@@ -9,7 +9,6 @@ project(
 
 staticdeps = get_option('staticdeps')
 tr_version = get_option('tr_version')
-gfx_gl_default_backend = get_option('gfx_gl_default_backend')
 
 fs = import('fs')
 c_compiler = meson.get_compiler('c')
@@ -23,7 +22,6 @@ build_opts = [
   '-DPCRE2_STATIC',
   '-DPCRE2_CODE_UNIT_WIDTH=8',
   '-DTR_VERSION=' + tr_version.to_string(),
-  '-DGFX_GL_DEFAULT_BACKEND=' + gfx_gl_default_backend,
 ]
 set_variable('defines', ['-DTR_VERSION=' + tr_version.to_string()])
 

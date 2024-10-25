@@ -87,7 +87,8 @@ char *GFX_GL_Program_PreprocessShader(
 }
 
 void GFX_GL_Program_AttachShader(
-    GFX_GL_PROGRAM *program, GLenum type, const char *path)
+    GFX_GL_PROGRAM *program, GLenum type, const char *path,
+    const GFX_GL_BACKEND backend)
 {
     assert(program != NULL);
     assert(path != NULL);
@@ -104,7 +105,7 @@ void GFX_GL_Program_AttachShader(
     }
 
     char *processed_content =
-        GFX_GL_Program_PreprocessShader(content, type, GFX_GL_DEFAULT_BACKEND);
+        GFX_GL_Program_PreprocessShader(content, type, backend);
     Memory_FreePointer(&content);
     if (!processed_content) {
         Shell_ExitSystemFmt("Failed to pre-process shader source:  %s", path);

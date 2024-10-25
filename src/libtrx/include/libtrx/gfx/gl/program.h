@@ -17,7 +17,8 @@ void GFX_GL_Program_Bind(GFX_GL_PROGRAM *program);
 char *GFX_GL_Program_PreprocessShader(
     const char *content, GLenum type, GFX_GL_BACKEND backend);
 void GFX_GL_Program_AttachShader(
-    GFX_GL_PROGRAM *program, GLenum type, const char *path);
+    GFX_GL_PROGRAM *program, GLenum type, const char *path,
+    GFX_GL_BACKEND backend);
 void GFX_GL_Program_Link(GFX_GL_PROGRAM *program);
 void GFX_GL_Program_FragmentData(GFX_GL_PROGRAM *program, const char *name);
 GLint GFX_GL_Program_UniformLocation(GFX_GL_PROGRAM *program, const char *name);

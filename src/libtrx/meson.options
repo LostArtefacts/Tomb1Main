@@ -12,9 +12,3 @@ option(
   max: 2,
   description: 'Which engine version to compile for'
 )
-
-option(
-  'gfx_gl_default_backend',
-  type: 'string',
-  description: 'Which OpenGL version to target'
-)

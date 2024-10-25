@@ -854,7 +854,6 @@ bool S_Output_Init(void)
         m_TextureSurfaces[i] = NULL;
     }
 
-    GFX_Context_Attach(S_Shell_GetWindowHandle());
     m_Renderer2D = GFX_Context_GetRenderer2D();
     m_Renderer3D = GFX_Context_GetRenderer3D();
 

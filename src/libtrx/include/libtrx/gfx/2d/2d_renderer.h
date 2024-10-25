@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../config.h"
 #include "../gl/buffer.h"
 #include "../gl/program.h"
 #include "../gl/sampler.h"
@@ -20,7 +21,7 @@ typedef struct {
     GFX_GL_PROGRAM program;
 } GFX_2D_RENDERER;
 
-void GFX_2D_Renderer_Init(GFX_2D_RENDERER *renderer);
+void GFX_2D_Renderer_Init(GFX_2D_RENDERER *renderer, const GFX_CONFIG *config);
 void GFX_2D_Renderer_Close(GFX_2D_RENDERER *renderer);
 
 void GFX_2D_Renderer_Upload(

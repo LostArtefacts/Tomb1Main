@@ -12,6 +12,7 @@
 
 #include <libtrx/filesystem.h>
 #include <libtrx/game/ui/common.h>
+#include <libtrx/gfx/common.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -32,6 +33,7 @@
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_video.h>
+#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -159,6 +161,7 @@ void S_Shell_Init(void)
         g_Config.rendering.window_width, g_Config.rendering.window_height,
         true);
     M_SetWindowMaximized(g_Config.rendering.enable_maximized, true);
+    SDL_ShowWindow(m_Window);
 }
 
 void S_Shell_ShowFatalError(const char *message)
@@ -321,21 +324,66 @@ int main(int argc, char **argv)
     return 0;
 }
 
+static void M_SetGLBackend(const GFX_GL_BACKEND backend)
+{
+    switch (backend) {
+    case GFX_GL_21:
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 0);
+        break;
+
+    case GFX_GL_33C:
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+        SDL_GL_SetAttribute(
+            SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        break;
+
+    case GFX_GL_INVALID_BACKEND:
+        assert(false);
+        break;
+    }
+}
+
 void S_Shell_CreateWindow(void)
 {
-    GFX_Context_SetupEnvironment();
+    const GFX_GL_BACKEND backends_to_try[] = {
+        // clang-format off
+        GFX_GL_33C,
+        GFX_GL_21,
+        GFX_GL_INVALID_BACKEND, // guard
+        // clang-format on
+    };
 
-    m_Window = SDL_CreateWindow(
-        "TR1X", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720,
-        SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE
-            | SDL_WINDOW_OPENGL);
+    for (int32_t i = 0; backends_to_try[i] != GFX_GL_INVALID_BACKEND; i++) {
+        const GFX_GL_BACKEND backend = backends_to_try[i];
 
-    if (!m_Window) {
-        S_Shell_ShowFatalError("System Error: cannot create window");
-        return;
+        M_SetGLBackend(backend);
+
+        SDL_Window *const window = SDL_CreateWindow(
+            "TR1X", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720,
+            SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN_DESKTOP
+                | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+
+        if (window == NULL) {
+            Shell_ExitSystem("System Error: cannot create window");
+            return;
+        }
+
+        int32_t major;
+        int32_t minor;
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major);
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor);
+        LOG_DEBUG("Trying GL backend %d.%d", major, minor);
+        if (GFX_Context_Attach(window, backend)) {
+            m_Window = window;
+            S_Shell_HandleWindowResize();
+            return;
+        }
     }
 
-    S_Shell_HandleWindowResize();
+    Shell_ExitSystem("System Error: cannot attach opengl context");
 }
 
 bool S_Shell_GetCommandLine(int *arg_count, char ***args)

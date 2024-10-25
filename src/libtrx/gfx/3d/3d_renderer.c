@@ -11,7 +11,7 @@ static void M_SelectTextureImpl(GFX_3D_RENDERER *renderer, int texture_num);
 
 static void M_SelectTextureImpl(GFX_3D_RENDERER *renderer, int texture_num)
 {
-    assert(renderer);
+    assert(renderer != NULL);
 
     GFX_GL_TEXTURE *texture = NULL;
     if (texture_num == GFX_ENV_MAP_TEXTURE) {
@@ -35,7 +35,7 @@ void GFX_3D_Renderer_Init(
     GFX_3D_RENDERER *renderer, const GFX_CONFIG *const config)
 {
     LOG_INFO("");
-    assert(renderer);
+    assert(renderer != NULL);
 
     renderer->config = config;
 
@@ -55,9 +55,11 @@ void GFX_3D_Renderer_Init(
 
     GFX_GL_Program_Init(&renderer->program);
     GFX_GL_Program_AttachShader(
-        &renderer->program, GL_VERTEX_SHADER, "shaders/3d.glsl");
+        &renderer->program, GL_VERTEX_SHADER, "shaders/3d.glsl",
+        config->backend);
     GFX_GL_Program_AttachShader(
-        &renderer->program, GL_FRAGMENT_SHADER, "shaders/3d.glsl");
+        &renderer->program, GL_FRAGMENT_SHADER, "shaders/3d.glsl",
+        config->backend);
     GFX_GL_Program_Link(&renderer->program);
 
     renderer->loc_mat_projection =
@@ -93,7 +95,7 @@ void GFX_3D_Renderer_Init(
 void GFX_3D_Renderer_Close(GFX_3D_RENDERER *renderer)
 {
     LOG_INFO("");
-    assert(renderer);
+    assert(renderer != NULL);
 
     GFX_3D_VertexStream_Close(&renderer->vertex_stream);
     GFX_GL_Program_Close(&renderer->program);
@@ -102,7 +104,7 @@ void GFX_3D_Renderer_Close(GFX_3D_RENDERER *renderer)
 
 void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *renderer)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     glEnable(GL_BLEND);
 
     glLineWidth(renderer->config->line_width);
@@ -145,7 +147,7 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *renderer)
 
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *renderer)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
 
     GFX_GL_CheckError();
@@ -213,8 +215,8 @@ void GFX_3D_Renderer_FillEnvironmentMap(GFX_3D_RENDERER *const renderer)
 int GFX_3D_Renderer_RegisterTexturePage(
     GFX_3D_RENDERER *renderer, const void *data, int width, int height)
 {
-    assert(renderer);
-    assert(data);
+    assert(renderer != NULL);
+    assert(data != NULL);
     GFX_GL_TEXTURE *texture = GFX_GL_Texture_Create(GL_TEXTURE_2D);
     GFX_GL_Texture_Load(texture, data, width, height, GL_RGBA, GL_RGBA);
 
@@ -236,7 +238,7 @@ int GFX_3D_Renderer_RegisterTexturePage(
 bool GFX_3D_Renderer_UnregisterTexturePage(
     GFX_3D_RENDERER *renderer, int texture_num)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     assert(texture_num >= 0);
     assert(texture_num < GFX_MAX_TEXTURES);
 
@@ -260,8 +262,8 @@ bool GFX_3D_Renderer_UnregisterTexturePage(
 void GFX_3D_Renderer_RenderPrimStrip(
     GFX_3D_RENDERER *renderer, GFX_3D_VERTEX *vertices, int count)
 {
-    assert(renderer);
-    assert(vertices);
+    assert(renderer != NULL);
+    assert(vertices != NULL);
     GFX_3D_VertexStream_PushPrimStrip(
         &renderer->vertex_stream, vertices, count);
 }
@@ -269,22 +271,22 @@ void GFX_3D_Renderer_RenderPrimStrip(
 void GFX_3D_Renderer_RenderPrimFan(
     GFX_3D_RENDERER *renderer, GFX_3D_VERTEX *vertices, int count)
 {
-    assert(renderer);
-    assert(vertices);
+    assert(renderer != NULL);
+    assert(vertices != NULL);
     GFX_3D_VertexStream_PushPrimFan(&renderer->vertex_stream, vertices, count);
 }
 
 void GFX_3D_Renderer_RenderPrimList(
     GFX_3D_RENDERER *renderer, GFX_3D_VERTEX *vertices, int count)
 {
-    assert(renderer);
-    assert(vertices);
+    assert(renderer != NULL);
+    assert(vertices != NULL);
     GFX_3D_VertexStream_PushPrimList(&renderer->vertex_stream, vertices, count);
 }
 
 void GFX_3D_Renderer_SelectTexture(GFX_3D_RENDERER *renderer, int texture_num)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     renderer->selected_texture_num = texture_num;
     M_SelectTextureImpl(renderer, texture_num);
@@ -292,14 +294,14 @@ void GFX_3D_Renderer_SelectTexture(GFX_3D_RENDERER *renderer, int texture_num)
 
 void GFX_3D_Renderer_RestoreTexture(GFX_3D_RENDERER *renderer)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     M_SelectTextureImpl(renderer, renderer->selected_texture_num);
 }
 
 void GFX_3D_Renderer_SetPrimType(
     GFX_3D_RENDERER *renderer, GFX_3D_PRIM_TYPE value)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     GFX_3D_VertexStream_SetPrimType(&renderer->vertex_stream, value);
 }
@@ -307,7 +309,7 @@ void GFX_3D_Renderer_SetPrimType(
 void GFX_3D_Renderer_SetTextureFilter(
     GFX_3D_RENDERER *renderer, GFX_TEXTURE_FILTER filter)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     GFX_GL_Sampler_Parameteri(
         &renderer->sampler, GL_TEXTURE_MAG_FILTER,
@@ -323,7 +325,7 @@ void GFX_3D_Renderer_SetTextureFilter(
 void GFX_3D_Renderer_SetDepthWritesEnabled(
     GFX_3D_RENDERER *const renderer, const bool is_enabled)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     if (is_enabled) {
         glDepthMask(GL_TRUE);
@@ -335,7 +337,7 @@ void GFX_3D_Renderer_SetDepthWritesEnabled(
 void GFX_3D_Renderer_SetDepthTestEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     if (is_enabled) {
         glEnable(GL_DEPTH_TEST);
@@ -366,7 +368,7 @@ void GFX_3D_Renderer_SetBlendingMode(
 void GFX_3D_Renderer_SetTexturingEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled)
 {
-    assert(renderer);
+    assert(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
     GFX_GL_Program_Uniform1i(
         &renderer->program, renderer->loc_texturing_enabled, is_enabled);

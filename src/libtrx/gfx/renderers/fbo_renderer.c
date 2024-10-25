@@ -100,9 +100,10 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
 
     GFX_GL_Program_Init(&priv->program);
     GFX_GL_Program_AttachShader(
-        &priv->program, GL_VERTEX_SHADER, "shaders/fbo.glsl");
+        &priv->program, GL_VERTEX_SHADER, "shaders/fbo.glsl", config->backend);
     GFX_GL_Program_AttachShader(
-        &priv->program, GL_FRAGMENT_SHADER, "shaders/fbo.glsl");
+        &priv->program, GL_FRAGMENT_SHADER, "shaders/fbo.glsl",
+        config->backend);
     GFX_GL_Program_Link(&priv->program);
     GFX_GL_Program_FragmentData(&priv->program, "fragColor");
 

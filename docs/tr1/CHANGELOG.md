@@ -1,6 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.5.1...develop) - ××××-××-××
 - added support for wading, similar to TR2+ (#1537)
 - added the ability to pause during cutscenes (#1673)
+- changed OpenGL backend to use version 3.3, with fallback to 2.1 if initialization fails (#1738)
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)
 - fixed missing trapdoor triggers in City of Khamoon (#1744)
@@ -45,7 +46,6 @@
 - added `/exit` command (#1462)
 - added reflections to Midas Hand death animation and savegame crystals (#154)
 - added an option to use PS1 tinted savegame crystals (#1506)
-- changed the target change functionality from the look key to a new, standalone key (default `z` on keyboard, `left analog click` on controller) (#1503)
 - fixed `/play`, `/load`, `/demo` and similar commands not working in stats, credits, cinematics and fmvs (#1477)
 - fixed console commands being able to interfere with demos, cutscenes and the title screen (#1489, regression from 3.0)
 - fixed reopening the compass not resetting its needle (#1472, regression from 4.0)
@@ -69,6 +69,7 @@
 - fixed Bacon Lara re-spawning after saving and loading (#1500, regression from 0.7)
 - fixed config JSON not sanitizing some numeric values (#1515)
 - fixed potential crashes in custom levels if hybrid creature objects are not present in the level (#1444)
+- changed the target change functionality from the look key to a new, standalone key (default `z` on keyboard, `left analog click` on controller) (#1503)
 - changed `/heal` console command to also extinguish Lara
 - changed `/tp` console command to look for the closest place to teleport to when targeting items (#1484)
 - changed `/set` console command output to always use fully-qualified option names

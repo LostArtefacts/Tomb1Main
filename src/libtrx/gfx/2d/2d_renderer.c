@@ -6,10 +6,11 @@
 
 #include <assert.h>
 
-void GFX_2D_Renderer_Init(GFX_2D_RENDERER *renderer)
+void GFX_2D_Renderer_Init(
+    GFX_2D_RENDERER *renderer, const GFX_CONFIG *const config)
 {
     LOG_INFO("");
-    assert(renderer);
+    assert(renderer != NULL);
 
     GFX_GL_Buffer_Init(&renderer->surface_buffer, GL_ARRAY_BUFFER);
     GFX_GL_Buffer_Bind(&renderer->surface_buffer);
@@ -38,9 +39,11 @@ void GFX_2D_Renderer_Init(GFX_2D_RENDERER *renderer)
 
     GFX_GL_Program_Init(&renderer->program);
     GFX_GL_Program_AttachShader(
-        &renderer->program, GL_VERTEX_SHADER, "shaders/2d.glsl");
+        &renderer->program, GL_VERTEX_SHADER, "shaders/2d.glsl",
+        config->backend);
     GFX_GL_Program_AttachShader(
-        &renderer->program, GL_FRAGMENT_SHADER, "shaders/2d.glsl");
+        &renderer->program, GL_FRAGMENT_SHADER, "shaders/2d.glsl",
+        config->backend);
     GFX_GL_Program_Link(&renderer->program);
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
 
@@ -50,7 +53,7 @@ void GFX_2D_Renderer_Init(GFX_2D_RENDERER *renderer)
 void GFX_2D_Renderer_Close(GFX_2D_RENDERER *renderer)
 {
     LOG_INFO("");
-    assert(renderer);
+    assert(renderer != NULL);
 
     GFX_GL_VertexArray_Close(&renderer->surface_format);
     GFX_GL_Buffer_Close(&renderer->surface_buffer);
@@ -62,6 +65,7 @@ void GFX_2D_Renderer_Close(GFX_2D_RENDERER *renderer)
 void GFX_2D_Renderer_Upload(
     GFX_2D_RENDERER *renderer, GFX_2D_SURFACE_DESC *desc, const uint8_t *data)
 {
+    assert(renderer != NULL);
     const uint32_t width = desc->width;
     const uint32_t height = desc->height;
 
@@ -87,6 +91,7 @@ void GFX_2D_Renderer_Upload(
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *renderer)
 {
+    assert(renderer != NULL);
     GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Buffer_Bind(&renderer->surface_buffer);
     GFX_GL_VertexArray_Bind(&renderer->surface_format);

@@ -5,15 +5,8 @@ project('TR2X', ['c'],
   ],
 )
 
-if host_machine.system() == 'darwin'
-  gfx_gl_default_backend = 'GFX_GL_33C'
-else
-  gfx_gl_default_backend = 'GFX_GL_21'
-endif
-
 trx = subproject('libtrx', default_options: {
   'tr_version': '2',
-  'gfx_gl_default_backend': gfx_gl_default_backend,
 })
 c_compiler = meson.get_compiler('c')
 

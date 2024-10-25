@@ -8,8 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void GFX_Context_SetupEnvironment(void);
-void GFX_Context_Attach(void *window_handle);
+bool GFX_Context_Attach(void *window_handle, GFX_GL_BACKEND backend);
 void GFX_Context_Detach(void);
 
 void GFX_Context_SetDisplayFilter(GFX_TEXTURE_FILTER filter);

@@ -10,6 +10,7 @@
 #include "memory.h"
 
 #include <SDL2/SDL_video.h>
+#include <assert.h>
 #include <string.h>
 
 typedef struct {
@@ -99,33 +100,23 @@ void GFX_Context_SwitchToDisplayViewport(void)
     GFX_GL_CheckError();
 }
 
-void GFX_Context_SetupEnvironment(void)
-{
-    switch (GFX_GL_DEFAULT_BACKEND) {
-    case GFX_GL_21:
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        break;
-
-    case GFX_GL_33C:
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-        SDL_GL_SetAttribute(
-            SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        break;
-    }
-}
-
-void GFX_Context_Attach(void *window_handle)
+bool GFX_Context_Attach(void *window_handle, GFX_GL_BACKEND backend)
 {
     const char *shading_ver;
 
     if (m_Context.window_handle) {
-        return;
+        LOG_ERROR("Context already attached");
+        return false;
     }
 
     LOG_INFO("Attaching to window %p", window_handle);
+    m_Context.context = SDL_GL_CreateContext(window_handle);
+    if (m_Context.context == NULL) {
+        LOG_ERROR("Can't create OpenGL context: %s", SDL_GetError());
+        return false;
+    }
 
+    m_Context.config.backend = backend;
     m_Context.config.line_width = 1;
     m_Context.config.enable_wireframe = false;
     m_Context.render_mode = -1;
@@ -135,12 +126,6 @@ void GFX_Context_Attach(void *window_handle)
     m_Context.display_height = m_Context.window_height;
 
     m_Context.window_handle = window_handle;
-
-    m_Context.context = SDL_GL_CreateContext(m_Context.window_handle);
-
-    if (m_Context.context == NULL) {
-        Shell_ExitSystemFmt("Can't create OpenGL context: %s", SDL_GetError());
-    }
 
     if (SDL_GL_MakeCurrent(m_Context.window_handle, m_Context.context)) {
         Shell_ExitSystemFmt(
@@ -159,7 +144,7 @@ void GFX_Context_Attach(void *window_handle)
     }
 
     // Check the availability of non-Core Profile extensions for OpenGL 2.1
-    if (GFX_GL_DEFAULT_BACKEND == GFX_GL_21) {
+    if (m_Context.config.backend == GFX_GL_21) {
         M_CheckExtensionSupport("GL_ARB_explicit_attrib_location");
         M_CheckExtensionSupport("GL_EXT_gpu_shader4");
     }
@@ -171,8 +156,9 @@ void GFX_Context_Attach(void *window_handle)
     // VSync defaults to on unless user disabled it in runtime json
     SDL_GL_SetSwapInterval(1);
 
-    GFX_2D_Renderer_Init(&m_Context.renderer_2d);
+    GFX_2D_Renderer_Init(&m_Context.renderer_2d, &m_Context.config);
     GFX_3D_Renderer_Init(&m_Context.renderer_3d, &m_Context.config);
+    return true;
 }
 
 void GFX_Context_Detach(void)
