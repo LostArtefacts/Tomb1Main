@@ -84,7 +84,6 @@
 #define InitialiseHair ((void __cdecl (*)(void))0x00420EA0)
 #define HairControl ((void __cdecl (*)(int32_t in_cutscene))0x00420F20)
 #define DrawHair ((void __cdecl (*)(void))0x00421920)
-#define Rocket_Control ((void __cdecl (*)(int16_t item_num))0x0042C530)
 #define Flare_DoLight ((int32_t __cdecl (*)(XYZ_32 *pos, int32_t flare_age))0x0042F7A0)
 #define Flare_DoInHand ((void __cdecl (*)(int32_t flare_age))0x0042F840)
 #define Flare_DrawInAir ((void __cdecl (*)(ITEM *item))0x0042F920)
