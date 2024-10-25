@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.69% (867)</tspan> · <tspan class="known">27.89% (347)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.77% (868)</tspan> · <tspan class="known">27.81% (346)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="520.62" height="6" x="0" y="0" class="decompiled"/>
-<rect width="208.37" height="6" x="520.62" y="0" class="known"/>
+<rect width="521.22" height="6" x="0" y="0" class="decompiled"/>
+<rect width="207.77" height="6" x="521.22" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -325,7 +325,7 @@
 <rect width="12" height="12" x="690" y="60" class="known"><title>void __cdecl ControlExplosion1(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="705" y="60" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl ControlRichochet1(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="735" y="60" class="known"><title>void __cdecl CreateBubble(PHD_3DPOS *pos, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="735" y="60" class="known"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="known"><title>void __cdecl LaraBubbles(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="75" class="known"><title>void __cdecl ControlBubble1(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="30" y="75" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
@@ -582,7 +582,7 @@
 <rect width="12" height="12" x="45" y="150" class="decompiled"><title>void __cdecl Gun_Rifle_FireShotgun(void);</title></rect>
 <rect width="12" height="12" x="60" y="150" class="decompiled"><title>void __cdecl Gun_Rifle_FireM16(bool running);</title></rect>
 <rect width="12" height="12" x="75" y="150" class="decompiled"><title>void __cdecl Gun_Rifle_FireHarpoon(void);</title></rect>
-<rect width="12" height="12" x="90" y="150" class="known"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="90" y="150" class="decompiled"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="105" y="150" class="decompiled"><title>void __cdecl Gun_Rifle_FireGrenade(void);</title></rect>
 <rect width="12" height="12" x="120" y="150" class="known"><title>void __cdecl Rocket_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="135" y="150" class="decompiled"><title>void __cdecl Gun_Rifle_Draw(LARA_GUN_TYPE weapon_type);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.68%</tspan> · <tspan class="known">26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.92%</tspan> · <tspan class="known">25.75%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="550.37" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.19" height="6" x="550.37" y="0" class="known"/>
+<rect width="552.20" height="6" x="0" y="0" class="decompiled"/>
+<rect width="192.36" height="6" x="552.20" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1424,7 +1424,7 @@
 <rect width="22.45" height="24.38" x="294.45" y="55.51" class="known"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
 <rect width="22.45" height="24.35" x="294.45" y="82.89" class="decompiled"><title>void __cdecl Output_InsertSprite_Sorted(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);</title></rect>
 <rect width="22.45" height="24.35" x="294.45" y="110.24" class="known"><title>void __cdecl RollingBallControl(int16_t item_num);</title></rect>
-<rect width="22.45" height="24.25" x="294.45" y="137.58" class="known"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
+<rect width="22.45" height="24.25" x="294.45" y="137.58" class="decompiled"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
 <rect width="22.45" height="24.22" x="294.45" y="164.83" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="22.45" height="24.15" x="294.45" y="192.05" class="decompiled"><title>void __fastcall Output_WGTMapA(int32_t y0, int32_t y1, uint8_t *tex_page); // actually, __watcall, which is esoteric and rarely supported</title></rect>
 <rect width="22.45" height="24.05" x="294.45" y="219.20" class="decompiled"><title>void __cdecl Lara_HangTest(ITEM *item, COLL_INFO *coll);</title></rect>
@@ -2041,7 +2041,7 @@
 <rect width="6.33" height="6.07" x="598.27" y="262.71" class="decompiled"><title>int32_t __cdecl GF_DoLevelSequence(int32_t level, GAMEFLOW_LEVEL_TYPE type);</title></rect>
 <rect width="6.33" height="6.07" x="598.27" y="271.78" class="decompiled"><title>void __cdecl Lara_LookUpDown(void);</title></rect>
 <rect width="6.33" height="6.07" x="598.27" y="280.86" class="known"><title>int16_t __cdecl GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
-<rect width="6.33" height="5.90" x="598.27" y="289.93" class="known"><title>void __cdecl CreateBubble(PHD_3DPOS *pos, int16_t room_num);</title></rect>
+<rect width="6.33" height="5.90" x="598.27" y="289.93" class="known"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="6.33" height="5.90" x="598.27" y="298.83" class="decompiled"><title>int32_t __cdecl GameInit(bool skip_cd_init);</title></rect>
 <rect width="6.33" height="5.90" x="598.27" y="307.72" class="known"><title>void __thiscall SE_DrawBitmap(BITMAP_RESOURCE *bmpRsrc, HDC hdc, int32_t x, int32_t y);</title></rect>
 <rect width="6.33" height="5.81" x="598.27" y="316.62" class="known"><title>void __cdecl swap_meshes_with_meshswap1(ITEM *item);</title></rect>

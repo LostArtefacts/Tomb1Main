@@ -58,6 +58,7 @@
 #include "game/objects/general/drawbridge.h"
 #include "game/objects/general/final_level_counter.h"
 #include "game/objects/general/gong_bonger.h"
+#include "game/objects/general/harpoon_bolt.h"
 #include "game/objects/general/keyhole.h"
 #include "game/objects/general/lift.h"
 #include "game/objects/general/movable_block.h"
@@ -1022,6 +1023,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00417E90, Dragon_Control);
     INJECT(enable, 0x004183E0, Bartoli_Initialise);
     INJECT(enable, 0x00418500, Bartoli_Control);
+    INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x004336F0, BodyPart_Control);
     INJECT(enable, 0x004338F0, MovableBlock_Initialise);
     INJECT(enable, 0x00433920, MovableBlock_Control);

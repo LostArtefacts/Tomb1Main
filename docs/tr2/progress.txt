@@ -3160,7 +3160,7 @@ typedef enum {
 0x0041C770  0x007F  -R      void __cdecl ControlExplosion1(int16_t fx_num);
 0x0041C7F0  0x0072  -R      void __cdecl Richochet(GAME_VECTOR *pos);
 0x0041C870  0x0030  -R      void __cdecl ControlRichochet1(int16_t fx_num);
-0x0041C8A0  0x0064  -R      void __cdecl CreateBubble(PHD_3DPOS *pos, int16_t room_num);
+0x0041C8A0  0x0064  -R      void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);
 0x0041C910  0x0078  -R      void __cdecl LaraBubbles(ITEM *item);
 0x0041C990  0x00F3  -R      void __cdecl ControlBubble1(int16_t fx_num);
 0x0041CA90  0x00C2  -R      void __cdecl Splash(ITEM *item);
@@ -3437,7 +3437,7 @@ typedef enum {
 0x0042BDE0  0x00F2  +       void __cdecl Gun_Rifle_FireShotgun(void);
 0x0042BEE0  0x007B  +       void __cdecl Gun_Rifle_FireM16(bool running);
 0x0042BF60  0x0187  +       void __cdecl Gun_Rifle_FireHarpoon(void);
-0x0042C0F0  0x0344  -       void __cdecl HarpoonBolt_Control(int16_t item_num);
+0x0042C0F0  0x0344  +       void __cdecl HarpoonBolt_Control(int16_t item_num);
 0x0042C440  0x00F0  +       void __cdecl Gun_Rifle_FireGrenade(void);
 0x0042C530  0x03FD  -       void __cdecl Rocket_Control(int16_t item_num);
 0x0042C930  0x0166  +       void __cdecl Gun_Rifle_Draw(LARA_GUN_TYPE weapon_type);

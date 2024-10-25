@@ -173,6 +173,7 @@ dll_sources = [
   'game/objects/general/drawbridge.c',
   'game/objects/general/final_level_counter.c',
   'game/objects/general/gong_bonger.c',
+  'game/objects/general/harpoon_bolt.c',
   'game/objects/general/keyhole.c',
   'game/objects/general/lift.c',
   'game/objects/general/movable_block.c',
