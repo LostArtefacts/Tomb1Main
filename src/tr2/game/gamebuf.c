@@ -94,7 +94,7 @@ void *__cdecl GameBuf_Alloc(const size_t alloc_size, const GAME_BUFFER buffer)
 
     if (aligned_size > g_GameBuf_MemFree) {
         Shell_ExitSystemFmt(
-            "GameBuf_Alloc(): OUT OF MEMORY %s %d", M_GetBufferName(buffer),
+            "%s: OUT OF MEMORY %s %d", M_GetBufferName(buffer), __FUNCTION__,
             aligned_size);
     }
 
@@ -103,4 +103,18 @@ void *__cdecl GameBuf_Alloc(const size_t alloc_size, const GAME_BUFFER buffer)
     g_GameBuf_MemUsed += aligned_size;
     g_GameBuf_MemPtr += aligned_size;
     return result;
+}
+
+void __cdecl GameBuf_Free(const size_t free_size)
+{
+    const size_t aligned_size = (free_size + 3) & ~3;
+    if (aligned_size > g_GameBuf_MemUsed) {
+        Shell_ExitSystemFmt(
+            "%s: Trying to free unused memory (buffer: %s, size: %d)",
+            __FUNCTION__, aligned_size);
+    }
+
+    g_GameBuf_MemPtr -= aligned_size;
+    g_GameBuf_MemFree += aligned_size;
+    g_GameBuf_MemUsed -= aligned_size;
 }

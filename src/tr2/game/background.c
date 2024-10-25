@@ -39,7 +39,7 @@ void __cdecl BGND_Make640x480(uint8_t *bitmap, RGB_888 *palette)
     UT_MemBlt(buf, 0, 0, 256, 224, 256, bitmap, 256, 256, 640);
     BGND_AddTexture(4, buf, g_BGND_PaletteIndex, palette);
 
-    game_free(buf_size);
+    GameBuf_Free(buf_size);
 
     BGND_GetPageHandles();
 

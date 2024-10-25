@@ -225,7 +225,6 @@
 #define S_FrontEndCheck ((BOOL __cdecl (*)(void))0x0044CCB0)
 #define S_SaveGame ((int32_t __cdecl (*)(const void *save_data, uint32_t save_size, int32_t slot_num))0x0044CE20)
 #define S_LoadGame ((int32_t __cdecl (*)(void *save_data, uint32_t save_size, int32_t slot_num))0x0044CF40)
-#define game_free ((void __cdecl (*)(size_t free_size))0x0044D740)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
 #define GetRenderHeight ((int32_t __cdecl (*)(void))0x00450AE0)
 #define GetRenderWidth ((int32_t __cdecl (*)(void))0x00450AF0)

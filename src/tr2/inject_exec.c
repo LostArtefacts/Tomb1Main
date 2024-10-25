@@ -295,6 +295,7 @@ static void M_GameBuf(bool enable)
     INJECT(enable, 0x0044D670, GameBuf_Shutdown);
     INJECT(enable, 0x0044D690, GameBuf_Reset);
     INJECT(enable, 0x0044D6C0, GameBuf_Alloc);
+    INJECT(enable, 0x0044D740, GameBuf_Free);
 }
 
 static void M_HWR(bool enable)

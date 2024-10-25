@@ -4005,7 +4005,7 @@ typedef enum {
 0x0044D670  0x0011  +       void __cdecl GameBuf_Shutdown(void);
 0x0044D690  0x0021  +       void __cdecl GameBuf_Reset(void);
 0x0044D6C0  0x006C  +       void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);
-0x0044D740  0x0034  -R      void __cdecl game_free(size_t free_size);
+0x0044D740  0x0034  +       void __cdecl GameBuf_Free(size_t free_size);
 0x0044D780  0x00E8  -R      void __cdecl CalculateWibbleTable(void);
 0x0044D870  0x007F  +       void __cdecl Random_Seed(void);
 0x0044D8F0  0x0120  +       BOOL __cdecl S_Input_Key(KEYMAP keymap);

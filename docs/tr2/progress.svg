@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.61% (866)</tspan> · <tspan class="known">27.97% (348)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.69% (867)</tspan> · <tspan class="known">27.89% (347)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="520.02" height="6" x="0" y="0" class="decompiled"/>
-<rect width="208.97" height="6" x="520.02" y="0" class="known"/>
+<rect width="520.62" height="6" x="0" y="0" class="decompiled"/>
+<rect width="208.37" height="6" x="520.62" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1101,7 +1101,7 @@
 <rect width="12" height="12" x="330" y="300" class="decompiled"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
 <rect width="12" height="12" x="345" y="300" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
 <rect width="12" height="12" x="360" y="300" class="decompiled"><title>void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
-<rect width="12" height="12" x="375" y="300" class="known"><title>void __cdecl game_free(size_t free_size);</title></rect>
+<rect width="12" height="12" x="375" y="300" class="decompiled"><title>void __cdecl GameBuf_Free(size_t free_size);</title></rect>
 <rect width="12" height="12" x="390" y="300" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
 <rect width="12" height="12" x="405" y="300" class="decompiled"><title>void __cdecl Random_Seed(void);</title></rect>
 <rect width="12" height="12" x="420" y="300" class="decompiled"><title>BOOL __cdecl S_Input_Key(KEYMAP keymap);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.66%</tspan> · <tspan class="known">26.01%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.68%</tspan> · <tspan class="known">26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="550.26" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.30" height="6" x="550.26" y="0" class="known"/>
+<rect width="550.37" height="6" x="0" y="0" class="decompiled"/>
+<rect width="194.19" height="6" x="550.37" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2283,7 +2283,7 @@
 <rect width="3.43" height="3.71" x="661.67" y="371.29" class="decompiled"><title>void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate);</title></rect>
 <rect width="3.40" height="3.75" x="668.09" y="296.01" class="decompiled"><title>void __cdecl BridgeTilt2_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="3.40" height="3.75" x="674.49" y="296.01" class="known"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
-<rect width="3.40" height="3.75" x="680.88" y="296.01" class="known"><title>void __cdecl game_free(size_t free_size);</title></rect>
+<rect width="3.40" height="3.75" x="680.88" y="296.01" class="decompiled"><title>void __cdecl GameBuf_Free(size_t free_size);</title></rect>
 <rect width="3.27" height="3.75" x="687.28" y="296.01" class="decompiled"><title>void __cdecl Output_SortPolyList(void);</title></rect>
 <rect width="3.27" height="3.75" x="693.55" y="296.01" class="decompiled"><title>void __cdecl CutscenePlayerGen_Initialise(int16_t item_num);</title></rect>
 <rect width="3.27" height="3.75" x="699.82" y="296.01" class="decompiled"><title>void __cdecl Lara_State_RightJump(ITEM *item, COLL_INFO *coll);</title></rect>
