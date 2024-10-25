@@ -1,6 +1,7 @@
 #include "game/objects/creatures/diver.h"
 
 #include "game/creature.h"
+#include "game/effects.h"
 #include "game/los.h"
 #include "global/const.h"
 #include "global/funcs.h"
@@ -11,6 +12,7 @@
 #define DIVER_DIE_ANIM 16
 #define DIVER_HITPOINTS 20
 #define DIVER_RADIUS (WALL_L / 3) // = 341
+#define DIVER_HARPOON_SPEED 150
 
 static BITE m_DiverBite = { .pos = { .x = 17, .y = 164, .z = 44, }, .mesh_num = 18 };
 
@@ -219,4 +221,28 @@ void __cdecl Diver_Control(int16_t item_num)
         item->pos.y = water_level - WALL_L / 2;
         break;
     }
+}
+
+int16_t __cdecl Diver_Harpoon(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t y_rot, const int16_t room_num)
+{
+    const int16_t fx_num = Effect_Create(room_num);
+    if (fx_num != NO_ITEM) {
+        FX *const fx = &g_Effects[fx_num];
+        fx->pos.x = x;
+        fx->pos.y = y;
+        fx->pos.z = z;
+        fx->room_num = room_num;
+        fx->rot.x = 0;
+        fx->rot.y = y_rot;
+        fx->rot.z = 0;
+        fx->speed = DIVER_HARPOON_SPEED;
+        fx->fall_speed = 0;
+        fx->frame_num = 0;
+        fx->object_id = O_MISSILE_HARPOON;
+        fx->shade = 3584;
+        ShootAtLara(fx);
+    }
+    return fx_num;
 }
