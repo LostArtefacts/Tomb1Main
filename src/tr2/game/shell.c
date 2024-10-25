@@ -22,6 +22,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#define GAMEBUF_MEM_CAP 0x380000
+
 // TODO: refactor the hell out of me
 BOOL __cdecl Shell_Main(void)
 {
@@ -58,14 +60,9 @@ BOOL __cdecl Shell_Main(void)
     S_LoadSettings();
 
     g_HiRes = -1;
-    g_GameBuf_MemBase = GlobalAlloc(0, g_GameBuf_MemCap);
-
-    if (g_GameBuf_MemBase == NULL) {
-        strcpy(g_ErrorMessage, "GameMain: could not allocate malloc_buffer");
-        return false;
-    }
-
+    GameBuf_Init(GAMEBUF_MEM_CAP);
     g_HiRes = 0;
+
     TempVideoAdjust(1, 1.0);
     Input_Update();
 

@@ -4003,7 +4003,7 @@ typedef enum {
 0x0044D5E0  0x0022  +R      bool __cdecl HWR_Init(void);
 0x0044D610  0x005C  +       BOOL __cdecl S_InitialiseSystem(void);
 0x0044D670  0x0011  +       void __cdecl GameBuf_Shutdown(void);
-0x0044D690  0x0021  -R      void __cdecl init_game_malloc(void);
+0x0044D690  0x0021  +       void __cdecl GameBuf_Reset(void);
 0x0044D6C0  0x006C  -R      void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);
 0x0044D740  0x0034  -R      void __cdecl game_free(size_t free_size);
 0x0044D780  0x00E8  -R      void __cdecl CalculateWibbleTable(void);
@@ -4450,7 +4450,7 @@ typedef enum {
 0x004D9ED8  -       D3DTLVERTEX g_HWR_VertexBuffer[0x2000]; // MAX_VERTICES
 0x00519EE0  -       HWR_TEXTURE_HANDLE g_HWR_PageHandles[32];
 0x00519F60  -       D3DTLVERTEX *g_HWR_VertexPtr;
-0x0051A0CC  -       void *g_GameBuf_MemBase;
+0x0051A0CC  -       char *g_GameBuf_MemBase;
 0x0051A0D0  +       BOOL g_ConflictLayout[14]; // INPUT_ROLE_NUMBER_OF
 0x0051A108  -       uint8_t g_DIKeys[256];
 0x0051A208  -       int32_t g_Input;

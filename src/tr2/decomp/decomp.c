@@ -3093,6 +3093,5 @@ BOOL __cdecl S_InitialiseSystem(void)
     g_DumpHeight = g_GameVid_Height;
     g_DumpWidth = g_GameVid_Width;
     CalculateWibbleTable();
-    g_GameBuf_MemCap = 0x380000;
     return 1;
 }

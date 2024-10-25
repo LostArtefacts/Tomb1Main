@@ -1,5 +1,6 @@
 #include "game/level.h"
 
+#include "game/gamebuf.h"
 #include "game/hwr.h"
 #include "game/items.h"
 #include "game/objects/setup.h"
@@ -841,7 +842,7 @@ finish:
 bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
 {
     LOG_DEBUG("%s (num=%d)", g_GF_LevelNames[level_num], level_num);
-    init_game_malloc();
+    GameBuf_Reset();
 
     BENCHMARK *const benchmark = Benchmark_Start();
     bool result = false;

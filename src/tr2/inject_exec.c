@@ -293,6 +293,7 @@ static void M_DecompEffects(const bool enable)
 static void M_GameBuf(bool enable)
 {
     INJECT(enable, 0x0044D670, GameBuf_Shutdown);
+    INJECT(enable, 0x0044D690, GameBuf_Reset);
 }
 
 static void M_HWR(bool enable)

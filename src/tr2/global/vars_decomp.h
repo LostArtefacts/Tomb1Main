@@ -369,7 +369,7 @@
 #define g_GameBuf_MemPtr (*(char **)0x0051A004)
 #define g_GameBuf_MemUsed (*(int32_t*)0x0051A008)
 #define g_GameBuf_MemFree (*(int32_t*)0x0051A00C)
-#define g_GameBuf_MemBase (*(void **)0x0051A0CC)
+#define g_GameBuf_MemBase (*(char **)0x0051A0CC)
 #define g_DIKeys (*(uint8_t(*)[256])0x0051A108)
 #define g_Input (*(int32_t*)0x0051A208)
 #define g_IsVidModeLock (*(int8_t*)0x0051A20C)

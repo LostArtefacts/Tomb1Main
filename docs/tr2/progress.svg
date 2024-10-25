@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.45% (864)</tspan> · <tspan class="known">28.14% (350)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.53% (865)</tspan> · <tspan class="known">28.05% (349)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="518.82" height="6" x="0" y="0" class="decompiled"/>
-<rect width="210.17" height="6" x="518.82" y="0" class="known"/>
+<rect width="519.42" height="6" x="0" y="0" class="decompiled"/>
+<rect width="209.57" height="6" x="519.42" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1099,7 +1099,7 @@
 <rect width="12" height="12" x="300" y="300" class="decompiled"><title>bool __cdecl HWR_Init(void);</title></rect>
 <rect width="12" height="12" x="315" y="300" class="decompiled"><title>BOOL __cdecl S_InitialiseSystem(void);</title></rect>
 <rect width="12" height="12" x="330" y="300" class="decompiled"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
-<rect width="12" height="12" x="345" y="300" class="known"><title>void __cdecl init_game_malloc(void);</title></rect>
+<rect width="12" height="12" x="345" y="300" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
 <rect width="12" height="12" x="360" y="300" class="known"><title>void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="12" height="12" x="375" y="300" class="known"><title>void __cdecl game_free(size_t free_size);</title></rect>
 <rect width="12" height="12" x="390" y="300" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.62%</tspan> · <tspan class="known">26.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.63%</tspan> · <tspan class="known">26.04%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="549.95" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.61" height="6" x="549.95" y="0" class="known"/>
+<rect width="550.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="194.54" height="6" x="550.02" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2400,7 +2400,7 @@
 <rect width="2.21" height="2.42" x="724.43" y="325.85" class="decompiled"><title>bool __cdecl DInputCreate(void);</title></rect>
 <rect width="2.21" height="2.42" x="729.63" y="325.85" class="decompiled"><title>bool __cdecl HWR_Init(void);</title></rect>
 <rect width="2.05" height="2.42" x="734.84" y="325.85" class="decompiled"><title>void __cdecl Lara_InitialiseLoad(int16_t item_num);</title></rect>
-<rect width="2.05" height="2.42" x="739.89" y="325.85" class="known"><title>void __cdecl init_game_malloc(void);</title></rect>
+<rect width="2.05" height="2.42" x="739.89" y="325.85" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
 <rect width="2.05" height="2.42" x="744.95" y="325.85" class="known"><title>void __cdecl S_SetupAboveWater(BOOL underwater);</title></rect>
 <rect width="1.97" height="2.34" x="698.24" y="331.27" class="decompiled"><title>void __cdecl Inv_Ring_MotionCameraPitch(RING_INFO *ring, int16_t target);</title></rect>
 <rect width="1.97" height="2.34" x="698.24" y="336.61" class="known"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
