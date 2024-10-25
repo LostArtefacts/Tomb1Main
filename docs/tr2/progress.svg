@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.94% (870)</tspan> · <tspan class="known">27.65% (344)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">70.02% (871)</tspan> · <tspan class="known">27.57% (343)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="522.42" height="6" x="0" y="0" class="decompiled"/>
-<rect width="206.57" height="6" x="522.42" y="0" class="known"/>
+<rect width="523.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="205.97" height="6" x="523.02" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -269,7 +269,7 @@
 <rect width="12" height="12" x="600" y="45" class="decompiled"><title>void __cdecl Demo_LoadLaraPos(void);</title></rect>
 <rect width="12" height="12" x="615" y="45" class="decompiled"><title>void __cdecl Demo_GetInput(void);</title></rect>
 <rect width="12" height="12" x="630" y="45" class="decompiled"><title>int16_t __cdecl Diver_Harpoon(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE y_rot, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="645" y="45" class="known"><title>int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="645" y="45" class="decompiled"><title>int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="660" y="45" class="decompiled"><title>void __cdecl Diver_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="675" y="45" class="known"><title>void __cdecl Dog_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="690" y="45" class="known"><title>void __cdecl Tiger_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.26%</tspan> · <tspan class="known">25.42%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.33%</tspan> · <tspan class="known">25.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="554.70" height="6" x="0" y="0" class="decompiled"/>
-<rect width="189.86" height="6" x="554.70" y="0" class="known"/>
+<rect width="555.27" height="6" x="0" y="0" class="decompiled"/>
+<rect width="189.29" height="6" x="555.27" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1680,7 +1680,7 @@
 <rect width="11.49" height="12.23" x="480.11" y="153.99" class="known"><title>void __cdecl Pendulum(int16_t item_num);</title></rect>
 <rect width="11.49" height="12.17" x="480.11" y="169.21" class="known"><title>void __cdecl KillerStatueControl(int16_t item_num);</title></rect>
 <rect width="11.49" height="12.06" x="480.11" y="184.39" class="decompiled"><title>int32_t __cdecl Text_GetWidth(TEXTSTRING *string);</title></rect>
-<rect width="11.49" height="12" x="480.11" y="199.44" class="known"><title>int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
+<rect width="11.49" height="12" x="480.11" y="199.44" class="decompiled"><title>int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="11.49" height="12" x="480.11" y="214.44" class="decompiled"><title>void __cdecl LOT_InitialiseSlot(int16_t item_num, int32_t slot);</title></rect>
 <rect width="11.49" height="12" x="480.11" y="229.44" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOffOK(int32_t direction);</title></rect>
 <rect width="11.49" height="12" x="480.11" y="244.44" class="known"><title>INT_PTR __stdcall SE_ControlsDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>

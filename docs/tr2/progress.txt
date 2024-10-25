@@ -3094,7 +3094,7 @@ typedef enum {
 
 # game/diver.c
 0x00416C20  0x007A  +       int16_t __cdecl Diver_Harpoon(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE y_rot, int16_t room_num);
-0x00416CA0  0x0106  -       int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);
+0x00416CA0  0x0106  +       int32_t __cdecl Diver_GetWaterSurface(int32_t x, int32_t y, int32_t z, int16_t room_num);
 0x00416DB0  0x0389  +       void __cdecl Diver_Control(int16_t item_num);
 
 # game/dog.c

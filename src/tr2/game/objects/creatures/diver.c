@@ -3,6 +3,7 @@
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/los.h"
+#include "game/room.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -28,6 +29,44 @@ typedef enum {
     DIVER_ANIM_NULL_2 = 8,
     DIVER_ANIM_DEATH = 9,
 } DIVER_ANIM;
+
+static const SECTOR *M_GetRelSector(const ROOM *r, int32_t x, int32_t z);
+
+static const SECTOR *M_GetRelSector(
+    const ROOM *const r, const int32_t x, const int32_t z)
+{
+    const XZ_32 sector_pos = {
+        .x = (x - r->pos.x) >> WALL_SHIFT,
+        .z = (z - r->pos.z) >> WALL_SHIFT,
+    };
+    return &r->sectors[sector_pos.z + r->size.z * sector_pos.x];
+}
+
+int32_t __cdecl Diver_GetWaterSurface(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t room_num)
+{
+    const ROOM *r = Room_Get(room_num);
+    const SECTOR *sector = M_GetRelSector(r, x, z);
+
+    if ((r->flags & RF_UNDERWATER)) {
+        while (sector->sky_room != NO_ROOM) {
+            r = Room_Get(sector->sky_room);
+            if (!(r->flags & RF_UNDERWATER)) {
+                return sector->ceiling << 8;
+            }
+            sector = M_GetRelSector(r, x, z);
+        }
+    } else {
+        while (sector->pit_room != NO_ROOM) {
+            r = Room_Get(sector->pit_room);
+            if ((r->flags & RF_UNDERWATER)) {
+                return sector->floor << 8;
+            }
+            sector = M_GetRelSector(r, x, z);
+        }
+    }
+    return NO_HEIGHT;
+}
 
 void Diver_Setup(void)
 {

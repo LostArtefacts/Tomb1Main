@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define Diver_GetWaterSurface ((int32_t __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t room_num))0x00416CA0)
 #define Dog_Control ((void __cdecl (*)(int16_t item_num))0x00417160)
 #define Tiger_Control ((void __cdecl (*)(int16_t item_num))0x00417510)
 #define TRex_Control ((void __cdecl (*)(int16_t item_num))0x004186A0)
