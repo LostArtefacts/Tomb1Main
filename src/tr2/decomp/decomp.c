@@ -6,6 +6,7 @@
 #include "game/console/common.h"
 #include "game/effects.h"
 #include "game/game.h"
+#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/hwr.h"
@@ -1384,7 +1385,7 @@ int32_t __cdecl Level_Initialise(
         || level_type == GFL_DEMO) {
         GetCarriedItems();
     }
-    g_Effects = game_malloc(MAX_EFFECTS * sizeof(FX), GBUF_EFFECTS_ARRAY);
+    g_Effects = GameBuf_Alloc(MAX_EFFECTS * sizeof(FX), GBUF_EFFECTS_ARRAY);
     Effect_InitialiseArray();
     LOT_InitialiseArray();
     Inv_InitColors();

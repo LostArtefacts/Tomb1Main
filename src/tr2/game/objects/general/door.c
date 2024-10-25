@@ -1,6 +1,7 @@
 #include "game/objects/general/door.h"
 
 #include "game/box.h"
+#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/room.h"
@@ -91,7 +92,7 @@ void __cdecl Door_Open(DOORPOS_DATA *const d)
 void __cdecl Door_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    DOOR_DATA *door = game_malloc(sizeof(DOOR_DATA), GBUF_EXTRA_DOOR_STUFF);
+    DOOR_DATA *door = GameBuf_Alloc(sizeof(DOOR_DATA), GBUF_EXTRA_DOOR_STUFF);
     item->data = door;
 
     int32_t dx = 0;

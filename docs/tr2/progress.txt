@@ -2555,7 +2555,7 @@ typedef enum {
     SF_UNFLIP = 0x80,
 } SOUND_FLAG;
 
-typedef enum {
+typedef enum { // decompiled
     GBUF_TEMP_ALLOC               = 0,
     GBUF_TEXTURE_PAGES            = 1,
     GBUF_MESH_POINTERS            = 2,
@@ -4004,7 +4004,7 @@ typedef enum {
 0x0044D610  0x005C  +       BOOL __cdecl S_InitialiseSystem(void);
 0x0044D670  0x0011  +       void __cdecl GameBuf_Shutdown(void);
 0x0044D690  0x0021  +       void __cdecl GameBuf_Reset(void);
-0x0044D6C0  0x006C  -R      void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);
+0x0044D6C0  0x006C  +       void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);
 0x0044D740  0x0034  -R      void __cdecl game_free(size_t free_size);
 0x0044D780  0x00E8  -R      void __cdecl CalculateWibbleTable(void);
 0x0044D870  0x007F  +       void __cdecl Random_Seed(void);
@@ -4779,7 +4779,7 @@ typedef enum {
 0x004D9EB0  -       void *g_MovieContext;
 0x004D9EB4  -       void *g_FmvContext;
 0x004D9EB8  -       void *g_FmvSoundContext;
-0x0051A000  -       int32_t g_GameBuf_MemCap;
+0x0051A000  -       size_t g_GameBuf_MemCap;
 0x0051A004  -       char *g_GameBuf_MemPtr;
-0x0051A008  -       int32_t g_GameBuf_MemUsed;
-0x0051A00C  -       int32_t g_GameBuf_MemFree;
+0x0051A008  -       size_t g_GameBuf_MemUsed;
+0x0051A00C  -       size_t g_GameBuf_MemFree;

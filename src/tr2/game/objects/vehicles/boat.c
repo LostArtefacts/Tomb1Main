@@ -2,6 +2,7 @@
 
 #include "decomp/effects.h"
 #include "game/effects.h"
+#include "game/gamebuf.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/look.h"
@@ -64,7 +65,7 @@ typedef enum {
 
 void __cdecl Boat_Initialise(const int16_t item_num)
 {
-    BOAT_INFO *boat_data = game_malloc(sizeof(BOAT_INFO), GBUF_TEMP_ALLOC);
+    BOAT_INFO *boat_data = GameBuf_Alloc(sizeof(BOAT_INFO), GBUF_TEMP_ALLOC);
     boat_data->boat_turn = 0;
     boat_data->left_fallspeed = 0;
     boat_data->right_fallspeed = 0;

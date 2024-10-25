@@ -1,5 +1,6 @@
 #include "game/background.h"
 
+#include "game/gamebuf.h"
 #include "game/hwr.h"
 #include "global/const.h"
 #include "global/funcs.h"
@@ -21,7 +22,7 @@ void __cdecl BGND_Make640x480(uint8_t *bitmap, RGB_888 *palette)
     }
 
     const int32_t buf_size = 640 * 480 * 2;
-    uint8_t *buf = game_malloc(buf_size, GBUF_TEMP_ALLOC);
+    uint8_t *buf = GameBuf_Alloc(buf_size, GBUF_TEMP_ALLOC);
     UT_MemBlt(buf, 0, 0, 256, 256, 256, bitmap, 0, 0, 640);
     BGND_AddTexture(0, buf, g_BGND_PaletteIndex, palette);
 

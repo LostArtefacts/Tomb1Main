@@ -60,7 +60,7 @@ static void __cdecl M_LoadTexturePages(VFILE *const file)
         for (int32_t i = 0; i < num_pages; i++) {
             if (g_TexturePageBuffer8[i] == NULL) {
                 g_TexturePageBuffer8[i] =
-                    game_malloc(texture_size, GBUF_TEXTURE_PAGES);
+                    GameBuf_Alloc(texture_size, GBUF_TEXTURE_PAGES);
             }
             VFile_Read(file, g_TexturePageBuffer8[i], texture_size);
         }
@@ -108,7 +108,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
         goto finish;
     }
 
-    g_Rooms = game_malloc(sizeof(ROOM) * g_RoomCount, GBUF_ROOMS);
+    g_Rooms = GameBuf_Alloc(sizeof(ROOM) * g_RoomCount, GBUF_ROOMS);
     assert(g_Rooms != NULL);
 
     for (int32_t i = 0; i < g_RoomCount; i++) {
@@ -122,14 +122,14 @@ static void __cdecl M_LoadRooms(VFILE *const file)
         r->max_ceiling = VFile_ReadS32(file);
 
         const int32_t data_size = VFile_ReadS32(file);
-        r->data = game_malloc(sizeof(int16_t) * data_size, GBUF_ROOM_MESH);
+        r->data = GameBuf_Alloc(sizeof(int16_t) * data_size, GBUF_ROOM_MESH);
         VFile_Read(file, r->data, sizeof(int16_t) * data_size);
 
         const int16_t num_doors = VFile_ReadS16(file);
         if (num_doors <= 0) {
             r->portals = NULL;
         } else {
-            r->portals = game_malloc(
+            r->portals = GameBuf_Alloc(
                 sizeof(PORTAL) * num_doors + sizeof(PORTALS),
                 GBUF_ROOM_PORTALS);
             r->portals->count = num_doors;
@@ -139,7 +139,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
         r->size.z = VFile_ReadS16(file);
         r->size.x = VFile_ReadS16(file);
 
-        r->sectors = game_malloc(
+        r->sectors = GameBuf_Alloc(
             sizeof(SECTOR) * r->size.z * r->size.x, GBUF_ROOM_FLOOR);
         for (int32_t i = 0; i < r->size.z * r->size.x; i++) {
             SECTOR *const sector = &r->sectors[i];
@@ -160,7 +160,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
             r->lights = NULL;
         } else {
             r->lights =
-                game_malloc(sizeof(LIGHT) * r->num_lights, GBUF_ROOM_LIGHTS);
+                GameBuf_Alloc(sizeof(LIGHT) * r->num_lights, GBUF_ROOM_LIGHTS);
             for (int32_t i = 0; i < r->num_lights; i++) {
                 LIGHT *const light = &r->lights[i];
                 light->pos.x = VFile_ReadS32(file);
@@ -177,7 +177,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
         if (!r->num_meshes) {
             r->meshes = NULL;
         } else {
-            r->meshes = game_malloc(
+            r->meshes = GameBuf_Alloc(
                 sizeof(MESH) * r->num_meshes, GBUF_ROOM_STATIC_MESHES);
             for (int32_t i = 0; i < r->num_meshes; i++) {
                 MESH *const mesh = &r->meshes[i];
@@ -205,7 +205,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
 
     const int32_t floor_data_size = VFile_ReadS32(file);
     g_FloorData =
-        game_malloc(sizeof(int16_t) * floor_data_size, GBUF_FLOOR_DATA);
+        GameBuf_Alloc(sizeof(int16_t) * floor_data_size, GBUF_FLOOR_DATA);
     VFile_Read(file, g_FloorData, sizeof(int16_t) * floor_data_size);
 
 finish:
@@ -217,7 +217,7 @@ static void __cdecl M_LoadMeshBase(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_meshes = VFile_ReadS32(file);
     LOG_INFO("meshes: %d", num_meshes);
-    g_MeshBase = game_malloc(sizeof(int16_t) * num_meshes, GBUF_MESHES);
+    g_MeshBase = GameBuf_Alloc(sizeof(int16_t) * num_meshes, GBUF_MESHES);
     VFile_Read(file, g_MeshBase, sizeof(int16_t) * num_meshes);
     Benchmark_End(benchmark, NULL);
 }
@@ -232,7 +232,7 @@ static void __cdecl M_LoadMeshes(VFILE *const file)
     VFile_Read(file, mesh_indices, sizeof(int32_t) * num_mesh_ptrs);
 
     g_Meshes =
-        game_malloc(sizeof(int16_t *) * num_mesh_ptrs, GBUF_MESH_POINTERS);
+        GameBuf_Alloc(sizeof(int16_t *) * num_mesh_ptrs, GBUF_MESH_POINTERS);
     for (int32_t i = 0; i < num_mesh_ptrs; i++) {
         g_Meshes[i] = &g_MeshBase[mesh_indices[i] / 2];
     }
@@ -246,7 +246,7 @@ static int32_t __cdecl M_LoadAnims(VFILE *const file, int32_t **frame_pointers)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anims = VFile_ReadS32(file);
     LOG_INFO("anims: %d", num_anims);
-    g_Anims = game_malloc(sizeof(ANIM) * num_anims, GBUF_ANIMS);
+    g_Anims = GameBuf_Alloc(sizeof(ANIM) * num_anims, GBUF_ANIMS);
     if (frame_pointers != NULL) {
         *frame_pointers = Memory_Alloc(sizeof(int32_t) * num_anims);
     }
@@ -281,7 +281,7 @@ static void __cdecl M_LoadAnimChanges(VFILE *const file)
     const int32_t num_anim_changes = VFile_ReadS32(file);
     LOG_INFO("anim changes: %d", num_anim_changes);
     g_AnimChanges =
-        game_malloc(sizeof(ANIM_CHANGE) * num_anim_changes, GBUF_STRUCTS);
+        GameBuf_Alloc(sizeof(ANIM_CHANGE) * num_anim_changes, GBUF_STRUCTS);
     for (int32_t i = 0; i < num_anim_changes; i++) {
         ANIM_CHANGE *const change = &g_AnimChanges[i];
         change->goal_anim_state = VFile_ReadS16(file);
@@ -297,7 +297,7 @@ static void __cdecl M_LoadAnimRanges(VFILE *const file)
     const int32_t num_anim_ranges = VFile_ReadS32(file);
     LOG_INFO("anim ranges: %d", num_anim_ranges);
     g_AnimRanges =
-        game_malloc(sizeof(ANIM_RANGE) * num_anim_ranges, GBUF_ANIM_RANGES);
+        GameBuf_Alloc(sizeof(ANIM_RANGE) * num_anim_ranges, GBUF_ANIM_RANGES);
     for (int32_t i = 0; i < num_anim_ranges; i++) {
         ANIM_RANGE *const range = &g_AnimRanges[i];
         range->start_frame = VFile_ReadS16(file);
@@ -314,7 +314,7 @@ static void __cdecl M_LoadAnimCommands(VFILE *const file)
     const int32_t num_anim_commands = VFile_ReadS32(file);
     LOG_INFO("anim commands: %d", num_anim_commands);
     g_AnimCommands =
-        game_malloc(sizeof(int16_t) * num_anim_commands, GBUF_ANIM_COMMANDS);
+        GameBuf_Alloc(sizeof(int16_t) * num_anim_commands, GBUF_ANIM_COMMANDS);
     VFile_Read(file, g_AnimCommands, sizeof(int16_t) * num_anim_commands);
     Benchmark_End(benchmark, NULL);
 }
@@ -325,7 +325,7 @@ static void __cdecl M_LoadAnimBones(VFILE *const file)
     const int32_t num_anim_bones = VFile_ReadS32(file);
     LOG_INFO("anim bones: %d", num_anim_bones);
     g_AnimBones =
-        game_malloc(sizeof(int32_t) * num_anim_bones, GBUF_ANIM_BONES);
+        GameBuf_Alloc(sizeof(int32_t) * num_anim_bones, GBUF_ANIM_BONES);
     VFile_Read(file, g_AnimBones, sizeof(int32_t) * num_anim_bones);
     Benchmark_End(benchmark, NULL);
 }
@@ -336,7 +336,7 @@ static void __cdecl M_LoadAnimFrames(VFILE *const file)
     const int32_t anim_frame_data_size = VFile_ReadS32(file);
     LOG_INFO("anim frame data size: %d", anim_frame_data_size);
     g_AnimFrames =
-        game_malloc(sizeof(int16_t) * anim_frame_data_size, GBUF_ANIM_FRAMES);
+        GameBuf_Alloc(sizeof(int16_t) * anim_frame_data_size, GBUF_ANIM_FRAMES);
     // TODO: make me FRAME_INFO
     int16_t *ptr = (int16_t *)&g_AnimFrames[0];
     VFile_Read(file, ptr, sizeof(int16_t) * anim_frame_data_size);
@@ -479,7 +479,7 @@ static void __cdecl M_LoadItems(VFILE *const file)
         goto finish;
     }
 
-    g_Items = game_malloc(sizeof(ITEM) * MAX_ITEMS, GBUF_ITEMS);
+    g_Items = GameBuf_Alloc(sizeof(ITEM) * MAX_ITEMS, GBUF_ITEMS);
     g_LevelItemCount = num_items;
 
     Item_InitialiseArray(MAX_ITEMS);
@@ -582,7 +582,7 @@ static void __cdecl M_LoadCameras(VFILE *const file)
     }
 
     g_Camera.fixed =
-        game_malloc(sizeof(OBJECT_VECTOR) * g_NumCameras, GBUF_CAMERAS);
+        GameBuf_Alloc(sizeof(OBJECT_VECTOR) * g_NumCameras, GBUF_CAMERAS);
     for (int32_t i = 0; i < g_NumCameras; i++) {
         OBJECT_VECTOR *const camera = &g_Camera.fixed[i];
         camera->x = VFile_ReadS32(file);
@@ -606,8 +606,8 @@ static void __cdecl M_LoadSoundEffects(VFILE *const file)
         goto finish;
     }
 
-    g_SoundEffects =
-        game_malloc(sizeof(OBJECT_VECTOR) * g_SoundEffectCount, GBUF_SOUND_FX);
+    g_SoundEffects = GameBuf_Alloc(
+        sizeof(OBJECT_VECTOR) * g_SoundEffectCount, GBUF_SOUND_FX);
     for (int32_t i = 0; i < g_SoundEffectCount; i++) {
         OBJECT_VECTOR *const effect = &g_SoundEffects[i];
         effect->x = VFile_ReadS32(file);
@@ -625,7 +625,7 @@ static void __cdecl M_LoadBoxes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     g_BoxCount = VFile_ReadS32(file);
-    g_Boxes = game_malloc(sizeof(BOX_INFO) * g_BoxCount, GBUF_BOXES);
+    g_Boxes = GameBuf_Alloc(sizeof(BOX_INFO) * g_BoxCount, GBUF_BOXES);
     for (int32_t i = 0; i < g_BoxCount; i++) {
         BOX_INFO *const box = &g_Boxes[i];
         box->left = VFile_ReadU8(file);
@@ -637,7 +637,7 @@ static void __cdecl M_LoadBoxes(VFILE *const file)
     }
 
     const int32_t num_overlaps = VFile_ReadS32(file);
-    g_Overlap = game_malloc(sizeof(uint16_t) * num_overlaps, GBUF_OVERLAPS);
+    g_Overlap = GameBuf_Alloc(sizeof(uint16_t) * num_overlaps, GBUF_OVERLAPS);
     VFile_Read(file, g_Overlap, sizeof(uint16_t) * num_overlaps);
 
     for (int32_t i = 0; i < 2; i++) {
@@ -654,11 +654,12 @@ static void __cdecl M_LoadBoxes(VFILE *const file)
             }
 
             g_GroundZone[j][i] =
-                game_malloc(sizeof(int16_t) * g_BoxCount, GBUF_GROUND_ZONE);
+                GameBuf_Alloc(sizeof(int16_t) * g_BoxCount, GBUF_GROUND_ZONE);
             VFile_Read(file, g_GroundZone[j][i], sizeof(int16_t) * g_BoxCount);
         }
 
-        g_FlyZone[i] = game_malloc(sizeof(int16_t) * g_BoxCount, GBUF_FLY_ZONE);
+        g_FlyZone[i] =
+            GameBuf_Alloc(sizeof(int16_t) * g_BoxCount, GBUF_FLY_ZONE);
         VFile_Read(file, g_FlyZone[i], sizeof(int16_t) * g_BoxCount);
     }
 
@@ -669,7 +670,7 @@ static void __cdecl M_LoadAnimatedTextures(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_ranges = VFile_ReadS32(file);
-    g_AnimTextureRanges = game_malloc(
+    g_AnimTextureRanges = GameBuf_Alloc(
         sizeof(int16_t) * num_ranges, GBUF_ANIMATING_TEXTURE_RANGES);
     VFile_Read(file, g_AnimTextureRanges, sizeof(int16_t) * num_ranges);
     Benchmark_End(benchmark, NULL);
@@ -684,7 +685,7 @@ static void __cdecl M_LoadCinematic(VFILE *const file)
         goto finish;
     }
 
-    g_CineData = game_malloc(
+    g_CineData = GameBuf_Alloc(
         sizeof(CINE_FRAME) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
     for (int32_t i = 0; i < g_NumCineFrames; i++) {
         CINE_FRAME *const frame = &g_CineData[i];
@@ -710,7 +711,7 @@ static void __cdecl M_LoadDemo(VFILE *const file)
 
     // TODO: is the allocation necessary if there's no demo data?
     // TODO: do not hardcode the allocation size
-    g_DemoPtr = game_malloc(36000, GBUF_LOAD_DEMO_BUFFER);
+    g_DemoPtr = GameBuf_Alloc(36000, GBUF_LOAD_DEMO_BUFFER);
 
     const int32_t demo_size = VFile_ReadU16(file);
     LOG_DEBUG("demo input size: %d", demo_size);
@@ -765,8 +766,8 @@ static void __cdecl M_LoadSamples(VFILE *const file)
         goto finish;
     }
 
-    g_SampleInfos =
-        game_malloc(sizeof(SAMPLE_INFO) * g_NumSampleInfos, GBUF_SAMPLE_INFOS);
+    g_SampleInfos = GameBuf_Alloc(
+        sizeof(SAMPLE_INFO) * g_NumSampleInfos, GBUF_SAMPLE_INFOS);
     for (int32_t i = 0; i < g_NumSampleInfos; i++) {
         SAMPLE_INFO *const sample_info = &g_SampleInfos[i];
         sample_info->number = VFile_ReadS16(file);

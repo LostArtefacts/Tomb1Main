@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.53% (865)</tspan> · <tspan class="known">28.05% (349)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.61% (866)</tspan> · <tspan class="known">27.97% (348)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="519.42" height="6" x="0" y="0" class="decompiled"/>
-<rect width="209.57" height="6" x="519.42" y="0" class="known"/>
+<rect width="520.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="208.97" height="6" x="520.02" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1100,7 +1100,7 @@
 <rect width="12" height="12" x="315" y="300" class="decompiled"><title>BOOL __cdecl S_InitialiseSystem(void);</title></rect>
 <rect width="12" height="12" x="330" y="300" class="decompiled"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
 <rect width="12" height="12" x="345" y="300" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
-<rect width="12" height="12" x="360" y="300" class="known"><title>void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
+<rect width="12" height="12" x="360" y="300" class="decompiled"><title>void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="12" height="12" x="375" y="300" class="known"><title>void __cdecl game_free(size_t free_size);</title></rect>
 <rect width="12" height="12" x="390" y="300" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
 <rect width="12" height="12" x="405" y="300" class="decompiled"><title>void __cdecl Random_Seed(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.63%</tspan> · <tspan class="known">26.04%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.66%</tspan> · <tspan class="known">26.01%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="550.02" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.54" height="6" x="550.02" y="0" class="known"/>
+<rect width="550.26" height="6" x="0" y="0" class="decompiled"/>
+<rect width="194.30" height="6" x="550.26" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2017,7 +2017,7 @@
 <rect width="6.65" height="6.28" x="588.61" y="331.67" class="decompiled"><title>int32_t __cdecl Output_VisibleZClip(const PHD_VBUF *vtx0, const PHD_VBUF *vtx1, const PHD_VBUF *vtx2);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="340.95" class="decompiled"><title>void __cdecl Overlay_AddDisplayPickup(GAME_OBJECT_ID object_id);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="350.24" class="decompiled"><title>int16_t __cdecl Effect_Create(int16_t room_num);</title></rect>
-<rect width="6.65" height="6.28" x="588.61" y="359.52" class="known"><title>void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
+<rect width="6.65" height="6.28" x="588.61" y="359.52" class="decompiled"><title>void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="6.65" height="6.20" x="588.61" y="368.80" class="decompiled"><title>void __cdecl Output_SetFarZ(int32_t far_z);</title></rect>
 <rect width="6.66" height="6.19" x="598.27" y="226.03" class="decompiled"><title>void __cdecl Lara_State_Swim(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.66" height="6.19" x="607.92" y="226.03" class="known"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>

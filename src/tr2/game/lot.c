@@ -1,8 +1,8 @@
 #include "game/lot.h"
 
 #include "game/box.h"
+#include "game/gamebuf.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -12,13 +12,13 @@
 void __cdecl LOT_InitialiseArray(void)
 {
     g_BaddieSlots =
-        game_malloc(NUM_SLOTS * sizeof(CREATURE), GBUF_CREATURE_DATA);
+        GameBuf_Alloc(NUM_SLOTS * sizeof(CREATURE), GBUF_CREATURE_DATA);
 
     for (int32_t i = 0; i < NUM_SLOTS; i++) {
         CREATURE *const creature = &g_BaddieSlots[i];
         creature->item_num = NO_ITEM;
         creature->lot.node =
-            game_malloc(g_BoxCount * sizeof(BOX_NODE), GBUF_CREATURE_LOT);
+            GameBuf_Alloc(g_BoxCount * sizeof(BOX_NODE), GBUF_CREATURE_LOT);
     }
 
     g_SlotsUsed = 0;
