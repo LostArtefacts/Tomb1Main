@@ -4001,7 +4001,7 @@ typedef enum {
 0x0044D570  0x0035  +R      void __cdecl HWR_GetPageHandles(void);
 0x0044D5B0  0x0019  +R      bool __cdecl HWR_VertexBufferFull(void);
 0x0044D5E0  0x0022  +R      bool __cdecl HWR_Init(void);
-0x0044D610  0x005C  *R      BOOL __cdecl S_InitialiseSystem(void);
+0x0044D610  0x005C  +       BOOL __cdecl S_InitialiseSystem(void);
 0x0044D670  0x0011  *       void __cdecl GameBuf_Shutdown(void);
 0x0044D690  0x0021  -R      void __cdecl init_game_malloc(void);
 0x0044D6C0  0x006C  -R      void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);
@@ -4450,7 +4450,7 @@ typedef enum {
 0x004D9ED8  -       D3DTLVERTEX g_HWR_VertexBuffer[0x2000]; // MAX_VERTICES
 0x00519EE0  -       HWR_TEXTURE_HANDLE g_HWR_PageHandles[32];
 0x00519F60  -       D3DTLVERTEX *g_HWR_VertexPtr;
-0x0051A0CC  -       void *g_GameMemoryPtr;
+0x0051A0CC  -       void *g_GameBuf_MemBase;
 0x0051A0D0  +       BOOL g_ConflictLayout[14]; // INPUT_ROLE_NUMBER_OF
 0x0051A108  -       uint8_t g_DIKeys[256];
 0x0051A208  -       int32_t g_Input;
@@ -4779,3 +4779,7 @@ typedef enum {
 0x004D9EB0  -       void *g_MovieContext;
 0x004D9EB4  -       void *g_FmvContext;
 0x004D9EB8  -       void *g_FmvSoundContext;
+0x0051A000  -       int32_t g_GameBuf_MemCap;
+0x0051A004  -       char *g_GameBuf_MemPtr;
+0x0051A008  -       int32_t g_GameBuf_MemUsed;
+0x0051A00C  -       int32_t g_GameBuf_MemFree;

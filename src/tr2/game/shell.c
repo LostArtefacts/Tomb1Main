@@ -57,9 +57,9 @@ BOOL __cdecl Shell_Main(void)
     S_LoadSettings();
 
     g_HiRes = -1;
-    g_GameMemoryPtr = GlobalAlloc(0, 0x380000u);
+    g_GameBuf_MemBase = GlobalAlloc(0, g_GameBuf_MemCap);
 
-    if (!g_GameMemoryPtr) {
+    if (g_GameBuf_MemBase == NULL) {
         strcpy(g_ErrorMessage, "GameMain: could not allocate malloc_buffer");
         return false;
     }

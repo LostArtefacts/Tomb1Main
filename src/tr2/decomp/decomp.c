@@ -19,6 +19,7 @@
 #include "game/math.h"
 #include "game/music.h"
 #include "game/overlay.h"
+#include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -3081,4 +3082,17 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
         } while (!passed);
         frames -= passed;
     }
+}
+
+BOOL __cdecl S_InitialiseSystem(void)
+{
+    Random_Seed();
+    SelectDrive();
+    g_DumpX = 0;
+    g_DumpY = 0;
+    g_DumpHeight = g_GameVid_Height;
+    g_DumpWidth = g_GameVid_Width;
+    CalculateWibbleTable();
+    g_GameBuf_MemCap = 0x380000;
+    return 1;
 }
