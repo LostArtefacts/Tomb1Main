@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.37% (863)</tspan> · <tspan class="known">28.22% (351)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">69.45% (864)</tspan> · <tspan class="known">28.14% (350)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="518.22" height="6" x="0" y="0" class="decompiled"/>
-<rect width="210.77" height="6" x="518.22" y="0" class="known"/>
+<rect width="518.82" height="6" x="0" y="0" class="decompiled"/>
+<rect width="210.17" height="6" x="518.82" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1098,7 +1098,7 @@
 <rect width="12" height="12" x="285" y="300" class="decompiled"><title>bool __cdecl HWR_VertexBufferFull(void);</title></rect>
 <rect width="12" height="12" x="300" y="300" class="decompiled"><title>bool __cdecl HWR_Init(void);</title></rect>
 <rect width="12" height="12" x="315" y="300" class="decompiled"><title>BOOL __cdecl S_InitialiseSystem(void);</title></rect>
-<rect width="12" height="12" x="330" y="300" class="known"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
+<rect width="12" height="12" x="330" y="300" class="decompiled"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
 <rect width="12" height="12" x="345" y="300" class="known"><title>void __cdecl init_game_malloc(void);</title></rect>
 <rect width="12" height="12" x="360" y="300" class="known"><title>void *__cdecl game_malloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="12" height="12" x="375" y="300" class="known"><title>void __cdecl game_free(size_t free_size);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.62%</tspan> · <tspan class="known">26.06%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.62%</tspan> · <tspan class="known">26.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="549.91" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.65" height="6" x="549.91" y="0" class="known"/>
+<rect width="549.95" height="6" x="0" y="0" class="decompiled"/>
+<rect width="194.61" height="6" x="549.95" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2494,7 +2494,7 @@
 <rect width="0.58" height="1.18" x="725.28" y="361.76" class="unused"><title>sub_447A90</title></rect>
 <rect width="0.58" height="1.18" x="725.28" y="365.93" class="known"><title>void __cdecl SafeFreePalette(int32_t palette_idx);</title></rect>
 <rect width="0.58" height="0.95" x="725.28" y="370.11" class="decompiled"><title>HWND __cdecl WinVidFindGameWindow(void);</title></rect>
-<rect width="0.58" height="0.95" x="725.28" y="374.05" class="known"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
+<rect width="0.58" height="0.95" x="725.28" y="374.05" class="decompiled"><title>void __cdecl GameBuf_Shutdown(void);</title></rect>
 <rect width="0.74" height="0.77" x="728.85" y="353.40" class="known"><title>HWND __cdecl SE_FindSetupDialog(void);</title></rect>
 <rect width="0.52" height="0.77" x="732.60" y="353.40" class="decompiled"><title>void __cdecl Text_RemoveBackground(TEXTSTRING *string);</title></rect>
 <rect width="0.52" height="0.77" x="736.12" y="353.40" class="decompiled"><title>void __cdecl Text_RemoveOutline(TEXTSTRING *string);</title></rect>

@@ -5,6 +5,7 @@
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game_string.h"
+#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/gameflow/reader.h"
 #include "game/input.h"

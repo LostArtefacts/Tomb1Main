@@ -13,6 +13,7 @@
 #include "game/demo.h"
 #include "game/effects.h"
 #include "game/game.h"
+#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/gun/gun.h"
 #include "game/gun/gun_misc.h"
@@ -90,6 +91,7 @@ static void M_DecompFMV(const bool enable);
 static void M_DecompSkidoo(const bool enable);
 static void M_DecompStats(const bool enable);
 static void M_DecompEffects(const bool enable);
+static void m_GameBuf(bool enable);
 static void M_HWR(bool enable);
 
 static void M_Camera(bool enable);
@@ -286,6 +288,11 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x00417930, Effect_CreateBartoliLight);
     INJECT(enable, 0x00417A10, Effect_MissileFlame);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
+}
+
+static void M_GameBuf(bool enable)
+{
+    INJECT(enable, 0x0044D670, GameBuf_Shutdown);
 }
 
 static void M_HWR(bool enable)
@@ -1120,6 +1127,7 @@ void Inject_Exec(void)
     M_DecompSkidoo(true);
     M_DecompStats(true);
     M_DecompEffects(true);
+    M_GameBuf(true);
     M_HWR(true);
     M_Background(true);
 

@@ -225,7 +225,6 @@
 #define S_FrontEndCheck ((BOOL __cdecl (*)(void))0x0044CCB0)
 #define S_SaveGame ((int32_t __cdecl (*)(const void *save_data, uint32_t save_size, int32_t slot_num))0x0044CE20)
 #define S_LoadGame ((int32_t __cdecl (*)(void *save_data, uint32_t save_size, int32_t slot_num))0x0044CF40)
-#define GameBuf_Shutdown ((void __cdecl (*)(void))0x0044D670)
 #define init_game_malloc ((void __cdecl (*)(void))0x0044D690)
 #define game_malloc ((void *__cdecl (*)(size_t alloc_size, GAME_BUFFER buf_index))0x0044D6C0)
 #define game_free ((void __cdecl (*)(size_t free_size))0x0044D740)
