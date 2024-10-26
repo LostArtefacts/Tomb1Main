@@ -635,7 +635,7 @@ void __cdecl Boat_Control(const int16_t item_num)
     const int32_t hfr = Boat_TestWaterHeight(boat, BOAT_FRONT, BOAT_SIDE, &fr);
 
     int16_t room_num = boat->room_num;
-    const SECTOR *const sector =
+    const SECTOR *sector =
         Room_GetSector(boat->pos.x, boat->pos.y, boat->pos.z, &room_num);
     int32_t height =
         Room_GetHeight(sector, boat->pos.x, boat->pos.y, boat->pos.z);
@@ -711,7 +711,6 @@ void __cdecl Boat_Control(const int16_t item_num)
 
         if (room_num != boat->room_num) {
             Item_NewRoom(item_num, room_num);
-            Item_NewRoom(g_Lara.item_num, room_num);
         }
 
         boat->rot.z += boat_data->tilt_angle;
@@ -721,6 +720,12 @@ void __cdecl Boat_Control(const int16_t item_num)
         lara->rot.x = boat->rot.x;
         lara->rot.y = boat->rot.y;
         lara->rot.z = boat->rot.z;
+
+        sector = Room_GetSector(
+            lara->pos.x, lara->pos.y - 5, lara->pos.z, &room_num);
+        if (room_num != g_LaraItem->room_num) {
+            Item_NewRoom(g_Lara.item_num, room_num);
+        }
 
         Item_Animate(lara);
 

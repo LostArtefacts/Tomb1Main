@@ -33,6 +33,7 @@ decompilation process. We recognize that there is much work to be done.
 
 - fixed TGA screenshots crashing the game
 - fixed the camera being cut off after using the gong hammer in Ice Palace
+- fixed Lara's underwater hue being retained when re-entering a boat
 
 #### Audio
 
