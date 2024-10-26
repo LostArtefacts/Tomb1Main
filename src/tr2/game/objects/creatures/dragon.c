@@ -33,9 +33,6 @@
 #define DRAGON_LIVE_TIME 330
 #define DRAGON_HITPOINTS 300
 #define DRAGON_RADIUS (WALL_L / 3) // = 341
-#define DRAGON_ANIM_DIE 21
-#define DRAGON_ANIM_DEAD 22
-#define DRAGON_ANIM_RESURRECT 23
 
 typedef enum {
     // clang-format off
@@ -51,6 +48,9 @@ typedef enum {
     DRAGON_ANIM_SWIPE_LEFT  = 9,
     DRAGON_ANIM_SWIPE_RIGHT = 10,
     DRAGON_ANIM_DEATH       = 11,
+    DRAGON_ANIM_DIE         = 21,
+    DRAGON_ANIM_DEAD        = 22,
+    DRAGON_ANIM_RESURRECT   = 23,
     // clang-format on
 } DRAGON_ANIM;
 
