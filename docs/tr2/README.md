@@ -28,6 +28,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed explosions sometimes being drawn too dark
 - fixed controls dialog remapping being too sensitive
 - fixed the distorted skybox in room 5 of Barkhang Monastery
+- fixed the dragon reviving itself after Lara removes the dagger in rare circumstances
 
 #### Visuals
 

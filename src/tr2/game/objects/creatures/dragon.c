@@ -33,6 +33,9 @@
 #define DRAGON_LIVE_TIME 330
 #define DRAGON_HITPOINTS 300
 #define DRAGON_RADIUS (WALL_L / 3) // = 341
+#define DRAGON_ANIM_DIE 21
+#define DRAGON_ANIM_DEAD 22
+#define DRAGON_ANIM_RESURRECT 23
 
 typedef enum {
     // clang-format off
@@ -48,9 +51,6 @@ typedef enum {
     DRAGON_ANIM_SWIPE_LEFT  = 9,
     DRAGON_ANIM_SWIPE_RIGHT = 10,
     DRAGON_ANIM_DEATH       = 11,
-    DRAGON_ANIM_DIE         = 21,
-    DRAGON_ANIM_DEAD        = 22,
-    DRAGON_ANIM_RESURRECT   = 23,
     // clang-format on
 } DRAGON_ANIM;
 
@@ -263,7 +263,7 @@ void __cdecl Dragon_Control(const int16_t item_num)
     if (dragon_front_item->hit_points <= 0) {
         if (dragon_front_item->current_anim_state != DRAGON_ANIM_DEATH) {
             dragon_front_item->anim_num =
-                g_Objects[O_DRAGON_FRONT].anim_idx + 21;
+                g_Objects[O_DRAGON_FRONT].anim_idx + DRAGON_ANIM_DIE;
             dragon_front_item->frame_num =
                 g_Anims[dragon_front_item->anim_num].frame_base;
             dragon_front_item->goal_anim_state = DRAGON_ANIM_DEATH;
@@ -275,7 +275,7 @@ void __cdecl Dragon_Control(const int16_t item_num)
             if (creature->flags == DRAGON_LIVE_TIME) {
                 dragon_front_item->goal_anim_state = DRAGON_ANIM_STOP;
             }
-            if (creature->flags >= DRAGON_LIVE_TIME + DRAGON_ALMOST_LIVE) {
+            if (creature->flags > DRAGON_LIVE_TIME + DRAGON_ALMOST_LIVE) {
                 dragon_front_item->hit_points =
                     g_Objects[O_DRAGON_FRONT].hit_points / 2;
             }
