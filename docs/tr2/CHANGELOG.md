@@ -12,6 +12,7 @@
 - fixed the audio not being in sync when Lara strikes the gong in Ice Palace (#1725)
 - fixed door cheat not working with drawbridges (#1748)
 - fixed Lara's underwater hue being retained when re-entering a boat (#1596)
+- fixed Lara reloading the harpoon gun after every shot in NG+ (#1575)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command
