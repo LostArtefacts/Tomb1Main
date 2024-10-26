@@ -183,8 +183,10 @@ void __cdecl Gun_Rifle_FireHarpoon(void)
     item->speed = (HARPOON_BOLT_SPEED * Math_Cos(item->rot.x)) >> W2V_SHIFT;
     Item_AddActive(item_num);
 
-    if (!g_SaveGame.bonus_flag) {
-        g_Lara.harpoon_ammo.ammo--;
+    g_Lara.harpoon_ammo.ammo--;
+    if (g_SaveGame.bonus_flag
+        && (g_Lara.harpoon_ammo.ammo % HARPOON_RECOIL) == 0) {
+        g_Lara.harpoon_ammo.ammo += HARPOON_RECOIL;
     }
     g_SaveGame.statistics.shots++;
 }
