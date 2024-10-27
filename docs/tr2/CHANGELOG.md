@@ -14,6 +14,7 @@
 - fixed Lara's underwater hue being retained when re-entering a boat (#1596)
 - fixed Lara reloading the harpoon gun after every shot in NG+ (#1575)
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances (#1572)
+- fixed grenades counting as double hits and kills in the game statistics (#1560)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command
