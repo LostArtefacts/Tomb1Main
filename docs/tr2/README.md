@@ -30,7 +30,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the distorted skybox in room 5 of Barkhang Monastery
 - fixed Lara reloading the harpoon gun after every shot in NG+
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances
-- fixed grenades counting as double hits and kills in the game statistics
+- fixed grenades counting as double kills in the game statistics
 
 #### Visuals
 
