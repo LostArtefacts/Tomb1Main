@@ -119,7 +119,16 @@ void __cdecl Grenade_Control(int16_t item_num)
         } else {
             // XXX: missing check if obj is intelligent?
             Gun_HitTarget(target_item, NULL, 30);
+
             explode = true;
+            g_SaveGame.statistics.hits++;
+
+            if (target_item->hit_points <= 0) {
+                if (target_item->object_id != O_DRAGON_FRONT
+                    && target_item->object_id != O_GIANT_YETI) {
+                    Creature_Die(target_item_num, true);
+                }
+            }
         }
     }
 
