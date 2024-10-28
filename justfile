@@ -25,7 +25,6 @@ _docker_build dockerfile tag force="0":
 
     echo "Building Docker image: {{dockerfile}} → {{tag}}"
     docker build \
-        --progress plain \
         . \
         -f {{dockerfile}} \
         -t {{tag}}
