@@ -5,6 +5,7 @@
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)
 - fixed missing trapdoor triggers in City of Khamoon (#1744)
+- fixed being unable to rename the lead bar (#1774, regression from 4.5)
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 

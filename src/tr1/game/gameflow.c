@@ -1482,6 +1482,8 @@ void GameFlow_LoadStrings(int32_t level_num)
         { O_PICKUP_OPTION_1,    GS(INV_ITEM_PICKUP1) },
         { O_PICKUP_ITEM_2,      GS(INV_ITEM_PICKUP2) },
         { O_PICKUP_OPTION_2,    GS(INV_ITEM_PICKUP2) },
+        { O_LEADBAR_ITEM,       GS(INV_ITEM_LEADBAR) },
+        { O_LEADBAR_OPTION,     GS(INV_ITEM_LEADBAR) },
         { O_SCION_ITEM_1,       GS(INV_ITEM_SCION) },
         { O_SCION_ITEM_2,       GS(INV_ITEM_SCION) },
         { O_SCION_ITEM_3,       GS(INV_ITEM_SCION) },
