@@ -1,5 +1,7 @@
 #pragma once
 
+#include <libtrx/game/clock.h>
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -43,7 +45,5 @@ bool Clock_CheckElapsedMilliseconds(CLOCK_TIMER *timer, int32_t wait);
 // The same as Clock_CheckElapsedMilliseconds, except does not scale the result
 // by the turbo cheat multiplier.
 bool Clock_CheckElapsedRawMilliseconds(CLOCK_TIMER *timer, int32_t how_often);
-
-void Clock_GetDateTime(char *date_time);
 
 int32_t Clock_GetFrameAdvance(void);

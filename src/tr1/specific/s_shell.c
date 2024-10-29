@@ -193,7 +193,7 @@ void S_Shell_SpinMessageLoop(void)
 
         case SDL_KEYUP:
             if (event.key.keysym.sym == SDLK_PRINTSCREEN) {
-                Shell_MakeScreenshot();
+                Screenshot_Make(g_Config.screenshot_format);
                 break;
             }
 

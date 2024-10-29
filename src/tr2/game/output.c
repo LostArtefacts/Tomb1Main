@@ -1,5 +1,6 @@
 #include "game/output.h"
 
+#include "decomp/decomp.h"
 #include "game/hwr.h"
 #include "game/math.h"
 #include "game/matrix.h"
@@ -8,7 +9,11 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/engine/image.h>
+#include <libtrx/log.h>
 #include <libtrx/utils.h>
+
+#include <assert.h>
 
 #define VBUF_VISIBLE(a, b, c)                                                  \
     (((a).ys - (b).ys) * ((c).xs - (b).xs)                                     \
@@ -4480,4 +4485,126 @@ void __cdecl Output_DrawScaledSpriteC(const int16_t *const obj_ptr)
         dst += dst_add;
         v_base += v_add;
     }
+}
+
+bool __cdecl Output_MakeScreenshot(const char *const path)
+{
+    LOG_INFO("Taking screenshot");
+
+    LPDDS screen = g_SavedAppSettings.render_mode == RM_SOFTWARE
+        ? g_RenderBufferSurface
+        : g_BackBufferSurface;
+
+    DDSURFACEDESC desc = { .dwSize = sizeof(DDSURFACEDESC) };
+    HRESULT rc;
+    while (true) {
+        rc = IDirectDrawSurface_GetSurfaceDesc(screen, &desc);
+        if (rc != DDERR_WASSTILLDRAWING) {
+            break;
+        }
+    }
+    if (rc == DDERR_SURFACELOST) {
+        IDirectDrawSurface_Restore(screen);
+    }
+    if (FAILED(rc)) {
+        LOG_ERROR("Failed to get surface description: %x", rc);
+        return false;
+    }
+
+    rc = WinVidBufferLock(screen, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT);
+    if (FAILED(rc)) {
+        LOG_ERROR("Failed to lock surface: %x", rc);
+        return false;
+    }
+
+    int32_t src_x = 0;
+    int32_t src_y = 0;
+    int32_t width = g_GameWindowWidth;
+    int32_t height = g_GameWindowHeight;
+    IMAGE *const image = Image_Create(width, height);
+
+    for (int32_t y = 0; y < height; y++) {
+        uint8_t *src = desc.lpSurface + desc.lPitch * (y + src_y);
+        src += src_x * (desc.ddpfPixelFormat.dwRGBBitCount / 8);
+        IMAGE_PIXEL *dst = &image->data[width * y];
+
+        switch (desc.ddpfPixelFormat.dwRGBBitCount) {
+        case 8:
+            assert(desc.ddpfPixelFormat.dwFlags & DDPF_PALETTEINDEXED8);
+            for (int32_t x = 0; x < width; x++) {
+                dst->r = g_GamePalette8[*src].red;
+                dst->g = g_GamePalette8[*src].green;
+                dst->b = g_GamePalette8[*src].blue;
+                src++;
+                dst++;
+            }
+            break;
+
+        case 16:
+            if (desc.ddpfPixelFormat.dwRBitMask == 0xF800) {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = (*(uint16_t *)src & 0xF800) >> 8;
+                    dst->g = (*(uint16_t *)src & 0x07E0) >> 3;
+                    dst->b = (*(uint16_t *)src & 0x001F) << 3;
+                    dst++;
+                    src += 2;
+                }
+            } else {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = (*(uint16_t *)src & 0x001F) << 3;
+                    dst->g = (*(uint16_t *)src & 0x07E0) >> 3;
+                    dst->b = (*(uint16_t *)src & 0xF800) >> 8;
+                    dst++;
+                    src += 2;
+                }
+            }
+            break;
+
+        case 24:
+            if (desc.ddpfPixelFormat.dwRBitMask == 255) {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = src[0];
+                    dst->g = src[1];
+                    dst->b = src[2];
+                    dst++;
+                    src += 3;
+                }
+            } else {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = src[2];
+                    dst->g = src[1];
+                    dst->b = src[0];
+                    dst++;
+                    src += 3;
+                }
+            }
+            break;
+
+        case 32:
+            if (desc.ddpfPixelFormat.dwRBitMask == 255) {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = src[0];
+                    dst->g = src[1];
+                    dst->b = src[2];
+                    dst++;
+                    src += 4;
+                }
+            } else {
+                for (int32_t x = 0; x < width; x++) {
+                    dst->r = src[2];
+                    dst->g = src[1];
+                    dst->b = src[0];
+                    dst++;
+                    src += 4;
+                }
+            }
+        }
+
+        src -= desc.lPitch;
+    }
+
+    const bool ret = Image_SaveToFile(image, path);
+    Image_Free(image);
+    WinVidBufferUnlock(screen, &desc);
+    return ret;
 }

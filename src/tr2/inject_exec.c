@@ -235,11 +235,6 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044E520, WinMain);
     INJECT(enable, 0x0044E700, GameInit);
     INJECT(enable, 0x0044E7A0, WinGameStart);
-    INJECT(enable, 0x0044E8E0, ScreenshotPCX);
-    INJECT(enable, 0x0044E9F0, CompPCX);
-    INJECT(enable, 0x0044EAA0, EncodeLinePCX);
-    INJECT(enable, 0x0044EB80, EncodePutPCX);
-    INJECT(enable, 0x0044EBC0, Screenshot);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);
     INJECT(enable, 0x00455140, S_LoadSettings);

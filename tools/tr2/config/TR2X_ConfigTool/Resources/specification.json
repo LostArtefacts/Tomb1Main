@@ -1,4 +1,10 @@
 {
+  "Enums": {
+    "screenshot_format": [
+      "jpg",
+      "png"
+    ]
+  },
   "CategorisedProperties": [
     {
       "ID": "controls",
@@ -36,7 +42,12 @@
       "ID": "graphics",
       "Image": "Graphics/graphic5.jpg",
       "Properties": [
-
+        {
+          "Field": "screenshot_format",
+          "DataType": "Enum",
+          "EnumKey": "screenshot_format",
+          "DefaultValue": "jpg"
+        }
       ]
     },
     {

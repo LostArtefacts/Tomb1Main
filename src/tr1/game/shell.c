@@ -33,86 +33,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#define SCREENSHOTS_DIR "screenshots"
 #define LEVEL_TITLE_SIZE 25
 #define TIMESTAMP_SIZE 20
 
 static const char m_TR1XGameflowPath[] = "cfg/TR1X_gameflow.json5";
 static const char m_TR1XGameflowGoldPath[] = "cfg/TR1X_gameflow_ub.json5";
 static const char m_TR1XGameflowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
-
-static char *M_GetScreenshotName(void);
-
-static char *M_GetScreenshotName(void)
-{
-    // Get level title of unknown length
-    char level_title[100];
-
-    if (g_CurrentLevel < 0) {
-        strncpy(level_title, "Intro", LEVEL_TITLE_SIZE - 1);
-    } else {
-        strncpy(
-            level_title, g_GameFlow.levels[g_CurrentLevel].level_title,
-            LEVEL_TITLE_SIZE - 1);
-    }
-    level_title[LEVEL_TITLE_SIZE] = '\0';
-
-    // Prepare level title for screenshot
-    char *check = level_title;
-    bool prev_us = true; // '_' after timestamp before title
-    int idx = 0;
-
-    while (*check != '\0') {
-        if (*check == ' ') {
-            // Replace spaces with a single underscore
-            if (prev_us) {
-                memmove(
-                    &level_title[idx], &level_title[idx + 1],
-                    strlen(level_title) - idx);
-            } else {
-                *check++ = '_';
-                idx++;
-                prev_us = true;
-            }
-        } else if (((*check < 'A' || *check > 'Z')
-                    && (*check < 'a' || *check > 'z')
-                    && (*check < '0' || *check > '9'))) {
-            // Strip non alphanumeric chars
-            memmove(
-                &level_title[idx], &level_title[idx + 1],
-                strlen(level_title) - idx);
-        } else {
-            check++;
-            idx++;
-            prev_us = false;
-        }
-    }
-
-    // If title totally invalid, name it based on level number
-    if (strlen(level_title) == 0) {
-        sprintf(level_title, "Level_%d", g_CurrentLevel);
-        prev_us = false;
-    }
-
-    // Strip trailing underscores
-    if (prev_us) {
-        check--;
-        idx--;
-        memmove(
-            &level_title[idx], &level_title[idx + 1], strlen(level_title) - 1);
-        prev_us = false;
-    }
-
-    // Get timestamp
-    char date_time[TIMESTAMP_SIZE];
-    Clock_GetDateTime(date_time);
-
-    // Full screenshot name
-    size_t out_size = snprintf(NULL, 0, "%s_%s", date_time, level_title) + 1;
-    char *out = Memory_Alloc(out_size);
-    snprintf(out, out_size, "%s_%s", date_time, level_title);
-    return out;
-}
 
 void Shell_Init(const char *gameflow_path)
 {
@@ -342,46 +268,4 @@ void Shell_ProcessInput(void)
     if (g_InputDB.turbo_cheat) {
         Clock_CycleTurboSpeed(!g_Input.slow);
     }
-}
-
-bool Shell_MakeScreenshot(void)
-{
-    File_CreateDirectory(SCREENSHOTS_DIR);
-
-    char *filename = M_GetScreenshotName();
-
-    const char *ext;
-    switch (g_Config.screenshot_format) {
-    case SCREENSHOT_FORMAT_JPEG:
-        ext = "jpg";
-        break;
-    case SCREENSHOT_FORMAT_PNG:
-        ext = "png";
-        break;
-    default:
-        ext = "jpg";
-        break;
-    }
-
-    bool result = false;
-    char *full_path = Memory_Alloc(
-        strlen(SCREENSHOTS_DIR) + strlen(filename) + strlen(ext) + 6);
-    sprintf(full_path, "%s/%s.%s", SCREENSHOTS_DIR, filename, ext);
-    if (!File_Exists(full_path)) {
-        result = Output_MakeScreenshot(full_path);
-    } else {
-        // name already exists, so add a number to name
-        for (int i = 2; i < 100; i++) {
-            sprintf(
-                full_path, "%s/%s_%d.%s", SCREENSHOTS_DIR, filename, i, ext);
-            if (!File_Exists(full_path)) {
-                result = Output_MakeScreenshot(full_path);
-                break;
-            }
-        }
-    }
-
-    Memory_FreePointer(&filename);
-    Memory_FreePointer(&full_path);
-    return result;
 }

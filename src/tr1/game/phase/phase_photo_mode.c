@@ -73,7 +73,7 @@ static void M_End(void)
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
     if (m_Status == PS_ACTIVE) {
-        Shell_MakeScreenshot();
+        Screenshot_Make(g_Config.screenshot_format);
         Sound_Effect(SFX_MENU_CHOOSE, NULL, SPM_ALWAYS);
         m_Status = PS_COOLDOWN;
     } else if (m_Status == PS_COOLDOWN) {

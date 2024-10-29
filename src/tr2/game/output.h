@@ -171,3 +171,5 @@ void __cdecl Output_DrawScreenSprite(
     int16_t sprite_idx, int16_t shade, uint16_t flags);
 
 void __cdecl Output_DrawScaledSpriteC(const int16_t *obj_ptr);
+
+bool __cdecl Output_MakeScreenshot(const char *path);

@@ -1272,12 +1272,6 @@ void S_Output_DownloadTextures(int32_t pages)
     m_EnvMapTexture = GFX_3D_Renderer_RegisterEnvironmentMap(m_Renderer3D);
 }
 
-bool S_Output_MakeScreenshot(const char *path)
-{
-    GFX_Context_ScheduleScreenshot(path);
-    return true;
-}
-
 void S_Output_ScreenBox(
     int32_t sx, int32_t sy, int32_t w, int32_t h, RGBA_8888 col_dark,
     RGBA_8888 col_light, float thickness)

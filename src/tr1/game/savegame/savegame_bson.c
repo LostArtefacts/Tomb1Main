@@ -1248,7 +1248,7 @@ static JSON_OBJECT *M_DumpCurrentMusic(void)
 {
     JSON_OBJECT *current_music_obj = JSON_ObjectNew();
     JSON_ObjectAppendInt(
-        current_music_obj, "current_track", Music_GetCurrentTrack());
+        current_music_obj, "current_track", Music_GetCurrentPlayingTrack());
     JSON_ObjectAppendDouble(
         current_music_obj, "timestamp", Music_GetTimestamp());
 

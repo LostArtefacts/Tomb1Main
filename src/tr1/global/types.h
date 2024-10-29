@@ -943,11 +943,6 @@ typedef enum {
 } TRISTATE_BOOL;
 
 typedef enum {
-    SCREENSHOT_FORMAT_JPEG,
-    SCREENSHOT_FORMAT_PNG,
-} SCREENSHOT_FORMAT;
-
-typedef enum {
     UI_STYLE_PS1,
     UI_STYLE_PC,
 } UI_STYLE;

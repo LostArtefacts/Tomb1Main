@@ -20,6 +20,7 @@
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/console/common.h>
+#include <libtrx/gfx/context.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 
@@ -1364,9 +1365,10 @@ void Output_ApplyTint(float *r, float *g, float *b)
     }
 }
 
-bool Output_MakeScreenshot(const char *path)
+bool Output_MakeScreenshot(const char *const path)
 {
-    return S_Output_MakeScreenshot(path);
+    GFX_Context_ScheduleScreenshot(path);
+    return true;
 }
 
 int Output_GetObjectBounds(const BOUNDS_16 *const bounds)

@@ -4,6 +4,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/gfx/common.h>
+#include <libtrx/screenshot.h>
 
 #include <stdbool.h>
 #include <stdint.h>

@@ -1,5 +1,6 @@
 #include "specific/s_input.h"
 
+#include "config.h"
 #include "decomp/decomp.h"
 #include "game/console/common.h"
 #include "game/gameflow/gameflow_new.h"
@@ -10,6 +11,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/screenshot.h>
 #include <libtrx/utils.h>
 
 #include <dinput.h>
@@ -53,6 +55,7 @@ INPUT_LAYOUT g_Layout[2] = {
     } }
 };
 
+static bool m_IsScreenshotPressed = false;
 static bool m_IsF3Pressed = false;
 static bool m_IsF4Pressed = false;
 static bool m_IsF7Pressed = false;
@@ -235,7 +238,12 @@ bool __cdecl S_Input_Update(void)
     }
 
     if (KEY_DOWN(DIK_S)) {
-        Screenshot(g_PrimaryBufferSurface);
+        if (!m_IsScreenshotPressed) {
+            m_IsScreenshotPressed = true;
+            Screenshot_Make(g_Config.rendering.screenshot_format);
+        }
+    } else {
+        m_IsScreenshotPressed = false;
     }
 
     const bool is_shift_pressed = KEY_DOWN(DIK_LSHIFT) || KEY_DOWN(DIK_RSHIFT);

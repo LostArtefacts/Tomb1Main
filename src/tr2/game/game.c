@@ -298,6 +298,11 @@ GAMEFLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
     return g_GameInfo.current_level.type;
 }
 
+extern int32_t Game_GetCurrentLevelNum(void)
+{
+    return g_CurrentLevel;
+}
+
 bool Game_IsPlayable(void)
 {
     if (g_GameInfo.current_level.type == GFL_TITLE

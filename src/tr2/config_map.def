@@ -1,1 +1,2 @@
 CFG_BOOL(g_Config, gameplay.fix_m16_accuracy, true)
+CFG_ENUM(g_Config, rendering.screenshot_format, SCREENSHOT_FORMAT_JPEG, SCREENSHOT_FORMAT)

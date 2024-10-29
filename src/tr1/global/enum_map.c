@@ -2,6 +2,7 @@
 
 #include <libtrx/enum_map.h>
 #include <libtrx/game/objects/ids.h>
+#include <libtrx/screenshot.h>
 
 void EnumMap_Init(void)
 {

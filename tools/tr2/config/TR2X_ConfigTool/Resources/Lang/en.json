@@ -6,10 +6,20 @@
     "window_title_about": "About TR2X Config Tool",
     "label_about_details": "Visit the TR2X GitHub page for further information."
   },
+  "Enums": {
+    "screenshot_format": {
+      "jpg": "JPEG",
+      "png": "PNG"
+    }
+  },
   "Properties": {
     "fix_m16_accuracy": {
       "Title": "Fix M16 accuracy",
       "Description": "Fixes the accuracy of the M16 while Lara is running."
+    },
+    "screenshot_format": {
+      "Title": "Screenshot format",
+      "Description": "Screenshot file format."
     }
   }
 }
