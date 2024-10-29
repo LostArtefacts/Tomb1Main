@@ -25,7 +25,7 @@
 #define GAMEBUF_MEM_CAP 0x380000
 
 // TODO: refactor the hell out of me
-BOOL __cdecl Shell_Main(void)
+void __cdecl Shell_Main(void)
 {
     g_HiRes = 0;
     g_ScreenSizer = 0;
@@ -42,17 +42,17 @@ BOOL __cdecl Shell_Main(void)
 
     Config_Read();
     if (!S_InitialiseSystem()) {
-        return false;
+        return;
     }
 
     if (!GF_LoadScriptFile("data\\tombPC.dat")) {
         Shell_ExitSystem("GameMain: could not load script file");
-        return false;
+        return;
     }
 
     if (!GF_N_Load("cfg/TR2X_gameflow.json5")) {
         Shell_ExitSystem("GameMain: could not load new script file");
-        return false;
+        return;
     }
 
     InitialiseStartInfo();
@@ -81,12 +81,12 @@ BOOL __cdecl Shell_Main(void)
     const bool is_frontend_fail = GF_DoFrontendSequence();
     if (g_IsGameToExit) {
         Config_Write();
-        return true;
+        return;
     }
 
     if (is_frontend_fail) {
-        strcpy(g_ErrorMessage, "GameMain: failed in GF_DoFrontendSequence()");
-        return false;
+        Shell_ExitSystem("GameMain: failed in GF_DoFrontendSequence()");
+        return;
     }
 
     S_FadeToBlack();
@@ -105,11 +105,10 @@ BOOL __cdecl Shell_Main(void)
                     GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
             } else {
                 if (gf_param > g_GameFlow.num_levels) {
-                    sprintf(
-                        g_ErrorMessage,
+                    Shell_ExitSystemFmt(
                         "GameMain: STARTGAME with invalid level number (%d)",
                         gf_param);
-                    return false;
+                    return;
                 }
                 gf_option = GF_DoLevelSequence(gf_param, GFL_NORMAL);
             }
@@ -118,11 +117,10 @@ BOOL __cdecl Shell_Main(void)
         case GFD_START_SAVED_GAME:
             S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), gf_param);
             if (g_SaveGame.current_level > g_GameFlow.num_levels) {
-                sprintf(
-                    g_ErrorMessage,
+                Shell_ExitSystemFmt(
                     "GameMain: STARTSAVEDGAME with invalid level number (%d)",
                     g_SaveGame.current_level);
-                return false;
+                return;
             }
             gf_option = GF_DoLevelSequence(g_SaveGame.current_level, GFL_SAVED);
             break;
@@ -145,10 +143,9 @@ BOOL __cdecl Shell_Main(void)
             if (g_GameFlow.title_disabled) {
                 if (g_GameFlow.title_replace < 0
                     || g_GameFlow.title_replace == GFD_EXIT_TO_TITLE) {
-                    strcpy(
-                        g_ErrorMessage,
+                    Shell_ExitSystem(
                         "GameMain Failed: Title disabled & no replacement");
-                    return false;
+                    return;
                 }
                 gf_option = g_GameFlow.title_replace;
             } else {
@@ -164,23 +161,27 @@ BOOL __cdecl Shell_Main(void)
     }
 
     S_SaveSettings();
-    GameBuf_Shutdown();
-    EnumMap_Shutdown();
+    Config_Write();
+}
+
+void __cdecl Shell_Shutdown(void)
+{
     GameString_Shutdown();
-    return true;
-}
-
-void __cdecl Shell_Cleanup(void)
-{
-    Music_Shutdown();
-}
-
-void __cdecl Shell_ExitSystem(const char *message)
-{
+    Console_Shutdown();
+    WinInFinish();
+    RenderFinish(true);
+    WinVidFinish();
+    WinVidHideGameWindow();
+    Text_Shutdown();
+    UI_Shutdown();
     GameBuf_Shutdown();
-    strcpy(g_ErrorMessage, message);
+    Config_Shutdown();
+}
+
+void __cdecl Shell_ExitSystem(const char *const message)
+{
+    MessageBoxA(NULL, message, NULL, MB_ICONWARNING);
     Shell_Shutdown();
-    Shell_Cleanup();
     exit(1);
 }
 

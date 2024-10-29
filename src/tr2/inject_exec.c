@@ -235,7 +235,6 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044E520, WinMain);
     INJECT(enable, 0x0044E700, GameInit);
     INJECT(enable, 0x0044E7A0, WinGameStart);
-    INJECT(enable, 0x0044E820, Shell_Shutdown);
     INJECT(enable, 0x0044E8E0, ScreenshotPCX);
     INJECT(enable, 0x0044E9F0, CompPCX);
     INJECT(enable, 0x0044EAA0, EncodeLinePCX);
@@ -430,7 +429,7 @@ static void M_Math(const bool enable)
 
 static void M_Shell(const bool enable)
 {
-    INJECT(enable, 0x0044E770, Shell_Cleanup);
+    INJECT(enable, 0x0044E820, Shell_Shutdown);
     INJECT(enable, 0x0044E890, Shell_ExitSystem);
     INJECT(enable, 0x00454980, Shell_Main);
 }

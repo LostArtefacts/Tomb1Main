@@ -243,8 +243,8 @@ int32_t __stdcall WinMain(
 
     int32_t result = WinGameStart();
     if (result) {
-        Shell_Shutdown();
         RenderErrorBox(result);
+        Shell_Shutdown();
         if (!SE_ShowSetupDialog(0, 0)) {
             goto cleanup;
         }
@@ -253,13 +253,11 @@ int32_t __stdcall WinMain(
         g_StopInventory = 0;
         g_IsGameToExit = 0;
         Shell_Main();
-        Config_Write();
         Shell_Shutdown();
         SE_WriteAppSettings(&g_SavedAppSettings);
     }
 
 cleanup:
-    Shell_Cleanup();
     return g_AppResultCode;
 }
 
@@ -554,21 +552,6 @@ int32_t __cdecl WinGameStart(void)
     //     return error;
     // }
     return 0;
-}
-
-void __cdecl Shell_Shutdown(void)
-{
-    Console_Shutdown();
-    WinInFinish();
-    RenderFinish(true);
-    WinVidFinish();
-    WinVidHideGameWindow();
-    if (g_ErrorMessage[0]) {
-        MessageBoxA(NULL, g_ErrorMessage, NULL, MB_ICONWARNING);
-    }
-    Text_Shutdown();
-    UI_Shutdown();
-    Config_Shutdown();
 }
 
 int16_t __cdecl TitleSequence(void)

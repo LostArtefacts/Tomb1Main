@@ -22,7 +22,6 @@ bool __cdecl DInputCreate(void);
 void __cdecl DInputRelease(void);
 void __cdecl WinInReadKeyboard(uint8_t *input_data);
 int32_t __cdecl WinGameStart(void);
-void __cdecl Shell_Shutdown(void);
 int16_t __cdecl TitleSequence(void);
 void __cdecl WinVidSetMinWindowSize(int32_t width, int32_t height);
 void __cdecl WinVidSetMaxWindowSize(int32_t width, int32_t height);

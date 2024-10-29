@@ -389,7 +389,6 @@
 #define g_WinVidNeedToResetBuffers (*(bool*)0x0051BC30)
 #define g_IsWet (*(int32_t*)0x0051BC38)
 #define g_SavedAppSettings (*(APP_SETTINGS*)0x0051BCC0)
-#define g_ErrorMessage (*(char(*)[128])0x0051BD20)
 #define g_IsTitleLoaded (*(BOOL*)0x0051BDA0)
 #define g_MasterVolume (*(int32_t*)0x0051BDA8)
 #define g_MciDeviceID (*(MCIDEVICEID*)0x0051BDAC)

@@ -4471,7 +4471,7 @@ typedef enum {
 0x0051B928  -       int32_t g_HiRes;
 0x0051B930  -       RGB_888 g_GamePalette8[256];
 0x0051BCC0  -       APP_SETTINGS g_SavedAppSettings;
-0x0051BD20  -       char g_ErrorMessage[128];
+0x0051BD20  +       char g_ErrorMessage[128];
 0x0051BDA8  -       int32_t g_MasterVolume;
 0x0051BDAC  -       MCIDEVICEID g_MciDeviceID;
 0x0051BDB0  -       int32_t g_CD_LoopTrack;
