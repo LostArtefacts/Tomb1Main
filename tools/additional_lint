@@ -7,7 +7,7 @@ from pathlib import Path
 
 from shared.files import find_versioned_files, is_binary_file
 from shared.linting import LintContext, lint_bulk_files, lint_file
-from shared.paths import SRC_DIR
+from shared.paths import REPO_DIR
 
 IGNORED_PATTERNS = ["*.patch", "*.bin", "gl_core_3_3.h"]
 
@@ -23,6 +23,8 @@ def filter_files(
     files: Iterable[Path], ignored_patterns: list[str] | None, debug: bool
 ) -> Iterable[Path]:
     for path in files:
+        if path.is_dir():
+            continue
         if is_binary_file(path):
             if debug:
                 print(f"{path} is a binary file, ignoring", file=sys.stderr)
@@ -39,12 +41,12 @@ def filter_files(
         yield path
 
 
-def main(root_dir: Path, ignored_patterns: list[str] | None = None) -> None:
+def main(root_dir: Path) -> None:
     args = parse_args()
 
     context = LintContext(
-        root_dir=SRC_DIR,
-        versioned_files=find_versioned_files(root_dir=SRC_DIR),
+        root_dir=root_dir,
+        versioned_files=find_versioned_files(root_dir=REPO_DIR),
     )
     if args.path:
         files = args.path
@@ -71,3 +73,7 @@ def main(root_dir: Path, ignored_patterns: list[str] | None = None) -> None:
         exit_code = 1
 
     exit(exit_code)
+
+
+if __name__ == "__main__":
+    main(root_dir=REPO_DIR)
