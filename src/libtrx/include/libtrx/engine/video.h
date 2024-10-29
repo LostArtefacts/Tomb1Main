@@ -25,16 +25,16 @@ void Video_SetSurfaceDeallocatorFunc(
     void *user_data);
 void Video_SetSurfaceClearFunc(
     VIDEO *video, void (*func)(void *surface, void *user_data),
-    void *const user_data);
+    void *user_data);
 void Video_SetSurfaceLockFunc(
     VIDEO *video, void *(*func)(void *surface, void *user_data),
-    void *const user_data);
+    void *user_data);
 void Video_SetSurfaceUnlockFunc(
     VIDEO *video, void (*func)(void *surface, void *user_data),
-    void *const user_data);
+    void *user_data);
 void Video_SetSurfaceUploadFunc(
     VIDEO *video, void (*func)(void *surface, void *user_data),
-    void *const user_data);
+    void *user_data);
 void Video_SetRenderBeginFunc(
     VIDEO *video, void (*func)(void *surface, void *user_data),
     void *user_data);
