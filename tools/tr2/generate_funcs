@@ -160,6 +160,8 @@ def make_types_h(types: list[str]) -> None:
     footer = [
         "",
         "// clang-format on",
+        "",
+        "#pragma pack(pop)",
     ]
 
     update_file(
