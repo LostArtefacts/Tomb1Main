@@ -32,6 +32,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances
 - fixed grenades counting as double kills in the game statistics
 - fixed the ammo counter being hidden while a demo plays in NG+
+- fixed the game hanging if exited during the level stats, credits, or final stats
 
 #### Visuals
 

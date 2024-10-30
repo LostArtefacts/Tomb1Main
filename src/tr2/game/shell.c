@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "decomp/decomp.h"
+#include "game/background.h"
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game_string.h"
@@ -169,7 +170,8 @@ void __cdecl Shell_Shutdown(void)
     GameString_Shutdown();
     Console_Shutdown();
     WinInFinish();
-    RenderFinish(true);
+    BGND_Free();
+    RenderFinish(false);
     WinVidFinish();
     WinVidHideGameWindow();
     Text_Shutdown();

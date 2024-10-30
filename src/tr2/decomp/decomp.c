@@ -2816,6 +2816,10 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
                 passed = Sync();
             } while (!passed);
             frames -= passed;
+
+            if (g_IsGameToExit) {
+                break;
+            }
         }
     }
 
@@ -2830,6 +2834,10 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
             passed = Sync();
         } while (!passed);
         frames -= passed;
+
+        if (g_IsGameToExit) {
+            break;
+        }
     }
 }
 
