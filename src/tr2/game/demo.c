@@ -12,9 +12,27 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+static struct {
+    bool bonus_flag;
+} m_OldConfig;
+
 static int32_t m_DemoLevel = 0;
 static int32_t m_DemoLevel2 = 0;
 static int32_t m_OldDemoInputDB = 0;
+
+static void M_PrepareConfig(void);
+static void M_RestoreConfig(void);
+
+static void M_PrepareConfig(void)
+{
+    m_OldConfig.bonus_flag = g_SaveGame.bonus_flag;
+    g_SaveGame.bonus_flag = false;
+}
+
+static void M_RestoreConfig(void)
+{
+    g_SaveGame.bonus_flag = m_OldConfig.bonus_flag;
+}
 
 int32_t __cdecl Demo_Control(int32_t level_num)
 {
@@ -40,6 +58,8 @@ int32_t __cdecl Demo_Start(int32_t level_num)
     if (level_num < 0 && !g_GameFlow.num_demos) {
         return GFD_EXIT_TO_TITLE;
     }
+
+    M_PrepareConfig();
 
     if (level_num >= 0) {
         m_DemoLevel2 = level_num;
@@ -90,6 +110,8 @@ int32_t __cdecl Demo_Start(int32_t level_num)
     g_Inv_DemoMode = false;
 
     Text_Remove(text);
+
+    M_RestoreConfig();
 
     *s = start;
     S_FadeToBlack();

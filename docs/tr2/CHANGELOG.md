@@ -15,6 +15,7 @@
 - fixed Lara reloading the harpoon gun after every shot in NG+ (#1575)
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances (#1572)
 - fixed grenades counting as double kills in the game statistics (#1560)
+- fixed the ammo counter being hidden while a demo plays in NG+ (#1559)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command
