@@ -2864,3 +2864,46 @@ void __cdecl S_DisplayPicture(const char *const file_name, const BOOL is_title)
     }
     GameBuf_Free(width * height);
 }
+
+void __cdecl DisplayCredits(void)
+{
+    S_FadeToBlack();
+    S_UnloadLevelFile();
+    if (!Level_Initialise(0, 0)) {
+        return;
+    }
+
+    RGB_888 old_palette[256];
+    memcpy(old_palette, g_GamePalette8, sizeof(old_palette));
+    memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
+
+    Music_Play(MX_SKIDOO_THEME, false);
+
+    for (int32_t i = 0; i < 9; i++) {
+        char file_name[60];
+        sprintf(file_name, "data/credit0%d.pcx", i + 1);
+        g_IsVidModeLock = 1;
+        FadeToPal(0, g_GamePalette8);
+
+        S_DisplayPicture(file_name, false);
+
+        S_InitialisePolyList(0);
+        S_CopyBufferToScreen();
+        S_OutputPolyList();
+        S_DumpScreen();
+        FadeToPal(30, g_GamePalette8);
+
+        S_Wait(450, 0);
+
+        S_FadeToBlack();
+        S_DontDisplayPicture();
+        if (g_IsGameToExit) {
+            break;
+        }
+    }
+
+    memcpy(g_GamePalette8, old_palette, sizeof(g_GamePalette8));
+    S_Wait(300, 0);
+    FadeToPal(30, g_GamePalette8);
+    g_IsVidModeLock = 0;
+}

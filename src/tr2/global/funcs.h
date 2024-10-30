@@ -206,7 +206,6 @@
 #define S_FadeToBlack ((void __cdecl (*)(void))0x0044C3A0)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define GetSavedGamesList ((void __cdecl (*)(REQUEST_INFO *req))0x0044CA20)
-#define DisplayCredits ((void __cdecl (*)(void))0x0044CA70)
 #define S_FrontEndCheck ((BOOL __cdecl (*)(void))0x0044CCB0)
 #define S_SaveGame ((int32_t __cdecl (*)(const void *save_data, uint32_t save_size, int32_t slot_num))0x0044CE20)
 #define S_LoadGame ((int32_t __cdecl (*)(void *save_data, uint32_t save_size, int32_t slot_num))0x0044CF40)

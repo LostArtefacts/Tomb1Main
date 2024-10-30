@@ -3984,7 +3984,7 @@ typedef enum {
 0x0044C9C0  0x000A  +       void __cdecl Random_SeedDraw(int32_t seed);
 0x0044C9D0  0x0044  -R      void __cdecl GetValidLevelsList(REQUEST_INFO *req);
 0x0044CA20  0x004C  -R      void __cdecl GetSavedGamesList(REQUEST_INFO *req);
-0x0044CA70  0x0233  -R      void __cdecl DisplayCredits(void);
+0x0044CA70  0x0233  +R      void __cdecl DisplayCredits(void);
 0x0044CCB0  0x0165  *R      BOOL __cdecl S_FrontEndCheck(void);
 0x0044CE20  0x0114  -R      int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);
 0x0044CF40  0x0096  -R      int32_t __cdecl S_LoadGame(void *save_data, uint32_t save_size, int32_t slot_num);
