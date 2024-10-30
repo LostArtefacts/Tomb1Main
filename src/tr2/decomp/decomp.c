@@ -2833,3 +2833,34 @@ BOOL __cdecl S_InitialiseSystem(void)
     CalculateWibbleTable();
     return 1;
 }
+
+void __cdecl S_DisplayPicture(const char *const file_name, const BOOL is_title)
+{
+    char *compressed_data = NULL;
+    size_t compressed_data_size = 0;
+    if (!File_Load(file_name, &compressed_data, &compressed_data_size)) {
+        return;
+    }
+
+    if (!is_title) {
+        GameBuf_Reset();
+    }
+
+    const size_t width = 640;
+    const size_t height = 480;
+    uint8_t *pixels = GameBuf_Alloc(width * height, GBUF_LOAD_PICTURE_BUFFER);
+    DecompPCX(
+        (uint8_t *)compressed_data, compressed_data_size, pixels,
+        g_PicturePalette);
+    Memory_FreePointer(&compressed_data);
+    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+        WinVidCopyBitmapToBuffer(g_PictureBufferSurface, pixels);
+    } else {
+        BGND_Make640x480(pixels, g_PicturePalette);
+    }
+    if (!is_title) {
+        CopyBitmapPalette(
+            g_PicturePalette, pixels, width * height, g_GamePalette8);
+    }
+    GameBuf_Free(width * height);
+}

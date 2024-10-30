@@ -72,6 +72,7 @@ void __cdecl Shell_Main(void)
     TempVideoAdjust(1, 1.0);
 
     g_IsVidModeLock = 1;
+
     S_DisplayPicture("data\\legal.pcx", 0);
     S_InitialisePolyList(0);
     S_CopyBufferToScreen();

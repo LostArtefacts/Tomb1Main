@@ -231,7 +231,6 @@
 #define S_SetupBelowWater ((void __cdecl (*)(BOOL underwater))0x00451C90)
 #define S_SetupAboveWater ((void __cdecl (*)(BOOL underwater))0x00451CF0)
 #define S_AnimateTextures ((void __cdecl (*)(int32_t ticks))0x00451D20)
-#define S_DisplayPicture ((void __cdecl (*)(const char *file_name, BOOL is_title))0x00451DE0)
 #define S_SyncPictureBufferPalette ((void __cdecl (*)(void))0x00451EF0)
 #define S_DontDisplayPicture ((void __cdecl (*)(void))0x00451F70)
 #define ScreenDump ((void __cdecl (*)(void))0x00451F80)

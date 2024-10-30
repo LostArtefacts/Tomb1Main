@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">70.90% (882)</tspan> · <tspan class="known">26.69% (332)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">70.98% (883)</tspan> · <tspan class="known">26.61% (331)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="529.63" height="6" x="0" y="0" class="decompiled"/>
-<rect width="199.36" height="6" x="529.63" y="0" class="known"/>
+<rect width="530.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="198.76" height="6" x="530.23" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1152,7 +1152,7 @@
 <rect width="12" height="12" x="345" y="315" class="known"><title>void __cdecl S_SetupBelowWater(BOOL underwater);</title></rect>
 <rect width="12" height="12" x="360" y="315" class="known"><title>void __cdecl S_SetupAboveWater(BOOL underwater);</title></rect>
 <rect width="12" height="12" x="375" y="315" class="known"><title>void __cdecl S_AnimateTextures(int32_t ticks);</title></rect>
-<rect width="12" height="12" x="390" y="315" class="known"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
+<rect width="12" height="12" x="390" y="315" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
 <rect width="12" height="12" x="405" y="315" class="known"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="12" height="12" x="420" y="315" class="known"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="12" height="12" x="435" y="315" class="known"><title>void __cdecl ScreenDump(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.70%</tspan> · <tspan class="known">24.97%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.78%</tspan> · <tspan class="known">24.89%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="558.04" height="6" x="0" y="0" class="decompiled"/>
-<rect width="186.52" height="6" x="558.04" y="0" class="known"/>
+<rect width="558.62" height="6" x="0" y="0" class="decompiled"/>
+<rect width="185.94" height="6" x="558.62" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1687,7 +1687,7 @@
 <rect width="11.49" height="11.94" x="480.11" y="259.44" class="decompiled"><title>TEXTSTRING *__cdecl Text_Create(int32_t x, int32_t y, int32_t z, const char *text);</title></rect>
 <rect width="11.49" height="11.94" x="480.11" y="274.38" class="known"><title>void __cdecl FallingBlock(int16_t item_num);</title></rect>
 <rect width="11.49" height="11.94" x="480.11" y="289.32" class="decompiled"><title>void __cdecl FmvBackToGame(void);</title></rect>
-<rect width="11.49" height="11.94" x="480.11" y="304.26" class="known"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
+<rect width="11.49" height="11.94" x="480.11" y="304.26" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
 <rect width="11.49" height="11.88" x="480.11" y="319.21" class="decompiled"><title>void __cdecl Gun_Rifle_Undraw(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="11.49" height="11.88" x="480.11" y="334.09" class="decompiled"><title>bool __cdecl WinVidGetMinMaxInfo(LPMINMAXINFO info);</title></rect>
 <rect width="11.49" height="11.54" x="480.11" y="348.97" class="known"><title>void __cdecl IcicleControl(int16_t item_num);</title></rect>

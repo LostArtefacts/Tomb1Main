@@ -375,6 +375,7 @@
 #define g_DetailText (*(TEXTSTRING *(*)[5])0x0051A2D8)
 #define g_SoundText (*(TEXTSTRING *(*)[4])0x0051A2F0)
 #define g_WaterPalette (*(RGB_888(*)[256])0x0051B308)
+#define g_PicturePalette (*(RGB_888(*)[256])0x0051B608)
 #define g_PhdWinRect (*(RECT*)0x0051B918)
 #define g_HiRes (*(int32_t*)0x0051B928)
 #define g_AnimTextureRanges (*(int16_t **)0x0051B92C)

@@ -4057,7 +4057,7 @@ typedef enum {
 0x00451C90  0x0051  -R      void __cdecl S_SetupBelowWater(BOOL underwater);
 0x00451CF0  0x0021  -R      void __cdecl S_SetupAboveWater(BOOL underwater);
 0x00451D20  0x00B1  -R      void __cdecl S_AnimateTextures(int32_t ticks);
-0x00451DE0  0x0105  *R      void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
+0x00451DE0  0x0105  +R      void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 0x00451EF0  0x007E  -R      void __cdecl S_SyncPictureBufferPalette(void);
 0x00451F70  0x001C  *R      void __cdecl S_DontDisplayPicture(void);
 0x00451F80  0x000D  -R      void __cdecl ScreenDump(void);
@@ -4784,3 +4784,4 @@ typedef enum {
 0x0051A004  -       char *g_GameBuf_MemPtr;
 0x0051A008  -       size_t g_GameBuf_MemUsed;
 0x0051A00C  -       size_t g_GameBuf_MemFree;
+0x0051B608  -       RGB_888 g_PicturePalette[256]
