@@ -93,6 +93,16 @@ void Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)
     text->pos.y = y;
 }
 
+void Text_SetScale(
+    TEXTSTRING *const text, const int32_t scale_h, const int32_t scale_v)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->scale.h = scale_h;
+    text->scale.v = scale_v;
+}
+
 void Text_Flash(TEXTSTRING *const text, const bool enable, const int16_t rate)
 {
     if (text == NULL) {

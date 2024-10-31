@@ -79,6 +79,7 @@ void Text_Shutdown(void);
 TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *text);
 void Text_ChangeText(TEXTSTRING *text, const char *content);
 void Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
+void Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
 void Text_Flash(TEXTSTRING *text, bool enable, int16_t rate);
 void Text_Hide(TEXTSTRING *text, bool enable);
 void Text_Draw(void);
