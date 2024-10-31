@@ -1,4 +1,4 @@
-#include "game/option/option_control_pick.h"
+#include "game/option/option_controls_pick.h"
 
 #include "game/game_string.h"
 #include "game/input.h"
@@ -55,7 +55,7 @@ static void M_ShutdownText(void)
     }
 }
 
-CONTROL_MODE Option_ControlPick(void)
+CONTROL_MODE Option_ControlsPick_Control(void)
 {
     if (!m_Text[TEXT_KEYBOARD]) {
         M_InitText();
@@ -106,7 +106,7 @@ CONTROL_MODE Option_ControlPick(void)
     return CM_PICK;
 }
 
-void Option_ControlPick_Shutdown(void)
+void Option_ControlsPick_Shutdown(void)
 {
     M_ShutdownText();
 }

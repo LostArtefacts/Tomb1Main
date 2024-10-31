@@ -587,7 +587,7 @@ static void M_FlipLeft(INVENTORY_ITEM *inv_item)
     }
 }
 
-void Option_Passport(INVENTORY_ITEM *inv_item)
+void Option_Passport_Control(INVENTORY_ITEM *inv_item)
 {
     if (!m_IsTextInit) {
         M_InitRequesters();

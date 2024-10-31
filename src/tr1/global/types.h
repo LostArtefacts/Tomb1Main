@@ -618,7 +618,6 @@ typedef struct {
             uint32_t background : 1;
             uint32_t outline : 1;
             uint32_t hide : 1;
-            uint32_t progress_bar : 1;
             uint32_t multiline : 1;
             uint32_t manual_draw : 1;
         };
@@ -652,7 +651,6 @@ typedef struct {
         TEXT_STYLE style;
     } outline;
     char *content;
-    BAR_INFO progress_bar;
 } TEXTSTRING;
 
 typedef struct {

@@ -115,7 +115,7 @@ static void M_ShutdownText(void)
     }
 }
 
-void Option_Compass(INVENTORY_ITEM *inv_item)
+void Option_Compass_Control(INVENTORY_ITEM *inv_item)
 {
     if (g_Config.enable_compass_stats) {
         char buf[100];

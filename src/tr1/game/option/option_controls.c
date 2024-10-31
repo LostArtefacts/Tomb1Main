@@ -1,10 +1,14 @@
-#include "game/option/option_control.h"
+#include "game/option/option_controls.h"
 
 #include "game/clock.h"
 #include "game/game_string.h"
+#include "game/overlay.h"
 #include "game/screen.h"
 #include "game/sound.h"
 #include "game/text.h"
+#include "global/types.h"
+
+#include <libtrx/log.h>
 
 #include <stdio.h>
 
@@ -17,6 +21,12 @@
 #define COL_END -1
 #define BUTTON_HOLD_TIME 2
 #define HOLD_DELAY_FRAMES 300 * LOGIC_FPS / 1000
+
+typedef enum {
+    M_PROGERSS_BAR_RESET_ALL,
+    M_PROGERSS_BAR_UNBIND,
+    M_PROGRESS_BAR_NUMBER_OF,
+} M_PROGRESS_BAR;
 
 typedef enum {
     KM_INACTIVE = 0,
@@ -33,7 +43,6 @@ typedef enum {
     TEXT_RIGHT_ARROW = 3,
     TEXT_UP_ARROW = 4,
     TEXT_DOWN_ARROW = 5,
-    TEXT_RESET_BORDER = 6,
     TEXT_RESET = 7,
     TEXT_UNBIND = 8,
     TEXT_NUMBER_OF = 9,
@@ -70,6 +79,7 @@ static int32_t m_UnbindTimer = 0;
 static int32_t m_UnbindKeyMode = KM_INACTIVE;
 static int32_t m_UnbindKeyDelay = 0;
 static char m_UnbindGS[100];
+static BAR_INFO m_ProgressBars[M_PROGRESS_BAR_NUMBER_OF];
 
 static MENU m_ControlMenu = {
     .num_options = 0,
@@ -173,7 +183,7 @@ static void M_FlashConflicts(INPUT_BACKEND backend, INPUT_LAYOUT layout);
 static INPUT_LAYOUT M_ChangeLayout(INPUT_BACKEND backend);
 static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout);
 static void M_CheckUnbindKey(INPUT_BACKEND backend, INPUT_LAYOUT layout);
-static void M_ProgressBar(TEXTSTRING *txt, int32_t timer);
+static void M_ProgressBar(const TEXTSTRING *txt, BAR_INFO *bar, int32_t timer);
 
 static void M_InitMenu(void)
 {
@@ -279,12 +289,6 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
         m_Text[TEXT_TITLE_BORDER], box_width, box_height, 0, 0, TS_BACKGROUND);
     Text_AddOutline(m_Text[TEXT_TITLE_BORDER], true, TS_BACKGROUND);
 
-    m_Text[TEXT_RESET_BORDER] = Text_Create(0, y + BOX_PADDING + BORDER, " ");
-    Text_CentreH(m_Text[TEXT_RESET_BORDER], true);
-    Text_CentreV(m_Text[TEXT_RESET_BORDER], true);
-    Text_AddBackground(
-        m_Text[TEXT_RESET_BORDER], box_width, ROW_HEIGHT, 0, 0, TS_BACKGROUND);
-
     sprintf(
         m_ResetGS, GS(CONTROL_RESET_DEFAULTS),
         Input_GetKeyName(backend, layout, INPUT_ROLE_RESET_BINDINGS));
@@ -316,11 +320,9 @@ static void M_UpdateText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 {
     if (layout == INPUT_LAYOUT_DEFAULT) {
         Text_Hide(m_Text[TEXT_RESET], true);
-        Text_Hide(m_Text[TEXT_RESET_BORDER], true);
         Text_Hide(m_Text[TEXT_UNBIND], true);
     } else {
         Text_Hide(m_Text[TEXT_RESET], false);
-        Text_Hide(m_Text[TEXT_RESET_BORDER], false);
 
         if (m_ControlMenu.cur_role == KC_TITLE
             || !m_ControlMenu.cur_row->can_unbind) {
@@ -495,7 +497,8 @@ static INPUT_LAYOUT M_ChangeLayout(INPUT_BACKEND backend)
     return layout;
 }
 
-static void M_ProgressBar(TEXTSTRING *txt, int32_t timer)
+static void M_ProgressBar(
+    const TEXTSTRING *const txt, BAR_INFO *const bar, const int32_t timer)
 {
     int32_t width = Text_GetWidth(txt);
     int32_t height = TEXT_HEIGHT;
@@ -517,8 +520,21 @@ static void M_ProgressBar(TEXTSTRING *txt, int32_t timer)
 
     int32_t percent = (timer * 100) / (LOGIC_FPS * BUTTON_HOLD_TIME);
     CLAMP(percent, 0, 100);
-    Text_AddProgressBar(
-        txt, width, height, x, y, percent, g_Config.ui.menu_style);
+
+    bar->custom_width = width;
+    bar->custom_height = height;
+    bar->custom_x = x;
+    bar->custom_y = y;
+    bar->blink = false;
+    bar->location = BL_CUSTOM;
+    bar->max_value = 100;
+    bar->type = BT_PROGRESS;
+    bar->value = percent;
+    if (g_Config.ui.menu_style == UI_STYLE_PC) {
+        bar->color = BC_GOLD;
+    } else {
+        bar->color = BC_PURPLE;
+    }
 }
 
 static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout)
@@ -555,7 +571,9 @@ static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     int32_t progress = m_ResetTimer > 0 ? frame - m_ResetTimer : 0;
     CLAMP(progress, 0, LOGIC_FPS * BUTTON_HOLD_TIME);
-    M_ProgressBar(m_Text[TEXT_RESET], progress);
+    M_ProgressBar(
+        m_Text[TEXT_RESET], &m_ProgressBars[M_PROGERSS_BAR_RESET_ALL],
+        progress);
 }
 
 static void M_CheckUnbindKey(INPUT_BACKEND backend, INPUT_LAYOUT layout)
@@ -592,10 +610,12 @@ static void M_CheckUnbindKey(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     int32_t progress = m_UnbindTimer > 0 ? frame - m_UnbindTimer : 0;
     CLAMP(progress, 0, LOGIC_FPS * BUTTON_HOLD_TIME);
-    M_ProgressBar(m_Text[TEXT_UNBIND], progress);
+    M_ProgressBar(
+        m_Text[TEXT_UNBIND], &m_ProgressBars[M_PROGERSS_BAR_UNBIND], progress);
 }
 
-CONTROL_MODE Option_Control(INVENTORY_ITEM *inv_item, INPUT_BACKEND backend)
+CONTROL_MODE Option_Controls_Control(
+    INVENTORY_ITEM *inv_item, INPUT_BACKEND backend)
 {
     INPUT_LAYOUT layout = INPUT_LAYOUT_DEFAULT;
     if (backend == INPUT_BACKEND_KEYBOARD) {
@@ -734,6 +754,16 @@ CONTROL_MODE Option_Control(INVENTORY_ITEM *inv_item, INPUT_BACKEND backend)
     m_ControlMenu.prev_row_num = m_ControlMenu.row_num;
 
     return backend == INPUT_BACKEND_KEYBOARD ? CM_KEYBOARD : CM_CONTROLLER;
+}
+
+void Option_Controls_Draw(INVENTORY_ITEM *inv_item, INPUT_BACKEND backend)
+{
+    if (m_ProgressBars[M_PROGERSS_BAR_RESET_ALL].value > 0) {
+        Overlay_BarDraw(&m_ProgressBars[M_PROGERSS_BAR_RESET_ALL], RSR_TEXT);
+    }
+    if (m_ProgressBars[M_PROGERSS_BAR_UNBIND].value > 0) {
+        Overlay_BarDraw(&m_ProgressBars[M_PROGERSS_BAR_UNBIND], RSR_TEXT);
+    }
 }
 
 void Option_Control_Shutdown(void)

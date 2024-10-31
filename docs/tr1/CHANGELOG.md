@@ -10,6 +10,7 @@
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 - removed health cheat (we now have the `/hp` command)
+- removed background for the "Reset" and "Unbind" labels in the controls dialog
 
 ## [4.5.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.5...tr1-4.5.1) - 2024-10-14
 - fixed mac builds missing embedded resources (#1710, regression from 4.5)

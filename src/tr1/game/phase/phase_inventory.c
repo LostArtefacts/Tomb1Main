@@ -145,6 +145,14 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
         break;
     }
 
+    if (motion->status == RNG_SELECTED) {
+        INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+        if (inv_item->object_id == O_PASSPORT_CLOSED) {
+            inv_item->object_id = O_PASSPORT_OPTION;
+        }
+        Option_Draw(inv_item);
+    }
+
     Matrix_Pop();
     Viewport_SetFOV(old_fov);
 
@@ -975,7 +983,7 @@ static PHASE_CONTROL M_ControlFrame(void)
         }
 
         if (!busy && !g_IDelay) {
-            Option_DoInventory(inv_item);
+            Option_Control(inv_item);
 
             if (g_InputDB.menu_back) {
                 inv_item->sprlist = NULL;

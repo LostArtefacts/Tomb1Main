@@ -62,7 +62,7 @@ static void M_InitText(void)
     }
 }
 
-void Option_Sound(INVENTORY_ITEM *inv_item)
+void Option_Sound_Control(INVENTORY_ITEM *inv_item)
 {
     char buf[20];
 

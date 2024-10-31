@@ -357,30 +357,6 @@ void Text_RemoveOutline(TEXTSTRING *const text)
     text->flags.outline = 0;
 }
 
-void Text_AddProgressBar(
-    TEXTSTRING *const text, const int16_t w, const int16_t h, const int16_t x,
-    const int16_t y, const int32_t value, const UI_STYLE style)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.progress_bar = true;
-    text->progress_bar.custom_width = w;
-    text->progress_bar.custom_height = h;
-    text->progress_bar.custom_x = x;
-    text->progress_bar.custom_y = y;
-    text->progress_bar.blink = false;
-    text->progress_bar.location = BL_CUSTOM;
-    text->progress_bar.max_value = 100;
-    text->progress_bar.type = BT_PROGRESS;
-    text->progress_bar.value = value;
-    if (style == UI_STYLE_PC) {
-        text->progress_bar.color = BC_GOLD;
-    } else {
-        text->progress_bar.color = BC_PURPLE;
-    }
-}
-
 void Text_CentreH(TEXTSTRING *const text, const bool enable)
 {
     if (text == NULL) {
@@ -583,10 +559,6 @@ void Text_DrawText(TEXTSTRING *text)
 
         M_DrawTextBackground(
             g_Config.ui.menu_style, sx, sy, sh, sv, text->background.style);
-    }
-
-    if (text->flags.progress_bar && text->progress_bar.value) {
-        Overlay_BarDraw(&text->progress_bar, RSR_TEXT);
     }
 
     if (text->flags.outline) {

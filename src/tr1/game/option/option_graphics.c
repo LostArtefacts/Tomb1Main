@@ -468,7 +468,7 @@ static void M_ChangeTextOption(
     }
 }
 
-void Option_Graphics(INVENTORY_ITEM *inv_item)
+void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
 {
     if (!m_IsTextInit) {
         M_InitText();

@@ -11,5 +11,7 @@ typedef enum {
     CM_CONTROLLER,
 } CONTROL_MODE;
 
-CONTROL_MODE Option_Control(INVENTORY_ITEM *inv_item, INPUT_BACKEND backend);
+CONTROL_MODE Option_Controls_Control(
+    INVENTORY_ITEM *inv_item, INPUT_BACKEND backend);
+void Option_Controls_Draw(INVENTORY_ITEM *inv_item, INPUT_BACKEND backend);
 void Option_Control_Shutdown(void);

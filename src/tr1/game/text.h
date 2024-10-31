@@ -26,9 +26,6 @@ void Text_AddBackground(
 void Text_RemoveBackground(TEXTSTRING *text);
 void Text_AddOutline(TEXTSTRING *text, bool enable, TEXT_STYLE style);
 void Text_RemoveOutline(TEXTSTRING *text);
-void Text_AddProgressBar(
-    TEXTSTRING *text, int16_t w, int16_t h, int16_t x, int16_t y, int32_t value,
-    UI_STYLE style);
 void Text_CentreH(TEXTSTRING *text, bool enable);
 void Text_CentreV(TEXTSTRING *text, bool enable);
 void Text_AlignRight(TEXTSTRING *text, bool enable);

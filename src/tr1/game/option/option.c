@@ -2,8 +2,8 @@
 
 #include "game/input.h"
 #include "game/option/option_compass.h"
-#include "game/option/option_control.h"
-#include "game/option/option_control_pick.h"
+#include "game/option/option_controls.h"
+#include "game/option/option_controls_pick.h"
 #include "game/option/option_graphics.h"
 #include "game/option/option_passport.h"
 #include "game/option/option_sound.h"
@@ -32,7 +32,7 @@ void Option_Shutdown(INVENTORY_ITEM *inv_item)
 
     case O_CONTROL_OPTION:
         if (m_ControlMode == CM_PICK) {
-            Option_ControlPick_Shutdown();
+            Option_ControlsPick_Shutdown();
         } else {
             Option_Control_Shutdown();
         }
@@ -43,35 +43,37 @@ void Option_Shutdown(INVENTORY_ITEM *inv_item)
     }
 }
 
-void Option_DoInventory(INVENTORY_ITEM *inv_item)
+void Option_Control(INVENTORY_ITEM *inv_item)
 {
     switch (inv_item->object_id) {
     case O_PASSPORT_OPTION:
-        Option_Passport(inv_item);
+        Option_Passport_Control(inv_item);
         break;
 
     case O_MAP_OPTION:
-        Option_Compass(inv_item);
+        Option_Compass_Control(inv_item);
         break;
 
     case O_DETAIL_OPTION:
-        Option_Graphics(inv_item);
+        Option_Graphics_Control(inv_item);
         break;
 
     case O_SOUND_OPTION:
-        Option_Sound(inv_item);
+        Option_Sound_Control(inv_item);
         break;
 
     case O_CONTROL_OPTION:
         switch (m_ControlMode) {
         case CM_PICK:
-            m_ControlMode = Option_ControlPick();
+            m_ControlMode = Option_ControlsPick_Control();
             break;
         case CM_KEYBOARD:
-            m_ControlMode = Option_Control(inv_item, INPUT_BACKEND_KEYBOARD);
+            m_ControlMode =
+                Option_Controls_Control(inv_item, INPUT_BACKEND_KEYBOARD);
             break;
         case CM_CONTROLLER:
-            m_ControlMode = Option_Control(inv_item, INPUT_BACKEND_CONTROLLER);
+            m_ControlMode =
+                Option_Controls_Control(inv_item, INPUT_BACKEND_CONTROLLER);
             break;
         }
         break;
@@ -112,6 +114,27 @@ void Option_DoInventory(INVENTORY_ITEM *inv_item)
             inv_item->goal_frame = 0;
             inv_item->anim_direction = -1;
         }
+        break;
+    }
+}
+
+void Option_Draw(INVENTORY_ITEM *inv_item)
+{
+    switch (inv_item->object_id) {
+    case O_CONTROL_OPTION:
+        switch (m_ControlMode) {
+        case CM_KEYBOARD:
+            Option_Controls_Draw(inv_item, INPUT_BACKEND_KEYBOARD);
+            break;
+        case CM_CONTROLLER:
+            Option_Controls_Draw(inv_item, INPUT_BACKEND_CONTROLLER);
+            break;
+        default:
+            break;
+        }
+        break;
+
+    default:
         break;
     }
 }
