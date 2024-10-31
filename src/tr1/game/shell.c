@@ -229,6 +229,10 @@ void Shell_ExitSystemFmt(const char *fmt, ...)
 
 void Shell_ProcessInput(void)
 {
+    if (g_InputDB.screenshot) {
+        Screenshot_Make(g_Config.screenshot_format);
+    }
+
     if (g_InputDB.toggle_bilinear_filter) {
         g_Config.rendering.texture_filter =
             (g_Config.rendering.texture_filter + 1) % GFX_TF_NUMBER_OF;
@@ -263,6 +267,10 @@ void Shell_ProcessInput(void)
             g_Config.rendering.enable_fps_counter ? GS(OSD_FPS_COUNTER_ON)
                                                   : GS(OSD_FPS_COUNTER_OFF));
         Config_Write();
+    }
+
+    if (g_InputDB.toggle_fullscreen) {
+        S_Shell_ToggleFullscreen();
     }
 
     if (g_InputDB.turbo_cheat) {

@@ -381,9 +381,7 @@ static void M_Init(void)
 static bool M_CustomUpdate(INPUT_STATE *const result, const INPUT_LAYOUT layout)
 {
     // we only do this for keyboard input
-#if TR_VERSION == 1
-    result->menu_confirm |= result->action;
-#elif TR_VERSION == 2
+#if TR_VERSION == 1 || TR_VERSION == 2
     result->menu_confirm |= result->action;
     result->toggle_fullscreen =
         KEY_DOWN(SDL_SCANCODE_RETURN) && KEY_DOWN(SDL_SCANCODE_LALT);

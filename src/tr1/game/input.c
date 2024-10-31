@@ -68,15 +68,19 @@ static void M_UpdateFromBackend(
     s->look                      |= backend->is_pressed(layout, INPUT_ROLE_LOOK);
     s->roll                      |= backend->is_pressed(layout, INPUT_ROLE_ROLL);
 
+    s->enter_console             |= backend->is_pressed(layout, INPUT_ROLE_ENTER_CONSOLE);
+    s->save                      |= backend->is_pressed(layout, INPUT_ROLE_SAVE);
+    s->load                      |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
+
     s->pause                     |= backend->is_pressed(layout, INPUT_ROLE_PAUSE);
     s->toggle_photo_mode         |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_PHOTO_MODE);
+
     s->camera_up                 |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_UP);
     s->camera_down               |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_DOWN);
     s->camera_forward            |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_FORWARD);
     s->camera_back               |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_BACK);
     s->camera_left               |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_LEFT);
     s->camera_right              |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_RIGHT);
-    s->enter_console             |= backend->is_pressed(layout, INPUT_ROLE_ENTER_CONSOLE);
     s->change_target             |= backend->is_pressed(layout, INPUT_ROLE_CHANGE_TARGET);
 
     s->item_cheat                |= backend->is_pressed(layout, INPUT_ROLE_ITEM_CHEAT);
@@ -99,9 +103,7 @@ static void M_UpdateFromBackend(
     s->menu_confirm              |= backend->is_pressed(layout, INPUT_ROLE_MENU_CONFIRM);
     s->menu_back                 |= backend->is_pressed(layout, INPUT_ROLE_MENU_BACK);
 
-    s->save                      |= backend->is_pressed(layout, INPUT_ROLE_SAVE);
-    s->load                      |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
-
+    s->screenshot                |= backend->is_pressed(layout, INPUT_ROLE_SCREENSHOT);
     s->toggle_fps_counter        |= backend->is_pressed(layout, INPUT_ROLE_FPS);
     s->toggle_bilinear_filter    |= backend->is_pressed(layout, INPUT_ROLE_BILINEAR);
     s->toggle_perspective_filter |= backend->is_pressed(layout, INPUT_ROLE_PERSPECTIVE);

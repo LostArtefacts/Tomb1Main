@@ -191,19 +191,6 @@ void S_Shell_SpinMessageLoop(void)
             S_Shell_TerminateGame(0);
             break;
 
-        case SDL_KEYUP:
-            if (event.key.keysym.sym == SDLK_PRINTSCREEN) {
-                Screenshot_Make(g_Config.screenshot_format);
-                break;
-            }
-
-            if (event.key.keysym.sym == SDLK_RETURN
-                && event.key.keysym.mod & KMOD_LALT) {
-                S_Shell_ToggleFullscreen();
-                break;
-            }
-            break;
-
         case SDL_WINDOWEVENT:
             switch (event.window.event) {
             case SDL_WINDOWEVENT_FOCUS_GAINED:

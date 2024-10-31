@@ -53,21 +53,19 @@ typedef union INPUT_STATE {
         uint64_t use_flare : 1;
 #endif
 
-#if TR_VERSION == 1
+        uint64_t screenshot : 1;
+        uint64_t toggle_fullscreen : 1;
         uint64_t toggle_bilinear_filter : 1;
         uint64_t toggle_perspective_filter : 1;
+#if TR_VERSION == 1
         uint64_t toggle_fps_counter : 1;
         uint64_t toggle_ui : 1;
         uint64_t toggle_photo_mode : 1;
 #elif TR_VERSION == 2
-        uint64_t screenshot : 1;
         uint64_t switch_resolution : 1;
         uint64_t switch_internal_screen_size : 1;
-        uint64_t toggle_bilinear_filter : 1;
-        uint64_t toggle_perspective_filter : 1;
         uint64_t toggle_z_buffer : 1;
         uint64_t toggle_dither : 1;
-        uint64_t toggle_fullscreen : 1;
         uint64_t toggle_rendering_mode : 1;
 #endif
 
