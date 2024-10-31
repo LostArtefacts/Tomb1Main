@@ -105,7 +105,7 @@ int32_t __cdecl Requester_Display(
                     INV_COLOR_BLACK, g_Requester_MainGour1, 2);
                 Text_AddOutline(
                     req->heading_text1, 1, INV_COLOR_ORANGE,
-                    g_Requester_MainGour2, 0);
+                    g_Requester_MainGour2);
             }
         }
 
@@ -132,7 +132,7 @@ int32_t __cdecl Requester_Display(
                     INV_COLOR_BLACK, g_Requester_MainGour1, 2);
                 Text_AddOutline(
                     req->heading_text2, 1, INV_COLOR_ORANGE,
-                    g_Requester_MainGour2, 0);
+                    g_Requester_MainGour2);
             }
         }
 
@@ -158,7 +158,7 @@ int32_t __cdecl Requester_Display(
             g_Requester_BackgroundGour1, 1);
         Text_AddOutline(
             req->background_text, 1, INV_COLOR_BLUE,
-            g_Requester_BackgroundGour2, 0);
+            g_Requester_BackgroundGour2);
     }
 
     /* arrows */
@@ -201,7 +201,7 @@ int32_t __cdecl Requester_Display(
                     *text1, req->pix_width - 12, 0, 0, 0, 16, INV_COLOR_BLACK,
                     g_Requester_UnselectionGour1, 1);
                 Text_AddOutline(
-                    *text1, 1, INV_COLOR_ORANGE, g_Requester_SelectionGour2, 0);
+                    *text1, 1, INV_COLOR_ORANGE, g_Requester_SelectionGour2);
             }
 
             if (req->pitem_flags1[n] & REQ_ALIGN_LEFT) {
@@ -350,7 +350,7 @@ void __cdecl Requester_Item_CenterAlign(
     if (text == NULL) {
         return;
     }
-    text->bgnd_off.x = 0;
+    text->background.offset.x = 0;
     text->pos.x = req->x_pos;
 }
 
@@ -364,7 +364,7 @@ void __cdecl Requester_Item_LeftAlign(
     const int32_t x = ((scale_h * req->pix_width) >> 16) / 2
         - Text_GetWidth(text) / 2 - ((8 * scale_h) >> 16);
     text->pos.x = req->x_pos - x;
-    text->bgnd_off.x = x;
+    text->background.offset.x = x;
 }
 
 void __cdecl Requester_Item_RightAlign(
@@ -377,7 +377,7 @@ void __cdecl Requester_Item_RightAlign(
     const int32_t x = ((scale_h * req->pix_width) >> 16) / 2
         - Text_GetWidth(text) / 2 - ((8 * scale_h) >> 16);
     text->pos.x = x + req->x_pos;
-    text->bgnd_off.x = -x;
+    text->background.offset.x = -x;
 }
 
 void __cdecl Requester_SetHeading(

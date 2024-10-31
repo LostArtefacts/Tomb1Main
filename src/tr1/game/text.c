@@ -253,10 +253,10 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     text->flags.all = 0;
     text->flags.active = 1;
 
-    text->bgnd_size.x = 0;
-    text->bgnd_size.y = 0;
-    text->bgnd_off.x = 0;
-    text->bgnd_off.y = 0;
+    text->background.size.x = 0;
+    text->background.size.y = 0;
+    text->background.offset.x = 0;
+    text->background.offset.y = 0;
 
     m_TextCount++;
 
@@ -324,10 +324,10 @@ void Text_AddBackground(
         return;
     }
     text->flags.background = 1;
-    text->bgnd_size.x = w;
-    text->bgnd_size.y = h;
-    text->bgnd_off.x = x;
-    text->bgnd_off.y = y;
+    text->background.size.x = w;
+    text->background.size.y = h;
+    text->background.offset.x = x;
+    text->background.offset.y = y;
     text->background.style = style;
 }
 
@@ -494,8 +494,9 @@ void Text_DrawText(TEXTSTRING *text)
         y += Screen_GetResHeightDownscaled(RSR_TEXT);
     }
 
-    int32_t bxpos = text->bgnd_off.x + x - TEXT_BOX_OFFSET;
-    int32_t bypos = text->bgnd_off.y + y - TEXT_BOX_OFFSET * 2 - TEXT_HEIGHT;
+    int32_t bxpos = text->background.offset.x + x - TEXT_BOX_OFFSET;
+    int32_t bypos =
+        text->background.offset.y + y - TEXT_BOX_OFFSET * 2 - TEXT_HEIGHT;
 
     int32_t start_x = x;
 
@@ -537,15 +538,15 @@ void Text_DrawText(TEXTSTRING *text)
     int32_t bwidth = 0;
     int32_t bheight = 0;
     if (text->flags.background || text->flags.outline) {
-        if (text->bgnd_size.x) {
+        if (text->background.size.x) {
             bxpos += text_width / 2;
-            bxpos -= text->bgnd_size.x / 2;
-            bwidth = text->bgnd_size.x + TEXT_BOX_OFFSET * 2;
+            bxpos -= text->background.size.x / 2;
+            bwidth = text->background.size.x + TEXT_BOX_OFFSET * 2;
         } else {
             bwidth = text_width + TEXT_BOX_OFFSET * 2;
         }
-        if (text->bgnd_size.y) {
-            bheight = text->bgnd_size.y;
+        if (text->background.size.y) {
+            bheight = text->background.size.y;
         } else {
             bheight = TEXT_HEIGHT + 7;
         }

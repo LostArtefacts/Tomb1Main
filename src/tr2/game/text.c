@@ -100,14 +100,14 @@ TEXTSTRING *__cdecl Text_Create(
     text->letter_spacing = 1;
     text->word_spacing = 6;
 
-    text->text_flags = 0;
-    text->outl_flags = 0;
+#if 0
     text->bgnd_flags = 0;
-    text->bgnd_size.x = 0;
-    text->bgnd_size.y = 0;
-    text->bgnd_off.x = 0;
-    text->bgnd_off.y = 0;
-    text->bgnd_off.z = 0;
+#endif
+    text->background.size.x = 0;
+    text->background.size.y = 0;
+    text->background.offset.x = 0;
+    text->background.offset.y = 0;
+    text->background.offset.z = 0;
     text->flags.all = 0;
     text->flags.active = 1;
 
@@ -171,14 +171,16 @@ void __cdecl Text_AddBackground(
     uint32_t scale_h = Text_GetScaleH(text->scale.h);
     uint32_t scale_v = Text_GetScaleV(text->scale.v);
     text->flags.background = 1;
-    text->bgnd_size.x = (scale_h * x_size) / PHD_ONE;
-    text->bgnd_size.y = (scale_v * y_size) / PHD_ONE;
-    text->bgnd_off.x = (scale_h * x_off) / PHD_ONE;
-    text->bgnd_off.y = (scale_v * y_off) / PHD_ONE;
-    text->bgnd_off.z = z_off;
+    text->background.size.x = (scale_h * x_size) / PHD_ONE;
+    text->background.size.y = (scale_v * y_size) / PHD_ONE;
+    text->background.offset.x = (scale_h * x_off) / PHD_ONE;
+    text->background.offset.y = (scale_v * y_off) / PHD_ONE;
+    text->background.offset.z = z_off;
+#if 0
     text->bgnd_color = color;
     text->bgnd_gour = gour_ptr;
     text->bgnd_flags = flags;
+#endif
 }
 
 void __cdecl Text_RemoveBackground(TEXTSTRING *const text)
@@ -191,15 +193,16 @@ void __cdecl Text_RemoveBackground(TEXTSTRING *const text)
 
 void __cdecl Text_AddOutline(
     TEXTSTRING *const text, const int16_t enable, const INV_COLOR color,
-    const uint16_t *const gour_ptr, const uint16_t flags)
+    const uint16_t *const gour_ptr)
 {
     if (text == NULL) {
         return;
     }
     text->flags.outline = 1;
+#if 0
     text->outl_gour = gour_ptr;
     text->outl_color = color;
-    text->outl_flags = flags;
+#endif
 }
 
 void __cdecl Text_RemoveOutline(TEXTSTRING *const text)
@@ -380,7 +383,6 @@ void __cdecl Text_DrawBorder(
     Output_DrawScreenSprite2D(x0, y0, z, scale_h, h, mesh_idx + 7, 0x1000, 0);
 }
 
-#include <libtrx/log.h>
 void __cdecl Text_DrawText(TEXTSTRING *const text)
 {
     int32_t box_w = 0;
@@ -414,8 +416,8 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         y += GetRenderHeight();
     }
 
-    int32_t box_x = x + text->bgnd_off.x - ((2 * scale_h) / PHD_ONE);
-    int32_t box_y = y + text->bgnd_off.y - ((4 * scale_v) / PHD_ONE)
+    int32_t box_x = x + text->background.offset.x - ((2 * scale_h) / PHD_ONE);
+    int32_t box_y = y + text->background.offset.y - ((4 * scale_v) / PHD_ONE)
         - ((11 * scale_v) / PHD_ONE);
     const int32_t start_x = x;
 
@@ -474,8 +476,7 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
                 && y < GetRenderHeight()) {
                 Output_DrawScreenSprite2D(
                     x, y, z, scale_h, scale_v,
-                    g_Objects[O_ALPHABET].mesh_idx + sprite_num, 4096,
-                    text->text_flags);
+                    g_Objects[O_ALPHABET].mesh_idx + sprite_num, 4096, 0);
             }
 
             if (IS_CHAR_DIACRITIC(c)) {
@@ -494,22 +495,28 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
     }
 
     if (text->flags.outline || text->flags.background) {
-        if (text->bgnd_size.x) {
-            box_x += (text_width - text->bgnd_size.x) / 2;
-            box_w = text->bgnd_size.x + 4;
+        if (text->background.size.x) {
+            box_x += (text_width - text->background.size.x) / 2;
+            box_w = text->background.size.x + 4;
         } else {
             box_w = text_width + 4;
         }
 
-        box_h =
-            text->bgnd_size.y ? text->bgnd_size.y : ((16 * scale_v) / PHD_ONE);
+        box_h = text->background.size.y ? text->background.size.y
+                                        : ((16 * scale_v) / PHD_ONE);
     }
 
     if (text->flags.background) {
+#if 0
         S_DrawScreenFBox(
-            box_x, box_y, text->bgnd_off.z + z + 2, box_w, box_h,
+            box_x, box_y, text->background.offset.z + z + 2, box_w, box_h,
             text->bgnd_color, (const GOURAUD_FILL *)text->bgnd_gour,
             text->bgnd_flags);
+#else
+        S_DrawScreenFBox(
+            box_x, box_y, text->background.offset.z + z + 2, box_w, box_h, 0,
+            NULL, 0);
+#endif
     }
 
     if (text->flags.outline) {

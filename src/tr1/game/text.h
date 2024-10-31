@@ -1,7 +1,8 @@
 #pragma once
 
 #include "config.h"
-#include "global/types.h"
+
+#include <libtrx/game/text.h>
 
 #include <stdbool.h>
 #include <stdint.h>

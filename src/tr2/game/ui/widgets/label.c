@@ -100,7 +100,7 @@ void UI_Label_AddFrame(UI_WIDGET *const widget)
     if (!self->has_frame) {
         self->text->pos.z = 0;
         Text_AddBackground(self->text, 0, 0, 0, 0, 0, INV_COLOR_BLACK, NULL, 0);
-        Text_AddOutline(self->text, true, INV_COLOR_BLUE, NULL, 0);
+        Text_AddOutline(self->text, true, INV_COLOR_BLUE, NULL);
         self->has_frame = true;
     }
 }

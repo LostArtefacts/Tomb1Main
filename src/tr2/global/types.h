@@ -13,6 +13,7 @@
 #include <libtrx/game/math.h>
 #include <libtrx/game/objects/common.h>
 #include <libtrx/game/rooms/types.h>
+#include <libtrx/game/text.h>
 
 #include <ddraw.h>
 #include <ddrawi.h>
@@ -270,51 +271,6 @@ typedef struct __unaligned {
     int32_t z;
     int32_t r;
 } SPHERE;
-
-typedef struct __unaligned {
-    union {
-        uint32_t all;
-        struct {
-            uint32_t active:      1;
-            uint32_t flash:       1;
-            uint32_t rotate_h:    1;
-            uint32_t rotate_v:    1;
-            uint32_t centre_h:    1;
-            uint32_t centre_v:    1;
-            uint32_t hide:        1;
-            uint32_t right:       1;
-            uint32_t bottom:      1;
-            uint32_t background:  1;
-            uint32_t outline:     1;
-            uint32_t multiline:   1;
-            uint32_t manual_draw: 1; // not present in the OG
-        };
-    } flags;
-    uint16_t text_flags;
-    uint16_t bgnd_flags;
-    uint16_t outl_flags;
-    XYZ_16 pos;
-    int16_t letter_spacing;
-    int16_t word_spacing;
-    struct {
-        int16_t rate;
-        int16_t count;
-    } flash;
-    int16_t bgnd_color;
-    const uint16_t *bgnd_gour;
-    int16_t outl_color;
-    const uint16_t *outl_gour;
-    struct {
-        int16_t x;
-        int16_t y;
-    } bgnd_size;
-    XYZ_16 bgnd_off;
-    struct {
-        int32_t h;
-        int32_t v;
-    } scale;
-    char *content;
-} TEXTSTRING;
 
 typedef struct __unaligned {
     float xv;

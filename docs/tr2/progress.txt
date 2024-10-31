@@ -257,7 +257,7 @@ typedef struct __unaligned {
     int32_t r;
 } SPHERE;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     union {
         uint32_t all;
         struct {

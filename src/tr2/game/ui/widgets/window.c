@@ -74,7 +74,7 @@ static void M_SetPosition(
     const int32_t h = M_GetHeight(self);
     Text_AddBackground(
         self->frame, w, h, w / 2, 0, 0, INV_COLOR_BLACK, NULL, 0);
-    Text_AddOutline(self->frame, true, INV_COLOR_BLUE, NULL, 0);
+    Text_AddOutline(self->frame, true, INV_COLOR_BLUE, NULL);
 }
 
 static void M_Control(UI_WINDOW *const self)

@@ -19,11 +19,11 @@ static void M_InitText(void)
     g_DetailText[4] = Text_Create(
         0, -30, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_SELECT_DETAIL]);
     Text_AddBackground(g_DetailText[4], 156, 0, 0, 0, 8, 0, 0, 0);
-    Text_AddOutline(g_DetailText[4], 1, 4, 0, 0);
+    Text_AddOutline(g_DetailText[4], 1, 4, 0);
     Text_AddBackground(g_DetailText[g_DetailLevel], 148, 0, 0, 0, 8, 0, 0, 0);
-    Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0, 0);
+    Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0);
     Text_AddBackground(g_DetailText[3], 160, 107, 0, 0, 16, 0, 0, 0);
-    Text_AddOutline(g_DetailText[3], 1, 15, 0, 0);
+    Text_AddOutline(g_DetailText[3], 1, 15, 0);
 
     for (int32_t i = 0; i < 5; i++) {
         Text_CentreH(g_DetailText[i], 1);
@@ -49,7 +49,7 @@ void __cdecl Option_Detail(INVENTORY_ITEM *const item)
         Text_RemoveOutline(g_DetailText[g_DetailLevel]);
         Text_RemoveBackground(g_DetailText[g_DetailLevel]);
         g_DetailLevel--;
-        Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0, 0);
+        Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0);
         Text_AddBackground(
             g_DetailText[g_DetailLevel], 148, 0, 0, 0, 8, 0, 0, 0);
     }
@@ -57,7 +57,7 @@ void __cdecl Option_Detail(INVENTORY_ITEM *const item)
         Text_RemoveOutline(g_DetailText[g_DetailLevel]);
         Text_RemoveBackground(g_DetailText[g_DetailLevel]);
         g_DetailLevel++;
-        Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0, 0);
+        Text_AddOutline(g_DetailText[g_DetailLevel], 1, 4, 0);
         Text_AddBackground(
             g_DetailText[g_DetailLevel], 148, 0, 0, 0, 8, 0, 0, 0);
     }

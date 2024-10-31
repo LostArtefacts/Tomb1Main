@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/text.h>
+
 #define TEXT_HEIGHT 15
 #define TEXT_MAX_STRING_SIZE 100
 
@@ -20,8 +22,8 @@ void __cdecl Text_AddBackground(
     uint16_t flags);
 void __cdecl Text_RemoveBackground(TEXTSTRING *text);
 void __cdecl Text_AddOutline(
-    TEXTSTRING *text, int16_t enable, INV_COLOR color, const uint16_t *gour_ptr,
-    uint16_t flags);
+    TEXTSTRING *text, int16_t enable, INV_COLOR color,
+    const uint16_t *gour_ptr);
 void __cdecl Text_RemoveOutline(TEXTSTRING *text);
 void __cdecl Text_CentreH(TEXTSTRING *text, int16_t enable);
 void __cdecl Text_CentreV(TEXTSTRING *text, int16_t enable);
