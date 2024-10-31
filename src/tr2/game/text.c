@@ -49,46 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_CentreH(TEXTSTRING *const text, const int16_t enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.centre_h = enable;
-}
-
-void __cdecl Text_CentreV(TEXTSTRING *const text, const int16_t enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.centre_v = enable;
-}
-
-void __cdecl Text_AlignRight(TEXTSTRING *const text, const int16_t enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.right = enable;
-}
-
-void __cdecl Text_AlignBottom(TEXTSTRING *const text, const int16_t enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.bottom = enable;
-}
-
-void __cdecl Text_SetMultiline(TEXTSTRING *text, bool enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.multiline = enable;
-}
-
 int32_t __cdecl Text_Remove(TEXTSTRING *const text)
 {
     if (text == NULL) {

@@ -6,11 +6,6 @@
 
 #define TEXT_HEIGHT 15
 
-void __cdecl Text_CentreH(TEXTSTRING *text, int16_t enable);
-void __cdecl Text_CentreV(TEXTSTRING *text, int16_t enable);
-void __cdecl Text_AlignRight(TEXTSTRING *text, int16_t enable);
-void __cdecl Text_AlignBottom(TEXTSTRING *text, int16_t enable);
-void __cdecl Text_SetMultiline(TEXTSTRING *textstring, bool enable);
 int32_t __cdecl Text_Remove(TEXTSTRING *text);
 int32_t __cdecl Text_GetWidth(TEXTSTRING *text);
 int32_t __cdecl Text_GetHeight(const TEXTSTRING *text);

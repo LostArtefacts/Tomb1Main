@@ -173,3 +173,43 @@ void Text_RemoveOutline(TEXTSTRING *const text)
     }
     text->flags.outline = 0;
 }
+
+void Text_CentreH(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.centre_h = enable;
+}
+
+void Text_CentreV(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.centre_v = enable;
+}
+
+void Text_AlignRight(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.right = enable;
+}
+
+void Text_AlignBottom(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.bottom = enable;
+}
+
+void Text_SetMultiline(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.multiline = enable;
+}
