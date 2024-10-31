@@ -102,3 +102,11 @@ void Text_Flash(TEXTSTRING *const text, const bool enable, const int16_t rate)
         text->flags.flash = 0;
     }
 }
+
+void Text_Hide(TEXTSTRING *const text, const bool enable)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.hide = enable;
+}

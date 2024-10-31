@@ -208,14 +208,6 @@ void Text_SetScale(
     text->scale.v = scale_v;
 }
 
-void Text_Hide(TEXTSTRING *const text, const bool enable)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.hide = enable;
-}
-
 void Text_AddBackground(
     TEXTSTRING *const text, const int16_t w, const int16_t h, const int16_t x,
     const int16_t y, const TEXT_STYLE style)
