@@ -12,7 +12,6 @@
 #define TEXT_OUTLINE_THICKNESS 2
 
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color);
-void Text_RemoveOutline(TEXTSTRING *text);
 void Text_CentreH(TEXTSTRING *text, bool enable);
 void Text_CentreV(TEXTSTRING *text, bool enable);
 void Text_AlignRight(TEXTSTRING *text, bool enable);

@@ -49,14 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_RemoveOutline(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.outline = 0;
-}
-
 void __cdecl Text_CentreH(TEXTSTRING *const text, const int16_t enable)
 {
     if (text == NULL) {

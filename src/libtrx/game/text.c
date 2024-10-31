@@ -165,3 +165,11 @@ void Text_AddOutline(TEXTSTRING *const text, const TEXT_STYLE style)
     text->flags.outline = 1;
     text->outline.style = style;
 }
+
+void Text_RemoveOutline(TEXTSTRING *const text)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.outline = 0;
+}
