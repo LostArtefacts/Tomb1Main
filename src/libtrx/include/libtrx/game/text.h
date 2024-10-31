@@ -87,3 +87,4 @@ void Text_AddBackground(
     TEXTSTRING *text, int16_t w, int16_t h, int16_t x, int16_t y,
     TEXT_STYLE style);
 void Text_RemoveBackground(TEXTSTRING *text);
+void Text_AddOutline(TEXTSTRING *text, TEXT_STYLE style);

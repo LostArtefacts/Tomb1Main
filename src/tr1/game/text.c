@@ -189,16 +189,6 @@ RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
     return m_MenuColorMap[color];
 }
 
-void Text_AddOutline(
-    TEXTSTRING *const text, const bool enable, const TEXT_STYLE style)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.outline = 1;
-    text->outline.style = style;
-}
-
 void Text_RemoveOutline(TEXTSTRING *const text)
 {
     if (text == NULL) {

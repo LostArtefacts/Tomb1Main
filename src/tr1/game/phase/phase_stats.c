@@ -220,7 +220,7 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
     Text_CentreH(*cur_txt, 1);
     Text_CentreV(*cur_txt, 1);
     Text_AddBackground(*cur_txt, row_width, height, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(*cur_txt, true, TS_BACKGROUND);
+    Text_AddOutline(*cur_txt, TS_BACKGROUND);
     cur_txt++;
 
     // heading
@@ -232,7 +232,7 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
     Text_CentreH(*cur_txt, 1);
     Text_CentreV(*cur_txt, 1);
     Text_AddBackground(*cur_txt, row_width - 4, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(*cur_txt, true, TS_HEADING);
+    Text_AddOutline(*cur_txt, TS_HEADING);
     cur_txt++;
 }
 

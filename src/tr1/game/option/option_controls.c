@@ -253,7 +253,7 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
     Text_CentreH(m_Text[TEXT_TITLE], true);
     Text_CentreV(m_Text[TEXT_TITLE], true);
     Text_AddBackground(m_Text[TEXT_TITLE], 0, 0, 0, 0, TS_REQUESTED);
-    Text_AddOutline(m_Text[TEXT_TITLE], true, TS_REQUESTED);
+    Text_AddOutline(m_Text[TEXT_TITLE], TS_REQUESTED);
 
     int32_t tw = Text_GetWidth(m_Text[TEXT_TITLE]);
 
@@ -291,7 +291,7 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     Text_AddBackground(
         m_Text[TEXT_TITLE_BORDER], box_width, box_height, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], true, TS_BACKGROUND);
+    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], TS_BACKGROUND);
 
     sprintf(
         m_ResetGS, GS(CONTROL_RESET_DEFAULTS),
@@ -396,7 +396,7 @@ static void M_UpdateText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
             m_ControlMenu.row_num == KC_TITLE
                 ? m_Text[TEXT_TITLE]
                 : m_ControlMenu.role_texts[m_ControlMenu.row_num],
-            true, TS_REQUESTED);
+            TS_REQUESTED);
         break;
 
     case KM_BROWSEKEYUP:
@@ -408,7 +408,7 @@ static void M_UpdateText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
             m_ControlMenu.key_texts[m_ControlMenu.row_num], 0, 0, 0, 0,
             TS_REQUESTED);
         Text_AddOutline(
-            m_ControlMenu.key_texts[m_ControlMenu.row_num], true, TS_REQUESTED);
+            m_ControlMenu.key_texts[m_ControlMenu.row_num], TS_REQUESTED);
         break;
 
     case KM_CHANGE:
@@ -425,8 +425,7 @@ static void M_UpdateText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
             m_ControlMenu.role_texts[m_ControlMenu.row_num], 0, 0, 0, 0,
             TS_REQUESTED);
         Text_AddOutline(
-            m_ControlMenu.role_texts[m_ControlMenu.row_num], true,
-            TS_REQUESTED);
+            m_ControlMenu.role_texts[m_ControlMenu.row_num], TS_REQUESTED);
         break;
     }
 }

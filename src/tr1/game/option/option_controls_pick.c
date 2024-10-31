@@ -28,18 +28,18 @@ static void M_InitText(void)
 {
     m_Text[TEXT_TITLE_BORDER] = Text_Create(0, -32, " ");
     Text_AddBackground(m_Text[TEXT_TITLE_BORDER], 180, 85, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], true, TS_BACKGROUND);
+    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], TS_BACKGROUND);
 
     m_Text[TEXT_TITLE] = Text_Create(0, -30, GS(CONTROL_CUSTOMIZE));
     Text_AddBackground(m_Text[TEXT_TITLE], 176, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(m_Text[TEXT_TITLE], true, TS_HEADING);
+    Text_AddOutline(m_Text[TEXT_TITLE], TS_HEADING);
 
     m_Text[TEXT_KEYBOARD] = Text_Create(0, 0, GS(CONTROL_BACKEND_KEYBOARD));
     m_Text[TEXT_CONTROLLER] =
         Text_Create(0, 25, GS(CONTROL_BACKEND_CONTROLLER));
 
     Text_AddBackground(m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-    Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+    Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
 
     for (int i = 0; i < TEXT_NUMBER_OF; i++) {
         Text_CentreH(m_Text[i], 1);
@@ -67,7 +67,7 @@ CONTROL_MODE Option_ControlsPick_Control(void)
         --g_OptionSelected;
         Text_AddBackground(
             m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+        Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
     }
 
     if (g_InputDB.menu_down && g_OptionSelected < TEXT_OPTION_MAX) {
@@ -76,7 +76,7 @@ CONTROL_MODE Option_ControlsPick_Control(void)
         ++g_OptionSelected;
         Text_AddBackground(
             m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+        Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
     }
 
     switch (g_OptionSelected) {

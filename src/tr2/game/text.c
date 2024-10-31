@@ -49,20 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_AddOutline(
-    TEXTSTRING *const text, const int16_t enable, const INV_COLOR color,
-    const uint16_t *const gour_ptr)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.outline = 1;
-#if 0
-    text->outl_gour = gour_ptr;
-    text->outl_color = color;
-#endif
-}
-
 void __cdecl Text_RemoveOutline(TEXTSTRING *const text)
 {
     if (text == NULL) {

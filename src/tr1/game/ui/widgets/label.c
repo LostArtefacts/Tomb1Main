@@ -99,7 +99,7 @@ void UI_Label_AddFrame(UI_WIDGET *const widget)
     UI_LABEL *const self = (UI_LABEL *)widget;
     if (!self->has_frame) {
         Text_AddBackground(self->text, 0, 0, 0, 0, TS_HEADING);
-        Text_AddOutline(self->text, true, TS_HEADING);
+        Text_AddOutline(self->text, TS_HEADING);
         self->has_frame = true;
     }
 }

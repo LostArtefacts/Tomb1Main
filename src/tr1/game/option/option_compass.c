@@ -97,9 +97,9 @@ static void M_InitText(void)
 
     Text_AddBackground(
         m_Text[TEXT_TITLE_BORDER], row_width, y - top_y, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], true, TS_BACKGROUND);
+    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], TS_BACKGROUND);
     Text_AddBackground(m_Text[TEXT_TITLE], row_width - 4, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(m_Text[TEXT_TITLE], true, TS_HEADING);
+    Text_AddOutline(m_Text[TEXT_TITLE], TS_HEADING);
 
     for (int i = 0; i < TEXT_NUMBER_OF; i++) {
         Text_CentreH(m_Text[i], 1);

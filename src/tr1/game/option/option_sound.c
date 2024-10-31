@@ -50,11 +50,11 @@ static void M_InitText(void)
     m_Text[TEXT_SOUND_VOLUME] = Text_Create(0, 25, buf);
 
     Text_AddBackground(m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-    Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+    Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
     Text_AddBackground(m_Text[TEXT_TITLE], 136, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(m_Text[TEXT_TITLE], true, TS_HEADING);
+    Text_AddOutline(m_Text[TEXT_TITLE], TS_HEADING);
     Text_AddBackground(m_Text[TEXT_TITLE_BORDER], 140, 85, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], true, TS_BACKGROUND);
+    Text_AddOutline(m_Text[TEXT_TITLE_BORDER], TS_BACKGROUND);
 
     for (int i = 0; i < TEXT_NUMBER_OF; i++) {
         Text_CentreH(m_Text[i], 1);
@@ -76,7 +76,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
         --g_OptionSelected;
         Text_AddBackground(
             m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+        Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
         Text_SetPos(m_Text[TEXT_LEFT_ARROW], -45, 0);
         Text_SetPos(m_Text[TEXT_RIGHT_ARROW], 40, 0);
     }
@@ -87,7 +87,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
         ++g_OptionSelected;
         Text_AddBackground(
             m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(m_Text[g_OptionSelected], true, TS_REQUESTED);
+        Text_AddOutline(m_Text[g_OptionSelected], TS_REQUESTED);
         Text_SetPos(m_Text[TEXT_LEFT_ARROW], -45, 25);
         Text_SetPos(m_Text[TEXT_RIGHT_ARROW], 40, 25);
     }

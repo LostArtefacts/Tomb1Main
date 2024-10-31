@@ -156,3 +156,12 @@ void Text_RemoveBackground(TEXTSTRING *const text)
     }
     text->flags.background = 0;
 }
+
+void Text_AddOutline(TEXTSTRING *const text, const TEXT_STYLE style)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.outline = 1;
+    text->outline.style = style;
+}

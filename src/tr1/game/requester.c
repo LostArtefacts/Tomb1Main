@@ -99,7 +99,7 @@ int32_t Requester_Display(REQUEST_INFO *req)
         Text_AlignBottom(req->background, 1);
         Text_AddBackground(
             req->background, box_width, box_height, 0, 0, TS_BACKGROUND);
-        Text_AddOutline(req->background, true, TS_BACKGROUND);
+        Text_AddOutline(req->background, TS_BACKGROUND);
     }
 
     if (!req->heading) {
@@ -110,7 +110,7 @@ int32_t Requester_Display(REQUEST_INFO *req)
         Text_AlignBottom(req->heading, 1);
         Text_AddBackground(
             req->heading, req->pix_width - 2 * BOX_BORDER, 0, 0, 0, TS_HEADING);
-        Text_AddOutline(req->heading, true, TS_HEADING);
+        Text_AddOutline(req->heading, TS_HEADING);
     }
 
     if (g_InputDB.menu_down) {
@@ -174,7 +174,7 @@ int32_t Requester_Display(REQUEST_INFO *req)
                 req->items[i].content,
                 req->pix_width - BOX_PADDING - 1 * BOX_BORDER, 0, 0, 0,
                 TS_REQUESTED);
-            Text_AddOutline(req->items[i].content, true, TS_REQUESTED);
+            Text_AddOutline(req->items[i].content, TS_REQUESTED);
         } else {
             Text_RemoveBackground(req->items[i].content);
             Text_RemoveOutline(req->items[i].content);
