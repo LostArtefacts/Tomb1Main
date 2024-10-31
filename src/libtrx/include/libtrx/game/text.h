@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// TODO: rename this
+#define TEXT_HEIGHT_FIXED 15
+
 #define TEXT_MAX_STRINGS 128
 #define TEXT_BASE_SCALE 0x10000
 

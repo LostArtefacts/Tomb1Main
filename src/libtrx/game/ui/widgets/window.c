@@ -1,9 +1,9 @@
-#include "game/text.h"
+#include "game/ui/widgets/window.h"
 
-#include <libtrx/game/ui/widgets/label.h>
-#include <libtrx/game/ui/widgets/window.h>
-#include <libtrx/memory.h>
-#include <libtrx/utils.h>
+#include "game/text.h"
+#include "game/ui/widgets/label.h"
+#include "memory.h"
+#include "utils.h"
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
@@ -19,6 +19,7 @@ typedef struct {
     int32_t title_margin;
 } UI_WINDOW;
 
+static void M_SyncChildren(UI_WINDOW *self);
 static int32_t M_GetWidth(const UI_WINDOW *self);
 static int32_t M_GetHeight(const UI_WINDOW *self);
 static void M_SetPosition(UI_WINDOW *self, int32_t x, int32_t y);
@@ -68,7 +69,7 @@ static void M_SetPosition(
             self->root, x + self->border.left, y + self->border.top);
     }
 
-    Text_SetPos(self->frame, x, y + TEXT_HEIGHT);
+    Text_SetPos(self->frame, x, y + TEXT_HEIGHT_FIXED);
 
     const int32_t w = M_GetWidth(self);
     const int32_t h = M_GetHeight(self);

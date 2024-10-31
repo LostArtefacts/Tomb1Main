@@ -209,7 +209,6 @@ dll_sources = [
   'game/ui/widgets/controls_layout_selector.c',
   'game/ui/widgets/label.c',
   'game/ui/widgets/prompt.c',
-  'game/ui/widgets/window.c',
   'global/enum_map.c',
   'global/vars.c',
   'inject_exec.c',

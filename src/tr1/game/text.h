@@ -8,7 +8,6 @@
 #include <stdint.h>
 
 #define TEXT_HEIGHT 11 // TODO: Get rid of this
-#define TEXT_HEIGHT_FIXED 15
 #define TEXT_OUTLINE_THICKNESS 2
 
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color);

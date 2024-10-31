@@ -110,7 +110,6 @@ sources = [
   'game/ui/widgets/label.c',
   'game/ui/widgets/photo_mode.c',
   'game/ui/widgets/prompt.c',
-  'game/ui/widgets/window.c',
   'game/effect_routines/explosion.c',
   'game/effect_routines/finish_level.c',
   'game/effect_routines/flicker.c',

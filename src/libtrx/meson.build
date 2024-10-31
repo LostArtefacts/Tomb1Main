@@ -106,6 +106,7 @@ sources = [
   'game/ui/widgets/prompt.c',
   'game/ui/widgets/spacer.c',
   'game/ui/widgets/stack.c',
+  'game/ui/widgets/window.c',
   'gfx/2d/2d_renderer.c',
   'gfx/2d/2d_surface.c',
   'gfx/3d/3d_renderer.c',
