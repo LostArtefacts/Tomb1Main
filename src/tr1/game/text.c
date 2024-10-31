@@ -189,21 +189,6 @@ RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
     return m_MenuColorMap[color];
 }
 
-void Text_AddBackground(
-    TEXTSTRING *const text, const int16_t w, const int16_t h, const int16_t x,
-    const int16_t y, const TEXT_STYLE style)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.background = 1;
-    text->background.size.x = w;
-    text->background.size.y = h;
-    text->background.offset.x = x;
-    text->background.offset.y = y;
-    text->background.style = style;
-}
-
 void Text_RemoveBackground(TEXTSTRING *const text)
 {
     if (text == NULL) {

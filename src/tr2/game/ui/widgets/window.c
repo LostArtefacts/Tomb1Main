@@ -72,8 +72,7 @@ static void M_SetPosition(
 
     const int32_t w = M_GetWidth(self);
     const int32_t h = M_GetHeight(self);
-    Text_AddBackground(
-        self->frame, w, h, w / 2, 0, 0, INV_COLOR_BLACK, NULL, 0);
+    Text_AddBackground(self->frame, w, h, w / 2, 0, TS_BACKGROUND);
     Text_AddOutline(self->frame, true, INV_COLOR_BLUE, NULL);
 }
 

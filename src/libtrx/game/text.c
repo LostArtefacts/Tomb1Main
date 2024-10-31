@@ -124,3 +124,27 @@ void Text_Hide(TEXTSTRING *const text, const bool enable)
     }
     text->flags.hide = enable;
 }
+
+void Text_AddBackground(
+    TEXTSTRING *const text, const int16_t w, const int16_t h, const int16_t x,
+    const int16_t y, const TEXT_STYLE style)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.background = 1;
+    text->background.size.x = w;
+    text->background.size.y = h;
+    text->background.offset.x = x;
+    text->background.offset.y = y;
+    switch (style) {
+    case TS_HEADING:
+    case TS_REQUESTED:
+        text->background.offset.z = 8;
+        break;
+    case TS_BACKGROUND:
+        text->background.offset.z = 48;
+        break;
+    }
+    text->background.style = style;
+}

@@ -6,10 +6,6 @@
 
 #define TEXT_HEIGHT 15
 
-void __cdecl Text_AddBackground(
-    TEXTSTRING *text, int16_t x_size, int16_t y_size, int16_t x_off,
-    int16_t y_off, int16_t z_off, INV_COLOR color, const uint16_t *gour_ptr,
-    uint16_t flags);
 void __cdecl Text_RemoveBackground(TEXTSTRING *text);
 void __cdecl Text_AddOutline(
     TEXTSTRING *text, int16_t enable, INV_COLOR color,

@@ -49,29 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_AddBackground(
-    TEXTSTRING *const text, const int16_t x_size, const int16_t y_size,
-    const int16_t x_off, const int16_t y_off, const int16_t z_off,
-    const INV_COLOR color, const uint16_t *const gour_ptr, const uint16_t flags)
-{
-    if (text == NULL) {
-        return;
-    }
-    uint32_t scale_h = Text_GetScaleH(text->scale.h);
-    uint32_t scale_v = Text_GetScaleV(text->scale.v);
-    text->flags.background = 1;
-    text->background.size.x = (scale_h * x_size) / TEXT_BASE_SCALE;
-    text->background.size.y = (scale_v * y_size) / TEXT_BASE_SCALE;
-    text->background.offset.x = x_off;
-    text->background.offset.y = y_off;
-    text->background.offset.z = z_off;
-#if 0
-    text->bgnd_color = color;
-    text->bgnd_gour = gour_ptr;
-    text->bgnd_flags = flags;
-#endif
-}
-
 void __cdecl Text_RemoveBackground(TEXTSTRING *const text)
 {
     if (text == NULL) {
@@ -381,13 +358,17 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 
     if (text->flags.outline || text->flags.background) {
         if (text->background.size.x) {
-            box_x += (text_width - text->background.size.x) / 2;
-            box_w = text->background.size.x + 4;
+            const int32_t background_width =
+                (text->background.size.x * scale_h) / TEXT_BASE_SCALE;
+            box_x += (text_width - background_width) / 2;
+            box_w = background_width + 4;
         } else {
             box_w = text_width + 4;
         }
 
-        box_h = text->background.size.y ? text->background.size.y
+        const int32_t background_height =
+            (text->background.size.y * scale_v) / TEXT_BASE_SCALE;
+        box_h = text->background.size.y ? background_height
                                         : ((16 * scale_v) / TEXT_BASE_SCALE);
     }
 
