@@ -6,7 +6,6 @@
 
 #define TEXT_HEIGHT 15
 
-int32_t __cdecl Text_Remove(TEXTSTRING *text);
 int32_t __cdecl Text_GetWidth(TEXTSTRING *text);
 int32_t __cdecl Text_GetHeight(const TEXTSTRING *text);
 

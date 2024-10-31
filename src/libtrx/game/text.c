@@ -72,6 +72,16 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     return text;
 }
 
+void Text_Remove(TEXTSTRING *const text)
+{
+    if (text == NULL) {
+        return;
+    }
+    if (text->flags.active) {
+        text->flags.active = 0;
+    }
+}
+
 void Text_ChangeText(TEXTSTRING *const text, const char *const content)
 {
     if (text == NULL) {

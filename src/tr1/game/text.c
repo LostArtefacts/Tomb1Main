@@ -230,16 +230,6 @@ int32_t Text_GetWidth(const TEXTSTRING *const text)
     return width * text->scale.h / TEXT_BASE_SCALE;
 }
 
-void Text_Remove(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return;
-    }
-    if (text->flags.active) {
-        text->flags.active = 0;
-    }
-}
-
 void Text_DrawText(TEXTSTRING *text)
 {
     int sx, sy, sh, sv;

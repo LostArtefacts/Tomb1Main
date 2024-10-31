@@ -49,18 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-int32_t __cdecl Text_Remove(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return false;
-    }
-    if (!text->flags.active) {
-        return false;
-    }
-    text->flags.active = false;
-    return true;
-}
-
 int32_t __cdecl Text_GetWidth(TEXTSTRING *const text)
 {
     if (text == NULL) {
