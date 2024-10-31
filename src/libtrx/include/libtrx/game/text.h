@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define TEXT_MAX_STRINGS 128
@@ -77,4 +78,5 @@ void Text_Shutdown(void);
 
 TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *text);
 void Text_ChangeText(TEXTSTRING *text, const char *content);
+void Text_Flash(TEXTSTRING *text, bool enable, int16_t rate);
 void Text_Draw(void);

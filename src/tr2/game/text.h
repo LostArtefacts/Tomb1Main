@@ -8,7 +8,6 @@
 
 void __cdecl Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void __cdecl Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
-void __cdecl Text_Flash(TEXTSTRING *text, int16_t enable, int16_t rate);
 void __cdecl Text_AddBackground(
     TEXTSTRING *text, int16_t x_size, int16_t y_size, int16_t x_off,
     int16_t y_off, int16_t z_off, INV_COLOR color, const uint16_t *gour_ptr,

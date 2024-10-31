@@ -88,3 +88,17 @@ void Text_ChangeText(TEXTSTRING *const text, const char *const content)
         text->content = Memory_DupStr(content);
     }
 }
+
+void Text_Flash(TEXTSTRING *const text, const bool enable, const int16_t rate)
+{
+    if (text == NULL) {
+        return;
+    }
+    if (enable) {
+        text->flags.flash = 1;
+        text->flash.rate = rate;
+        text->flash.count = rate;
+    } else {
+        text->flags.flash = 0;
+    }
+}
