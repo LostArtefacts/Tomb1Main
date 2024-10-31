@@ -148,3 +148,11 @@ void Text_AddBackground(
     }
     text->background.style = style;
 }
+
+void Text_RemoveBackground(TEXTSTRING *const text)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->flags.background = 0;
+}

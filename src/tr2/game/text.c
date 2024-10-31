@@ -49,14 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_RemoveBackground(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.background = 0;
-}
-
 void __cdecl Text_AddOutline(
     TEXTSTRING *const text, const int16_t enable, const INV_COLOR color,
     const uint16_t *const gour_ptr)

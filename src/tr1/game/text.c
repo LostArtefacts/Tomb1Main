@@ -189,14 +189,6 @@ RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
     return m_MenuColorMap[color];
 }
 
-void Text_RemoveBackground(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->flags.background = 0;
-}
-
 void Text_AddOutline(
     TEXTSTRING *const text, const bool enable, const TEXT_STYLE style)
 {
