@@ -189,15 +189,6 @@ RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
     return m_MenuColorMap[color];
 }
 
-void Text_SetPos(TEXTSTRING *const text, const int16_t x, const int16_t y)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->pos.x = x;
-    text->pos.y = y;
-}
-
 void Text_SetScale(
     TEXTSTRING *const text, const int32_t scale_h, const int32_t scale_v)
 {

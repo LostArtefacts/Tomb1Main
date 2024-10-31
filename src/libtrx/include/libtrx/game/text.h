@@ -32,9 +32,9 @@ typedef struct {
     } flags;
 
     struct {
-        int16_t x;
-        int16_t y;
-        int16_t z;
+        int32_t x;
+        int32_t y;
+        int32_t z;
     } pos;
 
     int16_t letter_spacing;
@@ -78,6 +78,7 @@ void Text_Shutdown(void);
 
 TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *text);
 void Text_ChangeText(TEXTSTRING *text, const char *content);
+void Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void Text_Flash(TEXTSTRING *text, bool enable, int16_t rate);
 void Text_Hide(TEXTSTRING *text, bool enable);
 void Text_Draw(void);

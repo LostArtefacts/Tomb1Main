@@ -49,15 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)
-{
-    if (text == NULL) {
-        return;
-    }
-    text->pos.x = (x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-    text->pos.y = (y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-}
-
 void __cdecl Text_SetScale(
     TEXTSTRING *const text, const int32_t scale_h, const int32_t scale_v)
 {
@@ -81,8 +72,8 @@ void __cdecl Text_AddBackground(
     text->flags.background = 1;
     text->background.size.x = (scale_h * x_size) / TEXT_BASE_SCALE;
     text->background.size.y = (scale_v * y_size) / TEXT_BASE_SCALE;
-    text->background.offset.x = (scale_h * x_off) / TEXT_BASE_SCALE;
-    text->background.offset.y = (scale_v * y_off) / TEXT_BASE_SCALE;
+    text->background.offset.x = x_off;
+    text->background.offset.y = y_off;
     text->background.offset.z = z_off;
 #if 0
     text->bgnd_color = color;
@@ -295,8 +286,10 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         }
     }
 
-    int32_t x = text->pos.x;
-    int32_t y = text->pos.y;
+    int32_t x =
+        (text->pos.x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
+    int32_t y =
+        (text->pos.y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
     int32_t z = text->pos.z;
     int32_t text_width = Text_GetWidth(text);
 
@@ -312,9 +305,13 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         y += GetRenderHeight();
     }
 
-    int32_t box_x =
-        x + text->background.offset.x - ((2 * scale_h) / TEXT_BASE_SCALE);
-    int32_t box_y = y + text->background.offset.y
+    int32_t box_x = x
+        + (text->background.offset.x * Text_GetScaleH(TEXT_BASE_SCALE))
+            / TEXT_BASE_SCALE
+        - ((2 * scale_h) / TEXT_BASE_SCALE);
+    int32_t box_y = y
+        + (text->background.offset.y * Text_GetScaleV(TEXT_BASE_SCALE))
+            / TEXT_BASE_SCALE
         - ((4 * scale_v) / TEXT_BASE_SCALE)
         - ((11 * scale_v) / TEXT_BASE_SCALE);
     const int32_t start_x = x;
@@ -422,14 +419,14 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
     }
 }
 
-uint32_t __cdecl Text_GetScaleH(const uint32_t value)
+int32_t __cdecl Text_GetScaleH(const uint32_t value)
 {
     const int32_t render_width = GetRenderWidth();
     const int32_t render_scale = MAX(render_width, 640) * TEXT_BASE_SCALE / 640;
     return (value / PHD_HALF) * (render_scale / PHD_HALF);
 }
 
-uint32_t __cdecl Text_GetScaleV(const uint32_t value)
+int32_t __cdecl Text_GetScaleV(const uint32_t value)
 {
     const int32_t render_height = GetRenderHeight();
     const int32_t render_scale =

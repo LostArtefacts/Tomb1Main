@@ -6,7 +6,6 @@
 
 #define TEXT_HEIGHT 15
 
-void __cdecl Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void __cdecl Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
 void __cdecl Text_AddBackground(
     TEXTSTRING *text, int16_t x_size, int16_t y_size, int16_t x_off,
@@ -29,5 +28,5 @@ int32_t __cdecl Text_GetHeight(const TEXTSTRING *text);
 void __cdecl Text_DrawBorder(
     int32_t x, int32_t y, int32_t z, int32_t width, int32_t height);
 void __cdecl Text_DrawText(TEXTSTRING *text);
-uint32_t __cdecl Text_GetScaleH(uint32_t value);
-uint32_t __cdecl Text_GetScaleV(uint32_t value);
+int32_t __cdecl Text_GetScaleH(uint32_t value);
+int32_t __cdecl Text_GetScaleV(uint32_t value);

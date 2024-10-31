@@ -55,13 +55,8 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     text->content = Memory_DupStr(content);
     text->scale.h = TEXT_BASE_SCALE;
     text->scale.v = TEXT_BASE_SCALE;
-#if TR_VERSION == 1
     text->pos.x = x;
     text->pos.y = y;
-#elif TR_VERSION == 2
-    text->pos.x = (x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-    text->pos.y = (y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-#endif
     text->pos.z = 0;
     text->letter_spacing = 1;
     text->word_spacing = 6;
@@ -87,6 +82,15 @@ void Text_ChangeText(TEXTSTRING *const text, const char *const content)
         Memory_FreePointer(&text->content);
         text->content = Memory_DupStr(content);
     }
+}
+
+void Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)
+{
+    if (text == NULL) {
+        return;
+    }
+    text->pos.x = x;
+    text->pos.y = y;
 }
 
 void Text_Flash(TEXTSTRING *const text, const bool enable, const int16_t rate)

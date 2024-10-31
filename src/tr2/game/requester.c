@@ -363,8 +363,9 @@ void __cdecl Requester_Item_LeftAlign(
         return;
     }
     const uint32_t scale_h = Text_GetScaleH(text->scale.h);
-    const int32_t x = ((scale_h * req->pix_width) >> 16) / 2
-        - Text_GetWidth(text) / 2 - ((8 * scale_h) >> 16);
+    const int32_t x =
+        (req->pix_width - (Text_GetWidth(text) * TEXT_BASE_SCALE / scale_h)) / 2
+        - 8;
     text->pos.x = req->x_pos - x;
     text->background.offset.x = x;
 }
@@ -376,9 +377,10 @@ void __cdecl Requester_Item_RightAlign(
     if (text == NULL) {
         return;
     }
-    const int32_t x = ((scale_h * req->pix_width) >> 16) / 2
-        - Text_GetWidth(text) / 2 - ((8 * scale_h) >> 16);
-    text->pos.x = x + req->x_pos;
+    const int32_t x =
+        (req->pix_width - (Text_GetWidth(text) * TEXT_BASE_SCALE / scale_h)) / 2
+        - 8;
+    text->pos.x = req->x_pos + x;
     text->background.offset.x = -x;
 }
 
