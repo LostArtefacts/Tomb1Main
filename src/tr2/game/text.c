@@ -6,21 +6,6 @@
 
 #include <libtrx/utils.h>
 
-int32_t Text_GetHeight(const TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return 0;
-    }
-    int32_t height = TEXT_HEIGHT;
-    char *content = text->content;
-    for (char letter = *content; letter != '\0'; letter = *content++) {
-        if (text->flags.multiline && letter == '\n') {
-            height += TEXT_HEIGHT;
-        }
-    }
-    return height * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
-}
-
 void __cdecl Text_DrawBorder(
     const int32_t x, const int32_t y, const int32_t z, const int32_t width,
     const int32_t height)

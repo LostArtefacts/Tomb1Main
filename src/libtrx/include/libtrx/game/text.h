@@ -120,5 +120,6 @@ void Text_AlignBottom(TEXTSTRING *text, bool enable);
 void Text_SetMultiline(TEXTSTRING *text, bool enable);
 
 int32_t Text_GetWidth(const TEXTSTRING *text);
+int32_t Text_GetHeight(const TEXTSTRING *text);
 
 void Text_Draw(void);

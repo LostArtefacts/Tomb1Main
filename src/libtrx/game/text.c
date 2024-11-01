@@ -295,3 +295,18 @@ int32_t Text_GetWidth(const TEXTSTRING *const text)
     width -= text->letter_spacing;
     return width * text->scale.h / TEXT_BASE_SCALE;
 }
+
+int32_t Text_GetHeight(const TEXTSTRING *const text)
+{
+    if (text == NULL) {
+        return 0;
+    }
+    int32_t height = TEXT_HEIGHT_FIXED;
+    char *content = text->content;
+    for (char letter = *content; letter != '\0'; letter = *content++) {
+        if (text->flags.multiline && letter == '\n') {
+            height += TEXT_HEIGHT_FIXED;
+        }
+    }
+    return height * text->scale.v / TEXT_BASE_SCALE;
+}

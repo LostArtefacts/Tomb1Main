@@ -2,7 +2,7 @@
 
 #include "game/clock.h"
 #include "game/output.h"
-#include "game/overlay.h"
+#include "game/screen.h"
 #include "global/vars.h"
 
 #define TEXT_BOX_OFFSET 2
@@ -109,21 +109,6 @@ static void M_DrawTextOutline(
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
 {
     return m_MenuColorMap[color];
-}
-
-int32_t Text_GetHeight(const TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return 0;
-    }
-    int32_t height = TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
-    char *content = text->content;
-    for (char letter = *content; letter != '\0'; letter = *content++) {
-        if (text->flags.multiline && letter == '\n') {
-            height += TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
-        }
-    }
-    return height;
 }
 
 void Text_DrawText(TEXTSTRING *const text)
