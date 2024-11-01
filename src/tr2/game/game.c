@@ -16,7 +16,6 @@
 #include "game/text.h"
 #include "global/funcs.h"
 #include "global/vars.h"
-#include "specific/s_audio_sample.h"
 
 #include <libtrx/utils.h>
 
@@ -289,7 +288,7 @@ int32_t __cdecl Game_Loop(const bool demo_mode)
     g_GameMode = GAMEMODE_NOT_IN_GAME;
 
     Overlay_HideGameInfo();
-    S_Audio_Sample_OutCloseAllTracks();
+    Sound_StopAllSamples();
     Music_Stop();
 
     if (g_OptionMusicVolume) {

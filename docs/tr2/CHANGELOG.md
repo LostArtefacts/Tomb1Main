@@ -37,6 +37,7 @@
 - fixed the camera being cut off after using the gong hammer in Ice Palace (#1580)
 - fixed the audio not being in sync when Lara strikes the gong in Ice Palace (#1725)
 - fixed door cheat not working with drawbridges (#1748)
+- fixed certain audio samples continuing to play after finishing the level (#1770, regression from 0.2)
 - fixed Lara's underwater hue being retained when re-entering a boat (#1596)
 - fixed Lara reloading the harpoon gun after every shot in NG+ (#1575)
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances (#1572)
