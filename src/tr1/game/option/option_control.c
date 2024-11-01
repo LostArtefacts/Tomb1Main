@@ -182,7 +182,7 @@ static void M_InitMenu(void)
         visible_lines = 6;
     } else if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 384) {
         visible_lines = 8;
-    } else if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 480) {
+    } else if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 600) {
         visible_lines = 12;
     } else {
         visible_lines = 18;
