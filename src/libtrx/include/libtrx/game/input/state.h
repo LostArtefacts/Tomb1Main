@@ -23,10 +23,11 @@ typedef union INPUT_STATE {
         uint64_t save : 1;
         uint64_t load : 1;
 
-#if TR_VERSION == 1
         uint64_t fly_cheat : 1;
         uint64_t item_cheat : 1;
         uint64_t level_skip_cheat : 1;
+
+#if TR_VERSION == 1
         uint64_t turbo_cheat : 1;
         uint64_t camera_up : 1;
         uint64_t camera_down : 1;

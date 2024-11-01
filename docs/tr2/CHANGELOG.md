@@ -1,4 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...develop) - ××××-××-××
+- added a fly cheat key (#1642)
+- added an items cheat key (#1641)
+- added a level skip cheat key (#1640)
 - changed the inputs backend from DirectX to SDL (#1695)
     - improved controller support to match TR1X
     - changed the number of custom layouts to 3

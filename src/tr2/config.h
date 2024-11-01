@@ -15,6 +15,7 @@ typedef struct {
 
     struct {
         bool fix_m16_accuracy;
+        bool enable_cheats;
     } gameplay;
 
     struct {

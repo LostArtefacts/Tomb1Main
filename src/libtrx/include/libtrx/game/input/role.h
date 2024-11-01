@@ -93,6 +93,9 @@ typedef enum {
     INPUT_ROLE_TOGGLE_DITHER               = 38,
     INPUT_ROLE_TOGGLE_FULLSCREEN           = 39,
     INPUT_ROLE_TOGGLE_RENDERING_MODE       = 40,
+    INPUT_ROLE_FLY_CHEAT                   = 41,
+    INPUT_ROLE_ITEM_CHEAT                  = 42,
+    INPUT_ROLE_LEVEL_SKIP_CHEAT            = 43,
 #endif
     INPUT_ROLE_NUMBER_OF,
     // clang-format on

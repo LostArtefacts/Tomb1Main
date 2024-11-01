@@ -1,5 +1,6 @@
 #include "game/ui/controllers/controls.h"
 
+#include "config.h"
 #include "game/input.h"
 #include "game/shell.h"
 #include "global/vars.h"
@@ -10,17 +11,49 @@
 #include <assert.h>
 
 static const INPUT_ROLE m_LeftRoles[] = {
-    INPUT_ROLE_UP,     INPUT_ROLE_DOWN,   INPUT_ROLE_LEFT, INPUT_ROLE_RIGHT,
-    INPUT_ROLE_STEP_L, INPUT_ROLE_STEP_R, INPUT_ROLE_SLOW, (INPUT_ROLE)-1,
+    // clang-format off
+    INPUT_ROLE_UP,
+    INPUT_ROLE_DOWN,
+    INPUT_ROLE_LEFT,
+    INPUT_ROLE_RIGHT,
+    INPUT_ROLE_STEP_L,
+    INPUT_ROLE_STEP_R,
+    INPUT_ROLE_SLOW,
+    INPUT_ROLE_ENTER_CONSOLE,
+    (INPUT_ROLE)-1,
+    // clang-format on
 };
 
-static const INPUT_ROLE m_RightRoles[] = {
-    INPUT_ROLE_JUMP,      INPUT_ROLE_ACTION,        INPUT_ROLE_DRAW,
-    INPUT_ROLE_USE_FLARE, INPUT_ROLE_LOOK,          INPUT_ROLE_ROLL,
-    INPUT_ROLE_OPTION,    INPUT_ROLE_ENTER_CONSOLE, (INPUT_ROLE)-1,
+static const INPUT_ROLE m_RightRoles_CheatsOff[] = {
+    // clang-format off
+    INPUT_ROLE_JUMP,
+    INPUT_ROLE_ACTION,
+    INPUT_ROLE_DRAW,
+    INPUT_ROLE_USE_FLARE,
+    INPUT_ROLE_LOOK,
+    INPUT_ROLE_ROLL,
+    INPUT_ROLE_OPTION,
+    (INPUT_ROLE)-1,
+    // clang-format on
 };
 
-static const INPUT_ROLE *M_GetInputRoles(int32_t col);
+static const INPUT_ROLE m_RightRoles_CheatsOn[] = {
+    // clang-format off
+    INPUT_ROLE_JUMP,
+    INPUT_ROLE_ACTION,
+    INPUT_ROLE_DRAW,
+    INPUT_ROLE_USE_FLARE,
+    INPUT_ROLE_LOOK,
+    INPUT_ROLE_ROLL,
+    INPUT_ROLE_OPTION,
+    INPUT_ROLE_FLY_CHEAT,
+    INPUT_ROLE_ITEM_CHEAT,
+    INPUT_ROLE_LEVEL_SKIP_CHEAT,
+    (INPUT_ROLE)-1,
+    // clang-format on
+};
+
+static INPUT_ROLE M_GetInputRole(int32_t col, int32_t row);
 static void M_CycleLayout(UI_CONTROLS_CONTROLLER *controller, int32_t dir);
 static bool M_NavigateLayout(UI_CONTROLS_CONTROLLER *controller);
 static bool M_NavigateInputs(UI_CONTROLS_CONTROLLER *controller);
@@ -28,9 +61,15 @@ static bool M_NavigateInputsDebounce(UI_CONTROLS_CONTROLLER *controller);
 static bool M_Listen(UI_CONTROLS_CONTROLLER *controller);
 static bool M_ListenDebounce(UI_CONTROLS_CONTROLLER *controller);
 
-static const INPUT_ROLE *M_GetInputRoles(const int32_t col)
+static INPUT_ROLE M_GetInputRole(const int32_t col, const int32_t row)
 {
-    return col == 0 ? m_LeftRoles : m_RightRoles;
+    if (col == 0) {
+        return m_LeftRoles[row];
+    } else if (g_Config.gameplay.enable_cheats) {
+        return m_RightRoles_CheatsOn[row];
+    } else {
+        return m_RightRoles_CheatsOff[row];
+    }
 }
 
 static void M_CycleLayout(
@@ -95,7 +134,7 @@ static bool M_NavigateLayout(UI_CONTROLS_CONTROLLER *const controller)
         return false;
     }
     controller->active_role =
-        M_GetInputRoles(controller->active_col)[controller->active_row];
+        M_GetInputRole(controller->active_col, controller->active_row);
     return true;
 }
 
@@ -137,7 +176,7 @@ static bool M_NavigateInputs(UI_CONTROLS_CONTROLLER *const controller)
         return false;
     }
     controller->active_role =
-        M_GetInputRoles(controller->active_col)[controller->active_row];
+        M_GetInputRole(controller->active_col, controller->active_row);
     return true;
 }
 
@@ -223,15 +262,14 @@ bool UI_ControlsController_Control(UI_CONTROLS_CONTROLLER *const controller)
 INPUT_ROLE UI_ControlsController_GetInputRole(
     const int32_t col, const int32_t row)
 {
-    return M_GetInputRoles(col)[row];
+    return M_GetInputRole(col, row);
 }
 
 int32_t UI_ControlsController_GetInputRoleCount(const int32_t col)
 {
-    int32_t result = 0;
-    const INPUT_ROLE *const roles = M_GetInputRoles(col);
-    while (roles[result] != (INPUT_ROLE)-1) {
-        result++;
+    int32_t row = 0;
+    while (M_GetInputRole(col, row) != (INPUT_ROLE)-1) {
+        row++;
     }
-    return result;
+    return row;
 }

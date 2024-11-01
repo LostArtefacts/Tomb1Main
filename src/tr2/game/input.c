@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "game/console/common.h"
+#include "game/game_string.h"
 #include "game/shell.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -44,6 +45,10 @@ static void M_UpdateFromBackend(
     s->enter_console               |= backend->is_pressed(layout, INPUT_ROLE_ENTER_CONSOLE);
     s->save                        |= backend->is_pressed(layout, INPUT_ROLE_SAVE);
     s->load                        |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
+
+    s->item_cheat                  |= backend->is_pressed(layout, INPUT_ROLE_ITEM_CHEAT);
+    s->fly_cheat                   |= backend->is_pressed(layout, INPUT_ROLE_FLY_CHEAT);
+    s->level_skip_cheat            |= backend->is_pressed(layout, INPUT_ROLE_LEVEL_SKIP_CHEAT);
 
     s->equip_pistols               |= backend->is_pressed(layout, INPUT_ROLE_EQUIP_PISTOLS);
     s->equip_shotgun               |= backend->is_pressed(layout, INPUT_ROLE_EQUIP_SHOTGUN);
@@ -95,6 +100,12 @@ void Input_Update(void)
         g_Input.right = 0;
     }
 
+    if (!g_Config.gameplay.enable_cheats) {
+        g_Input.item_cheat = 0;
+        g_Input.fly_cheat = 0;
+        g_Input.level_skip_cheat = 0;
+    }
+
     g_InputDB = M_GetDebounced(g_Input);
 
     if (Input_IsInListenMode()) {
@@ -107,22 +118,25 @@ const char *Input_GetRoleName(const INPUT_ROLE role)
 {
     // clang-format off
     switch (role) {
-    case INPUT_ROLE_UP:            return g_GF_GameStrings[GF_S_GAME_KEYMAP_RUN];
-    case INPUT_ROLE_DOWN:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_BACK];
-    case INPUT_ROLE_LEFT:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_LEFT];
-    case INPUT_ROLE_RIGHT:         return g_GF_GameStrings[GF_S_GAME_KEYMAP_RIGHT];
-    case INPUT_ROLE_STEP_L:        return g_GF_GameStrings[GF_S_GAME_KEYMAP_STEP_LEFT];
-    case INPUT_ROLE_STEP_R:        return g_GF_GameStrings[GF_S_GAME_KEYMAP_STEP_RIGHT];
-    case INPUT_ROLE_SLOW:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_WALK];
-    case INPUT_ROLE_JUMP:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_JUMP];
-    case INPUT_ROLE_ACTION:        return g_GF_GameStrings[GF_S_GAME_KEYMAP_ACTION];
-    case INPUT_ROLE_DRAW:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_DRAW_WEAPON];
-    case INPUT_ROLE_USE_FLARE:     return g_GF_GameStrings[GF_S_GAME_KEYMAP_FLARE];
-    case INPUT_ROLE_LOOK:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_LOOK];
-    case INPUT_ROLE_ROLL:          return g_GF_GameStrings[GF_S_GAME_KEYMAP_ROLL];
-    case INPUT_ROLE_OPTION:        return g_GF_GameStrings[GF_S_GAME_KEYMAP_INVENTORY];
-    case INPUT_ROLE_ENTER_CONSOLE: return "Console";
-    default:                       return "";
+    case INPUT_ROLE_UP:               return GS(KEYMAP_RUN);
+    case INPUT_ROLE_DOWN:             return GS(KEYMAP_BACK);
+    case INPUT_ROLE_LEFT:             return GS(KEYMAP_LEFT);
+    case INPUT_ROLE_RIGHT:            return GS(KEYMAP_RIGHT);
+    case INPUT_ROLE_STEP_L:           return GS(KEYMAP_STEP_LEFT);
+    case INPUT_ROLE_STEP_R:           return GS(KEYMAP_STEP_RIGHT);
+    case INPUT_ROLE_SLOW:             return GS(KEYMAP_WALK);
+    case INPUT_ROLE_JUMP:             return GS(KEYMAP_JUMP);
+    case INPUT_ROLE_ACTION:           return GS(KEYMAP_ACTION);
+    case INPUT_ROLE_DRAW:             return GS(KEYMAP_DRAW_WEAPON);
+    case INPUT_ROLE_USE_FLARE:        return GS(KEYMAP_USE_FLARE);
+    case INPUT_ROLE_LOOK:             return GS(KEYMAP_LOOK);
+    case INPUT_ROLE_ROLL:             return GS(KEYMAP_ROLL);
+    case INPUT_ROLE_OPTION:           return GS(KEYMAP_INVENTORY);
+    case INPUT_ROLE_FLY_CHEAT:        return GS(KEYMAP_FLY_CHEAT);
+    case INPUT_ROLE_ITEM_CHEAT:       return GS(KEYMAP_ITEM_CHEAT);
+    case INPUT_ROLE_LEVEL_SKIP_CHEAT: return GS(KEYMAP_LEVEL_SKIP_CHEAT);
+    case INPUT_ROLE_ENTER_CONSOLE:    return GS(KEYMAP_ENTER_CONSOLE);
+    default:                          return "";
     }
     // clang-format on
 }

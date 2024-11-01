@@ -13,6 +13,10 @@
     }
   },
   "Properties": {
+    "enable_cheats": {
+      "Title": "Cheats",
+      "Description": "Enables various cheats:\n- L: immediately end the level.\n- I: give Lara all weapons; a boost of ammo and medipacks; and all plot items for the current level.\n- O: enable DOZY cheat (swimming midair).\n     - WALK key: exit DOZY.\n     - GUN key: open the closest door (doesn't work in certain places)."
+    },
     "fix_m16_accuracy": {
       "Title": "Fix M16 accuracy",
       "Description": "Fixes the accuracy of the M16 while Lara is running."

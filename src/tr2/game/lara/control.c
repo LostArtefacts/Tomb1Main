@@ -245,6 +245,18 @@ void __cdecl Lara_Control(const int16_t item_num)
 {
     ITEM *const item = g_LaraItem;
 
+    if (g_InputDB.level_skip_cheat) {
+        Lara_Cheat_EndLevel();
+    }
+
+    if (g_InputDB.item_cheat) {
+        Lara_Cheat_GiveAllItems();
+    }
+
+    if (g_Lara.water_status != LWS_CHEAT && g_InputDB.fly_cheat) {
+        Lara_Cheat_EnterFlyMode();
+    }
+
     const bool room_submerged = g_Rooms[item->room_num].flags & RF_UNDERWATER;
     const int32_t water_depth = Lara_GetWaterDepth(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);

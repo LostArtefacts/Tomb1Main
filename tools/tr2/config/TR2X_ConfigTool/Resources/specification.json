@@ -28,7 +28,11 @@
       "ID": "gameplay_modifications",
       "Image": "Graphics/graphic3.jpg",
       "Properties": [
-
+        {
+          "Field": "enable_cheats",
+          "DataType": "Bool",
+          "DefaultValue": false
+        }
       ]
     },
     {
