@@ -103,6 +103,7 @@ sources = [
   'game/ui/common.c',
   'game/ui/events.c',
   'game/ui/widgets/console.c',
+  'game/ui/widgets/label.c',
   'game/ui/widgets/prompt.c',
   'game/ui/widgets/spacer.c',
   'game/ui/widgets/stack.c',

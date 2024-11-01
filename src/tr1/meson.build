@@ -107,7 +107,6 @@ sources = [
   'game/effect_routines/dino_stomp.c',
   'game/effect_routines/earthquake.c',
   'game/ui/common.c',
-  'game/ui/widgets/label.c',
   'game/ui/widgets/photo_mode.c',
   'game/effect_routines/explosion.c',
   'game/effect_routines/finish_level.c',

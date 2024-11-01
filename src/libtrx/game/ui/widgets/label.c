@@ -1,7 +1,7 @@
-#include "game/text.h"
+#include "game/ui/widgets/label.h"
 
-#include <libtrx/game/ui/widgets/label.h>
-#include <libtrx/memory.h>
+#include "game/text.h"
+#include "memory.h"
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
@@ -22,7 +22,7 @@ static int32_t M_GetWidth(const UI_LABEL *const self)
     if (self->width != UI_LABEL_AUTO_SIZE) {
         return self->width;
     }
-    return Text_GetWidth(self->text) * TEXT_BASE_SCALE / self->text->scale.h;
+    return Text_GetWidth(self->text);
 }
 
 static int32_t M_GetHeight(const UI_LABEL *const self)
@@ -68,6 +68,7 @@ UI_WIDGET *UI_Label_Create(
     self->has_frame = false;
 
     self->text = Text_Create(0, 0, text);
+    self->text->pos.z = 16;
     Text_SetMultiline(self->text, true);
     self->text->flags.manual_draw = 1;
 
@@ -98,8 +99,9 @@ void UI_Label_AddFrame(UI_WIDGET *const widget)
 {
     UI_LABEL *const self = (UI_LABEL *)widget;
     if (!self->has_frame) {
-        Text_AddBackground(self->text, 0, 0, 0, 0, TS_HEADING);
-        Text_AddOutline(self->text, TS_HEADING);
+        self->text->pos.z = 0;
+        Text_AddBackground(self->text, 0, 0, 0, 0, TS_REQUESTED);
+        Text_AddOutline(self->text, TS_REQUESTED);
         self->has_frame = true;
     }
 }
@@ -110,6 +112,7 @@ void UI_Label_RemoveFrame(UI_WIDGET *const widget)
     if (self->has_frame) {
         Text_RemoveBackground(self->text);
         Text_RemoveOutline(self->text);
+        self->text->pos.z = 16;
         self->has_frame = false;
     }
 }
@@ -129,6 +132,8 @@ void UI_Label_SetScale(UI_WIDGET *const widget, const float scale)
 
 void UI_Label_SetZIndex(UI_WIDGET *const widget, const int32_t z_index)
 {
+    UI_LABEL *const self = (UI_LABEL *)widget;
+    self->text->pos.z = z_index;
 }
 
 int32_t UI_Label_MeasureTextWidth(UI_WIDGET *const widget)
