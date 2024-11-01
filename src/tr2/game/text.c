@@ -49,18 +49,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
     return -1;
 }
 
-void __cdecl Text_ChangeText(TEXTSTRING *const text, const char *const content)
-{
-    if (text == NULL) {
-        return;
-    }
-    assert(content != NULL);
-    if (text->flags.active) {
-        Memory_FreePointer(&text->content);
-        text->content = Memory_DupStr(content);
-    }
-}
-
 void __cdecl Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)
 {
     if (text == NULL) {

@@ -2,6 +2,8 @@
 
 #include "memory.h"
 
+#include <assert.h>
+
 static TEXTSTRING m_TextStrings[TEXT_MAX_STRINGS] = { 0 };
 
 void Text_Init(void)
@@ -73,4 +75,16 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     text->flags.active = 1;
 
     return text;
+}
+
+void Text_ChangeText(TEXTSTRING *const text, const char *const content)
+{
+    if (text == NULL) {
+        return;
+    }
+    assert(content != NULL);
+    if (text->flags.active) {
+        Memory_FreePointer(&text->content);
+        text->content = Memory_DupStr(content);
+    }
 }

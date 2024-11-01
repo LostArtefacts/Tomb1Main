@@ -6,7 +6,6 @@
 
 #define TEXT_HEIGHT 15
 
-void __cdecl Text_ChangeText(TEXTSTRING *text, const char *content);
 void __cdecl Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void __cdecl Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
 void __cdecl Text_Flash(TEXTSTRING *text, int16_t enable, int16_t rate);

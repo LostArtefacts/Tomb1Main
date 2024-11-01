@@ -12,7 +12,6 @@
 #define TEXT_OUTLINE_THICKNESS 2
 
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color);
-void Text_ChangeText(TEXTSTRING *text, const char *content);
 void Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
 void Text_Flash(TEXTSTRING *text, bool enable, int16_t rate);

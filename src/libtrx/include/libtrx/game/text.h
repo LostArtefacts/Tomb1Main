@@ -76,4 +76,5 @@ void Text_Init(void);
 void Text_Shutdown(void);
 
 TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *text);
+void Text_ChangeText(TEXTSTRING *text, const char *content);
 void Text_Draw(void);

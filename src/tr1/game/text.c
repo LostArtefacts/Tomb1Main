@@ -2,12 +2,8 @@
 
 #include "game/clock.h"
 #include "game/output.h"
-#include "game/screen.h"
+#include "game/overlay.h"
 #include "global/vars.h"
-
-#include <libtrx/memory.h>
-
-#include <assert.h>
 
 #define TEXT_BOX_OFFSET 2
 #define TRIANGLE_SYM 93
@@ -191,18 +187,6 @@ static uint8_t M_MapLetterToSpriteNum(char letter)
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
 {
     return m_MenuColorMap[color];
-}
-
-void Text_ChangeText(TEXTSTRING *const text, const char *const content)
-{
-    if (text == NULL) {
-        return;
-    }
-    assert(content != NULL);
-    if (text->flags.active) {
-        Memory_FreePointer(&text->content);
-        text->content = Memory_DupStr(content);
-    }
 }
 
 void Text_SetPos(TEXTSTRING *const text, const int16_t x, const int16_t y)
