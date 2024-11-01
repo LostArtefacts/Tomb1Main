@@ -169,7 +169,7 @@
     },
     "enable_cheats": {
       "Title": "Trucchi",
-      "Description": "Abilita vari trucchi:\n- F11: tieni premuto per curare Lara.\n- F11 + tasto CAMMINA: tieni premuto per ferire Lara.\n- L: termina immediatamente il livello.\n- I: dai a Lara tutte le armi; gran quantità di munizioni e kit medici; tutti gli oggetti necessari per superare il livello.\n- O: abilita il trucco DOZY (nuotare a mezz'aria).\n     - tasto CAMMINA: disabilita DOZY.\n     - tasto ESTRAI ARMA: apre la porta più vicina (non funziona in certi casi)."
+      "Description": "Abilita vari trucchi:\n- L: termina immediatamente il livello.\n- I: dai a Lara tutte le armi; gran quantità di munizioni e kit medici; tutti gli oggetti necessari per superare il livello.\n- O: abilita il trucco DOZY (nuotare a mezz'aria).\n     - tasto CAMMINA: disabilita DOZY.\n     - tasto ESTRAI ARMA: apre la porta più vicina (non funziona in certi casi)."
     },
     "enable_console": {
       "Title": "Console",

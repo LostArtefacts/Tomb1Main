@@ -169,7 +169,7 @@
     },
     "enable_cheats": {
       "Title": "Triche",
-      "Description": "Active plusieurs fonctions de triche :\n- F11: Rester appuyé pour soigner Lara.\n- F11 + touche de MARCHE : Rester appuyé pour blesser Lara.\n- L: Termine immédiatement le niveau.\n- I: Donne à Lara toutes les armes; Le maximum de munitions et de trousses de soin; Et toutes les clés et éléments utiles au niveau en cours.\n- O: Fait voler Lara (Elle nage dans l'air).\n     - Touche MARCHE : Pour revenir au sol.\n     - Touche ESPACE : Ouvre les portes fermées (Peut ne pas fonctionner sur certaines)."
+      "Description": "Active plusieurs fonctions de triche :\n- L: Termine immédiatement le niveau.\n- I: Donne à Lara toutes les armes; Le maximum de munitions et de trousses de soin; Et toutes les clés et éléments utiles au niveau en cours.\n- O: Fait voler Lara (Elle nage dans l'air).\n     - Touche MARCHE : Pour revenir au sol.\n     - Touche ESPACE : Ouvre les portes fermées (Peut ne pas fonctionner sur certaines)."
     },
     "enable_console": {
       "Title": "Console",
