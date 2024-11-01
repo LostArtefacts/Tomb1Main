@@ -703,22 +703,20 @@ void Lara_TestWaterDepth(ITEM *const item, const COLL_INFO *const coll)
     const int32_t water_depth =
         Lara_GetWaterDepth(item->pos.x, item->pos.y, item->pos.z, room_num);
 
-    if (water_depth == NO_HEIGHT) {
-        item->pos = coll->old;
-        item->fall_speed = 0;
-    } else if (water_depth <= STEP_L * 2) {
-        Item_SwitchToAnim(item, LA_UNDERWATER_TO_STAND, 0);
-        item->current_anim_state = LS_WATER_OUT;
-        item->goal_anim_state = LS_STOP;
-        item->rot.x = 0;
-        item->rot.z = 0;
-        item->gravity = 0;
-        item->speed = 0;
-        item->fall_speed = 0;
-        g_Lara.water_status = LWS_WADE;
-        item->pos.y =
-            Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
+    if (water_depth == NO_HEIGHT || water_depth > STEP_L * 2) {
+        return;
     }
+
+    Item_SwitchToAnim(item, LA_UNDERWATER_TO_STAND, 0);
+    item->current_anim_state = LS_WATER_OUT;
+    item->goal_anim_state = LS_STOP;
+    item->rot.x = 0;
+    item->rot.z = 0;
+    item->gravity = 0;
+    item->speed = 0;
+    item->fall_speed = 0;
+    g_Lara.water_status = LWS_WADE;
+    item->pos.y = Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
 }
 
 bool Lara_TestWaterStepOut(ITEM *const item, const COLL_INFO *const coll)
