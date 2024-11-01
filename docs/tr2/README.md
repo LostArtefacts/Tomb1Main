@@ -38,6 +38,7 @@ decompilation process. We recognize that there is much work to be done.
 
 #### Statistics
 - fixed the dragon counting as more than one kill if allowed to revive
+- fixed enemies that are run over by the skidoo not being counted in the statistics
 
 #### Visuals
 

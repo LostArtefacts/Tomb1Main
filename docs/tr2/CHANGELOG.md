@@ -56,6 +56,7 @@
 - fixed the dragon counting as more than one kill if allowed to revive (#1771)
 - fixed a crash when firing grenades at Xian guards in statue form (#1561)
 - fixed harpoon bolts damaging inactive enemies (#1804)
+- fixed enemies that are run over by the skidoo not being counted in the statistics (#1772)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command

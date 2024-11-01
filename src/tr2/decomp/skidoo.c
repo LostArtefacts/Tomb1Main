@@ -136,11 +136,11 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
         if (item->current_anim_state == TRAP_ACTIVATE) {
             Lara_TakeDamage(100, true);
         }
-    } else {
+    } else if (object->intelligent && item->status == IS_ACTIVE) {
         DoLotsOfBlood(
             item->pos.x, skidoo->pos.y - STEP_L, item->pos.z, skidoo->speed,
             skidoo->rot.y, item->room_num, 3);
-        item->hit_points = 0;
+        Gun_HitTarget(item, NULL, item->hit_points);
     }
     return true;
 }
