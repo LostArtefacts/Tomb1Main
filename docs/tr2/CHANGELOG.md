@@ -42,6 +42,7 @@
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances (#1572)
 - fixed grenades counting as double kills in the game statistics (#1560)
 - fixed the ammo counter being hidden while a demo plays in NG+ (#1559)
+- fixed the game crashing in large rooms with z-buffer disabled (#1761, regression from 0.2)
 - fixed the game hanging if exited during the level stats, credits, or final stats (#1585)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08

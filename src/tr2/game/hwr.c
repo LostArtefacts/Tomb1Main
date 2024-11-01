@@ -269,9 +269,8 @@ void __cdecl HWR_GetPageHandles(void)
 
 bool __cdecl HWR_VertexBufferFull(void)
 {
-    const int32_t index =
-        (g_HWR_VertexPtr - g_HWR_VertexBuffer) / sizeof(D3DTLVERTEX);
-    return index >= MAX_VERTICES;
+    const int32_t index = g_HWR_VertexPtr - g_HWR_VertexBuffer;
+    return index >= MAX_VERTICES - 0x200;
 }
 
 bool __cdecl HWR_Init(void)
