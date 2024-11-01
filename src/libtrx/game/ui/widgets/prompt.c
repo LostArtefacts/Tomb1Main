@@ -1,5 +1,6 @@
 #include "game/ui/widgets/prompt.h"
 
+#include "game/const.h"
 #include "game/input.h"
 #include "game/ui/common.h"
 #include "game/ui/events.h"
@@ -293,8 +294,8 @@ void UI_Prompt_SetFocus(UI_WIDGET *const widget, const bool is_focused)
     self->is_focused = is_focused;
     if (is_focused) {
         Input_EnterListenMode();
-        UI_Label_ChangeText(self->caret, UI_Prompt_GetPromptChar());
-        UI_Label_Flash(self->caret, 1, UI_Prompt_GetCaretFlashRate());
+        UI_Label_ChangeText(self->caret, "\\{button left}");
+        UI_Label_Flash(self->caret, 1, LOGIC_FPS * 2 / 3);
     } else {
         Input_ExitListenMode();
         UI_Label_ChangeText(self->caret, "");

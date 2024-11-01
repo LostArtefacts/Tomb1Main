@@ -1,5 +1,7 @@
 #pragma once
 
+#define LOGIC_FPS 30
+
 #define DONT_TARGET (-16384)
 
 #define PHD_ONE 0x10000
