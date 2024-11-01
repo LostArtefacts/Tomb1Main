@@ -6,30 +6,6 @@
 
 #include <libtrx/utils.h>
 
-int32_t __cdecl Text_GetWidth(TEXTSTRING *const text)
-{
-    if (text == NULL) {
-        return 0;
-    }
-
-    int32_t width = 0;
-    const GLYPH_INFO **glyph_ptr = text->glyphs;
-    if (text->glyphs == NULL) {
-        return 0;
-    }
-    while (*glyph_ptr != NULL) {
-        if ((*glyph_ptr)->role == GLYPH_SPACE) {
-            width += text->word_spacing;
-        } else {
-            width += (*glyph_ptr)->width + text->letter_spacing;
-        }
-        glyph_ptr++;
-    }
-
-    width -= text->letter_spacing;
-    return width * Text_GetScaleH(text->scale.h) / TEXT_BASE_SCALE;
-}
-
 int32_t Text_GetHeight(const TEXTSTRING *const text)
 {
     if (text == NULL) {
@@ -98,7 +74,8 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
     int32_t y =
         (text->pos.y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
     int32_t z = text->pos.z;
-    int32_t text_width = Text_GetWidth(text);
+    int32_t text_width =
+        Text_GetWidth(text) * Text_GetScaleH(TEXT_BASE_SCALE) / TEXT_BASE_SCALE;
 
     if (text->flags.centre_h) {
         x += (GetRenderWidth() - text_width) / 2;

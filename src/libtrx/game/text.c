@@ -271,3 +271,27 @@ void Text_SetMultiline(TEXTSTRING *const text, const bool enable)
     }
     text->flags.multiline = enable;
 }
+
+int32_t Text_GetWidth(const TEXTSTRING *const text)
+{
+    if (text == NULL) {
+        return 0;
+    }
+
+    int32_t width = 0;
+    const GLYPH_INFO **glyph_ptr = text->glyphs;
+    if (text->glyphs == NULL) {
+        return 0;
+    }
+    while (*glyph_ptr != NULL) {
+        if ((*glyph_ptr)->role == GLYPH_SPACE) {
+            width += text->word_spacing;
+        } else {
+            width += (*glyph_ptr)->width + text->letter_spacing;
+        }
+        glyph_ptr++;
+    }
+
+    width -= text->letter_spacing;
+    return width * text->scale.h / TEXT_BASE_SCALE;
+}

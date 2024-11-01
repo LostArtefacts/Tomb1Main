@@ -353,9 +353,10 @@ void __cdecl Requester_Item_LeftAlign(
     if (text == NULL) {
         return;
     }
-    const uint32_t scale_h = Text_GetScaleH(text->scale.h);
     const int32_t x =
-        (req->pix_width - (Text_GetWidth(text) * TEXT_BASE_SCALE / scale_h)) / 2
+        (req->pix_width
+         - (Text_GetWidth(text) * TEXT_BASE_SCALE / text->scale.h))
+            / 2
         - 8;
     text->pos.x = req->x_pos - x;
     text->background.offset.x = x;
@@ -364,12 +365,13 @@ void __cdecl Requester_Item_LeftAlign(
 void __cdecl Requester_Item_RightAlign(
     REQUEST_INFO *const req, TEXTSTRING *const text)
 {
-    const uint32_t scale_h = Text_GetScaleH(text->scale.h);
     if (text == NULL) {
         return;
     }
     const int32_t x =
-        (req->pix_width - (Text_GetWidth(text) * TEXT_BASE_SCALE / scale_h)) / 2
+        (req->pix_width
+         - (Text_GetWidth(text) * TEXT_BASE_SCALE / text->scale.h))
+            / 2
         - 8;
     text->pos.x = req->x_pos + x;
     text->background.offset.x = -x;

@@ -22,8 +22,7 @@ static int32_t M_GetWidth(const UI_LABEL *const self)
     if (self->width != UI_LABEL_AUTO_SIZE) {
         return self->width;
     }
-    return Text_GetWidth(self->text) * TEXT_BASE_SCALE
-        / Text_GetScaleH(TEXT_BASE_SCALE);
+    return Text_GetWidth(self->text);
 }
 
 static int32_t M_GetHeight(const UI_LABEL *const self)
@@ -141,6 +140,5 @@ void UI_Label_SetZIndex(UI_WIDGET *const widget, const int32_t z_index)
 int32_t UI_Label_MeasureTextWidth(UI_WIDGET *const widget)
 {
     UI_LABEL *const self = (UI_LABEL *)widget;
-    return Text_GetWidth(self->text) * TEXT_BASE_SCALE
-        / Text_GetScaleH(TEXT_BASE_SCALE);
+    return Text_GetWidth(self->text);
 }
