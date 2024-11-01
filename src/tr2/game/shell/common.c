@@ -236,6 +236,14 @@ void Shell_ProcessEvents(void)
             break;
         }
 
+        case SDL_KEYUP:
+            // NOTE: needs special handling on Windows -
+            // SDL_SCANCODE_PRINTSCREEN is not sufficient to react to this.
+            if (event.key.keysym.sym == SDLK_PRINTSCREEN) {
+                Screenshot_Make(g_Config.rendering.screenshot_format);
+            }
+            break;
+
         case SDL_TEXTEDITING:
             UI_HandleTextEdit(event.text.text);
             break;
