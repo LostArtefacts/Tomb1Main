@@ -128,22 +128,23 @@ void __cdecl Door_Initialise(const int16_t item_num)
     if (room_num == NO_ROOM) {
         door->d2.sector = NULL;
         door->d2flip.sector = NULL;
-        return;
-    }
-
-    r = Room_Get(room_num);
-    M_Initialise(r, item, 0, 0, &door->d2);
-    if (r->flipped_room == NO_ROOM_NEG) {
-        door->d2flip.sector = NULL;
     } else {
-        r = Room_Get(r->flipped_room);
-        M_Initialise(r, item, 0, 0, &door->d2flip);
+        r = Room_Get(room_num);
+        M_Initialise(r, item, 0, 0, &door->d2);
+        if (r->flipped_room == NO_ROOM_NEG) {
+            door->d2flip.sector = NULL;
+        } else {
+            r = Room_Get(r->flipped_room);
+            M_Initialise(r, item, 0, 0, &door->d2flip);
+        }
+
+        Door_Shut(&door->d2);
+        Door_Shut(&door->d2flip);
     }
 
-    Door_Shut(&door->d2);
-    Door_Shut(&door->d2flip);
-
+    const int16_t prev_room = item->room_num;
     Item_NewRoom(item_num, room_num);
+    item->room_num = prev_room;
 }
 
 void __cdecl Door_Control(const int16_t item_num)
