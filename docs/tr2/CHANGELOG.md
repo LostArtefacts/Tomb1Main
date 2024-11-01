@@ -22,6 +22,7 @@
     - removed hardcoded Shift+F7 key binding for toggling triple buffering
     - removed hardcoded `0` key binding for flares
     - removed hardcoded cooldown of 15 frames for medipacks
+- changed text backend to accept named sequences (eg. "\{arrow up}" and similar)
 - improved FMV mode appearance - removed black scanlines (#1729)
 - improved FMV mode behavior - stopped switching screen resolutions (#1729)
 - improved screenshots: now saved in the screenshots/ directory with level titles and timestamps as JPG or PNG, similar to TR1X (#1773)

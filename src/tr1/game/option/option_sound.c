@@ -31,8 +31,8 @@ static void M_InitText(void)
 {
     char buf[20];
 
-    m_Text[TEXT_LEFT_ARROW] = Text_Create(-45, 0, "\200");
-    m_Text[TEXT_RIGHT_ARROW] = Text_Create(40, 0, "\201");
+    m_Text[TEXT_LEFT_ARROW] = Text_Create(-45, 0, "\\{button left}");
+    m_Text[TEXT_RIGHT_ARROW] = Text_Create(40, 0, "\\{button right}");
 
     m_Text[TEXT_TITLE_BORDER] = Text_Create(0, -32, " ");
     m_Text[TEXT_TITLE] = Text_Create(0, -30, GS(SOUND_SET_VOLUMES));
@@ -40,13 +40,13 @@ static void M_InitText(void)
     if (g_Config.music_volume > 10) {
         g_Config.music_volume = 10;
     }
-    sprintf(buf, "| %2d", g_Config.music_volume);
+    sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
     m_Text[TEXT_MUSIC_VOLUME] = Text_Create(0, 0, buf);
 
     if (g_Config.sound_volume > 10) {
         g_Config.sound_volume = 10;
     }
-    sprintf(buf, "} %2d", g_Config.sound_volume);
+    sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
     m_Text[TEXT_SOUND_VOLUME] = Text_Create(0, 25, buf);
 
     Text_AddBackground(m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
@@ -101,7 +101,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             g_IDCount = 5;
             Music_SetVolume(g_Config.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "| %2d", g_Config.music_volume);
+            sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
             Text_ChangeText(m_Text[TEXT_MUSIC_VOLUME], buf);
         } else if (
             g_Input.menu_right
@@ -112,7 +112,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             g_IDCount = 5;
             Music_SetVolume(g_Config.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "| %2d", g_Config.music_volume);
+            sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
             Text_ChangeText(m_Text[TEXT_MUSIC_VOLUME], buf);
         }
 
@@ -135,7 +135,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             g_IDCount = 5;
             Sound_SetMasterVolume(g_Config.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "} %2d", g_Config.sound_volume);
+            sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
             Text_ChangeText(m_Text[TEXT_SOUND_VOLUME], buf);
         } else if (
             g_Input.menu_right
@@ -146,7 +146,7 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             g_IDCount = 5;
             Sound_SetMasterVolume(g_Config.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "} %2d", g_Config.sound_volume);
+            sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
             Text_ChangeText(m_Text[TEXT_SOUND_VOLUME], buf);
         }
 

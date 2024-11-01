@@ -37,33 +37,18 @@ static BUILTIN_CONTROLLER_LAYOUT m_BuiltinLayout[] = {
     { -1, { 0, { 0 }, 0 } },
 };
 
-#if TR_VERSION == 1
-    #define M_ICON_X "\206"
-    #define M_ICON_CIRCLE "\205"
-    #define M_ICON_SQUARE "\207"
-    #define M_ICON_TRIANGLE "\204"
-    #define M_ICON_UP "\203 "
-    #define M_ICON_DOWN "\202 "
-    #define M_ICON_LEFT "\200 "
-    #define M_ICON_RIGHT "\201 "
-    #define M_ICON_L1 "^"
-    #define M_ICON_R1 "_"
-    #define M_ICON_L2 "\300"
-    #define M_ICON_R2 "{"
-#elif TR_VERSION == 2
-    #define M_ICON_X "\\{x}"
-    #define M_ICON_CIRCLE "\\{circle}"
-    #define M_ICON_SQUARE "\\{square}"
-    #define M_ICON_TRIANGLE "\\{triangle}"
-    #define M_ICON_UP "\\{up} "
-    #define M_ICON_DOWN "\\{down} "
-    #define M_ICON_LEFT "\\{left} "
-    #define M_ICON_RIGHT "\\{right} "
-    #define M_ICON_L1 "\\{l1}"
-    #define M_ICON_R1 "\\{r1}"
-    #define M_ICON_L2 "\\{l2}"
-    #define M_ICON_R2 "\\{r2}"
-#endif
+#define M_ICON_X "\\{button x}"
+#define M_ICON_CIRCLE "\\{button circle}"
+#define M_ICON_SQUARE "\\{button square}"
+#define M_ICON_TRIANGLE "\\{button triangle}"
+#define M_ICON_UP "\\{button up} "
+#define M_ICON_DOWN "\\{button down} "
+#define M_ICON_LEFT "\\{button left} "
+#define M_ICON_RIGHT "\\{button right} "
+#define M_ICON_L1 "\\{button l1}"
+#define M_ICON_R1 "\\{button r1}"
+#define M_ICON_L2 "\\{button l2}"
+#define M_ICON_R2 "\\{button r2}"
 
 // TODO: replace all of the text with icons
 #if TR_VERSION == 1

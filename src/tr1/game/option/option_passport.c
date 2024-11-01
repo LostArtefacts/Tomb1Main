@@ -124,16 +124,16 @@ void M_InitRequesters(void)
 
 static void M_InitText(void)
 {
-    m_Text[TEXT_LEFT_ARROW] = Text_Create(-85, -15, "\200");
+    m_Text[TEXT_LEFT_ARROW] = Text_Create(-85, -15, "\\{button left}");
     Text_Hide(m_Text[TEXT_LEFT_ARROW], true);
 
-    m_Text[TEXT_RIGHT_ARROW] = Text_Create(70, -15, "\201");
+    m_Text[TEXT_RIGHT_ARROW] = Text_Create(70, -15, "\\{button right}");
     Text_Hide(m_Text[TEXT_RIGHT_ARROW], true);
 
-    m_Text[TEXT_LEVEL_ARROW_LEFT] = Text_Create(0, 0, "\200");
+    m_Text[TEXT_LEVEL_ARROW_LEFT] = Text_Create(0, 0, "\\{button left}");
     Text_Hide(m_Text[TEXT_LEVEL_ARROW_LEFT], true);
 
-    m_Text[TEXT_LEVEL_ARROW_RIGHT] = Text_Create(0, 0, "\201");
+    m_Text[TEXT_LEVEL_ARROW_RIGHT] = Text_Create(0, 0, "\\{button right}");
     Text_Hide(m_Text[TEXT_LEVEL_ARROW_RIGHT], true);
 
     m_Text[TEXT_PAGE_NAME] = Text_Create(0, -16, "");

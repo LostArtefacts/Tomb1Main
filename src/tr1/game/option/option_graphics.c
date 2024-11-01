@@ -206,7 +206,7 @@ static void M_InitText(void)
         m_Text[TEXT_TITLE_BORDER], width, height, 0, 0, TS_BACKGROUND);
     Text_AddOutline(m_Text[TEXT_TITLE_BORDER], TS_BACKGROUND);
 
-    m_Text[TEXT_LEFT_ARROW] = Text_Create(0, 0, "\200");
+    m_Text[TEXT_LEFT_ARROW] = Text_Create(0, 0, "\\{button left}");
     Text_CentreV(m_Text[TEXT_LEFT_ARROW], 1);
     Text_SetPos(
         m_Text[TEXT_LEFT_ARROW], m_GraphicsMenu.value_texts[0]->pos.x - 20,
@@ -214,7 +214,7 @@ static void M_InitText(void)
     m_HideArrowLeft =
         g_Config.rendering.enable_perspective_filter ? false : true;
 
-    m_Text[TEXT_RIGHT_ARROW] = Text_Create(0, 0, "\201");
+    m_Text[TEXT_RIGHT_ARROW] = Text_Create(0, 0, "\\{button right}");
     Text_CentreV(m_Text[TEXT_RIGHT_ARROW], 1);
     Text_SetPos(
         m_Text[TEXT_RIGHT_ARROW], m_GraphicsMenu.value_texts[0]->pos.x + 40,
@@ -222,14 +222,14 @@ static void M_InitText(void)
     m_HideArrowRight =
         g_Config.rendering.enable_perspective_filter ? true : false;
 
-    m_Text[TEXT_UP_ARROW] = Text_Create(0, TOP_Y + BORDER * 2, "[");
+    m_Text[TEXT_UP_ARROW] = Text_Create(0, TOP_Y + BORDER * 2, "\\{arrow up}");
     Text_SetScale(
         m_Text[TEXT_UP_ARROW], TEXT_BASE_SCALE * 2 / 3,
         TEXT_BASE_SCALE * 2 / 3);
     Text_CentreH(m_Text[TEXT_UP_ARROW], true);
     Text_CentreV(m_Text[TEXT_UP_ARROW], true);
 
-    m_Text[TEXT_DOWN_ARROW] = Text_Create(0, max_y, "]");
+    m_Text[TEXT_DOWN_ARROW] = Text_Create(0, max_y, "\\{arrow down}");
     Text_SetScale(
         m_Text[TEXT_DOWN_ARROW], TEXT_BASE_SCALE * 2 / 3,
         TEXT_BASE_SCALE * 2 / 3);

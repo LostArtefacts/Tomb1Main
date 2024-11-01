@@ -141,7 +141,9 @@ UI_WIDGET *UI_PhotoMode_Create(void)
             INPUT_BACKEND_KEYBOARD, g_Config.input.layout,
             INPUT_ROLE_CAMERA_RIGHT));
 
-    const char *const rot_role = "\200 \203 \202 \201 : ";
+    const char *const rot_role =
+        "\\{button left} \\{button up} "
+        "\\{button down} \\{button right} : ";
 
     char z_roll_role[100];
     sprintf(z_roll_role, "%s: ", GS(PHOTO_MODE_ROLL_ROLE));

@@ -3,8 +3,33 @@
 #include "memory.h"
 
 #include <assert.h>
+#include <string.h>
 
 static TEXTSTRING m_TextStrings[TEXT_MAX_STRINGS] = { 0 };
+
+static GLYPH_INFO m_Glyphs[] = {
+#define GLYPH_DEFINE(mesh_idx_, text_, width_, role_)                          \
+    { .mesh_idx = mesh_idx_, .text = text_, .width = width_, .role = role_ },
+#include "text.def"
+    { .text = NULL }, // guard
+};
+
+static const GLYPH_INFO *M_GetGlyph(const char *ptr);
+
+static const GLYPH_INFO *M_GetGlyph(const char *const ptr)
+{
+    const GLYPH_INFO *best_match = NULL;
+    int32_t best_match_size = 0;
+    for (int32_t i = 0; m_Glyphs[i].text != NULL; i++) {
+        const int32_t match_size = strlen(m_Glyphs[i].text);
+        if (strncmp(ptr, m_Glyphs[i].text, match_size) == 0
+            && match_size >= best_match_size) {
+            best_match_size = match_size;
+            best_match = &m_Glyphs[i];
+        }
+    }
+    return best_match;
+}
 
 void Text_Init(void)
 {
@@ -19,6 +44,7 @@ void Text_Shutdown(void)
     for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
         TEXTSTRING *const text = &m_TextStrings[i];
         Memory_FreePointer(&text->content);
+        Memory_FreePointer(&text->glyphs);
     }
 }
 
@@ -52,7 +78,8 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     }
 
     TEXTSTRING *text = &m_TextStrings[free_idx];
-    text->content = Memory_DupStr(content);
+    text->content = NULL;
+    text->glyphs = NULL;
     text->scale.h = TEXT_BASE_SCALE;
     text->scale.v = TEXT_BASE_SCALE;
     text->pos.x = x;
@@ -68,6 +95,8 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     text->background.offset.z = 0;
     text->flags.all = 0;
     text->flags.active = 1;
+
+    Text_ChangeText(text, content);
 
     return text;
 }
@@ -87,11 +116,30 @@ void Text_ChangeText(TEXTSTRING *const text, const char *const content)
     if (text == NULL) {
         return;
     }
+
     assert(content != NULL);
-    if (text->flags.active) {
-        Memory_FreePointer(&text->content);
-        text->content = Memory_DupStr(content);
+    Memory_FreePointer(&text->content);
+    Memory_FreePointer(&text->glyphs);
+    if (!text->flags.active) {
+        return;
     }
+
+    text->content = Memory_DupStr(content);
+    text->glyphs = Memory_Alloc((strlen(content) + 1) * sizeof(GLYPH_INFO *));
+
+    const char *content_ptr = content;
+    const GLYPH_INFO **glyph_ptr = text->glyphs;
+    while (*content_ptr != '\0') {
+        const GLYPH_INFO *const glyph = M_GetGlyph(content_ptr);
+        if (glyph == NULL) {
+            content_ptr++;
+            continue;
+        }
+
+        *glyph_ptr++ = glyph;
+        content_ptr += strlen(glyph->text);
+    }
+    *glyph_ptr++ = NULL;
 }
 
 void Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)

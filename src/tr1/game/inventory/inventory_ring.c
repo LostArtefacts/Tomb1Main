@@ -112,16 +112,16 @@ void Inv_Ring_InitHeader(RING_INFO *ring)
     if (!m_InvUpArrow1) {
         if (ring->type == RT_OPTION
             || (ring->type == RT_MAIN && g_InvKeysObjects)) {
-            m_InvUpArrow1 = Text_Create(20, 28, "[");
-            m_InvUpArrow2 = Text_Create(-20, 28, "[");
+            m_InvUpArrow1 = Text_Create(20, 28, "\\{arrow up}");
+            m_InvUpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
             Text_AlignRight(m_InvUpArrow2, 1);
         }
     }
 
     if (!m_InvDownArrow1) {
         if (ring->type == RT_MAIN || ring->type == RT_KEYS) {
-            m_InvDownArrow1 = Text_Create(20, -15, "]");
-            m_InvDownArrow2 = Text_Create(-20, -15, "]");
+            m_InvDownArrow1 = Text_Create(20, -15, "\\{arrow down}");
+            m_InvDownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
             Text_AlignBottom(m_InvDownArrow1, 1);
             Text_AlignBottom(m_InvDownArrow2, 1);
             Text_AlignRight(m_InvDownArrow2, 1);
@@ -173,7 +173,7 @@ void Inv_Ring_Active(INVENTORY_ITEM *inv_item)
         Text_CentreH(g_InvItemText[IT_NAME], 1);
     }
 
-    char temp_text[64];
+    char temp_text[128];
     int32_t qty = Inv_RequestItem(inv_item->object_id);
 
     switch (inv_item->object_id) {

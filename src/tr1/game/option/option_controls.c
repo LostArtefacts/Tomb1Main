@@ -259,18 +259,18 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     m_Text[TEXT_LEFT_ARROW] = Text_Create(
         m_Text[TEXT_TITLE]->pos.x - tw / 2 - 20, m_Text[TEXT_TITLE]->pos.y,
-        "\200");
+        "\\{button left}");
     Text_CentreH(m_Text[TEXT_LEFT_ARROW], true);
     Text_CentreV(m_Text[TEXT_LEFT_ARROW], true);
 
     m_Text[TEXT_RIGHT_ARROW] = Text_Create(
         m_Text[TEXT_TITLE]->pos.x + tw / 2 + 15, m_Text[TEXT_TITLE]->pos.y,
-        "\201");
+        "\\{button right}");
     Text_CentreH(m_Text[TEXT_RIGHT_ARROW], true);
     Text_CentreV(m_Text[TEXT_RIGHT_ARROW], true);
 
     m_Text[TEXT_UP_ARROW] =
-        Text_Create(0, m_ControlMenu.key_texts[0]->pos.y - 12, "[");
+        Text_Create(0, m_ControlMenu.key_texts[0]->pos.y - 12, "\\{arrow up}");
     Text_SetScale(
         m_Text[TEXT_UP_ARROW], TEXT_BASE_SCALE * 2 / 3,
         TEXT_BASE_SCALE * 2 / 3);
@@ -279,7 +279,7 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     m_Text[TEXT_DOWN_ARROW] = Text_Create(
         0, m_ControlMenu.key_texts[m_ControlMenu.vis_options - 1]->pos.y + 12,
-        "]");
+        "\\{arrow down}");
     Text_SetScale(
         m_Text[TEXT_DOWN_ARROW], TEXT_BASE_SCALE * 2 / 3,
         TEXT_BASE_SCALE * 2 / 3);

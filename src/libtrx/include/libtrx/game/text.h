@@ -10,6 +10,22 @@
 #define TEXT_BASE_SCALE 0x10000
 
 typedef enum {
+    // special non-printable glyph roles
+    GLYPH_NORMAL,
+    GLYPH_SPACE,
+    GLYPH_NEWLINE,
+    GLYPH_COMBINING,
+    GLYPH_SECRET,
+} GLYPH_ROLE;
+
+typedef struct {
+    const char *text;
+    int32_t mesh_idx;
+    int32_t width;
+    GLYPH_ROLE role;
+} GLYPH_INFO;
+
+typedef enum {
     TS_HEADING = 0,
     TS_BACKGROUND = 1,
     TS_REQUESTED = 2,
@@ -71,6 +87,8 @@ typedef struct {
     } outline;
 
     char *content;
+
+    const GLYPH_INFO **glyphs;
 } TEXTSTRING;
 
 extern int32_t Text_GetMaxLineLength(void);

@@ -19,12 +19,12 @@ static void M_InitText(void)
     CLAMPG(g_OptionSoundVolume, 10);
 
     char text[8];
-    sprintf(text, "| %2d", g_OptionMusicVolume);
+    sprintf(text, "\\{icon music} %2d", g_OptionMusicVolume);
     g_SoundText[0] = Text_Create(0, 0, text);
     Text_AddBackground(g_SoundText[0], 128, 0, 0, 0, TS_REQUESTED);
     Text_AddOutline(g_SoundText[0], TS_REQUESTED);
 
-    sprintf(text, "} %2d", g_OptionSoundVolume);
+    sprintf(text, "\\{icon sound} %2d", g_OptionSoundVolume);
     g_SoundText[1] = Text_Create(0, 25, text);
 
     g_SoundText[2] = Text_Create(0, -32, " ");
@@ -95,7 +95,7 @@ void __cdecl Option_Sound(INVENTORY_ITEM *const item)
         }
 
         if (changed) {
-            sprintf(text, "} %2d", g_OptionSoundVolume);
+            sprintf(text, "\\{icon sound} %2d", g_OptionSoundVolume);
             Text_ChangeText(g_SoundText[1], text);
             if (g_OptionSoundVolume) {
                 Sound_SetMasterVolume(6 * g_OptionSoundVolume + 4);
@@ -118,7 +118,7 @@ void __cdecl Option_Sound(INVENTORY_ITEM *const item)
         if (changed) {
             g_Inv_IsOptionsDelay = 1;
             g_Inv_OptionsDelayCounter = 10;
-            sprintf(text, "| %2d", g_OptionMusicVolume);
+            sprintf(text, "\\{icon music} %2d", g_OptionMusicVolume);
             Text_ChangeText(g_SoundText[0], text);
 
             if (g_OptionMusicVolume) {

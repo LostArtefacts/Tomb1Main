@@ -146,19 +146,28 @@ void Overlay_HideGameInfo(void)
 
 void __cdecl Overlay_MakeAmmoString(char *const string)
 {
-    for (char *c = string; *c != '\0'; c++) {
-        if (*c == ' ') {
-            continue;
-        }
+    char result[128] = "";
 
-        if (*c - 'A' >= 0) {
-            // ammo sprites
-            *c += 0xC - 'A';
-        } else {
-            // digits
-            *c += 1 - '0';
+    char *ptr = string;
+    while (*ptr != '\0') {
+        if (*ptr == ' ') {
+            strcat(result, " ");
+        } else if (*ptr == 'A') {
+            strcat(result, "\\{ammo shotgun}");
+        } else if (*ptr == 'B') {
+            strcat(result, "\\{ammo magnums}");
+        } else if (*ptr == 'C') {
+            strcat(result, "\\{ammo uzis}");
+        } else if (*ptr >= '0' && *ptr <= '9') {
+            strcat(result, "\\{small digit ");
+            char tmp[2] = { *ptr, '\0' };
+            strcat(result, tmp);
+            strcat(result, "}");
         }
+        ptr++;
     }
+
+    strcpy(string, result);
 }
 
 void __cdecl Overlay_DrawAmmoInfo(void)
@@ -172,7 +181,7 @@ void __cdecl Overlay_DrawAmmoInfo(void)
         return;
     }
 
-    char buffer[80] = "";
+    char buffer[128] = "";
     switch (g_Lara.gun_type) {
     case LGT_MAGNUMS:
         sprintf(buffer, "%5d", g_Lara.magnum_ammo.ammo);

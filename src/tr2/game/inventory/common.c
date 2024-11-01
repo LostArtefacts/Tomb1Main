@@ -1094,8 +1094,8 @@ void __cdecl Inv_RingIsOpen(RING_INFO *const ring)
     if (g_Inv_UpArrow1 == NULL) {
         if (ring->type == RT_OPTION
             || (ring->type == RT_MAIN && g_Inv_KeyObjectsCount > 0)) {
-            g_Inv_UpArrow1 = Text_Create(20, 28, "[");
-            g_Inv_UpArrow2 = Text_Create(-20, 28, "[");
+            g_Inv_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
+            g_Inv_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
             Text_AlignRight(g_Inv_UpArrow2, true);
         }
     }
@@ -1104,9 +1104,9 @@ void __cdecl Inv_RingIsOpen(RING_INFO *const ring)
         && ((
             (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
             || ring->type == RT_KEYS))) {
-        g_Inv_DownArrow1 = Text_Create(20, -15, "]");
+        g_Inv_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
         Text_AlignBottom(g_Inv_DownArrow1, true);
-        g_Inv_DownArrow2 = Text_Create(-20, -15, "]");
+        g_Inv_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
         Text_AlignBottom(g_Inv_DownArrow2, true);
         Text_AlignRight(g_Inv_DownArrow2, true);
     }

@@ -155,7 +155,11 @@ void __cdecl ShowStatsText(const char *const time_str, const int32_t type)
         int32_t num_secrets = 0;
         for (int32_t i = 0; i < 3; i++) {
             if (g_SaveGame.statistics.secrets & (1 << i)) {
-                *ptr++ = 127 + i;
+                strcat(ptr, "\\{secret ");
+                char temp[2] = { '1' + i, '\0' };
+                strcat(ptr, temp);
+                strcat(ptr, "}");
+                ptr += strlen(ptr);
                 num_secrets++;
             } else {
                 *ptr++ = ' ';

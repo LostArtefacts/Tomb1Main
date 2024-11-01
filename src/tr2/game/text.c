@@ -1,53 +1,10 @@
 #include "game/text.h"
 
-#include "game/console/common.h"
 #include "game/output.h"
-#include "game/overlay.h"
-#include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <libtrx/memory.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
-#include <string.h>
-
-#define CHAR_SECRET_1 0x7Fu
-#define CHAR_SECRET_2 0x80u
-#define CHAR_SECRET_3 0x81u
-#define IS_CHAR_LEGAL(c) ((c) <= CHAR_SECRET_3 && ((c) <= 18u || (c) >= 32u))
-#define IS_CHAR_SECRET(c) ((c) >= CHAR_SECRET_1 && (c) <= CHAR_SECRET_3)
-#define IS_CHAR_DIACRITIC(c)                                                   \
-    ((c) == '(' || (c) == ')' || (c) == '$' || (c) == '~')
-#define IS_CHAR_SPACE(c) ((c) == 32)
-#define IS_CHAR_DIGIT(c) ((c) <= 0xAu)
-
-// TODO: replace textstring == NULL checks with assertions
-typedef struct {
-    const char *name;
-    int32_t sprite_idx;
-} M_SPRITE_NAME;
-
-static int32_t M_GetSpriteIndexByName(const char *input, size_t len);
-
-static M_SPRITE_NAME m_SpriteNames[] = {
-    { "left", 108 }, { "down", 106 },    { "up", 107 },    { "right", 109 },
-    { "x", 95 },     { "triangle", 93 }, { "square", 96 }, { "circle", 94 },
-    { "l1", 97 },    { "r1", 98 },       { "l2", 99 },     { "r2", 100 },
-    { NULL, -1 },
-};
-
-static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
-{
-    for (int32_t i = 0; m_SpriteNames[i].name != NULL; i++) {
-        const M_SPRITE_NAME *const def = &m_SpriteNames[i];
-        if (strncmp(input, def->name, len) == 0) {
-            return def->sprite_idx;
-        }
-    }
-    return -1;
-}
 
 int32_t __cdecl Text_GetWidth(TEXTSTRING *const text)
 {
@@ -55,57 +12,22 @@ int32_t __cdecl Text_GetWidth(TEXTSTRING *const text)
         return 0;
     }
 
-    const uint32_t scale_h = Text_GetScaleH(text->scale.h);
-    const char *content = text->content;
     int32_t width = 0;
-
-    while (1) {
-        int32_t spacing = 0;
-
-        const uint8_t c = *content++;
-        if (!c) {
-            break;
-        }
-
-        if (!IS_CHAR_LEGAL(c) || IS_CHAR_DIACRITIC(c)) {
-            continue;
-        }
-
-        if (IS_CHAR_SPACE(c)) {
-            spacing = text->word_spacing;
-        } else if (IS_CHAR_SECRET(c)) {
-            spacing = 16;
+    const GLYPH_INFO **glyph_ptr = text->glyphs;
+    if (text->glyphs == NULL) {
+        return 0;
+    }
+    while (*glyph_ptr != NULL) {
+        if ((*glyph_ptr)->role == GLYPH_SPACE) {
+            width += text->word_spacing;
         } else {
-            int16_t sprite_num;
-            if (c == '\\' && *content == '{') {
-                const char *const start = content + 1;
-                const char *const end = strchr(start, '}');
-                sprite_num = M_GetSpriteIndexByName(content + 1, end - start);
-                content = end + 1;
-            } else if (IS_CHAR_DIGIT(c)) {
-                sprite_num = c + 81;
-            } else {
-                sprite_num = g_TextASCIIMap[c];
-            }
-
-            if (sprite_num == -1) {
-                continue;
-            }
-
-            // TODO: OG bug - this should check c, not sprite_num
-            if (sprite_num >= '0' && sprite_num <= '9') {
-                spacing = 12;
-            } else {
-                // TODO: OG bug - wrong letter spacing calculation
-                spacing = g_TextSpacing[sprite_num] + text->letter_spacing;
-            }
+            width += (*glyph_ptr)->width + text->letter_spacing;
         }
-
-        width += spacing * scale_h / TEXT_BASE_SCALE;
+        glyph_ptr++;
     }
 
-    // TODO: OG bug - wrong letter spacing calculation; pointless ~1
-    return ((int16_t)width - text->letter_spacing) & ~1;
+    width -= text->letter_spacing;
+    return width * Text_GetScaleH(text->scale.h) / TEXT_BASE_SCALE;
 }
 
 int32_t Text_GetHeight(const TEXTSTRING *const text)
@@ -201,77 +123,42 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         - ((11 * scale_v) / TEXT_BASE_SCALE);
     const int32_t start_x = x;
 
-    const char *content = text->content;
-    while (1) {
-        const uint8_t c = *content++;
-        if (!c) {
-            break;
-        }
-
-        if (text->flags.multiline && c == '\n') {
+    const GLYPH_INFO **glyph_ptr = text->glyphs;
+    while (*glyph_ptr != NULL) {
+        if (text->flags.multiline && (*glyph_ptr)->role == GLYPH_NEWLINE) {
             y += TEXT_HEIGHT * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
             x = start_x;
+            glyph_ptr++;
             continue;
         }
 
-        if (!IS_CHAR_LEGAL(c)) {
+        if ((*glyph_ptr)->role == GLYPH_SPACE) {
+            x += text->word_spacing * scale_h / TEXT_BASE_SCALE;
+            glyph_ptr++;
             continue;
         }
 
-        if (IS_CHAR_SPACE(c)) {
-            const int32_t spacing = text->word_spacing;
-            x += spacing * scale_h / TEXT_BASE_SCALE;
-        } else if (IS_CHAR_SECRET(c)) {
+        if ((*glyph_ptr)->role == GLYPH_SECRET) {
             Output_DrawPickup(
                 x + 10, y, 7144,
-                g_Objects[O_SECRET_1 + c - CHAR_SECRET_1].mesh_idx, 4096);
-            const int32_t spacing = 16;
-            x += spacing * scale_h / TEXT_BASE_SCALE;
-        } else {
-            int16_t sprite_num;
-
-            if (c == '\\' && *content == '{') {
-                const char *const start = content + 1;
-                const char *const end = strchr(start, '}');
-                sprite_num = M_GetSpriteIndexByName(content + 1, end - start);
-                content = end + 1;
-            } else if (IS_CHAR_DIGIT(c)) {
-                sprite_num = c + 81;
-            } else if (c <= 0x12) {
-                sprite_num = c + 91;
-            } else {
-                sprite_num = g_TextASCIIMap[c];
-            }
-
-            if (sprite_num == -1) {
-                continue;
-            }
-
-            if (c >= '0' && c <= '9') {
-                const int32_t spacing = (12 - g_TextSpacing[sprite_num]) / 2;
-                x += spacing * scale_h / TEXT_BASE_SCALE;
-            }
-
-            if (x >= 0 && x < GetRenderWidth() && y >= 0
-                && y < GetRenderHeight()) {
-                Output_DrawScreenSprite2D(
-                    x, y, z, scale_h, scale_v,
-                    g_Objects[O_ALPHABET].mesh_idx + sprite_num, 4096, 0);
-            }
-
-            if (IS_CHAR_DIACRITIC(c)) {
-                continue;
-            }
-
-            if (c >= '0' && c <= '9') {
-                const int32_t x_off = (12 - g_TextSpacing[sprite_num]) / 2;
-                x += (12 - x_off) * scale_h / TEXT_BASE_SCALE;
-            } else {
-                const int32_t spacing =
-                    g_TextSpacing[sprite_num] + text->letter_spacing;
-                x += spacing * scale_h / TEXT_BASE_SCALE;
-            }
+                g_Objects[O_SECRET_1 + (*glyph_ptr)->mesh_idx].mesh_idx, 4096);
+            x += (*glyph_ptr)->width * scale_h / TEXT_BASE_SCALE;
+            glyph_ptr++;
+            continue;
         }
+
+        if (x >= 0 && x < GetRenderWidth() && y >= 0 && y < GetRenderHeight()) {
+            Output_DrawScreenSprite2D(
+                x, y, z, scale_h, scale_v,
+                g_Objects[O_ALPHABET].mesh_idx + (*glyph_ptr)->mesh_idx, 4096,
+                0);
+        }
+
+        if ((*glyph_ptr)->role != GLYPH_COMBINING) {
+            const int32_t spacing = text->letter_spacing + (*glyph_ptr)->width;
+            x += spacing * scale_h / TEXT_BASE_SCALE;
+        }
+        glyph_ptr++;
     }
 
     if (text->flags.outline || text->flags.background) {
@@ -291,16 +178,9 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
     }
 
     if (text->flags.background) {
-#if 0
-        S_DrawScreenFBox(
-            box_x, box_y, text->background.offset.z + z + 2, box_w, box_h,
-            text->bgnd_color, (const GOURAUD_FILL *)text->bgnd_gour,
-            text->bgnd_flags);
-#else
         S_DrawScreenFBox(
             box_x, box_y, text->background.offset.z + z + 2, box_w, box_h, 0,
             NULL, 0);
-#endif
     }
 
     if (text->flags.outline) {

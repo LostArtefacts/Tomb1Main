@@ -2,6 +2,41 @@
 - added support for wading, similar to TR2+ (#1537)
 - added the ability to pause during cutscenes (#1673)
 - changed OpenGL backend to use version 3.3, with fallback to 2.1 if initialization fails (#1738)
+- changed text backend to accept named sequences. Currently supported sequences (limited by the sprites available in OG):
+    - `\{umlaut}`
+    - `\{hat}`
+    - `\{acute accent}`
+    - `\{grave accent}`
+    - `\{arrow up}`
+    - `\{arrow down}`
+    - `\{small digit 0}`
+    - `\{small digit 1}`
+    - `\{small digit 2}`
+    - `\{small digit 3}`
+    - `\{small digit 4}`
+    - `\{small digit 5}`
+    - `\{small digit 6}`
+    - `\{small digit 7}`
+    - `\{small digit 8}`
+    - `\{small digit 9}`
+    - `\{button empty}`
+    - `\{button triangle}`
+    - `\{button circle}`
+    - `\{button x}`
+    - `\{button square}`
+    - `\{button l1}`
+    - `\{button r1}`
+    - `\{button l2}`
+    - `\{button r2}`
+    - `\{button down}`
+    - `\{button up}`
+    - `\{button left}`
+    - `\{button right}`
+    - `\{icon sound}`
+    - `\{icon music}`
+    - `\{ammo shotgun}`
+    - `\{ammo magnums}`
+    - `\{ammo uzis}`
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)
 - fixed missing trapdoor triggers in City of Khamoon (#1744)

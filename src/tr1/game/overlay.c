@@ -20,6 +20,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #define COLOR_STEPS 5
 #define MAX_PICKUP_COLUMNS 4
@@ -613,38 +614,36 @@ static void M_DrawAmmoInfo(void)
 
     double scale_ammo_to_bar = g_Config.ui.bar_scale / g_Config.ui.text_scale;
 
-    char ammostring[80] = "";
-
     if (g_Lara.gun_status != LGS_READY
         || (g_GameInfo.bonus_flag & GBF_NGPLUS)) {
         M_RemoveAmmoText();
         return;
     }
 
+    char ammo_string[80] = "";
     switch (g_Lara.gun_type) {
     case LGT_PISTOLS:
         return;
-    case LGT_MAGNUMS:
-        sprintf(ammostring, "%5d B", g_Lara.magnums.ammo);
+    case LGT_SHOTGUN:
+        sprintf(ammo_string, "%5d A", g_Lara.shotgun.ammo / SHOTGUN_AMMO_CLIP);
         break;
     case LGT_UZIS:
-        sprintf(ammostring, "%5d C", g_Lara.uzis.ammo);
+        sprintf(ammo_string, "%5d C", g_Lara.uzis.ammo);
         break;
-    case LGT_SHOTGUN:
-        sprintf(ammostring, "%5d A", g_Lara.shotgun.ammo / SHOTGUN_AMMO_CLIP);
+    case LGT_MAGNUMS:
+        sprintf(ammo_string, "%5d B", g_Lara.magnums.ammo);
         break;
     default:
         return;
     }
-
-    Overlay_MakeAmmoString(ammostring);
+    Overlay_MakeAmmoString(ammo_string);
 
     if (m_AmmoText) {
-        Text_ChangeText(m_AmmoText, ammostring);
+        Text_ChangeText(m_AmmoText, ammo_string);
     } else {
         m_AmmoText = Text_Create(
             -screen_margin_h - text_offset_x, text_height + screen_margin_v,
-            ammostring);
+            ammo_string);
         Text_SetScale(
             m_AmmoText, TEXT_BASE_SCALE * scale, TEXT_BASE_SCALE * scale);
         Text_AlignRight(m_AmmoText, 1);
@@ -838,17 +837,28 @@ void Overlay_AddPickup(const GAME_OBJECT_ID object_id)
     }
 }
 
-void Overlay_MakeAmmoString(char *string)
+void Overlay_MakeAmmoString(char *const string)
 {
-    char *c;
+    char result[128] = "";
 
-    for (c = string; *c != 0; c++) {
-        if (*c == 32) {
-            continue;
-        } else if (*c - 'A' >= 0) {
-            *c += 12 - 'A';
-        } else {
-            *c += 1 - '0';
+    char *ptr = string;
+    while (*ptr != '\0') {
+        if (*ptr == ' ') {
+            strcat(result, " ");
+        } else if (*ptr == 'A') {
+            strcat(result, "\\{ammo shotgun}");
+        } else if (*ptr == 'B') {
+            strcat(result, "\\{ammo magnums}");
+        } else if (*ptr == 'C') {
+            strcat(result, "\\{ammo uzis}");
+        } else if (*ptr >= '0' && *ptr <= '9') {
+            strcat(result, "\\{small digit ");
+            char tmp[2] = { *ptr, '\0' };
+            strcat(result, tmp);
+            strcat(result, "}");
         }
+        ptr++;
     }
+
+    strcpy(string, result);
 }

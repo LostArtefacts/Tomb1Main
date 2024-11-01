@@ -4,7 +4,7 @@
 
 const char *UI_Prompt_GetPromptChar(void)
 {
-    return "\x80";
+    return "\\{button left}";
 }
 
 int32_t UI_Prompt_GetCaretFlashRate(void)
