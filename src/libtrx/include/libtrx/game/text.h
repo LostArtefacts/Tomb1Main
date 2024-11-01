@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 
+#define TEXT_MAX_STRINGS 128
 #define TEXT_BASE_SCALE 0x10000
 
 typedef enum {
@@ -69,3 +70,10 @@ typedef struct {
 } TEXTSTRING;
 
 extern int32_t Text_GetMaxLineLength(void);
+extern void Text_DrawText(TEXTSTRING *text);
+
+void Text_Init(void);
+void Text_Shutdown(void);
+
+TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *text);
+void Text_Draw(void);

@@ -1,5 +1,6 @@
 #include "decomp/stats.h"
 
+#include "game/console/common.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/overlay.h"
@@ -337,6 +338,7 @@ int32_t __cdecl LevelStats(const int32_t level_num)
         }
 
         ShowStatsText(buffer, 0);
+        Console_Draw();
         Text_Draw();
         S_OutputPolyList();
         S_DumpScreen();
@@ -391,6 +393,7 @@ int32_t __cdecl GameStats(const int32_t level_num)
         }
 
         ShowEndStatsText();
+        Console_Draw();
         Text_Draw();
         S_OutputPolyList();
         S_DumpScreen();

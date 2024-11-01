@@ -10,14 +10,14 @@ static void M_ShutdownText(void);
 static void M_InitText(void)
 {
     g_DetailText[0] =
-        Text_Create(0, 50, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_LOW]);
+        Text_Create(0, 50, g_GF_GameStrings[GF_S_GAME_DETAIL_LOW]);
     g_DetailText[1] =
-        Text_Create(0, 25, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_MEDIUM]);
+        Text_Create(0, 25, g_GF_GameStrings[GF_S_GAME_DETAIL_MEDIUM]);
     g_DetailText[2] =
-        Text_Create(0, 0, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_HIGH]);
-    g_DetailText[3] = Text_Create(0, -32, 0, " ");
-    g_DetailText[4] = Text_Create(
-        0, -30, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_SELECT_DETAIL]);
+        Text_Create(0, 0, g_GF_GameStrings[GF_S_GAME_DETAIL_HIGH]);
+    g_DetailText[3] = Text_Create(0, -32, " ");
+    g_DetailText[4] =
+        Text_Create(0, -30, g_GF_GameStrings[GF_S_GAME_DETAIL_SELECT_DETAIL]);
     Text_AddBackground(g_DetailText[4], 156, 0, 0, 0, 8, 0, 0, 0);
     Text_AddOutline(g_DetailText[4], 1, 4, 0);
     Text_AddBackground(g_DetailText[g_DetailLevel], 148, 0, 0, 0, 8, 0, 0, 0);

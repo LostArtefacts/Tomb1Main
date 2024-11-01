@@ -54,8 +54,7 @@ void __cdecl Option_Passport(INVENTORY_ITEM *const item)
             if (g_SavedGames != 0 && g_Inv_Mode != INV_SAVE_MODE) {
                 if (g_PasswordText1 == NULL) {
                     g_PasswordText1 = Text_Create(
-                        0, -16, 0,
-                        g_GF_GameStrings[GF_S_GAME_PASSPORT_LOAD_GAME]);
+                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_LOAD_GAME]);
                     Text_AlignBottom(g_PasswordText1, true);
                     Text_CentreH(g_PasswordText1, true);
                 }
@@ -129,12 +128,10 @@ void __cdecl Option_Passport(INVENTORY_ITEM *const item)
             if (g_PasswordText1 == NULL) {
                 if (g_Inv_Mode == INV_TITLE_MODE || g_CurrentLevel == LV_GYM) {
                     g_PasswordText1 = Text_Create(
-                        0, -16, 0,
-                        g_GF_GameStrings[GF_S_GAME_PASSPORT_NEW_GAME]);
+                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_NEW_GAME]);
                 } else {
                     g_PasswordText1 = Text_Create(
-                        0, -16, 0,
-                        g_GF_GameStrings[GF_S_GAME_PASSPORT_SAVE_GAME]);
+                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_SAVE_GAME]);
                 }
                 Text_AlignBottom(g_PasswordText1, true);
                 Text_CentreH(g_PasswordText1, true);
@@ -186,14 +183,13 @@ void __cdecl Option_Passport(INVENTORY_ITEM *const item)
         if (g_PasswordText1 == NULL) {
             if (g_Inv_Mode == INV_TITLE_MODE) {
                 g_PasswordText1 = Text_Create(
-                    0, -16, 0, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_GAME]);
+                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_GAME]);
             } else if (g_GameFlow.demo_version) {
                 g_PasswordText1 = Text_Create(
-                    0, -16, 0, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_DEMO]);
+                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_DEMO]);
             } else {
                 g_PasswordText1 = Text_Create(
-                    0, -16, 0,
-                    g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_TO_TITLE]);
+                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_TO_TITLE]);
             }
             Text_AlignBottom(g_PasswordText1, true);
             Text_CentreH(g_PasswordText1, true);

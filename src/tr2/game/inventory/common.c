@@ -1,5 +1,6 @@
 #include "game/inventory/common.h"
 
+#include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game.h"
 #include "game/input.h"
@@ -72,7 +73,7 @@ static void M_ShowItemQuantity(const char *const fmt, const int32_t qty)
         char string[64];
         sprintf(string, fmt, qty);
         Overlay_MakeAmmoString(string);
-        g_Inv_ItemText[1] = Text_Create(64, -56, 0, string);
+        g_Inv_ItemText[1] = Text_Create(64, -56, string);
         Text_AlignBottom(g_Inv_ItemText[1], true);
         Text_CentreH(g_Inv_ItemText[1], true);
     }
@@ -121,7 +122,7 @@ void __cdecl Inv_Construct(void)
         if (g_GameFlow.gym_enabled) {
             g_Inv_OptionObjectsCount++;
         }
-        m_VersionText = Text_Create(-20, -18, 0, g_TR2XVersion);
+        m_VersionText = Text_Create(-20, -18, g_TR2XVersion);
         Text_AlignRight(m_VersionText, 1);
         Text_AlignBottom(m_VersionText, 1);
         Text_SetScale(
@@ -402,6 +403,7 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
 
         Matrix_Pop();
         Overlay_DrawModeInfo();
+        Console_Draw();
         Text_Draw();
         Sound_EndScene();
 
@@ -1062,23 +1064,23 @@ void __cdecl Inv_RingIsOpen(RING_INFO *const ring)
         switch (ring->type) {
         case RT_MAIN:
             g_Inv_RingText = Text_Create(
-                0, 26, 0, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
+                0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
             break;
 
         case RT_OPTION:
             if (g_Inv_Mode == INV_DEATH_MODE) {
                 g_Inv_RingText = Text_Create(
-                    0, 26, 0, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
+                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
             } else {
                 g_Inv_RingText = Text_Create(
-                    0, 26, 0, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
+                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
             }
             Text_CentreH(g_Inv_RingText, true);
             break;
 
         case RT_KEYS:
-            g_Inv_RingText = Text_Create(
-                0, 26, 0, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
+            g_Inv_RingText =
+                Text_Create(0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
             break;
         }
 
@@ -1092,8 +1094,8 @@ void __cdecl Inv_RingIsOpen(RING_INFO *const ring)
     if (g_Inv_UpArrow1 == NULL) {
         if (ring->type == RT_OPTION
             || (ring->type == RT_MAIN && g_Inv_KeyObjectsCount > 0)) {
-            g_Inv_UpArrow1 = Text_Create(20, 28, 0, "[");
-            g_Inv_UpArrow2 = Text_Create(-20, 28, 0, "[");
+            g_Inv_UpArrow1 = Text_Create(20, 28, "[");
+            g_Inv_UpArrow2 = Text_Create(-20, 28, "[");
             Text_AlignRight(g_Inv_UpArrow2, true);
         }
     }
@@ -1102,9 +1104,9 @@ void __cdecl Inv_RingIsOpen(RING_INFO *const ring)
         && ((
             (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
             || ring->type == RT_KEYS))) {
-        g_Inv_DownArrow1 = Text_Create(20, -15, 0, "]");
+        g_Inv_DownArrow1 = Text_Create(20, -15, "]");
         Text_AlignBottom(g_Inv_DownArrow1, true);
-        g_Inv_DownArrow2 = Text_Create(-20, -15, 0, "]");
+        g_Inv_DownArrow2 = Text_Create(-20, -15, "]");
         Text_AlignBottom(g_Inv_DownArrow2, true);
         Text_AlignRight(g_Inv_DownArrow2, true);
     }
@@ -1131,7 +1133,7 @@ void __cdecl Inv_RingNotActive(const INVENTORY_ITEM *const inv_item)
     if (g_Inv_ItemText[0] == NULL) {
         if (inv_item->object_id != O_PASSPORT_OPTION) {
             g_Inv_ItemText[0] =
-                Text_Create(0, -16, 0, Object_GetName(inv_item->object_id));
+                Text_Create(0, -16, Object_GetName(inv_item->object_id));
         }
 
         if (g_Inv_ItemText[0]) {

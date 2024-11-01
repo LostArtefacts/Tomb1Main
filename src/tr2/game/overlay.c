@@ -1,5 +1,6 @@
 #include "game/overlay.h"
 
+#include "game/console/common.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/text.h"
@@ -94,6 +95,7 @@ void __cdecl Overlay_DrawGameInfo(const bool pickup_state)
         Overlay_DrawPickups(pickup_state);
         Overlay_DrawAssaultTimer();
     }
+    Console_Draw();
     Text_Draw();
 }
 
@@ -204,7 +206,7 @@ void __cdecl Overlay_DrawAmmoInfo(void)
     if (g_AmmoTextInfo != NULL) {
         Text_ChangeText(g_AmmoTextInfo, buffer);
     } else {
-        g_AmmoTextInfo = Text_Create(AMMO_X, AMMO_Y, 0, buffer);
+        g_AmmoTextInfo = Text_Create(AMMO_X, AMMO_Y, buffer);
         Text_AlignRight(g_AmmoTextInfo, true);
     }
 }
@@ -280,8 +282,7 @@ void __cdecl Overlay_DisplayModeInfo(const char *const string)
     if (g_DisplayModeTextInfo != NULL) {
         Text_ChangeText(g_DisplayModeTextInfo, string);
     } else {
-        g_DisplayModeTextInfo =
-            Text_Create(MODE_INFO_X, MODE_INFO_Y, 0, string);
+        g_DisplayModeTextInfo = Text_Create(MODE_INFO_X, MODE_INFO_Y, string);
         Text_AlignRight(g_DisplayModeTextInfo, 1);
         Text_AlignBottom(g_DisplayModeTextInfo, 1);
     }

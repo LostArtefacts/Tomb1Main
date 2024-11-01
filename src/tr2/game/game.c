@@ -2,6 +2,7 @@
 
 #include "decomp/decomp.h"
 #include "game/camera.h"
+#include "game/console/common.h"
 #include "game/demo.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
@@ -191,6 +192,7 @@ int32_t __cdecl Game_DrawCinematic(void)
 {
     g_CameraUnderwater = false;
     Room_DrawAllRooms(g_Camera.pos.room_num);
+    Console_Draw();
     Text_Draw();
     S_OutputPolyList();
     g_Camera.num_frames = S_DumpScreen();

@@ -10,12 +10,8 @@
 #define TEXT_HEIGHT 11 // TODO: Get rid of this
 #define TEXT_HEIGHT_FIXED 15
 #define TEXT_OUTLINE_THICKNESS 2
-#define TEXT_MAX_STRING_SIZE 100
 
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color);
-void Text_Init(void);
-void Text_Shutdown(void);
-TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *content);
 void Text_ChangeText(TEXTSTRING *text, const char *content);
 void Text_SetPos(TEXTSTRING *text, int16_t x, int16_t y);
 void Text_SetScale(TEXTSTRING *text, int32_t scale_h, int32_t scale_v);
@@ -35,5 +31,3 @@ void Text_SetMultiline(TEXTSTRING *text, bool enable);
 int32_t Text_GetWidth(const TEXTSTRING *text);
 int32_t Text_GetHeight(const TEXTSTRING *text);
 void Text_Remove(TEXTSTRING *text);
-void Text_Draw(void);
-void Text_DrawText(TEXTSTRING *text);

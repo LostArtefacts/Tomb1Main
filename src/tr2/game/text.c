@@ -13,7 +13,6 @@
 #include <assert.h>
 #include <string.h>
 
-#define TEXT_MAX_STRINGS 128
 #define CHAR_SECRET_1 0x7Fu
 #define CHAR_SECRET_2 0x80u
 #define CHAR_SECRET_3 0x81u
@@ -30,7 +29,6 @@ typedef struct {
     int32_t sprite_idx;
 } M_SPRITE_NAME;
 
-static TEXTSTRING m_TextStrings[TEXT_MAX_STRINGS] = { 0 };
 static int32_t M_GetSpriteIndexByName(const char *input, size_t len);
 
 static M_SPRITE_NAME m_SpriteNames[] = {
@@ -49,69 +47,6 @@ static int32_t M_GetSpriteIndexByName(const char *const input, const size_t len)
         }
     }
     return -1;
-}
-
-void __cdecl Text_Init(void)
-{
-    Overlay_DisplayModeInfo(NULL);
-    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_TextStrings[i];
-        m_TextStrings[i].flags.all = 0;
-    }
-}
-
-void Text_Shutdown(void)
-{
-    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_TextStrings[i];
-        Memory_FreePointer(&text->content);
-    }
-}
-
-TEXTSTRING *__cdecl Text_Create(
-    const int32_t x, const int32_t y, const int32_t z,
-    const char *const content)
-{
-    if (content == NULL) {
-        return NULL;
-    }
-
-    int32_t free_idx = -1;
-    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_TextStrings[i];
-        if (!text->flags.active) {
-            free_idx = i;
-            break;
-        }
-    }
-
-    if (free_idx == -1) {
-        return NULL;
-    }
-
-    TEXTSTRING *const text = &m_TextStrings[free_idx];
-    text->content = Memory_DupStr(content);
-    text->scale.h = TEXT_BASE_SCALE;
-    text->scale.v = TEXT_BASE_SCALE;
-    text->pos.x = (x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-    text->pos.y = (y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-    text->pos.z = z;
-
-    text->letter_spacing = 1;
-    text->word_spacing = 6;
-
-#if 0
-    text->bgnd_flags = 0;
-#endif
-    text->background.size.x = 0;
-    text->background.size.y = 0;
-    text->background.offset.x = 0;
-    text->background.offset.y = 0;
-    text->background.offset.z = 0;
-    text->flags.all = 0;
-    text->flags.active = 1;
-
-    return text;
 }
 
 void __cdecl Text_ChangeText(TEXTSTRING *const text, const char *const content)
@@ -337,18 +272,6 @@ int32_t Text_GetHeight(const TEXTSTRING *const text)
         }
     }
     return height * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
-}
-
-void __cdecl Text_Draw(void)
-{
-    // TODO: move me outta here!
-    Console_Draw();
-    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_TextStrings[i];
-        if (text->flags.active && !text->flags.manual_draw) {
-            Text_DrawText(text);
-        }
-    }
 }
 
 void __cdecl Text_DrawBorder(

@@ -20,20 +20,19 @@ static void M_InitText(void)
 
     char text[8];
     sprintf(text, "| %2d", g_OptionMusicVolume);
-    g_SoundText[0] = Text_Create(0, 0, 0, text);
+    g_SoundText[0] = Text_Create(0, 0, text);
     Text_AddBackground(g_SoundText[0], 128, 0, 0, 0, 8, INV_COLOR_BLACK, 0, 0);
     Text_AddOutline(g_SoundText[0], 1, INV_COLOR_ORANGE, 0);
 
     sprintf(text, "} %2d", g_OptionSoundVolume);
-    g_SoundText[1] = Text_Create(0, 25, 0, text);
+    g_SoundText[1] = Text_Create(0, 25, text);
 
-    g_SoundText[2] = Text_Create(0, -32, 0, " ");
+    g_SoundText[2] = Text_Create(0, -32, " ");
     Text_AddBackground(
         g_SoundText[2], 140, 85, 0, 0, 48, INV_COLOR_BLACK, 0, 0);
     Text_AddOutline(g_SoundText[2], 1, INV_COLOR_BLUE, 0);
 
-    g_SoundText[3] =
-        Text_Create(0, -30, 0, g_GF_PCStrings[GF_S_PC_SET_VOLUMES]);
+    g_SoundText[3] = Text_Create(0, -30, g_GF_PCStrings[GF_S_PC_SET_VOLUMES]);
     Text_AddBackground(g_SoundText[3], 136, 0, 0, 0, 8, INV_COLOR_BLACK, 0, 0);
     Text_AddOutline(g_SoundText[3], 1, INV_COLOR_BLUE, 0);
 

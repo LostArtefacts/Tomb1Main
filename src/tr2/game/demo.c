@@ -99,7 +99,7 @@ int32_t __cdecl Demo_Start(int32_t level_num)
     Random_SeedControl(0xD371F947);
 
     TEXTSTRING *const text = Text_Create(
-        0, g_DumpHeight / 2 - 16, 0, g_GF_PCStrings[GF_S_PC_DEMO_MODE]);
+        0, g_DumpHeight / 2 - 16, g_GF_PCStrings[GF_S_PC_DEMO_MODE]);
 
     Text_Flash(text, true, 20);
     Text_CentreV(text, true);

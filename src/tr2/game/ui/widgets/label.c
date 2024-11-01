@@ -69,7 +69,8 @@ UI_WIDGET *UI_Label_Create(
     self->height = height;
     self->has_frame = false;
 
-    self->text = Text_Create(0, 0, 16, text);
+    self->text = Text_Create(0, 0, text);
+    self->text->pos.z = 16;
     Text_SetMultiline(self->text, true);
     self->text->flags.manual_draw = 1;
 

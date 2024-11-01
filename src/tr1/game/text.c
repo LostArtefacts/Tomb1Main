@@ -1,22 +1,15 @@
 #include "game/text.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/output.h"
-#include "game/overlay.h"
 #include "game/screen.h"
-#include "global/const.h"
-#include "global/types.h"
 #include "global/vars.h"
 
 #include <libtrx/memory.h>
 
 #include <assert.h>
-#include <stdio.h>
-#include <string.h>
 
 #define TEXT_BOX_OFFSET 2
-#define TEXT_MAX_STRINGS 100
 #define TRIANGLE_SYM 93
 #define CIRCLE_SYM 94
 #define X_SYM 95
@@ -28,10 +21,7 @@
 #define LEFT_ARROW_SYM 108
 #define RIGHT_ARROW_SYM 109
 
-static int32_t m_FlashFrames = 0;
 static CLOCK_TIMER m_FlashTimer = { 0 };
-static int16_t m_TextCount = 0;
-static TEXTSTRING m_Table[TEXT_MAX_STRINGS] = { 0 };
 
 static int8_t m_TextSpacing[110] = {
     14 /*A*/,  11 /*B*/, 11 /*C*/, 11 /*D*/, 11 /*E*/, 11 /*F*/, 11 /*G*/,
@@ -201,66 +191,6 @@ static uint8_t M_MapLetterToSpriteNum(char letter)
 RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
 {
     return m_MenuColorMap[color];
-}
-
-void Text_Init(void)
-{
-    for (int i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_Table[i];
-        text->flags.all = 0;
-    }
-    m_TextCount = 0;
-}
-
-void Text_Shutdown(void)
-{
-    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *const text = &m_Table[i];
-        Memory_FreePointer(&text->content);
-    }
-}
-
-TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
-{
-    if (m_TextCount == TEXT_MAX_STRINGS) {
-        return NULL;
-    }
-
-    TEXTSTRING *text = &m_Table[0];
-    int n;
-    for (n = 0; n < TEXT_MAX_STRINGS; n++) {
-        if (!text->flags.active) {
-            break;
-        }
-        text++;
-    }
-    if (n >= TEXT_MAX_STRINGS) {
-        return NULL;
-    }
-
-    if (content == NULL) {
-        return NULL;
-    }
-
-    text->content = Memory_DupStr(content);
-    text->pos.x = x;
-    text->pos.y = y;
-    text->letter_spacing = 1;
-    text->word_spacing = 6;
-    text->scale.h = TEXT_BASE_SCALE;
-    text->scale.v = TEXT_BASE_SCALE;
-
-    text->flags.all = 0;
-    text->flags.active = 1;
-
-    text->background.size.x = 0;
-    text->background.size.y = 0;
-    text->background.offset.x = 0;
-    text->background.offset.y = 0;
-
-    m_TextCount++;
-
-    return text;
 }
 
 void Text_ChangeText(TEXTSTRING *const text, const char *const content)
@@ -445,18 +375,6 @@ void Text_Remove(TEXTSTRING *const text)
     }
     if (text->flags.active) {
         text->flags.active = 0;
-        m_TextCount--;
-    }
-}
-
-void Text_Draw(void)
-{
-    m_FlashFrames = Clock_GetFrameAdvance();
-    for (int i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *text = &m_Table[i];
-        if (text->flags.active && !text->flags.manual_draw) {
-            Text_DrawText(text);
-        }
     }
 }
 
@@ -469,7 +387,7 @@ void Text_DrawText(TEXTSTRING *text)
     }
 
     if (text->flags.flash) {
-        text->flash.count -= m_FlashFrames;
+        text->flash.count -= Clock_GetFrameAdvance();
         if (text->flash.count <= -text->flash.rate) {
             text->flash.count = text->flash.rate;
         } else if (text->flash.count < 0) {

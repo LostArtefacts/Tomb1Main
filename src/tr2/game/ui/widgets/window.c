@@ -125,7 +125,8 @@ UI_WIDGET *UI_Window_Create(
     self->border.left = border_left;
     self->title_margin = 2;
 
-    self->frame = Text_Create(0, 0, 32, "");
+    self->frame = Text_Create(0, 0, "");
+    self->frame->pos.z = 32;
     self->frame->flags.manual_draw = 1;
 
     return (UI_WIDGET *)self;

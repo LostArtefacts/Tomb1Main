@@ -95,8 +95,9 @@ int32_t __cdecl Requester_Display(
     if (req->heading_flags1 & REQ_USE) {
         if (req->heading_text1 == NULL) {
             req->heading_text1 = Text_Create(
-                req->x_pos, line_one_off - req->line_height - 10, req->z_pos,
+                req->x_pos, line_one_off - req->line_height - 10,
                 req->heading_string1);
+            req->heading_text1->pos.z = req->z_pos;
             Text_CentreH(req->heading_text1, true);
             Text_AlignBottom(req->heading_text1, true);
             if (backgrounds) {
@@ -122,8 +123,9 @@ int32_t __cdecl Requester_Display(
         if (req->heading_text2) {
         } else {
             req->heading_text2 = Text_Create(
-                req->x_pos, line_one_off - req->line_height - 10, req->z_pos,
+                req->x_pos, line_one_off - req->line_height - 10,
                 req->heading_string2);
+            req->heading_text2->pos.z = req->z_pos;
             Text_CentreH(req->heading_text2, true);
             Text_AlignBottom(req->heading_text2, true);
             if (backgrounds) {
@@ -148,8 +150,8 @@ int32_t __cdecl Requester_Display(
     /* background */
     if (backgrounds && !req->background_text
         && (req->background_flags & 1) != 0) {
-        req->background_text = Text_Create(
-            req->x_pos, line_one_off - req->line_height - 12, 0, " ");
+        req->background_text =
+            Text_Create(req->x_pos, line_one_off - req->line_height - 12, " ");
         Text_CentreH(req->background_text, true);
         Text_AlignBottom(req->background_text, true);
         Text_AddBackground(
@@ -188,7 +190,7 @@ int32_t __cdecl Requester_Display(
         if (req->pitem_flags1[n] & REQ_USE) {
             if (*text1 == NULL) {
                 *text1 = Text_Create(
-                    0, line_one_off + req->line_height * i, 0,
+                    0, line_one_off + req->line_height * i,
                     &req->pitem_strings1[n * req->item_string_len]);
                 Text_CentreH(*text1, true);
                 Text_AlignBottom(*text1, true);
@@ -222,7 +224,7 @@ int32_t __cdecl Requester_Display(
         if (req->pitem_flags2[n] & REQ_USE) {
             if (*text2 == NULL) {
                 *text2 = Text_Create(
-                    0, line_one_off + req->line_height * i, 0,
+                    0, line_one_off + req->line_height * i,
                     &req->pitem_strings2[n * req->item_string_len]);
                 Text_CentreH(*text2, true);
                 Text_AlignBottom(*text2, true);
