@@ -69,6 +69,7 @@ static void M_MarkDragonDead(const ITEM *const dragon_back_item)
     const ITEM *const dragon_front_item = Item_Get(dragon_front_item_num);
     CREATURE *const creature = dragon_front_item->data;
     creature->flags = -1;
+    g_SaveGame.statistics.kills++;
 }
 
 static void M_PushLaraAway(

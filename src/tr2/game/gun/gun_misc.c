@@ -312,7 +312,8 @@ void __cdecl Gun_FindTargetPoint(
 void __cdecl Gun_HitTarget(
     ITEM *const item, const GAME_VECTOR *const hit_pos, const int32_t damage)
 {
-    if (item->hit_points > 0 && item->hit_points <= damage) {
+    if (item->hit_points > 0 && item->hit_points <= damage
+        && item->object_id != O_DRAGON_FRONT) {
         g_SaveGame.statistics.kills++;
     }
     Item_TakeDamage(item, damage, true);
