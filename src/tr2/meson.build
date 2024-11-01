@@ -216,7 +216,6 @@ dll_sources = [
   'inject_util.c',
   'lib/winmm.c',
   'main_dll.c',
-  'specific/s_audio_sample.c',
   'specific/s_flagged_string.c',
   dll_resources,
 ]

@@ -8,9 +8,9 @@
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
-#include "specific/s_audio_sample.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/engine/audio.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
@@ -752,12 +752,8 @@ static void __cdecl M_LoadSamples(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     int32_t *sample_offsets = NULL;
 
-    g_SoundIsActive = false;
-    if (!S_Audio_Sample_IsEnabled()) {
-        goto finish;
-    }
-
-    S_Audio_Sample_CloseAllTracks();
+    Audio_Sample_CloseAll();
+    Audio_Sample_UnloadAll();
 
     VFile_Read(file, g_SampleLUT, sizeof(int16_t) * SFX_NUMBER_OF);
     g_NumSampleInfos = VFile_ReadS32(file);
@@ -812,19 +808,20 @@ static void __cdecl M_LoadSamples(VFILE *const file)
         const int32_t data_size = *(int32_t *)(header + 0x28);
         const int32_t aligned_size = (data_size + 1) & ~1;
 
-        *(int16_t *)(header + 16) = 0;
         if (sample_offsets[sample_id] != i) {
             SetFilePointer(sfx_handle, aligned_size, NULL, FILE_CURRENT);
             continue;
         }
 
-        char *sample_data = Memory_Alloc(aligned_size);
-        ReadFileSync(sfx_handle, sample_data, aligned_size, NULL, NULL);
-        // TODO: do not reconstruct the header in S_Audio_Sample_Load, just
-        // pass the entire sample directly
-        const bool result = S_Audio_Sample_Load(
-            sample_id, (LPWAVEFORMATEX)(header + 20), sample_data, data_size);
+        const size_t sample_data_size = 0x2C + aligned_size;
+        char *sample_data = Memory_Alloc(sample_data_size);
+        memcpy(sample_data, header, 0x2C);
+        ReadFileSync(sfx_handle, sample_data + 0x2C, aligned_size, NULL, NULL);
+
+        const bool result =
+            Audio_Sample_LoadSingle(sample_id, sample_data, sample_data_size);
         Memory_FreePointer(&sample_data);
+
         if (!result) {
             goto finish;
         }
@@ -832,8 +829,6 @@ static void __cdecl M_LoadSamples(VFILE *const file)
         sample_id++;
     }
     CloseHandle(sfx_handle);
-
-    g_SoundIsActive = true;
 
 finish:
     Memory_FreePointer(&sample_offsets);

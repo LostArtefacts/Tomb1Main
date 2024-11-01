@@ -84,7 +84,6 @@
 #include "game/sound.h"
 #include "game/text.h"
 #include "inject_util.h"
-#include "specific/s_audio_sample.h"
 #include "specific/s_flagged_string.h"
 
 static void M_DecompGeneral(const bool enable);
@@ -131,7 +130,6 @@ static void M_Box(bool enable);
 static void M_Lot(bool enable);
 static void M_Objects(bool enable);
 
-static void M_S_Audio_Sample(bool enable);
 static void M_S_FlaggedString(bool enable);
 
 static void M_DecompGeneral(const bool enable)
@@ -1078,36 +1076,6 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442F40, Ember_Control);
 }
 
-static void M_S_Audio_Sample(const bool enable)
-{
-    INJECT(enable, 0x00447BC0, S_Audio_Sample_GetAdapter);
-    INJECT(enable, 0x00447C10, S_Audio_Sample_CloseAllTracks);
-    INJECT(enable, 0x00447C40, S_Audio_Sample_Load);
-    INJECT(enable, 0x00447D50, S_Audio_Sample_IsTrackPlaying);
-    INJECT(enable, 0x00447DA0, S_Audio_Sample_Play);
-    INJECT(enable, 0x00447E90, S_Audio_Sample_GetFreeTrackIndex);
-    INJECT(enable, 0x00447ED0, S_Audio_Sample_AdjustTrackVolumeAndPan);
-    INJECT(enable, 0x00447F00, S_Audio_Sample_AdjustTrackPitch);
-    INJECT(enable, 0x00447F40, S_Audio_Sample_CloseTrack);
-    INJECT(enable, 0x00447FB0, S_Audio_Sample_Init);
-    INJECT(enable, 0x00448050, S_Audio_Sample_DSoundEnumerate);
-    INJECT(enable, 0x00448070, S_Audio_Sample_DSoundEnumCallback);
-    INJECT(enable, 0x00448160, S_Audio_Sample_Init2);
-    INJECT(enable, 0x004482E0, S_Audio_Sample_DSoundCreate);
-    INJECT(enable, 0x00448300, S_Audio_Sample_DSoundBufferTest);
-    INJECT(enable, 0x004483D0, S_Audio_Sample_Shutdown);
-    INJECT(enable, 0x00448400, S_Audio_Sample_IsEnabled);
-    INJECT(enable, 0x00455220, S_Audio_Sample_OutPlay);
-    INJECT(enable, 0x00455270, S_Audio_Sample_CalculateSampleVolume);
-    INJECT(enable, 0x004552A0, S_Audio_Sample_CalculateSamplePan);
-    INJECT(enable, 0x004552D0, S_Audio_Sample_OutPlayLooped);
-    INJECT(enable, 0x00455320, S_Audio_Sample_OutSetPanAndVolume);
-    INJECT(enable, 0x00455360, S_Audio_Sample_OutSetPitch);
-    INJECT(enable, 0x00455390, S_Audio_Sample_OutCloseTrack);
-    INJECT(enable, 0x004553B0, S_Audio_Sample_OutCloseAllTracks);
-    INJECT(enable, 0x004553C0, S_Audio_Sample_OutIsTrackPlaying);
-}
-
 static void M_S_FlaggedString(const bool enable)
 {
     INJECT(enable, 0x00445F00, S_FlaggedString_Delete);
@@ -1166,6 +1134,5 @@ void Inject_Exec(void)
     M_Lot(true);
     M_Objects(true);
 
-    M_S_Audio_Sample(true);
     M_S_FlaggedString(true);
 }
