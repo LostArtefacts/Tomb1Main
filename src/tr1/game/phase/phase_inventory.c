@@ -178,7 +178,8 @@ static void Inv_Construct(void)
         m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
         Text_AlignRight(m_VersionText, 1);
         Text_AlignBottom(m_VersionText, 1);
-        Text_SetScale(m_VersionText, PHD_ONE * 0.5, PHD_ONE * 0.5);
+        Text_SetScale(
+            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
     } else {
         g_InvOptionObjects = OPTION_RING_OBJECTS;
         Text_Remove(m_VersionText);

@@ -137,7 +137,8 @@ int32_t Requester_Display(REQUEST_INFO *req)
         if (!req->moreup) {
             req->moreup =
                 Text_Create(req->x, line_one_off - req->line_height + 2, "[");
-            Text_SetScale(req->moreup, PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+            Text_SetScale(
+                req->moreup, TEXT_BASE_SCALE * 2 / 3, TEXT_BASE_SCALE * 2 / 3);
             Text_CentreH(req->moreup, 1);
             Text_AlignBottom(req->moreup, 1);
         }
@@ -149,7 +150,9 @@ int32_t Requester_Display(REQUEST_INFO *req)
     if (req->items_used > req->vis_lines + req->line_offset) {
         if (!req->moredown) {
             req->moredown = Text_Create(req->x, edge_y - 12, "]");
-            Text_SetScale(req->moredown, PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+            Text_SetScale(
+                req->moredown, TEXT_BASE_SCALE * 2 / 3,
+                TEXT_BASE_SCALE * 2 / 3);
             Text_CentreH(req->moredown, 1);
             Text_AlignBottom(req->moredown, 1);
         }

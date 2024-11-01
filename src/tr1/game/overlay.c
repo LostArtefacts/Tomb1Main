@@ -645,7 +645,8 @@ static void M_DrawAmmoInfo(void)
         m_AmmoText = Text_Create(
             -screen_margin_h - text_offset_x, text_height + screen_margin_v,
             ammostring);
-        Text_SetScale(m_AmmoText, PHD_ONE * scale, PHD_ONE * scale);
+        Text_SetScale(
+            m_AmmoText, TEXT_BASE_SCALE * scale, TEXT_BASE_SCALE * scale);
         Text_AlignRight(m_AmmoText, 1);
     }
 

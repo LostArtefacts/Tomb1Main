@@ -247,8 +247,8 @@ TEXTSTRING *Text_Create(int16_t x, int16_t y, const char *const content)
     text->pos.y = y;
     text->letter_spacing = 1;
     text->word_spacing = 6;
-    text->scale.h = PHD_ONE;
-    text->scale.v = PHD_ONE;
+    text->scale.h = TEXT_BASE_SCALE;
+    text->scale.v = TEXT_BASE_SCALE;
 
     text->flags.all = 0;
     text->flags.active = 1;
@@ -402,11 +402,11 @@ int32_t Text_GetHeight(const TEXTSTRING *const text)
     if (text == NULL) {
         return 0;
     }
-    int32_t height = TEXT_HEIGHT_FIXED * text->scale.v / PHD_ONE;
+    int32_t height = TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
     char *content = text->content;
     for (char letter = *content; letter != '\0'; letter = *content++) {
         if (text->flags.multiline && letter == '\n') {
-            height += TEXT_HEIGHT_FIXED * text->scale.v / PHD_ONE;
+            height += TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
         }
     }
     return height;
@@ -435,7 +435,7 @@ int32_t Text_GetWidth(const TEXTSTRING *const text)
     }
     width -= text->letter_spacing;
     width &= 0xFFFE;
-    return width * text->scale.h / PHD_ONE;
+    return width * text->scale.h / TEXT_BASE_SCALE;
 }
 
 void Text_Remove(TEXTSTRING *const text)
@@ -508,12 +508,12 @@ void Text_DrawText(TEXTSTRING *text)
         }
 
         if (text->flags.multiline && letter == '\n') {
-            y += TEXT_HEIGHT_FIXED * text->scale.v / PHD_ONE;
+            y += TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
             x = start_x;
             continue;
         }
         if (letter == ' ') {
-            x += text->word_spacing * text->scale.h / PHD_ONE;
+            x += text->word_spacing * text->scale.h / TEXT_BASE_SCALE;
             continue;
         }
 
@@ -532,7 +532,7 @@ void Text_DrawText(TEXTSTRING *text)
         }
 
         x += ((int32_t)text->letter_spacing + m_TextSpacing[sprite_num])
-            * text->scale.h / PHD_ONE;
+            * text->scale.h / TEXT_BASE_SCALE;
     }
 
     int32_t bwidth = 0;

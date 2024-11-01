@@ -271,14 +271,18 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
     m_Text[TEXT_UP_ARROW] =
         Text_Create(0, m_ControlMenu.key_texts[0]->pos.y - 12, "[");
-    Text_SetScale(m_Text[TEXT_UP_ARROW], PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+    Text_SetScale(
+        m_Text[TEXT_UP_ARROW], TEXT_BASE_SCALE * 2 / 3,
+        TEXT_BASE_SCALE * 2 / 3);
     Text_CentreH(m_Text[TEXT_UP_ARROW], true);
     Text_CentreV(m_Text[TEXT_UP_ARROW], true);
 
     m_Text[TEXT_DOWN_ARROW] = Text_Create(
         0, m_ControlMenu.key_texts[m_ControlMenu.vis_options - 1]->pos.y + 12,
         "]");
-    Text_SetScale(m_Text[TEXT_DOWN_ARROW], PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+    Text_SetScale(
+        m_Text[TEXT_DOWN_ARROW], TEXT_BASE_SCALE * 2 / 3,
+        TEXT_BASE_SCALE * 2 / 3);
     Text_CentreH(m_Text[TEXT_DOWN_ARROW], true);
     Text_CentreV(m_Text[TEXT_DOWN_ARROW], true);
 
@@ -299,13 +303,15 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
     m_Text[TEXT_RESET] =
         Text_Create(x_roles, y + BOX_PADDING + BORDER, m_ResetGS);
     Text_CentreV(m_Text[TEXT_RESET], true);
-    Text_SetScale(m_Text[TEXT_RESET], PHD_ONE * .8, PHD_ONE * .8);
+    Text_SetScale(
+        m_Text[TEXT_RESET], TEXT_BASE_SCALE * .8, TEXT_BASE_SCALE * .8);
 
     m_Text[TEXT_UNBIND] =
         Text_Create(x_names, y + BOX_PADDING + BORDER, m_UnbindGS);
     Text_CentreV(m_Text[TEXT_UNBIND], true);
     Text_AlignRight(m_Text[TEXT_UNBIND], true);
-    Text_SetScale(m_Text[TEXT_UNBIND], PHD_ONE * .8, PHD_ONE * .8);
+    Text_SetScale(
+        m_Text[TEXT_UNBIND], TEXT_BASE_SCALE * .8, TEXT_BASE_SCALE * .8);
 
     if (layout == INPUT_LAYOUT_DEFAULT) {
         Text_Hide(m_Text[TEXT_RESET], true);

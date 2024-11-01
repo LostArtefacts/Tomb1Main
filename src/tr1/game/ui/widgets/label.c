@@ -22,7 +22,7 @@ static int32_t M_GetWidth(const UI_LABEL *const self)
     if (self->width != UI_LABEL_AUTO_SIZE) {
         return self->width;
     }
-    return Text_GetWidth(self->text) * PHD_ONE / self->text->scale.h;
+    return Text_GetWidth(self->text) * TEXT_BASE_SCALE / self->text->scale.h;
 }
 
 static int32_t M_GetHeight(const UI_LABEL *const self)
@@ -124,7 +124,7 @@ void UI_Label_Flash(
 void UI_Label_SetScale(UI_WIDGET *const widget, const float scale)
 {
     UI_LABEL *const self = (UI_LABEL *)widget;
-    Text_SetScale(self->text, PHD_ONE * scale, PHD_ONE * scale);
+    Text_SetScale(self->text, TEXT_BASE_SCALE * scale, TEXT_BASE_SCALE * scale);
 }
 
 void UI_Label_SetZIndex(UI_WIDGET *const widget, const int32_t z_index)

@@ -223,12 +223,16 @@ static void M_InitText(void)
         g_Config.rendering.enable_perspective_filter ? true : false;
 
     m_Text[TEXT_UP_ARROW] = Text_Create(0, TOP_Y + BORDER * 2, "[");
-    Text_SetScale(m_Text[TEXT_UP_ARROW], PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+    Text_SetScale(
+        m_Text[TEXT_UP_ARROW], TEXT_BASE_SCALE * 2 / 3,
+        TEXT_BASE_SCALE * 2 / 3);
     Text_CentreH(m_Text[TEXT_UP_ARROW], true);
     Text_CentreV(m_Text[TEXT_UP_ARROW], true);
 
     m_Text[TEXT_DOWN_ARROW] = Text_Create(0, max_y, "]");
-    Text_SetScale(m_Text[TEXT_DOWN_ARROW], PHD_ONE * 2 / 3, PHD_ONE * 2 / 3);
+    Text_SetScale(
+        m_Text[TEXT_DOWN_ARROW], TEXT_BASE_SCALE * 2 / 3,
+        TEXT_BASE_SCALE * 2 / 3);
     Text_CentreH(m_Text[TEXT_DOWN_ARROW], true);
     Text_CentreV(m_Text[TEXT_DOWN_ARROW], true);
 

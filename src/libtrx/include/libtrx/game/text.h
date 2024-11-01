@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#define TEXT_BASE_SCALE 0x10000
+
 typedef enum {
     TS_HEADING = 0,
     TS_BACKGROUND = 1,

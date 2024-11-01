@@ -91,10 +91,10 @@ TEXTSTRING *__cdecl Text_Create(
 
     TEXTSTRING *const text = &m_TextStrings[free_idx];
     text->content = Memory_DupStr(content);
-    text->scale.h = PHD_ONE;
-    text->scale.v = PHD_ONE;
-    text->pos.x = (x * Text_GetScaleH(PHD_ONE)) / PHD_ONE;
-    text->pos.y = (y * Text_GetScaleV(PHD_ONE)) / PHD_ONE;
+    text->scale.h = TEXT_BASE_SCALE;
+    text->scale.v = TEXT_BASE_SCALE;
+    text->pos.x = (x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
+    text->pos.y = (y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
     text->pos.z = z;
 
     text->letter_spacing = 1;
@@ -131,8 +131,8 @@ void __cdecl Text_SetPos(TEXTSTRING *const text, int16_t x, int16_t y)
     if (text == NULL) {
         return;
     }
-    text->pos.x = (x * Text_GetScaleH(PHD_ONE)) / PHD_ONE;
-    text->pos.y = (y * Text_GetScaleV(PHD_ONE)) / PHD_ONE;
+    text->pos.x = (x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
+    text->pos.y = (y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
 }
 
 void __cdecl Text_SetScale(
@@ -171,10 +171,10 @@ void __cdecl Text_AddBackground(
     uint32_t scale_h = Text_GetScaleH(text->scale.h);
     uint32_t scale_v = Text_GetScaleV(text->scale.v);
     text->flags.background = 1;
-    text->background.size.x = (scale_h * x_size) / PHD_ONE;
-    text->background.size.y = (scale_v * y_size) / PHD_ONE;
-    text->background.offset.x = (scale_h * x_off) / PHD_ONE;
-    text->background.offset.y = (scale_v * y_off) / PHD_ONE;
+    text->background.size.x = (scale_h * x_size) / TEXT_BASE_SCALE;
+    text->background.size.y = (scale_v * y_size) / TEXT_BASE_SCALE;
+    text->background.offset.x = (scale_h * x_off) / TEXT_BASE_SCALE;
+    text->background.offset.y = (scale_v * y_off) / TEXT_BASE_SCALE;
     text->background.offset.z = z_off;
 #if 0
     text->bgnd_color = color;
@@ -317,7 +317,7 @@ int32_t __cdecl Text_GetWidth(TEXTSTRING *const text)
             }
         }
 
-        width += spacing * scale_h / PHD_ONE;
+        width += spacing * scale_h / TEXT_BASE_SCALE;
     }
 
     // TODO: OG bug - wrong letter spacing calculation; pointless ~1
@@ -336,7 +336,7 @@ int32_t Text_GetHeight(const TEXTSTRING *const text)
             height += TEXT_HEIGHT;
         }
     }
-    return height * Text_GetScaleV(text->scale.v) / PHD_ONE;
+    return height * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
 }
 
 void __cdecl Text_Draw(void)
@@ -362,8 +362,8 @@ void __cdecl Text_DrawBorder(
     const int32_t y0 = y + offset;
     const int32_t x1 = x0 + width - offset * 2;
     const int32_t y1 = y0 + height - offset * 2;
-    const int32_t scale_h = PHD_ONE;
-    const int32_t scale_v = PHD_ONE;
+    const int32_t scale_h = TEXT_BASE_SCALE;
+    const int32_t scale_v = TEXT_BASE_SCALE;
 
     Output_DrawScreenSprite2D(
         x0, y0, z, scale_h, scale_v, mesh_idx + 0, 0x1000, 0);
@@ -374,8 +374,8 @@ void __cdecl Text_DrawBorder(
     Output_DrawScreenSprite2D(
         x0, y1, z, scale_h, scale_v, mesh_idx + 3, 0x1000, 0);
 
-    int32_t w = (width - offset * 2) * PHD_ONE / 8;
-    int32_t h = (height - offset * 2) * PHD_ONE / 8;
+    int32_t w = (width - offset * 2) * TEXT_BASE_SCALE / 8;
+    int32_t h = (height - offset * 2) * TEXT_BASE_SCALE / 8;
 
     Output_DrawScreenSprite2D(x0, y0, z, w, scale_v, mesh_idx + 4, 0x1000, 0);
     Output_DrawScreenSprite2D(x1, y0, z, scale_h, h, mesh_idx + 5, 0x1000, 0);
@@ -416,9 +416,11 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         y += GetRenderHeight();
     }
 
-    int32_t box_x = x + text->background.offset.x - ((2 * scale_h) / PHD_ONE);
-    int32_t box_y = y + text->background.offset.y - ((4 * scale_v) / PHD_ONE)
-        - ((11 * scale_v) / PHD_ONE);
+    int32_t box_x =
+        x + text->background.offset.x - ((2 * scale_h) / TEXT_BASE_SCALE);
+    int32_t box_y = y + text->background.offset.y
+        - ((4 * scale_v) / TEXT_BASE_SCALE)
+        - ((11 * scale_v) / TEXT_BASE_SCALE);
     const int32_t start_x = x;
 
     const char *content = text->content;
@@ -429,7 +431,7 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         }
 
         if (text->flags.multiline && c == '\n') {
-            y += TEXT_HEIGHT * Text_GetScaleV(text->scale.v) / PHD_ONE;
+            y += TEXT_HEIGHT * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
             x = start_x;
             continue;
         }
@@ -440,13 +442,13 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 
         if (IS_CHAR_SPACE(c)) {
             const int32_t spacing = text->word_spacing;
-            x += spacing * scale_h / PHD_ONE;
+            x += spacing * scale_h / TEXT_BASE_SCALE;
         } else if (IS_CHAR_SECRET(c)) {
             Output_DrawPickup(
                 x + 10, y, 7144,
                 g_Objects[O_SECRET_1 + c - CHAR_SECRET_1].mesh_idx, 4096);
             const int32_t spacing = 16;
-            x += spacing * scale_h / PHD_ONE;
+            x += spacing * scale_h / TEXT_BASE_SCALE;
         } else {
             int16_t sprite_num;
 
@@ -469,7 +471,7 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 
             if (c >= '0' && c <= '9') {
                 const int32_t spacing = (12 - g_TextSpacing[sprite_num]) / 2;
-                x += spacing * scale_h / PHD_ONE;
+                x += spacing * scale_h / TEXT_BASE_SCALE;
             }
 
             if (x >= 0 && x < GetRenderWidth() && y >= 0
@@ -485,11 +487,11 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 
             if (c >= '0' && c <= '9') {
                 const int32_t x_off = (12 - g_TextSpacing[sprite_num]) / 2;
-                x += (12 - x_off) * scale_h / PHD_ONE;
+                x += (12 - x_off) * scale_h / TEXT_BASE_SCALE;
             } else {
                 const int32_t spacing =
                     g_TextSpacing[sprite_num] + text->letter_spacing;
-                x += spacing * scale_h / PHD_ONE;
+                x += spacing * scale_h / TEXT_BASE_SCALE;
             }
         }
     }
@@ -503,7 +505,7 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
         }
 
         box_h = text->background.size.y ? text->background.size.y
-                                        : ((16 * scale_v) / PHD_ONE);
+                                        : ((16 * scale_v) / TEXT_BASE_SCALE);
     }
 
     if (text->flags.background) {
@@ -527,14 +529,15 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 uint32_t __cdecl Text_GetScaleH(const uint32_t value)
 {
     const int32_t render_width = GetRenderWidth();
-    const int32_t render_scale = MAX(render_width, 640) * PHD_ONE / 640;
+    const int32_t render_scale = MAX(render_width, 640) * TEXT_BASE_SCALE / 640;
     return (value / PHD_HALF) * (render_scale / PHD_HALF);
 }
 
 uint32_t __cdecl Text_GetScaleV(const uint32_t value)
 {
     const int32_t render_height = GetRenderHeight();
-    const int32_t render_scale = MAX(render_height, 480) * PHD_ONE / 480;
+    const int32_t render_scale =
+        MAX(render_height, 480) * TEXT_BASE_SCALE / 480;
     return (value / PHD_HALF) * (render_scale / PHD_HALF);
 }
 
