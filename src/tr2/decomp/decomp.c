@@ -3,6 +3,7 @@
 #include "config.h"
 #include "game/background.h"
 #include "game/camera.h"
+#include "game/clock.h"
 #include "game/console/common.h"
 #include "game/effects.h"
 #include "game/game.h"
@@ -2790,11 +2791,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
             if (!g_Input.any) {
                 break;
             }
-            int32_t passed;
-            do {
-                passed = Sync();
-            } while (!passed);
-            frames -= passed;
+            frames -= Clock_SyncTicks() * TICKS_PER_FRAME;
 
             if (g_IsGameToExit) {
                 break;
@@ -2810,11 +2807,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
             break;
         }
 
-        int32_t passed;
-        do {
-            passed = Sync();
-        } while (!passed);
-        frames -= passed;
+        frames -= Clock_SyncTicks() * TICKS_PER_FRAME;
 
         if (g_IsGameToExit) {
             break;
@@ -2908,4 +2901,11 @@ void __cdecl DisplayCredits(void)
     S_Wait(300, true);
     FadeToPal(30, g_GamePalette8);
     g_IsVidModeLock = 0;
+}
+
+DWORD __cdecl S_DumpScreen(void)
+{
+    Clock_SyncTicks();
+    ScreenPartialDump();
+    return TICKS_PER_FRAME;
 }

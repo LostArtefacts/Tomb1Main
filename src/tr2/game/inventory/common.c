@@ -1,5 +1,6 @@
 #include "game/inventory/common.h"
 
+#include "decomp/decomp.h"
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game.h"

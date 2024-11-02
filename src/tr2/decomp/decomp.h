@@ -129,3 +129,4 @@ void __cdecl S_Wait(int32_t frames, BOOL input_check);
 BOOL __cdecl S_InitialiseSystem(void);
 void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 void __cdecl DisplayCredits(void);
+DWORD __cdecl S_DumpScreen(void);

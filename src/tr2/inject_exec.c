@@ -236,6 +236,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00455140, S_LoadSettings);
     INJECT(enable, 0x00451DE0, S_DisplayPicture);
     INJECT(enable, 0x0044CA70, DisplayCredits);
+    INJECT(enable, 0x00450BF0, S_DumpScreen);
 }
 
 static void M_DecompFMV(const bool enable)
