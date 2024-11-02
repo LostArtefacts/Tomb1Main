@@ -9,3 +9,5 @@ void __cdecl Music_Stop(void);
 bool __cdecl Music_PlaySynced(int16_t track_id);
 double __cdecl Music_GetTimestamp(void);
 void __cdecl Music_SetVolume(int32_t volume);
+void Music_Pause(void);
+void Music_Unpause(void);

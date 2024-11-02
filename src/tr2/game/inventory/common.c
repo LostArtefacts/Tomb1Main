@@ -208,7 +208,7 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
 
     Sound_StopAllSamples();
     if (inventory_mode != INV_TITLE_MODE) {
-        Music_SetVolume(0);
+        Music_Pause();
     }
 
     switch (inventory_mode) {
@@ -765,7 +765,7 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
 
     if (g_Inv_Chosen == NO_OBJECT) {
         if (inventory_mode != INV_TITLE_MODE && g_OptionMusicVolume != 0) {
-            Music_SetVolume(25 * g_OptionMusicVolume + 5);
+            Music_Unpause();
         }
         return 0;
     }
@@ -773,7 +773,7 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
     switch (g_Inv_Chosen) {
     case O_PASSPORT_OPTION:
         if (g_Inv_ExtraData[0] == 1 && g_OptionMusicVolume != 0) {
-            Music_SetVolume(25 * g_OptionMusicVolume + 5);
+            Music_Unpause();
         }
         return 1;
 
@@ -801,8 +801,8 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
         break;
     }
 
-    if (inventory_mode != INV_TITLE_MODE && g_OptionMusicVolume != 0) {
-        Music_SetVolume(25 * g_OptionMusicVolume + 5);
+    if (inventory_mode != INV_TITLE_MODE) {
+        Music_Unpause();
     }
     return 0;
 }

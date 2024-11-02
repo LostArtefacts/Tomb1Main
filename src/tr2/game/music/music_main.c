@@ -179,3 +179,19 @@ void __cdecl Music_SetVolume(int32_t volume)
         Audio_Stream_SetVolume(m_AudioStreamID, m_MusicVolume);
     }
 }
+
+void Music_Pause(void)
+{
+    if (m_AudioStreamID < 0) {
+        return;
+    }
+    Audio_Stream_Pause(m_AudioStreamID);
+}
+
+void Music_Unpause(void)
+{
+    if (m_AudioStreamID < 0) {
+        return;
+    }
+    Audio_Stream_Unpause(m_AudioStreamID);
+}

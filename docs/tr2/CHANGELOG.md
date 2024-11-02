@@ -28,6 +28,7 @@
     - removed hardcoded `0` key binding for flares
     - removed hardcoded cooldown of 15 frames for medipacks
 - changed text backend to accept named sequences (eg. "\{arrow up}" and similar)
+- changed inventory to pause the music rather than muting it (#1707)
 - improved FMV mode appearance - removed black scanlines (#1729)
 - improved FMV mode behavior - stopped switching screen resolutions (#1729)
 - improved screenshots: now saved in the screenshots/ directory with level titles and timestamps as JPG or PNG, similar to TR1X (#1773)
@@ -57,6 +58,7 @@
 - fixed a crash when firing grenades at Xian guards in statue form (#1561)
 - fixed harpoon bolts damaging inactive enemies (#1804)
 - fixed enemies that are run over by the skidoo not being counted in the statistics (#1772)
+- fixed sound settings resuming the music (#1707)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command
