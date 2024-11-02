@@ -181,6 +181,7 @@ void Door_Initialise(int16_t item_num)
     if (r->flipped_room == -1) {
         door->d2flip.sector = NULL;
     } else {
+        r = Room_Get(r->flipped_room);
         M_Initialise(r, item, 0, 0, &door->d2flip);
     }
 
