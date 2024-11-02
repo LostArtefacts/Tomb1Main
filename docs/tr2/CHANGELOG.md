@@ -54,6 +54,7 @@
 - fixed the console not being drawn during credits (#1802)
 - fixed grenades launched at too slow speeds (#1760, regression from 0.3)
 - fixed the dragon counting as more than one kill if allowed to revive (#1771)
+- fixed a crash when firing grenades at Xian guards in statue form (#1561)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command

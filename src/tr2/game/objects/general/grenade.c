@@ -117,10 +117,13 @@ void __cdecl Grenade_Control(int16_t item_num)
         if (target_item->object_id == O_WINDOW_1) {
             SmashWindow(target_item_num);
         } else {
-            // XXX: missing check if obj is intelligent?
-            Gun_HitTarget(target_item, NULL, 30);
-
             explode = true;
+
+            if (!target_obj->intelligent || target_item->status != IS_ACTIVE) {
+                continue;
+            }
+
+            Gun_HitTarget(target_item, NULL, 30);
             g_SaveGame.statistics.hits++;
 
             if (target_item->hit_points <= 0) {
