@@ -20,6 +20,7 @@ void __cdecl Matrix_RotYXZpack(uint32_t rpack);
 void __cdecl Matrix_RotYXZsuperpack(const int16_t **pprot, int32_t index);
 bool __cdecl Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);
 void __cdecl Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z);
+void Matrix_TranslateSet(int32_t x, int32_t y, int32_t z);
 
 void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate);
 void __cdecl Matrix_Interpolate(void);

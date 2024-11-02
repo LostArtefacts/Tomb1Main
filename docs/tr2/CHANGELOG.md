@@ -6,6 +6,7 @@
 - added the ability to skip end credits with the action and escape keys (#1800)
 - added the ability to skip FMVs with the action key (#1650)
 - added the ability to hold forward/back to move through menus more quickly (#1644)
+- added 3d pickup animations (#1633)
 - changed the inputs backend from DirectX to SDL (#1695)
     - improved controller support to match TR1X
     - changed the number of custom layouts to 3

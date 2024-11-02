@@ -5,6 +5,7 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/shell.h"
+#include "game/viewport.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -352,39 +353,9 @@ void __cdecl Output_Init(
     int32_t far_z, int16_t view_angle, int32_t screen_width,
     int32_t screen_height)
 {
-    g_PhdWinMinX = x;
-    g_PhdWinMinY = y;
-    g_PhdWinMaxX = width - 1;
-    g_PhdWinMaxY = height - 1;
-
-    g_PhdWinWidth = width;
-    g_PhdWinHeight = height;
-
-    g_PhdWinCenterX = width / 2;
-    g_PhdWinCenterY = height / 2;
-    g_FltWinCenterX = width / 2;
-    g_FltWinCenterY = height / 2;
-
-    g_PhdNearZ = near_z << 14;
-    g_PhdFarZ = far_z << W2V_SHIFT;
-    g_PhdViewDistance = far_z;
-
-    g_PhdWinLeft = 0;
-    g_PhdWinTop = 0;
-    g_PhdWinRight = g_PhdWinMaxX;
-    g_PhdWinBottom = g_PhdWinMaxY;
-
-    g_PhdWinRect.left = g_PhdWinMinX;
-    g_PhdWinRect.bottom = g_PhdWinMinY + g_PhdWinHeight;
-    g_PhdWinRect.top = g_PhdWinMinY;
-    g_PhdWinRect.right = g_PhdWinMinX + g_PhdWinWidth;
-
-    g_PhdScreenWidth = screen_width;
-    g_PhdScreenHeight = screen_height;
-
-    Output_AlterFOV(182 * view_angle);
-    Output_SetNearZ(g_PhdNearZ);
-    Output_SetFarZ(g_PhdFarZ);
+    Viewport_Init(
+        x, y, width, height, near_z, far_z, view_angle * PHD_DEGREE,
+        screen_width, screen_height);
 
     g_MatrixPtr = g_MatrixStack;
 
@@ -841,48 +812,9 @@ void __cdecl Output_PrintPolyList(uint8_t *surface_ptr)
     }
 }
 
-void __cdecl Output_SetNearZ(int32_t near_z)
-{
-    g_PhdNearZ = near_z;
-    g_FltNearZ = near_z;
-    g_FltRhwONearZ = g_RhwFactor / g_FltNearZ;
-    g_FltPerspONearZ = g_FltPersp / g_FltNearZ;
-
-    double res_z = 0.99 * g_FltNearZ * g_FltFarZ / (g_FltFarZ - g_FltNearZ);
-    g_FltResZ = res_z;
-    g_FltResZORhw = res_z / g_RhwFactor;
-    g_FltResZBuf = 0.005 + res_z / g_FltNearZ;
-}
-
-void __cdecl Output_SetFarZ(int32_t far_z)
-{
-    g_PhdFarZ = far_z;
-    g_FltFarZ = far_z;
-
-    double res_z = g_FltFarZ * g_FltNearZ * 0.99 / (g_FltFarZ - g_FltNearZ);
-    g_FltResZ = res_z;
-    g_FltResZORhw = res_z / g_RhwFactor;
-    g_FltResZBuf = 0.005 + res_z / g_FltNearZ;
-}
-
 void __cdecl Output_AlterFOV(int16_t fov)
 {
-    fov /= 2;
-
-    g_PhdPersp = g_PhdWinWidth / 2 * Math_Cos(fov) / Math_Sin(fov);
-
-    g_FltPersp = g_PhdPersp;
-    g_FltRhwOPersp = g_RhwFactor / g_FltPersp;
-    g_FltPerspONearZ = g_FltPersp / g_FltNearZ;
-
-    double window_aspect_ratio = 4.0 / 3.0;
-    if (!g_SavedAppSettings.fullscreen
-        && g_SavedAppSettings.aspect_mode == AM_16_9) {
-        window_aspect_ratio = 16.0 / 9.0;
-    }
-
-    g_ViewportAspectRatio =
-        window_aspect_ratio / ((double)g_PhdWinWidth / (double)g_PhdWinHeight);
+    Viewport_AlterFOV(fov);
 }
 
 void __cdecl Output_DrawPolyLine(const int16_t *obj_ptr)

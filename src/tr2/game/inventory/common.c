@@ -310,6 +310,7 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
             Inv_DoInventoryBackground();
         }
         S_AnimateTextures(g_Inv_NFrames);
+        Overlay_Animate(g_Inv_NFrames / 2);
 
         PHD_3DPOS view;
         Inv_Ring_GetView(&ring, &view);
@@ -1184,7 +1185,7 @@ void __cdecl Inv_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_SMALL_MEDIPACK_OPTION:
     case O_LARGE_MEDIPACK_OPTION:
         g_HealthBarTimer = 40;
-        Overlay_DrawHealthBar(Overlay_FlashCounter());
+        Overlay_DrawHealthBar();
         M_ShowItemQuantity("%d", qty);
         break;
 

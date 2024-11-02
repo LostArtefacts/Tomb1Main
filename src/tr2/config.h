@@ -14,6 +14,10 @@ typedef struct {
     } input;
 
     struct {
+        bool enable_3d_pickups;
+    } visuals;
+
+    struct {
         bool fix_m16_accuracy;
         bool enable_cheats;
     } gameplay;

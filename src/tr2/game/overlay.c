@@ -1,9 +1,14 @@
 #include "game/overlay.h"
 
+#include "config.h"
+#include "game/clock.h"
 #include "game/console/common.h"
+#include "game/inventory/common.h"
+#include "game/matrix.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/text.h"
+#include "game/viewport.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -12,21 +17,63 @@
 
 #include <stdio.h>
 
+#define MAX_PICKUP_COLUMNS 4
+#define MAX_PICKUP_ROWS 3
+#define MAX_PICKUPS (MAX_PICKUP_COLUMNS * MAX_PICKUP_ROWS)
+#define MAX_PICKUP_DURATION_DISPLAY (LOGIC_FPS * 2)
+#define MAX_PICKUP_DURATION_EASE_IN (LOGIC_FPS / 2)
+#define MAX_PICKUP_DURATION_EASE_OUT LOGIC_FPS
+#define PICKUPS_FOV 65
+
 #define FLASH_FRAMES 5
 #define AMMO_X (-10)
 #define AMMO_Y 35
 #define MODE_INFO_X (-16)
 #define MODE_INFO_Y (-16)
 
-static int32_t m_OldGameTimer = 0;
+typedef enum {
+    DPP_EASE_IN,
+    DPP_DISPLAY,
+    DPP_EASE_OUT,
+    DPP_DEAD,
+} DISPLAY_PICKUP_PHASE;
+
+typedef struct {
+    OBJECT *object;
+    OBJECT *inv_object;
+    double duration;
+    int32_t grid_x;
+    int32_t grid_y;
+    int32_t rot_y;
+    DISPLAY_PICKUP_PHASE phase;
+} DISPLAY_PICKUP;
+
+static DISPLAY_PICKUP m_Pickups[MAX_PICKUPS] = { 0 };
 static int32_t m_OldHitPoints = -1;
 static bool m_FlashState = false;
 static int32_t m_FlashCounter = 0;
 
-bool __cdecl Overlay_FlashCounter(void)
+static float M_Ease(int32_t cur_frame, int32_t max_frames);
+static void M_DrawPickup3D(const DISPLAY_PICKUP *pickup);
+static void M_DrawPickupSprite(const DISPLAY_PICKUP *pickup);
+
+static float M_Ease(const int32_t cur_frame, const int32_t max_frames)
+{
+    const float ratio = cur_frame / (float)max_frames;
+    float result;
+    if (ratio < 0.5f) {
+        result = 2.0f * ratio * ratio;
+    } else {
+        const float new_ratio = ratio - 1.0f;
+        result = 1.0f - 2.0f * new_ratio * new_ratio;
+    }
+    return result;
+}
+
+bool __cdecl Overlay_FlashCounter(const int32_t ticks)
 {
     if (m_FlashCounter > 0) {
-        m_FlashCounter--;
+        m_FlashCounter -= ticks;
         return m_FlashState;
     } else {
         m_FlashCounter = FLASH_FRAMES;
@@ -89,9 +136,8 @@ void __cdecl Overlay_DrawGameInfo(const bool pickup_state)
     Overlay_DrawAmmoInfo();
     Overlay_DrawModeInfo();
     if (g_OverlayStatus > 0) {
-        bool flash = Overlay_FlashCounter();
-        Overlay_DrawHealthBar(flash);
-        Overlay_DrawAirBar(flash);
+        Overlay_DrawHealthBar();
+        Overlay_DrawAirBar();
         Overlay_DrawPickups(pickup_state);
         Overlay_DrawAssaultTimer();
     }
@@ -99,7 +145,66 @@ void __cdecl Overlay_DrawGameInfo(const bool pickup_state)
     Text_Draw();
 }
 
-void __cdecl Overlay_DrawHealthBar(const bool flash_state)
+void Overlay_Animate(int32_t ticks)
+{
+    Overlay_FlashCounter(ticks);
+
+    for (int i = 0; i < MAX_PICKUPS; i++) {
+        DISPLAY_PICKUP *const pickup = &m_Pickups[i];
+
+        if (g_Config.visuals.enable_3d_pickups) {
+            pickup->rot_y += 4 * PHD_DEGREE * ticks;
+        } else {
+            // Stop existing animations
+            switch (pickup->phase) {
+            case DPP_EASE_IN:
+                pickup->phase = DPP_DISPLAY;
+                pickup->duration = 0;
+                break;
+
+            case DPP_EASE_OUT:
+                pickup->phase = DPP_DEAD;
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        switch (pickup->phase) {
+        case DPP_DEAD:
+            continue;
+
+        case DPP_EASE_IN:
+            pickup->duration += ticks;
+            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_IN) {
+                pickup->phase = DPP_DISPLAY;
+                pickup->duration = 0;
+            }
+            break;
+
+        case DPP_DISPLAY:
+            pickup->duration += ticks;
+            if (pickup->duration >= MAX_PICKUP_DURATION_DISPLAY) {
+                pickup->phase = g_Config.visuals.enable_3d_pickups
+                    ? DPP_EASE_OUT
+                    : DPP_DEAD;
+                pickup->duration = 0;
+            }
+            break;
+
+        case DPP_EASE_OUT:
+            pickup->duration += ticks;
+            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_OUT) {
+                pickup->phase = DPP_DEAD;
+                pickup->duration = 0;
+            }
+            break;
+        }
+    }
+}
+
+void Overlay_DrawHealthBar(void)
 {
     int32_t hit_points = g_LaraItem->hit_points;
     CLAMP(hit_points, 0, LARA_MAX_HITPOINTS);
@@ -112,13 +217,13 @@ void __cdecl Overlay_DrawHealthBar(const bool flash_state)
 
     const int32_t percent = hit_points * 100 / LARA_MAX_HITPOINTS;
     if (hit_points <= LARA_MAX_HITPOINTS / 4) {
-        S_DrawHealthBar(flash_state ? percent : 0);
+        S_DrawHealthBar(m_FlashState ? percent : 0);
     } else if (g_HealthBarTimer > 0 || g_Lara.gun_status == LGS_READY) {
         S_DrawHealthBar(percent);
     }
 }
 
-void __cdecl Overlay_DrawAirBar(const bool flash_state)
+void Overlay_DrawAirBar(void)
 {
     if (g_Lara.water_status != LWS_UNDERWATER
         && g_Lara.water_status != LWS_SURFACE) {
@@ -129,7 +234,7 @@ void __cdecl Overlay_DrawAirBar(const bool flash_state)
     CLAMP(air, 0, LARA_MAX_AIR);
     const int32_t percent = air * 100 / LARA_MAX_AIR;
     if (air <= 450) {
-        S_DrawAirBar(flash_state ? percent : 0);
+        S_DrawAirBar(m_FlashState ? percent : 0);
     } else {
         S_DrawAirBar(percent);
     }
@@ -223,43 +328,160 @@ void __cdecl Overlay_DrawAmmoInfo(void)
 void __cdecl Overlay_InitialisePickUpDisplay(void)
 {
     for (int32_t i = 0; i < MAX_PICKUPS; i++) {
-        g_Pickups[i].timer = 0;
+        m_Pickups[i].phase = DPP_DEAD;
     }
+}
+
+static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
+{
+    float ease = 1.0f;
+    switch (pickup->phase) {
+    case DPP_EASE_IN:
+        ease = M_Ease(pickup->duration, MAX_PICKUP_DURATION_EASE_IN);
+        break;
+
+    case DPP_EASE_OUT:
+        ease = M_Ease(
+            MAX_PICKUP_DURATION_EASE_OUT - pickup->duration,
+            MAX_PICKUP_DURATION_EASE_OUT);
+        break;
+
+    case DPP_DISPLAY:
+        ease = 1.0f;
+        break;
+
+    case DPP_DEAD:
+        return;
+    }
+
+#if 0
+    Output_ClearDepthBuffer();
+#endif
+
+    const VIEWPORT old_vp = *Viewport_Get();
+
+    const int32_t scale = 200;
+    const int32_t padding_right = old_vp.width / 16;
+    const int32_t padding_bottom = old_vp.height / 16;
+
+    // Try to fit in a quarter of the screen
+    const int32_t available_width = old_vp.width / 2 - padding_right;
+    const int32_t available_height = old_vp.width / 2 - padding_bottom;
+
+    // maintain aspect ratio
+    const int32_t cell_width =
+        MIN(available_width / MAX_PICKUP_COLUMNS,
+            available_height / MAX_PICKUP_ROWS);
+    const int32_t cell_height = cell_width * 3 / 4;
+
+    const int32_t vp_width = cell_width;
+    const int32_t vp_height = cell_height;
+    const int32_t vp_x = old_vp.x + old_vp.width
+        - ((pickup->grid_x + 1) * cell_width + padding_right) * ease;
+    const int32_t vp_y = old_vp.y + old_vp.height
+        - ((pickup->grid_y + 1) * cell_height + padding_bottom);
+
+    // clang-format off
+    Viewport_Init(
+        vp_x,
+        vp_y,
+        vp_width,
+        vp_height,
+        old_vp.near_z,
+        old_vp.far_z,
+        PICKUPS_FOV * PHD_DEGREE,
+        old_vp.screen_width,
+        old_vp.screen_height);
+    // clang-format on
+
+    Matrix_PushUnit();
+    Matrix_TranslateSet(0, 0, scale);
+    Matrix_RotYXZ(0, PHD_DEGREE * 15, 0);
+    Matrix_RotYXZ(pickup->rot_y, 0, 0);
+
+    g_LsDivider = 0x6000;
+    g_LsAdder = LOW_LIGHT;
+    Output_RotateLight(0, 0);
+    S_SetupAboveWater(false);
+
+    const OBJECT *const obj = pickup->inv_object;
+    const FRAME_INFO *const frame =
+        (FRAME_INFO *)g_Anims[obj->anim_idx].frame_ptr;
+
+    Matrix_Push();
+    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    Matrix_TranslateRel(
+        -(frame->bounds.min_x + frame->bounds.max_x) / 2,
+        -(frame->bounds.min_y + frame->bounds.max_y) / 2,
+        -(frame->bounds.min_z + frame->bounds.max_z) / 2);
+    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
+    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const int16_t *mesh_rots = frame->mesh_rots;
+    Matrix_RotYXZsuperpack(&mesh_rots, 0);
+
+    Output_InsertPolygons(mesh_ptrs[0], 0);
+    for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
+        int32_t bone_extra_flags = *bone;
+        if (bone_extra_flags & BF_MATRIX_POP) {
+            Matrix_Pop();
+        }
+
+        if (bone_extra_flags & BF_MATRIX_PUSH) {
+            Matrix_Push();
+        }
+
+        Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+        Matrix_RotYXZsuperpack(&mesh_rots, 0);
+        bone += 4;
+
+        Output_InsertPolygons(mesh_ptrs[mesh_idx], 0);
+    }
+    Matrix_Pop();
+
+    // clang-format off
+    Viewport_Init(
+        old_vp.x,
+        old_vp.y,
+        old_vp.width,
+        old_vp.height,
+        old_vp.near_z,
+        old_vp.far_z,
+        old_vp.view_angle,
+        old_vp.screen_width,
+        old_vp.screen_height);
+    // clang-format on
+}
+
+static void M_DrawPickupSprite(const DISPLAY_PICKUP *const pickup)
+{
+    const int32_t sprite_height =
+        MIN(GetRenderWidth(), GetRenderHeight() * 640 / 480) / 10;
+    const int32_t sprite_width = sprite_height * 4 / 3;
+
+    const int32_t x =
+        GetRenderWidth() - sprite_height - sprite_width * pickup->grid_x;
+    const int32_t y =
+        GetRenderHeight() - sprite_height - sprite_height * pickup->grid_y;
+
+    // TODO: use proper scaling
+    const int32_t scale = 12288 * GetRenderWidth() / 640;
+    const int16_t sprite_num = pickup->object->mesh_idx;
+    Output_DrawPickup(x, y, scale, sprite_num, 4096);
 }
 
 void __cdecl Overlay_DrawPickups(const bool timed)
 {
-    const int32_t time = g_SaveGame.statistics.timer - m_OldGameTimer;
-    m_OldGameTimer = g_SaveGame.statistics.timer;
-
-    if (time <= 0 || time >= 60) {
-        return;
-    }
-
-    static const int32_t max_columns = 4;
-    const int32_t cell_h = g_PhdWinWidth / 10;
-    const int32_t cell_v = cell_h * 2 / 3;
-    int32_t x = g_PhdWinWidth - cell_h;
-    int32_t y = g_PhdWinHeight - cell_h;
-
-    int32_t column = 0;
-    for (int32_t i = 0; i < 12; i++) {
-        PICKUP_INFO *const pickup = &g_Pickups[i];
-        if (timed) {
-            pickup->timer -= time;
+    for (int i = 0; i < MAX_PICKUPS; i++) {
+        const DISPLAY_PICKUP *const pickup = &m_Pickups[i];
+        if (pickup->phase == DPP_DEAD) {
+            continue;
         }
 
-        if (pickup->timer <= 0) {
-            pickup->timer = 0;
+        if (g_Config.visuals.enable_3d_pickups && pickup->inv_object != NULL) {
+            M_DrawPickup3D(pickup);
         } else {
-            if (column == max_columns) {
-                y -= cell_v;
-                x = g_PhdWinWidth - cell_h;
-            }
-            column++;
-            Output_DrawPickup(x, y, 12 * WALL_L, pickup->sprite, 0x1000);
+            M_DrawPickupSprite(pickup);
         }
-        x -= cell_h;
     }
 }
 
@@ -270,12 +492,44 @@ void __cdecl Overlay_AddDisplayPickup(const int16_t object_id)
         Music_Play(g_GameFlow.secret_track, false);
     }
 
+    int32_t grid_x = -1;
+    int32_t grid_y = -1;
+    for (int i = 0; i < MAX_PICKUPS; i++) {
+        int x = i % MAX_PICKUP_COLUMNS;
+        int y = i / MAX_PICKUP_COLUMNS;
+        bool is_occupied = false;
+        for (int j = 0; j < MAX_PICKUPS; j++) {
+            bool is_dead_or_dying = m_Pickups[j].phase == DPP_DEAD
+                || m_Pickups[j].phase == DPP_EASE_OUT;
+            if (m_Pickups[j].grid_x == x && m_Pickups[j].grid_y == y
+                && !is_dead_or_dying) {
+                is_occupied = true;
+                break;
+            }
+        }
+
+        if (!is_occupied) {
+            grid_x = x;
+            grid_y = y;
+            break;
+        }
+    }
+
+    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
     for (int32_t i = 0; i < MAX_PICKUPS; i++) {
-        PICKUP_INFO *const pickup = &g_Pickups[i];
-        if (pickup->timer <= 0) {
-            pickup->timer = 2.5 * FRAMES_PER_SECOND;
-            pickup->sprite = g_Objects[object_id].mesh_idx;
-            return;
+        DISPLAY_PICKUP *const pickup = &m_Pickups[i];
+        if (pickup->phase == DPP_DEAD) {
+            pickup->object = Object_GetObject(object_id);
+            pickup->inv_object = inv_object_id != NO_OBJECT
+                ? Object_GetObject(inv_object_id)
+                : NULL;
+            pickup->duration = 0;
+            pickup->grid_x = grid_x;
+            pickup->grid_y = grid_y;
+            pickup->rot_y = 0;
+            pickup->phase =
+                g_Config.visuals.enable_3d_pickups ? DPP_EASE_IN : DPP_DISPLAY;
+            break;
         }
     }
 }

@@ -361,6 +361,14 @@ void __cdecl Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z)
     mptr->_23 = dx * mptr->_20 + dy * mptr->_21 + dz * mptr->_22;
 }
 
+void Matrix_TranslateSet(const int32_t x, const int32_t y, const int32_t z)
+{
+    MATRIX *const mptr = g_MatrixPtr;
+    mptr->_03 = x << W2V_SHIFT;
+    mptr->_13 = y << W2V_SHIFT;
+    mptr->_23 = z << W2V_SHIFT;
+}
+
 void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate)
 {
     g_IMRate = rate;

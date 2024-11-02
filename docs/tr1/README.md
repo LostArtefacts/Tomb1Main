@@ -500,6 +500,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 #### Visuals
 - added optional shotgun flash sprites
 - added optional rendering of pickups on the ground as 3D meshes
+- added optional rendering of pickups in the UI as 3D meshes
 - added Lara's braid to each level
 - added support for displaying more than 3 pickup sprites
 - added more control over when to show health bar and air bar

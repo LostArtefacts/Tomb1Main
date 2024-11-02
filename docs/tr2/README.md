@@ -22,6 +22,7 @@ decompilation process. We recognize that there is much work to be done.
 #### Gameplay
 
 - added an option to fix M16 accuracy while running
+- added optional rendering of pickups in the UI as 3D meshes
 - fixed killing the T-Rex with a grenade launcher crashing the game
 - fixed secret rewards not displaying shotgun ammo
 - fixed numeric keys interfering with the demos

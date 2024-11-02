@@ -183,8 +183,10 @@ int32_t __cdecl Game_Draw(void)
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Overlay_DrawGameInfo(true);
     S_OutputPolyList();
-    g_Camera.num_frames = S_DumpScreen() * TICKS_PER_FRAME;
+    const int32_t frames = S_DumpScreen();
+    g_Camera.num_frames = frames * TICKS_PER_FRAME;
     Shell_ProcessEvents();
+    Overlay_Animate(frames);
     S_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
 }

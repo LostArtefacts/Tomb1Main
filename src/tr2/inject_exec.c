@@ -497,8 +497,6 @@ static void M_Output(const bool enable)
     INJECT(enable, 0x00402470, Output_QuickSort);
     INJECT(enable, 0x00402540, Output_PrintPolyList);
     INJECT(enable, 0x00402580, Output_AlterFOV);
-    INJECT(enable, 0x00402690, Output_SetNearZ);
-    INJECT(enable, 0x004026E0, Output_SetFarZ);
     INJECT(enable, 0x00402700, Output_Init);
     INJECT(enable, 0x00402970, Output_DrawPolyLine);
     INJECT(enable, 0x00402B10, Output_DrawPolyFlat);
@@ -601,11 +599,8 @@ static void M_Gameflow(bool enable)
 
 static void M_Overlay(const bool enable)
 {
-    INJECT(enable, 0x004219A0, Overlay_FlashCounter);
     INJECT(enable, 0x004219D0, Overlay_DrawAssaultTimer);
     INJECT(enable, 0x00421B20, Overlay_DrawGameInfo);
-    INJECT(enable, 0x00421B70, Overlay_DrawHealthBar);
-    INJECT(enable, 0x00421C20, Overlay_DrawAirBar);
     INJECT(enable, 0x00421CC0, Overlay_MakeAmmoString);
     INJECT(enable, 0x00421CF0, Overlay_DrawAmmoInfo);
     INJECT(enable, 0x00421E40, Overlay_InitialisePickUpDisplay);
