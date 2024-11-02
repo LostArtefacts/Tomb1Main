@@ -140,11 +140,11 @@ void __cdecl Door_Initialise(const int16_t item_num)
 
         Door_Shut(&door->d2);
         Door_Shut(&door->d2flip);
-    }
 
-    const int16_t prev_room = item->room_num;
-    Item_NewRoom(item_num, room_num);
-    item->room_num = prev_room;
+        const int16_t prev_room = item->room_num;
+        Item_NewRoom(item_num, room_num);
+        item->room_num = prev_room;
+    }
 }
 
 void __cdecl Door_Control(const int16_t item_num)
