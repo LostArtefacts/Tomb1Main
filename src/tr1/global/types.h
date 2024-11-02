@@ -909,3 +909,9 @@ typedef enum {
     TLM_SEMI,
     TLM_NONE,
 } TARGET_LOCK_MODE;
+
+typedef enum {
+    MUSIC_LOAD_NEVER,
+    MUSIC_LOAD_NON_AMBIENT,
+    MUSIC_LOAD_ALWAYS,
+} MUSIC_LOAD_CONDITION;

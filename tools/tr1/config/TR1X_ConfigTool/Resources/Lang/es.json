@@ -64,6 +64,11 @@
       "full_no_ambient": "Completo pero sin ambiente",
       "quiet_no_ambient": "Tranquilo pero sin ambientet",
       "none": "Ninguno"
+    },
+    "music_load_condition": {
+      "never": "Nunca",
+      "non-ambient": "No ambiental",
+      "always": "Siempre"
     }
   },
   "Properties": {
@@ -203,9 +208,9 @@
       "Title": "Habilitar sonidos de juegos en el inventario",
       "Description": "Permite que los sonidos del juego continúen reproduciéndose en la pantalla de inventario."
     },
-    "load_current_music": {
+    "music_load_condition": {
       "Title": "Cargar pista de música",
-      "Description": "Carga la pista de música que se estaba reproduciendo cuando se guardó el juego."
+      "Description": "Carga la pista de música que se estaba reproduciendo cuando se guardó el juego.\n- Nunca: no restaura pistas de música al cargar.\n- No ambiental: restaura solo pistas de música no ambientales al cargar.\n- Siempre: restaura cualquier tipo de pista de música al cargar."
     },
     "load_music_triggers": {
       "Title": "Recordar la música reproducida",

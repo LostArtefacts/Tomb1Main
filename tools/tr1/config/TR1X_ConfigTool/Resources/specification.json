@@ -57,6 +57,11 @@
       "full_no_ambient",
       "quiet_no_ambient",
       "none"
+    ],
+    "music_load_condition": [
+      "never",
+      "non-ambient",
+      "always"
     ]
   },
   "CategorisedProperties": [
@@ -439,9 +444,10 @@
       "Image": "Graphics/graphic6.jpg",
       "Properties": [
         {
-          "Field": "load_current_music",
-          "DataType": "Bool",
-          "DefaultValue": true
+          "Field": "music_load_condition",
+          "DataType": "Enum",
+          "EnumKey": "music_load_condition",
+          "DefaultValue": "non-ambient"
         },
         {
           "Field": "load_music_triggers",

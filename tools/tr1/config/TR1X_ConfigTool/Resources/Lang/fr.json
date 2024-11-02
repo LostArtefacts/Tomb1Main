@@ -57,14 +57,19 @@
       "full-lock": "Full lock",
       "semi-lock": "Semi lock",
       "no-lock": "No lock"
-      },
+    },
     "underwater_music": {
       "full": "Complète",
       "quiet": "Calme",
       "full_no_ambient": "Plein mais sans ambiance",
       "quiet_no_ambient": "Calme mais sans ambiance",
       "none": "Aucune"
-      }
+    },
+    "music_load_condition": {
+      "never": "Jamais",
+      "non-ambient": "Non ambiant",
+      "always": "Toujours"
+    }
   },
   "Properties": {
     "enable_tr3_sidesteps": {
@@ -331,9 +336,9 @@
       "Title": "Format des screenshots",
       "Description": "Selectionner le format voulu pour les captures d'écran en jeu."
     },
-    "load_current_music": {
+    "music_load_condition": {
       "Title": "Load music track",
-      "Description": "Charge la musique qui était en cours de lecture lors de la sauvegarde."
+      "Description": "Charge la musique qui était en cours de lecture lors de la sauvegarde.\n- Jamais : ne restaure pas les morceaux de musique au chargement.\n- Non ambiant : restaure uniquement les morceaux de musique non ambiants au chargement.\n- Toujours : restaure tout type de morceau de musique au chargement."
     },
     "load_music_triggers": {
       "Title": "Garder en mémoire les musiques jouées",

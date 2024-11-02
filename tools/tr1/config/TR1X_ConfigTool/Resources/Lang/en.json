@@ -53,17 +53,22 @@
       "bottom-center": "Bottom center",
       "bottom-right": "Bottom right"
     },
-  "target_mode": {
-    "full-lock": "Full lock",
-    "semi-lock": "Semi lock",
-    "no-lock": "No lock"
+    "target_mode": {
+      "full-lock": "Full lock",
+      "semi-lock": "Semi lock",
+      "no-lock": "No lock"
     },
-  "underwater_music": {
-    "full": "Full",
-    "quiet": "Quiet",
-    "full_no_ambient": "Full but no ambient",
-    "quiet_no_ambient": "Quiet but no ambient",
-    "none": "None"
+    "underwater_music": {
+      "full": "Full",
+      "quiet": "Quiet",
+      "full_no_ambient": "Full but no ambient",
+      "quiet_no_ambient": "Quiet but no ambient",
+      "none": "None"
+    },
+    "music_load_condition": {
+      "never": "Never",
+      "non-ambient": "Non-ambient",
+      "always": "Always"
     }
   },
   "Properties": {
@@ -331,9 +336,9 @@
       "Title": "Screenshot format",
       "Description": "Screenshot file format."
     },
-    "load_current_music": {
+    "music_load_condition": {
       "Title": "Load music track",
-      "Description": "Loads the music track that was playing when the game was saved."
+      "Description": "Loads the music track that was playing when the game was saved.\n- Never: do not restore music tracks on load.\n- Non-ambient: restore only non-ambient music tracks on load.\n- Always: restore any kind of music track on load."
     },
     "load_music_triggers": {
       "Title": "Remember played music",

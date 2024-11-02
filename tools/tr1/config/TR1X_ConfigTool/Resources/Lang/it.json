@@ -64,7 +64,12 @@
       "full_no_ambient": "Completa ma senza suoni ambientali",
       "quiet_no_ambient": "Attenuata ma senza suoni ambientali",
       "none": "Assente"
-      }
+    },
+    "music_load_condition": {
+      "never": "Mai",
+      "non-ambient": "Non ambientale",
+      "always": "Sempre"
+    }
   },
   "Properties": {
     "enable_tr3_sidesteps": {
@@ -331,9 +336,9 @@
       "Title": "Formato screenshot",
       "Description": "Formato del file da utilizzare per gli screenshot."
     },
-    "load_current_music": {
+    "music_load_condition": {
       "Title": "Carica la traccia musicale",
-      "Description": "Carica la traccia musicale che era in riproduzione al momento del salvataggio della partita."
+      "Description": "Carica la traccia musicale che era in riproduzione al momento del salvataggio della partita.\n- Mai: non ripristina le tracce musicali durante il caricamento.\n- Non ambientale: ripristina solo le tracce musicali non ambientali durante il caricamento.\n- Sempre: ripristina qualsiasi tipo di traccia musicale durante il caricamento."
     },
     "load_music_triggers": {
       "Title": "Ricorda la musica riprodotta",

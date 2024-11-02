@@ -865,7 +865,7 @@ static bool M_LoadLara(
 
 static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
 {
-    if (!g_Config.load_current_music) {
+    if (g_Config.music_load_condition == MUSIC_LOAD_NEVER) {
         return true;
     }
 
@@ -877,7 +877,17 @@ static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
     int16_t current_track = JSON_ObjectGetInt(music_obj, "current_track", -1);
     double timestamp = JSON_ObjectGetDouble(music_obj, "timestamp", -1.0);
     if (current_track != MX_INACTIVE) {
-        Music_Play(current_track);
+        const bool is_ambient =
+            JSON_ObjectGetBool(music_obj, "is_ambient", false);
+        if (is_ambient) {
+            if (g_Config.music_load_condition == MUSIC_LOAD_NON_AMBIENT) {
+                return true;
+            }
+            Music_PlayLooped(current_track);
+        } else {
+            Music_Play(current_track);
+        }
+
         if (!Music_SeekTimestamp(timestamp)) {
             LOG_WARNING(
                 "Could not load current track %d at timestamp %" PRId64 ".",
@@ -1246,11 +1256,13 @@ static JSON_OBJECT *M_DumpLara(LARA_INFO *lara)
 
 static JSON_OBJECT *M_DumpCurrentMusic(void)
 {
-    JSON_OBJECT *current_music_obj = JSON_ObjectNew();
-    JSON_ObjectAppendInt(
-        current_music_obj, "current_track", Music_GetCurrentPlayingTrack());
+    const MUSIC_TRACK_ID current_track = Music_GetCurrentPlayingTrack();
+    const bool is_ambient = current_track == Music_GetCurrentLoopedTrack();
+    JSON_OBJECT *const current_music_obj = JSON_ObjectNew();
+    JSON_ObjectAppendInt(current_music_obj, "current_track", current_track);
     JSON_ObjectAppendDouble(
         current_music_obj, "timestamp", Music_GetTimestamp());
+    JSON_ObjectAppendBool(current_music_obj, "is_ambient", is_ambient);
 
     return current_music_obj;
 }
