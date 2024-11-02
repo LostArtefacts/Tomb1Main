@@ -216,7 +216,7 @@ void Shell_ProcessEvents(void)
         switch (event.type) {
         case SDL_QUIT:
             g_IsMessageLoopClosed = true;
-            g_IsGameWindowMinimized = true;
+            g_IsGameToExit = true;
             g_StopInventory = true;
             break;
 
