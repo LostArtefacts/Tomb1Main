@@ -46,9 +46,10 @@ static bool M_IsPressed(INPUT_LAYOUT layout, INPUT_ROLE role);
 static bool M_IsRoleConflicted(INPUT_LAYOUT layout, INPUT_ROLE role);
 static const char *M_GetName(INPUT_LAYOUT layout, INPUT_ROLE role);
 static void M_UnassignRole(INPUT_LAYOUT layout, INPUT_ROLE role);
-static bool M_AssignFromJSONObject(INPUT_LAYOUT layout, JSON_OBJECT *bind_obj);
+static bool M_AssignFromJSONObject(
+    INPUT_LAYOUT layout, INPUT_ROLE role, JSON_OBJECT *bind_obj);
 static bool M_AssignToJSONObject(
-    INPUT_LAYOUT layout, JSON_OBJECT *bind_obj, INPUT_ROLE role);
+    INPUT_LAYOUT layout, INPUT_ROLE role, JSON_OBJECT *bind_obj);
 static void M_ResetLayout(INPUT_LAYOUT layout);
 static bool M_ReadAndAssign(INPUT_LAYOUT layout, INPUT_ROLE role);
 
@@ -410,13 +411,9 @@ static void M_UnassignRole(const INPUT_LAYOUT layout, const INPUT_ROLE role)
 }
 
 static bool M_AssignFromJSONObject(
-    const INPUT_LAYOUT layout, JSON_OBJECT *const bind_obj)
+    const INPUT_LAYOUT layout, const INPUT_ROLE role,
+    JSON_OBJECT *const bind_obj)
 {
-    const INPUT_ROLE role = JSON_ObjectGetInt(bind_obj, "role", -1);
-    if (role == (INPUT_ROLE)-1) {
-        return false;
-    }
-
     const SDL_Scancode default_scancode = M_GetAssignedScancode(layout, role);
     const SDL_Scancode user_scancode =
         JSON_ObjectGetInt(bind_obj, "scancode", default_scancode);
@@ -425,8 +422,8 @@ static bool M_AssignFromJSONObject(
 }
 
 static bool M_AssignToJSONObject(
-    const INPUT_LAYOUT layout, JSON_OBJECT *const bind_obj,
-    const INPUT_ROLE role)
+    const INPUT_LAYOUT layout, const INPUT_ROLE role,
+    JSON_OBJECT *const bind_obj)
 {
     const SDL_Scancode default_scancode =
         M_GetAssignedScancode(INPUT_LAYOUT_DEFAULT, role);
@@ -436,7 +433,6 @@ static bool M_AssignToJSONObject(
         return false;
     }
 
-    JSON_ObjectAppendInt(bind_obj, "role", role);
     JSON_ObjectAppendInt(bind_obj, "scancode", user_scancode);
     return true;
 }

@@ -1,5 +1,6 @@
 #include "game/input/common.h"
 
+#include "enum_map.h"
 #include "game/clock.h"
 #include "game/game_string.h"
 #include "game/input/backends/controller.h"
@@ -149,14 +150,89 @@ bool Input_AssignFromJSONObject(
     const INPUT_BACKEND backend, const INPUT_LAYOUT layout,
     JSON_OBJECT *const bind_obj)
 {
-    return M_GetBackend(backend)->assign_from_json_object(layout, bind_obj);
+    INPUT_ROLE role = (INPUT_ROLE)-1;
+
+#if TR_VERSION == 1
+    // TR1X <=4.5, TR2X <=0.5
+    const int32_t role_idx = JSON_ObjectGetInt(bind_obj, "role", -1);
+    // clang-format off
+    switch (role_idx) {
+    case 0: role = INPUT_ROLE_UP; break;
+    case 1: role = INPUT_ROLE_DOWN; break;
+    case 2: role = INPUT_ROLE_LEFT; break;
+    case 3: role = INPUT_ROLE_RIGHT; break;
+    case 4: role = INPUT_ROLE_STEP_L; break;
+    case 5: role = INPUT_ROLE_STEP_R; break;
+    case 6: role = INPUT_ROLE_SLOW; break;
+    case 7: role = INPUT_ROLE_JUMP; break;
+    case 8: role = INPUT_ROLE_ACTION; break;
+    case 9: role = INPUT_ROLE_DRAW; break;
+    case 10: role = INPUT_ROLE_LOOK; break;
+    case 11: role = INPUT_ROLE_ROLL; break;
+    case 12: role = INPUT_ROLE_OPTION; break;
+    case 13: role = INPUT_ROLE_FLY_CHEAT; break;
+    case 14: role = INPUT_ROLE_ITEM_CHEAT; break;
+    case 15: role = INPUT_ROLE_LEVEL_SKIP_CHEAT; break;
+    case 16: role = INPUT_ROLE_TURBO_CHEAT; break;
+    case 17: role = INPUT_ROLE_PAUSE; break;
+    case 18: role = INPUT_ROLE_CAMERA_FORWARD; break;
+    case 19: role = INPUT_ROLE_CAMERA_BACK; break;
+    case 20: role = INPUT_ROLE_CAMERA_LEFT; break;
+    case 21: role = INPUT_ROLE_CAMERA_RIGHT; break;
+    case 22: role = INPUT_ROLE_CAMERA_RESET; break;
+    case 23: role = INPUT_ROLE_EQUIP_PISTOLS; break;
+    case 24: role = INPUT_ROLE_EQUIP_SHOTGUN; break;
+    case 25: role = INPUT_ROLE_EQUIP_MAGNUMS; break;
+    case 26: role = INPUT_ROLE_EQUIP_UZIS; break;
+    case 27: role = INPUT_ROLE_USE_SMALL_MEDI; break;
+    case 28: role = INPUT_ROLE_USE_BIG_MEDI; break;
+    case 29: role = INPUT_ROLE_SAVE; break;
+    case 30: role = INPUT_ROLE_LOAD; break;
+    case 31: role = INPUT_ROLE_FPS; break;
+    case 32: role = INPUT_ROLE_BILINEAR; break;
+    case 33: role = INPUT_ROLE_ENTER_CONSOLE; break;
+    case 34: role = INPUT_ROLE_CHANGE_TARGET; break;
+    case 35: role = INPUT_ROLE_TOGGLE_UI; break;
+    case 36: role = INPUT_ROLE_CAMERA_UP; break;
+    case 37: role = INPUT_ROLE_CAMERA_DOWN; break;
+    case 38: role = INPUT_ROLE_TOGGLE_PHOTO_MODE; break;
+    case 39: role = INPUT_ROLE_UNBIND_KEY; break;
+    case 40: role = INPUT_ROLE_RESET_BINDINGS; break;
+    case 42: role = INPUT_ROLE_PERSPECTIVE; break;
+    case 43: role = INPUT_ROLE_MENU_CONFIRM; break;
+    case 44: role = INPUT_ROLE_MENU_BACK; break;
+    case 45: role = INPUT_ROLE_MENU_LEFT; break;
+    case 46: role = INPUT_ROLE_MENU_UP; break;
+    case 47: role = INPUT_ROLE_MENU_DOWN; break;
+    case 48: role = INPUT_ROLE_MENU_RIGHT; break;
+    case 49: role = INPUT_ROLE_SCREENSHOT; break;
+    case 50: role = INPUT_ROLE_TOGGLE_FULLSCREEN; break;
+    }
+    // clang-format on
+#endif
+
+    // TR1X >= 4.6, TR2X >= 0.6
+    if (role == (INPUT_ROLE)-1) {
+        role = ENUM_MAP_GET(
+            INPUT_ROLE, JSON_ObjectGetString(bind_obj, "role", ""),
+            (INPUT_ROLE)-1);
+    }
+
+    if (role == (INPUT_ROLE)-1) {
+        return false;
+    }
+
+    return M_GetBackend(backend)->assign_from_json_object(
+        layout, role, bind_obj);
 }
 
 bool Input_AssignToJSONObject(
     const INPUT_BACKEND backend, const INPUT_LAYOUT layout,
     JSON_OBJECT *const bind_obj, const INPUT_ROLE role)
 {
-    return M_GetBackend(backend)->assign_to_json_object(layout, bind_obj, role);
+    JSON_ObjectAppendString(
+        bind_obj, "role", ENUM_MAP_TO_STRING(INPUT_ROLE, role));
+    return M_GetBackend(backend)->assign_to_json_object(layout, role, bind_obj);
 }
 
 const char *Input_GetLayoutName(const INPUT_LAYOUT layout)

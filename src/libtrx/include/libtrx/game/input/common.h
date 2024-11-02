@@ -1,11 +1,25 @@
 #pragma once
 
 #include "../../json.h"
-#include "role.h"
-#include "state.h"
 
 #include <stdbool.h>
 #include <stdint.h>
+
+typedef enum {
+#undef INPUT_ROLE_DEFINE
+#define INPUT_ROLE_DEFINE(role_name, state_name) INPUT_ROLE_##role_name,
+#include "roles.def"
+    INPUT_ROLE_NUMBER_OF,
+} INPUT_ROLE;
+
+typedef union {
+    uint64_t any;
+    struct {
+#undef INPUT_ROLE_DEFINE
+#define INPUT_ROLE_DEFINE(role_name, state_name) uint64_t state_name : 1;
+#include "roles.def"
+    };
+} INPUT_STATE;
 
 typedef enum {
     INPUT_BACKEND_KEYBOARD,
