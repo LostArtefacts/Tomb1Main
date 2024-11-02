@@ -319,12 +319,6 @@ int32_t __cdecl LevelStats(const int32_t level_num)
     Overlay_HideGameInfo();
     S_CopyScreenToBuffer();
 
-    while (g_Input.menu_confirm) {
-        Shell_ProcessEvents();
-        Input_Update();
-        Shell_ProcessInput();
-    }
-
     while (true) {
         S_InitialisePolyList(0);
         S_CopyBufferToScreen();
@@ -337,6 +331,10 @@ int32_t __cdecl LevelStats(const int32_t level_num)
             break;
         }
 
+        if (g_InputDB.menu_back || g_InputDB.menu_confirm) {
+            break;
+        }
+
         if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
             break;
         }
@@ -346,10 +344,6 @@ int32_t __cdecl LevelStats(const int32_t level_num)
         Text_Draw();
         S_OutputPolyList();
         S_DumpScreen();
-
-        if (g_InputDB.menu_confirm) {
-            break;
-        }
     }
 
     Requester_Shutdown(&g_StatsRequester);
@@ -374,7 +368,8 @@ int32_t __cdecl GameStats(const int32_t level_num)
     start->statistics.medipacks = g_SaveGame.statistics.medipacks;
 
     Overlay_HideGameInfo();
-    while (g_Input.menu_confirm) {
+
+    while (g_Input.any) {
         Shell_ProcessEvents();
         Input_Update();
         Shell_ProcessInput();
@@ -392,6 +387,10 @@ int32_t __cdecl GameStats(const int32_t level_num)
             break;
         }
 
+        if (g_InputDB.menu_back || g_InputDB.menu_confirm) {
+            break;
+        }
+
         if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
             break;
         }
@@ -401,10 +400,6 @@ int32_t __cdecl GameStats(const int32_t level_num)
         Text_Draw();
         S_OutputPolyList();
         S_DumpScreen();
-
-        if (g_InputDB.menu_confirm) {
-            break;
-        }
     }
 
     Requester_Shutdown(&g_StatsRequester);

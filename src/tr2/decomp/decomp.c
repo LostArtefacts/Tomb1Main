@@ -2783,13 +2783,13 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
 {
     if (input_check) {
         while (frames > 0) {
-            if (g_Input.any) {
-                break;
-            }
             Shell_ProcessEvents();
             Input_Update();
             Shell_ProcessInput();
 
+            if (!g_Input.any) {
+                break;
+            }
             int32_t passed;
             do {
                 passed = Sync();
@@ -2806,7 +2806,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
         Shell_ProcessEvents();
         Input_Update();
         Shell_ProcessInput();
-        if (input_check && g_Input.any) {
+        if (input_check && g_InputDB.any) {
             break;
         }
 
@@ -2893,7 +2893,7 @@ void __cdecl DisplayCredits(void)
         S_DumpScreen();
         FadeToPal(30, g_GamePalette8);
 
-        S_Wait(450, 0);
+        S_Wait(450, true);
 
         S_FadeToBlack();
         S_DontDisplayPicture();
@@ -2903,7 +2903,7 @@ void __cdecl DisplayCredits(void)
     }
 
     memcpy(g_GamePalette8, old_palette, sizeof(g_GamePalette8));
-    S_Wait(300, 0);
+    S_Wait(300, true);
     FadeToPal(30, g_GamePalette8);
     g_IsVidModeLock = 0;
 }

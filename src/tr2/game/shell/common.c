@@ -80,7 +80,7 @@ void __cdecl Shell_Main(void)
     S_DumpScreen();
     Shell_ProcessEvents();
     FadeToPal(30, g_GamePalette8);
-    S_Wait(180, 1);
+    S_Wait(180, true);
     S_FadeToBlack();
     S_DontDisplayPicture();
     g_IsVidModeLock = 0;
