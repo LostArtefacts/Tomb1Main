@@ -104,7 +104,7 @@ int32_t __cdecl Requester_Display(
                 Text_AddBackground(
                     req->heading_text1, req->pix_width - 4, 0, 0, 0,
                     TS_HEADING);
-                Text_AddOutline(req->heading_text1, TS_REQUESTED);
+                Text_AddOutline(req->heading_text1, TS_HEADING);
             }
         }
 
@@ -130,7 +130,7 @@ int32_t __cdecl Requester_Display(
                 Text_AddBackground(
                     req->heading_text2, req->pix_width - 4, 0, 0, 0,
                     TS_HEADING);
-                Text_AddOutline(req->heading_text2, TS_REQUESTED);
+                Text_AddOutline(req->heading_text2, TS_HEADING);
             }
         }
 
@@ -148,6 +148,7 @@ int32_t __cdecl Requester_Display(
         && (req->background_flags & 1) != 0) {
         req->background_text =
             Text_Create(req->x_pos, line_one_off - req->line_height - 12, " ");
+        req->background_text->pos.z = req->z_pos;
         Text_CentreH(req->background_text, true);
         Text_AlignBottom(req->background_text, true);
         Text_AddBackground(
@@ -185,6 +186,7 @@ int32_t __cdecl Requester_Display(
                 *text1 = Text_Create(
                     0, line_one_off + req->line_height * i,
                     &req->pitem_strings1[n * req->item_string_len]);
+                (*text1)->pos.z = req->z_pos;
                 Text_CentreH(*text1, true);
                 Text_AlignBottom(*text1, true);
             }
@@ -217,6 +219,7 @@ int32_t __cdecl Requester_Display(
                 *text2 = Text_Create(
                     0, line_one_off + req->line_height * i,
                     &req->pitem_strings2[n * req->item_string_len]);
+                (*text2)->pos.z = req->z_pos;
                 Text_CentreH(*text2, true);
                 Text_AlignBottom(*text2, true);
             }

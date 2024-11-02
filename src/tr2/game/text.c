@@ -141,8 +141,8 @@ void __cdecl Text_DrawText(TEXTSTRING *const text)
 
     if (text->flags.background) {
         S_DrawScreenFBox(
-            box_x, box_y, text->background.offset.z + z + 2, box_w, box_h, 0,
-            NULL, 0);
+            box_x, box_y, z + text->background.offset.z, box_w, box_h, 0, NULL,
+            0);
     }
 
     if (text->flags.outline) {

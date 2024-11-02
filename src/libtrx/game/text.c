@@ -50,8 +50,8 @@ void Text_Shutdown(void)
 
 void Text_Draw(void)
 {
-    for (int i = 0; i < TEXT_MAX_STRINGS; i++) {
-        TEXTSTRING *text = &m_TextStrings[i];
+    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
+        TEXTSTRING *const text = &m_TextStrings[i];
         if (text->flags.active && !text->flags.manual_draw) {
             Text_DrawText(text);
         }
@@ -198,10 +198,10 @@ void Text_AddBackground(
     switch (style) {
     case TS_HEADING:
     case TS_REQUESTED:
-        text->background.offset.z = 8;
+        text->background.offset.z = 80;
         break;
     case TS_BACKGROUND:
-        text->background.offset.z = 48;
+        text->background.offset.z = 160;
         break;
     }
     text->background.style = style;
