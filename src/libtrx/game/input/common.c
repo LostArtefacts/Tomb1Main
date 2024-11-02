@@ -45,8 +45,9 @@ static INPUT_BACKEND_IMPL *M_GetBackend(const INPUT_BACKEND backend)
         return &g_Input_Keyboard;
     case INPUT_BACKEND_CONTROLLER:
         return &g_Input_Controller;
+    default:
+        return NULL;
     }
-    return NULL;
 }
 
 void Input_Init(void)
@@ -106,6 +107,18 @@ bool Input_ReadAndAssignRole(
     const INPUT_BACKEND backend, const INPUT_LAYOUT layout,
     const INPUT_ROLE role)
 {
+    // Check for canceling from other devices
+    for (INPUT_BACKEND other_backend = 0;
+         other_backend < INPUT_BACKEND_NUMBER_OF; other_backend++) {
+        if (other_backend == backend) {
+            continue;
+        }
+        if (Input_IsPressed(other_backend, layout, INPUT_ROLE_MENU_BACK)
+            || Input_IsPressed(other_backend, layout, INPUT_ROLE_OPTION)) {
+            return true;
+        }
+    }
+
     return M_GetBackend(backend)->read_and_assign(layout, role);
 }
 

@@ -51,6 +51,8 @@ static void M_HandleLayoutChange(const EVENT *event, void *user_data)
     case INPUT_BACKEND_CONTROLLER:
         g_Config.input.controller_layout = m_Controller.active_layout;
         break;
+    default:
+        break;
     }
 
     Config_Write();

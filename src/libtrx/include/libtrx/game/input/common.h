@@ -24,6 +24,7 @@ typedef union {
 typedef enum {
     INPUT_BACKEND_KEYBOARD,
     INPUT_BACKEND_CONTROLLER,
+    INPUT_BACKEND_NUMBER_OF,
 } INPUT_BACKEND;
 
 typedef enum {
