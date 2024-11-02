@@ -2889,6 +2889,8 @@ void __cdecl DisplayCredits(void)
 
         S_InitialisePolyList(0);
         S_CopyBufferToScreen();
+        Console_Draw();
+        Text_Draw();
         S_OutputPolyList();
         S_DumpScreen();
         FadeToPal(30, g_GamePalette8);
