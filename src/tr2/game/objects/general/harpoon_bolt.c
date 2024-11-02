@@ -84,7 +84,7 @@ void __cdecl HarpoonBolt_Control(const int16_t item_num)
         if (target_item->object_id == O_WINDOW_1) {
             SmashWindow(target_num);
         } else {
-            if (target_obj->intelligent) {
+            if (target_obj->intelligent && target_item->status == IS_ACTIVE) {
                 DoLotsOfBlood(
                     item->pos.x, item->pos.y, item->pos.z, 0, 0, item->room_num,
                     5);

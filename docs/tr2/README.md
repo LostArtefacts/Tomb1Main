@@ -34,6 +34,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the ammo counter being hidden while a demo plays in NG+
 - fixed the game hanging if exited during the level stats, credits, or final stats
 - fixed a crash when firing grenades at Xian guards in statue form
+- fixed harpoon bolts damaging inactive enemies
 
 #### Statistics
 - fixed the dragon counting as more than one kill if allowed to revive
