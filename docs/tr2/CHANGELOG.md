@@ -3,6 +3,7 @@
 - added an items cheat key (#1641)
 - added a level skip cheat key (#1640)
 - added the ability to skip end credits with the action and escape keys (#1800)
+- added the ability to skip FMVs with the action key (#1650)
 - changed the inputs backend from DirectX to SDL (#1695)
     - improved controller support to match TR1X
     - changed the number of custom layouts to 3

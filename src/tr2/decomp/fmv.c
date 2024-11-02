@@ -364,7 +364,7 @@ void __cdecl WinPlayFMV(const char *const file_name, const bool is_playback)
 
         Input_Update();
         Shell_ProcessInput();
-        if (g_InputDB.option) {
+        if (g_InputDB.menu_back || g_InputDB.menu_confirm) {
             Video_Stop(video);
             break;
         }
