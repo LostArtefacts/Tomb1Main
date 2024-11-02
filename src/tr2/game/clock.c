@@ -2,18 +2,12 @@
 
 #include <libtrx/game/const.h>
 
-#include <windows.h>
-
-double Clock_GetHighPrecisionCounter(void)
+double Clock_GetSpeedMultiplier(void)
 {
-    LARGE_INTEGER frequency;
-    LARGE_INTEGER counter;
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&counter);
-    return counter.QuadPart * 1000.0 / frequency.QuadPart;
+    return 1.0;
 }
 
-int32_t Clock_GetLogicalFrame(void)
+int32_t Clock_GetCurrentFPS(void)
 {
-    return Clock_GetHighPrecisionCounter() * LOGIC_FPS / 1000.0;
+    return LOGIC_FPS;
 }

@@ -274,7 +274,6 @@ sources = [
   'math/math.c',
   'math/math_misc.c',
   'math/matrix.c',
-  'specific/s_clock.c',
   'specific/s_output.c',
   'specific/s_shell.c',
   resources,

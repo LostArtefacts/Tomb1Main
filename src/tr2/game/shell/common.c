@@ -4,6 +4,7 @@
 #include "decomp/decomp.h"
 #include "decomp/fmv.h"
 #include "game/background.h"
+#include "game/clock.h"
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game_string.h"
@@ -42,6 +43,7 @@ void __cdecl Shell_Main(void)
     UI_Init();
     Console_Init();
 
+    Clock_Init();
     Sound_Init();
     Music_Init();
     Input_Init();
