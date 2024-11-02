@@ -1,5 +1,7 @@
 #include "game/clock.h"
 
+#include <libtrx/game/const.h>
+
 #include <windows.h>
 
 double Clock_GetHighPrecisionCounter(void)
@@ -9,4 +11,9 @@ double Clock_GetHighPrecisionCounter(void)
     QueryPerformanceFrequency(&frequency);
     QueryPerformanceCounter(&counter);
     return counter.QuadPart * 1000.0 / frequency.QuadPart;
+}
+
+int32_t Clock_GetLogicalFrame(void)
+{
+    return Clock_GetHighPrecisionCounter() * LOGIC_FPS / 1000.0;
 }

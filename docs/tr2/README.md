@@ -40,6 +40,9 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the dragon counting as more than one kill if allowed to revive
 - fixed enemies that are run over by the skidoo not being counted in the statistics
 
+#### Input
+- added the ability to hold forward/back to move through menus more quickly
+
 #### Visuals
 
 - fixed TGA screenshots crashing the game

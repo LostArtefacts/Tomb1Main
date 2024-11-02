@@ -1,6 +1,7 @@
 #include "game/input.h"
 
 #include "config.h"
+#include "game/clock.h"
 #include "game/console/common.h"
 #include "game/game_string.h"
 #include "game/shell.h"
@@ -11,6 +12,12 @@
 #include <libtrx/game/input/backends/controller.h>
 #include <libtrx/game/input/backends/keyboard.h>
 
+#define DELAY_FRAMES 12
+#define HOLD_FRAMES 3
+
+static int32_t m_HoldBack = 0;
+static int32_t m_HoldForward = 0;
+
 static INPUT_STATE M_GetDebounced(INPUT_STATE input);
 static void M_UpdateFromBackend(
     INPUT_STATE *s, const INPUT_BACKEND_IMPL *backend, INPUT_LAYOUT layout);
@@ -19,6 +26,28 @@ static INPUT_STATE M_GetDebounced(const INPUT_STATE input)
 {
     INPUT_STATE result;
     result.any = input.any & ~g_OldInputDB.any;
+
+    const int32_t frame = Clock_GetLogicalFrame();
+    if (input.forward || !input.back) {
+        m_HoldBack = 0;
+    } else if (input.back && m_HoldBack == 0) {
+        m_HoldBack = frame;
+    } else if (input.back && frame - m_HoldBack >= DELAY_FRAMES + HOLD_FRAMES) {
+        result.back = 1;
+        result.menu_down = 1;
+        m_HoldBack = frame - DELAY_FRAMES;
+    }
+
+    if (!input.forward || input.back) {
+        m_HoldForward = 0;
+    } else if (input.forward && m_HoldForward == 0) {
+        m_HoldForward = frame;
+    } else if (
+        input.forward && frame - m_HoldForward >= DELAY_FRAMES + HOLD_FRAMES) {
+        result.forward = 1;
+        result.menu_up = 1;
+        m_HoldForward = frame - DELAY_FRAMES;
+    }
 
     g_OldInputDB = input;
     return result;
