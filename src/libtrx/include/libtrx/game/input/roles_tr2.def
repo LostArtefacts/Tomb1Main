@@ -23,6 +23,7 @@ INPUT_ROLE_DEFINE(MENU_RIGHT,                  menu_right)
 INPUT_ROLE_DEFINE(FLY_CHEAT,                   fly_cheat)
 INPUT_ROLE_DEFINE(ITEM_CHEAT,                  item_cheat)
 INPUT_ROLE_DEFINE(LEVEL_SKIP_CHEAT,            level_skip_cheat)
+INPUT_ROLE_DEFINE(TURBO_CHEAT,                 turbo_cheat)
 
 INPUT_ROLE_DEFINE(SAVE,                        save)
 INPUT_ROLE_DEFINE(LOAD,                        load)

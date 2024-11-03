@@ -2,8 +2,7 @@
 
 #include "game/clock.h"
 #include "game/game_string.h"
-
-#include <libtrx/strings.h>
+#include "strings.h"
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 

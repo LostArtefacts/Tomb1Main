@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "decomp/decomp.h"
+#include "game/clock.h"
 #include "game/console/common.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
@@ -301,5 +302,9 @@ void Shell_ProcessInput(void)
 
     if (g_InputDB.toggle_rendering_mode) {
         M_ToggleRenderingMode();
+    }
+
+    if (g_InputDB.turbo_cheat) {
+        Clock_CycleTurboSpeed(!g_Input.slow);
     }
 }

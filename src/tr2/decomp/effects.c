@@ -4,6 +4,7 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/random.h"
+#include "game/stats.h"
 #include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -180,4 +181,5 @@ void __cdecl EffectFunc_AssaultStart(ITEM *const item)
     g_IsAssaultTimerActive = 1;
     g_IsAssaultTimerDisplay = 1;
     g_FlipEffect = -1;
+    Stats_StartTimer();
 }

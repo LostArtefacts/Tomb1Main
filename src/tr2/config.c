@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include "config_map.h"
+#include "game/clock.h"
 #include "game/input.h"
 
 #include <libtrx/config/file.h>
@@ -119,6 +120,9 @@ void Config_DumpToJSON(JSON_OBJECT *root_obj)
 
 void Config_Sanitize(void)
 {
+    CLAMP(
+        g_Config.rendering.turbo_speed, CLOCK_TURBO_SPEED_MIN,
+        CLOCK_TURBO_SPEED_MAX);
 }
 
 void Config_ApplyChanges(void)

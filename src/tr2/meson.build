@@ -198,6 +198,7 @@ dll_sources = [
   'game/shell/common.c',
   'game/shell/input.c',
   'game/sound.c',
+  'game/stats.c',
   'game/text.c',
   'game/ui/common.c',
   'game/ui/controllers/controls.c',

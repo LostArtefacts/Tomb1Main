@@ -1,7 +1,6 @@
 #include "game/console/setup.h"
 
 #include "game/console/cmd/easy_config.h"
-#include "game/console/cmd/speed.h"
 
 #include <libtrx/game/console/cmd/config.h>
 #include <libtrx/game/console/cmd/die.h>
@@ -20,11 +19,13 @@
 #include <libtrx/game/console/cmd/save_game.h>
 #include <libtrx/game/console/cmd/set_health.h>
 #include <libtrx/game/console/cmd/sfx.h>
+#include <libtrx/game/console/cmd/speed.h>
 #include <libtrx/game/console/cmd/teleport.h>
 
 #include <stddef.h>
 
 CONSOLE_COMMAND *g_ConsoleCommands[] = {
+    // clang-format off
     &g_Console_Cmd_EasyConfig,
     &g_Console_Cmd_Teleport,
     &g_Console_Cmd_Fly,
@@ -45,5 +46,6 @@ CONSOLE_COMMAND *g_ConsoleCommands[] = {
     &g_Console_Cmd_Config,
     &g_Console_Cmd_GiveItem,
     &g_Console_Cmd_SFX,
+    // clang-format on
     NULL,
 };

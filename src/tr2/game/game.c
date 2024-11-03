@@ -14,6 +14,7 @@
 #include "game/room_draw.h"
 #include "game/shell.h"
 #include "game/sound.h"
+#include "game/stats.h"
 #include "game/text.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -168,7 +169,7 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
 
         g_HealthBarTimer--;
         if (g_CurrentLevel || g_IsAssaultTimerActive) {
-            g_SaveGame.statistics.timer++;
+            Stats_UpdateTimer();
         }
 
         m_FrameCount -= 2;
@@ -182,7 +183,7 @@ int32_t __cdecl Game_Draw(void)
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Overlay_DrawGameInfo(true);
     S_OutputPolyList();
-    g_Camera.num_frames = S_DumpScreen();
+    g_Camera.num_frames = S_DumpScreen() * TICKS_PER_FRAME;
     Shell_ProcessEvents();
     S_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
@@ -277,6 +278,7 @@ int32_t __cdecl Game_Loop(const bool demo_mode)
     g_NoInputCounter = 0;
     g_GameMode = demo_mode ? GAMEMODE_IN_DEMO : GAMEMODE_IN_GAME;
 
+    Stats_StartTimer();
     GAME_FLOW_DIR dir = Game_Control(1, demo_mode);
     while (dir == 0) {
         const int32_t nframes = Game_Draw();

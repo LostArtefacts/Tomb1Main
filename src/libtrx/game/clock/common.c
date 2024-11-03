@@ -52,28 +52,28 @@ double Clock_GetHighPrecisionCounter(void)
 
 int32_t Clock_SyncTicks(void)
 {
-    m_LastCounter = m_Counter;
-    const double fps = Clock_GetCurrentFPS();
+    const Uint64 counter = SDL_GetPerformanceCounter();
 
-    const double frequency = (double)m_Frequency / Clock_GetSpeedMultiplier();
-    const Uint64 target_counter = m_LastCounter + (frequency / fps);
-
-    while (true) {
-        m_Counter = SDL_GetPerformanceCounter();
-
-        const double elapsed_sec =
-            (double)(m_Counter - m_LastCounter) / frequency;
-        const double delay_sec = m_Counter <= target_counter
-            ? (double)(target_counter - m_Counter) / frequency
-            : 0.0;
-        int32_t delay_ms = delay_sec * 1000;
-        if (delay_ms > 0) {
-            SDL_Delay(delay_ms);
-        }
-
-        const double elapsed_ticks = elapsed_sec * fps;
-        if (elapsed_ticks >= 1) {
-            return elapsed_ticks;
-        }
+    if (m_LastCounter == 0) {
+        m_LastCounter = counter;
+        return 1;
     }
+
+    const int32_t fps = Clock_GetCurrentFPS();
+    const double speed_multiplier = Clock_GetSpeedMultiplier();
+    const double frame_duration =
+        (1.0 / (fps * speed_multiplier)) * SDL_GetPerformanceFrequency();
+    const double elapsed = (double)(counter - m_LastCounter);
+
+    int32_t elapsed_frames = (int32_t)(elapsed / frame_duration);
+    if (elapsed_frames < 1) {
+        const Uint32 delay_time =
+            (frame_duration - elapsed) * 1000 / SDL_GetPerformanceFrequency();
+        SDL_Delay(delay_time);
+        elapsed_frames = 1;
+    }
+
+    m_LastCounter = SDL_GetPerformanceCounter();
+
+    return elapsed_frames;
 }

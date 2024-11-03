@@ -19,6 +19,7 @@ typedef struct {
     } gameplay;
 
     struct {
+        int32_t turbo_speed;
         SCREENSHOT_FORMAT screenshot_format;
     } rendering;
 } CONFIG;

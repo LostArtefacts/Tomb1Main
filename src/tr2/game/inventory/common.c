@@ -19,6 +19,7 @@
 #include "game/overlay.h"
 #include "game/shell.h"
 #include "game/sound.h"
+#include "game/stats.h"
 #include "game/text.h"
 #include "global/const.h"
 #include "global/funcs.h"
@@ -184,6 +185,7 @@ void __cdecl Inv_Construct(void)
 
 int32_t __cdecl Inv_Display(int32_t inventory_mode)
 {
+    Stats_StartTimer();
     RING_INFO ring = { 0 };
     IMOTION_INFO imo = { 0 };
 
@@ -744,12 +746,12 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
         }
 
         S_OutputPolyList();
-        const int32_t frames = S_DumpScreen();
+        const int32_t frames = S_DumpScreen() * TICKS_PER_FRAME;
         Shell_ProcessEvents();
         g_Inv_NFrames = frames;
         g_Camera.num_frames = frames;
         if (g_CurrentLevel) {
-            g_SaveGame.statistics.timer += frames / 2;
+            Stats_UpdateTimer();
         }
     } while (imo.status != RNG_DONE);
 

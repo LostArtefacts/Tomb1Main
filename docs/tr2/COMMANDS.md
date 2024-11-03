@@ -60,6 +60,10 @@ Currently supported commands:
 - `/exit`  
   Closes the game.
 
+- `/speed`  
+- `/speed {num}`  
+  Retrieves or sets current game speed.
+
 - `/sfx`  
 - `/sfx {sound}`  
   Plays a given sound sample.

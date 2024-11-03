@@ -78,6 +78,7 @@ static void M_UpdateFromBackend(
     s->item_cheat                  |= backend->is_pressed(layout, INPUT_ROLE_ITEM_CHEAT);
     s->fly_cheat                   |= backend->is_pressed(layout, INPUT_ROLE_FLY_CHEAT);
     s->level_skip_cheat            |= backend->is_pressed(layout, INPUT_ROLE_LEVEL_SKIP_CHEAT);
+    s->turbo_cheat                 |= backend->is_pressed(layout, INPUT_ROLE_TURBO_CHEAT);
 
     s->equip_pistols               |= backend->is_pressed(layout, INPUT_ROLE_EQUIP_PISTOLS);
     s->equip_shotgun               |= backend->is_pressed(layout, INPUT_ROLE_EQUIP_SHOTGUN);

@@ -1,5 +1,5 @@
 #pragma once
 
-#include <libtrx/game/console/common.h>
+#include "../common.h"
 
 extern CONSOLE_COMMAND g_Console_Cmd_Speed;

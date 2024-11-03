@@ -19,4 +19,3 @@ int32_t Clock_GetLogicalFrame(void);
 int32_t Clock_GetDrawFrame(void);
 
 extern int32_t Clock_GetCurrentFPS(void);
-extern double Clock_GetSpeedMultiplier(void);
