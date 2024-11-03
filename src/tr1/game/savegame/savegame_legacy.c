@@ -47,6 +47,7 @@ static char *m_SGBufPtr = NULL;
 
 static bool M_ItemHasSaveFlags(OBJECT *obj, ITEM *item);
 static bool M_ItemHasSaveAnim(const ITEM *item);
+static bool M_ItemHasHitPoints(const ITEM *item);
 static bool M_NeedsBaconLaraFix(char *buffer);
 
 static void M_Reset(char *buffer);
@@ -85,6 +86,12 @@ static bool M_ItemHasSaveAnim(const ITEM *const item)
 {
     const OBJECT *const obj = &g_Objects[item->object_id];
     return obj->save_anim && item->object_id != O_BACON_LARA;
+}
+
+static bool M_ItemHasHitPoints(const ITEM *const item)
+{
+    const OBJECT *const obj = &g_Objects[item->object_id];
+    return obj->save_hitpoints && item->object_id != O_SCION_ITEM_3;
 }
 
 static bool M_NeedsBaconLaraFix(char *buffer)
@@ -158,7 +165,7 @@ static bool M_NeedsBaconLaraFix(char *buffer)
             M_Read(&tmp_item.anim_num, sizeof(int16_t));
             M_Read(&tmp_item.frame_num, sizeof(int16_t));
         }
-        if (obj->save_hitpoints) {
+        if (M_ItemHasHitPoints(item)) {
             M_Read(&tmp_item.hit_points, sizeof(int16_t));
         }
         if (M_ItemHasSaveFlags(obj, item)) {
@@ -596,7 +603,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
             M_Read(&item->frame_num, sizeof(int16_t));
         }
 
-        if (obj->save_hitpoints) {
+        if (M_ItemHasHitPoints(item)) {
             M_Read(&item->hit_points, sizeof(int16_t));
         }
 
@@ -767,7 +774,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
             M_Write(&item->frame_num, sizeof(int16_t));
         }
 
-        if (obj->save_hitpoints) {
+        if (M_ItemHasHitPoints(item)) {
             M_Write(&item->hit_points, sizeof(int16_t));
         }
 

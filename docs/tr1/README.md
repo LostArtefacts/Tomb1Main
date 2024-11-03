@@ -458,6 +458,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - fixed the Scion being extremely difficult to shoot with the shotgun
 - fixed collision issues with drawbridges, trapdoors, and bridges when stacked over each other, over slopes, and near the ground
 - fixed a potential softlock when killing the Torso boss in Great Pyramid
+- fixed being able to shoot the scion multiple times if save/load is used while it blows up
 
 #### Cheats
 - added a fly cheat
