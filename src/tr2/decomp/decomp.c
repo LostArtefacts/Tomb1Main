@@ -2807,6 +2807,13 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
             break;
         }
 
+        S_InitialisePolyList(0);
+        S_CopyBufferToScreen();
+        Console_Draw();
+        Text_Draw();
+        S_OutputPolyList();
+        S_DumpScreen();
+
         frames -= Clock_SyncTicks() * TICKS_PER_FRAME;
 
         if (g_IsGameToExit) {
