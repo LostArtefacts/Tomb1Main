@@ -2806,7 +2806,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
         Shell_ProcessEvents();
         Input_Update();
         Shell_ProcessInput();
-        if (input_check && g_InputDB.any) {
+        if (input_check && (g_InputDB.menu_back || g_InputDB.menu_confirm)) {
             break;
         }
 
