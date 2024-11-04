@@ -228,6 +228,10 @@
       "Title": "Nadar suave",
       "Description": "Le da al giro bajo el agua de Lara una curva de aceleración para un movimiento más suave, similar a TR2+."
     },
+    "enable_tr2_swim_cancel": {
+      "Title": "Cancelación de natación responsiva",
+      "Description": "Le permite a Lara detenerse con mayor capacidad de respuesta bajo el agua cuando se suelta la tecla de natación, similar a TR2+."
+    },
     "enable_wading": {
       "Title": "Vadeando",
       "Description": "Le permite a Lara caminar en aguas poco profundas, similar a TR2+, en lugar de quedarse atrapada en la superficie del agua."

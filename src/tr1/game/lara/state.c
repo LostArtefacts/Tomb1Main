@@ -1083,7 +1083,8 @@ void Lara_State_Swim(ITEM *item, COLL_INFO *coll)
     }
 
     if (!g_Input.jump) {
-        item->goal_anim_state = LS_GLIDE;
+        item->goal_anim_state =
+            g_Config.enable_tr2_swim_cancel ? LS_RESPONSIVE : LS_GLIDE;
     }
 }
 

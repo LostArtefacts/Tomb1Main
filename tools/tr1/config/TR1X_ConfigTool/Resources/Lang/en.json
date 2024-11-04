@@ -100,6 +100,10 @@
       "Title": "Smooth swimming",
       "Description": "Gives Lara's underwater turn rate an acceleration curve for smoother movement, similar to TR2+."
     },
+    "enable_tr2_swim_cancel": {
+      "Title": "Responsive swim cancel",
+      "Description": "Allows Lara to stop more responsively underwater when the swim key is released, similar to TR2+."
+    },
     "enable_wading": {
       "Title": "Wading",
       "Description": "Allows Lara to wade through shallow water, similar to TR2+, rather than becoming stuck on the water surface."

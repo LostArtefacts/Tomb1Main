@@ -100,6 +100,10 @@
       "Title": "Nuoto regolare",
       "Description": "Fornisce alla velocità di virata subacquea di Lara una curva di accelerazione per movimenti più fluidi, simile a TR2+."
     },
+    "enable_tr2_swim_cancel": {
+      "Title": "Annullamento del nuoto reattivo",
+      "Description": "Permette a Lara di fermarsi più reattivamente sott'acqua quando viene rilasciato il tasto di nuoto, simile a TR2+."
+    },
     "enable_wading": {
       "Title": "Guadare",
       "Description": "Permette a Lara di guadare acque poco profonde, simile a TR2+, invece di rimanere bloccata sulla superficie dell'acqua."

@@ -100,6 +100,10 @@
       "Title": "Natation fluide",
       "Description": "Donne au taux de rotation sous l'eau de Lara une courbe d'accélération pour un mouvement plus fluide, similaire à TR2+."
     },
+    "enable_tr2_swim_cancel": {
+      "Title": "Annulation de natation réactive",
+      "Description": "Permet à Lara de s'arrêter de manière plus réactive sous l'eau lorsque la touche de natation est relâchée, similaire à TR2+."
+    },
     "enable_wading": {
       "Title": "Patauger",
       "Description": "Permet à Lara de patauger dans les eaux peu profondes, comme avec TR2+, plutôt que de rester coincée à la surface de l'eau."

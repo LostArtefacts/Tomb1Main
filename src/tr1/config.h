@@ -81,6 +81,7 @@ typedef struct {
     bool enable_swing_cancel;
     bool enable_tr2_jumping;
     bool enable_tr2_swimming;
+    bool enable_tr2_swim_cancel;
     bool enable_wading;
     MUSIC_LOAD_CONDITION music_load_condition;
     bool load_music_triggers;

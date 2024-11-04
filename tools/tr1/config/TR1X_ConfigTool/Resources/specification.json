@@ -105,6 +105,11 @@
           "DefaultValue": false
         },
         {
+          "Field": "enable_tr2_swim_cancel",
+          "DataType": "Bool",
+          "DefaultValue": false
+        },
+        {
           "Field": "enable_wading",
           "DataType": "Bool",
           "DefaultValue": true
