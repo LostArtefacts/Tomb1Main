@@ -210,7 +210,7 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
         injection->relevant = g_Config.fix_texture_issues;
         break;
     case INJ_LARA_JUMPS:
-        injection->relevant = g_Config.enable_tr2_jumping;
+        injection->relevant = false; // Merged with INJ_LARA_ANIMS in 4.6
         break;
     case INJ_ITEM_POSITION:
         injection->relevant = g_Config.fix_item_rots;

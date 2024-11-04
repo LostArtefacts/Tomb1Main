@@ -1435,17 +1435,8 @@ provided with the game achieves.
       <code>lara_animations.bin</code>
     </td>
     <td>
-      Injects several animations for Lara, such as the jump-twist, somersault,
-      and underwater roll.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>lara_jumping.bin</code>
-    </td>
-    <td>
-      Injects animation change/dispatch edits for Lara to cater for responsive
-      jumping, if that option is enabled.
+      Injects several animations, state changes and commands for Lara, such as
+      responsive jumping, jump-twist, somersault, underwater roll, and wading.
     </td>
   </tr>
   <tr valign="top">

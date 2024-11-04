@@ -47,6 +47,7 @@
 - fixed being able to shoot the scion multiple times if save/load is used while it blows up (#1819)
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
+- improved the injection approach for Lara's responsive jumping (#1823)
 - removed health cheat (we now have the `/hp` command)
 - removed background for the "Reset" and "Unbind" labels in the controls dialog
 

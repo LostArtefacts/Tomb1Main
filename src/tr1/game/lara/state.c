@@ -40,6 +40,7 @@ void (*g_LaraStateRoutines[])(ITEM *item, COLL_INFO *coll) = {
     Lara_State_DieMidas,    Lara_State_SwanDive,  Lara_State_FastDive,
     Lara_State_Gymnast,     Lara_State_WaterOut,  Lara_State_Controlled,
     Lara_State_Twist,       Lara_State_UWRoll,    Lara_State_Wade,
+    Lara_State_Responsive,
 };
 
 static bool m_JumpPermitted = true;
@@ -138,7 +139,8 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Input.jump && m_JumpPermitted && !item->gravity) {
-        item->goal_anim_state = LS_JUMP_FORWARD;
+        item->goal_anim_state =
+            g_Config.enable_tr2_jumping ? LS_RESPONSIVE : LS_JUMP_FORWARD;
     } else if (g_Input.forward) {
         if (g_Lara.water_status == LWS_WADE) {
             item->goal_anim_state = LS_WADE;
@@ -1246,4 +1248,8 @@ void Lara_State_Wade(ITEM *item, COLL_INFO *coll)
     } else {
         item->goal_anim_state = LS_STOP;
     }
+}
+
+void Lara_State_Responsive(ITEM *item, COLL_INFO *coll)
+{
 }

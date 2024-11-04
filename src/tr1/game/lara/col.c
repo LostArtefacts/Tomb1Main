@@ -63,6 +63,7 @@ void (*g_LaraCollisionRoutines[])(ITEM *item, COLL_INFO *coll) = {
     Lara_Col_DieMidas,    Lara_Col_SwanDive,  Lara_Col_FastDive,
     Lara_Col_Gymnast,     Lara_Col_WaterOut,  Lara_Col_Controlled,
     Lara_Col_Twist,       Lara_Col_UWRoll,    Lara_Col_Wade,
+    Lara_Col_Responsive,
 };
 
 static void M_Default(ITEM *item, COLL_INFO *coll);
@@ -1052,4 +1053,8 @@ void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
     }
 
     item->pos.y += MIN(coll->mid_floor, 50);
+}
+
+void Lara_Col_Responsive(ITEM *item, COLL_INFO *coll)
+{
 }

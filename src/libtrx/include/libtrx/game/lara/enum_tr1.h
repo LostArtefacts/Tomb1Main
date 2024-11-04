@@ -164,6 +164,7 @@ typedef enum {
     LS_TWIST        = 57,
     LS_UW_ROLL      = 58,
     LS_WADE         = 59,
+    LS_RESPONSIVE   = 60,
 } LARA_STATE;
 // clang-format on
 
