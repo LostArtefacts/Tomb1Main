@@ -20,40 +20,69 @@ decompilation process. We recognize that there is much work to be done.
 ## Improvements over original game
 
 #### Gameplay
-
 - added an option to fix M16 accuracy while running
 - added optional rendering of pickups in the UI as 3D meshes
+- changed inventory to pause the music rather than muting it
 - fixed killing the T-Rex with a grenade launcher crashing the game
 - fixed secret rewards not displaying shotgun ammo
 - fixed numeric keys interfering with the demos
+- fixed the ammo counter being hidden while a demo plays in NG+
 - fixed explosions sometimes being drawn too dark
 - fixed controls dialog remapping being too sensitive
-- fixed the distorted skybox in room 5 of Barkhang Monastery
 - fixed Lara reloading the harpoon gun after every shot in NG+
 - fixed the dragon reviving itself after Lara removes the dagger in rare circumstances
 - fixed grenades counting as double kills in the game statistics
-- fixed the ammo counter being hidden while a demo plays in NG+
 - fixed the game hanging if exited during the level stats, credits, or final stats
 - fixed a crash when firing grenades at Xian guards in statue form
 - fixed harpoon bolts damaging inactive enemies
+- fixed the distorted skybox in room 5 of Barkhang Monastery
+
+#### Cheats
+- added a fly cheat
+- added a level skip cheat
+- added a door open cheat (while in fly mode)
+- added a cheat to increase the game speed
+- added a cheat to explode Lara like in TR2 and TR3
+
+#### Input
+- added additional custom control schemes
+- added customizable controller support
+- fixed setting user keys being very difficult
+- fixed skipping FMVs triggering inventory
+- fixed skipping credits working too fast
 
 #### Statistics
 - fixed the dragon counting as more than one kill if allowed to revive
 - fixed enemies that are run over by the skidoo not being counted in the statistics
 
 #### Input
-- added the ability to hold forward/back to move through menus more quickly
+- added ability to hold forward/back to move through menus more quickly
 
 #### Visuals
-
+- added support for HD FMVs
 - fixed TGA screenshots crashing the game
 - fixed the camera being cut off after using the gong hammer in Ice Palace
 - fixed Lara's underwater hue being retained when re-entering a boat
+- improved FMV mode behavior - stopped switching screen resolutions
+- improved vertex movement when looking through water portals
 
 #### Audio
-
 - fixed music not playing with certain game versions
 - fixed the audio not being in sync when Lara strikes the gong in Ice Palace
+- fixed sound settings resuming the music
+- fixed wrong default music volume (being very loud on some setups)
 
 #### Mods
 - added developer console (accessible with `/`, see [COMMANDS.md](COMMANDS.md) for details)
+
+#### Miscellaneous
+- added .jpeg/.png screenshots
+- added ability to skip FMVs with both the Action key
+- added ability to skip end credits with the Action and Escape keys
+- ported video decoding library to ffmpeg
+- ported audio output library to SDL
+- ported input method to SDL
+- fixed screenshots not working in windowed mode
+- fixed screenshots key not getting debounced
+- changed screenshots to be put in the screenshots/ directory
+- changed saves to be put in the saves/ directory

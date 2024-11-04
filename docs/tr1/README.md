@@ -468,6 +468,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added a cheat to explode Lara like in TR2 and TR3
 
 #### Input
+- added ability to hold forward/back to move through menus more quickly
 - added ability to move camera around with W,A,S,D
 - added additional custom control schemes
 - added the ability to unbind unessential keys
@@ -606,6 +607,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - ported image decoding library to ffmpeg
 - ported audio output library to SDL
 - ported input method to SDL
+- changed screenshots to be put in the screenshots/ directory
 - changed saves to be put in the saves/ directory
 - fixed playing the secret sound in Tomb of Tihocan
 - fixed reading user settings not restoring the volume
