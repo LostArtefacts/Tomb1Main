@@ -65,7 +65,6 @@
 #define dynamic_light_on ((void __cdecl (*)(ITEM *item))0x0041D9F0)
 #define dynamic_light_off ((void __cdecl (*)(ITEM *item))0x0041DA00)
 #define reset_hair ((void __cdecl (*)(ITEM *item))0x0041DA10)
-#define AssaultStart ((void __cdecl (*)(ITEM *item))0x0041DA20)
 #define AssaultStop ((void __cdecl (*)(ITEM *item))0x0041DA50)
 #define AssaultReset ((void __cdecl (*)(ITEM *item))0x0041DA70)
 #define AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)

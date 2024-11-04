@@ -1,7 +1,6 @@
 #include "decomp/effects.h"
 
 #include "game/effects.h"
-#include "game/items.h"
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/random.h"
@@ -173,4 +172,12 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
         ((4 * Random_GetDraw()) >> 15) + 12,
         ((4 * Random_GetDraw()) >> 15) + 10);
     // clang-format on
+}
+
+void __cdecl EffectFunc_AssaultStart(ITEM *const item)
+{
+    g_SaveGame.statistics.timer = 0;
+    g_IsAssaultTimerActive = 1;
+    g_IsAssaultTimerDisplay = 1;
+    g_FlipEffect = -1;
 }

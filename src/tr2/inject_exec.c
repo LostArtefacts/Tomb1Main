@@ -657,6 +657,7 @@ static void M_Effects(const bool enable)
     INJECT(enable, 0x00427390, Effect_Kill);
     INJECT(enable, 0x00427480, Effect_NewRoom);
     INJECT(enable, 0x00419890, Effect_Draw);
+    INJECT(enable, 0x0041DA20, EffectFunc_AssaultStart);
 }
 
 static void M_LOS(const bool enable)

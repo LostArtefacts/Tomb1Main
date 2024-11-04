@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.22% (886)</tspan> · <tspan class="known">26.37% (328)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.30% (887)</tspan> · <tspan class="known">26.29% (327)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="532.03" height="6" x="0" y="0" class="decompiled"/>
-<rect width="196.96" height="6" x="532.03" y="0" class="known"/>
+<rect width="532.63" height="6" x="0" y="0" class="decompiled"/>
+<rect width="196.36" height="6" x="532.63" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -368,7 +368,7 @@
 <rect width="12" height="12" x="585" y="75" class="known"><title>void __cdecl dynamic_light_on(ITEM *item);</title></rect>
 <rect width="12" height="12" x="600" y="75" class="known"><title>void __cdecl dynamic_light_off(ITEM *item);</title></rect>
 <rect width="12" height="12" x="615" y="75" class="known"><title>void __cdecl reset_hair(ITEM *item);</title></rect>
-<rect width="12" height="12" x="630" y="75" class="known"><title>void __cdecl AssaultStart(ITEM *item);</title></rect>
+<rect width="12" height="12" x="630" y="75" class="decompiled"><title>void __cdecl EffectFunc_AssaultStart(ITEM *item);</title></rect>
 <rect width="12" height="12" x="645" y="75" class="known"><title>void __cdecl AssaultStop(ITEM *item);</title></rect>
 <rect width="12" height="12" x="660" y="75" class="known"><title>void __cdecl AssaultReset(ITEM *item);</title></rect>
 <rect width="12" height="12" x="675" y="75" class="known"><title>void __cdecl AssaultFinished(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.99%</tspan> · <tspan class="known">24.69%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75%</tspan> · <tspan class="known">24.68%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="560.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="184.40" height="6" x="560.16" y="0" class="known"/>
+<rect width="560.24" height="6" x="0" y="0" class="decompiled"/>
+<rect width="184.33" height="6" x="560.24" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2375,7 +2375,7 @@
 <rect width="2.88" height="2.22" x="692.67" y="320.63" class="known"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
 <rect width="2.88" height="2.22" x="698.55" y="320.63" class="known"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
 <rect width="2.72" height="2.22" x="704.43" y="320.63" class="decompiled"><title>void __cdecl Room_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
-<rect width="2.72" height="2.22" x="710.14" y="320.63" class="known"><title>void __cdecl AssaultStart(ITEM *item);</title></rect>
+<rect width="2.72" height="2.22" x="710.14" y="320.63" class="decompiled"><title>void __cdecl EffectFunc_AssaultStart(ITEM *item);</title></rect>
 <rect width="2.72" height="2.22" x="715.86" y="320.63" class="decompiled"><title>void __cdecl Inv_RemoveInventoryText(void);</title></rect>
 <rect width="2.72" height="2.22" x="721.58" y="320.63" class="decompiled"><title>void __cdecl Sound_Shutdown(void);</title></rect>
 <rect width="2.72" height="2.22" x="727.29" y="320.63" class="decompiled"><title>int16_t __cdecl Text_GetTextLength(const char *text);</title></rect>
