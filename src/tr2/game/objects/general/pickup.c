@@ -174,6 +174,16 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
     item->rot = old_rot;
 }
 
+void Pickup_Setup(OBJECT *const obj)
+{
+    // TODO: change this to Pickup_Collision after we decompile
+    // both comparisons in ExtractSaveGameInfo() and GetCarriedItems()
+    obj->collision = (void *)0x00437E70;
+    obj->draw_routine = Object_DrawSpriteItem;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+}
+
 void __cdecl Pickup_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {

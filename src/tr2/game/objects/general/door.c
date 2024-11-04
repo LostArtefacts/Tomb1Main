@@ -89,6 +89,16 @@ void __cdecl Door_Open(DOORPOS_DATA *const d)
     }
 }
 
+void Door_Setup(OBJECT *const obj)
+{
+    obj->initialise = Door_Initialise;
+    obj->control = Door_Control;
+    obj->draw_routine = Object_DrawUnclippedItem;
+    obj->collision = Door_Collision;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 void __cdecl Door_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);

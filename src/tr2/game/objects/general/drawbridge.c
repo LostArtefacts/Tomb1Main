@@ -1,11 +1,26 @@
 #include "game/objects/general/drawbridge.h"
 
 #include "game/objects/general/door.h"
+#include "global/funcs.h"
 
 typedef enum {
     DRAWBRIDGE_STATE_CLOSED = DOOR_STATE_CLOSED,
     DRAWBRIDGE_STATE_OPEN = DOOR_STATE_OPEN,
 } DRAWBRIDGE_STATE;
+
+void Drawbridge_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_DRAWBRIDGE);
+    if (!obj->loaded) {
+        return;
+    }
+    obj->control = GeneralControl;
+    obj->collision = Drawbridge_Collision;
+    obj->ceiling = Drawbridge_Ceiling;
+    obj->floor = Drawbridge_Floor;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
 
 int32_t __cdecl Drawbridge_IsItemOnTop(
     const ITEM *const item, const int32_t z, const int32_t x)

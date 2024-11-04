@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+void Drawbridge_Setup(void);
+
 int32_t __cdecl Drawbridge_IsItemOnTop(const ITEM *item, int32_t z, int32_t x);
 
 void __cdecl Drawbridge_Floor(

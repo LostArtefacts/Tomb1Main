@@ -34,6 +34,21 @@ static void M_CreateGongBonger(ITEM *const lara_item)
     item_gong_bonger->status = IS_ACTIVE;
 }
 
+void Detonator1_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_DETONATOR_1);
+    obj->collision = Detonator_Collision;
+}
+
+void Detonator2_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_DETONATOR_2);
+    obj->collision = Detonator_Collision;
+    obj->control = Detonator_Control;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 void __cdecl Detonator_Control(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);

@@ -78,6 +78,17 @@ void __cdecl Boat_Initialise(const int16_t item_num)
     boat->data = boat_data;
 }
 
+void Boat_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_BOAT);
+    obj->initialise = Boat_Initialise;
+    obj->control = Boat_Control;
+    obj->collision = Boat_Collision;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 int32_t __cdecl Boat_CheckGetOn(
     const int16_t item_num, const COLL_INFO *const coll)
 {

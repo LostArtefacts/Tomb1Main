@@ -2,6 +2,13 @@
 
 #include "game/objects/general/bridge_common.h"
 
+void BridgeTilt1_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_BRIDGE_TILT_1);
+    obj->ceiling = BridgeTilt1_Ceiling;
+    obj->floor = BridgeTilt1_Floor;
+}
+
 void __cdecl BridgeTilt1_Floor(
     const ITEM *const item, const int32_t x, const int32_t y, const int32_t z,
     int32_t *const out_height)

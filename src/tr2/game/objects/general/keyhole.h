@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+void Keyhole_Setup(OBJECT *obj);
+
 void __cdecl Keyhole_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 

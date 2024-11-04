@@ -15,6 +15,18 @@ typedef enum {
     LIFT_STATE_DOOR_OPEN = 1,
 } LIFT_STATE;
 
+void Lift_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_LIFT);
+    obj->initialise = Lift_Initialise;
+    obj->control = Lift_Control;
+    obj->ceiling = Lift_Ceiling;
+    obj->floor = Lift_Floor;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 void __cdecl Lift_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);

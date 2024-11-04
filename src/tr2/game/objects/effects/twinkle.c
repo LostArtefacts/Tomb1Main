@@ -44,6 +44,12 @@ static bool M_ShouldDisappear(
     return dx < DISAPPEAR_RANGE && dy < DISAPPEAR_RANGE && dz < DISAPPEAR_RANGE;
 }
 
+void Twinkle_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_TWINKLE);
+    obj->control = Twinkle_Control;
+}
+
 void __cdecl Twinkle_Control(const int16_t fx_num)
 {
     FX *const fx = &g_Effects[fx_num];

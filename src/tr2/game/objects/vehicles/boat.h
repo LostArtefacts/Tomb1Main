@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 void __cdecl Boat_Initialise(int16_t item_num);
+void Boat_Setup(void);
 int32_t __cdecl Boat_CheckGetOn(int16_t item_num, const COLL_INFO *coll);
 void __cdecl Boat_Collision(int16_t item_num, ITEM *lara, COLL_INFO *coll);
 int32_t __cdecl Boat_TestWaterHeight(

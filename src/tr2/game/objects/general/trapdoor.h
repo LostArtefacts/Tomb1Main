@@ -4,6 +4,8 @@
 
 int32_t __cdecl Trapdoor_IsItemOnTop(const ITEM *item, int32_t x, int32_t z);
 
+void Trapdoor_Setup(OBJECT *obj);
+
 void __cdecl Trapdoor_Floor(
     const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 void __cdecl Trapdoor_Ceiling(

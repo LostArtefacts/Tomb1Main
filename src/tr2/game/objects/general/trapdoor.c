@@ -7,6 +7,15 @@ typedef enum {
     TRAPDOOR_STATE_OPEN,
 } TRAPDOOR_STATE;
 
+void Trapdoor_Setup(OBJECT *const obj)
+{
+    obj->control = Trapdoor_Control;
+    obj->ceiling = Trapdoor_Ceiling;
+    obj->floor = Trapdoor_Floor;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 int32_t __cdecl Trapdoor_IsItemOnTop(
     const ITEM *const item, const int32_t x, const int32_t z)
 {

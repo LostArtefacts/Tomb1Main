@@ -18,6 +18,14 @@ static void M_ActivateHeavyTriggers(const int16_t item_num)
     Item_Kill(item_num);
 }
 
+void GongBonger_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_GONG_BONGER);
+    obj->control = GongBonger_Control;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 void __cdecl GongBonger_Control(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);

@@ -86,6 +86,14 @@ static void M_SwitchOff(ITEM *const switch_item, ITEM *const lara_item)
     switch_item->goal_anim_state = SWITCH_STATE_ON;
 }
 
+void Switch_Setup(OBJECT *const obj, const bool underwater)
+{
+    obj->control = Switch_Control;
+    obj->collision = underwater ? Switch_CollisionUW : Switch_Collision;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}
+
 void __cdecl Switch_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {

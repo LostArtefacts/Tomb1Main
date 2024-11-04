@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+void BridgeTilt1_Setup(void);
+
 void __cdecl BridgeTilt1_Floor(
     const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 

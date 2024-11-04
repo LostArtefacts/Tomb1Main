@@ -3157,19 +3157,19 @@ typedef enum {
 0x0041C560  0x0068  +       void __cdecl Sound_UpdateEffects(void);
 0x0041C5D0  0x0059  -R      int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);
 0x0041C630  0x00A4  -R      void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);
-0x0041C6E0  0x0082  -R      void __cdecl ControlBlood1(int16_t fx_num);
-0x0041C770  0x007F  -R      void __cdecl ControlExplosion1(int16_t fx_num);
+0x0041C6E0  0x0082  -R      void __cdecl Blood_Control(int16_t fx_num);
+0x0041C770  0x007F  -R      void __cdecl Explosion_Control(int16_t fx_num);
 0x0041C7F0  0x0072  -R      void __cdecl Richochet(GAME_VECTOR *pos);
-0x0041C870  0x0030  -R      void __cdecl ControlRichochet1(int16_t fx_num);
+0x0041C870  0x0030  -R      void __cdecl Richochet_Control(int16_t fx_num);
 0x0041C8A0  0x0064  -R      void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);
 0x0041C910  0x0078  -R      void __cdecl LaraBubbles(ITEM *item);
-0x0041C990  0x00F3  -R      void __cdecl ControlBubble1(int16_t fx_num);
+0x0041C990  0x00F3  -R      void __cdecl Bubbles_Control(int16_t fx_num);
 0x0041CA90  0x00C2  -R      void __cdecl Splash(ITEM *item);
-0x0041CB60  0x0071  -R      void __cdecl ControlSplash1(int16_t fx_num);
-0x0041CBE0  0x00AE  -R      void __cdecl ControlWaterSprite(int16_t fx_num);
-0x0041CC90  0x008C  -R      void __cdecl ControlSnowSprite(int16_t fx_num);
-0x0041CD20  0x00DE  -R      void __cdecl ControlHotLiquid(int16_t fx_num);
-0x0041CE00  0x013D  -R      void __cdecl WaterFall(int16_t fx_num);
+0x0041CB60  0x0071  -R      void __cdecl Splash_Control(int16_t fx_num);
+0x0041CBE0  0x00AE  -R      void __cdecl WaterSprite_Control(int16_t fx_num);
+0x0041CC90  0x008C  -R      void __cdecl SnowSprite_Control(int16_t fx_num);
+0x0041CD20  0x00DE  -R      void __cdecl HotLiquid_Control(int16_t fx_num);
+0x0041CE00  0x013D  -R      void __cdecl Waterfall_Control(int16_t fx_num);
 0x0041CF40  0x000B  -R      void __cdecl finish_level_effect(ITEM *item);
 0x0041CF50  0x0016  -R      void __cdecl turn180_effect(ITEM *item);
 0x0041CF70  0x0096  -R      void __cdecl floor_shake_effect(ITEM *item);
@@ -3183,15 +3183,15 @@ typedef enum {
 0x0041D1B0  0x001C  -R      void __cdecl CurtainFX(ITEM *item);
 0x0041D1D0  0x001C  -R      void __cdecl StatueFX(ITEM *item);
 0x0041D1F0  0x001C  -R      void __cdecl SetChangeFX(ITEM *item);
-0x0041D210  0x003F  -R      void __cdecl ControlDingDong(int16_t item_num);
-0x0041D250  0x0037  -R      void __cdecl ControlLaraAlarm(int16_t item_num);
-0x0041D290  0x0067  -R      void __cdecl ControlAlarmSound(int16_t item_num);
-0x0041D300  0x005D  -R      void __cdecl ControlBirdTweeter(int16_t item_num);
+0x0041D210  0x003F  -       void __cdecl DingDong_Control(int16_t item_num);
+0x0041D250  0x0037  -       void __cdecl LaraAlarm_Control(int16_t item_num);
+0x0041D290  0x0067  -       void __cdecl AlarmSound_Control(int16_t item_num);
+0x0041D300  0x005D  -       void __cdecl BirdTweeter_Control(int16_t item_num);
 0x0041D360  0x0059  -R      void __cdecl DoChimeSound(ITEM *item);
-0x0041D3C0  0x0068  -R      void __cdecl ControlClockChimes(int16_t item_num);
-0x0041D430  0x0128  -R      void __cdecl SphereOfDoomCollision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
-0x0041D560  0x00F0  -R      void __cdecl SphereOfDoom(int16_t item_num);
-0x0041D650  0x012D  -R      void __cdecl DrawSphereOfDoom(ITEM *item);
+0x0041D3C0  0x0068  -       void __cdecl ClockChimes_Control(int16_t item_num);
+0x0041D430  0x0128  -       void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
+0x0041D560  0x00F0  -       void __cdecl SphereOfDoom_Control(int16_t item_num);
+0x0041D650  0x012D  -       void __cdecl SphereOfDoom_Draw(const ITEM *item);
 0x0041D780  0x000A  -R      void __cdecl lara_hands_free(ITEM *item);
 0x0041D790  0x0005  -R      void __cdecl flip_map_effect(ITEM *item);
 0x0041D7A0  0x0043  -R      void __cdecl draw_right_gun(ITEM *item);
@@ -3490,7 +3490,7 @@ typedef enum {
 # game/laraflare.c
 0x0042F7A0  0x009D  -       int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);
 0x0042F840  0x00D3  -       void __cdecl Flare_DoInHand(int32_t flare_age);
-0x0042F920  0x00F8  -       void __cdecl Flare_DrawInAir(ITEM *item);
+0x0042F920  0x00F8  -       void __cdecl Flare_DrawInAir(const ITEM *item);
 0x0042FA20  0x01D7  -       void __cdecl Flare_Create(int32_t thrown);
 0x0042FC00  0x004B  -       void __cdecl Flare_SetArm(int32_t frame);
 0x0042FC50  0x0169  -       void __cdecl Flare_Draw(void);
@@ -3552,7 +3552,7 @@ typedef enum {
 0x00432F90  0x0049  +       void __cdecl LOT_ClearLOT(LOT_INFO *lot);
 
 # game/missile.c
-0x00432FE0  0x02D0  -R      void __cdecl ControlMissile(int16_t fx_num);
+0x00432FE0  0x02D0  -R      void __cdecl Missile_Control(int16_t fx_num);
 0x004332B0  0x00A7  -R      void __cdecl ShootAtLara(FX *fx);
 0x00433360  0x0386  +R      int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);
 0x004336F0  0x0200  -R      void __cdecl BodyPart_Control(int16_t fx_num);
@@ -3569,8 +3569,8 @@ typedef enum {
 0x004341A0  0x006B  -       void __cdecl Object_DrawUnclippedItem(const ITEM *item);
 
 # game/objects.c
-0x00434210  0x00DB  -R      void __cdecl EarthQuake(int16_t item_num);
-0x004342F0  0x003C  -R      void __cdecl ControlCutShotgun(int16_t item_num);
+0x00434210  0x00DB  -       void __cdecl Earthquake_Control(int16_t item_num);
+0x004342F0  0x003C  -       void __cdecl FinalCutscene_Control(int16_t item_num);
 0x00434330  0x009D  -R      void __cdecl InitialiseFinalLevel(void);
 0x00434400  0x020F  +       void __cdecl FinalLevelCounter_Control(int16_t item_num);
 0x00434610  0x00D9  -R      void __cdecl MiniCopterControl(int16_t item_num);
@@ -3579,12 +3579,12 @@ typedef enum {
 0x00434800  0x00BD  +       void __cdecl GongBonger_Control(int16_t item_num);
 0x004348C0  0x00BF  +       void __cdecl Zipline_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 0x00434980  0x028F  +       void __cdecl Zipline_Control(int16_t item_num);
-0x00434C10  0x00E3  -R      void __cdecl BigBowlControl(int16_t item_num);
-0x00434D00  0x007E  -R      void __cdecl BellControl(int16_t item_num);
-0x00434D80  0x0075  -R      void __cdecl InitialiseWindow(int16_t item_num);
+0x00434C10  0x00E3  -       void __cdecl BigBowl_Control(int16_t item_num);
+0x00434D00  0x007E  -       void __cdecl Bell_Control(int16_t item_num);
+0x00434D80  0x0075  -       void __cdecl Window_Initialise(int16_t item_num);
 0x00434E00  0x00C4  -R      void __cdecl SmashWindow(int16_t item_num);
-0x00434ED0  0x0096  -R      void __cdecl WindowControl(int16_t item_num);
-0x00434F70  0x00DC  -R      void __cdecl SmashIceControl(int16_t item_num);
+0x00434ED0  0x0096  -       void __cdecl Window_Control(int16_t item_num);
+0x00434F70  0x00DC  -R      void __cdecl SmashIce_Control(int16_t item_num);
 0x00435050  0x0042  +       void __cdecl Door_Shut(DOORPOS_DATA *d);
 0x004350A0  0x0032  +       void __cdecl Door_Open(DOORPOS_DATA *d);
 0x004350E0  0x03DC  +       void __cdecl Door_Initialise(int16_t item_num);
@@ -3611,8 +3611,8 @@ typedef enum {
 
 # game/people.c
 0x00435E00  0x0085  +       bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);
-0x00435E90  0x003B  -R      void __cdecl ControlGlow(int16_t fx_num);
-0x00435ED0  0x004E  -R      void __cdecl ControlGunShot(int16_t fx_num);
+0x00435E90  0x003B  -R      void __cdecl Glow_Control(int16_t fx_num);
+0x00435ED0  0x004E  -R      void __cdecl GunFlash_Control(int16_t fx_num);
 0x00435F20  0x0066  -R      int16_t __cdecl GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);
 0x00435F90  0x00B9  -R      int16_t __cdecl GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);
 0x00436050  0x00A7  -R      int16_t __cdecl GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);
@@ -3638,7 +3638,7 @@ typedef enum {
 0x00438D80  0x00BD  +       int32_t __cdecl Switch_Trigger(int16_t item_num, int16_t timer);
 0x00438E40  0x003D  +       int32_t __cdecl Keyhole_Trigger(int16_t item_num);
 0x00438E80  0x0033  +       int32_t __cdecl Pickup_Trigger(int16_t item_num);
-0x00438EC0  0x0023  -R      void __cdecl SecretControl(int16_t item_num);
+0x00438EC0  0x0023  -R      void __cdecl Secret_Control(int16_t item_num);
 
 # game/rat.c
 0x00438EF0  0x01DC  -       void __cdecl Mouse_Control(int16_t item_num);
@@ -3659,7 +3659,7 @@ typedef enum {
 0x0043A450  0x0027  -R      void __cdecl InitialiseLevelFlags(void);
 0x0043A480  0x103B  +       void __cdecl Object_SetupBaddyObjects(void);
 0x0043B4C0  0x05FD  -       void __cdecl Object_SetupTrapObjects(void);
-0x0043BAC0  0x0C4C  -       void __cdecl Object_SetupGeneralObjects(void);
+0x0043BAC0  0x0C4C  +       void __cdecl Object_SetupGeneralObjects(void);
 0x0043C710  0x0068  +       void __cdecl Object_SetupAllObjects(void);
 0x0043C780  0x00CE  -R      void __cdecl GetCarriedItems(void);
 

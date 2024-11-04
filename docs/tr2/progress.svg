@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.30% (887)</tspan> · <tspan class="known">26.29% (327)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.38% (888)</tspan> · <tspan class="known">26.21% (326)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="532.63" height="6" x="0" y="0" class="decompiled"/>
-<rect width="196.36" height="6" x="532.63" y="0" class="known"/>
+<rect width="533.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="195.76" height="6" x="533.23" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -321,19 +321,19 @@
 <rect width="12" height="12" x="630" y="60" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
 <rect width="12" height="12" x="645" y="60" class="known"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="660" y="60" class="known"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
-<rect width="12" height="12" x="675" y="60" class="known"><title>void __cdecl ControlBlood1(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="690" y="60" class="known"><title>void __cdecl ControlExplosion1(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="675" y="60" class="known"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="690" y="60" class="known"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="705" y="60" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
-<rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl ControlRichochet1(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="known"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="known"><title>void __cdecl LaraBubbles(ITEM *item);</title></rect>
-<rect width="12" height="12" x="15" y="75" class="known"><title>void __cdecl ControlBubble1(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="15" y="75" class="known"><title>void __cdecl Bubbles_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="30" y="75" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
-<rect width="12" height="12" x="45" y="75" class="known"><title>void __cdecl ControlSplash1(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="60" y="75" class="known"><title>void __cdecl ControlWaterSprite(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="75" y="75" class="known"><title>void __cdecl ControlSnowSprite(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="90" y="75" class="known"><title>void __cdecl ControlHotLiquid(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="105" y="75" class="known"><title>void __cdecl WaterFall(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="45" y="75" class="known"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="60" y="75" class="known"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="75" y="75" class="known"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="90" y="75" class="known"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="105" y="75" class="known"><title>void __cdecl Waterfall_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="120" y="75" class="known"><title>void __cdecl finish_level_effect(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="known"><title>void __cdecl turn180_effect(ITEM *item);</title></rect>
 <rect width="12" height="12" x="150" y="75" class="known"><title>void __cdecl floor_shake_effect(ITEM *item);</title></rect>
@@ -347,15 +347,15 @@
 <rect width="12" height="12" x="270" y="75" class="known"><title>void __cdecl CurtainFX(ITEM *item);</title></rect>
 <rect width="12" height="12" x="285" y="75" class="known"><title>void __cdecl StatueFX(ITEM *item);</title></rect>
 <rect width="12" height="12" x="300" y="75" class="known"><title>void __cdecl SetChangeFX(ITEM *item);</title></rect>
-<rect width="12" height="12" x="315" y="75" class="known"><title>void __cdecl ControlDingDong(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="330" y="75" class="known"><title>void __cdecl ControlLaraAlarm(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl ControlAlarmSound(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="360" y="75" class="known"><title>void __cdecl ControlBirdTweeter(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="315" y="75" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="330" y="75" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="360" y="75" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="375" y="75" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
-<rect width="12" height="12" x="390" y="75" class="known"><title>void __cdecl ControlClockChimes(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="405" y="75" class="known"><title>void __cdecl SphereOfDoomCollision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="12" height="12" x="420" y="75" class="known"><title>void __cdecl SphereOfDoom(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="435" y="75" class="known"><title>void __cdecl DrawSphereOfDoom(ITEM *item);</title></rect>
+<rect width="12" height="12" x="390" y="75" class="known"><title>void __cdecl ClockChimes_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="405" y="75" class="known"><title>void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
+<rect width="12" height="12" x="420" y="75" class="known"><title>void __cdecl SphereOfDoom_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="435" y="75" class="known"><title>void __cdecl SphereOfDoom_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="450" y="75" class="known"><title>void __cdecl lara_hands_free(ITEM *item);</title></rect>
 <rect width="12" height="12" x="465" y="75" class="known"><title>void __cdecl flip_map_effect(ITEM *item);</title></rect>
 <rect width="12" height="12" x="480" y="75" class="known"><title>void __cdecl draw_right_gun(ITEM *item);</title></rect>
@@ -626,7 +626,7 @@
 <rect width="12" height="12" x="705" y="150" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
 <rect width="12" height="12" x="720" y="150" class="known"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="735" y="150" class="known"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
-<rect width="12" height="12" x="0" y="165" class="known"><title>void __cdecl Flare_DrawInAir(ITEM *item);</title></rect>
+<rect width="12" height="12" x="0" y="165" class="known"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="165" class="known"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="12" height="12" x="30" y="165" class="known"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
 <rect width="12" height="12" x="45" y="165" class="known"><title>void __cdecl Flare_Draw(void);</title></rect>
@@ -678,7 +678,7 @@
 <rect width="12" height="12" x="735" y="165" class="decompiled"><title>void __cdecl LOT_InitialiseSlot(int16_t item_num, int32_t slot);</title></rect>
 <rect width="12" height="12" x="0" y="180" class="decompiled"><title>void __cdecl LOT_CreateZone(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="180" class="decompiled"><title>void __cdecl LOT_ClearLOT(LOT_INFO *lot);</title></rect>
-<rect width="12" height="12" x="30" y="180" class="known"><title>void __cdecl ControlMissile(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="30" y="180" class="known"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="45" y="180" class="known"><title>void __cdecl ShootAtLara(FX *fx);</title></rect>
 <rect width="12" height="12" x="60" y="180" class="decompiled"><title>int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);</title></rect>
 <rect width="12" height="12" x="75" y="180" class="known"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
@@ -691,8 +691,8 @@
 <rect width="12" height="12" x="180" y="180" class="decompiled"><title>void __cdecl Room_AlterFloorHeight(ITEM *item, int32_t height);</title></rect>
 <rect width="12" height="12" x="195" y="180" class="decompiled"><title>void __cdecl MovableBlock_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="210" y="180" class="known"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="225" y="180" class="known"><title>void __cdecl EarthQuake(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="240" y="180" class="known"><title>void __cdecl ControlCutShotgun(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="225" y="180" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="240" y="180" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="180" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="12" height="12" x="270" y="180" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="285" y="180" class="known"><title>void __cdecl MiniCopterControl(int16_t item_num);</title></rect>
@@ -701,12 +701,12 @@
 <rect width="12" height="12" x="330" y="180" class="decompiled"><title>void __cdecl GongBonger_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="180" class="decompiled"><title>void __cdecl Zipline_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="360" y="180" class="decompiled"><title>void __cdecl Zipline_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="375" y="180" class="known"><title>void __cdecl BigBowlControl(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="390" y="180" class="known"><title>void __cdecl BellControl(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="405" y="180" class="known"><title>void __cdecl InitialiseWindow(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="375" y="180" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="390" y="180" class="known"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="405" y="180" class="known"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="420" y="180" class="known"><title>void __cdecl SmashWindow(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="435" y="180" class="known"><title>void __cdecl WindowControl(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="450" y="180" class="known"><title>void __cdecl SmashIceControl(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="435" y="180" class="known"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="450" y="180" class="known"><title>void __cdecl SmashIce_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="465" y="180" class="decompiled"><title>void __cdecl Door_Shut(DOORPOS_DATA *d);</title></rect>
 <rect width="12" height="12" x="480" y="180" class="decompiled"><title>void __cdecl Door_Open(DOORPOS_DATA *d);</title></rect>
 <rect width="12" height="12" x="495" y="180" class="decompiled"><title>void __cdecl Door_Initialise(int16_t item_num);</title></rect>
@@ -731,8 +731,8 @@
 <rect width="12" height="12" x="30" y="195" class="known"><title>void __cdecl GeneralControl(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="195" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="195" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
-<rect width="12" height="12" x="75" y="195" class="known"><title>void __cdecl ControlGlow(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="90" y="195" class="known"><title>void __cdecl ControlGunShot(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="75" y="195" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="90" y="195" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="195" class="known"><title>int16_t __cdecl GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="120" y="195" class="known"><title>int16_t __cdecl GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="135" y="195" class="known"><title>int16_t __cdecl GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
@@ -756,7 +756,7 @@
 <rect width="12" height="12" x="405" y="195" class="decompiled"><title>int32_t __cdecl Switch_Trigger(int16_t item_num, int16_t timer);</title></rect>
 <rect width="12" height="12" x="420" y="195" class="decompiled"><title>int32_t __cdecl Keyhole_Trigger(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="195" class="decompiled"><title>int32_t __cdecl Pickup_Trigger(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="450" y="195" class="known"><title>void __cdecl SecretControl(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="450" y="195" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="465" y="195" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="480" y="195" class="known"><title>void __cdecl InitialiseStartInfo(void);</title></rect>
 <rect width="12" height="12" x="495" y="195" class="known"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
@@ -771,7 +771,7 @@
 <rect width="12" height="12" x="630" y="195" class="known"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
 <rect width="12" height="12" x="645" y="195" class="decompiled"><title>void __cdecl Object_SetupBaddyObjects(void);</title></rect>
 <rect width="12" height="12" x="660" y="195" class="known"><title>void __cdecl Object_SetupTrapObjects(void);</title></rect>
-<rect width="12" height="12" x="675" y="195" class="known"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
+<rect width="12" height="12" x="675" y="195" class="decompiled"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
 <rect width="12" height="12" x="690" y="195" class="decompiled"><title>void __cdecl Object_SetupAllObjects(void);</title></rect>
 <rect width="12" height="12" x="705" y="195" class="known"><title>void __cdecl GetCarriedItems(void);</title></rect>
 <rect width="12" height="12" x="720" y="195" class="known"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75%</tspan> · <tspan class="known">24.68%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.92%</tspan> · <tspan class="known">23.75%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="560.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="184.33" height="6" x="560.24" y="0" class="known"/>
+<rect width="567.12" height="6" x="0" y="0" class="decompiled"/>
+<rect width="177.44" height="6" x="567.12" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1337,7 +1337,7 @@
 <rect width="57.98" height="51.94" x="0" y="190.24" class="decompiled"><title>void __cdecl Output_GTMapPersp32FP(int32_t y1, int32_t y2, uint8_t *tex_page);</title></rect>
 <rect width="57.98" height="42.31" x="0" y="245.18" class="decompiled"><title>void __cdecl Lara_Draw(const ITEM *item);</title></rect>
 <rect width="57.98" height="41.67" x="0" y="290.49" class="decompiled"><title>void __cdecl GF_ModifyInventory(int32_t level, int32_t type);</title></rect>
-<rect width="57.98" height="39.83" x="0" y="335.17" class="known"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
+<rect width="57.98" height="39.83" x="0" y="335.17" class="decompiled"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
 <rect width="40.15" height="54.95" x="60.98" y="0" class="decompiled"><title>void __cdecl Lara_Draw_I(const ITEM *item, const FRAME_INFO *frame1, const FRAME_INFO *frame2, int32_t frac, int32_t rate);</title></rect>
 <rect width="40.15" height="49.99" x="60.98" y="57.95" class="decompiled"><title>bool __cdecl Input_Update(void);</title></rect>
 <rect width="40.15" height="47.99" x="60.98" y="110.94" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT4(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
@@ -1449,7 +1449,7 @@
 <rect width="21.59" height="21.46" x="319.90" y="329.15" class="decompiled"><title>void __cdecl Skidoo_Draw(const ITEM *item);</title></rect>
 <rect width="21.59" height="21.39" x="319.90" y="353.61" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3_ZBuffered(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="0" class="decompiled"><title>int32_t __cdecl Output_XYClipper(int32_t vtx_count, VERTEX_INFO *vtx);</title></rect>
-<rect width="20.94" height="21.96" x="344.49" y="24.96" class="known"><title>void __cdecl ControlMissile(int16_t fx_num);</title></rect>
+<rect width="20.94" height="21.96" x="344.49" y="24.96" class="known"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="49.91" class="decompiled"><title>BOOL __cdecl Shell_Main(void);</title></rect>
 <rect width="20.94" height="21.85" x="344.49" y="74.87" class="decompiled"><title>void __cdecl Lara_Animate(ITEM *item);</title></rect>
 <rect width="20.94" height="21.75" x="344.49" y="99.73" class="known"><title>void __cdecl GiantYeti_Control(int16_t item_num);</title></rect>
@@ -1626,7 +1626,7 @@
 <rect width="13.47" height="13.02" x="448.40" y="140.93" class="decompiled"><title>void __cdecl Inv_Ring_DoMotions(RING_INFO *ring);</title></rect>
 <rect width="13.47" height="13.02" x="448.40" y="156.95" class="known"><title>void __cdecl DartEmitterControl(int16_t item_num);</title></rect>
 <rect width="13.47" height="12.97" x="448.40" y="172.97" class="decompiled"><title>void __cdecl Output_InsertTransQuad_Sorted(int32_t x, int32_t y, int32_t width, int32_t height, int32_t z);</title></rect>
-<rect width="13.47" height="12.97" x="448.40" y="188.94" class="known"><title>void __cdecl WaterFall(int16_t fx_num);</title></rect>
+<rect width="13.47" height="12.97" x="448.40" y="188.94" class="known"><title>void __cdecl Waterfall_Control(int16_t fx_num);</title></rect>
 <rect width="13.47" height="12.92" x="448.40" y="204.91" class="decompiled"><title>void __cdecl RestoreLostBuffers(void);</title></rect>
 <rect width="13.47" height="12.87" x="448.40" y="220.83" class="decompiled"><title>void __cdecl Item_AlignPosition(XYZ_32 *vec, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="13.47" height="12.87" x="448.40" y="236.70" class="decompiled"><title>void __cdecl CreateScreenBuffers(void);</title></rect>
@@ -1644,10 +1644,10 @@
 <rect width="13.31" height="12.56" x="513.97" y="92.62" class="decompiled"><title>void __cdecl Inv_DoInventoryBackground(void);</title></rect>
 <rect width="13.26" height="12.56" x="530.28" y="92.62" class="decompiled"><title>int32_t __cdecl Creature_Vault(int16_t item_num, int16_t angle, int32_t vault, int32_t shift);</title></rect>
 <rect width="13.20" height="12.56" x="546.53" y="92.62" class="decompiled"><title>int32_t __cdecl Lara_TestSlide(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="13.04" height="12.56" x="562.74" y="92.62" class="known"><title>void __cdecl DrawSphereOfDoom(ITEM *item);</title></rect>
+<rect width="13.04" height="12.56" x="562.74" y="92.62" class="known"><title>void __cdecl SphereOfDoom_Draw(const ITEM *item);</title></rect>
 <rect width="12.94" height="12.56" x="578.78" y="92.62" class="decompiled"><title>void __cdecl Output_InsertLine_Sorted(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t z, uint8_t color_idx);</title></rect>
 <rect width="12.83" height="12.56" x="594.72" y="92.62" class="decompiled"><title>void __cdecl Inv_InsertItem(INVENTORY_ITEM *inv_item);</title></rect>
-<rect width="12.78" height="12.56" x="610.55" y="92.62" class="known"><title>void __cdecl SphereOfDoomCollision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
+<rect width="12.78" height="12.56" x="610.55" y="92.62" class="known"><title>void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="12.78" height="12.56" x="626.33" y="92.62" class="known"><title>int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);</title></rect>
 <rect width="12.78" height="12.56" x="642.11" y="92.62" class="decompiled"><title>void __cdecl HWR_InitState(void);</title></rect>
 <rect width="12.73" height="12.56" x="657.89" y="92.62" class="decompiled"><title>void __cdecl Lara_Col_Hang(ITEM *item, COLL_INFO *coll);</title></rect>
@@ -1699,19 +1699,19 @@
 <rect width="11.37" height="11.43" x="552.37" y="108.19" class="known"><title>BOOL __cdecl DecompPCX(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal);</title></rect>
 <rect width="11.26" height="11.43" x="566.74" y="108.19" class="decompiled"><title>int32_t __cdecl Boat_TestWaterHeight(ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *pos);</title></rect>
 <rect width="11.26" height="11.43" x="581" y="108.19" class="decompiled"><title>int32_t __cdecl Creature_CheckBaddieOverlap(int16_t item_num);</title></rect>
-<rect width="11.26" height="11.43" x="595.25" y="108.19" class="known"><title>void __cdecl Flare_DrawInAir(ITEM *item);</title></rect>
+<rect width="11.26" height="11.43" x="595.25" y="108.19" class="known"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
 <rect width="11.26" height="11.43" x="609.51" y="108.19" class="decompiled"><title>void __cdecl Skidoo_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="11.20" height="11.43" x="623.77" y="108.19" class="decompiled"><title>void __cdecl Output_DrawPoly_Gouraud(int32_t vtx_count, int32_t red, int32_t green, int32_t blue);</title></rect>
 <rect width="11.08" height="11.43" x="637.96" y="108.19" class="decompiled"><title>int32_t __cdecl Lara_TestHangOnClimbWall(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="11.08" height="11.43" x="652.05" y="108.19" class="decompiled"><title>void __cdecl Gun_Rifle_Control(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="11.08" height="11.43" x="666.13" y="108.19" class="known"><title>int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);</title></rect>
 <rect width="10.97" height="11.43" x="680.21" y="108.19" class="decompiled"><title>void __cdecl Output_InsertPolygons(const int16_t *obj_ptr, int32_t clip);</title></rect>
-<rect width="10.97" height="11.43" x="694.18" y="108.19" class="known"><title>void __cdecl ControlBubble1(int16_t fx_num);</title></rect>
+<rect width="10.97" height="11.43" x="694.18" y="108.19" class="known"><title>void __cdecl Bubbles_Control(int16_t fx_num);</title></rect>
 <rect width="10.97" height="11.43" x="708.15" y="108.19" class="decompiled"><title>void __cdecl Lara_SurfaceCollision(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.97" height="11.43" x="722.12" y="108.19" class="decompiled"><title>DWORD __cdecl WinInReadJoystick(int32_t *x, int32_t *y);</title></rect>
 <rect width="10.91" height="11.43" x="736.09" y="108.19" class="decompiled"><title>int32_t __cdecl Box_StalkBox(const ITEM *item, const ITEM *enemy, int16_t box_num);</title></rect>
 <rect width="10.64" height="11.72" x="494.60" y="122.62" class="decompiled"><title>void __cdecl Gun_Rifle_FireShotgun(void);</title></rect>
-<rect width="10.64" height="11.60" x="494.60" y="137.34" class="known"><title>void __cdecl SphereOfDoom(int16_t item_num);</title></rect>
+<rect width="10.64" height="11.60" x="494.60" y="137.34" class="known"><title>void __cdecl SphereOfDoom_Control(int16_t item_num);</title></rect>
 <rect width="10.64" height="11.60" x="494.60" y="151.94" class="decompiled"><title>void __cdecl Gun_Rifle_FireGrenade(void);</title></rect>
 <rect width="10.64" height="11.54" x="494.60" y="166.53" class="decompiled"><title>void __cdecl Lara_DoClimbLeftRight(ITEM *item, COLL_INFO *coll, int32_t result, int32_t shift);</title></rect>
 <rect width="10.64" height="11.41" x="494.60" y="181.07" class="decompiled"><title>void __cdecl Camera_Chase(const ITEM *item);</title></rect>
@@ -1728,7 +1728,7 @@
 <rect width="10.64" height="10.87" x="494.60" y="336.46" class="decompiled"><title>bool __cdecl DInputJoystickCreate(void);</title></rect>
 <rect width="10.64" height="10.87" x="494.60" y="350.33" class="known"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
 <rect width="10.64" height="10.81" x="494.60" y="364.19" class="decompiled"><title>void __cdecl Effect_Kill(int16_t fx_num);</title></rect>
-<rect width="10.72" height="10.72" x="508.24" y="122.62" class="known"><title>void __cdecl BigBowlControl(int16_t item_num);</title></rect>
+<rect width="10.72" height="10.72" x="508.24" y="122.62" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
 <rect width="10.66" height="10.72" x="521.97" y="122.62" class="decompiled"><title>void __cdecl Lara_SlideSlope(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.66" height="10.72" x="535.63" y="122.62" class="decompiled"><title>bool __cdecl WinVidSpinMessageLoop(bool needWait);</title></rect>
 <rect width="10.66" height="10.72" x="549.29" y="122.62" class="decompiled"><title>BOOL __stdcall S_Audio_Sample_DSoundEnumCallback(LPGUID guid, LPCTSTR description, LPCTSTR module, LPVOID context);</title></rect>
@@ -1736,12 +1736,12 @@
 <rect width="10.60" height="10.72" x="576.56" y="122.62" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOn(int16_t item_num, COLL_INFO *coll);</title></rect>
 <rect width="10.54" height="10.72" x="590.16" y="122.62" class="known"><title>void __cdecl FallingCeiling(int16_t item_num);</title></rect>
 <rect width="10.54" height="10.72" x="603.70" y="122.62" class="known"><title>BOOL __cdecl SelectDrive(void);</title></rect>
-<rect width="10.42" height="10.72" x="617.24" y="122.62" class="known"><title>void __cdecl ControlHotLiquid(int16_t fx_num);</title></rect>
+<rect width="10.42" height="10.72" x="617.24" y="122.62" class="known"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="10.30" height="10.72" x="630.66" y="122.62" class="decompiled"><title>void __cdecl CutscenePlayer_Control(int16_t item_num);</title></rect>
-<rect width="10.30" height="10.72" x="643.96" y="122.62" class="known"><title>void __cdecl SmashIceControl(int16_t item_num);</title></rect>
+<rect width="10.30" height="10.72" x="643.96" y="122.62" class="known"><title>void __cdecl SmashIce_Control(int16_t item_num);</title></rect>
 <rect width="10.30" height="10.72" x="657.26" y="122.62" class="decompiled"><title>void __cdecl DrawQuad(float sx, float sy, float width, float height, D3DCOLOR color);</title></rect>
 <rect width="10.30" height="10.72" x="670.56" y="122.62" class="known"><title>INT_PTR __stdcall SE_AdvancedDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
-<rect width="10.24" height="10.72" x="683.86" y="122.62" class="known"><title>void __cdecl EarthQuake(int16_t item_num);</title></rect>
+<rect width="10.24" height="10.72" x="683.86" y="122.62" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
 <rect width="10.24" height="10.72" x="697.10" y="122.62" class="known"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
 <rect width="10.24" height="10.72" x="710.34" y="122.62" class="known"><title>void __cdecl SpringBoardControl(int16_t item_num);</title></rect>
 <rect width="10.24" height="10.72" x="723.58" y="122.62" class="decompiled"><title>void __cdecl S_LoadSettings(void);</title></rect>
@@ -1825,7 +1825,7 @@
 <rect width="9.18" height="9.06" x="595.10" y="161.47" class="known"><title>void __cdecl S_AnimateTextures(int32_t ticks);</title></rect>
 <rect width="9.11" height="9.06" x="607.28" y="161.47" class="decompiled"><title>void __cdecl Camera_Initialise(void);</title></rect>
 <rect width="9.04" height="9.06" x="619.39" y="161.47" class="decompiled"><title>bool __cdecl WinVidGetDisplayAdapters(void);</title></rect>
-<rect width="8.97" height="9.06" x="631.43" y="161.47" class="known"><title>void __cdecl ControlWaterSprite(int16_t fx_num);</title></rect>
+<rect width="8.97" height="9.06" x="631.43" y="161.47" class="known"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
 <rect width="8.97" height="9.06" x="643.41" y="161.47" class="decompiled"><title>DWORD __cdecl CompPCX(BYTE *bitmap, DWORD width, DWORD height, RGB_888 *palette, BYTE **pcx_data);</title></rect>
 <rect width="8.97" height="9.06" x="655.38" y="161.47" class="known"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
 <rect width="8.90" height="9.06" x="667.36" y="161.47" class="decompiled"><title>int32_t __cdecl Lara_TestEdgeCatch(ITEM *item, COLL_INFO *coll, int32_t *edge);</title></rect>
@@ -1890,7 +1890,7 @@
 <rect width="7.86" height="8.46" x="556.72" y="185.25" class="decompiled"><title>void __cdecl Lara_State_Zipline(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="196.72" class="decompiled"><title>void __cdecl Lara_Col_Compress( ITEM *item, COLL_INFO *coll );</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="208.18" class="decompiled"><title>void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);</title></rect>
-<rect width="7.86" height="8.46" x="556.72" y="219.64" class="known"><title>void __cdecl WindowControl(int16_t item_num);</title></rect>
+<rect width="7.86" height="8.46" x="556.72" y="219.64" class="known"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="231.11" class="known"><title>int32_t __cdecl S_LoadGame(void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="242.57" class="decompiled"><title>void __cdecl Option_Controls_UpdateText(void);</title></rect>
 <rect width="7.86" height="8.39" x="556.72" y="254.04" class="decompiled"><title>void __cdecl Output_SetNearZ(int32_t near_z);</title></rect>
@@ -1917,7 +1917,7 @@
 <rect width="7.63" height="8.01" x="676.05" y="185.25" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="7.55" height="8.01" x="686.68" y="185.25" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT4_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="7.55" height="8.01" x="697.23" y="185.25" class="decompiled"><title>int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);</title></rect>
-<rect width="7.55" height="8.01" x="707.79" y="185.25" class="known"><title>void __cdecl ControlSnowSprite(int16_t fx_num);</title></rect>
+<rect width="7.55" height="8.01" x="707.79" y="185.25" class="known"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
 <rect width="7.55" height="8.01" x="718.34" y="185.25" class="decompiled"><title>void __cdecl Text_AddBackground(TEXTSTRING *string, int16_t x_size, int16_t y_size, int16_t x_off, int16_t y_off, int16_t z_off, int16_t color, uint16_t *gour_ptr, uint16_t flags);</title></rect>
 <rect width="7.55" height="8.01" x="728.89" y="185.25" class="unused"><title>sub_444B20</title></rect>
 <rect width="7.55" height="8.01" x="739.45" y="185.25" class="decompiled"><title>bool __cdecl WinVidGetDisplayMode(DISPLAY_MODE *disp_mode);</title></rect>
@@ -1948,7 +1948,7 @@
 <rect width="7.78" height="7.16" x="654.39" y="196.26" class="decompiled"><title>bool __cdecl Music_PlaySynced(int32_t track_id);</title></rect>
 <rect width="7.70" height="7.16" x="665.17" y="196.26" class="known"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
 <rect width="7.70" height="7.16" x="675.86" y="196.26" class="decompiled"><title>void __cdecl Lara_Col_Fallback(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="7.61" height="7.16" x="686.56" y="196.26" class="known"><title>void __cdecl ControlBlood1(int16_t fx_num);</title></rect>
+<rect width="7.61" height="7.16" x="686.56" y="196.26" class="known"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="7.61" height="7.16" x="697.17" y="196.26" class="decompiled"><title>void __cdecl Requester_Init(REQUEST_INFO *req);</title></rect>
 <rect width="7.61" height="7.16" x="707.79" y="196.26" class="decompiled"><title>void __cdecl HWR_EnableZBuffer(bool z_write_enable, bool z_enable);</title></rect>
 <rect width="7.53" height="7.16" x="718.40" y="196.26" class="decompiled"><title>int32_t __cdecl Inv_AnimateInventoryItem(INVENTORY_ITEM *inv_item);</title></rect>
@@ -1958,13 +1958,13 @@
 <rect width="7.40" height="7.29" x="578.21" y="216.71" class="decompiled"><title>void __cdecl Lara_Col_Roll(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.29" x="578.21" y="227" class="decompiled"><title>void __cdecl SkidooArmed_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="237.29" class="decompiled"><title>int32_t __cdecl Room_FindByPos(int32_t x, int32_t y, int32_t z);</title></rect>
-<rect width="7.40" height="7.13" x="578.21" y="247.42" class="known"><title>void __cdecl ControlExplosion1(int16_t fx_num);</title></rect>
+<rect width="7.40" height="7.13" x="578.21" y="247.42" class="known"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="257.55" class="decompiled"><title>int32_t __cdecl Lara_DeflectEdge(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="267.68" class="decompiled"><title>void __cdecl SkidooDriver_Initialise(int16_t item_num);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="277.81" class="decompiled"><title>bool __cdecl WinInputInit(void);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="287.94" class="decompiled"><title>void __cdecl Random_Seed(void);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="298.07" class="decompiled"><title>void __cdecl Option_DoInventory(INVENTORY_ITEM *item);</title></rect>
-<rect width="7.40" height="7.05" x="578.21" y="308.20" class="known"><title>void __cdecl BellControl(int16_t item_num);</title></rect>
+<rect width="7.40" height="7.05" x="578.21" y="308.20" class="known"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
 <rect width="7.40" height="7.05" x="578.21" y="318.25" class="decompiled"><title>void __cdecl Option_Controls_FlashConflicts(void);</title></rect>
 <rect width="7.40" height="7.05" x="578.21" y="328.30" class="known"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="7.40" height="6.97" x="578.21" y="338.36" class="decompiled"><title>void __cdecl S_SaveSettings(void);</title></rect>
@@ -1995,14 +1995,14 @@
 <rect width="7.22" height="6.58" x="639.90" y="216.45" class="known"><title>bool __cdecl GetRegistryBoolValue(LPCTSTR lpValueName, bool *pValue, bool defaultValue);</title></rect>
 <rect width="7.14" height="6.58" x="650.12" y="216.45" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);</title></rect>
 <rect width="7.14" height="6.58" x="660.25" y="216.45" class="decompiled"><title>void __cdecl Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="7.14" height="6.58" x="670.39" y="216.45" class="known"><title>void __cdecl InitialiseWindow(int16_t item_num);</title></rect>
+<rect width="7.14" height="6.58" x="670.39" y="216.45" class="known"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="7.05" height="6.58" x="680.53" y="216.45" class="known"><title>void __cdecl InitialiseHair(void);</title></rect>
 <rect width="7.05" height="6.58" x="690.57" y="216.45" class="decompiled"><title>void __cdecl Lara_Col_Jumper(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.96" height="6.58" x="700.62" y="216.45" class="decompiled"><title>void __cdecl GameWindowCalculateSizeFromClient(int32_t *width, int32_t *height);</title></rect>
 <rect width="6.88" height="6.58" x="710.58" y="216.45" class="decompiled"><title>void __cdecl Matrix_LookAt(int32_t xsrc, int32_t ysrc, int32_t zsrc, int32_t xtar, int32_t ytar, int32_t ztar, int16_t roll);</title></rect>
 <rect width="6.88" height="6.58" x="720.46" y="216.45" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="6.88" height="6.58" x="730.34" y="216.45" class="decompiled"><title>void __cdecl Lara_LookLeftRight(void);</title></rect>
-<rect width="6.79" height="6.58" x="740.21" y="216.45" class="known"><title>void __cdecl ControlSplash1(int16_t fx_num);</title></rect>
+<rect width="6.79" height="6.58" x="740.21" y="216.45" class="known"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
 <rect width="6.65" height="6.71" x="588.61" y="226.03" class="decompiled"><title>void __thiscall WinVidGetColorBitMasks(COLOR_BIT_MASKS *bm, LPDDPIXELFORMAT pixel_format);</title></rect>
 <rect width="6.65" height="6.71" x="588.61" y="235.74" class="decompiled"><title>BOOL __cdecl Level_LoadPalettes(HANDLE handle);</title></rect>
 <rect width="6.65" height="6.71" x="588.61" y="245.45" class="known"><title>bool __cdecl GetRegistryBinaryValue(LPCTSTR lpValueName, LPBYTE value, DWORD valueSize, LPBYTE defaultValue);</title></rect>
@@ -2028,14 +2028,14 @@
 <rect width="6.57" height="6.19" x="655.95" y="226.03" class="known"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
 <rect width="6.48" height="6.19" x="665.51" y="226.03" class="decompiled"><title>void __cdecl Lara_Col_SwanDive(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.39" height="6.19" x="674.99" y="226.03" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
-<rect width="6.39" height="6.19" x="684.38" y="226.03" class="known"><title>void __cdecl ControlClockChimes(int16_t item_num);</title></rect>
+<rect width="6.39" height="6.19" x="684.38" y="226.03" class="known"><title>void __cdecl ClockChimes_Control(int16_t item_num);</title></rect>
 <rect width="6.39" height="6.19" x="693.77" y="226.03" class="decompiled"><title>void __cdecl Lara_Col_Death(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.39" height="6.19" x="703.15" y="226.03" class="decompiled"><title>void __cdecl Object_SetupAllObjects(void);</title></rect>
 <rect width="6.39" height="6.19" x="712.54" y="226.03" class="unused"><title>sub_4470F0</title></rect>
 <rect width="6.39" height="6.19" x="721.93" y="226.03" class="unused"><title>sub_447AC0</title></rect>
 <rect width="6.39" height="6.19" x="731.32" y="226.03" class="known"><title>void __cdecl SE_ControlsDlgUpdate(HWND hwndDlg);</title></rect>
 <rect width="6.30" height="6.19" x="740.70" y="226.03" class="decompiled"><title>void __cdecl Object_Collision_Trap(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="6.33" height="6.16" x="598.27" y="235.22" class="known"><title>void __cdecl ControlAlarmSound(int16_t item_num);</title></rect>
+<rect width="6.33" height="6.16" x="598.27" y="235.22" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="6.33" height="6.16" x="598.27" y="244.38" class="decompiled"><title>int32_t __cdecl Lara_HitCeiling(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.33" height="6.16" x="598.27" y="253.54" class="decompiled"><title>void __cdecl UpdateGameResolution(void);</title></rect>
 <rect width="6.33" height="6.07" x="598.27" y="262.71" class="decompiled"><title>int32_t __cdecl GF_DoLevelSequence(int32_t level, GAMEFLOW_LEVEL_TYPE type);</title></rect>
@@ -2069,7 +2069,7 @@
 <rect width="5.73" height="5.94" x="741.27" y="235.22" class="decompiled"><title>void __cdecl Sound_StopEffect(int32_t sample_id);</title></rect>
 <rect width="5.57" height="6.10" x="607.59" y="244.16" class="known"><title>bool __cdecl GetRegistryDwordValue(LPCTSTR lpValueName, DWORD *pValue, DWORD defaultValue);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="253.25" class="decompiled"><title>void __cdecl Item_UpdateRoom(ITEM *item, int32_t height);</title></rect>
-<rect width="5.57" height="6" x="607.59" y="262.25" class="known"><title>void __cdecl ControlBirdTweeter(int16_t item_num);</title></rect>
+<rect width="5.57" height="6" x="607.59" y="262.25" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="271.25" class="decompiled"><title>void __cdecl Inv_Ring_MotionItemSelect(RING_INFO *ring, INVENTORY_ITEM *inv_item);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="280.25" class="decompiled"><title>void __cdecl Lara_Col_ClimbLeft(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="289.25" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);</title></rect>
@@ -2129,7 +2129,7 @@
 <rect width="4.94" height="5.15" x="624.52" y="361.70" class="decompiled"><title>int16_t __cdecl Room_GetDoor(const SECTOR *sector);</title></rect>
 <rect width="4.94" height="5.15" x="624.52" y="369.85" class="decompiled"><title>void __cdecl Gun_Pistols_DrawMeshes(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="4.97" height="5.12" x="632.45" y="252.89" class="decompiled"><title>int32_t __cdecl MovableBlock_TestDestination(ITEM *item, int32_t block_height);</title></rect>
-<rect width="4.97" height="5.12" x="640.42" y="252.89" class="known"><title>void __cdecl ControlGunShot(int16_t fx_num);</title></rect>
+<rect width="4.97" height="5.12" x="640.42" y="252.89" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
 <rect width="4.97" height="5.12" x="648.39" y="252.89" class="decompiled"><title>JOYSTICK_NODE *__cdecl GetJoystick(GUID *lpGuid);</title></rect>
 <rect width="4.97" height="5.12" x="656.35" y="252.89" class="known"><title>bool __cdecl OpenGameRegistryKey(LPCTSTR key);</title></rect>
 <rect width="4.97" height="5.12" x="664.32" y="252.89" class="known"><title>double __cdecl UT_Microseconds(void);</title></rect>
@@ -2195,7 +2195,7 @@
 <rect width="4.37" height="4.20" x="684.82" y="268.48" class="decompiled"><title>bool __cdecl WinVidInit(void);</title></rect>
 <rect width="4.37" height="4.20" x="692.19" y="268.48" class="decompiled"><title>void __cdecl Option_Controls_DefaultConflict(void);</title></rect>
 <rect width="4.37" height="4.20" x="699.56" y="268.48" class="known"><title>void __cdecl UpdateTicks(void);</title></rect>
-<rect width="4.26" height="4.20" x="706.93" y="268.48" class="known"><title>void __cdecl ControlDingDong(int16_t item_num);</title></rect>
+<rect width="4.26" height="4.20" x="706.93" y="268.48" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="4.26" height="4.20" x="714.19" y="268.48" class="decompiled"><title>void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.14" height="4.20" x="721.44" y="268.48" class="known"><title>void __cdecl Flare_Ready(void);</title></rect>
 <rect width="4.14" height="4.20" x="728.58" y="268.48" class="known"><title>void __cdecl FallingBlockFloor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
@@ -2210,7 +2210,7 @@
 <rect width="4.23" height="3.89" x="692.18" y="275.68" class="decompiled"><title>void __cdecl Output_DrawPolyGTMap(const int16_t *obj_ptr);</title></rect>
 <rect width="4.23" height="3.89" x="699.41" y="275.68" class="decompiled"><title>void __cdecl Output_DrawPolyWGTMap(const int16_t *obj_ptr);</title></rect>
 <rect width="4.23" height="3.89" x="706.64" y="275.68" class="decompiled"><title>void __cdecl Boat_Initialise(int16_t item_num);</title></rect>
-<rect width="4.23" height="3.89" x="713.86" y="275.68" class="known"><title>void __cdecl ControlCutShotgun(int16_t item_num);</title></rect>
+<rect width="4.23" height="3.89" x="713.86" y="275.68" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="721.09" y="275.68" class="known"><title>void __cdecl InitialiseBlade(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="728.32" y="275.68" class="known"><title>void __cdecl InitialiseRollingBall(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="735.55" y="275.68" class="decompiled"><title>int32_t __cdecl RenderErrorBox(int32_t error_code);</title></rect>
@@ -2220,7 +2220,7 @@
 <rect width="4.14" height="3.86" x="647.85" y="296.40" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="303.26" class="decompiled"><title>void __cdecl Drawbridge_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="310.12" class="decompiled"><title>int32_t __cdecl Bridge_GetOffset(const ITEM *item, int32_t x, int32_t z);</title></rect>
-<rect width="4.14" height="3.86" x="647.85" y="316.98" class="known"><title>void __cdecl ControlGlow(int16_t fx_num);</title></rect>
+<rect width="4.14" height="3.86" x="647.85" y="316.98" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="323.83" class="decompiled"><title>void __cdecl WaitPrimaryBufferFlip(void);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="330.69" class="decompiled"><title>void __cdecl S_RemoveCtrlText(void);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="337.55" class="known"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
@@ -2246,7 +2246,7 @@
 <rect width="3.68" height="3.84" x="654.99" y="289.50" class="decompiled"><title>void __cdecl Item_ShiftCol(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="296.34" class="decompiled"><title>int32_t __cdecl Game_DrawCinematic(void);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="303.18" class="decompiled"><title>int32_t __cdecl Game_Draw(void);</title></rect>
-<rect width="3.68" height="3.84" x="654.99" y="310.01" class="known"><title>void __cdecl ControlLaraAlarm(int16_t item_num);</title></rect>
+<rect width="3.68" height="3.84" x="654.99" y="310.01" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="316.85" class="decompiled"><title>void __cdecl Text_ChangeText(TEXTSTRING *string, const char *text);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="323.68" class="decompiled"><title>uint32_t __cdecl Text_GetScaleH(uint32_t value);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="330.52" class="decompiled"><title>bool __cdecl D3DIsSupported(LPD3DDEVICEDESC desc);</title></rect>
@@ -2308,7 +2308,7 @@
 <rect width="3.57" height="3.19" x="668.09" y="371.81" class="known"><title>int32_t __cdecl Music_GetRealTrack(int32_t track);</title></rect>
 <rect width="3.36" height="3.39" x="674.66" y="302.76" class="decompiled"><title>void __cdecl S_Audio_Sample_AdjustTrackPitch(int32_t track_id, int32_t pitch);</title></rect>
 <rect width="3.36" height="3.39" x="674.66" y="309.15" class="known"><title>void __cdecl S_CalculateStaticLight(int16_t adder);</title></rect>
-<rect width="3.36" height="3.26" x="674.66" y="315.54" class="known"><title>void __cdecl ControlRichochet1(int16_t fx_num);</title></rect>
+<rect width="3.36" height="3.26" x="674.66" y="315.54" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="321.80" class="decompiled"><title>void __cdecl Effect_InitialiseArray(void);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="328.06" class="decompiled"><title>void __cdecl Lara_State_PushBlock(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="334.32" class="decompiled"><title>void __cdecl Lara_State_Pickup(ITEM *item, COLL_INFO *coll);</title></rect>
@@ -2390,7 +2390,7 @@
 <rect width="2.57" height="2.21" x="692.67" y="351.93" class="decompiled"><title>void __cdecl Lara_Col_SurfBack(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="357.14" class="decompiled"><title>void __cdecl Lara_Col_SurfLeft(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="362.36" class="decompiled"><title>void __cdecl Lara_Col_SurfRight(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="2.57" height="2.21" x="692.67" y="367.57" class="known"><title>void __cdecl SecretControl(int16_t item_num);</title></rect>
+<rect width="2.57" height="2.21" x="692.67" y="367.57" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="372.79" class="known"><title>uint16_t __cdecl S_COLOR(int32_t red, int32_t green, int32_t blue);</title></rect>
 <rect width="2.36" height="2.42" x="698.24" y="325.85" class="known"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="2.21" height="2.42" x="703.60" y="325.85" class="decompiled"><title>void __cdecl Matrix_Pop_I(void);</title></rect>

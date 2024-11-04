@@ -42,6 +42,12 @@ static void M_Consume(
     g_InteractPosition = lara_item->pos;
 }
 
+void Keyhole_Setup(OBJECT *const obj)
+{
+    obj->collision = Keyhole_Collision;
+    obj->save_flags = 1;
+}
+
 void __cdecl Keyhole_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {

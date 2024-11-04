@@ -4,6 +4,7 @@
 #include "game/items.h"
 #include "game/los.h"
 #include "game/lot.h"
+#include "game/objects/common.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -71,6 +72,14 @@ static void __cdecl M_PrepareCutscene(const int16_t item_num)
     g_CineFrameIdx = 428;
     g_CinePos.pos = item->pos;
     g_CinePos.rot = item->rot;
+}
+
+void FinalLevelCounter_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_FINAL_LEVEL_COUNTER);
+    obj->control = FinalLevelCounter_Control;
+    obj->draw_routine = Object_DrawDummyItem;
+    obj->save_flags = 1;
 }
 
 void __cdecl FinalLevelCounter_Control(const int16_t item_num)

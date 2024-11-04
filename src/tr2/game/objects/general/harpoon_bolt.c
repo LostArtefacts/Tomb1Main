@@ -7,6 +7,13 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+void HarpoonBolt_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_HARPOON_BOLT);
+    obj->control = HarpoonBolt_Control;
+    obj->save_position = 1;
+}
+
 void __cdecl HarpoonBolt_Control(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
