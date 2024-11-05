@@ -2,7 +2,9 @@
 
 #include "game/console/common.h"
 #include "game/const.h"
+#include "game/game.h"
 #include "game/game_string.h"
+#include "game/gameflow/common.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "strings.h"
@@ -25,6 +27,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     // clang-format off
     Console_Log(
         GS(OSD_POS_GET),
+        Game_GetCurrentLevelNum(),
+        Gameflow_GetLevelTitle(Game_GetCurrentLevelNum()),
         lara_item->room_num,
         lara_item->pos.x / (float)WALL_L,
         lara_item->pos.y / (float)WALL_L,

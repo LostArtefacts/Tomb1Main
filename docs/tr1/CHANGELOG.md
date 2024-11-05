@@ -38,6 +38,7 @@
     - `\{ammo shotgun}`
     - `\{ammo magnums}`
     - `\{ammo uzis}`
+- changed the `/pos` command to include the level number and title
 - changed the music timestamp loading behaviour and config option to support ambient tracks (#1769)
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)

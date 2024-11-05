@@ -309,7 +309,7 @@
         "OSD_PERSPECTIVE_FILTER_ON": "Perspective filter enabled",
         "OSD_PHOTO_MODE_LAUNCHED": "Entering photo mode, press %s for help",
         "OSD_PLAY_LEVEL": "Loading %s",
-        "OSD_POS_GET": "Room: %d\nPosition: %.3f, %.3f, %.3f\nRotation: %.3f,%.3f,%.3f",
+        "OSD_POS_GET": "Level: %d (%s)  Room: %d\nPosition: %.3f, %.3f, %.3f\nRotation: %.3f,%.3f,%.3f",
         "OSD_POS_SET_ITEM": "Teleported to object: %s",
         "OSD_POS_SET_ITEM_FAIL": "Failed to teleport to object: %s",
         "OSD_POS_SET_POS": "Teleported to position: %.3f %.3f %.3f",

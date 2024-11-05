@@ -32,6 +32,7 @@
     - removed hardcoded cooldown of 15 frames for medipacks
 - changed text backend to accept named sequences (eg. "\{arrow up}" and similar)
 - changed inventory to pause the music rather than muting it (#1707)
+- changed the `/pos` command to include the level number and title
 - improved FMV mode appearance - removed black scanlines (#1729)
 - improved FMV mode behavior - stopped switching screen resolutions (#1729)
 - improved screenshots: now saved in the screenshots/ directory with level titles and timestamps as JPG or PNG, similar to TR1X (#1773)
