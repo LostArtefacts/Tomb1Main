@@ -6,6 +6,7 @@
 #include "game/inventory/common.h"
 #include "game/matrix.h"
 #include "game/music.h"
+#include "game/objects/common.h"
 #include "game/output.h"
 #include "game/text.h"
 #include "game/viewport.h"
@@ -69,88 +70,6 @@ static float M_Ease(const int32_t cur_frame, const int32_t max_frames)
         result = 1.0f - 2.0f * new_ratio * new_ratio;
     }
     return result;
-}
-
-static BOUNDS_16 M_GetBounds(
-    const OBJECT *const obj, const FRAME_INFO *const frame)
-{
-    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
-    const int16_t *mesh_rots = frame->mesh_rots;
-
-    Matrix_PushUnit();
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
-    Matrix_RotYXZsuperpack(&mesh_rots, 0);
-
-    BOUNDS_16 new_bounds = {
-        .min_x = 0x7FFF,
-        .min_y = 0x7FFF,
-        .min_z = 0x7FFF,
-        .max_x = -0x7FFF,
-        .max_y = -0x7FFF,
-        .max_z = -0x7FFF,
-    };
-
-    for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
-        if (mesh_idx != 0) {
-            int32_t bone_extra_flags = *bone;
-            if (bone_extra_flags & BF_MATRIX_POP) {
-                Matrix_Pop();
-            }
-
-            if (bone_extra_flags & BF_MATRIX_PUSH) {
-                Matrix_Push();
-            }
-
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
-            bone += 4;
-        }
-
-        const int16_t *obj_ptr = mesh_ptrs[mesh_idx];
-        obj_ptr += 5;
-        const int32_t vtx_count = *obj_ptr++;
-        for (int32_t i = 0; i < vtx_count; i++) {
-            PHD_VBUF *const vbuf = &g_PhdVBuf[i];
-
-            // clang-format off
-            const MATRIX *const mptr = g_MatrixPtr;
-            const double xv = (
-                mptr->_00 * obj_ptr[0] +
-                mptr->_01 * obj_ptr[1] +
-                mptr->_02 * obj_ptr[2] +
-                mptr->_03
-            );
-            const double yv = (
-                mptr->_10 * obj_ptr[0] +
-                mptr->_11 * obj_ptr[1] +
-                mptr->_12 * obj_ptr[2] +
-                mptr->_13
-            );
-            double zv = (
-                mptr->_20 * obj_ptr[0] +
-                mptr->_21 * obj_ptr[1] +
-                mptr->_22 * obj_ptr[2] +
-                mptr->_23
-            );
-            // clang-format on
-
-            const int32_t x = ((int32_t)xv) >> W2V_SHIFT;
-            const int32_t y = ((int32_t)yv) >> W2V_SHIFT;
-            const int32_t z = ((int32_t)zv) >> W2V_SHIFT;
-
-            new_bounds.min_x = MIN(new_bounds.min_x, x);
-            new_bounds.min_y = MIN(new_bounds.min_y, y);
-            new_bounds.min_z = MIN(new_bounds.min_z, z);
-            new_bounds.max_x = MAX(new_bounds.max_x, x);
-            new_bounds.max_y = MAX(new_bounds.max_y, y);
-            new_bounds.max_z = MAX(new_bounds.max_z, z);
-            obj_ptr += 3;
-        }
-    }
-
-    Matrix_Pop();
-    return new_bounds;
 }
 
 bool __cdecl Overlay_FlashCounter(const int32_t ticks)
@@ -457,7 +376,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     if (frame->bounds.min_x == frame->bounds.max_x
         && frame->bounds.min_y == frame->bounds.max_y) {
         // fix broken collision box for the prayer wheel
-        bounds = M_GetBounds(obj, frame);
+        bounds = Object_GetBoundingBox(obj, frame);
     }
 
     const int32_t scale = 1280;

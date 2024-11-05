@@ -47,6 +47,11 @@
       "Image": "Graphics/graphic5.jpg",
       "Properties": [
         {
+          "Field": "enable_3d_pickups",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "screenshot_format",
           "DataType": "Enum",
           "EnumKey": "screenshot_format",

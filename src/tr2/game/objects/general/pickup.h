@@ -4,6 +4,8 @@
 
 void Pickup_Setup(OBJECT *obj);
 
+void Pickup_Draw(const ITEM *item);
+
 void __cdecl Pickup_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 
