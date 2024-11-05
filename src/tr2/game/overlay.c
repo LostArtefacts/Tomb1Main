@@ -376,7 +376,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     if (frame->bounds.min_x == frame->bounds.max_x
         && frame->bounds.min_y == frame->bounds.max_y) {
         // fix broken collision box for the prayer wheel
-        bounds = Object_GetBoundingBox(obj, frame);
+        bounds = Object_GetBoundingBox(obj, frame, -1);
     }
 
     const int32_t scale = 1280;

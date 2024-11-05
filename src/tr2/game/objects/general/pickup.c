@@ -211,27 +211,23 @@ void Pickup_Draw(const ITEM *const item)
     }
 
     // Get the first frame of the first animation, and its bounding box.
-    const FRAME_INFO *frame = (const FRAME_INFO *)obj->frame_base;
-    const BOUNDS_16 bounds = Object_GetBoundingBox(obj, frame);
-
-    // First - Is there floor under the item?
-    // This is mostly true, but for example the 4 items in the Obelisk of
-    // Khamoon the 4 items are sitting on top of a static mesh which is not
-    // floor.
-    int16_t room_num = item->room_num;
-    const SECTOR *const sector =
-        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-    const int16_t floor_height =
-        Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-
     int16_t offset;
-    if (item->pos.y == floor_height) {
-        // Is the floor "just below" the item? Take the position from the anim.
-        offset =
-            floor_height - frame->offset.y - (bounds.max_y - bounds.min_y) / 2;
+    BOUNDS_16 bounds;
+    const FRAME_INFO *frame = NULL;
+
+    // Some items, such as the Prayer Wheel in Barkhang Monastery, do not have
+    // animations, and for such items we need to calculate this information
+    // manually.
+    if (obj->anim_idx != -1) {
+        frame = (const FRAME_INFO *)obj->frame_base;
+        bounds = frame->bounds;
+        const int16_t y_off = frame->offset.y - bounds.max_y;
+        bounds.max_y -= bounds.max_y;
+        bounds.min_y -= bounds.max_y;
+        offset = item->pos.y + y_off;
     } else {
-        // Otherwise leave it as-is.
-        offset = item->pos.y;
+        bounds = Object_GetBoundingBox(obj, NULL, item->mesh_bits);
+        offset = item->pos.y - (bounds.max_y - bounds.min_y) / 2;
     }
 
     Matrix_Push();
@@ -240,19 +236,16 @@ void Pickup_Draw(const ITEM *const item)
 
     S_CalculateLight(item->pos.x, item->pos.y, item->pos.z, item->room_num);
 
-    const int32_t clip = S_GetObjectBounds(&frame->bounds);
+    const int32_t clip = S_GetObjectBounds(&bounds);
     if (clip) {
-        // From this point on the function is a slightly customised version
-        // of the code in DrawAnimatingItem starting with the line that
-        // matches the following line.
         int32_t bit = 1;
         int16_t **meshpp = &g_Meshes[obj->mesh_idx];
         int32_t *bone = &g_AnimBones[obj->bone_idx];
 
-        Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
-
-        const int16_t *mesh_rots = frame->mesh_rots;
-        Matrix_RotYXZsuperpack(&mesh_rots, 0);
+        const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
+        if (mesh_rots != NULL) {
+            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+        }
 
         if (item->mesh_bits & bit) {
             Output_InsertPolygons(*meshpp++, clip);
@@ -269,7 +262,9 @@ void Pickup_Draw(const ITEM *const item)
             }
 
             Matrix_TranslateRel(bone[1], bone[2], bone[3]);
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            if (mesh_rots != NULL) {
+                Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            }
 
             // Extra rotation is ignored in this case as it's not needed.
 

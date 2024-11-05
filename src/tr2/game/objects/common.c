@@ -50,15 +50,20 @@ void __cdecl Object_Collision_Trap(
 }
 
 BOUNDS_16 Object_GetBoundingBox(
-    const OBJECT *const obj, const FRAME_INFO *const frame)
+    const OBJECT *const obj, const FRAME_INFO *const frame,
+    const uint32_t mesh_bits)
 {
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     int32_t *bone = &g_AnimBones[obj->bone_idx];
-    const int16_t *mesh_rots = frame->mesh_rots;
+    const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
 
     Matrix_PushUnit();
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
-    Matrix_RotYXZsuperpack(&mesh_rots, 0);
+    if (frame != NULL) {
+        Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    }
+    if (mesh_rots != NULL) {
+        Matrix_RotYXZsuperpack(&mesh_rots, 0);
+    }
 
     BOUNDS_16 new_bounds = {
         .min_x = 0x7FFF,
@@ -81,8 +86,14 @@ BOUNDS_16 Object_GetBoundingBox(
             }
 
             Matrix_TranslateRel(bone[1], bone[2], bone[3]);
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            if (mesh_rots != NULL) {
+                Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            }
             bone += 4;
+        }
+
+        if (!(mesh_bits & (1 << mesh_idx))) {
+            continue;
         }
 
         const int16_t *obj_ptr = mesh_ptrs[mesh_idx];

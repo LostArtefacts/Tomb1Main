@@ -12,4 +12,5 @@ void __cdecl Object_Collision(
 void __cdecl Object_Collision_Trap(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 
-BOUNDS_16 Object_GetBoundingBox(const OBJECT *obj, const FRAME_INFO *frame);
+BOUNDS_16 Object_GetBoundingBox(
+    const OBJECT *obj, const FRAME_INFO *frame, uint32_t mesh_bits);
