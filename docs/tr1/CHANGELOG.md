@@ -47,6 +47,7 @@
 - fixed the controls menu extending to the bottom of the screen with certain text scaling values (#1783, regression from 2.12)
 - fixed game stuck at remapping controller key if no controllers connected (#1788)
 - fixed being able to shoot the scion multiple times if save/load is used while it blows up (#1819)
+- fixed certain erroneous `/play` invocations resulting in duplicated error messages
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 - improved the injection approach for Lara's responsive jumping (#1823)

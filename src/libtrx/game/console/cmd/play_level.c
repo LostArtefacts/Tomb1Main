@@ -46,7 +46,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
 
     if (matches->count == 0) {
         Console_Log(GS(OSD_INVALID_LEVEL));
-        result = CR_BAD_INVOCATION;
+        result = CR_FAILURE;
         goto cleanup;
     } else if (matches->count >= 1) {
         const STRING_FUZZY_MATCH *const match = Vector_Get(matches, 0);
