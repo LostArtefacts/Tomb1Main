@@ -38,6 +38,13 @@ static void M_Apply(void)
     g_PhdNearZ = m_Viewport.near_z << W2V_SHIFT;
     g_PhdFarZ = m_Viewport.far_z << W2V_SHIFT;
 
+    g_FltWinLeft = g_PhdWinMinX + g_PhdWinLeft;
+    g_FltWinTop = g_PhdWinMinY + g_PhdWinTop;
+    g_FltWinRight = g_PhdWinRight + g_PhdWinMinX + 1;
+    g_FltWinBottom = g_PhdWinBottom + g_PhdWinMinY + 1;
+    g_FltWinCenterX = g_PhdWinMinX + g_PhdWinCenterX;
+    g_FltWinCenterY = g_PhdWinMinY + g_PhdWinCenterY;
+
     g_FltNearZ = g_PhdNearZ;
     g_FltFarZ = g_PhdFarZ;
 

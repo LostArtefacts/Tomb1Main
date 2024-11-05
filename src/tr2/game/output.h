@@ -170,4 +170,6 @@ void __cdecl Output_DrawScreenSprite(
 
 void __cdecl Output_DrawScaledSpriteC(const int16_t *obj_ptr);
 
+void Output_ClearDepthBuffer(void);
+
 bool __cdecl Output_MakeScreenshot(const char *path);

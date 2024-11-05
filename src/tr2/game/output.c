@@ -403,13 +403,6 @@ void __cdecl Output_Init(
 
 void __cdecl Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
 {
-    g_FltWinLeft = g_PhdWinMinX;
-    g_FltWinTop = g_PhdWinMinY;
-    g_FltWinRight = (g_PhdWinMaxX + g_PhdWinMinX + 1);
-    g_FltWinBottom = (g_PhdWinMaxY + g_PhdWinMinY + 1);
-    g_FltWinCenterX = (g_PhdWinMinX + g_PhdWinCenterX);
-    g_FltWinCenterY = (g_PhdWinMinY + g_PhdWinCenterY);
-
     obj_ptr = Output_CalcObjectVertices(obj_ptr + 4);
     if (obj_ptr) {
         obj_ptr = Output_CalcVerticeLight(obj_ptr);
@@ -431,13 +424,6 @@ void __cdecl Output_InsertPolygons_I(
 
 void __cdecl Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside)
 {
-    g_FltWinLeft = (g_PhdWinMinX + g_PhdWinLeft);
-    g_FltWinTop = (g_PhdWinMinY + g_PhdWinTop);
-    g_FltWinRight = (g_PhdWinRight + g_PhdWinMinX + 1);
-    g_FltWinBottom = (g_PhdWinBottom + g_PhdWinMinY + 1);
-    g_FltWinCenterX = (g_PhdWinMinX + g_PhdWinCenterX);
-    g_FltWinCenterY = (g_PhdWinMinY + g_PhdWinCenterY);
-
     const int16_t *const old_obj_ptr = obj_ptr;
     obj_ptr = Output_CalcRoomVertices(obj_ptr, is_outside ? 0 : 16);
 
@@ -463,13 +449,6 @@ void __cdecl Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside)
 
 void __cdecl Output_InsertSkybox(const int16_t *obj_ptr)
 {
-    g_FltWinLeft = (g_PhdWinMinX + g_PhdWinLeft);
-    g_FltWinTop = (g_PhdWinMinY + g_PhdWinTop);
-    g_FltWinRight = (g_PhdWinRight + g_PhdWinMinX + 1);
-    g_FltWinBottom = (g_PhdWinBottom + g_PhdWinMinY + 1);
-    g_FltWinCenterX = (g_PhdWinMinX + g_PhdWinCenterX);
-    g_FltWinCenterY = (g_PhdWinMinY + g_PhdWinCenterY);
-
     obj_ptr = Output_CalcObjectVertices(obj_ptr + 4);
     if (obj_ptr) {
         if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
@@ -4539,4 +4518,19 @@ bool __cdecl Output_MakeScreenshot(const char *const path)
     Image_Free(image);
     WinVidBufferUnlock(screen, &desc);
     return ret;
+}
+
+void Output_ClearDepthBuffer(void)
+{
+    if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+        DWORD d3dClearFlags = D3DCLEAR_ZBUFFER;
+
+        D3DRECT d3dRect;
+        d3dRect.x1 = g_PhdWinRect.left;
+        d3dRect.y1 = g_PhdWinRect.top;
+        d3dRect.x2 = g_PhdWinRect.right;
+        d3dRect.y2 = g_PhdWinRect.bottom;
+
+        g_D3DView->lpVtbl->Clear(g_D3DView, 1, &d3dRect, d3dClearFlags);
+    }
 }

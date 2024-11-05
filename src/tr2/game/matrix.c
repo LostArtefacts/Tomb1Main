@@ -29,9 +29,9 @@ void __cdecl Matrix_PushUnit(void)
     mptr->_20 = 0;
     mptr->_21 = 0;
     mptr->_22 = (1 << W2V_SHIFT);
-    // mptr->_03 = 0;
-    // mptr->_13 = 0;
-    // mptr->_23 = 0;
+    mptr->_03 = 0;
+    mptr->_13 = 0;
+    mptr->_23 = 0;
 }
 
 void __cdecl Matrix_Pop(void)

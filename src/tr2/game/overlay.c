@@ -54,6 +54,7 @@ static bool m_FlashState = false;
 static int32_t m_FlashCounter = 0;
 
 static float M_Ease(int32_t cur_frame, int32_t max_frames);
+static BOUNDS_16 M_GetBounds(const OBJECT *obj, const FRAME_INFO *frame);
 static void M_DrawPickup3D(const DISPLAY_PICKUP *pickup);
 static void M_DrawPickupSprite(const DISPLAY_PICKUP *pickup);
 
@@ -68,6 +69,88 @@ static float M_Ease(const int32_t cur_frame, const int32_t max_frames)
         result = 1.0f - 2.0f * new_ratio * new_ratio;
     }
     return result;
+}
+
+static BOUNDS_16 M_GetBounds(
+    const OBJECT *const obj, const FRAME_INFO *const frame)
+{
+    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
+    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const int16_t *mesh_rots = frame->mesh_rots;
+
+    Matrix_PushUnit();
+    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    Matrix_RotYXZsuperpack(&mesh_rots, 0);
+
+    BOUNDS_16 new_bounds = {
+        .min_x = 0x7FFF,
+        .min_y = 0x7FFF,
+        .min_z = 0x7FFF,
+        .max_x = -0x7FFF,
+        .max_y = -0x7FFF,
+        .max_z = -0x7FFF,
+    };
+
+    for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
+        if (mesh_idx != 0) {
+            int32_t bone_extra_flags = *bone;
+            if (bone_extra_flags & BF_MATRIX_POP) {
+                Matrix_Pop();
+            }
+
+            if (bone_extra_flags & BF_MATRIX_PUSH) {
+                Matrix_Push();
+            }
+
+            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            bone += 4;
+        }
+
+        const int16_t *obj_ptr = mesh_ptrs[mesh_idx];
+        obj_ptr += 5;
+        const int32_t vtx_count = *obj_ptr++;
+        for (int32_t i = 0; i < vtx_count; i++) {
+            PHD_VBUF *const vbuf = &g_PhdVBuf[i];
+
+            // clang-format off
+            const MATRIX *const mptr = g_MatrixPtr;
+            const double xv = (
+                mptr->_00 * obj_ptr[0] +
+                mptr->_01 * obj_ptr[1] +
+                mptr->_02 * obj_ptr[2] +
+                mptr->_03
+            );
+            const double yv = (
+                mptr->_10 * obj_ptr[0] +
+                mptr->_11 * obj_ptr[1] +
+                mptr->_12 * obj_ptr[2] +
+                mptr->_13
+            );
+            double zv = (
+                mptr->_20 * obj_ptr[0] +
+                mptr->_21 * obj_ptr[1] +
+                mptr->_22 * obj_ptr[2] +
+                mptr->_23
+            );
+            // clang-format on
+
+            const int32_t x = ((int32_t)xv) >> W2V_SHIFT;
+            const int32_t y = ((int32_t)yv) >> W2V_SHIFT;
+            const int32_t z = ((int32_t)zv) >> W2V_SHIFT;
+
+            new_bounds.min_x = MIN(new_bounds.min_x, x);
+            new_bounds.min_y = MIN(new_bounds.min_y, y);
+            new_bounds.min_z = MIN(new_bounds.min_z, z);
+            new_bounds.max_x = MAX(new_bounds.max_x, x);
+            new_bounds.max_y = MAX(new_bounds.max_y, y);
+            new_bounds.max_z = MAX(new_bounds.max_z, z);
+            obj_ptr += 3;
+        }
+    }
+
+    Matrix_Pop();
+    return new_bounds;
 }
 
 bool __cdecl Overlay_FlashCounter(const int32_t ticks)
@@ -133,6 +216,16 @@ void __cdecl Overlay_DrawAssaultTimer(void)
 
 void __cdecl Overlay_DrawGameInfo(const bool pickup_state)
 {
+    S_OutputPolyList();
+    Output_ClearDepthBuffer();
+    // TODO: this distinction is only about preventing S_InitialisePolyList
+    // from clearing the buffers
+    if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+        S_InitialisePolyList(false);
+    } else {
+        Output_InitPolyList();
+    }
+
     Overlay_DrawAmmoInfo();
     Overlay_DrawModeInfo();
     if (g_OverlayStatus > 0) {
@@ -334,6 +427,10 @@ void __cdecl Overlay_InitialisePickUpDisplay(void)
 
 static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 {
+    const OBJECT *const obj = pickup->inv_object;
+    const FRAME_INFO *const frame =
+        (FRAME_INFO *)g_Anims[obj->anim_idx].frame_ptr;
+
     float ease = 1.0f;
     switch (pickup->phase) {
     case DPP_EASE_IN:
@@ -354,48 +451,44 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
         return;
     }
 
-#if 0
-    Output_ClearDepthBuffer();
-#endif
-
     const VIEWPORT old_vp = *Viewport_Get();
 
-    const int32_t scale = 200;
-    const int32_t padding_right = old_vp.width / 16;
-    const int32_t padding_bottom = old_vp.height / 16;
+    BOUNDS_16 bounds = frame->bounds;
+    if (frame->bounds.min_x == frame->bounds.max_x
+        && frame->bounds.min_y == frame->bounds.max_y) {
+        // fix broken collision box for the prayer wheel
+        bounds = M_GetBounds(obj, frame);
+    }
+
+    const int32_t scale = 1280;
+    const int32_t padding_right = MIN(old_vp.width, old_vp.height) / 10;
+    const int32_t padding_bottom = padding_right;
 
     // Try to fit in a quarter of the screen
-    const int32_t available_width = old_vp.width / 2 - padding_right;
-    const int32_t available_height = old_vp.width / 2 - padding_bottom;
+    const int32_t available_width = old_vp.width * 0.4 - padding_right;
+    const int32_t available_height = old_vp.height / 2 - padding_bottom;
 
     // maintain aspect ratio
-    const int32_t cell_width =
-        MIN(available_width / MAX_PICKUP_COLUMNS,
-            available_height / MAX_PICKUP_ROWS);
-    const int32_t cell_height = cell_width * 3 / 4;
+    const int32_t cell_width = available_width / MAX_PICKUP_COLUMNS;
+    const int32_t cell_height = available_height / MAX_PICKUP_ROWS;
+    const int32_t offscreen_offset = cell_width;
 
     const int32_t vp_width = cell_width;
     const int32_t vp_height = cell_height;
-    const int32_t vp_x = old_vp.x + old_vp.width
-        - ((pickup->grid_x + 1) * cell_width + padding_right) * ease;
-    const int32_t vp_y = old_vp.y + old_vp.height
-        - ((pickup->grid_y + 1) * cell_height + padding_bottom);
+    const int32_t vp_src_x = old_vp.x + old_vp.width + offscreen_offset;
+    const int32_t vp_dst_x = old_vp.x + old_vp.width
+        - (cell_width / 2 + padding_right) - pickup->grid_x * cell_width;
+    const int32_t vp_src_y =
+        old_vp.y + old_vp.height - (cell_height / 2 + padding_bottom);
+    const int32_t vp_dst_y = vp_src_y - pickup->grid_y * cell_height;
+    const int32_t vp_x = vp_src_x + (vp_dst_x - vp_src_x) * ease;
+    const int32_t vp_y = vp_src_y + (vp_dst_y - vp_src_y) * ease;
 
-    // clang-format off
-    Viewport_Init(
-        vp_x,
-        vp_y,
-        vp_width,
-        vp_height,
-        old_vp.near_z,
-        old_vp.far_z,
-        PICKUPS_FOV * PHD_DEGREE,
-        old_vp.screen_width,
-        old_vp.screen_height);
-    // clang-format on
+    g_FltWinCenterX = vp_x;
+    g_FltWinCenterY = vp_y;
 
     Matrix_PushUnit();
-    Matrix_TranslateSet(0, 0, scale);
+    Matrix_TranslateRel(0, 0, scale);
     Matrix_RotYXZ(0, PHD_DEGREE * 15, 0);
     Matrix_RotYXZ(pickup->rot_y, 0, 0);
 
@@ -404,16 +497,12 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     Output_RotateLight(0, 0);
     S_SetupAboveWater(false);
 
-    const OBJECT *const obj = pickup->inv_object;
-    const FRAME_INFO *const frame =
-        (FRAME_INFO *)g_Anims[obj->anim_idx].frame_ptr;
-
     Matrix_Push();
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
     Matrix_TranslateRel(
-        -(frame->bounds.min_x + frame->bounds.max_x) / 2,
-        -(frame->bounds.min_y + frame->bounds.max_y) / 2,
-        -(frame->bounds.min_z + frame->bounds.max_z) / 2);
+        -(bounds.min_x + bounds.max_x) / 2, -(bounds.min_y + bounds.max_y) / 2,
+        -(bounds.min_z + bounds.max_z) / 2);
+
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     int32_t *bone = &g_AnimBones[obj->bone_idx];
     const int16_t *mesh_rots = frame->mesh_rots;
