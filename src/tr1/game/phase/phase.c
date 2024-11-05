@@ -109,7 +109,7 @@ static void M_SetUnconditionally(const PHASE phase, const void *args)
     // set it at the end, so that the start callbacks can retrieve the old phase
     m_Phase = phase;
 
-    Clock_SyncTicks();
+    Clock_WaitTick();
 }
 
 PHASE Phase_Get(void)
@@ -134,13 +134,13 @@ static int32_t M_Wait(void)
     if (m_Phaser && m_Phaser->wait) {
         return m_Phaser->wait();
     } else {
-        return Clock_SyncTicks();
+        return Clock_WaitTick();
     }
 }
 
 GAMEFLOW_COMMAND Phase_Run(void)
 {
-    int32_t nframes = Clock_SyncTicks();
+    int32_t nframes = Clock_WaitTick();
     PHASE_CONTROL control = { .end = false };
 
     m_Running = true;

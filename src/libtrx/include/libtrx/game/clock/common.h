@@ -8,7 +8,8 @@
 
 void Clock_Init(void);
 
-int32_t Clock_SyncTicks(void);
+void Clock_SyncTick(void);
+int32_t Clock_WaitTick(void);
 
 size_t Clock_GetDateTime(char *buffer, size_t size);
 

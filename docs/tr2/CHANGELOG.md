@@ -62,6 +62,7 @@
 - fixed harpoon bolts damaging inactive enemies (#1804)
 - fixed enemies that are run over by the skidoo not being counted in the statistics (#1772)
 - fixed sound settings resuming the music (#1707)
+- fixed the inventory ring spinout animation sometimes running too fast (#1704, regression from 0.3)
 
 ## [0.5](https://github.com/LostArtefacts/TRX/compare/afaf12a...tr2-0.5) - 2024-10-08
 - added `/sfx` command

@@ -1,6 +1,7 @@
 #include "game/inventory/common.h"
 
 #include "decomp/decomp.h"
+#include "game/clock.h"
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/game.h"
@@ -185,6 +186,7 @@ void __cdecl Inv_Construct(void)
 
 int32_t __cdecl Inv_Display(int32_t inventory_mode)
 {
+    Clock_SyncTick();
     Stats_StartTimer();
     RING_INFO ring = { 0 };
     IMOTION_INFO imo = { 0 };

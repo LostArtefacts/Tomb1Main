@@ -50,7 +50,12 @@ double Clock_GetHighPrecisionCounter(void)
         / (double)m_Frequency;
 }
 
-int32_t Clock_SyncTicks(void)
+void Clock_SyncTick(void)
+{
+    m_LastCounter = SDL_GetPerformanceCounter();
+}
+
+int32_t Clock_WaitTick(void)
 {
     const Uint64 counter = SDL_GetPerformanceCounter();
 
@@ -73,7 +78,7 @@ int32_t Clock_SyncTicks(void)
         elapsed_frames = 1;
     }
 
-    m_LastCounter = SDL_GetPerformanceCounter();
+    Clock_SyncTick();
 
     return elapsed_frames;
 }

@@ -2791,7 +2791,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
             if (!g_Input.any) {
                 break;
             }
-            frames -= Clock_SyncTicks() * TICKS_PER_FRAME;
+            frames -= Clock_WaitTick() * TICKS_PER_FRAME;
 
             if (g_IsGameToExit) {
                 break;
@@ -2910,7 +2910,7 @@ void __cdecl DisplayCredits(void)
 
 DWORD __cdecl S_DumpScreen(void)
 {
-    const int32_t passed = Clock_SyncTicks();
+    const int32_t passed = Clock_WaitTick();
     ScreenPartialDump();
     return passed;
 }

@@ -27,7 +27,7 @@
         Input_Update();                                                        \
         Output_EndScene();                                                     \
         Output_AnimateFades();                                                 \
-        Clock_SyncTicks();                                                     \
+        Clock_WaitTick();                                                      \
     } while (g_Input.key);
 
 void Game_ProcessInput(void)
