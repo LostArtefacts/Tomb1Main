@@ -116,7 +116,7 @@ void __cdecl ShowGymStatsText(const char *const time_str, const int32_t type)
 
 void __cdecl ShowStatsText(const char *const time_str, const int32_t type)
 {
-    char buffer[32];
+    char buffer[32] = { 0 };
 
     if (g_StatsRequester.ready) {
         Requester_ChangeItem(
