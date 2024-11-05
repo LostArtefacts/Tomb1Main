@@ -1003,9 +1003,14 @@ typedef struct __unaligned {
 } GAME_VECTOR;
 
 typedef struct __unaligned {
-    int32_t x;
-    int32_t y;
-    int32_t z;
+    union {
+        struct __unaligned {
+            int32_t x;
+            int32_t y;
+            int32_t z;
+        };
+        XYZ_32 pos;
+    };
     int16_t data;
     int16_t flags;
 } OBJECT_VECTOR;
