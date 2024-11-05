@@ -94,7 +94,6 @@
 #define Flare_Control ((void __cdecl (*)(int16_t item_num))0x00430070)
 #define Missile_Control ((void __cdecl (*)(int16_t fx_num))0x00432FE0)
 #define ShootAtLara ((void __cdecl (*)(FX *fx))0x004332B0)
-#define BodyPart_Control ((void __cdecl (*)(int16_t fx_num))0x004336F0)
 #define Object_DrawUnclippedItem ((void __cdecl (*)(const ITEM *item))0x004341A0)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)

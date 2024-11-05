@@ -174,7 +174,6 @@ dll_sources = [
   'game/objects/general/bell.c',
   'game/objects/general/big_bowl.c',
   'game/objects/general/bird_tweeter.c',
-  'game/objects/general/body_part.c',
   'game/objects/general/bridge_common.c',
   'game/objects/general/bridge_flat.c',
   'game/objects/general/bridge_tilt_1.c',

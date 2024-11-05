@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.38% (888)</tspan> · <tspan class="known">26.21% (326)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.46% (889)</tspan> · <tspan class="known">26.13% (325)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="533.23" height="6" x="0" y="0" class="decompiled"/>
-<rect width="195.76" height="6" x="533.23" y="0" class="known"/>
+<rect width="533.83" height="6" x="0" y="0" class="decompiled"/>
+<rect width="195.16" height="6" x="533.83" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -681,7 +681,7 @@
 <rect width="12" height="12" x="30" y="180" class="known"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="45" y="180" class="known"><title>void __cdecl ShootAtLara(FX *fx);</title></rect>
 <rect width="12" height="12" x="60" y="180" class="decompiled"><title>int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);</title></rect>
-<rect width="12" height="12" x="75" y="180" class="known"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="75" y="180" class="decompiled"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="180" class="decompiled"><title>void __cdecl MovableBlock_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="105" y="180" class="decompiled"><title>void __cdecl MovableBlock_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="120" y="180" class="decompiled"><title>void __cdecl MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.92%</tspan> · <tspan class="known">23.75%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.07%</tspan> · <tspan class="known">23.60%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="567.12" height="6" x="0" y="0" class="decompiled"/>
-<rect width="177.44" height="6" x="567.12" y="0" class="known"/>
+<rect width="568.24" height="6" x="0" y="0" class="decompiled"/>
+<rect width="176.32" height="6" x="568.24" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1508,7 +1508,7 @@
 <rect width="17.35" height="18.04" x="390.77" y="171.83" class="decompiled"><title>bool __cdecl ApplySettings(APP_SETTINGS *new_settings);</title></rect>
 <rect width="17.35" height="17.91" x="390.77" y="192.87" class="known"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="17.35" height="17.87" x="390.77" y="213.78" class="decompiled"><title>void __cdecl Bird_Control(int16_t item_num);</title></rect>
-<rect width="17.35" height="17.87" x="390.77" y="234.66" class="known"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
+<rect width="17.35" height="17.87" x="390.77" y="234.66" class="decompiled"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
 <rect width="17.35" height="17.59" x="390.77" y="255.53" class="decompiled"><title>void __cdecl Skidoo_BaddieCollision(const ITEM *skidoo);</title></rect>
 <rect width="17.35" height="17.47" x="390.77" y="276.12" class="known"><title>void __cdecl S_DrawAirBar(int32_t percent);</title></rect>
 <rect width="17.35" height="17.43" x="390.77" y="296.58" class="decompiled"><title>void __cdecl Screenshot(LPDDS screen);</title></rect>
