@@ -36,6 +36,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed a crash when firing grenades at Xian guards in statue form
 - fixed harpoon bolts damaging inactive enemies
 - fixed the distorted skybox in room 5 of Barkhang Monastery
+- fixed new saves not displaying the save count in the passport
 
 #### Cheats
 - added a fly cheat
