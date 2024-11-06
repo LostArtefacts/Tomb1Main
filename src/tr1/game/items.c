@@ -837,5 +837,8 @@ bool Item_TestFrameRange(ITEM *item, int16_t start, int16_t end)
 
 ITEM *Item_Get(const int16_t item_num)
 {
+    if (item_num == NO_ITEM) {
+        return NULL;
+    }
     return &g_Items[item_num];
 }

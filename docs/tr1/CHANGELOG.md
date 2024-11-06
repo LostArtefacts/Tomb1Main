@@ -39,6 +39,8 @@
     - `\{ammo magnums}`
     - `\{ammo uzis}`
 - changed the `/pos` command to include the level number and title
+- changed the `/tp` command to teleport to items in a round-robin fashion
+  The first call will teleport Lara to the object that's the closest to her; repeated calls will cycle through all matching objects in the object placement order.
 - changed the music timestamp loading behaviour and config option to support ambient tracks (#1769)
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)

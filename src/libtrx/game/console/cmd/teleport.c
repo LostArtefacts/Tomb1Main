@@ -11,12 +11,18 @@
 #include "game/objects/vars.h"
 #include "game/random.h"
 #include "game/rooms.h"
+#include "memory.h"
 #include "strings.h"
 
 #include <math.h>
 #include <stdio.h>
 
+static int16_t m_LastTeleportedItemNum = NO_ITEM;
+
 static bool M_CanTargetObject(GAME_OBJECT_ID object_id);
+static bool M_CanTargetItem(
+    const ITEM *item, const GAME_OBJECT_ID *matching_objs, int32_t match_count);
+static const ITEM *M_GetItemToTeleporTo(const char *user_input);
 static bool M_IsFloatRound(float num);
 
 static COMMAND_RESULT M_TeleportToXYZ(float x, float y, float z);
@@ -46,6 +52,95 @@ static bool M_CanTargetObject(const GAME_OBJECT_ID object_id)
         && !Object_IsObjectType(object_id, g_InvObjects)
         && Object_GetObject(object_id)->loaded
         && M_ObjectCanBePickedUp(object_id);
+}
+
+static bool M_CanTargetItem(
+    const ITEM *const item, const GAME_OBJECT_ID *const matching_objs,
+    const int32_t match_count)
+{
+    // Collected pickups
+    if (Object_IsObjectType(item->object_id, g_PickupObjects)
+        && (item->status == IS_INVISIBLE || item->status == IS_DEACTIVATED
+            || item->room_num == NO_ROOM)) {
+        return false;
+    }
+
+    // Killed enemies and removed items
+    if (item->flags & IF_KILLED) {
+        return false;
+    }
+
+    // Non-matches to user input
+    bool is_matched = false;
+    for (int32_t j = 0; j < match_count; j++) {
+        if (matching_objs[j] == item->object_id) {
+            is_matched = true;
+            break;
+        }
+    }
+    if (!is_matched) {
+        return false;
+    }
+
+    return true;
+}
+
+static const ITEM *M_GetItemToTeleporTo(const char *const user_input)
+{
+    int32_t match_count = 0;
+    GAME_OBJECT_ID *matching_objs =
+        Object_IdsFromName(user_input, &match_count, M_CanTargetObject);
+
+    const ITEM *const lara_item = Lara_GetItem();
+
+    int16_t best_item_num = NO_ITEM;
+
+    // Choose the matching item closest to Lara.
+    const int32_t near_distance = WALL_L;
+    int16_t closest_item_num = NO_ITEM;
+    int32_t closest_distance = INT32_MAX;
+    for (int32_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
+        const ITEM *const item = Item_Get(item_num);
+        if (!M_CanTargetItem(item, matching_objs, match_count)) {
+            continue;
+        }
+
+        const int32_t distance = Item_GetDistance(item, &lara_item->pos);
+        if (distance < closest_distance) {
+            closest_distance = distance;
+            closest_item_num = item_num;
+        }
+    }
+
+    if (closest_distance > near_distance) {
+        best_item_num = closest_item_num;
+    } else {
+        // If Lara's already very close to a matching item, choose the next
+        // matching item in a round-robin fashion.
+        const int16_t start_idx = (closest_item_num + 1) % Item_GetTotalCount();
+        for (int32_t i = 0; i < Item_GetTotalCount(); i++) {
+            int16_t item_num = (start_idx + i) % Item_GetTotalCount();
+            if (item_num == closest_item_num) {
+                continue;
+            }
+
+            const ITEM *const item = Item_Get(item_num);
+            if (!M_CanTargetItem(item, matching_objs, match_count)) {
+                continue;
+            }
+
+            const int32_t distance = Item_GetDistance(item, &lara_item->pos);
+            if (distance < near_distance) {
+                continue;
+            }
+
+            best_item_num = item_num;
+            break;
+        }
+    }
+
+    Memory_FreePointer(&matching_objs);
+    return Item_Get(best_item_num);
 }
 
 static inline bool M_IsFloatRound(const float num)
@@ -113,44 +208,7 @@ static COMMAND_RESULT M_TeleportToObject(const char *const user_input)
         return CR_BAD_INVOCATION;
     }
 
-    int32_t match_count = 0;
-    GAME_OBJECT_ID *matching_objs =
-        Object_IdsFromName(user_input, &match_count, M_CanTargetObject);
-
-    const ITEM *const lara_item = Lara_GetItem();
-    const ITEM *best_item = NULL;
-    int32_t best_distance = INT32_MAX;
-
-    for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
-        const ITEM *const item = Item_Get(item_num);
-        if (Object_IsObjectType(item->object_id, g_PickupObjects)
-            && (item->status == IS_INVISIBLE || item->status == IS_DEACTIVATED
-                || item->room_num == NO_ROOM)) {
-            continue;
-        }
-
-        if (item->flags & IF_KILLED) {
-            continue;
-        }
-
-        bool is_matched = false;
-        for (int32_t i = 0; i < match_count; i++) {
-            if (matching_objs[i] == item->object_id) {
-                is_matched = true;
-                break;
-            }
-        }
-        if (!is_matched) {
-            continue;
-        }
-
-        const int32_t distance = Item_GetDistance(item, &lara_item->pos);
-        if (distance < best_distance) {
-            best_distance = distance;
-            best_item = item;
-        }
-    }
-
+    const ITEM *const best_item = M_GetItemToTeleporTo(user_input);
     if (best_item == NULL) {
         Console_Log(GS(OSD_POS_SET_ITEM_FAIL), user_input);
         return CR_FAILURE;

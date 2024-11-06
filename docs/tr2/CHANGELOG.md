@@ -34,6 +34,8 @@
 - changed text backend to accept named sequences (eg. "\{arrow up}" and similar)
 - changed inventory to pause the music rather than muting it (#1707)
 - changed the `/pos` command to include the level number and title
+- changed the `/tp` command to teleport to items in a round-robin fashion
+  The first call will teleport Lara to the object that's the closest to her; repeated calls will cycle through all matching objects in the object placement order.
 - improved FMV mode appearance - removed black scanlines (#1729)
 - improved FMV mode behavior - stopped switching screen resolutions (#1729)
 - improved screenshots: now saved in the screenshots/ directory with level titles and timestamps as JPG or PNG, similar to TR1X (#1773)

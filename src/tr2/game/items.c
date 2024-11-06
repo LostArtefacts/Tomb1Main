@@ -731,5 +731,8 @@ int32_t Item_GetDistance(const ITEM *const item, const XYZ_32 *const target)
 
 ITEM *Item_Get(const int16_t item_num)
 {
+    if (item_num == NO_ITEM) {
+        return NULL;
+    }
     return &g_Items[item_num];
 }
