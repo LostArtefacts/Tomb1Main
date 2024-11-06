@@ -8,6 +8,7 @@
 - added the ability to hold forward/back to move through menus more quickly (#1644)
 - added optional rendering of pickups in the UI as 3D meshes (#1633)
 - added optional rendering of pickups on the ground as 3D meshes (#1634)
+- added a special target, "pickup", to item-based console commands
 - changed the inputs backend from DirectX to SDL (#1695)
     - improved controller support to match TR1X
     - changed the number of custom layouts to 3

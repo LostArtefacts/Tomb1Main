@@ -1,6 +1,8 @@
 #include "game/objects/names.h"
 
 #include "game/game_string.h"
+#include "game/objects/common.h"
+#include "game/objects/vars.h"
 #include "memory.h"
 #include "strings/fuzzy_match.h"
 
@@ -54,12 +56,24 @@ GAME_OBJECT_ID *Object_IdsFromName(
         if (filter != NULL && !filter(object_id)) {
             continue;
         }
-        STRING_FUZZY_SOURCE source_item = {
-            .key = Object_GetName(object_id),
-            .value = (void *)(intptr_t)object_id,
-            .weight = 1,
-        };
-        Vector_Add(source, &source_item);
+
+        {
+            STRING_FUZZY_SOURCE source_item = {
+                .key = Object_GetName(object_id),
+                .value = (void *)(intptr_t)object_id,
+                .weight = 2,
+            };
+            Vector_Add(source, &source_item);
+        }
+
+        if (Object_IsObjectType(object_id, g_PickupObjects)) {
+            STRING_FUZZY_SOURCE source_item = {
+                .key = "pickup",
+                .value = (void *)(intptr_t)object_id,
+                .weight = 1,
+            };
+            Vector_Add(source, &source_item);
+        }
     }
 
     VECTOR *matches = String_FuzzyMatch(user_input, source);

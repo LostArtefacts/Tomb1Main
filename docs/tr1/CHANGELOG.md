@@ -2,6 +2,7 @@
 - added support for wading, similar to TR2+ (#1537)
 - added the ability to pause during cutscenes (#1673)
 - added an option to enable responsive swim cancellation, similar to TR2+ (#1004)
+- added a special target, "pickup", to item-based console commands
 - changed OpenGL backend to use version 3.3, with fallback to 2.1 if initialization fails (#1738)
 - changed text backend to accept named sequences. Currently supported sequences (limited by the sprites available in OG):
     - `\{umlaut}`
