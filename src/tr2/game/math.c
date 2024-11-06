@@ -506,13 +506,19 @@ int16_t Math_DirectionToAngle(DIRECTION dir)
 
 int32_t XYZ_32_GetDistance(const XYZ_32 *const pos1, const XYZ_32 *const pos2)
 {
-    // clang-format off
-    return Math_Sqrt(
-        SQUARE(pos1->x - pos2->x) +
-        SQUARE(pos1->y - pos2->y) +
-        SQUARE(pos1->z - pos2->z)
-    );
-    // clang-format on
+    int32_t x = (pos1->x - pos2->x);
+    int32_t y = (pos1->y - pos2->y);
+    int32_t z = (pos1->z - pos2->z);
+
+    int32_t scale = 0;
+    while ((int16_t)x != x || (int16_t)y != y || (int16_t)z != z) {
+        scale++;
+        x >>= 1;
+        y >>= 1;
+        z >>= 1;
+    }
+
+    return Math_Sqrt(SQUARE(x) + SQUARE(y) + SQUARE(z)) << scale;
 }
 
 int32_t XYZ_32_GetDistance0(const XYZ_32 *const pos)
