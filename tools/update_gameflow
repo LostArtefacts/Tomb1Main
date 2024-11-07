@@ -30,7 +30,7 @@ def process_tr1() -> None:
         gameflow: str, strings_map: dict[str, str]
     ) -> str:
         gameflow = re.sub(
-            r'^(    "strings": {)[^}]*(})',
+            r'^(    "strings": {)[\S\s]*?^(    })',
             '    "strings": {\n'
             + "\n".join(
                 f"        {json.dumps(key)}: {json.dumps(value)},"
@@ -64,7 +64,7 @@ def process_tr2() -> None:
         game_strings_map: dict[str, str],
     ) -> str:
         gameflow = re.sub(
-            r'^(    "object_strings": {)[^}]*(})',
+            r'^(    "object_strings": {)[\S\s]*?^(    })',
             '    "object_strings": {\n'
             + "\n".join(
                 f"        {json.dumps(key)}: {json.dumps(value)},"
@@ -76,7 +76,7 @@ def process_tr2() -> None:
         )
 
         gameflow = re.sub(
-            r'^(    "game_strings": {)[^}]*(})',
+            r'^(    "game_strings": {)[\S\s]*?^(    })',
             '    "game_strings": {\n'
             + "\n".join(
                 f"        {json.dumps(key)}: {json.dumps(value)},"

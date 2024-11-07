@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../vector.h"
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -15,4 +17,7 @@ bool String_ParseBool(const char *value, bool *target);
 bool String_ParseInteger(const char *value, int32_t *target);
 bool String_ParseDecimal(const char *value, float *target);
 
+char *String_ToUpper(const char *text);
+
 char *String_WordWrap(const char *text, size_t line_length);
+VECTOR *String_Paginate(const char *text, int32_t max_lines);

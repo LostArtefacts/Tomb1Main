@@ -4,6 +4,7 @@
 #include "game/game_string.h"
 #include "game/inventory.h"
 #include "game/inventory/inventory_vars.h"
+#include "game/option/option_examine.h"
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/text.h"
@@ -25,6 +26,26 @@ static TEXTSTRING *m_InvDownArrow1 = NULL;
 static TEXTSTRING *m_InvDownArrow2 = NULL;
 static TEXTSTRING *m_InvUpArrow1 = NULL;
 static TEXTSTRING *m_InvUpArrow2 = NULL;
+static TEXTSTRING *m_ExamineItemText = NULL;
+static TEXTSTRING *m_UseItemText = NULL;
+
+static TEXTSTRING *M_InitExamineText(
+    int32_t x_pos, const char *role_str, const char *input_str);
+
+static TEXTSTRING *M_InitExamineText(
+    const int32_t x_pos, const char *const role_str,
+    const char *const input_str)
+{
+    char role[100];
+    sprintf(role, role_str, input_str);
+
+    TEXTSTRING *const text = Text_Create(x_pos, -100, role);
+    Text_AlignBottom(text, true);
+    Text_CentreH(text, true);
+    Text_Hide(text, true);
+
+    return text;
+}
 
 void Inv_Ring_Init(
     RING_INFO *ring, int16_t type, INVENTORY_ITEM **list, int16_t qty,
@@ -75,6 +96,37 @@ void Inv_Ring_Init(
     ring->light.x = -1536;
     ring->light.y = 256;
     ring->light.z = 1024;
+}
+
+bool Inv_Ring_CanExamine(void)
+{
+    return g_Config.enable_item_examining && m_ExamineItemText != NULL
+        && !m_ExamineItemText->flags.hide;
+}
+
+void Inv_Ring_InitExamineOverlay(void)
+{
+    if ((g_InvMode != INV_GAME_MODE && g_InvMode != INV_KEYS_MODE)
+        || !g_Config.enable_item_examining || m_ExamineItemText != NULL) {
+        return;
+    }
+
+    m_ExamineItemText =
+        M_InitExamineText(-100, GS(ITEM_EXAMINE_ROLE), GS(KEYMAP_LOOK));
+    m_UseItemText =
+        M_InitExamineText(100, GS(ITEM_USE_ROLE), GS(KEYMAP_ACTION));
+}
+
+void Inv_Ring_RemoveExamineOverlay(void)
+{
+    if (m_ExamineItemText == NULL) {
+        return;
+    }
+
+    Text_Remove(m_ExamineItemText);
+    Text_Remove(m_UseItemText);
+    m_ExamineItemText = NULL;
+    m_UseItemText = NULL;
 }
 
 void Inv_Ring_InitHeader(RING_INFO *ring)
@@ -155,6 +207,7 @@ void Inv_Ring_RemoveHeader(void)
 void Inv_Ring_RemoveAllText(void)
 {
     Inv_Ring_RemoveHeader();
+    Inv_Ring_RemoveExamineOverlay();
     for (int i = 0; i < IT_NUMBER_OF; i++) {
         if (g_InvItemText[i]) {
             Text_Remove(g_InvItemText[i]);
@@ -175,6 +228,8 @@ void Inv_Ring_Active(INVENTORY_ITEM *inv_item)
 
     char temp_text[128];
     int32_t qty = Inv_RequestItem(inv_item->object_id);
+
+    bool show_examine_option = false;
 
     switch (inv_item->object_id) {
     case O_SHOTGUN_OPTION:
@@ -279,6 +334,9 @@ void Inv_Ring_Active(INVENTORY_ITEM *inv_item)
             Text_AlignBottom(g_InvItemText[IT_QTY], 1);
             Text_CentreH(g_InvItemText[IT_QTY], 1);
         }
+
+        show_examine_option = !Option_Examine_IsActive()
+            && Option_Examine_CanExamine(inv_item->object_id);
         break;
 
     default:
@@ -304,6 +362,11 @@ void Inv_Ring_Active(INVENTORY_ITEM *inv_item)
         Text_Hide(m_InvDownArrow2, false);
         g_GameInfo.inv_showing_medpack = false;
     }
+
+    if (m_ExamineItemText != NULL) {
+        Text_Hide(m_ExamineItemText, !show_examine_option);
+        Text_Hide(m_UseItemText, !show_examine_option);
+    }
 }
 
 void Inv_Ring_ResetItem(INVENTORY_ITEM *const inv_item)
@@ -316,6 +379,7 @@ void Inv_Ring_ResetItem(INVENTORY_ITEM *const inv_item)
     inv_item->y_rot = 0;
     inv_item->ytrans = 0;
     inv_item->ztrans = 0;
+    inv_item->action = ACTION_USE;
     if (inv_item->object_id == O_PASSPORT_OPTION) {
         inv_item->object_id = O_PASSPORT_CLOSED;
     }

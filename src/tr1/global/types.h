@@ -791,6 +791,11 @@ typedef struct {
     int16_t sprnum;
 } INVENTORY_SPRITE;
 
+typedef enum {
+    ACTION_USE = 0,
+    ACTION_EXAMINE = 1,
+} INVENTORY_ITEM_ACTION;
+
 typedef struct {
     GAME_OBJECT_ID object_id;
     int16_t frames_total;
@@ -812,6 +817,7 @@ typedef struct {
     uint32_t drawn_meshes;
     int16_t inv_pos;
     INVENTORY_SPRITE **sprlist;
+    INVENTORY_ITEM_ACTION action;
 } INVENTORY_ITEM;
 
 typedef struct {

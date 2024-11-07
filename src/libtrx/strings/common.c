@@ -8,6 +8,21 @@
 #include <stdio.h>
 #include <string.h>
 
+static void M_AddPage(
+    const char *text, int32_t start_pos, int32_t length, VECTOR *pages);
+
+static void M_AddPage(
+    const char *text, const int32_t start_pos, const int32_t length,
+    VECTOR *const pages)
+{
+    char substr[length + 1];
+    strncpy(substr, text + start_pos, length);
+    substr[length] = '\0';
+
+    const char *page = Memory_DupStr(substr);
+    Vector_Add(pages, &page);
+}
+
 bool String_EndsWith(const char *str, const char *suffix)
 {
     int str_len = strlen(str);
@@ -157,6 +172,25 @@ bool String_ParseDecimal(const char *const value, float *const target)
     return true;
 }
 
+char *String_ToUpper(const char *text)
+{
+    if (text == NULL) {
+        return NULL;
+    }
+
+    const size_t text_len = strlen(text);
+    char *const upper_text = Memory_Alloc(text_len + 1);
+
+    char *dest = upper_text;
+
+    while (*text != '\0') {
+        *dest++ = toupper(*text++);
+    }
+
+    *dest = '\0';
+    return upper_text;
+}
+
 char *String_WordWrap(const char *text, const size_t line_len)
 {
     if (text == NULL || line_len == 0) {
@@ -230,4 +264,38 @@ char *String_WordWrap(const char *text, const size_t line_len)
 
     *dest = '\0';
     return wrapped_text;
+}
+
+VECTOR *String_Paginate(const char *const text, const int32_t max_lines)
+{
+    VECTOR *const pages = Vector_Create(sizeof(char *));
+    int32_t line_count = 0;
+    int32_t start_pos = 0;
+    int32_t current_length = 0;
+
+    const char *iter_text = text;
+
+    while (*iter_text != '\0') {
+        current_length++;
+        if (*iter_text == '\n') {
+            line_count++;
+        }
+
+        if (line_count == max_lines || *iter_text == '\f') {
+            M_AddPage(text, start_pos, current_length, pages);
+
+            start_pos += current_length;
+            current_length = 0;
+            line_count = 0;
+        }
+
+        *iter_text++;
+    }
+
+    // Anything that is left becomes its own page.
+    if (pages->count == 0 || current_length != 0) {
+        M_AddPage(text, start_pos, current_length, pages);
+    }
+
+    return pages;
 }

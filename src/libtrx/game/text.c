@@ -1,6 +1,7 @@
 #include "game/text.h"
 
 #include "memory.h"
+#include "utils.h"
 
 #include <assert.h>
 #include <string.h>
@@ -278,20 +279,26 @@ int32_t Text_GetWidth(const TEXTSTRING *const text)
         return 0;
     }
 
-    int32_t width = 0;
-    const GLYPH_INFO **glyph_ptr = text->glyphs;
     if (text->glyphs == NULL) {
         return 0;
     }
+
+    int32_t width = 0;
+    int32_t max_width = 0;
+    const GLYPH_INFO **glyph_ptr = text->glyphs;
     while (*glyph_ptr != NULL) {
         if ((*glyph_ptr)->role == GLYPH_SPACE) {
             width += text->word_spacing;
+        } else if ((*glyph_ptr)->role == GLYPH_NEWLINE) {
+            max_width = MAX(max_width, width);
+            width = 0;
         } else {
             width += (*glyph_ptr)->width + text->letter_spacing;
         }
         glyph_ptr++;
     }
 
+    width = MAX(max_width, width);
     width -= text->letter_spacing;
     return width * text->scale.h / TEXT_BASE_SCALE;
 }

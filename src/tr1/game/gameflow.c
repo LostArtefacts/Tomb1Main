@@ -60,7 +60,10 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj);
 static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *dest);
 static bool M_LoadObjectNames(
-    JSON_OBJECT *root_obj, GAMEFLOW_STRING_ENTRY **dest);
+    JSON_OBJECT *root_obj, const char *key, GAMEFLOW_STRING_ENTRY **dest);
+static void M_ScanLevelText(
+    const GAMEFLOW_STRING_ENTRY *entry,
+    void (*callback)(GAME_OBJECT_ID object_id, const char *text));
 
 static const STRING_TO_ENUM_TYPE m_GameflowLevelTypeEnumMap[] = {
     { "title", GFL_TITLE },
@@ -531,11 +534,11 @@ static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *const dest)
 }
 
 static bool M_LoadObjectNames(
-    JSON_OBJECT *const root_obj, GAMEFLOW_STRING_ENTRY **dest)
+    JSON_OBJECT *const root_obj, const char *const key,
+    GAMEFLOW_STRING_ENTRY **dest)
 {
-    JSON_OBJECT *strings_obj = JSON_ObjectGetObject(root_obj, "strings");
+    JSON_OBJECT *strings_obj = JSON_ObjectGetObject(root_obj, key);
     if (strings_obj == NULL) {
-        LOG_ERROR("'strings' must be a dictionary");
         return false;
     }
 
@@ -543,6 +546,7 @@ static bool M_LoadObjectNames(
         char *json_key;
         char *target_string;
     } legacy_string_defs[] = {
+        // clang-format off
         { "puzzle1", "O_PUZZLE_ITEM_1" },
         { "puzzle1", "O_PUZZLE_OPTION_1" },
         { "puzzle2", "O_PUZZLE_ITEM_2" },
@@ -563,7 +567,11 @@ static bool M_LoadObjectNames(
         { "pickup1", "O_PICKUP_OPTION_1" },
         { "pickup2", "O_PICKUP_ITEM_2" },
         { "pickup2", "O_PICKUP_OPTION_2" },
+        { "leadbar", "O_LEADBAR_ITEM" },
+        { "leadbar", "O_LEADBAR_OPTION" },
+        { "scion", "O_SCION_OPTION" },
         { NULL, NULL },
+        // clang-format on
     };
 
     // count allocation size
@@ -591,6 +599,20 @@ static bool M_LoadObjectNames(
     }
 
     return true;
+}
+
+static void M_ScanLevelText(
+    const GAMEFLOW_STRING_ENTRY *entry,
+    void (*callback)(GAME_OBJECT_ID object_id, const char *text))
+{
+    while (entry != NULL && entry->key != NULL) {
+        const GAME_OBJECT_ID object_id =
+            ENUM_MAP_GET(GAME_OBJECT_ID, entry->key, NO_OBJECT);
+        if (object_id != NO_OBJECT) {
+            callback(object_id, entry->value);
+        }
+        entry++;
+    }
 }
 
 static bool M_LoadScriptLevels(JSON_OBJECT *obj)
@@ -747,7 +769,8 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
         cur->unobtainable.secrets =
             JSON_ObjectGetInt(jlvl_obj, "unobtainable_secrets", 0);
 
-        M_LoadObjectNames(jlvl_obj, &cur->object_strings);
+        M_LoadObjectNames(jlvl_obj, "strings", &cur->object_strings);
+        M_LoadObjectNames(jlvl_obj, "examine", &cur->examine_strings);
 
         tmp_i = JSON_ObjectGetBool(jlvl_obj, "inherit_injections", 1);
         tmp_arr = JSON_ObjectGetArray(jlvl_obj, "injections");
@@ -921,6 +944,7 @@ void GameFlow_Shutdown(void)
     if (g_GameFlow.levels) {
         for (int i = 0; i < g_GameFlow.level_count; i++) {
             M_StringTableShutdown(g_GameFlow.levels[i].object_strings);
+            M_StringTableShutdown(g_GameFlow.levels[i].examine_strings);
 
             for (int j = 0; j < g_GameFlow.levels[i].injections.length; j++) {
                 Memory_FreePointer(
@@ -1477,15 +1501,8 @@ void GameFlow_LoadStrings(int32_t level_num)
     if (level_num >= 0) {
         assert(level_num < g_GameFlow.level_count);
         const GAMEFLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
-        const GAMEFLOW_STRING_ENTRY *entry = level->object_strings;
-        while (entry != NULL && entry->key != NULL) {
-            const GAME_OBJECT_ID object_id =
-                ENUM_MAP_GET(GAME_OBJECT_ID, entry->key, NO_OBJECT);
-            if (object_id != NO_OBJECT) {
-                Object_SetName(object_id, entry->value);
-            }
-            entry++;
-        }
+        M_ScanLevelText(level->object_strings, Object_SetName);
+        M_ScanLevelText(level->examine_strings, Object_SetDescription);
     }
 }
 

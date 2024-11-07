@@ -95,6 +95,12 @@ void UI_Label_SetSize(
     self->height = height;
 }
 
+void UI_Label_SetVisible(UI_WIDGET *const widget, const bool visible)
+{
+    UI_LABEL *const self = (UI_LABEL *)widget;
+    Text_Hide(self->text, !visible);
+}
+
 void UI_Label_AddFrame(UI_WIDGET *const widget)
 {
     UI_LABEL *const self = (UI_LABEL *)widget;
@@ -140,4 +146,10 @@ int32_t UI_Label_MeasureTextWidth(UI_WIDGET *const widget)
 {
     UI_LABEL *const self = (UI_LABEL *)widget;
     return Text_GetWidth(self->text);
+}
+
+int32_t UI_Label_MeasureTextHeight(UI_WIDGET *const widget)
+{
+    UI_LABEL *const self = (UI_LABEL *)widget;
+    return Text_GetHeight(self->text);
 }

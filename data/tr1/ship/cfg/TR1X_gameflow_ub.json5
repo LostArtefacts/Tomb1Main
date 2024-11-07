@@ -87,7 +87,6 @@
                 {"type": "level_stats", "level_id": 2},
                 {"type": "exit_to_level", "level_id": 3},
             ],
-            "strings": {},
             "unobtainable_kills": 1,
         },
 
@@ -116,7 +115,6 @@
                 {"type": "total_stats", "picture_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
 
         // Level 4
@@ -135,7 +133,6 @@
                 {"type": "play_fmv", "fmv_path": "fmv/escape.avi"},
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
 
         // Level 5
@@ -151,7 +148,6 @@
             "music": 0,
             "inherit_injections": false,
             "sequence": [{"type": "exit_to_title"}],
-            "strings": {},
         },
     ],
 
@@ -221,6 +217,8 @@
         "INV_ITEM_SOUND": "Sound",
         "INV_ITEM_UZI": "Uzis",
         "INV_ITEM_UZI_AMMO": "Uzi Clips",
+        "ITEM_EXAMINE_ROLE": "\\{button empty} %s: Examine",
+        "ITEM_USE_ROLE": "\\{button empty} %s: Use",
         "KEYMAP_ACTION": "Action",
         "KEYMAP_BACK": "Back",
         "KEYMAP_BILINEAR": "Toggle Texture Filter",
@@ -331,6 +329,7 @@
         "OSD_UI_OFF": "UI disabled",
         "OSD_UI_ON": "UI enabled",
         "OSD_UNKNOWN_COMMAND": "Unknown command: %s",
+        "PAGINATION_NAV": "%d / %d",
         "PASSPORT_EXIT_GAME": "Exit Game",
         "PASSPORT_EXIT_TO_TITLE": "Exit to Title",
         "PASSPORT_LEGACY_SELECT_LEVEL_1": "Legacy saves do not",

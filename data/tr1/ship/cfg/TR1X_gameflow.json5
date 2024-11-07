@@ -47,7 +47,6 @@
                 {"type": "level_stats", "level_id": 0},
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
 
         // Level 1
@@ -70,7 +69,6 @@
                 {"type": "level_stats", "level_id": 1},
                 {"type": "exit_to_level", "level_id": 2},
             ],
-            "strings": {},
         },
 
         // Level 2
@@ -143,7 +141,6 @@
                 {"type": "stop_game"},
                 {"type": "exit_to_cine", "level_id": 16},
             ],
-            "strings": {},
         },
 
         // Level 5
@@ -418,7 +415,6 @@
                 {"type": "play_fmv", "fmv_path": "fmv/prison.avi"},
                 {"type": "exit_to_cine", "level_id": 19},
             ],
-            "strings": {},
             "unobtainable_pickups": 3,
         },
 
@@ -448,7 +444,6 @@
                 {"type": "total_stats", "picture_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
 
         // Level 16
@@ -474,7 +469,6 @@
                 {"type": "level_stats", "level_id": 4},
                 {"type": "exit_to_level", "level_id": 5},
             ],
-            "strings": {},
         },
 
         // Level 17
@@ -502,7 +496,6 @@
                 {"type": "level_stats", "level_id": 9},
                 {"type": "exit_to_level", "level_id": 10},
             ],
-            "strings": {},
         },
 
         // Level 18
@@ -524,7 +517,6 @@
                 {"type": "loop_cine"},
                 {"type": "exit_to_level", "level_id": 14},
             ],
-            "strings": {},
         },
 
         // Level 19
@@ -553,7 +545,6 @@
                 {"type": "level_stats", "level_id": 14},
                 {"type": "exit_to_level", "level_id": 15},
             ],
-            "strings": {},
         },
 
         // Level 20
@@ -573,7 +564,6 @@
                 {"type": "play_fmv", "fmv_path": "fmv/cafe.avi"},
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
 
         // Level 21
@@ -586,7 +576,6 @@
             "sequence": [
                 {"type": "exit_to_title"},
             ],
-            "strings": {},
         },
     ],
 
@@ -656,6 +645,8 @@
         "INV_ITEM_SOUND": "Sound",
         "INV_ITEM_UZI": "Uzis",
         "INV_ITEM_UZI_AMMO": "Uzi Clips",
+        "ITEM_EXAMINE_ROLE": "\\{button empty} %s: Examine",
+        "ITEM_USE_ROLE": "\\{button empty} %s: Use",
         "KEYMAP_ACTION": "Action",
         "KEYMAP_BACK": "Back",
         "KEYMAP_BILINEAR": "Toggle Texture Filter",
@@ -766,6 +757,7 @@
         "OSD_UI_OFF": "UI disabled",
         "OSD_UI_ON": "UI enabled",
         "OSD_UNKNOWN_COMMAND": "Unknown command: %s",
+        "PAGINATION_NAV": "%d / %d",
         "PASSPORT_EXIT_GAME": "Exit Game",
         "PASSPORT_EXIT_TO_TITLE": "Exit to Title",
         "PASSPORT_LEGACY_SELECT_LEVEL_1": "Legacy saves do not",

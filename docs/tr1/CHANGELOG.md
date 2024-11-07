@@ -4,6 +4,7 @@
 - added an option to enable responsive swim cancellation, similar to TR2+ (#1004)
 - added a special target, "pickup", to item-based console commands
 - added support for custom levels to enforce values for any config setting (#1846)
+- added support for key/puzzle/pickup descriptions, allowing players to examine said items in the inventory (#1821)
 - changed OpenGL backend to use version 3.3, with fallback to 2.1 if initialization fails (#1738)
 - changed text backend to accept named sequences. Currently supported sequences (limited by the sprites available in OG):
     - `\{umlaut}`

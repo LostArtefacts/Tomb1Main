@@ -292,6 +292,10 @@
       "Title": "Conta tempo di gioco nell'inventario",
       "Description": "Fa in modo che il tempo di gioco scorra anche nel menu dell'inventario"
     },
+    "enable_item_examining": {
+      "Title": "Esame dell'oggetto",
+      "Description": "Per livelli personalizzati: consente di visualizzare le descrizioni degli oggetti nell'inventario in cui l'autore del livello ha fornito dati adeguati."
+    },
     "anisotropy_filter": {
       "Title": "Filtro anisotropico",
       "Description": "Migliora il filtraggio delle texture a distanza."

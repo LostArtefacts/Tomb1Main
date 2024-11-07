@@ -251,6 +251,11 @@ Following are each of the properties available within a level.
         "puzzle2": "Machine Cog",
         // etc
     },
+    "examine": {
+        "key1": "This shows when the player examines key1 in the inventory.",
+        "puzzle2": "You can use \n to make new lines and \f to make new pages.",
+        // etc
+    },
 },
 ```
 </details>
@@ -293,6 +298,21 @@ Following are each of the properties available within a level.
     <td colspan="2">
       Can be customized per level. See <a href="#draw-distance-max">above</a>
       for details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>examine</code>
+    </td>
+    <td>String-to-string map</td>
+    <td>No</td>
+    <td colspan="2">
+      Allows longer text descriptions to be defined for key and puzzle items,
+      over and above the names defined in <code>strings</code> (see below).
+      Players can examine items in the inventory when this text has been
+      defined. Use <code>\n</code> in the text to create new lines; you can also
+      use <code>\f</code> to force a page break. Long text will be automatically
+      wrapped and paginated as necessary.
     </td>
   </tr>
   <tr valign="top">
@@ -372,10 +392,11 @@ Following are each of the properties available within a level.
       <code>strings</code>
     </td>
     <td rowspan="12">String-to-string map</td>
-    <td rowspan="12">Yes</td>
+    <td rowspan="12">No</td>
     <td colspan="2">
-      Key and puzzle item names. The possible types are as follows. An empty map
-      is permitted.
+      Key and puzzle item names. The possible types are as follows. If this map
+      is missing, or is missing an item's name, the game will use a suitable
+      default value.
     </td>
   </tr>
   <tr valign="top">

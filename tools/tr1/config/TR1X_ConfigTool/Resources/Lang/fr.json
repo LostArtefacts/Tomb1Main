@@ -292,6 +292,10 @@
       "Title": "Compteur de temps de jeu dans l'inventaire",
       "Description": "Fait fonctionner le conteur du jeu même en étant dans les menus de l'inventaire."
     },
+    "enable_item_examining": {
+      "Title": "Examen des articles",
+      "Description": "Pour les niveaux personnalisés - permet d'afficher les descriptions d'éléments dans l'inventaire lorsque l'auteur du niveau a fourni les données appropriées."
+    },
     "anisotropy_filter": {
       "Title": "Filtre anisotropique",
       "Description": "Améliore le filtrage des textures à distance."

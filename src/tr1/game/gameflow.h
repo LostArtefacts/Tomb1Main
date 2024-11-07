@@ -27,6 +27,7 @@ typedef struct {
     char *level_title;
     char *level_file;
     GAMEFLOW_STRING_ENTRY *object_strings;
+    GAMEFLOW_STRING_ENTRY *examine_strings;
     int8_t demo;
     GAMEFLOW_SEQUENCE *sequence;
     struct {

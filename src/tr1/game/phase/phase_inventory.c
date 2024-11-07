@@ -771,7 +771,8 @@ static PHASE_CONTROL M_ControlFrame(void)
             g_InputDB = (INPUT_STATE) { 0 };
         }
 
-        if (g_InputDB.menu_confirm) {
+        const bool examine = g_InputDB.look && Inv_Ring_CanExamine();
+        if (g_InputDB.menu_confirm || examine) {
             if ((g_InvMode == INV_SAVE_MODE
                  || g_InvMode == INV_SAVE_CRYSTAL_MODE
                  || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
@@ -795,6 +796,7 @@ static PHASE_CONTROL M_ControlFrame(void)
 
             inv_item->goal_frame = inv_item->open_frame;
             inv_item->anim_direction = 1;
+            inv_item->action = examine ? ACTION_EXAMINE : ACTION_USE;
 
             Inv_Ring_MotionSetup(
                 ring, RNG_SELECTING, RNG_SELECTED, SELECTING_FRAMES);
@@ -1088,8 +1090,10 @@ static PHASE_CONTROL M_ControlFrame(void)
             Inv_Ring_Active(inv_item);
         }
         Inv_Ring_InitHeader(ring);
+        Inv_Ring_InitExamineOverlay();
     } else {
         Inv_Ring_RemoveHeader();
+        Inv_Ring_RemoveExamineOverlay();
     }
 
     if (!motion->status || motion->status == RNG_CLOSING

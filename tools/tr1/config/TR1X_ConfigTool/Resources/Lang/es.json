@@ -296,6 +296,10 @@
       "Title": "Temporizador en el inventario",
       "Description": "Permite que el temporizador del juego siga funcionando incluso cuando se muestra el inventario."
     },
+    "enable_item_examining": {
+      "Title": "Examen del artículo",
+      "Description": "Para niveles personalizados: permite que se muestren descripciones de elementos en el inventario donde el autor del nivel haya proporcionado datos adecuados."
+    },
     "enable_total_stats": {
       "Title": "Pantalla de estadísticas finales",
       "Description": "Habilita una pantalla de estadísticas totales del juego que se reproduce después de los créditos."

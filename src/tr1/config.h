@@ -98,6 +98,7 @@ typedef struct {
     bool fix_animated_sprites;
     bool enable_skybox;
     bool enable_ps1_crystals;
+    bool enable_item_examining;
 
     struct {
         int32_t layout;

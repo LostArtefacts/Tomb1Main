@@ -10,6 +10,7 @@
 
 typedef struct {
     char *name;
+    char *description;
 } M_NAME_ENTRY;
 
 static M_NAME_ENTRY m_NamesTable[O_NUMBER_OF] = { 0 };
@@ -21,6 +22,7 @@ static void M_ClearNames(void)
     for (GAME_OBJECT_ID object_id = 0; object_id < O_NUMBER_OF; object_id++) {
         M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
         Memory_FreePointer(&entry->name);
+        Memory_FreePointer(&entry->description);
     }
 }
 
@@ -32,10 +34,25 @@ void Object_SetName(const GAME_OBJECT_ID object_id, const char *const name)
     entry->name = Memory_DupStr(name);
 }
 
+void Object_SetDescription(
+    const GAME_OBJECT_ID object_id, const char *const description)
+{
+    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    Memory_FreePointer(&entry->description);
+    assert(description != NULL);
+    entry->description = Memory_DupStr(description);
+}
+
 const char *Object_GetName(const GAME_OBJECT_ID object_id)
 {
     M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
     return entry != NULL ? entry->name : NULL;
+}
+
+const char *Object_GetDescription(GAME_OBJECT_ID object_id)
+{
+    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    return entry != NULL ? entry->description : NULL;
 }
 
 void Object_ResetNames(void)

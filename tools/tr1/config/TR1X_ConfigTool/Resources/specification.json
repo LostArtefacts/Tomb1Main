@@ -368,6 +368,11 @@
           "Field": "enable_timer_in_inventory",
           "DataType": "Bool",
           "DefaultValue": true
+        },
+        {
+          "Field": "enable_item_examining",
+          "DataType": "Bool",
+          "DefaultValue": true
         }
       ]
     },

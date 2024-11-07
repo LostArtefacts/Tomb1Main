@@ -292,6 +292,10 @@
       "Title": "Timer counts in inventory",
       "Description": "Makes the in-game timer work even while the game is showing the inventory."
     },
+    "enable_item_examining": {
+      "Title": "Item examination",
+      "Description": "For custom levels - allows item descriptions to be displayed in the inventory where the level author has provided suitable data."
+    },
     "anisotropy_filter": {
       "Title": "Anisotropic filter",
       "Description": "Enhances texture filtering at distances."
