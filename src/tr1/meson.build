@@ -8,10 +8,12 @@ project(
 )
 
 staticdeps = get_option('staticdeps')
+subprojects = get_option('subprojects')
 
 trx = subproject('libtrx', default_options: {
   'tr_version': '1',
   'staticdeps': staticdeps,
+  'subprojects': subprojects,
 })
 c_compiler = meson.get_compiler('c')
 

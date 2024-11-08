@@ -1,4 +1,12 @@
 option(
+  'subprojects',
+  type: 'boolean',
+  value: true,
+  description: 'Use bundled dependencies through meson subprojects. default: true.' +
+    'If false, try to find them on the OS.'
+)
+
+option(
   'staticdeps',
   type: 'boolean',
   value: true,

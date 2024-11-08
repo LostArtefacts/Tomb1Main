@@ -7,6 +7,7 @@ project(
   ],
 )
 
+subprojects = get_option('subprojects')
 staticdeps = get_option('staticdeps')
 tr_version = get_option('tr_version')
 
@@ -32,9 +33,28 @@ if host_machine.system() == 'darwin'
   staticdeps = false
 endif
 
-uthash = subproject('uthash', default_options: ['warning_level=0'])
-
 null_dep = dependency('', required: false)
+
+dep_uthash = null_dep
+if subprojects
+  # Use uthash bundled meson subproject
+  uthash = subproject('uthash', default_options: ['warning_level=0'])
+  dep_uthash = uthash.get_variable('uthash_dep')
+else
+  # Searching for uthash library header provided by OS package manager
+  incdir = include_directories('/usr/include')
+  uthash_version = c_compiler.get_define('UTHASH_VERSION',
+    include_directories: incdir,
+    prefix: '#include "uthash.h"')
+
+  # make sure we found the right version
+  if uthash_version.version_compare('>=2.3.0')
+    message('Found uthash library header version: ' + uthash_version)
+  else
+    error('Found wrong uthash library header version: ' + uthash_version)
+  endif
+endif
+
 dep_avcodec = dependency('libavcodec', static: staticdeps)
 dep_avformat = dependency('libavformat', static: staticdeps)
 dep_avutil = dependency('libavutil', static: staticdeps)
@@ -151,7 +171,7 @@ dependencies = [
   dep_swscale,
   dep_zlib,
   dep_opengl,
-  uthash.get_variable('uthash_dep'),
+  dep_uthash,
 ]
 
 if dep_backtrace.found() and host_machine.system() == 'linux'
