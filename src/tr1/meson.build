@@ -7,8 +7,11 @@ project(
   ],
 )
 
+staticdeps = get_option('staticdeps')
+
 trx = subproject('libtrx', default_options: {
   'tr_version': '1',
+  'staticdeps': staticdeps,
 })
 c_compiler = meson.get_compiler('c')
 
@@ -23,8 +26,6 @@ build_opts = [
 ] + trx.get_variable('defines')
 
 add_project_arguments(build_opts, language: 'c')
-
-staticdeps = get_option('staticdeps')
 
 # Always dynamically link on macOS
 if host_machine.system() == 'darwin'
