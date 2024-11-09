@@ -347,6 +347,20 @@ void JSON_ObjectAppendObject(
     JSON_ObjectAppend(obj, key, JSON_ValueFromObject(obj2));
 }
 
+bool JSON_ObjectContainsKey(JSON_OBJECT *const obj, const char *const key)
+{
+    JSON_OBJECT_ELEMENT *elem = obj->start;
+    while (elem != NULL) {
+        if (!strcmp(elem->name->string, key)) {
+            return true;
+        }
+
+        elem = elem->next;
+    }
+
+    return false;
+}
+
 void JSON_ObjectEvictKey(JSON_OBJECT *obj, const char *key)
 {
     if (!obj) {
@@ -365,6 +379,16 @@ void JSON_ObjectEvictKey(JSON_OBJECT *obj, const char *key)
             return;
         }
         prev = elem;
+        elem = elem->next;
+    }
+}
+
+void JSON_ObjectMerge(JSON_OBJECT *const root, const JSON_OBJECT *const obj)
+{
+    JSON_OBJECT_ELEMENT *elem = obj->start;
+    while (elem != NULL) {
+        JSON_ObjectEvictKey(root, elem->name->string);
+        JSON_ObjectAppend(root, elem->name->string, elem->value);
         elem = elem->next;
     }
 }

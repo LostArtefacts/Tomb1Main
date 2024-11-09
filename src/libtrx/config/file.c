@@ -7,31 +7,53 @@
 
 #include <string.h>
 
+#define ENFORCED_KEY "enforced"
+
 static bool M_ReadFromJSON(
     const char *json, void (*load)(JSON_OBJECT *root_obj));
-static char *M_WriteToJSON(void (*dump)(JSON_OBJECT *root_obj));
+static void M_PreserveEnforcedState(
+    JSON_OBJECT *root_obj, JSON_VALUE *old_root);
+static char *M_WriteToJSON(
+    void (*dump)(JSON_OBJECT *root_obj), const char *old_data);
 static const char *M_ResolveOptionName(const char *option_name);
+
+static JSON_VALUE *M_ReadRoot(const char *const cfg_data)
+{
+    if (cfg_data == NULL) {
+        return NULL;
+    }
+
+    JSON_PARSE_RESULT parse_result;
+    JSON_VALUE *root = JSON_ParseEx(
+        cfg_data, strlen(cfg_data), JSON_PARSE_FLAGS_ALLOW_JSON5, NULL, NULL,
+        &parse_result);
+    if (root == NULL) {
+        LOG_ERROR(
+            "failed to parse config file: %s in line %d, char %d",
+            JSON_GetErrorDescription(parse_result.error),
+            parse_result.error_line_no, parse_result.error_row_no);
+    }
+
+    return root;
+}
 
 static bool M_ReadFromJSON(
     const char *cfg_data, void (*load)(JSON_OBJECT *root_obj))
 {
     bool result = false;
 
-    JSON_PARSE_RESULT parse_result;
-    JSON_VALUE *root = JSON_ParseEx(
-        cfg_data, strlen(cfg_data), JSON_PARSE_FLAGS_ALLOW_JSON5, NULL, NULL,
-        &parse_result);
+    JSON_VALUE *root = M_ReadRoot(cfg_data);
     if (root != NULL) {
         result = true;
-    } else {
-        LOG_ERROR(
-            "failed to parse config file: %s in line %d, char %d",
-            JSON_GetErrorDescription(parse_result.error),
-            parse_result.error_line_no, parse_result.error_row_no);
-        // continue to supply the default values
     }
 
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
+
+    JSON_OBJECT *enforced_config = JSON_ObjectGetObject(root_obj, ENFORCED_KEY);
+    if (enforced_config != NULL) {
+        JSON_ObjectMerge(root_obj, enforced_config);
+    }
+
     load(root_obj);
 
     if (root) {
@@ -41,16 +63,54 @@ static bool M_ReadFromJSON(
     return result;
 }
 
-static char *M_WriteToJSON(void (*dump)(JSON_OBJECT *root_obj))
+static void M_PreserveEnforcedState(
+    JSON_OBJECT *const root_obj, JSON_VALUE *const old_root)
+{
+    if (old_root == NULL) {
+        return;
+    }
+
+    JSON_OBJECT *old_root_obj = JSON_ValueAsObject(old_root);
+    JSON_OBJECT *enforced_obj =
+        JSON_ObjectGetObject(old_root_obj, ENFORCED_KEY);
+    if (enforced_obj == NULL) {
+        return;
+    }
+
+    // Restore the original values for any enforced settings, provided they were
+    // defined, and preserve the enforced object itself in the new object.
+    JSON_OBJECT_ELEMENT *elem = enforced_obj->start;
+    while (elem != NULL) {
+        const char *const name = elem->name->string;
+        elem = elem->next;
+
+        JSON_ObjectEvictKey(root_obj, name);
+        if (!JSON_ObjectContainsKey(old_root_obj, name)) {
+            continue;
+        }
+
+        JSON_VALUE *const old_value = JSON_ObjectGetValue(old_root_obj, name);
+        JSON_ObjectAppend(root_obj, name, old_value);
+    }
+
+    JSON_ObjectAppendObject(root_obj, ENFORCED_KEY, enforced_obj);
+}
+
+static char *M_WriteToJSON(
+    void (*dump)(JSON_OBJECT *root_obj), const char *const old_data)
 {
     JSON_OBJECT *root_obj = JSON_ObjectNew();
 
     dump(root_obj);
 
+    JSON_VALUE *old_root = M_ReadRoot(old_data);
+    M_PreserveEnforcedState(root_obj, old_root);
+
     JSON_VALUE *root = JSON_ValueFromObject(root_obj);
     size_t size;
     char *data = JSON_WritePretty(root, "  ", "\n", &size);
     JSON_ValueFree(root);
+    JSON_ValueFree(old_root);
 
     return data;
 }
@@ -88,7 +148,8 @@ bool ConfigFile_Write(const char *path, void (*dump)(JSON_OBJECT *root_obj))
     File_Load(path, &old_data, NULL);
 
     bool updated = false;
-    char *data = M_WriteToJSON(dump);
+    char *data = M_WriteToJSON(dump, old_data);
+
     if (old_data == NULL || strcmp(data, old_data) != 0) {
         MYFILE *const fp = File_Open(path, FILE_OPEN_WRITE);
         if (fp == NULL) {
@@ -101,6 +162,10 @@ bool ConfigFile_Write(const char *path, void (*dump)(JSON_OBJECT *root_obj))
     }
 
     Memory_FreePointer(&data);
+    if (old_data != NULL) {
+        Memory_FreePointer(&old_data);
+    }
+
     return updated;
 }
 

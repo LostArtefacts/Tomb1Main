@@ -5,6 +5,7 @@
 #define JSON_INVALID_NUMBER 0x7FFFFFFF
 
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -126,7 +127,9 @@ void JSON_ObjectAppendArray(JSON_OBJECT *obj, const char *key, JSON_ARRAY *arr);
 void JSON_ObjectAppendObject(
     JSON_OBJECT *obj, const char *key, JSON_OBJECT *obj2);
 
+bool JSON_ObjectContainsKey(JSON_OBJECT *obj, const char *key);
 void JSON_ObjectEvictKey(JSON_OBJECT *obj, const char *key);
+void JSON_ObjectMerge(JSON_OBJECT *root, const JSON_OBJECT *obj);
 
 JSON_VALUE *JSON_ObjectGetValue(JSON_OBJECT *obj, const char *key);
 int JSON_ObjectGetBool(JSON_OBJECT *obj, const char *key, int d);

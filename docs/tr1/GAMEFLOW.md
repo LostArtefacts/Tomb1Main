@@ -10,6 +10,7 @@ Jump to:
 - [Bonus levels](#bonus-levels)
 - [Item drops](#item-drops)
 - [Injections](#injections)
+- [User configuration](#user-configuration)
 
 ## Global properties
 The following properties are in the root of the gameflow document and control
@@ -1483,3 +1484,50 @@ provided with the game achieves.
     </td>
   </tr>
 </table>
+
+## User Configuration
+TRX ships with a configuration tool to allow users to adjust game settings to
+their taste. This tool writes to `cfg\TR1X.json5`. As a level builder, you may
+wish to enforce some settings to match how your level is designed.
+
+As an example, let's say you do not wish to add save crystals to your level, and
+as a result you wish to prevent the player from enabling that option in the
+config tool. To achieve this, open `cfg\TR1X.json5` in a suitable text editor
+and add the following.
+
+```json
+"enforced" : {
+  "enable_save_crystals" : false,
+}
+```
+
+This means that the game will enforce your chosen value for this particular
+config setting. If the player launches the config tool, the option to toggle
+save crystals will be greyed out.
+
+You can add as many settings within the `enforced` section as needed.
+
+Note that you do not need to ship a full `cfg\TR1X.json5` with your level, and
+indeed it is not recommended to do so if you have, for example, your own custom
+keyboard or controller layouts defined.
+
+If you do not have any requirement to enforce settings, you can omit the file
+altogether from your level - the game will provide defaults for all settings as
+standard when it is launched.
+
+You can also ship only the `enforced` settings. So, your _entire_ file may
+appear simply as follows, and this is perfectly valid.
+
+```json
+{
+  "enforced" : {
+    "enable_save_crystals" : false,
+    "disable_healing_between_levels" : true,
+    "enable_3d_pickups" : true,
+    "enable_wading" : true,
+  }
+}
+```
+
+These settings will be enforced; everything else will default, plus the player
+can customise the settings you have not defined as desired.
