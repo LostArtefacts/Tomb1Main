@@ -34,6 +34,7 @@ public class MainWindowViewModel : BaseLanguageViewModel
     {
         IsEditorDirty = _configuration.IsDataDirty();
         IsEditorDefault = _configuration.IsDataDefault();
+        HasReadOnlyItems = _configuration.HasReadOnlyItems();
     }
 
     public void Load()
@@ -75,6 +76,20 @@ public class MainWindowViewModel : BaseLanguageViewModel
             if (_isEditorDefault != value)
             {
                 _isEditorDefault = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    private bool _hasReadOnlyItems;
+    public bool HasReadOnlyItems
+    {
+        get => _hasReadOnlyItems;
+        set
+        {
+            if (_hasReadOnlyItems != value)
+            {
+                _hasReadOnlyItems = value;
                 NotifyPropertyChanged();
             }
         }

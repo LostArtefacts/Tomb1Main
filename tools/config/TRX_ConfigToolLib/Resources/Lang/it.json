@@ -12,6 +12,8 @@
     "menu_help": "_Aiuto",
     "command_github": "_GitHub",
     "command_about": "_Informazioni su",
+    "label_locked_properties": "Questo set di configurazione contiene alcuni valori di sola lettura definiti dall'autore del gioco.",
+    "label_enforced": "Valore applicato a:",
     "checkbox_enabled": "Abilitato",
     "spinner_msg_invalid_number": "Il valore immesso non è un numero valido",
     "spinner_msg_comparison_failed": "Il valore immesso deve essere compreso tra {0} e {1}",

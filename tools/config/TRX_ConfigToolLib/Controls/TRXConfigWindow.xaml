@@ -136,11 +136,28 @@
         <Grid
             Margin="7">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <Border
+                Visibility="{Binding HasReadOnlyItems, Converter={StaticResource BoolToCollapsedConverter}}"
+                BorderThickness="1"
+                BorderBrush="#666"
+                Margin="0,0,0,7"
+                Background="Orange">
+                <StackPanel>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Margin="5"
+                        FontWeight="Bold"
+                        Text="{Binding ViewText[label_locked_properties]}"/>
+                </StackPanel>
+            </Border>
+
             <TabControl
+                Grid.Row="1"
                 Margin="0,0,0,7"
                 Padding="0"
                 IsEnabled="{Binding IsEditorActive}"
@@ -165,7 +182,7 @@
             </TabControl>
 
             <Grid
-                Grid.Row="1">
+                Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>

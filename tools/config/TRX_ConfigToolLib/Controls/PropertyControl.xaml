@@ -6,15 +6,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:TRX_ConfigToolLib.Controls"
     xmlns:models="clr-namespace:TRX_ConfigToolLib.Models"
+    xmlns:utils="clr-namespace:TRX_ConfigToolLib.Utils"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
 
     <UserControl.Resources>
-        <ResourceDictionary Source="/TRX_ConfigToolLib;component/Resources/styles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TRX_ConfigToolLib;component/Resources/styles.xaml" />
+                <ResourceDictionary>
+                    <utils:BoolToVisibilityConverter
+                        x:Key="BoolToCollapsedConverter"
+                        FalseValue="Collapsed"
+                        TrueValue="Visible"/>
+                    <utils:BoolToVisibilityConverter
+                        x:Key="InverseBoolToCollapsedConverter"
+                        FalseValue="Visible"
+                        TrueValue="Collapsed"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel>
+    <StackPanel IsEnabled="{Binding IsEnabled}">
         <TextBlock
             Text="{Binding Title}"
             Style="{StaticResource PropertyTitleStyle}"/>
@@ -25,7 +40,8 @@
 
         <ContentControl
             Content="{Binding}"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Left"
+            Visibility="{Binding IsEnabled, Converter={StaticResource BoolToCollapsedConverter}}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type models:BoolProperty}">
                     <CheckBox
@@ -52,5 +68,12 @@
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
+
+        <TextBlock
+            Style="{StaticResource PropertyEnforcedStyle}"
+            Visibility="{Binding IsEnabled, Converter={StaticResource InverseBoolToCollapsedConverter}}">
+            <Run Text="{Binding DataContext.ViewText[label_enforced], RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Run Text="{Binding EnforcedValue}"/>
+        </TextBlock>
     </StackPanel>
 </UserControl>

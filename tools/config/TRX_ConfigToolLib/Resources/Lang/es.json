@@ -12,6 +12,8 @@
     "menu_help": "_Ayuda",
     "command_github": "_GitHub",
     "command_about": "_Acerca de",
+    "label_locked_properties": "Este conjunto de configuración contiene algunos valores de solo lectura definidos por el autor del juego.",
+    "label_enforced": "Valor aplicado a:",
     "checkbox_enabled": "Habilitado",
     "spinner_msg_invalid_number": "La cadena de entrada no es un número válido",
     "spinner_msg_comparison_failed": "El valor de entrada debe estar entre {0} y {1}",

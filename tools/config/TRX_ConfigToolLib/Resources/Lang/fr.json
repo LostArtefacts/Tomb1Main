@@ -12,6 +12,8 @@
     "menu_help": "_Aide",
     "command_github": "_GitHub",
     "command_about": "_A propos",
+    "label_locked_properties": "Cet ensemble de configuration contient certaines valeurs en lecture seule définies par l'auteur du jeu.",
+    "label_enforced": "Valeur imposée à:",
     "checkbox_enabled": "Activé",
     "spinner_msg_invalid_number": "La valeur n'est pas un nombre valide",
     "spinner_msg_comparison_failed": "La valeur doit être entre {0} et {1}",

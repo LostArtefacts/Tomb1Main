@@ -12,6 +12,8 @@
     "menu_help": "_Help",
     "command_github": "_GitHub",
     "command_about": "_About",
+    "label_locked_properties": "This configuration set contains some read-only values defined by the game author.",
+    "label_enforced": "Value enforced to:",
     "checkbox_enabled": "Enabled",
     "spinner_msg_invalid_number": "The input string is not a valid number",
     "spinner_msg_comparison_failed": "The input value must be between {0} and {1}",
