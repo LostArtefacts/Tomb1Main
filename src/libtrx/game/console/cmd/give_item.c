@@ -23,7 +23,8 @@ static bool M_CanTargetObjectPickup(const GAME_OBJECT_ID object_id)
     }
     const GAME_OBJECT_ID inv_object_id =
         Object_GetCognate(object_id, g_ItemToInvObjectMap);
-    return Object_GetObject(inv_object_id)->loaded;
+    return Object_GetObject(object_id)->loaded
+        && Object_GetObject(inv_object_id)->loaded;
 }
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
