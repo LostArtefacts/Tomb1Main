@@ -654,6 +654,7 @@ static void M_Effects(const bool enable)
     INJECT(enable, 0x00419890, Effect_Draw);
     INJECT(enable, 0x0041DA20, FX_AssaultStart);
     INJECT(enable, 0x0041C8A0, CreateBubble);
+    INJECT(enable, 0x0041C910, FX_Bubbles);
 }
 
 static void M_LOS(const bool enable)

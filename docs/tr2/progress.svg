@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.54% (890)</tspan> · <tspan class="known">26.05% (324)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.62% (891)</tspan> · <tspan class="known">25.96% (323)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="534.43" height="6" x="0" y="0" class="decompiled"/>
-<rect width="194.56" height="6" x="534.43" y="0" class="known"/>
+<rect width="535.03" height="6" x="0" y="0" class="decompiled"/>
+<rect width="193.96" height="6" x="535.03" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -326,7 +326,7 @@
 <rect width="12" height="12" x="705" y="60" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="0" y="75" class="known"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
+<rect width="12" height="12" x="0" y="75" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="75" class="known"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="30" y="75" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
 <rect width="12" height="12" x="45" y="75" class="known"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.10%</tspan> · <tspan class="known">23.57%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.13%</tspan> · <tspan class="known">23.54%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="568.46" height="6" x="0" y="0" class="decompiled"/>
-<rect width="176.11" height="6" x="568.46" y="0" class="known"/>
+<rect width="568.72" height="6" x="0" y="0" class="decompiled"/>
+<rect width="175.84" height="6" x="568.72" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1985,7 +1985,7 @@
 <rect width="7.01" height="7.03" x="700.37" y="206.42" class="decompiled"><title>BOOL __cdecl Level_LoadCinematic(HANDLE handle);</title></rect>
 <rect width="6.93" height="7.03" x="710.38" y="206.42" class="decompiled"><title>void __cdecl Math_GetVectorAngles(int32_t x, int32_t y, int32_t z, int16_t *dest);</title></rect>
 <rect width="6.93" height="7.03" x="720.30" y="206.42" class="decompiled"><title>void __cdecl Creature_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="6.93" height="7.03" x="730.23" y="206.42" class="known"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
+<rect width="6.93" height="7.03" x="730.23" y="206.42" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
 <rect width="6.84" height="7.03" x="740.16" y="206.42" class="decompiled"><title>void __cdecl Door_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="7.31" height="6.58" x="588.61" y="216.45" class="decompiled"><title>int32_t __cdecl Inv_RequestItem(GAME_OBJECT_ID object_id);</title></rect>
 <rect width="7.31" height="6.58" x="598.92" y="216.45" class="decompiled"><title>bool __cdecl Music_Init(void);</title></rect>

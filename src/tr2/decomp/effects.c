@@ -4,6 +4,7 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/random.h"
+#include "game/sound.h"
 #include "game/stats.h"
 #include "global/funcs.h"
 #include "global/types.h"
@@ -196,4 +197,25 @@ void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
     fx->object_id = O_BUBBLES;
     fx->frame_num = -((Random_GetDraw() * 3) / 0x8000);
     fx->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
+}
+
+void __cdecl FX_Bubbles(ITEM *const item)
+{
+    const int32_t count = (Random_GetDraw() * 3) / 0x8000;
+    if (count == 0) {
+        return;
+    }
+
+    Sound_Effect(SFX_LARA_BUBBLES, &item->pos, SPM_UNDERWATER);
+
+    XYZ_32 offset = {
+        .x = 0,
+        .y = 0,
+        .z = 50,
+    };
+    Collide_GetJointAbsPosition(item, &offset, LM_HEAD);
+
+    for (int32_t i = 0; i < count; i++) {
+        CreateBubble(&offset, item->room_num);
+    }
 }
