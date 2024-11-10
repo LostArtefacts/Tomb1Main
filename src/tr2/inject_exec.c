@@ -50,6 +50,7 @@
 #include "game/objects/effects/ember.h"
 #include "game/objects/effects/flame.h"
 #include "game/objects/effects/twinkle.h"
+#include "game/objects/general/bell.h"
 #include "game/objects/general/bridge_common.h"
 #include "game/objects/general/bridge_flat.h"
 #include "game/objects/general/bridge_tilt_1.h"
@@ -991,6 +992,7 @@ static void M_Lot(const bool enable)
 
 static void M_Objects(const bool enable)
 {
+    INJECT(enable, 0x00434D00, Bell_Control);
     INJECT(enable, 0x0040C880, Bird_Initialise);
     INJECT(enable, 0x0040C910, Bird_Control);
     INJECT(enable, 0x0040CB30, Boat_Initialise);

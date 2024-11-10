@@ -3585,7 +3585,7 @@ typedef enum {
 0x004348C0  0x00BF  +       void __cdecl Zipline_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 0x00434980  0x028F  +       void __cdecl Zipline_Control(int16_t item_num);
 0x00434C10  0x00E3  -       void __cdecl BigBowl_Control(int16_t item_num);
-0x00434D00  0x007E  -       void __cdecl Bell_Control(int16_t item_num);
+0x00434D00  0x007E  +       void __cdecl Bell_Control(int16_t item_num);
 0x00434D80  0x0075  -       void __cdecl Window_Initialise(int16_t item_num);
 0x00434E00  0x00C4  -R      void __cdecl SmashWindow(int16_t item_num);
 0x00434ED0  0x0096  -       void __cdecl Window_Control(int16_t item_num);
