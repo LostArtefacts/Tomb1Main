@@ -68,8 +68,6 @@ typedef struct {
     char *savegame_fmt_bson;
     int8_t has_demo;
     double demo_delay;
-    TRISTATE_BOOL force_game_modes;
-    TRISTATE_BOOL force_save_crystals;
     GAMEFLOW_LEVEL *levels;
     RGB_F water_color;
     float draw_distance_fade;

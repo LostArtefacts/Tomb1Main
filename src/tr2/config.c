@@ -3,6 +3,7 @@
 #include "config_map.h"
 #include "game/clock.h"
 #include "game/input.h"
+#include "game/shell.h"
 
 #include <libtrx/config/file.h>
 
@@ -101,9 +102,9 @@ static void M_DumpInputLayout(
     }
 }
 
-const char *Config_GetPath(void)
+const char *Config_GetPath(const CONFIG_FILE_TYPE file_type)
 {
-    return m_ConfigPath;
+    return file_type == CFT_DEFAULT ? m_ConfigPath : Shell_GetGameflowPath();
 }
 
 void Config_LoadFromJSON(JSON_OBJECT *root_obj)

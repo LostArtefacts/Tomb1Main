@@ -57,6 +57,7 @@
 - improved the injection approach for Lara's responsive jumping (#1823)
 - removed health cheat (we now have the `/hp` command)
 - removed background for the "Reset" and "Unbind" labels in the controls dialog
+- removed `force_game_modes` and `force_save_crystals` from the gameflow - see GAMEFLOW.md for details on how to enforce these settings (#1857)
 
 ## [4.5.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.5...tr1-4.5.1) - 2024-10-14
 - fixed mac builds missing embedded resources (#1710, regression from 4.5)

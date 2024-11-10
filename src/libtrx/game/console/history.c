@@ -46,13 +46,21 @@ void M_DumpToJSON(JSON_OBJECT *const root_obj)
 void Console_History_Init(void)
 {
     m_History = Vector_Create(sizeof(char *));
-    ConfigFile_Read(m_Path, &M_LoadFromJSON);
+    ConfigFile_Read(&(CONFIG_IO_ARGS) {
+        .default_path = m_Path,
+        .enforced_path = NULL,
+        .action = &M_LoadFromJSON,
+    });
 }
 
 void Console_History_Shutdown(void)
 {
     if (m_History != NULL) {
-        ConfigFile_Write(m_Path, &M_DumpToJSON);
+        ConfigFile_Write(&(CONFIG_IO_ARGS) {
+            .default_path = m_Path,
+            .enforced_path = NULL,
+            .action = &M_DumpToJSON,
+        });
         for (int32_t i = m_History->count - 1; i >= 0; i--) {
             char *const prompt = *(char **)Vector_Get(m_History, i);
             Memory_Free(prompt);

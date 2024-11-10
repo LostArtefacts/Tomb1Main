@@ -40,6 +40,8 @@ static const char m_TR1XGameflowPath[] = "cfg/TR1X_gameflow.json5";
 static const char m_TR1XGameflowGoldPath[] = "cfg/TR1X_gameflow_ub.json5";
 static const char m_TR1XGameflowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
 
+static const char *m_CurrentGameflowPath;
+
 void Shell_Init(const char *gameflow_path)
 {
     Text_Init();
@@ -89,23 +91,24 @@ void Shell_Shutdown(void)
     Log_Shutdown();
 }
 
+const char *Shell_GetGameflowPath(void)
+{
+    return m_CurrentGameflowPath;
+}
+
 void Shell_Main(void)
 {
-    GameString_Init();
-    EnumMap_Init();
-    Config_Init();
-
-    const char *gameflow_path = m_TR1XGameflowPath;
+    m_CurrentGameflowPath = m_TR1XGameflowPath;
 
     char **args = NULL;
     int arg_count = 0;
     S_Shell_GetCommandLine(&arg_count, &args);
     for (int i = 0; i < arg_count; i++) {
         if (!strcmp(args[i], "-gold")) {
-            gameflow_path = m_TR1XGameflowGoldPath;
+            m_CurrentGameflowPath = m_TR1XGameflowGoldPath;
         }
         if (!strcmp(args[i], "-demo_pc")) {
-            gameflow_path = m_TR1XGameflowDemoPath;
+            m_CurrentGameflowPath = m_TR1XGameflowDemoPath;
         }
     }
     for (int i = 0; i < arg_count; i++) {
@@ -113,7 +116,11 @@ void Shell_Main(void)
     }
     Memory_FreePointer(&args);
 
-    Shell_Init(gameflow_path);
+    GameString_Init();
+    EnumMap_Init();
+    Config_Init();
+
+    Shell_Init(m_CurrentGameflowPath);
 
     GAMEFLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
     bool intro_played = false;

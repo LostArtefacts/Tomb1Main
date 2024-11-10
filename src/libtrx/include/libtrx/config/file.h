@@ -7,8 +7,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-bool ConfigFile_Read(const char *path, void (*load)(JSON_OBJECT *root_obj));
-bool ConfigFile_Write(const char *path, void (*dump)(JSON_OBJECT *root_obj));
+typedef struct {
+    const char *default_path;
+    const char *enforced_path;
+    void (*action)(JSON_OBJECT *root_obj);
+} CONFIG_IO_ARGS;
+
+bool ConfigFile_Read(const CONFIG_IO_ARGS *control);
+bool ConfigFile_Write(const CONFIG_IO_ARGS *control);
 
 void ConfigFile_LoadOptions(
     JSON_OBJECT *root_obj, const CONFIG_OPTION *options);

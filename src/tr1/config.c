@@ -6,6 +6,7 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/requester.h"
+#include "game/shell.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
@@ -160,9 +161,9 @@ static void M_DumpControllerLayout(
     }
 }
 
-const char *Config_GetPath(void)
+const char *Config_GetPath(const CONFIG_FILE_TYPE file_type)
 {
-    return m_ConfigPath;
+    return file_type == CFT_ENFORCED ? Shell_GetGameflowPath() : m_ConfigPath;
 }
 
 void Config_LoadFromJSON(JSON_OBJECT *root_obj)

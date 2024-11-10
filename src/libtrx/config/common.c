@@ -19,7 +19,12 @@ void Config_Shutdown(void)
 
 bool Config_Read(void)
 {
-    const bool result = ConfigFile_Read(Config_GetPath(), &Config_LoadFromJSON);
+    const CONFIG_IO_ARGS args = {
+        .default_path = Config_GetPath(CFT_DEFAULT),
+        .enforced_path = Config_GetPath(CFT_ENFORCED),
+        .action = &Config_LoadFromJSON,
+    };
+    const bool result = ConfigFile_Read(&args);
     if (result) {
         Config_Sanitize();
         Config_ApplyChanges();
@@ -30,7 +35,12 @@ bool Config_Read(void)
 bool Config_Write(void)
 {
     Config_Sanitize();
-    const bool updated = ConfigFile_Write(Config_GetPath(), &Config_DumpToJSON);
+    const CONFIG_IO_ARGS args = {
+        .default_path = Config_GetPath(CFT_DEFAULT),
+        .enforced_path = Config_GetPath(CFT_ENFORCED),
+        .action = &Config_DumpToJSON,
+    };
+    const bool updated = ConfigFile_Write(&args);
     if (updated) {
         Config_ApplyChanges();
         if (m_EventManager != NULL) {

@@ -58,7 +58,6 @@ static bool M_LoadScriptGameStrings(JSON_OBJECT *obj);
 static bool M_IsLegacySequence(const char *type_str);
 static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj);
-static bool M_LoadFromFileImpl(const char *file_name);
 static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *dest);
 static bool M_LoadObjectNames(
     JSON_OBJECT *root_obj, GAMEFLOW_STRING_ENTRY **dest);
@@ -163,19 +162,6 @@ static bool M_LoadScriptMeta(JSON_OBJECT *obj)
         return false;
     }
     g_GameFlow.demo_delay = tmp_d;
-
-    g_GameFlow.force_game_modes = M_ReadTristateBool(obj, "force_game_modes");
-    if (JSON_ObjectGetBool(obj, "force_disable_game_modes", false)) {
-        // backwards compatibility
-        g_GameFlow.force_game_modes = TB_OFF;
-    }
-
-    g_GameFlow.force_save_crystals =
-        M_ReadTristateBool(obj, "force_save_crystals");
-    if (JSON_ObjectGetBool(obj, "force_enable_save_crystals", false)) {
-        // backwards compatibility
-        g_GameFlow.force_save_crystals = TB_ON;
-    }
 
     tmp_arr = JSON_ObjectGetArray(obj, "water_color");
     g_GameFlow.water_color.r = 0.6;
@@ -879,7 +865,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
     return true;
 }
 
-static bool M_LoadFromFileImpl(const char *file_name)
+bool GameFlow_LoadFromFile(const char *file_name)
 {
     GameFlow_Shutdown();
     bool result = false;
@@ -999,25 +985,6 @@ void GameFlow_Shutdown(void)
         }
         Memory_FreePointer(&g_GameFlow.levels);
     }
-}
-
-bool GameFlow_LoadFromFile(const char *file_name)
-{
-    bool result = M_LoadFromFileImpl(file_name);
-
-    if (g_GameFlow.force_save_crystals == TB_ON) {
-        g_Config.enable_save_crystals = true;
-    } else if (g_GameFlow.force_save_crystals == TB_OFF) {
-        g_Config.enable_save_crystals = false;
-    }
-
-    if (g_GameFlow.force_game_modes == TB_ON) {
-        g_Config.enable_game_modes = true;
-    } else if (g_GameFlow.force_game_modes == TB_OFF) {
-        g_Config.enable_game_modes = false;
-    }
-
-    return result;
 }
 
 GAMEFLOW_COMMAND

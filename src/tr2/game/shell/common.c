@@ -28,6 +28,8 @@
 
 #define GAMEBUF_MEM_CAP 0x380000
 
+static const char *m_CurrentGameflowPath = "cfg/TR2X_gameflow.json5";
+
 // TODO: refactor the hell out of me
 void __cdecl Shell_Main(void)
 {
@@ -58,7 +60,7 @@ void __cdecl Shell_Main(void)
         return;
     }
 
-    if (!GF_N_Load("cfg/TR2X_gameflow.json5")) {
+    if (!GF_N_Load(m_CurrentGameflowPath)) {
         Shell_ExitSystem("GameMain: could not load new script file");
         return;
     }
@@ -209,6 +211,11 @@ void __cdecl Shell_ExitSystemFmt(const char *fmt, ...)
     Shell_ExitSystem(message);
 
     Memory_FreePointer(&message);
+}
+
+const char *Shell_GetGameflowPath(void)
+{
+    return m_CurrentGameflowPath;
 }
 
 // TODO: try to call this function in a single place after introducing phasers.

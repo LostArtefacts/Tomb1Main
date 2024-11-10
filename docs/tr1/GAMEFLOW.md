@@ -23,8 +23,6 @@ various pieces of global behaviour.
 "main_menu_picture": "data/titleh.png",
 "savegame_fmt_legacy": "saveati.%d",
 "savegame_fmt_bson": "save_tr1_%02d.dat",
-"force_game_modes": null,
-"force_save_crystals": null,
 "demo_delay": 16,
 "water_color": [0.45, 1.0, 1.0],
 "draw_distance_fade": 22.0,
@@ -35,6 +33,9 @@ various pieces of global behaviour.
     // etc
 ],
 "convert_dropped_guns": false,
+"enforced_config": {
+    "enable_save_crystals": false,
+},
 "levels": [
     {
         "title": "Caves",
@@ -125,27 +126,14 @@ various pieces of global behaviour.
   </tr>
   <tr valign="top">
     <td>
-      <code>force_game_modes</code>
+      <a name="enforced-config"></a>
+      <code>enforced_config</code>
     </td>
-    <td>Optional Boolean</td>
+    <td>String-to-object map</td>
     <td>No</td>
     <td>
-      Forces game mode selection to be enabled if <code>true</code> or disabled
-      if <code>false</code>, so the user can't select NG+ modes until a
-      playthrough is completed. Overrides the config option
-      <code>enable_game_modes</code>. Has no action if <code>null</code>.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>force_save_crystals</code>
-    </td>
-    <td>Optional Boolean</td>
-    <td>No</td>
-    <td>
-      Forces save crystals to be enabled if <code>true</code> or disabled if
-      <code>false</code>. Overrides the config option
-      <code>enable_save_crystals</code>. Has no action if <code>null</code>.
+      This allows <em>any</em> regular game config setting to be overriden. See
+      <a href="#user-configuration">User configuration</a> for full details.
     </td>
   </tr>
   <tr valign="top">
@@ -1488,15 +1476,15 @@ provided with the game achieves.
 ## User Configuration
 TRX ships with a configuration tool to allow users to adjust game settings to
 their taste. This tool writes to `cfg\TR1X.json5`. As a level builder, you may
-wish to enforce some settings to match how your level is designed.
+however wish to enforce some settings to match how your level is designed.
 
 As an example, let's say you do not wish to add save crystals to your level, and
 as a result you wish to prevent the player from enabling that option in the
-config tool. To achieve this, open `cfg\TR1X.json5` in a suitable text editor
-and add the following.
+config tool. To achieve this, open `cfg\TR1X_gameflow.json5` in a suitable text
+editor and add the following.
 
 ```json
-"enforced" : {
+"enforced_config" : {
   "enable_save_crystals" : false,
 }
 ```
@@ -1505,29 +1493,12 @@ This means that the game will enforce your chosen value for this particular
 config setting. If the player launches the config tool, the option to toggle
 save crystals will be greyed out.
 
-You can add as many settings within the `enforced` section as needed.
+You can add as many settings within the `enforced_config` section as needed.
+Refer to the key names within `cfg\TR1X.json5` for reference.
 
 Note that you do not need to ship a full `cfg\TR1X.json5` with your level, and
 indeed it is not recommended to do so if you have, for example, your own custom
 keyboard or controller layouts defined.
 
-If you do not have any requirement to enforce settings, you can omit the file
-altogether from your level - the game will provide defaults for all settings as
-standard when it is launched.
-
-You can also ship only the `enforced` settings. So, your _entire_ file may
-appear simply as follows, and this is perfectly valid.
-
-```json
-{
-  "enforced" : {
-    "enable_save_crystals" : false,
-    "disable_healing_between_levels" : true,
-    "enable_3d_pickups" : true,
-    "enable_wading" : true,
-  }
-}
-```
-
-These settings will be enforced; everything else will default, plus the player
-can customise the settings you have not defined as desired.
+If you do not have any requirement to enforce settings, you can omit the 
+`enforced_config` section from your gameflow.

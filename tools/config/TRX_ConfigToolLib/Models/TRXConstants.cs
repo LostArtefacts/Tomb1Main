@@ -16,6 +16,7 @@ public class TRXConstants
     public string AppImage { get; set; }
     public string ConfigFilterExtension { get; set; }
     public string ConfigPath { get; set; }
+    public string GameflowName { get; set; }
     public string ExecutableName { get; set; }
     public bool GoldSupported { get; set; }
     public string GoldArgs { get; set; }

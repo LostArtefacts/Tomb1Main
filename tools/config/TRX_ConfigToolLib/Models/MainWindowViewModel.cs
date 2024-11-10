@@ -146,7 +146,7 @@ public class MainWindowViewModel : BaseLanguageViewModel
     {
         try
         {
-            _configuration.Read(filePath);
+            _configuration.Read(filePath, TRXConstants.Instance.GameflowName);
             SelectedFile = filePath;
             IsEditorDirty = false;
             IsEditorDefault = _configuration.IsDataDefault();

@@ -7,7 +7,7 @@ namespace TRX_ConfigToolLib.Models;
 
 public class Configuration
 {
-    private static readonly string _enforcedKey = "enforced";
+    private static readonly string _enforcedKey = "enforced_config";
     private static readonly string _specificationPath = "Resources.specification.json";
     private static readonly JsonSerializerSettings _serializerSettings = new()
     {
@@ -76,16 +76,22 @@ public class Configuration
         return Properties.Any(p => !p.IsEnabled);
     }
 
-    public void Read(string jsonPath)
+    public void Read(string jsonPath, string enforcedDataName)
     {
         JObject externalData = File.Exists(jsonPath)
             ? JObject.Parse(File.ReadAllText(jsonPath))
             : new();
         JObject activeData = new();
 
-        JObject enforcedData = externalData.ContainsKey(_enforcedKey)
-            ? externalData[_enforcedKey].ToObject<JObject>()
-            : null;
+        string enforcedPath = Path.Combine(Path.GetDirectoryName(jsonPath), enforcedDataName);
+        JObject enforcedData = null;
+        if (File.Exists(enforcedPath))
+        {
+            JObject extraData = JObject.Parse(File.ReadAllText(enforcedPath));
+            enforcedData = extraData.ContainsKey(_enforcedKey)
+                ? extraData[_enforcedKey].ToObject<JObject>()
+                : null;
+        }
 
         foreach (BaseProperty property in Properties)
         {

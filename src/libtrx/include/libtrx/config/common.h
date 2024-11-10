@@ -7,6 +7,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef enum {
+    CFT_DEFAULT = 0,
+    CFT_ENFORCED = 1,
+} CONFIG_FILE_TYPE;
+
 void Config_Init(void);
 void Config_Shutdown(void);
 
@@ -16,7 +21,7 @@ bool Config_Write(void);
 int32_t Config_SubscribeChanges(EVENT_LISTENER listener, void *user_data);
 void Config_UnsubscribeChanges(int32_t listener_id);
 
-extern const char *Config_GetPath(void);
+extern const char *Config_GetPath(CONFIG_FILE_TYPE file_type);
 
 extern void Config_Sanitize(void);
 extern void Config_ApplyChanges(void);
