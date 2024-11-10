@@ -51,6 +51,7 @@
 - fixed game stuck at remapping controller key if no controllers connected (#1788)
 - fixed being able to shoot the scion multiple times if save/load is used while it blows up (#1819)
 - fixed certain erroneous `/play` invocations resulting in duplicated error messages
+- fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo (#1606)
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 - improved the injection approach for Lara's responsive jumping (#1823)

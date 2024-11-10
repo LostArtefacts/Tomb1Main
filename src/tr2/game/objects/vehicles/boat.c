@@ -183,6 +183,7 @@ void __cdecl Boat_Collision(
     }
 
     g_Lara.water_status = LWS_ABOVE_WATER;
+    g_Lara.hit_direction = -1;
 
     ITEM *const boat = &g_Items[item_num];
 

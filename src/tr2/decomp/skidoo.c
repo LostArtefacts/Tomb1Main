@@ -230,6 +230,7 @@ void __cdecl Skidoo_Collision(
     lara_item->current_anim_state = LARA_STATE_SKIDOO_GET_ON;
     lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
     g_Lara.gun_status = LGS_ARMLESS;
+    g_Lara.hit_direction = -1;
 
     ITEM *const item = &g_Items[item_num];
     lara_item->pos.x = item->pos.x;

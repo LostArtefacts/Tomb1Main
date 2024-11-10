@@ -37,6 +37,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed harpoon bolts damaging inactive enemies
 - fixed the distorted skybox in room 5 of Barkhang Monastery
 - fixed new saves not displaying the save count in the passport
+- fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo
 
 #### Cheats
 - added a fly cheat
