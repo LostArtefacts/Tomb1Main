@@ -7,11 +7,11 @@
 #include "global/vars.h"
 
 typedef enum {
-    THS_SET = 0,
-    THS_TEASE = 1,
-    THS_ACTIVE = 2,
-    THS_DONE = 3,
-} THOR_HAMMER_STATE;
+    THOR_HAMMER_HANDLE_STATE_SET = 0,
+    THOR_HAMMER_HANDLE_STATE_TEASE = 1,
+    THOR_HAMMER_HANDLE_STATE_ACTIVE = 2,
+    THOR_HAMMER_HANDLE_STATE_DONE = 3,
+} THOR_HAMMER_HANDLE_STATE;
 
 void ThorsHammerHandle_Setup(OBJECT *obj)
 {
@@ -43,24 +43,24 @@ void ThorsHammerHandle_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
 
     switch (item->current_anim_state) {
-    case THS_SET:
+    case THOR_HAMMER_HANDLE_STATE_SET:
         if (Item_IsTriggerActive(item)) {
-            item->goal_anim_state = THS_TEASE;
+            item->goal_anim_state = THOR_HAMMER_HANDLE_STATE_TEASE;
         } else {
             Item_RemoveActive(item_num);
             item->status = IS_INACTIVE;
         }
         break;
 
-    case THS_TEASE:
+    case THOR_HAMMER_HANDLE_STATE_TEASE:
         if (Item_IsTriggerActive(item)) {
-            item->goal_anim_state = THS_ACTIVE;
+            item->goal_anim_state = THOR_HAMMER_HANDLE_STATE_ACTIVE;
         } else {
-            item->goal_anim_state = THS_SET;
+            item->goal_anim_state = THOR_HAMMER_HANDLE_STATE_SET;
         }
         break;
 
-    case THS_ACTIVE: {
+    case THOR_HAMMER_HANDLE_STATE_ACTIVE: {
         int32_t frm = item->frame_num - g_Anims[item->anim_num].frame_base;
         if (frm > 30) {
             int32_t x = item->pos.x;
@@ -95,7 +95,7 @@ void ThorsHammerHandle_Control(int16_t item_num)
         break;
     }
 
-    case THS_DONE: {
+    case THOR_HAMMER_HANDLE_STATE_DONE: {
         int32_t x = item->pos.x;
         int32_t z = item->pos.z;
         int32_t old_x = x;

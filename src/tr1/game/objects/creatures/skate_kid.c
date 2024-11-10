@@ -28,13 +28,13 @@
 #define SKATE_KID_SPEECH_STARTED 1
 
 typedef enum {
-    SKATE_KID_STOP = 0,
-    SKATE_KID_SHOOT = 1,
-    SKATE_KID_SKATE = 2,
-    SKATE_KID_PUSH = 3,
-    SKATE_KID_SHOOT2 = 4,
-    SKATE_KID_DEATH = 5,
-} SKATE_KID_ANIM;
+    SKATE_KID_STATE_STOP = 0,
+    SKATE_KID_STATE_SHOOT_1 = 1,
+    SKATE_KID_STATE_SKATE = 2,
+    SKATE_KID_STATE_PUSH = 3,
+    SKATE_KID_STATE_SHOOT_2 = 4,
+    SKATE_KID_STATE_DEATH = 5,
+} SKATE_KID_STATE;
 
 static BITE m_KidGun1 = { 0, 150, 34, 7 };
 static BITE m_KidGun2 = { 0, 150, 37, 4 };
@@ -69,7 +69,7 @@ void SkateKid_Setup(OBJECT *obj)
 void SkateKid_Initialise(int16_t item_num)
 {
     Creature_Initialise(item_num);
-    g_Items[item_num].current_anim_state = SKATE_KID_SKATE;
+    g_Items[item_num].current_anim_state = SKATE_KID_STATE_SKATE;
 }
 
 void SkateKid_Control(int16_t item_num)
@@ -88,8 +88,8 @@ void SkateKid_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != SKATE_KID_DEATH) {
-            item->current_anim_state = SKATE_KID_DEATH;
+        if (item->current_anim_state != SKATE_KID_STATE_DEATH) {
+            item->current_anim_state = SKATE_KID_STATE_DEATH;
             Item_SwitchToAnim(item, SKATE_KID_DIE_ANIM, 0);
         }
     } else {
@@ -111,50 +111,50 @@ void SkateKid_Control(int16_t item_num)
         }
 
         switch (item->current_anim_state) {
-        case SKATE_KID_STOP:
+        case SKATE_KID_STATE_STOP:
             kid->flags = 0;
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = SKATE_KID_SHOOT;
+                item->goal_anim_state = SKATE_KID_STATE_SHOOT_1;
             } else {
-                item->goal_anim_state = SKATE_KID_SKATE;
+                item->goal_anim_state = SKATE_KID_STATE_SKATE;
             }
             break;
 
-        case SKATE_KID_SKATE:
+        case SKATE_KID_STATE_SKATE:
             kid->flags = 0;
             if (Random_GetControl() < SKATE_KID_PUSH_CHANCE) {
-                item->goal_anim_state = SKATE_KID_PUSH;
+                item->goal_anim_state = SKATE_KID_STATE_PUSH;
             } else if (Creature_CanTargetEnemy(item, &info)) {
                 if (info.distance > SKATE_KID_DONT_STOP_RANGE
                     && info.distance < SKATE_KID_STOP_RANGE
                     && kid->mood != MOOD_ESCAPE) {
-                    item->goal_anim_state = SKATE_KID_STOP;
+                    item->goal_anim_state = SKATE_KID_STATE_STOP;
                 } else {
-                    item->goal_anim_state = SKATE_KID_SHOOT2;
+                    item->goal_anim_state = SKATE_KID_STATE_SHOOT_2;
                 }
             }
             break;
 
-        case SKATE_KID_PUSH:
+        case SKATE_KID_STATE_PUSH:
             if (Random_GetControl() < SKATE_KID_SKATE_CHANCE) {
-                item->goal_anim_state = SKATE_KID_SKATE;
+                item->goal_anim_state = SKATE_KID_STATE_SKATE;
             }
             break;
 
-        case SKATE_KID_SHOOT:
-        case SKATE_KID_SHOOT2:
+        case SKATE_KID_STATE_SHOOT_1:
+        case SKATE_KID_STATE_SHOOT_2:
             if (!kid->flags && Creature_CanTargetEnemy(item, &info)) {
                 Creature_ShootAtLara(
                     item, info.distance, &m_KidGun1, head,
-                    item->current_anim_state == SKATE_KID_SHOOT
+                    item->current_anim_state == SKATE_KID_STATE_SHOOT_1
                         ? SKATE_KID_STOP_SHOT_DAMAGE
                         : SKATE_KID_SKATE_SHOT_DAMAGE);
 
                 Creature_ShootAtLara(
                     item, info.distance, &m_KidGun2, head,
-                    item->current_anim_state == SKATE_KID_SHOOT
+                    item->current_anim_state == SKATE_KID_STATE_SHOOT_1
                         ? SKATE_KID_STOP_SHOT_DAMAGE
                         : SKATE_KID_SKATE_SHOT_DAMAGE);
 
@@ -162,7 +162,7 @@ void SkateKid_Control(int16_t item_num)
             }
             if (kid->mood == MOOD_ESCAPE
                 || info.distance < SKATE_KID_TOO_CLOSE) {
-                item->required_anim_state = SKATE_KID_SKATE;
+                item->required_anim_state = SKATE_KID_STATE_SKATE;
             }
             break;
         }

@@ -19,13 +19,13 @@
 #define BAT_SMARTNESS 0x400
 
 typedef enum {
-    BAT_EMPTY = 0,
-    BAT_STOP = 1,
-    BAT_FLY = 2,
-    BAT_ATTACK = 3,
-    BAT_FALL = 4,
-    BAT_DEATH = 5,
-} BAT_ANIM;
+    BAT_STATE_EMPTY = 0,
+    BAT_STATE_STOP = 1,
+    BAT_STATE_FLY = 2,
+    BAT_STATE_ATTACK = 3,
+    BAT_STATE_FALL = 4,
+    BAT_STATE_DEATH = 5,
+} BAT_STATE;
 
 static BITE m_BatBite = { 0, 16, 45, 4 };
 
@@ -100,12 +100,12 @@ void Bat_Control(int16_t item_num)
     if (item->hit_points <= 0) {
         if (item->pos.y < item->floor) {
             item->gravity = 1;
-            item->goal_anim_state = BAT_FALL;
+            item->goal_anim_state = BAT_STATE_FALL;
             item->speed = 0;
         } else {
             item->gravity = 0;
             item->fall_speed = 0;
-            item->goal_anim_state = BAT_DEATH;
+            item->goal_anim_state = BAT_STATE_DEATH;
             item->pos.y = item->floor;
         }
         Creature_Animate(item_num, 0, 0);
@@ -117,24 +117,24 @@ void Bat_Control(int16_t item_num)
         angle = Creature_Turn(item, BAT_TURN);
 
         switch (item->current_anim_state) {
-        case BAT_STOP:
-            item->goal_anim_state = BAT_FLY;
+        case BAT_STATE_STOP:
+            item->goal_anim_state = BAT_STATE_FLY;
             break;
 
-        case BAT_FLY:
+        case BAT_STATE_FLY:
             if (item->touch_bits) {
-                item->goal_anim_state = BAT_ATTACK;
+                item->goal_anim_state = BAT_STATE_ATTACK;
                 Creature_Animate(item_num, angle, 0);
                 return;
             }
             break;
 
-        case BAT_ATTACK:
+        case BAT_STATE_ATTACK:
             if (item->touch_bits) {
                 Creature_Effect(item, &m_BatBite, Effect_Blood);
                 Lara_TakeDamage(BAT_ATTACK_DAMAGE, true);
             } else {
-                item->goal_anim_state = BAT_FLY;
+                item->goal_anim_state = BAT_STATE_FLY;
                 bat->mood = MOOD_BORED;
             }
             break;

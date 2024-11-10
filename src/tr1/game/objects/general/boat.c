@@ -2,6 +2,13 @@
 
 #include "game/items.h"
 
+typedef enum {
+    BOAT_STATE_EMPTY = 0,
+    BOAT_STATE_SET = 1,
+    BOAT_STATE_MOVE = 2,
+    BOAT_STATE_STOP = 3,
+} BOAT_STATE;
+
 void Boat_Setup(OBJECT *obj)
 {
     obj->control = Boat_Control;
@@ -15,13 +22,13 @@ void Boat_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
 
     switch (item->current_anim_state) {
-    case BOAT_SET:
-        item->goal_anim_state = BOAT_MOVE;
+    case BOAT_STATE_SET:
+        item->goal_anim_state = BOAT_STATE_MOVE;
         break;
-    case BOAT_MOVE:
-        item->goal_anim_state = BOAT_STOP;
+    case BOAT_STATE_MOVE:
+        item->goal_anim_state = BOAT_STATE_STOP;
         break;
-    case BOAT_STOP:
+    case BOAT_STATE_STOP:
         Item_Kill(item_num);
         break;
     }

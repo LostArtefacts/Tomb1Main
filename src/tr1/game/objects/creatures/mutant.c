@@ -24,9 +24,9 @@
 #define FLYER_POSE_CHANCE 80
 #define FLYER_UNPOSE_CHANCE 256
 #define FLYER_WALK_RANGE SQUARE(WALL_L * 9 / 2) // = 21233664
-#define FLYER_ATTACK1_RANGE SQUARE(600) // = 360000
-#define FLYER_ATTACK2_RANGE SQUARE(WALL_L * 5 / 2) // = 6553600
-#define FLYER_ATTACK3_RANGE SQUARE(300) // = 90000
+#define FLYER_ATTACK_1_RANGE SQUARE(600) // = 360000
+#define FLYER_ATTACK_2_RANGE SQUARE(WALL_L * 5 / 2) // = 6553600
+#define FLYER_ATTACK_3_RANGE SQUARE(300) // = 90000
 #define FLYER_ATTACK_RANGE SQUARE(WALL_L * 15 / 4) // = 14745600
 #define FLYER_TOUCH 0x678
 #define FLYER_BULLET1 1
@@ -40,21 +40,21 @@
 #define WARRIOR2_SMARTNESS 0x2000
 
 typedef enum {
-    FLYER_EMPTY = 0,
-    FLYER_STOP = 1,
-    FLYER_WALK = 2,
-    FLYER_RUN = 3,
-    FLYER_ATTACK1 = 4,
-    FLYER_DEATH = 5,
-    FLYER_POSE = 6,
-    FLYER_ATTACK2 = 7,
-    FLYER_ATTACK3 = 8,
-    FLYER_AIM1 = 9,
-    FLYER_AIM2 = 10,
-    FLYER_SHOOT = 11,
-    FLYER_MUMMY = 12,
-    FLYER_FLY = 13,
-} FLYER_ANIM;
+    MUTANT_STATE_EMPTY = 0,
+    MUTANT_STATE_STOP = 1,
+    MUTANT_STATE_WALK = 2,
+    MUTANT_STATE_RUN = 3,
+    MUTANT_STATE_ATTACK_1 = 4,
+    MUTANT_STATE_DEATH = 5,
+    MUTANT_STATE_POSE = 6,
+    MUTANT_STATE_ATTACK_2 = 7,
+    MUTANT_STATE_ATTACK_3 = 8,
+    MUTANT_STATE_AIM_1 = 9,
+    MUTANT_STATE_AIM_2 = 10,
+    MUTANT_STATE_SHOOT = 11,
+    MUTANT_STATE_MUMMY = 12,
+    MUTANT_STATE_FLY = 13,
+} MUTANT_STATE;
 
 static bool m_EnableExplosions = true;
 static BITE m_WarriorBite = { -27, 98, 0, 10 };
@@ -155,7 +155,7 @@ void Mutant_FlyerControl(int16_t item_num)
         }
 
         if (item->object_id == O_WARRIOR_1) {
-            if (item->current_anim_state == FLYER_FLY) {
+            if (item->current_anim_state == MUTANT_STATE_FLY) {
                 if ((flyer->flags & FLYER_FLYMODE) && flyer->mood != MOOD_ESCAPE
                     && info.zone_num == info.enemy_zone) {
                     flyer->flags &= ~FLYER_FLYMODE;
@@ -181,7 +181,7 @@ void Mutant_FlyerControl(int16_t item_num)
             head = info.angle;
         }
 
-        if (item->current_anim_state != FLYER_FLY) {
+        if (item->current_anim_state != MUTANT_STATE_FLY) {
             Creature_Mood(item, &info, false);
         } else if (flyer->flags & FLYER_FLYMODE) {
             Creature_Mood(item, &info, true);
@@ -190,144 +190,144 @@ void Mutant_FlyerControl(int16_t item_num)
         angle = Creature_Turn(item, flyer->maximum_turn);
 
         switch (item->current_anim_state) {
-        case FLYER_MUMMY:
-            item->goal_anim_state = FLYER_STOP;
+        case MUTANT_STATE_MUMMY:
+            item->goal_anim_state = MUTANT_STATE_STOP;
             break;
 
-        case FLYER_STOP:
+        case MUTANT_STATE_STOP:
             flyer->flags &= ~(FLYER_BULLET1 | FLYER_BULLET2 | FLYER_TWIST);
             if (flyer->flags & FLYER_FLYMODE) {
-                item->goal_anim_state = FLYER_FLY;
+                item->goal_anim_state = MUTANT_STATE_FLY;
             } else if (item->touch_bits & FLYER_TOUCH) {
-                item->goal_anim_state = FLYER_ATTACK3;
-            } else if (info.bite && info.distance < FLYER_ATTACK3_RANGE) {
-                item->goal_anim_state = FLYER_ATTACK3;
-            } else if (info.bite && info.distance < FLYER_ATTACK1_RANGE) {
-                item->goal_anim_state = FLYER_ATTACK1;
+                item->goal_anim_state = MUTANT_STATE_ATTACK_3;
+            } else if (info.bite && info.distance < FLYER_ATTACK_3_RANGE) {
+                item->goal_anim_state = MUTANT_STATE_ATTACK_3;
+            } else if (info.bite && info.distance < FLYER_ATTACK_1_RANGE) {
+                item->goal_anim_state = MUTANT_STATE_ATTACK_1;
             } else if (shoot1) {
-                item->goal_anim_state = FLYER_AIM1;
+                item->goal_anim_state = MUTANT_STATE_AIM_1;
             } else if (shoot2) {
-                item->goal_anim_state = FLYER_AIM2;
+                item->goal_anim_state = MUTANT_STATE_AIM_2;
             } else if (
                 flyer->mood == MOOD_BORED
                 || (flyer->mood == MOOD_STALK
                     && info.distance < FLYER_WALK_RANGE)) {
-                item->goal_anim_state = FLYER_POSE;
+                item->goal_anim_state = MUTANT_STATE_POSE;
             } else {
-                item->goal_anim_state = FLYER_RUN;
+                item->goal_anim_state = MUTANT_STATE_RUN;
             }
             break;
 
-        case FLYER_POSE:
+        case MUTANT_STATE_POSE:
             head = 0;
             if (shoot1 || shoot2 || (flyer->flags & FLYER_FLYMODE)) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             } else if (flyer->mood == MOOD_STALK) {
                 if (info.distance < FLYER_WALK_RANGE) {
                     if (info.zone_num == info.enemy_zone
                         || Random_GetControl() < FLYER_UNPOSE_CHANCE) {
-                        item->goal_anim_state = FLYER_WALK;
+                        item->goal_anim_state = MUTANT_STATE_WALK;
                     }
                 } else {
-                    item->goal_anim_state = FLYER_STOP;
+                    item->goal_anim_state = MUTANT_STATE_STOP;
                 }
             } else if (
                 flyer->mood == MOOD_BORED
                 && Random_GetControl() < FLYER_UNPOSE_CHANCE) {
-                item->goal_anim_state = FLYER_WALK;
+                item->goal_anim_state = MUTANT_STATE_WALK;
             } else if (
                 flyer->mood == MOOD_ATTACK || flyer->mood == MOOD_ESCAPE) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_WALK:
+        case MUTANT_STATE_WALK:
             flyer->maximum_turn = FLYER_WALK_TURN;
             if (shoot1 || shoot2 || (flyer->flags & FLYER_FLYMODE)) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             } else if (
                 flyer->mood == MOOD_ATTACK || flyer->mood == MOOD_ESCAPE) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             } else if (
                 flyer->mood == MOOD_BORED
                 || (flyer->mood == MOOD_STALK
                     && info.zone_num != info.enemy_zone)) {
                 if (Random_GetControl() < FLYER_POSE_CHANCE) {
-                    item->goal_anim_state = FLYER_POSE;
+                    item->goal_anim_state = MUTANT_STATE_POSE;
                 }
             } else if (
                 flyer->mood == MOOD_STALK && info.distance > FLYER_WALK_RANGE) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_RUN:
+        case MUTANT_STATE_RUN:
             flyer->maximum_turn = FLYER_RUN_TURN;
             if (flyer->flags & FLYER_FLYMODE) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             } else if (item->touch_bits & FLYER_TOUCH) {
-                item->goal_anim_state = FLYER_STOP;
-            } else if (info.bite && info.distance < FLYER_ATTACK1_RANGE) {
-                item->goal_anim_state = FLYER_STOP;
-            } else if (info.ahead && info.distance < FLYER_ATTACK2_RANGE) {
-                item->goal_anim_state = FLYER_ATTACK2;
+                item->goal_anim_state = MUTANT_STATE_STOP;
+            } else if (info.bite && info.distance < FLYER_ATTACK_1_RANGE) {
+                item->goal_anim_state = MUTANT_STATE_STOP;
+            } else if (info.ahead && info.distance < FLYER_ATTACK_2_RANGE) {
+                item->goal_anim_state = MUTANT_STATE_ATTACK_2;
             } else if (shoot1 || shoot2) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             } else if (
                 flyer->mood == MOOD_BORED
                 || (flyer->mood == MOOD_STALK
                     && info.distance < FLYER_WALK_RANGE)) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_ATTACK1:
-            if (item->required_anim_state == FLYER_EMPTY
+        case MUTANT_STATE_ATTACK_1:
+            if (item->required_anim_state == MUTANT_STATE_EMPTY
                 && (item->touch_bits & FLYER_TOUCH)) {
                 Creature_Effect(item, &m_WarriorBite, Effect_Blood);
                 Lara_TakeDamage(FLYER_LUNGE_DAMAGE, true);
-                item->required_anim_state = FLYER_STOP;
+                item->required_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_ATTACK2:
-            if (item->required_anim_state == FLYER_EMPTY
+        case MUTANT_STATE_ATTACK_2:
+            if (item->required_anim_state == MUTANT_STATE_EMPTY
                 && (item->touch_bits & FLYER_TOUCH)) {
                 Creature_Effect(item, &m_WarriorBite, Effect_Blood);
                 Lara_TakeDamage(FLYER_CHARGE_DAMAGE, true);
-                item->required_anim_state = FLYER_RUN;
+                item->required_anim_state = MUTANT_STATE_RUN;
             }
             break;
 
-        case FLYER_ATTACK3:
-            if (item->required_anim_state == FLYER_EMPTY
+        case MUTANT_STATE_ATTACK_3:
+            if (item->required_anim_state == MUTANT_STATE_EMPTY
                 && (item->touch_bits & FLYER_TOUCH)) {
                 Creature_Effect(item, &m_WarriorBite, Effect_Blood);
                 Lara_TakeDamage(FLYER_PUNCH_DAMAGE, true);
-                item->required_anim_state = FLYER_STOP;
+                item->required_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_AIM1:
+        case MUTANT_STATE_AIM_1:
             flyer->flags |= FLYER_TWIST;
             flyer->flags |= FLYER_BULLET1;
             if (shoot1) {
-                item->goal_anim_state = FLYER_SHOOT;
+                item->goal_anim_state = MUTANT_STATE_SHOOT;
             } else {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_AIM2:
+        case MUTANT_STATE_AIM_2:
             flyer->flags |= FLYER_BULLET2;
             if (shoot2) {
-                item->goal_anim_state = FLYER_SHOOT;
+                item->goal_anim_state = MUTANT_STATE_SHOOT;
             } else {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
 
-        case FLYER_SHOOT:
+        case MUTANT_STATE_SHOOT:
             if (flyer->flags & FLYER_BULLET1) {
                 flyer->flags &= ~FLYER_BULLET1;
                 Creature_Effect(item, &m_WarriorShard, Effect_ShardGun);
@@ -337,9 +337,9 @@ void Mutant_FlyerControl(int16_t item_num)
             }
             break;
 
-        case FLYER_FLY:
+        case MUTANT_STATE_FLY:
             if (!(flyer->flags & FLYER_FLYMODE) && item->pos.y == item->floor) {
-                item->goal_anim_state = FLYER_STOP;
+                item->goal_anim_state = MUTANT_STATE_STOP;
             }
             break;
         }

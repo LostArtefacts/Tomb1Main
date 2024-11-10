@@ -5,8 +5,8 @@
 #include "game/sound.h"
 
 typedef enum {
-    DART_EMITTER_IDLE = 0,
-    DART_EMITTER_FIRE = 1,
+    DART_EMITTER_STATE_IDLE = 0,
+    DART_EMITTER_STATE_FIRE = 1,
 } DART_EMITTER_STATE;
 
 void DartEmitter_Setup(OBJECT *obj)
@@ -20,16 +20,16 @@ void DartEmitter_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
 
     if (Item_IsTriggerActive(item)) {
-        if (item->current_anim_state == DART_EMITTER_IDLE) {
-            item->goal_anim_state = DART_EMITTER_FIRE;
+        if (item->current_anim_state == DART_EMITTER_STATE_IDLE) {
+            item->goal_anim_state = DART_EMITTER_STATE_FIRE;
         }
     } else {
-        if (item->current_anim_state == DART_EMITTER_FIRE) {
-            item->goal_anim_state = DART_EMITTER_IDLE;
+        if (item->current_anim_state == DART_EMITTER_STATE_FIRE) {
+            item->goal_anim_state = DART_EMITTER_STATE_IDLE;
         }
     }
 
-    if (item->current_anim_state == DART_EMITTER_FIRE
+    if (item->current_anim_state == DART_EMITTER_STATE_FIRE
         && Item_TestFrameEqual(item, 0)) {
         int16_t dart_item_num = Item_Create();
         if (dart_item_num != NO_ITEM) {

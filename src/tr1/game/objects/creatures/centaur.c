@@ -27,14 +27,14 @@
 #define CENTAUR_SMARTNESS 0x7FFF
 
 typedef enum {
-    CENTAUR_EMPTY = 0,
-    CENTAUR_STOP = 1,
-    CENTAUR_SHOOT = 2,
-    CENTAUR_RUN = 3,
-    CENTAUR_AIM = 4,
-    CENTAUR_DEATH = 5,
-    CENTAUR_WARNING = 6,
-} CENTAUR_ANIM;
+    CENTAUR_STATE_EMPTY = 0,
+    CENTAUR_STATE_STOP = 1,
+    CENTAUR_STATE_SHOOT = 2,
+    CENTAUR_STATE_RUN = 3,
+    CENTAUR_STATE_AIM = 4,
+    CENTAUR_STATE_DEATH = 5,
+    CENTAUR_STATE_WARNING = 6,
+} CENTAUR_STATE;
 
 static BITE m_CentaurRocket = { 11, 415, 41, 13 };
 static BITE m_CentaurRear = { 50, 30, 0, 5 };
@@ -76,8 +76,8 @@ void Centaur_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != CENTAUR_DEATH) {
-            item->current_anim_state = CENTAUR_DEATH;
+        if (item->current_anim_state != CENTAUR_STATE_DEATH) {
+            item->current_anim_state = CENTAUR_STATE_DEATH;
             Item_SwitchToAnim(item, CENTAUR_DIE_ANIM, 0);
         }
     } else {
@@ -93,45 +93,45 @@ void Centaur_Control(int16_t item_num)
         angle = Creature_Turn(item, CENTAUR_TURN);
 
         switch (item->current_anim_state) {
-        case CENTAUR_STOP:
+        case CENTAUR_STATE_STOP:
             centaur->neck_rotation = 0;
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (info.bite && info.distance < CENTAUR_REAR_RANGE) {
-                item->goal_anim_state = CENTAUR_RUN;
+                item->goal_anim_state = CENTAUR_STATE_RUN;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = CENTAUR_AIM;
+                item->goal_anim_state = CENTAUR_STATE_AIM;
             } else {
-                item->goal_anim_state = CENTAUR_RUN;
+                item->goal_anim_state = CENTAUR_STATE_RUN;
             }
             break;
 
-        case CENTAUR_RUN:
+        case CENTAUR_STATE_RUN:
             if (info.bite && info.distance < CENTAUR_REAR_RANGE) {
-                item->required_anim_state = CENTAUR_WARNING;
-                item->goal_anim_state = CENTAUR_STOP;
+                item->required_anim_state = CENTAUR_STATE_WARNING;
+                item->goal_anim_state = CENTAUR_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = CENTAUR_AIM;
-                item->goal_anim_state = CENTAUR_STOP;
+                item->required_anim_state = CENTAUR_STATE_AIM;
+                item->goal_anim_state = CENTAUR_STATE_STOP;
             } else if (Random_GetControl() < CENTAUR_REAR_CHANCE) {
-                item->required_anim_state = CENTAUR_WARNING;
-                item->goal_anim_state = CENTAUR_STOP;
+                item->required_anim_state = CENTAUR_STATE_WARNING;
+                item->goal_anim_state = CENTAUR_STATE_STOP;
             }
             break;
 
-        case CENTAUR_AIM:
+        case CENTAUR_STATE_AIM:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = CENTAUR_SHOOT;
+                item->goal_anim_state = CENTAUR_STATE_SHOOT;
             } else {
-                item->goal_anim_state = CENTAUR_STOP;
+                item->goal_anim_state = CENTAUR_STATE_STOP;
             }
             break;
 
-        case CENTAUR_SHOOT:
-            if (item->required_anim_state == CENTAUR_EMPTY) {
-                item->required_anim_state = CENTAUR_AIM;
+        case CENTAUR_STATE_SHOOT:
+            if (item->required_anim_state == CENTAUR_STATE_EMPTY) {
+                item->required_anim_state = CENTAUR_STATE_AIM;
                 int16_t fx_num =
                     Creature_Effect(item, &m_CentaurRocket, Effect_RocketGun);
                 if (fx_num != NO_ITEM) {
@@ -140,12 +140,12 @@ void Centaur_Control(int16_t item_num)
             }
             break;
 
-        case CENTAUR_WARNING:
-            if (item->required_anim_state == CENTAUR_EMPTY
+        case CENTAUR_STATE_WARNING:
+            if (item->required_anim_state == CENTAUR_STATE_EMPTY
                 && (item->touch_bits & CENTAUR_TOUCH)) {
                 Creature_Effect(item, &m_CentaurRear, Effect_Blood);
                 Lara_TakeDamage(CENTAUR_REAR_DAMAGE, true);
-                item->required_anim_state = CENTAUR_STOP;
+                item->required_anim_state = CENTAUR_STATE_STOP;
             }
             break;
         }

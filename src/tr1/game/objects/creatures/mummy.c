@@ -14,10 +14,10 @@
 #define MUMMY_HITPOINTS 18
 
 typedef enum {
-    MUMMY_EMPTY = 0,
-    MUMMY_STOP = 1,
-    MUMMY_DEATH = 2,
-} MUMMY_ANIM;
+    MUMMY_STATE_EMPTY = 0,
+    MUMMY_STATE_STOP = 1,
+    MUMMY_STATE_DEATH = 2,
+} MUMMY_STATE;
 
 void Mummy_Setup(OBJECT *obj)
 {
@@ -48,7 +48,7 @@ void Mummy_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
     int16_t head = 0;
 
-    if (item->current_anim_state == MUMMY_STOP) {
+    if (item->current_anim_state == MUMMY_STATE_STOP) {
         head = Math_Atan(
                    g_LaraItem->pos.z - item->pos.z,
                    g_LaraItem->pos.x - item->pos.x)
@@ -56,7 +56,7 @@ void Mummy_Control(int16_t item_num)
         CLAMP(head, -FRONT_ARC, FRONT_ARC);
 
         if (item->hit_points <= 0 || item->touch_bits) {
-            item->goal_anim_state = MUMMY_DEATH;
+            item->goal_anim_state = MUMMY_STATE_DEATH;
         }
     }
 

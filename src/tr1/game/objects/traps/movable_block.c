@@ -17,9 +17,9 @@
 #define LF_PPREADY 19
 
 typedef enum {
-    MBS_STILL = 1,
-    MBS_PUSH = 2,
-    MBS_PULL = 3,
+    MOVABLE_BLOCK_STATE_STILL = 1,
+    MOVABLE_BLOCK_STATE_PUSH = 2,
+    MOVABLE_BLOCK_STATE_PULL = 3,
 } MOVABLE_BLOCK_STATE;
 
 static const OBJECT_BOUNDS m_MovableBlock_Bounds = {
@@ -284,7 +284,7 @@ void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
     ITEM *item = &g_Items[item_num];
     const OBJECT *const obj = &g_Objects[item->object_id];
 
-    if (item->current_anim_state == MBS_STILL) {
+    if (item->current_anim_state == MOVABLE_BLOCK_STATE_STILL) {
         item->priv = (void *)false;
     }
 
@@ -368,13 +368,13 @@ void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             if (!M_TestPush(item, WALL_L, quadrant)) {
                 return;
             }
-            item->goal_anim_state = MBS_PUSH;
+            item->goal_anim_state = MOVABLE_BLOCK_STATE_PUSH;
             lara_item->goal_anim_state = LS_PUSH_BLOCK;
         } else if (g_Input.back) {
             if (!M_TestPull(item, WALL_L, quadrant)) {
                 return;
             }
-            item->goal_anim_state = MBS_PULL;
+            item->goal_anim_state = MOVABLE_BLOCK_STATE_PULL;
             lara_item->goal_anim_state = LS_PULL_BLOCK;
         } else {
             return;

@@ -20,14 +20,14 @@
 #define COWBOY_SMARTNESS 0x7FFF
 
 typedef enum {
-    COWBOY_EMPTY = 0,
-    COWBOY_STOP = 1,
-    COWBOY_WALK = 2,
-    COWBOY_RUN = 3,
-    COWBOY_AIM = 4,
-    COWBOY_DEATH = 5,
-    COWBOY_SHOOT = 6,
-} COWBOY_ANIM;
+    COWBOY_STATE_EMPTY = 0,
+    COWBOY_STATE_STOP = 1,
+    COWBOY_STATE_WALK = 2,
+    COWBOY_STATE_RUN = 3,
+    COWBOY_STATE_AIM = 4,
+    COWBOY_STATE_DEATH = 5,
+    COWBOY_STATE_SHOOT = 6,
+} COWBOY_STATE;
 
 static BITE m_CowboyGun1 = { 1, 200, 41, 5 };
 static BITE m_CowboyGun2 = { -2, 200, 40, 8 };
@@ -69,8 +69,8 @@ void Cowboy_Control(int16_t item_num)
     int16_t tilt = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != COWBOY_DEATH) {
-            item->current_anim_state = COWBOY_DEATH;
+        if (item->current_anim_state != COWBOY_STATE_DEATH) {
+            item->current_anim_state = COWBOY_STATE_DEATH;
             Item_SwitchToAnim(item, COWBOY_DIE_ANIM, 0);
         }
     } else {
@@ -86,58 +86,58 @@ void Cowboy_Control(int16_t item_num)
         angle = Creature_Turn(item, cowboy->maximum_turn);
 
         switch (item->current_anim_state) {
-        case COWBOY_STOP:
+        case COWBOY_STATE_STOP:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = COWBOY_AIM;
+                item->goal_anim_state = COWBOY_STATE_AIM;
             } else if (cowboy->mood == MOOD_BORED) {
-                item->goal_anim_state = COWBOY_WALK;
+                item->goal_anim_state = COWBOY_STATE_WALK;
             } else {
-                item->goal_anim_state = COWBOY_RUN;
+                item->goal_anim_state = COWBOY_STATE_RUN;
             }
             break;
 
-        case COWBOY_WALK:
+        case COWBOY_STATE_WALK:
             cowboy->maximum_turn = COWBOY_WALK_TURN;
             if (cowboy->mood == MOOD_ESCAPE || !info.ahead) {
-                item->required_anim_state = COWBOY_RUN;
-                item->goal_anim_state = COWBOY_STOP;
+                item->required_anim_state = COWBOY_STATE_RUN;
+                item->goal_anim_state = COWBOY_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = COWBOY_AIM;
-                item->goal_anim_state = COWBOY_STOP;
+                item->required_anim_state = COWBOY_STATE_AIM;
+                item->goal_anim_state = COWBOY_STATE_STOP;
             } else if (info.distance > COWBOY_WALK_RANGE) {
-                item->required_anim_state = COWBOY_RUN;
-                item->goal_anim_state = COWBOY_STOP;
+                item->required_anim_state = COWBOY_STATE_RUN;
+                item->goal_anim_state = COWBOY_STATE_STOP;
             }
             break;
 
-        case COWBOY_RUN:
+        case COWBOY_STATE_RUN:
             cowboy->maximum_turn = COWBOY_RUN_TURN;
             tilt = angle / 2;
             if (cowboy->mood != MOOD_ESCAPE || info.ahead) {
                 if (Creature_CanTargetEnemy(item, &info)) {
-                    item->required_anim_state = COWBOY_AIM;
-                    item->goal_anim_state = COWBOY_STOP;
+                    item->required_anim_state = COWBOY_STATE_AIM;
+                    item->goal_anim_state = COWBOY_STATE_STOP;
                 } else if (info.ahead && info.distance < COWBOY_WALK_RANGE) {
-                    item->required_anim_state = COWBOY_WALK;
-                    item->goal_anim_state = COWBOY_STOP;
+                    item->required_anim_state = COWBOY_STATE_WALK;
+                    item->goal_anim_state = COWBOY_STATE_STOP;
                 }
             }
             break;
 
-        case COWBOY_AIM:
+        case COWBOY_STATE_AIM:
             cowboy->flags = 0;
             if (item->required_anim_state) {
-                item->goal_anim_state = COWBOY_STOP;
+                item->goal_anim_state = COWBOY_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = COWBOY_SHOOT;
+                item->goal_anim_state = COWBOY_STATE_SHOOT;
             } else {
-                item->goal_anim_state = COWBOY_STOP;
+                item->goal_anim_state = COWBOY_STATE_STOP;
             }
             break;
 
-        case COWBOY_SHOOT:
+        case COWBOY_STATE_SHOOT:
             if (!cowboy->flags) {
                 Creature_ShootAtLara(
                     item, info.distance, &m_CowboyGun1, head,
@@ -158,7 +158,7 @@ void Cowboy_Control(int16_t item_num)
             cowboy->flags++;
 
             if (cowboy->mood == MOOD_ESCAPE) {
-                item->required_anim_state = COWBOY_RUN;
+                item->required_anim_state = COWBOY_STATE_RUN;
             }
             break;
         }

@@ -12,10 +12,10 @@
 #define ZIPLINE_ACCELERATION 5
 
 typedef enum {
-    ZIPLINE_EMPTY = 0,
-    ZIPLINE_GRAB = 1,
-    ZIPLINE_HANG = 2,
-} ZIPLINE_STATUS;
+    ZIPLINE_STATE_EMPTY = 0,
+    ZIPLINE_STATE_GRAB = 1,
+    ZIPLINE_STATE_HANG = 2,
+} ZIPLINE_STATE;
 
 void __cdecl Zipline_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
@@ -64,15 +64,15 @@ void __cdecl Zipline_Control(const int16_t item_num)
             Item_NewRoom(item_num, old->room_num);
         }
         item->status = IS_INACTIVE;
-        item->goal_anim_state = ZIPLINE_GRAB;
-        item->current_anim_state = ZIPLINE_GRAB;
+        item->goal_anim_state = ZIPLINE_STATE_GRAB;
+        item->current_anim_state = ZIPLINE_STATE_GRAB;
         item->anim_num = g_Objects[item->object_id].anim_idx;
         item->frame_num = g_Anims[item->anim_num].frame_base;
         Item_RemoveActive(item_num);
         return;
     }
 
-    if (item->current_anim_state == ZIPLINE_GRAB) {
+    if (item->current_anim_state == ZIPLINE_STATE_GRAB) {
         Item_Animate(item);
         return;
     }

@@ -45,23 +45,23 @@
 #define GONDOLA_SINK_SPEED 50
 
 typedef enum {
-    BOAT_GET_ON = 0,
-    BOAT_STILL = 1,
-    BOAT_MOVING = 2,
-    BOAT_JUMP_R = 3,
-    BOAT_JUMP_L = 4,
-    BOAT_HIT = 5,
-    BOAT_FALL = 6,
-    BOAT_DEATH = 8,
-} BOAT_ANIM;
+    BOAT_STATE_GET_ON = 0,
+    BOAT_STATE_STILL = 1,
+    BOAT_STATE_MOVING = 2,
+    BOAT_STATE_JUMP_R = 3,
+    BOAT_STATE_JUMP_L = 4,
+    BOAT_STATE_HIT = 5,
+    BOAT_STATE_FALL = 6,
+    BOAT_STATE_DEATH = 8,
+} BOAT_STATE;
 
 typedef enum {
-    GONDOLA_EMPTY = 0,
-    GONDOLA_FLOATING = 1,
-    GONDOLA_CRASH = 2,
-    GONDOLA_SINK = 3,
-    GONDOLA_LAND = 4,
-} GONDOLA_ANIM;
+    GONDOLA_STATE_EMPTY = 0,
+    GONDOLA_STATE_FLOATING = 1,
+    GONDOLA_STATE_CRASH = 2,
+    GONDOLA_STATE_SINK = 3,
+    GONDOLA_STATE_LAND = 4,
+} GONDOLA_STATE;
 
 void __cdecl Boat_Initialise(const int16_t item_num)
 {
@@ -262,7 +262,7 @@ void __cdecl Boat_DoShift(const int32_t boat_num)
         }
 
         if (item->object_id == O_GONDOLA
-            && item->current_anim_state == GONDOLA_FLOATING) {
+            && item->current_anim_state == GONDOLA_STATE_FLOATING) {
             const int32_t c = Math_Cos(item->rot.y);
             const int32_t s = Math_Sin(item->rot.y);
             const int32_t ix = item->pos.x - ((s * STEP_L * 2) >> W2V_SHIFT);
@@ -277,7 +277,7 @@ void __cdecl Boat_DoShift(const int32_t boat_num)
                     boat->pos.z = iz - SQUARE(BOAT_RADIUS * 2) * dz / dist;
                 } else if (item->pos.y - boat->pos.y < WALL_L * 2) {
                     Sound_Effect(SFX_BOAT_INTO_WATER, &item->pos, SPM_NORMAL);
-                    item->goal_anim_state = GONDOLA_CRASH;
+                    item->goal_anim_state = GONDOLA_STATE_CRASH;
                 }
             }
         }
@@ -564,67 +564,67 @@ void __cdecl Boat_Animation(const ITEM *const boat, const int32_t collide)
     const BOAT_INFO *const boat_data = (const BOAT_INFO *)boat->data;
 
     if (lara->hit_points <= 0) {
-        if (lara->current_anim_state == BOAT_DEATH) {
+        if (lara->current_anim_state == BOAT_STATE_DEATH) {
             return;
         }
         lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_DEATH_ANIM;
         lara->frame_num = g_Anims[lara->anim_num].frame_base;
-        lara->goal_anim_state = BOAT_DEATH;
-        lara->current_anim_state = BOAT_DEATH;
+        lara->goal_anim_state = BOAT_STATE_DEATH;
+        lara->current_anim_state = BOAT_STATE_DEATH;
         return;
     }
 
     if (boat->pos.y < boat_data->water - STEP_L / 2 && boat->fall_speed > 0) {
-        if (lara->current_anim_state == BOAT_FALL) {
+        if (lara->current_anim_state == BOAT_STATE_FALL) {
             return;
         }
         lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_FALL_ANIM;
         lara->frame_num = g_Anims[lara->anim_num].frame_base;
-        lara->goal_anim_state = BOAT_FALL;
-        lara->current_anim_state = BOAT_FALL;
+        lara->goal_anim_state = BOAT_STATE_FALL;
+        lara->current_anim_state = BOAT_STATE_FALL;
         return;
     }
 
     if (collide) {
-        if (lara->current_anim_state == BOAT_HIT) {
+        if (lara->current_anim_state == BOAT_STATE_HIT) {
             return;
         }
         lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + collide;
         lara->frame_num = g_Anims[lara->anim_num].frame_base;
-        lara->goal_anim_state = BOAT_HIT;
-        lara->current_anim_state = BOAT_HIT;
+        lara->goal_anim_state = BOAT_STATE_HIT;
+        lara->current_anim_state = BOAT_STATE_HIT;
         return;
     }
 
     switch (lara->current_anim_state) {
-    case BOAT_STILL:
+    case BOAT_STATE_STILL:
         if (g_Input.jump) {
             if (g_Input.right) {
-                lara->goal_anim_state = BOAT_JUMP_R;
+                lara->goal_anim_state = BOAT_STATE_JUMP_R;
             } else if (g_Input.left) {
-                lara->goal_anim_state = BOAT_JUMP_L;
+                lara->goal_anim_state = BOAT_STATE_JUMP_L;
             }
         }
 
         if (boat->speed > 0) {
-            lara->goal_anim_state = BOAT_MOVING;
+            lara->goal_anim_state = BOAT_STATE_MOVING;
         }
         break;
 
-    case BOAT_MOVING:
+    case BOAT_STATE_MOVING:
         if (g_Input.jump) {
             if (g_Input.right) {
-                lara->goal_anim_state = BOAT_JUMP_R;
+                lara->goal_anim_state = BOAT_STATE_JUMP_R;
             } else if (g_Input.left) {
-                lara->goal_anim_state = BOAT_JUMP_L;
+                lara->goal_anim_state = BOAT_STATE_JUMP_L;
             }
         } else if (boat->speed <= 0) {
-            lara->goal_anim_state = BOAT_STILL;
+            lara->goal_anim_state = BOAT_STATE_STILL;
         }
         break;
 
-    case BOAT_FALL:
-        lara->goal_anim_state = BOAT_MOVING;
+    case BOAT_STATE_FALL:
+        lara->goal_anim_state = BOAT_STATE_MOVING;
         break;
     }
 }
@@ -662,9 +662,9 @@ void __cdecl Boat_Control(const int16_t item_num)
 
     if (g_Lara.skidoo == item_num && lara->hit_points > 0) {
         switch (lara->current_anim_state) {
-        case BOAT_GET_ON:
-        case BOAT_JUMP_R:
-        case BOAT_JUMP_L:
+        case BOAT_STATE_GET_ON:
+        case BOAT_STATE_JUMP_R:
+        case BOAT_STATE_JUMP_L:
             break;
 
         default:
@@ -783,10 +783,10 @@ void __cdecl Boat_Control(const int16_t item_num)
         return;
     }
 
-    if ((lara->current_anim_state == BOAT_JUMP_R
-         || lara->current_anim_state == BOAT_JUMP_L)
+    if ((lara->current_anim_state == BOAT_STATE_JUMP_R
+         || lara->current_anim_state == BOAT_STATE_JUMP_L)
         && lara->frame_num == g_Anims[lara->anim_num].frame_end) {
-        if (lara->current_anim_state == BOAT_JUMP_L) {
+        if (lara->current_anim_state == BOAT_STATE_JUMP_L) {
             lara->rot.y -= PHD_90;
         } else {
             lara->rot.y += PHD_90;
@@ -831,14 +831,14 @@ void __cdecl Gondola_Control(const int16_t item_num)
     ITEM *const gondola = &g_Items[item_num];
 
     switch (gondola->current_anim_state) {
-    case GONDOLA_FLOATING:
-        if (gondola->goal_anim_state == GONDOLA_CRASH) {
+    case GONDOLA_STATE_FLOATING:
+        if (gondola->goal_anim_state == GONDOLA_STATE_CRASH) {
             gondola->mesh_bits = 0xFF;
             Effect_ExplodingDeath(item_num, 240, 0);
         }
         break;
 
-    case GONDOLA_SINK: {
+    case GONDOLA_STATE_SINK: {
         gondola->pos.y = gondola->pos.y + GONDOLA_SINK_SPEED;
         int16_t room_num = gondola->room_num;
         const SECTOR *const sector = Room_GetSector(
@@ -848,7 +848,7 @@ void __cdecl Gondola_Control(const int16_t item_num)
         gondola->floor = height;
 
         if (gondola->pos.y >= height) {
-            gondola->goal_anim_state = GONDOLA_LAND;
+            gondola->goal_anim_state = GONDOLA_STATE_LAND;
             gondola->pos.y = height;
         }
         break;

@@ -26,15 +26,15 @@
 #define PIERRE_SMARTNESS 0x7FFF
 
 typedef enum {
-    PIERRE_EMPTY = 0,
-    PIERRE_STOP = 1,
-    PIERRE_WALK = 2,
-    PIERRE_RUN = 3,
-    PIERRE_AIM = 4,
-    PIERRE_DEATH = 5,
-    PIERRE_POSE = 6,
-    PIERRE_SHOOT = 7,
-} PIERRE_ANIM;
+    PIERRE_STATE_EMPTY = 0,
+    PIERRE_STATE_STOP = 1,
+    PIERRE_STATE_WALK = 2,
+    PIERRE_STATE_RUN = 3,
+    PIERRE_STATE_AIM = 4,
+    PIERRE_STATE_DEATH = 5,
+    PIERRE_STATE_POSE = 6,
+    PIERRE_STATE_SHOOT = 7,
+} PIERRE_STATE;
 
 static BITE m_PierreGun1 = { 60, 200, 0, 11 };
 static BITE m_PierreGun2 = { -57, 200, 0, 14 };
@@ -109,8 +109,8 @@ void Pierre_Control(int16_t item_num)
     }
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != PIERRE_DEATH) {
-            item->current_anim_state = PIERRE_DEATH;
+        if (item->current_anim_state != PIERRE_STATE_DEATH) {
+            item->current_anim_state = PIERRE_STATE_DEATH;
             Item_SwitchToAnim(item, PIERRE_DIE_ANIM, 0);
         }
     } else {
@@ -130,74 +130,74 @@ void Pierre_Control(int16_t item_num)
         angle = Creature_Turn(item, pierre->maximum_turn);
 
         switch (item->current_anim_state) {
-        case PIERRE_STOP:
+        case PIERRE_STATE_STOP:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (pierre->mood == MOOD_BORED) {
                 item->goal_anim_state = Random_GetControl() < PIERRE_POSE_CHANCE
-                    ? PIERRE_POSE
-                    : PIERRE_WALK;
+                    ? PIERRE_STATE_POSE
+                    : PIERRE_STATE_WALK;
             } else if (pierre->mood == MOOD_ESCAPE) {
-                item->goal_anim_state = PIERRE_RUN;
+                item->goal_anim_state = PIERRE_STATE_RUN;
             } else {
-                item->goal_anim_state = PIERRE_WALK;
+                item->goal_anim_state = PIERRE_STATE_WALK;
             }
             break;
 
-        case PIERRE_POSE:
+        case PIERRE_STATE_POSE:
             if (pierre->mood != MOOD_BORED) {
-                item->goal_anim_state = PIERRE_STOP;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (Random_GetControl() < PIERRE_POSE_CHANCE) {
-                item->required_anim_state = PIERRE_WALK;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_WALK;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             }
             break;
 
-        case PIERRE_WALK:
+        case PIERRE_STATE_WALK:
             pierre->maximum_turn = PIERRE_WALK_TURN;
             if (pierre->mood == MOOD_BORED
                 && Random_GetControl() < PIERRE_POSE_CHANCE) {
-                item->required_anim_state = PIERRE_POSE;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_POSE;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (pierre->mood == MOOD_ESCAPE) {
-                item->required_anim_state = PIERRE_RUN;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_RUN;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = PIERRE_AIM;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_AIM;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (!info.ahead || info.distance > PIERRE_WALK_RANGE) {
-                item->required_anim_state = PIERRE_RUN;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_RUN;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             }
             break;
 
-        case PIERRE_RUN:
+        case PIERRE_STATE_RUN:
             pierre->maximum_turn = PIERRE_RUN_TURN;
             tilt = angle / 2;
             if (pierre->mood == MOOD_BORED
                 && Random_GetControl() < PIERRE_POSE_CHANCE) {
-                item->required_anim_state = PIERRE_POSE;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_POSE;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = PIERRE_AIM;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_AIM;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             } else if (info.ahead && info.distance < PIERRE_WALK_RANGE) {
-                item->required_anim_state = PIERRE_WALK;
-                item->goal_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_WALK;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             }
             break;
 
-        case PIERRE_AIM:
+        case PIERRE_STATE_AIM:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = PIERRE_SHOOT;
+                item->goal_anim_state = PIERRE_STATE_SHOOT;
             } else {
-                item->goal_anim_state = PIERRE_STOP;
+                item->goal_anim_state = PIERRE_STATE_STOP;
             }
             break;
 
-        case PIERRE_SHOOT:
+        case PIERRE_STATE_SHOOT:
             if (!item->required_anim_state) {
                 Creature_ShootAtLara(
                     item, info.distance, &m_PierreGun1, head,
@@ -205,11 +205,11 @@ void Pierre_Control(int16_t item_num)
                 Creature_ShootAtLara(
                     item, info.distance, &m_PierreGun2, head,
                     PIERRE_SHOT_DAMAGE / 2);
-                item->required_anim_state = PIERRE_AIM;
+                item->required_anim_state = PIERRE_STATE_AIM;
             }
             if (pierre->mood == MOOD_ESCAPE
                 && Random_GetControl() > PIERRE_WIMP_CHANCE) {
-                item->required_anim_state = PIERRE_STOP;
+                item->required_anim_state = PIERRE_STATE_STOP;
             }
             break;
         }

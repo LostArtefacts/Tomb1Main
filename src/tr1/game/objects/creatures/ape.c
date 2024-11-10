@@ -32,19 +32,19 @@
 #define APE_SMARTNESS 0x7FFF
 
 typedef enum {
-    APE_EMPTY = 0,
-    APE_STOP = 1,
-    APE_WALK = 2,
-    APE_RUN = 3,
-    APE_ATTACK1 = 4,
-    APE_DEATH = 5,
-    APE_WARNING = 6,
-    APE_WARNING2 = 7,
-    APE_RUN_LEFT = 8,
-    APE_RUN_RIGHT = 9,
-    APE_JUMP = 10,
-    APE_VAULT = 11,
-} APE_ANIM;
+    APE_STATE_EMPTY = 0,
+    APE_STATE_STOP = 1,
+    APE_STATE_WALK = 2,
+    APE_STATE_RUN = 3,
+    APE_STATE_ATTACK = 4,
+    APE_STATE_DEATH = 5,
+    APE_STATE_WARNING_1 = 6,
+    APE_STATE_WARNING_2 = 7,
+    APE_STATE_RUN_LEFT = 8,
+    APE_STATE_RUN_RIGHT = 9,
+    APE_STATE_JUMP = 10,
+    APE_STATE_VAULT = 11,
+} APE_STATE;
 
 static BITE m_ApeBite = { 0, -19, 75, 15 };
 
@@ -145,8 +145,8 @@ void Ape_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != APE_DEATH) {
-            item->current_anim_state = APE_DEATH;
+        if (item->current_anim_state != APE_STATE_DEATH) {
+            item->current_anim_state = APE_STATE_DEATH;
             Item_SwitchToAnim(
                 item, APE_DIE_ANIM + (int16_t)(Random_GetControl() / 0x4000),
                 0);
@@ -168,7 +168,7 @@ void Ape_Control(int16_t item_num)
         }
 
         switch (item->current_anim_state) {
-        case APE_STOP:
+        case APE_STATE_STOP:
             if (ape->flags & APE_TURN_L_FLAG) {
                 item->rot.y -= PHD_90;
                 ape->flags &= ~APE_TURN_L_FLAG;
@@ -180,73 +180,73 @@ void Ape_Control(int16_t item_num)
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (info.bite && info.distance < APE_ATTACK_RANGE) {
-                item->goal_anim_state = APE_ATTACK1;
+                item->goal_anim_state = APE_STATE_ATTACK;
             } else if (
                 !(ape->flags & APE_ATTACK_FLAG)
                 && info.zone_num == info.enemy_zone && info.ahead) {
                 int16_t random = Random_GetControl() >> 5;
                 if (random < APE_JUMP_CHANCE) {
-                    item->goal_anim_state = APE_JUMP;
+                    item->goal_anim_state = APE_STATE_JUMP;
                 } else if (random < APE_WARN1_CHANCE) {
-                    item->goal_anim_state = APE_WARNING;
+                    item->goal_anim_state = APE_STATE_WARNING_1;
                 } else if (random < APE_WARN2_CHANCE) {
-                    item->goal_anim_state = APE_WARNING2;
+                    item->goal_anim_state = APE_STATE_WARNING_2;
                 } else if (random < APE_RUN_LEFT_CHANCE) {
-                    item->goal_anim_state = APE_RUN_LEFT;
+                    item->goal_anim_state = APE_STATE_RUN_LEFT;
                     ape->maximum_turn = 0;
                 } else {
-                    item->goal_anim_state = APE_RUN_RIGHT;
+                    item->goal_anim_state = APE_STATE_RUN_RIGHT;
                     ape->maximum_turn = 0;
                 }
             } else {
-                item->goal_anim_state = APE_RUN;
+                item->goal_anim_state = APE_STATE_RUN;
             }
             break;
 
-        case APE_RUN:
+        case APE_STATE_RUN:
             ape->maximum_turn = APE_RUN_TURN;
             if (!ape->flags && info.angle > -APE_DISPLAY_ANGLE
                 && info.angle < APE_DISPLAY_ANGLE) {
-                item->goal_anim_state = APE_STOP;
+                item->goal_anim_state = APE_STATE_STOP;
             } else if (info.ahead && (item->touch_bits & APE_TOUCH)) {
-                item->required_anim_state = APE_ATTACK1;
-                item->goal_anim_state = APE_STOP;
+                item->required_anim_state = APE_STATE_ATTACK;
+                item->goal_anim_state = APE_STATE_STOP;
             } else if (ape->mood != MOOD_ESCAPE) {
                 int16_t random = Random_GetControl();
                 if (random < APE_JUMP_CHANCE) {
-                    item->required_anim_state = APE_JUMP;
-                    item->goal_anim_state = APE_STOP;
+                    item->required_anim_state = APE_STATE_JUMP;
+                    item->goal_anim_state = APE_STATE_STOP;
                 } else if (random < APE_WARN1_CHANCE) {
-                    item->required_anim_state = APE_WARNING;
-                    item->goal_anim_state = APE_STOP;
+                    item->required_anim_state = APE_STATE_WARNING_1;
+                    item->goal_anim_state = APE_STATE_STOP;
                 } else if (random < APE_WARN2_CHANCE) {
-                    item->required_anim_state = APE_WARNING2;
-                    item->goal_anim_state = APE_STOP;
+                    item->required_anim_state = APE_STATE_WARNING_2;
+                    item->goal_anim_state = APE_STATE_STOP;
                 }
             }
             break;
 
-        case APE_RUN_LEFT:
+        case APE_STATE_RUN_LEFT:
             if (!(ape->flags & APE_TURN_R_FLAG)) {
                 item->rot.y -= PHD_90;
                 ape->flags |= APE_TURN_R_FLAG;
             }
-            item->goal_anim_state = APE_STOP;
+            item->goal_anim_state = APE_STATE_STOP;
             break;
 
-        case APE_RUN_RIGHT:
+        case APE_STATE_RUN_RIGHT:
             if (!(ape->flags & APE_TURN_L_FLAG)) {
                 item->rot.y += PHD_90;
                 ape->flags |= APE_TURN_L_FLAG;
             }
-            item->goal_anim_state = APE_STOP;
+            item->goal_anim_state = APE_STATE_STOP;
             break;
 
-        case APE_ATTACK1:
+        case APE_STATE_ATTACK:
             if (!item->required_anim_state && (item->touch_bits & APE_TOUCH)) {
                 Creature_Effect(item, &m_ApeBite, Effect_Blood);
                 Lara_TakeDamage(APE_ATTACK_DAMAGE, true);
-                item->required_anim_state = APE_STOP;
+                item->required_anim_state = APE_STATE_STOP;
             }
             break;
         }
@@ -254,11 +254,11 @@ void Ape_Control(int16_t item_num)
 
     Creature_Head(item, head);
 
-    if (item->current_anim_state == APE_VAULT) {
+    if (item->current_anim_state == APE_STATE_VAULT) {
         Creature_Animate(item_num, angle, 0);
     } else if (M_Vault(item_num, angle)) {
         ape->maximum_turn = 0;
-        item->current_anim_state = APE_VAULT;
+        item->current_anim_state = APE_STATE_VAULT;
         Item_SwitchToAnim(item, APE_VAULT_ANIM, 0);
     }
 }

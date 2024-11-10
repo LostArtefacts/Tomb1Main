@@ -14,9 +14,9 @@
 #define LF_PPREADY 19
 
 typedef enum {
-    MBS_STILL = 1,
-    MBS_PUSH = 2,
-    MBS_PULL = 3,
+    MOVABLE_BLOCK_STATE_STILL = 1,
+    MOVABLE_BLOCK_STATE_PUSH = 2,
+    MOVABLE_BLOCK_STATE_PULL = 3,
 } MOVABLE_BLOCK_STATE;
 
 int32_t __cdecl MovableBlock_TestDestination(
@@ -300,13 +300,13 @@ void __cdecl MovableBlock_Collision(
             if (!MovableBlock_TestPush(item, WALL_L, quadrant)) {
                 return;
             }
-            item->goal_anim_state = MBS_PUSH;
+            item->goal_anim_state = MOVABLE_BLOCK_STATE_PUSH;
             lara_item->goal_anim_state = LS_PUSH_BLOCK;
         } else if (g_Input.back) {
             if (!MovableBlock_TestPull(item, WALL_L, quadrant)) {
                 return;
             }
-            item->goal_anim_state = MBS_PULL;
+            item->goal_anim_state = MOVABLE_BLOCK_STATE_PULL;
             lara_item->goal_anim_state = LS_PULL_BLOCK;
         } else {
             return;

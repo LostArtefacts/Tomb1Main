@@ -20,15 +20,15 @@
 #define CROW_DIE_ANIM 1
 
 typedef enum {
-    BIRD_ANIM_EMPTY = 0,
-    BIRD_ANIM_FLY = 1,
-    BIRD_ANIM_STOP = 2,
-    BIRD_ANIM_GLIDE = 3,
-    BIRD_ANIM_FALL = 4,
-    BIRD_ANIM_DEATH = 5,
-    BIRD_ANIM_ATTACK = 6,
-    BIRD_ANIM_EAT = 7,
-} BIRD_ANIM;
+    BIRD_STATE_EMPTY = 0,
+    BIRD_STATE_FLY = 1,
+    BIRD_STATE_STOP = 2,
+    BIRD_STATE_GLIDE = 3,
+    BIRD_STATE_FALL = 4,
+    BIRD_STATE_DEATH = 5,
+    BIRD_STATE_ATTACK = 6,
+    BIRD_STATE_EAT = 7,
+} BIRD_STATE;
 
 static const BITE m_BirdBite = {
     .pos = { .x = 15, .y = 46, .z = 21 },
@@ -92,13 +92,13 @@ void __cdecl Bird_Initialise(const int16_t item_num)
     if (item->object_id == O_CROW) {
         item->anim_num = g_Objects[O_CROW].anim_idx + CROW_START_ANIM;
         item->frame_num = g_Anims[item->anim_num].frame_base;
-        item->goal_anim_state = BIRD_ANIM_EAT;
-        item->current_anim_state = BIRD_ANIM_EAT;
+        item->goal_anim_state = BIRD_STATE_EAT;
+        item->current_anim_state = BIRD_STATE_EAT;
     } else {
         item->anim_num = g_Objects[O_EAGLE].anim_idx + BIRD_START_ANIM;
         item->frame_num = g_Anims[item->anim_num].frame_base;
-        item->goal_anim_state = BIRD_ANIM_STOP;
-        item->current_anim_state = BIRD_ANIM_STOP;
+        item->goal_anim_state = BIRD_STATE_STOP;
+        item->current_anim_state = BIRD_STATE_STOP;
     }
 }
 
@@ -113,16 +113,16 @@ void __cdecl Bird_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         switch (item->current_anim_state) {
-        case BIRD_ANIM_FALL:
+        case BIRD_STATE_FALL:
             if (item->pos.y > item->floor) {
                 item->pos.y = item->floor;
                 item->gravity = 0;
                 item->fall_speed = 0;
-                item->goal_anim_state = BIRD_ANIM_DEATH;
+                item->goal_anim_state = BIRD_STATE_DEATH;
             }
             break;
 
-        case BIRD_ANIM_DEATH:
+        case BIRD_STATE_DEATH:
             item->pos.y = item->floor;
             break;
 
@@ -133,7 +133,7 @@ void __cdecl Bird_Control(const int16_t item_num)
                 item->anim_num = g_Objects[O_EAGLE].anim_idx + BIRD_DIE_ANIM;
             }
             item->frame_num = g_Anims[item->anim_num].frame_base;
-            item->current_anim_state = BIRD_ANIM_FALL;
+            item->current_anim_state = BIRD_STATE_FALL;
             item->gravity = 1;
             item->speed = 0;
             break;
@@ -149,37 +149,37 @@ void __cdecl Bird_Control(const int16_t item_num)
     const int16_t angle = Creature_Turn(item, BIRD_TURN);
 
     switch (item->current_anim_state) {
-    case BIRD_ANIM_FLY:
+    case BIRD_STATE_FLY:
         bird->flags = 0;
-        if (item->required_anim_state != BIRD_ANIM_EMPTY) {
+        if (item->required_anim_state != BIRD_STATE_EMPTY) {
             item->goal_anim_state = item->required_anim_state;
         }
         if (bird->mood == MOOD_BORED) {
-            item->goal_anim_state = BIRD_ANIM_STOP;
+            item->goal_anim_state = BIRD_STATE_STOP;
         } else if (info.ahead && info.distance < BIRD_ATTACK_RANGE) {
-            item->goal_anim_state = BIRD_ANIM_ATTACK;
+            item->goal_anim_state = BIRD_STATE_ATTACK;
         } else {
-            item->goal_anim_state = BIRD_ANIM_GLIDE;
+            item->goal_anim_state = BIRD_STATE_GLIDE;
         }
         break;
 
-    case BIRD_ANIM_STOP:
+    case BIRD_STATE_STOP:
         item->pos.y = item->floor;
         if (bird->mood != MOOD_BORED) {
-            item->goal_anim_state = BIRD_ANIM_FLY;
+            item->goal_anim_state = BIRD_STATE_FLY;
         }
         break;
 
-    case BIRD_ANIM_GLIDE:
+    case BIRD_STATE_GLIDE:
         if (bird->mood == MOOD_BORED) {
-            item->required_anim_state = BIRD_ANIM_STOP;
-            item->goal_anim_state = BIRD_ANIM_FLY;
+            item->required_anim_state = BIRD_STATE_STOP;
+            item->goal_anim_state = BIRD_STATE_FLY;
         } else if (info.ahead && info.distance < BIRD_ATTACK_RANGE) {
-            item->goal_anim_state = BIRD_ANIM_ATTACK;
+            item->goal_anim_state = BIRD_STATE_ATTACK;
         }
         break;
 
-    case BIRD_ANIM_ATTACK:
+    case BIRD_STATE_ATTACK:
         if (!bird->flags && item->touch_bits) {
             g_LaraItem->hit_points -= BIRD_DAMAGE;
             g_LaraItem->hit_status = 1;
@@ -192,10 +192,10 @@ void __cdecl Bird_Control(const int16_t item_num)
         }
         break;
 
-    case BIRD_ANIM_EAT:
+    case BIRD_STATE_EAT:
         item->pos.y = item->floor;
         if (bird->mood != MOOD_BORED) {
-            item->goal_anim_state = BIRD_ANIM_FLY;
+            item->goal_anim_state = BIRD_STATE_FLY;
         }
         break;
     }

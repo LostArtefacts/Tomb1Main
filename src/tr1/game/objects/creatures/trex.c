@@ -28,16 +28,16 @@
 #define TREX_SMARTNESS 0x7FFF
 
 typedef enum {
-    TREX_EMPTY = 0,
-    TREX_STOP = 1,
-    TREX_WALK = 2,
-    TREX_RUN = 3,
-    TREX_ATTACK1 = 4,
-    TREX_DEATH = 5,
-    TREX_ROAR = 6,
-    TREX_ATTACK2 = 7,
-    TREX_KILL = 8,
-} TREX_ANIM;
+    TREX_STATE_EMPTY = 0,
+    TREX_STATE_STOP = 1,
+    TREX_STATE_WALK = 2,
+    TREX_STATE_RUN = 3,
+    TREX_STATE_ATTACK_1 = 4,
+    TREX_STATE_DEATH = 5,
+    TREX_STATE_ROAR = 6,
+    TREX_STATE_ATTACK_2 = 7,
+    TREX_STATE_KILL = 8,
+} TREX_STATE;
 
 void TRex_Setup(OBJECT *obj)
 {
@@ -87,10 +87,10 @@ void TRex_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state == TREX_STOP) {
-            item->goal_anim_state = TREX_DEATH;
+        if (item->current_anim_state == TREX_STATE_STOP) {
+            item->goal_anim_state = TREX_STATE_DEATH;
         } else {
-            item->goal_anim_state = TREX_STOP;
+            item->goal_anim_state = TREX_STATE_STOP;
         }
     } else {
         AI_INFO info;
@@ -105,7 +105,7 @@ void TRex_Control(int16_t item_num)
         angle = Creature_Turn(item, dino->maximum_turn);
 
         if (item->touch_bits) {
-            if (item->current_anim_state == TREX_RUN) {
+            if (item->current_anim_state == TREX_STATE_RUN) {
                 Lara_TakeDamage(TREX_TRAMPLE_DAMAGE, false);
             } else {
                 Lara_TakeDamage(TREX_TOUCH_DAMAGE, false);
@@ -121,51 +121,51 @@ void TRex_Control(int16_t item_num)
         }
 
         switch (item->current_anim_state) {
-        case TREX_STOP:
-            if (item->required_anim_state != TREX_EMPTY) {
+        case TREX_STATE_STOP:
+            if (item->required_anim_state != TREX_STATE_EMPTY) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (info.distance < TREX_BITE_RANGE && info.bite) {
-                item->goal_anim_state = TREX_ATTACK2;
+                item->goal_anim_state = TREX_STATE_ATTACK_2;
             } else if (dino->mood == MOOD_BORED || dino->flags) {
-                item->goal_anim_state = TREX_WALK;
+                item->goal_anim_state = TREX_STATE_WALK;
             } else {
-                item->goal_anim_state = TREX_RUN;
+                item->goal_anim_state = TREX_STATE_RUN;
             }
             break;
 
-        case TREX_WALK:
+        case TREX_STATE_WALK:
             dino->maximum_turn = TREX_WALK_TURN;
             if (dino->mood != MOOD_BORED || !dino->flags) {
-                item->goal_anim_state = TREX_STOP;
+                item->goal_anim_state = TREX_STATE_STOP;
             } else if (info.ahead && Random_GetControl() < TREX_ROAR_CHANCE) {
-                item->required_anim_state = TREX_ROAR;
-                item->goal_anim_state = TREX_STOP;
+                item->required_anim_state = TREX_STATE_ROAR;
+                item->goal_anim_state = TREX_STATE_STOP;
             }
             break;
 
-        case TREX_RUN:
+        case TREX_STATE_RUN:
             dino->maximum_turn = TREX_RUN_TURN;
             if (info.distance < TREX_RUN_RANGE && info.bite) {
-                item->goal_anim_state = TREX_STOP;
+                item->goal_anim_state = TREX_STATE_STOP;
             } else if (dino->flags) {
-                item->goal_anim_state = TREX_STOP;
+                item->goal_anim_state = TREX_STATE_STOP;
             } else if (
                 dino->mood != MOOD_ESCAPE && info.ahead
                 && Random_GetControl() < TREX_ROAR_CHANCE) {
-                item->required_anim_state = TREX_ROAR;
-                item->goal_anim_state = TREX_STOP;
+                item->required_anim_state = TREX_STATE_ROAR;
+                item->goal_anim_state = TREX_STATE_STOP;
             } else if (dino->mood == MOOD_BORED) {
-                item->goal_anim_state = TREX_STOP;
+                item->goal_anim_state = TREX_STATE_STOP;
             }
             break;
 
-        case TREX_ATTACK2:
+        case TREX_STATE_ATTACK_2:
             if (item->touch_bits & TREX_TOUCH) {
                 Lara_TakeDamage(TREX_BITE_DAMAGE, true);
-                item->goal_anim_state = TREX_KILL;
+                item->goal_anim_state = TREX_STATE_KILL;
                 TRex_LaraDeath(item);
             }
-            item->required_anim_state = TREX_WALK;
+            item->required_anim_state = TREX_STATE_WALK;
             break;
         }
     }
@@ -178,7 +178,7 @@ void TRex_Control(int16_t item_num)
 
 void TRex_LaraDeath(ITEM *item)
 {
-    item->goal_anim_state = TREX_KILL;
+    item->goal_anim_state = TREX_STATE_KILL;
     if (g_LaraItem->room_num != item->room_num) {
         Item_NewRoom(g_Lara.item_num, item->room_num);
     }

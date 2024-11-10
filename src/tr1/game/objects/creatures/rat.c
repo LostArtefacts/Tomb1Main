@@ -30,31 +30,31 @@
 #define VOLE_ATTACK_RANGE SQUARE(300) // = 90000
 
 typedef enum {
-    RAT_EMPTY = 0,
-    RAT_STOP = 1,
-    RAT_ATTACK2 = 2,
-    RAT_RUN = 3,
-    RAT_ATTACK1 = 4,
-    RAT_DEATH = 5,
-    RAT_POSE = 6,
-} RAT_ANIM;
+    RAT_STATE_EMPTY = 0,
+    RAT_STATE_STOP = 1,
+    RAT_STATE_ATTACK_2 = 2,
+    RAT_STATE_RUN = 3,
+    RAT_STATE_ATTACK_1 = 4,
+    RAT_STATE_DEATH = 5,
+    RAT_STATE_POSE = 6,
+} RAT_STATE;
 
 typedef enum {
-    VOLE_EMPTY = 0,
-    VOLE_SWIM = 1,
-    VOLE_ATTACK = 2,
-    VOLE_DEATH = 3,
-} VOLE_ANIM;
+    VOLE_STATE_EMPTY = 0,
+    VOLE_STATE_SWIM = 1,
+    VOLE_STATE_ATTACK = 2,
+    VOLE_STATE_DEATH = 3,
+} VOLE_STATE;
 
 static BITE m_RatBite = { 0, -11, 108, 3 };
 
 static const HYBRID_INFO m_RatInfo = {
     .land.id = O_RAT,
-    .land.active_anim = RAT_EMPTY,
+    .land.active_anim = RAT_STATE_EMPTY,
     .land.death_anim = RAT_DIE_ANIM,
-    .land.death_state = RAT_DEATH,
+    .land.death_state = RAT_STATE_DEATH,
     .water.id = O_VOLE,
-    .water.active_anim = VOLE_EMPTY,
+    .water.active_anim = VOLE_STATE_EMPTY,
 };
 
 void Rat_Setup(OBJECT *obj)
@@ -94,8 +94,8 @@ void Rat_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != RAT_DEATH) {
-            item->current_anim_state = RAT_DEATH;
+        if (item->current_anim_state != RAT_STATE_DEATH) {
+            item->current_anim_state = RAT_STATE_DEATH;
             Item_SwitchToAnim(item, RAT_DIE_ANIM, 0);
         }
     } else {
@@ -111,49 +111,49 @@ void Rat_Control(int16_t item_num)
         angle = Creature_Turn(item, RAT_RUN_TURN);
 
         switch (item->current_anim_state) {
-        case RAT_STOP:
+        case RAT_STATE_STOP:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (info.bite && info.distance < RAT_BITE_RANGE) {
-                item->goal_anim_state = RAT_ATTACK1;
+                item->goal_anim_state = RAT_STATE_ATTACK_1;
             } else {
-                item->goal_anim_state = RAT_RUN;
+                item->goal_anim_state = RAT_STATE_RUN;
             }
             break;
 
-        case RAT_RUN:
+        case RAT_STATE_RUN:
             if (info.ahead && (item->touch_bits & RAT_TOUCH)) {
-                item->goal_anim_state = RAT_STOP;
+                item->goal_anim_state = RAT_STATE_STOP;
             } else if (info.bite && info.distance < RAT_CHARGE_RANGE) {
-                item->goal_anim_state = RAT_ATTACK2;
+                item->goal_anim_state = RAT_STATE_ATTACK_2;
             } else if (info.ahead && Random_GetControl() < RAT_POSE_CHANCE) {
-                item->required_anim_state = RAT_POSE;
-                item->goal_anim_state = RAT_STOP;
+                item->required_anim_state = RAT_STATE_POSE;
+                item->goal_anim_state = RAT_STATE_STOP;
             }
             break;
 
-        case RAT_ATTACK1:
-            if (item->required_anim_state == RAT_EMPTY && info.ahead
+        case RAT_STATE_ATTACK_1:
+            if (item->required_anim_state == RAT_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
                 Creature_Effect(item, &m_RatBite, Effect_Blood);
                 Lara_TakeDamage(RAT_BITE_DAMAGE, true);
-                item->required_anim_state = RAT_STOP;
+                item->required_anim_state = RAT_STATE_STOP;
             }
             break;
 
-        case RAT_ATTACK2:
-            if (item->required_anim_state == RAT_EMPTY && info.ahead
+        case RAT_STATE_ATTACK_2:
+            if (item->required_anim_state == RAT_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
                 Creature_Effect(item, &m_RatBite, Effect_Blood);
                 Lara_TakeDamage(RAT_CHARGE_DAMAGE, true);
-                item->required_anim_state = RAT_RUN;
+                item->required_anim_state = RAT_STATE_RUN;
             }
             break;
 
-        case RAT_POSE:
+        case RAT_STATE_POSE:
             if (rat->mood != MOOD_BORED
                 || Random_GetControl() < RAT_POSE_CHANCE) {
-                item->goal_anim_state = RAT_STOP;
+                item->goal_anim_state = RAT_STATE_STOP;
             }
             break;
         }
@@ -203,8 +203,8 @@ void Vole_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != VOLE_DEATH) {
-            item->current_anim_state = VOLE_DEATH;
+        if (item->current_anim_state != VOLE_STATE_DEATH) {
+            item->current_anim_state = VOLE_STATE_DEATH;
             Item_SwitchToAnim(item, VOLE_DIE_ANIM, 0);
             Carrier_TestItemDrops(item_num);
         }
@@ -217,8 +217,8 @@ void Vole_Control(int16_t item_num)
             item->pos.x, item->pos.y, item->pos.z, item->room_num);
         if (wh == NO_HEIGHT) {
             item->object_id = O_RAT;
-            item->current_anim_state = RAT_DEATH;
-            item->goal_anim_state = RAT_DEATH;
+            item->current_anim_state = RAT_STATE_DEATH;
+            item->goal_anim_state = RAT_STATE_DEATH;
             Item_SwitchToAnim(item, RAT_DIE_ANIM, -1);
             item->pos.y = item->floor;
         }
@@ -235,20 +235,20 @@ void Vole_Control(int16_t item_num)
         angle = Creature_Turn(item, VOLE_SWIM_TURN);
 
         switch (item->current_anim_state) {
-        case VOLE_SWIM:
+        case VOLE_STATE_SWIM:
             if (info.ahead && (item->touch_bits & RAT_TOUCH)) {
-                item->goal_anim_state = VOLE_ATTACK;
+                item->goal_anim_state = VOLE_STATE_ATTACK;
             }
             break;
 
-        case VOLE_ATTACK:
-            if (item->required_anim_state == VOLE_EMPTY && info.ahead
+        case VOLE_STATE_ATTACK:
+            if (item->required_anim_state == VOLE_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
                 Creature_Effect(item, &m_RatBite, Effect_Blood);
                 Lara_TakeDamage(RAT_BITE_DAMAGE, true);
-                item->required_anim_state = VOLE_SWIM;
+                item->required_anim_state = VOLE_STATE_SWIM;
             }
-            item->goal_anim_state = VOLE_EMPTY;
+            item->goal_anim_state = VOLE_STATE_EMPTY;
             break;
         }
 

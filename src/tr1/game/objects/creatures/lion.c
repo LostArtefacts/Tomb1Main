@@ -33,15 +33,15 @@
 #define PUMA_SMARTNESS 0x2000
 
 typedef enum {
-    LION_EMPTY = 0,
-    LION_STOP = 1,
-    LION_WALK = 2,
-    LION_RUN = 3,
-    LION_ATTACK1 = 4,
-    LION_DEATH = 5,
-    LION_WARNING = 6,
-    LION_ATTACK2 = 7,
-} LION_ANIM;
+    LION_STATE_EMPTY = 0,
+    LION_STATE_STOP = 1,
+    LION_STATE_WALK = 2,
+    LION_STATE_RUN = 3,
+    LION_STATE_ATTACK_1 = 4,
+    LION_STATE_DEATH = 5,
+    LION_STATE_WARNING = 6,
+    LION_STATE_ATTACK_2 = 7,
+} LION_STATE;
 
 static BITE m_LionBite = { -2, -10, 132, 21 };
 
@@ -110,8 +110,8 @@ void Lion_Control(int16_t item_num)
     int16_t tilt = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != LION_DEATH) {
-            item->current_anim_state = LION_DEATH;
+        if (item->current_anim_state != LION_STATE_DEATH) {
+            item->current_anim_state = LION_STATE_DEATH;
             int16_t anim_idx =
                 item->object_id == O_PUMA ? PUMA_DIE_ANIM : LION_DIE_ANIM;
             Item_SwitchToAnim(
@@ -130,61 +130,61 @@ void Lion_Control(int16_t item_num)
         angle = Creature_Turn(item, lion->maximum_turn);
 
         switch (item->current_anim_state) {
-        case LION_STOP:
+        case LION_STATE_STOP:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (lion->mood == MOOD_BORED) {
-                item->goal_anim_state = LION_WALK;
+                item->goal_anim_state = LION_STATE_WALK;
             } else if (info.ahead && (item->touch_bits & LION_TOUCH)) {
-                item->goal_anim_state = LION_ATTACK2;
+                item->goal_anim_state = LION_STATE_ATTACK_2;
             } else if (info.ahead && info.distance < LION_POUNCE_RANGE) {
-                item->goal_anim_state = LION_ATTACK1;
+                item->goal_anim_state = LION_STATE_ATTACK_1;
             } else {
-                item->goal_anim_state = LION_RUN;
+                item->goal_anim_state = LION_STATE_RUN;
             }
             break;
 
-        case LION_WALK:
+        case LION_STATE_WALK:
             lion->maximum_turn = LION_WALK_TURN;
             if (lion->mood != MOOD_BORED) {
-                item->goal_anim_state = LION_STOP;
+                item->goal_anim_state = LION_STATE_STOP;
             } else if (Random_GetControl() < LION_ROAR_CHANCE) {
-                item->required_anim_state = LION_WARNING;
-                item->goal_anim_state = LION_STOP;
+                item->required_anim_state = LION_STATE_WARNING;
+                item->goal_anim_state = LION_STATE_STOP;
             }
             break;
 
-        case LION_RUN:
+        case LION_STATE_RUN:
             lion->maximum_turn = LION_RUN_TURN;
             tilt = angle;
             if (lion->mood == MOOD_BORED) {
-                item->goal_anim_state = LION_STOP;
+                item->goal_anim_state = LION_STATE_STOP;
             } else if (info.ahead && info.distance < LION_POUNCE_RANGE) {
-                item->goal_anim_state = LION_STOP;
+                item->goal_anim_state = LION_STATE_STOP;
             } else if ((item->touch_bits & LION_TOUCH) && info.ahead) {
-                item->goal_anim_state = LION_STOP;
+                item->goal_anim_state = LION_STATE_STOP;
             } else if (
                 lion->mood != MOOD_ESCAPE
                 && Random_GetControl() < LION_ROAR_CHANCE) {
-                item->required_anim_state = LION_WARNING;
-                item->goal_anim_state = LION_STOP;
+                item->required_anim_state = LION_STATE_WARNING;
+                item->goal_anim_state = LION_STATE_STOP;
             }
             break;
 
-        case LION_ATTACK1:
-            if (item->required_anim_state == LION_EMPTY
+        case LION_STATE_ATTACK_1:
+            if (item->required_anim_state == LION_STATE_EMPTY
                 && (item->touch_bits & LION_TOUCH)) {
                 Lara_TakeDamage(LION_POUNCE_DAMAGE, true);
-                item->required_anim_state = LION_STOP;
+                item->required_anim_state = LION_STATE_STOP;
             }
             break;
 
-        case LION_ATTACK2:
-            if (item->required_anim_state == LION_EMPTY
+        case LION_STATE_ATTACK_2:
+            if (item->required_anim_state == LION_STATE_EMPTY
                 && (item->touch_bits & LION_TOUCH)) {
                 Creature_Effect(item, &m_LionBite, Effect_Blood);
                 Lara_TakeDamage(LION_BITE_DAMAGE, true);
-                item->required_anim_state = LION_STOP;
+                item->required_anim_state = LION_STATE_STOP;
             }
             break;
         }

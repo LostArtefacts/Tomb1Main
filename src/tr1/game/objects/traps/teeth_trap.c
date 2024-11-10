@@ -9,8 +9,8 @@
 #define TEETH_TRAP_DAMAGE 400
 
 typedef enum {
-    TT_NICE = 0,
-    TT_NASTY = 1,
+    TEETH_TRAP_STATE_NICE = 0,
+    TEETH_TRAP_STATE_NASTY = 1,
 } TEETH_TRAP_STATE;
 
 static BITE m_Teeth1A = { -23, 0, -1718, 0 };
@@ -45,8 +45,9 @@ void TeethTrap_Control(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
     if (Item_IsTriggerActive(item)) {
-        item->goal_anim_state = TT_NASTY;
-        if (item->touch_bits && item->current_anim_state == TT_NASTY) {
+        item->goal_anim_state = TEETH_TRAP_STATE_NASTY;
+        if (item->touch_bits
+            && item->current_anim_state == TEETH_TRAP_STATE_NASTY) {
             Lara_TakeDamage(TEETH_TRAP_DAMAGE, true);
             M_BiteEffect(item, &m_Teeth1A);
             M_BiteEffect(item, &m_Teeth1B);
@@ -56,7 +57,7 @@ void TeethTrap_Control(int16_t item_num)
             M_BiteEffect(item, &m_Teeth3B);
         }
     } else {
-        item->goal_anim_state = TT_NICE;
+        item->goal_anim_state = TEETH_TRAP_STATE_NICE;
     }
     Item_Animate(item);
 }

@@ -13,9 +13,9 @@
 #define POD_EXPLODE_DIST (WALL_L * 4) // = 4096
 
 typedef enum {
-    POD_SET = 0,
-    POD_EXPLODE = 1,
-} POD_ANIM;
+    POD_STATE_SET = 0,
+    POD_STATE_EXPLODE = 1,
+} POD_STATE;
 
 void Pod_Setup(OBJECT *obj)
 {
@@ -79,7 +79,7 @@ void Pod_Control(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
 
-    if (item->goal_anim_state != POD_EXPLODE) {
+    if (item->goal_anim_state != POD_STATE_EXPLODE) {
         int32_t explode = 0;
 
         if (item->flags & IF_ONE_SHOT) {
@@ -97,7 +97,7 @@ void Pod_Control(int16_t item_num)
         }
 
         if (explode) {
-            item->goal_anim_state = POD_EXPLODE;
+            item->goal_anim_state = POD_STATE_EXPLODE;
             item->mesh_bits = 0xFFFFFF;
             item->collidable = 0;
             Effect_ExplodingDeath(item_num, 0xFFFE00, 0);

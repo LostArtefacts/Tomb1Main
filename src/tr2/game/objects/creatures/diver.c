@@ -18,17 +18,17 @@
 static BITE m_DiverBite = { .pos = { .x = 17, .y = 164, .z = 44, }, .mesh_num = 18 };
 
 typedef enum {
-    DIVER_ANIM_EMPTY = 0,
-    DIVER_ANIM_SWIM_1 = 1,
-    DIVER_ANIM_SWIM_2 = 2,
-    DIVER_ANIM_SHOOT_1 = 3,
-    DIVER_ANIM_AIM_1 = 4,
-    DIVER_ANIM_NULL_1 = 5,
-    DIVER_ANIM_AIM_2 = 6,
-    DIVER_ANIM_SHOOT_2 = 7,
-    DIVER_ANIM_NULL_2 = 8,
-    DIVER_ANIM_DEATH = 9,
-} DIVER_ANIM;
+    DIVER_STATE_EMPTY = 0,
+    DIVER_STATE_SWIM_1 = 1,
+    DIVER_STATE_SWIM_2 = 2,
+    DIVER_STATE_SHOOT_1 = 3,
+    DIVER_STATE_AIM_1 = 4,
+    DIVER_STATE_NULL_1 = 5,
+    DIVER_STATE_AIM_2 = 6,
+    DIVER_STATE_SHOOT_2 = 7,
+    DIVER_STATE_NULL_2 = 8,
+    DIVER_STATE_DEATH = 9,
+} DIVER_STATE;
 
 static const SECTOR *M_GetRelSector(const ROOM *r, int32_t x, int32_t z);
 
@@ -104,10 +104,10 @@ void __cdecl Diver_Control(int16_t item_num)
     CREATURE *const creature = item->data;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != DIVER_ANIM_DEATH) {
+        if (item->current_anim_state != DIVER_STATE_DEATH) {
             item->anim_num = g_Objects[O_DIVER].anim_idx + DIVER_DIE_ANIM;
             item->frame_num = g_Anims[item->anim_num].frame_base;
-            item->current_anim_state = DIVER_ANIM_DEATH;
+            item->current_anim_state = DIVER_STATE_DEATH;
         }
         Creature_Float(item_num);
         return;
@@ -168,32 +168,32 @@ void __cdecl Diver_Control(int16_t item_num)
         + 512;
 
     switch (item->current_anim_state) {
-    case DIVER_ANIM_SWIM_1:
+    case DIVER_STATE_SWIM_1:
         creature->maximum_turn = DIVER_SWIM_TURN;
         if (shoot) {
             neck = -info.angle;
         }
         if (creature->target.y < water_level
             && item->pos.y < water_level + creature->lot.fly) {
-            item->goal_anim_state = DIVER_ANIM_SWIM_2;
+            item->goal_anim_state = DIVER_STATE_SWIM_2;
         } else if (creature->mood != MOOD_ESCAPE && shoot) {
-            item->goal_anim_state = DIVER_ANIM_AIM_1;
+            item->goal_anim_state = DIVER_STATE_AIM_1;
         }
         break;
 
-    case DIVER_ANIM_SWIM_2:
+    case DIVER_STATE_SWIM_2:
         creature->maximum_turn = DIVER_SWIM_TURN;
         if (shoot) {
             head = info.angle;
         }
         if (creature->target.y > water_level) {
-            item->goal_anim_state = DIVER_ANIM_SWIM_1;
+            item->goal_anim_state = DIVER_STATE_SWIM_1;
         } else if (creature->mood != MOOD_ESCAPE && shoot) {
-            item->goal_anim_state = DIVER_ANIM_AIM_2;
+            item->goal_anim_state = DIVER_STATE_AIM_2;
         }
         break;
 
-    case DIVER_ANIM_SHOOT_1:
+    case DIVER_STATE_SHOOT_1:
         if (shoot) {
             neck = -info.angle;
         }
@@ -203,7 +203,7 @@ void __cdecl Diver_Control(int16_t item_num)
         }
         break;
 
-    case DIVER_ANIM_SHOOT_2:
+    case DIVER_STATE_SHOOT_2:
         if (shoot) {
             head = info.angle;
         }
@@ -213,7 +213,7 @@ void __cdecl Diver_Control(int16_t item_num)
         }
         break;
 
-    case DIVER_ANIM_AIM_1:
+    case DIVER_STATE_AIM_1:
         creature->flags = 0;
         if (shoot) {
             neck = -info.angle;
@@ -221,22 +221,22 @@ void __cdecl Diver_Control(int16_t item_num)
         if (!shoot || creature->mood == MOOD_ESCAPE
             || (creature->target.y < water_level
                 && item->pos.y < water_level + creature->lot.fly)) {
-            item->goal_anim_state = DIVER_ANIM_SWIM_1;
+            item->goal_anim_state = DIVER_STATE_SWIM_1;
         } else {
-            item->goal_anim_state = DIVER_ANIM_SHOOT_1;
+            item->goal_anim_state = DIVER_STATE_SHOOT_1;
         }
         break;
 
-    case DIVER_ANIM_AIM_2:
+    case DIVER_STATE_AIM_2:
         creature->flags = 0;
         if (shoot) {
             head = info.angle;
         }
         if (!shoot || creature->mood == MOOD_ESCAPE
             || creature->target.y > water_level) {
-            item->goal_anim_state = DIVER_ANIM_SWIM_2;
+            item->goal_anim_state = DIVER_STATE_SWIM_2;
         } else {
-            item->goal_anim_state = DIVER_ANIM_SHOOT_2;
+            item->goal_anim_state = DIVER_STATE_SHOOT_2;
         }
         break;
 
@@ -250,9 +250,9 @@ void __cdecl Diver_Control(int16_t item_num)
     Creature_Animate(item_num, angle, 0);
 
     switch (item->current_anim_state) {
-    case DIVER_ANIM_SWIM_1:
-    case DIVER_ANIM_AIM_1:
-    case DIVER_ANIM_SHOOT_1:
+    case DIVER_STATE_SWIM_1:
+    case DIVER_STATE_AIM_1:
+    case DIVER_STATE_SHOOT_1:
         Creature_Underwater(item, WALL_L / 2);
         break;
 

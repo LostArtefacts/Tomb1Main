@@ -37,19 +37,19 @@
 #define TORSO_FRAME_TURN_R_END 22
 
 typedef enum {
-    TORSO_EMPTY = 0,
-    TORSO_STOP = 1,
-    TORSO_TURN_L = 2,
-    TORSO_TURN_R = 3,
-    TORSO_ATTACK1 = 4,
-    TORSO_ATTACK2 = 5,
-    TORSO_ATTACK3 = 6,
-    TORSO_FORWARD = 7,
-    TORSO_SET = 8,
-    TORSO_FALL = 9,
-    TORSO_DEATH = 10,
-    TORSO_KILL = 11,
-} TORSO_ANIM;
+    TORSO_STATE_EMPTY = 0,
+    TORSO_STATE_STOP = 1,
+    TORSO_STATE_TURN_L = 2,
+    TORSO_STATE_TURN_R = 3,
+    TORSO_STATE_ATTACK_1 = 4,
+    TORSO_STATE_ATTACK_2 = 5,
+    TORSO_STATE_ATTACK_3 = 6,
+    TORSO_STATE_FORWARD = 7,
+    TORSO_STATE_SET = 8,
+    TORSO_STATE_FALL = 9,
+    TORSO_STATE_DEATH = 10,
+    TORSO_STATE_KILL = 11,
+} TORSO_STATE;
 
 void Torso_Setup(OBJECT *obj)
 {
@@ -87,8 +87,8 @@ void Torso_Control(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != TORSO_DEATH) {
-            item->current_anim_state = TORSO_DEATH;
+        if (item->current_anim_state != TORSO_STATE_DEATH) {
+            item->current_anim_state = TORSO_STATE_DEATH;
             Item_SwitchToAnim(item, TORSO_DIE_ANIM, 0);
         }
     } else {
@@ -111,37 +111,37 @@ void Torso_Control(int16_t item_num)
         }
 
         switch (item->current_anim_state) {
-        case TORSO_SET:
-            item->goal_anim_state = TORSO_FALL;
+        case TORSO_STATE_SET:
+            item->goal_anim_state = TORSO_STATE_FALL;
             item->gravity = 1;
             break;
 
-        case TORSO_STOP:
+        case TORSO_STATE_STOP:
             if (g_LaraItem->hit_points <= 0) {
                 break;
             }
 
             torso->flags = 0;
             if (angle > TORSO_NEED_TURN) {
-                item->goal_anim_state = TORSO_TURN_R;
+                item->goal_anim_state = TORSO_STATE_TURN_R;
             } else if (angle < -TORSO_NEED_TURN) {
-                item->goal_anim_state = TORSO_TURN_L;
+                item->goal_anim_state = TORSO_STATE_TURN_L;
             } else if (info.distance >= TORSO_ATTACK_RANGE) {
-                item->goal_anim_state = TORSO_FORWARD;
+                item->goal_anim_state = TORSO_STATE_FORWARD;
             } else if (g_LaraItem->hit_points > TORSO_ATTACK_DAMAGE) {
                 if (Random_GetControl() < 0x4000) {
-                    item->goal_anim_state = TORSO_ATTACK1;
+                    item->goal_anim_state = TORSO_STATE_ATTACK_1;
                 } else {
-                    item->goal_anim_state = TORSO_ATTACK2;
+                    item->goal_anim_state = TORSO_STATE_ATTACK_2;
                 }
             } else if (info.distance < TORSO_CLOSE_RANGE) {
-                item->goal_anim_state = TORSO_ATTACK3;
+                item->goal_anim_state = TORSO_STATE_ATTACK_3;
             } else {
-                item->goal_anim_state = TORSO_FORWARD;
+                item->goal_anim_state = TORSO_STATE_FORWARD;
             }
             break;
 
-        case TORSO_FORWARD:
+        case TORSO_STATE_FORWARD:
             if (angle < -TORSO_TURN) {
                 item->goal_anim_state -= TORSO_TURN;
             } else if (angle > TORSO_TURN) {
@@ -151,13 +151,13 @@ void Torso_Control(int16_t item_num)
             }
 
             if (angle > TORSO_NEED_TURN || angle < -TORSO_NEED_TURN) {
-                item->goal_anim_state = TORSO_STOP;
+                item->goal_anim_state = TORSO_STATE_STOP;
             } else if (info.distance < TORSO_ATTACK_RANGE) {
-                item->goal_anim_state = TORSO_STOP;
+                item->goal_anim_state = TORSO_STATE_STOP;
             }
             break;
 
-        case TORSO_TURN_L:
+        case TORSO_STATE_TURN_L:
             if (!torso->flags) {
                 torso->flags = item->frame_num;
             } else if (
@@ -168,11 +168,11 @@ void Torso_Control(int16_t item_num)
             }
 
             if (angle > -TORSO_NEED_TURN) {
-                item->goal_anim_state = TORSO_STOP;
+                item->goal_anim_state = TORSO_STATE_STOP;
             }
             break;
 
-        case TORSO_TURN_R:
+        case TORSO_STATE_TURN_R:
             if (!torso->flags) {
                 torso->flags = item->frame_num;
             } else if (
@@ -183,28 +183,28 @@ void Torso_Control(int16_t item_num)
             }
 
             if (angle < TORSO_NEED_TURN) {
-                item->goal_anim_state = TORSO_STOP;
+                item->goal_anim_state = TORSO_STATE_STOP;
             }
             break;
 
-        case TORSO_ATTACK1:
+        case TORSO_STATE_ATTACK_1:
             if (!torso->flags && (item->touch_bits & TORSO_TRIGHT)) {
                 Lara_TakeDamage(TORSO_ATTACK_DAMAGE, true);
                 torso->flags = 1;
             }
             break;
 
-        case TORSO_ATTACK2:
+        case TORSO_STATE_ATTACK_2:
             if (!torso->flags && (item->touch_bits & TORSO_TOUCH)) {
                 Lara_TakeDamage(TORSO_ATTACK_DAMAGE, true);
                 torso->flags = 1;
             }
             break;
 
-        case TORSO_ATTACK3:
+        case TORSO_STATE_ATTACK_3:
             if ((item->touch_bits & TORSO_TRIGHT)
                 || g_LaraItem->hit_points <= 0) {
-                item->goal_anim_state = TORSO_KILL;
+                item->goal_anim_state = TORSO_STATE_KILL;
 
                 Item_SwitchToObjAnim(
                     g_LaraItem, EXTRA_ANIM_TORSO_SLAM, 0, O_LARA_EXTRA);
@@ -228,7 +228,7 @@ void Torso_Control(int16_t item_num)
             }
             break;
 
-        case TORSO_KILL:
+        case TORSO_STATE_KILL:
             g_Camera.target_distance = WALL_L * 2;
             g_Camera.flags = FOLLOW_CENTRE;
             break;
@@ -237,11 +237,11 @@ void Torso_Control(int16_t item_num)
 
     Creature_Head(item, head);
 
-    if (item->current_anim_state == TORSO_FALL) {
+    if (item->current_anim_state == TORSO_STATE_FALL) {
         Item_Animate(item);
 
         if (item->pos.y > item->floor) {
-            item->goal_anim_state = TORSO_STOP;
+            item->goal_anim_state = TORSO_STATE_STOP;
             item->gravity = 0;
             item->pos.y = item->floor;
             g_Camera.bounce = 500;

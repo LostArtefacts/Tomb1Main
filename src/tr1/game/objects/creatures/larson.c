@@ -20,15 +20,15 @@
 #define LARSON_SMARTNESS 0x7FFF
 
 typedef enum {
-    LARSON_EMPTY = 0,
-    LARSON_STOP = 1,
-    LARSON_WALK = 2,
-    LARSON_RUN = 3,
-    LARSON_AIM = 4,
-    LARSON_DEATH = 5,
-    LARSON_POSE = 6,
-    LARSON_SHOOT = 7,
-} LARSON_ANIM;
+    LARSON_STATE_EMPTY = 0,
+    LARSON_STATE_STOP = 1,
+    LARSON_STATE_WALK = 2,
+    LARSON_STATE_RUN = 3,
+    LARSON_STATE_AIM = 4,
+    LARSON_STATE_DEATH = 5,
+    LARSON_STATE_POSE = 6,
+    LARSON_STATE_SHOOT = 7,
+} LARSON_STATE;
 
 static BITE m_LarsonGun = { -60, 170, 0, 14 };
 
@@ -69,8 +69,8 @@ void Larson_Control(int16_t item_num)
     int16_t tilt = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != LARSON_DEATH) {
-            item->current_anim_state = LARSON_DEATH;
+        if (item->current_anim_state != LARSON_STATE_DEATH) {
+            item->current_anim_state = LARSON_STATE_DEATH;
             Item_SwitchToAnim(item, LARSON_DIE_ANIM, 0);
         }
     } else {
@@ -86,82 +86,82 @@ void Larson_Control(int16_t item_num)
         angle = Creature_Turn(item, person->maximum_turn);
 
         switch (item->current_anim_state) {
-        case LARSON_STOP:
+        case LARSON_STATE_STOP:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (person->mood == MOOD_BORED) {
                 item->goal_anim_state = Random_GetControl() < LARSON_POSE_CHANCE
-                    ? LARSON_POSE
-                    : LARSON_WALK;
+                    ? LARSON_STATE_POSE
+                    : LARSON_STATE_WALK;
             } else if (person->mood == MOOD_ESCAPE) {
-                item->goal_anim_state = LARSON_RUN;
+                item->goal_anim_state = LARSON_STATE_RUN;
             } else {
-                item->goal_anim_state = LARSON_WALK;
+                item->goal_anim_state = LARSON_STATE_WALK;
             }
             break;
 
-        case LARSON_POSE:
+        case LARSON_STATE_POSE:
             if (person->mood != MOOD_BORED) {
-                item->goal_anim_state = LARSON_STOP;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (Random_GetControl() < LARSON_POSE_CHANCE) {
-                item->required_anim_state = LARSON_WALK;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_WALK;
+                item->goal_anim_state = LARSON_STATE_STOP;
             }
             break;
 
-        case LARSON_WALK:
+        case LARSON_STATE_WALK:
             person->maximum_turn = LARSON_WALK_TURN;
             if (person->mood == MOOD_BORED
                 && Random_GetControl() < LARSON_POSE_CHANCE) {
-                item->required_anim_state = LARSON_POSE;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_POSE;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (person->mood == MOOD_ESCAPE) {
-                item->required_anim_state = LARSON_RUN;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_RUN;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = LARSON_AIM;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_AIM;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (!info.ahead || info.distance > LARSON_WALK_RANGE) {
-                item->required_anim_state = LARSON_RUN;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_RUN;
+                item->goal_anim_state = LARSON_STATE_STOP;
             }
             break;
 
-        case LARSON_RUN:
+        case LARSON_STATE_RUN:
             person->maximum_turn = LARSON_RUN_TURN;
             tilt = angle / 2;
             if (person->mood == MOOD_BORED
                 && Random_GetControl() < LARSON_POSE_CHANCE) {
-                item->required_anim_state = LARSON_POSE;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_POSE;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->required_anim_state = LARSON_AIM;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_AIM;
+                item->goal_anim_state = LARSON_STATE_STOP;
             } else if (info.ahead && info.distance < LARSON_WALK_RANGE) {
-                item->required_anim_state = LARSON_WALK;
-                item->goal_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_WALK;
+                item->goal_anim_state = LARSON_STATE_STOP;
             }
             break;
 
-        case LARSON_AIM:
+        case LARSON_STATE_AIM:
             if (item->required_anim_state) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (Creature_CanTargetEnemy(item, &info)) {
-                item->goal_anim_state = LARSON_SHOOT;
+                item->goal_anim_state = LARSON_STATE_SHOOT;
             } else {
-                item->goal_anim_state = LARSON_STOP;
+                item->goal_anim_state = LARSON_STATE_STOP;
             }
             break;
 
-        case LARSON_SHOOT:
+        case LARSON_STATE_SHOOT:
             if (!item->required_anim_state) {
                 Creature_ShootAtLara(
                     item, info.distance, &m_LarsonGun, head,
                     LARSON_SHOT_DAMAGE);
-                item->required_anim_state = LARSON_AIM;
+                item->required_anim_state = LARSON_STATE_AIM;
             }
             if (person->mood == MOOD_ESCAPE) {
-                item->required_anim_state = LARSON_STOP;
+                item->required_anim_state = LARSON_STATE_STOP;
             }
             break;
         }

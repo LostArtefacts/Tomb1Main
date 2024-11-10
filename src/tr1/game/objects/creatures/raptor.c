@@ -27,16 +27,16 @@
 #define RAPTOR_SMARTNESS 0x4000
 
 typedef enum {
-    RAPTOR_EMPTY = 0,
-    RAPTOR_STOP = 1,
-    RAPTOR_WALK = 2,
-    RAPTOR_RUN = 3,
-    RAPTOR_ATTACK1 = 4,
-    RAPTOR_DEATH = 5,
-    RAPTOR_WARNING = 6,
-    RAPTOR_ATTACK2 = 7,
-    RAPTOR_ATTACK3 = 8,
-} RAPTOR_ANIM;
+    RAPTOR_STATE_EMPTY = 0,
+    RAPTOR_STATE_STOP = 1,
+    RAPTOR_STATE_WALK = 2,
+    RAPTOR_STATE_RUN = 3,
+    RAPTOR_STATE_ATTACK_1 = 4,
+    RAPTOR_STATE_DEATH = 5,
+    RAPTOR_STATE_WARNING = 6,
+    RAPTOR_STATE_ATTACK_2 = 7,
+    RAPTOR_STATE_ATTACK_3 = 8,
+} RAPTOR_STATE;
 
 static BITE m_RaptorBite = { 0, 66, 318, 22 };
 
@@ -78,8 +78,8 @@ void Raptor_Control(int16_t item_num)
     int16_t tilt = 0;
 
     if (item->hit_points <= 0) {
-        if (item->current_anim_state != RAPTOR_DEATH) {
-            item->current_anim_state = RAPTOR_DEATH;
+        if (item->current_anim_state != RAPTOR_STATE_DEATH) {
+            item->current_anim_state = RAPTOR_STATE_DEATH;
             Item_SwitchToAnim(
                 item, RAPTOR_DIE_ANIM + (Random_GetControl() / 16200), 0);
         }
@@ -96,82 +96,82 @@ void Raptor_Control(int16_t item_num)
         angle = Creature_Turn(item, raptor->maximum_turn);
 
         switch (item->current_anim_state) {
-        case RAPTOR_STOP:
-            if (item->required_anim_state != RAPTOR_EMPTY) {
+        case RAPTOR_STATE_STOP:
+            if (item->required_anim_state != RAPTOR_STATE_EMPTY) {
                 item->goal_anim_state = item->required_anim_state;
             } else if (item->touch_bits & RAPTOR_TOUCH) {
-                item->goal_anim_state = RAPTOR_ATTACK3;
+                item->goal_anim_state = RAPTOR_STATE_ATTACK_3;
             } else if (info.bite && info.distance < RAPTOR_CLOSE_RANGE) {
-                item->goal_anim_state = RAPTOR_ATTACK3;
+                item->goal_anim_state = RAPTOR_STATE_ATTACK_3;
             } else if (info.bite && info.distance < RAPTOR_LUNGE_RANGE) {
-                item->goal_anim_state = RAPTOR_ATTACK1;
+                item->goal_anim_state = RAPTOR_STATE_ATTACK_1;
             } else if (raptor->mood == MOOD_BORED) {
-                item->goal_anim_state = RAPTOR_WALK;
+                item->goal_anim_state = RAPTOR_STATE_WALK;
             } else {
-                item->goal_anim_state = RAPTOR_RUN;
+                item->goal_anim_state = RAPTOR_STATE_RUN;
             }
             break;
 
-        case RAPTOR_WALK:
+        case RAPTOR_STATE_WALK:
             raptor->maximum_turn = RAPTOR_WALK_TURN;
             if (raptor->mood != MOOD_BORED) {
-                item->goal_anim_state = RAPTOR_STOP;
+                item->goal_anim_state = RAPTOR_STATE_STOP;
             } else if (info.ahead && Random_GetControl() < RAPTOR_ROAR_CHANCE) {
-                item->required_anim_state = RAPTOR_WARNING;
-                item->goal_anim_state = RAPTOR_STOP;
+                item->required_anim_state = RAPTOR_STATE_WARNING;
+                item->goal_anim_state = RAPTOR_STATE_STOP;
             }
             break;
 
-        case RAPTOR_RUN:
+        case RAPTOR_STATE_RUN:
             tilt = angle;
             raptor->maximum_turn = RAPTOR_RUN_TURN;
             if (item->touch_bits & RAPTOR_TOUCH) {
-                item->goal_anim_state = RAPTOR_STOP;
+                item->goal_anim_state = RAPTOR_STATE_STOP;
             } else if (info.bite && info.distance < RAPTOR_ATTACK_RANGE) {
-                if (item->goal_anim_state == RAPTOR_RUN) {
+                if (item->goal_anim_state == RAPTOR_STATE_RUN) {
                     if (Random_GetControl() < 0x2000) {
-                        item->goal_anim_state = RAPTOR_STOP;
+                        item->goal_anim_state = RAPTOR_STATE_STOP;
                     } else {
-                        item->goal_anim_state = RAPTOR_ATTACK2;
+                        item->goal_anim_state = RAPTOR_STATE_ATTACK_2;
                     }
                 }
             } else if (
                 info.ahead && raptor->mood != MOOD_ESCAPE
                 && Random_GetControl() < RAPTOR_ROAR_CHANCE) {
-                item->required_anim_state = RAPTOR_WARNING;
-                item->goal_anim_state = RAPTOR_STOP;
+                item->required_anim_state = RAPTOR_STATE_WARNING;
+                item->goal_anim_state = RAPTOR_STATE_STOP;
             } else if (raptor->mood == MOOD_BORED) {
-                item->goal_anim_state = RAPTOR_STOP;
+                item->goal_anim_state = RAPTOR_STATE_STOP;
             }
             break;
 
-        case RAPTOR_ATTACK1:
+        case RAPTOR_STATE_ATTACK_1:
             tilt = angle;
-            if (item->required_anim_state == RAPTOR_EMPTY && info.ahead
+            if (item->required_anim_state == RAPTOR_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAPTOR_TOUCH)) {
                 Creature_Effect(item, &m_RaptorBite, Effect_Blood);
                 Lara_TakeDamage(RAPTOR_LUNGE_DAMAGE, true);
-                item->required_anim_state = RAPTOR_STOP;
+                item->required_anim_state = RAPTOR_STATE_STOP;
             }
             break;
 
-        case RAPTOR_ATTACK2:
+        case RAPTOR_STATE_ATTACK_2:
             tilt = angle;
-            if (item->required_anim_state == RAPTOR_EMPTY && info.ahead
+            if (item->required_anim_state == RAPTOR_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAPTOR_TOUCH)) {
                 Creature_Effect(item, &m_RaptorBite, Effect_Blood);
                 Lara_TakeDamage(RAPTOR_CHARGE_DAMAGE, true);
-                item->required_anim_state = RAPTOR_RUN;
+                item->required_anim_state = RAPTOR_STATE_RUN;
             }
             break;
 
-        case RAPTOR_ATTACK3:
+        case RAPTOR_STATE_ATTACK_3:
             tilt = angle;
-            if (item->required_anim_state == RAPTOR_EMPTY
+            if (item->required_anim_state == RAPTOR_STATE_EMPTY
                 && (item->touch_bits & RAPTOR_TOUCH)) {
                 Creature_Effect(item, &m_RaptorBite, Effect_Blood);
                 Lara_TakeDamage(RAPTOR_BITE_DAMAGE, true);
-                item->required_anim_state = RAPTOR_STOP;
+                item->required_anim_state = RAPTOR_STATE_STOP;
             }
             break;
         }
