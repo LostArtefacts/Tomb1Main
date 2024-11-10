@@ -194,7 +194,7 @@ void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
 
     FX *const fx = &g_Effects[fx_num];
     fx->pos = *pos;
-    fx->object_id = O_BUBBLES;
+    fx->object_id = O_BUBBLE;
     fx->frame_num = -((Random_GetDraw() * 3) / 0x8000);
     fx->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
 }

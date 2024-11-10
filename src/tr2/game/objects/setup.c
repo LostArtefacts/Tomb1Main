@@ -29,7 +29,7 @@
 #include "game/objects/creatures/yeti.h"
 #include "game/objects/effects/blood.h"
 #include "game/objects/effects/body_part.h"
-#include "game/objects/effects/bubbles.h"
+#include "game/objects/effects/bubble.h"
 #include "game/objects/effects/explosion.h"
 #include "game/objects/effects/glow.h"
 #include "game/objects/effects/gun_flash.h"
@@ -193,7 +193,7 @@ void __cdecl Object_SetupGeneralObjects(void)
     // effects
     Blood_Setup();
     BodyPart_Setup();
-    Bubbles_Setup();
+    Bubble_Setup();
     Explosion_Setup();
     Glow_Setup();
     Splash_Setup();

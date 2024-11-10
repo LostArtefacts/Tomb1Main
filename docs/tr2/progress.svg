@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.62% (891)</tspan> · <tspan class="known">25.96% (323)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.70% (892)</tspan> · <tspan class="known">25.88% (322)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="535.03" height="6" x="0" y="0" class="decompiled"/>
-<rect width="193.96" height="6" x="535.03" y="0" class="known"/>
+<rect width="535.63" height="6" x="0" y="0" class="decompiled"/>
+<rect width="193.36" height="6" x="535.63" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -327,7 +327,7 @@
 <rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
-<rect width="12" height="12" x="15" y="75" class="known"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="15" y="75" class="decompiled"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="30" y="75" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
 <rect width="12" height="12" x="45" y="75" class="known"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="60" y="75" class="known"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.13%</tspan> · <tspan class="known">23.54%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.20%</tspan> · <tspan class="known">23.47%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="568.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="175.84" height="6" x="568.72" y="0" class="known"/>
+<rect width="569.25" height="6" x="0" y="0" class="decompiled"/>
+<rect width="175.31" height="6" x="569.25" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1706,7 +1706,7 @@
 <rect width="11.08" height="11.43" x="652.05" y="108.19" class="decompiled"><title>void __cdecl Gun_Rifle_Control(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="11.08" height="11.43" x="666.13" y="108.19" class="known"><title>int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);</title></rect>
 <rect width="10.97" height="11.43" x="680.21" y="108.19" class="decompiled"><title>void __cdecl Output_InsertPolygons(const int16_t *obj_ptr, int32_t clip);</title></rect>
-<rect width="10.97" height="11.43" x="694.18" y="108.19" class="known"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
+<rect width="10.97" height="11.43" x="694.18" y="108.19" class="decompiled"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
 <rect width="10.97" height="11.43" x="708.15" y="108.19" class="decompiled"><title>void __cdecl Lara_SurfaceCollision(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.97" height="11.43" x="722.12" y="108.19" class="decompiled"><title>DWORD __cdecl WinInReadJoystick(int32_t *x, int32_t *y);</title></rect>
 <rect width="10.91" height="11.43" x="736.09" y="108.19" class="decompiled"><title>int32_t __cdecl Box_StalkBox(const ITEM *item, const ITEM *enemy, int16_t box_num);</title></rect>

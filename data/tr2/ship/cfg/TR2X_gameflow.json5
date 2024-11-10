@@ -314,7 +314,7 @@
         "O_COPTER": "Helicopter",
         "O_EXPLOSION": "Explosion",
         "O_SPLASH": "Water Ripples",
-        "O_BUBBLES": "Bubbles",
+        "O_BUBBLE": "Bubble",
         "O_BUBBLE_EMITTER": "Bubbles Emitter",
         "O_BLOOD": "Blood",
         "O_DART_EFFECT": "Dart Effect",

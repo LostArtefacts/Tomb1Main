@@ -156,7 +156,7 @@ dll_sources = [
   'game/objects/creatures/yeti.c',
   'game/objects/effects/blood.c',
   'game/objects/effects/body_part.c',
-  'game/objects/effects/bubbles.c',
+  'game/objects/effects/bubble.c',
   'game/objects/effects/ember.c',
   'game/objects/effects/explosion.c',
   'game/objects/effects/flame.c',

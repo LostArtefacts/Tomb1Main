@@ -46,6 +46,7 @@
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/skidoo_driver.h"
 #include "game/objects/effects/body_part.h"
+#include "game/objects/effects/bubble.h"
 #include "game/objects/effects/ember.h"
 #include "game/objects/effects/flame.h"
 #include "game/objects/effects/twinkle.h"
@@ -1016,6 +1017,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00417E90, Dragon_Control);
     INJECT(enable, 0x004183E0, Bartoli_Initialise);
     INJECT(enable, 0x00418500, Bartoli_Control);
+    INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x004336F0, BodyPart_Control);
