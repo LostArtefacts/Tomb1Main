@@ -175,11 +175,25 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
     // clang-format on
 }
 
-void __cdecl EffectFunc_AssaultStart(ITEM *const item)
+void __cdecl FX_AssaultStart(ITEM *const item)
 {
     g_SaveGame.statistics.timer = 0;
     g_IsAssaultTimerActive = 1;
     g_IsAssaultTimerDisplay = 1;
     g_FlipEffect = -1;
     Stats_StartTimer();
+}
+
+void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
+{
+    const int16_t fx_num = Effect_Create(room_num);
+    if (fx_num == NO_ITEM) {
+        return;
+    }
+
+    FX *const fx = &g_Effects[fx_num];
+    fx->pos = *pos;
+    fx->object_id = O_BUBBLES;
+    fx->frame_num = -((Random_GetDraw() * 3) / 0x8000);
+    fx->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
 }

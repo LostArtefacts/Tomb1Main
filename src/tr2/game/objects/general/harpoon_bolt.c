@@ -1,5 +1,6 @@
 #include "game/objects/general/harpoon_bolt.h"
 
+#include "decomp/effects.h"
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/math.h"

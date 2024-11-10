@@ -5,5 +5,5 @@
 void Bubbles_Setup(void)
 {
     OBJECT *const obj = Object_GetObject(O_BUBBLES);
-    obj->control = Bubbles_Control;
+    obj->control = Bubble_Control;
 }

@@ -197,7 +197,7 @@ void __cdecl MovableBlock_Control(const int16_t item_num)
         item->gravity = 0;
         item->pos.y = height;
         item->status = IS_DEACTIVATED;
-        floor_shake_effect(item);
+        FX_FloorShake(item);
         Sound_Effect(SFX_ENEMY_GRUNT, &item->pos, SPM_ALWAYS);
     }
 

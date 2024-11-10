@@ -2,8 +2,6 @@
 
 #include "game/items.h"
 
-#include <stdint.h>
-
 int32_t __cdecl Effect_ExplodingDeath(
     int16_t item_num, int32_t mesh_bits, int16_t damage);
 
@@ -13,4 +11,6 @@ int16_t __cdecl Effect_MissileFlame(
 
 void __cdecl Effect_CreateBartoliLight(int16_t item_num);
 
-void __cdecl EffectFunc_AssaultStart(ITEM *item);
+void __cdecl FX_AssaultStart(ITEM *item);
+
+void __cdecl CreateBubble(const XYZ_32 *pos, int16_t room_num);

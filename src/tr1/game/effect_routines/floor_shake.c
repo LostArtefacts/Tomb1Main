@@ -1,4 +1,4 @@
-#include "game/effect_routines/dino_stomp.h"
+#include "game/effect_routines/floor_shake.h"
 
 #include "global/const.h"
 #include "global/vars.h"
@@ -9,7 +9,7 @@
 
 #define MAX_BOUNCE 100
 
-void FX_DinoStomp(ITEM *item)
+void FX_FloorShake(ITEM *item)
 {
     int32_t dx = item->pos.x - g_Camera.pos.x;
     int32_t dy = item->pos.y - g_Camera.pos.y;

@@ -2,4 +2,4 @@
 
 #include "global/types.h"
 
-void FX_DinoStomp(ITEM *item);
+void FX_FloorShake(ITEM *item);

@@ -1,7 +1,7 @@
 #include "game/objects/traps/movable_block.h"
 
 #include "game/collide.h"
-#include "game/effect_routines/dino_stomp.h"
+#include "game/effect_routines/floor_shake.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"
@@ -258,7 +258,7 @@ void MovableBlock_Control(int16_t item_num)
         item->gravity = 0;
         item->pos.y = height;
         item->status = IS_DEACTIVATED;
-        FX_DinoStomp(item);
+        FX_FloorShake(item);
         Sound_Effect(SFX_T_REX_FOOTSTOMP, &item->pos, SPM_NORMAL);
     } else if (
         item->pos.y >= height && !item->gravity
