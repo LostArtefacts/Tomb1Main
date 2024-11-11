@@ -3503,7 +3503,7 @@ typedef enum {
 0x0042FFF0  0x0018  +       void __cdecl Flare_DrawMeshes(void);
 0x00430010  0x0018  +       void __cdecl Flare_UndrawMeshes(void);
 0x00430030  0x003E  +       void __cdecl Flare_Ready(void);
-0x00430070  0x026E  -       void __cdecl Flare_Control(int16_t item_num);
+0x00430070  0x026E  +       void __cdecl Flare_Control(int16_t item_num);
 
 # game/laramisc.c
 0x004302E0  0x0668  +       void __cdecl Lara_Control(int16_t item_num);

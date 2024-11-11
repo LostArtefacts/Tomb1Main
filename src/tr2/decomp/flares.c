@@ -13,6 +13,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/utils.h>
+
 #define FLARE_INTENSITY 12
 #define FLARE_FALL_OFF 11
 #define MAX_FLARE_AGE (60 * FRAMES_PER_SECOND) // = 1800
@@ -334,4 +336,90 @@ void __cdecl Flare_Ready(void)
     g_Lara.left_arm.lock = 0;
     g_Lara.right_arm.lock = 0;
     g_Lara.target = NULL;
+}
+
+void __cdecl Flare_Control(const int16_t item_num)
+{
+    ITEM *const item = &g_Items[item_num];
+    if (item->fall_speed) {
+        item->rot.x += PHD_DEGREE * 3;
+        item->rot.z += PHD_DEGREE * 5;
+    } else {
+        item->rot.x = 0;
+        item->rot.z = 0;
+    }
+
+    const int32_t x = item->pos.x;
+    const int32_t y = item->pos.y;
+    const int32_t z = item->pos.z;
+    item->pos.z += (item->speed * Math_Cos(item->rot.y)) >> W2V_SHIFT;
+    item->pos.x += (item->speed * Math_Sin(item->rot.y)) >> W2V_SHIFT;
+
+    if (g_Rooms[item->room_num].flags & RF_UNDERWATER) {
+        item->fall_speed += (5 - item->fall_speed) / 2;
+        item->speed = item->speed + (5 - item->speed) / 2;
+    } else {
+        item->fall_speed += GRAVITY;
+    }
+    item->pos.y += item->fall_speed;
+
+    int16_t room_num = item->room_num;
+    const SECTOR *const sector =
+        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
+
+    const int32_t height =
+        Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
+    if (item->pos.y < height) {
+        const int32_t ceiling =
+            Room_GetCeiling(sector, item->pos.x, item->pos.y, item->pos.z);
+        if (item->pos.y < ceiling) {
+            item->fall_speed = -item->fall_speed;
+            item->pos.y = ceiling;
+        }
+    } else {
+        if (y > height) {
+            item->pos.x = x;
+            item->pos.y = y;
+            item->pos.z = z;
+            item->rot.y += PHD_180;
+            item->speed /= 2;
+            room_num = item->room_num;
+        } else {
+            if (item->fall_speed > 40) {
+                item->fall_speed = 40 - item->fall_speed;
+                CLAMPL(item->fall_speed, -100);
+            } else {
+                item->fall_speed = 0;
+                item->speed -= 3;
+                CLAMPL(item->speed, 0);
+            }
+            item->pos.y = height;
+        }
+    }
+
+    if (room_num != item->room_num) {
+        Item_NewRoom(item_num, room_num);
+    }
+
+    int32_t flare_age = (int32_t)item->data & 0x7FFF;
+    if (flare_age < MAX_FLARE_AGE) {
+        flare_age++;
+    } else if (item->fall_speed == 0 && item->speed == 0) {
+        Item_Kill(item_num);
+        return;
+    }
+
+    if (Flare_DoLight(&item->pos, flare_age)) {
+        flare_age |= 0x8000u;
+        if ((g_Rooms[item->room_num].flags & RF_UNDERWATER)) {
+            Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_UNDERWATER);
+            if (Random_GetDraw() < 0x4000) {
+                CreateBubble(&item->pos, item->room_num);
+            }
+        } else {
+            Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_NORMAL);
+        }
+    }
+
+    item->data = (void *)flare_age;
 }

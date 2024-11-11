@@ -29,3 +29,4 @@ void __cdecl Flare_Undraw(void);
 void __cdecl Flare_DrawMeshes(void);
 void __cdecl Flare_UndrawMeshes(void);
 void __cdecl Flare_Ready(void);
+void __cdecl Flare_Control(int16_t item_num);

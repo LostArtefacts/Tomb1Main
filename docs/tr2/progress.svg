@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.83% (906)</tspan> · <tspan class="known">24.76% (308)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.91% (907)</tspan> · <tspan class="known">24.68% (307)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="544.04" height="6" x="0" y="0" class="decompiled"/>
-<rect width="184.95" height="6" x="544.04" y="0" class="known"/>
+<rect width="544.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="184.35" height="6" x="544.64" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -634,7 +634,7 @@
 <rect width="12" height="12" x="75" y="165" class="decompiled"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="90" y="165" class="decompiled"><title>void __cdecl Flare_UndrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="105" y="165" class="decompiled"><title>void __cdecl Flare_Ready(void);</title></rect>
-<rect width="12" height="12" x="120" y="165" class="known"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="120" y="165" class="decompiled"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="135" y="165" class="decompiled"><title>void __cdecl Lara_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="150" y="165" class="decompiled"><title>void __cdecl Lara_Animate(ITEM *item);</title></rect>
 <rect width="12" height="12" x="165" y="165" class="decompiled"><title>void __cdecl Lara_UseItem(GAME_OBJECT_ID object_id);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.97%</tspan> · <tspan class="known">22.70%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.15%</tspan> · <tspan class="known">22.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="574.98" height="6" x="0" y="0" class="decompiled"/>
-<rect width="169.58" height="6" x="574.98" y="0" class="known"/>
+<rect width="576.34" height="6" x="0" y="0" class="decompiled"/>
+<rect width="168.22" height="6" x="576.34" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1466,7 +1466,7 @@
 <rect width="20.94" height="19.05" x="344.49" y="355.95" class="known"><title>void __cdecl Shark_Control(int16_t item_num);</title></rect>
 <rect width="19.34" height="20.62" x="368.43" y="0" class="known"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
 <rect width="19.34" height="20.18" x="368.43" y="23.62" class="known"><title>int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
-<rect width="19.34" height="20.10" x="368.43" y="46.80" class="known"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
+<rect width="19.34" height="20.10" x="368.43" y="46.80" class="decompiled"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
 <rect width="19.34" height="19.81" x="368.43" y="69.90" class="decompiled"><title>void __cdecl Output_Init(int16_t x, int16_t y, int32_t width, int32_t height, int32_t near_z, int32_t far_z, int16_t view_angle, int32_t screen_width, int32_t screen_height);</title></rect>
 <rect width="19.34" height="19.77" x="368.43" y="92.71" class="decompiled"><title>int32_t __cdecl Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>
 <rect width="19.34" height="19.77" x="368.43" y="115.48" class="decompiled"><title>BOOL __cdecl Level_LoadSamples(HANDLE handle);</title></rect>
