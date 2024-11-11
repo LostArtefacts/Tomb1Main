@@ -315,3 +315,9 @@ void __cdecl Flare_DrawMeshes(void)
     g_Lara.mesh_ptrs[LM_HAND_L] =
         g_Meshes[g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L];
 }
+
+void __cdecl Flare_UndrawMeshes(void)
+{
+    g_Lara.mesh_ptrs[LM_HAND_L] =
+        g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_L];
+}

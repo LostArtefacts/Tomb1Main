@@ -3501,7 +3501,7 @@ typedef enum {
 0x0042FC50  0x0169  +       void __cdecl Flare_Draw(void);
 0x0042FDC0  0x0221  +       void __cdecl Flare_Undraw(void);
 0x0042FFF0  0x0018  +       void __cdecl Flare_DrawMeshes(void);
-0x00430010  0x0018  -       void __cdecl Flare_UndrawMeshes(void);
+0x00430010  0x0018  +       void __cdecl Flare_UndrawMeshes(void);
 0x00430030  0x003E  -       void __cdecl Flare_Ready(void);
 0x00430070  0x026E  -       void __cdecl Flare_Control(int16_t item_num);
 
