@@ -49,6 +49,7 @@
 #include "game/objects/effects/bubble.h"
 #include "game/objects/effects/ember.h"
 #include "game/objects/effects/flame.h"
+#include "game/objects/effects/splash.h"
 #include "game/objects/effects/twinkle.h"
 #include "game/objects/general/bell.h"
 #include "game/objects/general/bridge_common.h"
@@ -993,7 +994,6 @@ static void M_Lot(const bool enable)
 
 static void M_Objects(const bool enable)
 {
-    INJECT(enable, 0x00434D00, Bell_Control);
     INJECT(enable, 0x0040C880, Bird_Initialise);
     INJECT(enable, 0x0040C910, Bird_Control);
     INJECT(enable, 0x0040CB30, Boat_Initialise);
@@ -1021,6 +1021,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004183E0, Bartoli_Initialise);
     INJECT(enable, 0x00418500, Bartoli_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
+    INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x004336F0, BodyPart_Control);
@@ -1035,6 +1036,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434800, GongBonger_Control);
     INJECT(enable, 0x004348C0, Zipline_Collision);
     INJECT(enable, 0x00434980, Zipline_Control);
+    INJECT(enable, 0x00434D00, Bell_Control);
     INJECT(enable, 0x00435050, Door_Shut);
     INJECT(enable, 0x004350A0, Door_Open);
     INJECT(enable, 0x004350E0, Door_Initialise);
