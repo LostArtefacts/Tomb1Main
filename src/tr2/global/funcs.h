@@ -145,7 +145,6 @@
 #define KillerStatue_Initialise ((void __cdecl (*)(int16_t item_num))0x004418F0)
 #define KillerStatue_Control ((void __cdecl (*)(int16_t item_num))0x00441940)
 #define SpringBoard_Control ((void __cdecl (*)(int16_t item_num))0x00441A50)
-#define RollingBall_Initialise ((void __cdecl (*)(int16_t item_num))0x00441B30)
 #define RollingBall_Control ((void __cdecl (*)(int16_t item_num))0x00441B70)
 #define RollingBall_Collision ((void __cdecl (*)(int16_t item_num, ITEM *litem, COLL_INFO *coll))0x00441EC0)
 #define Spike_Collision ((void __cdecl (*)(int16_t item_num, ITEM *litem, COLL_INFO *coll))0x00442110)

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.99% (908)</tspan> · <tspan class="known">24.60% (306)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.07% (909)</tspan> · <tspan class="known">24.52% (305)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="545.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="183.75" height="6" x="545.24" y="0" class="known"/>
+<rect width="545.84" height="6" x="0" y="0" class="decompiled"/>
+<rect width="183.15" height="6" x="545.84" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -845,7 +845,7 @@
 <rect width="12" height="12" x="240" y="225" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="225" class="known"><title>void __cdecl KillerStatue_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="270" y="225" class="known"><title>void __cdecl SpringBoard_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="285" y="225" class="known"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="285" y="225" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="300" y="225" class="known"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="315" y="225" class="known"><title>void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="330" y="225" class="known"><title>void __cdecl Spike_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.30%</tspan> · <tspan class="known">22.37%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.32%</tspan> · <tspan class="known">22.36%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="577.43" height="6" x="0" y="0" class="decompiled"/>
-<rect width="167.13" height="6" x="577.43" y="0" class="known"/>
+<rect width="577.56" height="6" x="0" y="0" class="decompiled"/>
+<rect width="167" height="6" x="577.56" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2212,7 +2212,7 @@
 <rect width="4.23" height="3.89" x="706.64" y="275.68" class="decompiled"><title>void __cdecl Boat_Initialise(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="713.86" y="275.68" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="721.09" y="275.68" class="known"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
-<rect width="4.23" height="3.89" x="728.32" y="275.68" class="known"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
+<rect width="4.23" height="3.89" x="728.32" y="275.68" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="735.55" y="275.68" class="decompiled"><title>int32_t __cdecl RenderErrorBox(int32_t error_code);</title></rect>
 <rect width="4.23" height="3.89" x="742.77" y="275.68" class="decompiled"><title>void __cdecl Shell_ExitSystem(const char *message);</title></rect>
 <rect width="4.14" height="3.97" x="647.85" y="282.57" class="decompiled"><title>void __cdecl S_Audio_Sample_OutCloseAllTracks(void);</title></rect>
