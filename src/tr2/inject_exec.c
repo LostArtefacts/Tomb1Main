@@ -302,6 +302,7 @@ static void M_DecompFlares(const bool enable)
     INJECT(enable, 0x0042FDC0, Flare_Undraw);
     INJECT(enable, 0x0042FFF0, Flare_DrawMeshes);
     INJECT(enable, 0x00430010, Flare_UndrawMeshes);
+    INJECT(enable, 0x00430030, Flare_Ready);
 }
 
 static void M_GameBuf(bool enable)

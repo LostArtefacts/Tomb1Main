@@ -321,3 +321,17 @@ void __cdecl Flare_UndrawMeshes(void)
     g_Lara.mesh_ptrs[LM_HAND_L] =
         g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_L];
 }
+
+void __cdecl Flare_Ready(void)
+{
+    g_Lara.gun_status = LGS_ARMLESS;
+    g_Lara.left_arm.rot.x = 0;
+    g_Lara.left_arm.rot.y = 0;
+    g_Lara.left_arm.rot.z = 0;
+    g_Lara.right_arm.rot.x = 0;
+    g_Lara.right_arm.rot.y = 0;
+    g_Lara.right_arm.rot.z = 0;
+    g_Lara.left_arm.lock = 0;
+    g_Lara.right_arm.lock = 0;
+    g_Lara.target = NULL;
+}
