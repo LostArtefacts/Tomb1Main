@@ -2,10 +2,16 @@
 
 #include "game/gamebuf.h"
 #include "game/items.h"
+#include "game/lara/misc.h"
 #include "game/math.h"
+#include "game/objects/common.h"
+#include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "global/funcs.h"
 #include "global/vars.h"
+
+#include <libtrx/utils.h>
 
 #define ROLLING_BALL_DAMAGE_AIR 100
 #define ROLL_SHAKE_RANGE (WALL_L * 10) // = 10240
@@ -130,5 +136,73 @@ void __cdecl RollingBall_Control(const int16_t item_num)
         item->current_anim_state = item->goal_anim_state;
         item->required_anim_state = TRAP_SET;
         Item_RemoveActive(item_num);
+    }
+}
+
+void __cdecl RollingBall_Collision(
+    const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
+{
+    ITEM *const item = Item_Get(item_num);
+    if (item->status != IS_ACTIVE) {
+        if (item->status != IS_INACTIVE) {
+            Object_Collision(item_num, lara_item, coll);
+        }
+        return;
+    }
+
+    if (!Item_TestBoundsCollide(&g_Items[item_num], lara_item, coll->radius)) {
+        return;
+    }
+    if (!Collide_TestCollision(item, lara_item)) {
+        return;
+    }
+
+    if (lara_item->gravity) {
+        if (coll->enable_baddie_push) {
+            Lara_Push(item, lara_item, coll, coll->enable_spaz, true);
+        }
+        lara_item->hit_points -= ROLLING_BALL_DAMAGE_AIR;
+
+        // TODO: handle overflows
+        const int32_t dx = lara_item->pos.x - item->pos.x;
+        const int32_t dy =
+            (lara_item->pos.y - 350) - (item->pos.y - WALL_L / 2);
+        const int32_t dz = lara_item->pos.z - item->pos.z;
+        int32_t dist = Math_Sqrt(SQUARE(dx) + SQUARE(dy) + SQUARE(dz));
+        CLAMPL(dist, WALL_L / 2);
+
+        DoBloodSplat(
+            item->pos.x + (dx * WALL_L / 2) / dist,
+            item->pos.y + (dy * WALL_L / 2) / dist - WALL_L / 2,
+            item->pos.z + (dz * WALL_L / 2) / dist, item->speed, item->rot.y,
+            item->room_num);
+    } else {
+        lara_item->hit_status = 1;
+        if (lara_item->hit_points > 0) {
+            lara_item->hit_points = -1;
+
+            lara_item->rot.x = 0;
+            lara_item->rot.y = item->rot.y;
+            lara_item->rot.z = 0;
+
+            lara_item->anim_num = LA_BOULDER_DEATH;
+            lara_item->frame_num = g_Anims[LA_BOULDER_DEATH].frame_base;
+            lara_item->current_anim_state = LA_REACH_TO_FREEFALL;
+            lara_item->goal_anim_state = LA_REACH_TO_FREEFALL;
+
+            g_Camera.flags = CF_FOLLOW_CENTRE;
+            g_Camera.target_angle = 170 * PHD_DEGREE;
+            g_Camera.target_elevation = -25 * PHD_DEGREE;
+
+            for (int32_t i = 0; i < 15; i++) {
+                DoBloodSplat(
+                    lara_item->pos.x + (Random_GetControl() - 0x4000) / 256,
+                    lara_item->pos.z + (Random_GetControl() - 0x4000) / 256,
+                    lara_item->pos.y - Random_GetControl() / 64,
+                    2 * item->speed,
+                    item->rot.y + (Random_GetControl() - 0x4000) / 8,
+                    item->room_num);
+            }
+        }
     }
 }
