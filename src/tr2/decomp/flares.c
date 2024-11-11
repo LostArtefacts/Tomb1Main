@@ -309,3 +309,9 @@ void __cdecl Flare_Undraw(void)
     g_Lara.left_arm.frame_num = frame_num_1;
     Flare_SetArm(frame_num_1);
 }
+
+void __cdecl Flare_DrawMeshes(void)
+{
+    g_Lara.mesh_ptrs[LM_HAND_L] =
+        g_Meshes[g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L];
+}

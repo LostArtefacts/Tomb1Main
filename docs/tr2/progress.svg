@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.59% (903)</tspan> · <tspan class="known">25% (311)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.67% (904)</tspan> · <tspan class="known">24.92% (310)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="542.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="186.75" height="6" x="542.24" y="0" class="known"/>
+<rect width="542.84" height="6" x="0" y="0" class="decompiled"/>
+<rect width="186.15" height="6" x="542.84" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -631,7 +631,7 @@
 <rect width="12" height="12" x="30" y="165" class="decompiled"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
 <rect width="12" height="12" x="45" y="165" class="decompiled"><title>void __cdecl Flare_Draw(void);</title></rect>
 <rect width="12" height="12" x="60" y="165" class="decompiled"><title>void __cdecl Flare_Undraw(void);</title></rect>
-<rect width="12" height="12" x="75" y="165" class="known"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
+<rect width="12" height="12" x="75" y="165" class="decompiled"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="90" y="165" class="known"><title>void __cdecl Flare_UndrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="105" y="165" class="known"><title>void __cdecl Flare_Ready(void);</title></rect>
 <rect width="12" height="12" x="120" y="165" class="known"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.94%</tspan> · <tspan class="known">22.73%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.95%</tspan> · <tspan class="known">22.73%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="574.74" height="6" x="0" y="0" class="decompiled"/>
-<rect width="169.82" height="6" x="574.74" y="0" class="known"/>
+<rect width="574.79" height="6" x="0" y="0" class="decompiled"/>
+<rect width="169.77" height="6" x="574.79" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2447,7 +2447,7 @@
 <rect width="1.45" height="1.66" x="741.10" y="336.33" class="decompiled"><title>int32_t __cdecl Input_GetDebounced(int32_t input);</title></rect>
 <rect width="1.45" height="1.66" x="745.55" y="336.33" class="decompiled"><title>bool __cdecl HWR_VertexBufferFull(void);</title></rect>
 <rect width="1.30" height="1.63" x="712.97" y="340.99" class="decompiled"><title>void __cdecl Lara_State_SlideBack(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="1.30" height="1.63" x="712.97" y="345.62" class="known"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
+<rect width="1.30" height="1.63" x="712.97" y="345.62" class="decompiled"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
 <rect width="1.30" height="1.63" x="712.97" y="350.24" class="known"><title>void __cdecl Flare_UndrawMeshes(void);</title></rect>
 <rect width="1.30" height="1.63" x="712.97" y="354.87" class="unused"><title>sub_444990</title></rect>
 <rect width="1.30" height="1.63" x="712.97" y="359.49" class="unused"><title>sub_444AA0</title></rect>

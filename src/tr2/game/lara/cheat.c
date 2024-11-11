@@ -1,6 +1,7 @@
 #include "game/lara/cheat.h"
 
 #include "decomp/effects.h"
+#include "decomp/flares.h"
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/creature.h"
