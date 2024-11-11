@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.03% (896)</tspan> · <tspan class="known">25.56% (318)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.11% (897)</tspan> · <tspan class="known">25.48% (317)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="538.03" height="6" x="0" y="0" class="decompiled"/>
-<rect width="190.95" height="6" x="538.03" y="0" class="known"/>
+<rect width="538.63" height="6" x="0" y="0" class="decompiled"/>
+<rect width="190.35" height="6" x="538.63" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -625,7 +625,7 @@
 <rect width="12" height="12" x="690" y="150" class="decompiled"><title>void __cdecl Gun_SmashItem(int16_t item_num, LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="12" height="12" x="705" y="150" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
 <rect width="12" height="12" x="720" y="150" class="known"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
-<rect width="12" height="12" x="735" y="150" class="known"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
+<rect width="12" height="12" x="735" y="150" class="decompiled"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="0" y="165" class="known"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="165" class="known"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="12" height="12" x="30" y="165" class="known"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.33%</tspan> · <tspan class="known">23.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.40%</tspan> · <tspan class="known">23.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="570.22" height="6" x="0" y="0" class="decompiled"/>
-<rect width="174.34" height="6" x="570.22" y="0" class="known"/>
+<rect width="570.68" height="6" x="0" y="0" class="decompiled"/>
+<rect width="173.88" height="6" x="570.68" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1758,7 +1758,7 @@
 <rect width="10.16" height="10.37" x="508.24" y="258.65" class="decompiled"><title>void __cdecl Lift_Control(int16_t item_num);</title></rect>
 <rect width="10.16" height="10.30" x="508.24" y="272.02" class="decompiled"><title>void __cdecl Output_InsertTransQuad(int32_t x, int32_t y, int32_t width, int32_t height, int32_t z);</title></rect>
 <rect width="10.16" height="10.30" x="508.24" y="285.32" class="decompiled"><title>void __cdecl Lara_State_ForwardJump(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="10.16" height="10.30" x="508.24" y="298.63" class="known"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
+<rect width="10.16" height="10.30" x="508.24" y="298.63" class="decompiled"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
 <rect width="10.16" height="10.30" x="508.24" y="311.93" class="decompiled"><title>void __cdecl CreateWindowPalette(void);</title></rect>
 <rect width="10.16" height="10.24" x="508.24" y="325.23" class="decompiled"><title>int32_t __cdecl Output_XGenX(const int16_t *obj_ptr);</title></rect>
 <rect width="10.16" height="10.24" x="508.24" y="338.47" class="known"><title>void __cdecl GeneralControl(int16_t item_num);</title></rect>

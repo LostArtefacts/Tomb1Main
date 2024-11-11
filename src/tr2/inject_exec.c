@@ -2,6 +2,7 @@
 
 #include "decomp/decomp.h"
 #include "decomp/effects.h"
+#include "decomp/flares.h"
 #include "decomp/fmv.h"
 #include "decomp/skidoo.h"
 #include "decomp/stats.h"
@@ -288,6 +289,11 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041CA90, Splash);
     INJECT(enable, 0x0041D780, FX_LaraHandsFree);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
+}
+
+static void M_DecompFlares(const bool enable)
+{
+    INJECT(enable, 0x0042F840, Flare_DoInHand);
 }
 
 static void M_GameBuf(bool enable)
@@ -1100,6 +1106,7 @@ void Inject_Exec(void)
     M_DecompSkidoo(true);
     M_DecompStats(true);
     M_DecompEffects(true);
+    M_DecompFlares(true);
     M_GameBuf(true);
     M_HWR(true);
     M_Background(true);

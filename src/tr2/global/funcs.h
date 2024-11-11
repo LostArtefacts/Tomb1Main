@@ -76,7 +76,6 @@
 #define HairControl ((void __cdecl (*)(int32_t in_cutscene))0x00420F20)
 #define DrawHair ((void __cdecl (*)(void))0x00421920)
 #define Flare_DoLight ((int32_t __cdecl (*)(XYZ_32 *pos, int32_t flare_age))0x0042F7A0)
-#define Flare_DoInHand ((void __cdecl (*)(int32_t flare_age))0x0042F840)
 #define Flare_DrawInAir ((void __cdecl (*)(const ITEM *item))0x0042F920)
 #define Flare_Create ((void __cdecl (*)(int32_t thrown))0x0042FA20)
 #define Flare_SetArm ((void __cdecl (*)(int32_t frame))0x0042FC00)
