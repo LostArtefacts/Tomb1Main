@@ -1,6 +1,7 @@
 #include "decomp/flares.h"
 
 #include "decomp/effects.h"
+#include "game/gun/gun.h"
 #include "game/inventory/backpack.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
@@ -226,4 +227,85 @@ void __cdecl Flare_Draw(void)
 
     g_Lara.left_arm.frame_num = frame_num;
     Flare_SetArm(frame_num);
+}
+
+void __cdecl Flare_Undraw(void)
+{
+    int16_t frame_num_1 = g_Lara.left_arm.frame_num;
+    int16_t frame_num_2 = g_Lara.flare_frame;
+
+    g_Lara.flare_control_left = 1;
+
+    if (g_LaraItem->goal_anim_state == LS_STOP && g_Lara.skidoo == NO_ITEM) {
+        if (g_LaraItem->anim_num == LA_STAND_IDLE) {
+            frame_num_2 = g_Anims[LA_FLARE_THROW].frame_base + frame_num_1;
+            g_LaraItem->anim_num = LA_FLARE_THROW;
+            g_Lara.flare_frame = frame_num_2;
+            g_LaraItem->frame_num = frame_num_2;
+        }
+
+        if (g_LaraItem->anim_num == LA_FLARE_THROW) {
+            g_Lara.flare_control_left = 0;
+
+            if (frame_num_2
+                >= g_Anims[LA_FLARE_THROW].frame_base + LF_FL_THROW_FT - 1) {
+                g_Lara.gun_type = g_Lara.last_gun_type;
+                g_Lara.request_gun_type = g_Lara.last_gun_type;
+                g_Lara.gun_status = LGS_ARMLESS;
+                Gun_InitialiseNewWeapon();
+                g_Lara.target = NULL;
+                g_Lara.right_arm.lock = 0;
+                g_Lara.left_arm.lock = 0;
+                g_LaraItem->anim_num = LA_STAND_STILL;
+                g_Lara.flare_frame = g_Anims[g_LaraItem->anim_num].frame_base;
+                g_LaraItem->frame_num = g_Lara.flare_frame;
+                g_LaraItem->current_anim_state = LS_STOP;
+                g_LaraItem->goal_anim_state = LS_STOP;
+                return;
+            }
+            g_Lara.flare_frame = frame_num_2 + 1;
+        }
+    } else if (
+        g_LaraItem->current_anim_state == LS_STOP && g_Lara.skidoo == -1) {
+        g_LaraItem->anim_num = LA_STAND_STILL;
+        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+    }
+
+    if (frame_num_1 == LF_FL_HOLD) {
+        frame_num_1 = LF_FL_THROW;
+    } else if (frame_num_1 >= LF_FL_IGNITE && frame_num_1 < LF_FL_2_HOLD) {
+        frame_num_1++;
+        if (frame_num_1 == LF_FL_2_HOLD - 1) {
+            frame_num_1 = LF_FL_THROW;
+        }
+    } else if (frame_num_1 >= LF_FL_THROW && frame_num_1 < LF_FL_DRAW) {
+        frame_num_1++;
+        if (frame_num_1 == LF_FL_THROW_RELEASE) {
+            Flare_Create(true);
+            Flare_UndrawMeshes();
+        } else if (frame_num_1 == LF_FL_DRAW) {
+            frame_num_1 = 0;
+            g_Lara.gun_type = g_Lara.last_gun_type;
+            g_Lara.request_gun_type = g_Lara.last_gun_type;
+            g_Lara.gun_status = LGS_ARMLESS;
+            Gun_InitialiseNewWeapon();
+            g_Lara.target = NULL;
+            g_Lara.flare_control_left = 0;
+            g_Lara.right_arm.lock = 0;
+            g_Lara.left_arm.lock = 0;
+            g_Lara.flare_frame = 0;
+        }
+    } else if (frame_num_1 >= LF_FL_2_HOLD && frame_num_1 < LF_FL_END) {
+        frame_num_1++;
+        if (frame_num_1 == LF_FL_END) {
+            frame_num_1 = LF_FL_THROW;
+        }
+    }
+
+    if (frame_num_1 >= LF_FL_THROW && frame_num_1 < LF_FL_THROW_RELEASE) {
+        Flare_DoInHand(g_Lara.flare_age);
+    }
+
+    g_Lara.left_arm.frame_num = frame_num_1;
+    Flare_SetArm(frame_num_1);
 }

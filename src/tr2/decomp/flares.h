@@ -11,6 +11,7 @@ typedef enum {
 
     LF_FL_HOLD = 0,
     LF_FL_THROW = (LF_FL_HOLD + LF_FL_HOLD_FT), // = 1
+    LF_FL_THROW_RELEASE = (LF_FL_THROW + 20), // = 21
     LF_FL_DRAW = (LF_FL_THROW + LF_FL_THROW_FT), // = 33
     LF_FL_IGNITE = (LF_FL_DRAW + LF_FL_DRAW_FT), // = 72
     LF_FL_2_HOLD = (LF_FL_IGNITE + LF_FL_IGNITE_FT), // = 95
@@ -24,3 +25,4 @@ void __cdecl Flare_DrawInAir(const ITEM *item);
 void __cdecl Flare_Create(bool thrown);
 void __cdecl Flare_SetArm(int32_t frame);
 void __cdecl Flare_Draw(void);
+void __cdecl Flare_Undraw(void);

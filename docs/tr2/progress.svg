@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.51% (902)</tspan> · <tspan class="known">25.08% (312)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.59% (903)</tspan> · <tspan class="known">25% (311)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="541.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="187.35" height="6" x="541.64" y="0" class="known"/>
+<rect width="542.24" height="6" x="0" y="0" class="decompiled"/>
+<rect width="186.75" height="6" x="542.24" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -630,7 +630,7 @@
 <rect width="12" height="12" x="15" y="165" class="decompiled"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="12" height="12" x="30" y="165" class="decompiled"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
 <rect width="12" height="12" x="45" y="165" class="decompiled"><title>void __cdecl Flare_Draw(void);</title></rect>
-<rect width="12" height="12" x="60" y="165" class="known"><title>void __cdecl Flare_Undraw(void);</title></rect>
+<rect width="12" height="12" x="60" y="165" class="decompiled"><title>void __cdecl Flare_Undraw(void);</title></rect>
 <rect width="12" height="12" x="75" y="165" class="known"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="90" y="165" class="known"><title>void __cdecl Flare_UndrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="105" y="165" class="known"><title>void __cdecl Flare_Ready(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.78%</tspan> · <tspan class="known">22.89%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.94%</tspan> · <tspan class="known">22.73%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="573.55" height="6" x="0" y="0" class="decompiled"/>
-<rect width="171.01" height="6" x="573.55" y="0" class="known"/>
+<rect width="574.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="169.82" height="6" x="574.74" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1492,7 +1492,7 @@
 <rect width="17.94" height="18.68" x="562.69" y="0" class="decompiled"><title>void __cdecl Output_DrawScaledSpriteC(const int16_t *obj_ptr);</title></rect>
 <rect width="17.94" height="18.68" x="583.63" y="0" class="decompiled"><title>void __cdecl Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="17.94" height="18.68" x="604.56" y="0" class="decompiled"><title>void __cdecl Keyhole_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="17.86" height="18.68" x="625.50" y="0" class="known"><title>void __cdecl Flare_Undraw(void);</title></rect>
+<rect width="17.86" height="18.68" x="625.50" y="0" class="decompiled"><title>void __cdecl Flare_Undraw(void);</title></rect>
 <rect width="17.86" height="18.68" x="646.36" y="0" class="decompiled"><title>BOOL __cdecl Level_LoadBoxes(HANDLE handle);</title></rect>
 <rect width="17.82" height="18.68" x="667.21" y="0" class="decompiled"><title>void __cdecl BGND_DrawInGameBackground(void);</title></rect>
 <rect width="17.67" height="18.68" x="688.04" y="0" class="decompiled"><title>void __cdecl Gun_GetNewTarget(WEAPON_INFO *winfo);</title></rect>
