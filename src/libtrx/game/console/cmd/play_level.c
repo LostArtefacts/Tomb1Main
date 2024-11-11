@@ -57,7 +57,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
 matched:
     if (level_to_load >= 0 && level_to_load < Gameflow_GetLevelCount()) {
         Gameflow_OverrideCommand((GAMEFLOW_COMMAND) {
-            .action = GF_START_GAME,
+            .action = GF_SELECT_GAME,
             .param = level_to_load,
         });
         Console_Log(GS(OSD_PLAY_LEVEL), Gameflow_GetLevelTitle(level_to_load));

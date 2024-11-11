@@ -241,6 +241,7 @@ void Gameflow_OverrideCommand(const GAMEFLOW_COMMAND command)
 {
     switch (command.action) {
     case GF_START_GAME:
+    case GF_SELECT_GAME:
         g_GF_OverrideDir = GFD_START_GAME | command.param;
         break;
     case GF_START_SAVED_GAME:
