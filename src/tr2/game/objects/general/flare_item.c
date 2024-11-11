@@ -1,5 +1,6 @@
 #include "game/objects/general/flare_item.h"
 
+#include "decomp/flares.h"
 #include "game/objects/general/pickup.h"
 #include "global/funcs.h"
 

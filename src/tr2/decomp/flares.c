@@ -2,6 +2,9 @@
 
 #include "decomp/effects.h"
 #include "game/lara/misc.h"
+#include "game/math.h"
+#include "game/matrix.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/sound.h"
 #include "global/funcs.h"
@@ -71,4 +74,28 @@ void __cdecl Flare_DoInHand(const int32_t flare_age)
     } else if (g_Lara.gun_status == LGS_ARMLESS) {
         g_Lara.gun_status = LGS_UNDRAW;
     }
+}
+
+void __cdecl Flare_DrawInAir(const ITEM *const item)
+{
+    int32_t rate;
+    FRAME_INFO *frames[2];
+    Item_GetFrames(item, frames, &rate);
+    Matrix_Push();
+    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    const int32_t clip = S_GetObjectBounds(&frames[0]->bounds);
+    if (clip != 0) {
+        Output_CalculateObjectLighting(item, frames[0]);
+        Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_ITEM].mesh_idx], clip);
+        if ((int32_t)item->data & 0x8000) {
+            Matrix_TranslateRel(-6, 6, 80);
+            Matrix_RotX(-90 * PHD_DEGREE);
+            Matrix_RotY((int16_t)(2 * Random_GetDraw()));
+            S_CalculateStaticLight(8 * 256);
+            Output_InsertPolygons(
+                g_Meshes[g_Objects[O_FLARE_FIRE].mesh_idx], clip);
+        }
+    }
+    Matrix_Pop();
 }

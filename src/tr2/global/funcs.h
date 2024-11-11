@@ -75,7 +75,6 @@
 #define InitialiseHair ((void __cdecl (*)(void))0x00420EA0)
 #define HairControl ((void __cdecl (*)(int32_t in_cutscene))0x00420F20)
 #define DrawHair ((void __cdecl (*)(void))0x00421920)
-#define Flare_DrawInAir ((void __cdecl (*)(const ITEM *item))0x0042F920)
 #define Flare_Create ((void __cdecl (*)(int32_t thrown))0x0042FA20)
 #define Flare_SetArm ((void __cdecl (*)(int32_t frame))0x0042FC00)
 #define Flare_Draw ((void __cdecl (*)(void))0x0042FC50)
