@@ -244,3 +244,8 @@ void __cdecl Splash(const ITEM *const item)
         fx->frame_num = 0;
     }
 }
+
+void __cdecl FX_LaraHandsFree(ITEM *const item)
+{
+    g_Lara.gun_status = LGS_ARMLESS;
+}

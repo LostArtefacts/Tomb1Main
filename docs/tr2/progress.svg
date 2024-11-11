@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.95% (895)</tspan> · <tspan class="known">25.64% (319)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.03% (896)</tspan> · <tspan class="known">25.56% (318)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="537.43" height="6" x="0" y="0" class="decompiled"/>
-<rect width="191.55" height="6" x="537.43" y="0" class="known"/>
+<rect width="538.03" height="6" x="0" y="0" class="decompiled"/>
+<rect width="190.95" height="6" x="538.03" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -356,7 +356,7 @@
 <rect width="12" height="12" x="405" y="75" class="known"><title>void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="420" y="75" class="known"><title>void __cdecl SphereOfDoom_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="75" class="known"><title>void __cdecl SphereOfDoom_Draw(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="450" y="75" class="known"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
+<rect width="12" height="12" x="450" y="75" class="decompiled"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
 <rect width="12" height="12" x="465" y="75" class="known"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
 <rect width="12" height="12" x="480" y="75" class="known"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="495" y="75" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
@@ -1326,8 +1326,8 @@
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
 <text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.33%</tspan> · <tspan class="known">23.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="570.20" height="6" x="0" y="0" class="decompiled"/>
-<rect width="174.36" height="6" x="570.20" y="0" class="known"/>
+<rect width="570.22" height="6" x="0" y="0" class="decompiled"/>
+<rect width="174.34" height="6" x="570.22" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2515,7 +2515,7 @@
 <rect width="0.10" height="0.22" x="747.16" y="357.17" class="decompiled"><title>void __cdecl Lara_State_UWTwist(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="0.10" height="0.18" x="732.20" y="360.38" class="known"><title>void __cdecl S_ClearScreen(void);</title></rect>
 <rect width="0.10" height="0.10" x="732.20" y="363.56" class="decompiled"><title>void __cdecl Game_SetCutsceneTrack(int32_t track);</title></rect>
-<rect width="0.10" height="0.10" x="732.20" y="366.45" class="known"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
+<rect width="0.10" height="0.10" x="732.20" y="366.45" class="decompiled"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
 <rect width="0.10" height="0.10" x="732.20" y="369.34" class="decompiled"><title>void __cdecl Lara_State_Splat(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="0.10" height="0.10" x="732.20" y="372.22" class="decompiled"><title>void __cdecl Random_SeedControl(int32_t seed);</title></rect>
 <rect width="0.10" height="0.10" x="732.20" y="375.11" class="decompiled"><title>void __cdecl Random_SeedDraw(int32_t seed);</title></rect>
