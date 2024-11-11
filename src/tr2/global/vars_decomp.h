@@ -248,6 +248,7 @@
 #define g_DetonatorPosition (*(XYZ_32*)0x004D7C68)
 #define g_NumCameras (*(int32_t*)0x004D7C74)
 #define g_SoundTrackIds (*(int32_t(*)[128])0x004D7C80)
+#define g_DetonateAllMines (*(int32_t*)0x004D7E7C)
 #define g_BGND_PictureIsReady (*(bool*)0x004D7E88)
 #define g_BGND_TexturePageIndexes (*(int32_t(*)[5])0x004D7E90)
 #define g_BGND_PageHandles (*(HWR_TEXTURE_HANDLE(*)[5])0x004D7EA8)

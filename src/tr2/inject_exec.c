@@ -75,6 +75,7 @@
 #include "game/objects/setup.h"
 #include "game/objects/traps/ember_emitter.h"
 #include "game/objects/traps/flame_emitter.h"
+#include "game/objects/traps/mine.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 #include "game/option/option.h"
@@ -1092,6 +1093,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043EDD0, SkidooDriver_Control);
     INJECT(enable, 0x0043F1D0, SkidooArmed_Push);
     INJECT(enable, 0x0043F2F0, SkidooArmed_Collision);
+    INJECT(enable, 0x00440F10, Mine_Control);
     INJECT(enable, 0x00442270, Trapdoor_Control);
     INJECT(enable, 0x004422C0, Trapdoor_Floor);
     INJECT(enable, 0x00442300, Trapdoor_Ceiling);

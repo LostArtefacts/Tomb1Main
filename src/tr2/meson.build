@@ -210,6 +210,7 @@ dll_sources = [
   'game/objects/setup.c',
   'game/objects/traps/ember_emitter.c',
   'game/objects/traps/flame_emitter.c',
+  'game/objects/traps/mine.c',
   'game/objects/vars.c',
   'game/objects/vehicles/boat.c',
   'game/objects/vehicles/skidoo_armed.c',

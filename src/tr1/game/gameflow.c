@@ -546,32 +546,18 @@ static bool M_LoadObjectNames(
         char *json_key;
         char *target_string;
     } legacy_string_defs[] = {
-        // clang-format off
-        { "puzzle1", "O_PUZZLE_ITEM_1" },
-        { "puzzle1", "O_PUZZLE_OPTION_1" },
-        { "puzzle2", "O_PUZZLE_ITEM_2" },
-        { "puzzle2", "O_PUZZLE_OPTION_2" },
-        { "puzzle3", "O_PUZZLE_ITEM_3" },
-        { "puzzle3", "O_PUZZLE_OPTION_3" },
-        { "puzzle4", "O_PUZZLE_ITEM_4" },
-        { "puzzle4", "O_PUZZLE_OPTION_4" },
-        { "key1", "O_KEY_ITEM_1" },
-        { "key1", "O_KEY_OPTION_1" },
-        { "key2", "O_KEY_ITEM_2" },
-        { "key2", "O_KEY_OPTION_2" },
-        { "key3", "O_KEY_ITEM_3" },
-        { "key3", "O_KEY_OPTION_3" },
-        { "key4", "O_KEY_ITEM_4" },
-        { "key4", "O_KEY_OPTION_4" },
-        { "pickup1", "O_PICKUP_ITEM_1" },
-        { "pickup1", "O_PICKUP_OPTION_1" },
-        { "pickup2", "O_PICKUP_ITEM_2" },
-        { "pickup2", "O_PICKUP_OPTION_2" },
-        { "leadbar", "O_LEADBAR_ITEM" },
-        { "leadbar", "O_LEADBAR_OPTION" },
-        { "scion", "O_SCION_OPTION" },
-        { NULL, NULL },
-        // clang-format on
+        { "puzzle1", "O_PUZZLE_ITEM_1" }, { "puzzle1", "O_PUZZLE_OPTION_1" },
+        { "puzzle2", "O_PUZZLE_ITEM_2" }, { "puzzle2", "O_PUZZLE_OPTION_2" },
+        { "puzzle3", "O_PUZZLE_ITEM_3" }, { "puzzle3", "O_PUZZLE_OPTION_3" },
+        { "puzzle4", "O_PUZZLE_ITEM_4" }, { "puzzle4", "O_PUZZLE_OPTION_4" },
+        { "key1", "O_KEY_ITEM_1" },       { "key1", "O_KEY_OPTION_1" },
+        { "key2", "O_KEY_ITEM_2" },       { "key2", "O_KEY_OPTION_2" },
+        { "key3", "O_KEY_ITEM_3" },       { "key3", "O_KEY_OPTION_3" },
+        { "key4", "O_KEY_ITEM_4" },       { "key4", "O_KEY_OPTION_4" },
+        { "pickup1", "O_PICKUP_ITEM_1" }, { "pickup1", "O_PICKUP_OPTION_1" },
+        { "pickup2", "O_PICKUP_ITEM_2" }, { "pickup2", "O_PICKUP_OPTION_2" },
+        { "leadbar", "O_LEADBAR_ITEM" },  { "leadbar", "O_LEADBAR_OPTION" },
+        { "scion", "O_SCION_OPTION" },    { NULL, NULL },
     };
 
     // count allocation size
