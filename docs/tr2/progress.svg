@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.07% (909)</tspan> · <tspan class="known">24.52% (305)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.15% (910)</tspan> · <tspan class="known">24.44% (304)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="545.84" height="6" x="0" y="0" class="decompiled"/>
-<rect width="183.15" height="6" x="545.84" y="0" class="known"/>
+<rect width="546.44" height="6" x="0" y="0" class="decompiled"/>
+<rect width="182.55" height="6" x="546.44" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -846,7 +846,7 @@
 <rect width="12" height="12" x="255" y="225" class="known"><title>void __cdecl KillerStatue_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="270" y="225" class="known"><title>void __cdecl SpringBoard_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="285" y="225" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="300" y="225" class="known"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="300" y="225" class="decompiled"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="315" y="225" class="known"><title>void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="330" y="225" class="known"><title>void __cdecl Spike_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="345" y="225" class="decompiled"><title>void __cdecl Trapdoor_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.32%</tspan> · <tspan class="known">22.36%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.56%</tspan> · <tspan class="known">22.11%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="577.56" height="6" x="0" y="0" class="decompiled"/>
-<rect width="167" height="6" x="577.56" y="0" class="known"/>
+<rect width="579.40" height="6" x="0" y="0" class="decompiled"/>
+<rect width="165.16" height="6" x="579.40" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1423,7 +1423,7 @@
 <rect width="22.45" height="24.67" x="294.45" y="27.84" class="known"><title>INT_PTR __stdcall SE_GraphicsDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="22.45" height="24.38" x="294.45" y="55.51" class="known"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
 <rect width="22.45" height="24.35" x="294.45" y="82.89" class="decompiled"><title>void __cdecl Output_InsertSprite_Sorted(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);</title></rect>
-<rect width="22.45" height="24.35" x="294.45" y="110.24" class="known"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
+<rect width="22.45" height="24.35" x="294.45" y="110.24" class="decompiled"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
 <rect width="22.45" height="24.25" x="294.45" y="137.58" class="decompiled"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
 <rect width="22.45" height="24.22" x="294.45" y="164.83" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="22.45" height="24.15" x="294.45" y="192.05" class="decompiled"><title>void __fastcall Output_WGTMapA(int32_t y0, int32_t y1, uint8_t *tex_page); // actually, __watcall, which is esoteric and rarely supported</title></rect>

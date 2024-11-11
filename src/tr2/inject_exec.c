@@ -1096,6 +1096,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043F2F0, SkidooArmed_Collision);
     INJECT(enable, 0x00440F10, Mine_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
+    INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00442270, Trapdoor_Control);
     INJECT(enable, 0x004422C0, Trapdoor_Floor);
     INJECT(enable, 0x00442300, Trapdoor_Ceiling);
