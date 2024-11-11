@@ -15,6 +15,7 @@ typedef enum {
     LF_FL_IGNITE = (LF_FL_DRAW + LF_FL_DRAW_FT), // = 72
     LF_FL_2_HOLD = (LF_FL_IGNITE + LF_FL_IGNITE_FT), // = 95
     LF_FL_END = (LF_FL_2_HOLD + LF_FL_2_HOLD_FT), // = 110
+    LF_FL_DRAW_GOT_IT = (LF_FL_DRAW + 13), // = 46
 } LARA_FLARE_ANIMATION_FRAME;
 
 int32_t __cdecl Flare_DoLight(const XYZ_32 *pos, int32_t flare_age);
@@ -22,3 +23,4 @@ void __cdecl Flare_DoInHand(int32_t flare_age);
 void __cdecl Flare_DrawInAir(const ITEM *item);
 void __cdecl Flare_Create(bool thrown);
 void __cdecl Flare_SetArm(int32_t frame);
+void __cdecl Flare_Draw(void);

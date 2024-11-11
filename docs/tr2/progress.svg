@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.43% (901)</tspan> · <tspan class="known">25.16% (313)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.51% (902)</tspan> · <tspan class="known">25.08% (312)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="541.03" height="6" x="0" y="0" class="decompiled"/>
-<rect width="187.95" height="6" x="541.03" y="0" class="known"/>
+<rect width="541.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="187.35" height="6" x="541.64" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -629,7 +629,7 @@
 <rect width="12" height="12" x="0" y="165" class="decompiled"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="165" class="decompiled"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="12" height="12" x="30" y="165" class="decompiled"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
-<rect width="12" height="12" x="45" y="165" class="known"><title>void __cdecl Flare_Draw(void);</title></rect>
+<rect width="12" height="12" x="45" y="165" class="decompiled"><title>void __cdecl Flare_Draw(void);</title></rect>
 <rect width="12" height="12" x="60" y="165" class="known"><title>void __cdecl Flare_Undraw(void);</title></rect>
 <rect width="12" height="12" x="75" y="165" class="known"><title>void __cdecl Flare_DrawMeshes(void);</title></rect>
 <rect width="12" height="12" x="90" y="165" class="known"><title>void __cdecl Flare_UndrawMeshes(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.67%</tspan> · <tspan class="known">23%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.78%</tspan> · <tspan class="known">22.89%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="572.76" height="6" x="0" y="0" class="decompiled"/>
-<rect width="171.80" height="6" x="572.76" y="0" class="known"/>
+<rect width="573.55" height="6" x="0" y="0" class="decompiled"/>
+<rect width="171.01" height="6" x="573.55" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1592,7 +1592,7 @@
 <rect width="15.01" height="13.82" x="520.68" y="59.33" class="decompiled"><title>int32_t __cdecl Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.96" height="13.82" x="538.69" y="59.33" class="decompiled"><title>void __cdecl HWR_DrawPolyList(void);</title></rect>
 <rect width="14.81" height="13.82" x="556.65" y="59.33" class="decompiled"><title>void __cdecl Boat_Animation(ITEM *boat, int32_t collide);</title></rect>
-<rect width="14.81" height="13.82" x="574.46" y="59.33" class="known"><title>void __cdecl Flare_Draw(void);</title></rect>
+<rect width="14.81" height="13.82" x="574.46" y="59.33" class="decompiled"><title>void __cdecl Flare_Draw(void);</title></rect>
 <rect width="14.76" height="13.82" x="592.27" y="59.33" class="decompiled"><title>int32_t __cdecl Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="14.71" height="13.82" x="610.03" y="59.33" class="decompiled"><title>void __cdecl Inv_RingIsOpen(RING_INFO *ring);</title></rect>
 <rect width="14.66" height="13.82" x="627.74" y="59.33" class="decompiled"><title>void __cdecl Gun_Rifle_Draw(LARA_GUN_TYPE weapon_type);</title></rect>

@@ -298,6 +298,7 @@ static void M_DecompFlares(const bool enable)
     INJECT(enable, 0x0042F920, Flare_DrawInAir);
     INJECT(enable, 0x0042FA20, Flare_Create);
     INJECT(enable, 0x0042FC00, Flare_SetArm);
+    INJECT(enable, 0x0042FC50, Flare_Draw);
 }
 
 static void M_GameBuf(bool enable)

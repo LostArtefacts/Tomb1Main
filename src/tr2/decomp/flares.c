@@ -1,6 +1,7 @@
 #include "decomp/flares.h"
 
 #include "decomp/effects.h"
+#include "game/inventory/backpack.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
 #include "game/matrix.h"
@@ -181,4 +182,48 @@ void __cdecl Flare_SetArm(const int32_t frame)
 
     g_Lara.left_arm.anim_num = anim_base;
     g_Lara.left_arm.frame_base = g_Anims[g_Lara.left_arm.anim_num].frame_ptr;
+}
+
+void __cdecl Flare_Draw(void)
+{
+    if (g_LaraItem->current_anim_state == LS_FLARE_PICKUP
+        || g_LaraItem->current_anim_state == LS_PICKUP) {
+        Flare_DoInHand(g_Lara.flare_age);
+        g_Lara.flare_control_left = 0;
+        g_Lara.left_arm.frame_num = LF_FL_2_HOLD - 2;
+        Flare_SetArm(g_Lara.left_arm.frame_num);
+        return;
+    }
+
+    int32_t frame_num = g_Lara.left_arm.frame_num + 1;
+
+    g_Lara.flare_control_left = 1;
+
+    if (frame_num < LF_FL_DRAW || frame_num > LF_FL_2_HOLD - 1) {
+        frame_num = LF_FL_DRAW;
+    } else if (frame_num == LF_FL_DRAW_GOT_IT) {
+        Flare_DrawMeshes();
+        if (!g_SaveGame.bonus_flag) {
+            Inv_RemoveItem(O_FLARES_ITEM);
+        }
+    } else if (frame_num >= LF_FL_IGNITE && frame_num <= LF_FL_2_HOLD - 2) {
+        if (frame_num == LF_FL_IGNITE) {
+            if ((g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) != 0) {
+                Sound_Effect(
+                    SFX_LARA_FLARE_IGNITE, &g_LaraItem->pos, SPM_UNDERWATER);
+            } else {
+                Sound_Effect(
+                    SFX_LARA_FLARE_IGNITE, &g_LaraItem->pos, SPM_NORMAL);
+            }
+            g_Lara.flare_age = 0;
+        }
+        Flare_DoInHand(g_Lara.flare_age);
+    } else if (frame_num == LF_FL_2_HOLD - 1) {
+        Flare_Ready();
+        Flare_DoInHand(g_Lara.flare_age);
+        frame_num = LF_FL_HOLD;
+    }
+
+    g_Lara.left_arm.frame_num = frame_num;
+    Flare_SetArm(frame_num);
 }
