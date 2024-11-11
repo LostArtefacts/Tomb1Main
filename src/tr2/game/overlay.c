@@ -403,8 +403,8 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     const int32_t vp_x = vp_src_x + (vp_dst_x - vp_src_x) * ease;
     const int32_t vp_y = vp_src_y + (vp_dst_y - vp_src_y) * ease;
 
-    g_FltWinCenterX = vp_x;
-    g_FltWinCenterY = vp_y;
+    g_PhdWinCenterX = vp_x;
+    g_PhdWinCenterY = vp_y;
 
     Matrix_PushUnit();
     Matrix_TranslateRel(0, 0, scale);
