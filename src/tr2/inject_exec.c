@@ -293,6 +293,7 @@ static void M_DecompEffects(const bool enable)
 
 static void M_DecompFlares(const bool enable)
 {
+    INJECT(enable, 0x0042F7A0, Flare_DoLight);
     INJECT(enable, 0x0042F840, Flare_DoInHand);
 }
 

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.11% (897)</tspan> · <tspan class="known">25.48% (317)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.19% (898)</tspan> · <tspan class="known">25.40% (316)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="538.63" height="6" x="0" y="0" class="decompiled"/>
-<rect width="190.35" height="6" x="538.63" y="0" class="known"/>
+<rect width="539.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="189.75" height="6" x="539.23" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -624,7 +624,7 @@
 <rect width="12" height="12" x="675" y="150" class="decompiled"><title>void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);</title></rect>
 <rect width="12" height="12" x="690" y="150" class="decompiled"><title>void __cdecl Gun_SmashItem(int16_t item_num, LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="12" height="12" x="705" y="150" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
-<rect width="12" height="12" x="720" y="150" class="known"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
+<rect width="12" height="12" x="720" y="150" class="decompiled"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="735" y="150" class="decompiled"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="0" y="165" class="known"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="165" class="known"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.40%</tspan> · <tspan class="known">23.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.44%</tspan> · <tspan class="known">23.23%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="570.68" height="6" x="0" y="0" class="decompiled"/>
-<rect width="173.88" height="6" x="570.68" y="0" class="known"/>
+<rect width="571.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="173.54" height="6" x="571.02" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1866,7 +1866,7 @@
 <rect width="8.25" height="8.72" x="672.02" y="173.53" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT3_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="8.25" height="8.72" x="683.27" y="173.53" class="known"><title>void __cdecl setup_screen_size(void);</title></rect>
 <rect width="8.11" height="8.72" x="694.52" y="173.53" class="decompiled"><title>void __cdecl Output_DrawScreenSprite(int32_t sx, int32_t sy, int32_t sz, int32_t scale_h, int32_t scale_v, int16_t sprite_idx, int16_t shade, uint16_t flags);</title></rect>
-<rect width="8.11" height="8.72" x="705.63" y="173.53" class="known"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
+<rect width="8.11" height="8.72" x="705.63" y="173.53" class="decompiled"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
 <rect width="8.11" height="8.72" x="716.74" y="173.53" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="8.11" height="8.72" x="727.85" y="173.53" class="decompiled"><title>void __cdecl CreateClipper(void);</title></rect>
 <rect width="8.04" height="8.72" x="738.96" y="173.53" class="decompiled"><title>void __cdecl Item_NewRoom(int16_t item_num, int16_t room_num);</title></rect>

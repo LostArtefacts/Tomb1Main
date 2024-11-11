@@ -3493,7 +3493,7 @@ typedef enum {
 0x0042F740  0x003B  +       GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);
 
 # game/laraflare.c
-0x0042F7A0  0x009D  -       int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);
+0x0042F7A0  0x009D  +       int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);
 0x0042F840  0x00D3  +       void __cdecl Flare_DoInHand(int32_t flare_age);
 0x0042F920  0x00F8  -       void __cdecl Flare_DrawInAir(const ITEM *item);
 0x0042FA20  0x01D7  -       void __cdecl Flare_Create(int32_t thrown);
