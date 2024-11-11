@@ -134,7 +134,6 @@
 #define Spider_Leap ((void __cdecl (*)(int16_t item_num, int16_t angle))0x0043FFC0)
 #define Spider_Control ((void __cdecl (*)(int16_t item_num))0x00440070)
 #define BigSpider_Control ((void __cdecl (*)(int16_t item_num))0x00440290)
-#define CeilingSpikes_Control ((void __cdecl (*)(int16_t item_num))0x00441250)
 #define Hook_Control ((void __cdecl (*)(int16_t item_num))0x00441370)
 #define Propeller_Control ((void __cdecl (*)(int16_t item_num))0x00441400)
 #define SpinningBlade_Control ((void __cdecl (*)(int16_t item_num))0x00441590)

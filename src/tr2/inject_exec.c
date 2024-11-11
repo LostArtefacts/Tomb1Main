@@ -77,6 +77,7 @@
 #include "game/objects/traps/flame_emitter.h"
 #include "game/objects/traps/mine.h"
 #include "game/objects/traps/rolling_ball.h"
+#include "game/objects/traps/spike_ceiling.h"
 #include "game/objects/traps/spike_wall.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
@@ -1097,6 +1098,8 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043F2F0, SkidooArmed_Collision);
     INJECT(enable, 0x00440F10, Mine_Control);
     INJECT(enable, 0x00441110, SpikeWall_Control);
+    INJECT(enable, 0x00441250, SpikeCeiling_Control);
+    INJECT(enable, 0x00441250, SpikeCeiling_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00441EC0, RollingBall_Collision);
