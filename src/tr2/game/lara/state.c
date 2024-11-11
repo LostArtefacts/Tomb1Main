@@ -909,7 +909,7 @@ void __cdecl Lara_State_SurfSwim(ITEM *item, COLL_INFO *coll)
     } else if (g_Input.right) {
         item->rot.y += LARA_SLOW_TURN;
     }
-    if (!g_Input.forward || g_Input.back) {
+    if (!g_Input.forward || g_Input.jump) {
         item->goal_anim_state = LS_SURF_TREAD;
     }
     item->fall_speed += 8;
