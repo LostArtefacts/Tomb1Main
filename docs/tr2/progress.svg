@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.27% (899)</tspan> · <tspan class="known">25.32% (315)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">72.35% (900)</tspan> · <tspan class="known">25.24% (314)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="539.83" height="6" x="0" y="0" class="decompiled"/>
-<rect width="189.15" height="6" x="539.83" y="0" class="known"/>
+<rect width="540.43" height="6" x="0" y="0" class="decompiled"/>
+<rect width="188.55" height="6" x="540.43" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -627,7 +627,7 @@
 <rect width="12" height="12" x="720" y="150" class="decompiled"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="735" y="150" class="decompiled"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
 <rect width="12" height="12" x="0" y="165" class="decompiled"><title>void __cdecl Flare_DrawInAir(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="15" y="165" class="known"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
+<rect width="12" height="12" x="15" y="165" class="decompiled"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="12" height="12" x="30" y="165" class="known"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
 <rect width="12" height="12" x="45" y="165" class="known"><title>void __cdecl Flare_Draw(void);</title></rect>
 <rect width="12" height="12" x="60" y="165" class="known"><title>void __cdecl Flare_Undraw(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.51%</tspan> · <tspan class="known">23.16%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.65%</tspan> · <tspan class="known">23.02%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="571.56" height="6" x="0" y="0" class="decompiled"/>
-<rect width="173" height="6" x="571.56" y="0" class="known"/>
+<rect width="572.59" height="6" x="0" y="0" class="decompiled"/>
+<rect width="171.97" height="6" x="572.59" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1524,7 +1524,7 @@
 <rect width="17" height="16.75" x="533.27" y="21.68" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="17" height="16.75" x="553.27" y="21.68" class="known"><title>void __cdecl SE_GraphicsDlgFullScreenModesUpdate(HWND hwndDlg);</title></rect>
 <rect width="16.96" height="16.75" x="573.27" y="21.68" class="decompiled"><title>void __cdecl Creature_GetBaddieTarget(int16_t item_num, int32_t goody);</title></rect>
-<rect width="16.79" height="16.75" x="593.23" y="21.68" class="known"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
+<rect width="16.79" height="16.75" x="593.23" y="21.68" class="decompiled"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
 <rect width="16.75" height="16.75" x="613.02" y="21.68" class="decompiled"><title>void __cdecl ShowGymStatsText(char *time_str, int32_t type);</title></rect>
 <rect width="16.75" height="16.75" x="632.77" y="21.68" class="decompiled"><title>BOOL __cdecl Level_LoadItems(HANDLE handle);</title></rect>
 <rect width="16.75" height="16.75" x="652.52" y="21.68" class="decompiled"><title>int32_t __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int32_t nShowCmd);</title></rect>

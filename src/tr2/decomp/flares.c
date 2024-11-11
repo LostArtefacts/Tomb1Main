@@ -6,6 +6,7 @@
 #include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
+#include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -98,4 +99,66 @@ void __cdecl Flare_DrawInAir(const ITEM *const item)
         }
     }
     Matrix_Pop();
+}
+
+void __cdecl Flare_Create(const bool thrown)
+{
+    const int16_t item_num = Item_Create();
+    if (item_num == NO_ITEM) {
+        return;
+    }
+
+    ITEM *const item = Item_Get(item_num);
+    item->object_id = O_FLARE_ITEM;
+    item->room_num = g_LaraItem->room_num;
+
+    XYZ_32 vec = {
+        .x = -16,
+        .y = 32,
+        .z = 42,
+    };
+    Lara_GetJointAbsPosition(&vec, LM_HAND_L);
+
+    const SECTOR *const sector =
+        Room_GetSector(vec.x, vec.y, vec.z, &item->room_num);
+    const int32_t height = Room_GetHeight(sector, vec.x, vec.y, vec.z);
+    if (height < vec.y) {
+        item->pos.x = g_LaraItem->pos.x;
+        item->pos.y = vec.y;
+        item->pos.z = g_LaraItem->pos.z;
+        item->rot.y = -g_LaraItem->rot.y;
+        item->room_num = g_LaraItem->room_num;
+    } else {
+        item->pos.x = vec.x;
+        item->pos.y = vec.y;
+        item->pos.z = vec.z;
+        if (thrown) {
+            item->rot.y = g_LaraItem->rot.y;
+        } else {
+            item->rot.y = g_LaraItem->rot.y - PHD_45;
+        }
+    }
+
+    Item_Initialise(item_num);
+
+    item->rot.z = 0;
+    item->rot.x = 0;
+    item->shade_1 = -1;
+
+    if (thrown) {
+        item->speed = g_LaraItem->speed + 50;
+        item->fall_speed = g_LaraItem->fall_speed - 50;
+    } else {
+        item->speed = g_LaraItem->speed + 10;
+        item->fall_speed = g_LaraItem->fall_speed + 50;
+    }
+
+    if (Flare_DoLight(&item->pos, g_Lara.flare_age)) {
+        item->data = (void *)(g_Lara.flare_age | 0x8000);
+    } else {
+        item->data = (void *)(g_Lara.flare_age & ~0x8000);
+    }
+
+    Item_AddActive(item_num);
+    item->status = IS_ACTIVE;
 }
