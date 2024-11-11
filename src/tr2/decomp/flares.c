@@ -162,3 +162,23 @@ void __cdecl Flare_Create(const bool thrown)
     Item_AddActive(item_num);
     item->status = IS_ACTIVE;
 }
+
+void __cdecl Flare_SetArm(const int32_t frame)
+{
+    int16_t anim_base;
+
+    if (frame < LF_FL_THROW) {
+        anim_base = g_Objects[O_LARA_FLARE].anim_idx;
+    } else if (frame < LF_FL_DRAW) {
+        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 1;
+    } else if (frame < LF_FL_IGNITE) {
+        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 2;
+    } else if (frame < LF_FL_2_HOLD) {
+        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 3;
+    } else {
+        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 4;
+    }
+
+    g_Lara.left_arm.anim_num = anim_base;
+    g_Lara.left_arm.frame_base = g_Anims[g_Lara.left_arm.anim_num].frame_ptr;
+}

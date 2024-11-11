@@ -3497,7 +3497,7 @@ typedef enum {
 0x0042F840  0x00D3  +       void __cdecl Flare_DoInHand(int32_t flare_age);
 0x0042F920  0x00F8  +       void __cdecl Flare_DrawInAir(const ITEM *item);
 0x0042FA20  0x01D7  +       void __cdecl Flare_Create(int32_t thrown);
-0x0042FC00  0x004B  -       void __cdecl Flare_SetArm(int32_t frame);
+0x0042FC00  0x004B  +       void __cdecl Flare_SetArm(int32_t frame);
 0x0042FC50  0x0169  -       void __cdecl Flare_Draw(void);
 0x0042FDC0  0x0221  -       void __cdecl Flare_Undraw(void);
 0x0042FFF0  0x0018  -       void __cdecl Flare_DrawMeshes(void);
