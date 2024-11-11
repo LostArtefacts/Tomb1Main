@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.78% (893)</tspan> · <tspan class="known">25.80% (321)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">71.86% (894)</tspan> · <tspan class="known">25.72% (320)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="536.23" height="6" x="0" y="0" class="decompiled"/>
-<rect width="192.75" height="6" x="536.23" y="0" class="known"/>
+<rect width="536.83" height="6" x="0" y="0" class="decompiled"/>
+<rect width="192.15" height="6" x="536.83" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -328,7 +328,7 @@
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="75" class="decompiled"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="30" y="75" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
+<rect width="12" height="12" x="30" y="75" class="decompiled"><title>void __cdecl Splash(ITEM *item);</title></rect>
 <rect width="12" height="12" x="45" y="75" class="known"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="60" y="75" class="known"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="75" y="75" class="known"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.24%</tspan> · <tspan class="known">23.43%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.30%</tspan> · <tspan class="known">23.38%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="569.52" height="6" x="0" y="0" class="decompiled"/>
-<rect width="175.04" height="6" x="569.52" y="0" class="known"/>
+<rect width="569.95" height="6" x="0" y="0" class="decompiled"/>
+<rect width="174.61" height="6" x="569.95" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1785,7 +1785,7 @@
 <rect width="9.52" height="9.98" x="521.40" y="149.44" class="decompiled"><title>bool __cdecl S_Audio_Sample_DSoundBufferTest(void);</title></rect>
 <rect width="9.52" height="9.98" x="521.40" y="162.42" class="known"><title>BOOL __cdecl S_ReloadLevelGraphics(BOOL reload_palettes, BOOL reload_tex_pages);</title></rect>
 <rect width="9.52" height="9.98" x="521.40" y="175.41" class="known"><title>void __thiscall SE_LoadBitmapResource(BITMAP_RESOURCE *bmpRsrc, LPCTSTR lpName);</title></rect>
-<rect width="9.52" height="9.85" x="521.40" y="188.39" class="known"><title>void __cdecl Splash(ITEM *item);</title></rect>
+<rect width="9.52" height="9.85" x="521.40" y="188.39" class="decompiled"><title>void __cdecl Splash(ITEM *item);</title></rect>
 <rect width="9.52" height="9.79" x="521.40" y="201.25" class="decompiled"><title>int32_t __cdecl Inv_GetItemOption(GAME_OBJECT_ID object_id);</title></rect>
 <rect width="9.52" height="9.79" x="521.40" y="214.03" class="decompiled"><title>void __cdecl Gun_AimWeapon(WEAPON_INFO *winfo, LARA_ARM *arm);</title></rect>
 <rect width="9.52" height="9.72" x="521.40" y="226.82" class="decompiled"><title>void __cdecl Requester_ChangeItem(REQUEST_INFO *req, int32_t item, const char *text1, uint32_t flags1, const char *text2, uint32_t flags2);</title></rect>

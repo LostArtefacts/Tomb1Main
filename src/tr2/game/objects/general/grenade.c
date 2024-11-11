@@ -28,7 +28,7 @@ static void M_Explode(int16_t grenade_item_num, const XYZ_32 pos)
         fx->counter = 0;
         fx->object_id = O_EXPLOSION;
     }
-    Sound_Effect(SFX_EXPLOSION1, NULL, SPM_NORMAL);
+    Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_NORMAL);
     Item_Kill(grenade_item_num);
 }
 

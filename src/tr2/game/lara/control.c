@@ -1,5 +1,6 @@
 #include "game/lara/control.h"
 
+#include "decomp/effects.h"
 #include "decomp/skidoo.h"
 #include "game/creature.h"
 #include "game/gun/gun.h"

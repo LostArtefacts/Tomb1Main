@@ -4,6 +4,7 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/random.h"
+#include "game/room.h"
 #include "game/sound.h"
 #include "game/stats.h"
 #include "global/funcs.h"
@@ -217,5 +218,29 @@ void __cdecl FX_Bubbles(ITEM *const item)
 
     for (int32_t i = 0; i < count; i++) {
         CreateBubble(&offset, item->room_num);
+    }
+}
+
+void __cdecl Splash(const ITEM *const item)
+{
+    const int32_t water_height = Room_GetWaterHeight(
+        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    int16_t room_num = item->room_num;
+    Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
+
+    for (int32_t i = 0; i < 10; i++) {
+        const int16_t fx_num = Effect_Create(room_num);
+        if (fx_num == NO_ITEM) {
+            continue;
+        }
+
+        FX *const fx = &g_Effects[fx_num];
+        fx->object_id = O_SPLASH;
+        fx->pos.x = item->pos.x;
+        fx->pos.y = water_height;
+        fx->pos.z = item->pos.z;
+        fx->rot.y = 2 * Random_GetDraw() + PHD_180;
+        fx->speed = Random_GetDraw() / 256;
+        fx->frame_num = 0;
     }
 }

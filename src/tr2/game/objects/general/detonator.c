@@ -62,7 +62,7 @@ void __cdecl Detonator_Control(const int16_t item_num)
 
     if (frame_num == 80) {
         g_Camera.bounce = -150;
-        Sound_Effect(SFX_EXPLOSION1, NULL, SPM_ALWAYS);
+        Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_ALWAYS);
     }
 
     if (item->status == IS_DEACTIVATED) {

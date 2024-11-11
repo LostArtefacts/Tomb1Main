@@ -63,7 +63,7 @@ void __cdecl BodyPart_Control(const int16_t fx_num)
             fx->counter = 0;
             fx->object_id = O_EXPLOSION;
             fx->shade = HIGH_LIGHT;
-            Sound_Effect(SFX_EXPLOSION1, &fx->pos, SPM_NORMAL);
+            Sound_Effect(SFX_EXPLOSION_1, &fx->pos, SPM_NORMAL);
         } else {
             Effect_Kill(fx_num);
         }
@@ -79,7 +79,7 @@ void __cdecl BodyPart_Control(const int16_t fx_num)
             fx->counter = 0;
             fx->object_id = O_EXPLOSION;
             fx->shade = HIGH_LIGHT;
-            Sound_Effect(SFX_EXPLOSION1, &fx->pos, SPM_NORMAL);
+            Sound_Effect(SFX_EXPLOSION_1, &fx->pos, SPM_NORMAL);
             g_Lara.spaz_effect_count = 5;
             g_Lara.spaz_effect = fx;
         } else {

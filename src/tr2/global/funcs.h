@@ -22,7 +22,6 @@
 #define Explosion_Control ((void __cdecl (*)(int16_t fx_num))0x0041C770)
 #define Richochet ((void __cdecl (*)(GAME_VECTOR *pos))0x0041C7F0)
 #define Richochet_Control ((void __cdecl (*)(int16_t fx_num))0x0041C870)
-#define Splash ((void __cdecl (*)(ITEM *item))0x0041CA90)
 #define Splash_Control ((void __cdecl (*)(int16_t fx_num))0x0041CB60)
 #define WaterSprite_Control ((void __cdecl (*)(int16_t fx_num))0x0041CBE0)
 #define SnowSprite_Control ((void __cdecl (*)(int16_t fx_num))0x0041CC90)

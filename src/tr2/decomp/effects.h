@@ -15,3 +15,5 @@ void __cdecl FX_AssaultStart(ITEM *item);
 
 void __cdecl CreateBubble(const XYZ_32 *pos, int16_t room_num);
 void __cdecl FX_Bubbles(ITEM *item);
+
+void __cdecl Splash(const ITEM *item);
