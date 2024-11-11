@@ -403,10 +403,10 @@ void __cdecl Output_Init(
 
 void __cdecl Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
 {
-    g_FltWinLeft = g_PhdWinMinX + g_PhdWinLeft;
-    g_FltWinTop = g_PhdWinMinY + g_PhdWinTop;
-    g_FltWinRight = g_PhdWinRight + g_PhdWinMinX + 1;
-    g_FltWinBottom = g_PhdWinBottom + g_PhdWinMinY + 1;
+    g_FltWinLeft = g_PhdWinMinX;
+    g_FltWinTop = g_PhdWinMinY;
+    g_FltWinRight = g_PhdWinMinX + g_PhdWinMaxX + 1;
+    g_FltWinBottom = g_PhdWinMinY + g_PhdWinMaxY + 1;
     g_FltWinCenterX = g_PhdWinMinX + g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinMinY + g_PhdWinCenterY;
 
@@ -433,8 +433,8 @@ void __cdecl Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside)
 {
     g_FltWinLeft = g_PhdWinMinX + g_PhdWinLeft;
     g_FltWinTop = g_PhdWinMinY + g_PhdWinTop;
-    g_FltWinRight = g_PhdWinRight + g_PhdWinMinX + 1;
-    g_FltWinBottom = g_PhdWinBottom + g_PhdWinMinY + 1;
+    g_FltWinRight = g_PhdWinMinX + g_PhdWinRight + 1;
+    g_FltWinBottom = g_PhdWinMinY + g_PhdWinBottom + 1;
     g_FltWinCenterX = g_PhdWinMinX + g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinMinY + g_PhdWinCenterY;
 
@@ -465,8 +465,8 @@ void __cdecl Output_InsertSkybox(const int16_t *obj_ptr)
 {
     g_FltWinLeft = g_PhdWinMinX + g_PhdWinLeft;
     g_FltWinTop = g_PhdWinMinY + g_PhdWinTop;
-    g_FltWinRight = g_PhdWinRight + g_PhdWinMinX + 1;
-    g_FltWinBottom = g_PhdWinBottom + g_PhdWinMinY + 1;
+    g_FltWinRight = g_PhdWinMinX + g_PhdWinRight + 1;
+    g_FltWinBottom = g_PhdWinMinY + g_PhdWinBottom + 1;
     g_FltWinCenterX = g_PhdWinMinX + g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinMinY + g_PhdWinCenterY;
 
@@ -3228,7 +3228,7 @@ void __cdecl Output_InsertFlatRect_ZBuffered(
 
     CLAMPL(x1, g_PhdWinMinX);
     CLAMPL(y1, g_PhdWinMinY);
-    CLAMPG(x2, g_PhdWinWidth + g_PhdWinMinX);
+    CLAMPG(x2, g_PhdWinMinX + g_PhdWinWidth);
     CLAMPG(y2, g_PhdWinMinY + g_PhdWinHeight);
     CLAMP(z, g_PhdNearZ, g_PhdFarZ);
 
@@ -3832,7 +3832,7 @@ void __cdecl Output_InsertFlatRect_Sorted(
 
     CLAMPL(x1, g_PhdWinMinX);
     CLAMPL(y1, g_PhdWinMinY);
-    CLAMPG(x2, g_PhdWinWidth + g_PhdWinMinX);
+    CLAMPG(x2, g_PhdWinMinX + g_PhdWinWidth);
     CLAMPG(y2, g_PhdWinMinY + g_PhdWinHeight);
 
     g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
@@ -3952,8 +3952,8 @@ void __cdecl Output_InsertSprite_Sorted(
     }
 
     if (x0 < g_PhdWinMinX || y0 < g_PhdWinMinY
-        || x1 > g_PhdWinWidth + g_PhdWinMinX
-        || y1 > g_PhdWinHeight + g_PhdWinMinY) {
+        || x1 > g_PhdWinMinX + g_PhdWinWidth
+        || y1 > g_PhdWinMinY + g_PhdWinHeight) {
         g_FltWinLeft = (float)g_PhdWinMinX;
         g_FltWinTop = (float)g_PhdWinMinY;
         g_FltWinRight = (float)(g_PhdWinMinX + g_PhdWinWidth);

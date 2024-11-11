@@ -403,8 +403,10 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     const int32_t vp_x = vp_src_x + (vp_dst_x - vp_src_x) * ease;
     const int32_t vp_y = vp_src_y + (vp_dst_y - vp_src_y) * ease;
 
-    g_PhdWinCenterX = vp_x;
-    g_PhdWinCenterY = vp_y;
+    VIEWPORT new_vp = old_vp;
+    new_vp.game_vars.win_center_x = vp_x;
+    new_vp.game_vars.win_center_y = vp_y;
+    Viewport_Restore(&new_vp);
 
     Matrix_PushUnit();
     Matrix_TranslateRel(0, 0, scale);
@@ -446,18 +448,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     }
     Matrix_Pop();
 
-    // clang-format off
-    Viewport_Init(
-        old_vp.x,
-        old_vp.y,
-        old_vp.width,
-        old_vp.height,
-        old_vp.near_z,
-        old_vp.far_z,
-        old_vp.view_angle,
-        old_vp.screen_width,
-        old_vp.screen_height);
-    // clang-format on
+    Viewport_Restore(&old_vp);
 }
 
 static void M_DrawPickupSprite(const DISPLAY_PICKUP *const pickup)
