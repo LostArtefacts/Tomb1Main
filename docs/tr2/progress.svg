@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.23% (911)</tspan> · <tspan class="known">24.36% (303)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.31% (912)</tspan> · <tspan class="known">24.28% (302)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="547.04" height="6" x="0" y="0" class="decompiled"/>
-<rect width="181.95" height="6" x="547.04" y="0" class="known"/>
+<rect width="547.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="181.35" height="6" x="547.64" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -834,7 +834,7 @@
 <rect width="12" height="12" x="75" y="225" class="decompiled"><title>uint32_t __cdecl Text_GetScaleH(uint32_t value);</title></rect>
 <rect width="12" height="12" x="90" y="225" class="decompiled"><title>uint32_t __cdecl Text_GetScaleV(uint32_t value);</title></rect>
 <rect width="12" height="12" x="105" y="225" class="decompiled"><title>void __cdecl Mine_Control(int16_t mine_num);</title></rect>
-<rect width="12" height="12" x="120" y="225" class="known"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="120" y="225" class="decompiled"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="135" y="225" class="known"><title>void __cdecl CeilingSpikes_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="150" y="225" class="known"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="165" y="225" class="known"><title>void __cdecl Propeller_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.73%</tspan> · <tspan class="known">21.94%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.83%</tspan> · <tspan class="known">21.85%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="580.68" height="6" x="0" y="0" class="decompiled"/>
-<rect width="163.88" height="6" x="580.68" y="0" class="known"/>
+<rect width="581.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="163.20" height="6" x="581.36" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1632,7 +1632,7 @@
 <rect width="13.47" height="12.87" x="448.40" y="236.70" class="decompiled"><title>void __cdecl CreateScreenBuffers(void);</title></rect>
 <rect width="13.47" height="12.82" x="448.40" y="252.56" class="decompiled"><title>void __fastcall Output_TransA(int32_t y0, int32_t y1, uint8_t depth_q); // actually, __watcall, which is esoteric and rarely supported</title></rect>
 <rect width="13.47" height="12.72" x="448.40" y="268.38" class="decompiled"><title>void __cdecl Camera_UpdateCutscene(void);</title></rect>
-<rect width="13.47" height="12.72" x="448.40" y="284.10" class="known"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
+<rect width="13.47" height="12.72" x="448.40" y="284.10" class="decompiled"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
 <rect width="13.47" height="12.67" x="448.40" y="299.82" class="decompiled"><title>int32_t __cdecl Item_TestPosition(int16_t *bounds, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="13.47" height="12.67" x="448.40" y="315.48" class="decompiled"><title>int32_t __cdecl MovableBlock_TestPush(ITEM *item, int32_t block_height, uint16_t quadrant);</title></rect>
 <rect width="13.47" height="12.67" x="448.40" y="331.15" class="known"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>

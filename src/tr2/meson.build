@@ -212,6 +212,7 @@ dll_sources = [
   'game/objects/traps/flame_emitter.c',
   'game/objects/traps/mine.c',
   'game/objects/traps/rolling_ball.c',
+  'game/objects/traps/spike_wall.c',
   'game/objects/vars.c',
   'game/objects/vehicles/boat.c',
   'game/objects/vehicles/skidoo_armed.c',
