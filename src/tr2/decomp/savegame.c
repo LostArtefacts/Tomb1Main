@@ -308,6 +308,84 @@ void __cdecl ModifyStartInfo(const int32_t level_num)
     }
 }
 
+void __cdecl CreateStartInfo(const int32_t level_num)
+{
+    START_INFO *const start = &g_SaveGame.start[level_num];
+
+    start->available = 1;
+
+    if (Inv_RequestItem(O_PISTOL_ITEM)) {
+        start->has_pistols = 1;
+        start->pistol_ammo = 1000;
+    } else {
+        start->has_pistols = 0;
+        start->pistol_ammo = 1000;
+    }
+
+    if (Inv_RequestItem(O_SHOTGUN_ITEM)) {
+        start->has_shotgun = 1;
+        start->shotgun_ammo = g_Lara.shotgun_ammo.ammo;
+    } else {
+        start->has_shotgun = 0;
+        start->shotgun_ammo =
+            Inv_RequestItem(O_SHOTGUN_AMMO_ITEM) * SHOTGUN_AMMO_QTY;
+    }
+
+    if (Inv_RequestItem(O_MAGNUM_ITEM)) {
+        start->has_magnums = 1;
+        start->magnum_ammo = g_Lara.magnum_ammo.ammo;
+    } else {
+        start->has_magnums = 0;
+        start->magnum_ammo =
+            Inv_RequestItem(O_MAGNUM_AMMO_ITEM) * MAGNUM_AMMO_QTY;
+    }
+
+    if (Inv_RequestItem(O_UZI_ITEM)) {
+        start->has_uzis = 1;
+        start->uzi_ammo = g_Lara.uzi_ammo.ammo;
+    } else {
+        start->has_uzis = 0;
+        start->uzi_ammo = Inv_RequestItem(O_UZI_AMMO_ITEM) * UZI_AMMO_QTY;
+    }
+
+    if (Inv_RequestItem(O_M16_ITEM)) {
+        start->has_m16 = 1;
+        start->m16_ammo = g_Lara.m16_ammo.ammo;
+    } else {
+        start->has_m16 = 0;
+        start->m16_ammo = Inv_RequestItem(O_M16_AMMO_ITEM) * M16_AMMO_QTY;
+    }
+
+    if (Inv_RequestItem(O_HARPOON_ITEM)) {
+        start->has_harpoon = 1;
+        start->harpoon_ammo = g_Lara.harpoon_ammo.ammo;
+    } else {
+        start->has_harpoon = 0;
+        start->harpoon_ammo =
+            Inv_RequestItem(O_HARPOON_AMMO_ITEM) * HARPOON_AMMO_QTY;
+    }
+
+    if (Inv_RequestItem(O_GRENADE_ITEM)) {
+        start->has_grenade = 1;
+        start->grenade_ammo = g_Lara.grenade_ammo.ammo;
+    } else {
+        start->has_grenade = 0;
+        start->grenade_ammo =
+            Inv_RequestItem(O_GRENADE_AMMO_ITEM) * GRENADE_AMMO_QTY;
+    }
+
+    start->flares = Inv_RequestItem(O_FLARE_ITEM);
+    start->small_medipacks = Inv_RequestItem(O_SMALL_MEDIPACK_ITEM);
+    start->large_medipacks = Inv_RequestItem(O_LARGE_MEDIPACK_ITEM);
+
+    if (g_Lara.gun_type == LGT_FLARE) {
+        start->gun_type = g_Lara.last_gun_type;
+    } else {
+        start->gun_type = g_Lara.gun_type;
+    }
+    start->gun_status = LGS_ARMLESS;
+}
+
 void __cdecl CreateSaveGameInfo(void)
 {
     g_SaveGame.current_level = g_CurrentLevel;

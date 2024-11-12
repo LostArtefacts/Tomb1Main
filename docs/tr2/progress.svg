@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.63% (916)</tspan> · <tspan class="known">23.95% (298)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.71% (917)</tspan> · <tspan class="known">23.87% (297)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="550.04" height="6" x="0" y="0" class="decompiled"/>
-<rect width="178.94" height="6" x="550.04" y="0" class="known"/>
+<rect width="550.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="178.34" height="6" x="550.64" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -760,7 +760,7 @@
 <rect width="12" height="12" x="465" y="195" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="480" y="195" class="decompiled"><title>void __cdecl InitialiseStartInfo(void);</title></rect>
 <rect width="12" height="12" x="495" y="195" class="decompiled"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
-<rect width="12" height="12" x="510" y="195" class="known"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
+<rect width="12" height="12" x="510" y="195" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="525" y="195" class="decompiled"><title>void __cdecl CreateSaveGameInfo(void);</title></rect>
 <rect width="12" height="12" x="540" y="195" class="known"><title>void __cdecl ExtractSaveGameInfo(void);</title></rect>
 <rect width="12" height="12" x="555" y="195" class="known"><title>void __cdecl ResetSG(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.39%</tspan> · <tspan class="known">21.29%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.54%</tspan> · <tspan class="known">21.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="585.55" height="6" x="0" y="0" class="decompiled"/>
-<rect width="159.01" height="6" x="585.55" y="0" class="known"/>
+<rect width="586.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="157.89" height="6" x="586.67" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1506,7 +1506,7 @@
 <rect width="17.35" height="18.12" x="390.77" y="129.59" class="known"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
 <rect width="17.35" height="18.12" x="390.77" y="150.71" class="known"><title>void __cdecl S_LightRoom(ROOM *room);</title></rect>
 <rect width="17.35" height="18.04" x="390.77" y="171.83" class="decompiled"><title>bool __cdecl ApplySettings(APP_SETTINGS *new_settings);</title></rect>
-<rect width="17.35" height="17.91" x="390.77" y="192.87" class="known"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
+<rect width="17.35" height="17.91" x="390.77" y="192.87" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="17.35" height="17.87" x="390.77" y="213.78" class="decompiled"><title>void __cdecl Bird_Control(int16_t item_num);</title></rect>
 <rect width="17.35" height="17.87" x="390.77" y="234.66" class="decompiled"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
 <rect width="17.35" height="17.59" x="390.77" y="255.53" class="decompiled"><title>void __cdecl Skidoo_BaddieCollision(const ITEM *skidoo);</title></rect>

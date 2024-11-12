@@ -315,6 +315,7 @@ static void M_DecompSavegame(const bool enable)
 {
     INJECT(enable, 0x004390E0, InitialiseStartInfo);
     INJECT(enable, 0x00439150, ModifyStartInfo);
+    INJECT(enable, 0x00439230, CreateStartInfo);
     INJECT(enable, 0x00439440, CreateSaveGameInfo);
 }
 

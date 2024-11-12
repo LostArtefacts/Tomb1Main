@@ -1,6 +1,7 @@
 #include "decomp/decomp.h"
 
 #include "config.h"
+#include "decomp/savegame.h"
 #include "game/background.h"
 #include "game/camera.h"
 #include "game/clock.h"
