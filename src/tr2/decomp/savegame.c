@@ -841,3 +841,10 @@ void __cdecl WriteSG(const void *const pointer, const size_t size)
     memcpy(g_SavegameBufPtr, pointer, size);
     g_SavegameBufPtr += size;
 }
+
+void __cdecl ReadSG(void *const pointer, const size_t size)
+{
+    g_SavegameBufPos += size;
+    memcpy(pointer, g_SavegameBufPtr, size);
+    g_SavegameBufPtr += size;
+}

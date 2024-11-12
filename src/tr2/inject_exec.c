@@ -320,6 +320,7 @@ static void M_DecompSavegame(const bool enable)
     INJECT(enable, 0x00439970, ExtractSaveGameInfo);
     INJECT(enable, 0x0043A1D0, ResetSG);
     INJECT(enable, 0x0043A1F0, WriteSG);
+    INJECT(enable, 0x0043A240, ReadSG);
 }
 
 static void M_GameBuf(bool enable)
