@@ -18,19 +18,20 @@
 
 #define SAVE_CREATURE (1 << 7)
 
-#define SPECIAL_READS                                                          \
-    SPECIAL_READ(M_ReadS8, int8_t);                                            \
-    SPECIAL_READ(M_ReadS16, int16_t);                                          \
-    SPECIAL_READ(M_ReadS32, int32_t);                                          \
-    SPECIAL_READ(M_ReadU8, uint8_t);                                           \
-    SPECIAL_READ(M_ReadU16, uint16_t);                                         \
-    SPECIAL_READ(M_ReadU32, uint32_t);
+#define SPECIAL_READ_WRITES                                                    \
+    SPECIAL_READ_WRITE(S8, int8_t);                                            \
+    SPECIAL_READ_WRITE(S16, int16_t);                                          \
+    SPECIAL_READ_WRITE(S32, int32_t);                                          \
+    SPECIAL_READ_WRITE(U8, uint8_t);                                           \
+    SPECIAL_READ_WRITE(U16, uint16_t);                                         \
+    SPECIAL_READ_WRITE(U32, uint32_t);
 
 static char *m_BufCopy = NULL;
 
 static void M_Read(void *ptr, size_t size);
-#define SPECIAL_READ(name, type) static type name(void);
-SPECIAL_READS;
+#undef SPECIAL_READ_WRITE
+#define SPECIAL_READ_WRITE(name, type) static type M_Read##name(void);
+SPECIAL_READ_WRITES;
 static void M_Skip(size_t size);
 static void M_ReadItems(void);
 static void M_ReadLara(LARA_INFO *lara);
@@ -39,6 +40,9 @@ static void M_ReadAmmoInfo(AMMO_INFO *ammo_info);
 static void M_ReadFlares(void);
 
 static void M_Write(const void *ptr, size_t size);
+#undef SPECIAL_READ_WRITE
+#define SPECIAL_READ_WRITE(name, type) static void M_Write##name(type value);
+SPECIAL_READ_WRITES;
 static void M_WriteItems(void);
 static void M_WriteLara(const LARA_INFO *lara);
 static void M_WriteLaraArm(const LARA_ARM *arm);
@@ -50,15 +54,23 @@ static void M_Read(void *ptr, const size_t size)
     ReadSG(ptr, size);
 }
 
-#undef SPECIAL_READ
-#define SPECIAL_READ(name, type)                                               \
-    static type name(void)                                                     \
+#undef SPECIAL_READ_WRITE
+#define SPECIAL_READ_WRITE(name, type)                                         \
+    static type M_Read##name(void)                                             \
     {                                                                          \
         type result;                                                           \
         ReadSG(&result, sizeof(type));                                         \
         return result;                                                         \
     }
-SPECIAL_READS;
+SPECIAL_READ_WRITES;
+
+#undef SPECIAL_READ_WRITE
+#define SPECIAL_READ_WRITE(name, type)                                         \
+    static void M_Write##name(type value)                                      \
+    {                                                                          \
+        M_Write(&value, sizeof(type));                                         \
+    }
+SPECIAL_READ_WRITES;
 
 static void M_Skip(const size_t size)
 {
@@ -284,7 +296,7 @@ static void M_ReadLara(LARA_INFO *const lara)
     M_ReadAmmoInfo(&lara->grenade_ammo);
     M_ReadAmmoInfo(&lara->m16_ammo);
     M_Skip(4);
-    g_Lara.creature = NULL;
+    lara->creature = NULL;
 }
 
 static void M_ReadLaraArm(LARA_ARM *const arm)
@@ -339,27 +351,27 @@ static void M_WriteItems(void)
         const ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_GetObject(item->object_id);
         if (obj->save_position) {
-            M_Write(&item->pos.x, sizeof(int32_t));
-            M_Write(&item->pos.y, sizeof(int32_t));
-            M_Write(&item->pos.z, sizeof(int32_t));
-            M_Write(&item->rot.x, sizeof(int16_t));
-            M_Write(&item->rot.y, sizeof(int16_t));
-            M_Write(&item->rot.z, sizeof(int16_t));
-            M_Write(&item->room_num, sizeof(int16_t));
-            M_Write(&item->speed, sizeof(int16_t));
-            M_Write(&item->fall_speed, sizeof(int16_t));
+            M_WriteS32(item->pos.x);
+            M_WriteS32(item->pos.y);
+            M_WriteS32(item->pos.z);
+            M_WriteS16(item->rot.x);
+            M_WriteS16(item->rot.y);
+            M_WriteS16(item->rot.z);
+            M_WriteS16(item->room_num);
+            M_WriteS16(item->speed);
+            M_WriteS16(item->fall_speed);
         }
 
         if (obj->save_anim) {
-            M_Write(&item->current_anim_state, sizeof(int16_t));
-            M_Write(&item->goal_anim_state, sizeof(int16_t));
-            M_Write(&item->required_anim_state, sizeof(int16_t));
-            M_Write(&item->anim_num, sizeof(int16_t));
-            M_Write(&item->frame_num, sizeof(int16_t));
+            M_WriteS16(item->current_anim_state);
+            M_WriteS16(item->goal_anim_state);
+            M_WriteS16(item->required_anim_state);
+            M_WriteS16(item->anim_num);
+            M_WriteS16(item->frame_num);
         }
 
         if (obj->save_hitpoints) {
-            M_Write(&item->hit_points, sizeof(int16_t));
+            M_WriteS16(item->hit_points);
         }
 
         if (obj->save_flags) {
@@ -368,19 +380,19 @@ static void M_WriteItems(void)
             if (obj->intelligent && item->data != NULL) {
                 flags |= SAVE_CREATURE;
             }
-            M_Write(&flags, sizeof(uint16_t));
+            M_WriteU16(flags);
             if (obj->intelligent) {
-                M_Write(&item->carried_item, sizeof(int16_t));
+                M_WriteS16(item->carried_item);
             }
 
-            M_Write(&item->timer, sizeof(int16_t));
+            M_WriteS16(item->timer);
             if (flags & SAVE_CREATURE) {
                 const CREATURE *const creature = item->data;
-                M_Write(&creature->head_rotation, sizeof(int16_t));
-                M_Write(&creature->neck_rotation, sizeof(int16_t));
-                M_Write(&creature->maximum_turn, sizeof(int16_t));
-                M_Write(&creature->flags, sizeof(int16_t));
-                M_Write(&creature->mood, sizeof(int32_t));
+                M_WriteS16(creature->head_rotation);
+                M_WriteS16(creature->neck_rotation);
+                M_WriteS16(creature->maximum_turn);
+                M_WriteS16(creature->flags);
+                M_WriteS32(creature->mood);
             }
         }
 
@@ -402,27 +414,27 @@ static void M_WriteItems(void)
 
 static void M_WriteLara(const LARA_INFO *const lara)
 {
-    M_Write(&lara->item_num, sizeof(int16_t));
-    M_Write(&lara->gun_status, sizeof(int16_t));
-    M_Write(&lara->gun_type, sizeof(int16_t));
-    M_Write(&lara->request_gun_type, sizeof(int16_t));
-    M_Write(&lara->last_gun_type, sizeof(int16_t));
-    M_Write(&lara->calc_fall_speed, sizeof(int16_t));
-    M_Write(&lara->water_status, sizeof(int16_t));
-    M_Write(&lara->climb_status, sizeof(int16_t));
-    M_Write(&lara->pose_count, sizeof(int16_t));
-    M_Write(&lara->hit_frame, sizeof(int16_t));
-    M_Write(&lara->hit_direction, sizeof(int16_t));
-    M_Write(&lara->air, sizeof(int16_t));
-    M_Write(&lara->dive_count, sizeof(int16_t));
-    M_Write(&lara->death_timer, sizeof(int16_t));
-    M_Write(&lara->current_active, sizeof(int16_t));
-    M_Write(&lara->spaz_effect_count, sizeof(int16_t));
-    M_Write(&lara->flare_age, sizeof(int16_t));
-    M_Write(&lara->skidoo, sizeof(int16_t));
-    M_Write(&lara->weapon_item, sizeof(int16_t));
-    M_Write(&lara->back_gun, sizeof(int16_t));
-    M_Write(&lara->flare_frame, sizeof(int16_t));
+    M_WriteS16(lara->item_num);
+    M_WriteS16(lara->gun_status);
+    M_WriteS16(lara->gun_type);
+    M_WriteS16(lara->request_gun_type);
+    M_WriteS16(lara->last_gun_type);
+    M_WriteS16(lara->calc_fall_speed);
+    M_WriteS16(lara->water_status);
+    M_WriteS16(lara->climb_status);
+    M_WriteS16(lara->pose_count);
+    M_WriteS16(lara->hit_frame);
+    M_WriteS16(lara->hit_direction);
+    M_WriteS16(lara->air);
+    M_WriteS16(lara->dive_count);
+    M_WriteS16(lara->death_timer);
+    M_WriteS16(lara->current_active);
+    M_WriteS16(lara->spaz_effect_count);
+    M_WriteS16(lara->flare_age);
+    M_WriteS16(lara->skidoo);
+    M_WriteS16(lara->weapon_item);
+    M_WriteS16(lara->back_gun);
+    M_WriteS16(lara->flare_frame);
 
     uint16_t flags = 0;
     // clang-format off
@@ -432,33 +444,33 @@ static void M_WriteLara(const LARA_INFO *const lara)
     if (lara->look)                { flags |= 1 << 3; }
     if (lara->burn)                { flags |= 1 << 4; }
     // clang-format on
-    M_Write(&flags, sizeof(uint16_t));
+    M_WriteU16(flags);
 
-    M_Write(&lara->water_surface_dist, sizeof(int32_t));
-    M_Write(&lara->last_pos.x, sizeof(int32_t));
-    M_Write(&lara->last_pos.y, sizeof(int32_t));
-    M_Write(&lara->last_pos.z, sizeof(int32_t));
-    M_Write(&lara->spaz_effect, sizeof(FX *));
-    M_Write(&lara->mesh_effects, sizeof(uint32_t));
+    M_WriteS32(lara->water_surface_dist);
+    M_WriteS32(lara->last_pos.x);
+    M_WriteS32(lara->last_pos.y);
+    M_WriteS32(lara->last_pos.z);
+    M_Skip(4);
+    M_WriteU32(lara->mesh_effects);
 
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
         const int32_t mesh_idx =
             (intptr_t)lara->mesh_ptrs[i] - (intptr_t)g_MeshBase;
-        M_Write(&mesh_idx, sizeof(int32_t));
+        M_WriteS32(mesh_idx);
     }
 
-    M_Write(&lara->target, sizeof(ITEM *));
-    M_Write(&lara->target_angles[0], sizeof(int16_t));
-    M_Write(&lara->target_angles[1], sizeof(int16_t));
+    M_Skip(4);
+    M_WriteS16(lara->target_angles[0]);
+    M_WriteS16(lara->target_angles[1]);
 
-    M_Write(&lara->turn_rate, sizeof(int16_t));
-    M_Write(&lara->move_angle, sizeof(int16_t));
-    M_Write(&lara->head_y_rot, sizeof(int16_t));
-    M_Write(&lara->head_x_rot, sizeof(int16_t));
-    M_Write(&lara->head_z_rot, sizeof(int16_t));
-    M_Write(&lara->torso_y_rot, sizeof(int16_t));
-    M_Write(&lara->torso_x_rot, sizeof(int16_t));
-    M_Write(&lara->torso_z_rot, sizeof(int16_t));
+    M_WriteS16(lara->turn_rate);
+    M_WriteS16(lara->move_angle);
+    M_WriteS16(lara->head_y_rot);
+    M_WriteS16(lara->head_x_rot);
+    M_WriteS16(lara->head_z_rot);
+    M_WriteS16(lara->torso_y_rot);
+    M_WriteS16(lara->torso_x_rot);
+    M_WriteS16(lara->torso_z_rot);
 
     M_WriteLaraArm(&lara->left_arm);
     M_WriteLaraArm(&lara->right_arm);
@@ -469,26 +481,26 @@ static void M_WriteLara(const LARA_INFO *const lara)
     M_WriteAmmoInfo(&lara->harpoon_ammo);
     M_WriteAmmoInfo(&lara->grenade_ammo);
     M_WriteAmmoInfo(&lara->m16_ammo);
-    M_Write(&lara->creature, sizeof(CREATURE *));
+    M_Skip(4);
 }
 
 static void M_WriteLaraArm(const LARA_ARM *const arm)
 {
     const int32_t frame_base =
         (intptr_t)arm->frame_base - (intptr_t)g_AnimFrames;
-    M_Write(&frame_base, sizeof(int32_t));
-    M_Write(&arm->frame_num, sizeof(int16_t));
-    M_Write(&arm->anim_num, sizeof(int16_t));
-    M_Write(&arm->lock, sizeof(int16_t));
-    M_Write(&arm->rot.y, sizeof(int16_t));
-    M_Write(&arm->rot.x, sizeof(int16_t));
-    M_Write(&arm->rot.z, sizeof(int16_t));
-    M_Write(&arm->flash_gun, sizeof(int16_t));
+    M_WriteS32(frame_base);
+    M_WriteS16(arm->frame_num);
+    M_WriteS16(arm->anim_num);
+    M_WriteS16(arm->lock);
+    M_WriteS16(arm->rot.y);
+    M_WriteS16(arm->rot.x);
+    M_WriteS16(arm->rot.z);
+    M_WriteS16(arm->flash_gun);
 }
 
 static void M_WriteAmmoInfo(const AMMO_INFO *const ammo_info)
 {
-    M_Write(&ammo_info->ammo, sizeof(int32_t));
+    M_WriteS32(ammo_info->ammo);
 }
 
 static void M_WriteFlares(void)
@@ -501,21 +513,21 @@ static void M_WriteFlares(void)
         }
     }
 
-    M_Write(&num_flares, sizeof(int32_t));
+    M_WriteS32(num_flares);
     for (int32_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         const ITEM *const item = Item_Get(item_num);
         if (item->active && item->object_id == O_FLARE_ITEM) {
-            M_Write(&item->pos.x, sizeof(int32_t));
-            M_Write(&item->pos.y, sizeof(int32_t));
-            M_Write(&item->pos.z, sizeof(int32_t));
-            M_Write(&item->rot.x, sizeof(int16_t));
-            M_Write(&item->rot.y, sizeof(int16_t));
-            M_Write(&item->rot.z, sizeof(int16_t));
-            M_Write(&item->room_num, sizeof(int16_t));
-            M_Write(&item->speed, sizeof(int16_t));
-            M_Write(&item->fall_speed, sizeof(int16_t));
+            M_WriteS32(item->pos.x);
+            M_WriteS32(item->pos.y);
+            M_WriteS32(item->pos.z);
+            M_WriteS16(item->rot.x);
+            M_WriteS16(item->rot.y);
+            M_WriteS16(item->rot.z);
+            M_WriteS16(item->room_num);
+            M_WriteS16(item->speed);
+            M_WriteS16(item->fall_speed);
             const int32_t flare_age = (intptr_t)item->data;
-            M_Write(&flare_age, sizeof(int32_t));
+            M_WriteS32(flare_age);
         }
     }
 }
@@ -719,15 +731,15 @@ void __cdecl CreateSaveGameInfo(void)
     ResetSG();
     memset(g_SaveGame.buffer, 0, sizeof(g_SaveGame.buffer));
 
-    M_Write(&g_FlipStatus, sizeof(int32_t));
+    M_WriteS32(g_FlipStatus);
     for (int32_t i = 0; i < MAX_FLIP_MAPS; i++) {
         uint8_t tflag = g_FlipMaps[i] >> 8;
-        M_Write(&tflag, sizeof(uint8_t));
+        M_WriteU8(tflag);
     }
 
     M_Write(g_MusicTrackFlags, MAX_CD_TRACKS * sizeof(uint16_t));
     for (int32_t i = 0; i < g_NumCameras; i++) {
-        M_Write(&g_Camera.fixed[i].flags, sizeof(int16_t));
+        M_WriteS16(g_Camera.fixed[i].flags);
     }
 
     M_WriteItems();
@@ -735,16 +747,16 @@ void __cdecl CreateSaveGameInfo(void)
 
     if (g_Lara.weapon_item != NO_ITEM) {
         const ITEM *const weapon_item = Item_Get(g_Lara.weapon_item);
-        M_Write(&weapon_item->object_id, sizeof(int16_t));
-        M_Write(&weapon_item->anim_num, sizeof(int16_t));
-        M_Write(&weapon_item->frame_num, sizeof(int16_t));
-        M_Write(&weapon_item->current_anim_state, sizeof(int16_t));
-        M_Write(&weapon_item->goal_anim_state, sizeof(int16_t));
+        M_WriteS16(weapon_item->object_id);
+        M_WriteS16(weapon_item->anim_num);
+        M_WriteS16(weapon_item->frame_num);
+        M_WriteS16(weapon_item->current_anim_state);
+        M_WriteS16(weapon_item->goal_anim_state);
     }
 
-    M_Write(&g_FlipEffect, sizeof(int32_t));
-    M_Write(&g_FlipTimer, sizeof(int32_t));
-    M_Write(&g_IsMonkAngry, sizeof(int32_t));
+    M_WriteS32(g_FlipEffect);
+    M_WriteS32(g_FlipTimer);
+    M_WriteS32(g_IsMonkAngry);
 
     M_WriteFlares();
 }
