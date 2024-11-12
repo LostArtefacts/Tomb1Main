@@ -21,6 +21,7 @@ typedef struct {
         bool fix_m16_accuracy;
         bool enable_cheats;
         bool fix_item_duplication_glitch;
+        bool enable_auto_item_selection;
     } gameplay;
 
     struct {

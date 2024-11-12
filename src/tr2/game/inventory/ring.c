@@ -1,5 +1,6 @@
 #include "game/inventory/ring.h"
 
+#include "game/inventory/backpack.h"
 #include "game/math_misc.h"
 #include "game/output.h"
 #include "global/funcs.h"
@@ -13,6 +14,32 @@
 #define RING_CAMERA_HEIGHT (-256)
 #define RING_CAMERA_Y_OFFSET (-96)
 
+static GAME_OBJECT_ID m_RequestedObjectID = NO_OBJECT;
+
+static void M_HandleRequestedObject(RING_INFO *ring);
+
+static void M_HandleRequestedObject(RING_INFO *const ring)
+{
+    if (m_RequestedObjectID == NO_OBJECT) {
+        return;
+    }
+
+    for (int32_t i = 0; i < ring->number_of_objects; i++) {
+        const GAME_OBJECT_ID item_id = ring->list[i]->object_id;
+        if (item_id == m_RequestedObjectID && Inv_RequestItem(item_id) > 0) {
+            ring->current_object = i;
+            break;
+        }
+    }
+
+    m_RequestedObjectID = NO_OBJECT;
+}
+
+void Inv_Ring_SetRequestedObjectID(const GAME_OBJECT_ID object_id)
+{
+    m_RequestedObjectID = object_id;
+}
+
 void __cdecl Inv_Ring_Init(
     RING_INFO *const ring, const RING_TYPE type, INVENTORY_ITEM **const list,
     const int16_t qty, const int16_t current, IMOTION_INFO *const imo)
@@ -23,6 +50,8 @@ void __cdecl Inv_Ring_Init(
     ring->current_object = current;
     ring->radius = 0;
     ring->angle_adder = 0x10000 / qty;
+
+    M_HandleRequestedObject(ring);
 
     if (g_Inv_Mode == INV_TITLE_MODE) {
         ring->camera_pitch = 1024;

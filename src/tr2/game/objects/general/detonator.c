@@ -106,7 +106,7 @@ void __cdecl Detonator_Collision(
     }
 
     if (g_Inv_Chosen == NO_OBJECT) {
-        Inv_Display(INV_KEYS_MODE);
+        Inv_DisplayKeys(item->object_id);
     }
 
     if (g_Inv_Chosen != O_KEY_OPTION_2) {

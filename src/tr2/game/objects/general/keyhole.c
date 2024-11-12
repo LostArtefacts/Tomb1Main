@@ -71,7 +71,7 @@ void __cdecl Keyhole_Collision(
     }
 
     if (g_Inv_Chosen == NO_OBJECT) {
-        Inv_Display(INV_KEYS_MODE);
+        Inv_DisplayKeys(item->object_id);
         if (g_Inv_Chosen == NO_OBJECT && g_Inv_KeyObjectsCount > 0) {
             return;
         }

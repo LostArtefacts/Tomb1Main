@@ -44,7 +44,11 @@
       "ID": "gameplay_options",
       "Image": "Graphics/graphic4.jpg",
       "Properties": [
-
+        {
+          "Field": "enable_auto_item_selection",
+          "DataType": "Bool",
+          "DefaultValue": true
+        }
       ]
     },
     {

@@ -2,6 +2,7 @@
 
 #include "global/types.h"
 
+void Inv_Ring_SetRequestedObjectID(const GAME_OBJECT_ID object_id);
 void __cdecl Inv_Ring_Init(
     RING_INFO *ring, RING_TYPE type, INVENTORY_ITEM **list, int16_t qty,
     int16_t current, IMOTION_INFO *imo);

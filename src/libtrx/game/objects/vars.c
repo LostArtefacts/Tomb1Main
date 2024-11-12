@@ -12,6 +12,9 @@ const GAME_OBJECT_PAIR g_KeyItemToReceptacleMap[] = {
     { O_PUZZLE_OPTION_4, O_PUZZLE_HOLE_4 },
     #if TR_VERSION == 1
     { O_LEADBAR_OPTION, O_MIDAS_TOUCH },
+    #elif TR_VERSION == 2
+    { O_KEY_OPTION_2, O_DETONATOR_1 },
+    { O_KEY_OPTION_2, O_DETONATOR_2 },
     #endif
     { NO_OBJECT, NO_OBJECT },
     // clang-format on

@@ -29,6 +29,7 @@
 #include "global/vars.h"
 
 #include <libtrx/game/objects/names.h>
+#include <libtrx/game/objects/vars.h>
 
 #include <stdio.h>
 
@@ -817,6 +818,17 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
     }
 
     return 0;
+}
+
+int32_t Inv_DisplayKeys(const GAME_OBJECT_ID receptacle_type_id)
+{
+    if (g_Config.gameplay.enable_auto_item_selection) {
+        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
+            receptacle_type_id, g_KeyItemToReceptacleMap);
+        Inv_Ring_SetRequestedObjectID(object_id);
+    }
+
+    return Inv_Display(INV_KEYS_MODE);
 }
 
 void __cdecl Inv_SelectMeshes(INVENTORY_ITEM *const inv_item)
