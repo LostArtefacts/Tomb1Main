@@ -208,6 +208,29 @@ static void M_WriteFlares(void)
     }
 }
 
+void __cdecl InitialiseStartInfo(void)
+{
+    if (g_SaveGame.bonus_flag) {
+        return;
+    }
+
+    for (int32_t i = 0; i < MAX_LEVELS; i++) {
+        ModifyStartInfo(i);
+        g_SaveGame.start[i].available = 0;
+        g_SaveGame.start[i].statistics.timer = 0;
+        g_SaveGame.start[i].statistics.shots = 0;
+        g_SaveGame.start[i].statistics.hits = 0;
+        g_SaveGame.start[i].statistics.distance = 0;
+        g_SaveGame.start[i].statistics.kills = 0;
+        g_SaveGame.start[i].statistics.secrets = 0;
+        g_SaveGame.start[i].statistics.medipacks = 0;
+    }
+
+    g_SaveGame.start[LV_GYM].available = 1;
+    g_SaveGame.start[LV_FIRST].available = 1;
+    g_SaveGame.bonus_flag = 0;
+}
+
 void __cdecl CreateSaveGameInfo(void)
 {
     g_SaveGame.current_level = g_CurrentLevel;
