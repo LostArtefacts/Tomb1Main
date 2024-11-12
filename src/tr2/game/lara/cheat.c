@@ -121,6 +121,10 @@ bool Lara_Cheat_EnterFlyMode(void)
         M_ResetGunStatus();
     }
 
+    if (g_Lara.gun_status == LGS_HANDS_BUSY) {
+        g_Lara.gun_status = LGS_ARMLESS;
+    }
+
     Lara_GetOffVehicle();
 
     if (g_Lara.water_status != LWS_UNDERWATER || g_LaraItem->hit_points <= 0) {
