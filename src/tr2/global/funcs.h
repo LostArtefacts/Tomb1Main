@@ -108,7 +108,6 @@
 #define Winston_Control ((void __cdecl (*)(int16_t item_num))0x00437CF0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define Mouse_Control ((void __cdecl (*)(int16_t item_num))0x00438EF0)
-#define ModifyStartInfo ((void __cdecl (*)(int32_t level_num))0x00439150)
 #define CreateStartInfo ((void __cdecl (*)(int32_t level_num))0x00439230)
 #define ExtractSaveGameInfo ((void __cdecl (*)(void))0x00439970)
 #define ResetSG ((void __cdecl (*)(void))0x0043A1D0)

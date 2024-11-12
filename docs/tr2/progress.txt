@@ -3655,7 +3655,7 @@ typedef enum {
 
 # game/savegame.c
 0x004390E0  0x0062  +R      void __cdecl InitialiseStartInfo(void);
-0x00439150  0x00DB  -R      void __cdecl ModifyStartInfo(int32_t level_num);
+0x00439150  0x00DB  +R      void __cdecl ModifyStartInfo(int32_t level_num);
 0x00439230  0x0201  -R      void __cdecl CreateStartInfo(int32_t level_num);
 0x00439440  0x052B  +R      void __cdecl CreateSaveGameInfo(void);
 0x00439970  0x085C  -R      void __cdecl ExtractSaveGameInfo(void);

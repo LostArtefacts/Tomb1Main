@@ -1,6 +1,7 @@
 #include "decomp/stats.h"
 
 #include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "game/console/common.h"
 #include "game/input.h"
 #include "game/music.h"

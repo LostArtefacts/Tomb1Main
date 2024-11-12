@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.55% (915)</tspan> · <tspan class="known">24.04% (299)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.63% (916)</tspan> · <tspan class="known">23.95% (298)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="549.44" height="6" x="0" y="0" class="decompiled"/>
-<rect width="179.54" height="6" x="549.44" y="0" class="known"/>
+<rect width="550.04" height="6" x="0" y="0" class="decompiled"/>
+<rect width="178.94" height="6" x="550.04" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -759,7 +759,7 @@
 <rect width="12" height="12" x="450" y="195" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="465" y="195" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="480" y="195" class="decompiled"><title>void __cdecl InitialiseStartInfo(void);</title></rect>
-<rect width="12" height="12" x="495" y="195" class="known"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
+<rect width="12" height="12" x="495" y="195" class="decompiled"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="510" y="195" class="known"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="525" y="195" class="decompiled"><title>void __cdecl CreateSaveGameInfo(void);</title></rect>
 <rect width="12" height="12" x="540" y="195" class="known"><title>void __cdecl ExtractSaveGameInfo(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.32%</tspan> · <tspan class="known">21.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.39%</tspan> · <tspan class="known">21.29%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="585.07" height="6" x="0" y="0" class="decompiled"/>
-<rect width="159.49" height="6" x="585.07" y="0" class="known"/>
+<rect width="585.55" height="6" x="0" y="0" class="decompiled"/>
+<rect width="159.01" height="6" x="585.55" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1742,7 +1742,7 @@
 <rect width="10.30" height="10.72" x="657.26" y="122.62" class="decompiled"><title>void __cdecl DrawQuad(float sx, float sy, float width, float height, D3DCOLOR color);</title></rect>
 <rect width="10.30" height="10.72" x="670.56" y="122.62" class="known"><title>INT_PTR __stdcall SE_AdvancedDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="10.24" height="10.72" x="683.86" y="122.62" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
-<rect width="10.24" height="10.72" x="697.10" y="122.62" class="known"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
+<rect width="10.24" height="10.72" x="697.10" y="122.62" class="decompiled"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
 <rect width="10.24" height="10.72" x="710.34" y="122.62" class="known"><title>void __cdecl SpringBoard_Control(int16_t item_num);</title></rect>
 <rect width="10.24" height="10.72" x="723.58" y="122.62" class="decompiled"><title>void __cdecl S_LoadSettings(void);</title></rect>
 <rect width="10.18" height="10.72" x="736.82" y="122.62" class="decompiled"><title>int32_t __cdecl LOS_ClipTarget(const GAME_VECTOR *start, GAME_VECTOR *target, const SECTOR *sector);</title></rect>

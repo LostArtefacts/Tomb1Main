@@ -231,6 +231,83 @@ void __cdecl InitialiseStartInfo(void)
     g_SaveGame.bonus_flag = 0;
 }
 
+void __cdecl ModifyStartInfo(const int32_t level_num)
+{
+    START_INFO *start = &g_SaveGame.start[level_num];
+    start->has_pistols = 1;
+    start->gun_type = LGT_PISTOLS;
+    start->pistol_ammo = 1000;
+
+    if (level_num == LV_GYM) {
+        start->available = 1;
+
+        start->has_pistols = 0;
+        start->has_shotgun = 0;
+        start->has_magnums = 0;
+        start->has_uzis = 0;
+        start->has_harpoon = 0;
+        start->has_m16 = 0;
+        start->has_grenade = 0;
+
+        start->pistol_ammo = 0;
+        start->shotgun_ammo = 0;
+        start->magnum_ammo = 0;
+        start->uzi_ammo = 0;
+        start->harpoon_ammo = 0;
+        start->m16_ammo = 0;
+        start->grenade_ammo = 0;
+
+        start->flares = 0;
+        start->large_medipacks = 0;
+        start->small_medipacks = 0;
+        start->gun_type = LGT_UNARMED;
+        start->gun_status = LGS_ARMLESS;
+    } else if (level_num == LV_FIRST) {
+        start->available = 1;
+
+        start->has_pistols = 1;
+        start->has_shotgun = 1;
+        start->has_magnums = 0;
+        start->has_uzis = 0;
+        start->has_harpoon = 0;
+        start->has_m16 = 0;
+        start->has_grenade = 0;
+
+        start->shotgun_ammo = 2 * SHOTGUN_AMMO_CLIP;
+        start->magnum_ammo = 0;
+        start->uzi_ammo = 0;
+        start->harpoon_ammo = 0;
+        start->m16_ammo = 0;
+        start->grenade_ammo = 0;
+
+        start->flares = 2;
+        start->small_medipacks = 1;
+        start->large_medipacks = 1;
+        start->gun_status = LGS_ARMLESS;
+    }
+
+    if (g_SaveGame.bonus_flag && level_num != LV_GYM) {
+        start->has_pistols = 1;
+        start->has_shotgun = 1;
+        start->has_magnums = 1;
+        start->has_uzis = 1;
+        start->has_grenade = 1;
+        start->has_harpoon = 1;
+        start->has_m16 = 1;
+        start->has_grenade = 1;
+
+        start->shotgun_ammo = 10000;
+        start->magnum_ammo = 10000;
+        start->uzi_ammo = 10000;
+        start->harpoon_ammo = 10000;
+        start->m16_ammo = 10000;
+        start->grenade_ammo = 10000;
+
+        start->flares = -1;
+        start->gun_type = LGT_GRENADE;
+    }
+}
+
 void __cdecl CreateSaveGameInfo(void)
 {
     g_SaveGame.current_level = g_CurrentLevel;
