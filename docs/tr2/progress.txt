@@ -3658,7 +3658,7 @@ typedef enum {
 0x00439150  0x00DB  +R      void __cdecl ModifyStartInfo(int32_t level_num);
 0x00439230  0x0201  +R      void __cdecl CreateStartInfo(int32_t level_num);
 0x00439440  0x052B  +R      void __cdecl CreateSaveGameInfo(void);
-0x00439970  0x085C  -R      void __cdecl ExtractSaveGameInfo(void);
+0x00439970  0x085C  +R      void __cdecl ExtractSaveGameInfo(void);
 0x0043A1D0  0x0015  -R      void __cdecl ResetSG(void);
 0x0043A1F0  0x004C  -R      void __cdecl WriteSG(const void *pointer, int32_t size);
 0x0043A240  0x0035  -R      void __cdecl ReadSG(void *pointer, int32_t size);
@@ -4597,7 +4597,7 @@ typedef enum {
 0x00525B08  -       int16_t *g_AnimCommands;
 0x0052617C  -       ANIM_CHANGE *g_AnimChanges;
 0x00525B04  -       ANIM_RANGE *g_AnimRanges;
-0x00526260  -       int32_t g_FlipMaps[10]; // MAX_FLIPMAPS
+0x00526260  -       int32_t g_FlipMaps[10]; // MAX_FLIP_MAPS
 0x005252B4  -       int32_t g_Outside;
 0x00526198  -       int32_t g_OutsideRight;
 0x00526178  -       int32_t g_OutsideLeft;
