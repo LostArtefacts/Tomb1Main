@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.04% (921)</tspan> · <tspan class="known">23.55% (293)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.12% (922)</tspan> · <tspan class="known">23.47% (292)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="553.04" height="6" x="0" y="0" class="decompiled"/>
-<rect width="175.94" height="6" x="553.04" y="0" class="known"/>
+<rect width="553.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="175.34" height="6" x="553.64" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1078,7 +1078,7 @@
 <rect width="12" height="12" x="735" y="285" class="decompiled"><title>int32_t __cdecl Random_GetDraw(void);</title></rect>
 <rect width="12" height="12" x="0" y="300" class="decompiled"><title>void __cdecl Random_SeedDraw(int32_t seed);</title></rect>
 <rect width="12" height="12" x="15" y="300" class="known"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
-<rect width="12" height="12" x="30" y="300" class="known"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
+<rect width="12" height="12" x="30" y="300" class="decompiled"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="45" y="300" class="decompiled"><title>void __cdecl DisplayCredits(void);</title></rect>
 <rect width="12" height="12" x="60" y="300" class="known"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
 <rect width="12" height="12" x="75" y="300" class="known"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.21%</tspan> · <tspan class="known">20.47%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.23%</tspan> · <tspan class="known">20.44%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="591.68" height="6" x="0" y="0" class="decompiled"/>
-<rect width="152.88" height="6" x="591.68" y="0" class="known"/>
+<rect width="591.84" height="6" x="0" y="0" class="decompiled"/>
+<rect width="152.72" height="6" x="591.84" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2139,7 +2139,7 @@
 <rect width="4.86" height="5.12" x="695.87" y="252.89" class="decompiled"><title>void __cdecl WinVidExitMessage(void);</title></rect>
 <rect width="4.76" height="5.12" x="703.74" y="252.89" class="decompiled"><title>void __cdecl Lara_State_Extra_Breath(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.76" height="5.12" x="711.50" y="252.89" class="decompiled"><title>void __cdecl WriteSG(const void *pointer, int32_t size);</title></rect>
-<rect width="4.76" height="5.12" x="719.26" y="252.89" class="known"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
+<rect width="4.76" height="5.12" x="719.26" y="252.89" class="decompiled"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
 <rect width="4.66" height="5.12" x="727.02" y="252.89" class="decompiled"><title>int32_t __cdecl Boat_DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
 <rect width="4.66" height="5.12" x="734.68" y="252.89" class="decompiled"><title>void __cdecl Lara_State_FastTurn(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.66" height="5.12" x="742.34" y="252.89" class="decompiled"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>

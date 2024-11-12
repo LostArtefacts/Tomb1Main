@@ -11,6 +11,7 @@
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
+#include "game/requester.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "global/const.h"
@@ -847,4 +848,18 @@ void __cdecl ReadSG(void *const pointer, const size_t size)
     g_SavegameBufPos += size;
     memcpy(pointer, g_SavegameBufPtr, size);
     g_SavegameBufPtr += size;
+}
+
+void __cdecl GetSavedGamesList(REQUEST_INFO *const req)
+{
+    Requester_SetSize(req, 10, -32);
+    if (req->selected >= req->visible_count) {
+        req->line_offset = req->selected - req->visible_count + 1;
+    }
+    memcpy(
+        g_RequesterFlags1, g_SaveGameReqFlags1,
+        sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
+    memcpy(
+        g_RequesterFlags2, g_SaveGameReqFlags2,
+        sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
 }
