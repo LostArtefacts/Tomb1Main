@@ -820,3 +820,9 @@ void __cdecl ExtractSaveGameInfo(void)
 
     M_ReadFlares();
 }
+
+void __cdecl ResetSG(void)
+{
+    g_SavegameBufPos = 0;
+    g_SavegameBufPtr = g_SaveGame.buffer;
+}

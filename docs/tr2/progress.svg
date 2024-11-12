@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.79% (918)</tspan> · <tspan class="known">23.79% (296)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">73.87% (919)</tspan> · <tspan class="known">23.71% (295)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="551.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="177.74" height="6" x="551.24" y="0" class="known"/>
+<rect width="551.84" height="6" x="0" y="0" class="decompiled"/>
+<rect width="177.14" height="6" x="551.84" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -763,7 +763,7 @@
 <rect width="12" height="12" x="510" y="195" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="525" y="195" class="decompiled"><title>void __cdecl CreateSaveGameInfo(void);</title></rect>
 <rect width="12" height="12" x="540" y="195" class="decompiled"><title>void __cdecl ExtractSaveGameInfo(void);</title></rect>
-<rect width="12" height="12" x="555" y="195" class="known"><title>void __cdecl ResetSG(void);</title></rect>
+<rect width="12" height="12" x="555" y="195" class="decompiled"><title>void __cdecl ResetSG(void);</title></rect>
 <rect width="12" height="12" x="570" y="195" class="known"><title>void __cdecl WriteSG(const void *pointer, int32_t size);</title></rect>
 <rect width="12" height="12" x="585" y="195" class="known"><title>void __cdecl ReadSG(void *pointer, int32_t size);</title></rect>
 <rect width="12" height="12" x="600" y="195" class="decompiled"><title>int32_t __cdecl Level_Initialise(int32_t level_num, int32_t level_type);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.16%</tspan> · <tspan class="known">20.51%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.17%</tspan> · <tspan class="known">20.50%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="591.35" height="6" x="0" y="0" class="decompiled"/>
-<rect width="153.21" height="6" x="591.35" y="0" class="known"/>
+<rect width="591.40" height="6" x="0" y="0" class="decompiled"/>
+<rect width="153.16" height="6" x="591.40" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2469,7 +2469,7 @@
 <rect width="1.09" height="1.46" x="738.10" y="345.15" class="decompiled"><title>void __cdecl HWR_BeginScene(void);</title></rect>
 <rect width="0.91" height="1.46" x="742.19" y="345.15" class="decompiled"><title>void __cdecl Overlay_InitialisePickUpDisplay(void);</title></rect>
 <rect width="0.91" height="1.46" x="746.09" y="345.15" class="decompiled"><title>void __cdecl Lara_State_WaterOut(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="1.12" height="1.23" x="717.27" y="349.61" class="known"><title>void __cdecl ResetSG(void);</title></rect>
+<rect width="1.12" height="1.23" x="717.27" y="349.61" class="decompiled"><title>void __cdecl ResetSG(void);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="353.84" class="decompiled"><title>void __cdecl Lara_State_Death(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="357.86" class="decompiled"><title>void __cdecl Lara_State_Climbing(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="361.89" class="decompiled"><title>void __cdecl Lara_State_ClimbDown(ITEM *item, COLL_INFO *coll);</title></rect>

@@ -108,7 +108,6 @@
 #define Winston_Control ((void __cdecl (*)(int16_t item_num))0x00437CF0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define Mouse_Control ((void __cdecl (*)(int16_t item_num))0x00438EF0)
-#define ResetSG ((void __cdecl (*)(void))0x0043A1D0)
 #define WriteSG ((void __cdecl (*)(const void *pointer, int32_t size))0x0043A1F0)
 #define ReadSG ((void __cdecl (*)(void *pointer, int32_t size))0x0043A240)
 #define InitialiseGameFlags ((void __cdecl (*)(void))0x0043A3E0)
