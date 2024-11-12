@@ -18,6 +18,9 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/filesystem.h>
+
+#include <stdio.h>
 #include <string.h>
 
 #define MAX_SG_BUFFER_SIZE 6272
@@ -862,4 +865,47 @@ void __cdecl GetSavedGamesList(REQUEST_INFO *const req)
     memcpy(
         g_RequesterFlags2, g_SaveGameReqFlags2,
         sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
+}
+
+BOOL __cdecl S_FrontEndCheck(void)
+{
+    Requester_Init(&g_LoadGameRequester);
+
+    g_SavedGames = 0;
+    for (int32_t i = 0; i < MAX_REQUESTER_ITEMS; i++) {
+        char file_name[80];
+        sprintf(file_name, "savegame.%d", i);
+
+        if (!File_Exists(file_name)) {
+            Requester_AddItem(
+                &g_LoadGameRequester, g_GF_PCStrings[GF_S_PC_EMPTY_SLOT], 0, 0,
+                0);
+            g_SavedLevels[i] = 0;
+        } else {
+            MYFILE *const fp = File_Open(file_name, FILE_OPEN_READ);
+            char level_title[80];
+            File_ReadData(fp, level_title, 75);
+            const int32_t save_num = File_ReadS32(fp);
+            File_Close(fp);
+
+            char save_num_text[20];
+            sprintf(save_num_text, "%d", save_num);
+
+            Requester_AddItem(
+                &g_LoadGameRequester, level_title, REQ_ALIGN_LEFT,
+                save_num_text, REQ_ALIGN_RIGHT);
+
+            if (save_num > g_SaveCounter) {
+                g_SaveCounter = save_num;
+                g_LoadGameRequester.selected = i;
+            }
+            g_SavedLevels[i] = 1;
+            g_SavedGames++;
+        }
+    }
+
+    memcpy(g_SaveGameReqFlags1, g_RequesterFlags1, sizeof(g_SaveGameReqFlags1));
+    memcpy(g_SaveGameReqFlags2, g_RequesterFlags2, sizeof(g_SaveGameReqFlags2));
+    g_SaveCounter++;
+    return true;
 }

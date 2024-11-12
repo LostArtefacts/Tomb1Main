@@ -13,3 +13,4 @@ void __cdecl WriteSG(const void *pointer, size_t size);
 void __cdecl ReadSG(void *pointer, size_t size);
 
 void __cdecl GetSavedGamesList(REQUEST_INFO *req);
+BOOL __cdecl S_FrontEndCheck(void);

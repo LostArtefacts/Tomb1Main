@@ -322,6 +322,7 @@ static void M_DecompSavegame(const bool enable)
     INJECT(enable, 0x0043A1F0, WriteSG);
     INJECT(enable, 0x0043A240, ReadSG);
     INJECT(enable, 0x0044CA20, GetSavedGamesList);
+    INJECT(enable, 0x0044CCB0, S_FrontEndCheck);
 }
 
 static void M_GameBuf(bool enable)

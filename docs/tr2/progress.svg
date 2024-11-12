@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.12% (922)</tspan> · <tspan class="known">23.47% (292)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.20% (923)</tspan> · <tspan class="known">23.39% (291)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="553.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="175.34" height="6" x="553.64" y="0" class="known"/>
+<rect width="554.25" height="6" x="0" y="0" class="decompiled"/>
+<rect width="174.74" height="6" x="554.25" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1080,7 +1080,7 @@
 <rect width="12" height="12" x="15" y="300" class="known"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="30" y="300" class="decompiled"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="45" y="300" class="decompiled"><title>void __cdecl DisplayCredits(void);</title></rect>
-<rect width="12" height="12" x="60" y="300" class="known"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
+<rect width="12" height="12" x="60" y="300" class="decompiled"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
 <rect width="12" height="12" x="75" y="300" class="known"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="12" height="12" x="90" y="300" class="known"><title>int32_t __cdecl S_LoadGame(void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="12" height="12" x="105" y="300" class="decompiled"><title>void __cdecl HWR_InitState(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.23%</tspan> · <tspan class="known">20.44%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.33%</tspan> · <tspan class="known">20.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="591.84" height="6" x="0" y="0" class="decompiled"/>
-<rect width="152.72" height="6" x="591.84" y="0" class="known"/>
+<rect width="592.63" height="6" x="0" y="0" class="decompiled"/>
+<rect width="151.94" height="6" x="592.63" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1596,7 +1596,7 @@
 <rect width="14.76" height="13.82" x="592.27" y="59.33" class="decompiled"><title>int32_t __cdecl Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="14.71" height="13.82" x="610.03" y="59.33" class="decompiled"><title>void __cdecl Inv_RingIsOpen(RING_INFO *ring);</title></rect>
 <rect width="14.66" height="13.82" x="627.74" y="59.33" class="decompiled"><title>void __cdecl Gun_Rifle_Draw(LARA_GUN_TYPE weapon_type);</title></rect>
-<rect width="14.61" height="13.82" x="645.40" y="59.33" class="known"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
+<rect width="14.61" height="13.82" x="645.40" y="59.33" class="decompiled"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
 <rect width="14.56" height="13.82" x="663.02" y="59.33" class="decompiled"><title>void __cdecl Flame_Control(int16_t fx_num);</title></rect>
 <rect width="14.47" height="13.82" x="680.58" y="59.33" class="decompiled"><title>void __cdecl Lara_Col_Wade(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.37" height="13.82" x="698.05" y="59.33" class="decompiled"><title>void __fastcall Output_GourA(int32_t y0, int32_t y1, uint8_t color_idx); // actually, __watcall, which is esoteric and rarely supported</title></rect>
