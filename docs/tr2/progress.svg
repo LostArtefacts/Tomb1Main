@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.20% (923)</tspan> · <tspan class="known">23.39% (291)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.28% (924)</tspan> · <tspan class="known">23.31% (290)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="554.25" height="6" x="0" y="0" class="decompiled"/>
-<rect width="174.74" height="6" x="554.25" y="0" class="known"/>
+<rect width="554.85" height="6" x="0" y="0" class="decompiled"/>
+<rect width="174.14" height="6" x="554.85" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1081,7 +1081,7 @@
 <rect width="12" height="12" x="30" y="300" class="decompiled"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="45" y="300" class="decompiled"><title>void __cdecl DisplayCredits(void);</title></rect>
 <rect width="12" height="12" x="60" y="300" class="decompiled"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
-<rect width="12" height="12" x="75" y="300" class="known"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
+<rect width="12" height="12" x="75" y="300" class="decompiled"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="12" height="12" x="90" y="300" class="known"><title>int32_t __cdecl S_LoadGame(void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="12" height="12" x="105" y="300" class="decompiled"><title>void __cdecl HWR_InitState(void);</title></rect>
 <rect width="12" height="12" x="120" y="300" class="decompiled"><title>void __cdecl HWR_ResetTexSource(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.33%</tspan> · <tspan class="known">20.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.41%</tspan> · <tspan class="known">20.26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="592.63" height="6" x="0" y="0" class="decompiled"/>
-<rect width="151.94" height="6" x="592.63" y="0" class="known"/>
+<rect width="593.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="151.33" height="6" x="593.23" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1664,7 +1664,7 @@
 <rect width="12.24" height="12.14" x="464.87" y="184.80" class="known"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12.24" height="12.08" x="464.87" y="199.94" class="decompiled"><title>void __cdecl SpikeCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12.24" height="12.03" x="464.87" y="215.02" class="decompiled"><title>void __cdecl Bartoli_Initialise(int16_t item_num);</title></rect>
-<rect width="12.24" height="12.03" x="464.87" y="230.05" class="known"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
+<rect width="12.24" height="12.03" x="464.87" y="230.05" class="decompiled"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="12.24" height="11.97" x="464.87" y="245.08" class="decompiled"><title>int32_t __cdecl GameStats(int32_t level_num);</title></rect>
 <rect width="12.24" height="11.92" x="464.87" y="260.06" class="decompiled"><title>int32_t __cdecl Game_Cutscene_Start(int32_t level_num);</title></rect>
 <rect width="12.24" height="11.81" x="464.87" y="274.98" class="decompiled"><title>int32_t __cdecl Inv_RemoveItem(GAME_OBJECT_ID object_id);</title></rect>

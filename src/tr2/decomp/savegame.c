@@ -888,7 +888,7 @@ BOOL __cdecl S_FrontEndCheck(void)
             const int32_t save_num = File_ReadS32(fp);
             File_Close(fp);
 
-            char save_num_text[20];
+            char save_num_text[16];
             sprintf(save_num_text, "%d", save_num);
 
             Requester_AddItem(
@@ -907,5 +907,34 @@ BOOL __cdecl S_FrontEndCheck(void)
     memcpy(g_SaveGameReqFlags1, g_RequesterFlags1, sizeof(g_SaveGameReqFlags1));
     memcpy(g_SaveGameReqFlags2, g_RequesterFlags2, sizeof(g_SaveGameReqFlags2));
     g_SaveCounter++;
+    return true;
+}
+
+int32_t __cdecl S_SaveGame(
+    const void *const save_data, const size_t save_size, const int32_t slot_num)
+{
+    char file_name[80];
+    sprintf(file_name, "savegame.%d", slot_num);
+
+    MYFILE *const fp = File_Open(file_name, FILE_OPEN_WRITE);
+    if (fp == NULL) {
+        return false;
+    }
+
+    sprintf(file_name, "%s", g_GF_LevelNames[g_SaveGame.current_level]);
+    File_WriteData(fp, file_name, 75);
+    File_WriteS32(fp, g_SaveCounter);
+    File_WriteData(fp, save_data, save_size);
+    File_Close(fp);
+
+    char save_num_text[16];
+    sprintf(save_num_text, "%d", g_SaveCounter);
+    Requester_ChangeItem(
+        &g_LoadGameRequester, slot_num, file_name, REQ_ALIGN_LEFT,
+        save_num_text, REQ_ALIGN_RIGHT);
+
+    g_SavedLevels[slot_num] = 1;
+    g_SaveCounter++;
+    g_SavedGames++;
     return true;
 }
