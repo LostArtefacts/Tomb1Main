@@ -933,9 +933,12 @@ int32_t __cdecl S_SaveGame(
         &g_LoadGameRequester, slot_num, file_name, REQ_ALIGN_LEFT,
         save_num_text, REQ_ALIGN_RIGHT);
 
+    g_SaveGameReqFlags1[slot_num] = g_RequesterFlags1[slot_num];
+    g_SaveGameReqFlags2[slot_num] = g_RequesterFlags2[slot_num];
     g_SavedLevels[slot_num] = 1;
     g_SaveCounter++;
     g_SavedGames++;
+
     return true;
 }
 

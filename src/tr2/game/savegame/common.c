@@ -19,9 +19,6 @@ bool Savegame_Save(const int32_t slot_idx)
 {
     CreateSaveGameInfo();
     S_SaveGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_idx);
-    // TODO: move me inside S_SaveGame
-    g_SaveGameReqFlags1[slot_idx] = g_RequesterFlags1[slot_idx];
-    g_SaveGameReqFlags2[slot_idx] = g_RequesterFlags2[slot_idx];
     GetSavedGamesList(&g_LoadGameRequester);
     return true;
 }
