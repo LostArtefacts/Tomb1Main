@@ -12,10 +12,14 @@
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
 #include "game/room.h"
+#include "game/shell.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <string.h>
+
+#define MAX_SG_BUFFER_SIZE 6272
 #define SAVE_CREATURE (1 << 7)
 
 #define SPECIAL_READ_WRITES                                                    \
@@ -825,4 +829,15 @@ void __cdecl ResetSG(void)
 {
     g_SavegameBufPos = 0;
     g_SavegameBufPtr = g_SaveGame.buffer;
+}
+
+void __cdecl WriteSG(const void *const pointer, const size_t size)
+{
+    g_SavegameBufPos += size;
+    if (g_SavegameBufPos >= MAX_SG_BUFFER_SIZE) {
+        Shell_ExitSystem("FATAL: Savegame is too big to fit in buffer");
+    }
+
+    memcpy(g_SavegameBufPtr, pointer, size);
+    g_SavegameBufPtr += size;
 }

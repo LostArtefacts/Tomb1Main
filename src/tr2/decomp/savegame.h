@@ -8,3 +8,4 @@ void __cdecl CreateStartInfo(int32_t level_num);
 void __cdecl CreateSaveGameInfo(void);
 void __cdecl ExtractSaveGameInfo(void);
 void __cdecl ResetSG(void);
+void __cdecl WriteSG(const void *pointer, size_t size);

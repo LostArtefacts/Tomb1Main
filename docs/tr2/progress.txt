@@ -614,7 +614,7 @@ typedef struct __unaligned {
     uint8_t num_puzzle[4];
     uint8_t num_key[4];
     uint16_t reserved;
-    char buffer[6272];
+    char buffer[6272]; // MAX_SG_BUFFER_SIZE
 } SAVEGAME_INFO;
 
 typedef struct __unaligned { // decompiled
@@ -3660,7 +3660,7 @@ typedef enum {
 0x00439440  0x052B  +R      void __cdecl CreateSaveGameInfo(void);
 0x00439970  0x085C  +R      void __cdecl ExtractSaveGameInfo(void);
 0x0043A1D0  0x0015  +R      void __cdecl ResetSG(void);
-0x0043A1F0  0x004C  -R      void __cdecl WriteSG(const void *pointer, int32_t size);
+0x0043A1F0  0x004C  +R      void __cdecl WriteSG(const void *pointer, int32_t size);
 0x0043A240  0x0035  -R      void __cdecl ReadSG(void *pointer, int32_t size);
 
 # game/setup.c
