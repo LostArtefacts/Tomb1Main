@@ -938,3 +938,20 @@ int32_t __cdecl S_SaveGame(
     g_SavedGames++;
     return true;
 }
+
+int32_t __cdecl S_LoadGame(
+    void *const save_data, const size_t save_size, const int32_t slot_num)
+{
+    char file_name[80];
+    sprintf(file_name, "savegame.%d", slot_num);
+
+    MYFILE *const fp = File_Open(file_name, FILE_OPEN_READ);
+    if (fp == NULL) {
+        return false;
+    }
+    File_Skip(fp, 75);
+    File_Skip(fp, 4);
+    File_ReadData(fp, save_data, save_size);
+    File_Close(fp);
+    return true;
+}
