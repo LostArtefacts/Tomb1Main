@@ -690,7 +690,7 @@ int32_t __cdecl Lara_TestVault(ITEM *item, COLL_INFO *coll)
         item->current_anim_state = LS_STOP;
         item->anim_num = LA_STAND_STILL;
         item->frame_num = g_Anims[item->anim_num].frame_base;
-        g_Lara.calc_fallspeed =
+        g_Lara.calc_fall_speed =
             -(Math_Sqrt(-2 * GRAVITY * (front_floor + 800)) + 3);
         Lara_Animate(item);
     } else if (
@@ -702,7 +702,7 @@ int32_t __cdecl Lara_TestVault(ITEM *item, COLL_INFO *coll)
         item->current_anim_state = LS_STOP;
         item->anim_num = LA_STAND_STILL;
         item->frame_num = g_Anims[item->anim_num].frame_base;
-        g_Lara.calc_fallspeed = -116;
+        g_Lara.calc_fall_speed = -116;
         Lara_Animate(item);
     } else if (
         g_Lara.climb_status

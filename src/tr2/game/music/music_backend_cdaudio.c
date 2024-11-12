@@ -6,11 +6,10 @@
 #include <libtrx/memory.h>
 
 #include <assert.h>
+#include <global/const.h>
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
-
-#define MAX_CD_TRACKS 60
 
 typedef struct {
     uint64_t from;

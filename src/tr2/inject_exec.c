@@ -4,6 +4,7 @@
 #include "decomp/effects.h"
 #include "decomp/flares.h"
 #include "decomp/fmv.h"
+#include "decomp/savegame.h"
 #include "decomp/skidoo.h"
 #include "decomp/stats.h"
 #include "game/background.h"
@@ -308,6 +309,11 @@ static void M_DecompFlares(const bool enable)
     INJECT(enable, 0x00430010, Flare_UndrawMeshes);
     INJECT(enable, 0x00430030, Flare_Ready);
     INJECT(enable, 0x00430070, Flare_Control);
+}
+
+static void M_DecompSavegame(const bool enable)
+{
+    INJECT(enable, 0x00439440, CreateSaveGameInfo);
 }
 
 static void M_GameBuf(bool enable)
@@ -1128,6 +1134,8 @@ void Inject_Exec(void)
     M_DecompStats(true);
     M_DecompEffects(true);
     M_DecompFlares(true);
+    M_DecompSavegame(true);
+
     M_GameBuf(true);
     M_HWR(true);
     M_Background(true);

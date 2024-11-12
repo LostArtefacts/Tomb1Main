@@ -1,3 +1,4 @@
+#include "decomp/savegame.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 

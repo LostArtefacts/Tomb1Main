@@ -1,6 +1,7 @@
 #include "game/game.h"
 
 #include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/demo.h"

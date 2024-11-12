@@ -100,7 +100,7 @@ typedef struct __PACKING {
     int16_t gun_type;
     int16_t request_gun_type;
     int16_t last_gun_type;
-    int16_t calc_fallspeed;
+    int16_t calc_fall_speed;
     int16_t water_status;
     int16_t climb_status;
     int16_t pose_count;

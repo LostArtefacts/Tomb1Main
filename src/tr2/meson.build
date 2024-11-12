@@ -82,6 +82,7 @@ dll_sources = [
   'decomp/effects.c',
   'decomp/flares.c',
   'decomp/fmv.c',
+  'decomp/savegame.c',
   'decomp/skidoo.c',
   'decomp/stats.c',
   'game/background.c',

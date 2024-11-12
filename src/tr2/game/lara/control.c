@@ -536,9 +536,9 @@ void __cdecl Lara_Animate(ITEM *const item)
                     item->speed = *cmd_ptr++;
                     item->gravity = 1;
 
-                    if (g_Lara.calc_fallspeed) {
-                        item->fall_speed = g_Lara.calc_fallspeed;
-                        g_Lara.calc_fallspeed = 0;
+                    if (g_Lara.calc_fall_speed) {
+                        item->fall_speed = g_Lara.calc_fall_speed;
+                        g_Lara.calc_fall_speed = 0;
                     }
                     break;
 
@@ -736,7 +736,7 @@ void __cdecl Lara_Initialise(const GAMEFLOW_LEVEL_TYPE type)
     g_Lara.hit_direction = -1;
     g_Lara.skidoo = NO_ITEM;
     g_Lara.weapon_item = NO_ITEM;
-    g_Lara.calc_fallspeed = 0;
+    g_Lara.calc_fall_speed = 0;
     g_Lara.climb_status = 0;
     g_Lara.pose_count = 0;
     g_Lara.hit_frame = 0;

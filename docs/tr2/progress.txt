@@ -1230,7 +1230,7 @@ typedef struct __unaligned { // decompiled
     int16_t gun_type;
     int16_t request_gun_type;
     int16_t last_gun_type;
-    int16_t calc_fallspeed;
+    int16_t calc_fall_speed;
     int16_t water_status;
     int16_t climb_status;
     int16_t pose_count;
@@ -1246,12 +1246,17 @@ typedef struct __unaligned { // decompiled
     int16_t weapon_item;
     int16_t back_gun;
     int16_t flare_frame;
-    uint16_t flare_control_left:  1; // 0x01 1
-    uint16_t flare_control_right: 1; // 0x02 2
-    uint16_t extra_anim:          1; // 0x04 4
-    uint16_t look:                1; // 0x08 8
-    uint16_t burn:                1; // 0x10 16
-    uint16_t pad:                 11;
+    union {
+        struct ___unaligned {
+            uint16_t flare_control_left:  1; // 0x01 1
+            uint16_t flare_control_right: 1; // 0x02 2
+            uint16_t extra_anim:          1; // 0x04 4
+            uint16_t look:                1; // 0x08 8
+            uint16_t burn:                1; // 0x10 16
+            uint16_t pad:                 11;
+        };
+        uint16_t flags;
+    }
     int32_t water_surface_dist;
     XYZ_32 last_pos;
     FX *spaz_effect;
@@ -3652,10 +3657,10 @@ typedef enum {
 0x004390E0  0x0062  *R      void __cdecl InitialiseStartInfo(void);
 0x00439150  0x00DB  -R      void __cdecl ModifyStartInfo(int32_t level_num);
 0x00439230  0x0201  -R      void __cdecl CreateStartInfo(int32_t level_num);
-0x00439440  0x052B  -R      void __cdecl CreateSaveGameInfo(void);
+0x00439440  0x052B  +R      void __cdecl CreateSaveGameInfo(void);
 0x00439970  0x085C  -R      void __cdecl ExtractSaveGameInfo(void);
 0x0043A1D0  0x0015  -R      void __cdecl ResetSG(void);
-0x0043A1F0  0x004C  -R      void __cdecl WriteSG(void *pointer, int32_t size);
+0x0043A1F0  0x004C  -R      void __cdecl WriteSG(const void *pointer, int32_t size);
 0x0043A240  0x0035  -R      void __cdecl ReadSG(void *pointer, int32_t size);
 
 # game/setup.c
@@ -4791,3 +4796,5 @@ typedef enum {
 0x0051A00C  -       size_t g_GameBuf_MemFree;
 0x0051B608  -       RGB_888 g_PicturePalette[256]
 0x004D7E7C  -       int32_t g_DetonateAllMines;
+0x005206A4  -       int32_t g_SavegameBufPos;
+0x0051E9C8  -       char *g_SavegameBufPtr;
