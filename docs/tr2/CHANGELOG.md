@@ -1,6 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.6...develop) - ××××-××-××
 - added support for custom levels to enforce values for any config setting (#1846)
 - fixed depth problems when drawing certain rooms (#1853, regression from 0.6)
+- fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo (#1606)
 - fixed being unable to go from surface swimming to underwater swimming without first stopping (#1863, regression from 0.6)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
