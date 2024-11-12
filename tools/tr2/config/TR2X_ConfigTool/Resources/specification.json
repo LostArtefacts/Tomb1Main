@@ -21,6 +21,11 @@
           "Field": "fix_m16_accuracy",
           "DataType": "Bool",
           "DefaultValue": true
+        },
+        {
+          "Field": "fix_item_duplication_glitch",
+          "DataType": "Bool",
+          "DefaultValue": false
         }
       ]
     },

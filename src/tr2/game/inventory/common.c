@@ -1,5 +1,6 @@
 #include "game/inventory/common.h"
 
+#include "config.h"
 #include "decomp/decomp.h"
 #include "game/clock.h"
 #include "game/console/common.h"
@@ -810,6 +811,11 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
     if (inventory_mode != INV_TITLE_MODE) {
         Music_Unpause();
     }
+
+    if (g_Config.gameplay.fix_item_duplication_glitch) {
+        Inv_ClearSelection();
+    }
+
     return 0;
 }
 

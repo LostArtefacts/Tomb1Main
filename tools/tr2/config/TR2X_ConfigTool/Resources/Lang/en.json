@@ -25,6 +25,10 @@
       "Title": "Fix M16 accuracy",
       "Description": "Fixes the accuracy of the M16 while Lara is running."
     },
+    "fix_item_duplication_glitch": {
+      "Title": "Fix item duplication glitch",
+      "Description": "Fixes the ability to duplicate usage of key items in the inventory."
+    },
     "screenshot_format": {
       "Title": "Screenshot format",
       "Description": "Screenshot file format."

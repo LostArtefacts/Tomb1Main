@@ -20,6 +20,7 @@ typedef struct {
     struct {
         bool fix_m16_accuracy;
         bool enable_cheats;
+        bool fix_item_duplication_glitch;
     } gameplay;
 
     struct {

@@ -323,8 +323,13 @@ int32_t __cdecl Inv_RequestItem(const GAME_OBJECT_ID object_id)
 void __cdecl Inv_RemoveAllItems(void)
 {
     g_Inv_MainObjectsCount = 0;
-    g_Inv_MainCurrent = 0;
     g_Inv_KeyObjectsCount = 0;
+    Inv_ClearSelection();
+}
+
+void Inv_ClearSelection(void)
+{
+    g_Inv_MainCurrent = 0;
     g_Inv_KeysCurrent = 0;
 }
 
