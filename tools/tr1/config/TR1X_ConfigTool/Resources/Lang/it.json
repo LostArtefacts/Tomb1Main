@@ -168,6 +168,10 @@
       "Title": "Correggi il glitch QWOP",
       "Description": "Risolve il problema per cui a volte Lara, saltando da piccoli gradini, provoca una strana animazione di corsa nota come stato QWOP."
     },
+    "fix_item_duplication_glitch": {
+      "Title": "Correggi il glitch duplicazione degli oggetti",
+      "Description": "Risolto il problema con la possibilità di duplicare l'utilizzo degli elementi chiave nell'inventario."
+    },
     "fix_tihocan_secret_sound": {
       "Title": "Correggi il suono dei segreti nella Tomba di Tihocan",
       "Description": "Impedisce la riproduzione errata del suono dei segreti quando si utilizza la chiave dorata nella Tomba di Tihocan."

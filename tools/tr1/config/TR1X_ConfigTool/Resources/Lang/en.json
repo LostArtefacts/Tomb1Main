@@ -168,6 +168,10 @@
       "Title": "Fix QWOP glitch",
       "Description": "Fixes Lara jumping on small steps sometimes resulting in a weird running animation, known as a QWOP state."
     },
+    "fix_item_duplication_glitch": {
+      "Title": "Fix item duplication glitch",
+      "Description": "Fixes the ability to duplicate usage of key items in the inventory."
+    },
     "fix_tihocan_secret_sound": {
       "Title": "Fix Tomb of Tihocan secret sound",
       "Description": "Prevents the secret sound from incorrectly playing when using the golden key in Tomb of Tihocan."

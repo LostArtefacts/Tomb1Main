@@ -48,6 +48,7 @@ typedef struct {
     bool fix_wall_jump_glitch;
     bool fix_bridge_collision;
     bool fix_qwop_glitch;
+    bool fix_item_duplication_glitch;
     bool fix_alligator_ai;
     bool change_pierre_spawn;
     bool fix_bear_ai;

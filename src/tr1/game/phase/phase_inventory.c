@@ -211,6 +211,10 @@ static void Inv_Destroy(void)
     Inv_Ring_RemoveAllText();
     m_InvChosen = NO_OBJECT;
 
+    if (g_Config.fix_item_duplication_glitch) {
+        Inv_ClearSelection();
+    }
+
     if (m_VersionText) {
         Text_Remove(m_VersionText);
         m_VersionText = NULL;

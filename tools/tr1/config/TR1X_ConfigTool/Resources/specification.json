@@ -194,6 +194,11 @@
           "DefaultValue": false
         },
         {
+          "Field": "fix_item_duplication_glitch",
+          "DataType": "Bool",
+          "DefaultValue": false
+        },
+        {
           "Field": "fix_tihocan_secret_sound",
           "DataType": "Bool",
           "DefaultValue": true

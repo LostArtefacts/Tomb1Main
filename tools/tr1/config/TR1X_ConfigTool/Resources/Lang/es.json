@@ -352,6 +352,10 @@
       "Title": "Arreglar fallo de QWOP",
       "Description": "Corrige que Lara salte en pequeños pasos, lo que a veces resulta en una animación extraña de carrera, conocida como estado QWOP."
     },
+    "fix_item_duplication_glitch": {
+      "Title": "Arreglar fallo de duplicación de elementos",
+      "Description": "Corrige la capacidad de duplicar el uso de elementos clave en el inventario."
+    },
     "fix_secrets_killing_music": {
       "Title": "Evitar detener la música en recogidas de secretos",
       "Description": "Corrige el sonido de recoger un secreto que detiene la pista de música activa."

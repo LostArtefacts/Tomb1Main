@@ -168,6 +168,10 @@
       "Title": "Correction du glitch QWOP",
       "Description": "Corrige le saut de Lara sur de petites étapes, entraînant parfois une animation de course étrange, connu sous le nom du glitch QWOP."
     },
+    "fix_item_duplication_glitch": {
+      "Title": "Correction du glitch de duplication d'élément",
+      "Description": "Corrige la possibilité de dupliquer l'utilisation d'éléments clés dans l'inventaire."
+    },
     "fix_tihocan_secret_sound": {
       "Title": "Correction du son du secret dans le niveau de la tombe de Tihocan",
       "Description": "Corrige le fait que le son du secret se joue de manière incorrecte lors de l'utilisation de la clé dorée dans le niveau de la tombe de Tihocan."
