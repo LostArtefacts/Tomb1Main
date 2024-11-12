@@ -220,6 +220,10 @@
       "Title": "Interazioni animate",
       "Description": "Fa in modo che Lara si avvicini agli oggetti, alle leve e agli interruttori quando questi sono nelle vicinanze, invece di teletrasportarsi."
     },
+    "enable_auto_item_selection": {
+      "Title": "Preselezione degli elementi chiave",
+      "Description": "Quando Lara preme l'azione contro il buco della serratura o la fessura di un puzzle e ha l'oggetto corrispondente nell'inventario, quell'oggetto verrà preselezionato."
+    },
     "enable_deaths_counter": {
       "Title": "Conta il numero di morti",
       "Description": "Permette di mostrare il conteggio delle morti nella bussola e nelle statistiche del livello. Il conteggio delle morti viene aggiornato nel salvataggio attualmente caricato ogni volta che Lara muore."

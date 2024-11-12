@@ -220,6 +220,10 @@
       "Title": "Animated interactions",
       "Description": "Makes Lara walk to pickups and switches when nearby instead of teleporting to them."
     },
+    "enable_auto_item_selection": {
+      "Title": "Key item pre-selection",
+      "Description": "When Lara presses action against a keyhole or puzzle slot, and she has the corresponding item in the inventory, that item will be pre-selected."
+    },
     "enable_deaths_counter": {
       "Title": "Count number of deaths",
       "Description": "Enables showing a deaths counter in the compass and in the level statistics. Death count is updated in the currently loaded save as soon as Lara dies."

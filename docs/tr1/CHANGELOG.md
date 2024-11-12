@@ -6,6 +6,7 @@
 - added support for custom levels to enforce values for any config setting (#1846)
 - added support for key/puzzle/pickup descriptions, allowing players to examine said items in the inventory (#1821)
 - added an option to fix inventory item usage duplication (#1586)
+- added optional automatic key/puzzle inventory item pre-selection (#1884)
 - changed OpenGL backend to use version 3.3, with fallback to 2.1 if initialization fails (#1738)
 - changed text backend to accept named sequences. Currently supported sequences (limited by the sprites available in OG):
     - `\{umlaut}`

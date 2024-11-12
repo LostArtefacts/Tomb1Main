@@ -1,8 +1,11 @@
+#include "config.h"
+#include "game/inventory/inventory_ring.h"
 #include "game/inventory/inventory_vars.h"
 #include "game/phase/phase.h"
 #include "game/phase/phase_inventory.h"
 #include "global/types.h"
 
+#include <libtrx/game/objects/vars.h>
 #include <libtrx/memory.h>
 
 bool Inv_Display(const INV_MODE inv_mode)
@@ -15,4 +18,15 @@ bool Inv_Display(const INV_MODE inv_mode)
     args->mode = inv_mode;
     Phase_Set(PHASE_INVENTORY, args);
     return true;
+}
+
+bool Inv_DisplayKeys(const GAME_OBJECT_ID receptacle_type_id)
+{
+    if (g_Config.enable_auto_item_selection) {
+        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
+            receptacle_type_id, g_KeyItemToReceptacleMap);
+        Inv_Ring_SetRequestedObjectID(object_id);
+    }
+
+    return Inv_Display(INV_KEYS_MODE);
 }

@@ -17,6 +17,7 @@ void Inv_Ring_ResetItem(INVENTORY_ITEM *inv_item);
 bool Inv_Ring_CanExamine(void);
 void Inv_Ring_InitExamineOverlay(void);
 void Inv_Ring_RemoveExamineOverlay(void);
+void Inv_Ring_SetRequestedObjectID(GAME_OBJECT_ID object_id);
 
 void Inv_Ring_GetView(RING_INFO *ring, XYZ_32 *view_pos, XYZ_16 *view_rot);
 void Inv_Ring_Light(RING_INFO *ring);

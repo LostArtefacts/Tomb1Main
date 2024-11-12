@@ -29,8 +29,11 @@ static TEXTSTRING *m_InvUpArrow2 = NULL;
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
 
+static GAME_OBJECT_ID m_RequestedObjectID = NO_OBJECT;
+
 static TEXTSTRING *M_InitExamineText(
     int32_t x_pos, const char *role_str, const char *input_str);
+static void M_HandleRequestedObject(RING_INFO *ring);
 
 static TEXTSTRING *M_InitExamineText(
     const int32_t x_pos, const char *const role_str,
@@ -47,6 +50,28 @@ static TEXTSTRING *M_InitExamineText(
     return text;
 }
 
+static void M_HandleRequestedObject(RING_INFO *const ring)
+{
+    if (m_RequestedObjectID == NO_OBJECT) {
+        return;
+    }
+
+    for (int32_t i = 0; i < ring->number_of_objects; i++) {
+        const GAME_OBJECT_ID item_id = ring->list[i]->object_id;
+        if (item_id == m_RequestedObjectID && Inv_RequestItem(item_id) > 0) {
+            ring->current_object = i;
+            break;
+        }
+    }
+
+    m_RequestedObjectID = NO_OBJECT;
+}
+
+void Inv_Ring_SetRequestedObjectID(const GAME_OBJECT_ID object_id)
+{
+    m_RequestedObjectID = object_id;
+}
+
 void Inv_Ring_Init(
     RING_INFO *ring, int16_t type, INVENTORY_ITEM **list, int16_t qty,
     int16_t current, IMOTION_INFO *imo)
@@ -57,6 +82,8 @@ void Inv_Ring_Init(
     ring->number_of_objects = qty;
     ring->current_object = current;
     ring->angle_adder = 0x10000 / qty;
+
+    M_HandleRequestedObject(ring);
 
     if (g_InvMode == INV_TITLE_MODE) {
         ring->camera_pitch = 1024;

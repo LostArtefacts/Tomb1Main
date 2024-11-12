@@ -100,6 +100,7 @@ typedef struct {
     bool enable_skybox;
     bool enable_ps1_crystals;
     bool enable_item_examining;
+    bool enable_auto_item_selection;
 
     struct {
         int32_t layout;

@@ -402,6 +402,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added weapons to Lara's empty holsters on pickup
 - added options to quiet or mute music while underwater
 - added a photo mode feature
+- added optional automatic key/puzzle inventory item pre-selection
 - changed weapon pickup behavior when unarmed to set any weapon as the default weapon, not just pistols
 - fixed keys and items not working when drawing guns immediately after using them
 - fixed counting the secret in The Great Pyramid

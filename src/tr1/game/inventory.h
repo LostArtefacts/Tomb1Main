@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 bool Inv_Display(const INV_MODE inv_mode);
+bool Inv_DisplayKeys(GAME_OBJECT_ID receptacle_type_id);
 
 bool Inv_AddItem(GAME_OBJECT_ID object_id);
 void Inv_AddItemNTimes(GAME_OBJECT_ID object_id, int32_t qty);

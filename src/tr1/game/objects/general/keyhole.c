@@ -55,7 +55,7 @@ static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         return;
     }
 
-    Inv_Display(INV_KEYS_MODE);
+    Inv_DisplayKeys(item->object_id);
 }
 
 static const OBJECT_BOUNDS *M_Bounds(void)

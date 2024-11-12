@@ -278,6 +278,11 @@
           "DefaultValue": false
         },
         {
+          "Field": "enable_auto_item_selection",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "enable_deaths_counter",
           "DataType": "Bool",
           "DefaultValue": true

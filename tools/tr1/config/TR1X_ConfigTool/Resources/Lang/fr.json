@@ -220,6 +220,10 @@
       "Title": "Interactions animées - Placement automatique",
       "Description": "Fait marcher Lara vers les collectibles et les interrupteurs à proximité, au lieu de se téléporter vers eux."
     },
+    "enable_auto_item_selection": {
+      "Title": "Présélection des éléments clés",
+      "Description": "Lorsque Lara appuie sur un trou de serrure ou un emplacement de puzzle et qu'elle a l'objet correspondant dans son inventaire, cet objet sera présélectionné."
+    },
     "enable_deaths_counter": {
       "Title": "Compteur du nombres de morts",
       "Description": "Permet d'afficher un compteur de décès dans la boussole et dans les statistiques de niveau. Le nombre de morts est mis à jour dans la sauvegarde actuellement chargée dès que Lara meurt."

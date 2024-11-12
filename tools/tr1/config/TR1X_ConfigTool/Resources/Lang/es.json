@@ -431,6 +431,10 @@
     "walk_to_items": {
       "Title": "Interacciones animadas",
       "Description": "Hace que Lara camine hacia los objetos recogibles y los interruptores cuando están cerca en lugar de teletransportarse hacia ellos."
+    },
+    "enable_auto_item_selection": {
+      "Title": "Preselección de elementos clave",
+      "Description": "Cuando Lara presiona la acción contra el ojo de una cerradura o la ranura de un rompecabezas y tiene el elemento correspondiente en el inventario, ese elemento será preseleccionado."
     }
   }
 }
