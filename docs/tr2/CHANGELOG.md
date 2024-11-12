@@ -4,6 +4,7 @@
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo (#1606)
 - fixed being unable to go from surface swimming to underwater swimming without first stopping (#1863, regression from 0.6)
 - fixed pistols appearing in Lara's hands when entering the fly cheat during certain animations (#1874)
+- fixed Lara continuing to walk after being killed if in that animation (#1880, regression from 0.1)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)

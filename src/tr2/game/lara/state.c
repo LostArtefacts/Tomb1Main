@@ -38,6 +38,7 @@ void __cdecl Lara_State_Walk(ITEM *item, COLL_INFO *coll)
 {
     if (item->hit_points <= 0) {
         item->goal_anim_state = LS_STOP;
+        return;
     }
 
     if (g_Input.left) {
