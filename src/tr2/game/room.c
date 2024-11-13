@@ -879,59 +879,9 @@ int32_t __cdecl Room_GetCeiling(
     return height;
 }
 
-int16_t __cdecl Room_GetDoor(const SECTOR *const sector)
+int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *const sector)
 {
-    if (!sector->idx) {
-        return NO_ROOM;
-    }
-
-    const int16_t *fd = &g_FloorData[sector->idx];
-    while (true) {
-        const int16_t fd_cmd = *fd++;
-
-        switch (FLOORDATA_TYPE(fd_cmd)) {
-        case FT_DOOR:
-            return *fd;
-
-        case FT_ROOF:
-        case FT_TILT:
-            fd++;
-            break;
-
-        case FT_TRIGGER:
-            fd++;
-
-            while (true) {
-                int16_t trigger = *fd++;
-                switch (TRIGGER_TYPE(trigger)) {
-                case TO_CAMERA:
-                    trigger = *fd++;
-                    break;
-
-                default:
-                    break;
-                }
-
-                if (TRIGGER_IS_END(trigger)) {
-                    break;
-                }
-            }
-            break;
-
-        case FT_LAVA:
-        case FT_CLIMB:
-            break;
-
-        default:
-            Shell_ExitSystem("GetDoor(): Unknown floordata type");
-            break;
-        }
-
-        if (FLOORDATA_IS_END(fd_cmd)) {
-            break;
-        }
-    }
-
+    assert(false);
     return NO_ROOM;
 }
 

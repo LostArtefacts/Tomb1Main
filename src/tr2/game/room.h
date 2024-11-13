@@ -26,7 +26,6 @@ int32_t __cdecl Room_GetHeight(
     const SECTOR *sector, int32_t x, int32_t y, int32_t z);
 int32_t __cdecl Room_GetCeiling(
     const SECTOR *sector, int32_t x, int32_t y, int32_t z);
-int16_t __cdecl Room_GetDoor(const SECTOR *sector);
 
 void Room_ParseFloorData(const int16_t *floor_data);
 void Room_PopulateSectorData(
@@ -40,6 +39,7 @@ void __cdecl Room_RemoveFlipItems(const ROOM *r);
 void __cdecl Room_AddFlipItems(const ROOM *r);
 
 // TODO: eliminate
+int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *sector);
 void __cdecl Room_Legacy_TestTriggers(const int16_t *fd, bool heavy);
 void __cdecl Room_Legacy_TriggerMusicTrack(
     int16_t value, int16_t flags, int16_t type);

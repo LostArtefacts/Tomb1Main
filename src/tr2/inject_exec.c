@@ -414,7 +414,7 @@ static void M_Room(const bool enable)
     INJECT(enable, 0x00414D10, Room_GetWaterHeight);
     INJECT(enable, 0x00414E80, Room_GetHeight);
     INJECT(enable, 0x00415930, Room_GetCeiling);
-    INJECT(enable, 0x00415B90, Room_GetDoor);
+    INJECT(enable, 0x00415B90, Room_Legacy_GetDoor);
     INJECT(enable, 0x004151F0, Room_Legacy_TestTriggers);
     INJECT(enable, 0x004340B0, Room_AlterFloorHeight);
     INJECT(enable, 0x00416640, Room_FlipMap);

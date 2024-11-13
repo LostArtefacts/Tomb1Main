@@ -3085,7 +3085,7 @@ typedef enum {
 0x004151F0  0x0690  +       void __cdecl Room_Legacy_TestTriggers(int16_t *data, int32_t heavy);
 0x004158D0  0x0055  +       int32_t __cdecl Item_IsTriggerActive(ITEM *item);
 0x00415930  0x023D  +       int32_t __cdecl Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z);
-0x00415B90  0x004E  +       int16_t __cdecl Room_GetDoor(const SECTOR *sector);
+0x00415B90  0x004E  +       int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *sector);
 0x00415BE0  0x00A0  +       int32_t __cdecl LOS_Check(const GAME_VECTOR *start, GAME_VECTOR *target);
 0x00415C80  0x02EB  +       int32_t __cdecl LOS_CheckZ(const GAME_VECTOR *start, GAME_VECTOR *target);
 0x00415F70  0x02EC  +       int32_t __cdecl LOS_CheckX(const GAME_VECTOR *start, GAME_VECTOR *target);

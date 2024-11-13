@@ -253,7 +253,7 @@
 <rect width="12" height="12" x="360" y="45" class="decompiled"><title>void __cdecl Room_Legacy_TestTriggers(int16_t *data, int32_t heavy);</title></rect>
 <rect width="12" height="12" x="375" y="45" class="decompiled"><title>int32_t __cdecl Item_IsTriggerActive(ITEM *item);</title></rect>
 <rect width="12" height="12" x="390" y="45" class="decompiled"><title>int32_t __cdecl Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>
-<rect width="12" height="12" x="405" y="45" class="decompiled"><title>int16_t __cdecl Room_GetDoor(const SECTOR *sector);</title></rect>
+<rect width="12" height="12" x="405" y="45" class="decompiled"><title>int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *sector);</title></rect>
 <rect width="12" height="12" x="420" y="45" class="decompiled"><title>int32_t __cdecl LOS_Check(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
 <rect width="12" height="12" x="435" y="45" class="decompiled"><title>int32_t __cdecl LOS_CheckZ(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
 <rect width="12" height="12" x="450" y="45" class="decompiled"><title>int32_t __cdecl LOS_CheckX(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
@@ -2126,7 +2126,7 @@
 <rect width="4.94" height="5.26" x="624.52" y="337.03" class="decompiled"><title>void __cdecl LOT_DisableBaddieAI(int16_t item_num);</title></rect>
 <rect width="4.94" height="5.26" x="624.52" y="345.29" class="decompiled"><title>void __cdecl Trapdoor_Control(int16_t item_num);</title></rect>
 <rect width="4.94" height="5.15" x="624.52" y="353.54" class="decompiled"><title>void __cdecl Creature_Neck(ITEM *item, int16_t required);</title></rect>
-<rect width="4.94" height="5.15" x="624.52" y="361.70" class="decompiled"><title>int16_t __cdecl Room_GetDoor(const SECTOR *sector);</title></rect>
+<rect width="4.94" height="5.15" x="624.52" y="361.70" class="decompiled"><title>int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *sector);</title></rect>
 <rect width="4.94" height="5.15" x="624.52" y="369.85" class="decompiled"><title>void __cdecl Gun_Pistols_DrawMeshes(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="4.97" height="5.12" x="632.45" y="252.89" class="decompiled"><title>int32_t __cdecl MovableBlock_TestDestination(ITEM *item, int32_t block_height);</title></rect>
 <rect width="4.97" height="5.12" x="640.42" y="252.89" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
