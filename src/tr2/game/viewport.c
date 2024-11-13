@@ -183,6 +183,7 @@ void Viewport_AlterFOV(const int16_t view_angle)
 
     M_PullGameVars(&m_Viewport);
     M_AlterFov(&m_Viewport);
+    M_ApplyGameVars(&m_Viewport);
 }
 
 int16_t Viewport_GetFOV(void)
