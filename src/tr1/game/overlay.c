@@ -139,6 +139,7 @@ static void M_ResetBarLocations(void);
 static void M_RemoveAmmoText(void);
 static void M_DrawAmmoInfo(void);
 static void M_DrawPickups(void);
+static double M_GetBarToTextScale(void);
 
 static void M_BarSetupHealth(void)
 {
@@ -237,17 +238,23 @@ static void M_BarGetLocation(
             - m_BarOffsetY[bar_info->location];
     }
 
-    if (Phase_Get() == PHASE_INVENTORY
+    if (Phase_Get() == PHASE_DEMO && bar_info->location == BL_BOTTOM_CENTER) {
+        *y -= M_GetBarToTextScale() * (TEXT_HEIGHT + bar_spacing);
+    } else if (
+        Phase_Get() == PHASE_INVENTORY
         && g_CurrentLevel == g_GameFlow.title_level_num
         && (bar_info->location == BL_TOP_CENTER
             || bar_info->location == BL_BOTTOM_CENTER)) {
-        double scale_bar_to_text =
-            g_Config.ui.text_scale / g_Config.ui.bar_scale;
         *y = screen_margin_v + m_BarOffsetY[bar_info->location]
-            + scale_bar_to_text * (TEXT_HEIGHT + bar_spacing);
+            + M_GetBarToTextScale() * (TEXT_HEIGHT + bar_spacing);
     }
 
     m_BarOffsetY[bar_info->location] += *height + bar_spacing;
+}
+
+static double M_GetBarToTextScale(void)
+{
+    return g_Config.ui.text_scale / g_Config.ui.bar_scale;
 }
 
 void Overlay_BarDraw(BAR_INFO *bar_info, RENDER_SCALE_REF scale_ref)
