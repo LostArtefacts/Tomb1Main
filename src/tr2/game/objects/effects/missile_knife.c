@@ -1,6 +1,7 @@
 #include "game/objects/effects/missile_knife.h"
 
-#include "global/funcs.h"
+#include "game/objects/common.h"
+#include "game/objects/effects/missile_common.h"
 
 void MissileKnife_Setup(void)
 {

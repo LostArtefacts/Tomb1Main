@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.36% (925)</tspan> · <tspan class="known">23.23% (289)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.44% (926)</tspan> · <tspan class="known">23.15% (288)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="555.45" height="6" x="0" y="0" class="decompiled"/>
-<rect width="173.54" height="6" x="555.45" y="0" class="known"/>
+<rect width="556.05" height="6" x="0" y="0" class="decompiled"/>
+<rect width="172.94" height="6" x="556.05" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -678,7 +678,7 @@
 <rect width="12" height="12" x="735" y="165" class="decompiled"><title>void __cdecl LOT_InitialiseSlot(int16_t item_num, int32_t slot);</title></rect>
 <rect width="12" height="12" x="0" y="180" class="decompiled"><title>void __cdecl LOT_CreateZone(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="180" class="decompiled"><title>void __cdecl LOT_ClearLOT(LOT_INFO *lot);</title></rect>
-<rect width="12" height="12" x="30" y="180" class="known"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="30" y="180" class="decompiled"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="45" y="180" class="known"><title>void __cdecl ShootAtLara(FX *fx);</title></rect>
 <rect width="12" height="12" x="60" y="180" class="decompiled"><title>int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);</title></rect>
 <rect width="12" height="12" x="75" y="180" class="decompiled"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.46%</tspan> · <tspan class="known">20.21%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.67%</tspan> · <tspan class="known">20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="593.56" height="6" x="0" y="0" class="decompiled"/>
-<rect width="151" height="6" x="593.56" y="0" class="known"/>
+<rect width="595.13" height="6" x="0" y="0" class="decompiled"/>
+<rect width="149.43" height="6" x="595.13" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1449,7 +1449,7 @@
 <rect width="21.59" height="21.46" x="319.90" y="329.15" class="decompiled"><title>void __cdecl Skidoo_Draw(const ITEM *item);</title></rect>
 <rect width="21.59" height="21.39" x="319.90" y="353.61" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3_ZBuffered(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="0" class="decompiled"><title>int32_t __cdecl Output_XYClipper(int32_t vtx_count, VERTEX_INFO *vtx);</title></rect>
-<rect width="20.94" height="21.96" x="344.49" y="24.96" class="known"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
+<rect width="20.94" height="21.96" x="344.49" y="24.96" class="decompiled"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="49.91" class="decompiled"><title>BOOL __cdecl Shell_Main(void);</title></rect>
 <rect width="20.94" height="21.85" x="344.49" y="74.87" class="decompiled"><title>void __cdecl Lara_Animate(ITEM *item);</title></rect>
 <rect width="20.94" height="21.75" x="344.49" y="99.73" class="known"><title>void __cdecl GiantYeti_Control(int16_t item_num);</title></rect>

@@ -1,6 +1,7 @@
 #include "game/objects/effects/missile_harpoon.h"
 
-#include "global/funcs.h"
+#include "game/objects/common.h"
+#include "game/objects/effects/missile_common.h"
 
 void MissileHarpoon_Setup(void)
 {
