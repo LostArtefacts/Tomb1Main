@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.68% (929)</tspan> · <tspan class="known">22.91% (285)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.76% (930)</tspan> · <tspan class="known">22.83% (284)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="557.85" height="6" x="0" y="0" class="decompiled"/>
-<rect width="171.14" height="6" x="557.85" y="0" class="known"/>
+<rect width="558.45" height="6" x="0" y="0" class="decompiled"/>
+<rect width="170.54" height="6" x="558.45" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -292,7 +292,7 @@
 <rect width="12" height="12" x="195" y="60" class="decompiled"><title>void __cdecl Room_DrawSingleRoomObjects(int16_t room_num);</title></rect>
 <rect width="12" height="12" x="210" y="60" class="decompiled"><title>void __cdecl Effect_Draw(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="225" y="60" class="decompiled"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="240" y="60" class="known"><title>void __cdecl Object_DrawAnimatingItem(const ITEM *item);</title></rect>
+<rect width="12" height="12" x="240" y="60" class="decompiled"><title>void __cdecl Object_DrawAnimatingItem(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="255" y="60" class="decompiled"><title>void __cdecl Lara_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="60" class="decompiled"><title>void __cdecl Lara_Draw_I(const ITEM *item, const FRAME_INFO *frame1, const FRAME_INFO *frame2, int32_t frac, int32_t rate);</title></rect>
 <rect width="12" height="12" x="285" y="60" class="decompiled"><title>void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate);</title></rect>
@@ -310,7 +310,7 @@
 <rect width="12" height="12" x="465" y="60" class="decompiled"><title>void __cdecl Matrix_Interpolate(void);</title></rect>
 <rect width="12" height="12" x="480" y="60" class="decompiled"><title>void __cdecl Matrix_InterpolateArm(void);</title></rect>
 <rect width="12" height="12" x="495" y="60" class="known"><title>void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);</title></rect>
-<rect width="12" height="12" x="510" y="60" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const FRAME_INFO *frame);</title></rect>
+<rect width="12" height="12" x="510" y="60" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);</title></rect>
 <rect width="12" height="12" x="525" y="60" class="decompiled"><title>int32_t __cdecl Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate);</title></rect>
 <rect width="12" height="12" x="540" y="60" class="decompiled"><title>BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="60" class="decompiled"><title>FRAME_INFO *__cdecl Item_GetBestFrame(const ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.79%</tspan> · <tspan class="known">19.89%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.05%</tspan> · <tspan class="known">19.63%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="596.02" height="6" x="0" y="0" class="decompiled"/>
-<rect width="148.54" height="6" x="596.02" y="0" class="known"/>
+<rect width="597.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="146.60" height="6" x="597.96" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1413,7 +1413,7 @@
 <rect width="24.48" height="24.23" x="266.96" y="137.73" class="decompiled"><title>int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);</title></rect>
 <rect width="24.48" height="24.02" x="266.96" y="164.97" class="decompiled"><title>void __cdecl Room_SetBounds(const int16_t *objptr, int32_t room_num, ROOM *parent);</title></rect>
 <rect width="24.48" height="23.99" x="266.96" y="191.99" class="decompiled"><title>void __cdecl Gun_Rifle_Animate(LARA_GUN_TYPE weapon_type);</title></rect>
-<rect width="24.48" height="23.81" x="266.96" y="218.98" class="known"><title>void __cdecl Object_DrawAnimatingItem(const ITEM *item);</title></rect>
+<rect width="24.48" height="23.81" x="266.96" y="218.98" class="decompiled"><title>void __cdecl Object_DrawAnimatingItem(const ITEM *item);</title></rect>
 <rect width="24.48" height="23.69" x="266.96" y="245.79" class="decompiled"><title>void __cdecl WinVidStart(void);</title></rect>
 <rect width="24.48" height="23.63" x="266.96" y="272.48" class="decompiled"><title>void __cdecl Camera_Move(const GAME_VECTOR *target, int32_t speed);</title></rect>
 <rect width="24.48" height="23.45" x="266.96" y="299.11" class="decompiled"><title>void __cdecl Lara_InitialiseInventory(int32_t level_num);</title></rect>
@@ -1717,7 +1717,7 @@
 <rect width="10.64" height="11.41" x="494.60" y="181.07" class="decompiled"><title>void __cdecl Camera_Chase(const ITEM *item);</title></rect>
 <rect width="10.64" height="11.29" x="494.60" y="195.48" class="decompiled"><title>void __cdecl Lara_State_SurfTread(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.64" height="11.23" x="494.60" y="209.77" class="decompiled"><title>void __cdecl Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside);</title></rect>
-<rect width="10.64" height="11.11" x="494.60" y="224.01" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const FRAME_INFO *frame);</title></rect>
+<rect width="10.64" height="11.11" x="494.60" y="224.01" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="238.12" class="decompiled"><title>BOOL __stdcall DInputEnumDevicesCallback(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="252.23" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="266.34" class="decompiled"><title>void __cdecl Camera_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>

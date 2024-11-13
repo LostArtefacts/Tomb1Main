@@ -20,6 +20,116 @@ void Object_DrawDummyItem(const ITEM *const item)
 {
 }
 
+void __cdecl Object_DrawAnimatingItem(const ITEM *item)
+{
+    FRAME_INFO *frames[2];
+    int32_t rate;
+    int32_t frac = Item_GetFrames(item, frames, &rate);
+    const OBJECT *const obj = Object_GetObject(item->object_id);
+
+    if (obj->shadow_size != 0) {
+        S_PrintShadow(obj->shadow_size, &frames[0]->bounds, item);
+    }
+
+    Matrix_Push();
+    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+
+    const int32_t clip = S_GetObjectBounds(&frames[0]->bounds);
+    if (!clip) {
+        Matrix_Pop();
+        return;
+    }
+
+    Output_CalculateObjectLighting(item, &frames[0]->bounds);
+
+    int16_t *const *mesh_ptrs = &g_Meshes[obj->mesh_idx];
+    const int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const int16_t *extra_rotation = item->data;
+    const int16_t *mesh_rots[2] = {
+        frames[0]->mesh_rots,
+        frames[1]->mesh_rots,
+    };
+
+    if (frac != 0) {
+        for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
+            if (mesh_idx == 0) {
+                Matrix_InitInterpolate(frac, rate);
+                Matrix_TranslateRel_ID(
+                    frames[0]->offset.x, frames[0]->offset.y,
+                    frames[0]->offset.z, frames[1]->offset.x,
+                    frames[1]->offset.y, frames[1]->offset.z);
+                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+            } else {
+                const int32_t bone_flags = bone[0];
+                if (bone_flags & BF_MATRIX_POP) {
+                    Matrix_Pop_I();
+                }
+                if (bone_flags & BF_MATRIX_PUSH) {
+                    Matrix_Push_I();
+                }
+
+                Matrix_TranslateRel_I(bone[1], bone[2], bone[3]);
+                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+                if (extra_rotation != NULL) {
+                    if (bone_flags & BF_ROT_Y) {
+                        Matrix_RotY_I(*extra_rotation++);
+                    }
+                    if (bone_flags & BF_ROT_X) {
+                        Matrix_RotX_I(*extra_rotation++);
+                    }
+                    if (bone_flags & BF_ROT_Z) {
+                        Matrix_RotZ_I(*extra_rotation++);
+                    }
+                }
+                bone += 4;
+            }
+
+            if (item->mesh_bits & (1 << mesh_idx)) {
+                Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
+            }
+        }
+    } else {
+        for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
+            if (mesh_idx == 0) {
+                Matrix_TranslateRel(
+                    frames[0]->offset.x, frames[0]->offset.y,
+                    frames[0]->offset.z);
+                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+            } else {
+                const int32_t bone_flags = bone[0];
+                if (bone_flags & BF_MATRIX_POP) {
+                    Matrix_Pop();
+                }
+                if ((bone_flags & BF_MATRIX_PUSH)) {
+                    Matrix_Push();
+                }
+
+                Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+                if (extra_rotation != NULL) {
+                    if (bone_flags & BF_ROT_Y) {
+                        Matrix_RotY(*extra_rotation++);
+                    }
+                    if (bone_flags & BF_ROT_X) {
+                        Matrix_RotX(*extra_rotation++);
+                    }
+                    if (bone_flags & BF_ROT_Z) {
+                        Matrix_RotZ(*extra_rotation++);
+                    }
+                }
+                bone += 4;
+            }
+
+            if (item->mesh_bits & (1 << mesh_idx)) {
+                Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
+            }
+        }
+    }
+
+    Matrix_Pop();
+}
+
 void __cdecl Object_DrawUnclippedItem(const ITEM *const item)
 {
     const VIEWPORT old_vp = *Viewport_Get();

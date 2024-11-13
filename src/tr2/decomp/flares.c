@@ -91,7 +91,7 @@ void __cdecl Flare_DrawInAir(const ITEM *const item)
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     const int32_t clip = S_GetObjectBounds(&frames[0]->bounds);
     if (clip != 0) {
-        Output_CalculateObjectLighting(item, frames[0]);
+        Output_CalculateObjectLighting(item, &frames[0]->bounds);
         Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_ITEM].mesh_idx], clip);
         if ((int32_t)item->data & 0x8000) {
             Matrix_TranslateRel(-6, 6, 80);

@@ -3134,7 +3134,7 @@ typedef enum {
 0x00419670  0x0218  +       void __cdecl Room_DrawSingleRoomObjects(int16_t room_num);
 0x00419890  0x0147  +       void __cdecl Effect_Draw(int16_t fx_num);
 0x004199E0  0x0083  +       void __cdecl Object_DrawSpriteItem(const ITEM *item);
-0x00419A70  0x0378  -       void __cdecl Object_DrawAnimatingItem(const ITEM *item);
+0x00419A70  0x0378  +       void __cdecl Object_DrawAnimatingItem(const ITEM *item);
 0x00419DF0  0x0D02  +       void __cdecl Lara_Draw(const ITEM *item);
 0x0041AB20  0x0BC6  +       void __cdecl Lara_Draw_I(const ITEM *item, const FRAME_INFO *frame1, const FRAME_INFO *frame2, int32_t frac, int32_t rate);
 0x0041B710  0x0034  +       void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate);
@@ -3152,7 +3152,7 @@ typedef enum {
 0x0041BA80  0x01A5  +       void __cdecl Matrix_Interpolate(void);
 0x0041BC30  0x00FC  +       void __cdecl Matrix_InterpolateArm(void);
 0x0041BD30  0x014B  -       void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);
-0x0041BEA0  0x00E8  -       void __cdecl Output_CalculateObjectLighting(const ITEM *item, const FRAME_INFO *frame);
+0x0041BEA0  0x00E8  -       void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
 0x0041BF90  0x0092  +       int32_t __cdecl Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate);
 0x0041C030  0x007C  +       BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);
 0x0041C0B0  0x0035  +       FRAME_INFO *__cdecl Item_GetBestFrame(const ITEM *item);

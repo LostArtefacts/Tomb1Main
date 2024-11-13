@@ -66,7 +66,7 @@ void __cdecl Lara_Draw(const ITEM *const item)
     }
 
     Matrix_Push();
-    Output_CalculateObjectLighting(item, frame);
+    Output_CalculateObjectLighting(item, &frame->bounds);
 
     const int32_t *bone = &g_AnimBones[object->bone_idx];
     const int16_t *mesh_rots = frame->mesh_rots;
@@ -366,7 +366,7 @@ void __cdecl Lara_Draw_I(
     }
 
     Matrix_Push();
-    Output_CalculateObjectLighting(item, frame1);
+    Output_CalculateObjectLighting(item, &frame1->bounds);
 
     const int32_t *bone = &g_AnimBones[object->bone_idx];
     const int16_t *mesh_rots_1 = frame1->mesh_rots;
