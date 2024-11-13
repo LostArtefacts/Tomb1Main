@@ -14,8 +14,12 @@ void __cdecl Room_GetNearbyRooms(
 void __cdecl Room_GetNewRoom(int32_t x, int32_t y, int32_t z, int16_t room_num);
 int16_t __cdecl Room_GetTiltType(
     const SECTOR *sector, int32_t x, int32_t y, int32_t z);
+
+SECTOR *Room_GetPitSector(const SECTOR *sector, int32_t x, int32_t z);
+SECTOR *Room_GetSkySector(const SECTOR *sector, int32_t x, int32_t z);
 SECTOR *__cdecl Room_GetSector(
     int32_t x, int32_t y, int32_t z, int16_t *room_num);
+
 int32_t __cdecl Room_GetWaterHeight(
     int32_t x, int32_t y, int32_t z, int16_t room_num);
 int32_t __cdecl Room_GetHeight(
