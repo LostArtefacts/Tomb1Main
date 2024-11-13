@@ -57,6 +57,7 @@
 - fixed certain erroneous `/play` invocations resulting in duplicated error messages
 - fixed the `/play` console command resulting in Lara starting the target level without pistols (#1861, regression from 4.5)
 - fixed the demo mode text overlapping with the enemy health bar if the health bar is located in the bottom centered (#1446)
+- fixed mutant explosions sometimes heavily damaging Lara even if they missed (#1758, regression since 4.5)
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 - improved the injection approach for Lara's responsive jumping (#1823)
