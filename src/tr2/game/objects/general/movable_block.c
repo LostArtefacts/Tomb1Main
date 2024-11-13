@@ -5,6 +5,7 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
+#include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.52% (927)</tspan> · <tspan class="known">23.07% (287)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.60% (928)</tspan> · <tspan class="known">22.99% (286)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="556.65" height="6" x="0" y="0" class="decompiled"/>
-<rect width="172.34" height="6" x="556.65" y="0" class="known"/>
+<rect width="557.25" height="6" x="0" y="0" class="decompiled"/>
+<rect width="171.74" height="6" x="557.25" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -690,7 +690,7 @@
 <rect width="12" height="12" x="165" y="180" class="decompiled"><title>int32_t __cdecl MovableBlock_TestPull(ITEM *item, int32_t block_height, uint16_t quadrant);</title></rect>
 <rect width="12" height="12" x="180" y="180" class="decompiled"><title>void __cdecl Room_AlterFloorHeight(ITEM *item, int32_t height);</title></rect>
 <rect width="12" height="12" x="195" y="180" class="decompiled"><title>void __cdecl MovableBlock_Draw(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="210" y="180" class="known"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
+<rect width="12" height="12" x="210" y="180" class="decompiled"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="225" y="180" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="180" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="180" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.72%</tspan> · <tspan class="known">19.96%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.75%</tspan> · <tspan class="known">19.92%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="595.50" height="6" x="0" y="0" class="decompiled"/>
-<rect width="149.06" height="6" x="595.50" y="0" class="known"/>
+<rect width="595.73" height="6" x="0" y="0" class="decompiled"/>
+<rect width="148.83" height="6" x="595.73" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2020,7 +2020,7 @@
 <rect width="6.65" height="6.28" x="588.61" y="359.52" class="decompiled"><title>void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="6.65" height="6.20" x="588.61" y="368.80" class="decompiled"><title>void __cdecl Output_SetFarZ(int32_t far_z);</title></rect>
 <rect width="6.66" height="6.19" x="598.27" y="226.03" class="decompiled"><title>void __cdecl Lara_State_Swim(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="6.66" height="6.19" x="607.92" y="226.03" class="known"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
+<rect width="6.66" height="6.19" x="607.92" y="226.03" class="decompiled"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
 <rect width="6.66" height="6.19" x="617.58" y="226.03" class="decompiled"><title>bool __cdecl PlayFMV(const char *file_name);</title></rect>
 <rect width="6.57" height="6.19" x="627.24" y="226.03" class="decompiled"><title>void __cdecl Direct3DRelease(void);</title></rect>
 <rect width="6.57" height="6.19" x="636.81" y="226.03" class="decompiled"><title>void __cdecl GameWindowCalculateSizeFromClientByZero(int32_t *width, int32_t *height);</title></rect>

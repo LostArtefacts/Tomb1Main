@@ -3,6 +3,7 @@
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/matrix.h"
+#include "game/viewport.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -15,6 +16,21 @@ OBJECT *Object_GetObject(GAME_OBJECT_ID object_id)
 
 void Object_DrawDummyItem(const ITEM *const item)
 {
+}
+
+void __cdecl Object_DrawUnclippedItem(const ITEM *const item)
+{
+    const VIEWPORT old_vp = *Viewport_Get();
+
+    VIEWPORT new_vp = old_vp;
+    new_vp.game_vars.win_top = 0;
+    new_vp.game_vars.win_left = 0;
+    new_vp.game_vars.win_bottom = new_vp.game_vars.win_max_y;
+    new_vp.game_vars.win_right = new_vp.game_vars.win_max_x;
+
+    Viewport_Restore(&new_vp);
+    Object_DrawAnimatingItem(item);
+    Viewport_Restore(&old_vp);
 }
 
 void __cdecl Object_Collision(
