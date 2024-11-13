@@ -772,21 +772,17 @@ void __cdecl Lara_State_Extra_PullDagger(ITEM *item, COLL_INFO *coll)
 
     if (item->frame_num == g_Anims[item->anim_num].frame_end) {
         item->rot.y += PHD_90;
-        int16_t room_num = item->room_num;
-        const SECTOR *sector =
-            Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-        Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-        Room_TestTriggers(g_TriggerIndex, true);
+
+        const ITEM *const dragon_bones = Item_Find(O_DRAGON_BONES_2);
+        if (dragon_bones != NULL) {
+            Room_TestTriggers(dragon_bones);
+        }
     }
 }
 
 void __cdecl Lara_State_Extra_StartAnim(ITEM *item, COLL_INFO *coll)
 {
-    int16_t room_num = item->room_num;
-    const SECTOR *sector =
-        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-    Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-    Room_TestTriggers(g_TriggerIndex, false);
+    Room_TestTriggers(item);
 }
 
 void __cdecl Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll)

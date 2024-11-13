@@ -2695,7 +2695,7 @@ typedef struct __unaligned {
     int16_t mesh_rots[];
 } FRAME_INFO;
 
-typedef enum {
+typedef enum { // decompiled
     TO_OBJECT      = 0,
     TO_CAMERA      = 1,
     TO_SINK        = 2,
@@ -2710,7 +2710,7 @@ typedef enum {
     TO_BODY_BAG    = 11,
 } TRIGGER_OBJECT;
 
-typedef enum {
+typedef enum { // decompiled
     TT_TRIGGER     = 0,
     TT_PAD         = 1,
     TT_SWITCH      = 2,
@@ -3081,8 +3081,8 @@ typedef enum {
 0x00414B70  0x0198  +       SECTOR *__cdecl Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num);
 0x00414D10  0x0168  +       int32_t __cdecl Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num);
 0x00414E80  0x0265  +       int32_t __cdecl Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z);
-0x00415100  0x00E7  +       void __cdecl Camera_RefreshFromTrigger(int16_t type, const int16_t *data);
-0x004151F0  0x0690  +       void __cdecl Room_TestTriggers(int16_t *data, int32_t heavy);
+0x00415100  0x00E7  +       void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *data);
+0x004151F0  0x0690  +       void __cdecl Room_Legacy_TestTriggers(int16_t *data, int32_t heavy);
 0x004158D0  0x0055  +       int32_t __cdecl Item_IsTriggerActive(ITEM *item);
 0x00415930  0x023D  +       int32_t __cdecl Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z);
 0x00415B90  0x004E  +       int16_t __cdecl Room_GetDoor(const SECTOR *sector);
@@ -3094,7 +3094,7 @@ typedef enum {
 0x00416640  0x00B3  +       void __cdecl Room_FlipMap(void);
 0x00416700  0x0096  +       void __cdecl Room_RemoveFlipItems(ROOM *r);
 0x004167A0  0x005C  +       void __cdecl Room_AddFlipItems(ROOM *r);
-0x00416800  0x0024  +       void __cdecl Room_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);
+0x00416800  0x0024  +       void __cdecl Room_Legacy_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);
 0x00416830  0x00DA  +       void __cdecl Room_TriggerMusicTrackImpl(int16_t value, int16_t flags, int16_t type);
 
 # game/demo.c

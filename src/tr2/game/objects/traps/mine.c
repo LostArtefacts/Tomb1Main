@@ -51,11 +51,7 @@ static void M_DetonateAll(
     Item_Kill(boat_item_num);
     boat_item->object_id = O_BOAT;
 
-    const SECTOR *const sector = Room_GetSector(
-        mine_item->pos.x, mine_item->pos.y, mine_item->pos.z, &boat_room_num);
-    Room_GetHeight(
-        sector, mine_item->pos.x, mine_item->pos.y, mine_item->pos.z);
-    Room_TestTriggers(g_TriggerIndex, true);
+    Room_TestTriggers(mine_item);
 
     g_DetonateAllMines = true;
 }

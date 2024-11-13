@@ -33,9 +33,13 @@ void Room_PopulateSectorData(
     SECTOR *sector, const int16_t *floor_data, uint16_t start_index,
     uint16_t null_index);
 
-void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy);
+void Room_TestTriggers(const ITEM *item);
 void __cdecl Room_AlterFloorHeight(const ITEM *item, int32_t height);
 void __cdecl Room_FlipMap(void);
 void __cdecl Room_RemoveFlipItems(const ROOM *r);
 void __cdecl Room_AddFlipItems(const ROOM *r);
-void __cdecl Room_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);
+
+// TODO: eliminate
+void __cdecl Room_Legacy_TestTriggers(const int16_t *fd, bool heavy);
+void __cdecl Room_Legacy_TriggerMusicTrack(
+    int16_t value, int16_t flags, int16_t type);

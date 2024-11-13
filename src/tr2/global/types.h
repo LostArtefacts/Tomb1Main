@@ -1522,34 +1522,6 @@ typedef struct __unaligned {
 } FRAME_INFO;
 
 typedef enum {
-    TO_OBJECT      = 0,
-    TO_CAMERA      = 1,
-    TO_SINK        = 2,
-    TO_FLIP_MAP    = 3,
-    TO_FLIP_ON     = 4,
-    TO_FLIP_OFF    = 5,
-    TO_TARGET      = 6,
-    TO_FINISH      = 7,
-    TO_CD          = 8,
-    TO_FLIP_EFFECT = 9,
-    TO_SECRET      = 10,
-    TO_BODY_BAG    = 11,
-} TRIGGER_OBJECT;
-
-typedef enum {
-    TT_TRIGGER     = 0,
-    TT_PAD         = 1,
-    TT_SWITCH      = 2,
-    TT_KEY         = 3,
-    TT_PICKUP      = 4,
-    TT_HEAVY       = 5,
-    TT_ANTIPAD     = 6,
-    TT_COMBAT      = 7,
-    TT_DUMMY       = 8,
-    TT_ANTITRIGGER = 9,
-} TRIGGER_TYPE;
-
-typedef enum {
     GF_S_PC_DETAIL_LEVELS      = 0,
     GF_S_PC_DEMO_MODE          = 1,
     GF_S_PC_SOUND              = 2,

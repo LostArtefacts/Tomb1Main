@@ -249,8 +249,8 @@
 <rect width="12" height="12" x="300" y="45" class="decompiled"><title>SECTOR *__cdecl Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num);</title></rect>
 <rect width="12" height="12" x="315" y="45" class="decompiled"><title>int32_t __cdecl Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="330" y="45" class="decompiled"><title>int32_t __cdecl Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>
-<rect width="12" height="12" x="345" y="45" class="decompiled"><title>void __cdecl Camera_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>
-<rect width="12" height="12" x="360" y="45" class="decompiled"><title>void __cdecl Room_TestTriggers(int16_t *data, int32_t heavy);</title></rect>
+<rect width="12" height="12" x="345" y="45" class="decompiled"><title>void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>
+<rect width="12" height="12" x="360" y="45" class="decompiled"><title>void __cdecl Room_Legacy_TestTriggers(int16_t *data, int32_t heavy);</title></rect>
 <rect width="12" height="12" x="375" y="45" class="decompiled"><title>int32_t __cdecl Item_IsTriggerActive(ITEM *item);</title></rect>
 <rect width="12" height="12" x="390" y="45" class="decompiled"><title>int32_t __cdecl Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>
 <rect width="12" height="12" x="405" y="45" class="decompiled"><title>int16_t __cdecl Room_GetDoor(const SECTOR *sector);</title></rect>
@@ -262,7 +262,7 @@
 <rect width="12" height="12" x="495" y="45" class="decompiled"><title>void __cdecl Room_FlipMap(void);</title></rect>
 <rect width="12" height="12" x="510" y="45" class="decompiled"><title>void __cdecl Room_RemoveFlipItems(ROOM *r);</title></rect>
 <rect width="12" height="12" x="525" y="45" class="decompiled"><title>void __cdecl Room_AddFlipItems(ROOM *r);</title></rect>
-<rect width="12" height="12" x="540" y="45" class="decompiled"><title>void __cdecl Room_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
+<rect width="12" height="12" x="540" y="45" class="decompiled"><title>void __cdecl Room_Legacy_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
 <rect width="12" height="12" x="555" y="45" class="decompiled"><title>void __cdecl Room_TriggerMusicTrackImpl(int16_t value, int16_t flags, int16_t type);</title></rect>
 <rect width="12" height="12" x="570" y="45" class="decompiled"><title>int32_t __cdecl Demo_Control(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="585" y="45" class="decompiled"><title>int32_t __cdecl Demo_Start(int32_t level_num);</title></rect>
@@ -1352,7 +1352,7 @@
 <rect width="35.20" height="35.66" x="104.13" y="120.85" class="decompiled"><title>void __cdecl Option_Controls(INVENTORY_ITEM *item);</title></rect>
 <rect width="35.20" height="34.90" x="104.13" y="159.51" class="decompiled"><title>BOOL __cdecl GF_LoadFromFile(const char *file_name);</title></rect>
 <rect width="35.20" height="34.49" x="104.13" y="197.42" class="decompiled"><title>int32_t __cdecl Inv_AddItem(GAME_OBJECT_ID object_id);</title></rect>
-<rect width="35.20" height="33.49" x="104.13" y="234.91" class="decompiled"><title>void __cdecl Room_TestTriggers(int16_t *data, int32_t heavy);</title></rect>
+<rect width="35.20" height="33.49" x="104.13" y="234.91" class="decompiled"><title>void __cdecl Room_Legacy_TestTriggers(int16_t *data, int32_t heavy);</title></rect>
 <rect width="35.20" height="33.06" x="104.13" y="271.40" class="decompiled"><title>void __cdecl Collide_GetCollisionInfo(COLL_INFO *coll, int32_t xpos, int32_t ypos, int32_t zpos, int16_t room_num, int32_t obj_height);</title></rect>
 <rect width="35.20" height="32.62" x="104.13" y="307.45" class="decompiled"><title>void __cdecl Lara_Control(int16_t item_num);</title></rect>
 <rect width="35.20" height="31.93" x="104.13" y="343.07" class="decompiled"><title>void __cdecl Option_Passport(INVENTORY_ITEM *item);</title></rect>
@@ -1720,7 +1720,7 @@
 <rect width="10.64" height="11.11" x="494.60" y="224.01" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="238.12" class="decompiled"><title>BOOL __stdcall DInputEnumDevicesCallback(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="252.23" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
-<rect width="10.64" height="11.05" x="494.60" y="266.34" class="decompiled"><title>void __cdecl Camera_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>
+<rect width="10.64" height="11.05" x="494.60" y="266.34" class="decompiled"><title>void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="280.39" class="decompiled"><title>int32_t __cdecl Lara_TestWaterStepOut(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="294.43" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_Play(int32_t sample_id, int32_t volume, int32_t pitch, int32_t pan, int32_t flags);</title></rect>
 <rect width="10.64" height="10.99" x="494.60" y="308.48" class="decompiled"><title>void __cdecl Lara_TouchLava(ITEM *item);</title></rect>
@@ -2374,7 +2374,7 @@
 <rect width="2.47" height="2.62" x="687.21" y="372.38" class="decompiled"><title>HRESULT __cdecl WinVidBufferUnlock(LPDDS surface, LPDDSDESC desc);</title></rect>
 <rect width="2.88" height="2.22" x="692.67" y="320.63" class="known"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
 <rect width="2.88" height="2.22" x="698.55" y="320.63" class="known"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
-<rect width="2.72" height="2.22" x="704.43" y="320.63" class="decompiled"><title>void __cdecl Room_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
+<rect width="2.72" height="2.22" x="704.43" y="320.63" class="decompiled"><title>void __cdecl Room_Legacy_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
 <rect width="2.72" height="2.22" x="710.14" y="320.63" class="decompiled"><title>void __cdecl FX_AssaultStart(ITEM *item);</title></rect>
 <rect width="2.72" height="2.22" x="715.86" y="320.63" class="decompiled"><title>void __cdecl Inv_RemoveInventoryText(void);</title></rect>
 <rect width="2.72" height="2.22" x="721.58" y="320.63" class="decompiled"><title>void __cdecl Sound_Shutdown(void);</title></rect>

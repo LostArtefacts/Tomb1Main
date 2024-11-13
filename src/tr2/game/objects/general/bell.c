@@ -29,7 +29,7 @@ void __cdecl Bell_Control(const int16_t item_num)
     const SECTOR *const sector =
         Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &item->room_num);
     item->floor = Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-    Room_TestTriggers(g_TriggerIndex, true);
+    Room_TestTriggers(item);
 
     Item_Animate(item);
 

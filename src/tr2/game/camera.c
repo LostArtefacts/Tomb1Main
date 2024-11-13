@@ -888,18 +888,23 @@ void __cdecl Camera_UpdateCutscene(void)
         campos.x, campos.y, campos.z, camtar.x, camtar.y, camtar.z, roll);
 }
 
-void __cdecl Camera_RefreshFromTrigger(const int16_t type, const int16_t *fd)
+void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *fd)
+{
+    assert(false);
+}
+
+void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
 {
     int16_t target_ok = 2;
 
-    while (true) {
-        const int16_t fd_cmd = *fd++;
-        const int16_t value = TRIGGER_VALUE(fd_cmd);
+    for (int32_t i = 0; i < trigger->command_count; i++) {
+        const TRIGGER_CMD *const cmd = &trigger->commands[i];
+        if (cmd->type == TO_CAMERA) {
+            const TRIGGER_CAMERA_DATA *const cam_data =
+                (TRIGGER_CAMERA_DATA *)cmd->parameter;
+            if (cam_data->camera_num == g_Camera.last) {
+                g_Camera.num = cam_data->camera_num;
 
-        switch (TRIGGER_TYPE(fd_cmd)) {
-        case TO_CAMERA: {
-            if (value == g_Camera.last) {
-                g_Camera.num = value;
                 if (g_Camera.timer < 0 || g_Camera.type == CAM_LOOK
                     || g_Camera.type == CAM_COMBAT) {
                     g_Camera.timer = -1;
@@ -911,18 +916,10 @@ void __cdecl Camera_RefreshFromTrigger(const int16_t type, const int16_t *fd)
             } else {
                 target_ok = 0;
             }
-            break;
-        }
-
-        case TO_TARGET:
+        } else if (cmd->type == TO_TARGET) {
             if (g_Camera.type != CAM_LOOK && g_Camera.type != CAM_COMBAT) {
-                g_Camera.item = &g_Items[value];
+                g_Camera.item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
             }
-            break;
-        }
-
-        if (FLOORDATA_IS_END(fd_cmd)) {
-            break;
         }
     }
 

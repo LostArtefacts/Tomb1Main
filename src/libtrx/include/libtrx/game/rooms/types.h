@@ -5,7 +5,6 @@
 
 #include <stdbool.h>
 
-#if TR_VERSION == 1
 typedef struct __PACKING {
     TRIGGER_OBJECT type;
     void *parameter;
@@ -27,7 +26,6 @@ typedef struct __PACKING {
     int32_t command_count;
     TRIGGER_CMD *commands;
 } TRIGGER;
-#endif
 
 typedef struct __PACKING {
     int16_t room_num;
@@ -62,6 +60,7 @@ typedef struct __PACKING {
     int16_t box;
     bool is_death_sector;
     LADDER_DIRECTION ladder;
+    TRIGGER *trigger;
     struct __PACKING {
         uint8_t pit;
         uint8_t sky;

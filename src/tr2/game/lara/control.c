@@ -92,7 +92,7 @@ void __cdecl Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, -LARA_HEIGHT / 2);
     Gun_Control();
-    Room_TestTriggers(coll->trigger, false);
+    Room_TestTriggers(item);
 }
 
 void __cdecl Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
@@ -150,7 +150,7 @@ void __cdecl Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, 100);
     Gun_Control();
-    Room_TestTriggers(coll->trigger, false);
+    Room_TestTriggers(item);
 }
 
 void __cdecl Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
@@ -239,7 +239,7 @@ void __cdecl Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, 0);
     Gun_Control();
-    Room_TestTriggers(coll->trigger, false);
+    Room_TestTriggers(item);
 }
 
 void __cdecl Lara_Control(const int16_t item_num)

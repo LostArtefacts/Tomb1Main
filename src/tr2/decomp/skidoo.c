@@ -812,7 +812,7 @@ int32_t __cdecl Skidoo_Control(void)
         Room_GetSector(skidoo->pos.x, skidoo->pos.y, skidoo->pos.z, &room_num);
     int32_t height =
         Room_GetHeight(sector, skidoo->pos.x, skidoo->pos.y, skidoo->pos.z);
-    Room_TestTriggers(g_TriggerIndex, false);
+    Room_TestTriggers(g_LaraItem);
 
     bool dead = false;
     if (g_LaraItem->hit_points <= 0) {

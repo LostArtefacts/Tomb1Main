@@ -10,11 +10,7 @@ static void M_ActivateHeavyTriggers(int16_t item_num);
 static void M_ActivateHeavyTriggers(const int16_t item_num)
 {
     const ITEM *const item = Item_Get(item_num);
-    int16_t room_num = item->room_num;
-    const SECTOR *const sector =
-        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-    Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-    Room_TestTriggers(g_TriggerIndex, true);
+    Room_TestTriggers(item);
     Item_Kill(item_num);
 }
 

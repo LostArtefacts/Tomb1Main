@@ -27,4 +27,7 @@ void __cdecl Camera_Fixed(void);
 void __cdecl Camera_Update(void);
 void __cdecl Camera_LoadCutsceneFrame(void);
 void __cdecl Camera_UpdateCutscene(void);
-void __cdecl Camera_RefreshFromTrigger(int16_t type, const int16_t *fd);
+void Camera_RefreshFromTrigger(const TRIGGER *trigger);
+
+// TODO: eliminate
+void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *fd);

@@ -386,7 +386,7 @@ static void M_Camera(const bool enable)
     INJECT(enable, 0x00411AA0, Camera_Update);
     INJECT(enable, 0x004126A0, Camera_LoadCutsceneFrame);
     INJECT(enable, 0x00412290, Camera_UpdateCutscene);
-    INJECT(enable, 0x00415100, Camera_RefreshFromTrigger);
+    INJECT(enable, 0x00415100, Camera_Legacy_RefreshFromTrigger);
 }
 
 static void M_Collide(const bool enable)
@@ -415,7 +415,7 @@ static void M_Room(const bool enable)
     INJECT(enable, 0x00414E80, Room_GetHeight);
     INJECT(enable, 0x00415930, Room_GetCeiling);
     INJECT(enable, 0x00415B90, Room_GetDoor);
-    INJECT(enable, 0x004151F0, Room_TestTriggers);
+    INJECT(enable, 0x004151F0, Room_Legacy_TestTriggers);
     INJECT(enable, 0x004340B0, Room_AlterFloorHeight);
     INJECT(enable, 0x00416640, Room_FlipMap);
     INJECT(enable, 0x00416700, Room_RemoveFlipItems);
@@ -426,7 +426,7 @@ static void M_Room(const bool enable)
     INJECT(enable, 0x004189D0, Room_DrawAllRooms);
     INJECT(enable, 0x004195B0, Room_DrawSingleRoomGeometry);
     INJECT(enable, 0x00419670, Room_DrawSingleRoomObjects);
-    INJECT(enable, 0x00416800, Room_TriggerMusicTrack);
+    INJECT(enable, 0x00416800, Room_Legacy_TriggerMusicTrack);
 }
 
 static void M_Matrix(const bool enable)

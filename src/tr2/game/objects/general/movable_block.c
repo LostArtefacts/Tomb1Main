@@ -210,12 +210,7 @@ void __cdecl MovableBlock_Control(const int16_t item_num)
         item->status = IS_INACTIVE;
         Item_RemoveActive(item_num);
         Room_AlterFloorHeight(item, -WALL_L);
-
-        int16_t room_num = item->room_num;
-        const SECTOR *const sector =
-            Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-        Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-        Room_TestTriggers(g_TriggerIndex, true);
+        Room_TestTriggers(item);
     }
 }
 
