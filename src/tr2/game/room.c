@@ -448,6 +448,7 @@ void Room_PopulateSectorData(
     sector->ceiling.tilt = 0;
     sector->portal_room.wall = NO_ROOM;
     sector->is_death_sector = false;
+    sector->ladder = LADDER_NONE;
 
     if (start_index == null_index) {
         return;
@@ -476,7 +477,8 @@ void Room_PopulateSectorData(
             break;
 
         case FT_CLIMB:
-            break; // TODO: expand climb directions
+            sector->ladder = (LADDER_DIRECTION)((fd_entry & 0x7F00) >> 8);
+            break;
 
         case FT_TRIGGER: {
             // TODO: (TRIGGER *)trigger
@@ -534,6 +536,12 @@ void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy)
         if (sector->is_death_sector && M_TestLava(g_LaraItem)) {
             Lara_TouchLava(g_LaraItem);
         }
+
+        const LADDER_DIRECTION direction = 1
+            << Math_GetDirection(g_LaraItem->rot.y);
+        if ((sector->ladder & direction) == direction) {
+            g_Lara.climb_status = 1;
+        }
     }
 
     if (FLOORDATA_TYPE(*fd) == FT_LAVA) {
@@ -545,13 +553,6 @@ void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy)
     }
 
     if (FLOORDATA_TYPE(*fd) == FT_CLIMB) {
-        if (!heavy) {
-            const int32_t quad = Math_GetDirection(g_LaraItem->rot.y);
-            if (*fd & (1 << (quad + 8))) {
-                g_Lara.climb_status = 1;
-            }
-        }
-
         if (FLOORDATA_IS_END(*fd)) {
             return;
         }

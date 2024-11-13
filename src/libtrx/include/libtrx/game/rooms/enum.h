@@ -27,3 +27,13 @@ typedef enum {
     TT_DUMMY = 8,
 } TRIGGER_TYPE;
 #endif
+
+#if TR_VERSION == 2
+typedef enum {
+    LADDER_NONE = 0,
+    LADDER_NORTH = 1 << 0,
+    LADDER_EAST = 1 << 1,
+    LADDER_SOUTH = 1 << 2,
+    LADDER_WEST = 1 << 3,
+} LADDER_DIRECTION;
+#endif
