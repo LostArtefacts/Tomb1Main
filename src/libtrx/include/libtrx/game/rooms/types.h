@@ -38,28 +38,13 @@ typedef struct __PACKING {
     PORTAL portal[];
 } PORTALS;
 
-#if TR_VERSION == 1
 typedef struct __PACKING {
     uint16_t idx;
     int16_t box;
     bool is_death_sector;
-    TRIGGER *trigger;
-    struct __PACKING {
-        uint8_t pit;
-        uint8_t sky;
-        int16_t wall;
-    } portal_room;
-    struct __PACKING {
-        int16_t height;
-        int16_t tilt;
-    } floor, ceiling;
-} SECTOR;
-#elif TR_VERSION == 2
-typedef struct __PACKING {
-    uint16_t idx;
-    int16_t box;
-    bool is_death_sector;
+#if TR_VERSION == 2
     LADDER_DIRECTION ladder;
+#endif
     TRIGGER *trigger;
     struct __PACKING {
         uint8_t pit;
@@ -71,7 +56,6 @@ typedef struct __PACKING {
         int16_t tilt;
     } floor, ceiling;
 } SECTOR;
-#endif
 
 typedef struct __PACKING {
     XYZ_32 pos;
