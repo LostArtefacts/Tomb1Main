@@ -60,6 +60,7 @@ typedef struct __PACKING {
 typedef struct __PACKING {
     uint16_t idx;
     int16_t box;
+    bool is_death_sector;
     struct __PACKING {
         uint8_t pit;
         uint8_t sky;

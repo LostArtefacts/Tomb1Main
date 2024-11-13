@@ -27,6 +27,7 @@
 static int16_t M_GetFloorTiltHeight(const SECTOR *sector, int32_t x, int32_t z);
 static int16_t M_GetCeilingTiltHeight(
     const SECTOR *sector, int32_t x, int32_t z);
+static bool M_TestLava(const ITEM *item);
 
 static int16_t M_GetFloorTiltHeight(
     const SECTOR *sector, const int32_t x, const int32_t z)
@@ -90,6 +91,21 @@ static int16_t M_GetCeilingTiltHeight(
     }
 
     return height;
+}
+
+static bool M_TestLava(const ITEM *const item)
+{
+    if (item->hit_points < 0 || g_Lara.water_status == LWS_CHEAT
+        || (g_Lara.water_status == LWS_ABOVE_WATER
+            && item->pos.y != item->floor)) {
+        return false;
+    }
+
+    // OG fix: check if floor index has lava
+    int16_t room_num = item->room_num;
+    const SECTOR *const sector =
+        Room_GetSector(item->pos.x, MAX_HEIGHT, item->pos.z, &room_num);
+    return sector->is_death_sector;
 }
 
 int16_t Room_GetIndexFromPos(const int32_t x, const int32_t y, const int32_t z)
@@ -431,6 +447,7 @@ void Room_PopulateSectorData(
     sector->floor.tilt = 0;
     sector->ceiling.tilt = 0;
     sector->portal_room.wall = NO_ROOM;
+    sector->is_death_sector = false;
 
     if (start_index == null_index) {
         return;
@@ -455,7 +472,8 @@ void Room_PopulateSectorData(
             break;
 
         case FT_LAVA:
-            break; // TODO: (bool)is_death_sector
+            sector->is_death_sector = true;
+            break;
 
         case FT_CLIMB:
             break; // TODO: expand climb directions
@@ -507,13 +525,18 @@ void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy)
         return;
     }
 
-    if (FLOORDATA_TYPE(*fd) == FT_LAVA) {
-        if (!heavy
-            && (g_LaraItem->pos.y == g_LaraItem->floor
-                || g_Lara.water_status != LWS_ABOVE_WATER)) {
+    if (!heavy) {
+        // Temporary until triggers and climb entries are handled, after which
+        // we will have the sector at this point.
+        int16_t room_num = g_LaraItem->room_num;
+        const SECTOR *sector = Room_GetSector(
+            g_LaraItem->pos.x, MAX_HEIGHT, g_LaraItem->pos.z, &room_num);
+        if (sector->is_death_sector && M_TestLava(g_LaraItem)) {
             Lara_TouchLava(g_LaraItem);
         }
+    }
 
+    if (FLOORDATA_TYPE(*fd) == FT_LAVA) {
         if (FLOORDATA_IS_END(*fd)) {
             return;
         }
