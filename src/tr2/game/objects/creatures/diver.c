@@ -50,16 +50,16 @@ int32_t __cdecl Diver_GetWaterSurface(
     const SECTOR *sector = M_GetRelSector(r, x, z);
 
     if ((r->flags & RF_UNDERWATER)) {
-        while (sector->sky_room != NO_ROOM) {
-            r = Room_Get(sector->sky_room);
+        while (sector->portal_room.sky != NO_ROOM) {
+            r = Room_Get(sector->portal_room.sky);
             if (!(r->flags & RF_UNDERWATER)) {
                 return sector->ceiling.height;
             }
             sector = M_GetRelSector(r, x, z);
         }
     } else {
-        while (sector->pit_room != NO_ROOM) {
-            r = Room_Get(sector->pit_room);
+        while (sector->portal_room.pit != NO_ROOM) {
+            r = Room_Get(sector->portal_room.pit);
             if ((r->flags & RF_UNDERWATER)) {
                 return sector->floor.height;
             }

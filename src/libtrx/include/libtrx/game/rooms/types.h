@@ -60,8 +60,11 @@ typedef struct __PACKING {
 typedef struct __PACKING {
     uint16_t idx;
     int16_t box;
-    uint8_t pit_room;
-    uint8_t sky_room;
+    struct __PACKING {
+        uint8_t pit;
+        uint8_t sky;
+        int16_t wall;
+    } portal_room;
     struct __PACKING {
         int16_t height;
         int16_t tilt;

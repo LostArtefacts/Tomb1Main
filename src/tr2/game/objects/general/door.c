@@ -42,7 +42,7 @@ static void M_Initialise(
 
     const SECTOR *sector = door_pos->sector;
 
-    const int16_t room_num = Room_GetDoor(door_pos->sector);
+    const int16_t room_num = door_pos->sector->portal_room.wall;
     if (room_num != NO_ROOM) {
         sector =
             M_GetRoomRelSector(Room_Get(room_num), item, sector_dx, sector_dz);
@@ -67,8 +67,9 @@ void __cdecl Door_Shut(DOORPOS_DATA *const d)
     sector->box = NO_BOX;
     sector->ceiling.height = NO_HEIGHT;
     sector->floor.height = NO_HEIGHT;
-    sector->sky_room = NO_ROOM_NEG;
-    sector->pit_room = NO_ROOM_NEG;
+    sector->portal_room.sky = NO_ROOM_NEG;
+    sector->portal_room.pit = NO_ROOM_NEG;
+    sector->portal_room.wall = NO_ROOM;
 
     const int16_t box_num = d->block;
     if (box_num != NO_BOX) {
@@ -132,7 +133,7 @@ void __cdecl Door_Initialise(const int16_t item_num)
         M_Initialise(r, item, dx, dz, &door->d1flip);
     }
 
-    room_num = Room_GetDoor(door->d1.sector);
+    room_num = door->d1.sector->portal_room.wall;
     Door_Shut(&door->d1);
     Door_Shut(&door->d1flip);
 

@@ -172,8 +172,8 @@ void __cdecl Room_GetNewRoom(
 int16_t __cdecl Room_GetTiltType(
     const SECTOR *sector, const int32_t x, const int32_t y, const int32_t z)
 {
-    while (sector->pit_room != NO_ROOM) {
-        const ROOM *const room = &g_Rooms[sector->pit_room];
+    while (sector->portal_room.pit != NO_ROOM) {
+        const ROOM *const room = &g_Rooms[sector->portal_room.pit];
         const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
         const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
         sector = &room->sectors[z_sector + x_sector * room->size.z];
@@ -217,18 +217,17 @@ SECTOR *__cdecl Room_GetSector(
         }
 
         sector = &r->sectors[z_sector + x_sector * r->size.z];
-        const int16_t door = Room_GetDoor(sector);
-        if (door == NO_ROOM) {
+        if (sector->portal_room.wall == NO_ROOM) {
             break;
         }
-        *room_num = door;
+        *room_num = sector->portal_room.wall;
     }
 
     assert(sector != NULL);
 
     if (y >= sector->floor.height) {
-        while (sector->pit_room != NO_ROOM) {
-            *room_num = sector->pit_room;
+        while (sector->portal_room.pit != NO_ROOM) {
+            *room_num = sector->portal_room.pit;
             const ROOM *const r = &g_Rooms[*room_num];
             const int32_t z_sector = ((z - r->pos.z) >> WALL_SHIFT);
             const int32_t x_sector = ((x - r->pos.x) >> WALL_SHIFT);
@@ -238,9 +237,9 @@ SECTOR *__cdecl Room_GetSector(
             }
         }
     } else if (y < sector->ceiling.height) {
-        while (sector->sky_room != NO_ROOM) {
-            *room_num = sector->sky_room;
-            const ROOM *const r = &g_Rooms[sector->sky_room];
+        while (sector->portal_room.sky != NO_ROOM) {
+            *room_num = sector->portal_room.sky;
+            const ROOM *const r = &g_Rooms[sector->portal_room.sky];
             const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
             const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
             sector = &r->sectors[z_sector + x_sector * r->size.z];
@@ -285,12 +284,12 @@ int32_t __cdecl Room_GetWaterHeight(
         }
 
         sector = &r->sectors[z_sector + x_sector * r->size.z];
-        room_num = Room_GetDoor(sector);
+        room_num = sector->portal_room.wall;
     } while (room_num != NO_ROOM);
 
     if (r->flags & RF_UNDERWATER) {
-        while (sector->sky_room != NO_ROOM) {
-            r = &g_Rooms[sector->sky_room];
+        while (sector->portal_room.sky != NO_ROOM) {
+            r = &g_Rooms[sector->portal_room.sky];
             if (!(r->flags & RF_UNDERWATER)) {
                 break;
             }
@@ -300,8 +299,8 @@ int32_t __cdecl Room_GetWaterHeight(
         }
         return sector->ceiling.height;
     } else {
-        while (sector->pit_room != NO_ROOM) {
-            r = &g_Rooms[sector->pit_room];
+        while (sector->portal_room.pit != NO_ROOM) {
+            r = &g_Rooms[sector->portal_room.pit];
             if (r->flags & RF_UNDERWATER) {
                 return sector->floor.height;
             }
@@ -319,8 +318,8 @@ int32_t __cdecl Room_GetHeight(
     g_HeightType = 0;
     g_TriggerIndex = NULL;
 
-    while (sector->pit_room != NO_ROOM) {
-        const ROOM *const r = &g_Rooms[sector->pit_room];
+    while (sector->portal_room.pit != NO_ROOM) {
+        const ROOM *const r = &g_Rooms[sector->portal_room.pit];
         const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
         const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
         sector = &r->sectors[z_sector + x_sector * r->size.z];
@@ -415,6 +414,7 @@ void Room_PopulateSectorData(
 {
     sector->floor.tilt = 0;
     sector->ceiling.tilt = 0;
+    sector->portal_room.wall = NO_ROOM;
 
     if (start_index == null_index) {
         return;
@@ -435,7 +435,7 @@ void Room_PopulateSectorData(
             break;
 
         case FT_DOOR:
-            data++; // TODO: (int16_t)portal_room
+            sector->portal_room.wall = *data++;
             break;
 
         case FT_LAVA:
@@ -775,8 +775,8 @@ int32_t __cdecl Room_GetCeiling(
 {
     const SECTOR *f = sector;
 
-    while (f->sky_room != NO_ROOM) {
-        const ROOM *const r = &g_Rooms[f->sky_room];
+    while (f->portal_room.sky != NO_ROOM) {
+        const ROOM *const r = &g_Rooms[f->portal_room.sky];
         const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
         const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
         f = &r->sectors[z_sector + x_sector * r->size.z];
@@ -785,8 +785,8 @@ int32_t __cdecl Room_GetCeiling(
     int32_t height = M_GetCeilingTiltHeight(f, x, z);
 
     f = sector;
-    while (f->pit_room != NO_ROOM) {
-        const ROOM *const r = &g_Rooms[f->pit_room];
+    while (f->portal_room.pit != NO_ROOM) {
+        const ROOM *const r = &g_Rooms[f->portal_room.pit];
         const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
         const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
         f = &r->sectors[z_sector + x_sector * r->size.z];

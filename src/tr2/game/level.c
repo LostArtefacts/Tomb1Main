@@ -148,9 +148,9 @@ static void __cdecl M_LoadRooms(VFILE *const file)
             SECTOR *const sector = &r->sectors[i];
             sector->idx = VFile_ReadU16(file);
             sector->box = VFile_ReadS16(file);
-            sector->pit_room = VFile_ReadU8(file);
+            sector->portal_room.pit = VFile_ReadU8(file);
             sector->floor.height = VFile_ReadS8(file) * STEP_L;
-            sector->sky_room = VFile_ReadU8(file);
+            sector->portal_room.sky = VFile_ReadU8(file);
             sector->ceiling.height = VFile_ReadS8(file) * STEP_L;
         }
 

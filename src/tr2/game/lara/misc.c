@@ -1573,17 +1573,16 @@ int32_t __cdecl Lara_GetWaterDepth(
         }
 
         sector = &r->sectors[z_sector + x_sector * r->size.z];
-        const int16_t data = Room_GetDoor(sector);
-        if (data == NO_ROOM) {
+        if (sector->portal_room.wall == NO_ROOM) {
             break;
         }
-        room_num = data;
+        room_num = sector->portal_room.wall;
         r = &g_Rooms[room_num];
     }
 
     if (r->flags & RF_UNDERWATER) {
-        while (sector->sky_room != NO_ROOM) {
-            r = &g_Rooms[sector->sky_room];
+        while (sector->portal_room.sky != NO_ROOM) {
+            r = &g_Rooms[sector->portal_room.sky];
             if (!(r->flags & RF_UNDERWATER)) {
                 const int32_t water_height = sector->ceiling.height;
                 sector = Room_GetSector(x, y, z, &room_num);
@@ -1596,8 +1595,8 @@ int32_t __cdecl Lara_GetWaterDepth(
         return 0x7FFF;
     }
 
-    while (sector->pit_room != NO_ROOM) {
-        r = &g_Rooms[sector->pit_room];
+    while (sector->portal_room.pit != NO_ROOM) {
+        r = &g_Rooms[sector->portal_room.pit];
         if (r->flags & RF_UNDERWATER) {
             const int32_t water_height = sector->floor.height;
             sector = Room_GetSector(x, y, z, &room_num);
