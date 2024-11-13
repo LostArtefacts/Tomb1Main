@@ -53,7 +53,7 @@ int32_t __cdecl Diver_GetWaterSurface(
         while (sector->sky_room != NO_ROOM) {
             r = Room_Get(sector->sky_room);
             if (!(r->flags & RF_UNDERWATER)) {
-                return sector->ceiling << 8;
+                return sector->ceiling.height;
             }
             sector = M_GetRelSector(r, x, z);
         }
@@ -61,7 +61,7 @@ int32_t __cdecl Diver_GetWaterSurface(
         while (sector->pit_room != NO_ROOM) {
             r = Room_Get(sector->pit_room);
             if ((r->flags & RF_UNDERWATER)) {
-                return sector->floor << 8;
+                return sector->floor.height;
             }
             sector = M_GetRelSector(r, x, z);
         }

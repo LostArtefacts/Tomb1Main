@@ -1585,7 +1585,7 @@ int32_t __cdecl Lara_GetWaterDepth(
         while (sector->sky_room != NO_ROOM) {
             r = &g_Rooms[sector->sky_room];
             if (!(r->flags & RF_UNDERWATER)) {
-                const int32_t water_height = sector->ceiling << 8;
+                const int32_t water_height = sector->ceiling.height;
                 sector = Room_GetSector(x, y, z, &room_num);
                 return Room_GetHeight(sector, x, y, z) - water_height;
             }
@@ -1599,7 +1599,7 @@ int32_t __cdecl Lara_GetWaterDepth(
     while (sector->pit_room != NO_ROOM) {
         r = &g_Rooms[sector->pit_room];
         if (r->flags & RF_UNDERWATER) {
-            const int32_t water_height = sector->floor << 8;
+            const int32_t water_height = sector->floor.height;
             sector = Room_GetSector(x, y, z, &room_num);
             return Room_GetHeight(sector, x, y, z) - water_height;
         }

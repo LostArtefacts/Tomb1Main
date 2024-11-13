@@ -61,9 +61,10 @@ typedef struct __PACKING {
     uint16_t idx;
     int16_t box;
     uint8_t pit_room;
-    int8_t floor;
     uint8_t sky_room;
-    int8_t ceiling;
+    struct __PACKING {
+        int16_t height;
+    } floor, ceiling;
 } SECTOR;
 #endif
 

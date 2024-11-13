@@ -27,7 +27,7 @@ int32_t __cdecl MovableBlock_TestDestination(
     const SECTOR *const sector =
         Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
 
-    const int16_t floor = sector->floor << 8;
+    const int16_t floor = sector->floor.height;
     return floor == NO_HEIGHT || (floor == item->pos.y - block_height);
 }
 
@@ -70,7 +70,7 @@ int32_t __cdecl MovableBlock_TestPush(
     }
 
     const SECTOR *sector = Room_GetSector(x, y, z, &room_num);
-    if ((sector->floor << 8) != y) {
+    if (sector->floor.height != y) {
         return false;
     }
 
@@ -129,13 +129,13 @@ int32_t __cdecl MovableBlock_TestPull(
     }
 
     const SECTOR *sector = Room_GetSector(x, y, z, &room_num);
-    if ((sector->floor << 8) != y) {
+    if (sector->floor.height != y) {
         return false;
     }
 
     const int32_t y_min = y - block_height;
     sector = Room_GetSector(x, y_min, z, &room_num);
-    if ((sector->ceiling << 8) > y_min) {
+    if (sector->ceiling.height > y_min) {
         return false;
     }
 
@@ -143,12 +143,12 @@ int32_t __cdecl MovableBlock_TestPull(
     z += z_add;
     room_num = item->room_num;
     sector = Room_GetSector(x, y, z, &room_num);
-    if ((sector->floor << 8) != y) {
+    if (sector->floor.height != y) {
         return false;
     }
 
     sector = Room_GetSector(x, y - LARA_HEIGHT, z, &room_num);
-    if ((sector->ceiling << 8) > y - LARA_HEIGHT) {
+    if (sector->ceiling.height > y - LARA_HEIGHT) {
         return false;
     }
 

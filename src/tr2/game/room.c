@@ -13,6 +13,7 @@
 #include "game/shell.h"
 #include "global/const.h"
 #include "global/funcs.h"
+#include "global/utils.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -108,7 +109,7 @@ int16_t __cdecl Room_GetTiltType(
         sector = &room->sectors[z_sector + x_sector * room->size.z];
     }
 
-    if ((y + 512 >= (sector->floor << 8)) && sector->idx != 0) {
+    if ((y + STEP_L * 2 >= sector->floor.height) && sector->idx != 0) {
         const int16_t *fd = &g_FloorData[sector->idx];
         if (FLOORDATA_TYPE(fd[0]) == FT_TILT) {
             return fd[1];
@@ -158,25 +159,25 @@ SECTOR *__cdecl Room_GetSector(
 
     assert(sector != NULL);
 
-    if (y >= (sector->floor << 8)) {
+    if (y >= sector->floor.height) {
         while (sector->pit_room != NO_ROOM) {
             *room_num = sector->pit_room;
             const ROOM *const r = &g_Rooms[*room_num];
             const int32_t z_sector = ((z - r->pos.z) >> WALL_SHIFT);
             const int32_t x_sector = ((x - r->pos.x) >> WALL_SHIFT);
             sector = &r->sectors[z_sector + x_sector * r->size.z];
-            if (y < (sector->floor << 8)) {
+            if (y < sector->floor.height) {
                 break;
             }
         }
-    } else if (y < (sector->ceiling << 8)) {
+    } else if (y < sector->ceiling.height) {
         while (sector->sky_room != NO_ROOM) {
             *room_num = sector->sky_room;
             const ROOM *const r = &g_Rooms[sector->sky_room];
             const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
             const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
             sector = &r->sectors[z_sector + x_sector * r->size.z];
-            if (y >= (sector->ceiling << 8)) {
+            if (y >= sector->ceiling.height) {
                 break;
             }
         }
@@ -230,12 +231,12 @@ int32_t __cdecl Room_GetWaterHeight(
             const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
             sector = &r->sectors[z_sector + x_sector * r->size.z];
         }
-        return sector->ceiling << 8;
+        return sector->ceiling.height;
     } else {
         while (sector->pit_room != NO_ROOM) {
             r = &g_Rooms[sector->pit_room];
             if (r->flags & RF_UNDERWATER) {
-                return sector->floor << 8;
+                return sector->floor.height;
             }
             const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
             const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
@@ -258,7 +259,7 @@ int32_t __cdecl Room_GetHeight(
         sector = &r->sectors[z_sector + x_sector * r->size.z];
     }
 
-    int32_t height = sector->floor << 8;
+    int32_t height = sector->floor.height;
     if (g_GF_NoFloor && g_GF_NoFloor == height) {
         height = 0x4000;
     }
@@ -735,7 +736,7 @@ int32_t __cdecl Room_GetCeiling(
         f = &r->sectors[z_sector + x_sector * r->size.z];
     }
 
-    int32_t height = f->ceiling << 8;
+    int32_t height = f->ceiling.height;
 
     if (f->idx) {
         const int16_t *fd = &g_FloorData[f->idx];
@@ -895,12 +896,12 @@ void __cdecl Room_AlterFloorHeight(const ITEM *const item, const int32_t height)
     const SECTOR *ceiling = Room_GetSector(
         item->pos.x, item->pos.y + height - WALL_L, item->pos.z, &room_num);
 
-    if (sector->floor == NO_HEIGHT / 256) {
-        sector->floor = ceiling->ceiling + height / 256;
+    if (sector->floor.height == NO_HEIGHT) {
+        sector->floor.height = ceiling->ceiling.height + ROUND_TO_CLICK(height);
     } else {
-        sector->floor += height / 256;
-        if (sector->floor == ceiling->ceiling) {
-            sector->floor = NO_HEIGHT / 256;
+        sector->floor.height += ROUND_TO_CLICK(height);
+        if (sector->floor.height == ceiling->ceiling.height) {
+            sector->floor.height = NO_HEIGHT;
         }
     }
 

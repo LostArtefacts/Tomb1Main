@@ -65,8 +65,8 @@ void __cdecl Door_Shut(DOORPOS_DATA *const d)
 
     sector->idx = 0;
     sector->box = NO_BOX;
-    sector->ceiling = NO_HEIGHT / STEP_L;
-    sector->floor = NO_HEIGHT / STEP_L;
+    sector->ceiling.height = NO_HEIGHT;
+    sector->floor.height = NO_HEIGHT;
     sector->sky_room = NO_ROOM_NEG;
     sector->pit_room = NO_ROOM_NEG;
 
