@@ -61,6 +61,7 @@
 - improved enemy item drops by supporting the TR2+ approach of having drops defined in level data (#1713)
 - improved Italian localization for the Config Tool
 - improved the injection approach for Lara's responsive jumping (#1823)
+- improved the exploding Lara input cheat to always use explosion sprites
 - removed health cheat (we now have the `/hp` command)
 - removed background for the "Reset" and "Unbind" labels in the controls dialog
 - removed `force_game_modes` and `force_save_crystals` from the gameflow - see GAMEFLOW.md for details on how to enforce these settings (#1857)
