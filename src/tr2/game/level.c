@@ -17,6 +17,7 @@
 
 #include <assert.h>
 
+static void M_LoadFromFile(const char *file_name, int32_t level_num);
 static void __cdecl M_LoadTexturePages(VFILE *file);
 static void __cdecl M_LoadRooms(VFILE *file);
 static void __cdecl M_LoadMeshBase(VFILE *file);
@@ -42,6 +43,7 @@ static void __cdecl M_LoadCinematic(VFILE *file);
 static void __cdecl M_LoadDemo(VFILE *file);
 static void __cdecl M_LoadDemoExternal(const char *level_name);
 static void __cdecl M_LoadSamples(VFILE *file);
+static void M_CompleteSetup(void);
 
 static void __cdecl M_LoadTexturePages(VFILE *const file)
 {
@@ -500,7 +502,6 @@ static void __cdecl M_LoadItems(VFILE *const file)
                 "Bad object number (%d) on item %d", item->object_id, i);
             goto finish;
         }
-        Item_Initialise(i);
     }
 
 finish:
@@ -835,13 +836,12 @@ finish:
     Benchmark_End(benchmark, NULL);
 }
 
-bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
+static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
 {
     LOG_DEBUG("%s (num=%d)", g_GF_LevelNames[level_num], level_num);
     GameBuf_Reset();
 
     BENCHMARK *const benchmark = Benchmark_Start();
-    bool result = false;
 
     const char *full_path = GetFullPath(file_name);
     strcpy(g_LevelFileName, full_path);
@@ -853,7 +853,6 @@ bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
         Shell_ExitSystemFmt(
             "FATAL: Level %d (%s) requires a new TOMB2.EXE (version %d) to run",
             level_num, full_path, file_name);
-        return false;
     }
 
     if (version < 45) {
@@ -861,7 +860,6 @@ bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
             "FATAL: Level %d (%s) is OUT OF DATE (version %d). COPY NEW "
             "EDITORS AND REMAKE LEVEL",
             level_num, full_path, file_name);
-        return false;
     }
 
     g_LevelFilePalettesOffset = VFile_GetPos(file);
@@ -915,5 +913,30 @@ bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
     file = NULL;
 
     Benchmark_End(benchmark, NULL);
+}
+
+static void M_CompleteSetup(void)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    // Must be called after Setup_AllObjects using the cached item
+    // count, as individual setups may increment g_LevelItemCount.
+    const int32_t item_count = g_LevelItemCount;
+    for (int32_t i = 0; i < item_count; i++) {
+        Item_Initialise(i);
+    }
+
+    Benchmark_End(benchmark, NULL);
+}
+
+bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    M_LoadFromFile(file_name, level_num);
+    M_CompleteSetup();
+
+    Benchmark_End(benchmark, NULL);
+
     return true;
 }
