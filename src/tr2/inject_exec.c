@@ -1064,6 +1064,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x00432FE0, Missile_Control);
+    INJECT(enable, 0x004332B0, Missile_ShootAtLara);
     INJECT(enable, 0x004336F0, BodyPart_Control);
     INJECT(enable, 0x004338F0, MovableBlock_Initialise);
     INJECT(enable, 0x00433920, MovableBlock_Control);

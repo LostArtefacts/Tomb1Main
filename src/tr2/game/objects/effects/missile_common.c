@@ -11,6 +11,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/utils.h>
+
 void __cdecl Missile_Control(const int16_t fx_num)
 {
     FX *const fx = &g_Effects[fx_num];
@@ -87,4 +89,20 @@ void __cdecl Missile_Control(const int16_t fx_num)
     } else if (fx->object_id == O_MISSILE_KNIFE) {
         fx->rot.z += 30 * PHD_DEGREE;
     }
+}
+
+void __cdecl Missile_ShootAtLara(FX *const fx)
+{
+    const int32_t dx = g_LaraItem->pos.x - fx->pos.x;
+    const int32_t dy = g_LaraItem->pos.y - fx->pos.y;
+    const int32_t dz = g_LaraItem->pos.z - fx->pos.z;
+
+    const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(g_LaraItem);
+    const int32_t dist_vert =
+        dy + bounds->max_y + 3 * (bounds->min_y - bounds->max_y) / 4;
+    const int32_t dist_horz = Math_Sqrt(SQUARE(dz) + SQUARE(dx));
+    fx->rot.x = -Math_Atan(dist_horz, dist_vert);
+    fx->rot.y = Math_Atan(dz, dx);
+    fx->rot.x += (Random_GetControl() - 0x4000) / 64;
+    fx->rot.y += (Random_GetControl() - 0x4000) / 64;
 }

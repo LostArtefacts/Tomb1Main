@@ -3,6 +3,7 @@
 #include "game/effects.h"
 #include "game/math.h"
 #include "game/matrix.h"
+#include "game/objects/effects/missile_common.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -136,7 +137,7 @@ int16_t __cdecl Effect_MissileFlame(
     fx->object_id = O_MISSILE_FLAME;
     fx->shade = 14 * 256;
 
-    ShootAtLara(fx);
+    Missile_ShootAtLara(fx);
 
     if (g_Objects[O_DRAGON_FRONT].loaded) {
         fx->counter = 0x4000;

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.44% (926)</tspan> · <tspan class="known">23.15% (288)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.52% (927)</tspan> · <tspan class="known">23.07% (287)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="556.05" height="6" x="0" y="0" class="decompiled"/>
-<rect width="172.94" height="6" x="556.05" y="0" class="known"/>
+<rect width="556.65" height="6" x="0" y="0" class="decompiled"/>
+<rect width="172.34" height="6" x="556.65" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -679,7 +679,7 @@
 <rect width="12" height="12" x="0" y="180" class="decompiled"><title>void __cdecl LOT_CreateZone(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="180" class="decompiled"><title>void __cdecl LOT_ClearLOT(LOT_INFO *lot);</title></rect>
 <rect width="12" height="12" x="30" y="180" class="decompiled"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="45" y="180" class="known"><title>void __cdecl ShootAtLara(FX *fx);</title></rect>
+<rect width="12" height="12" x="45" y="180" class="decompiled"><title>void __cdecl Missile_ShootAtLara(FX *fx);</title></rect>
 <rect width="12" height="12" x="60" y="180" class="decompiled"><title>int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);</title></rect>
 <rect width="12" height="12" x="75" y="180" class="decompiled"><title>void __cdecl BodyPart_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="180" class="decompiled"><title>void __cdecl MovableBlock_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.67%</tspan> · <tspan class="known">20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.72%</tspan> · <tspan class="known">19.96%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="595.13" height="6" x="0" y="0" class="decompiled"/>
-<rect width="149.43" height="6" x="595.13" y="0" class="known"/>
+<rect width="595.50" height="6" x="0" y="0" class="decompiled"/>
+<rect width="149.06" height="6" x="595.50" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1849,7 +1849,7 @@
 <rect width="8.64" height="8.97" x="533.93" y="306.52" class="known"><title>void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="318.49" class="decompiled"><title>void __cdecl Output_InsertSprite(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="330.39" class="decompiled"><title>int32_t __cdecl Box_ValidBox(const ITEM *item, int16_t zone_num, int16_t box_num);</title></rect>
-<rect width="8.64" height="8.90" x="533.93" y="342.29" class="known"><title>void __cdecl ShootAtLara(FX *fx);</title></rect>
+<rect width="8.64" height="8.90" x="533.93" y="342.29" class="decompiled"><title>void __cdecl Missile_ShootAtLara(FX *fx);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="354.20" class="known"><title>int16_t __cdecl GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="366.10" class="decompiled"><title>bool __cdecl ShowDDrawGameWindow(bool active);</title></rect>
 <rect width="8.68" height="8.72" x="545.57" y="173.53" class="decompiled"><title>void __cdecl Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll);</title></rect>

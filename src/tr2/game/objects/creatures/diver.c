@@ -3,6 +3,7 @@
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/los.h"
+#include "game/objects/effects/missile_common.h"
 #include "game/room.h"
 #include "global/const.h"
 #include "global/funcs.h"
@@ -281,7 +282,7 @@ int16_t __cdecl Diver_Harpoon(
         fx->frame_num = 0;
         fx->object_id = O_MISSILE_HARPOON;
         fx->shade = 3584;
-        ShootAtLara(fx);
+        Missile_ShootAtLara(fx);
     }
     return fx_num;
 }

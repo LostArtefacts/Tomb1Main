@@ -75,7 +75,6 @@
 #define InitialiseHair ((void __cdecl (*)(void))0x00420EA0)
 #define HairControl ((void __cdecl (*)(int32_t in_cutscene))0x00420F20)
 #define DrawHair ((void __cdecl (*)(void))0x00421920)
-#define ShootAtLara ((void __cdecl (*)(FX *fx))0x004332B0)
 #define Object_DrawUnclippedItem ((void __cdecl (*)(const ITEM *item))0x004341A0)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)
