@@ -4,6 +4,7 @@
 #include "game/hwr.h"
 #include "game/items.h"
 #include "game/objects/setup.h"
+#include "game/room.h"
 #include "game/shell.h"
 #include "global/const.h"
 #include "global/funcs.h"
@@ -918,6 +919,10 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
 static void M_CompleteSetup(void)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
+
+    // Expand raw floor data into sectors
+    Room_ParseFloorData(g_FloorData);
+    // TODO: store raw FD temporarily, release here and eliminate g_FloorData
 
     // Must be called after Setup_AllObjects using the cached item
     // count, as individual setups may increment g_LevelItemCount.

@@ -23,6 +23,12 @@ int32_t __cdecl Room_GetHeight(
 int32_t __cdecl Room_GetCeiling(
     const SECTOR *sector, int32_t x, int32_t y, int32_t z);
 int16_t __cdecl Room_GetDoor(const SECTOR *sector);
+
+void Room_ParseFloorData(const int16_t *floor_data);
+void Room_PopulateSectorData(
+    SECTOR *sector, const int16_t *floor_data, uint16_t start_index,
+    uint16_t null_index);
+
 void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy);
 void __cdecl Room_AlterFloorHeight(const ITEM *item, int32_t height);
 void __cdecl Room_FlipMap(void);

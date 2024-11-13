@@ -19,6 +19,8 @@
 
 #include <assert.h>
 
+#define NULL_FD_INDEX 0 // TODO: move to libtrx and update TR1
+
 int16_t Room_GetIndexFromPos(const int32_t x, const int32_t y, const int32_t z)
 {
     // TODO: merge this to Room_FindByPos
@@ -349,6 +351,82 @@ int32_t __cdecl Room_GetHeight(
     }
 
     return height;
+}
+
+void Room_ParseFloorData(const int16_t *floor_data)
+{
+    for (int32_t i = 0; i < g_RoomCount; i++) {
+        const ROOM *const room = Room_Get(i);
+        for (int32_t j = 0; j < room->size.x * room->size.z; j++) {
+            SECTOR *const sector = &room->sectors[j];
+            Room_PopulateSectorData(
+                &room->sectors[j], floor_data, sector->idx, NULL_FD_INDEX);
+        }
+    }
+}
+
+void Room_PopulateSectorData(
+    SECTOR *const sector, const int16_t *floor_data, const uint16_t start_index,
+    const uint16_t null_index)
+{
+    if (start_index == null_index) {
+        return;
+    }
+
+    const int16_t *data = &floor_data[sector->idx];
+    int16_t fd_entry;
+    do {
+        fd_entry = *data++;
+
+        switch (FLOORDATA_TYPE(fd_entry)) {
+        case FT_TILT:
+            data++; // TODO: (int16_t)floor.tilt
+            break;
+
+        case FT_ROOF:
+            data++; // TODO: (int16_t)ceiling.tilt
+            break;
+
+        case FT_DOOR:
+            data++; // TODO: (int16_t)portal_room
+            break;
+
+        case FT_LAVA:
+            break; // TODO: (bool)is_death_sector
+
+        case FT_CLIMB:
+            break; // TODO: expand climb directions
+
+        case FT_TRIGGER: {
+            // TODO: (TRIGGER *)trigger
+            const int16_t trig_setup = *data++;
+            const TRIGGER_TYPE trig_type = TRIGGER_TYPE(fd_entry);
+            if (trig_type == TT_SWITCH || trig_type == TT_KEY
+                || trig_type == TT_PICKUP) {
+                const int16_t item_data = *data++; // TODO: (int16_t)item_index
+                if (TRIGGER_IS_END(item_data)) {
+                    break;
+                }
+            }
+
+            // TODO: count commands and store them in the trigger
+            while (true) {
+                int16_t command = *data++;
+                if (TRIGGER_TYPE(command) == TO_CAMERA) {
+                    command = *data++;
+                }
+                if (TRIGGER_IS_END(command)) {
+                    break;
+                }
+            }
+
+            break;
+        }
+
+        default:
+            break;
+        }
+    } while (!FLOORDATA_IS_END(fd_entry));
 }
 
 void __cdecl Room_TestTriggers(const int16_t *fd, bool heavy)
