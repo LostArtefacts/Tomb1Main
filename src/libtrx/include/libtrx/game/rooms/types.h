@@ -64,6 +64,7 @@ typedef struct __PACKING {
     uint8_t sky_room;
     struct __PACKING {
         int16_t height;
+        int16_t tilt;
     } floor, ceiling;
 } SECTOR;
 #endif

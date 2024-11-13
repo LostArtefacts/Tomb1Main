@@ -21,6 +21,76 @@
 #include <assert.h>
 
 #define NULL_FD_INDEX 0 // TODO: move to libtrx and update TR1
+#define NEG_TILT(T, H) ((T * (H & (WALL_L - 1))) >> 2)
+#define POS_TILT(T, H) ((T * ((WALL_L - 1 - H) & (WALL_L - 1))) >> 2)
+
+static int16_t M_GetFloorTiltHeight(const SECTOR *sector, int32_t x, int32_t z);
+static int16_t M_GetCeilingTiltHeight(
+    const SECTOR *sector, int32_t x, int32_t z);
+
+static int16_t M_GetFloorTiltHeight(
+    const SECTOR *sector, const int32_t x, const int32_t z)
+{
+    int16_t height = sector->floor.height;
+    if (sector->floor.tilt == 0) {
+        return height;
+    }
+
+    const int32_t z_off = sector->floor.tilt >> 8;
+    const int32_t x_off = (int8_t)sector->floor.tilt;
+
+    const HEIGHT_TYPE slope_type =
+        (ABS(z_off) > 2 || ABS(x_off) > 2) ? HT_BIG_SLOPE : HT_SMALL_SLOPE;
+    if (g_IsChunkyCamera && slope_type == HT_BIG_SLOPE) {
+        return height;
+    }
+
+    g_HeightType = slope_type;
+
+    if (z_off < 0) {
+        height -= (int16_t)NEG_TILT(z_off, z);
+    } else {
+        height += (int16_t)POS_TILT(z_off, z);
+    }
+
+    if (x_off < 0) {
+        height -= (int16_t)NEG_TILT(x_off, x);
+    } else {
+        height += (int16_t)POS_TILT(x_off, x);
+    }
+
+    return height;
+}
+
+static int16_t M_GetCeilingTiltHeight(
+    const SECTOR *sector, const int32_t x, const int32_t z)
+{
+    int16_t height = sector->ceiling.height;
+    if (sector->ceiling.tilt == 0) {
+        return height;
+    }
+
+    const int32_t z_off = sector->ceiling.tilt >> 8;
+    const int32_t x_off = (int8_t)sector->ceiling.tilt;
+
+    if (g_IsChunkyCamera && (ABS(z_off) > 2 || ABS(x_off) > 2)) {
+        return height;
+    }
+
+    if (z_off < 0) {
+        height += (int16_t)NEG_TILT(z_off, z);
+    } else {
+        height -= (int16_t)POS_TILT(z_off, z);
+    }
+
+    if (x_off < 0) {
+        height += (int16_t)POS_TILT(x_off, x);
+    } else {
+        height -= (int16_t)NEG_TILT(x_off, x);
+    }
+
+    return height;
+}
 
 int16_t Room_GetIndexFromPos(const int32_t x, const int32_t y, const int32_t z)
 {
@@ -109,14 +179,11 @@ int16_t __cdecl Room_GetTiltType(
         sector = &room->sectors[z_sector + x_sector * room->size.z];
     }
 
-    if ((y + STEP_L * 2 >= sector->floor.height) && sector->idx != 0) {
-        const int16_t *fd = &g_FloorData[sector->idx];
-        if (FLOORDATA_TYPE(fd[0]) == FT_TILT) {
-            return fd[1];
-        }
+    if ((y + STEP_L * 2) < sector->floor.height) {
+        return 0;
     }
 
-    return 0;
+    return sector->floor.tilt;
 }
 
 SECTOR *__cdecl Room_GetSector(
@@ -262,6 +329,8 @@ int32_t __cdecl Room_GetHeight(
     int32_t height = sector->floor.height;
     if (g_GF_NoFloor && g_GF_NoFloor == height) {
         height = 0x4000;
+    } else {
+        height = M_GetFloorTiltHeight(sector, x, z);
     }
 
     if (!sector->idx) {
@@ -275,35 +344,9 @@ int32_t __cdecl Room_GetHeight(
         switch (FLOORDATA_TYPE(fd_cmd)) {
         case FT_DOOR:
         case FT_ROOF:
+        case FT_TILT:
             fd++;
             break;
-
-        case FT_TILT: {
-            const int32_t x_off = *fd >> 8;
-            const int32_t y_off = (int8_t)*fd;
-            fd++;
-
-            if (!g_IsChunkyCamera || (ABS(x_off) <= 2 && ABS(y_off) <= 2)) {
-                if (ABS(x_off) > 2 || ABS(y_off) > 2) {
-                    g_HeightType = HT_BIG_SLOPE;
-                } else {
-                    g_HeightType = HT_SMALL_SLOPE;
-                }
-
-                if (x_off < 0) {
-                    height -= (x_off * (z & (WALL_L - 1))) >> 2;
-                } else {
-                    height += (x_off * ((WALL_L - 1 - z) & (WALL_L - 1))) >> 2;
-                }
-
-                if (y_off < 0) {
-                    height -= (y_off * (x & (WALL_L - 1))) >> 2;
-                } else {
-                    height += (y_off * ((WALL_L - 1 - x) & (WALL_L - 1))) >> 2;
-                }
-            }
-            break;
-        }
 
         case FT_TRIGGER:
             if (g_TriggerIndex == NULL) {
@@ -370,6 +413,9 @@ void Room_PopulateSectorData(
     SECTOR *const sector, const int16_t *floor_data, const uint16_t start_index,
     const uint16_t null_index)
 {
+    sector->floor.tilt = 0;
+    sector->ceiling.tilt = 0;
+
     if (start_index == null_index) {
         return;
     }
@@ -381,11 +427,11 @@ void Room_PopulateSectorData(
 
         switch (FLOORDATA_TYPE(fd_entry)) {
         case FT_TILT:
-            data++; // TODO: (int16_t)floor.tilt
+            sector->floor.tilt = *data++;
             break;
 
         case FT_ROOF:
-            data++; // TODO: (int16_t)ceiling.tilt
+            sector->ceiling.tilt = *data++;
             break;
 
         case FT_DOOR:
@@ -736,36 +782,7 @@ int32_t __cdecl Room_GetCeiling(
         f = &r->sectors[z_sector + x_sector * r->size.z];
     }
 
-    int32_t height = f->ceiling.height;
-
-    if (f->idx) {
-        const int16_t *fd = &g_FloorData[f->idx];
-        int16_t type = FLOORDATA_TYPE(*fd++);
-
-        if (type == FT_TILT) {
-            fd++;
-            type = FLOORDATA_TYPE(*fd++);
-        }
-
-        if (type == FT_ROOF) {
-            const int32_t x_off = *fd >> 8;
-            const int32_t y_off = (int8_t)*fd;
-
-            if (!g_IsChunkyCamera || (ABS(x_off) <= 2 && ABS(y_off) <= 2)) {
-                if (x_off < 0) {
-                    height += (x_off * (z & (WALL_L - 1))) >> 2;
-                } else {
-                    height -= (x_off * ((WALL_L - 1 - z) & (WALL_L - 1))) >> 2;
-                }
-
-                if (y_off < 0) {
-                    height += (y_off * ((WALL_L - 1 - x) & (WALL_L - 1))) >> 2;
-                } else {
-                    height -= (y_off * (x & (WALL_L - 1))) >> 2;
-                }
-            }
-        }
-    }
+    int32_t height = M_GetCeilingTiltHeight(f, x, z);
 
     f = sector;
     while (f->pit_room != NO_ROOM) {
