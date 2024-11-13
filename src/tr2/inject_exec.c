@@ -1059,6 +1059,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00417E90, Dragon_Control);
     INJECT(enable, 0x004183E0, Bartoli_Initialise);
     INJECT(enable, 0x00418500, Bartoli_Control);
+    INJECT(enable, 0x004199E0, Object_DrawSpriteItem);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);

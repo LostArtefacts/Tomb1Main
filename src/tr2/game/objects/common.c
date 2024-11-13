@@ -3,6 +3,8 @@
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/matrix.h"
+#include "game/output.h"
+#include "game/room.h"
 #include "game/viewport.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -31,6 +33,21 @@ void __cdecl Object_DrawUnclippedItem(const ITEM *const item)
     Viewport_Restore(&new_vp);
     Object_DrawAnimatingItem(item);
     Viewport_Restore(&old_vp);
+}
+
+void __cdecl Object_DrawSpriteItem(const ITEM *const item)
+{
+    S_CalculateStaticMeshLight(
+        item->pos.x, item->pos.y, item->pos.z, item->shade_1, item->shade_2,
+        Room_Get(item->room_num));
+
+    const OBJECT *const obj = Object_GetObject(item->object_id);
+
+    Output_DrawSprite(
+        SPRITE_ABS | (obj->semi_transparent ? SPRITE_SEMI_TRANS : 0)
+            | SPRITE_SHADE,
+        item->pos.x, item->pos.y, item->pos.z, obj->mesh_idx - item->frame_num,
+        g_LsAdder + 4096, 0);
 }
 
 void __cdecl Object_Collision(

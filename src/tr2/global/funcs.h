@@ -9,7 +9,6 @@
 #define Dog_Control ((void __cdecl (*)(int16_t item_num))0x00417160)
 #define Tiger_Control ((void __cdecl (*)(int16_t item_num))0x00417510)
 #define TRex_Control ((void __cdecl (*)(int16_t item_num))0x004186A0)
-#define Object_DrawSpriteItem ((void __cdecl (*)(const ITEM *item))0x004199E0)
 #define Object_DrawAnimatingItem ((void __cdecl (*)(const ITEM *item))0x00419A70)
 #define Gun_DrawFlash ((void __cdecl (*)(LARA_GUN_TYPE weapon_type, int32_t clip))0x0041BD30)
 #define Output_CalculateObjectLighting ((void __cdecl (*)(const ITEM *item, const FRAME_INFO *frame))0x0041BEA0)

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.60% (928)</tspan> · <tspan class="known">22.99% (286)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.68% (929)</tspan> · <tspan class="known">22.91% (285)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="557.25" height="6" x="0" y="0" class="decompiled"/>
-<rect width="171.74" height="6" x="557.25" y="0" class="known"/>
+<rect width="557.85" height="6" x="0" y="0" class="decompiled"/>
+<rect width="171.14" height="6" x="557.85" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -291,7 +291,7 @@
 <rect width="12" height="12" x="180" y="60" class="decompiled"><title>void __cdecl Room_DrawSingleRoomGeometry(int16_t room_num);</title></rect>
 <rect width="12" height="12" x="195" y="60" class="decompiled"><title>void __cdecl Room_DrawSingleRoomObjects(int16_t room_num);</title></rect>
 <rect width="12" height="12" x="210" y="60" class="decompiled"><title>void __cdecl Effect_Draw(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="225" y="60" class="known"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
+<rect width="12" height="12" x="225" y="60" class="decompiled"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="60" class="known"><title>void __cdecl Object_DrawAnimatingItem(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="255" y="60" class="decompiled"><title>void __cdecl Lara_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="60" class="decompiled"><title>void __cdecl Lara_Draw_I(const ITEM *item, const FRAME_INFO *frame1, const FRAME_INFO *frame2, int32_t frac, int32_t rate);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.75%</tspan> · <tspan class="known">19.92%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.79%</tspan> · <tspan class="known">19.89%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="595.73" height="6" x="0" y="0" class="decompiled"/>
-<rect width="148.83" height="6" x="595.73" y="0" class="known"/>
+<rect width="596.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="148.54" height="6" x="596.02" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1946,7 +1946,7 @@
 <rect width="7.86" height="7.16" x="632.75" y="196.26" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
 <rect width="7.78" height="7.16" x="643.61" y="196.26" class="decompiled"><title>void __cdecl Lara_State_Back(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.78" height="7.16" x="654.39" y="196.26" class="decompiled"><title>bool __cdecl Music_PlaySynced(int32_t track_id);</title></rect>
-<rect width="7.70" height="7.16" x="665.17" y="196.26" class="known"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
+<rect width="7.70" height="7.16" x="665.17" y="196.26" class="decompiled"><title>void __cdecl Object_DrawSpriteItem(const ITEM *item);</title></rect>
 <rect width="7.70" height="7.16" x="675.86" y="196.26" class="decompiled"><title>void __cdecl Lara_Col_Fallback(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.61" height="7.16" x="686.56" y="196.26" class="known"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="7.61" height="7.16" x="697.17" y="196.26" class="decompiled"><title>void __cdecl Requester_Init(REQUEST_INFO *req);</title></rect>

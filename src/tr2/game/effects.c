@@ -132,7 +132,7 @@ void __cdecl Effect_Draw(const int16_t fx_num)
 
     if (object->mesh_count < 0) {
         Output_DrawSprite(
-            SPRITE_ABS | (object->semi_transparent ? SPRITE_SEMITRANS : 0)
+            SPRITE_ABS | (object->semi_transparent ? SPRITE_SEMI_TRANS : 0)
                 | SPRITE_SHADE,
             fx->pos.x, fx->pos.y, fx->pos.z, object->mesh_idx - fx->frame_num,
             fx->shade, 0);
