@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.92% (932)</tspan> · <tspan class="known">22.67% (282)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75% (933)</tspan> · <tspan class="known">22.59% (281)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="559.65" height="6" x="0" y="0" class="decompiled"/>
-<rect width="169.34" height="6" x="559.65" y="0" class="known"/>
+<rect width="560.25" height="6" x="0" y="0" class="decompiled"/>
+<rect width="168.74" height="6" x="560.25" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -705,7 +705,7 @@
 <rect width="12" height="12" x="390" y="180" class="decompiled"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="405" y="180" class="decompiled"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="420" y="180" class="decompiled"><title>void __cdecl Window_Smash(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="435" y="180" class="known"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="435" y="180" class="decompiled"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="450" y="180" class="known"><title>void __cdecl SmashIce_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="465" y="180" class="decompiled"><title>void __cdecl Door_Shut(DOORPOS_DATA *d);</title></rect>
 <rect width="12" height="12" x="480" y="180" class="decompiled"><title>void __cdecl Door_Open(DOORPOS_DATA *d);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.14%</tspan> · <tspan class="known">19.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.18%</tspan> · <tspan class="known">19.49%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="598.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="145.92" height="6" x="598.64" y="0" class="known"/>
+<rect width="598.97" height="6" x="0" y="0" class="decompiled"/>
+<rect width="145.59" height="6" x="598.97" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1890,7 +1890,7 @@
 <rect width="7.86" height="8.46" x="556.72" y="185.25" class="decompiled"><title>void __cdecl Lara_State_Zipline(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="196.72" class="decompiled"><title>void __cdecl Lara_Col_Compress( ITEM *item, COLL_INFO *coll );</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="208.18" class="decompiled"><title>void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);</title></rect>
-<rect width="7.86" height="8.46" x="556.72" y="219.64" class="known"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
+<rect width="7.86" height="8.46" x="556.72" y="219.64" class="decompiled"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="231.11" class="decompiled"><title>int32_t __cdecl S_LoadGame(void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="242.57" class="decompiled"><title>void __cdecl Option_Controls_UpdateText(void);</title></rect>
 <rect width="7.86" height="8.39" x="556.72" y="254.04" class="decompiled"><title>void __cdecl Output_SetNearZ(int32_t near_z);</title></rect>

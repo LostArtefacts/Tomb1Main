@@ -2,11 +2,15 @@
 
 #include "game/box.h"
 #include "game/items.h"
+#include "game/lara/misc.h"
+#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
 #include "global/vars.h"
+
+#include <libtrx/utils.h>
 
 void Window_1_Setup(void)
 {
@@ -42,6 +46,28 @@ void __cdecl Window_Initialise(const int16_t item_num)
 
     if (box->overlap_index & BOX_BLOCKABLE) {
         box->overlap_index |= BOX_BLOCKED;
+    }
+}
+
+void __cdecl Window_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    if ((item->flags & IF_ONE_SHOT)) {
+        return;
+    }
+
+    if (g_Lara.skidoo != NO_ITEM) {
+        if (Lara_IsNearItem(&item->pos, 512)) {
+            Window_Smash(item_num);
+        }
+    } else if (item->touch_bits) {
+        item->touch_bits = 0;
+        const int32_t speed =
+            ABS((g_LaraItem->speed * Math_Cos(g_LaraItem->rot.y - item->rot.y))
+                >> W2V_SHIFT);
+        if (speed >= 50) {
+            Window_Smash(item_num);
+        }
     }
 }
 

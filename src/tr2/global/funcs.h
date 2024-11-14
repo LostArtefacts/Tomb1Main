@@ -80,7 +80,6 @@
 #define InitialiseDyingMonk ((void __cdecl (*)(int16_t item_num))0x004346F0)
 #define DyingMonk ((void __cdecl (*)(int16_t item_num))0x00434770)
 #define BigBowl_Control ((void __cdecl (*)(int16_t item_num))0x00434C10)
-#define Window_Control ((void __cdecl (*)(int16_t item_num))0x00434ED0)
 #define SmashIce_Control ((void __cdecl (*)(int16_t item_num))0x00434F70)
 #define CopterControl ((void __cdecl (*)(int16_t item_num))0x00435B80)
 #define GeneralControl ((void __cdecl (*)(int16_t item_num))0x00435C90)
