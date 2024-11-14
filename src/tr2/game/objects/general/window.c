@@ -17,7 +17,7 @@ void Window_1_Setup(void)
     OBJECT *const obj = Object_GetObject(O_WINDOW_1);
     obj->initialise = Window_Initialise;
     obj->collision = Object_Collision;
-    obj->control = Window_Control;
+    obj->control = Window_1_Control;
     obj->save_flags = 1;
     obj->save_anim = 1;
 }
@@ -27,7 +27,7 @@ void Window_2_Setup(void)
     OBJECT *const obj = Object_GetObject(O_WINDOW_2);
     obj->initialise = Window_Initialise;
     obj->collision = Object_Collision;
-    obj->control = SmashIce_Control;
+    obj->control = Window_2_Control;
     obj->save_flags = 1;
     obj->save_anim = 1;
 }
@@ -49,10 +49,10 @@ void __cdecl Window_Initialise(const int16_t item_num)
     }
 }
 
-void __cdecl Window_Control(const int16_t item_num)
+void __cdecl Window_1_Control(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    if ((item->flags & IF_ONE_SHOT)) {
+    if (item->flags & IF_ONE_SHOT) {
         return;
     }
 
@@ -71,6 +71,33 @@ void __cdecl Window_Control(const int16_t item_num)
     }
 }
 
+void __cdecl Window_2_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    if (item->flags & IF_ONE_SHOT) {
+        return;
+    }
+
+    const ROOM *const r = Room_Get(item->room_num);
+    const int32_t z_sector = (item->pos.z - r->pos.z) >> WALL_SHIFT;
+    const int32_t x_sector = (item->pos.x - r->pos.x) >> WALL_SHIFT;
+    const SECTOR *const sector = &r->sectors[z_sector + x_sector * r->size.z];
+    BOX_INFO *const box = &g_Boxes[sector->box];
+
+    if (box->overlap_index & BOX_BLOCKED) {
+        box->overlap_index &= ~BOX_BLOCKED;
+    }
+
+    item->mesh_bits = ~1;
+    item->collidable = 0;
+    Effect_ExplodingDeath(item_num, 65278, 0);
+    Sound_Effect(SFX_BRITTLE_GROUND_BREAK, &item->pos, SPM_NORMAL);
+
+    item->flags |= IF_ONE_SHOT;
+    item->status = IS_DEACTIVATED;
+    Item_RemoveActive(item_num);
+}
+
 void __cdecl Window_Smash(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
@@ -84,11 +111,10 @@ void __cdecl Window_Smash(const int16_t item_num)
         box->overlap_index &= ~BOX_BLOCKED;
     }
 
-    Sound_Effect(SFX_GLASS_BREAK, &item->pos, SPM_NORMAL);
-
     item->collidable = 0;
     item->mesh_bits = ~1;
     Effect_ExplodingDeath(item_num, 65278, 0);
+    Sound_Effect(SFX_GLASS_BREAK, &item->pos, SPM_NORMAL);
 
     item->flags |= IF_ONE_SHOT;
     if (item->status == IS_ACTIVE) {
