@@ -824,13 +824,6 @@ int32_t __cdecl Lara_CheckForLetGo(ITEM *item, COLL_INFO *coll)
     item->gravity = 0;
     item->fall_speed = 0;
 
-    int16_t room_num = item->room_num;
-    int32_t x = item->pos.x;
-    int32_t y = item->pos.y;
-    int32_t z = item->pos.z;
-    const SECTOR *const sector = Room_GetSector(x, y, z, &room_num);
-    Room_GetHeight(sector, x, y, z);
-    coll->trigger = g_TriggerIndex;
     if (g_Input.action && item->hit_points > 0) {
         return 0;
     }

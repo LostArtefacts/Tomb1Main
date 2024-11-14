@@ -674,13 +674,6 @@ void __cdecl Lara_State_Zipline(ITEM *item, COLL_INFO *coll)
 {
     g_Camera.target_angle = CAM_ZIPLINE_ANGLE;
 
-    int16_t room_num = item->room_num;
-    const SECTOR *sector =
-        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-    Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
-
-    coll->trigger = g_TriggerIndex;
-
     if (!g_Input.action) {
         item->goal_anim_state = LS_FORWARD_JUMP;
         Lara_Animate(item);

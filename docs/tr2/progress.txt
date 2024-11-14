@@ -4513,7 +4513,7 @@ typedef enum {
 0x00526188  -       MATRIX *g_IMMatrixPtr;
 0x0052618C  -       ROOM *g_Rooms;
 0x00526240  -       int32_t g_FlipStatus;
-0x00526288  -       int16_t *g_TriggerIndex;
+0x00526288  -       int16_t *g_Legacy_TriggerIndex;
 0x005262A0  -       int32_t g_LOSRooms[20];
 0x005262F0  -       ITEM *g_Items;
 0x005262F6  -       int16_t g_NumCineFrames;

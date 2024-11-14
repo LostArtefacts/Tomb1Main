@@ -494,7 +494,7 @@
 #define g_MusicTrackFlags (*(uint16_t(*)[64])0x005261C0)
 #define g_FlipStatus (*(int32_t*)0x00526240)
 #define g_FlipMaps (*(int32_t(*)[10])0x00526260)
-#define g_TriggerIndex (*(int16_t **)0x00526288)
+#define g_Legacy_TriggerIndex (*(int16_t **)0x00526288)
 #define g_LOSRooms (*(int32_t(*)[20])0x005262A0)
 #define g_Items (*(ITEM **)0x005262F0)
 #define g_CineLoaded (*(int16_t*)0x005262F4)

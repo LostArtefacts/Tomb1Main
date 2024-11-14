@@ -38,7 +38,6 @@ void __cdecl Collide_GetCollisionInfo(
     coll->side_mid.floor = height;
     coll->side_mid.ceiling = ceiling;
     coll->side_mid.type = g_HeightType;
-    coll->trigger = g_TriggerIndex;
 
     const int16_t tilt = Room_GetTiltType(sector, x, g_LaraItem->pos.y, z);
     coll->z_tilt = tilt >> 8;
