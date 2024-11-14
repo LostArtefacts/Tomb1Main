@@ -211,6 +211,7 @@ dll_sources = [
   'game/objects/general/zipline.c',
   'game/objects/setup.c',
   'game/objects/traps/ember_emitter.c',
+  'game/objects/traps/falling_block.c',
   'game/objects/traps/flame_emitter.c',
   'game/objects/traps/mine.c',
   'game/objects/traps/rolling_ball.c',

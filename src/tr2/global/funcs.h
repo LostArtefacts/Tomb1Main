@@ -128,7 +128,6 @@
 #define SpringBoard_Control ((void __cdecl (*)(int16_t item_num))0x00441A50)
 #define Spike_Collision ((void __cdecl (*)(int16_t item_num, ITEM *litem, COLL_INFO *coll))0x00442110)
 #define Pendulum_Control ((void __cdecl (*)(int16_t item_num))0x004423F0)
-#define FallingBlock_Control ((void __cdecl (*)(int16_t item_num))0x00442500)
 #define FallingBlock_Floor ((void __cdecl (*)(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height))0x00442610)
 #define FallingBlock_Ceiling ((void __cdecl (*)(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height))0x00442650)
 #define TeethTrap_Control ((void __cdecl (*)(int16_t item_num))0x004426A0)

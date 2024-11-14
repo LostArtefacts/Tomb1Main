@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.08% (934)</tspan> · <tspan class="known">22.51% (280)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.16% (935)</tspan> · <tspan class="known">22.43% (279)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="560.85" height="6" x="0" y="0" class="decompiled"/>
-<rect width="168.14" height="6" x="560.85" y="0" class="known"/>
+<rect width="561.45" height="6" x="0" y="0" class="decompiled"/>
+<rect width="167.53" height="6" x="561.45" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -854,7 +854,7 @@
 <rect width="12" height="12" x="375" y="225" class="decompiled"><title>void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="390" y="225" class="decompiled"><title>int32_t __cdecl Trapdoor_IsItemOnTop(const ITEM *item, int32_t x, int32_t z);</title></rect>
 <rect width="12" height="12" x="405" y="225" class="known"><title>void __cdecl Pendulum_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="420" y="225" class="known"><title>void __cdecl FallingBlock_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="420" y="225" class="decompiled"><title>void __cdecl FallingBlock_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="225" class="known"><title>void __cdecl FallingBlock_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="450" y="225" class="known"><title>void __cdecl FallingBlock_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="465" y="225" class="known"><title>void __cdecl TeethTrap_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.25%</tspan> · <tspan class="known">19.43%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.32%</tspan> · <tspan class="known">19.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="599.45" height="6" x="0" y="0" class="decompiled"/>
-<rect width="145.11" height="6" x="599.45" y="0" class="known"/>
+<rect width="600.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="144.54" height="6" x="600.02" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1685,7 +1685,7 @@
 <rect width="11.49" height="12" x="480.11" y="229.44" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOffOK(int32_t direction);</title></rect>
 <rect width="11.49" height="12" x="480.11" y="244.44" class="known"><title>INT_PTR __stdcall SE_ControlsDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="11.49" height="11.94" x="480.11" y="259.44" class="decompiled"><title>TEXTSTRING *__cdecl Text_Create(int32_t x, int32_t y, int32_t z, const char *text);</title></rect>
-<rect width="11.49" height="11.94" x="480.11" y="274.38" class="known"><title>void __cdecl FallingBlock_Control(int16_t item_num);</title></rect>
+<rect width="11.49" height="11.94" x="480.11" y="274.38" class="decompiled"><title>void __cdecl FallingBlock_Control(int16_t item_num);</title></rect>
 <rect width="11.49" height="11.94" x="480.11" y="289.32" class="decompiled"><title>void __cdecl FmvBackToGame(void);</title></rect>
 <rect width="11.49" height="11.94" x="480.11" y="304.26" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
 <rect width="11.49" height="11.88" x="480.11" y="319.21" class="decompiled"><title>void __cdecl Gun_Rifle_Undraw(LARA_GUN_TYPE weapon_type);</title></rect>

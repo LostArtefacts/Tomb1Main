@@ -77,6 +77,7 @@
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
 #include "game/objects/traps/ember_emitter.h"
+#include "game/objects/traps/falling_block.h"
 #include "game/objects/traps/flame_emitter.h"
 #include "game/objects/traps/mine.h"
 #include "game/objects/traps/rolling_ball.h"
@@ -1135,6 +1136,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004422C0, Trapdoor_Floor);
     INJECT(enable, 0x00442300, Trapdoor_Ceiling);
     INJECT(enable, 0x00442340, Trapdoor_IsItemOnTop);
+    INJECT(enable, 0x00442500, FallingBlock_Control);
     INJECT(enable, 0x00442B30, FlameEmitter_Control);
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);
