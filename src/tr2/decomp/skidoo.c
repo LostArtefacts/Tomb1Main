@@ -981,7 +981,7 @@ void __cdecl Skidoo_Draw(const ITEM *const item)
         return;
     }
 
-    Output_CalculateObjectLighting(item, frames[0]);
+    Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
     int32_t *bone = &g_AnimBones[obj->bone_idx];
     if (frac) {

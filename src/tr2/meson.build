@@ -164,6 +164,7 @@ dll_sources = [
   'game/objects/effects/flame.c',
   'game/objects/effects/glow.c',
   'game/objects/effects/gun_flash.c',
+  'game/objects/effects/missile_common.c',
   'game/objects/effects/missile_flame.c',
   'game/objects/effects/missile_harpoon.c',
   'game/objects/effects/missile_knife.c',
