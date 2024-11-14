@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.76% (930)</tspan> · <tspan class="known">22.83% (284)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">74.84% (931)</tspan> · <tspan class="known">22.75% (283)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="558.45" height="6" x="0" y="0" class="decompiled"/>
-<rect width="170.54" height="6" x="558.45" y="0" class="known"/>
+<rect width="559.05" height="6" x="0" y="0" class="decompiled"/>
+<rect width="169.94" height="6" x="559.05" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -703,7 +703,7 @@
 <rect width="12" height="12" x="360" y="180" class="decompiled"><title>void __cdecl Zipline_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="375" y="180" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="390" y="180" class="decompiled"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="405" y="180" class="known"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="405" y="180" class="decompiled"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="420" y="180" class="known"><title>void __cdecl SmashWindow(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="180" class="known"><title>void __cdecl Window_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="450" y="180" class="known"><title>void __cdecl SmashIce_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.05%</tspan> · <tspan class="known">19.63%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.08%</tspan> · <tspan class="known">19.59%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="597.96" height="6" x="0" y="0" class="decompiled"/>
-<rect width="146.60" height="6" x="597.96" y="0" class="known"/>
+<rect width="598.21" height="6" x="0" y="0" class="decompiled"/>
+<rect width="146.35" height="6" x="598.21" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1995,7 +1995,7 @@
 <rect width="7.22" height="6.58" x="639.90" y="216.45" class="known"><title>bool __cdecl GetRegistryBoolValue(LPCTSTR lpValueName, bool *pValue, bool defaultValue);</title></rect>
 <rect width="7.14" height="6.58" x="650.12" y="216.45" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);</title></rect>
 <rect width="7.14" height="6.58" x="660.25" y="216.45" class="decompiled"><title>void __cdecl Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="7.14" height="6.58" x="670.39" y="216.45" class="known"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
+<rect width="7.14" height="6.58" x="670.39" y="216.45" class="decompiled"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="7.05" height="6.58" x="680.53" y="216.45" class="known"><title>void __cdecl InitialiseHair(void);</title></rect>
 <rect width="7.05" height="6.58" x="690.57" y="216.45" class="decompiled"><title>void __cdecl Lara_Col_Jumper(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.96" height="6.58" x="700.62" y="216.45" class="decompiled"><title>void __cdecl GameWindowCalculateSizeFromClient(int32_t *width, int32_t *height);</title></rect>

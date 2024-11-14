@@ -209,8 +209,8 @@ void __cdecl Object_SetupGeneralObjects(void)
     BridgeTilt1_Setup();
     BridgeTilt2_Setup();
     Drawbridge_Setup();
-    Window1_Setup();
-    Window2_Setup();
+    Window_1_Setup();
+    Window_2_Setup();
 
     // doors
     Door_Setup(Object_GetObject(O_DOOR_TYPE_1));

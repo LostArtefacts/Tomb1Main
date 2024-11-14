@@ -73,6 +73,7 @@
 #include "game/objects/general/puzzle_hole.h"
 #include "game/objects/general/switch.h"
 #include "game/objects/general/trapdoor.h"
+#include "game/objects/general/window.h"
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
 #include "game/objects/traps/ember_emitter.h"
@@ -1081,6 +1082,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004348C0, Zipline_Collision);
     INJECT(enable, 0x00434980, Zipline_Control);
     INJECT(enable, 0x00434D00, Bell_Control);
+    INJECT(enable, 0x00434D80, Window_Initialise);
     INJECT(enable, 0x00435050, Door_Shut);
     INJECT(enable, 0x004350A0, Door_Open);
     INJECT(enable, 0x004350E0, Door_Initialise);
