@@ -61,8 +61,8 @@
     "underwater_music": {
       "full": "Completa",
       "quiet": "Attenuata",
-      "full_no_ambient": "Completa ma senza suoni ambientali",
-      "quiet_no_ambient": "Attenuata ma senza suoni ambientali",
+      "full_no_ambient": "Completa ma senza tracce ambientali",
+      "quiet_no_ambient": "Attenuata ma senza tracce ambientali",
       "none": "Assente"
     },
     "music_load_condition": {
@@ -101,8 +101,8 @@
       "Description": "Fornisce alla velocità di virata subacquea di Lara una curva di accelerazione per movimenti più fluidi, simile a TR2+."
     },
     "enable_tr2_swim_cancel": {
-      "Title": "Annullamento del nuoto reattivo",
-      "Description": "Permette a Lara di fermarsi più reattivamente sott'acqua quando viene rilasciato il tasto di nuoto, simile a TR2+."
+      "Title": "Annullamento reattivo del nuoto",
+      "Description": "Permette a Lara di fermarsi più reattivamente sott'acqua quando viene rilasciato il tasto per nuotare, similmente a TR2+."
     },
     "enable_wading": {
       "Title": "Guadare",
@@ -169,8 +169,8 @@
       "Description": "Risolve il problema per cui a volte Lara, saltando da piccoli gradini, provoca una strana animazione di corsa nota come stato QWOP."
     },
     "fix_item_duplication_glitch": {
-      "Title": "Correggi il glitch duplicazione degli oggetti",
-      "Description": "Risolto il problema con la possibilità di duplicare l'utilizzo degli elementi chiave nell'inventario."
+      "Title": "Correggi il glitch di duplicazione degli oggetti",
+      "Description": "Risolve il problema per cui è possibile duplicare l'utilizzo degli oggetti chiave nell'inventario."
     },
     "fix_tihocan_secret_sound": {
       "Title": "Correggi il suono dei segreti nella Tomba di Tihocan",
@@ -221,8 +221,8 @@
       "Description": "Fa in modo che Lara si avvicini agli oggetti, alle leve e agli interruttori quando questi sono nelle vicinanze, invece di teletrasportarsi."
     },
     "enable_auto_item_selection": {
-      "Title": "Preselezione degli elementi chiave",
-      "Description": "Quando Lara preme l'azione contro il buco della serratura o la fessura di un puzzle e ha l'oggetto corrispondente nell'inventario, quell'oggetto verrà preselezionato."
+      "Title": "Preselezione degli oggetti chiave",
+      "Description": "Quando Lara preme azione contro un buco della serratura o un altro ricettacolo e ha l'oggetto corrispondente nell'inventario, quell'oggetto verrà preselezionato."
     },
     "enable_deaths_counter": {
       "Title": "Conta il numero di morti",
@@ -301,8 +301,8 @@
       "Description": "Fa in modo che il tempo di gioco scorra anche nel menu dell'inventario"
     },
     "enable_item_examining": {
-      "Title": "Esame dell'oggetto",
-      "Description": "Per livelli personalizzati: consente di visualizzare le descrizioni degli oggetti nell'inventario in cui l'autore del livello ha fornito dati adeguati."
+      "Title": "Esaminare oggetti",
+      "Description": "Per livelli custom: consente di visualizzare le descrizioni degli oggetti nell'inventario quando fornite dall'autore del livello."
     },
     "anisotropy_filter": {
       "Title": "Filtro anisotropico",
@@ -354,7 +354,7 @@
     },
     "music_load_condition": {
       "Title": "Carica la traccia musicale",
-      "Description": "Carica la traccia musicale che era in riproduzione al momento del salvataggio della partita.\n- Mai: non ripristina le tracce musicali durante il caricamento.\n- Non ambientale: ripristina solo le tracce musicali non ambientali durante il caricamento.\n- Sempre: ripristina qualsiasi tipo di traccia musicale durante il caricamento."
+      "Description": "Carica la traccia musicale che era in riproduzione al momento del salvataggio della partita.\n- Mai: non ripristina le tracce musicali al caricamento.\n- Non ambientale: ripristina le tracce musicali ma non le tracce ambientali al caricamento.\n- Sempre: ripristina qualsiasi tipo di traccia musicale al caricamento."
     },
     "load_music_triggers": {
       "Title": "Ricorda la musica riprodotta",
