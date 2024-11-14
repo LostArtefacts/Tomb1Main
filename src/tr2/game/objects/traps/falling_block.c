@@ -73,3 +73,15 @@ void __cdecl FallingBlock_Floor(
         *out_height = item->pos.y - origin;
     }
 }
+
+void __cdecl FallingBlock_Ceiling(
+    const ITEM *const item, const int32_t x, const int32_t y, const int32_t z,
+    int32_t *const out_height)
+{
+    const int32_t origin = M_GetOrigin(item->object_id);
+    if (y > item->pos.y - origin
+        && (item->current_anim_state == TRAP_SET
+            || item->current_anim_state == TRAP_ACTIVATE)) {
+        *out_height = item->pos.y - origin + STEP_L;
+    }
+}
