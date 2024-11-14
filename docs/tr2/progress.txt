@@ -1247,6 +1247,7 @@ typedef struct __unaligned { // decompiled
     int16_t back_gun;
     int16_t flare_frame;
     union {
+        uint16_t flags;
         struct ___unaligned {
             uint16_t flare_control_left:  1; // 0x01 1
             uint16_t flare_control_right: 1; // 0x02 2
@@ -1255,8 +1256,7 @@ typedef struct __unaligned { // decompiled
             uint16_t burn:                1; // 0x10 16
             uint16_t pad:                 11;
         };
-        uint16_t flags;
-    }
+    };
     int32_t water_surface_dist;
     XYZ_32 last_pos;
     FX *spaz_effect;
@@ -4604,7 +4604,7 @@ typedef enum {
 0x005261AC  -       int32_t g_OutsideTop;
 0x00525B00  -       int32_t g_OutsideBottom;
 0x00525900  -       int32_t g_BoundRooms[128]; // MAX_BOUND_ROOMS
-0x005258C0  -       DOOR_VBUF g_DoorVBuf[4];
+0x005258C0  -       PORTAL_VBUF g_DoorVBuf[4];
 0x00464180  -       int32_t g_BoxLines[12][2];
 0x00526190  -       BOOL g_CameraUnderwater;
 0x005263D0  -       int32_t g_BoxCount;
