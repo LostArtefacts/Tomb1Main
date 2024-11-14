@@ -476,6 +476,7 @@ static void __cdecl M_LoadItems(VFILE *const file)
     const int32_t num_items = VFile_ReadS32(file);
     LOG_DEBUG("items: %d", num_items);
     if (!num_items) {
+        g_LevelItemCount = 0;
         goto finish;
     }
 
