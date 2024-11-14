@@ -4593,7 +4593,7 @@ typedef enum {
 0x00466BDC  -       int32_t g_PaletteIndex;
 0x00519F78  -       int32_t g_HWR_TexturePageIndexes[32]; // MAX_TEXTURE_PAGES
 0x004D7790  -       int32_t g_HeightType;
-0x004D9D94  -       int16_t *g_FloorData;
+0x004D9D94  -       int16_t *g_Legacy_FloorData;
 0x00525B08  -       int16_t *g_AnimCommands;
 0x0052617C  -       ANIM_CHANGE *g_AnimChanges;
 0x00525B04  -       ANIM_RANGE *g_AnimRanges;

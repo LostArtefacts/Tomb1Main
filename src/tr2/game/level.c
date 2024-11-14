@@ -206,10 +206,12 @@ static void __cdecl M_LoadRooms(VFILE *const file)
         r->fx_num = NO_ITEM;
     }
 
+    // TODO: store this temporarily in a m_LevelInfo property similar to TR1 and
+    // release after parsing.
     const int32_t floor_data_size = VFile_ReadS32(file);
-    g_FloorData =
+    g_Legacy_FloorData =
         GameBuf_Alloc(sizeof(int16_t) * floor_data_size, GBUF_FLOOR_DATA);
-    VFile_Read(file, g_FloorData, sizeof(int16_t) * floor_data_size);
+    VFile_Read(file, g_Legacy_FloorData, sizeof(int16_t) * floor_data_size);
 
 finish:
     Benchmark_End(benchmark, NULL);
@@ -921,7 +923,7 @@ static void M_CompleteSetup(void)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // Expand raw floor data into sectors
-    Room_ParseFloorData(g_FloorData);
+    Room_ParseFloorData(g_Legacy_FloorData);
     // TODO: store raw FD temporarily, release here and eliminate g_FloorData
 
     // Must be called after Setup_AllObjects using the cached item

@@ -339,7 +339,7 @@
 #define g_LevelFileTexPagesOffset (*(int32_t*)0x004D9BF8)
 #define g_GF_LevelOffsets (*(int16_t(*)[200])0x004D9C00)
 #define g_MeshBase (*(int16_t **)0x004D9D90)
-#define g_FloorData (*(int16_t **)0x004D9D94)
+#define g_Legacy_FloorData (*(int16_t **)0x004D9D94)
 #define g_LevelFileName (*(char(*)[256])0x004D9D98)
 #define g_TextureInfoCount (*(int32_t*)0x004D9E98)
 #define g_LevelFileDepthQOffset (*(int32_t*)0x004D9E9C)
