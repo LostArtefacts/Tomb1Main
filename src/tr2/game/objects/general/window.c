@@ -1,8 +1,10 @@
 #include "game/objects/general/window.h"
 
 #include "game/box.h"
+#include "game/items.h"
 #include "game/objects/common.h"
 #include "game/room.h"
+#include "game/sound.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -41,4 +43,30 @@ void __cdecl Window_Initialise(const int16_t item_num)
     if (box->overlap_index & BOX_BLOCKABLE) {
         box->overlap_index |= BOX_BLOCKED;
     }
+}
+
+void __cdecl Window_Smash(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    const ROOM *const r = Room_Get(item->room_num);
+    const int32_t z_sector = (item->pos.z - r->pos.z) >> WALL_SHIFT;
+    const int32_t x_sector = (item->pos.x - r->pos.x) >> WALL_SHIFT;
+    const SECTOR *const sector = &r->sectors[z_sector + x_sector * r->size.z];
+    BOX_INFO *const box = &g_Boxes[sector->box];
+
+    if (box->overlap_index & BOX_BLOCKABLE) {
+        box->overlap_index &= ~BOX_BLOCKED;
+    }
+
+    Sound_Effect(SFX_GLASS_BREAK, &item->pos, SPM_NORMAL);
+
+    item->collidable = 0;
+    item->mesh_bits = ~1;
+    Effect_ExplodingDeath(item_num, 65278, 0);
+
+    item->flags |= IF_ONE_SHOT;
+    if (item->status == IS_ACTIVE) {
+        Item_RemoveActive(item_num);
+    }
+    item->status = IS_DEACTIVATED;
 }

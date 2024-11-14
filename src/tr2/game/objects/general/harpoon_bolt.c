@@ -4,6 +4,7 @@
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/math.h"
+#include "game/objects/general/window.h"
 #include "game/room.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -90,7 +91,7 @@ void __cdecl HarpoonBolt_Control(const int16_t item_num)
         }
 
         if (target_item->object_id == O_WINDOW_1) {
-            SmashWindow(target_num);
+            Window_Smash(target_num);
         } else {
             if (target_obj->intelligent && target_item->status == IS_ACTIVE) {
                 DoLotsOfBlood(

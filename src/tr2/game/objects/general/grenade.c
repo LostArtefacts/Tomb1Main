@@ -5,6 +5,7 @@
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/math.h"
+#include "game/objects/general/window.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
@@ -122,7 +123,7 @@ void __cdecl Grenade_Control(int16_t item_num)
         }
 
         if (target_item->object_id == O_WINDOW_1) {
-            SmashWindow(target_item_num);
+            Window_Smash(target_item_num);
         } else {
             explode = true;
 

@@ -1083,6 +1083,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434980, Zipline_Control);
     INJECT(enable, 0x00434D00, Bell_Control);
     INJECT(enable, 0x00434D80, Window_Initialise);
+    INJECT(enable, 0x00434E00, Window_Smash);
     INJECT(enable, 0x00435050, Door_Shut);
     INJECT(enable, 0x004350A0, Door_Open);
     INJECT(enable, 0x004350E0, Door_Initialise);

@@ -6,6 +6,7 @@
 #include "game/math.h"
 #include "game/math_misc.h"
 #include "game/matrix.h"
+#include "game/objects/general/window.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "global/funcs.h"
@@ -342,7 +343,7 @@ void __cdecl Gun_SmashItem(
 
     switch (item->object_id) {
     case O_WINDOW_1:
-        SmashWindow(item_num);
+        Window_Smash(item_num);
         break;
 
     case O_BELL:
