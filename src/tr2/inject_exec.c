@@ -1137,6 +1137,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442300, Trapdoor_Ceiling);
     INJECT(enable, 0x00442340, Trapdoor_IsItemOnTop);
     INJECT(enable, 0x00442500, FallingBlock_Control);
+    INJECT(enable, 0x00442610, FallingBlock_Floor);
     INJECT(enable, 0x00442B30, FlameEmitter_Control);
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);
