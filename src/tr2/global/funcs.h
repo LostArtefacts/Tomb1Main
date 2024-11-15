@@ -134,7 +134,6 @@
 #define DartEffect_Control ((void __cdecl (*)(int16_t fx_num))0x00442AE0)
 #define GiantYeti_Control ((void __cdecl (*)(int16_t item_num))0x00443050)
 #define Yeti_Control ((void __cdecl (*)(int16_t item_num))0x00443350)
-#define IncreaseScreenSize ((void __cdecl (*)(void))0x00447810)
 #define DecreaseScreenSize ((void __cdecl (*)(void))0x00447880)
 #define setup_screen_size ((void __cdecl (*)(void))0x004478F0)
 #define ReadFileSync ((BOOL __cdecl (*)(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped))0x004498D0)

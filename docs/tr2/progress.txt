@@ -3890,7 +3890,7 @@ typedef enum {
 0x004477B0  0x002D  +R      void __cdecl WinInStart(void);
 0x004477E0  0x000F  +R      void __cdecl WinInFinish(void);
 0x004477F0  0x0017  +R      void __cdecl WinInRunControlPanel(HWND hWnd);
-0x00447810  0x0062  *R      void __cdecl IncreaseScreenSize(void);
+0x00447810  0x0062  +R      void __cdecl IncreaseScreenSize(void);
 0x00447880  0x0062  *R      void __cdecl DecreaseScreenSize(void);
 0x004478F0  0x009F  *R      void __cdecl setup_screen_size(void);
 0x00447990  0x0034  +R      void __cdecl TempVideoAdjust(int32_t hires, double sizer);

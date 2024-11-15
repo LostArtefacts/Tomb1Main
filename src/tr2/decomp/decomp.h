@@ -151,6 +151,7 @@ void __cdecl S_FinishInventory(void);
 void __cdecl S_FadeToBlack(void);
 uint16_t __cdecl S_FindColor(int32_t red, int32_t green, int32_t blue);
 void __cdecl S_CopyBufferToScreen(void);
+void __cdecl IncreaseScreenSize(void);
 void __cdecl TempVideoAdjust(int32_t hires, double sizer);
 void __cdecl TempVideoRemove(void);
 void __cdecl S_FadeInInventory(bool is_fade);
