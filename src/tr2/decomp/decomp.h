@@ -131,3 +131,4 @@ void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 void __cdecl DisplayCredits(void);
 DWORD __cdecl S_DumpScreen(void);
 int32_t __cdecl GetRenderHeight(void);
+int32_t __cdecl GetRenderWidth(void);

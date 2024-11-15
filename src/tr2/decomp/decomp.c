@@ -2916,3 +2916,8 @@ int32_t __cdecl GetRenderHeight(void)
 {
     return g_PhdWinHeight;
 }
+
+int32_t __cdecl GetRenderWidth(void)
+{
+    return g_PhdWinWidth;
+}

@@ -245,6 +245,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044E700, GameInit);
     INJECT(enable, 0x0044E7A0, WinGameStart);
     INJECT(enable, 0x00450AE0, GetRenderHeight);
+    INJECT(enable, 0x00450AF0, GetRenderWidth);
     INJECT(enable, 0x00450BF0, S_DumpScreen);
     INJECT(enable, 0x00451DE0, S_DisplayPicture);
     INJECT(enable, 0x00454C50, TitleSequence);
