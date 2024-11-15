@@ -3022,3 +3022,12 @@ void __cdecl S_InsertBackPolygon(
         g_PhdWinMinX + x0, g_PhdWinMinY + y0, g_PhdWinMinX + x1,
         g_PhdWinMinY + y1, g_PhdFarZ + 1, g_InvColors[0]);
 }
+
+void __cdecl S_DrawScreenLine(
+    const int32_t x, const int32_t y, const int32_t z, const int32_t x_len,
+    const int32_t y_len, const uint8_t color_idx, const D3DCOLOR *const gour,
+    const uint16_t flags)
+{
+    g_Output_InsertLine(
+        x, y, x + x_len, y + y_len, g_PhdNearZ + 8 * z, color_idx);
+}

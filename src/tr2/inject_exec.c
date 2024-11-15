@@ -237,6 +237,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00449610, GameApplySettings);
     INJECT(enable, 0x00449850, UpdateGameResolution);
     INJECT(enable, 0x004498C0, DecodeErrorMessage);
+    INJECT(enable, 0x0044C200, S_DrawScreenLine);
     INJECT(enable, 0x0044C3F0, S_Wait);
     INJECT(enable, 0x0044CA70, DisplayCredits);
     INJECT(enable, 0x0044D610, S_InitialiseSystem);
