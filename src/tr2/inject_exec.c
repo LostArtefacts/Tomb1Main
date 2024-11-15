@@ -250,6 +250,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00450BF0, S_DumpScreen);
     INJECT(enable, 0x00450C30, S_ClearScreen);
     INJECT(enable, 0x00450C40, S_InitialiseScreen);
+    INJECT(enable, 0x00450C80, S_OutputPolyList);
     INJECT(enable, 0x00451DE0, S_DisplayPicture);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);

@@ -2992,3 +2992,25 @@ void __cdecl S_InitialiseScreen(const GAMEFLOW_LEVEL_TYPE level_type)
         HWR_InitState();
     }
 }
+
+void __cdecl S_OutputPolyList(void)
+{
+    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+        Output_SortPolyList();
+
+        DDSURFACEDESC desc;
+        const HRESULT rc = WinVidBufferLock(
+            g_RenderBufferSurface, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT);
+        if (SUCCEEDED(rc)) {
+            Output_PrintPolyList(desc.lpSurface);
+            WinVidBufferUnlock(g_RenderBufferSurface, &desc);
+        }
+    } else {
+        if (!g_SavedAppSettings.zbuffer
+            || !g_SavedAppSettings.dont_sort_primitives) {
+            Output_SortPolyList();
+        }
+        HWR_DrawPolyList();
+        g_D3DDev->lpVtbl->EndScene(g_D3DDev);
+    }
+}
