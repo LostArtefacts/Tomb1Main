@@ -3139,3 +3139,12 @@ void __cdecl TempVideoAdjust(const int32_t hires, const double sizer)
         setup_screen_size();
     }
 }
+
+void __cdecl TempVideoRemove(void)
+{
+    g_IsVidSizeLock = false;
+    if (g_GameSizer != g_GameSizerCopy) {
+        g_GameSizer = g_GameSizerCopy;
+        setup_screen_size();
+    }
+}

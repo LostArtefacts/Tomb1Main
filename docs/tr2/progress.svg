@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.17% (960)</tspan> · <tspan class="known">20.42% (254)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.25% (961)</tspan> · <tspan class="known">20.34% (253)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="576.46" height="6" x="0" y="0" class="decompiled"/>
-<rect width="152.52" height="6" x="576.46" y="0" class="known"/>
+<rect width="577.06" height="6" x="0" y="0" class="decompiled"/>
+<rect width="151.92" height="6" x="577.06" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -978,7 +978,7 @@
 <rect width="12" height="12" x="735" y="255" class="known"><title>void __cdecl DecreaseScreenSize(void);</title></rect>
 <rect width="12" height="12" x="0" y="270" class="known"><title>void __cdecl setup_screen_size(void);</title></rect>
 <rect width="12" height="12" x="15" y="270" class="decompiled"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
-<rect width="12" height="12" x="30" y="270" class="known"><title>void __cdecl TempVideoRemove(void);</title></rect>
+<rect width="12" height="12" x="30" y="270" class="decompiled"><title>void __cdecl TempVideoRemove(void);</title></rect>
 <rect width="12" height="12" x="45" y="270" class="known"><title>void __cdecl S_FadeInInventory(BOOL isFade);</title></rect>
 <rect width="12" height="12" x="60" y="270" class="known"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="12" height="12" x="75" y="270" class="unused"><title>sub_447A80</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.05%</tspan> · <tspan class="known">18.63%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.06%</tspan> · <tspan class="known">18.61%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="605.42" height="6" x="0" y="0" class="decompiled"/>
-<rect width="139.14" height="6" x="605.42" y="0" class="known"/>
+<rect width="605.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="139.02" height="6" x="605.54" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2235,7 +2235,7 @@
 <rect width="3.82" height="3.93" x="675.45" y="282.57" class="decompiled"><title>void __cdecl Switch_Control(int16_t item_num);</title></rect>
 <rect width="3.82" height="3.93" x="682.27" y="282.57" class="decompiled"><title>uint32_t __cdecl Text_GetScaleV(uint32_t value);</title></rect>
 <rect width="3.82" height="3.93" x="689.09" y="282.57" class="unused"><title>sub_447170</title></rect>
-<rect width="3.82" height="3.93" x="695.91" y="282.57" class="known"><title>void __cdecl TempVideoRemove(void);</title></rect>
+<rect width="3.82" height="3.93" x="695.91" y="282.57" class="decompiled"><title>void __cdecl TempVideoRemove(void);</title></rect>
 <rect width="3.82" height="3.93" x="702.73" y="282.57" class="unused"><title>sub_447B40</title></rect>
 <rect width="3.82" height="3.93" x="709.56" y="282.57" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_GetFreeTrackIndex(void);</title></rect>
 <rect width="3.82" height="3.93" x="716.38" y="282.57" class="decompiled"><title>void __cdecl Shell_Shutdown(void);</title></rect>

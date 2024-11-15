@@ -3894,7 +3894,7 @@ typedef enum {
 0x00447880  0x0062  *R      void __cdecl DecreaseScreenSize(void);
 0x004478F0  0x009F  *R      void __cdecl setup_screen_size(void);
 0x00447990  0x0034  +R      void __cdecl TempVideoAdjust(int32_t hires, double sizer);
-0x004479D0  0x0039  -R      void __cdecl TempVideoRemove(void);
+0x004479D0  0x0039  +R      void __cdecl TempVideoRemove(void);
 0x00447A10  0x0035  -R      void __cdecl S_FadeInInventory(BOOL isFade);
 0x00447A50  0x0027  -R      void __cdecl S_FadeOutInventory(BOOL isFade);
 0x00447A80  0x0018  x       sub_447A80
