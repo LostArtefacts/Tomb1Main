@@ -156,7 +156,6 @@
 #define S_FadeToBlack ((void __cdecl (*)(void))0x0044C3A0)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
-#define S_InitialiseScreen ((void __cdecl (*)(GAMEFLOW_LEVEL_TYPE level_type))0x00450C40)
 #define S_OutputPolyList ((void __cdecl (*)(void))0x00450C80)
 #define S_GetObjectBounds ((int32_t __cdecl (*)(const BOUNDS_16 *bounds))0x00450CC0)
 #define S_InsertBackPolygon ((void __cdecl (*)(int32_t x0, int32_t y0, int32_t x1, int32_t y1))0x00450F30)

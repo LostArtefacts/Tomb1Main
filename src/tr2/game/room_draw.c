@@ -1,5 +1,6 @@
 #include "game/room_draw.h"
 
+#include "decomp/decomp.h"
 #include "game/effects.h"
 #include "game/lara/draw.h"
 #include "game/matrix.h"

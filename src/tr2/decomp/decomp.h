@@ -134,3 +134,4 @@ int32_t __cdecl GetRenderHeight(void);
 int32_t __cdecl GetRenderWidth(void);
 void __cdecl S_InitialisePolyList(bool clear_back_buffer);
 void __cdecl S_ClearScreen(void);
+void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);

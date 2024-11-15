@@ -2976,3 +2976,19 @@ void __cdecl S_ClearScreen(void)
 {
     ScreenClear(false);
 }
+
+void __cdecl S_InitialiseScreen(const GAMEFLOW_LEVEL_TYPE level_type)
+{
+    if (level_type < 0) {
+        FadeToPal(0, g_GamePalette8);
+    } else {
+        if (level_type != GFL_TITLE) {
+            TempVideoRemove();
+        }
+        FadeToPal(FRAMES_PER_SECOND, g_GamePalette8);
+    }
+
+    if (g_SavedAppSettings.render_mode != RM_SOFTWARE) {
+        HWR_InitState();
+    }
+}

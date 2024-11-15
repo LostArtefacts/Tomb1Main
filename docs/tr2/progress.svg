@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.21% (948)</tspan> · <tspan class="known">21.38% (266)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.29% (949)</tspan> · <tspan class="known">21.30% (265)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="569.26" height="6" x="0" y="0" class="decompiled"/>
-<rect width="159.73" height="6" x="569.26" y="0" class="known"/>
+<rect width="569.86" height="6" x="0" y="0" class="decompiled"/>
+<rect width="159.13" height="6" x="569.86" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1137,7 +1137,7 @@
 <rect width="12" height="12" x="120" y="315" class="decompiled"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
 <rect width="12" height="12" x="135" y="315" class="decompiled"><title>DWORD __cdecl S_DumpScreen(void);</title></rect>
 <rect width="12" height="12" x="150" y="315" class="decompiled"><title>void __cdecl S_ClearScreen(void);</title></rect>
-<rect width="12" height="12" x="165" y="315" class="known"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
+<rect width="12" height="12" x="165" y="315" class="decompiled"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="180" y="315" class="known"><title>void __cdecl S_OutputPolyList(void);</title></rect>
 <rect width="12" height="12" x="195" y="315" class="known"><title>int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
 <rect width="12" height="12" x="210" y="315" class="known"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.62%</tspan> · <tspan class="known">19.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.64%</tspan> · <tspan class="known">19.04%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="602.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="142.32" height="6" x="602.24" y="0" class="known"/>
+<rect width="602.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="142.20" height="6" x="602.36" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2250,7 +2250,7 @@
 <rect width="3.68" height="3.84" x="654.99" y="316.85" class="decompiled"><title>void __cdecl Text_ChangeText(TEXTSTRING *string, const char *text);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="323.68" class="decompiled"><title>uint32_t __cdecl Text_GetScaleH(uint32_t value);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="330.52" class="decompiled"><title>bool __cdecl D3DIsSupported(LPD3DDEVICEDESC desc);</title></rect>
-<rect width="3.68" height="3.84" x="654.99" y="337.36" class="known"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
+<rect width="3.68" height="3.84" x="654.99" y="337.36" class="decompiled"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="344.19" class="known"><title>LONG __cdecl SetRegistryBinaryValue(LPCTSTR lpValueName, LPBYTE value, DWORD valueSize);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="351.03" class="known"><title>void __thiscall SE_ReleaseBitmapResource(BITMAP_RESOURCE *bmpRsrc);</title></rect>
 <rect width="3.68" height="3.71" x="654.99" y="357.86" class="decompiled"><title>void __cdecl Output_PrintPolyList(uint8_t *surface_ptr);</title></rect>
