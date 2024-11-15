@@ -3064,3 +3064,13 @@ void __cdecl S_FinishInventory(void)
         TempVideoRemove();
     }
 }
+
+void __cdecl S_FadeToBlack(void)
+{
+    memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
+    FadeToPal(10, g_GamePalette8);
+    ScreenClear(false);
+    ScreenDump();
+    ScreenClear(false);
+    ScreenDump();
+}

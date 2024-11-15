@@ -149,7 +149,6 @@
 #define S_AdjustTexelCoordinates ((void __cdecl (*)(void))0x0044B500)
 #define S_ReloadLevelGraphics ((BOOL __cdecl (*)(BOOL reload_palettes, BOOL reload_tex_pages))0x0044B520)
 #define S_COLOR ((uint16_t __cdecl (*)(int32_t red, int32_t green, int32_t blue))0x0044C1D0)
-#define S_FadeToBlack ((void __cdecl (*)(void))0x0044C3A0)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
 #define S_GetObjectBounds ((int32_t __cdecl (*)(const BOUNDS_16 *bounds))0x00450CC0)

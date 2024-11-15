@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.77% (955)</tspan> · <tspan class="known">20.82% (259)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.85% (956)</tspan> · <tspan class="known">20.74% (258)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="573.46" height="6" x="0" y="0" class="decompiled"/>
-<rect width="155.52" height="6" x="573.46" y="0" class="known"/>
+<rect width="574.06" height="6" x="0" y="0" class="decompiled"/>
+<rect width="154.92" height="6" x="574.06" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1064,7 +1064,7 @@
 <rect width="12" height="12" x="525" y="285" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="540" y="285" class="decompiled"><title>void __cdecl S_DrawScreenFBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_FILL *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="555" y="285" class="decompiled"><title>void __cdecl S_FinishInventory(void);</title></rect>
-<rect width="12" height="12" x="570" y="285" class="known"><title>void __cdecl S_FadeToBlack(void);</title></rect>
+<rect width="12" height="12" x="570" y="285" class="decompiled"><title>void __cdecl S_FadeToBlack(void);</title></rect>
 <rect width="12" height="12" x="585" y="285" class="decompiled"><title>void __cdecl S_Wait(int32_t timeout, BOOL input_check);</title></rect>
 <rect width="12" height="12" x="600" y="285" class="decompiled"><title>bool __cdecl S_PlayFMV(const char *file_name);</title></rect>
 <rect width="12" height="12" x="615" y="285" class="decompiled"><title>bool __cdecl S_IntroFMV(const char *file_name1, const char *file_name2);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.81%</tspan> · <tspan class="known">18.86%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.83%</tspan> · <tspan class="known">18.84%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="603.67" height="6" x="0" y="0" class="decompiled"/>
-<rect width="140.89" height="6" x="603.67" y="0" class="known"/>
+<rect width="603.82" height="6" x="0" y="0" class="decompiled"/>
+<rect width="140.74" height="6" x="603.82" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2181,7 +2181,7 @@
 <rect width="4.60" height="4.32" x="640.25" y="313.03" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="320.34" class="known"><title>void __cdecl Cultist1_Initialise(int16_t item_num);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="327.66" class="decompiled"><title>void __cdecl WinVidShowGameWindow(int32_t nCmdShow);</title></rect>
-<rect width="4.60" height="4.32" x="640.25" y="334.98" class="known"><title>void __cdecl S_FadeToBlack(void);</title></rect>
+<rect width="4.60" height="4.32" x="640.25" y="334.98" class="decompiled"><title>void __cdecl S_FadeToBlack(void);</title></rect>
 <rect width="4.60" height="4.21" x="640.25" y="342.29" class="decompiled"><title>void __cdecl Door_Shut(DOORPOS_DATA *d);</title></rect>
 <rect width="4.60" height="4.21" x="640.25" y="349.50" class="known"><title>int32_t __cdecl UT_ErrorBox(UINT uID, HWND hWnd);</title></rect>
 <rect width="4.60" height="4.10" x="640.25" y="356.71" class="decompiled"><title>void __cdecl Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z);</title></rect>
