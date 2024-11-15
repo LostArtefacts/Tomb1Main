@@ -3057,3 +3057,10 @@ void __cdecl S_DrawScreenFBox(
 {
     g_Output_InsertTransQuad(sx, sy, width + 1, height + 1, g_PhdNearZ + 8 * z);
 }
+
+void __cdecl S_FinishInventory(void)
+{
+    if (g_Inv_Mode != INV_TITLE_MODE) {
+        TempVideoRemove();
+    }
+}

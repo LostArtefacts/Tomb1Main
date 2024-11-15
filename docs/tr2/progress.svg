@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.69% (954)</tspan> · <tspan class="known">20.90% (260)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.77% (955)</tspan> · <tspan class="known">20.82% (259)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="572.86" height="6" x="0" y="0" class="decompiled"/>
-<rect width="156.13" height="6" x="572.86" y="0" class="known"/>
+<rect width="573.46" height="6" x="0" y="0" class="decompiled"/>
+<rect width="155.52" height="6" x="573.46" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1063,7 +1063,7 @@
 <rect width="12" height="12" x="510" y="285" class="decompiled"><title>void __cdecl S_DrawScreenLine(int32_t x, int32_t y, int32_t z, int32_t x_len, int32_t y_len, BYTE color_idx, D3DCOLOR *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="525" y="285" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="540" y="285" class="decompiled"><title>void __cdecl S_DrawScreenFBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_FILL *gour, uint16_t flags);</title></rect>
-<rect width="12" height="12" x="555" y="285" class="known"><title>void __cdecl S_FinishInventory(void);</title></rect>
+<rect width="12" height="12" x="555" y="285" class="decompiled"><title>void __cdecl S_FinishInventory(void);</title></rect>
 <rect width="12" height="12" x="570" y="285" class="known"><title>void __cdecl S_FadeToBlack(void);</title></rect>
 <rect width="12" height="12" x="585" y="285" class="decompiled"><title>void __cdecl S_Wait(int32_t timeout, BOOL input_check);</title></rect>
 <rect width="12" height="12" x="600" y="285" class="decompiled"><title>bool __cdecl S_PlayFMV(const char *file_name);</title></rect>
@@ -1326,8 +1326,8 @@
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
 <text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.81%</tspan> · <tspan class="known">18.86%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="603.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="140.92" height="6" x="603.64" y="0" class="known"/>
+<rect width="603.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="140.89" height="6" x="603.67" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2501,7 +2501,7 @@
 <rect width="0.52" height="0.77" x="739.65" y="353.40" class="unused"><title>sub_44E880</title></rect>
 <rect width="0.52" height="0.77" x="743.17" y="353.40" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="0.30" height="0.77" x="746.70" y="353.40" class="decompiled"><title>void __cdecl WinInFinish(void);</title></rect>
-<rect width="0.35" height="0.72" x="728.85" y="357.17" class="known"><title>void __cdecl S_FinishInventory(void);</title></rect>
+<rect width="0.35" height="0.72" x="728.85" y="357.17" class="decompiled"><title>void __cdecl S_FinishInventory(void);</title></rect>
 <rect width="0.35" height="0.72" x="728.85" y="360.89" class="known"><title>bool __cdecl IsNewRegistryKeyCreated(void);</title></rect>
 <rect width="0.35" height="0.47" x="728.85" y="364.61" class="decompiled"><title>bool __cdecl S_PlayFMV(const char *file_name);</title></rect>
 <rect width="0.35" height="0.47" x="728.85" y="368.08" class="known"><title>void __cdecl SE_AdvancedDlgInit(HWND hwndDlg);</title></rect>
