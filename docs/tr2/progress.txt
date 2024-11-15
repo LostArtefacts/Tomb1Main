@@ -3704,7 +3704,7 @@ typedef enum {
 0x0043F2F0  0x0081  +       void __cdecl SkidooArmed_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 
 # game/sound.c
-0x0043F380  0x0031  *       int32_t __cdecl Music_GetRealTrack(int32_t track);
+0x0043F380  0x0031  +       int32_t __cdecl Music_GetRealTrack(int32_t track);
 0x0043F3C0  0x0484  +       void __cdecl Sound_Effect(int32_t sample_id, const XYZ_32 *pos, uint32_t flags);
 0x0043F860  0x005E  +       void __cdecl Sound_StopEffect(int32_t sample_id);
 0x0043F8C0  0x0086  +       void __cdecl Sound_EndScene(void);

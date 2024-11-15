@@ -109,7 +109,6 @@
 #define DoShift ((int32_t __cdecl (*)(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old))0x0043D320)
 #define DoDynamics ((int32_t __cdecl (*)(int32_t height, int32_t fall_speed, int32_t *y))0x0043D5A0)
 #define GetCollisionAnim ((int32_t __cdecl (*)(ITEM *skidoo, XYZ_32 *moved))0x0043D600)
-#define Music_GetRealTrack ((int32_t __cdecl (*)(int32_t track))0x0043F380)
 #define Collide_TestCollision ((int32_t __cdecl (*)(ITEM *item, const ITEM *lara_item))0x0043F9B0)
 #define Collide_GetSpheres ((int32_t __cdecl (*)(const ITEM *item, SPHERE *spheres, bool world_space))0x0043FAE0)
 #define Collide_GetJointAbsPosition ((void __cdecl (*)(const ITEM *item, const XYZ_32 *vec, int32_t joint))0x0043FDC0)

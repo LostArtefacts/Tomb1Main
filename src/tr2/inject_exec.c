@@ -618,6 +618,7 @@ static void M_Output(const bool enable)
 
 static void M_Music(const bool enable)
 {
+    INJECT(enable, 0x0043F380, Music_GetRealTrack);
     INJECT(enable, 0x004553E0, Music_Init);
     INJECT(enable, 0x00455460, Music_Shutdown);
     INJECT(enable, 0x00455500, Music_Legacy_Play);
