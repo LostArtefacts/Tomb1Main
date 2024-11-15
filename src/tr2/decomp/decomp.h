@@ -149,3 +149,4 @@ void __cdecl S_DrawScreenFBox(
     uint8_t color_idx, const GOURAUD_FILL *gour, uint16_t flags);
 void __cdecl S_FinishInventory(void);
 void __cdecl S_FadeToBlack(void);
+uint16_t __cdecl S_FindColor(int32_t red, int32_t green, int32_t blue);

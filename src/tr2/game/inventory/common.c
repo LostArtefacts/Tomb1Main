@@ -93,17 +93,17 @@ static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
 
 void __cdecl Inv_InitColors(void)
 {
-    g_InvColors[INV_COLOR_BLACK] = S_COLOR(0x00, 0x00, 0x00);
-    g_InvColors[INV_COLOR_GRAY] = S_COLOR(0x40, 0x40, 0x40);
-    g_InvColors[INV_COLOR_WHITE] = S_COLOR(0xFF, 0xFF, 0xFF);
-    g_InvColors[INV_COLOR_RED] = S_COLOR(0xFF, 0x00, 0x00);
-    g_InvColors[INV_COLOR_ORANGE] = S_COLOR(0xFF, 0x80, 0x00);
-    g_InvColors[INV_COLOR_YELLOW] = S_COLOR(0xFF, 0xFF, 0x00);
-    g_InvColors[INV_COLOR_DARK_GREEN] = S_COLOR(0x00, 0x80, 0x00);
-    g_InvColors[INV_COLOR_GREEN] = S_COLOR(0x00, 0xFF, 0x00);
-    g_InvColors[INV_COLOR_CYAN] = S_COLOR(0x00, 0xFF, 0xFF);
-    g_InvColors[INV_COLOR_BLUE] = S_COLOR(0x00, 0x00, 0xFF);
-    g_InvColors[INV_COLOR_MAGENTA] = S_COLOR(0xFF, 0x00, 0xFF);
+    g_InvColors[INV_COLOR_BLACK] = S_FindColor(0x00, 0x00, 0x00);
+    g_InvColors[INV_COLOR_GRAY] = S_FindColor(0x40, 0x40, 0x40);
+    g_InvColors[INV_COLOR_WHITE] = S_FindColor(0xFF, 0xFF, 0xFF);
+    g_InvColors[INV_COLOR_RED] = S_FindColor(0xFF, 0x00, 0x00);
+    g_InvColors[INV_COLOR_ORANGE] = S_FindColor(0xFF, 0x80, 0x00);
+    g_InvColors[INV_COLOR_YELLOW] = S_FindColor(0xFF, 0xFF, 0x00);
+    g_InvColors[INV_COLOR_DARK_GREEN] = S_FindColor(0x00, 0x80, 0x00);
+    g_InvColors[INV_COLOR_GREEN] = S_FindColor(0x00, 0xFF, 0x00);
+    g_InvColors[INV_COLOR_CYAN] = S_FindColor(0x00, 0xFF, 0xFF);
+    g_InvColors[INV_COLOR_BLUE] = S_FindColor(0x00, 0x00, 0xFF);
+    g_InvColors[INV_COLOR_MAGENTA] = S_FindColor(0xFF, 0x00, 0xFF);
 }
 
 void __cdecl Inv_Construct(void)

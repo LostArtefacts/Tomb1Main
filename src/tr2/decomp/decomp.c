@@ -3074,3 +3074,9 @@ void __cdecl S_FadeToBlack(void)
     ScreenClear(false);
     ScreenDump();
 }
+
+uint16_t __cdecl S_FindColor(
+    const int32_t red, const int32_t green, const int32_t blue)
+{
+    return FindNearestPaletteEntry(g_GamePalette8, red, green, blue, false);
+}

@@ -1,5 +1,6 @@
 #include "game/level.h"
 
+#include "decomp/decomp.h"
 #include "game/gamebuf.h"
 #include "game/hwr.h"
 #include "game/items.h"
@@ -531,7 +532,7 @@ static void __cdecl M_LoadDepthQ(VFILE *const file)
         memcpy(g_GamePalette8, palette, sizeof(g_GamePalette8));
 
         for (int32_t i = 0; i < 256; i++) {
-            g_DepthQIndex[i] = S_COLOR(
+            g_DepthQIndex[i] = S_FindColor(
                 g_GamePalette8[i].red, g_GamePalette8[i].green,
                 g_GamePalette8[i].blue);
         }

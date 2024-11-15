@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.85% (956)</tspan> · <tspan class="known">20.74% (258)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.93% (957)</tspan> · <tspan class="known">20.66% (257)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="574.06" height="6" x="0" y="0" class="decompiled"/>
-<rect width="154.92" height="6" x="574.06" y="0" class="known"/>
+<rect width="574.66" height="6" x="0" y="0" class="decompiled"/>
+<rect width="154.32" height="6" x="574.66" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1059,7 +1059,7 @@
 <rect width="12" height="12" x="450" y="285" class="decompiled"><title>void __cdecl WinPlayFMV(const char *file_name, bool is_playback);</title></rect>
 <rect width="12" height="12" x="465" y="285" class="decompiled"><title>void __cdecl WinStopFMV(bool is_playback);</title></rect>
 <rect width="12" height="12" x="480" y="285" class="decompiled"><title>bool __cdecl IntroFMV(const char *file_name1, const char *file_name2);</title></rect>
-<rect width="12" height="12" x="495" y="285" class="known"><title>uint16_t __cdecl S_COLOR(int32_t red, int32_t green, int32_t blue);</title></rect>
+<rect width="12" height="12" x="495" y="285" class="decompiled"><title>uint16_t __cdecl S_FindColor(int32_t red, int32_t green, int32_t blue);</title></rect>
 <rect width="12" height="12" x="510" y="285" class="decompiled"><title>void __cdecl S_DrawScreenLine(int32_t x, int32_t y, int32_t z, int32_t x_len, int32_t y_len, BYTE color_idx, D3DCOLOR *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="525" y="285" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="540" y="285" class="decompiled"><title>void __cdecl S_DrawScreenFBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_FILL *gour, uint16_t flags);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.83%</tspan> · <tspan class="known">18.84%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.84%</tspan> · <tspan class="known">18.83%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="603.82" height="6" x="0" y="0" class="decompiled"/>
-<rect width="140.74" height="6" x="603.82" y="0" class="known"/>
+<rect width="603.89" height="6" x="0" y="0" class="decompiled"/>
+<rect width="140.67" height="6" x="603.89" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2391,7 +2391,7 @@
 <rect width="2.57" height="2.21" x="692.67" y="357.14" class="decompiled"><title>void __cdecl Lara_Col_SurfLeft(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="362.36" class="decompiled"><title>void __cdecl Lara_Col_SurfRight(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="367.57" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
-<rect width="2.57" height="2.21" x="692.67" y="372.79" class="known"><title>uint16_t __cdecl S_COLOR(int32_t red, int32_t green, int32_t blue);</title></rect>
+<rect width="2.57" height="2.21" x="692.67" y="372.79" class="decompiled"><title>uint16_t __cdecl S_FindColor(int32_t red, int32_t green, int32_t blue);</title></rect>
 <rect width="2.36" height="2.42" x="698.24" y="325.85" class="known"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="2.21" height="2.42" x="703.60" y="325.85" class="decompiled"><title>void __cdecl Matrix_Pop_I(void);</title></rect>
 <rect width="2.21" height="2.42" x="708.81" y="325.85" class="decompiled"><title>void __cdecl Inv_Ring_MotionRotation(RING_INFO *ring, int16_t rotation, int16_t target);</title></rect>
