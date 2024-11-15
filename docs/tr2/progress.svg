@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.09% (959)</tspan> · <tspan class="known">20.50% (255)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.17% (960)</tspan> · <tspan class="known">20.42% (254)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="575.86" height="6" x="0" y="0" class="decompiled"/>
-<rect width="153.12" height="6" x="575.86" y="0" class="known"/>
+<rect width="576.46" height="6" x="0" y="0" class="decompiled"/>
+<rect width="152.52" height="6" x="576.46" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -977,7 +977,7 @@
 <rect width="12" height="12" x="720" y="255" class="known"><title>void __cdecl IncreaseScreenSize(void);</title></rect>
 <rect width="12" height="12" x="735" y="255" class="known"><title>void __cdecl DecreaseScreenSize(void);</title></rect>
 <rect width="12" height="12" x="0" y="270" class="known"><title>void __cdecl setup_screen_size(void);</title></rect>
-<rect width="12" height="12" x="15" y="270" class="known"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
+<rect width="12" height="12" x="15" y="270" class="decompiled"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
 <rect width="12" height="12" x="30" y="270" class="known"><title>void __cdecl TempVideoRemove(void);</title></rect>
 <rect width="12" height="12" x="45" y="270" class="known"><title>void __cdecl S_FadeInInventory(BOOL isFade);</title></rect>
 <rect width="12" height="12" x="60" y="270" class="known"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.03%</tspan> · <tspan class="known">18.64%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.05%</tspan> · <tspan class="known">18.63%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="605.30" height="6" x="0" y="0" class="decompiled"/>
-<rect width="139.26" height="6" x="605.30" y="0" class="known"/>
+<rect width="605.42" height="6" x="0" y="0" class="decompiled"/>
+<rect width="139.14" height="6" x="605.42" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2282,7 +2282,7 @@
 <rect width="3.43" height="3.84" x="661.67" y="364.44" class="known"><title>bool __cdecl ReloadTextures(bool reset);</title></rect>
 <rect width="3.43" height="3.71" x="661.67" y="371.29" class="decompiled"><title>void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate);</title></rect>
 <rect width="3.40" height="3.75" x="668.09" y="296.01" class="decompiled"><title>void __cdecl BridgeTilt2_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
-<rect width="3.40" height="3.75" x="674.49" y="296.01" class="known"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
+<rect width="3.40" height="3.75" x="674.49" y="296.01" class="decompiled"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
 <rect width="3.40" height="3.75" x="680.88" y="296.01" class="decompiled"><title>void __cdecl GameBuf_Free(size_t free_size);</title></rect>
 <rect width="3.27" height="3.75" x="687.28" y="296.01" class="decompiled"><title>void __cdecl Output_SortPolyList(void);</title></rect>
 <rect width="3.27" height="3.75" x="693.55" y="296.01" class="decompiled"><title>void __cdecl CutscenePlayerGen_Initialise(int16_t item_num);</title></rect>

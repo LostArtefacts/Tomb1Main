@@ -3130,3 +3130,12 @@ void __cdecl S_CopyBufferToScreen(void)
         BGND_DrawInGameBackground();
     }
 }
+
+void __cdecl TempVideoAdjust(const int32_t hires, const double sizer)
+{
+    g_IsVidSizeLock = true;
+    if (sizer != g_GameSizer) {
+        g_GameSizer = sizer;
+        setup_screen_size();
+    }
+}

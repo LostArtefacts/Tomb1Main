@@ -137,7 +137,6 @@
 #define IncreaseScreenSize ((void __cdecl (*)(void))0x00447810)
 #define DecreaseScreenSize ((void __cdecl (*)(void))0x00447880)
 #define setup_screen_size ((void __cdecl (*)(void))0x004478F0)
-#define TempVideoAdjust ((void __cdecl (*)(int32_t hires, double sizer))0x00447990)
 #define TempVideoRemove ((void __cdecl (*)(void))0x004479D0)
 #define S_FadeInInventory ((void __cdecl (*)(BOOL isFade))0x00447A10)
 #define S_FadeOutInventory ((void __cdecl (*)(BOOL isFade))0x00447A50)
