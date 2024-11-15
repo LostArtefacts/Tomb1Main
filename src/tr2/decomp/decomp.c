@@ -2971,3 +2971,8 @@ void __cdecl S_InitialisePolyList(bool clear_back_buffer)
 
     Output_InitPolyList();
 }
+
+void __cdecl S_ClearScreen(void)
+{
+    ScreenClear(false);
+}

@@ -4052,7 +4052,7 @@ typedef enum {
 0x00450AF0  0x0006  +R      int32_t __cdecl GetRenderWidth(void);
 0x00450B00  0x00E4  +R      void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);
 0x00450BF0  0x0036  +R      DWORD __cdecl S_DumpScreen(void);
-0x00450C30  0x000B  -R      void __cdecl S_ClearScreen(void);
+0x00450C30  0x000B  +R      void __cdecl S_ClearScreen(void);
 0x00450C40  0x0037  -R      void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);
 0x00450C80  0x0089  *R      void __cdecl S_OutputPolyList(void);
 0x00450CC0  0x0270  -R      int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);
