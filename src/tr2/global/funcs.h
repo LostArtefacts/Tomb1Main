@@ -149,7 +149,6 @@
 #define S_AdjustTexelCoordinates ((void __cdecl (*)(void))0x0044B500)
 #define S_ReloadLevelGraphics ((BOOL __cdecl (*)(BOOL reload_palettes, BOOL reload_tex_pages))0x0044B520)
 #define S_COLOR ((uint16_t __cdecl (*)(int32_t red, int32_t green, int32_t blue))0x0044C1D0)
-#define S_DrawScreenBox ((void __cdecl (*)(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags))0x0044C240)
 #define S_DrawScreenFBox ((void __cdecl (*)(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_FILL *gour, uint16_t flags))0x0044C360)
 #define S_FinishInventory ((void __cdecl (*)(void))0x0044C390)
 #define S_FadeToBlack ((void __cdecl (*)(void))0x0044C3A0)

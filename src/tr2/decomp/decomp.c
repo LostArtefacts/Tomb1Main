@@ -3031,3 +3031,21 @@ void __cdecl S_DrawScreenLine(
     g_Output_InsertLine(
         x, y, x + x_len, y + y_len, g_PhdNearZ + 8 * z, color_idx);
 }
+
+void __cdecl S_DrawScreenBox(
+    const int32_t sx, const int32_t sy, const int32_t z, const int32_t width,
+    const int32_t height, const uint8_t color_idx,
+    const GOURAUD_OUTLINE *const gour, const uint16_t flags)
+{
+    const int32_t col_1 = 15;
+    const int32_t col_2 = 31;
+    S_DrawScreenLine(sx, sy - 1, z, width + 1, 0, col_1, NULL, flags);
+    S_DrawScreenLine(sx + 1, sy, z, width - 1, 0, col_2, NULL, flags);
+    S_DrawScreenLine(sx + width, sy + 1, z, 0, height - 1, col_1, NULL, flags);
+    S_DrawScreenLine(sx + width + 1, sy, z, 0, height + 1, col_2, NULL, flags);
+    S_DrawScreenLine(sx - 1, sy - 1, z, 0, height + 1, col_1, NULL, flags);
+    S_DrawScreenLine(sx, sy, z, 0, height - 1, col_2, NULL, flags);
+    S_DrawScreenLine(sx, height + sy, z, width - 1, 0, col_1, NULL, flags);
+    S_DrawScreenLine(
+        sx - 1, height + sy + 1, z, width + 1, 0, col_2, NULL, flags);
+}

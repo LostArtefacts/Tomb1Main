@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.53% (952)</tspan> · <tspan class="known">21.06% (262)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.61% (953)</tspan> · <tspan class="known">20.98% (261)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="571.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="157.33" height="6" x="571.66" y="0" class="known"/>
+<rect width="572.26" height="6" x="0" y="0" class="decompiled"/>
+<rect width="156.73" height="6" x="572.26" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1061,7 +1061,7 @@
 <rect width="12" height="12" x="480" y="285" class="decompiled"><title>bool __cdecl IntroFMV(const char *file_name1, const char *file_name2);</title></rect>
 <rect width="12" height="12" x="495" y="285" class="known"><title>uint16_t __cdecl S_COLOR(int32_t red, int32_t green, int32_t blue);</title></rect>
 <rect width="12" height="12" x="510" y="285" class="decompiled"><title>void __cdecl S_DrawScreenLine(int32_t x, int32_t y, int32_t z, int32_t x_len, int32_t y_len, BYTE color_idx, D3DCOLOR *gour, uint16_t flags);</title></rect>
-<rect width="12" height="12" x="525" y="285" class="known"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
+<rect width="12" height="12" x="525" y="285" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="540" y="285" class="known"><title>void __cdecl S_DrawScreenFBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_FILL *gour, uint16_t flags);</title></rect>
 <rect width="12" height="12" x="555" y="285" class="known"><title>void __cdecl S_FinishInventory(void);</title></rect>
 <rect width="12" height="12" x="570" y="285" class="known"><title>void __cdecl S_FadeToBlack(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.71%</tspan> · <tspan class="known">18.96%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.79%</tspan> · <tspan class="known">18.88%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="602.93" height="6" x="0" y="0" class="decompiled"/>
-<rect width="141.63" height="6" x="602.93" y="0" class="known"/>
+<rect width="603.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="141.02" height="6" x="603.54" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1661,7 +1661,7 @@
 <rect width="12.24" height="12.36" x="464.87" y="139.01" class="known"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
 <rect width="12.24" height="12.30" x="464.87" y="154.36" class="decompiled"><title>void __cdecl SkidooArmed_Push(const ITEM *item, ITEM *lara_item, int32_t radius);</title></rect>
 <rect width="12.24" height="12.14" x="464.87" y="169.66" class="known"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
-<rect width="12.24" height="12.14" x="464.87" y="184.80" class="known"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
+<rect width="12.24" height="12.14" x="464.87" y="184.80" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12.24" height="12.08" x="464.87" y="199.94" class="decompiled"><title>void __cdecl SpikeCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12.24" height="12.03" x="464.87" y="215.02" class="decompiled"><title>void __cdecl Bartoli_Initialise(int16_t item_num);</title></rect>
 <rect width="12.24" height="12.03" x="464.87" y="230.05" class="decompiled"><title>int32_t __cdecl S_SaveGame(const void *save_data, uint32_t save_size, int32_t slot_num);</title></rect>
