@@ -191,14 +191,11 @@ finish:
 
 int32_t __cdecl GameInit(void)
 {
-    Music_Shutdown();
-    UT_InitAccurateTimer();
     // clang-format off
     return WinVidInit()
         && Direct3DInit()
         && RenderInit()
         && InitTextures()
-        && TIME_Init()
         && HWR_Init()
         && BGND_Init();
     // clang-format on
@@ -2824,7 +2821,6 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
 BOOL __cdecl S_InitialiseSystem(void)
 {
     Random_Seed();
-    SelectDrive();
     g_DumpX = 0;
     g_DumpY = 0;
     g_DumpHeight = g_GameVid_Height;

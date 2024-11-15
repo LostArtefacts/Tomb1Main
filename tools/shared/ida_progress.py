@@ -104,7 +104,7 @@ class Symbol:
 
     @property
     def is_decompiled(self) -> bool:
-        return "+" in self.flags
+        return "+" in self.flags or "@" in self.flags
 
     @property
     def is_called(self) -> bool:

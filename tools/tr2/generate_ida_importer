@@ -62,6 +62,8 @@ def import_symbol(symbol: Symbol, file) -> None:
 
         if "+" in symbol.flags:
             color = 0xA0FFA0
+        elif "@" in symbol.flags:
+            color = 0xA0C0A0
         elif "x" in symbol.flags:
             color = 0xA0A0A0
         elif known:

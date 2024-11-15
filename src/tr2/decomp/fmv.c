@@ -11,7 +11,9 @@
 #include "lib/ddraw.h"
 
 #include <libtrx/engine/video.h>
+#include <libtrx/filesystem.h>
 #include <libtrx/log.h>
+#include <libtrx/memory.h>
 
 #include <assert.h>
 #include <string.h>
@@ -307,8 +309,9 @@ static void M_ExitFMVMode(void)
 static void M_Play(const char *const file_name)
 {
     g_IsFMVPlaying = true;
-    const char *const full_path = GetFullPath(file_name);
+    const char *full_path = File_GetFullPath(file_name);
     WinPlayFMV(full_path, true);
+    Memory_FreePointer(&full_path);
     g_IsFMVPlaying = false;
 }
 

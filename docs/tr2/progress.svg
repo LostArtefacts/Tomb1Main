@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.32% (937)</tspan> · <tspan class="known">22.27% (277)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">75.88% (944)</tspan> · <tspan class="known">21.70% (270)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="562.65" height="6" x="0" y="0" class="decompiled"/>
-<rect width="166.33" height="6" x="562.65" y="0" class="known"/>
+<rect width="566.86" height="6" x="0" y="0" class="decompiled"/>
+<rect width="162.13" height="6" x="566.86" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1045,9 +1045,9 @@
 <rect width="12" height="12" x="240" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadDemo(HANDLE handle);</title></rect>
 <rect width="12" height="12" x="255" y="285" class="decompiled"><title>void __cdecl Level_LoadDemoExternal(LPCTSTR level_name);</title></rect>
 <rect width="12" height="12" x="270" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadSamples(HANDLE handle);</title></rect>
-<rect width="12" height="12" x="285" y="285" class="known"><title>void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);</title></rect>
-<rect width="12" height="12" x="300" y="285" class="known"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
-<rect width="12" height="12" x="315" y="285" class="known"><title>BOOL __cdecl SelectDrive(void);</title></rect>
+<rect width="12" height="12" x="285" y="285" class="decompiled"><title>void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);</title></rect>
+<rect width="12" height="12" x="300" y="285" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
+<rect width="12" height="12" x="315" y="285" class="decompiled"><title>BOOL __cdecl SelectDrive(void);</title></rect>
 <rect width="12" height="12" x="330" y="285" class="decompiled"><title>bool __cdecl Level_Load(const char *file_name, int32_t level_num);</title></rect>
 <rect width="12" height="12" x="345" y="285" class="known"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="360" y="285" class="known"><title>void __cdecl S_UnloadLevelFile(void);</title></rect>
@@ -1246,12 +1246,12 @@
 <rect width="12" height="12" x="255" y="345" class="known"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
 <rect width="12" height="12" x="270" y="345" class="known"><title>void __cdecl CleanupTextures(void);</title></rect>
 <rect width="12" height="12" x="285" y="345" class="known"><title>bool __cdecl InitTextures(void);</title></rect>
-<rect width="12" height="12" x="300" y="345" class="known"><title>void __cdecl UpdateTicks(void);</title></rect>
-<rect width="12" height="12" x="315" y="345" class="known"><title>bool __cdecl TIME_Init(void);</title></rect>
+<rect width="12" height="12" x="300" y="345" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
+<rect width="12" height="12" x="315" y="345" class="decompiled"><title>bool __cdecl TIME_Init(void);</title></rect>
 <rect width="12" height="12" x="330" y="345" class="decompiled"><title>DWORD __cdecl Sync(void);</title></rect>
 <rect width="12" height="12" x="345" y="345" class="known"><title>LPVOID __cdecl UT_LoadResource(LPCTSTR lpName, LPCTSTR lpType);</title></rect>
-<rect width="12" height="12" x="360" y="345" class="known"><title>void __cdecl UT_InitAccurateTimer(void);</title></rect>
-<rect width="12" height="12" x="375" y="345" class="known"><title>double __cdecl UT_Microseconds(void);</title></rect>
+<rect width="12" height="12" x="360" y="345" class="decompiled"><title>void __cdecl UT_InitAccurateTimer(void);</title></rect>
+<rect width="12" height="12" x="375" y="345" class="decompiled"><title>double __cdecl UT_Microseconds(void);</title></rect>
 <rect width="12" height="12" x="390" y="345" class="known"><title>BOOL __cdecl UT_CenterWindow(HWND hWnd);</title></rect>
 <rect width="12" height="12" x="405" y="345" class="known"><title>LPTSTR __cdecl UT_FindArg(LPCTSTR str);</title></rect>
 <rect width="12" height="12" x="420" y="345" class="known"><title>int32_t __cdecl UT_MessageBox(LPCTSTR lpText, HWND hWnd);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.36%</tspan> · <tspan class="known">19.31%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.55%</tspan> · <tspan class="known">19.13%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="600.31" height="6" x="0" y="0" class="decompiled"/>
-<rect width="144.26" height="6" x="600.31" y="0" class="known"/>
+<rect width="601.69" height="6" x="0" y="0" class="decompiled"/>
+<rect width="142.87" height="6" x="601.69" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1735,7 +1735,7 @@
 <rect width="10.60" height="10.72" x="562.95" y="122.62" class="decompiled"><title>int32_t __cdecl Lara_TestWall(ITEM *item, int32_t front, int32_t right, int32_t down);</title></rect>
 <rect width="10.60" height="10.72" x="576.56" y="122.62" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOn(int16_t item_num, COLL_INFO *coll);</title></rect>
 <rect width="10.54" height="10.72" x="590.16" y="122.62" class="known"><title>void __cdecl FallingCeiling_Control(int16_t item_num);</title></rect>
-<rect width="10.54" height="10.72" x="603.70" y="122.62" class="known"><title>BOOL __cdecl SelectDrive(void);</title></rect>
+<rect width="10.54" height="10.72" x="603.70" y="122.62" class="decompiled"><title>BOOL __cdecl SelectDrive(void);</title></rect>
 <rect width="10.42" height="10.72" x="617.24" y="122.62" class="known"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="10.30" height="10.72" x="630.66" y="122.62" class="decompiled"><title>void __cdecl CutscenePlayer_Control(int16_t item_num);</title></rect>
 <rect width="10.30" height="10.72" x="643.96" y="122.62" class="decompiled"><title>void __cdecl Window_2_Control(int16_t item_num);</title></rect>
@@ -2061,7 +2061,7 @@
 <rect width="5.91" height="5.94" x="670.44" y="235.22" class="decompiled"><title>void __cdecl Lara_State_SurfRight(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.91" height="5.94" x="679.35" y="235.22" class="decompiled"><title>BOOL __cdecl Level_LoadCameras(HANDLE handle);</title></rect>
 <rect width="5.91" height="5.94" x="688.27" y="235.22" class="decompiled"><title>BOOL __cdecl Level_LoadSoundEffects(HANDLE handle);</title></rect>
-<rect width="5.91" height="5.94" x="697.18" y="235.22" class="known"><title>void __cdecl UT_InitAccurateTimer(void);</title></rect>
+<rect width="5.91" height="5.94" x="697.18" y="235.22" class="decompiled"><title>void __cdecl UT_InitAccurateTimer(void);</title></rect>
 <rect width="5.82" height="5.94" x="706.09" y="235.22" class="decompiled"><title>void __cdecl Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);</title></rect>
 <rect width="5.82" height="5.94" x="714.91" y="235.22" class="decompiled"><title>void __cdecl BGND_DrawInGameBlack(void);</title></rect>
 <rect width="5.82" height="5.94" x="723.73" y="235.22" class="unused"><title>sub_444AB0</title></rect>
@@ -2117,7 +2117,7 @@
 <rect width="4.94" height="5.47" x="624.52" y="261.36" class="decompiled"><title>void __cdecl Gun_SmashItem(int16_t item_num, LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="4.94" height="5.47" x="624.52" y="269.82" class="known"><title>void __cdecl S_SetupBelowWater(BOOL underwater);</title></rect>
 <rect width="4.94" height="5.47" x="624.52" y="278.29" class="decompiled"><title>void __cdecl Music_Shutdown(void);</title></rect>
-<rect width="4.94" height="5.47" x="624.52" y="286.76" class="known"><title>bool __cdecl TIME_Init(void);</title></rect>
+<rect width="4.94" height="5.47" x="624.52" y="286.76" class="decompiled"><title>bool __cdecl TIME_Init(void);</title></rect>
 <rect width="4.94" height="5.47" x="624.52" y="295.22" class="known"><title>LPCTSTR __cdecl GuidBinaryToString(GUID *guid);</title></rect>
 <rect width="4.94" height="5.36" x="624.52" y="303.69" class="decompiled"><title>void __cdecl Creature_Underwater(ITEM *item, int32_t depth);</title></rect>
 <rect width="4.94" height="5.36" x="624.52" y="312.05" class="decompiled"><title>const SECTOR *__cdecl Camera_GoodPosition(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
@@ -2132,7 +2132,7 @@
 <rect width="4.97" height="5.12" x="640.42" y="252.89" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
 <rect width="4.97" height="5.12" x="648.39" y="252.89" class="decompiled"><title>JOYSTICK_NODE *__cdecl GetJoystick(GUID *lpGuid);</title></rect>
 <rect width="4.97" height="5.12" x="656.35" y="252.89" class="known"><title>bool __cdecl OpenGameRegistryKey(LPCTSTR key);</title></rect>
-<rect width="4.97" height="5.12" x="664.32" y="252.89" class="known"><title>double __cdecl UT_Microseconds(void);</title></rect>
+<rect width="4.97" height="5.12" x="664.32" y="252.89" class="decompiled"><title>double __cdecl UT_Microseconds(void);</title></rect>
 <rect width="4.86" height="5.12" x="672.28" y="252.89" class="decompiled"><title>void __cdecl Lara_State_Extra_StartAnim(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.86" height="5.12" x="680.15" y="252.89" class="decompiled"><title>void __cdecl BGND_Free(void);</title></rect>
 <rect width="4.86" height="5.12" x="688.01" y="252.89" class="decompiled"><title>bool __cdecl WinVidClearBuffer(LPDDS surface, LPRECT rect, DWORD fill_color);</title></rect>
@@ -2194,7 +2194,7 @@
 <rect width="4.37" height="4.20" x="677.45" y="268.48" class="decompiled"><title>void __cdecl Skidoo_Initialise(int16_t item_num);</title></rect>
 <rect width="4.37" height="4.20" x="684.82" y="268.48" class="decompiled"><title>bool __cdecl WinVidInit(void);</title></rect>
 <rect width="4.37" height="4.20" x="692.19" y="268.48" class="decompiled"><title>void __cdecl Option_Controls_DefaultConflict(void);</title></rect>
-<rect width="4.37" height="4.20" x="699.56" y="268.48" class="known"><title>void __cdecl UpdateTicks(void);</title></rect>
+<rect width="4.37" height="4.20" x="699.56" y="268.48" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
 <rect width="4.26" height="4.20" x="706.93" y="268.48" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="4.26" height="4.20" x="714.19" y="268.48" class="decompiled"><title>void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.14" height="4.20" x="721.44" y="268.48" class="decompiled"><title>void __cdecl Flare_Ready(void);</title></rect>
@@ -2256,7 +2256,7 @@
 <rect width="3.68" height="3.71" x="654.99" y="357.86" class="decompiled"><title>void __cdecl Output_PrintPolyList(uint8_t *surface_ptr);</title></rect>
 <rect width="3.68" height="3.71" x="654.99" y="364.58" class="decompiled"><title>void __cdecl Lara_Col_Default(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.68" height="3.71" x="654.99" y="371.29" class="decompiled"><title>void __cdecl Drawbridge_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
-<rect width="3.88" height="3.51" x="661.67" y="289.50" class="known"><title>void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);</title></rect>
+<rect width="3.88" height="3.51" x="661.67" y="289.50" class="decompiled"><title>void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);</title></rect>
 <rect width="3.88" height="3.51" x="668.55" y="289.50" class="decompiled"><title>DWORD __cdecl S_DumpScreen(void);</title></rect>
 <rect width="3.88" height="3.51" x="675.43" y="289.50" class="known"><title>LPVOID __cdecl UT_LoadResource(LPCTSTR lpName, LPCTSTR lpType);</title></rect>
 <rect width="3.88" height="3.51" x="682.32" y="289.50" class="known"><title>LONG __cdecl SetRegistryFloatValue(LPCTSTR lpValueName, double value);</title></rect>
@@ -2364,7 +2364,7 @@
 <rect width="2.53" height="2.85" x="744.47" y="314.78" class="decompiled"><title>void __cdecl Text_Draw(void);</title></rect>
 <rect width="2.47" height="2.92" x="687.21" y="320.63" class="known"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="326.55" class="decompiled"><title>void __cdecl Inv_Ring_MotionRadius(RING_INFO *ring, int16_t target);</title></rect>
-<rect width="2.47" height="2.77" x="687.21" y="332.32" class="known"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
+<rect width="2.47" height="2.77" x="687.21" y="332.32" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="338.08" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="343.85" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_CalculateSamplePan(int16_t pan);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="349.62" class="known"><title>void __cdecl FreeTexturePages(void);</title></rect>

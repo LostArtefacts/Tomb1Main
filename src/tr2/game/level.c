@@ -12,6 +12,7 @@
 
 #include <libtrx/benchmark.h>
 #include <libtrx/engine/audio.h>
+#include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
@@ -42,7 +43,6 @@ static void __cdecl M_LoadBoxes(VFILE *file);
 static void __cdecl M_LoadAnimatedTextures(VFILE *file);
 static void __cdecl M_LoadCinematic(VFILE *file);
 static void __cdecl M_LoadDemo(VFILE *file);
-static void __cdecl M_LoadDemoExternal(const char *level_name);
 static void __cdecl M_LoadSamples(VFILE *file);
 static void M_CompleteSetup(void);
 
@@ -730,28 +730,6 @@ static void __cdecl M_LoadDemo(VFILE *const file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void __cdecl M_LoadDemoExternal(const char *const level_name)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    char file_name[MAX_PATH];
-    strcpy(file_name, level_name);
-    ChangeFileNameExtension(file_name, "DEM");
-
-    HANDLE handle = CreateFileA(
-        file_name, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
-        NULL);
-    if (handle == INVALID_HANDLE_VALUE) {
-        return;
-    }
-
-    // TODO: do not hardcode the allocation size
-    DWORD bytes_read;
-    ReadFileSync(handle, g_DemoPtr, 36000, &bytes_read, 0);
-    g_IsDemoLoaded = bytes_read != 0;
-    CloseHandle(handle);
-    Benchmark_End(benchmark, NULL);
-}
-
 static void __cdecl M_LoadSamples(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -787,11 +765,12 @@ static void __cdecl M_LoadSamples(VFILE *const file)
     VFile_Read(file, sample_offsets, sizeof(int32_t) * num_samples);
 
     const char *const file_name = "data\\main.sfx";
-    const char *const full_path = GetFullPath(file_name);
+    const char *full_path = File_GetFullPath(file_name);
     LOG_DEBUG("Loading samples from %s", full_path);
     HANDLE sfx_handle = CreateFileA(
         full_path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
         NULL);
+    Memory_FreePointer(&full_path);
 
     if (sfx_handle == INVALID_HANDLE_VALUE) {
         Shell_ExitSystemFmt(
@@ -847,10 +826,10 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
 
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    const char *full_path = GetFullPath(file_name);
+    const char *full_path = File_GetFullPath(file_name);
     strcpy(g_LevelFileName, full_path);
-
-    VFILE *file = VFile_CreateFromPath(full_path);
+    VFILE *const file = VFile_CreateFromPath(full_path);
+    Memory_FreePointer(&full_path);
 
     const int32_t version = VFile_ReadS32(file);
     if (version > 45) {
@@ -912,10 +891,7 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     M_LoadDemo(file);
     M_LoadSamples(file);
 
-    M_LoadDemoExternal(full_path);
     VFile_Close(file);
-    file = NULL;
-
     Benchmark_End(benchmark, NULL);
 }
 

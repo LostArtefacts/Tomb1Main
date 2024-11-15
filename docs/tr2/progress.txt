@@ -2885,6 +2885,7 @@ typedef enum {
 #   * to do, called by TR2X
 #   x unused
 #   + fully decompiled
+#   @ not decompiled, but implemented via different means
 # Offset    Size    Flags   Declaration
 
 # 3dsystem/3d_gen.c
@@ -3960,9 +3961,9 @@ typedef enum {
 0x0044AD70  0x008A  +       BOOL __cdecl Level_LoadDemo(HANDLE handle);
 0x0044AE00  0x009A  +       void __cdecl Level_LoadDemoExternal(LPCTSTR level_name);
 0x0044AEA0  0x0265  +       BOOL __cdecl Level_LoadSamples(HANDLE handle);
-0x0044B110  0x0036  -R      void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);
-0x0044B150  0x0026  -R      LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);
-0x0044B180  0x00E0  -R      BOOL __cdecl SelectDrive(void);
+0x0044B110  0x0036  @R      void __cdecl ChangeFileNameExtension(char *file_name, const char *file_ext);
+0x0044B150  0x0026  @R      LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);
+0x0044B180  0x00E0  @R      BOOL __cdecl SelectDrive(void);
 0x0044B260  0x024A  +       bool __cdecl Level_Load(const char *file_name, int32_t level_num);
 0x0044B4B0  0x0018  -R      BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 0x0044B4D0  0x002A  -R      void __cdecl S_UnloadLevelFile(void);
@@ -4161,12 +4162,12 @@ typedef enum {
 0x00456430  0x0025  -R      HRESULT __cdecl EnumerateTextureFormats(void);
 0x00456460  0x0030  -R      void __cdecl CleanupTextures(void);
 0x00456470  0x001F  -R      bool __cdecl InitTextures(void);
-0x00456490  0x0040  -R      void __cdecl UpdateTicks(void);
-0x004564D0  0x0051  -R      bool __cdecl TIME_Init(void);
+0x00456490  0x0040  @R      void __cdecl UpdateTicks(void);
+0x004564D0  0x0051  @R      bool __cdecl TIME_Init(void);
 0x00456530  0x0058  +R      DWORD __cdecl Sync(void);
 0x00456590  0x0036  -R      LPVOID __cdecl UT_LoadResource(LPCTSTR lpName, LPCTSTR lpType);
-0x004565D0  0x0060  -R      void __cdecl UT_InitAccurateTimer(void);
-0x00456630  0x004E  -R      double __cdecl UT_Microseconds(void);
+0x004565D0  0x0060  @R      void __cdecl UT_InitAccurateTimer(void);
+0x00456630  0x004E  @R      double __cdecl UT_Microseconds(void);
 0x00456680  0x006F  -R      BOOL __cdecl UT_CenterWindow(HWND hWnd);
 0x004566F0  0x002C  -R      LPTSTR __cdecl UT_FindArg(LPCTSTR str);
 0x00456720  0x0018  -R      int32_t __cdecl UT_MessageBox(LPCTSTR lpText, HWND hWnd);

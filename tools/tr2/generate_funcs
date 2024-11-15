@@ -99,7 +99,7 @@ def make_funcs_h(functions: list[Symbol]) -> None:
 
     defines = []
     for function in functions:
-        if "+" not in function.flags and (
+        if not function.is_decompiled and (
             define := make_func_pointer_define(function)
         ):
             defines.append(define)
@@ -122,7 +122,7 @@ def make_vars_h(variables: list[Symbol]) -> None:
 
     defines = []
     for variable in sorted(variables, key=lambda symbol: symbol.offset):
-        if "+" not in variable.flags and (
+        if not variable.is_decompiled and (
             define := make_var_pointer_define(variable)
         ):
             defines.append(define)

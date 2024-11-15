@@ -14,6 +14,7 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
@@ -195,8 +196,9 @@ BOOL __cdecl GF_LoadFromFile(const char *const file_name)
     BENCHMARK *const benchmark = Benchmark_Start();
     DWORD bytes_read;
 
-    const char *full_path = GetFullPath(file_name);
+    const char *full_path = File_GetFullPath(file_name);
     VFILE *const file = VFile_CreateFromPath(full_path);
+    Memory_FreePointer(&full_path);
     if (file == NULL) {
         return false;
     }
