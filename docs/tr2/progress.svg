@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.05% (946)</tspan> · <tspan class="known">21.54% (268)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.13% (947)</tspan> · <tspan class="known">21.46% (267)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="568.06" height="6" x="0" y="0" class="decompiled"/>
-<rect width="160.93" height="6" x="568.06" y="0" class="known"/>
+<rect width="568.66" height="6" x="0" y="0" class="decompiled"/>
+<rect width="160.33" height="6" x="568.66" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1134,7 +1134,7 @@
 <rect width="12" height="12" x="75" y="315" class="decompiled"><title>void __cdecl S_RemoveCtrlText(void);</title></rect>
 <rect width="12" height="12" x="90" y="315" class="decompiled"><title>int32_t __cdecl GetRenderHeight(void);</title></rect>
 <rect width="12" height="12" x="105" y="315" class="decompiled"><title>int32_t __cdecl GetRenderWidth(void);</title></rect>
-<rect width="12" height="12" x="120" y="315" class="known"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
+<rect width="12" height="12" x="120" y="315" class="decompiled"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
 <rect width="12" height="12" x="135" y="315" class="decompiled"><title>DWORD __cdecl S_DumpScreen(void);</title></rect>
 <rect width="12" height="12" x="150" y="315" class="known"><title>void __cdecl S_ClearScreen(void);</title></rect>
 <rect width="12" height="12" x="165" y="315" class="known"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.55%</tspan> · <tspan class="known">19.12%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.62%</tspan> · <tspan class="known">19.06%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="601.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="142.84" height="6" x="601.72" y="0" class="known"/>
+<rect width="602.22" height="6" x="0" y="0" class="decompiled"/>
+<rect width="142.34" height="6" x="602.22" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1726,7 +1726,7 @@
 <rect width="10.64" height="10.99" x="494.60" y="308.48" class="decompiled"><title>void __cdecl Lara_TouchLava(ITEM *item);</title></rect>
 <rect width="10.64" height="10.99" x="494.60" y="322.47" class="decompiled"><title>void __cdecl RenderFinish(bool need_to_clear_textures);</title></rect>
 <rect width="10.64" height="10.87" x="494.60" y="336.46" class="decompiled"><title>bool __cdecl DInputJoystickCreate(void);</title></rect>
-<rect width="10.64" height="10.87" x="494.60" y="350.33" class="known"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
+<rect width="10.64" height="10.87" x="494.60" y="350.33" class="decompiled"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
 <rect width="10.64" height="10.81" x="494.60" y="364.19" class="decompiled"><title>void __cdecl Effect_Kill(int16_t fx_num);</title></rect>
 <rect width="10.72" height="10.72" x="508.24" y="122.62" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
 <rect width="10.66" height="10.72" x="521.97" y="122.62" class="decompiled"><title>void __cdecl Lara_SlideSlope(ITEM *item, COLL_INFO *coll);</title></rect>

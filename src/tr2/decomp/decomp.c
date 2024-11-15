@@ -21,6 +21,7 @@
 #include "game/lot.h"
 #include "game/math.h"
 #include "game/music.h"
+#include "game/output.h"
 #include "game/overlay.h"
 #include "game/random.h"
 #include "game/room.h"
@@ -2920,4 +2921,53 @@ int32_t __cdecl GetRenderHeight(void)
 int32_t __cdecl GetRenderWidth(void)
 {
     return g_PhdWinWidth;
+}
+
+void __cdecl S_InitialisePolyList(bool clear_back_buffer)
+{
+    CLEAR_BUFFER_FLAGS clear_buffer_flags = 0;
+
+    if (g_WinVidNeedToResetBuffers) {
+        RestoreLostBuffers();
+        WinVidSpinMessageLoop(0);
+
+        if (g_SavedAppSettings.fullscreen) {
+            clear_buffer_flags = CLRB_BACK_BUFFER | CLRB_PRIMARY_BUFFER;
+            if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+                clear_buffer_flags |= CLRB_RENDER_BUFFER;
+            }
+            if (g_SavedAppSettings.triple_buffering) {
+                clear_buffer_flags |= CLRB_THIRD_BUFFER;
+            }
+            WaitPrimaryBufferFlip();
+        } else {
+            clear_buffer_flags = CLRB_WINDOWED_PRIMARY_BUFFER;
+            if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+                clear_buffer_flags |= CLRB_BACK_BUFFER;
+            } else {
+                clear_buffer_flags |= CLRB_RENDER_BUFFER;
+            }
+        }
+        ClearBuffers(clear_buffer_flags, 0);
+        clear_back_buffer = 0;
+        g_WinVidNeedToResetBuffers = 0;
+    }
+
+    clear_buffer_flags = CLRB_PHDWINSIZE;
+    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+        clear_buffer_flags |= CLRB_RENDER_BUFFER;
+        ClearBuffers(clear_buffer_flags, 0);
+    } else {
+        if (clear_back_buffer) {
+            clear_buffer_flags = CLRB_BACK_BUFFER;
+        }
+        if (g_SavedAppSettings.zbuffer && g_ZBufferSurface != NULL) {
+            clear_buffer_flags |= CLRB_Z_BUFFER;
+        }
+        ClearBuffers(clear_buffer_flags, 0);
+        HWR_BeginScene();
+        HWR_EnableZBuffer(true, true);
+    }
+
+    Output_InitPolyList();
 }

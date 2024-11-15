@@ -156,7 +156,6 @@
 #define S_FadeToBlack ((void __cdecl (*)(void))0x0044C3A0)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
-#define S_InitialisePolyList ((void __cdecl (*)(BOOL clear_back_buffer))0x00450B00)
 #define S_ClearScreen ((void __cdecl (*)(void))0x00450C30)
 #define S_InitialiseScreen ((void __cdecl (*)(GAMEFLOW_LEVEL_TYPE level_type))0x00450C40)
 #define S_OutputPolyList ((void __cdecl (*)(void))0x00450C80)

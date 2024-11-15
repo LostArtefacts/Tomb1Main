@@ -132,3 +132,4 @@ void __cdecl DisplayCredits(void);
 DWORD __cdecl S_DumpScreen(void);
 int32_t __cdecl GetRenderHeight(void);
 int32_t __cdecl GetRenderWidth(void);
+void __cdecl S_InitialisePolyList(bool clear_back_buffer);
