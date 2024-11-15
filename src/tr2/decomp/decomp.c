@@ -2911,3 +2911,8 @@ DWORD __cdecl S_DumpScreen(void)
     ScreenPartialDump();
     return passed;
 }
+
+int32_t __cdecl GetRenderHeight(void)
+{
+    return g_PhdWinHeight;
+}

@@ -238,17 +238,18 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00449850, UpdateGameResolution);
     INJECT(enable, 0x004498C0, DecodeErrorMessage);
     INJECT(enable, 0x0044C3F0, S_Wait);
+    INJECT(enable, 0x0044CA70, DisplayCredits);
     INJECT(enable, 0x0044D610, S_InitialiseSystem);
     INJECT(enable, 0x0044E4E0, RenderErrorBox);
     INJECT(enable, 0x0044E520, WinMain);
     INJECT(enable, 0x0044E700, GameInit);
     INJECT(enable, 0x0044E7A0, WinGameStart);
+    INJECT(enable, 0x00450AE0, GetRenderHeight);
+    INJECT(enable, 0x00450BF0, S_DumpScreen);
+    INJECT(enable, 0x00451DE0, S_DisplayPicture);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);
     INJECT(enable, 0x00455140, S_LoadSettings);
-    INJECT(enable, 0x00451DE0, S_DisplayPicture);
-    INJECT(enable, 0x0044CA70, DisplayCredits);
-    INJECT(enable, 0x00450BF0, S_DumpScreen);
 }
 
 static void M_DecompFMV(const bool enable)
