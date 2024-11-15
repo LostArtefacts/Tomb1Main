@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.01% (958)</tspan> · <tspan class="known">20.58% (256)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.09% (959)</tspan> · <tspan class="known">20.50% (255)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="575.26" height="6" x="0" y="0" class="decompiled"/>
-<rect width="153.72" height="6" x="575.26" y="0" class="known"/>
+<rect width="575.86" height="6" x="0" y="0" class="decompiled"/>
+<rect width="153.12" height="6" x="575.86" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1160,7 +1160,7 @@
 <rect width="12" height="12" x="465" y="315" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="480" y="315" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="12" height="12" x="495" y="315" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
-<rect width="12" height="12" x="510" y="315" class="known"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
+<rect width="12" height="12" x="510" y="315" class="decompiled"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
 <rect width="12" height="12" x="525" y="315" class="known"><title>BOOL __cdecl DecompPCX(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal);</title></rect>
 <rect width="12" height="12" x="540" y="315" class="unused"><title>sub_4523A0</title></rect>
 <rect width="12" height="12" x="555" y="315" class="unused"><title>sub_4523B0</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.86%</tspan> · <tspan class="known">18.82%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.03%</tspan> · <tspan class="known">18.64%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="604" height="6" x="0" y="0" class="decompiled"/>
-<rect width="140.56" height="6" x="604" y="0" class="known"/>
+<rect width="605.30" height="6" x="0" y="0" class="decompiled"/>
+<rect width="139.26" height="6" x="605.30" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1472,7 +1472,7 @@
 <rect width="19.34" height="19.77" x="368.43" y="115.48" class="decompiled"><title>BOOL __cdecl Level_LoadSamples(HANDLE handle);</title></rect>
 <rect width="19.34" height="19.69" x="368.43" y="138.24" class="decompiled"><title>int32_t __cdecl Lara_TestClimb(int32_t x, int32_t y, int32_t z, int32_t xfront, int32_t zfront, int32_t item_height, int16_t item_room, int32_t *shift);</title></rect>
 <rect width="19.34" height="19.66" x="368.43" y="160.94" class="known"><title>bool __cdecl SE_WriteAppSettings(APP_SETTINGS *settings);</title></rect>
-<rect width="19.34" height="19.14" x="368.43" y="183.60" class="known"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
+<rect width="19.34" height="19.14" x="368.43" y="183.60" class="decompiled"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
 <rect width="19.34" height="19.03" x="368.43" y="205.73" class="decompiled"><title>void __cdecl DrawTextureTile(int32_t sx, int32_t sy, int32_t width, int32_t height, HWR_TEXTURE_HANDLE tex_source, int32_t tu, int32_t tv, int32_t t_width, int32_t t_height, D3DCOLOR color0, D3DCOLOR color1, D3DCOLOR color2, D3DCOLOR color3);</title></rect>
 <rect width="19.34" height="18.77" x="368.43" y="227.76" class="decompiled"><title>void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="19.34" height="18.77" x="368.43" y="249.52" class="decompiled"><title>bool __cdecl Level_Load(const char *file_name, int32_t level_num);</title></rect>

@@ -3080,3 +3080,53 @@ uint16_t __cdecl S_FindColor(
 {
     return FindNearestPaletteEntry(g_GamePalette8, red, green, blue, false);
 }
+
+void __cdecl S_CopyBufferToScreen(void)
+{
+    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+        if (memcmp(g_GamePalette8, g_PicturePalette, 256 * 100) != 0) {
+            S_SyncPictureBufferPalette();
+        }
+        g_RenderBufferSurface->lpVtbl->Blt(
+            g_RenderBufferSurface, &g_GameVid_Rect, g_PictureBufferSurface,
+            NULL, DDBLT_WAIT, NULL);
+    } else if (g_BGND_PictureIsReady) {
+        BGND_GetPageHandles();
+        HWR_EnableZBuffer(false, false);
+
+        const uint32_t color = 0xFFFFFFFF;
+        const int32_t tile_x[4] = { 0, 256, 512, 640 };
+        const int32_t tile_y[3] = { 0, 256, 480 };
+        int32_t x[4];
+        int32_t y[3];
+
+        for (int32_t i = 0; i < 4; i++) {
+            x[i] = g_PhdWinMinX + tile_x[i] * g_PhdWinWidth / 640;
+        }
+        for (int32_t i = 0; i < 3; i++) {
+            y[i] = g_PhdWinMinY + tile_y[i] * g_PhdWinHeight / 480;
+        }
+
+        DrawTextureTile(
+            x[0], y[0], x[1] - x[0], y[1] - y[0], g_BGND_PageHandles[0], 0, 0,
+            256, 256, color, color, color, color);
+        DrawTextureTile(
+            x[1], y[0], x[2] - x[1], y[1] - y[0], g_BGND_PageHandles[1], 0, 0,
+            256, 256, color, color, color, color);
+        DrawTextureTile(
+            x[2], y[0], x[3] - x[2], y[1] - y[0], g_BGND_PageHandles[2], 0, 0,
+            128, 256, color, color, color, color);
+        DrawTextureTile(
+            x[0], y[1], x[1] - x[0], y[2] - y[1], g_BGND_PageHandles[3], 0, 0,
+            256, 224, color, color, color, color);
+        DrawTextureTile(
+            x[1], y[1], x[2] - x[1], y[2] - y[1], g_BGND_PageHandles[4], 0, 0,
+            256, 224, color, color, color, color);
+        DrawTextureTile(
+            x[2], y[1], x[3] - x[2], y[2] - y[1], g_BGND_PageHandles[2], 128, 0,
+            128, 224, color, color, color, color);
+        HWR_EnableZBuffer(true, true);
+    } else {
+        BGND_DrawInGameBackground();
+    }
+}

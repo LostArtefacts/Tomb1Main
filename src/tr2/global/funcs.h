@@ -168,7 +168,6 @@
 #define FadeToPal ((void __cdecl (*)(int32_t fade_value, RGB_888 *palette))0x00451FA0)
 #define ScreenClear ((void __cdecl (*)(bool is_phd_win_size))0x00452170)
 #define S_CopyScreenToBuffer ((void __cdecl (*)(void))0x004521A0)
-#define S_CopyBufferToScreen ((void __cdecl (*)(void))0x00452250)
 #define DecompPCX ((BOOL __cdecl (*)(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal))0x004522A0)
 #define OpenGameRegistryKey ((bool __cdecl (*)(LPCTSTR key))0x004523C0)
 #define CloseGameRegistryKey ((LONG __cdecl (*)(void))0x00452410)

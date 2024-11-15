@@ -4076,7 +4076,7 @@ typedef enum {
 0x00451FA0  0x01C9  *R      void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);
 0x00452170  0x0026  -R      void __cdecl ScreenClear(bool is_phd_win_size);
 0x004521A0  0x00AB  -R      void __cdecl S_CopyScreenToBuffer(void);
-0x00452250  0x0254  *R      void __cdecl S_CopyBufferToScreen(void);
+0x00452250  0x0254  +R      void __cdecl S_CopyBufferToScreen(void);
 0x004522A0  0x00FA  -R      BOOL __cdecl DecompPCX(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal);
 0x004523A0  0x0005  x       sub_4523A0
 0x004523B0  0x0001  x       sub_4523B0
@@ -4795,7 +4795,7 @@ typedef enum {
 0x0051A004  -       char *g_GameBuf_MemPtr;
 0x0051A008  -       size_t g_GameBuf_MemUsed;
 0x0051A00C  -       size_t g_GameBuf_MemFree;
-0x0051B608  -       RGB_888 g_PicturePalette[256]
+0x0051B608  -       RGB_888 g_PicturePalette[256];
 0x004D7E7C  -       int32_t g_DetonateAllMines;
 0x005206A4  -       int32_t g_SavegameBufPos;
 0x0051E9C8  -       char *g_SavegameBufPtr;

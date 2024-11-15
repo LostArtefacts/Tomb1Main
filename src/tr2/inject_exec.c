@@ -259,6 +259,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00450C80, S_OutputPolyList);
     INJECT(enable, 0x00450F30, S_InsertBackPolygon);
     INJECT(enable, 0x00451DE0, S_DisplayPicture);
+    INJECT(enable, 0x00452250, S_CopyBufferToScreen);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);
     INJECT(enable, 0x00455140, S_LoadSettings);
