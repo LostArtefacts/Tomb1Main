@@ -3143,6 +3143,18 @@ void __cdecl IncreaseScreenSize(void)
     }
 }
 
+void __cdecl DecreaseScreenSize(void)
+{
+    if (g_GameSizer != 0.44) {
+        g_GameSizer = g_GameSizer - 0.08;
+        if (g_GameSizer < 0.44) {
+            g_GameSizer = 0.44;
+        }
+        g_GameSizerCopy = g_GameSizer;
+        setup_screen_size();
+    }
+}
+
 void __cdecl TempVideoAdjust(const int32_t hires, const double sizer)
 {
     g_IsVidSizeLock = true;
