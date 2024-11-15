@@ -3049,3 +3049,11 @@ void __cdecl S_DrawScreenBox(
     S_DrawScreenLine(
         sx - 1, height + sy + 1, z, width + 1, 0, col_2, NULL, flags);
 }
+
+void __cdecl S_DrawScreenFBox(
+    const int32_t sx, const int32_t sy, const int32_t z, const int32_t width,
+    const int32_t height, const uint8_t color_idx,
+    const GOURAUD_FILL *const gour, const uint16_t flags)
+{
+    g_Output_InsertTransQuad(sx, sy, width + 1, height + 1, g_PhdNearZ + 8 * z);
+}

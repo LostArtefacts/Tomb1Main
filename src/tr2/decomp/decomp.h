@@ -144,3 +144,6 @@ void __cdecl S_DrawScreenLine(
 void __cdecl S_DrawScreenBox(
     int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height,
     uint8_t color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);
+void __cdecl S_DrawScreenFBox(
+    int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height,
+    uint8_t color_idx, const GOURAUD_FILL *gour, uint16_t flags);
