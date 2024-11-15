@@ -488,7 +488,7 @@ void __cdecl Overlay_AddDisplayPickup(const int16_t object_id)
 {
     if (object_id == O_SECRET_1 || object_id == O_SECRET_2
         || object_id == O_SECRET_3) {
-        Music_Play(g_GameFlow.secret_track, false);
+        Music_Play(g_GameFlow.secret_track, MPM_ALWAYS);
     }
 
     int32_t grid_x = -1;

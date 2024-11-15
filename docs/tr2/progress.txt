@@ -4131,7 +4131,7 @@ typedef enum {
 0x004553C0  0x001F  +       BOOL __cdecl S_Audio_Sample_OutIsTrackPlaying(int32_t track_id);
 0x004553E0  0x0077  +       bool __cdecl Music_Init(void);
 0x00455460  0x0051  +       void __cdecl Music_Shutdown(void);
-0x00455500  0x006F  +       void __cdecl Music_Play(int16_t track_id, bool is_looped);
+0x00455500  0x006F  +       void __cdecl Music_Legacy_Play(int16_t track_id, bool is_looped);
 0x00455570  0x0039  +       void __cdecl Music_Stop(void);
 0x004555B0  0x0084  +       bool __cdecl Music_PlaySynced(int32_t track_id);
 0x00455640  0x0061  +       int32_t __cdecl Music_GetFrames(void);
@@ -4249,7 +4249,7 @@ typedef enum {
 0x0046408C  -       float g_RhwFactor = 335544320.0f; // 10*2**25
 0x004640B0  -       int32_t g_CineTrackID = 1;
 0x004640B8  -       int32_t g_CineTickRate = 0x8000; // 0x8000 = PHD_ONE/TICKS_PER_FRAME
-0x004640BC  -       int16_t g_CD_TrackID = -1;
+0x004640BC  +       int16_t g_CD_TrackID = -1;
 0x004640C4  -       int32_t g_FlipEffect = -1;
 0x004641F0  -       int32_t g_AssaultBestTime = -1;
 0x004641F8  -       void (*__cdecl g_EffectRoutines[32])(ITEM *item);

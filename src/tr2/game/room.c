@@ -115,27 +115,29 @@ static void M_TriggerMusicTrack(
         }
     }
 
-    if (track != g_CD_TrackID) {
-        const int32_t timer = trigger->timer;
-        if (timer) {
-            g_CD_TrackID = track;
-            g_MusicTrackFlags[track] =
-                (g_MusicTrackFlags[track] & 0xFF00) | ((30 * timer) & 0xFF);
-        } else {
-            Music_Play(track, false);
-        }
-    } else {
-        int32_t timer = g_MusicTrackFlags[track] & 0xFF;
-        if (timer) {
-            timer--;
-            if (timer == 0) {
-                g_CD_TrackID = -1;
-                Music_Play(track, false);
-            }
-            g_MusicTrackFlags[track] =
-                (g_MusicTrackFlags[track] & 0xFF00) | (timer & 0xFF);
-        }
+    if (trigger->timer == 0) {
+        Music_Play(track, MPM_TRACKED);
+        return;
     }
+
+    if (track != Music_GetDelayedTrack()) {
+        Music_Play(track, MPM_DELAYED);
+        g_MusicTrackFlags[track] = (g_MusicTrackFlags[track] & 0xFF00)
+            | ((FRAMES_PER_SECOND * trigger->timer) & 0xFF);
+        return;
+    }
+
+    int32_t timer = g_MusicTrackFlags[track] & 0xFF;
+    if (timer == 0) {
+        return;
+    }
+
+    timer--;
+    if (timer == 0) {
+        Music_Play(track, MPM_TRACKED);
+    }
+    g_MusicTrackFlags[track] =
+        (g_MusicTrackFlags[track] & 0xFF00) | (timer & 0xFF);
 }
 
 static bool M_TestLava(const ITEM *const item)

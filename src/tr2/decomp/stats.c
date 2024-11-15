@@ -314,7 +314,7 @@ int32_t __cdecl LevelStats(const int32_t level_num)
     char buffer[100];
     sprintf(buffer, "%02d:%02d:%02d", sec / 3600, (sec / 60) % 60, sec % 60);
 
-    Music_Play(g_GameFlow.level_complete_track, false);
+    Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
 
     TempVideoAdjust(g_HiRes, 1.0);
     FadeToPal(30, g_GamePalette8);

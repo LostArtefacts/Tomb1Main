@@ -1216,7 +1216,7 @@
 <rect width="12" height="12" x="555" y="330" class="decompiled"><title>BOOL __cdecl S_Audio_Sample_OutIsTrackPlaying(int32_t track_id);</title></rect>
 <rect width="12" height="12" x="570" y="330" class="decompiled"><title>bool __cdecl Music_Init(void);</title></rect>
 <rect width="12" height="12" x="585" y="330" class="decompiled"><title>void __cdecl Music_Shutdown(void);</title></rect>
-<rect width="12" height="12" x="600" y="330" class="decompiled"><title>void __cdecl Music_Play(int16_t track_id, bool is_looped);</title></rect>
+<rect width="12" height="12" x="600" y="330" class="decompiled"><title>void __cdecl Music_Legacy_Play(int16_t track_id, bool is_looped);</title></rect>
 <rect width="12" height="12" x="615" y="330" class="decompiled"><title>void __cdecl Music_Stop(void);</title></rect>
 <rect width="12" height="12" x="630" y="330" class="decompiled"><title>bool __cdecl Music_PlaySynced(int32_t track_id);</title></rect>
 <rect width="12" height="12" x="645" y="330" class="decompiled"><title>int32_t __cdecl Music_GetFrames(void);</title></rect>
@@ -2011,7 +2011,7 @@
 <rect width="6.65" height="6.63" x="588.61" y="274.42" class="decompiled"><title>void __cdecl CreatePictureBuffer(void);</title></rect>
 <rect width="6.65" height="6.54" x="588.61" y="284.05" class="decompiled"><title>int32_t __cdecl Box_UpdateLOT(LOT_INFO *lot, int32_t expansion);</title></rect>
 <rect width="6.65" height="6.54" x="588.61" y="293.59" class="decompiled"><title>void __cdecl Item_RemoveDrawn(int16_t item_num);</title></rect>
-<rect width="6.65" height="6.54" x="588.61" y="303.13" class="decompiled"><title>void __cdecl Music_Play(int16_t track_id, bool is_looped);</title></rect>
+<rect width="6.65" height="6.54" x="588.61" y="303.13" class="decompiled"><title>void __cdecl Music_Legacy_Play(int16_t track_id, bool is_looped);</title></rect>
 <rect width="6.65" height="6.54" x="588.61" y="312.67" class="known"><title>BOOL __cdecl UT_CenterWindow(HWND hWnd);</title></rect>
 <rect width="6.65" height="6.46" x="588.61" y="322.21" class="known"><title>void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="331.67" class="decompiled"><title>int32_t __cdecl Output_VisibleZClip(const PHD_VBUF *vtx0, const PHD_VBUF *vtx1, const PHD_VBUF *vtx2);</title></rect>

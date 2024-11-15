@@ -28,7 +28,7 @@ void __cdecl GongBonger_Control(const int16_t item_num)
 
     Item_Animate(item);
     if (item->frame_num - g_Anims[item->anim_num].frame_base == 41) {
-        Music_Play(MX_REVEAL_1, 0);
+        Music_Play(MX_REVEAL_1, MPM_ALWAYS);
         g_Camera.bounce -= 50;
     }
 

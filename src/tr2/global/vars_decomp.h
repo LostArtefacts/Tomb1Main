@@ -12,7 +12,6 @@
 #define g_RhwFactor (*(float*)0x0046408C) // = 335544320.0f
 #define g_CineTrackID (*(int32_t*)0x004640B0) // = 1
 #define g_CineTickRate (*(int32_t*)0x004640B8) // = 0x8000
-#define g_CD_TrackID (*(int16_t*)0x004640BC) // = -1
 #define g_FlipEffect (*(int32_t*)0x004640C4) // = -1
 #define g_BoxLines (*(int32_t(*)[12][2])0x00464180)
 #define g_AssaultBestTime (*(int32_t*)0x004641F0) // = -1

@@ -317,7 +317,7 @@ int16_t __cdecl TitleSequence(void)
 
     S_DisplayPicture("data/title.pcx", true);
     if (g_GameFlow.title_track) {
-        Music_Play(g_GameFlow.title_track, true);
+        Music_Play(g_GameFlow.title_track, MPM_LOOPED);
     }
 
     GAME_FLOW_DIR dir = Inv_Display(INV_TITLE_MODE);
@@ -1127,7 +1127,7 @@ int32_t __cdecl Level_Initialise(
     if (level_type == GFL_NORMAL || level_type == GFL_SAVED
         || level_type == GFL_DEMO) {
         if (g_GF_MusicTracks[0]) {
-            Music_Play(g_GF_MusicTracks[0], 1);
+            Music_Play(g_GF_MusicTracks[0], MPM_LOOPED);
         }
     }
     g_IsAssaultTimerActive = 0;
@@ -2876,7 +2876,7 @@ void __cdecl DisplayCredits(void)
     memcpy(old_palette, g_GamePalette8, sizeof(old_palette));
     memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
 
-    Music_Play(MX_SKIDOO_THEME, false);
+    Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
 
     for (int32_t i = 0; i < 9; i++) {
         char file_name[60];

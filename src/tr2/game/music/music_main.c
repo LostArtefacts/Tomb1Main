@@ -14,6 +14,8 @@
 #include <assert.h>
 
 static MUSIC_TRACK_ID m_TrackCurrent = MX_INACTIVE;
+static MUSIC_TRACK_ID m_TrackLastPlayed = MX_INACTIVE;
+static MUSIC_TRACK_ID m_TrackDelayed = MX_INACTIVE;
 static MUSIC_TRACK_ID m_TrackLooped = MX_INACTIVE;
 
 static float m_MusicVolume = 0.0f;
@@ -65,9 +67,10 @@ static void M_StreamFinished(const int32_t stream_id, void *const user_data)
 {
     // When a stream finishes, play the remembered background BGM.
     if (stream_id == m_AudioStreamID) {
+        m_TrackCurrent = MX_INACTIVE;
         m_AudioStreamID = -1;
         if (m_TrackLooped >= 0) {
-            Music_Play(m_TrackLooped, true);
+            Music_Play(m_TrackLooped, MPM_LOOPED);
         }
     }
 }
@@ -88,6 +91,8 @@ bool __cdecl Music_Init(void)
 
 finish:
     m_TrackCurrent = MX_INACTIVE;
+    m_TrackLastPlayed = MX_INACTIVE;
+    m_TrackDelayed = MX_INACTIVE;
     m_TrackLooped = MX_INACTIVE;
     return result;
 }
@@ -106,9 +111,23 @@ void __cdecl Music_Shutdown(void)
     Audio_Stream_Close(m_AudioStreamID);
 }
 
-void __cdecl Music_Play(int16_t track_id, bool is_looped)
+void __cdecl Music_Legacy_Play(int16_t track_id, bool is_looped)
 {
-    if (track_id == m_TrackCurrent) {
+    Music_Play(track_id, is_looped ? MPM_LOOPED : MPM_ALWAYS);
+}
+
+void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
+{
+    if (track_id == m_TrackCurrent && mode != MPM_ALWAYS) {
+        return;
+    }
+
+    if (mode == MPM_TRACKED && track_id == m_TrackLastPlayed) {
+        return;
+    }
+
+    if (mode == MPM_DELAYED) {
+        m_TrackDelayed = track_id;
         return;
     }
 
@@ -127,8 +146,7 @@ void __cdecl Music_Play(int16_t track_id, bool is_looped)
 
     const int32_t real_track_id = Music_GetRealTrack(track_id);
     LOG_DEBUG(
-        "Playing track %d (real: %d), looped: %d", track_id, real_track_id,
-        is_looped);
+        "Playing track %d (real: %d), mode: %d", track_id, real_track_id, mode);
 
     m_AudioStreamID = m_Backend->play(m_Backend, real_track_id);
     if (m_AudioStreamID < 0) {
@@ -136,15 +154,17 @@ void __cdecl Music_Play(int16_t track_id, bool is_looped)
         goto finish;
     }
 
-    Audio_Stream_SetIsLooped(m_AudioStreamID, is_looped);
+    Audio_Stream_SetIsLooped(m_AudioStreamID, mode == MPM_LOOPED);
     Audio_Stream_SetVolume(m_AudioStreamID, m_MusicVolume);
     Audio_Stream_SetFinishCallback(m_AudioStreamID, M_StreamFinished, NULL);
 
 finish:
-    g_CD_TrackID = track_id;
-    m_TrackCurrent = track_id;
-    if (is_looped) {
+    m_TrackDelayed = MX_INACTIVE;
+    if (mode == MPM_LOOPED) {
         m_TrackLooped = track_id;
+    } else {
+        m_TrackCurrent = track_id;
+        m_TrackLastPlayed = track_id;
     }
 }
 
@@ -154,6 +174,8 @@ void __cdecl Music_Stop(void)
         return;
     }
     m_TrackCurrent = MX_INACTIVE;
+    m_TrackLastPlayed = MX_INACTIVE;
+    m_TrackDelayed = MX_INACTIVE;
     m_TrackLooped = MX_INACTIVE;
     M_StopActiveStream();
 }
@@ -178,6 +200,21 @@ void __cdecl Music_SetVolume(int32_t volume)
     if (m_AudioStreamID >= 0) {
         Audio_Stream_SetVolume(m_AudioStreamID, m_MusicVolume);
     }
+}
+
+MUSIC_TRACK_ID Music_GetCurrentTrack(void)
+{
+    return m_TrackCurrent != MX_INACTIVE ? m_TrackCurrent : m_TrackLooped;
+}
+
+MUSIC_TRACK_ID Music_GetLastPlayedTrack(void)
+{
+    return m_TrackLastPlayed;
+}
+
+MUSIC_TRACK_ID Music_GetDelayedTrack(void)
+{
+    return m_TrackDelayed;
 }
 
 void Music_Pause(void)
