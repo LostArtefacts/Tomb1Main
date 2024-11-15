@@ -137,7 +137,6 @@
 #define IncreaseScreenSize ((void __cdecl (*)(void))0x00447810)
 #define DecreaseScreenSize ((void __cdecl (*)(void))0x00447880)
 #define setup_screen_size ((void __cdecl (*)(void))0x004478F0)
-#define S_FadeInInventory ((void __cdecl (*)(BOOL isFade))0x00447A10)
 #define S_FadeOutInventory ((void __cdecl (*)(BOOL isFade))0x00447A50)
 #define ReadFileSync ((BOOL __cdecl (*)(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped))0x004498D0)
 #define AdjustTextureUVs ((void __cdecl (*)(bool reset_uv_add))0x00449E50)

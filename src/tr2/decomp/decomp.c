@@ -3148,3 +3148,15 @@ void __cdecl TempVideoRemove(void)
         setup_screen_size();
     }
 }
+
+void __cdecl S_FadeInInventory(const bool is_fade)
+{
+    if (g_Inv_Mode != INV_TITLE_MODE) {
+        S_CopyScreenToBuffer();
+    }
+    if (is_fade) {
+        g_FadeValue = 0x100000;
+        g_FadeLimit = 0x180000;
+        g_FadeAdder = 0x8000;
+    }
+}
