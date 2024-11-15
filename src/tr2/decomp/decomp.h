@@ -154,3 +154,4 @@ void __cdecl S_CopyBufferToScreen(void);
 void __cdecl TempVideoAdjust(int32_t hires, double sizer);
 void __cdecl TempVideoRemove(void);
 void __cdecl S_FadeInInventory(bool is_fade);
+void __cdecl S_FadeOutInventory(bool is_fade);

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.33% (962)</tspan> · <tspan class="known">20.26% (252)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.41% (963)</tspan> · <tspan class="known">20.18% (251)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="577.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="151.32" height="6" x="577.66" y="0" class="known"/>
+<rect width="578.26" height="6" x="0" y="0" class="decompiled"/>
+<rect width="150.72" height="6" x="578.26" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -980,7 +980,7 @@
 <rect width="12" height="12" x="15" y="270" class="decompiled"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
 <rect width="12" height="12" x="30" y="270" class="decompiled"><title>void __cdecl TempVideoRemove(void);</title></rect>
 <rect width="12" height="12" x="45" y="270" class="decompiled"><title>void __cdecl S_FadeInInventory(BOOL isFade);</title></rect>
-<rect width="12" height="12" x="60" y="270" class="known"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
+<rect width="12" height="12" x="60" y="270" class="decompiled"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="12" height="12" x="75" y="270" class="unused"><title>sub_447A80</title></rect>
 <rect width="12" height="12" x="90" y="270" class="unused"><title>sub_447A90</title></rect>
 <rect width="12" height="12" x="105" y="270" class="unused"><title>sub_447AC0</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.08%</tspan> · <tspan class="known">18.59%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.09%</tspan> · <tspan class="known">18.58%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="605.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="138.90" height="6" x="605.66" y="0" class="known"/>
+<rect width="605.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="138.82" height="6" x="605.74" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2362,7 +2362,7 @@
 <rect width="2.53" height="2.85" x="733.42" y="314.78" class="decompiled"><title>void __cdecl Lara_State_PPReady(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.53" height="2.85" x="738.94" y="314.78" class="known"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
 <rect width="2.53" height="2.85" x="744.47" y="314.78" class="decompiled"><title>void __cdecl Text_Draw(void);</title></rect>
-<rect width="2.47" height="2.92" x="687.21" y="320.63" class="known"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
+<rect width="2.47" height="2.92" x="687.21" y="320.63" class="decompiled"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="326.55" class="decompiled"><title>void __cdecl Inv_Ring_MotionRadius(RING_INFO *ring, int16_t target);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="332.32" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="338.08" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>

@@ -220,6 +220,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00447990, TempVideoAdjust);
     INJECT(enable, 0x004479D0, TempVideoRemove);
     INJECT(enable, 0x00447A10, S_FadeInInventory);
+    INJECT(enable, 0x00447A50, S_FadeOutInventory);
     INJECT(enable, 0x00448430, CreateScreenBuffers);
     INJECT(enable, 0x00448570, CreatePrimarySurface);
     INJECT(enable, 0x00448610, CreateBackBuffer);

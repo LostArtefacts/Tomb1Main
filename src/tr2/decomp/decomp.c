@@ -3160,3 +3160,12 @@ void __cdecl S_FadeInInventory(const bool is_fade)
         g_FadeAdder = 0x8000;
     }
 }
+
+void __cdecl S_FadeOutInventory(const bool is_fade)
+{
+    if (is_fade) {
+        g_FadeValue = 0x180000;
+        g_FadeLimit = 0x100000;
+        g_FadeAdder = -0x8000;
+    }
+}
