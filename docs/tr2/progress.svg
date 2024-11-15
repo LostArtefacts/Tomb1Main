@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.37% (950)</tspan> · <tspan class="known">21.22% (264)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">76.45% (951)</tspan> · <tspan class="known">21.14% (263)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="570.46" height="6" x="0" y="0" class="decompiled"/>
-<rect width="158.53" height="6" x="570.46" y="0" class="known"/>
+<rect width="571.06" height="6" x="0" y="0" class="decompiled"/>
+<rect width="157.93" height="6" x="571.06" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1140,7 +1140,7 @@
 <rect width="12" height="12" x="165" y="315" class="decompiled"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="180" y="315" class="decompiled"><title>void __cdecl S_OutputPolyList(void);</title></rect>
 <rect width="12" height="12" x="195" y="315" class="known"><title>int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
-<rect width="12" height="12" x="210" y="315" class="known"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
+<rect width="12" height="12" x="210" y="315" class="decompiled"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
 <rect width="12" height="12" x="225" y="315" class="known"><title>void __cdecl S_PrintShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="315" class="known"><title>void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="255" y="315" class="known"><title>void __cdecl S_CalculateStaticLight(int16_t adder);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.68%</tspan> · <tspan class="known">19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.70%</tspan> · <tspan class="known">18.98%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="602.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="141.90" height="6" x="602.66" y="0" class="known"/>
+<rect width="602.81" height="6" x="0" y="0" class="decompiled"/>
+<rect width="141.75" height="6" x="602.81" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2167,7 +2167,7 @@
 <rect width="4.78" height="4.46" x="687.96" y="261.02" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="4.78" height="4.46" x="695.74" y="261.02" class="decompiled"><title>HRESULT __cdecl DDrawSurfaceRestoreLost(LPDDS surface1, LPDDS surface2, bool blank);</title></rect>
 <rect width="4.78" height="4.46" x="703.52" y="261.02" class="decompiled"><title>DWORD __cdecl GetRenderBitDepth(DWORD dwRGBBitCount);</title></rect>
-<rect width="4.78" height="4.46" x="711.31" y="261.02" class="known"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
+<rect width="4.78" height="4.46" x="711.31" y="261.02" class="decompiled"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
 <rect width="4.78" height="4.46" x="719.09" y="261.02" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_OutPlay(int32_t sample_id, uint16_t volume, int32_t pitch, int32_t pan);</title></rect>
 <rect width="4.78" height="4.46" x="726.87" y="261.02" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_OutPlayLooped(int32_t track_id, uint16_t volume, int32_t pitch, int32_t pan);</title></rect>
 <rect width="4.67" height="4.46" x="734.66" y="261.02" class="decompiled"><title>void __cdecl Overlay_DrawGameInfo(bool pickup_state);</title></rect>

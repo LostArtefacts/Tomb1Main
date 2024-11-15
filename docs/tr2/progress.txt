@@ -4056,7 +4056,7 @@ typedef enum {
 0x00450C40  0x0037  +R      void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);
 0x00450C80  0x0089  +R      void __cdecl S_OutputPolyList(void);
 0x00450CC0  0x0270  -R      int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);
-0x00450F30  0x0046  -R      void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
+0x00450F30  0x0046  +R      void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 0x00450F80  0x01F1  -R      void __cdecl S_PrintShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
 0x00451180  0x02F6  -R      void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
 0x00451480  0x0031  -R      void __cdecl S_CalculateStaticLight(int16_t adder);

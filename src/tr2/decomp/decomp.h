@@ -136,3 +136,5 @@ void __cdecl S_InitialisePolyList(bool clear_back_buffer);
 void __cdecl S_ClearScreen(void);
 void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);
 void __cdecl S_OutputPolyList(void);
+void __cdecl S_InsertBackPolygon(
+    int32_t x0, int32_t y0, int32_t x1, int32_t y1);

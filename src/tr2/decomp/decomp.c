@@ -3014,3 +3014,11 @@ void __cdecl S_OutputPolyList(void)
         g_D3DDev->lpVtbl->EndScene(g_D3DDev);
     }
 }
+
+void __cdecl S_InsertBackPolygon(
+    const int32_t x0, const int32_t y0, const int32_t x1, const int32_t y1)
+{
+    g_Output_InsertFlatRect(
+        g_PhdWinMinX + x0, g_PhdWinMinY + y0, g_PhdWinMinX + x1,
+        g_PhdWinMinY + y1, g_PhdFarZ + 1, g_InvColors[0]);
+}

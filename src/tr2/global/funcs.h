@@ -157,7 +157,6 @@
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
 #define S_GetObjectBounds ((int32_t __cdecl (*)(const BOUNDS_16 *bounds))0x00450CC0)
-#define S_InsertBackPolygon ((void __cdecl (*)(int32_t x0, int32_t y0, int32_t x1, int32_t y1))0x00450F30)
 #define S_PrintShadow ((void __cdecl (*)(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item))0x00450F80)
 #define S_CalculateLight ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t room_num))0x00451180)
 #define S_CalculateStaticLight ((void __cdecl (*)(int16_t adder))0x00451480)
