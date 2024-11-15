@@ -2878,7 +2878,7 @@ void __cdecl DisplayCredits(void)
     for (int32_t i = 0; i < 9; i++) {
         char file_name[60];
         sprintf(file_name, "data/credit0%d.pcx", i + 1);
-        g_IsVidModeLock = 1;
+        g_IsVidModeLock = true;
         FadeToPal(0, g_GamePalette8);
 
         S_DisplayPicture(file_name, false);
@@ -3171,6 +3171,24 @@ void __cdecl TempVideoRemove(void)
         g_GameSizer = g_GameSizerCopy;
         setup_screen_size();
     }
+}
+
+void __cdecl setup_screen_size(void)
+{
+    int32_t width = (double)g_GameVid_Width * g_GameSizer;
+    int32_t height = (double)g_GameVid_Height * g_GameSizer;
+    CLAMPG(width, g_GameVid_Width);
+    CLAMPG(height, g_GameVid_Height);
+    const int32_t x = (g_GameVid_Width - width) / 2;
+    const int32_t y = (g_GameVid_Height - height) / 2;
+    Output_Init(
+        x, y, width, height, VIEW_NEAR, VIEW_FAR, GAME_FOV, g_GameVid_BufWidth,
+        g_GameVid_BufHeight);
+    g_DumpY = y;
+    g_DumpX = x;
+    g_DumpWidth = width;
+    g_DumpHeight = height;
+    g_WinVidNeedToResetBuffers = true;
 }
 
 void __cdecl S_FadeInInventory(const bool is_fade)

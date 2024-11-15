@@ -155,5 +155,6 @@ void __cdecl DecreaseScreenSize(void);
 void __cdecl IncreaseScreenSize(void);
 void __cdecl TempVideoAdjust(int32_t hires, double sizer);
 void __cdecl TempVideoRemove(void);
+void __cdecl setup_screen_size(void);
 void __cdecl S_FadeInInventory(bool is_fade);
 void __cdecl S_FadeOutInventory(bool is_fade);

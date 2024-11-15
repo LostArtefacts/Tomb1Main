@@ -219,6 +219,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00447240, WinInReadKeyboard);
     INJECT(enable, 0x00447810, IncreaseScreenSize);
     INJECT(enable, 0x00447880, DecreaseScreenSize);
+    INJECT(enable, 0x004478F0, setup_screen_size);
     INJECT(enable, 0x00447990, TempVideoAdjust);
     INJECT(enable, 0x004479D0, TempVideoRemove);
     INJECT(enable, 0x00447A10, S_FadeInInventory);

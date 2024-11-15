@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.57% (965)</tspan> · <tspan class="known">20.02% (249)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.65% (966)</tspan> · <tspan class="known">19.94% (248)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="579.47" height="6" x="0" y="0" class="decompiled"/>
-<rect width="149.52" height="6" x="579.47" y="0" class="known"/>
+<rect width="580.07" height="6" x="0" y="0" class="decompiled"/>
+<rect width="148.92" height="6" x="580.07" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -976,7 +976,7 @@
 <rect width="12" height="12" x="705" y="255" class="decompiled"><title>void __cdecl WinInRunControlPanel(HWND hWnd);</title></rect>
 <rect width="12" height="12" x="720" y="255" class="decompiled"><title>void __cdecl IncreaseScreenSize(void);</title></rect>
 <rect width="12" height="12" x="735" y="255" class="decompiled"><title>void __cdecl DecreaseScreenSize(void);</title></rect>
-<rect width="12" height="12" x="0" y="270" class="known"><title>void __cdecl setup_screen_size(void);</title></rect>
+<rect width="12" height="12" x="0" y="270" class="decompiled"><title>void __cdecl setup_screen_size(void);</title></rect>
 <rect width="12" height="12" x="15" y="270" class="decompiled"><title>void __cdecl TempVideoAdjust(int32_t hires, double sizer);</title></rect>
 <rect width="12" height="12" x="30" y="270" class="decompiled"><title>void __cdecl TempVideoRemove(void);</title></rect>
 <rect width="12" height="12" x="45" y="270" class="decompiled"><title>void __cdecl S_FadeInInventory(BOOL isFade);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.15%</tspan> · <tspan class="known">18.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.19%</tspan> · <tspan class="known">18.48%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="606.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="138.39" height="6" x="606.17" y="0" class="known"/>
+<rect width="606.52" height="6" x="0" y="0" class="decompiled"/>
+<rect width="138.04" height="6" x="606.52" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1864,7 +1864,7 @@
 <rect width="8.39" height="8.72" x="649.30" y="173.53" class="decompiled"><title>void __cdecl CreateRenderBuffer(void);</title></rect>
 <rect width="8.32" height="8.72" x="660.70" y="173.53" class="decompiled"><title>int32_t __cdecl LOS_Check(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
 <rect width="8.25" height="8.72" x="672.02" y="173.53" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT3_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
-<rect width="8.25" height="8.72" x="683.27" y="173.53" class="known"><title>void __cdecl setup_screen_size(void);</title></rect>
+<rect width="8.25" height="8.72" x="683.27" y="173.53" class="decompiled"><title>void __cdecl setup_screen_size(void);</title></rect>
 <rect width="8.11" height="8.72" x="694.52" y="173.53" class="decompiled"><title>void __cdecl Output_DrawScreenSprite(int32_t sx, int32_t sy, int32_t sz, int32_t scale_h, int32_t scale_v, int16_t sprite_idx, int16_t shade, uint16_t flags);</title></rect>
 <rect width="8.11" height="8.72" x="705.63" y="173.53" class="decompiled"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
 <rect width="8.11" height="8.72" x="716.74" y="173.53" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
