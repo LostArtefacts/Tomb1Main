@@ -1,4 +1,6 @@
-﻿namespace TRX_ConfigToolLib.Models;
+﻿using TRX_ConfigToolLib.Utils;
+
+namespace TRX_ConfigToolLib.Models;
 
 public abstract class BaseProperty : BaseNotifyPropertyChanged
 {
@@ -15,6 +17,8 @@ public abstract class BaseProperty : BaseNotifyPropertyChanged
     {
         get => Language.Instance.Properties[Field].Description;
     }
+
+    public string NormalisedText { get; private set; }
 
     public abstract object ExportValue();
     public abstract void LoadValue(string value);
@@ -41,5 +45,8 @@ public abstract class BaseProperty : BaseNotifyPropertyChanged
     public virtual void Initialise(Specification specification)
     {
         SetToDefault();
+
+        string text = (Title + " " + Description).ToLower();
+        NormalisedText = TextUtilities.Normalise(text);
     }
 }

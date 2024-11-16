@@ -11,6 +11,7 @@ public class CategoryViewModel
     public CategoryViewModel(Category category)
     {
         _category = category;
+        ItemsSource = new(category.Properties);
     }
 
     public string Title
@@ -23,10 +24,7 @@ public class CategoryViewModel
         get => AssemblyUtils.GetEmbeddedResourcePath(_category.Image ?? _defaultImage);
     }
 
-    public IEnumerable<BaseProperty> ItemsSource
-    {
-        get => _category.Properties;
-    }
+    public FastObservableCollection<BaseProperty> ItemsSource { get; private set; }
 
     public double ViewPosition { get; set; }
 }

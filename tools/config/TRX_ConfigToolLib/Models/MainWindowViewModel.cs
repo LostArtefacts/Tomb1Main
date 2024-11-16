@@ -10,9 +10,12 @@ namespace TRX_ConfigToolLib.Models;
 
 public class MainWindowViewModel : BaseLanguageViewModel
 {
+    private const int _minSearchLength = 3;
+
     private readonly Configuration _configuration;
 
     public IEnumerable<CategoryViewModel> Categories { get; private set; }
+    public IEnumerable<CategoryViewModel> SearchResults { get; private set; }
 
     public MainWindowViewModel()
     {
@@ -28,6 +31,17 @@ public class MainWindowViewModel : BaseLanguageViewModel
 
         Categories = categories;
         SelectedCategory = Categories.FirstOrDefault();
+
+        // Search results are contained within a special category whose properties are built
+        // on-the-fly. Pick a random picture for it each time the application is used.
+        Random random = new();
+        SearchCategory = new(new()
+        {
+            Properties = new(),
+            Image = _configuration.Categories[random.Next(_configuration.Categories.Count)].Image,
+        });
+
+        SearchResults = new List<CategoryViewModel> { SearchCategory };
     }
 
     private void EditorPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -52,6 +66,8 @@ public class MainWindowViewModel : BaseLanguageViewModel
             NotifyPropertyChanged();
         }
     }
+
+    public CategoryViewModel SearchCategory { get; private set; }
 
     private bool _isEditorDirty;
     public bool IsEditorDirty
@@ -228,6 +244,78 @@ public class MainWindowViewModel : BaseLanguageViewModel
     private bool CanSaveAs()
     {
         return IsEditorActive;
+    }
+
+    private bool _beginSearch;
+    public bool BeginSearch
+    {
+        get => _beginSearch;
+        set
+        {
+            if (!value)
+            {
+                return;
+            }
+
+            _beginSearch = true;
+            NotifyPropertyChanged();
+            _beginSearch = false;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private string _searchText = string.Empty;
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            if (value == _searchText)
+            {
+                return;
+            }
+
+            _searchText = value;
+            RunPropertySearch();
+            NotifyPropertyChanged();
+            NotifyPropertyChanged(nameof(IsSearchActive));
+            NotifyPropertyChanged(nameof(IsSearchTextDefined));
+            NotifyPropertyChanged(nameof(SearchFailStatus));
+        }
+    }
+
+    public bool IsSearchActive => SearchCategory.ItemsSource.Any();
+    public bool IsSearchTextDefined => _searchText.Length > 0;
+    public bool SearchFailStatus => _searchText.Trim().Length >= _minSearchLength && !IsSearchActive;
+
+    private void RunPropertySearch()
+    {
+        string text = _searchText.Trim().ToLower();
+        if (text.Length < _minSearchLength)
+        {
+            SearchCategory.ItemsSource.RemoveAll();
+            return;
+        }
+
+        text = TextUtilities.Normalise(text);
+        List<string> keywords = new(text.Split(null));
+        IEnumerable<BaseProperty> matchedProperties = Categories
+            .SelectMany(c => c.ItemsSource)
+            .Where(p => keywords.Any(p.NormalisedText.Contains));
+
+        SearchCategory.ItemsSource.ReplaceCollection(matchedProperties);
+    }
+
+    private RelayCommand _beginSearchCommand;
+    public ICommand BeginSearchCommand
+    {
+        get => _beginSearchCommand ??= new RelayCommand(() => BeginSearch = true);
+    }
+
+    private RelayCommand _closeSearchCommand;
+    public ICommand CloseSearchCommand
+    {
+        get => _closeSearchCommand ??= new RelayCommand(() => SearchText = string.Empty);
     }
 
     private RelayCommand _launchGameCommand;

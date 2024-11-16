@@ -58,55 +58,130 @@
         <utils:RelayKeyBinding
             CommandBinding="{Binding GitHubCommand}"
             Key="F11" />
+        <utils:RelayKeyBinding
+            CommandBinding="{Binding BeginSearchCommand}"
+            Modifiers="Ctrl"
+            Key="F" />
     </Window.InputBindings>
 
     <DockPanel>
-        <Menu
-            DockPanel.Dock="Top"
-            Background="{DynamicResource {x:Static SystemColors.WindowBrush}}">
-            <MenuItem Header="{Binding ViewText[menu_file]}">
-                <MenuItem
-                    Command="{Binding OpenCommand}"
-                    Header="{Binding ViewText[command_open]}"
-                    InputGestureText="Ctrl+O"/>
-                <MenuItem
-                    Command="{Binding ReloadCommand}"
-                    Header="{Binding ViewText[command_reload]}"
-                    InputGestureText="F5"/>
-                <Separator/>
-                <MenuItem
-                    Command="{Binding SaveCommand}"
-                    Header="{Binding ViewText[command_save]}"
-                    InputGestureText="Ctrl+S"/>
-                <MenuItem
-                    Command="{Binding SaveAsCommand}"
-                    Header="{Binding ViewText[command_save_as]}"
-                    InputGestureText="Ctrl+Alt+S"/>
-                <Separator/>
-                <MenuItem
-                    Command="{Binding ExitCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                    Header="{Binding ViewText[command_exit]}"
-                    InputGestureText="Alt+F4"/>
-            </MenuItem>
+        <DockPanel DockPanel.Dock="Top">
+            <Menu
+                Background="{DynamicResource {x:Static SystemColors.WindowBrush}}">
+                <MenuItem Header="{Binding ViewText[menu_file]}">
+                    <MenuItem
+                        Command="{Binding OpenCommand}"
+                        Header="{Binding ViewText[command_open]}"
+                        InputGestureText="Ctrl+O"/>
+                    <MenuItem
+                        Command="{Binding ReloadCommand}"
+                        Header="{Binding ViewText[command_reload]}"
+                        InputGestureText="F5"/>
+                    <Separator/>
+                    <MenuItem
+                        Command="{Binding SaveCommand}"
+                        Header="{Binding ViewText[command_save]}"
+                        InputGestureText="Ctrl+S"/>
+                    <MenuItem
+                        Command="{Binding SaveAsCommand}"
+                        Header="{Binding ViewText[command_save_as]}"
+                        InputGestureText="Ctrl+Alt+S"/>
+                    <Separator/>
+                    <MenuItem
+                        Command="{Binding ExitCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Header="{Binding ViewText[command_exit]}"
+                        InputGestureText="Alt+F4"/>
+                </MenuItem>
 
-            <MenuItem Header="{Binding ViewText[menu_tools]}">
-                <MenuItem
-                    Command="{Binding RestoreDefaultsCommand}"
-                    Header="{Binding ViewText[command_restore]}"/>
-            </MenuItem>
+                <MenuItem Header="{Binding ViewText[menu_tools]}">
+                    <MenuItem
+                        Command="{Binding RestoreDefaultsCommand}"
+                        Header="{Binding ViewText[command_restore]}"/>
+                </MenuItem>
 
-            <MenuItem Header="{Binding ViewText[menu_help]}">
-                <MenuItem
-                    Command="{Binding GitHubCommand}"
-                    Header="{Binding ViewText[command_github]}"
-                    InputGestureText="F11"/>
-                <Separator/>
-                <MenuItem
-                    Command="{Binding AboutCommand}"
-                    Header="{Binding ViewText[command_about]}"/>
-            </MenuItem>
-        </Menu>
+                <MenuItem Header="{Binding ViewText[menu_help]}">
+                    <MenuItem
+                        Command="{Binding GitHubCommand}"
+                        Header="{Binding ViewText[command_github]}"
+                        InputGestureText="F11"/>
+                    <Separator/>
+                    <MenuItem
+                        Command="{Binding AboutCommand}"
+                        Header="{Binding ViewText[command_about]}"/>
+                </MenuItem>
+            </Menu>
+            
+            <Grid
+                DockPanel.Dock="Right"
+                Margin="0,7,7,0"
+                IsEnabled="{Binding IsEditorActive}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Grid.Column="1"
+                    BorderBrush="#666"
+                    BorderThickness="1"
+                    Background="{Binding SearchFailStatus, Converter={utils:ConditionalMarkupConverter TrueValue='#FFC7CE', FalseValue='White'}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="24"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Margin="0,1"
+                            x:Name="SearchTermTextBox"
+                            Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.BeginSearch}" Value="True">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=SearchTermTextBox}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        
+                        <TextBlock
+                            IsHitTestVisible="False"
+                            Text="{Binding ViewText[label_search]}"
+                            Padding="4,0,0,0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            Foreground="#666">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <Button
+                            Grid.Column="2"
+                            Command="{Binding CloseSearchCommand}"
+                            Style="{StaticResource SmallButtonStyle}"
+                            IsEnabled="{Binding IsSearchTextDefined}"
+                            Content="../Resources/close.png"
+                            ToolTip="{Binding ViewText[command_close_search]}"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
 
         <StatusBar
             DockPanel.Dock="Bottom">
@@ -163,7 +238,8 @@
                 IsEnabled="{Binding IsEditorActive}"
                 ItemsSource="{Binding Categories}"
                 SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
-                SelectionChanged="TabControl_SelectionChanged">
+                SelectionChanged="TabControl_SelectionChanged"
+                Visibility="{Binding IsSearchActive, Converter={StaticResource InverseBoolToCollapsedConverter}}">
                 <TabControl.Resources>
                     <ResourceDictionary Source="/TRX_ConfigToolLib;component/Resources/styles.xaml" />
                 </TabControl.Resources>
@@ -177,6 +253,34 @@
                     <DataTemplate>
                         <controls:CategoryControl
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=TabControl}, Converter={StaticResource BoolToHiddenConverter}}"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+
+            <TabControl
+                Grid.Row="1"
+                Margin="0,0,0,7"
+                Padding="0"
+                IsEnabled="{Binding IsEditorActive}"
+                ItemsSource="{Binding SearchResults}"
+                SelectedItem="{Binding SearchCategory, Mode=OneWay}"
+                Visibility="{Binding IsSearchActive, Converter={StaticResource BoolToCollapsedConverter}}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ViewText[label_search_results]}"/>
+                            <Button
+                                Content="../Resources/close.png"
+                                ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ViewText[command_close_search]}"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CloseSearchCommand}"
+                                Style="{StaticResource TabButtonStyle}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <controls:CategoryControl />
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>

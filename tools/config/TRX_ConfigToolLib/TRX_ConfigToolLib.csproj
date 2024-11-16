@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="Resources\arrow-down.png" />
     <None Remove="Resources\arrow-up.png" />
+    <None Remove="Resources\close.png" />
     <None Remove="Resources\const.json" />
     <None Remove="Resources\Lang\en.json" />
     <None Remove="Resources\Lang\es.json" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <Resource Include="Resources\arrow-down.png" />
     <Resource Include="Resources\arrow-up.png" />
+    <Resource Include="Resources\close.png" />
     <Resource Include="Resources\styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>

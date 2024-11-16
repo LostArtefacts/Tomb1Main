@@ -225,4 +225,70 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style
+        TargetType="{x:Type Button}"
+        x:Key="SmallButtonStyle">
+        <Setter
+            Property="Background"
+            Value="#333"/>
+        <Setter
+            Property="Foreground"
+            Value="#FFF"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        Padding="0,2"
+                        BorderThickness="0"
+                        BorderBrush="#ABADB3">
+                        <Image
+                            Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"
+                            Height="6"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter
+                    Property="Background"
+                    Value="#121212"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter
+                    Property="Background"
+                    Value="#858585"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        TargetType="{x:Type Button}"
+        BasedOn="{StaticResource SmallButtonStyle}"
+        x:Key="TabButtonStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        Padding="6,2"
+                        Margin="4,0,0,0"
+                        BorderThickness="1"
+                        BorderBrush="#ABADB3">
+                        <Image
+                            Source="../Resources/close.png"
+                            Height="6"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
