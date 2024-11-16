@@ -111,7 +111,7 @@
                         Header="{Binding ViewText[command_about]}"/>
                 </MenuItem>
             </Menu>
-            
+
             <Grid
                 DockPanel.Dock="Right"
                 Margin="0,7,7,0"
@@ -151,7 +151,7 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        
+
                         <TextBlock
                             IsHitTestVisible="False"
                             Text="{Binding ViewText[label_search]}"
