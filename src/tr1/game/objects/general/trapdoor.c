@@ -3,6 +3,8 @@
 #include "game/items.h"
 #include "global/const.h"
 
+#include <libtrx/utils.h>
+
 typedef enum {
     TRAPDOOR_STATE_CLOSED,
     TRAPDOOR_STATE_OPEN,
@@ -12,20 +14,40 @@ static bool M_IsItemOnTop(const ITEM *item, int32_t x, int32_t z);
 
 static bool M_IsItemOnTop(const ITEM *item, int32_t x, int32_t z)
 {
-    int32_t tx = item->pos.x >> WALL_SHIFT;
-    int32_t tz = item->pos.z >> WALL_SHIFT;
-    x >>= WALL_SHIFT;
-    z >>= WALL_SHIFT;
+    const BOUNDS_16 *const orig_bounds = &Item_GetBestFrame(item)->bounds;
+    BOUNDS_16 fixed_bounds = { 0 };
 
-    if (item->rot.y == 0 && x == tx && (z == tz || z == tz + 1)) {
-        return true;
-    } else if (item->rot.y == -PHD_180 && x == tx && (z == tz || z == tz - 1)) {
-        return true;
-    } else if (item->rot.y == PHD_90 && z == tz && (x == tx || x == tx + 1)) {
-        return true;
-    } else if (item->rot.y == -PHD_90 && z == tz && (x == tx || x == tx - 1)) {
+    // Bounds need to change in order to account for 2 sector trapdoors
+    // and the trapdoor angle.
+    if (item->rot.y == 0) {
+        fixed_bounds.min.x = orig_bounds->min.x;
+        fixed_bounds.max.x = orig_bounds->max.x;
+        fixed_bounds.min.z = orig_bounds->min.z;
+        fixed_bounds.max.z = orig_bounds->max.z;
+    } else if (item->rot.y == PHD_90) {
+        fixed_bounds.min.x = orig_bounds->min.z;
+        fixed_bounds.max.x = orig_bounds->max.z;
+        fixed_bounds.min.z = -orig_bounds->max.x;
+        fixed_bounds.max.z = -orig_bounds->min.x;
+    } else if (item->rot.y == -PHD_180) {
+        fixed_bounds.min.x = -orig_bounds->max.x;
+        fixed_bounds.max.x = -orig_bounds->min.x;
+        fixed_bounds.min.z = -orig_bounds->max.z;
+        fixed_bounds.max.z = -orig_bounds->min.z;
+    } else if (item->rot.y == -PHD_90) {
+        fixed_bounds.min.x = -orig_bounds->max.z;
+        fixed_bounds.max.x = -orig_bounds->min.z;
+        fixed_bounds.min.z = orig_bounds->min.x;
+        fixed_bounds.max.z = orig_bounds->max.x;
+    }
+
+    if (x <= item->pos.x + fixed_bounds.max.x
+        && x >= item->pos.x + fixed_bounds.min.x
+        && z <= item->pos.z + fixed_bounds.max.z
+        && z >= item->pos.z + fixed_bounds.min.z) {
         return true;
     }
+
     return false;
 }
 
