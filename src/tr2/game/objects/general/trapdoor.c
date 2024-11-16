@@ -19,30 +19,38 @@ void Trapdoor_Setup(OBJECT *const obj)
 int32_t __cdecl Trapdoor_IsItemOnTop(
     const ITEM *const item, const int32_t x, const int32_t z)
 {
-    // trapdoor sector
-    const XZ_32 obj = {
-        .x = item->pos.x >> WALL_SHIFT,
-        .z = item->pos.z >> WALL_SHIFT,
-    };
+    const BOUNDS_16 *const orig_bounds = &Item_GetBestFrame(item)->bounds;
+    BOUNDS_16 fixed_bounds = { 0 };
 
-    // test sector
-    const XZ_32 test = {
-        .x = x >> WALL_SHIFT,
-        .z = z >> WALL_SHIFT,
-    };
+    // Bounds need to change in order to account for 2 sector trapdoors
+    // and the trapdoor angle.
+    if (item->rot.y == 0) {
+        fixed_bounds.min_x = orig_bounds->min_x;
+        fixed_bounds.max_x = orig_bounds->max_x;
+        fixed_bounds.min_z = orig_bounds->min_z;
+        fixed_bounds.max_z = orig_bounds->max_z;
+    } else if (item->rot.y == PHD_90) {
+        fixed_bounds.min_x = orig_bounds->min_z;
+        fixed_bounds.max_x = orig_bounds->max_z;
+        fixed_bounds.min_z = -orig_bounds->max_x;
+        fixed_bounds.max_z = -orig_bounds->min_x;
+    } else if (item->rot.y == -PHD_180) {
+        fixed_bounds.min_x = -orig_bounds->max_x;
+        fixed_bounds.max_x = -orig_bounds->min_x;
+        fixed_bounds.min_z = -orig_bounds->max_z;
+        fixed_bounds.max_z = -orig_bounds->min_z;
+    } else if (item->rot.y == -PHD_90) {
+        fixed_bounds.min_x = -orig_bounds->max_z;
+        fixed_bounds.max_x = -orig_bounds->min_z;
+        fixed_bounds.min_z = orig_bounds->min_x;
+        fixed_bounds.max_z = orig_bounds->max_x;
+    }
 
-    switch (item->rot.y) {
-    case 0:
-        return test.x == obj.x && (test.z == obj.z || test.z == obj.z + 1);
-
-    case -PHD_180:
-        return test.x == obj.x && (test.z == obj.z || test.z == obj.z - 1);
-
-    case PHD_90:
-        return test.z == obj.z && (test.x == obj.x || test.x == obj.x + 1);
-
-    case -PHD_90:
-        return test.z == obj.z && (test.x == obj.x || test.x == obj.x - 1);
+    if (x <= item->pos.x + fixed_bounds.max_x
+        && x >= item->pos.x + fixed_bounds.min_x
+        && z <= item->pos.z + fixed_bounds.max_z
+        && z >= item->pos.z + fixed_bounds.min_z) {
+        return true;
     }
 
     return false;

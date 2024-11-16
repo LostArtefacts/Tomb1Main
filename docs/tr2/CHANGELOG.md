@@ -10,6 +10,7 @@
 - fixed Lara continuing to walk after being killed if in that animation (#1880, regression from 0.1)
 - fixed some music tracks looping while Lara remained on the same trigger tile (#1899, regression from 0.2)
 - fixed some music tracks not playing if they were the last played track and the level had no ambience (#1899, regression from 0.2)
+- fixed wrongly calculated trapdoor size that could affect custom levels (#1904)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)
