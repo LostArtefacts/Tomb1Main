@@ -115,3 +115,13 @@ cleanup:
 
     return result;
 }
+
+LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(const LPDDS surface)
+{
+    LPDIRECT3DTEXTURE2 texture_3d = NULL;
+    if (FAILED(surface->lpVtbl->QueryInterface(
+            surface, &g_IID_IDirect3DTexture2, (LPVOID *)&texture_3d))) {
+        return NULL;
+    }
+    return texture_3d;
+}

@@ -7,6 +7,7 @@
 
 // clang-format off
 #define g_IID_IDirectDrawSurface3 (*(GUID*)0x00463150)
+#define g_IID_IDirect3DTexture2 (*(GUID*)0x00463170)
 #define g_PerspectiveDistance (*(uint32_t*)0x00464060) // = 0x3000000
 #define g_PolyDrawRoutines (*((void(__cdecl  *(*)[9])(const int16_t *obj_ptr))0x00464068))
 #define g_RhwFactor (*(float*)0x0046408C) // = 335544320.0f
