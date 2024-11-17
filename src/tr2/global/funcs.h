@@ -135,7 +135,6 @@
 #define GiantYeti_Control ((void __cdecl (*)(int16_t item_num))0x00443050)
 #define Yeti_Control ((void __cdecl (*)(int16_t item_num))0x00443350)
 #define ReadFileSync ((BOOL __cdecl (*)(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped))0x004498D0)
-#define AdjustTextureUVs ((void __cdecl (*)(bool reset_uv_add))0x00449E50)
 #define S_LoadLevelFile ((BOOL __cdecl (*)(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type))0x0044B4B0)
 #define S_UnloadLevelFile ((void __cdecl (*)(void))0x0044B4D0)
 #define S_AdjustTexelCoordinates ((void __cdecl (*)(void))0x0044B500)

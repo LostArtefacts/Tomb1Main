@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.23% (998)</tspan> · <tspan class="known">17.36% (216)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.31% (999)</tspan> · <tspan class="known">17.28% (215)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="599.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.70" height="6" x="599.28" y="0" class="known"/>
+<rect width="599.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.10" height="6" x="599.88" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1031,7 +1031,7 @@
 <rect width="12" height="12" x="30" y="285" class="known"><title>BOOL __cdecl ReadFileSync(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped);</title></rect>
 <rect width="12" height="12" x="45" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadTexturePages(HANDLE handle);</title></rect>
 <rect width="12" height="12" x="60" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadRooms(HANDLE handle);</title></rect>
-<rect width="12" height="12" x="75" y="285" class="known"><title>void __cdecl AdjustTextureUVs(bool reset_uv_add);</title></rect>
+<rect width="12" height="12" x="75" y="285" class="decompiled"><title>void __cdecl AdjustTextureUVs(bool reset_uv_add);</title></rect>
 <rect width="12" height="12" x="90" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadObjects(HANDLE handle);</title></rect>
 <rect width="12" height="12" x="105" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadSprites(HANDLE handle);</title></rect>
 <rect width="12" height="12" x="120" y="285" class="decompiled"><title>BOOL __cdecl Level_LoadItems(HANDLE handle);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.35%</tspan> · <tspan class="known">17.32%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.39%</tspan> · <tspan class="known">17.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="615.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.40" height="6" x="615.16" y="0" class="known"/>
+<rect width="615.49" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.07" height="6" x="615.49" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1882,7 +1882,7 @@
 <rect width="8.15" height="8.31" x="545.57" y="288.25" class="decompiled"><title>void __cdecl CreateBackBuffer(void);</title></rect>
 <rect width="8.15" height="8.31" x="545.57" y="299.56" class="decompiled"><title>bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);</title></rect>
 <rect width="8.15" height="8.24" x="545.57" y="310.87" class="decompiled"><title>void __cdecl Overlay_DrawAirBar(bool flash_state);</title></rect>
-<rect width="8.15" height="8.24" x="545.57" y="322.11" class="known"><title>void __cdecl AdjustTextureUVs(bool reset_uv_add);</title></rect>
+<rect width="8.15" height="8.24" x="545.57" y="322.11" class="decompiled"><title>void __cdecl AdjustTextureUVs(bool reset_uv_add);</title></rect>
 <rect width="8.15" height="8.16" x="545.57" y="333.35" class="decompiled"><title>void __cdecl Output_DrawScreenSprite2D(int32_t sx, int32_t sy, int32_t sz, int32_t scale_h, int32_t scale_v, int16_t sprite_idx, int16_t shade, uint16_t flags);</title></rect>
 <rect width="8.15" height="8.16" x="545.57" y="344.51" class="decompiled"><title>void __cdecl Lara_Control_Cutscene(int16_t item_num);</title></rect>
 <rect width="8.15" height="8.16" x="545.57" y="355.67" class="decompiled"><title>void __cdecl Room_RemoveFlipItems(ROOM *r);</title></rect>

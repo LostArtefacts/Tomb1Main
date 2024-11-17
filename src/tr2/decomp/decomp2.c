@@ -509,3 +509,31 @@ void __cdecl S_CopyScreenToBuffer(void)
 
     memcpy(g_PicturePalette, g_GamePalette8, sizeof(RGB_888) * 256);
 }
+
+void __cdecl AdjustTextureUVs(const bool reset_uv_add)
+{
+    if (reset_uv_add) {
+        g_UVAdd = 0;
+    }
+
+    int32_t adjustment = g_SavedAppSettings.nearest_adjustment;
+    if (g_SavedAppSettings.render_mode == RM_HARDWARE
+        && (g_SavedAppSettings.texel_adjust_mode == TAM_ALWAYS
+            || (g_SavedAppSettings.texel_adjust_mode == TAM_BILINEAR_ONLY
+                && g_SavedAppSettings.bilinear_filtering))) {
+        adjustment = g_SavedAppSettings.linear_adjustment;
+    }
+
+    const int32_t offset = adjustment - g_UVAdd;
+    for (int32_t i = 0; i < g_TextureInfoCount; i++) {
+        PHD_UV *const uv = g_TextureInfo[i].uv;
+        int32_t uv_flags = g_LabTextureUVFlag[i];
+        for (int32_t j = 0; j < 4; j++) {
+            uv[j].u += (uv_flags & 1) ? -offset : offset;
+            uv[j].v += (uv_flags & 2) ? -offset : offset;
+            uv_flags >>= 2;
+        }
+    }
+
+    g_UVAdd += offset;
+}

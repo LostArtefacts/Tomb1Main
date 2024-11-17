@@ -190,7 +190,6 @@ typedef struct __unaligned {
     bool disable_16bit_textures;
     bool dont_sort_primitives;
     bool flip_broken;
-    bool disable_fmv;
     TEX_ADJUST_MODE texel_adjust_mode;
     int32_t nearest_adjustment;
     int32_t linear_adjustment;
@@ -3947,7 +3946,7 @@ typedef enum {
 0x004498D0  0x0049  -R      BOOL __cdecl ReadFileSync(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped);
 0x00449920  0x0188  +       BOOL __cdecl Level_LoadTexturePages(HANDLE handle);
 0x00449AB0  0x03A0  +       BOOL __cdecl Level_LoadRooms(HANDLE handle);
-0x00449E50  0x0097  -R      void __cdecl AdjustTextureUVs(bool reset_uv_add);
+0x00449E50  0x0097  +R      void __cdecl AdjustTextureUVs(bool reset_uv_add);
 0x00449EF0  0x057E  +       BOOL __cdecl Level_LoadObjects(HANDLE handle);
 0x0044A470  0x0135  +       BOOL __cdecl Level_LoadSprites(HANDLE handle);
 0x0044A5B0  0x01D6  +       BOOL __cdecl Level_LoadItems(HANDLE handle);

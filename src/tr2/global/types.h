@@ -205,7 +205,6 @@ typedef struct __unaligned {
     bool disable_16bit_textures;
     bool dont_sort_primitives;
     bool flip_broken;
-    bool disable_fmv;
     TEX_ADJUST_MODE texel_adjust_mode;
     int32_t nearest_adjustment;
     int32_t linear_adjustment;
