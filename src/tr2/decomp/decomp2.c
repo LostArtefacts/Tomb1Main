@@ -410,3 +410,8 @@ void __cdecl S_DontDisplayPicture(void)
         g_BGND_PictureIsReady = 0;
     }
 }
+
+void __cdecl ScreenDump(void)
+{
+    UpdateFrame(true, NULL);
+}

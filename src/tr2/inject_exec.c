@@ -268,6 +268,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00451DE0, S_DisplayPicture);
     INJECT(enable, 0x00451EF0, S_SyncPictureBufferPalette);
     INJECT(enable, 0x00451F70, S_DontDisplayPicture);
+    INJECT(enable, 0x00451F80, ScreenDump);
     INJECT(enable, 0x00452250, S_CopyBufferToScreen);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);

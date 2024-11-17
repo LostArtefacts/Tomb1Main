@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.82% (993)</tspan> · <tspan class="known">17.77% (221)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.90% (994)</tspan> · <tspan class="known">17.68% (220)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="596.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="132.71" height="6" x="596.28" y="0" class="known"/>
+<rect width="596.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="132.11" height="6" x="596.88" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1155,7 +1155,7 @@
 <rect width="12" height="12" x="390" y="315" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
 <rect width="12" height="12" x="405" y="315" class="decompiled"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="12" height="12" x="420" y="315" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
-<rect width="12" height="12" x="435" y="315" class="known"><title>void __cdecl ScreenDump(void);</title></rect>
+<rect width="12" height="12" x="435" y="315" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="12" height="12" x="450" y="315" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="12" height="12" x="465" y="315" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="480" y="315" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.15%</tspan> · <tspan class="known">17.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.15%</tspan> · <tspan class="known">17.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.92" height="6" x="613.64" y="0" class="known"/>
+<rect width="613.66" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.90" height="6" x="613.66" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2506,7 +2506,7 @@
 <rect width="0.35" height="0.47" x="728.85" y="364.61" class="decompiled"><title>bool __cdecl S_PlayFMV(const char *file_name);</title></rect>
 <rect width="0.35" height="0.47" x="728.85" y="368.08" class="known"><title>void __cdecl SE_AdvancedDlgInit(HWND hwndDlg);</title></rect>
 <rect width="0.35" height="0.22" x="728.85" y="371.55" class="decompiled"><title>void __thiscall DisplayModeListInit(DISPLAY_MODE_LIST *pList);</title></rect>
-<rect width="0.35" height="0.22" x="728.85" y="374.78" class="known"><title>void __cdecl ScreenDump(void);</title></rect>
+<rect width="0.35" height="0.22" x="728.85" y="374.78" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="0.35" height="0.22" x="732.20" y="357.17" class="known"><title>LONG __cdecl CloseRegistryKey(void);</title></rect>
 <rect width="0.10" height="0.22" x="735.55" y="357.17" class="decompiled"><title>LPCTSTR __cdecl DecodeErrorMessage(DWORD error_code);</title></rect>
 <rect width="0.10" height="0.22" x="738.65" y="357.17" class="known"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
