@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.31% (999)</tspan> · <tspan class="known">17.28% (215)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.39% (1000)</tspan> · <tspan class="known">17.20% (214)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="599.88" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.10" height="6" x="599.88" y="0" class="known"/>
+<rect width="600.48" height="6" x="0" y="0" class="decompiled"/>
+<rect width="128.50" height="6" x="600.48" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1051,7 +1051,7 @@
 <rect width="12" height="12" x="330" y="285" class="decompiled"><title>bool __cdecl Level_Load(const char *file_name, int32_t level_num);</title></rect>
 <rect width="12" height="12" x="345" y="285" class="known"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="360" y="285" class="known"><title>void __cdecl S_UnloadLevelFile(void);</title></rect>
-<rect width="12" height="12" x="375" y="285" class="known"><title>void __cdecl S_AdjustTexelCoordinates(void);</title></rect>
+<rect width="12" height="12" x="375" y="285" class="decompiled"><title>void __cdecl S_AdjustTexelCoordinates(void);</title></rect>
 <rect width="12" height="12" x="390" y="285" class="known"><title>BOOL __cdecl S_ReloadLevelGraphics(BOOL reload_palettes, BOOL reload_tex_pages);</title></rect>
 <rect width="12" height="12" x="405" y="285" class="decompiled"><title>BOOL __cdecl GF_ReadStringTable(DWORD count, char **string_table, char **string_buf, LPDWORD buf_size, HANDLE handle);</title></rect>
 <rect width="12" height="12" x="420" y="285" class="decompiled"><title>BOOL __cdecl GF_LoadFromFile(const char *file_name);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.39%</tspan> · <tspan class="known">17.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.40%</tspan> · <tspan class="known">17.27%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="615.49" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.07" height="6" x="615.49" y="0" class="known"/>
+<rect width="615.53" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.03" height="6" x="615.53" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2474,7 +2474,7 @@
 <rect width="1.12" height="1.03" x="717.27" y="357.86" class="decompiled"><title>void __cdecl Lara_State_Climbing(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="361.89" class="decompiled"><title>void __cdecl Lara_State_ClimbDown(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="365.92" class="decompiled"><title>void __cdecl Lara_State_Dive(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="1.12" height="1.03" x="717.27" y="369.95" class="known"><title>void __cdecl S_AdjustTexelCoordinates(void);</title></rect>
+<rect width="1.12" height="1.03" x="717.27" y="369.95" class="decompiled"><title>void __cdecl S_AdjustTexelCoordinates(void);</title></rect>
 <rect width="1.12" height="1.03" x="717.27" y="373.97" class="known"><title>void __cdecl SE_GraphicsTestFinish(void);</title></rect>
 <rect width="0.89" height="1.06" x="721.39" y="349.61" class="decompiled"><title>void __cdecl Requester_RemoveAllItems(REQUEST_INFO *req);</title></rect>
 <rect width="0.89" height="1.06" x="721.39" y="353.66" class="decompiled"><title>void __cdecl Lara_State_UpJump(ITEM *item, COLL_INFO *coll);</title></rect>

@@ -137,7 +137,6 @@
 #define ReadFileSync ((BOOL __cdecl (*)(HANDLE handle, LPVOID lpBuffer, DWORD nBytesToRead, LPDWORD lpnBytesRead, LPOVERLAPPED lpOverlapped))0x004498D0)
 #define S_LoadLevelFile ((BOOL __cdecl (*)(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type))0x0044B4B0)
 #define S_UnloadLevelFile ((void __cdecl (*)(void))0x0044B4D0)
-#define S_AdjustTexelCoordinates ((void __cdecl (*)(void))0x0044B500)
 #define S_ReloadLevelGraphics ((BOOL __cdecl (*)(BOOL reload_palettes, BOOL reload_tex_pages))0x0044B520)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)

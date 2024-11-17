@@ -245,6 +245,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00449850, UpdateGameResolution);
     INJECT(enable, 0x004498C0, DecodeErrorMessage);
     INJECT(enable, 0x00449E50, AdjustTextureUVs);
+    INJECT(enable, 0x0044B500, S_AdjustTexelCoordinates);
     INJECT(enable, 0x0044C1D0, S_FindColor);
     INJECT(enable, 0x0044C200, S_DrawScreenLine);
     INJECT(enable, 0x0044C240, S_DrawScreenBox);

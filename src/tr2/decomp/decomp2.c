@@ -537,3 +537,10 @@ void __cdecl AdjustTextureUVs(const bool reset_uv_add)
 
     g_UVAdd += offset;
 }
+
+void __cdecl S_AdjustTexelCoordinates(void)
+{
+    if (g_TextureInfoCount > 0) {
+        AdjustTextureUVs(false);
+    }
+}
