@@ -168,3 +168,4 @@ void __cdecl SyncSurfacePalettes(
     const void *src_data, int32_t width, int32_t height, int32_t src_pitch,
     const RGB_888 *src_palette, void *dst_data, int32_t dst_pitch,
     const RGB_888 *dst_palette, bool preserve_sys_palette);
+int32_t __cdecl CreateTexturePalette(const RGB_888 *palette);

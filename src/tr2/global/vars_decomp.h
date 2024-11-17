@@ -389,6 +389,7 @@
 #define g_CD_LoopTrack (*(int32_t*)0x0051BDB0)
 #define g_TextureFormat (*(TEXTURE_FORMAT*)0x0051C1B8)
 #define g_TexturesAlphaChannel (*(bool*)0x0051C20C)
+#define g_TexturePalettes (*(LPDIRECTDRAWPALETTE(*)[16])0x0051C210)
 #define g_NumSampleInfos (*(int32_t*)0x0051E6C0)
 #define g_SoundIsActive (*(int32_t*)0x0051E6C4)
 #define g_SampleLUT (*(int16_t(*)[])0x0051E6E0)

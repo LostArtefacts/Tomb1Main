@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.89% (969)</tspan> · <tspan class="known">19.69% (245)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.97% (970)</tspan> · <tspan class="known">19.61% (244)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="581.87" height="6" x="0" y="0" class="decompiled"/>
-<rect width="147.12" height="6" x="581.87" y="0" class="known"/>
+<rect width="582.47" height="6" x="0" y="0" class="decompiled"/>
+<rect width="146.52" height="6" x="582.47" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1224,7 +1224,7 @@
 <rect width="12" height="12" x="675" y="330" class="decompiled"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
 <rect width="12" height="12" x="690" y="330" class="decompiled"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
 <rect width="12" height="12" x="705" y="330" class="decompiled"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
-<rect width="12" height="12" x="720" y="330" class="known"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
+<rect width="12" height="12" x="720" y="330" class="decompiled"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
 <rect width="12" height="12" x="735" y="330" class="known"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
 <rect width="12" height="12" x="0" y="345" class="known"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="15" y="345" class="known"><title>void __cdecl SafeFreePalette(int32_t palette_idx);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.39%</tspan> · <tspan class="known">18.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.43%</tspan> · <tspan class="known">18.24%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="608.02" height="6" x="0" y="0" class="decompiled"/>
-<rect width="136.54" height="6" x="608.02" y="0" class="known"/>
+<rect width="608.31" height="6" x="0" y="0" class="decompiled"/>
+<rect width="136.25" height="6" x="608.31" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1937,7 +1937,7 @@
 <rect width="7.64" height="7.60" x="567.57" y="335.82" class="decompiled"><title>bool __cdecl IntroFMV(const char *file_name1, const char *file_name2);</title></rect>
 <rect width="7.64" height="7.53" x="567.57" y="346.42" class="known"><title>void __cdecl DyingMonk(int16_t item_num);</title></rect>
 <rect width="7.64" height="7.53" x="567.57" y="356.95" class="decompiled"><title>bool __cdecl HideDDrawGameWindow(void);</title></rect>
-<rect width="7.64" height="7.53" x="567.57" y="367.47" class="known"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
+<rect width="7.64" height="7.53" x="567.57" y="367.47" class="decompiled"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
 <rect width="7.94" height="7.16" x="578.21" y="196.26" class="decompiled"><title>void __cdecl Lara_SwimTurn(ITEM *item);</title></rect>
 <rect width="7.94" height="7.16" x="589.15" y="196.26" class="decompiled"><title>void __cdecl Sound_EndScene(void);</title></rect>
 <rect width="7.94" height="7.16" x="600.09" y="196.26" class="known"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>

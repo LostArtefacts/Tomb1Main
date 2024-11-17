@@ -1,5 +1,6 @@
 #include "game/background.h"
 
+#include "decomp/decomp.h"
 #include "game/gamebuf.h"
 #include "game/hwr.h"
 #include "global/const.h"

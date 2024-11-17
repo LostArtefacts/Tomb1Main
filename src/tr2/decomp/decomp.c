@@ -3316,3 +3316,27 @@ void __cdecl SyncSurfacePalettes(
         dst_ptr += dst_pitch - width;
     }
 }
+
+int32_t __cdecl CreateTexturePalette(const RGB_888 *const palette)
+{
+    const int32_t palette_idx = GetFreePaletteIndex();
+    if (palette_idx < 0) {
+        return -1;
+    }
+
+    PALETTEENTRY pal_entries[256];
+    for (int32_t i = 0; i < 256; i++) {
+        pal_entries[i].peRed = palette[i].red;
+        pal_entries[i].peGreen = palette[i].green;
+        pal_entries[i].peBlue = palette[i].blue;
+        pal_entries[i].peFlags = 0;
+    }
+
+    const HRESULT rc = g_DDraw->lpVtbl->CreatePalette(
+        g_DDraw, DDPCAPS_ALLOW256 | DDPCAPS_8BIT, pal_entries,
+        &g_TexturePalettes[palette_idx], NULL);
+    if (FAILED(rc)) {
+        return -1;
+    }
+    return palette_idx;
+}
