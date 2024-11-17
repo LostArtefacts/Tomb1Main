@@ -3211,3 +3211,53 @@ void __cdecl S_FadeOutInventory(const bool is_fade)
         g_FadeAdder = -0x8000;
     }
 }
+
+void __cdecl CopyBitmapPalette(
+    const RGB_888 *const src_pal, const uint8_t *const src_bitmap,
+    const int32_t bitmap_size, RGB_888 *const out_pal)
+{
+    PALETTEENTRY first_sys_pal_entries[10];
+    PALETTEENTRY last_sys_pal_entries[10];
+
+    for (int32_t i = 0; i < 256; i++) {
+        g_SortBuffer[i]._0 = i;
+        g_SortBuffer[i]._1 = 0;
+    }
+
+    for (int32_t i = 0; i < bitmap_size; i++) {
+        g_SortBuffer[src_bitmap[i]]._1++;
+    }
+
+    Output_QuickSort(0, 255);
+
+    const HDC dc = GetDC(NULL);
+    GetSystemPaletteEntries(dc, 0, 10, first_sys_pal_entries);
+    GetSystemPaletteEntries(dc, 256, 10, last_sys_pal_entries);
+    ReleaseDC(NULL, dc);
+
+    for (int32_t i = 0; i < 8; i++) {
+        out_pal[i].red = first_sys_pal_entries[i].peRed;
+        out_pal[i].green = first_sys_pal_entries[i].peGreen;
+        out_pal[i].blue = first_sys_pal_entries[i].peBlue;
+    }
+    for (int32_t i = 8; i < 10; i++) {
+        out_pal[i].red = 0;
+        out_pal[i].green = 0;
+        out_pal[i].blue = 0;
+    }
+
+    for (int32_t i = 10; i < 246; i++) {
+        const int32_t j = i - 10;
+        out_pal[i] = src_pal[g_SortBuffer[j]._0];
+    }
+
+    out_pal[246].red = 0;
+    out_pal[246].green = 0;
+    out_pal[246].blue = 0;
+    for (int32_t i = 247; i < 10; i++) {
+        const int32_t j = i - 246;
+        out_pal[j].red = last_sys_pal_entries[j].peRed;
+        out_pal[j].green = last_sys_pal_entries[j].peGreen;
+        out_pal[j].blue = last_sys_pal_entries[j].peBlue;
+    }
+}

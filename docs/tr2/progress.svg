@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.65% (966)</tspan> · <tspan class="known">19.94% (248)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.73% (967)</tspan> · <tspan class="known">19.86% (247)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="580.07" height="6" x="0" y="0" class="decompiled"/>
-<rect width="148.92" height="6" x="580.07" y="0" class="known"/>
+<rect width="580.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="148.32" height="6" x="580.67" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1221,7 +1221,7 @@
 <rect width="12" height="12" x="630" y="330" class="decompiled"><title>bool __cdecl Music_PlaySynced(int32_t track_id);</title></rect>
 <rect width="12" height="12" x="645" y="330" class="decompiled"><title>int32_t __cdecl Music_GetFrames(void);</title></rect>
 <rect width="12" height="12" x="660" y="330" class="decompiled"><title>void __cdecl Music_SetVolume(int32_t volume);</title></rect>
-<rect width="12" height="12" x="675" y="330" class="known"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
+<rect width="12" height="12" x="675" y="330" class="decompiled"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
 <rect width="12" height="12" x="690" y="330" class="known"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
 <rect width="12" height="12" x="705" y="330" class="known"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
 <rect width="12" height="12" x="720" y="330" class="known"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.19%</tspan> · <tspan class="known">18.48%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.29%</tspan> · <tspan class="known">18.39%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="606.52" height="6" x="0" y="0" class="decompiled"/>
-<rect width="138.04" height="6" x="606.52" y="0" class="known"/>
+<rect width="607.20" height="6" x="0" y="0" class="decompiled"/>
+<rect width="137.36" height="6" x="607.20" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1635,7 +1635,7 @@
 <rect width="13.47" height="12.72" x="448.40" y="284.10" class="decompiled"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
 <rect width="13.47" height="12.67" x="448.40" y="299.82" class="decompiled"><title>int32_t __cdecl Item_TestPosition(int16_t *bounds, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="13.47" height="12.67" x="448.40" y="315.48" class="decompiled"><title>int32_t __cdecl MovableBlock_TestPush(ITEM *item, int32_t block_height, uint16_t quadrant);</title></rect>
-<rect width="13.47" height="12.67" x="448.40" y="331.15" class="known"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
+<rect width="13.47" height="12.67" x="448.40" y="331.15" class="decompiled"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
 <rect width="13.47" height="12.62" x="448.40" y="346.82" class="decompiled"><title>void __cdecl Lara_DeflectEdgeJump(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="13.47" height="12.57" x="448.40" y="362.43" class="decompiled"><title>BOOL __cdecl Level_LoadSprites(HANDLE handle);</title></rect>
 <rect width="13.42" height="12.56" x="464.87" y="92.62" class="decompiled"><title>void __cdecl Output_InsertSkybox(const int16_t *obj_ptr);</title></rect>

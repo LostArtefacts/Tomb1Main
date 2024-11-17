@@ -158,3 +158,6 @@ void __cdecl TempVideoRemove(void);
 void __cdecl setup_screen_size(void);
 void __cdecl S_FadeInInventory(bool is_fade);
 void __cdecl S_FadeOutInventory(bool is_fade);
+void __cdecl CopyBitmapPalette(
+    const RGB_888 *src_pal, const uint8_t *src_bitmap, int32_t bitmap_size,
+    RGB_888 *out_pal);
