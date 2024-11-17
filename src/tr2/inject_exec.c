@@ -288,6 +288,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00455F10, FreeTexturePages);
     INJECT(enable, 0x00455F40, LoadTexturePage);
     INJECT(enable, 0x00455FF0, ReloadTextures);
+    INJECT(enable, 0x00456030, GetTexturePageHandle);
 }
 
 static void M_DecompFMV(const bool enable)

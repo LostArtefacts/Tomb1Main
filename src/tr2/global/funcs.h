@@ -198,7 +198,6 @@
 #define SE_AdvancedDlgInit ((void __cdecl (*)(HWND hwndDlg))0x00454950)
 #define SE_FindSetupDialog ((HWND __cdecl (*)(void))0x00454960)
 #define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define GetTexturePageHandle ((HWR_TEXTURE_HANDLE __cdecl (*)(int32_t page_idx))0x00456030)
 #define AddTexturePage8 ((int32_t __cdecl (*)(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx))0x00456070)
 #define AddTexturePage16 ((int32_t __cdecl (*)(int32_t width, int32_t height, const uint8_t *page_buf))0x00456170)
 #define EnumTextureFormatsCallback ((HRESULT __stdcall (*)(LPDDSDESC lpDdsd, LPVOID lpContext))0x00456310)

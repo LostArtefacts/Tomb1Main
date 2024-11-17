@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.10% (984)</tspan> · <tspan class="known">18.49% (230)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.18% (985)</tspan> · <tspan class="known">18.41% (229)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="590.87" height="6" x="0" y="0" class="decompiled"/>
-<rect width="138.11" height="6" x="590.87" y="0" class="known"/>
+<rect width="591.48" height="6" x="0" y="0" class="decompiled"/>
+<rect width="137.51" height="6" x="591.48" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1239,7 +1239,7 @@
 <rect width="12" height="12" x="150" y="345" class="decompiled"><title>void __cdecl FreeTexturePages(void);</title></rect>
 <rect width="12" height="12" x="165" y="345" class="decompiled"><title>bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);</title></rect>
 <rect width="12" height="12" x="180" y="345" class="decompiled"><title>bool __cdecl ReloadTextures(bool reset);</title></rect>
-<rect width="12" height="12" x="195" y="345" class="known"><title>HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);</title></rect>
+<rect width="12" height="12" x="195" y="345" class="decompiled"><title>HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="210" y="345" class="known"><title>int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);</title></rect>
 <rect width="12" height="12" x="225" y="345" class="known"><title>int32_t __cdecl AddTexturePage16(int32_t width, int32_t height, const uint8_t *page_buf);</title></rect>
 <rect width="12" height="12" x="240" y="345" class="known"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.78%</tspan> · <tspan class="known">17.90%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.79%</tspan> · <tspan class="known">17.88%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="610.87" height="6" x="0" y="0" class="decompiled"/>
-<rect width="133.69" height="6" x="610.87" y="0" class="known"/>
+<rect width="611.01" height="6" x="0" y="0" class="decompiled"/>
+<rect width="133.55" height="6" x="611.01" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2202,7 +2202,7 @@
 <rect width="4.14" height="4.20" x="735.72" y="268.48" class="decompiled"><title>void __cdecl Enumerate3DDevices(DISPLAY_ADAPTER *adapter);</title></rect>
 <rect width="4.14" height="4.20" x="742.86" y="268.48" class="decompiled"><title>DWORD __cdecl EncodePutPCX(BYTE value, BYTE num, BYTE *buffer);</title></rect>
 <rect width="4.47" height="3.89" x="647.85" y="275.68" class="known"><title>int32_t __stdcall SE_PropSheetCallback(HWND hwndDlg, UINT uMsg, LPARAM lParam);</title></rect>
-<rect width="4.47" height="3.89" x="655.32" y="275.68" class="known"><title>HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);</title></rect>
+<rect width="4.47" height="3.89" x="655.32" y="275.68" class="decompiled"><title>HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);</title></rect>
 <rect width="4.35" height="3.89" x="662.79" y="275.68" class="decompiled"><title>void __cdecl Matrix_RotYXZsuperpack_I(const int16_t **pprot1, const int16_t **pprot2, int32_t skip);</title></rect>
 <rect width="4.35" height="3.89" x="670.14" y="275.68" class="decompiled"><title>int32_t __cdecl Keyhole_Trigger(int16_t item_num);</title></rect>
 <rect width="4.35" height="3.89" x="677.49" y="275.68" class="decompiled"><title>HRESULT __cdecl WinVidBufferLock(LPDDS surface, LPDDSDESC desc, DWORD flags);</title></rect>

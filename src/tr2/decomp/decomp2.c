@@ -213,3 +213,19 @@ bool __cdecl ReloadTextures(const bool reset)
     }
     return result;
 }
+
+HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(const int32_t page_idx)
+{
+    if (page_idx < 0) {
+        return 0;
+    }
+
+    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
+    if (desc->vid_mem_surface != NULL) {
+        if (desc->vid_mem_surface->lpVtbl->IsLost(desc->vid_mem_surface)
+            == DDERR_SURFACELOST) {
+            LoadTexturePage(page_idx, true);
+        }
+    }
+    return desc->tex_handle;
+}
