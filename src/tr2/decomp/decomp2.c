@@ -483,3 +483,29 @@ void __cdecl ScreenClear(const bool is_phd_win_size)
 
     ClearBuffers(flags, 0);
 }
+
+void __cdecl S_CopyScreenToBuffer(void)
+{
+    if (g_SavedAppSettings.render_mode != RM_SOFTWARE) {
+        return;
+    }
+
+    g_PictureBufferSurface->lpVtbl->Blt(
+        g_PictureBufferSurface, NULL, g_RenderBufferSurface, &g_GameVid_Rect,
+        DDBLT_WAIT, NULL);
+
+    DDSURFACEDESC desc;
+    if (SUCCEEDED(WinVidBufferLock(
+            g_PictureBufferSurface, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT))) {
+        uint8_t *dst_ptr = desc.lpSurface;
+        for (int32_t y = 0; y < 480; y++) {
+            for (int32_t x = 0; x < 640; x++) {
+                dst_ptr[x] = g_DepthQIndex[dst_ptr[x]];
+            }
+            dst_ptr += desc.lPitch;
+        }
+        WinVidBufferUnlock(g_PictureBufferSurface, &desc);
+    }
+
+    memcpy(g_PicturePalette, g_GamePalette8, sizeof(RGB_888) * 256);
+}

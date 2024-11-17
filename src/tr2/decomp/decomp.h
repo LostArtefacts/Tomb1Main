@@ -204,3 +204,4 @@ void __cdecl ScreenDump(void);
 void __cdecl ScreenPartialDump(void);
 void __cdecl FadeToPal(int32_t fade_value, const RGB_888 *palette);
 void __cdecl ScreenClear(bool is_phd_win_size);
+void __cdecl S_CopyScreenToBuffer(void);

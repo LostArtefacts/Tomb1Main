@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.14% (997)</tspan> · <tspan class="known">17.44% (217)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.23% (998)</tspan> · <tspan class="known">17.36% (216)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="598.68" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.30" height="6" x="598.68" y="0" class="known"/>
+<rect width="599.28" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.70" height="6" x="599.28" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1159,7 +1159,7 @@
 <rect width="12" height="12" x="450" y="315" class="decompiled"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="12" height="12" x="465" y="315" class="decompiled"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="480" y="315" class="decompiled"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
-<rect width="12" height="12" x="495" y="315" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
+<rect width="12" height="12" x="495" y="315" class="decompiled"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
 <rect width="12" height="12" x="510" y="315" class="decompiled"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
 <rect width="12" height="12" x="525" y="315" class="known"><title>BOOL __cdecl DecompPCX(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal);</title></rect>
 <rect width="12" height="12" x="540" y="315" class="unused"><title>sub_4523A0</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.30%</tspan> · <tspan class="known">17.37%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.35%</tspan> · <tspan class="known">17.32%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="614.78" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.78" height="6" x="614.78" y="0" class="known"/>
+<rect width="615.16" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.40" height="6" x="615.16" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1836,7 +1836,7 @@
 <rect width="8.77" height="9.06" x="726.47" y="161.47" class="decompiled"><title>int16_t __cdecl Effect_MissileFlame(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>
 <rect width="8.77" height="9.06" x="738.23" y="161.47" class="decompiled"><title>void __cdecl Overlay_DrawHealthBar(bool flash_state);</title></rect>
 <rect width="8.64" height="9.19" x="533.93" y="173.53" class="decompiled"><title>void __cdecl Lara_SlideEdgeJump(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="8.64" height="9.19" x="533.93" y="185.71" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
+<rect width="8.64" height="9.19" x="533.93" y="185.71" class="decompiled"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
 <rect width="8.64" height="9.12" x="533.93" y="197.90" class="decompiled"><title>void __cdecl Matrix_RotX(int16_t rx);</title></rect>
 <rect width="8.64" height="9.12" x="533.93" y="210.02" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT3_ZBuffered(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="8.64" height="9.12" x="533.93" y="222.13" class="decompiled"><title>void __cdecl Requester_SetHeading(REQUEST_INFO *req, char *text1, uint32_t flags1, char *text2, uint32_t flags2);</title></rect>
