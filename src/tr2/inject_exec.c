@@ -248,6 +248,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044B4B0, S_LoadLevelFile);
     INJECT(enable, 0x0044B4D0, S_UnloadLevelFile);
     INJECT(enable, 0x0044B500, S_AdjustTexelCoordinates);
+    INJECT(enable, 0x0044B520, S_ReloadLevelGraphics);
     INJECT(enable, 0x0044C1D0, S_FindColor);
     INJECT(enable, 0x0044C200, S_DrawScreenLine);
     INJECT(enable, 0x0044C240, S_DrawScreenBox);

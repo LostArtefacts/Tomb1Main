@@ -16,12 +16,10 @@
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
-#include <libtrx/virtual_file.h>
 
 #include <assert.h>
 
 static void M_LoadFromFile(const char *file_name, int32_t level_num);
-static void __cdecl M_LoadTexturePages(VFILE *file);
 static void __cdecl M_LoadRooms(VFILE *file);
 static void __cdecl M_LoadMeshBase(VFILE *file);
 static void __cdecl M_LoadMeshes(VFILE *file);
@@ -36,8 +34,6 @@ static void __cdecl M_LoadStaticObjects(VFILE *file);
 static void __cdecl M_LoadTextures(VFILE *file);
 static void __cdecl M_LoadSprites(VFILE *file);
 static void __cdecl M_LoadItems(VFILE *file);
-static void __cdecl M_LoadDepthQ(VFILE *file);
-static void __cdecl M_LoadPalettes(VFILE *file);
 static void __cdecl M_LoadCameras(VFILE *file);
 static void __cdecl M_LoadSoundEffects(VFILE *file);
 static void __cdecl M_LoadBoxes(VFILE *file);
@@ -47,7 +43,7 @@ static void __cdecl M_LoadDemo(VFILE *file);
 static void __cdecl M_LoadSamples(VFILE *file);
 static void M_CompleteSetup(void);
 
-static void __cdecl M_LoadTexturePages(VFILE *const file)
+void __cdecl Level_LoadTexturePages(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     char *base = NULL;
@@ -401,7 +397,6 @@ static void __cdecl M_LoadTextures(VFILE *const file)
     LOG_INFO("textures: %d", num_textures);
     if (num_textures > MAX_TEXTURES) {
         Shell_ExitSystem("Too many textures");
-        return;
     }
 
     g_TextureInfoCount = num_textures;
@@ -513,7 +508,7 @@ finish:
     Benchmark_End(benchmark, NULL);
 }
 
-static void __cdecl M_LoadDepthQ(VFILE *const file)
+void __cdecl Level_LoadDepthQ(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     for (int32_t i = 0; i < 32; i++) {
@@ -558,7 +553,7 @@ static void __cdecl M_LoadDepthQ(VFILE *const file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void __cdecl M_LoadPalettes(VFILE *const file)
+void __cdecl Level_LoadPalettes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     VFile_Read(file, g_GamePalette8, sizeof(RGB_888) * 256);
@@ -847,10 +842,10 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     }
 
     g_LevelFilePalettesOffset = VFile_GetPos(file);
-    M_LoadPalettes(file);
+    Level_LoadPalettes(file);
 
     g_LevelFileTexPagesOffset = VFile_GetPos(file);
-    M_LoadTexturePages(file);
+    Level_LoadTexturePages(file);
     VFile_Skip(file, 4);
 
     M_LoadRooms(file);
@@ -887,7 +882,7 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     M_LoadItems(file);
 
     g_LevelFileDepthQOffset = VFile_GetPos(file);
-    M_LoadDepthQ(file);
+    Level_LoadDepthQ(file);
     M_LoadCinematic(file);
     M_LoadDemo(file);
     M_LoadSamples(file);

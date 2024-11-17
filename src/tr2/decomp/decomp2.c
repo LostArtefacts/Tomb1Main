@@ -1,9 +1,12 @@
 #include "decomp/decomp.h"
 #include "game/background.h"
 #include "game/hwr.h"
+#include "game/inventory/common.h"
 #include "game/level.h"
 #include "global/funcs.h"
 #include "global/vars.h"
+
+#include <libtrx/virtual_file.h>
 
 int32_t __cdecl CreateTexturePage(
     const int32_t width, const int32_t height, LPDIRECTDRAWPALETTE palette)
@@ -562,4 +565,39 @@ void __cdecl S_UnloadLevelFile(void)
     strcpy(g_LevelFileName, "");
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     g_TextureInfoCount = 0;
+}
+
+BOOL __cdecl S_ReloadLevelGraphics(
+    const bool reload_palettes, const bool reload_tex_pages)
+{
+    if (g_LevelFileName[0] != '\0') {
+        VFILE *const file = VFile_CreateFromPath(g_LevelFileName);
+        if (file == NULL) {
+            return false;
+        }
+
+        if (reload_palettes && g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+            VFile_SetPos(file, g_LevelFilePalettesOffset);
+            Level_LoadPalettes(file);
+
+            VFile_SetPos(file, g_LevelFileDepthQOffset);
+            Level_LoadDepthQ(file);
+        }
+
+        if (reload_tex_pages) {
+            if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+                HWR_FreeTexturePages();
+            }
+            VFile_SetPos(file, g_LevelFileTexPagesOffset);
+            Level_LoadTexturePages(file);
+        }
+
+        VFile_Close(file);
+    }
+
+    if (reload_palettes) {
+        Inv_InitColors();
+    }
+
+    return true;
 }
