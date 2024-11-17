@@ -420,3 +420,53 @@ void __cdecl ScreenPartialDump(void)
 {
     UpdateFrame(true, &g_PhdWinRect);
 }
+
+void __cdecl FadeToPal(const int32_t fade_value, const RGB_888 *const palette)
+{
+    if (!g_GameVid_IsVga) {
+        return;
+    }
+
+    int32_t start_idx;
+    int32_t end_idx;
+    if (g_GameVid_IsWindowedVGA) {
+        start_idx = 10;
+        end_idx = 246;
+    } else {
+        start_idx = 0;
+        end_idx = 256;
+    }
+    const int32_t pal_size = end_idx - start_idx;
+
+    if (fade_value <= 1) {
+        for (int32_t i = start_idx; i < end_idx; i++) {
+            g_WinVid_Palette[i].peRed = palette[i].red;
+            g_WinVid_Palette[i].peGreen = palette[i].green;
+            g_WinVid_Palette[i].peBlue = palette[i].blue;
+        }
+        g_DDrawPalette->lpVtbl->SetEntries(
+            g_DDrawPalette, 0, start_idx, pal_size,
+            &g_WinVid_Palette[start_idx]);
+        return;
+    }
+
+    PALETTEENTRY fade_pal[256];
+    for (int32_t i = start_idx; i < end_idx; i++) {
+        fade_pal[i] = g_WinVid_Palette[i];
+    }
+
+    for (int32_t j = 0; j <= fade_value; j++) {
+        for (int32_t i = start_idx; i < end_idx; i++) {
+            g_WinVid_Palette[i].peRed = fade_pal[i].peRed
+                + (palette[i].red - fade_pal[i].peRed) * j / fade_value;
+            g_WinVid_Palette[i].peGreen = fade_pal[i].peGreen
+                + (palette[i].green - fade_pal[i].peGreen) * j / fade_value;
+            g_WinVid_Palette[i].peBlue = fade_pal[i].peBlue
+                + (palette[i].blue - fade_pal[i].peBlue) * j / fade_value;
+        }
+        g_DDrawPalette->lpVtbl->SetEntries(
+            g_DDrawPalette, 0, start_idx, pal_size,
+            &g_WinVid_Palette[start_idx]);
+        S_DumpScreen();
+    }
+}

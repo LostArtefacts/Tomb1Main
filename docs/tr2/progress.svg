@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.98% (995)</tspan> · <tspan class="known">17.60% (219)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.06% (996)</tspan> · <tspan class="known">17.52% (218)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="597.48" height="6" x="0" y="0" class="decompiled"/>
-<rect width="131.51" height="6" x="597.48" y="0" class="known"/>
+<rect width="598.08" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.91" height="6" x="598.08" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1157,7 +1157,7 @@
 <rect width="12" height="12" x="420" y="315" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="12" height="12" x="435" y="315" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="12" height="12" x="450" y="315" class="decompiled"><title>void __cdecl ScreenPartialDump(void);</title></rect>
-<rect width="12" height="12" x="465" y="315" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
+<rect width="12" height="12" x="465" y="315" class="decompiled"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="480" y="315" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="12" height="12" x="495" y="315" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
 <rect width="12" height="12" x="510" y="315" class="decompiled"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.16%</tspan> · <tspan class="known">17.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.29%</tspan> · <tspan class="known">17.38%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.70" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.86" height="6" x="613.70" y="0" class="known"/>
+<rect width="614.70" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.86" height="6" x="614.70" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1532,7 +1532,7 @@
 <rect width="16.50" height="16.75" x="691.97" y="21.68" class="decompiled"><title>void __cdecl Matrix_GenerateW2V(PHD_3DPOS *viewpos);</title></rect>
 <rect width="16.33" height="16.75" x="711.47" y="21.68" class="known"><title>void __cdecl S_DrawHealthBar(int32_t percent);</title></rect>
 <rect width="16.20" height="16.75" x="730.80" y="21.68" class="decompiled"><title>void __cdecl Output_InsertFlatRect_ZBuffered(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t z, uint8_t color_idx);</title></rect>
-<rect width="16.42" height="16.52" x="411.12" y="41.42" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
+<rect width="16.42" height="16.52" x="411.12" y="41.42" class="decompiled"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="16.42" height="16.40" x="411.12" y="60.95" class="decompiled"><title>void __cdecl Room_GetBounds(void);</title></rect>
 <rect width="16.42" height="16.31" x="411.12" y="80.34" class="known"><title>int32_t __cdecl ShotLara(ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation, int32_t damage);</title></rect>
 <rect width="16.42" height="16.23" x="411.12" y="99.66" class="decompiled"><title>int32_t __cdecl LevelStats(int32_t level_num);</title></rect>
