@@ -154,7 +154,6 @@
 #define S_SetupBelowWater ((void __cdecl (*)(BOOL underwater))0x00451C90)
 #define S_SetupAboveWater ((void __cdecl (*)(BOOL underwater))0x00451CF0)
 #define S_AnimateTextures ((void __cdecl (*)(int32_t ticks))0x00451D20)
-#define ScreenClear ((void __cdecl (*)(bool is_phd_win_size))0x00452170)
 #define S_CopyScreenToBuffer ((void __cdecl (*)(void))0x004521A0)
 #define DecompPCX ((BOOL __cdecl (*)(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal))0x004522A0)
 #define OpenGameRegistryKey ((bool __cdecl (*)(LPCTSTR key))0x004523C0)

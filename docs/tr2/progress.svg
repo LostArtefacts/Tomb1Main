@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.06% (996)</tspan> · <tspan class="known">17.52% (218)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.14% (997)</tspan> · <tspan class="known">17.44% (217)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="598.08" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.91" height="6" x="598.08" y="0" class="known"/>
+<rect width="598.68" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.30" height="6" x="598.68" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1158,7 +1158,7 @@
 <rect width="12" height="12" x="435" y="315" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="12" height="12" x="450" y="315" class="decompiled"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="12" height="12" x="465" y="315" class="decompiled"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
-<rect width="12" height="12" x="480" y="315" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
+<rect width="12" height="12" x="480" y="315" class="decompiled"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="12" height="12" x="495" y="315" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
 <rect width="12" height="12" x="510" y="315" class="decompiled"><title>void __cdecl S_CopyBufferToScreen(void);</title></rect>
 <rect width="12" height="12" x="525" y="315" class="known"><title>BOOL __cdecl DecompPCX(const uint8_t *pcx, size_t pcx_size, LPBYTE pic, RGB_888 *pal);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.29%</tspan> · <tspan class="known">17.38%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.30%</tspan> · <tspan class="known">17.37%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="614.70" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.86" height="6" x="614.70" y="0" class="known"/>
+<rect width="614.78" height="6" x="0" y="0" class="decompiled"/>
+<rect width="129.78" height="6" x="614.78" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2365,7 +2365,7 @@
 <rect width="2.47" height="2.92" x="687.21" y="320.63" class="decompiled"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="326.55" class="decompiled"><title>void __cdecl Inv_Ring_MotionRadius(RING_INFO *ring, int16_t target);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="332.32" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
-<rect width="2.47" height="2.77" x="687.21" y="338.08" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
+<rect width="2.47" height="2.77" x="687.21" y="338.08" class="decompiled"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="343.85" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_CalculateSamplePan(int16_t pan);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="349.62" class="decompiled"><title>void __cdecl FreeTexturePages(void);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="355.39" class="known"><title>void __cdecl SE_PassMessageToImage(HWND hWnd, UINT uMsg, WPARAM wParam);</title></rect>

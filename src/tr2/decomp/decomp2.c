@@ -470,3 +470,16 @@ void __cdecl FadeToPal(const int32_t fade_value, const RGB_888 *const palette)
         S_DumpScreen();
     }
 }
+
+void __cdecl ScreenClear(const bool is_phd_win_size)
+{
+    uint32_t flags = (g_SavedAppSettings.render_mode == RM_HARDWARE)
+        ? CLRB_BACK_BUFFER
+        : CLRB_RENDER_BUFFER;
+
+    if (is_phd_win_size) {
+        flags |= CLRB_PHDWINSIZE;
+    }
+
+    ClearBuffers(flags, 0);
+}

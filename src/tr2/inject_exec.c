@@ -271,6 +271,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00451F80, ScreenDump);
     INJECT(enable, 0x00451F90, ScreenPartialDump);
     INJECT(enable, 0x00451FA0, FadeToPal);
+    INJECT(enable, 0x00452170, ScreenClear);
     INJECT(enable, 0x00452250, S_CopyBufferToScreen);
     INJECT(enable, 0x00454C50, TitleSequence);
     INJECT(enable, 0x004550C0, S_SaveSettings);
