@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.78% (980)</tspan> · <tspan class="known">18.81% (234)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.86% (981)</tspan> · <tspan class="known">18.73% (233)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="588.47" height="6" x="0" y="0" class="decompiled"/>
-<rect width="140.51" height="6" x="588.47" y="0" class="known"/>
+<rect width="589.07" height="6" x="0" y="0" class="decompiled"/>
+<rect width="139.91" height="6" x="589.07" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1235,7 +1235,7 @@
 <rect width="12" height="12" x="90" y="345" class="decompiled"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
 <rect width="12" height="12" x="105" y="345" class="decompiled"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="120" y="345" class="decompiled"><title>void __cdecl FreeTexturePage(int32_t page_idx);</title></rect>
-<rect width="12" height="12" x="135" y="345" class="known"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
+<rect width="12" height="12" x="135" y="345" class="decompiled"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
 <rect width="12" height="12" x="150" y="345" class="known"><title>void __cdecl FreeTexturePages(void);</title></rect>
 <rect width="12" height="12" x="165" y="345" class="known"><title>bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);</title></rect>
 <rect width="12" height="12" x="180" y="345" class="known"><title>bool __cdecl ReloadTextures(bool reset);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.69%</tspan> · <tspan class="known">17.99%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.70%</tspan> · <tspan class="known">17.97%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="610.19" height="6" x="0" y="0" class="decompiled"/>
-<rect width="134.37" height="6" x="610.19" y="0" class="known"/>
+<rect width="610.32" height="6" x="0" y="0" class="decompiled"/>
+<rect width="134.24" height="6" x="610.32" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2223,7 +2223,7 @@
 <rect width="4.14" height="3.86" x="647.85" y="316.98" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="323.83" class="decompiled"><title>void __cdecl WaitPrimaryBufferFlip(void);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="330.69" class="decompiled"><title>void __cdecl S_RemoveCtrlText(void);</title></rect>
-<rect width="4.14" height="3.86" x="647.85" y="337.55" class="known"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
+<rect width="4.14" height="3.86" x="647.85" y="337.55" class="decompiled"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
 <rect width="4.14" height="3.74" x="647.85" y="344.41" class="decompiled"><title>void __cdecl Gun_Pistols_UndrawMeshLeft(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="4.14" height="3.74" x="647.85" y="351.15" class="decompiled"><title>void __cdecl Gun_Pistols_UndrawMeshRight(LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="4.14" height="3.74" x="647.85" y="357.89" class="decompiled"><title>void __cdecl Trapdoor_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>

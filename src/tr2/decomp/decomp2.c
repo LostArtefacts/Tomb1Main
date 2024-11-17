@@ -143,3 +143,17 @@ void __cdecl FreeTexturePage(const int32_t page_idx)
     }
     desc->status = 0;
 }
+
+void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *const page)
+{
+    HWR_ResetTexSource();
+    page->tex_handle = NULL;
+    if (page->texture_3d != NULL) {
+        page->texture_3d->lpVtbl->Release(page->texture_3d);
+        page->texture_3d = NULL;
+    }
+    if (page->vid_mem_surface != NULL) {
+        page->vid_mem_surface->lpVtbl->Release(page->vid_mem_surface);
+        page->vid_mem_surface = NULL;
+    }
+}
