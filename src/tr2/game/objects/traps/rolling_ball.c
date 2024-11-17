@@ -144,7 +144,7 @@ void __cdecl RollingBall_Collision(
 {
     ITEM *const item = Item_Get(item_num);
     if (item->status != IS_ACTIVE) {
-        if (item->status != IS_INACTIVE) {
+        if (item->status != IS_INVISIBLE) {
             Object_Collision(item_num, lara_item, coll);
         }
         return;
