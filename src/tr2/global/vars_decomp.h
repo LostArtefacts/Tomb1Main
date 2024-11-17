@@ -387,6 +387,7 @@
 #define g_MasterVolume (*(int32_t*)0x0051BDA8)
 #define g_MciDeviceID (*(MCIDEVICEID*)0x0051BDAC)
 #define g_CD_LoopTrack (*(int32_t*)0x0051BDB0)
+#define g_TexturePages (*(TEXPAGE_DESC(*)[32])0x0051BDB8)
 #define g_TextureFormat (*(TEXTURE_FORMAT*)0x0051C1B8)
 #define g_TexturesAlphaChannel (*(bool*)0x0051C20C)
 #define g_TexturePalettes (*(LPDIRECTDRAWPALETTE(*)[16])0x0051C210)

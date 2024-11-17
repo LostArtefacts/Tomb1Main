@@ -79,6 +79,7 @@ dll_sources = [
   'config.c',
   'config_map.c',
   'decomp/decomp.c',
+  'decomp/decomp2.c',
   'decomp/effects.c',
   'decomp/flares.c',
   'decomp/fmv.c',

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.22% (973)</tspan> · <tspan class="known">19.37% (241)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.30% (974)</tspan> · <tspan class="known">19.29% (240)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="584.27" height="6" x="0" y="0" class="decompiled"/>
-<rect width="144.72" height="6" x="584.27" y="0" class="known"/>
+<rect width="584.87" height="6" x="0" y="0" class="decompiled"/>
+<rect width="144.12" height="6" x="584.87" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1228,7 +1228,7 @@
 <rect width="12" height="12" x="735" y="330" class="decompiled"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
 <rect width="12" height="12" x="0" y="345" class="decompiled"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="15" y="345" class="decompiled"><title>void __cdecl SafeFreePalette(int32_t palette_idx);</title></rect>
-<rect width="12" height="12" x="30" y="345" class="known"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
+<rect width="12" height="12" x="30" y="345" class="decompiled"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
 <rect width="12" height="12" x="45" y="345" class="known"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
 <rect width="12" height="12" x="60" y="345" class="known"><title>bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);</title></rect>
 <rect width="12" height="12" x="75" y="345" class="known"><title>bool __cdecl TexturePageInit(TEXPAGE_DESC *page);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.46%</tspan> · <tspan class="known">18.22%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.49%</tspan> · <tspan class="known">18.18%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="608.49" height="6" x="0" y="0" class="decompiled"/>
-<rect width="136.07" height="6" x="608.49" y="0" class="known"/>
+<rect width="608.72" height="6" x="0" y="0" class="decompiled"/>
+<rect width="135.84" height="6" x="608.72" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2025,7 +2025,7 @@
 <rect width="6.57" height="6.19" x="627.24" y="226.03" class="decompiled"><title>void __cdecl Direct3DRelease(void);</title></rect>
 <rect width="6.57" height="6.19" x="636.81" y="226.03" class="decompiled"><title>void __cdecl GameWindowCalculateSizeFromClientByZero(int32_t *width, int32_t *height);</title></rect>
 <rect width="6.57" height="6.19" x="646.38" y="226.03" class="decompiled"><title>bool __cdecl WinVidRegisterGameWindowClass(void);</title></rect>
-<rect width="6.57" height="6.19" x="655.95" y="226.03" class="known"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
+<rect width="6.57" height="6.19" x="655.95" y="226.03" class="decompiled"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
 <rect width="6.48" height="6.19" x="665.51" y="226.03" class="decompiled"><title>void __cdecl Lara_Col_SwanDive(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.39" height="6.19" x="674.99" y="226.03" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
 <rect width="6.39" height="6.19" x="684.38" y="226.03" class="known"><title>void __cdecl ClockChimes_Control(int16_t item_num);</title></rect>

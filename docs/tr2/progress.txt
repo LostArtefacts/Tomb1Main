@@ -197,11 +197,11 @@ typedef struct __unaligned {
 } APP_SETTINGS;
 
 typedef struct __unaligned {
-    LPDDS sysMemSurface;
-    LPDDS vidMemSurface;
+    LPDDS sys_mem_surface;
+    LPDDS vid_mem_surface;
     LPDIRECTDRAWPALETTE palette;
-    LPDIRECT3DTEXTURE2 texture3d;
-    HWR_TEXTURE_HANDLE texHandle;
+    LPDIRECT3DTEXTURE2 texture_3d;
+    HWR_TEXTURE_HANDLE tex_handle;
     int32_t width;
     int32_t height;
     int32_t status;
@@ -4144,7 +4144,7 @@ typedef enum {
 0x00455AF0  0x001C  +R      int32_t __cdecl GetFreePaletteIndex(void);
 0x00455B10  0x0023  +R      void __cdecl FreePalette(int32_t palette_idx);
 0x00455B40  0x0012  +R      void __cdecl SafeFreePalette(int32_t palette_idx);
-0x00455B90  0x006A  -R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
+0x00455B90  0x006A  +R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
 0x00455C00  0x001C  -R      int32_t __cdecl GetFreeTexturePageIndex(void);
 0x00455C20  0x0098  -R      bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);
 0x00455CC0  0x0174  -R      bool __cdecl TexturePageInit(TEXPAGE_DESC *page);
@@ -4800,3 +4800,4 @@ typedef enum {
 0x005206A4  -       int32_t g_SavegameBufPos;
 0x0051E9C8  -       char *g_SavegameBufPtr;
 0x0051C210  -       LPDIRECTDRAWPALETTE g_TexturePalettes[16]; // MAX_PALETTES
+0x0051BDB8  -       TEXPAGE_DESC g_TexturePages[32]; // MAX_TEXTURE_PAGES

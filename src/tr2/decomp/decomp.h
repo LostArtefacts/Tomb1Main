@@ -5,6 +5,11 @@
 #include <stdint.h>
 #include <windows.h>
 
+// TODO: This is a placeholder file containing functions that originated from
+// the decompilation phase, and they are currently disorganized. Eventually,
+// they'll need to be properly modularized. The same applies to all files
+// within the decomp/ directory which are scheduled for extensive refactoring.
+
 int32_t __cdecl GameInit(void);
 int32_t __stdcall WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
@@ -172,3 +177,4 @@ int32_t __cdecl CreateTexturePalette(const RGB_888 *palette);
 int32_t __cdecl GetFreePaletteIndex(void);
 void __cdecl FreePalette(int32_t palette_idx);
 void __cdecl SafeFreePalette(int32_t palette_idx);
+int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);

@@ -212,11 +212,11 @@ typedef struct __unaligned {
 } APP_SETTINGS;
 
 typedef struct __unaligned {
-    LPDDS sysMemSurface;
-    LPDDS vidMemSurface;
+    LPDDS sys_mem_surface;
+    LPDDS vid_mem_surface;
     LPDIRECTDRAWPALETTE palette;
-    LPDIRECT3DTEXTURE2 texture3d;
-    HWR_TEXTURE_HANDLE texHandle;
+    LPDIRECT3DTEXTURE2 texture_3d;
+    HWR_TEXTURE_HANDLE tex_handle;
     int32_t width;
     int32_t height;
     int32_t status;
