@@ -2,7 +2,9 @@
 
 #include "decomp/decomp.h"
 #include "game/gamebuf.h"
+#include "game/gameflow/gameflow_new.h"
 #include "game/hwr.h"
+#include "game/inject.h"
 #include "game/items.h"
 #include "game/objects/setup.h"
 #include "game/room.h"
@@ -899,6 +901,8 @@ static void M_CompleteSetup(void)
     Room_ParseFloorData(g_Legacy_FloorData);
     // TODO: store raw FD temporarily, release here and eliminate g_FloorData
 
+    Inject_AllInjections();
+
     // Must be called after Setup_AllObjects using the cached item
     // count, as individual setups may increment g_LevelItemCount.
     const int32_t item_count = g_LevelItemCount;
@@ -913,8 +917,13 @@ bool __cdecl Level_Load(const char *const file_name, const int32_t level_num)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
+    const GAMEFLOW_NEW_LEVEL *const level = &g_GameflowNew.levels[level_num];
+    Inject_Init(level->injections.count, level->injections.data_paths);
+
     M_LoadFromFile(file_name, level_num);
     M_CompleteSetup();
+
+    Inject_Cleanup();
 
     Benchmark_End(benchmark, NULL);
 

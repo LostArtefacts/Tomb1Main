@@ -8,10 +8,75 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
+static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAMEFLOW_NEW *gf);
+static void M_LoadLevelInjections(
+    JSON_OBJECT *obj, const GAMEFLOW_NEW *gf, GAMEFLOW_NEW_LEVEL *level);
 static void M_StringTableShutdown(GAMEFLOW_NEW_STRING_ENTRY *dest);
 static bool M_LoadStringTable(
     JSON_OBJECT *root_obj, const char *key, GAMEFLOW_NEW_STRING_ENTRY **dest);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAMEFLOW_NEW *gf);
+
+static void M_LoadGlobalInjections(
+    JSON_OBJECT *const obj, GAMEFLOW_NEW *const gf)
+{
+    gf->injections.count = 0;
+    JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
+    if (injections == NULL) {
+        return;
+    }
+
+    gf->injections.count = injections->length;
+    gf->injections.data_paths =
+        Memory_Alloc(sizeof(char *) * injections->length);
+    for (size_t i = 0; i < injections->length; i++) {
+        JSON_VALUE *const value = JSON_ArrayGetValue(injections, i);
+        const JSON_STRING *const str = JSON_ValueAsString(value);
+        gf->injections.data_paths[i] = Memory_DupStr(str->string);
+    }
+}
+
+static void M_LoadLevelInjections(
+    JSON_OBJECT *const obj, const GAMEFLOW_NEW *const gf,
+    GAMEFLOW_NEW_LEVEL *const level)
+{
+    const bool inherit = JSON_ObjectGetBool(obj, "inherit_injections", true);
+    JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
+
+    level->injections.count = 0;
+    if (injections == NULL && !inherit) {
+        return;
+    }
+
+    if (inherit) {
+        level->injections.count += gf->injections.count;
+    }
+    if (injections != NULL) {
+        level->injections.count += injections->length;
+    }
+
+    level->injections.data_paths =
+        Memory_Alloc(sizeof(char *) * level->injections.count);
+    int32_t base_index = 0;
+
+    if (inherit) {
+        for (int32_t i = 0; i < gf->injections.count; i++) {
+            level->injections.data_paths[i] =
+                Memory_DupStr(gf->injections.data_paths[i]);
+        }
+        base_index = gf->injections.count;
+    }
+
+    if (injections == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < injections->length; i++) {
+        JSON_VALUE *const value = JSON_ArrayGetValue(injections, i);
+        const JSON_STRING *const str = JSON_ValueAsString(value);
+        level->injections.data_paths[base_index + i] =
+            Memory_DupStr(str->string);
+    }
+}
 
 static void M_StringTableShutdown(GAMEFLOW_NEW_STRING_ENTRY *const dest)
 {
@@ -100,6 +165,8 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAMEFLOW_NEW *const gf)
             goto end;
         }
 
+        M_LoadLevelInjections(jlvl_obj, gf, level);
+
         result &= M_LoadStringTable(
             jlvl_obj, "object_strings", &level->object_strings);
         result &=
@@ -138,6 +205,7 @@ bool GF_N_Load(const char *const path)
 
     GAMEFLOW_NEW *const gf = &g_GameflowNew;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
+    M_LoadGlobalInjections(root_obj, gf);
     result &=
         M_LoadStringTable(root_obj, "object_strings", &gf->object_strings);
     result &= M_LoadStringTable(root_obj, "game_strings", &gf->game_strings);
@@ -161,9 +229,19 @@ void GF_N_Shutdown(void)
 {
     GAMEFLOW_NEW *const gf = &g_GameflowNew;
 
+    for (int32_t i = 0; i < gf->injections.count; i++) {
+        Memory_FreePointer(&gf->injections.data_paths[i]);
+    }
+    Memory_FreePointer(&gf->injections.data_paths);
+
     for (int32_t i = 0; i < gf->level_count; i++) {
         M_StringTableShutdown(gf->levels[i].object_strings);
         M_StringTableShutdown(gf->levels[i].game_strings);
+
+        for (int32_t j = 0; j < gf->levels[i].injections.count; j++) {
+            Memory_FreePointer(&gf->levels[i].injections.data_paths[j]);
+        }
+        Memory_FreePointer(&gf->levels[i].injections.data_paths);
     }
 
     M_StringTableShutdown(gf->object_strings);
