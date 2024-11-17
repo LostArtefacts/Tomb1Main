@@ -132,3 +132,14 @@ void __cdecl SafeFreeTexturePage(const int32_t page_idx)
         FreeTexturePage(page_idx);
     }
 }
+
+void __cdecl FreeTexturePage(const int32_t page_idx)
+{
+    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
+    TexturePageReleaseVidMemSurface(desc);
+    if (desc->sys_mem_surface != NULL) {
+        desc->sys_mem_surface->lpVtbl->Release(desc->sys_mem_surface);
+        desc->sys_mem_surface = NULL;
+    }
+    desc->status = 0;
+}
