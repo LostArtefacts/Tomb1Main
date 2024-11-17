@@ -318,3 +318,45 @@ int32_t __cdecl AddTexturePage16(
 
     return page_idx;
 }
+
+HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC desc, LPVOID lpContext)
+{
+    DDPIXELFORMAT *pixel_fmt = &desc->ddpfPixelFormat;
+    if (pixel_fmt->dwRGBBitCount < 8) {
+        return D3DENUMRET_OK;
+    }
+
+    if (g_SavedAppSettings.disable_16bit_textures
+        || pixel_fmt->dwRGBBitCount != 16) {
+        if (pixel_fmt->dwFlags & DDPF_PALETTEINDEXED8) {
+            g_TextureFormat.pixel_fmt = *pixel_fmt;
+            g_TextureFormat.bpp = 8;
+            g_TexturesAlphaChannel = 0;
+            g_TexturesHaveCompatibleMasks = false;
+            return D3DENUMRET_CANCEL;
+        }
+    } else if (pixel_fmt->dwFlags & DDPF_RGB) {
+        g_TextureFormat.pixel_fmt = *pixel_fmt;
+        g_TextureFormat.bpp = 16;
+        g_TexturesAlphaChannel = pixel_fmt->dwFlags & DDPF_ALPHAPIXELS;
+        WinVidGetColorBitMasks(&g_TextureFormat.color_bit_masks, pixel_fmt);
+
+        if (g_TextureFormat.bpp == 16
+            && g_TextureFormat.color_bit_masks.depth.a == 1
+            && g_TextureFormat.color_bit_masks.depth.r == 5
+            && g_TextureFormat.color_bit_masks.depth.g == 5
+            && g_TextureFormat.color_bit_masks.depth.b == 5
+            && g_TextureFormat.color_bit_masks.offset.a == 15
+            && g_TextureFormat.color_bit_masks.offset.r == 10
+            && g_TextureFormat.color_bit_masks.offset.g == 5
+            && g_TextureFormat.color_bit_masks.offset.b == 0) {
+            g_TexturesHaveCompatibleMasks = true;
+            return D3DENUMRET_CANCEL;
+        } else {
+            g_TexturesHaveCompatibleMasks = false;
+            return D3DENUMRET_OK;
+        }
+    }
+
+    return D3DENUMRET_OK;
+}
