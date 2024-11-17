@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.05% (971)</tspan> · <tspan class="known">19.53% (243)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.14% (972)</tspan> · <tspan class="known">19.45% (242)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="583.07" height="6" x="0" y="0" class="decompiled"/>
-<rect width="145.92" height="6" x="583.07" y="0" class="known"/>
+<rect width="583.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="145.32" height="6" x="583.67" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1226,7 +1226,7 @@
 <rect width="12" height="12" x="705" y="330" class="decompiled"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
 <rect width="12" height="12" x="720" y="330" class="decompiled"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
 <rect width="12" height="12" x="735" y="330" class="decompiled"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
-<rect width="12" height="12" x="0" y="345" class="known"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
+<rect width="12" height="12" x="0" y="345" class="decompiled"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="15" y="345" class="known"><title>void __cdecl SafeFreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="30" y="345" class="known"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
 <rect width="12" height="12" x="45" y="345" class="known"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.44%</tspan> · <tspan class="known">18.23%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.45%</tspan> · <tspan class="known">18.22%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="608.37" height="6" x="0" y="0" class="decompiled"/>
-<rect width="136.19" height="6" x="608.37" y="0" class="known"/>
+<rect width="608.45" height="6" x="0" y="0" class="decompiled"/>
+<rect width="136.11" height="6" x="608.45" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2392,7 +2392,7 @@
 <rect width="2.57" height="2.21" x="692.67" y="362.36" class="decompiled"><title>void __cdecl Lara_Col_SurfRight(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="367.57" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="372.79" class="decompiled"><title>uint16_t __cdecl S_FindColor(int32_t red, int32_t green, int32_t blue);</title></rect>
-<rect width="2.36" height="2.42" x="698.24" y="325.85" class="known"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
+<rect width="2.36" height="2.42" x="698.24" y="325.85" class="decompiled"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="2.21" height="2.42" x="703.60" y="325.85" class="decompiled"><title>void __cdecl Matrix_Pop_I(void);</title></rect>
 <rect width="2.21" height="2.42" x="708.81" y="325.85" class="decompiled"><title>void __cdecl Inv_Ring_MotionRotation(RING_INFO *ring, int16_t rotation, int16_t target);</title></rect>
 <rect width="2.21" height="2.42" x="714.01" y="325.85" class="decompiled"><title>void __cdecl MovableBlock_Draw(const ITEM *item);</title></rect>

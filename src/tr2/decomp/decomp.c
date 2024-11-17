@@ -3350,3 +3350,12 @@ int32_t __cdecl GetFreePaletteIndex(void)
     }
     return -1;
 }
+
+void __cdecl FreePalette(const int32_t palette_idx)
+{
+    LPDIRECTDRAWPALETTE palette = &g_TexturePalettes[palette_idx];
+    if (palette != NULL) {
+        palette->lpVtbl->Release(palette);
+        g_TexturePalettes[palette_idx] = NULL;
+    }
+}
