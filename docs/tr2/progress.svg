@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.90% (994)</tspan> · <tspan class="known">17.68% (220)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.98% (995)</tspan> · <tspan class="known">17.60% (219)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="596.88" height="6" x="0" y="0" class="decompiled"/>
-<rect width="132.11" height="6" x="596.88" y="0" class="known"/>
+<rect width="597.48" height="6" x="0" y="0" class="decompiled"/>
+<rect width="131.51" height="6" x="597.48" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1156,7 +1156,7 @@
 <rect width="12" height="12" x="405" y="315" class="decompiled"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="12" height="12" x="420" y="315" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="12" height="12" x="435" y="315" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
-<rect width="12" height="12" x="450" y="315" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
+<rect width="12" height="12" x="450" y="315" class="decompiled"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="12" height="12" x="465" y="315" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="480" y="315" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="12" height="12" x="495" y="315" class="known"><title>void __cdecl S_CopyScreenToBuffer(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.15%</tspan> · <tspan class="known">17.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.16%</tspan> · <tspan class="known">17.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.90" height="6" x="613.66" y="0" class="known"/>
+<rect width="613.70" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.86" height="6" x="613.70" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2499,7 +2499,7 @@
 <rect width="0.52" height="0.77" x="732.60" y="353.40" class="decompiled"><title>void __cdecl Text_RemoveBackground(TEXTSTRING *string);</title></rect>
 <rect width="0.52" height="0.77" x="736.12" y="353.40" class="decompiled"><title>void __cdecl Text_RemoveOutline(TEXTSTRING *string);</title></rect>
 <rect width="0.52" height="0.77" x="739.65" y="353.40" class="unused"><title>sub_44E880</title></rect>
-<rect width="0.52" height="0.77" x="743.17" y="353.40" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
+<rect width="0.52" height="0.77" x="743.17" y="353.40" class="decompiled"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="0.30" height="0.77" x="746.70" y="353.40" class="decompiled"><title>void __cdecl WinInFinish(void);</title></rect>
 <rect width="0.35" height="0.72" x="728.85" y="357.17" class="decompiled"><title>void __cdecl S_FinishInventory(void);</title></rect>
 <rect width="0.35" height="0.72" x="728.85" y="360.89" class="known"><title>bool __cdecl IsNewRegistryKeyCreated(void);</title></rect>

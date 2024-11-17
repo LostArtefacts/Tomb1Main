@@ -4072,7 +4072,7 @@ typedef enum {
 0x00451EF0  0x007E  +R      void __cdecl S_SyncPictureBufferPalette(void);
 0x00451F70  0x001C  +R      void __cdecl S_DontDisplayPicture(void);
 0x00451F80  0x000D  +R      void __cdecl ScreenDump(void);
-0x00451F90  0x0010  -R      void __cdecl ScreenPartialDump(void);
+0x00451F90  0x0010  +R      void __cdecl ScreenPartialDump(void);
 0x00451FA0  0x01C9  *R      void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);
 0x00452170  0x0026  -R      void __cdecl ScreenClear(bool is_phd_win_size);
 0x004521A0  0x00AB  -R      void __cdecl S_CopyScreenToBuffer(void);

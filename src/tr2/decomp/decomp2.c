@@ -415,3 +415,8 @@ void __cdecl ScreenDump(void)
 {
     UpdateFrame(true, NULL);
 }
+
+void __cdecl ScreenPartialDump(void)
+{
+    UpdateFrame(true, &g_PhdWinRect);
+}
