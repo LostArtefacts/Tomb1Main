@@ -553,3 +553,13 @@ BOOL __cdecl S_LoadLevelFile(
     S_UnloadLevelFile();
     return Level_Load(file_name, level_num);
 }
+
+void __cdecl S_UnloadLevelFile(void)
+{
+    if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+        HWR_FreeTexturePages();
+    }
+    strcpy(g_LevelFileName, "");
+    memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
+    g_TextureInfoCount = 0;
+}
