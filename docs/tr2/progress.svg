@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.42% (988)</tspan> · <tspan class="known">18.17% (226)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.50% (989)</tspan> · <tspan class="known">18.09% (225)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="593.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="135.71" height="6" x="593.28" y="0" class="known"/>
+<rect width="593.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="135.11" height="6" x="593.88" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1243,7 +1243,7 @@
 <rect width="12" height="12" x="210" y="345" class="decompiled"><title>int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);</title></rect>
 <rect width="12" height="12" x="225" y="345" class="decompiled"><title>int32_t __cdecl AddTexturePage16(int32_t width, int32_t height, const uint8_t *page_buf);</title></rect>
 <rect width="12" height="12" x="240" y="345" class="decompiled"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
-<rect width="12" height="12" x="255" y="345" class="known"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
+<rect width="12" height="12" x="255" y="345" class="decompiled"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
 <rect width="12" height="12" x="270" y="345" class="known"><title>void __cdecl CleanupTextures(void);</title></rect>
 <rect width="12" height="12" x="285" y="345" class="known"><title>bool __cdecl InitTextures(void);</title></rect>
 <rect width="12" height="12" x="300" y="345" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.07%</tspan> · <tspan class="known">17.61%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.08%</tspan> · <tspan class="known">17.59%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.05" height="6" x="0" y="0" class="decompiled"/>
-<rect width="131.51" height="6" x="613.05" y="0" class="known"/>
+<rect width="613.13" height="6" x="0" y="0" class="decompiled"/>
+<rect width="131.43" height="6" x="613.13" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2373,7 +2373,7 @@
 <rect width="2.47" height="2.62" x="687.21" y="366.77" class="decompiled"><title>int32_t __cdecl Text_Remove(TEXTSTRING *string);</title></rect>
 <rect width="2.47" height="2.62" x="687.21" y="372.38" class="decompiled"><title>HRESULT __cdecl WinVidBufferUnlock(LPDDS surface, LPDDSDESC desc);</title></rect>
 <rect width="2.88" height="2.22" x="692.67" y="320.63" class="decompiled"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
-<rect width="2.88" height="2.22" x="698.55" y="320.63" class="known"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
+<rect width="2.88" height="2.22" x="698.55" y="320.63" class="decompiled"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
 <rect width="2.72" height="2.22" x="704.43" y="320.63" class="decompiled"><title>void __cdecl Room_Legacy_TriggerMusicTrack(int16_t value, int16_t flags, int16_t type);</title></rect>
 <rect width="2.72" height="2.22" x="710.14" y="320.63" class="decompiled"><title>void __cdecl FX_AssaultStart(ITEM *item);</title></rect>
 <rect width="2.72" height="2.22" x="715.86" y="320.63" class="decompiled"><title>void __cdecl Inv_RemoveInventoryText(void);</title></rect>

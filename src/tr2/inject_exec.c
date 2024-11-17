@@ -292,6 +292,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00456070, AddTexturePage8);
     INJECT(enable, 0x00456170, AddTexturePage16);
     INJECT(enable, 0x00456310, EnumTextureFormatsCallback);
+    INJECT(enable, 0x00456430, EnumerateTextureFormats);
 }
 
 static void M_DecompFMV(const bool enable)

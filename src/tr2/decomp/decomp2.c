@@ -360,3 +360,10 @@ HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC desc, LPVOID lpContext)
 
     return D3DENUMRET_OK;
 }
+
+HRESULT __cdecl EnumerateTextureFormats(void)
+{
+    memset(&g_TextureFormat, 0, sizeof(g_TextureFormat));
+    return g_D3DDev->lpVtbl->EnumTextureFormats(
+        g_D3DDev, EnumTextureFormatsCallback, NULL);
+}
