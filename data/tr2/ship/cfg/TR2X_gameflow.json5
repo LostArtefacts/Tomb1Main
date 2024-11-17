@@ -42,6 +42,9 @@
 
         // 11. Tibetan Foothills
         {
+            "injections": [
+                "data/injections/tibet_fd.bin",
+            ],
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
             },

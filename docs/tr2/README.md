@@ -41,6 +41,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo
 - fixed the following floor data issues:
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
+    - **Tibetan Foothills**: added missing triggers for the drawbridge in room 96 (after the flipmap)
 
 #### Cheats
 - added a fly cheat
