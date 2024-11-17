@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.30% (974)</tspan> · <tspan class="known">19.29% (240)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.38% (975)</tspan> · <tspan class="known">19.21% (239)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="584.87" height="6" x="0" y="0" class="decompiled"/>
-<rect width="144.12" height="6" x="584.87" y="0" class="known"/>
+<rect width="585.47" height="6" x="0" y="0" class="decompiled"/>
+<rect width="143.52" height="6" x="585.47" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1229,7 +1229,7 @@
 <rect width="12" height="12" x="0" y="345" class="decompiled"><title>void __cdecl FreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="15" y="345" class="decompiled"><title>void __cdecl SafeFreePalette(int32_t palette_idx);</title></rect>
 <rect width="12" height="12" x="30" y="345" class="decompiled"><title>int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);</title></rect>
-<rect width="12" height="12" x="45" y="345" class="known"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
+<rect width="12" height="12" x="45" y="345" class="decompiled"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
 <rect width="12" height="12" x="60" y="345" class="known"><title>bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);</title></rect>
 <rect width="12" height="12" x="75" y="345" class="known"><title>bool __cdecl TexturePageInit(TEXPAGE_DESC *page);</title></rect>
 <rect width="12" height="12" x="90" y="345" class="known"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.49%</tspan> · <tspan class="known">18.18%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.50%</tspan> · <tspan class="known">18.18%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="608.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="135.84" height="6" x="608.72" y="0" class="known"/>
+<rect width="608.78" height="6" x="0" y="0" class="decompiled"/>
+<rect width="135.78" height="6" x="608.78" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2433,7 +2433,7 @@
 <rect width="1.96" height="1.69" x="708.01" y="341.02" class="known"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="345.70" class="decompiled"><title>void __cdecl S_Audio_Sample_OutSetPitch(int32_t track_id, int32_t pitch);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="350.39" class="decompiled"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
-<rect width="1.96" height="1.69" x="708.01" y="355.07" class="known"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
+<rect width="1.96" height="1.69" x="708.01" y="355.07" class="decompiled"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="359.76" class="known"><title>void __thiscall SE_UpdateBitmapPalette(BITMAP_RESOURCE *bmpRsrc, HWND hWnd, HWND hSender);</title></rect>
 <rect width="1.96" height="1.52" x="708.01" y="364.44" class="decompiled"><title>void __cdecl Inv_RemoveAllItems(void);</title></rect>
 <rect width="1.96" height="1.52" x="708.01" y="368.96" class="decompiled"><title>void __cdecl Requester_Item_CenterAlign(REQUEST_INFO *req, TEXTSTRING *txt);</title></rect>
