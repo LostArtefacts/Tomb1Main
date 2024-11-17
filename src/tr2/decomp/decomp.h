@@ -198,3 +198,4 @@ HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC desc, LPVOID lpContext);
 HRESULT __cdecl EnumerateTextureFormats(void);
 void __cdecl CleanupTextures(void);
 bool __cdecl InitTextures(void);
+void __cdecl S_SyncPictureBufferPalette(void);

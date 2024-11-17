@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.66% (991)</tspan> · <tspan class="known">17.93% (223)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.74% (992)</tspan> · <tspan class="known">17.85% (222)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="595.08" height="6" x="0" y="0" class="decompiled"/>
-<rect width="133.91" height="6" x="595.08" y="0" class="known"/>
+<rect width="595.68" height="6" x="0" y="0" class="decompiled"/>
+<rect width="133.31" height="6" x="595.68" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1153,7 +1153,7 @@
 <rect width="12" height="12" x="360" y="315" class="known"><title>void __cdecl S_SetupAboveWater(BOOL underwater);</title></rect>
 <rect width="12" height="12" x="375" y="315" class="known"><title>void __cdecl S_AnimateTextures(int32_t ticks);</title></rect>
 <rect width="12" height="12" x="390" y="315" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
-<rect width="12" height="12" x="405" y="315" class="known"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
+<rect width="12" height="12" x="405" y="315" class="decompiled"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="12" height="12" x="420" y="315" class="known"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="12" height="12" x="435" y="315" class="known"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="12" height="12" x="450" y="315" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.10%</tspan> · <tspan class="known">17.57%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.14%</tspan> · <tspan class="known">17.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.30" height="6" x="0" y="0" class="decompiled"/>
-<rect width="131.26" height="6" x="613.30" y="0" class="known"/>
+<rect width="613.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.99" height="6" x="613.58" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1966,7 +1966,7 @@
 <rect width="7.40" height="7.13" x="578.21" y="298.07" class="decompiled"><title>void __cdecl Option_DoInventory(INVENTORY_ITEM *item);</title></rect>
 <rect width="7.40" height="7.05" x="578.21" y="308.20" class="decompiled"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
 <rect width="7.40" height="7.05" x="578.21" y="318.25" class="decompiled"><title>void __cdecl Option_Controls_FlashConflicts(void);</title></rect>
-<rect width="7.40" height="7.05" x="578.21" y="328.30" class="known"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
+<rect width="7.40" height="7.05" x="578.21" y="328.30" class="decompiled"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
 <rect width="7.40" height="6.97" x="578.21" y="338.36" class="decompiled"><title>void __cdecl S_SaveSettings(void);</title></rect>
 <rect width="7.40" height="6.89" x="578.21" y="348.33" class="decompiled"><title>BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);</title></rect>
 <rect width="7.40" height="6.89" x="578.21" y="358.22" class="decompiled"><title>int32_t __cdecl Item_GlobalReplace(GAME_OBJECT_ID src_object_id, GAME_OBJECT_ID dst_object_id);</title></rect>

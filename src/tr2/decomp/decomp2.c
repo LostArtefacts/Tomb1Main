@@ -382,3 +382,22 @@ bool __cdecl InitTextures(void)
     memset(g_TexturePalettes, 0, sizeof(LPDIRECTDRAWPALETTE) * MAX_PALETTES);
     return true;
 }
+
+void __cdecl S_SyncPictureBufferPalette(void)
+{
+    if (g_PictureBufferSurface == NULL) {
+        return;
+    }
+
+    DDSURFACEDESC desc;
+    if (FAILED(WinVidBufferLock(
+            g_PictureBufferSurface, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT))) {
+        return;
+    }
+
+    SyncSurfacePalettes(
+        desc.lpSurface, 640, 480, desc.lPitch, g_PicturePalette, desc.lpSurface,
+        desc.lPitch, g_GamePalette8, true);
+    WinVidBufferUnlock(g_PictureBufferSurface, &desc);
+    memcpy(g_PicturePalette, g_GamePalette8, sizeof(RGB_888) * 256);
+}
