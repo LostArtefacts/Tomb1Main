@@ -4141,7 +4141,7 @@ typedef enum {
 0x004558E0  0x00C8  +R      BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);
 0x004559B0  0x00AE  +R      void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);
 0x00455A60  0x0087  +R      int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);
-0x00455AF0  0x001C  -R      int32_t __cdecl GetFreePaletteIndex(void);
+0x00455AF0  0x001C  +R      int32_t __cdecl GetFreePaletteIndex(void);
 0x00455B10  0x0023  -R      void __cdecl FreePalette(int32_t palette_idx);
 0x00455B40  0x0012  -R      void __cdecl SafeFreePalette(int32_t palette_idx);
 0x00455B90  0x006A  -R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);

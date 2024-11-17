@@ -3340,3 +3340,13 @@ int32_t __cdecl CreateTexturePalette(const RGB_888 *const palette)
     }
     return palette_idx;
 }
+
+int32_t __cdecl GetFreePaletteIndex(void)
+{
+    for (int32_t i = 0; i < MAX_PALETTES; i++) {
+        if (g_TexturePalettes[i] == NULL) {
+            return i;
+        }
+    }
+    return -1;
+}

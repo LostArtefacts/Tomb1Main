@@ -274,6 +274,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x004558E0, FindNearestPaletteEntry);
     INJECT(enable, 0x004559B0, SyncSurfacePalettes);
     INJECT(enable, 0x00455A60, CreateTexturePalette);
+    INJECT(enable, 0x00455AF0, GetFreePaletteIndex);
 }
 
 static void M_DecompFMV(const bool enable)
