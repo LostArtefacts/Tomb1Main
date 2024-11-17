@@ -171,3 +171,4 @@ void __cdecl SyncSurfacePalettes(
 int32_t __cdecl CreateTexturePalette(const RGB_888 *palette);
 int32_t __cdecl GetFreePaletteIndex(void);
 void __cdecl FreePalette(int32_t palette_idx);
+void __cdecl SafeFreePalette(int32_t palette_idx);

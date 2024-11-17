@@ -4143,7 +4143,7 @@ typedef enum {
 0x00455A60  0x0087  +R      int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);
 0x00455AF0  0x001C  +R      int32_t __cdecl GetFreePaletteIndex(void);
 0x00455B10  0x0023  +R      void __cdecl FreePalette(int32_t palette_idx);
-0x00455B40  0x0012  -R      void __cdecl SafeFreePalette(int32_t palette_idx);
+0x00455B40  0x0012  +R      void __cdecl SafeFreePalette(int32_t palette_idx);
 0x00455B90  0x006A  -R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
 0x00455C00  0x001C  -R      int32_t __cdecl GetFreeTexturePageIndex(void);
 0x00455C20  0x0098  -R      bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);

@@ -198,7 +198,6 @@
 #define SE_AdvancedDlgInit ((void __cdecl (*)(HWND hwndDlg))0x00454950)
 #define SE_FindSetupDialog ((HWND __cdecl (*)(void))0x00454960)
 #define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define SafeFreePalette ((void __cdecl (*)(int32_t palette_idx))0x00455B40)
 #define CreateTexturePage ((int32_t __cdecl (*)(int32_t width, int32_t height, bool alpha))0x00455B90)
 #define GetFreeTexturePageIndex ((int32_t __cdecl (*)(void))0x00455C00)
 #define CreateTexturePageSurface ((bool __cdecl (*)(TEXPAGE_DESC *desc))0x00455C20)
