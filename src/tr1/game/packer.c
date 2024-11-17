@@ -51,7 +51,7 @@ static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE *bounds);
 static void M_Cleanup(void);
 
 static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2);
-static void M_EnqueueTexInfo(TEX_INFO *info);
+static bool M_EnqueueTexInfo(TEX_INFO *info);
 static RECTANGLE *M_GetObjectBounds(PHD_TEXTURE *texture);
 static RECTANGLE *M_GetSpriteBounds(PHD_SPRITE *texture);
 static void M_PrepareObject(int object_index);
@@ -127,7 +127,9 @@ static void M_PrepareObject(int object_index)
         info->tpage = object_texture->tpage;
         info->bounds = M_GetObjectBounds(object_texture);
         info->move = M_MoveObject;
-        M_EnqueueTexInfo(info);
+        if (!M_EnqueueTexInfo(info)) {
+            Memory_FreePointer(&info);
+        }
     }
 }
 
@@ -144,7 +146,9 @@ static void M_PrepareSprite(int sprite_index)
         info->tpage = sprite_texture->tpage;
         info->bounds = M_GetSpriteBounds(sprite_texture);
         info->move = M_MoveSprite;
-        M_EnqueueTexInfo(info);
+        if (!M_EnqueueTexInfo(info)) {
+            Memory_FreePointer(&info);
+        }
     }
 }
 
@@ -164,7 +168,7 @@ static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE *bounds)
     page->free_space -= bounds->w * bounds->h;
 }
 
-static void M_EnqueueTexInfo(TEX_INFO *info)
+static bool M_EnqueueTexInfo(TEX_INFO *info)
 {
     // This may be a child of another, so try to find its
     // parent first and add it there.
@@ -190,7 +194,8 @@ static void M_EnqueueTexInfo(TEX_INFO *info)
                 container->bounds = info->bounds;
             }
 
-            return;
+            // Mark the item as no longer used and eligible for freeing.
+            return false;
         }
     }
 
@@ -201,6 +206,7 @@ static void M_EnqueueTexInfo(TEX_INFO *info)
     new_container->size = 1;
     new_container->bounds = info->bounds;
     new_container->tex_infos = info;
+    return true;
 }
 
 static RECTANGLE *M_GetObjectBounds(PHD_TEXTURE *texture)

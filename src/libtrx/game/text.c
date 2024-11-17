@@ -109,6 +109,8 @@ void Text_Remove(TEXTSTRING *const text)
     }
     if (text->flags.active) {
         text->flags.active = 0;
+        Memory_FreePointer(&text->content);
+        Memory_FreePointer(&text->glyphs);
     }
 }
 

@@ -77,12 +77,18 @@ int32_t Console_History_GetLength(void)
 
 void Console_History_Clear(void)
 {
+    for (int32_t i = m_History->count - 1; i >= 0; i--) {
+        char *const prompt = *(char **)Vector_Get(m_History, i);
+        Memory_Free(prompt);
+    }
     Vector_Clear(m_History);
 }
 
 void Console_History_Append(const char *const prompt)
 {
     if (m_History->count == MAX_HISTORY_ENTRIES) {
+        char *const prompt = *(char **)Vector_Get(m_History, 0);
+        Memory_Free(prompt);
         Vector_RemoveAt(m_History, 0);
     }
     char *prompt_copy = Memory_DupStr(prompt);

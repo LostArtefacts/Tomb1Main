@@ -475,6 +475,12 @@ bool Audio_Stream_Close(int32_t sound_id)
 
     if (stream->av.codec_ctx) {
         avcodec_close(stream->av.codec_ctx);
+
+        // XXX: potential libav bug - avcodec_close should free this info
+        if (stream->av.codec_ctx->extradata != NULL) {
+            av_freep(&stream->av.codec_ctx->extradata);
+        }
+
         av_free(stream->av.codec_ctx);
         stream->av.codec_ctx = NULL;
     }

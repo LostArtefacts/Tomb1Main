@@ -1861,10 +1861,6 @@ VIDEO *Video_Open(const char *const file_path)
         return NULL;
     }
 
-    VIDEO *result = Memory_Alloc(sizeof(VIDEO));
-    result->path = Memory_DupStr(file_path);
-    result->is_playing = true;
-
     int flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
     if (SDL_Init(flags)) {
         LOG_ERROR("Could not initialize SDL - %s", SDL_GetError());
@@ -1874,12 +1870,17 @@ VIDEO *Video_Open(const char *const file_path)
     SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
     SDL_EventState(SDL_USEREVENT, SDL_IGNORE);
 
+    VIDEO *const result = Memory_Alloc(sizeof(VIDEO));
+
     result->priv = M_StreamOpen(file_path);
-    if (!result->priv) {
+    if (result->priv == NULL) {
+        Memory_Free(result);
         LOG_ERROR("Failed to initialize video!");
         return NULL;
     }
 
+    result->path = Memory_DupStr(file_path);
+    result->is_playing = true;
     return result;
 }
 
@@ -1920,7 +1921,7 @@ void Video_Stop(VIDEO *const video)
     is->abort_request = true;
 }
 
-void Video_Close(VIDEO *video)
+void Video_Close(VIDEO *const video)
 {
     M_STATE *const is = video->priv;
     if (is) {
@@ -1928,6 +1929,9 @@ void Video_Close(VIDEO *video)
     }
 
     LOG_DEBUG("Finished playing video: %s", video->path);
+
+    Memory_Free((char *)video->path);
+    Memory_Free(video);
 }
 
 void Video_SetSurfaceSize(

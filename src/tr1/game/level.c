@@ -598,21 +598,20 @@ static void M_LoadCameras(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     g_NumberCameras = VFile_ReadS32(file);
     LOG_INFO("%d cameras", g_NumberCameras);
-    if (!g_NumberCameras) {
-        return;
-    }
-    g_Camera.fixed =
-        GameBuf_Alloc(sizeof(OBJECT_VECTOR) * g_NumberCameras, GBUF_CAMERAS);
-    if (!g_Camera.fixed) {
-        Shell_ExitSystem("Error allocating the fixed cameras.");
-    }
-    for (int32_t i = 0; i < g_NumberCameras; i++) {
-        OBJECT_VECTOR *camera = &g_Camera.fixed[i];
-        camera->x = VFile_ReadS32(file);
-        camera->y = VFile_ReadS32(file);
-        camera->z = VFile_ReadS32(file);
-        camera->data = VFile_ReadS16(file);
-        camera->flags = VFile_ReadS16(file);
+    if (g_NumberCameras != 0) {
+        g_Camera.fixed = GameBuf_Alloc(
+            sizeof(OBJECT_VECTOR) * g_NumberCameras, GBUF_CAMERAS);
+        if (!g_Camera.fixed) {
+            Shell_ExitSystem("Error allocating the fixed cameras.");
+        }
+        for (int32_t i = 0; i < g_NumberCameras; i++) {
+            OBJECT_VECTOR *camera = &g_Camera.fixed[i];
+            camera->x = VFile_ReadS32(file);
+            camera->y = VFile_ReadS32(file);
+            camera->z = VFile_ReadS32(file);
+            camera->data = VFile_ReadS16(file);
+            camera->flags = VFile_ReadS16(file);
+        }
     }
     Benchmark_End(benchmark, NULL);
 }
@@ -622,21 +621,20 @@ static void M_LoadSoundEffects(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     g_NumberSoundEffects = VFile_ReadS32(file);
     LOG_INFO("%d sound effects", g_NumberSoundEffects);
-    if (!g_NumberSoundEffects) {
-        return;
-    }
-    g_SoundEffectsTable = GameBuf_Alloc(
-        sizeof(OBJECT_VECTOR) * g_NumberSoundEffects, GBUF_SOUND_FX);
-    if (!g_SoundEffectsTable) {
-        Shell_ExitSystem("Error allocating the sound effects table.");
-    }
-    for (int32_t i = 0; i < g_NumberSoundEffects; i++) {
-        OBJECT_VECTOR *sound = &g_SoundEffectsTable[i];
-        sound->x = VFile_ReadS32(file);
-        sound->y = VFile_ReadS32(file);
-        sound->z = VFile_ReadS32(file);
-        sound->data = VFile_ReadS16(file);
-        sound->flags = VFile_ReadS16(file);
+    if (g_NumberSoundEffects != 0) {
+        g_SoundEffectsTable = GameBuf_Alloc(
+            sizeof(OBJECT_VECTOR) * g_NumberSoundEffects, GBUF_SOUND_FX);
+        if (!g_SoundEffectsTable) {
+            Shell_ExitSystem("Error allocating the sound effects table.");
+        }
+        for (int32_t i = 0; i < g_NumberSoundEffects; i++) {
+            OBJECT_VECTOR *sound = &g_SoundEffectsTable[i];
+            sound->x = VFile_ReadS32(file);
+            sound->y = VFile_ReadS32(file);
+            sound->z = VFile_ReadS32(file);
+            sound->data = VFile_ReadS16(file);
+            sound->flags = VFile_ReadS16(file);
+        }
     }
     Benchmark_End(benchmark, NULL);
 }
@@ -796,23 +794,21 @@ static void M_LoadCinematic(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     g_NumCineFrames = VFile_ReadS16(file);
     LOG_INFO("%d cinematic frames", g_NumCineFrames);
-    if (!g_NumCineFrames) {
-        return;
+    if (g_NumCineFrames != 0) {
+        g_CineCamera = GameBuf_Alloc(
+            sizeof(CINE_CAMERA) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
+        for (int32_t i = 0; i < g_NumCineFrames; i++) {
+            CINE_CAMERA *camera = &g_CineCamera[i];
+            camera->tx = VFile_ReadS16(file);
+            camera->ty = VFile_ReadS16(file);
+            camera->tz = VFile_ReadS16(file);
+            camera->cx = VFile_ReadS16(file);
+            camera->cy = VFile_ReadS16(file);
+            camera->cz = VFile_ReadS16(file);
+            camera->fov = VFile_ReadS16(file);
+            camera->roll = VFile_ReadS16(file);
+        }
     }
-    g_CineCamera = GameBuf_Alloc(
-        sizeof(CINE_CAMERA) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
-    for (int32_t i = 0; i < g_NumCineFrames; i++) {
-        CINE_CAMERA *camera = &g_CineCamera[i];
-        camera->tx = VFile_ReadS16(file);
-        camera->ty = VFile_ReadS16(file);
-        camera->tz = VFile_ReadS16(file);
-        camera->cx = VFile_ReadS16(file);
-        camera->cy = VFile_ReadS16(file);
-        camera->cz = VFile_ReadS16(file);
-        camera->fov = VFile_ReadS16(file);
-        camera->roll = VFile_ReadS16(file);
-    }
-
     Benchmark_End(benchmark, NULL);
 }
 
@@ -823,10 +819,9 @@ static void M_LoadDemo(VFILE *file)
         GameBuf_Alloc(sizeof(uint32_t) * DEMO_COUNT_MAX, GBUF_LOADDEMO_BUFFER);
     const uint16_t size = VFile_ReadS16(file);
     LOG_INFO("%d demo buffer size", size);
-    if (!size) {
-        return;
+    if (size != 0) {
+        VFile_Read(file, g_DemoData, size);
     }
-    VFile_Read(file, g_DemoData, size);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -1049,6 +1044,7 @@ void Level_Load(int level_num)
     Memory_FreePointer(&m_LevelInfo.texture_rgb_page_ptrs);
     Memory_FreePointer(&m_LevelInfo.anim_frame_offsets);
     Memory_FreePointer(&m_LevelInfo.sample_offsets);
+    Memory_FreePointer(&m_LevelInfo.palette);
     Memory_FreePointer(&m_InjectionInfo);
 
     m_InjectionInfo = Memory_Alloc(sizeof(INJECTION_INFO));

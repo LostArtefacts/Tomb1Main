@@ -929,6 +929,8 @@ void GameFlow_Shutdown(void)
 
     if (g_GameFlow.levels) {
         for (int i = 0; i < g_GameFlow.level_count; i++) {
+            Memory_FreePointer(&g_GameFlow.levels[i].level_file);
+            Memory_FreePointer(&g_GameFlow.levels[i].level_title);
             M_StringTableShutdown(g_GameFlow.levels[i].object_strings);
             M_StringTableShutdown(g_GameFlow.levels[i].examine_strings);
 

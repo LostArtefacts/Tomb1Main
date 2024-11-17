@@ -121,7 +121,6 @@ static bool M_Init(const char *const path, IMAGE_READER_CONTEXT *const ctx)
     }
 
     ctx->packet = av_packet_alloc();
-    av_new_packet(ctx->packet, 0);
     error_code = av_read_frame(ctx->format_ctx, ctx->packet);
     if (error_code < 0) {
         goto finish;
@@ -428,7 +427,6 @@ bool Image_SaveToFile(const IMAGE *const image, const char *const path)
     }
 
     packet = av_packet_alloc();
-    av_new_packet(packet, 0);
 
     sws_ctx = sws_getContext(
         image->width, image->height, src_pix_fmt, frame->width, frame->height,

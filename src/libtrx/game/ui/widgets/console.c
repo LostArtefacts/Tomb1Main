@@ -162,6 +162,9 @@ static void M_Free(UI_CONSOLE *const self)
     self->spacer->free(self->spacer);
     self->prompt->free(self->prompt);
     self->container->free(self->container);
+    for (int32_t i = 0; i < MAX_LOG_LINES; i++) {
+        self->logs[i].label->free(self->logs[i].label);
+    }
     for (int32_t i = 0; i < MAX_LISTENERS; i++) {
         UI_Events_Unsubscribe(self->listeners[i]);
     }
