@@ -202,3 +202,14 @@ bool __cdecl LoadTexturePage(const int32_t page_idx, const bool reset)
     sys_mem_texture->lpVtbl->Release(sys_mem_texture);
     return rc;
 }
+
+bool __cdecl ReloadTextures(const bool reset)
+{
+    bool result = true;
+    for (int32_t i = 0; i < MAX_TEXTURE_PAGES; i++) {
+        if (g_TexturePages[i].status & 1) {
+            result &= LoadTexturePage(i, reset);
+        }
+    }
+    return result;
+}

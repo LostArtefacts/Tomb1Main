@@ -187,3 +187,4 @@ void __cdecl FreeTexturePage(int32_t page_idx);
 void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);
 void __cdecl FreeTexturePages(void);
 bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);
+bool __cdecl ReloadTextures(bool reset);
