@@ -3261,3 +3261,33 @@ void __cdecl CopyBitmapPalette(
         out_pal[j].blue = last_sys_pal_entries[j].peBlue;
     }
 }
+
+uint8_t __cdecl FindNearestPaletteEntry(
+    const RGB_888 *const palette, const int32_t red, const int32_t green,
+    const int32_t blue, const bool ignore_sys_palette)
+{
+    int32_t start_idx;
+    int32_t end_idx;
+    if (ignore_sys_palette) {
+        start_idx = 10;
+        end_idx = 246;
+    } else {
+        start_idx = 0;
+        end_idx = 256;
+    }
+
+    int32_t best_idx = 0;
+    int32_t best_diff = INT32_MAX;
+    for (int32_t i = start_idx; i < end_idx; i++) {
+        const int32_t dr = red - palette[i].red;
+        const int32_t dg = green - palette[i].green;
+        const int32_t db = blue - palette[i].blue;
+        const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
+        if (diff < best_diff) {
+            best_diff = diff;
+            best_idx = i;
+        }
+    }
+
+    return best_idx;
+}

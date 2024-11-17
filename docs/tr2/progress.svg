@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.73% (967)</tspan> · <tspan class="known">19.86% (247)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">77.81% (968)</tspan> · <tspan class="known">19.77% (246)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="580.67" height="6" x="0" y="0" class="decompiled"/>
-<rect width="148.32" height="6" x="580.67" y="0" class="known"/>
+<rect width="581.27" height="6" x="0" y="0" class="decompiled"/>
+<rect width="147.72" height="6" x="581.27" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1222,7 +1222,7 @@
 <rect width="12" height="12" x="645" y="330" class="decompiled"><title>int32_t __cdecl Music_GetFrames(void);</title></rect>
 <rect width="12" height="12" x="660" y="330" class="decompiled"><title>void __cdecl Music_SetVolume(int32_t volume);</title></rect>
 <rect width="12" height="12" x="675" y="330" class="decompiled"><title>void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);</title></rect>
-<rect width="12" height="12" x="690" y="330" class="known"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
+<rect width="12" height="12" x="690" y="330" class="decompiled"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
 <rect width="12" height="12" x="705" y="330" class="known"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
 <rect width="12" height="12" x="720" y="330" class="known"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
 <rect width="12" height="12" x="735" y="330" class="known"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.29%</tspan> · <tspan class="known">18.39%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.34%</tspan> · <tspan class="known">18.33%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="607.20" height="6" x="0" y="0" class="decompiled"/>
-<rect width="137.36" height="6" x="607.20" y="0" class="known"/>
+<rect width="607.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="136.92" height="6" x="607.64" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1773,7 +1773,7 @@
 <rect width="9.74" height="10.10" x="599.02" y="136.34" class="decompiled"><title>void __cdecl DInputKeyboardCreate(void);</title></rect>
 <rect width="9.67" height="10.10" x="611.75" y="136.34" class="decompiled"><title>void __cdecl Room_GetNearbyRooms(int32_t x, int32_t y, int32_t z, int32_t r, int32_t h, int16_t room_num);</title></rect>
 <rect width="9.67" height="10.10" x="624.42" y="136.34" class="decompiled"><title>void __cdecl Door_Control(int16_t item_num);</title></rect>
-<rect width="9.67" height="10.10" x="637.09" y="136.34" class="known"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
+<rect width="9.67" height="10.10" x="637.09" y="136.34" class="decompiled"><title>BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);</title></rect>
 <rect width="9.61" height="10.10" x="649.77" y="136.34" class="decompiled"><title>void __cdecl Output_RotateLight(int16_t pitch, int16_t yaw);</title></rect>
 <rect width="9.61" height="10.10" x="662.38" y="136.34" class="known"><title>bool __cdecl SE_SoundTestStart(void);</title></rect>
 <rect width="9.55" height="10.10" x="674.98" y="136.34" class="unused"><title>sub_4449D0</title></rect>

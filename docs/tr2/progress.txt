@@ -4138,7 +4138,7 @@ typedef enum {
 0x00455640  0x0061  +       int32_t __cdecl Music_GetFrames(void);
 0x004556B0  0x0092  +       void __cdecl Music_SetVolume(int32_t volume);
 0x004557A0  0x0137  +R      void __cdecl CopyBitmapPalette(RGB_888 *src_pal, BYTE *src_bitmap, int32_t bitmap_size, RGB_888 *dest_pal);
-0x004558E0  0x00C8  -R      BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);
+0x004558E0  0x00C8  +R      BYTE __cdecl FindNearestPaletteEntry(RGB_888 *palette, int32_t red, int32_t green, int32_t blue, bool ignore_sys_palette);
 0x004559B0  0x00AE  -R      void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);
 0x00455A60  0x0087  -R      int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);
 0x00455AF0  0x001C  -R      int32_t __cdecl GetFreePaletteIndex(void);

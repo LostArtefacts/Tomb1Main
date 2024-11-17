@@ -161,3 +161,6 @@ void __cdecl S_FadeOutInventory(bool is_fade);
 void __cdecl CopyBitmapPalette(
     const RGB_888 *src_pal, const uint8_t *src_bitmap, int32_t bitmap_size,
     RGB_888 *out_pal);
+uint8_t __cdecl FindNearestPaletteEntry(
+    const RGB_888 *palette, int32_t red, int32_t green, int32_t blue,
+    bool ignore_sys_palette);
