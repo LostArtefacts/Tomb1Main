@@ -29,6 +29,10 @@
       "Title": "Fix item duplication glitch",
       "Description": "Fixes the ability to duplicate usage of key items in the inventory."
     },
+    "fix_floor_data_issues": {
+      "Title": "Fix floor data issues",
+      "Description": "Fixes original issues with floor data/triggers."
+    },
     "enable_auto_item_selection": {
       "Title": "Key item pre-selection",
       "Description": "When Lara presses action against a keyhole or puzzle slot, and she has the corresponding item in the inventory, that item will be pre-selected."

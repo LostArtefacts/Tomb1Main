@@ -3,7 +3,7 @@
 #include "global/types.h"
 
 typedef struct {
-    // TODO: add properties
+    int32_t floor_edit_count;
 } INJECTION_INFO;
 
 void Inject_Init(int injection_count, char *filenames[]);
