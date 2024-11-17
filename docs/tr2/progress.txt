@@ -3964,7 +3964,7 @@ typedef enum {
 0x0044B150  0x0026  @R      LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);
 0x0044B180  0x00E0  @R      BOOL __cdecl SelectDrive(void);
 0x0044B260  0x024A  +       bool __cdecl Level_Load(const char *file_name, int32_t level_num);
-0x0044B4B0  0x0018  -R      BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
+0x0044B4B0  0x0018  +R      BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 0x0044B4D0  0x002A  -R      void __cdecl S_UnloadLevelFile(void);
 0x0044B500  0x0014  +R      void __cdecl S_AdjustTexelCoordinates(void);
 0x0044B520  0x00C4  -R      BOOL __cdecl S_ReloadLevelGraphics(BOOL reload_palettes, BOOL reload_tex_pages);

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.39% (1000)</tspan> · <tspan class="known">17.20% (214)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.47% (1001)</tspan> · <tspan class="known">17.12% (213)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="600.48" height="6" x="0" y="0" class="decompiled"/>
-<rect width="128.50" height="6" x="600.48" y="0" class="known"/>
+<rect width="601.08" height="6" x="0" y="0" class="decompiled"/>
+<rect width="127.90" height="6" x="601.08" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1049,7 +1049,7 @@
 <rect width="12" height="12" x="300" y="285" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
 <rect width="12" height="12" x="315" y="285" class="decompiled"><title>BOOL __cdecl SelectDrive(void);</title></rect>
 <rect width="12" height="12" x="330" y="285" class="decompiled"><title>bool __cdecl Level_Load(const char *file_name, int32_t level_num);</title></rect>
-<rect width="12" height="12" x="345" y="285" class="known"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
+<rect width="12" height="12" x="345" y="285" class="decompiled"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="360" y="285" class="known"><title>void __cdecl S_UnloadLevelFile(void);</title></rect>
 <rect width="12" height="12" x="375" y="285" class="decompiled"><title>void __cdecl S_AdjustTexelCoordinates(void);</title></rect>
 <rect width="12" height="12" x="390" y="285" class="known"><title>BOOL __cdecl S_ReloadLevelGraphics(BOOL reload_palettes, BOOL reload_tex_pages);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.40%</tspan> · <tspan class="known">17.27%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.41%</tspan> · <tspan class="known">17.27%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="615.53" height="6" x="0" y="0" class="decompiled"/>
-<rect width="129.03" height="6" x="615.53" y="0" class="known"/>
+<rect width="615.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="128.98" height="6" x="615.58" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2455,7 +2455,7 @@
 <rect width="1.30" height="1.63" x="712.97" y="368.75" class="unused"><title>sub_447160</title></rect>
 <rect width="1.30" height="1.63" x="712.97" y="373.37" class="unused"><title>sub_447A80</title></rect>
 <rect width="1.79" height="1.16" x="717.27" y="340.99" class="unused"><title>sub_447B30</title></rect>
-<rect width="1.79" height="1.16" x="722.06" y="340.99" class="known"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
+<rect width="1.79" height="1.16" x="722.06" y="340.99" class="decompiled"><title>BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="1.79" height="1.16" x="726.85" y="340.99" class="known"><title>int32_t __cdecl UT_MessageBox(LPCTSTR lpText, HWND hWnd);</title></rect>
 <rect width="1.59" height="1.16" x="731.64" y="340.99" class="known"><title>void __cdecl FX_AssaultReset(ITEM *item);</title></rect>
 <rect width="1.59" height="1.16" x="736.23" y="340.99" class="decompiled"><title>void __cdecl Text_SetScale(TEXTSTRING *string, int32_t scale_h, int32_t scale_v);</title></rect>

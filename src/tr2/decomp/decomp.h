@@ -207,3 +207,5 @@ void __cdecl ScreenClear(bool is_phd_win_size);
 void __cdecl S_CopyScreenToBuffer(void);
 void __cdecl AdjustTextureUVs(bool reset_uv_add);
 void __cdecl S_AdjustTexelCoordinates(void);
+BOOL __cdecl S_LoadLevelFile(
+    const char *file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);

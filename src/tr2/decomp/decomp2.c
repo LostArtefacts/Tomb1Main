@@ -1,6 +1,7 @@
 #include "decomp/decomp.h"
 #include "game/background.h"
 #include "game/hwr.h"
+#include "game/level.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -543,4 +544,12 @@ void __cdecl S_AdjustTexelCoordinates(void)
     if (g_TextureInfoCount > 0) {
         AdjustTextureUVs(false);
     }
+}
+
+BOOL __cdecl S_LoadLevelFile(
+    const char *const file_name, const int32_t level_num,
+    const GAMEFLOW_LEVEL_TYPE level_type)
+{
+    S_UnloadLevelFile();
+    return Level_Load(file_name, level_num);
 }
