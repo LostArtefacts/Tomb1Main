@@ -16,7 +16,11 @@
         {},
 
         // 4. Opera House
-        {},
+        {
+            "injections": [
+                "data/injections/opera_fd.bin",
+            ],
+        },
 
         // 5. Offshore Rig
         {},

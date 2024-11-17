@@ -39,6 +39,8 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the distorted skybox in room 5 of Barkhang Monastery
 - fixed new saves not displaying the save count in the passport
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo
+- fixed the following floor data issues:
+    - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
 
 #### Cheats
 - added a fly cheat
