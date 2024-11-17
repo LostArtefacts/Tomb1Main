@@ -154,7 +154,6 @@
 #define S_SetupBelowWater ((void __cdecl (*)(BOOL underwater))0x00451C90)
 #define S_SetupAboveWater ((void __cdecl (*)(BOOL underwater))0x00451CF0)
 #define S_AnimateTextures ((void __cdecl (*)(int32_t ticks))0x00451D20)
-#define S_DontDisplayPicture ((void __cdecl (*)(void))0x00451F70)
 #define ScreenDump ((void __cdecl (*)(void))0x00451F80)
 #define ScreenPartialDump ((void __cdecl (*)(void))0x00451F90)
 #define FadeToPal ((void __cdecl (*)(int32_t fade_value, RGB_888 *palette))0x00451FA0)

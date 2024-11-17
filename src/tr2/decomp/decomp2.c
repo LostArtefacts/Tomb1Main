@@ -1,4 +1,5 @@
 #include "decomp/decomp.h"
+#include "game/background.h"
 #include "game/hwr.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -400,4 +401,12 @@ void __cdecl S_SyncPictureBufferPalette(void)
         desc.lPitch, g_GamePalette8, true);
     WinVidBufferUnlock(g_PictureBufferSurface, &desc);
     memcpy(g_PicturePalette, g_GamePalette8, sizeof(RGB_888) * 256);
+}
+
+void __cdecl S_DontDisplayPicture(void)
+{
+    if (g_SavedAppSettings.render_mode == RM_HARDWARE) {
+        BGND_Free();
+        g_BGND_PictureIsReady = 0;
+    }
 }

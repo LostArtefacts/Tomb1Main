@@ -4070,7 +4070,7 @@ typedef enum {
 0x00451D20  0x00B1  -R      void __cdecl S_AnimateTextures(int32_t ticks);
 0x00451DE0  0x0105  +R      void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 0x00451EF0  0x007E  +R      void __cdecl S_SyncPictureBufferPalette(void);
-0x00451F70  0x001C  *R      void __cdecl S_DontDisplayPicture(void);
+0x00451F70  0x001C  +R      void __cdecl S_DontDisplayPicture(void);
 0x00451F80  0x000D  -R      void __cdecl ScreenDump(void);
 0x00451F90  0x0010  -R      void __cdecl ScreenPartialDump(void);
 0x00451FA0  0x01C9  *R      void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);

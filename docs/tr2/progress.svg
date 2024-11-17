@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.74% (992)</tspan> · <tspan class="known">17.85% (222)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.82% (993)</tspan> · <tspan class="known">17.77% (221)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="595.68" height="6" x="0" y="0" class="decompiled"/>
-<rect width="133.31" height="6" x="595.68" y="0" class="known"/>
+<rect width="596.28" height="6" x="0" y="0" class="decompiled"/>
+<rect width="132.71" height="6" x="596.28" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1154,7 +1154,7 @@
 <rect width="12" height="12" x="375" y="315" class="known"><title>void __cdecl S_AnimateTextures(int32_t ticks);</title></rect>
 <rect width="12" height="12" x="390" y="315" class="decompiled"><title>void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);</title></rect>
 <rect width="12" height="12" x="405" y="315" class="decompiled"><title>void __cdecl S_SyncPictureBufferPalette(void);</title></rect>
-<rect width="12" height="12" x="420" y="315" class="known"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
+<rect width="12" height="12" x="420" y="315" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="12" height="12" x="435" y="315" class="known"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="12" height="12" x="450" y="315" class="known"><title>void __cdecl ScreenPartialDump(void);</title></rect>
 <rect width="12" height="12" x="465" y="315" class="known"><title>void __cdecl FadeToPal(int32_t fade_value, RGB_888 *palette);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.14%</tspan> · <tspan class="known">17.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.15%</tspan> · <tspan class="known">17.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="130.99" height="6" x="613.58" y="0" class="known"/>
+<rect width="613.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="130.92" height="6" x="613.64" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2430,7 +2430,7 @@
 <rect width="1.59" height="2.06" x="740.81" y="331.27" class="known"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="745.41" y="331.27" class="decompiled"><title>void __cdecl Lara_State_Reach(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="336.33" class="decompiled"><title>bool __cdecl S_Audio_Sample_DSoundCreate(GUID *guid);</title></rect>
-<rect width="1.96" height="1.69" x="708.01" y="341.02" class="known"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
+<rect width="1.96" height="1.69" x="708.01" y="341.02" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="345.70" class="decompiled"><title>void __cdecl S_Audio_Sample_OutSetPitch(int32_t track_id, int32_t pitch);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="350.39" class="decompiled"><title>int32_t __cdecl GetFreePaletteIndex(void);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="355.07" class="decompiled"><title>int32_t __cdecl GetFreeTexturePageIndex(void);</title></rect>
