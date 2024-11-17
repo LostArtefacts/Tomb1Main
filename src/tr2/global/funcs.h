@@ -198,7 +198,6 @@
 #define SE_AdvancedDlgInit ((void __cdecl (*)(HWND hwndDlg))0x00454950)
 #define SE_FindSetupDialog ((HWND __cdecl (*)(void))0x00454960)
 #define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define TexturePageInit ((bool __cdecl (*)(TEXPAGE_DESC *page))0x00455CC0)
 #define Create3DTexture ((LPDIRECT3DTEXTURE2 __cdecl (*)(LPDDS surface))0x00455E40)
 #define SafeFreeTexturePage ((void __cdecl (*)(int32_t page_idx))0x00455E70)
 #define FreeTexturePage ((void __cdecl (*)(int32_t page_idx))0x00455E90)

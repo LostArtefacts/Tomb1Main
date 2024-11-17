@@ -55,3 +55,63 @@ bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *const desc)
 
     return true;
 }
+
+bool __cdecl TexturePageInit(TEXPAGE_DESC *const page)
+{
+    bool result = false;
+
+    DDSURFACEDESC dsp = { 0 };
+    dsp.dwSize = sizeof(dsp);
+    dsp.dwFlags = DDSD_PIXELFORMAT | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
+    dsp.dwWidth = page->width;
+    dsp.dwHeight = page->height;
+    dsp.ddpfPixelFormat = g_TextureFormat.pixel_fmt;
+    dsp.ddsCaps.dwCaps =
+        DDSCAPS_ALLOCONLOAD | DDSCAPS_VIDEOMEMORY | DDSCAPS_TEXTURE;
+
+    if (FAILED(DDrawSurfaceCreate(&dsp, &page->vid_mem_surface))) {
+        return false;
+    }
+
+    if (page->palette != NULL) {
+        if (FAILED(page->vid_mem_surface->lpVtbl->SetPalette(
+                page->vid_mem_surface, page->palette))) {
+            goto cleanup;
+        }
+
+        DDCOLORKEY color_key;
+        color_key.dwColorSpaceLowValue = 0;
+        color_key.dwColorSpaceHighValue = 0;
+        if (FAILED(page->vid_mem_surface->lpVtbl->SetColorKey(
+                page->vid_mem_surface, DDCKEY_SRCBLT, &color_key))) {
+            goto cleanup;
+        }
+    }
+
+    page->texture_3d = Create3DTexture(page->vid_mem_surface);
+    if (page->texture_3d == NULL) {
+        goto cleanup;
+    }
+
+    if (FAILED(page->texture_3d->lpVtbl->GetHandle(
+            page->texture_3d, g_D3DDev, &page->tex_handle))) {
+        goto cleanup;
+    }
+
+    result = true;
+
+cleanup:
+    if (!result) {
+        if (page->texture_3d != NULL) {
+            page->texture_3d->lpVtbl->Release(page->texture_3d);
+            page->texture_3d = NULL;
+        }
+
+        if (page->vid_mem_surface != NULL) {
+            page->vid_mem_surface->lpVtbl->Release(page->vid_mem_surface);
+            page->vid_mem_surface = NULL;
+        }
+    }
+
+    return result;
+}
