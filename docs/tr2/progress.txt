@@ -4161,7 +4161,7 @@ typedef enum {
 0x00456310  0x011A  +R      HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);
 0x00456430  0x0025  +R      HRESULT __cdecl EnumerateTextureFormats(void);
 0x00456460  0x0030  +R      void __cdecl CleanupTextures(void);
-0x00456470  0x001F  -R      bool __cdecl InitTextures(void);
+0x00456470  0x001F  +R      bool __cdecl InitTextures(void);
 0x00456490  0x0040  @R      void __cdecl UpdateTicks(void);
 0x004564D0  0x0051  @R      bool __cdecl TIME_Init(void);
 0x00456530  0x0058  +R      DWORD __cdecl Sync(void);

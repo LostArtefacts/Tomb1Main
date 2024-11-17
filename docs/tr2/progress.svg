@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.58% (990)</tspan> · <tspan class="known">18.01% (224)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.66% (991)</tspan> · <tspan class="known">17.93% (223)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="594.48" height="6" x="0" y="0" class="decompiled"/>
-<rect width="134.51" height="6" x="594.48" y="0" class="known"/>
+<rect width="595.08" height="6" x="0" y="0" class="decompiled"/>
+<rect width="133.91" height="6" x="595.08" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1245,7 +1245,7 @@
 <rect width="12" height="12" x="240" y="345" class="decompiled"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
 <rect width="12" height="12" x="255" y="345" class="decompiled"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
 <rect width="12" height="12" x="270" y="345" class="decompiled"><title>void __cdecl CleanupTextures(void);</title></rect>
-<rect width="12" height="12" x="285" y="345" class="known"><title>bool __cdecl InitTextures(void);</title></rect>
+<rect width="12" height="12" x="285" y="345" class="decompiled"><title>bool __cdecl InitTextures(void);</title></rect>
 <rect width="12" height="12" x="300" y="345" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
 <rect width="12" height="12" x="315" y="345" class="decompiled"><title>bool __cdecl TIME_Init(void);</title></rect>
 <rect width="12" height="12" x="330" y="345" class="decompiled"><title>DWORD __cdecl Sync(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.09%</tspan> · <tspan class="known">17.58%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.10%</tspan> · <tspan class="known">17.57%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.23" height="6" x="0" y="0" class="decompiled"/>
-<rect width="131.33" height="6" x="613.23" y="0" class="known"/>
+<rect width="613.30" height="6" x="0" y="0" class="decompiled"/>
+<rect width="131.26" height="6" x="613.30" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2409,7 +2409,7 @@
 <rect width="1.97" height="2.17" x="698.24" y="352.30" class="decompiled"><title>bool __cdecl D3DCreate(void);</title></rect>
 <rect width="1.97" height="2.17" x="698.24" y="357.47" class="decompiled"><title>void __thiscall S_FlaggedString_Create(STRING_FLAGGED *string, int32_t size);</title></rect>
 <rect width="1.97" height="2.17" x="698.24" y="362.65" class="decompiled"><title>BOOL __cdecl S_Audio_Sample_OutIsTrackPlaying(int32_t track_id);</title></rect>
-<rect width="1.97" height="2.17" x="698.24" y="367.82" class="known"><title>bool __cdecl InitTextures(void);</title></rect>
+<rect width="1.97" height="2.17" x="698.24" y="367.82" class="decompiled"><title>bool __cdecl InitTextures(void);</title></rect>
 <rect width="1.97" height="2.01" x="698.24" y="372.99" class="decompiled"><title>void __cdecl Lara_Col_Slide(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.79" height="2.19" x="703.21" y="331.27" class="decompiled"><title>void __cdecl Lara_State_ClimbEnd(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.79" height="2.19" x="703.21" y="336.46" class="decompiled"><title>void __cdecl Lara_Col_SurfTread(ITEM *item, COLL_INFO *coll);</title></rect>

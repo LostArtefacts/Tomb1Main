@@ -375,3 +375,10 @@ void __cdecl CleanupTextures(void)
         SafeFreePalette(i);
     }
 }
+
+bool __cdecl InitTextures(void)
+{
+    memset(g_TexturePages, 0, sizeof(TEXPAGE_DESC) * MAX_TEXTURE_PAGES);
+    memset(g_TexturePalettes, 0, sizeof(LPDIRECTDRAWPALETTE) * MAX_PALETTES);
+    return true;
+}
