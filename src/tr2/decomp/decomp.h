@@ -177,7 +177,8 @@ int32_t __cdecl CreateTexturePalette(const RGB_888 *palette);
 int32_t __cdecl GetFreePaletteIndex(void);
 void __cdecl FreePalette(int32_t palette_idx);
 void __cdecl SafeFreePalette(int32_t palette_idx);
-int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
+int32_t __cdecl CreateTexturePage(
+    int32_t width, int32_t height, LPDIRECTDRAWPALETTE palette);
 int32_t __cdecl GetFreeTexturePageIndex(void);
 bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);
 bool __cdecl TexturePageInit(TEXPAGE_DESC *page);
@@ -189,3 +190,5 @@ void __cdecl FreeTexturePages(void);
 bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);
 bool __cdecl ReloadTextures(bool reset);
 HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);
+int32_t __cdecl AddTexturePage8(
+    int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);

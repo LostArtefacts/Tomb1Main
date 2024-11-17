@@ -4144,7 +4144,7 @@ typedef enum {
 0x00455AF0  0x001C  +R      int32_t __cdecl GetFreePaletteIndex(void);
 0x00455B10  0x0023  +R      void __cdecl FreePalette(int32_t palette_idx);
 0x00455B40  0x0012  +R      void __cdecl SafeFreePalette(int32_t palette_idx);
-0x00455B90  0x006A  +R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
+0x00455B90  0x006A  +R      int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, LPDIRECTDRAWPALETTE palette);
 0x00455C00  0x001C  +R      int32_t __cdecl GetFreeTexturePageIndex(void);
 0x00455C20  0x0098  +R      bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);
 0x00455CC0  0x0174  +R      bool __cdecl TexturePageInit(TEXPAGE_DESC *page);
@@ -4156,7 +4156,7 @@ typedef enum {
 0x00455F40  0x00A2  +R      bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);
 0x00455FF0  0x0035  +R      bool __cdecl ReloadTextures(bool reset);
 0x00456030  0x003E  +R      HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);
-0x00456070  0x00F5  -R      int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);
+0x00456070  0x00F5  +R      int32_t __cdecl AddTexturePage8(int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);
 0x00456170  0x0196  -R      int32_t __cdecl AddTexturePage16(int32_t width, int32_t height, const uint8_t *page_buf);
 0x00456310  0x011A  -R      HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);
 0x00456430  0x0025  -R      HRESULT __cdecl EnumerateTextureFormats(void);

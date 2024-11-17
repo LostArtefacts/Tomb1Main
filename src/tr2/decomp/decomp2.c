@@ -4,19 +4,19 @@
 #include "global/vars.h"
 
 int32_t __cdecl CreateTexturePage(
-    const int32_t width, const int32_t height, const bool alpha)
+    const int32_t width, const int32_t height, LPDIRECTDRAWPALETTE palette)
 {
     const int32_t palette_idx = GetFreeTexturePageIndex();
     if (palette_idx < 0) {
         return -1;
     }
-    TEXPAGE_DESC *desc = &g_TexturePages[palette_idx];
-    memset(desc, 0, sizeof(TEXPAGE_DESC));
-    desc->status = 1;
-    desc->width = width;
-    desc->height = height;
-    desc->palette = (LPDIRECTDRAWPALETTE)alpha;
-    if (!CreateTexturePageSurface(desc)) {
+    TEXPAGE_DESC *const page = &g_TexturePages[palette_idx];
+    memset(page, 0, sizeof(TEXPAGE_DESC));
+    page->status = 1;
+    page->width = width;
+    page->height = height;
+    page->palette = palette;
+    if (!CreateTexturePageSurface(page)) {
         return -1;
     }
 
@@ -34,23 +34,23 @@ int32_t __cdecl GetFreeTexturePageIndex(void)
     return -1;
 }
 
-bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *const desc)
+bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *const page)
 {
     DDSURFACEDESC dsp = { 0 };
     dsp.dwSize = sizeof(dsp);
     dsp.dwFlags = DDSD_PIXELFORMAT | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
     dsp.ddsCaps.dwCaps = DDSCAPS_TEXTURE | DDSCAPS_SYSTEMMEMORY;
-    dsp.dwWidth = desc->width;
-    dsp.dwHeight = desc->height;
+    dsp.dwWidth = page->width;
+    dsp.dwHeight = page->height;
     dsp.ddpfPixelFormat = g_TextureFormat.pixel_fmt;
 
-    if (FAILED(DDrawSurfaceCreate(&dsp, &desc->sys_mem_surface))) {
+    if (FAILED(DDrawSurfaceCreate(&dsp, &page->sys_mem_surface))) {
         return false;
     }
 
-    if (desc->palette != NULL
-        && FAILED(desc->sys_mem_surface->lpVtbl->SetPalette(
-            desc->sys_mem_surface, desc->palette))) {
+    if (page->palette != NULL
+        && FAILED(page->sys_mem_surface->lpVtbl->SetPalette(
+            page->sys_mem_surface, page->palette))) {
         return false;
     }
 
@@ -136,13 +136,13 @@ void __cdecl SafeFreeTexturePage(const int32_t page_idx)
 
 void __cdecl FreeTexturePage(const int32_t page_idx)
 {
-    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
-    TexturePageReleaseVidMemSurface(desc);
-    if (desc->sys_mem_surface != NULL) {
-        desc->sys_mem_surface->lpVtbl->Release(desc->sys_mem_surface);
-        desc->sys_mem_surface = NULL;
+    TEXPAGE_DESC *const page = &g_TexturePages[page_idx];
+    TexturePageReleaseVidMemSurface(page);
+    if (page->sys_mem_surface != NULL) {
+        page->sys_mem_surface->lpVtbl->Release(page->sys_mem_surface);
+        page->sys_mem_surface = NULL;
     }
-    desc->status = 0;
+    page->status = 0;
 }
 
 void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *const page)
@@ -176,29 +176,29 @@ bool __cdecl LoadTexturePage(const int32_t page_idx, const bool reset)
         return false;
     }
 
-    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
-    if (reset || desc->vid_mem_surface == NULL) {
+    TEXPAGE_DESC *const page = &g_TexturePages[page_idx];
+    if (reset || page->vid_mem_surface == NULL) {
         rc = SUCCEEDED(
-            DDrawSurfaceRestoreLost(desc->vid_mem_surface, NULL, false));
+            DDrawSurfaceRestoreLost(page->vid_mem_surface, NULL, false));
     }
 
     if (!rc) {
-        TexturePageReleaseVidMemSurface(desc);
-        rc = TexturePageInit(desc);
+        TexturePageReleaseVidMemSurface(page);
+        rc = TexturePageInit(page);
     }
 
     if (!rc) {
         return false;
     }
 
-    DDrawSurfaceRestoreLost(desc->sys_mem_surface, 0, 0);
-    LPDIRECT3DTEXTURE2 sys_mem_texture = Create3DTexture(desc->sys_mem_surface);
+    DDrawSurfaceRestoreLost(page->sys_mem_surface, 0, 0);
+    LPDIRECT3DTEXTURE2 sys_mem_texture = Create3DTexture(page->sys_mem_surface);
     if (sys_mem_texture == NULL) {
         return false;
     }
 
     rc = SUCCEEDED(
-        desc->texture_3d->lpVtbl->Load(desc->texture_3d, sys_mem_texture));
+        page->texture_3d->lpVtbl->Load(page->texture_3d, sys_mem_texture));
     sys_mem_texture->lpVtbl->Release(sys_mem_texture);
     return rc;
 }
@@ -220,12 +220,48 @@ HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(const int32_t page_idx)
         return 0;
     }
 
-    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
-    if (desc->vid_mem_surface != NULL) {
-        if (desc->vid_mem_surface->lpVtbl->IsLost(desc->vid_mem_surface)
+    TEXPAGE_DESC *const page = &g_TexturePages[page_idx];
+    if (page->vid_mem_surface != NULL) {
+        if (page->vid_mem_surface->lpVtbl->IsLost(page->vid_mem_surface)
             == DDERR_SURFACELOST) {
             LoadTexturePage(page_idx, true);
         }
     }
-    return desc->tex_handle;
+    return page->tex_handle;
+}
+
+int32_t __cdecl AddTexturePage8(
+    const int32_t width, const int32_t height, const uint8_t *const page_buf,
+    const int32_t pal_idx)
+{
+    if (pal_idx < 0) {
+        return -1;
+    }
+
+    const int32_t page_idx =
+        CreateTexturePage(width, height, g_TexturePalettes[pal_idx]);
+    if (page_idx < 0) {
+        return -1;
+    }
+
+    TEXPAGE_DESC *const page = &g_TexturePages[page_idx];
+
+    DDSURFACEDESC desc;
+    if (FAILED(WinVidBufferLock(
+            page->sys_mem_surface, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT))) {
+        return -1;
+    }
+
+    const uint8_t *src = page_buf;
+    uint8_t *dst = desc.lpSurface;
+    for (int32_t y = 0; y < height; y++) {
+        memcpy(dst, src, width);
+        src += width;
+        dst += desc.lPitch;
+    }
+
+    WinVidBufferUnlock(page->sys_mem_surface, &desc);
+    LoadTexturePage(page_idx, false);
+
+    return page_idx;
 }
