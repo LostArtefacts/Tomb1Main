@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.86% (981)</tspan> · <tspan class="known">18.73% (233)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.94% (982)</tspan> · <tspan class="known">18.65% (232)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="589.07" height="6" x="0" y="0" class="decompiled"/>
-<rect width="139.91" height="6" x="589.07" y="0" class="known"/>
+<rect width="589.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="139.31" height="6" x="589.67" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1236,7 +1236,7 @@
 <rect width="12" height="12" x="105" y="345" class="decompiled"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="120" y="345" class="decompiled"><title>void __cdecl FreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="135" y="345" class="decompiled"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
-<rect width="12" height="12" x="150" y="345" class="known"><title>void __cdecl FreeTexturePages(void);</title></rect>
+<rect width="12" height="12" x="150" y="345" class="decompiled"><title>void __cdecl FreeTexturePages(void);</title></rect>
 <rect width="12" height="12" x="165" y="345" class="known"><title>bool __cdecl LoadTexturePage(int32_t page_idx, bool reset);</title></rect>
 <rect width="12" height="12" x="180" y="345" class="known"><title>bool __cdecl ReloadTextures(bool reset);</title></rect>
 <rect width="12" height="12" x="195" y="345" class="known"><title>HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.70%</tspan> · <tspan class="known">17.97%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.71%</tspan> · <tspan class="known">17.96%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="610.32" height="6" x="0" y="0" class="decompiled"/>
-<rect width="134.24" height="6" x="610.32" y="0" class="known"/>
+<rect width="610.40" height="6" x="0" y="0" class="decompiled"/>
+<rect width="134.16" height="6" x="610.40" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2367,7 +2367,7 @@
 <rect width="2.47" height="2.77" x="687.21" y="332.32" class="decompiled"><title>LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="338.08" class="known"><title>void __cdecl ScreenClear(bool is_phd_win_size);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="343.85" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_CalculateSamplePan(int16_t pan);</title></rect>
-<rect width="2.47" height="2.77" x="687.21" y="349.62" class="known"><title>void __cdecl FreeTexturePages(void);</title></rect>
+<rect width="2.47" height="2.77" x="687.21" y="349.62" class="decompiled"><title>void __cdecl FreeTexturePages(void);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="355.39" class="known"><title>void __cdecl SE_PassMessageToImage(HWND hWnd, UINT uMsg, WPARAM wParam);</title></rect>
 <rect width="2.47" height="2.62" x="687.21" y="361.15" class="decompiled"><title>void __cdecl Inv_Ring_MotionCameraPos(RING_INFO *ring, int16_t target);</title></rect>
 <rect width="2.47" height="2.62" x="687.21" y="366.77" class="decompiled"><title>int32_t __cdecl Text_Remove(TEXTSTRING *string);</title></rect>

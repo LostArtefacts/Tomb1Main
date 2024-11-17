@@ -1,4 +1,5 @@
 #include "decomp/decomp.h"
+#include "game/hwr.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -147,7 +148,7 @@ void __cdecl FreeTexturePage(const int32_t page_idx)
 void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *const page)
 {
     HWR_ResetTexSource();
-    page->tex_handle = NULL;
+    page->tex_handle = 0;
     if (page->texture_3d != NULL) {
         page->texture_3d->lpVtbl->Release(page->texture_3d);
         page->texture_3d = NULL;
@@ -155,5 +156,15 @@ void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *const page)
     if (page->vid_mem_surface != NULL) {
         page->vid_mem_surface->lpVtbl->Release(page->vid_mem_surface);
         page->vid_mem_surface = NULL;
+    }
+}
+
+void __cdecl FreeTexturePages(void)
+{
+    for (int32_t i = 0; i < MAX_TEXTURE_PAGES; i++) {
+        TEXPAGE_DESC *const page = &g_TexturePages[i];
+        if (page->status & 1) {
+            FreeTexturePage(i);
+        }
     }
 }
