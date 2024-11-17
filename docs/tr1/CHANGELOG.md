@@ -48,6 +48,7 @@
 - changed the `/tp` command to teleport to items in a round-robin fashion
   The first call will teleport Lara to the object that's the closest to her; repeated calls will cycle through all matching objects in the object placement order.
 - changed the music timestamp loading behaviour and config option to support ambient tracks (#1769)
+- fixed a crash relating to audio decoding (#1895)
 - fixed missing pushblock SFX in Natla's Mines (#1714)
 - fixed crash reports not working in certain circumstances (#1738)
 - fixed missing trapdoor triggers in City of Khamoon (#1744)

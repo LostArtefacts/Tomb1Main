@@ -208,7 +208,7 @@ static bool M_EnqueueFrame(AUDIO_STREAM_SOUND *stream)
                 m_DecodeBuffer =
                     Memory_Realloc(m_DecodeBuffer, m_DecodeBufferCapacity);
             }
-            if (out_buffer) {
+            if (m_DecodeBuffer != NULL && out_buffer != NULL) {
                 memcpy(
                     (uint8_t *)m_DecodeBuffer + out_pos, out_buffer,
                     out_buffer_size);
@@ -393,6 +393,7 @@ void Audio_Stream_Init(void)
 void Audio_Stream_Shutdown(void)
 {
     Memory_FreePointer(&m_DecodeBuffer);
+    m_DecodeBufferCapacity = 0;
     if (!g_AudioDeviceID) {
         return;
     }
