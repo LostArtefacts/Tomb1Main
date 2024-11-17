@@ -168,3 +168,37 @@ void __cdecl FreeTexturePages(void)
         }
     }
 }
+
+bool __cdecl LoadTexturePage(const int32_t page_idx, const bool reset)
+{
+    bool rc = false;
+    if (page_idx < 0) {
+        return false;
+    }
+
+    TEXPAGE_DESC *const desc = &g_TexturePages[page_idx];
+    if (reset || desc->vid_mem_surface == NULL) {
+        rc = SUCCEEDED(
+            DDrawSurfaceRestoreLost(desc->vid_mem_surface, NULL, false));
+    }
+
+    if (!rc) {
+        TexturePageReleaseVidMemSurface(desc);
+        rc = TexturePageInit(desc);
+    }
+
+    if (!rc) {
+        return false;
+    }
+
+    DDrawSurfaceRestoreLost(desc->sys_mem_surface, 0, 0);
+    LPDIRECT3DTEXTURE2 sys_mem_texture = Create3DTexture(desc->sys_mem_surface);
+    if (sys_mem_texture == NULL) {
+        return false;
+    }
+
+    rc = SUCCEEDED(
+        desc->texture_3d->lpVtbl->Load(desc->texture_3d, sys_mem_texture));
+    sys_mem_texture->lpVtbl->Release(sys_mem_texture);
+    return rc;
+}
