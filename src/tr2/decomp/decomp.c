@@ -3291,3 +3291,28 @@ uint8_t __cdecl FindNearestPaletteEntry(
 
     return best_idx;
 }
+
+void __cdecl SyncSurfacePalettes(
+    const void *const src_data, const int32_t width, const int32_t height,
+    const int32_t src_pitch, const RGB_888 *const src_palette,
+    void *const dst_data, const int32_t dst_pitch,
+    const RGB_888 *const dst_palette, const bool preserve_sys_palette)
+{
+    const uint8_t *src_ptr = src_data;
+    uint8_t *dst_ptr = dst_data;
+    uint8_t buf_palette[256];
+
+    for (int32_t i = 0; i < 256; i++) {
+        buf_palette[i] = FindNearestPaletteEntry(
+            dst_palette, src_palette[i].red, src_palette[i].green,
+            src_palette[i].blue, preserve_sys_palette);
+    }
+
+    for (int32_t y = 0; y < height; y++) {
+        for (int32_t x = 0; x < width; x++) {
+            *dst_ptr++ = buf_palette[*src_ptr++];
+        }
+        src_ptr += src_pitch - width;
+        dst_ptr += dst_pitch - width;
+    }
+}

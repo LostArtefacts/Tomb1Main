@@ -198,7 +198,6 @@
 #define SE_AdvancedDlgInit ((void __cdecl (*)(HWND hwndDlg))0x00454950)
 #define SE_FindSetupDialog ((HWND __cdecl (*)(void))0x00454960)
 #define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define SyncSurfacePalettes ((void __cdecl (*)(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette))0x004559B0)
 #define CreateTexturePalette ((int32_t __cdecl (*)(const RGB_888 *pal))0x00455A60)
 #define GetFreePaletteIndex ((int32_t __cdecl (*)(void))0x00455AF0)
 #define FreePalette ((void __cdecl (*)(int32_t palette_idx))0x00455B10)

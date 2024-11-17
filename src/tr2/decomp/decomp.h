@@ -164,3 +164,7 @@ void __cdecl CopyBitmapPalette(
 uint8_t __cdecl FindNearestPaletteEntry(
     const RGB_888 *palette, int32_t red, int32_t green, int32_t blue,
     bool ignore_sys_palette);
+void __cdecl SyncSurfacePalettes(
+    const void *src_data, int32_t width, int32_t height, int32_t src_pitch,
+    const RGB_888 *src_palette, void *dst_data, int32_t dst_pitch,
+    const RGB_888 *dst_palette, bool preserve_sys_palette);

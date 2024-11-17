@@ -272,6 +272,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00455140, S_LoadSettings);
     INJECT(enable, 0x004557A0, CopyBitmapPalette);
     INJECT(enable, 0x004558E0, FindNearestPaletteEntry);
+    INJECT(enable, 0x004559B0, SyncSurfacePalettes);
 }
 
 static void M_DecompFMV(const bool enable)
