@@ -125,3 +125,10 @@ LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(const LPDDS surface)
     }
     return texture_3d;
 }
+
+void __cdecl SafeFreeTexturePage(const int32_t page_idx)
+{
+    if (page_idx >= 0 && (g_TexturePages[page_idx].status & 1)) {
+        FreeTexturePage(page_idx);
+    }
+}

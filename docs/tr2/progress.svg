@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.62% (978)</tspan> · <tspan class="known">18.97% (236)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">78.70% (979)</tspan> · <tspan class="known">18.89% (235)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="587.27" height="6" x="0" y="0" class="decompiled"/>
-<rect width="141.71" height="6" x="587.27" y="0" class="known"/>
+<rect width="587.87" height="6" x="0" y="0" class="decompiled"/>
+<rect width="141.11" height="6" x="587.87" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1233,7 +1233,7 @@
 <rect width="12" height="12" x="60" y="345" class="decompiled"><title>bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);</title></rect>
 <rect width="12" height="12" x="75" y="345" class="decompiled"><title>bool __cdecl TexturePageInit(TEXPAGE_DESC *page);</title></rect>
 <rect width="12" height="12" x="90" y="345" class="decompiled"><title>LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);</title></rect>
-<rect width="12" height="12" x="105" y="345" class="known"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
+<rect width="12" height="12" x="105" y="345" class="decompiled"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="120" y="345" class="known"><title>void __cdecl FreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="12" height="12" x="135" y="345" class="known"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>
 <rect width="12" height="12" x="150" y="345" class="known"><title>void __cdecl FreeTexturePages(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.66%</tspan> · <tspan class="known">18.01%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">81.67%</tspan> · <tspan class="known">18%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="610.01" height="6" x="0" y="0" class="decompiled"/>
-<rect width="134.55" height="6" x="610.01" y="0" class="known"/>
+<rect width="610.08" height="6" x="0" y="0" class="decompiled"/>
+<rect width="134.48" height="6" x="610.08" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2403,7 +2403,7 @@
 <rect width="2.05" height="2.42" x="739.89" y="325.85" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
 <rect width="2.05" height="2.42" x="744.95" y="325.85" class="known"><title>void __cdecl S_SetupAboveWater(BOOL underwater);</title></rect>
 <rect width="1.97" height="2.34" x="698.24" y="331.27" class="decompiled"><title>void __cdecl Inv_Ring_MotionCameraPitch(RING_INFO *ring, int16_t target);</title></rect>
-<rect width="1.97" height="2.34" x="698.24" y="336.61" class="known"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
+<rect width="1.97" height="2.34" x="698.24" y="336.61" class="decompiled"><title>void __cdecl SafeFreeTexturePage(int32_t page_idx);</title></rect>
 <rect width="1.97" height="2.17" x="698.24" y="341.95" class="known"><title>void __cdecl FX_AssaultStop(ITEM *item);</title></rect>
 <rect width="1.97" height="2.17" x="698.24" y="347.13" class="decompiled"><title>int32_t __cdecl GF_DoFrontendSequence(void);</title></rect>
 <rect width="1.97" height="2.17" x="698.24" y="352.30" class="decompiled"><title>bool __cdecl D3DCreate(void);</title></rect>

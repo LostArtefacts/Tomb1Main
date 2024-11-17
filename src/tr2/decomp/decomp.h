@@ -182,3 +182,4 @@ int32_t __cdecl GetFreeTexturePageIndex(void);
 bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);
 bool __cdecl TexturePageInit(TEXPAGE_DESC *page);
 LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(const LPDDS surface);
+void __cdecl SafeFreeTexturePage(int32_t page_idx);

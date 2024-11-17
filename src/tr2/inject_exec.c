@@ -282,6 +282,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00455C20, CreateTexturePageSurface);
     INJECT(enable, 0x00455CC0, TexturePageInit);
     INJECT(enable, 0x00455E40, Create3DTexture);
+    INJECT(enable, 0x00455E70, SafeFreeTexturePage);
 }
 
 static void M_DecompFMV(const bool enable)

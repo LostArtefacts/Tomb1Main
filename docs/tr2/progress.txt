@@ -4149,7 +4149,7 @@ typedef enum {
 0x00455C20  0x0098  +R      bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);
 0x00455CC0  0x0174  +R      bool __cdecl TexturePageInit(TEXPAGE_DESC *page);
 0x00455E40  0x0025  +R      LPDIRECT3DTEXTURE2 __cdecl Create3DTexture(LPDDS surface);
-0x00455E70  0x0020  -R      void __cdecl SafeFreeTexturePage(int32_t page_idx);
+0x00455E70  0x0020  +R      void __cdecl SafeFreeTexturePage(int32_t page_idx);
 0x00455E90  0x0032  -R      void __cdecl FreeTexturePage(int32_t page_idx);
 0x00455ED0  0x003B  -R      void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);
 0x00455F10  0x0026  -R      void __cdecl FreeTexturePages(void);
