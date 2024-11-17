@@ -192,3 +192,5 @@ bool __cdecl ReloadTextures(bool reset);
 HWR_TEXTURE_HANDLE __cdecl GetTexturePageHandle(int32_t page_idx);
 int32_t __cdecl AddTexturePage8(
     int32_t width, int32_t height, const uint8_t *page_buf, int32_t pal_idx);
+int32_t __cdecl AddTexturePage16(
+    int32_t width, int32_t height, const uint8_t *page_buf);

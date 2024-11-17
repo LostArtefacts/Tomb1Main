@@ -265,3 +265,56 @@ int32_t __cdecl AddTexturePage8(
 
     return page_idx;
 }
+
+int32_t __cdecl AddTexturePage16(
+    const int32_t width, const int32_t height, const uint8_t *const page_buf)
+{
+    const int32_t page_idx = CreateTexturePage(width, height, NULL);
+    if (page_idx < 0) {
+        return -1;
+    }
+
+    TEXPAGE_DESC *const page = &g_TexturePages[page_idx];
+
+    DDSURFACEDESC desc;
+    if (FAILED(WinVidBufferLock(
+            page->sys_mem_surface, &desc, DDLOCK_WRITEONLY | DDLOCK_WAIT))) {
+        return -1;
+    }
+
+    if (g_TexturesHaveCompatibleMasks) {
+        const uint8_t *src = page_buf;
+        uint8_t *dst = (uint8_t *)desc.lpSurface;
+        for (int32_t y = 0; y < height; y++) {
+            memcpy(dst, src, 2 * width);
+            src += 2 * width;
+            dst += desc.lPitch;
+        }
+    } else {
+        const int32_t bytes_per_pixel = (g_TextureFormat.bpp + 7) >> 3;
+
+        uint8_t *dst = (uint8_t *)desc.lpSurface;
+        uint16_t *src = (uint16_t *)page_buf;
+        for (int32_t y = 0; y < height; y++) {
+            uint8_t *subdst = dst;
+            for (int32_t x = 0; x < width; x++) {
+                uint32_t compatible_color = CalculateCompatibleColor(
+                    &g_TextureFormat.color_bit_masks, (*src >> 7) & 0xF8,
+                    (*src >> 2) & 0xF8, (*src << 3) & 0xF8, (*src >> 15) & 1);
+                src++;
+
+                for (int32_t k = 0; k < bytes_per_pixel; k++) {
+                    *subdst++ = compatible_color;
+                    compatible_color >>= 8;
+                }
+            }
+
+            dst += desc.lPitch;
+        }
+    }
+
+    WinVidBufferUnlock(page->sys_mem_surface, &desc);
+    LoadTexturePage(page_idx, false);
+
+    return page_idx;
+}
