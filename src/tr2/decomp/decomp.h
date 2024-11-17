@@ -179,3 +179,4 @@ void __cdecl FreePalette(int32_t palette_idx);
 void __cdecl SafeFreePalette(int32_t palette_idx);
 int32_t __cdecl CreateTexturePage(int32_t width, int32_t height, bool alpha);
 int32_t __cdecl GetFreeTexturePageIndex(void);
+bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);

@@ -32,3 +32,26 @@ int32_t __cdecl GetFreeTexturePageIndex(void)
     }
     return -1;
 }
+
+bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *const desc)
+{
+    DDSURFACEDESC dsp = { 0 };
+    dsp.dwSize = sizeof(dsp);
+    dsp.dwFlags = DDSD_PIXELFORMAT | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
+    dsp.ddsCaps.dwCaps = DDSCAPS_TEXTURE | DDSCAPS_SYSTEMMEMORY;
+    dsp.dwWidth = desc->width;
+    dsp.dwHeight = desc->height;
+    dsp.ddpfPixelFormat = g_TextureFormat.pixel_fmt;
+
+    if (FAILED(DDrawSurfaceCreate(&dsp, &desc->sys_mem_surface))) {
+        return false;
+    }
+
+    if (desc->palette != NULL
+        && FAILED(desc->sys_mem_surface->lpVtbl->SetPalette(
+            desc->sys_mem_surface, desc->palette))) {
+        return false;
+    }
+
+    return true;
+}
