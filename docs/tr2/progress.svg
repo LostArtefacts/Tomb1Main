@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.50% (989)</tspan> · <tspan class="known">18.09% (225)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">79.58% (990)</tspan> · <tspan class="known">18.01% (224)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="593.88" height="6" x="0" y="0" class="decompiled"/>
-<rect width="135.11" height="6" x="593.88" y="0" class="known"/>
+<rect width="594.48" height="6" x="0" y="0" class="decompiled"/>
+<rect width="134.51" height="6" x="594.48" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1244,7 +1244,7 @@
 <rect width="12" height="12" x="225" y="345" class="decompiled"><title>int32_t __cdecl AddTexturePage16(int32_t width, int32_t height, const uint8_t *page_buf);</title></rect>
 <rect width="12" height="12" x="240" y="345" class="decompiled"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
 <rect width="12" height="12" x="255" y="345" class="decompiled"><title>HRESULT __cdecl EnumerateTextureFormats(void);</title></rect>
-<rect width="12" height="12" x="270" y="345" class="known"><title>void __cdecl CleanupTextures(void);</title></rect>
+<rect width="12" height="12" x="270" y="345" class="decompiled"><title>void __cdecl CleanupTextures(void);</title></rect>
 <rect width="12" height="12" x="285" y="345" class="known"><title>bool __cdecl InitTextures(void);</title></rect>
 <rect width="12" height="12" x="300" y="345" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
 <rect width="12" height="12" x="315" y="345" class="decompiled"><title>bool __cdecl TIME_Init(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.08%</tspan> · <tspan class="known">17.59%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.09%</tspan> · <tspan class="known">17.58%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="613.13" height="6" x="0" y="0" class="decompiled"/>
-<rect width="131.43" height="6" x="613.13" y="0" class="known"/>
+<rect width="613.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="131.33" height="6" x="613.23" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2315,7 +2315,7 @@
 <rect width="3.36" height="3.26" x="674.66" y="340.57" class="decompiled"><title>void __cdecl Lara_State_UseKey(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="346.83" class="decompiled"><title>void __cdecl BridgeTilt1_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="353.09" class="decompiled"><title>bool __cdecl BGND_Init(void);</title></rect>
-<rect width="3.36" height="3.26" x="674.66" y="359.35" class="known"><title>void __cdecl CleanupTextures(void);</title></rect>
+<rect width="3.36" height="3.26" x="674.66" y="359.35" class="decompiled"><title>void __cdecl CleanupTextures(void);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="365.61" class="known"><title>BOOL __cdecl OpenRegistryKey(LPCTSTR lpSubKey);</title></rect>
 <rect width="3.36" height="3.13" x="674.66" y="371.87" class="decompiled"><title>void __cdecl Creature_Initialise(int16_t item_num);</title></rect>
 <rect width="3.32" height="3.17" x="681.03" y="302.76" class="decompiled"><title>int32_t __cdecl Room_FindGridShift(int32_t src, int32_t dst);</title></rect>

@@ -198,7 +198,6 @@
 #define SE_AdvancedDlgInit ((void __cdecl (*)(HWND hwndDlg))0x00454950)
 #define SE_FindSetupDialog ((HWND __cdecl (*)(void))0x00454960)
 #define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define CleanupTextures ((void __cdecl (*)(void))0x00456460)
 #define InitTextures ((bool __cdecl (*)(void))0x00456470)
 #define UT_LoadResource ((LPVOID __cdecl (*)(LPCTSTR lpName, LPCTSTR lpType))0x00456590)
 #define UT_CenterWindow ((BOOL __cdecl (*)(HWND hWnd))0x00456680)

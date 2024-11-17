@@ -367,3 +367,11 @@ HRESULT __cdecl EnumerateTextureFormats(void)
     return g_D3DDev->lpVtbl->EnumTextureFormats(
         g_D3DDev, EnumTextureFormatsCallback, NULL);
 }
+
+void __cdecl CleanupTextures(void)
+{
+    FreeTexturePages();
+    for (int32_t i = 0; i < MAX_PALETTES; i++) {
+        SafeFreePalette(i);
+    }
+}
