@@ -51,9 +51,9 @@ static const char *M_GetBufferName(GAME_BUFFER buffer)
         case GBUF_TRAP_DATA:                return "Trap data";
         case GBUF_CREATURE_DATA:            return "Creature data";
         case GBUF_VERTEX_BUFFER:            return "Vertex buffer";
+        default:                            return "Unknown";
     }
     // clang-format on
-    return "Unknown";
 };
 
 void GameBuf_Init(void)
@@ -82,7 +82,7 @@ void GameBuf_Shutdown(void)
     m_GameAllocMemFree = 0;
 }
 
-void *GameBuf_Alloc(int32_t alloc_size, GAME_BUFFER buffer)
+void *GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buffer)
 {
     size_t aligned_size = (alloc_size + 3) & ~3;
 

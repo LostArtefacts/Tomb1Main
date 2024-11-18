@@ -88,7 +88,7 @@ void __cdecl GameBuf_Shutdown(void)
     g_GameBuf_MemUsed = 0;
 }
 
-void *__cdecl GameBuf_Alloc(const size_t alloc_size, const GAME_BUFFER buffer)
+void *GameBuf_Alloc(const size_t alloc_size, const GAME_BUFFER buffer)
 {
     const size_t aligned_size = (alloc_size + 3) & ~3;
 
