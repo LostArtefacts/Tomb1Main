@@ -14,6 +14,7 @@
 - fixed wrongly calculated trapdoor size that could affect custom levels (#1904)
 - fixed one of the collapsible tiles in Opera House room 184 not triggering (#1902)
 - fixed being unable to use the drawbridge key in Tibetan Foothills after the flipmap (#1744)
+- fixed missing death tiles in Temple of Xian room 91 (#1920)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)

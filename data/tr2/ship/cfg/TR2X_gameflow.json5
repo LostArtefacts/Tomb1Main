@@ -68,7 +68,11 @@
         },
 
         // 15. Temple of Xian
-        {},
+        {
+            "injections": [
+                "data/injections/xian_fd.bin",
+            ],
+        },
 
         // 16. Floating Islands
         {},

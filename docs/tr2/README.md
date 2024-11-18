@@ -42,6 +42,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the following floor data issues:
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
     - **Tibetan Foothills**: added missing triggers for the drawbridge in room 96 (after the flipmap)
+    - **Temple of Xian**: fixed missing death tiles in room 91
 
 #### Cheats
 - added a fly cheat
