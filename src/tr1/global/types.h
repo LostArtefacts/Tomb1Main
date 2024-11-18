@@ -211,15 +211,6 @@ typedef enum {
 } ROOM_FLAG;
 
 typedef enum {
-    FT_FLOOR = 0,
-    FT_DOOR = 1,
-    FT_TILT = 2,
-    FT_ROOF = 3,
-    FT_TRIGGER = 4,
-    FT_LAVA = 5,
-} FLOOR_TYPE;
-
-typedef enum {
     INV_GAME_MODE = 0,
     INV_TITLE_MODE = 1,
     INV_KEYS_MODE = 2,

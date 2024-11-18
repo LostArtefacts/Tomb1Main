@@ -28,10 +28,6 @@ BOUNDS_32 Room_GetWorldBounds(void);
 
 void Room_AlterFloorHeight(ITEM *item, int32_t height);
 
-void Room_ParseFloorData(const int16_t *floor_data);
-void Room_PopulateSectorData(
-    SECTOR *sector, const int16_t *floor_data, uint16_t start_index,
-    uint16_t null_index);
 void Room_TestTriggers(const ITEM *item);
 bool Room_IsOnWalkable(
     const SECTOR *sector, int32_t x, int32_t y, int32_t z, int32_t room_height);

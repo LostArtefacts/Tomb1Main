@@ -20,10 +20,6 @@
 #include <assert.h>
 #include <stddef.h>
 
-#define NULL_FD_INDEX 0
-#define NEG_TILT(T, H) ((T * (H & (WALL_L - 1))) >> 2)
-#define POS_TILT(T, H) ((T * ((WALL_L - 1 - H) & (WALL_L - 1))) >> 2)
-
 int32_t g_FlipTimer = 0;
 int32_t g_FlipEffect = -1;
 int32_t g_FlipStatus = 0;
@@ -638,124 +634,6 @@ void Room_FlipMap(void)
     }
 
     g_FlipStatus = !g_FlipStatus;
-}
-
-void Room_ParseFloorData(const int16_t *floor_data)
-{
-    for (int32_t i = 0; i < g_RoomCount; i++) {
-        const ROOM *const room = &g_RoomInfo[i];
-        for (int32_t j = 0; j < room->size.x * room->size.z; j++) {
-            SECTOR *const sector = &room->sectors[j];
-            Room_PopulateSectorData(
-                &room->sectors[j], floor_data, sector->idx, NULL_FD_INDEX);
-        }
-    }
-}
-
-void Room_PopulateSectorData(
-    SECTOR *const sector, const int16_t *floor_data, const uint16_t start_index,
-    const uint16_t null_index)
-{
-    sector->floor.tilt = 0;
-    sector->ceiling.tilt = 0;
-    sector->portal_room.wall = NO_ROOM;
-    sector->is_death_sector = false;
-    sector->trigger = NULL;
-
-    if (start_index == null_index) {
-        return;
-    }
-
-    const int16_t *data = &floor_data[start_index];
-    int16_t fd_entry;
-    do {
-        fd_entry = *data++;
-
-        switch (fd_entry & DATA_TYPE) {
-        case FT_TILT:
-            sector->floor.tilt = *data++;
-            break;
-
-        case FT_ROOF:
-            sector->ceiling.tilt = *data++;
-            break;
-
-        case FT_DOOR:
-            sector->portal_room.wall = *data++;
-            break;
-
-        case FT_LAVA:
-            sector->is_death_sector = true;
-            break;
-
-        case FT_TRIGGER: {
-            assert(sector->trigger == NULL);
-
-            TRIGGER *const trigger =
-                GameBuf_Alloc(sizeof(TRIGGER), GBUF_FLOOR_DATA);
-            sector->trigger = trigger;
-
-            const int16_t trig_setup = *data++;
-            trigger->type = TRIG_TYPE(fd_entry);
-            trigger->timer = trig_setup & 0xFF;
-            trigger->one_shot = trig_setup & IF_ONE_SHOT;
-            trigger->mask = trig_setup & IF_CODE_BITS;
-            trigger->item_index = NO_ITEM;
-            trigger->command_count = 0;
-
-            if (trigger->type == TT_SWITCH || trigger->type == TT_KEY
-                || trigger->type == TT_PICKUP) {
-                const int16_t item_data = *data++;
-                trigger->item_index = item_data & VALUE_BITS;
-                if (item_data & END_BIT) {
-                    // See City of Khamoon room 49 - two dangling key triggers
-                    // with no commands. Exit early to avoid populating garbage
-                    // command data.
-                    break;
-                }
-            }
-
-            const int16_t *command_data = data;
-            while (true) {
-                trigger->command_count++;
-                int16_t command = *data++;
-                if (TRIG_BITS(command) == TO_CAMERA) {
-                    command = *data++;
-                }
-                if (command & END_BIT) {
-                    break;
-                }
-            }
-
-            trigger->commands = GameBuf_Alloc(
-                sizeof(TRIGGER_CMD) * trigger->command_count, GBUF_FLOOR_DATA);
-            for (int32_t i = 0; i < trigger->command_count; i++) {
-                int16_t command = *command_data++;
-                TRIGGER_CMD *const cmd = &trigger->commands[i];
-                cmd->type = TRIG_BITS(command);
-
-                if (cmd->type == TO_CAMERA) {
-                    TRIGGER_CAMERA_DATA *const cam_data = GameBuf_Alloc(
-                        sizeof(TRIGGER_CAMERA_DATA), GBUF_FLOOR_DATA);
-                    cmd->parameter = (void *)cam_data;
-                    cam_data->camera_num = command & VALUE_BITS;
-
-                    command = *command_data++;
-                    cam_data->timer = command & 0xFF;
-                    cam_data->glide = (command & IF_CODE_BITS) >> 6;
-                    cam_data->one_shot = command & IF_ONE_SHOT;
-                } else {
-                    cmd->parameter = (void *)(intptr_t)(command & VALUE_BITS);
-                }
-            }
-
-            break;
-        }
-
-        default:
-            break;
-        }
-    } while (!(fd_entry & END_BIT));
 }
 
 void Room_TestTriggers(const ITEM *const item)

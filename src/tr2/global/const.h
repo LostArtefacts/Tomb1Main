@@ -184,13 +184,6 @@
 
 #define IDS_DX5_REQUIRED 1
 
-#define TRIGGER_TYPE(t) ((t & 0x3C00) >> 10)
-#define TRIGGER_VALUE(t) (t & 0x3FF)
-#define TRIGGER_IS_END(t) ((t & 0x8000) == 0x8000)
-
-#define FLOORDATA_TYPE(t) (t & 0xFF)
-#define FLOORDATA_IS_END(t) ((t & 0x8000) == 0x8000)
-
 #define MONK_FRIENDLY_FIRE_THRESHOLD 10
 
 #define GUN_AMMO_CLIP 16

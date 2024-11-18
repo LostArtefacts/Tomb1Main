@@ -1311,16 +1311,6 @@ typedef enum {
 } COLL_TYPE;
 
 typedef enum {
-    FT_FLOOR   = 0,
-    FT_DOOR    = 1,
-    FT_TILT    = 2,
-    FT_ROOF    = 3,
-    FT_TRIGGER = 4,
-    FT_LAVA    = 5,
-    FT_CLIMB   = 6,
-} FLOOR_TYPE;
-
-typedef enum {
     HT_WALL        = 0,
     HT_SMALL_SLOPE = 1,
     HT_BIG_SLOPE   = 2,

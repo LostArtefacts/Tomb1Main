@@ -2420,7 +2420,7 @@ typedef enum {
     COLL_CLAMP     = 0x20,
 } COLL_TYPE;
 
-typedef enum {
+typedef enum { // decompiled
     FT_FLOOR   = 0,
     FT_DOOR    = 1,
     FT_TILT    = 2,

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <stddef.h>
 
 typedef enum {
 // clang-format off

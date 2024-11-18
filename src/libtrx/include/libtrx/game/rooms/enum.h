@@ -1,6 +1,18 @@
 #pragma once
 
 typedef enum {
+    FT_FLOOR = 0,
+    FT_DOOR = 1,
+    FT_TILT = 2,
+    FT_ROOF = 3,
+    FT_TRIGGER = 4,
+    FT_LAVA = 5,
+#if TR_VERSION == 2
+    FT_CLIMB = 6,
+#endif
+} FLOOR_TYPE;
+
+typedef enum {
     TO_OBJECT = 0,
     TO_CAMERA = 1,
     TO_SINK = 2,

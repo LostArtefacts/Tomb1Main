@@ -21,11 +21,6 @@
 
 #include <assert.h>
 
-#define NULL_FD_INDEX 0 // TODO: move to libtrx and update TR1
-#define TRIG_TYPE(T) ((T & 0x3F00) >> 8)
-#define NEG_TILT(T, H) ((T * (H & (WALL_L - 1))) >> 2)
-#define POS_TILT(T, H) ((T * ((WALL_L - 1 - H) & (WALL_L - 1))) >> 2)
-
 static int16_t M_GetFloorTiltHeight(const SECTOR *sector, int32_t x, int32_t z);
 static int16_t M_GetCeilingTiltHeight(
     const SECTOR *sector, int32_t x, int32_t z);
@@ -717,126 +712,6 @@ int32_t __cdecl Room_GetHeight(
     }
 
     return height;
-}
-
-void Room_ParseFloorData(const int16_t *floor_data)
-{
-    for (int32_t i = 0; i < g_RoomCount; i++) {
-        const ROOM *const room = Room_Get(i);
-        for (int32_t j = 0; j < room->size.x * room->size.z; j++) {
-            SECTOR *const sector = &room->sectors[j];
-            Room_PopulateSectorData(
-                &room->sectors[j], floor_data, sector->idx, NULL_FD_INDEX);
-        }
-    }
-}
-
-void Room_PopulateSectorData(
-    SECTOR *const sector, const int16_t *floor_data, const uint16_t start_index,
-    const uint16_t null_index)
-{
-    sector->floor.tilt = 0;
-    sector->ceiling.tilt = 0;
-    sector->portal_room.wall = NO_ROOM;
-    sector->is_death_sector = false;
-    sector->ladder = LADDER_NONE;
-    sector->trigger = NULL;
-
-    if (start_index == null_index) {
-        return;
-    }
-
-    const int16_t *data = &floor_data[sector->idx];
-    int16_t fd_entry;
-    do {
-        fd_entry = *data++;
-
-        switch (FLOORDATA_TYPE(fd_entry)) {
-        case FT_TILT:
-            sector->floor.tilt = *data++;
-            break;
-
-        case FT_ROOF:
-            sector->ceiling.tilt = *data++;
-            break;
-
-        case FT_DOOR:
-            sector->portal_room.wall = *data++;
-            break;
-
-        case FT_LAVA:
-            sector->is_death_sector = true;
-            break;
-
-        case FT_CLIMB:
-            sector->ladder = (LADDER_DIRECTION)((fd_entry & 0x7F00) >> 8);
-            break;
-
-        case FT_TRIGGER: {
-            assert(sector->trigger == NULL);
-
-            TRIGGER *const trigger =
-                GameBuf_Alloc(sizeof(TRIGGER), GBUF_FLOOR_DATA);
-            sector->trigger = trigger;
-
-            const int16_t trig_setup = *data++;
-            trigger->type = TRIG_TYPE(fd_entry);
-            trigger->timer = trig_setup & 0xFF;
-            trigger->one_shot = trig_setup & IF_ONE_SHOT;
-            trigger->mask = trig_setup & IF_CODE_BITS;
-            trigger->item_index = NO_ITEM;
-            trigger->command_count = 0;
-
-            if (trigger->type == TT_SWITCH || trigger->type == TT_KEY
-                || trigger->type == TT_PICKUP) {
-                const int16_t item_data = *data++;
-                trigger->item_index = TRIGGER_VALUE(item_data);
-                if (TRIGGER_IS_END(item_data)) {
-                    break;
-                }
-            }
-
-            const int16_t *command_data = data;
-            while (true) {
-                trigger->command_count++;
-                int16_t command = *data++;
-                if (TRIGGER_TYPE(command) == TO_CAMERA) {
-                    command = *data++;
-                }
-                if (TRIGGER_IS_END(command)) {
-                    break;
-                }
-            }
-
-            trigger->commands = GameBuf_Alloc(
-                sizeof(TRIGGER_CMD) * trigger->command_count, GBUF_FLOOR_DATA);
-            for (int32_t i = 0; i < trigger->command_count; i++) {
-                int16_t command = *command_data++;
-                TRIGGER_CMD *const cmd = &trigger->commands[i];
-                cmd->type = TRIGGER_TYPE(command);
-
-                if (cmd->type == TO_CAMERA) {
-                    TRIGGER_CAMERA_DATA *const cam_data = GameBuf_Alloc(
-                        sizeof(TRIGGER_CAMERA_DATA), GBUF_FLOOR_DATA);
-                    cmd->parameter = (void *)cam_data;
-                    cam_data->camera_num = TRIGGER_VALUE(command);
-
-                    command = *command_data++;
-                    cam_data->timer = command & 0xFF;
-                    cam_data->glide = (command & IF_CODE_BITS) >> 6;
-                    cam_data->one_shot = command & IF_ONE_SHOT;
-                } else {
-                    cmd->parameter = (void *)(intptr_t)TRIGGER_VALUE(command);
-                }
-            }
-
-            break;
-        }
-
-        default:
-            break;
-        }
-    } while (!FLOORDATA_IS_END(fd_entry));
 }
 
 void __cdecl Room_Legacy_TestTriggers(const int16_t *fd, bool heavy)
