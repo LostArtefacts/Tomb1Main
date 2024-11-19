@@ -322,12 +322,12 @@ int32_t __cdecl LevelStats(const int32_t level_num)
     S_CopyScreenToBuffer();
 
     while (true) {
-        S_InitialisePolyList(0);
-        S_CopyBufferToScreen();
-
         Shell_ProcessEvents();
         Input_Update();
         Shell_ProcessInput();
+
+        S_InitialisePolyList(0);
+        S_CopyBufferToScreen();
 
         if (g_IsGameToExit) {
             break;
@@ -378,12 +378,12 @@ int32_t __cdecl GameStats(const int32_t level_num)
     }
 
     while (true) {
-        S_InitialisePolyList(0);
-        S_CopyBufferToScreen();
-
         Shell_ProcessEvents();
         Input_Update();
         Shell_ProcessInput();
+
+        S_InitialisePolyList(0);
+        S_CopyBufferToScreen();
 
         if (g_IsGameToExit) {
             break;

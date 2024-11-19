@@ -1934,7 +1934,6 @@ bool __cdecl D3DIsSupported(LPD3DDEVICEDESC_V2 desc)
 bool __cdecl D3DSetViewport(void)
 {
     D3DVIEWPORT2 viewPort = {
-
         .dwSize = sizeof(D3DVIEWPORT2),
         .dvClipX = 0.0,
         .dvClipY = 0.0,
