@@ -59,6 +59,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed skipping credits working too fast
 
 #### Statistics
+- added a final statistics background picture
 - fixed the dragon counting as more than one kill if allowed to revive
 - fixed enemies that are run over by the skidoo not being counted in the statistics
 

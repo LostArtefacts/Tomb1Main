@@ -2907,7 +2907,6 @@ void __cdecl DisplayCredits(void)
     }
 
     memcpy(g_GamePalette8, old_palette, sizeof(g_GamePalette8));
-    S_Wait(300, true);
     FadeToPal(30, g_GamePalette8);
     g_IsVidModeLock = false;
 }

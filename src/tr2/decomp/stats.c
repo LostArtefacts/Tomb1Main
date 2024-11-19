@@ -371,6 +371,17 @@ int32_t __cdecl GameStats(const int32_t level_num)
 
     Overlay_HideGameInfo();
 
+    S_FadeToBlack();
+    g_IsVidModeLock = true;
+    RGB_888 old_palette[256];
+    memcpy(old_palette, g_GamePalette8, sizeof(old_palette));
+    memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
+
+    char file_name[60];
+    sprintf(file_name, "data/end.pcx");
+    FadeToPal(0, g_GamePalette8);
+    S_DisplayPicture(file_name, true);
+
     while (g_Input.any) {
         Shell_ProcessEvents();
         Input_Update();
@@ -412,7 +423,12 @@ int32_t __cdecl GameStats(const int32_t level_num)
     }
     g_SaveGame.current_level = LV_FIRST;
 
+    S_FadeToBlack();
     S_DontDisplayPicture();
+
+    memcpy(g_GamePalette8, old_palette, sizeof(g_GamePalette8));
+    FadeToPal(30, g_GamePalette8);
+    g_IsVidModeLock = true;
     return 0;
 }
 
