@@ -4449,17 +4449,17 @@ bool __cdecl Output_MakeScreenshot(const char *const path)
         return false;
     }
 
-    int32_t src_x = 0;
-    int32_t src_y = 0;
-    int32_t width = g_GameWindowWidth;
-    int32_t height = g_GameWindowHeight;
+    const int32_t src_x = 0;
+    const int32_t src_y = 0;
+    const int32_t width = g_GameVid_Width;
+    const int32_t height = g_GameVid_Height;
     IMAGE *const image = Image_Create(width, height);
 
     for (int32_t y = 0; y < height; y++) {
-        uint8_t *src = desc.lpSurface + desc.lPitch * (y + src_y);
+        const uint8_t *src = desc.lpSurface + desc.lPitch * (y + src_y);
         src += src_x * (desc.ddpfPixelFormat.dwRGBBitCount / 8);
-        IMAGE_PIXEL *dst = &image->data[width * y];
 
+        IMAGE_PIXEL *dst = &image->data[width * y];
         switch (desc.ddpfPixelFormat.dwRGBBitCount) {
         case 8:
             assert(desc.ddpfPixelFormat.dwFlags & DDPF_PALETTEINDEXED8);
@@ -4531,8 +4531,6 @@ bool __cdecl Output_MakeScreenshot(const char *const path)
                 }
             }
         }
-
-        src -= desc.lPitch;
     }
 
     const bool ret = Image_SaveToFile(image, path);
