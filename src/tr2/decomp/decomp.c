@@ -47,6 +47,7 @@
 
 #define IDI_MAINICON 100
 
+static void M_DisplayPicture(const char *file_name, bool copy_palette);
 static bool M_InsertDisplayModeInListSorted(
     DISPLAY_MODE_LIST *mode_list, DISPLAY_MODE *src_mode);
 
@@ -60,6 +61,34 @@ static DISPLAY_MODE *M_InsertDisplayModeInListHead(
     DISPLAY_MODE_LIST *mode_list);
 static DISPLAY_MODE *M_InsertDisplayModeInListTail(
     DISPLAY_MODE_LIST *mode_list);
+
+static void M_DisplayPicture(
+    const char *const file_name, const bool copy_palette)
+{
+    char *compressed_data = NULL;
+    size_t compressed_data_size = 0;
+    if (!File_Load(file_name, &compressed_data, &compressed_data_size)) {
+        return;
+    }
+
+    const size_t width = 640;
+    const size_t height = 480;
+    uint8_t *pixels = GameBuf_Alloc(width * height, GBUF_LOAD_PICTURE_BUFFER);
+    DecompPCX(
+        (uint8_t *)compressed_data, compressed_data_size, pixels,
+        g_PicturePalette);
+    Memory_FreePointer(&compressed_data);
+    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
+        WinVidCopyBitmapToBuffer(g_PictureBufferSurface, pixels);
+    } else {
+        BGND_Make640x480(pixels, g_PicturePalette);
+    }
+    if (copy_palette) {
+        CopyBitmapPalette(
+            g_PicturePalette, pixels, width * height, g_GamePalette8);
+    }
+    GameBuf_Free(width * height);
+}
 
 static void M_DisplayModeListInit(DISPLAY_MODE_LIST *mode_list)
 {
@@ -2832,33 +2861,10 @@ BOOL __cdecl S_InitialiseSystem(void)
 
 void __cdecl S_DisplayPicture(const char *const file_name, const BOOL is_title)
 {
-    char *compressed_data = NULL;
-    size_t compressed_data_size = 0;
-    if (!File_Load(file_name, &compressed_data, &compressed_data_size)) {
-        return;
-    }
-
     if (!is_title) {
         GameBuf_Reset();
     }
-
-    const size_t width = 640;
-    const size_t height = 480;
-    uint8_t *pixels = GameBuf_Alloc(width * height, GBUF_LOAD_PICTURE_BUFFER);
-    DecompPCX(
-        (uint8_t *)compressed_data, compressed_data_size, pixels,
-        g_PicturePalette);
-    Memory_FreePointer(&compressed_data);
-    if (g_SavedAppSettings.render_mode == RM_SOFTWARE) {
-        WinVidCopyBitmapToBuffer(g_PictureBufferSurface, pixels);
-    } else {
-        BGND_Make640x480(pixels, g_PicturePalette);
-    }
-    if (!is_title) {
-        CopyBitmapPalette(
-            g_PicturePalette, pixels, width * height, g_GamePalette8);
-    }
-    GameBuf_Free(width * height);
+    M_DisplayPicture(file_name, !is_title);
 }
 
 void __cdecl DisplayCredits(void)
@@ -2869,19 +2875,19 @@ void __cdecl DisplayCredits(void)
         return;
     }
 
+    g_IsVidModeLock = true;
     RGB_888 old_palette[256];
-    memcpy(old_palette, g_GamePalette8, sizeof(old_palette));
-    memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
+    memcpy(old_palette, g_GamePalette8, sizeof(RGB_888) * 256);
+    memset(g_GamePalette8, 0, sizeof(RGB_888) * 256);
 
     Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
 
     for (int32_t i = 0; i < 9; i++) {
         char file_name[60];
         sprintf(file_name, "data/credit0%d.pcx", i + 1);
-        g_IsVidModeLock = true;
-        FadeToPal(0, g_GamePalette8);
 
-        S_DisplayPicture(file_name, false);
+        FadeToPal(0, g_GamePalette8);
+        M_DisplayPicture(file_name, true);
 
         S_InitialisePolyList(0);
         S_CopyBufferToScreen();
@@ -2903,7 +2909,7 @@ void __cdecl DisplayCredits(void)
     memcpy(g_GamePalette8, old_palette, sizeof(g_GamePalette8));
     S_Wait(300, true);
     FadeToPal(30, g_GamePalette8);
-    g_IsVidModeLock = 0;
+    g_IsVidModeLock = false;
 }
 
 DWORD __cdecl S_DumpScreen(void)
