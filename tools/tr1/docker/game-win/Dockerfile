@@ -112,6 +112,19 @@ RUN cd SDL \
 
 
 
+# uthash
+FROM mingw AS uthash
+
+RUN mkdir /ext/
+WORKDIR /tmp/
+
+RUN apt-get install -y wget xz-utils
+RUN wget https://github.com/troydhanson/uthash/archive/v2.3.0.tar.gz
+RUN tar -xvf v2.3.0.tar.gz
+RUN cp -rL uthash-2.3.0/* /ext/
+
+
+
 # TR1X
 FROM mingw
 
@@ -123,12 +136,11 @@ COPY --from=pcre2 /ext/ /ext/
 COPY --from=zlib /ext/ /ext/
 COPY --from=libav /ext/ /ext/
 COPY --from=sdl /ext/ /ext/
+COPY --from=uthash /ext/ /ext/
 
 # system dependencies
 # configure pkgconfig manually
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=967969
-ENV PKG_CONFIG_LIBDIR=/ext/lib/
-ENV PKG_CONFIG_PATH=/ext/lib/pkgconfig/
 RUN apt-get install -y \
         mingw-w64-tools \
         pkg-config \
@@ -139,5 +151,8 @@ RUN apt-get install -y \
         meson \
         ninja
 
+ENV PKG_CONFIG_LIBDIR=/ext/lib/
+ENV PKG_CONFIG_PATH=/ext/lib/pkgconfig/
+ENV C_INCLUDE_PATH=/ext/include/
 ENV PYTHONPATH=/app/tools/
 ENTRYPOINT ["/app/tools/tr1/docker/game-win/entrypoint.sh"]

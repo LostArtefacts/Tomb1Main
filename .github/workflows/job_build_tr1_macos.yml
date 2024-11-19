@@ -20,6 +20,7 @@ env:
   FFMPEG_INSTALL_TMP_X86_64: /tmp/install_x86_64
   CACHE_TMP_DIR: /tmp/opt_local/
   CACHE_DST_DIR: /opt/local/
+  C_INCLUDE_PATH: /opt/local/include/uthash/:/opt/local/include/
 
 jobs:
   build:
@@ -62,7 +63,7 @@ jobs:
         id: restore-cache
         uses: actions/cache/restore@v4
         with:
-          key: ${{ runner.os }}-tooling-${{ hashFiles('.github/workflows/build_macos.yml') }}
+          key: ${{ runner.os }}-tooling-${{ hashFiles('.github/workflows/job_build_tr1_macos.yml') }}
           path: |
             ${{ env.CACHE_TMP_DIR }}
             ${{ env.FFMPEG_INSTALL_TMP_ARM64 }}
@@ -114,6 +115,10 @@ jobs:
       - name: "Build dependency: libsdl2 (universal)"
         if: steps.restore-cache.outputs.cache-hit != 'true'
         run: sudo port -N install libsdl2 +universal
+
+      - name: "Build dependency: uthash (universal)"
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: sudo port -N install uthash +universal
 
       - name: "Build dependency: ffmpeg (universal)"
         if: steps.restore-cache.outputs.cache-hit != 'true'

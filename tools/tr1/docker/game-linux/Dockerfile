@@ -92,19 +92,6 @@ RUN cd SDL \
 
 
 
-# UPX
-FROM base AS upx
-
-RUN mkdir /ext/
-WORKDIR /ext/
-
-RUN apt-get install -y wget xz-utils
-RUN wget https://github.com/upx/upx/releases/download/v4.1.0/upx-4.1.0-amd64_linux.tar.xz
-RUN tar -xvf upx-*.tar.xz
-RUN ln -s upx-*/upx
-
-
-
 # TR1X
 FROM base
 
@@ -130,9 +117,12 @@ RUN apt-get install -y \
         pyjson5 \
         meson \
         ninja
+# Regular dependencies
+RUN apt-get install -y \
+        upx \
+        uthash-dev
 
 # manually built dependencies
-COPY --from=upx /ext/upx /usr/local/bin/upx
 COPY --from=libav /ext/ /ext/
 COPY --from=sdl /ext/ /ext/
 COPY --from=backtrace /ext/ /ext/

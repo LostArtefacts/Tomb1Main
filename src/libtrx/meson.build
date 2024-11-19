@@ -32,8 +32,6 @@ if host_machine.system() == 'darwin'
   staticdeps = false
 endif
 
-uthash = subproject('uthash', default_options: ['warning_level=0'])
-
 null_dep = dependency('', required: false)
 dep_avcodec = dependency('libavcodec', static: staticdeps)
 dep_avformat = dependency('libavformat', static: staticdeps)
@@ -43,6 +41,7 @@ dep_pcre2 = dependency('libpcre2-8', static: staticdeps)
 dep_backtrace = c_compiler.find_library('backtrace', static: true, required: false)
 dep_swscale = dependency('libswscale', static: staticdeps)
 dep_swresample = dependency('libswresample', static: staticdeps)
+c_compiler.check_header('uthash.h', required: true)
 
 dep_zlib = null_dep
 if not staticdeps
@@ -151,7 +150,6 @@ dependencies = [
   dep_swscale,
   dep_zlib,
   dep_opengl,
-  uthash.get_variable('uthash_dep'),
 ]
 
 if dep_backtrace.found() and host_machine.system() == 'linux'
