@@ -75,6 +75,11 @@ RUN apt-get install -y \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libpulse-dev \
+    libxkbcommon-dev \
+    libwayland-client0 \
+    libwayland-cursor0 \
+    libwayland-dev \
+    libwayland-egl1 \
     automake \
     gcc \
     libxext-dev

@@ -1,4 +1,5 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...develop) - ××××-××-××
+- added support for Wayland in binary Linux builds (#1927)
 
 ## [4.6](https://github.com/LostArtefacts/TRX/compare/tr1-4.5.1...tr1-4.6) - 2024-11-18
 - added support for wading, similar to TR2+ (#1537)
