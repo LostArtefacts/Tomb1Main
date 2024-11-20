@@ -11,6 +11,7 @@
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
+#include "game/objects/vars.h"
 #include "game/requester.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -92,7 +93,7 @@ static void M_ReadItems(void)
         ITEM *const item = Item_Get(item_num);
         OBJECT *const obj = &g_Objects[item->object_id];
 
-        if (obj->control == MovableBlock_Control) {
+        if (Object_IsObjectType(item->object_id, g_MovableBlockObjects)) {
             Room_AlterFloorHeight(item, WALL_L);
         }
 
@@ -179,13 +180,13 @@ static void M_ReadItems(void)
 
             item->flags &= 0xFF00;
 
-            if (obj->collision == PuzzleHole_Collision
+            if (Object_IsObjectType(item->object_id, g_PuzzleHoleObjects)
                 && (item->status == IS_DEACTIVATED
                     || item->status == IS_ACTIVE)) {
                 item->object_id += O_PUZZLE_DONE_1 - O_PUZZLE_HOLE_1;
             }
 
-            if (obj->collision == Pickup_Collision
+            if (Object_IsObjectType(item->object_id, g_PickupObjects)
                 && item->status == IS_DEACTIVATED) {
                 Item_RemoveDrawn(item_num);
             }
@@ -200,7 +201,7 @@ static void M_ReadItems(void)
             }
         }
 
-        if (obj->control == MovableBlock_Control
+        if (Object_IsObjectType(item->object_id, g_MovableBlockObjects)
             && item->status == IS_INACTIVE) {
             Room_AlterFloorHeight(item, -WALL_L);
         }
