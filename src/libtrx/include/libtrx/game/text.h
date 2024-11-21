@@ -15,14 +15,21 @@ typedef enum {
     GLYPH_SPACE,
     GLYPH_NEWLINE,
     GLYPH_COMBINING,
+    GLYPH_COMPOUND,
     GLYPH_SECRET,
 } GLYPH_ROLE;
 
 typedef struct {
     const char *text;
-    int32_t mesh_idx;
-    int32_t width;
     GLYPH_ROLE role;
+    int32_t width;
+    int32_t mesh_idx;
+
+    struct {
+        int32_t mesh_idx;
+        int32_t offset_x;
+        int32_t offset_y;
+    } combine_with;
 } GLYPH_INFO;
 
 typedef enum {

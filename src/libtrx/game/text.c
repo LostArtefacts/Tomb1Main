@@ -9,9 +9,17 @@
 static TEXTSTRING m_TextStrings[TEXT_MAX_STRINGS] = { 0 };
 
 static GLYPH_INFO m_Glyphs[] = {
-#define GLYPH_DEFINE(mesh_idx_, text_, width_, role_)                          \
-    { .mesh_idx = mesh_idx_, .text = text_, .width = width_, .role = role_ },
-#include "text.def"
+#define GLYPH_DEFINE(text_, role_, width_, mesh_idx_, ...)                     \
+    { .text = text_,                                                           \
+      .role = role_,                                                           \
+      .width = width_,                                                         \
+      .mesh_idx = mesh_idx_,                                                   \
+      __VA_ARGS__ },
+#if TR_VERSION == 1
+    #include "text_tr1.def"
+#elif TR_VERSION == 2
+    #include "text_tr2.def"
+#endif
     { .text = NULL }, // guard
 };
 

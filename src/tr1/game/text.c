@@ -152,18 +152,18 @@ void Text_DrawText(TEXTSTRING *const text)
     int32_t sv;
     const int32_t start_x = x;
 
+    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
     const GLYPH_INFO **glyph_ptr = text->glyphs;
     while (*glyph_ptr != NULL) {
-        if (text->flags.multiline && (*glyph_ptr)->role == GLYPH_NEWLINE) {
+        const GLYPH_INFO *glyph = *glyph_ptr;
+        if (text->flags.multiline && glyph->role == GLYPH_NEWLINE) {
             y += TEXT_HEIGHT_FIXED * text->scale.v / TEXT_BASE_SCALE;
             x = start_x;
-            glyph_ptr++;
-            continue;
+            goto loop_end;
         }
-        if ((*glyph_ptr)->role == GLYPH_SPACE) {
+        if (glyph->role == GLYPH_SPACE) {
             x += text->word_spacing * text->scale.h / TEXT_BASE_SCALE;
-            glyph_ptr++;
-            continue;
+            goto loop_end;
         }
 
         sx = Screen_GetRenderScale(x, RSR_TEXT);
@@ -171,15 +171,32 @@ void Text_DrawText(TEXTSTRING *const text)
         sh = Screen_GetRenderScale(text->scale.h, RSR_TEXT);
         sv = Screen_GetRenderScale(text->scale.v, RSR_TEXT);
 
-        Output_DrawScreenSprite2D(
-            sx, sy, 0, sh, sv,
-            g_Objects[O_ALPHABET].mesh_idx + (*glyph_ptr)->mesh_idx, 16 << 8, 0,
-            0);
+        if (glyph->role == GLYPH_COMPOUND) {
+            const int32_t csx = sx
+                + Screen_GetRenderScale(glyph->combine_with.offset_x, RSR_TEXT);
+            const int32_t csy = sy
+                + Screen_GetRenderScale(glyph->combine_with.offset_y, RSR_TEXT);
+            if (glyph->combine_with.mesh_idx >= ABS(obj->nmeshes)) {
+                goto loop_end;
+            }
 
-        if ((*glyph_ptr)->role != GLYPH_COMBINING) {
-            x += (text->letter_spacing + (*glyph_ptr)->width) * text->scale.h
+            Output_DrawScreenSprite2D(
+                csx, csy, 0, sh, sv,
+                obj->mesh_idx + glyph->combine_with.mesh_idx, 16 << 8, 0, 0);
+        }
+
+        if (glyph->mesh_idx >= ABS(obj->nmeshes)) {
+            goto loop_end;
+        }
+        Output_DrawScreenSprite2D(
+            sx, sy, 0, sh, sv, g_Objects[O_ALPHABET].mesh_idx + glyph->mesh_idx,
+            16 << 8, 0, 0);
+
+        if (glyph->role != GLYPH_COMBINING) {
+            x += (text->letter_spacing + glyph->width) * text->scale.h
                 / TEXT_BASE_SCALE;
         }
+    loop_end:
         glyph_ptr++;
     }
 

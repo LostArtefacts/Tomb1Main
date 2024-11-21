@@ -1,5 +1,29 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...develop) - ××××-××-××
 - added support for Wayland in binary Linux builds (#1927)
+- added support for Unicode in gameflow JSON (#386, #636, #1919 and #1928)
+    Expanding on the 4.6's added support for named sequences, we now support
+    most of the characters the following Unicode planes:
+
+    - Basic Latin
+    - Cyrillic
+    - Greek and Coptic
+    - Latin-1 Supplement
+    - Latin Extended A
+
+    The sprites were created by Arsunt originally posted in the TRF topic here:
+    https://www.tombraiderforums.com/showthread.php?p=8396039
+
+    This should be enough to let gameflow editors provide full localisation for
+    the following languages:
+
+    Basque, Belarusian, Bosnian, Bulgarian, Catalan, Croatian, Czech, Danish,
+    Dutch, English, Estonian, Faroese, Finnish, French, Galician, German,
+    Greek, Hungarian, Icelandic, Indonesian, Irish, Italian, Latvian,
+    Lithuanian, Macedonian, Malay, Maltese, Northern Sami, Norwegian, Polish,
+    Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish,
+    Swedish, Turkish and possibly more.
+
+    Importantly, Asian and Arabic languages remain unsupported at the moment.
 
 ## [4.6](https://github.com/LostArtefacts/TRX/compare/tr1-4.5.1...tr1-4.6) - 2024-11-18
 - added support for wading, similar to TR2+ (#1537)
