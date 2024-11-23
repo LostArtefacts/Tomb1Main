@@ -78,15 +78,22 @@ static const int16_t *M_DrawObjectG3(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectG4(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectGT3(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectGT4(const int16_t *obj_ptr, int32_t number);
+static void M_DrawFlatFace3s(const FACE3 *faces, int32_t count);
+static void M_DrawFlatFace4s(const FACE4 *faces, int32_t count);
 static void M_DrawTexturedFace3s(const FACE3 *faces, int32_t count);
 static void M_DrawTexturedFace4s(const FACE4 *faces, int32_t count);
-static const int16_t *M_DrawObjectEnvMap(
+static const int16_t *M_DrawObjectEnvMap_OLD(
     const int16_t *obj_ptr, int32_t poly_count, int32_t vertex_count,
     bool textured);
+static void M_DrawObjectFace3EnvMap(const FACE3 *faces, int32_t count);
+static void M_DrawObjectFace4EnvMap(const FACE4 *faces, int32_t count);
 static void M_DrawRoomSprites(const ROOM_MESH *mesh);
-static const int16_t *M_CalcObjectVertices(const int16_t *obj_ptr);
-static const int16_t *M_CalcVerticeLight(const int16_t *obj_ptr);
-static const int16_t *M_CalcVerticeEnvMap(const int16_t *obj_ptr);
+static const int16_t *M_CalcObjectVertices_OLD(const int16_t *obj_ptr);
+static bool M_CalcObjectVertices(const OBJECT_MESH *mesh);
+static const int16_t *M_CalcVerticeLight_OLD(const int16_t *obj_ptr);
+static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
+static const int16_t *M_CalcVerticeEnvMap_OLD(const int16_t *obj_ptr);
+static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh);
 static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr);
 static void M_CalcRoomVertices(const ROOM_MESH *mesh);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
@@ -175,6 +182,42 @@ static const int16_t *M_DrawObjectGT4(const int16_t *obj_ptr, int32_t number)
     return obj_ptr;
 }
 
+static void M_DrawFlatFace3s(const FACE3 *const faces, const int32_t count)
+{
+    S_Output_DisableTextureMode();
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE3 *const face = &faces[i];
+        PHD_VBUF *const vns[3] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+        };
+
+        const RGB_888 color = Output_GetPaletteColor(face->texture);
+        S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
+    }
+}
+
+static void M_DrawFlatFace4s(const FACE4 *const faces, const int32_t count)
+{
+    S_Output_DisableTextureMode();
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE4 *const face = &faces[i];
+        PHD_VBUF *const vns[4] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+            &m_VBuf[face->vertices[3]],
+        };
+
+        const RGB_888 color = Output_GetPaletteColor(face->texture);
+        S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
+        S_Output_DrawFlatTriangle(vns[2], vns[3], vns[0], color);
+    }
+}
+
 static void M_DrawTexturedFace3s(const FACE3 *const faces, const int32_t count)
 {
     S_Output_EnableTextureMode();
@@ -214,7 +257,7 @@ static void M_DrawTexturedFace4s(const FACE4 *const faces, const int32_t count)
     }
 }
 
-static const int16_t *M_DrawObjectEnvMap(
+static const int16_t *M_DrawObjectEnvMap_OLD(
     const int16_t *obj_ptr, const int32_t poly_count,
     const int32_t vertex_count, const bool textured)
 {
@@ -245,6 +288,48 @@ static const int16_t *M_DrawObjectEnvMap(
     return obj_ptr;
 }
 
+static void M_DrawObjectFace3EnvMap(
+    const FACE3 *const faces, const int32_t count)
+{
+    const PHD_VBUF *vns[3];
+    const PHD_UV *uv[3];
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE3 *const face = &faces[i];
+        for (int32_t j = 0; j < 3; j++) {
+            const uint16_t vertex_num = face->vertices[j];
+            vns[j] = &m_VBuf[vertex_num];
+            uv[j] = &m_EnvMapUV[vertex_num];
+        }
+
+        if (face->enable_reflections) {
+            S_Output_DrawEnvMapTriangle(
+                vns[0], vns[1], vns[2], uv[0], uv[1], uv[2]);
+        }
+    }
+}
+
+static void M_DrawObjectFace4EnvMap(
+    const FACE4 *const faces, const int32_t count)
+{
+    const PHD_VBUF *vns[4];
+    const PHD_UV *uv[4];
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE4 *const face = &faces[i];
+        for (int32_t j = 0; j < 4; j++) {
+            const uint16_t vertex_num = face->vertices[j];
+            vns[j] = &m_VBuf[vertex_num];
+            uv[j] = &m_EnvMapUV[vertex_num];
+        }
+
+        if (face->enable_reflections) {
+            S_Output_DrawEnvMapQuad(
+                vns[0], vns[1], vns[2], vns[3], uv[0], uv[1], uv[2], uv[3]);
+        }
+    }
+}
+
 static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
 {
     for (int i = 0; i < mesh->num_sprites; i++) {
@@ -273,7 +358,7 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
     }
 }
 
-static const int16_t *M_CalcObjectVertices(const int16_t *obj_ptr)
+static const int16_t *M_CalcObjectVertices_OLD(const int16_t *obj_ptr)
 {
     int16_t total_clip = -1;
 
@@ -336,7 +421,67 @@ static const int16_t *M_CalcObjectVertices(const int16_t *obj_ptr)
     return total_clip == 0 ? obj_ptr : NULL;
 }
 
-static const int16_t *M_CalcVerticeLight(const int16_t *obj_ptr)
+static bool M_CalcObjectVertices(const OBJECT_MESH *const mesh)
+{
+    int16_t total_clip = -1;
+    for (int i = 0; i < mesh->num_vertices; i++) {
+        const XYZ_16 *const vertex = &mesh->vertices[i];
+        // clang-format off
+        double xv =
+            g_MatrixPtr->_00 * vertex->x +
+            g_MatrixPtr->_01 * vertex->y +
+            g_MatrixPtr->_02 * vertex->z +
+            g_MatrixPtr->_03;
+        double yv =
+            g_MatrixPtr->_10 * vertex->x +
+            g_MatrixPtr->_11 * vertex->y +
+            g_MatrixPtr->_12 * vertex->z +
+            g_MatrixPtr->_13;
+        double zv =
+            g_MatrixPtr->_20 * vertex->x +
+            g_MatrixPtr->_21 * vertex->y +
+            g_MatrixPtr->_22 * vertex->z +
+            g_MatrixPtr->_23;
+        // clang-format on
+
+        m_VBuf[i].xv = xv;
+        m_VBuf[i].yv = yv;
+        m_VBuf[i].zv = zv;
+
+        int16_t clip_flags;
+        if (zv < Output_GetNearZ()) {
+            clip_flags = -32768;
+        } else {
+            clip_flags = 0;
+
+            double persp = g_PhdPersp / zv;
+            double xs = Viewport_GetCenterX() + xv * persp;
+            double ys = Viewport_GetCenterY() + yv * persp;
+
+            if (xs < g_PhdLeft) {
+                clip_flags |= 1;
+            } else if (xs > g_PhdRight) {
+                clip_flags |= 2;
+            }
+
+            if (ys < g_PhdTop) {
+                clip_flags |= 4;
+            } else if (ys > g_PhdBottom) {
+                clip_flags |= 8;
+            }
+
+            m_VBuf[i].xs = xs;
+            m_VBuf[i].ys = ys;
+        }
+
+        m_VBuf[i].clip = clip_flags;
+        total_clip &= clip_flags;
+    }
+
+    return total_clip == 0;
+}
+
+static const int16_t *M_CalcVerticeLight_OLD(const int16_t *obj_ptr)
 {
     int32_t vertex_count = *obj_ptr++;
     if (vertex_count > 0) {
@@ -380,7 +525,50 @@ static const int16_t *M_CalcVerticeLight(const int16_t *obj_ptr)
     return obj_ptr;
 }
 
-static const int16_t *M_CalcVerticeEnvMap(const int16_t *obj_ptr)
+static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
+{
+    // TODO: refactor
+    const int32_t vertex_count = mesh->num_lights;
+    if (vertex_count > 0) {
+        if (g_LsDivider) {
+            int32_t xv = (g_MatrixPtr->_00 * m_LsVectorView.x
+                          + g_MatrixPtr->_10 * m_LsVectorView.y
+                          + g_MatrixPtr->_20 * m_LsVectorView.z)
+                / g_LsDivider;
+            int32_t yv = (g_MatrixPtr->_01 * m_LsVectorView.x
+                          + g_MatrixPtr->_11 * m_LsVectorView.y
+                          + g_MatrixPtr->_21 * m_LsVectorView.z)
+                / g_LsDivider;
+            int32_t zv = (g_MatrixPtr->_02 * m_LsVectorView.x
+                          + g_MatrixPtr->_12 * m_LsVectorView.y
+                          + g_MatrixPtr->_22 * m_LsVectorView.z)
+                / g_LsDivider;
+            for (int i = 0; i < vertex_count; i++) {
+                const XYZ_16 *const normal = &mesh->lighting.normals[i];
+                int16_t shade = g_LsAdder
+                    + ((normal->x * xv + normal->y * yv + normal->z * zv)
+                       >> 16);
+                CLAMP(shade, 0, 0x1FFF);
+                m_VBuf[i].g = shade;
+            }
+            return;
+        } else {
+            int16_t shade = g_LsAdder;
+            CLAMP(shade, 0, 0x1FFF);
+            for (int i = 0; i < vertex_count; i++) {
+                m_VBuf[i].g = shade;
+            }
+        }
+    } else {
+        for (int i = 0; i < -vertex_count; i++) {
+            int16_t shade = g_LsAdder + mesh->lighting.lights[i];
+            CLAMP(shade, 0, 0x1FFF);
+            m_VBuf[i].g = shade;
+        }
+    }
+}
+
+static const int16_t *M_CalcVerticeEnvMap_OLD(const int16_t *obj_ptr)
 {
     const int32_t vtx_count = *obj_ptr++;
     if (vtx_count <= 0) {
@@ -423,6 +611,51 @@ static const int16_t *M_CalcVerticeEnvMap(const int16_t *obj_ptr)
         obj_ptr += 3;
     }
     return obj_ptr;
+}
+
+static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh)
+{
+    if (mesh->num_lights <= 0) {
+        return false;
+    }
+
+    for (int32_t i = 0; i < mesh->num_lights; ++i) {
+        // make sure that reflection will be drawn after normal poly
+        m_VBuf[i].zv -= (double)(W2V_SCALE / 2);
+
+        // set lighting that depends only from fog distance
+        m_VBuf[i].g = 0x1000;
+
+        const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
+        m_VBuf[i].g += M_CalcFogShade(depth);
+
+        // reflection can be darker but not brighter
+        CLAMP(m_VBuf[i].g, 0x1000, 0x1FFF);
+
+        // rotate normal vectors for X/Y, no translation
+        const XYZ_16 *const normal = &mesh->lighting.normals[i];
+
+        // clang-format off
+        int32_t x = (
+            g_MatrixPtr->_00 * normal->x +
+            g_MatrixPtr->_01 * normal->y +
+            g_MatrixPtr->_02 * normal->z
+        ) >> W2V_SHIFT;
+
+        int32_t y = (
+            g_MatrixPtr->_10 * normal->x +
+            g_MatrixPtr->_11 * normal->y +
+            g_MatrixPtr->_12 * normal->z
+        ) >> W2V_SHIFT;
+        // clang-format on
+
+        CLAMP(x, -PHD_ONE, PHD_IONE);
+        CLAMP(y, -PHD_ONE, PHD_IONE);
+        m_EnvMapUV[i].u = PHD_ONE / PHD_IONE * (x + PHD_IONE) / 2;
+        m_EnvMapUV[i].v = PHD_ONE - PHD_ONE / PHD_IONE * (y + PHD_IONE) / 2;
+    }
+
+    return true;
 }
 
 static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr)
@@ -763,13 +996,13 @@ void Output_DrawPolygons(const int16_t *obj_ptr, int clip)
     const bool has_reflections = IS_REFLECTION_ENABLED(obj_ptr[3]);
     obj_ptr += 4;
 
-    obj_ptr = M_CalcObjectVertices(obj_ptr);
+    obj_ptr = M_CalcObjectVertices_OLD(obj_ptr);
     if (obj_ptr == NULL) {
         return;
     }
 
     const int16_t *obj_ptr_old = obj_ptr;
-    obj_ptr = M_CalcVerticeLight(obj_ptr);
+    obj_ptr = M_CalcVerticeLight_OLD(obj_ptr);
     obj_ptr = M_DrawObjectGT4(obj_ptr + 1, *obj_ptr);
     obj_ptr = M_DrawObjectGT3(obj_ptr + 1, *obj_ptr);
     obj_ptr = M_DrawObjectG4(obj_ptr + 1, *obj_ptr);
@@ -777,12 +1010,12 @@ void Output_DrawPolygons(const int16_t *obj_ptr, int clip)
 
     if (has_reflections && g_Config.rendering.enable_reflections) {
         obj_ptr = obj_ptr_old;
-        obj_ptr = M_CalcVerticeEnvMap(obj_ptr);
+        obj_ptr = M_CalcVerticeEnvMap_OLD(obj_ptr);
         if (obj_ptr != NULL) {
-            obj_ptr = M_DrawObjectEnvMap(obj_ptr + 1, *obj_ptr, 4, true);
-            obj_ptr = M_DrawObjectEnvMap(obj_ptr + 1, *obj_ptr, 3, true);
-            obj_ptr = M_DrawObjectEnvMap(obj_ptr + 1, *obj_ptr, 4, false);
-            obj_ptr = M_DrawObjectEnvMap(obj_ptr + 1, *obj_ptr, 3, false);
+            obj_ptr = M_DrawObjectEnvMap_OLD(obj_ptr + 1, *obj_ptr, 4, true);
+            obj_ptr = M_DrawObjectEnvMap_OLD(obj_ptr + 1, *obj_ptr, 3, true);
+            obj_ptr = M_DrawObjectEnvMap_OLD(obj_ptr + 1, *obj_ptr, 4, false);
+            obj_ptr = M_DrawObjectEnvMap_OLD(obj_ptr + 1, *obj_ptr, 3, false);
         }
     }
 }
@@ -792,6 +1025,38 @@ void Output_DrawPolygons_I(const int16_t *obj_ptr, int32_t clip)
     Matrix_Push();
     Matrix_Interpolate();
     Output_DrawPolygons(obj_ptr, clip);
+    Matrix_Pop();
+}
+
+void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
+{
+    if (!M_CalcObjectVertices(mesh)) {
+        return;
+    }
+
+    M_CalcVerticeLight(mesh);
+    M_DrawTexturedFace4s(mesh->tex_face4s, mesh->num_tex_face4s);
+    M_DrawTexturedFace3s(mesh->tex_face3s, mesh->num_tex_face3s);
+    M_DrawFlatFace4s(mesh->flat_face4s, mesh->num_flat_face4s);
+    M_DrawFlatFace3s(mesh->flat_face3s, mesh->num_flat_face3s);
+
+    if (mesh->enable_reflections && g_Config.rendering.enable_reflections) {
+        if (!M_CalcVerticeEnvMap(mesh)) {
+            return;
+        }
+
+        M_DrawObjectFace4EnvMap(mesh->tex_face4s, mesh->num_tex_face4s);
+        M_DrawObjectFace3EnvMap(mesh->tex_face3s, mesh->num_tex_face3s);
+        M_DrawObjectFace4EnvMap(mesh->flat_face4s, mesh->num_flat_face4s);
+        M_DrawObjectFace3EnvMap(mesh->flat_face3s, mesh->num_flat_face3s);
+    }
+}
+
+void Output_DrawObjectMesh_I(const OBJECT_MESH *const mesh, const int32_t clip)
+{
+    Matrix_Push();
+    Matrix_Interpolate();
+    Output_DrawObjectMesh(mesh, clip);
     Matrix_Pop();
 }
 
@@ -812,7 +1077,7 @@ void Output_DrawSkybox(const int16_t *obj_ptr)
     g_PhdRight = Viewport_GetMaxX();
     g_PhdBottom = Viewport_GetMaxY();
 
-    obj_ptr = M_CalcObjectVertices(obj_ptr + 4);
+    obj_ptr = M_CalcObjectVertices_OLD(obj_ptr + 4);
     if (!obj_ptr) {
         return;
     }
@@ -873,7 +1138,7 @@ void Output_DrawShadow(
         item->interp.result.pos.x, item->floor, item->interp.result.pos.z);
     Matrix_RotY(item->rot.y);
 
-    if (M_CalcObjectVertices(&g_ShadowInfo.poly_count)) {
+    if (M_CalcObjectVertices_OLD(&g_ShadowInfo.poly_count)) {
         int16_t clip_and = 1;
         int16_t clip_positive = 1;
         int16_t clip_or = 0;

@@ -58,6 +58,9 @@ void Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
 void Output_DrawPolygons(const int16_t *obj_ptr, int clip);
 void Output_DrawPolygons_I(const int16_t *obj_ptr, int32_t clip);
 
+void Output_DrawObjectMesh(const OBJECT_MESH *mesh, int32_t clip);
+void Output_DrawObjectMesh_I(const OBJECT_MESH *mesh, int32_t clip);
+
 void Output_SetSkyboxEnabled(bool enabled);
 bool Output_IsSkyboxEnabled(void);
 void Output_DrawSkybox(const int16_t *obj_ptr);
