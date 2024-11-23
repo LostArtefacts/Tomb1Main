@@ -70,6 +70,30 @@ typedef struct __PACKING {
 #endif
 } LIGHT;
 
+#if TR_VERSION == 1
+typedef struct __PACKING {
+    XYZ_16 pos;
+    uint16_t flags;
+    uint16_t shade;
+} ROOM_VERTEX;
+
+typedef struct __PACKING {
+    uint16_t texture;
+    uint16_t vertex;
+} ROOM_SPRITE;
+
+typedef struct __PACKING {
+    int16_t num_vertices;
+    int16_t num_face4s;
+    int16_t num_face3s;
+    int16_t num_sprites;
+    ROOM_VERTEX *vertices;
+    FACE4 *face4s;
+    FACE3 *face3s;
+    ROOM_SPRITE *sprites;
+} ROOM_MESH;
+#endif
+
 typedef struct __PACKING {
     XYZ_32 pos;
     struct __PACKING {
@@ -85,7 +109,10 @@ typedef struct __PACKING {
 } STATIC_MESH;
 
 typedef struct __PACKING {
-    int16_t *data;
+#if TR_VERSION == 1
+    ROOM_MESH mesh;
+#endif
+    int16_t *data; // TODO: add elif TR2 once TR1 parsing fully implemented
     PORTALS *portals;
     SECTOR *sectors;
     LIGHT *lights;
