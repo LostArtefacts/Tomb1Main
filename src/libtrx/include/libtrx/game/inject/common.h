@@ -1,3 +1,3 @@
 #include "./types.h"
 
-extern uint32_t Inject_GetExtraRoomMeshSize(int32_t room_index);
+extern INJECTION_MESH_META Inject_GetRoomMeshMeta(int32_t room_index);

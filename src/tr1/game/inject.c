@@ -20,7 +20,7 @@
 #include <stddef.h>
 
 #define INJECTION_MAGIC MKTAG('T', '1', 'M', 'J')
-#define INJECTION_CURRENT_VERSION 8
+#define INJECTION_CURRENT_VERSION 9
 #define NULL_FD_INDEX ((uint16_t)(-1))
 
 typedef enum {
@@ -32,6 +32,7 @@ typedef enum {
     INJ_VERSION_6 = 6,
     INJ_VERSION_7 = 7,
     INJ_VERSION_8 = 8,
+    INJ_VERSION_9 = 9,
 } INJECTION_VERSION;
 
 typedef enum {
@@ -266,22 +267,32 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
     }
 
     if (injection->version > INJ_VERSION_1) {
-        // room_mesh_count is a summary of the change in mesh size,
-        // while room_mesh_edit_count indicates how many edits to
+        // room_mesh_meta_count is a summary of the change in size of room mesh
+        // properties, while room_mesh_edit_count indicates how many edits to
         // read and interpret (not all edits incur a size change).
-        info->room_mesh_count = VFile_ReadU32(fp);
-        info->room_meshes =
-            Memory_Alloc(sizeof(INJECTION_ROOM_MESH) * info->room_mesh_count);
-        for (int32_t i = 0; i < info->room_mesh_count; i++) {
-            INJECTION_ROOM_MESH *mesh = &info->room_meshes[i];
-            mesh->room_index = VFile_ReadS16(fp);
-            mesh->extra_size = VFile_ReadU32(fp);
+        info->room_mesh_meta_count = VFile_ReadU32(fp);
+        if (injection->version >= INJ_VERSION_9) {
+            info->room_mesh_meta = Memory_Alloc(
+                sizeof(INJECTION_MESH_META) * info->room_mesh_meta_count);
+            for (int32_t i = 0; i < info->room_mesh_meta_count; i++) {
+                INJECTION_MESH_META *const meta = &info->room_mesh_meta[i];
+                meta->room_index = VFile_ReadS16(fp);
+                meta->num_vertices = VFile_ReadS16(fp);
+                meta->num_quads = VFile_ReadS16(fp);
+                meta->num_triangles = VFile_ReadS16(fp);
+                meta->num_sprites = VFile_ReadS16(fp);
+            }
+        } else {
+            // Since the implementation of structured room meshes, older
+            // injections without detailed meta are no longer supported.
+            const int32_t legacy_size = sizeof(int16_t) + sizeof(uint32_t);
+            VFile_Skip(fp, info->room_mesh_meta_count * legacy_size);
         }
 
         info->room_mesh_edit_count = VFile_ReadU32(fp);
         info->room_door_edit_count = VFile_ReadU32(fp);
     } else {
-        info->room_meshes = NULL;
+        info->room_mesh_meta = NULL;
     }
 
     if (injection->version > INJ_VERSION_2) {
@@ -1448,6 +1459,11 @@ static void M_AddRoomFace(INJECTION *injection)
         vertices[i] = VFile_ReadS16(fp);
     }
 
+    if (injection->version < INJ_VERSION_9) {
+        LOG_WARNING("Legacy room face injection is not supported");
+        return;
+    }
+
     if (target_room < 0 || target_room >= g_RoomCount) {
         LOG_WARNING("Room index %d is invalid", target_room);
         return;
@@ -1515,6 +1531,11 @@ static void M_AddRoomVertex(INJECTION *injection)
     const int16_t y = VFile_ReadS16(fp);
     const int16_t z = VFile_ReadS16(fp);
     const int16_t lighting = VFile_ReadS16(fp);
+
+    if (injection->version < INJ_VERSION_9) {
+        LOG_WARNING("Legacy room vertex injection is not supported");
+        return;
+    }
 
     ROOM *r = &g_RoomInfo[target_room];
     int32_t data_index = 0;
@@ -1804,9 +1825,7 @@ void Inject_Cleanup(void)
             VFile_Close(injection->fp);
         }
         if (injection->info) {
-            if (injection->info->room_meshes) {
-                Memory_FreePointer(&injection->info->room_meshes);
-            }
+            Memory_FreePointer(&injection->info->room_mesh_meta);
             Memory_FreePointer(&injection->info);
         }
     }
@@ -1815,27 +1834,33 @@ void Inject_Cleanup(void)
     Benchmark_End(benchmark, NULL);
 }
 
-uint32_t Inject_GetExtraRoomMeshSize(int32_t room_index)
+INJECTION_MESH_META Inject_GetRoomMeshMeta(const int32_t room_index)
 {
-    uint32_t size = 0;
-    if (!m_Injections) {
-        return size;
+    INJECTION_MESH_META summed_meta = { 0 };
+    if (m_Injections == NULL) {
+        return summed_meta;
     }
 
     for (int32_t i = 0; i < m_NumInjections; i++) {
-        INJECTION *injection = &m_Injections[i];
-        if (!injection->relevant || injection->version < INJ_VERSION_2) {
+        const INJECTION *const injection = &m_Injections[i];
+        if (!injection->relevant || injection->version < INJ_VERSION_9) {
             continue;
         }
 
-        INJECTION_INFO *inj_info = injection->info;
-        for (int32_t j = 0; j < inj_info->room_mesh_count; j++) {
-            INJECTION_ROOM_MESH *mesh = &inj_info->room_meshes[j];
-            if (mesh->room_index == room_index) {
-                size += mesh->extra_size;
+        const INJECTION_INFO *const inj_info = injection->info;
+        for (int32_t j = 0; j < inj_info->room_mesh_meta_count; j++) {
+            const INJECTION_MESH_META *const meta =
+                &inj_info->room_mesh_meta[j];
+            if (meta->room_index != room_index) {
+                continue;
             }
+
+            summed_meta.num_vertices += meta->num_vertices;
+            summed_meta.num_quads += meta->num_quads;
+            summed_meta.num_triangles += meta->num_triangles;
+            summed_meta.num_sprites += meta->num_sprites;
         }
     }
 
-    return size;
+    return summed_meta;
 }
