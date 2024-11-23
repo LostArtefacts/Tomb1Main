@@ -293,20 +293,21 @@ void Room_DrawSingleRoom(int16_t room_num)
     }
 
     for (int i = 0; i < r->num_static_meshes; i++) {
-        STATIC_MESH *mesh = &r->static_meshes[i];
-        if (g_StaticObjects[mesh->static_num].flags & 2) {
-            Matrix_Push();
-            Matrix_TranslateAbs(mesh->pos.x, mesh->pos.y, mesh->pos.z);
-            Matrix_RotY(mesh->rot.y);
-            int clip =
-                Output_GetObjectBounds(&g_StaticObjects[mesh->static_num].p);
-            if (clip) {
-                Output_CalculateStaticLight(mesh->shade);
-                Output_DrawPolygons(
-                    g_Meshes[g_StaticObjects[mesh->static_num].mesh_num], clip);
-            }
-            Matrix_Pop();
+        const STATIC_MESH *const mesh = &r->static_meshes[i];
+        const STATIC_INFO *const info = &g_StaticObjects[mesh->static_num];
+        if (!(info->flags & SMF_VISIBLE)) {
+            continue;
         }
+
+        Matrix_Push();
+        Matrix_TranslateAbs(mesh->pos.x, mesh->pos.y, mesh->pos.z);
+        Matrix_RotY(mesh->rot.y);
+        int clip = Output_GetObjectBounds(&info->p);
+        if (clip) {
+            Output_CalculateStaticLight(mesh->shade);
+            Output_DrawPolygons(g_Meshes[info->mesh_num], clip);
+        }
+        Matrix_Pop();
     }
 
     for (int i = r->fx_num; i != NO_ITEM; i = g_Effects[i].next_draw) {

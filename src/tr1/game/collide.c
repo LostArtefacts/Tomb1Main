@@ -347,7 +347,7 @@ bool Collide_CollideStaticObjects(
         for (int j = 0; j < r->num_static_meshes; j++) {
             const STATIC_MESH *const mesh = &r->static_meshes[j];
             const STATIC_INFO *const sinfo = &g_StaticObjects[mesh->static_num];
-            if (sinfo->flags & 1) {
+            if (sinfo->flags & SMF_NON_COLLIDABLE) {
                 continue;
             }
 

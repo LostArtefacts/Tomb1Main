@@ -1,6 +1,11 @@
 #pragma once
 
 typedef enum {
+    SMF_NON_COLLIDABLE = 1 << 0,
+    SMF_VISIBLE = 1 << 1,
+} STATIC_MESH_FLAG;
+
+typedef enum {
     FT_FLOOR = 0,
     FT_DOOR = 1,
     FT_TILT = 2,
