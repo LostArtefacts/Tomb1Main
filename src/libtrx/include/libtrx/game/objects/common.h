@@ -22,3 +22,16 @@ GAME_OBJECT_ID Object_GetCognate(
 
 GAME_OBJECT_ID Object_GetCognateInverse(
     GAME_OBJECT_ID value_id, const GAME_OBJECT_PAIR *test_map);
+
+#if TR_VERSION == 1
+void Object_InitialiseMeshes(int32_t mesh_count);
+void Object_StoreMesh(OBJECT_MESH *mesh);
+
+OBJECT_MESH *Object_FindMesh(int32_t data_offset);
+int32_t Object_GetMeshOffset(const OBJECT_MESH *mesh);
+void Object_SetMeshOffset(OBJECT_MESH *mesh, int32_t data_offset);
+
+OBJECT_MESH *Object_GetMesh(int32_t index);
+void Object_SwapMesh(
+    GAME_OBJECT_ID object1_id, GAME_OBJECT_ID object2_id, int32_t mesh_num);
+#endif

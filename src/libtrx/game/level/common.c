@@ -61,7 +61,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             GameBuf_Alloc(sizeof(FACE4) * mesh->num_tex_face4s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_tex_face4s; i++) {
             FACE4 *const face = &mesh->tex_face4s[i];
-            for (int j = 0; j < 4; j++) {
+            for (int32_t j = 0; j < 4; j++) {
                 face->vertices[j] = VFile_ReadU16(file);
             }
             face->texture = VFile_ReadU16(file);
@@ -75,7 +75,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             GameBuf_Alloc(sizeof(FACE3) * mesh->num_tex_face3s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_tex_face3s; i++) {
             FACE3 *const face = &mesh->tex_face3s[i];
-            for (int j = 0; j < 3; j++) {
+            for (int32_t j = 0; j < 3; j++) {
                 face->vertices[j] = VFile_ReadU16(file);
             }
             face->texture = VFile_ReadU16(file);
@@ -89,7 +89,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             GameBuf_Alloc(sizeof(FACE4) * mesh->num_flat_face4s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_flat_face4s; i++) {
             FACE4 *const face = &mesh->flat_face4s[i];
-            for (int j = 0; j < 4; j++) {
+            for (int32_t j = 0; j < 4; j++) {
                 face->vertices[j] = VFile_ReadU16(file);
             }
             face->texture = VFile_ReadU16(file);
@@ -103,7 +103,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             GameBuf_Alloc(sizeof(FACE3) * mesh->num_flat_face3s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_flat_face3s; i++) {
             FACE3 *const face = &mesh->flat_face3s[i];
-            for (int j = 0; j < 3; j++) {
+            for (int32_t j = 0; j < 3; j++) {
                 face->vertices[j] = VFile_ReadU16(file);
             }
             face->texture = VFile_ReadU16(file);
@@ -209,14 +209,15 @@ void Level_ReadObjectMeshes(
         const int32_t pointer = *(const int32_t *)Vector_Get(unique_indices, i);
         VFile_SetPos(file, start_pos + pointer);
         M_ReadObjectMesh(&meshes[i], file);
+
+        // The original data position is required for backward compatibility
+        // with savegame files, specifically for Lara's mesh pointers.
+        Object_SetMeshOffset(&meshes[i], pointer / 2);
     }
 
-    OBJECT_MESH *final_pointers[num_indices];
     for (int32_t i = 0; i < num_indices; i++) {
-        final_pointers[i] = &meshes[pointer_map[i]];
+        Object_StoreMesh(&meshes[pointer_map[i]]);
     }
-
-    // TODO: store pointers via objects/common.h
 
     LOG_INFO("%d unique meshes constructed", unique_indices->count);
 

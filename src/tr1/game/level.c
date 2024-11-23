@@ -293,9 +293,12 @@ static void M_LoadObjectMeshes(VFILE *const file)
 
     const size_t end_pos = VFile_GetPos(file);
     VFile_SetPos(file, data_start_pos);
-    Level_ReadObjectMeshes(m_LevelInfo.mesh_ptr_count, mesh_indices, file);
-    VFile_SetPos(file, end_pos);
 
+    Object_InitialiseMeshes(
+        m_LevelInfo.mesh_ptr_count + m_InjectionInfo->mesh_ptr_count);
+    Level_ReadObjectMeshes(m_LevelInfo.mesh_ptr_count, mesh_indices, file);
+
+    VFile_SetPos(file, end_pos);
     Benchmark_End(benchmark, NULL);
 }
 
