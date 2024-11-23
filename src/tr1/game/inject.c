@@ -10,6 +10,7 @@
 #include "items.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
@@ -125,7 +126,7 @@ static void M_LoadTexturePages(
     RGBA_8888 *page_ptr);
 static void M_TextureData(
     INJECTION *injection, LEVEL_INFO *level_info, int32_t page_base);
-static void M_MeshData(INJECTION *injection, LEVEL_INFO *level_info);
+static void M_MeshData(const INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimRangeEdits(INJECTION *injection);
 static void M_ObjectData(
@@ -478,26 +479,38 @@ static void M_TextureData(
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_MeshData(INJECTION *injection, LEVEL_INFO *level_info)
+static void M_MeshData(const INJECTION *injection, LEVEL_INFO *const level_info)
 {
+    if (injection->info->mesh_count == 0) {
+        return;
+    }
+
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    INJECTION_INFO *inj_info = injection->info;
+    const INJECTION_INFO *const inj_info = injection->info;
     VFILE *const fp = injection->fp;
 
-    int32_t mesh_base = level_info->mesh_count;
+    const int32_t mesh_base = level_info->mesh_count;
+    const size_t data_start_pos = VFile_GetPos(fp);
+    // TODO: skip, handled in Level_ReadObjectMeshes
     VFile_Read(
         fp, g_MeshBase + mesh_base, sizeof(int16_t) * inj_info->mesh_count);
     level_info->mesh_count += inj_info->mesh_count;
 
-    uint32_t *mesh_indices = GameBuf_Alloc(
-        sizeof(uint32_t) * inj_info->mesh_ptr_count, GBUF_MESH_POINTERS);
-    VFile_Read(fp, mesh_indices, sizeof(uint32_t) * inj_info->mesh_ptr_count);
+    // TODO: Use Memory_Alloc and free
+    int32_t *mesh_indices = GameBuf_Alloc(
+        sizeof(int32_t) * inj_info->mesh_ptr_count, GBUF_MESH_POINTERS);
+    VFile_Read(fp, mesh_indices, sizeof(int32_t) * inj_info->mesh_ptr_count);
 
     for (int32_t i = 0; i < inj_info->mesh_ptr_count; i++) {
         g_Meshes[level_info->mesh_ptr_count + i] =
             &g_MeshBase[mesh_base + mesh_indices[i] / 2];
     }
+
+    const size_t end_pos = VFile_GetPos(fp);
+    VFile_SetPos(fp, data_start_pos);
+    Level_ReadObjectMeshes(inj_info->mesh_ptr_count, mesh_indices, fp);
+    VFile_SetPos(fp, end_pos);
 
     Benchmark_End(benchmark, NULL);
 }

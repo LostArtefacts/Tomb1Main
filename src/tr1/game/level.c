@@ -266,6 +266,9 @@ static void M_LoadObjectMeshes(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.mesh_count = VFile_ReadS32(file);
     LOG_INFO("%d object mesh data", m_LevelInfo.mesh_count);
+
+    const size_t data_start_pos = VFile_GetPos(file);
+    // TODO: skip, handled in Level_ReadObjectMeshes
     g_MeshBase = GameBuf_Alloc(
         sizeof(int16_t)
             * (m_LevelInfo.mesh_count + m_InjectionInfo->mesh_count),
@@ -274,6 +277,7 @@ static void M_LoadObjectMeshes(VFILE *const file)
 
     m_LevelInfo.mesh_ptr_count = VFile_ReadS32(file);
     LOG_INFO("%d object mesh indices", m_LevelInfo.mesh_ptr_count);
+    // TODO: Use Memory_Alloc and free
     int32_t *mesh_indices = GameBuf_Alloc(
         sizeof(int32_t) * m_LevelInfo.mesh_ptr_count, GBUF_MESH_POINTERS);
     VFile_Read(
@@ -286,6 +290,12 @@ static void M_LoadObjectMeshes(VFILE *const file)
     for (int i = 0; i < m_LevelInfo.mesh_ptr_count; i++) {
         g_Meshes[i] = &g_MeshBase[mesh_indices[i] / 2];
     }
+
+    const size_t end_pos = VFile_GetPos(file);
+    VFile_SetPos(file, data_start_pos);
+    Level_ReadObjectMeshes(m_LevelInfo.mesh_ptr_count, mesh_indices, file);
+    VFile_SetPos(file, end_pos);
+
     Benchmark_End(benchmark, NULL);
 }
 
