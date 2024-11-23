@@ -13,6 +13,28 @@ typedef struct __PACKING {
 } OBJECT_BOUNDS;
 
 typedef struct __PACKING {
+    void *priv;
+    XYZ_16 center;
+    int32_t radius;
+    int16_t num_lights;
+    int16_t num_vertices;
+    int16_t num_tex_face4s;
+    int16_t num_tex_face3s;
+    int16_t num_flat_face4s;
+    int16_t num_flat_face3s;
+    union {
+        XYZ_16 *normals;
+        int16_t *lights;
+    } lighting;
+    XYZ_16 *vertices;
+    FACE4 *tex_face4s;
+    FACE3 *tex_face3s;
+    FACE4 *flat_face4s;
+    FACE3 *flat_face3s;
+    bool enable_reflections;
+} OBJECT_MESH;
+
+typedef struct __PACKING {
     int16_t nmeshes;
     int16_t mesh_idx;
     int32_t bone_idx;
