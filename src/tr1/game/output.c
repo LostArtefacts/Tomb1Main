@@ -78,17 +78,18 @@ static const int16_t *M_DrawObjectG3(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectG4(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectGT3(const int16_t *obj_ptr, int32_t number);
 static const int16_t *M_DrawObjectGT4(const int16_t *obj_ptr, int32_t number);
+static void M_DrawTexturedFace3s(const FACE3 *faces, int32_t count);
+static void M_DrawTexturedFace4s(const FACE4 *faces, int32_t count);
 static const int16_t *M_DrawObjectEnvMap(
     const int16_t *obj_ptr, int32_t poly_count, int32_t vertex_count,
     bool textured);
-static const int16_t *M_DrawRoomSprites(
-    const int16_t *obj_ptr, int32_t vertex_count);
+static void M_DrawRoomSprites(const ROOM_MESH *mesh);
 static const int16_t *M_CalcObjectVertices(const int16_t *obj_ptr);
 static const int16_t *M_CalcVerticeLight(const int16_t *obj_ptr);
 static const int16_t *M_CalcVerticeEnvMap(const int16_t *obj_ptr);
 static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr);
-static const int16_t *M_CalcRoomVertices(const int16_t *obj_ptr);
-static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr);
+static void M_CalcRoomVertices(const ROOM_MESH *mesh);
+static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
 static int32_t M_CalcFogShade(int32_t depth);
 static void M_CalcWibbleTable(void);
 
@@ -174,6 +175,45 @@ static const int16_t *M_DrawObjectGT4(const int16_t *obj_ptr, int32_t number)
     return obj_ptr;
 }
 
+static void M_DrawTexturedFace3s(const FACE3 *const faces, const int32_t count)
+{
+    S_Output_EnableTextureMode();
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE3 *const face = &faces[i];
+        PHD_VBUF *const vns[3] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+        };
+
+        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture];
+        S_Output_DrawTexturedTriangle(
+            vns[0], vns[1], vns[2], tex->tpage, &tex->uv[0], &tex->uv[1],
+            &tex->uv[2], tex->drawtype);
+    }
+}
+
+static void M_DrawTexturedFace4s(const FACE4 *const faces, const int32_t count)
+{
+    S_Output_EnableTextureMode();
+
+    for (int32_t i = 0; i < count; i++) {
+        const FACE4 *const face = &faces[i];
+        PHD_VBUF *const vns[4] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+            &m_VBuf[face->vertices[3]],
+        };
+
+        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture];
+        S_Output_DrawTexturedQuad(
+            vns[0], vns[1], vns[2], vns[3], tex->tpage, &tex->uv[0],
+            &tex->uv[1], &tex->uv[2], &tex->uv[3], tex->drawtype);
+    }
+}
+
 static const int16_t *M_DrawObjectEnvMap(
     const int16_t *obj_ptr, const int32_t poly_count,
     const int32_t vertex_count, const bool textured)
@@ -205,37 +245,32 @@ static const int16_t *M_DrawObjectEnvMap(
     return obj_ptr;
 }
 
-static const int16_t *M_DrawRoomSprites(
-    const int16_t *obj_ptr, int32_t vertex_count)
+static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
 {
-    for (int i = 0; i < vertex_count; i++) {
-        int16_t vbuf_num = obj_ptr[0];
-        int16_t sprnum = obj_ptr[1];
-        obj_ptr += 2;
-
-        PHD_VBUF *vbuf = &m_VBuf[vbuf_num];
+    for (int i = 0; i < mesh->num_sprites; i++) {
+        const ROOM_SPRITE *room_sprite = &mesh->sprites[i];
+        const PHD_VBUF *const vbuf = &m_VBuf[room_sprite->vertex];
         if (vbuf->clip < 0) {
             continue;
         }
 
-        int32_t zv = vbuf->zv;
-        PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-        int32_t zp = (zv / g_PhdPersp);
-        int32_t x1 =
+        const int32_t zv = vbuf->zv;
+        const PHD_SPRITE *const sprite = &g_PhdSpriteInfo[room_sprite->texture];
+        const int32_t zp = (zv / g_PhdPersp);
+        const int32_t x1 =
             Viewport_GetCenterX() + (vbuf->xv + (sprite->x1 << W2V_SHIFT)) / zp;
-        int32_t y1 =
+        const int32_t y1 =
             Viewport_GetCenterY() + (vbuf->yv + (sprite->y1 << W2V_SHIFT)) / zp;
-        int32_t x2 =
+        const int32_t x2 =
             Viewport_GetCenterX() + (vbuf->xv + (sprite->x2 << W2V_SHIFT)) / zp;
-        int32_t y2 =
+        const int32_t y2 =
             Viewport_GetCenterY() + (vbuf->yv + (sprite->y2 << W2V_SHIFT)) / zp;
         if (x2 >= g_PhdLeft && y2 >= g_PhdTop && x1 < g_PhdRight
             && y1 < g_PhdBottom) {
-            S_Output_DrawSprite(x1, y1, x2, y2, zv, sprnum, vbuf->g);
+            S_Output_DrawSprite(
+                x1, y1, x2, y2, zv, room_sprite->texture, vbuf->g);
         }
     }
-
-    return obj_ptr;
 }
 
 static const int16_t *M_CalcObjectVertices(const int16_t *obj_ptr)
@@ -407,30 +442,29 @@ static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr)
     return obj_ptr;
 }
 
-static const int16_t *M_CalcRoomVertices(const int16_t *obj_ptr)
+static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
 {
-    const int32_t vertex_count = *obj_ptr++;
-
-    for (int32_t i = 0; i < vertex_count; i++) {
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
         PHD_VBUF *const vbuf = &m_VBuf[i];
+        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
 
         // clang-format off
         const double xv = (
-            g_MatrixPtr->_00 * obj_ptr[0] +
-            g_MatrixPtr->_01 * obj_ptr[1] +
-            g_MatrixPtr->_02 * obj_ptr[2] +
+            g_MatrixPtr->_00 * vertex->pos.x +
+            g_MatrixPtr->_01 * vertex->pos.y +
+            g_MatrixPtr->_02 * vertex->pos.z +
             g_MatrixPtr->_03
         );
         const double yv = (
-            g_MatrixPtr->_10 * obj_ptr[0] +
-            g_MatrixPtr->_11 * obj_ptr[1] +
-            g_MatrixPtr->_12 * obj_ptr[2] +
+            g_MatrixPtr->_10 * vertex->pos.x +
+            g_MatrixPtr->_11 * vertex->pos.y +
+            g_MatrixPtr->_12 * vertex->pos.z +
             g_MatrixPtr->_13
         );
         const int32_t zv_int = (
-            g_MatrixPtr->_20 * obj_ptr[0] +
-            g_MatrixPtr->_21 * obj_ptr[1] +
-            g_MatrixPtr->_22 * obj_ptr[2] +
+            g_MatrixPtr->_20 * vertex->pos.x +
+            g_MatrixPtr->_21 * vertex->pos.y +
+            g_MatrixPtr->_22 * vertex->pos.z +
             g_MatrixPtr->_23
         );
         const double zv = zv_int;
@@ -439,7 +473,7 @@ static const int16_t *M_CalcRoomVertices(const int16_t *obj_ptr)
         vbuf->xv = xv;
         vbuf->yv = yv;
         vbuf->zv = zv;
-        vbuf->g = obj_ptr[3] & MAX_LIGHTING;
+        vbuf->g = vertex->shade & MAX_LIGHTING;
 
         if (zv < Output_GetNearZ()) {
             vbuf->clip = 0x8000;
@@ -477,7 +511,8 @@ static const int16_t *M_CalcRoomVertices(const int16_t *obj_ptr)
             if (m_IsWaterEffect) {
                 vbuf->g += m_ShadeTable[(
                     ((uint8_t)m_WibbleOffset
-                     + (uint8_t)m_RandTable[(vertex_count - i) % WIBBLE_SIZE])
+                     + (uint8_t)
+                         m_RandTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
                     % WIBBLE_SIZE)];
                 CLAMP(vbuf->g, 0, 0x1FFF);
             }
@@ -486,23 +521,18 @@ static const int16_t *M_CalcRoomVertices(const int16_t *obj_ptr)
             vbuf->ys = ys;
             vbuf->clip = clip_flags;
         }
-        obj_ptr += 4;
     }
-
-    return obj_ptr;
 }
 
-static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
+static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
 {
-    const int32_t vertex_count = *obj_ptr++;
-
-    for (int32_t i = 0; i < vertex_count; i++) {
-        PHD_VBUF *const vbuf = &m_VBuf[i];
-        if (obj_ptr[3] & NO_VERT_MOVE) {
-            obj_ptr += 4;
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
+        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
+        if (vertex->flags & NO_VERT_MOVE) {
             continue;
         }
 
+        PHD_VBUF *const vbuf = &m_VBuf[i];
         double xs = vbuf->xs;
         double ys = vbuf->ys;
         xs += m_WibbleTable[(m_WibbleOffset + (int)ys) & (WIBBLE_SIZE - 1)];
@@ -524,10 +554,7 @@ static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
         vbuf->xs = xs;
         vbuf->ys = ys;
         vbuf->clip = clip_flags;
-        obj_ptr += 4;
     }
-
-    return obj_ptr;
 }
 
 static int32_t M_CalcFogShade(int32_t depth)
@@ -799,23 +826,21 @@ void Output_DrawSkybox(const int16_t *obj_ptr)
     S_Output_EnableDepthTest();
 }
 
-void Output_DrawRoom(const int16_t *obj_ptr)
+void Output_DrawRoom(const ROOM_MESH *const mesh)
 {
-    const int16_t *const old_obj_ptr = obj_ptr;
-
-    obj_ptr = M_CalcRoomVertices(obj_ptr);
+    M_CalcRoomVertices(mesh);
 
     if (m_IsWibbleEffect) {
         S_Output_DisableDepthWrites();
-        obj_ptr = M_DrawObjectGT4(obj_ptr + 1, *obj_ptr);
-        obj_ptr = M_DrawObjectGT3(obj_ptr + 1, *obj_ptr);
+        M_DrawTexturedFace4s(mesh->face4s, mesh->num_face4s);
+        M_DrawTexturedFace3s(mesh->face3s, mesh->num_face3s);
         S_Output_EnableDepthWrites();
-        obj_ptr = M_CalcRoomVerticesWibble(old_obj_ptr);
+        M_CalcRoomVerticesWibble(mesh);
     }
 
-    obj_ptr = M_DrawObjectGT4(obj_ptr + 1, *obj_ptr);
-    obj_ptr = M_DrawObjectGT3(obj_ptr + 1, *obj_ptr);
-    obj_ptr = M_DrawRoomSprites(obj_ptr + 1, *obj_ptr);
+    M_DrawTexturedFace4s(mesh->face4s, mesh->num_face4s);
+    M_DrawTexturedFace3s(mesh->face3s, mesh->num_face3s);
+    M_DrawRoomSprites(mesh);
 }
 
 void Output_DrawShadow(

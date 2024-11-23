@@ -62,7 +62,7 @@ void Output_SetSkyboxEnabled(bool enabled);
 bool Output_IsSkyboxEnabled(void);
 void Output_DrawSkybox(const int16_t *obj_ptr);
 
-void Output_DrawRoom(const int16_t *obj_ptr);
+void Output_DrawRoom(const ROOM_MESH *mesh);
 void Output_DrawShadow(int16_t size, const BOUNDS_16 *bounds, const ITEM *item);
 void Output_DrawLightningSegment(
     int32_t x1, int32_t y1, int32_t z1, int32_t x2, int32_t y2, int32_t z2,

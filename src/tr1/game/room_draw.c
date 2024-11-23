@@ -283,7 +283,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     g_PhdTop = r->bound_top;
     g_PhdBottom = r->bound_bottom;
 
-    Output_DrawRoom(r->data);
+    Output_DrawRoom(&r->mesh);
 
     for (int i = r->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
         ITEM *item = &g_Items[i];

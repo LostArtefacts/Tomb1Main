@@ -224,14 +224,14 @@ static void M_LoadRooms(VFILE *file)
 
         // Static mesh infos
         r->num_static_meshes = VFile_ReadS16(file);
-        if (!r->num_static_meshes) {
+        if (r->num_static_meshes == 0) {
             r->static_meshes = NULL;
         } else {
             r->static_meshes = GameBuf_Alloc(
                 sizeof(STATIC_MESH) * r->num_static_meshes,
                 GBUF_ROOM_STATIC_MESHES);
             for (int32_t j = 0; j < r->num_static_meshes; j++) {
-                STATIC_MESH *mesh = &r->static_meshes[j];
+                STATIC_MESH *const mesh = &r->static_meshes[j];
                 mesh->pos.x = VFile_ReadS32(file);
                 mesh->pos.y = VFile_ReadS32(file);
                 mesh->pos.z = VFile_ReadS32(file);
@@ -981,17 +981,15 @@ static void M_MarkWaterEdgeVertices(void)
     }
 
     BENCHMARK *const benchmark = Benchmark_Start();
-    for (int32_t i = 0; i < g_RoomCount; i++) {
-        const ROOM *const room = &g_RoomInfo[i];
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+        const ROOM *const room = Room_Get(i);
         const int32_t y_test =
             (room->flags & RF_UNDERWATER) ? room->max_ceiling : room->min_floor;
-        int16_t *data = room->data;
-        const int16_t num_vertices = *data++;
-        for (int32_t j = 0; j < num_vertices; j++) {
-            if (data[1] == y_test) {
-                data[3] |= NO_VERT_MOVE;
+        for (int32_t j = 0; j < room->mesh.num_vertices; j++) {
+            ROOM_VERTEX *const vertex = &room->mesh.vertices[j];
+            if (vertex->pos.y == y_test) {
+                vertex->flags |= NO_VERT_MOVE;
             }
-            data += 4;
         }
     }
 
@@ -1024,8 +1022,9 @@ static size_t M_CalculateMaxVertices(void)
             MAX(max_vertices, *(g_Meshes[static_info->mesh_num] + 5));
     }
 
-    for (int32_t i = 0; i < g_RoomCount; i++) {
-        max_vertices = MAX(max_vertices, *g_RoomInfo[i].data);
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+        const ROOM *const room = Room_Get(i);
+        max_vertices = MAX(max_vertices, room->mesh.num_vertices);
     }
 
     Benchmark_End(benchmark, NULL);
