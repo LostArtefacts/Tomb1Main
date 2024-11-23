@@ -6,9 +6,9 @@
 
 #include <assert.h>
 
+#if TR_VERSION == 1
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
 {
-#if TR_VERSION == 1
     ROOM *const room = Room_Get(room_num);
     const INJECTION_MESH_META inj_data = Inject_GetRoomMeshMeta(room_num);
 
@@ -76,5 +76,5 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
     const size_t total_read =
         (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
     assert(total_read == mesh_length);
-#endif
 }
+#endif
