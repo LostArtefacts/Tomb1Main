@@ -111,8 +111,9 @@ typedef struct __PACKING {
 typedef struct __PACKING {
 #if TR_VERSION == 1
     ROOM_MESH mesh;
+#elif TR_VERSION == 2
+    int16_t *data;
 #endif
-    int16_t *data; // TODO: add elif TR2 once TR1 parsing fully implemented
     PORTALS *portals;
     SECTOR *sectors;
     LIGHT *lights;

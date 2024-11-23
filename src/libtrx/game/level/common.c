@@ -8,19 +8,12 @@
 
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
 {
+#if TR_VERSION == 1
     ROOM *const room = Room_Get(room_num);
     const INJECTION_MESH_META inj_data = Inject_GetRoomMeshMeta(room_num);
 
     const uint32_t mesh_length = VFile_ReadU32(file);
     size_t start_pos = VFile_GetPos(file);
-
-    {
-        // Temporarily retain raw data until parsing/output refactor complete.
-        room->data =
-            GameBuf_Alloc(sizeof(int16_t) * mesh_length, GBUF_ROOM_MESH);
-        VFile_Read(file, room->data, sizeof(int16_t) * mesh_length);
-        VFile_SetPos(file, start_pos);
-    }
 
     {
         room->mesh.num_vertices = VFile_ReadS16(file);
@@ -83,4 +76,5 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
     const size_t total_read =
         (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
     assert(total_read == mesh_length);
+#endif
 }
