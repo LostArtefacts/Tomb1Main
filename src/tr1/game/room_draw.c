@@ -292,8 +292,8 @@ void Room_DrawSingleRoom(int16_t room_num)
         }
     }
 
-    for (int i = 0; i < r->num_meshes; i++) {
-        MESH *mesh = &r->meshes[i];
+    for (int i = 0; i < r->num_static_meshes; i++) {
+        STATIC_MESH *mesh = &r->static_meshes[i];
         if (g_StaticObjects[mesh->static_num].flags & 2) {
             Matrix_Push();
             Matrix_TranslateAbs(mesh->pos.x, mesh->pos.y, mesh->pos.z);

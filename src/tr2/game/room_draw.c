@@ -398,8 +398,8 @@ void __cdecl Room_DrawSingleRoomObjects(const int16_t room_num)
     g_PhdWinRight = r->bound_right;
     g_PhdWinBottom = r->bound_bottom;
 
-    for (int32_t i = 0; i < r->num_meshes; i++) {
-        const MESH *const mesh = &r->meshes[i];
+    for (int32_t i = 0; i < r->num_static_meshes; i++) {
+        const STATIC_MESH *const mesh = &r->static_meshes[i];
         const STATIC_INFO *const static_obj =
             &g_StaticObjects[mesh->static_num];
         if (static_obj->flags & 2) {

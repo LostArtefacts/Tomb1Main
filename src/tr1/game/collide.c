@@ -343,10 +343,10 @@ bool Collide_CollideStaticObjects(
     for (int i = 0; i < g_RoomsToDrawCount; i++) {
         int16_t room_num = g_RoomsToDraw[i];
         ROOM *r = &g_RoomInfo[room_num];
-        MESH *mesh = r->meshes;
 
-        for (int j = 0; j < r->num_meshes; j++, mesh++) {
-            STATIC_INFO *sinfo = &g_StaticObjects[mesh->static_num];
+        for (int j = 0; j < r->num_static_meshes; j++) {
+            const STATIC_MESH *const mesh = &r->static_meshes[j];
+            const STATIC_INFO *const sinfo = &g_StaticObjects[mesh->static_num];
             if (sinfo->flags & 1) {
                 continue;
             }

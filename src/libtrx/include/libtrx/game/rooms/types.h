@@ -82,14 +82,14 @@ typedef struct __PACKING {
     int16_t shade_2;
 #endif
     int16_t static_num;
-} MESH;
+} STATIC_MESH;
 
 typedef struct __PACKING {
     int16_t *data;
     PORTALS *portals;
     SECTOR *sectors;
     LIGHT *lights;
-    MESH *meshes;
+    STATIC_MESH *static_meshes;
     XYZ_32 pos;
     int32_t min_floor;
     int32_t max_ceiling;
@@ -105,7 +105,7 @@ typedef struct __PACKING {
     int16_t light_mode;
 #endif
     int16_t num_lights;
-    int16_t num_meshes;
+    int16_t num_static_meshes;
     int16_t bound_left;
     int16_t bound_right;
     int16_t bound_top;

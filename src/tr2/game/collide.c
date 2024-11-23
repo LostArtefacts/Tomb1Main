@@ -305,8 +305,8 @@ int32_t __cdecl Collide_CollideStaticObjects(
     for (int32_t i = 0; i < g_DrawRoomsCount; i++) {
         const ROOM *const room = &g_Rooms[g_DrawRoomsArray[i]];
 
-        for (int32_t j = 0; j < room->num_meshes; j++) {
-            const MESH *const mesh = &room->meshes[j];
+        for (int32_t j = 0; j < room->num_static_meshes; j++) {
+            const STATIC_MESH *const mesh = &room->static_meshes[j];
             const STATIC_INFO *const sinfo = &g_StaticObjects[mesh->static_num];
 
             if (sinfo->flags & 1) {

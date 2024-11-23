@@ -226,14 +226,15 @@ static void M_LoadRooms(VFILE *file)
         }
 
         // Static mesh infos
-        r->num_meshes = VFile_ReadS16(file);
-        if (!r->num_meshes) {
-            r->meshes = NULL;
+        r->num_static_meshes = VFile_ReadS16(file);
+        if (!r->num_static_meshes) {
+            r->static_meshes = NULL;
         } else {
-            r->meshes = GameBuf_Alloc(
-                sizeof(MESH) * r->num_meshes, GBUF_ROOM_STATIC_MESHES);
-            for (int32_t j = 0; j < r->num_meshes; j++) {
-                MESH *mesh = &r->meshes[j];
+            r->static_meshes = GameBuf_Alloc(
+                sizeof(STATIC_MESH) * r->num_static_meshes,
+                GBUF_ROOM_STATIC_MESHES);
+            for (int32_t j = 0; j < r->num_static_meshes; j++) {
+                STATIC_MESH *mesh = &r->static_meshes[j];
                 mesh->pos.x = VFile_ReadS32(file);
                 mesh->pos.y = VFile_ReadS32(file);
                 mesh->pos.z = VFile_ReadS32(file);
