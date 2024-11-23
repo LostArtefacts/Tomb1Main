@@ -27,6 +27,7 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
@@ -160,11 +161,7 @@ static void M_LoadRooms(VFILE *file)
         r->max_ceiling = VFile_ReadS32(file);
 
         // Room mesh
-        const uint32_t num_meshes = VFile_ReadS32(file);
-        const uint32_t inj_mesh_size = Inject_GetExtraRoomMeshSize(i);
-        r->data = GameBuf_Alloc(
-            sizeof(uint16_t) * (num_meshes + inj_mesh_size), GBUF_ROOM_MESH);
-        VFile_Read(file, r->data, sizeof(uint16_t) * num_meshes);
+        Level_ReadRoomMesh(i, file);
 
         // Doors
         const uint16_t num_doors = VFile_ReadS16(file);
