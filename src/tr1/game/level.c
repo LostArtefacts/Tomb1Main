@@ -44,8 +44,7 @@ static void M_LoadFromFile(
     const char *filename, int32_t level_num, bool is_demo);
 static void M_LoadTexturePages(VFILE *file);
 static void M_LoadRooms(VFILE *file);
-static void M_LoadMeshBase(VFILE *file);
-static void M_LoadMeshes(VFILE *file);
+static void M_LoadObjectMeshes(VFILE *file);
 static void M_LoadAnims(VFILE *file);
 static void M_LoadAnimChanges(VFILE *file);
 static void M_LoadAnimRanges(VFILE *file);
@@ -93,8 +92,7 @@ static void M_LoadFromFile(
     LOG_INFO("file level num: %d", file_level_num);
 
     M_LoadRooms(file);
-    M_LoadMeshBase(file);
-    M_LoadMeshes(file);
+    M_LoadObjectMeshes(file);
     M_LoadAnims(file);
     M_LoadAnimChanges(file);
     M_LoadAnimRanges(file);
@@ -263,23 +261,19 @@ static void M_LoadRooms(VFILE *file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadMeshBase(VFILE *const file)
+static void M_LoadObjectMeshes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.mesh_count = VFile_ReadS32(file);
-    LOG_INFO("%d meshes", m_LevelInfo.mesh_count);
+    LOG_INFO("%d object mesh data", m_LevelInfo.mesh_count);
     g_MeshBase = GameBuf_Alloc(
         sizeof(int16_t)
             * (m_LevelInfo.mesh_count + m_InjectionInfo->mesh_count),
         GBUF_MESHES);
     VFile_Read(file, g_MeshBase, sizeof(int16_t) * m_LevelInfo.mesh_count);
-    Benchmark_End(benchmark, NULL);
-}
 
-static void M_LoadMeshes(VFILE *const file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.mesh_ptr_count = VFile_ReadS32(file);
+    LOG_INFO("%d object mesh indices", m_LevelInfo.mesh_ptr_count);
     int32_t *mesh_indices = GameBuf_Alloc(
         sizeof(int32_t) * m_LevelInfo.mesh_ptr_count, GBUF_MESH_POINTERS);
     VFile_Read(
