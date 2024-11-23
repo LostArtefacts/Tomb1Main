@@ -2,12 +2,7 @@
 
 #include "global/types.h"
 
-#include <stdint.h>
-
-typedef struct {
-    int16_t room_index;
-    uint32_t extra_size;
-} INJECTION_ROOM_MESH;
+#include <libtrx/game/inject.h>
 
 typedef struct {
     int32_t texture_page_count;
@@ -43,4 +38,3 @@ void Inject_Init(
     int injection_count, char *filenames[], INJECTION_INFO *aggregate);
 void Inject_AllInjections(LEVEL_INFO *level_info);
 void Inject_Cleanup(void);
-uint32_t Inject_GetExtraRoomMeshSize(int32_t room_index);
