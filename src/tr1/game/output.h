@@ -5,16 +5,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// TODO: remove these macros
-#define IS_REFLECTION_ENABLED(target) ((uint16_t)(target) & 0x8000)
-#define DISABLE_REFLECTION_BIT(target) ((uint16_t)(target) & ~0x8000)
-#define TOGGLE_REFLECTION_ENABLED(target, enabled)                             \
-    if (enabled) {                                                             \
-        target |= 0x8000;                                                      \
-    } else {                                                                   \
-        target &= ~0x8000;                                                     \
-    }
-
 bool Output_Init(void);
 void Output_Shutdown(void);
 void Output_ReserveVertexBuffer(size_t size);
@@ -54,9 +44,6 @@ void Output_ClearDepthBuffer(void);
 void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);
 void Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
-
-void Output_DrawPolygons(const int16_t *obj_ptr, int clip);
-void Output_DrawPolygons_I(const int16_t *obj_ptr, int32_t clip);
 
 void Output_DrawObjectMesh(const OBJECT_MESH *mesh, int32_t clip);
 void Output_DrawObjectMesh_I(const OBJECT_MESH *mesh, int32_t clip);
