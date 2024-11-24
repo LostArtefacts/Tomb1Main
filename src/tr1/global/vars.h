@@ -49,8 +49,6 @@ extern int32_t g_OverlayFlag;
 extern int32_t g_HeightType;
 
 extern ROOM *g_RoomInfo;
-extern int16_t *g_MeshBase;
-extern int16_t **g_Meshes;
 extern OBJECT g_Objects[O_NUMBER_OF];
 extern STATIC_INFO g_StaticObjects[STATIC_NUMBER_OF];
 extern RGBA_8888 *g_TexturePagePtrs[MAX_TEXTPAGES];

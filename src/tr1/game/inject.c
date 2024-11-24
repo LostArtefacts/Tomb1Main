@@ -495,25 +495,20 @@ static void M_MeshData(const INJECTION *injection, LEVEL_INFO *const level_info)
 
     const int32_t mesh_base = level_info->mesh_count;
     const size_t data_start_pos = VFile_GetPos(fp);
-    // TODO: skip, handled in Level_ReadObjectMeshes
-    VFile_Read(
-        fp, g_MeshBase + mesh_base, sizeof(int16_t) * inj_info->mesh_count);
+    VFile_Skip(fp, inj_info->mesh_count * sizeof(int16_t));
     level_info->mesh_count += inj_info->mesh_count;
 
-    // TODO: Use Memory_Alloc and free
-    int32_t *mesh_indices = GameBuf_Alloc(
-        sizeof(int32_t) * inj_info->mesh_ptr_count, GBUF_MESH_POINTERS);
-    VFile_Read(fp, mesh_indices, sizeof(int32_t) * inj_info->mesh_ptr_count);
-
-    for (int32_t i = 0; i < inj_info->mesh_ptr_count; i++) {
-        g_Meshes[level_info->mesh_ptr_count + i] =
-            &g_MeshBase[mesh_base + mesh_indices[i] / 2];
-    }
+    const int32_t alloc_size = inj_info->mesh_ptr_count * sizeof(int32_t);
+    int32_t *mesh_indices = Memory_Alloc(alloc_size);
+    VFile_Read(fp, mesh_indices, alloc_size);
 
     const size_t end_pos = VFile_GetPos(fp);
     VFile_SetPos(fp, data_start_pos);
+
     Level_ReadObjectMeshes(inj_info->mesh_ptr_count, mesh_indices, fp);
+
     VFile_SetPos(fp, end_pos);
+    Memory_FreePointer(&mesh_indices);
 
     Benchmark_End(benchmark, NULL);
 }
