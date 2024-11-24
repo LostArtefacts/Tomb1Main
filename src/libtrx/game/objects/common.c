@@ -2,10 +2,8 @@
 
 #include "game/gamebuf.h"
 
-#if TR_VERSION == 1
 static OBJECT_MESH **m_MeshPointers = NULL;
 static int32_t m_MeshCount = 0;
-#endif
 
 bool Object_IsObjectType(
     GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr)
@@ -46,7 +44,6 @@ GAME_OBJECT_ID Object_GetCognateInverse(
     return NO_OBJECT;
 }
 
-#if TR_VERSION == 1
 void Object_InitialiseMeshes(const int32_t mesh_count)
 {
     m_MeshPointers =
@@ -99,4 +96,3 @@ void Object_SwapMesh(
         m_MeshPointers[obj2->mesh_idx + mesh_num];
     m_MeshPointers[obj2->mesh_idx + mesh_num] = temp;
 }
-#endif

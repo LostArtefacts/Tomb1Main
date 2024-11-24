@@ -4,14 +4,6 @@
 
 #include <stdint.h>
 
-#if TR_VERSION == 1
-typedef struct __PACKING {
-    struct __PACKING {
-        XYZ_16 min;
-        XYZ_16 max;
-    } shift, rot;
-} OBJECT_BOUNDS;
-
 typedef struct __PACKING {
     void *priv;
     XYZ_16 center;
@@ -33,6 +25,14 @@ typedef struct __PACKING {
     FACE3 *flat_face3s;
     bool enable_reflections;
 } OBJECT_MESH;
+
+#if TR_VERSION == 1
+typedef struct __PACKING {
+    struct __PACKING {
+        XYZ_16 min;
+        XYZ_16 max;
+    } shift, rot;
+} OBJECT_BOUNDS;
 
 typedef struct __PACKING {
     int16_t nmeshes;

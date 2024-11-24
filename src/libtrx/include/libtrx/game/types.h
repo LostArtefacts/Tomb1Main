@@ -9,7 +9,6 @@
     #define __PACKING __attribute__((packed))
 #endif
 
-#if TR_VERSION == 1
 typedef struct __PACKING {
     uint16_t texture;
     uint16_t vertices[4];
@@ -21,4 +20,3 @@ typedef struct __PACKING {
     uint16_t vertices[3];
     bool enable_reflections;
 } FACE3;
-#endif
