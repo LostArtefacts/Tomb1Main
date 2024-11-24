@@ -1,10 +1,17 @@
 #include "game/text.h"
 
+#include "log.h"
 #include "memory.h"
 #include "utils.h"
 
 #include <assert.h>
 #include <string.h>
+#include <uthash.h>
+
+typedef struct {
+    GLYPH_INFO *glyph;
+    UT_hash_handle hh;
+} M_HASH_ENTRY;
 
 static TEXTSTRING m_TextStrings[TEXT_MAX_STRINGS] = { 0 };
 
@@ -23,21 +30,33 @@ static GLYPH_INFO m_Glyphs[] = {
     { .text = NULL }, // guard
 };
 
-static const GLYPH_INFO *M_GetGlyph(const char *ptr);
+static size_t m_GlyphLookupKeyCap = 0;
+static char *m_GlyphLookupKey = NULL;
+static M_HASH_ENTRY *m_GlyphMap = NULL;
 
-static const GLYPH_INFO *M_GetGlyph(const char *const ptr)
+static size_t M_GetGlyphSize(const char *ptr);
+
+static size_t M_GetGlyphSize(const char *const ptr)
 {
-    const GLYPH_INFO *best_match = NULL;
-    int32_t best_match_size = 0;
-    for (int32_t i = 0; m_Glyphs[i].text != NULL; i++) {
-        const int32_t match_size = strlen(m_Glyphs[i].text);
-        if (strncmp(ptr, m_Glyphs[i].text, match_size) == 0
-            && match_size >= best_match_size) {
-            best_match_size = match_size;
-            best_match = &m_Glyphs[i];
+    // Check for named escape sequence.
+    if (*ptr == '\\' && *(ptr + 1) == '{') {
+        const char *end = strchr(ptr + 2, '}');
+        if (end != NULL) {
+            return end + 1 - ptr;
         }
+        return 1;
     }
-    return best_match;
+
+    // clang-format off
+    // UTF-8 sequence lengths
+    if ((*ptr & 0x80) == 0x00) { return 1; } // 1-byte sequence
+    if ((*ptr & 0xE0) == 0xC0) { return 2; } // 2-byte sequence
+    if ((*ptr & 0xF0) == 0xE0) { return 3; } // 3-byte sequence
+    if ((*ptr & 0xF8) == 0xF0) { return 4; } // 4-byte sequence
+    // clang-format on
+
+    // Fallback to 1
+    return 1;
 }
 
 void Text_Init(void)
@@ -46,6 +65,20 @@ void Text_Init(void)
         TEXTSTRING *const text = &m_TextStrings[i];
         text->flags.all = 0;
     }
+
+    // Convert the linear array coming from the .def macros to a hash lookup
+    // table for faster text-to-glyph resolution.
+    for (GLYPH_INFO *glyph_ptr = m_Glyphs; glyph_ptr->text != NULL;
+         glyph_ptr++) {
+        M_HASH_ENTRY *const hash_entry = Memory_Alloc(sizeof(M_HASH_ENTRY));
+        hash_entry->glyph = glyph_ptr;
+        HASH_ADD_KEYPTR(
+            hh, m_GlyphMap, glyph_ptr->text, strlen(glyph_ptr->text),
+            hash_entry);
+    }
+
+    m_GlyphLookupKeyCap = 10;
+    m_GlyphLookupKey = Memory_Alloc(m_GlyphLookupKeyCap);
 }
 
 void Text_Shutdown(void)
@@ -55,6 +88,16 @@ void Text_Shutdown(void)
         Memory_FreePointer(&text->content);
         Memory_FreePointer(&text->glyphs);
     }
+
+    M_HASH_ENTRY *current, *tmp;
+    HASH_ITER(hh, m_GlyphMap, current, tmp)
+    {
+        HASH_DEL(m_GlyphMap, current);
+        Memory_Free(current);
+    }
+
+    Memory_FreePointer(&m_GlyphLookupKey);
+    m_GlyphLookupKeyCap = 0;
 }
 
 void Text_Draw(void)
@@ -135,21 +178,44 @@ void Text_ChangeText(TEXTSTRING *const text, const char *const content)
         return;
     }
 
-    text->content = Memory_DupStr(content);
-    text->glyphs = Memory_Alloc((strlen(content) + 1) * sizeof(GLYPH_INFO *));
-
+    // Count number of characters
+    size_t glyph_count = 0;
     const char *content_ptr = content;
+    while (*content_ptr != '\0') {
+        const size_t glyph_size = M_GetGlyphSize(content_ptr);
+        content_ptr += glyph_size;
+        glyph_count++;
+    }
+
+    text->content = Memory_DupStr(content);
+    text->glyphs = Memory_Alloc((glyph_count + 1) * sizeof(GLYPH_INFO *));
+
+    // Assign glyphs using hash table
+    content_ptr = content;
     const GLYPH_INFO **glyph_ptr = text->glyphs;
     while (*content_ptr != '\0') {
-        const GLYPH_INFO *const glyph = M_GetGlyph(content_ptr);
-        if (glyph == NULL) {
-            content_ptr++;
-            continue;
+        const size_t glyph_size = M_GetGlyphSize(content_ptr);
+        if (m_GlyphLookupKeyCap <= glyph_size) {
+            m_GlyphLookupKeyCap = glyph_size + 10;
+            m_GlyphLookupKey =
+                Memory_Realloc(m_GlyphLookupKey, m_GlyphLookupKeyCap);
+        }
+        strncpy(m_GlyphLookupKey, content_ptr, glyph_size);
+        m_GlyphLookupKey[glyph_size] = '\0';
+
+        M_HASH_ENTRY *entry;
+        HASH_FIND_STR(m_GlyphMap, m_GlyphLookupKey, entry);
+
+        if (entry != NULL) {
+            *glyph_ptr++ = entry->glyph;
+        } else {
+            LOG_WARNING("Unknown glyph: %s", m_GlyphLookupKey);
         }
 
-        *glyph_ptr++ = glyph;
-        content_ptr += strlen(glyph->text);
+        content_ptr += glyph_size;
     }
+
+    // guard
     *glyph_ptr++ = NULL;
 }
 

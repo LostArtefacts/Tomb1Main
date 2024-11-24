@@ -12,9 +12,6 @@
 # Important notes:
 # - Some sprite indices are fixed. This is for compatibility with the original
 #   game to retains original text format even if font.bin goes missing.
-# - Glyphs are ordered for efficient lookup by the naive strcmp()-based
-#   implementation we have now. Thus the most used glyphs (ASCII and icons)
-#   should retain their early position in the file.
 
 include "mapping_basic_latin.txt"
 include "mapping_icons.txt"
