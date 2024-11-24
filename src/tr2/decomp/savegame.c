@@ -222,8 +222,10 @@ static void M_ReadItems(void)
 
         if (item->object_id == O_SKIDOO_DRIVER
             && item->status == IS_DEACTIVATED) {
-            item->object_id = O_SKIDOO_ARMED;
-            Skidoo_Initialise((intptr_t)item->data);
+            const int16_t skidoo_num = (int16_t)(intptr_t)item->data;
+            ITEM *const skidoo = Item_Get(skidoo_num);
+            skidoo->object_id = O_SKIDOO_FAST;
+            Skidoo_Initialise(skidoo_num);
         }
 
         if (item->object_id == O_DRAGON_FRONT
