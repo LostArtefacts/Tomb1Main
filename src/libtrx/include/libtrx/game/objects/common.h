@@ -34,4 +34,6 @@ void Object_SetMeshOffset(OBJECT_MESH *mesh, int32_t data_offset);
 OBJECT_MESH *Object_GetMesh(int32_t index);
 void Object_SwapMesh(
     GAME_OBJECT_ID object1_id, GAME_OBJECT_ID object2_id, int32_t mesh_num);
+
+extern void Object_DrawMesh(int32_t mesh_idx, int32_t clip, bool interpolated);
 #endif

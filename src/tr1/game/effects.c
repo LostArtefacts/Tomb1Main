@@ -143,12 +143,12 @@ void Effect_Draw(const int16_t fxnum)
                 fx->interp.result.rot.z);
             if (object->nmeshes) {
                 Output_CalculateStaticLight(fx->shade);
-                Output_DrawPolygons(g_Meshes[object->mesh_idx], -1);
+                Object_DrawMesh(object->mesh_idx, -1, false);
             } else {
                 Output_CalculateLight(
                     fx->interp.result.pos.x, fx->interp.result.pos.y,
                     fx->interp.result.pos.z, fx->room_num);
-                Output_DrawPolygons(g_Meshes[fx->frame_num], -1);
+                Object_DrawMesh(fx->frame_num, -1, false);
             }
         }
         Matrix_Pop();

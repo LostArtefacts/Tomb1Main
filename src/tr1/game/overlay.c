@@ -404,12 +404,11 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         -(frame->bounds.min.x + frame->bounds.max.x) / 2,
         -(frame->bounds.min.y + frame->bounds.max.y) / 2,
         -(frame->bounds.min.z + frame->bounds.max.z) / 2);
-    int16_t **meshpp = &g_Meshes[obj->mesh_idx];
     int32_t *bone = &g_AnimBones[obj->bone_idx];
     int32_t *packed_rotation = frame->mesh_rots;
     Matrix_RotYXZpack(*packed_rotation++);
 
-    Output_DrawPolygons(*meshpp++, 0);
+    Object_DrawMesh(obj->mesh_idx, 0, false);
 
     for (int i = 1; i < obj->nmeshes; i++) {
         int32_t bone_extra_flags = *bone;
@@ -424,10 +423,9 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         Matrix_TranslateRel(bone[1], bone[2], bone[3]);
         Matrix_RotYXZpack(*packed_rotation++);
 
-        Output_DrawPolygons(*meshpp, 0);
+        Object_DrawMesh(obj->mesh_idx + i, 0, false);
 
         bone += 4;
-        meshpp++;
     }
     Matrix_Pop();
 

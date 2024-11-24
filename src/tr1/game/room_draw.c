@@ -305,7 +305,7 @@ void Room_DrawSingleRoom(int16_t room_num)
         int clip = Output_GetObjectBounds(&info->p);
         if (clip) {
             Output_CalculateStaticLight(mesh->shade);
-            Output_DrawPolygons(g_Meshes[info->mesh_num], clip);
+            Object_DrawMesh(info->mesh_num, clip, false);
         }
         Matrix_Pop();
     }

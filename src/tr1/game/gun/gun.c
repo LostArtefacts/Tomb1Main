@@ -293,8 +293,9 @@ void Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip)
     Matrix_TranslateRel(0, len, off);
     Matrix_RotYXZ(0, -90 * PHD_DEGREE, (PHD_ANGLE)(Random_GetDraw() * 2));
     Output_CalculateStaticLight(light);
-    if (g_Objects[O_GUN_FLASH].loaded) {
-        Output_DrawPolygons(g_Meshes[g_Objects[O_GUN_FLASH].mesh_idx], clip);
+    const OBJECT *const object = Object_GetObject(O_GUN_FLASH);
+    if (object->loaded) {
+        Object_DrawMesh(object->mesh_idx, clip, false);
     }
 }
 
