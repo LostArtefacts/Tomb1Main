@@ -532,10 +532,14 @@ void S_Output_DrawSprite(
         vshade = 255.0f;
     }
 
-    t1 = ((int)sprite->offset & 0xFF) + 0.5f;
-    t2 = ((int)sprite->offset >> 8) + 0.5f;
-    t3 = ((int)sprite->width >> 8) + t1;
-    t4 = ((int)sprite->height >> 8) + t2;
+    t1 = ((int)sprite->offset & 0xFF)
+        + (g_Config.rendering.texture_filter == GFX_TF_NN ? 0.0f : 0.5f);
+    t2 = ((int)sprite->offset >> 8)
+        + (g_Config.rendering.texture_filter == GFX_TF_NN ? 0.0f : 0.5f);
+    t3 = ((int)sprite->width >> 8) + t1
+        + (g_Config.rendering.texture_filter == GFX_TF_NN ? 1.0f : 0.0f);
+    t4 = ((int)sprite->height >> 8) + t2
+        + (g_Config.rendering.texture_filter == GFX_TF_NN ? 1.0f : 0.0f);
     vz = z * 0.0001f;
     t5 = 65536.0f / z;
 
