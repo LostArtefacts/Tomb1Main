@@ -925,7 +925,7 @@ static void M_CompleteSetup(int32_t level_num)
     // Must be called post-injection to allow for floor data changes.
     Stats_ObserveRoomsLoad();
 
-    // Must be called after all g_Anims, g_Meshes etc initialised.
+    // Must be called after all animations, meshes etc are initialised.
     Object_SetupAllObjects();
 
     // Must be called after Setup_AllObjects using the cached item
@@ -1008,14 +1008,15 @@ static size_t M_CalculateMaxVertices(void)
     BENCHMARK *const benchmark = Benchmark_Start();
     size_t max_vertices = 0;
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        const OBJECT *object_info = &g_Objects[i];
-        if (!object_info->loaded) {
+        const OBJECT *const object = Object_GetObject(i);
+        if (!object->loaded) {
             continue;
         }
 
-        for (int32_t j = 0; j < object_info->nmeshes; j++) {
-            max_vertices =
-                MAX(max_vertices, *(g_Meshes[object_info->mesh_idx + j] + 5));
+        for (int32_t j = 0; j < object->nmeshes; j++) {
+            const OBJECT_MESH *const mesh =
+                Object_GetMesh(object->mesh_idx + j);
+            max_vertices = MAX(max_vertices, mesh->num_vertices);
         }
     }
 
@@ -1025,8 +1026,8 @@ static size_t M_CalculateMaxVertices(void)
             continue;
         }
 
-        max_vertices =
-            MAX(max_vertices, *(g_Meshes[static_info->mesh_num] + 5));
+        const OBJECT_MESH *const mesh = Object_GetMesh(static_info->mesh_num);
+        max_vertices = MAX(max_vertices, mesh->num_vertices);
     }
 
     for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
