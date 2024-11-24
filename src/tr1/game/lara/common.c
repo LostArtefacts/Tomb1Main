@@ -329,7 +329,18 @@ void Lara_SwapMeshExtra(void)
 
 void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID object_id)
 {
-    g_Lara.mesh_ptrs[mesh] = g_Meshes[g_Objects[object_id].mesh_idx + mesh];
+    const OBJECT *const object = Object_GetObject(object_id);
+    g_Lara.mesh_ptrs[mesh] = Object_GetMesh(object->mesh_idx + mesh);
+}
+
+OBJECT_MESH *Lara_GetMesh(const LARA_MESH mesh)
+{
+    return g_Lara.mesh_ptrs[mesh];
+}
+
+void Lara_SetMesh(const LARA_MESH mesh, OBJECT_MESH *const mesh_ptr)
+{
+    g_Lara.mesh_ptrs[mesh] = mesh_ptr;
 }
 
 void Lara_Animate(ITEM *item)

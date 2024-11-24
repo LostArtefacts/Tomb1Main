@@ -134,16 +134,16 @@ void BaconLara_Draw(ITEM *item)
         return;
     }
 
-    int16_t *old_mesh_ptrs[LM_NUMBER_OF];
+    OBJECT_MESH *old_mesh_ptrs[LM_NUMBER_OF];
 
     for (LARA_MESH mesh = LM_FIRST; mesh < LM_NUMBER_OF; mesh++) {
-        old_mesh_ptrs[mesh] = g_Lara.mesh_ptrs[mesh];
+        old_mesh_ptrs[mesh] = Lara_GetMesh(mesh);
         Lara_SwapSingleMesh(mesh, O_BACON_LARA);
     }
 
     Lara_Draw(item);
 
     for (LARA_MESH mesh = LM_FIRST; mesh < LM_NUMBER_OF; mesh++) {
-        g_Lara.mesh_ptrs[mesh] = old_mesh_ptrs[mesh];
+        Lara_SetMesh(mesh, old_mesh_ptrs[mesh]);
     }
 }

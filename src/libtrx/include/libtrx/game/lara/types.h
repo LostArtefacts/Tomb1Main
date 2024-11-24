@@ -4,6 +4,7 @@
 #include "../creature.h"
 #include "../effects/types.h"
 #include "../items/types.h"
+#include "../objects/common.h"
 #include "../types.h"
 #include "enum.h"
 
@@ -48,7 +49,7 @@ typedef struct __PACKING {
     int16_t spaz_effect_count;
     FX *spaz_effect;
     int32_t mesh_effects;
-    int16_t *mesh_ptrs[LM_NUMBER_OF];
+    OBJECT_MESH *mesh_ptrs[LM_NUMBER_OF];
     ITEM *target;
     int16_t target_angles[2];
     int16_t turn_rate;

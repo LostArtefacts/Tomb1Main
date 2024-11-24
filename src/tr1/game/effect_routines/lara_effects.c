@@ -24,15 +24,6 @@ void FX_LaraHandsFree(ITEM *item)
 
 void FX_LaraDrawRightGun(ITEM *item)
 {
-    int16_t *tmp_mesh;
-    OBJECT *obj = &g_Objects[item->object_id];
-    OBJECT *obj2 = &g_Objects[O_PISTOL_ANIM];
-
-    SWAP(
-        g_Meshes[obj->mesh_idx + LM_THIGH_R],
-        g_Meshes[obj2->mesh_idx + LM_THIGH_R], tmp_mesh);
-
-    SWAP(
-        g_Meshes[obj->mesh_idx + LM_HAND_R],
-        g_Meshes[obj2->mesh_idx + LM_HAND_R], tmp_mesh);
+    Object_SwapMesh(item->object_id, O_PISTOL_ANIM, LM_THIGH_R);
+    Object_SwapMesh(item->object_id, O_PISTOL_ANIM, LM_HAND_R);
 }

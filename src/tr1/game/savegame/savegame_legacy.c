@@ -244,7 +244,7 @@ static void M_WriteLara(LARA_INFO *lara)
     M_Write(&lara->mesh_effects, sizeof(int32_t));
 
     for (int i = 0; i < LM_NUMBER_OF; i++) {
-        tmp32 = ((intptr_t)lara->mesh_ptrs[i] - (intptr_t)g_MeshBase);
+        tmp32 = Object_GetMeshOffset(lara->mesh_ptrs[i]) * 2;
         M_Write(&tmp32, sizeof(int32_t));
     }
 
@@ -348,8 +348,10 @@ static void M_ReadLara(LARA_INFO *lara)
     M_Read(&lara->mesh_effects, sizeof(int32_t));
     for (int i = 0; i < LM_NUMBER_OF; i++) {
         M_Read(&tmp32, sizeof(int32_t));
-        lara->mesh_ptrs[i] =
-            (int16_t *)((intptr_t)g_MeshBase + (intptr_t)tmp32);
+        OBJECT_MESH *const mesh = Object_FindMesh(tmp32 / 2);
+        if (mesh != NULL) {
+            lara->mesh_ptrs[i] = mesh;
+        }
     }
 
     lara->target = NULL;

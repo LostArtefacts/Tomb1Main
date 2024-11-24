@@ -19,7 +19,9 @@ void Lara_InitialiseInventory(int32_t level_num);
 void Lara_InitialiseMeshes(int32_t level_num);
 
 void Lara_SwapMeshExtra(void);
-void Lara_SwapSingleMesh(LARA_MESH mesh, GAME_OBJECT_ID);
+void Lara_SwapSingleMesh(LARA_MESH mesh, GAME_OBJECT_ID object_id);
+OBJECT_MESH *Lara_GetMesh(LARA_MESH mesh);
+void Lara_SetMesh(LARA_MESH mesh, OBJECT_MESH *mesh_ptr);
 bool Lara_IsNearItem(const XYZ_32 *pos, int32_t distance);
 void Lara_UseItem(GAME_OBJECT_ID object_id);
 int16_t Lara_GetNearestEnemy(void);
