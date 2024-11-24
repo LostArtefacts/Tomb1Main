@@ -38,6 +38,12 @@ typedef struct {
     } edges[2];
 } LIGHTNING;
 
+typedef struct {
+    int16_t poly_count;
+    int16_t vertex_count;
+    XYZ_16 vertices[32];
+} SHADOW_INFO;
+
 static bool m_IsSkyboxEnabled = false;
 static bool m_IsWibbleEffect = false;
 static bool m_IsWaterEffect = false;
@@ -89,7 +95,7 @@ static void M_DrawObjectFace3EnvMap(const FACE3 *faces, int32_t count);
 static void M_DrawObjectFace4EnvMap(const FACE4 *faces, int32_t count);
 static void M_DrawRoomSprites(const ROOM_MESH *mesh);
 static const int16_t *M_CalcObjectVertices_OLD(const int16_t *obj_ptr);
-static bool M_CalcObjectVertices(const OBJECT_MESH *mesh);
+static bool M_CalcObjectVertices(const XYZ_16 *vertices, int16_t count);
 static const int16_t *M_CalcVerticeLight_OLD(const int16_t *obj_ptr);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
 static const int16_t *M_CalcVerticeEnvMap_OLD(const int16_t *obj_ptr);
@@ -421,11 +427,12 @@ static const int16_t *M_CalcObjectVertices_OLD(const int16_t *obj_ptr)
     return total_clip == 0 ? obj_ptr : NULL;
 }
 
-static bool M_CalcObjectVertices(const OBJECT_MESH *const mesh)
+static bool M_CalcObjectVertices(
+    const XYZ_16 *const vertices, const int16_t count)
 {
     int16_t total_clip = -1;
-    for (int i = 0; i < mesh->num_vertices; i++) {
-        const XYZ_16 *const vertex = &mesh->vertices[i];
+    for (int i = 0; i < count; i++) {
+        const XYZ_16 *const vertex = &vertices[i];
         // clang-format off
         double xv =
             g_MatrixPtr->_00 * vertex->x +
@@ -1020,7 +1027,7 @@ void Output_DrawPolygons_I(const int16_t *obj_ptr, int32_t clip)
 
 void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
 {
-    if (!M_CalcObjectVertices(mesh)) {
+    if (!M_CalcObjectVertices(mesh->vertices, mesh->num_vertices)) {
         return;
     }
 
@@ -1067,7 +1074,7 @@ void Output_DrawSkybox(const OBJECT_MESH *const mesh)
     g_PhdRight = Viewport_GetMaxX();
     g_PhdBottom = Viewport_GetMaxY();
 
-    if (!M_CalcObjectVertices(mesh)) {
+    if (!M_CalcObjectVertices(mesh->vertices, mesh->num_vertices)) {
         return;
     }
 
@@ -1100,7 +1107,8 @@ void Output_DrawRoom(const ROOM_MESH *const mesh)
 void Output_DrawShadow(
     const int16_t size, const BOUNDS_16 *const bounds, const ITEM *const item)
 {
-    g_ShadowInfo.vertex_count = g_Config.enable_round_shadow ? 32 : 8;
+    SHADOW_INFO shadow = { 0 };
+    shadow.vertex_count = g_Config.enable_round_shadow ? 32 : 8;
 
     int32_t x0 = bounds->min.x;
     int32_t x1 = bounds->max.x;
@@ -1113,13 +1121,11 @@ void Output_DrawShadow(
     int32_t x_add = (x1 - x0) * size / 1024;
     int32_t z_add = (z1 - z0) * size / 1024;
 
-    for (int32_t i = 0; i < g_ShadowInfo.vertex_count; i++) {
-        int32_t angle = (PHD_180 + i * PHD_360) / g_ShadowInfo.vertex_count;
-        g_ShadowInfo.vertex[i].x =
-            x_mid + (x_add * 2) * Math_Sin(angle) / PHD_90;
-        g_ShadowInfo.vertex[i].z =
-            z_mid + (z_add * 2) * Math_Cos(angle) / PHD_90;
-        g_ShadowInfo.vertex[i].y = 0;
+    for (int32_t i = 0; i < shadow.vertex_count; i++) {
+        int32_t angle = (PHD_180 + i * PHD_360) / shadow.vertex_count;
+        shadow.vertices[i].x = x_mid + (x_add * 2) * Math_Sin(angle) / PHD_90;
+        shadow.vertices[i].z = z_mid + (z_add * 2) * Math_Cos(angle) / PHD_90;
+        shadow.vertices[i].y = 0;
     }
 
     Matrix_Push();
@@ -1127,11 +1133,11 @@ void Output_DrawShadow(
         item->interp.result.pos.x, item->floor, item->interp.result.pos.z);
     Matrix_RotY(item->rot.y);
 
-    if (M_CalcObjectVertices_OLD(&g_ShadowInfo.poly_count)) {
+    if (M_CalcObjectVertices(shadow.vertices, shadow.vertex_count)) {
         int16_t clip_and = 1;
         int16_t clip_positive = 1;
         int16_t clip_or = 0;
-        for (int32_t i = 0; i < g_ShadowInfo.vertex_count; i++) {
+        for (int32_t i = 0; i < shadow.vertex_count; i++) {
             clip_and &= m_VBuf[i].clip;
             clip_positive &= m_VBuf[i].clip >= 0;
             clip_or |= m_VBuf[i].clip;
@@ -1146,7 +1152,7 @@ void Output_DrawShadow(
 
         if (!clip_and && clip_positive && visible) {
             S_Output_DrawShadow(
-                &m_VBuf[0], clip_or ? 1 : 0, g_ShadowInfo.vertex_count);
+                &m_VBuf[0], clip_or ? 1 : 0, shadow.vertex_count);
         }
     }
 

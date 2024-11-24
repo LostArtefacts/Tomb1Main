@@ -591,16 +591,6 @@ typedef struct {
 } BAR_INFO;
 
 typedef struct {
-    int16_t poly_count;
-    int16_t vertex_count;
-    struct {
-        uint16_t x;
-        uint16_t y;
-        uint16_t z;
-    } vertex[32];
-} SHADOW_INFO;
-
-typedef struct {
     bool loaded;
     int16_t nmeshes;
     int16_t mesh_num;
