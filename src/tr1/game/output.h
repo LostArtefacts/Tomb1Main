@@ -63,7 +63,7 @@ void Output_DrawObjectMesh_I(const OBJECT_MESH *mesh, int32_t clip);
 
 void Output_SetSkyboxEnabled(bool enabled);
 bool Output_IsSkyboxEnabled(void);
-void Output_DrawSkybox(const int16_t *obj_ptr);
+void Output_DrawSkybox(const OBJECT_MESH *mesh);
 
 void Output_DrawRoom(const ROOM_MESH *mesh);
 void Output_DrawShadow(int16_t size, const BOUNDS_16 *bounds, const ITEM *item);

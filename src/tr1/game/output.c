@@ -94,7 +94,7 @@ static const int16_t *M_CalcVerticeLight_OLD(const int16_t *obj_ptr);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
 static const int16_t *M_CalcVerticeEnvMap_OLD(const int16_t *obj_ptr);
 static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh);
-static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr);
+static void M_CalcSkyboxLight(const OBJECT_MESH *mesh);
 static void M_CalcRoomVertices(const ROOM_MESH *mesh);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
 static int32_t M_CalcFogShade(int32_t depth);
@@ -658,21 +658,11 @@ static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh)
     return true;
 }
 
-static const int16_t *M_CalcSkyboxLight(const int16_t *obj_ptr)
+static void M_CalcSkyboxLight(const OBJECT_MESH *const mesh)
 {
-    int32_t vertex_count = *obj_ptr++;
-    if (vertex_count > 0) {
-        obj_ptr += 3 * vertex_count;
-    } else {
-        vertex_count = -vertex_count;
-        obj_ptr += vertex_count;
-    }
-
-    for (int i = 0; i < vertex_count; i++) {
+    for (int32_t i = 0; i < ABS(mesh->num_lights); i++) {
         m_VBuf[i].g = 0xFFF;
     }
-
-    return obj_ptr;
 }
 
 static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
@@ -1070,24 +1060,23 @@ bool Output_IsSkyboxEnabled(void)
     return m_IsSkyboxEnabled;
 }
 
-void Output_DrawSkybox(const int16_t *obj_ptr)
+void Output_DrawSkybox(const OBJECT_MESH *const mesh)
 {
     g_PhdLeft = Viewport_GetMinX();
     g_PhdTop = Viewport_GetMinY();
     g_PhdRight = Viewport_GetMaxX();
     g_PhdBottom = Viewport_GetMaxY();
 
-    obj_ptr = M_CalcObjectVertices_OLD(obj_ptr + 4);
-    if (!obj_ptr) {
+    if (!M_CalcObjectVertices(mesh)) {
         return;
     }
 
     S_Output_DisableDepthTest();
-    obj_ptr = M_CalcSkyboxLight(obj_ptr);
-    obj_ptr = M_DrawObjectGT4(obj_ptr + 1, *obj_ptr);
-    obj_ptr = M_DrawObjectGT3(obj_ptr + 1, *obj_ptr);
-    obj_ptr = M_DrawObjectG4(obj_ptr + 1, *obj_ptr);
-    obj_ptr = M_DrawObjectG3(obj_ptr + 1, *obj_ptr);
+    M_CalcSkyboxLight(mesh);
+    M_DrawTexturedFace4s(mesh->tex_face4s, mesh->num_tex_face4s);
+    M_DrawTexturedFace3s(mesh->tex_face3s, mesh->num_tex_face3s);
+    M_DrawFlatFace4s(mesh->flat_face4s, mesh->num_flat_face4s);
+    M_DrawFlatFace3s(mesh->flat_face3s, mesh->num_flat_face3s);
     S_Output_EnableDepthTest();
 }
 
