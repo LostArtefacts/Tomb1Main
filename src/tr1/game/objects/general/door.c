@@ -163,7 +163,7 @@ void Door_Initialise(int16_t item_num)
         door->d1flip.sector = NULL;
     } else {
         r = Room_Get(r->flipped_room);
-        M_Initialise(r, item, dz, dz, &door->d1flip);
+        M_Initialise(r, item, dx, dz, &door->d1flip);
     }
 
     room_num = door->d1.sector->portal_room.wall;
