@@ -724,8 +724,8 @@ typedef struct {
     uint16_t max_items;
     uint16_t requested;
     uint16_t vis_lines;
-    uint16_t line_offset;
-    uint16_t line_old_offset;
+    int16_t line_offset;
+    int16_t line_old_offset;
     uint16_t pix_width;
     uint16_t line_height;
     bool is_blockable;

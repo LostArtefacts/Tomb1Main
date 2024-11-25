@@ -24,6 +24,7 @@
     Swedish, Turkish and possibly more.
 
     Importantly, Asian and Arabic languages remain unsupported at the moment.
+- added ability to disable saves completely by setting the save slot to 0 (#1954)
 - fixed invisible walls being present in front of some doors (#1948, regression from 4.6)
 - fixed missing FMVs causing the game to go silent (#1931, regression from 4.6)
 - fixed game crashing when toggling the bilinear filter in passport (#1942, regression from 4.5)

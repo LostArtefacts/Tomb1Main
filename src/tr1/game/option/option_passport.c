@@ -173,7 +173,8 @@ static void M_DeterminePages(void)
     switch (g_InvMode) {
     case INV_TITLE_MODE:
         m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
-        m_PassportStatus.page_available[PAGE_1] = g_SavedGamesCount > 0;
+        m_PassportStatus.page_available[PAGE_1] =
+            g_SavedGamesCount > 0 && Savegame_GetSlotCount() > 0;
         m_PassportStatus.page_available[PAGE_2] = true;
         m_PassportStatus.page_available[PAGE_3] = true;
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
@@ -183,13 +184,15 @@ static void M_DeterminePages(void)
 
     case INV_GAME_MODE:
         m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
-        m_PassportStatus.page_available[PAGE_1] = g_SavedGamesCount > 0;
+        m_PassportStatus.page_available[PAGE_1] =
+            g_SavedGamesCount > 0 && Savegame_GetSlotCount() > 0;
         m_PassportStatus.page_available[PAGE_2] = true;
         m_PassportStatus.page_available[PAGE_3] = true;
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
         m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_SAVE_GAME;
         m_PassportStatus.page_role[PAGE_3] = PASSPORT_MODE_EXIT_TITLE;
-        if (g_CurrentLevel == g_GameFlow.gym_level_num) {
+        if (g_CurrentLevel == g_GameFlow.gym_level_num
+            || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
         } else if (g_Config.enable_save_crystals) {
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_RESTART;
@@ -197,14 +200,20 @@ static void M_DeterminePages(void)
         break;
 
     case INV_LOAD_MODE:
-        m_PassportStatus.mode = PASSPORT_MODE_LOAD_GAME;
+        m_PassportStatus.mode = Savegame_GetSlotCount() > 0
+            ? PASSPORT_MODE_LOAD_GAME
+            : PASSPORT_MODE_RESTART;
         m_PassportStatus.page_available[PAGE_1] = true;
         m_PassportStatus.page_available[PAGE_2] = false;
         m_PassportStatus.page_available[PAGE_3] = false;
-        m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
+        m_PassportStatus.page_role[PAGE_1] = m_PassportStatus.mode;
         m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_UNAVAILABLE;
         m_PassportStatus.page_role[PAGE_3] = PASSPORT_MODE_UNAVAILABLE;
-        M_InitSaveRequester(PAGE_1);
+        if (m_PassportStatus.mode == PASSPORT_MODE_RESTART) {
+            M_InitNewGameRequester();
+        } else {
+            M_InitSaveRequester(PAGE_1);
+        }
         break;
 
     case INV_SAVE_MODE:
@@ -215,7 +224,8 @@ static void M_DeterminePages(void)
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_UNAVAILABLE;
         m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_SAVE_GAME;
         m_PassportStatus.page_role[PAGE_3] = PASSPORT_MODE_UNAVAILABLE;
-        if (g_CurrentLevel == g_GameFlow.gym_level_num) {
+        if (g_CurrentLevel == g_GameFlow.gym_level_num
+            || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
         } else if (g_Config.enable_save_crystals) {
@@ -240,7 +250,8 @@ static void M_DeterminePages(void)
 
     case INV_DEATH_MODE:
         m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
-        m_PassportStatus.page_available[PAGE_1] = g_SavedGamesCount > 0;
+        m_PassportStatus.page_available[PAGE_1] =
+            g_SavedGamesCount > 0 && Savegame_GetSlotCount() > 0;
         m_PassportStatus.page_available[PAGE_2] = true;
         m_PassportStatus.page_available[PAGE_3] = true;
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
@@ -250,7 +261,8 @@ static void M_DeterminePages(void)
 
     default:
         m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
-        m_PassportStatus.page_available[PAGE_1] = g_SavedGamesCount > 0;
+        m_PassportStatus.page_available[PAGE_1] =
+            g_SavedGamesCount > 0 && Savegame_GetSlotCount() > 0;
         m_PassportStatus.page_available[PAGE_2] = true;
         m_PassportStatus.page_available[PAGE_3] = true;
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
@@ -293,14 +305,7 @@ static void M_InitSaveRequester(int16_t page_num)
 
 static void M_RestoreSaveRequester(void)
 {
-    // Reload the savegame requester items in case something cleared them in
-    // the meantime (for example the player changed the save slot count with a
-    // console command.)
-    if (g_SavegameRequester.items_used == 0) {
-        M_InitSaveRequester(m_PassportStatus.page);
-    }
-
-    CLAMPG(g_SavegameRequester.requested, g_SavegameRequester.items_used - 1);
+    CLAMP(g_SavegameRequester.requested, 0, g_SavegameRequester.items_used - 1);
 }
 
 static void M_InitSelectLevelRequester(void)
@@ -429,14 +434,16 @@ static void M_LoadGame(void)
             } else {
                 M_ShowSaves(PASSPORT_MODE_LOAD_GAME);
                 if (m_PassportStatus.mode == PASSPORT_MODE_LOAD_GAME) {
-                    Text_SetPos(
-                        m_Text[TEXT_LEVEL_ARROW_RIGHT], 130,
-                        g_SavegameRequester
-                            .items
-                                [g_SavegameRequester.requested
-                                 - g_SavegameRequester.line_offset]
-                            .content->pos.y);
-                    Text_Hide(m_Text[TEXT_LEVEL_ARROW_RIGHT], false);
+                    const REQUESTER_ITEM *const row_item =
+                        &g_SavegameRequester.items
+                             [g_SavegameRequester.requested
+                              - g_SavegameRequester.line_offset];
+                    if (row_item->content != NULL) {
+                        Text_SetPos(
+                            m_Text[TEXT_LEVEL_ARROW_RIGHT], 130,
+                            row_item->content->pos.y);
+                        Text_Hide(m_Text[TEXT_LEVEL_ARROW_RIGHT], false);
+                    }
                 } else {
                     Text_Hide(m_Text[TEXT_LEVEL_ARROW_RIGHT], true);
                 }

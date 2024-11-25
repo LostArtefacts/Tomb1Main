@@ -212,7 +212,7 @@ void Config_Sanitize(void)
     CLAMP(
         g_Config.rendering.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);
-    CLAMPL(g_Config.maximum_save_slots, 1);
+    CLAMPL(g_Config.maximum_save_slots, 0);
     CLAMPL(g_Config.rendering.anisotropy_filter, 1.0);
     CLAMP(g_Config.rendering.wireframe_width, 1.0, 100.0);
 

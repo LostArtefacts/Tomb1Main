@@ -133,7 +133,7 @@ int32_t Requester_Display(REQUEST_INFO *req)
         }
     }
 
-    if (req->line_offset) {
+    if (req->line_offset > 0) {
         if (!req->moreup) {
             req->moreup = Text_Create(
                 req->x, line_one_off - req->line_height + 2, "\\{arrow up}");
