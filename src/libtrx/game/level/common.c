@@ -10,14 +10,39 @@
 
 #include <assert.h>
 
-// TODO: create shared readers for XYZ_16 and faces
+static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
+static void M_ReadFace4(FACE4 *face, VFILE *file);
+static void M_ReadFace3(FACE3 *face, VFILE *file);
 static void M_ReadObjectMesh(OBJECT_MESH *mesh, VFILE *file);
+
+static void M_ReadVertex(XYZ_16 *const vertex, VFILE *const file)
+{
+    vertex->x = VFile_ReadS16(file);
+    vertex->y = VFile_ReadS16(file);
+    vertex->z = VFile_ReadS16(file);
+}
+
+static void M_ReadFace4(FACE4 *const face, VFILE *const file)
+{
+    for (int32_t i = 0; i < 4; i++) {
+        face->vertices[i] = VFile_ReadU16(file);
+    }
+    face->texture = VFile_ReadU16(file);
+    face->enable_reflections = false;
+}
+
+static void M_ReadFace3(FACE3 *const face, VFILE *const file)
+{
+    for (int32_t i = 0; i < 3; i++) {
+        face->vertices[i] = VFile_ReadU16(file);
+    }
+    face->texture = VFile_ReadU16(file);
+    face->enable_reflections = false;
+}
 
 static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
 {
-    mesh->center.x = VFile_ReadS16(file);
-    mesh->center.y = VFile_ReadS16(file);
-    mesh->center.z = VFile_ReadS16(file);
+    M_ReadVertex(&mesh->center, file);
     mesh->radius = VFile_ReadS32(file);
 
     mesh->enable_reflections = false;
@@ -27,10 +52,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
         mesh->vertices =
             GameBuf_Alloc(sizeof(XYZ_16) * mesh->num_vertices, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_vertices; i++) {
-            XYZ_16 *const vertex = &mesh->vertices[i];
-            vertex->x = VFile_ReadS16(file);
-            vertex->y = VFile_ReadS16(file);
-            vertex->z = VFile_ReadS16(file);
+            M_ReadVertex(&mesh->vertices[i], file);
         }
     }
 
@@ -40,10 +62,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             mesh->lighting.normals =
                 GameBuf_Alloc(sizeof(XYZ_16) * mesh->num_lights, GBUF_MESHES);
             for (int32_t i = 0; i < mesh->num_lights; i++) {
-                XYZ_16 *const normal = &mesh->lighting.normals[i];
-                normal->x = VFile_ReadS16(file);
-                normal->y = VFile_ReadS16(file);
-                normal->z = VFile_ReadS16(file);
+                M_ReadVertex(&mesh->lighting.normals[i], file);
             }
         } else {
             mesh->lighting.lights = GameBuf_Alloc(
@@ -59,12 +78,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
         mesh->tex_face4s =
             GameBuf_Alloc(sizeof(FACE4) * mesh->num_tex_face4s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_tex_face4s; i++) {
-            FACE4 *const face = &mesh->tex_face4s[i];
-            for (int32_t j = 0; j < 4; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
-            face->enable_reflections = false;
+            M_ReadFace4(&mesh->tex_face4s[i], file);
         }
     }
 
@@ -73,12 +87,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
         mesh->tex_face3s =
             GameBuf_Alloc(sizeof(FACE3) * mesh->num_tex_face3s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_tex_face3s; i++) {
-            FACE3 *const face = &mesh->tex_face3s[i];
-            for (int32_t j = 0; j < 3; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
-            face->enable_reflections = false;
+            M_ReadFace3(&mesh->tex_face3s[i], file);
         }
     }
 
@@ -87,12 +96,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
         mesh->flat_face4s =
             GameBuf_Alloc(sizeof(FACE4) * mesh->num_flat_face4s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_flat_face4s; i++) {
-            FACE4 *const face = &mesh->flat_face4s[i];
-            for (int32_t j = 0; j < 4; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
-            face->enable_reflections = false;
+            M_ReadFace4(&mesh->flat_face4s[i], file);
         }
     }
 
@@ -101,12 +105,7 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
         mesh->flat_face3s =
             GameBuf_Alloc(sizeof(FACE3) * mesh->num_flat_face3s, GBUF_MESHES);
         for (int32_t i = 0; i < mesh->num_flat_face3s; i++) {
-            FACE3 *const face = &mesh->flat_face3s[i];
-            for (int32_t j = 0; j < 3; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
-            face->enable_reflections = false;
+            M_ReadFace3(&mesh->flat_face3s[i], file);
         }
     }
 }
@@ -128,9 +127,7 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
             GameBuf_Alloc(sizeof(ROOM_VERTEX) * alloc_count, GBUF_ROOM_MESH);
         for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
             ROOM_VERTEX *const vertex = &room->mesh.vertices[i];
-            vertex->pos.x = VFile_ReadS16(file);
-            vertex->pos.y = VFile_ReadS16(file);
-            vertex->pos.z = VFile_ReadS16(file);
+            M_ReadVertex(&vertex->pos, file);
             vertex->shade = VFile_ReadU16(file);
             vertex->flags = 0;
         }
@@ -142,11 +139,7 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
         room->mesh.face4s =
             GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
         for (int32_t i = 0; i < room->mesh.num_face4s; i++) {
-            FACE4 *const face = &room->mesh.face4s[i];
-            for (int32_t j = 0; j < 4; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
+            M_ReadFace4(&room->mesh.face4s[i], file);
         }
     }
 
@@ -157,11 +150,7 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
         room->mesh.face3s =
             GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
         for (int32_t i = 0; i < room->mesh.num_face3s; i++) {
-            FACE3 *const face = &room->mesh.face3s[i];
-            for (int32_t j = 0; j < 3; j++) {
-                face->vertices[j] = VFile_ReadU16(file);
-            }
-            face->texture = VFile_ReadU16(file);
+            M_ReadFace3(&room->mesh.face3s[i], file);
         }
     }
 
