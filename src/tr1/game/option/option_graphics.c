@@ -129,7 +129,7 @@ static void M_InitMenu(void)
 static void M_UpdateMenuVisible(void)
 {
     int32_t visible_lines = 0;
-    if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 240) {
+    if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 260) {
         visible_lines = 8;
     } else if (Screen_GetResHeightDownscaled(RSR_TEXT) <= 384) {
         visible_lines = 9;

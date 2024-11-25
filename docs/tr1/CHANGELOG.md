@@ -25,6 +25,7 @@
 
     Importantly, Asian and Arabic languages remain unsupported at the moment.
 - fixed invisible walls being present in front of some doors (#1948, regression from 4.6)
+- fixed big font scale causing text overlaps in the graphics options (#1946)
 - fixed missing FMVs causing the game to go silent (#1931, regression from 4.6)
 - fixed game crashing when toggling the bilinear filter in passport (#1942, regression from 4.5)
 
