@@ -27,6 +27,7 @@
 - fixed invisible walls being present in front of some doors (#1948, regression from 4.6)
 - fixed missing FMVs causing the game to go silent (#1931, regression from 4.6)
 - fixed game crashing when toggling the bilinear filter in passport (#1942, regression from 4.5)
+- fixed game crashing when changing the save slot with `/set` when in passport (#1954, regression from 4.2)
 
 ## [4.6](https://github.com/LostArtefacts/TRX/compare/tr1-4.5.1...tr1-4.6) - 2024-11-18
 - added support for wading, similar to TR2+ (#1537)

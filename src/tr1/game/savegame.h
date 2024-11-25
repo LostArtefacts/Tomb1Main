@@ -48,6 +48,7 @@ typedef struct {
 
 void Savegame_Init(void);
 void Savegame_Shutdown(void);
+bool Savegame_IsInitialised(void);
 
 void Savegame_InitCurrentInfo(void);
 

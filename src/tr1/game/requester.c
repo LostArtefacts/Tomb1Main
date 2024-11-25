@@ -161,33 +161,41 @@ int32_t Requester_Display(REQUEST_INFO *req)
         req->moredown = NULL;
     }
 
-    for (int i = 0; i < line_qty; i++) {
-        if (!req->items[i].content) {
-            req->items[i].content = Text_Create(
-                0, line_one_off + req->line_height * i,
-                req->items[req->line_offset + i].content_text);
-            Text_CentreH(req->items[i].content, 1);
-            Text_AlignBottom(req->items[i].content, 1);
+    for (int32_t i = 0; i < line_qty; i++) {
+        REQUESTER_ITEM *const item = &req->items[i];
+
+        const int32_t j = req->line_offset + i;
+        if (j < 0 || j >= req->items_used) {
+            Text_RemoveBackground(item->content);
+            Text_RemoveOutline(item->content);
+            continue;
+        }
+        REQUESTER_ITEM *const row_item = &req->items[j];
+
+        if (item->content == NULL && row_item->content_text != NULL) {
+            item->content = Text_Create(
+                0, line_one_off + req->line_height * i, row_item->content_text);
+            Text_CentreH(item->content, 1);
+            Text_AlignBottom(item->content, 1);
         }
         if (req->line_offset + i == req->requested) {
             Text_AddBackground(
-                req->items[i].content,
-                req->pix_width - BOX_PADDING - 1 * BOX_BORDER, 0, 0, 0,
-                TS_REQUESTED);
-            Text_AddOutline(req->items[i].content, TS_REQUESTED);
+                item->content, req->pix_width - BOX_PADDING - 1 * BOX_BORDER, 0,
+                0, 0, TS_REQUESTED);
+            Text_AddOutline(item->content, TS_REQUESTED);
         } else {
-            Text_RemoveBackground(req->items[i].content);
-            Text_RemoveOutline(req->items[i].content);
+            Text_RemoveBackground(item->content);
+            Text_RemoveOutline(item->content);
         }
     }
 
     if (req->line_offset != req->line_old_offset) {
         for (int i = 0; i < line_qty; i++) {
-            if (req->items[i].content) {
+            REQUESTER_ITEM *const item = &req->items[i];
+            if (item->content != NULL) {
                 Text_ChangeText(
-                    req->items[i].content,
+                    item->content,
                     req->items[req->line_offset + i].content_text);
-                ;
             }
         }
     }

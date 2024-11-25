@@ -44,6 +44,7 @@ typedef struct {
     bool (*update_death_counters)(MYFILE *fp, GAME_INFO *game_info);
 } SAVEGAME_STRATEGY;
 
+static int32_t m_SaveSlots = 0;
 static uint16_t m_NewestSlot = 0;
 static SAVEGAME_INFO *m_SavegameInfo = NULL;
 
@@ -83,7 +84,7 @@ static void M_Clear(void)
         return;
     }
 
-    for (int i = 0; i < g_Config.maximum_save_slots; i++) {
+    for (int i = 0; i < m_SaveSlots; i++) {
         SAVEGAME_INFO *const savegame_info = &m_SavegameInfo[i];
         savegame_info->format = 0;
         savegame_info->counter = -1;
@@ -174,14 +175,19 @@ static void M_LoadPostprocess(void)
 
 void Savegame_Init(void)
 {
-    m_SavegameInfo =
-        Memory_Alloc(sizeof(SAVEGAME_INFO) * g_Config.maximum_save_slots);
+    m_SaveSlots = g_Config.maximum_save_slots;
+    m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
 }
 
 void Savegame_Shutdown(void)
 {
     M_Clear();
     Memory_FreePointer(&m_SavegameInfo);
+}
+
+bool Savegame_IsInitialised(void)
+{
+    return m_SavegameInfo != NULL;
 }
 
 void Savegame_ProcessItemsBeforeLoad(void)
@@ -403,7 +409,7 @@ int32_t Savegame_GetLevelNumber(const int32_t slot_num)
 
 int32_t Savegame_GetSlotCount(void)
 {
-    return g_Config.maximum_save_slots;
+    return m_SaveSlots;
 }
 
 bool Savegame_IsSlotFree(const int32_t slot_num)
@@ -553,7 +559,7 @@ void Savegame_ScanSavedGames(void)
     g_SaveCounter = 0;
     g_SavedGamesCount = 0;
 
-    for (int i = 0; i < g_Config.maximum_save_slots; i++) {
+    for (int i = 0; i < m_SaveSlots; i++) {
         SAVEGAME_INFO *savegame_info = &m_SavegameInfo[i];
         const SAVEGAME_STRATEGY *strategy = &m_Strategies[0];
         while (strategy->format) {
@@ -598,6 +604,7 @@ void Savegame_ScanSavedGames(void)
 
     REQUEST_INFO *req = &g_SavegameRequester;
     Requester_ClearTextstrings(req);
+    Requester_Init(&g_SavegameRequester, Savegame_GetSlotCount());
 
     for (int i = 0; i < req->max_items; i++) {
         SAVEGAME_INFO *savegame_info = &m_SavegameInfo[i];

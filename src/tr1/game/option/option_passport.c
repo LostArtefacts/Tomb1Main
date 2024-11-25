@@ -277,6 +277,7 @@ static void M_InitSaveRequester(int16_t page_num)
     } else {
         req->vis_lines = 12;
     }
+    req->vis_lines = MIN(req->max_items, req->vis_lines);
 
     // Title screen passport is at a different pitch.
     if (g_InvMode == INV_TITLE_MODE) {
@@ -298,6 +299,8 @@ static void M_RestoreSaveRequester(void)
     if (g_SavegameRequester.items_used == 0) {
         M_InitSaveRequester(m_PassportStatus.page);
     }
+
+    CLAMPG(g_SavegameRequester.requested, g_SavegameRequester.items_used - 1);
 }
 
 static void M_InitSelectLevelRequester(void)

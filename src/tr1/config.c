@@ -6,6 +6,7 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/requester.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/vars.h"
@@ -211,6 +212,7 @@ void Config_Sanitize(void)
     CLAMP(
         g_Config.rendering.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);
+    CLAMPL(g_Config.maximum_save_slots, 1);
     CLAMPL(g_Config.rendering.anisotropy_filter, 1.0);
     CLAMP(g_Config.rendering.wireframe_width, 1.0, 100.0);
 
@@ -223,8 +225,13 @@ void Config_ApplyChanges(void)
 {
     Music_SetVolume(g_Config.music_volume);
     Sound_SetMasterVolume(g_Config.sound_volume);
-    Requester_Shutdown(&g_SavegameRequester);
-    Requester_Init(&g_SavegameRequester, g_Config.maximum_save_slots);
+
+    if (Savegame_IsInitialised()) {
+        Savegame_Shutdown();
+        Savegame_Init();
+        Savegame_ScanSavedGames();
+    }
+
     Output_ApplyRenderSettings();
 }
 
