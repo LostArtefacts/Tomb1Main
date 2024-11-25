@@ -25,6 +25,7 @@
 
     Importantly, Asian and Arabic languages remain unsupported at the moment.
 - fixed invisible walls being present in front of some doors (#1948, regression from 4.6)
+- fixed missing FMVs causing the game to go silent (#1931, regression from 4.6)
 
 ## [4.6](https://github.com/LostArtefacts/TRX/compare/tr1-4.5.1...tr1-4.6) - 2024-11-18
 - added support for wading, similar to TR2+ (#1537)
