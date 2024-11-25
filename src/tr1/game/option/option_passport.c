@@ -102,6 +102,7 @@ static void M_ShutdownText(void);
 static void M_Close(INVENTORY_ITEM *inv_item);
 static void M_DeterminePages(void);
 static void M_InitSaveRequester(int16_t page_num);
+static void M_RestoreSaveRequester(void);
 static void M_InitSelectLevelRequester(void);
 static void M_InitNewGameRequester(void);
 static void M_ShowSaves(PASSPORT_MODE pending_mode);
@@ -118,6 +119,8 @@ void M_InitRequesters(void)
 {
     Requester_Shutdown(&m_SelectLevelRequester);
     Requester_Shutdown(&m_NewGameRequester);
+    Requester_Shutdown(&g_SavegameRequester);
+    Requester_Init(&g_SavegameRequester, Savegame_GetSlotCount());
     Requester_Init(&m_SelectLevelRequester, g_GameFlow.level_count + 1);
     Requester_Init(&m_NewGameRequester, MAX_GAME_MODES);
 }
@@ -287,6 +290,16 @@ static void M_InitSaveRequester(int16_t page_num)
     Savegame_ScanSavedGames();
 }
 
+static void M_RestoreSaveRequester(void)
+{
+    // Reload the savegame requester items in case something cleared them in
+    // the meantime (for example the player changed the save slot count with a
+    // console command.)
+    if (g_SavegameRequester.items_used == 0) {
+        M_InitSaveRequester(m_PassportStatus.page);
+    }
+}
+
 static void M_InitSelectLevelRequester(void)
 {
     REQUEST_INFO *req = &m_SelectLevelRequester;
@@ -398,6 +411,7 @@ static void M_LoadGame(void)
             m_PassportStatus.mode = PASSPORT_MODE_LOAD_GAME;
         }
     } else if (m_PassportStatus.mode == PASSPORT_MODE_LOAD_GAME) {
+        M_RestoreSaveRequester();
         if (!g_SavegameRequester.items[g_SavegameRequester.requested].is_blocked
             || !g_SavegameRequester.is_blockable) {
             if (g_InputDB.menu_right) {
@@ -478,6 +492,7 @@ static void M_SaveGame(void)
             m_PassportStatus.mode = PASSPORT_MODE_SAVE_GAME;
         }
     } else if (m_PassportStatus.mode == PASSPORT_MODE_SAVE_GAME) {
+        M_RestoreSaveRequester();
         M_ShowSaves(PASSPORT_MODE_SAVE_GAME);
     }
 }

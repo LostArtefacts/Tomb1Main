@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/savegame.h>
+
 #include <stdbool.h>
 #include <stdint.h>
 
