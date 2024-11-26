@@ -24,6 +24,7 @@
     Swedish, Turkish and possibly more.
 
     Importantly, Asian and Arabic languages remain unsupported at the moment.
+- fixed a potential invisible wall issue in custom levels with non-portal doors and certain geometry (#1958, regression from 4.3)
 
 ## [4.6.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...tr1-4.6.1) - 2024-11-25
 - added ability to disable saves completely by setting the save slot to 0 (#1954)

@@ -97,6 +97,8 @@ static void M_Shut(DOORPOS_DATA *const d)
     sector->box = NO_BOX;
     sector->floor.height = NO_HEIGHT;
     sector->ceiling.height = NO_HEIGHT;
+    sector->floor.tilt = 0;
+    sector->ceiling.tilt = 0;
     sector->portal_room.sky = NO_ROOM;
     sector->portal_room.pit = NO_ROOM;
     sector->portal_room.wall = NO_ROOM;
