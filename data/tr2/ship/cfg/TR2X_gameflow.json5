@@ -55,6 +55,9 @@
 
         // 13. Catacombs of the Talion
         {
+            "injections": [
+                "data/injections/catacombs_fd.bin",
+            ],
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
             },
