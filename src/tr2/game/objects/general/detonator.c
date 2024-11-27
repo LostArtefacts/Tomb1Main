@@ -87,7 +87,8 @@ void __cdecl Detonator_Collision(
     item->rot.y = lara_item->rot.y;
     item->rot.z = 0;
 
-    if (item->status == IS_DEACTIVATED || !g_Input.action
+    if (item->status == IS_DEACTIVATED
+        || (g_Inv_Chosen == NO_OBJECT && !g_Input.action)
         || g_Lara.gun_status != LGS_ARMLESS || lara_item->gravity
         || lara_item->current_anim_state != LS_STOP) {
         goto normal_collision;

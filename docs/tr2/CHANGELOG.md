@@ -19,6 +19,7 @@
 - fixed broken final stats screen in software rendering mode (#1915, regression from 0.6)
 - fixed screenshots not capturing level stats (#1925, regression from 0.6)
 - fixed screenshots sometimes crashing in the windowed mode (regression from 0.6)
+- fixed the detonator key and gong hammer not activating their target items when manually selected from the inventory (#1887)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)

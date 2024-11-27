@@ -39,6 +39,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed the distorted skybox in room 5 of Barkhang Monastery
 - fixed new saves not displaying the save count in the passport
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo
+- fixed the detonator key and gong hammer not activating their target items when manually selected from the inventory
 - fixed the following floor data issues:
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
     - **Tibetan Foothills**: added missing triggers for the drawbridge in room 96 (after the flipmap)
