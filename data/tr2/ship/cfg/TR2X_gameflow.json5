@@ -32,7 +32,11 @@
         {},
 
         // 8. The Wreck of Maria Doria
-        {},
+        {
+            "injections": [
+                "data/injections/wreck_fd.bin",
+            ],
+        },
 
         // 9. Living Quarters
         {},
