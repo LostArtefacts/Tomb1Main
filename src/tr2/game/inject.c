@@ -29,6 +29,7 @@ typedef enum {
     FET_FD_INSERT = 2,
     FET_ROOM_SHIFT = 3,
     FET_TRIGGER_ITEM = 4,
+    FET_ROOM_PROPERTIES = 5,
 } FLOOR_EDIT_TYPE;
 
 typedef struct {
@@ -50,6 +51,7 @@ static void M_TriggerParameterChange(
 static void M_SetMusicOneShot(const SECTOR *sector);
 static void M_InsertFloorData(const INJECTION *injection, SECTOR *sector);
 static void M_RoomShift(const INJECTION *injection, int16_t room_num);
+static void M_RoomProperties(const INJECTION *injection, int16_t room_num);
 
 static void M_ItemEdits(const INJECTION *injection, int32_t data_count);
 
@@ -159,6 +161,9 @@ static void M_FloorDataEdits(
                 break;
             case FET_TRIGGER_ITEM:
                 LOG_WARNING("Item injection is not currently supported");
+                break;
+            case FET_ROOM_PROPERTIES:
+                M_RoomProperties(injection, room_num);
                 break;
             default:
                 LOG_WARNING("Unknown floor data edit type: %d", edit_type);
@@ -292,6 +297,15 @@ static void M_RoomShift(
     for (int32_t i = 0; i < vertex_count; i++) {
         *(data_ptr + (i * 4) + 1) += y_shift;
     }
+}
+
+static void M_RoomProperties(
+    const INJECTION *const injection, const int16_t room_num)
+{
+    const uint16_t flags = VFile_ReadU16(injection->fp);
+
+    ROOM *const room = Room_Get(room_num);
+    room->flags = flags;
 }
 
 static void M_ItemEdits(
