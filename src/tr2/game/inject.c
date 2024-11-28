@@ -51,6 +51,8 @@ static void M_SetMusicOneShot(const SECTOR *sector);
 static void M_InsertFloorData(const INJECTION *injection, SECTOR *sector);
 static void M_RoomShift(const INJECTION *injection, int16_t room_num);
 
+static void M_ItemEdits(const INJECTION *injection, int32_t data_count);
+
 static void M_LoadFromFile(INJECTION *const injection, const char *filename)
 {
     injection->relevant = false;
@@ -292,6 +294,37 @@ static void M_RoomShift(
     }
 }
 
+static void M_ItemEdits(
+    const INJECTION *const injection, const int32_t data_count)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    VFILE *const fp = injection->fp;
+
+    for (int32_t i = 0; i < data_count; i++) {
+        const int16_t item_num = VFile_ReadS16(fp);
+        const int16_t y_rot = VFile_ReadS16(fp);
+        const XYZ_32 pos = {
+            .x = VFile_ReadS32(fp),
+            .y = VFile_ReadS32(fp),
+            .z = VFile_ReadS32(fp),
+        };
+        const int16_t room_num = VFile_ReadS16(fp);
+
+        if (item_num < 0 || item_num >= Item_GetTotalCount()) {
+            LOG_WARNING("Item number %d is out of level item range", item_num);
+            continue;
+        }
+
+        ITEM *const item = Item_Get(item_num);
+        item->rot.y = y_rot;
+        item->pos = pos;
+        item->room_num = room_num;
+    }
+
+    Benchmark_End(benchmark, NULL);
+}
+
 int32_t Inject_GetDataCount(const INJECTION_DATA_TYPE type)
 {
     return m_DataCounts[type];
@@ -340,6 +373,10 @@ void Inject_AllInjections(void)
             switch (type) {
             case IDT_FLOOR_EDIT:
                 M_FloorDataEdits(injection, data_count);
+                break;
+
+            case IDT_ITEM_EDIT:
+                M_ItemEdits(injection, data_count);
                 break;
 
             default:

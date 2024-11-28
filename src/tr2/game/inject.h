@@ -4,7 +4,8 @@
 
 typedef enum {
     IDT_FLOOR_EDIT = 0,
-    IDT_NUMBER_OF = 1,
+    IDT_ITEM_EDIT = 1,
+    IDT_NUMBER_OF = 2,
 } INJECTION_DATA_TYPE;
 
 int32_t Inject_GetDataCount(INJECTION_DATA_TYPE type);
