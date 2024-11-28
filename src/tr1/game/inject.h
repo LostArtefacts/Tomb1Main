@@ -35,6 +35,6 @@ typedef struct {
 } INJECTION_INFO;
 
 void Inject_Init(
-    int injection_count, char *filenames[], INJECTION_INFO *aggregate);
+    int32_t injection_count, char *filenames[], INJECTION_INFO *aggregate);
 void Inject_AllInjections(LEVEL_INFO *level_info);
 void Inject_Cleanup(void);
