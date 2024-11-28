@@ -20,6 +20,7 @@
 - fixed screenshots not capturing level stats (#1925, regression from 0.6)
 - fixed screenshots sometimes crashing in the windowed mode (regression from 0.6)
 - fixed the detonator key and gong hammer not activating their target items when manually selected from the inventory (#1887)
+- fixed wrongly positioned doors in Ice Palace and Floating Islands, which caused invisible walls (#1963)
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)

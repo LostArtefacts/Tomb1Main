@@ -65,6 +65,9 @@
 
         // 14. Ice Palace
         {
+            "injections": [
+                "data/injections/palace_fd.bin",
+            ],
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
             },
@@ -78,7 +81,11 @@
         },
 
         // 16. Floating Islands
-        {},
+        {
+            "injections": [
+                "data/injections/floating_fd.bin",
+            ],
+        },
 
         // 17. The Dragon's Lair
         {},
