@@ -35,16 +35,16 @@ typedef struct {
     VFILE *fp;
     INJECTION_VERSION version;
     INJECTION_TYPE type;
-    INJECTION_INFO *info;
     bool relevant;
 } INJECTION;
 
 static int32_t m_NumInjections = 0;
 static INJECTION *m_Injections = NULL;
+static int32_t m_DataCounts[IDT_NUMBER_OF] = { 0 };
 
 static void M_LoadFromFile(INJECTION *injection, const char *filename);
 
-static void M_FloorDataEdits(const INJECTION *injection);
+static void M_FloorDataEdits(const INJECTION *injection, int32_t data_count);
 static void M_TriggerParameterChange(
     const INJECTION *injection, const SECTOR *sector);
 static void M_SetMusicOneShot(const SECTOR *sector);
@@ -54,7 +54,6 @@ static void M_RoomShift(const INJECTION *injection, int16_t room_num);
 static void M_LoadFromFile(INJECTION *const injection, const char *filename)
 {
     injection->relevant = false;
-    injection->info = NULL;
 
     VFILE *const fp = VFile_CreateFromPath(filename);
     injection->fp = fp;
@@ -95,22 +94,31 @@ static void M_LoadFromFile(INJECTION *const injection, const char *filename)
         return;
     }
 
-    injection->info = Memory_Alloc(sizeof(INJECTION_INFO));
-    INJECTION_INFO *const info = injection->info;
+    const size_t start_pos = VFile_GetPos(fp);
+    const int32_t block_count = VFile_ReadS32(fp);
 
-    info->floor_edit_count = VFile_ReadS32(fp);
+    for (int32_t i = 0; i < block_count; i++) {
+        const INJECTION_DATA_TYPE type = (INJECTION_DATA_TYPE)VFile_ReadS32(fp);
+        const int32_t data_count = VFile_ReadS32(fp);
+        m_DataCounts[type] += data_count;
+
+        const int32_t data_size = VFile_ReadS32(fp);
+        VFile_Skip(fp, data_size);
+    }
+
+    VFile_SetPos(fp, start_pos);
 
     LOG_INFO("%s queued for injection", filename);
 }
 
-static void M_FloorDataEdits(const INJECTION *const injection)
+static void M_FloorDataEdits(
+    const INJECTION *const injection, const int32_t data_count)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    INJECTION_INFO *const inj_info = injection->info;
     VFILE *const fp = injection->fp;
 
-    for (int32_t i = 0; i < inj_info->floor_edit_count; i++) {
+    for (int32_t i = 0; i < data_count; i++) {
         const int16_t room_num = VFile_ReadS16(fp);
         const uint16_t x = VFile_ReadU16(fp);
         const uint16_t z = VFile_ReadU16(fp);
@@ -284,7 +292,12 @@ static void M_RoomShift(
     }
 }
 
-void Inject_Init(const int injection_count, char *filenames[])
+int32_t Inject_GetDataCount(const INJECTION_DATA_TYPE type)
+{
+    return m_DataCounts[type];
+}
+
+void Inject_Init(const int32_t injection_count, char *filenames[])
 {
     m_NumInjections = injection_count;
     if (m_NumInjections == 0) {
@@ -315,7 +328,26 @@ void Inject_AllInjections(void)
             continue;
         }
 
-        M_FloorDataEdits(injection);
+        VFILE *const fp = injection->fp;
+        const int32_t block_count = VFile_ReadS32(fp);
+
+        for (int32_t j = 0; j < block_count; j++) {
+            const INJECTION_DATA_TYPE type =
+                (INJECTION_DATA_TYPE)VFile_ReadS32(fp);
+            const int32_t data_count = VFile_ReadS32(fp);
+            const int32_t data_size = VFile_ReadS32(fp);
+
+            switch (type) {
+            case IDT_FLOOR_EDIT:
+                M_FloorDataEdits(injection, data_count);
+                break;
+
+            default:
+                VFile_Skip(fp, data_size);
+                LOG_WARNING("Unknown injection data type %d", type);
+                break;
+            }
+        }
     }
 
     Benchmark_End(benchmark, NULL);
@@ -332,7 +364,10 @@ void Inject_Cleanup(void)
     for (int32_t i = 0; i < m_NumInjections; i++) {
         INJECTION *const injection = &m_Injections[i];
         VFile_Close(injection->fp);
-        Memory_FreePointer(&injection->info);
+    }
+
+    for (int32_t i = 0; i < IDT_NUMBER_OF; i++) {
+        m_DataCounts[i] = 0;
     }
 
     Memory_FreePointer(&m_Injections);

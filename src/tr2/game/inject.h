@@ -2,10 +2,12 @@
 
 #include "global/types.h"
 
-typedef struct {
-    int32_t floor_edit_count;
-} INJECTION_INFO;
+typedef enum {
+    IDT_FLOOR_EDIT = 0,
+    IDT_NUMBER_OF = 1,
+} INJECTION_DATA_TYPE;
 
-void Inject_Init(int injection_count, char *filenames[]);
+int32_t Inject_GetDataCount(INJECTION_DATA_TYPE type);
+void Inject_Init(int32_t injection_count, char *filenames[]);
 void Inject_AllInjections(void);
 void Inject_Cleanup();
