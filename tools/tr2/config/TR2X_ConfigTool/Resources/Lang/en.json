@@ -33,6 +33,10 @@
       "Title": "Fix floor data issues",
       "Description": "Fixes original issues with floor data/triggers."
     },
+    "fix_item_rots": {
+      "Title": "Fix item rotation issues",
+      "Description": "Fixes original issues with some incorrectly rotated pickups when using the 3D pickups option."
+    },
     "enable_auto_item_selection": {
       "Title": "Key item pre-selection",
       "Description": "When Lara presses action against a keyhole or puzzle slot, and she has the corresponding item in the inventory, that item will be pre-selected."

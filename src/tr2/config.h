@@ -15,6 +15,7 @@ typedef struct {
 
     struct {
         bool enable_3d_pickups;
+        bool fix_item_rots;
     } visuals;
 
     struct {

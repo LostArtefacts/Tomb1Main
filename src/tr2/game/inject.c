@@ -21,6 +21,7 @@ typedef enum {
 typedef enum {
     INJ_GENERAL = 0,
     INJ_FLOOR_DATA = 4,
+    INJ_ITEM_POSITION = 7,
 } INJECTION_TYPE;
 
 typedef enum {
@@ -88,6 +89,9 @@ static void M_LoadFromFile(INJECTION *const injection, const char *filename)
         break;
     case INJ_FLOOR_DATA:
         injection->relevant = g_Config.gameplay.fix_floor_data_issues;
+        break;
+    case INJ_ITEM_POSITION:
+        injection->relevant = g_Config.visuals.fix_item_rots;
         break;
     default:
         LOG_WARNING("%s is of unknown type %d", filename, injection->type);
