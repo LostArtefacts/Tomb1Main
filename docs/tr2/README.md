@@ -44,7 +44,7 @@ decompilation process. We recognize that there is much work to be done.
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
     - **Wreck of the Maria Doria**: fixed room 98 not having water
     - **Tibetan Foothills**: added missing triggers for the drawbridge in room 96 (after the flipmap)
-    - **Catacombs of the Talion**: added missing triggers and ladder in room 116 (after the flipmap)
+    - **Catacombs of the Talion**: changed some music triggers to pads near the first yeti, and added missing triggers and ladder in room 116 (after the flipmap)
     - **Ice Palace**: fixed door 143's position to resolve the invisible wall in front of it, and added an extra pickup trigger beside the Gong Hammer in room 29
     - **Temple of Xian**: fixed missing death tiles in room 91
     - **Floating Islands**: fixed door 72's position to resolve the invisible wall in front of it

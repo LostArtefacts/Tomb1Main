@@ -31,6 +31,7 @@ typedef enum {
     FET_ROOM_SHIFT = 3,
     FET_TRIGGER_ITEM = 4,
     FET_ROOM_PROPERTIES = 5,
+    FET_TRIGGER_TYPE = 6,
 } FLOOR_EDIT_TYPE;
 
 typedef struct {
@@ -47,6 +48,8 @@ static int32_t m_DataCounts[IDT_NUMBER_OF] = { 0 };
 static void M_LoadFromFile(INJECTION *injection, const char *filename);
 
 static void M_FloorDataEdits(const INJECTION *injection, int32_t data_count);
+static void M_TriggerTypeChange(
+    const INJECTION *injection, const SECTOR *sector);
 static void M_TriggerParameterChange(
     const INJECTION *injection, const SECTOR *sector);
 static void M_SetMusicOneShot(const SECTOR *sector);
@@ -151,6 +154,9 @@ static void M_FloorDataEdits(
         for (int32_t j = 0; j < fd_edit_count; j++) {
             const FLOOR_EDIT_TYPE edit_type = VFile_ReadS32(fp);
             switch (edit_type) {
+            case FET_TRIGGER_TYPE:
+                M_TriggerTypeChange(injection, sector);
+                break;
             case FET_TRIGGER_PARAM:
                 M_TriggerParameterChange(injection, sector);
                 break;
@@ -177,6 +183,18 @@ static void M_FloorDataEdits(
     }
 
     Benchmark_End(benchmark, NULL);
+}
+
+static void M_TriggerTypeChange(
+    const INJECTION *const injection, const SECTOR *const sector)
+{
+    const uint8_t new_type = VFile_ReadU8(injection->fp);
+
+    if (sector == NULL || sector->trigger == NULL) {
+        return;
+    }
+
+    sector->trigger->type = new_type;
 }
 
 static void M_TriggerParameterChange(

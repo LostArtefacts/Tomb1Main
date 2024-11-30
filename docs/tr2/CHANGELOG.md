@@ -16,6 +16,7 @@
 - fixed one of the collapsible tiles in Opera House room 184 not triggering (#1902)
 - fixed being unable to use the drawbridge key in Tibetan Foothills after the flipmap (#1744)
 - fixed missing triggers and ladder in Catacombs of the Talion after the flipmap (#1960)
+- fixed incorrect music trigger types at the beginning of Catacombs of the Talion (#1962)
 - fixed missing death tiles in Temple of Xian room 91 (#1920)
 - fixed broken final stats screen in software rendering mode (#1915, regression from 0.6)
 - fixed screenshots not capturing level stats (#1925, regression from 0.6)
