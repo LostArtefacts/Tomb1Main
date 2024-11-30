@@ -306,44 +306,52 @@ static bool M_CalcObjectVertices(
 
 static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
 {
-    // TODO: refactor
-    const int32_t vertex_count = mesh->num_lights;
-    if (vertex_count > 0) {
-        if (m_LsDivider) {
-            int32_t xv = (g_MatrixPtr->_00 * m_LsVectorView.x
-                          + g_MatrixPtr->_10 * m_LsVectorView.y
-                          + g_MatrixPtr->_20 * m_LsVectorView.z)
-                / m_LsDivider;
-            int32_t yv = (g_MatrixPtr->_01 * m_LsVectorView.x
-                          + g_MatrixPtr->_11 * m_LsVectorView.y
-                          + g_MatrixPtr->_21 * m_LsVectorView.z)
-                / m_LsDivider;
-            int32_t zv = (g_MatrixPtr->_02 * m_LsVectorView.x
-                          + g_MatrixPtr->_12 * m_LsVectorView.y
-                          + g_MatrixPtr->_22 * m_LsVectorView.z)
-                / m_LsDivider;
-            for (int i = 0; i < vertex_count; i++) {
-                const XYZ_16 *const normal = &mesh->lighting.normals[i];
-                int16_t shade = m_LsAdder
-                    + ((normal->x * xv + normal->y * yv + normal->z * zv)
-                       >> 16);
-                CLAMP(shade, 0, 0x1FFF);
-                m_VBuf[i].g = shade;
-            }
-            return;
-        } else {
-            int16_t shade = m_LsAdder;
-            CLAMP(shade, 0, 0x1FFF);
-            for (int i = 0; i < vertex_count; i++) {
-                m_VBuf[i].g = shade;
-            }
-        }
-    } else {
-        for (int i = 0; i < -vertex_count; i++) {
+    if (mesh->num_lights <= 0) {
+        for (int32_t i = 0; i < -mesh->num_lights; i++) {
             int16_t shade = m_LsAdder + mesh->lighting.lights[i];
             CLAMP(shade, 0, 0x1FFF);
             m_VBuf[i].g = shade;
         }
+
+        return;
+    }
+
+    if (m_LsDivider == 0) {
+        int16_t shade = m_LsAdder;
+        CLAMP(shade, 0, 0x1FFF);
+        for (int32_t i = 0; i < mesh->num_lights; i++) {
+            m_VBuf[i].g = shade;
+        }
+
+        return;
+    }
+
+    // clang-format off
+    const int32_t xv = (
+        g_MatrixPtr->_00 * m_LsVectorView.x +
+        g_MatrixPtr->_10 * m_LsVectorView.y +
+        g_MatrixPtr->_20 * m_LsVectorView.z
+    ) / m_LsDivider;
+
+    const int32_t yv = (
+        g_MatrixPtr->_01 * m_LsVectorView.x +
+        g_MatrixPtr->_11 * m_LsVectorView.y +
+        g_MatrixPtr->_21 * m_LsVectorView.z
+    ) / m_LsDivider;
+
+    const int32_t zv = (
+        g_MatrixPtr->_02 * m_LsVectorView.x +
+        g_MatrixPtr->_12 * m_LsVectorView.y +
+        g_MatrixPtr->_22 * m_LsVectorView.z
+    ) / m_LsDivider;
+    // clang-format on
+
+    for (int32_t i = 0; i < mesh->num_lights; i++) {
+        const XYZ_16 *const normal = &mesh->lighting.normals[i];
+        int16_t shade = m_LsAdder
+            + ((normal->x * xv + normal->y * yv + normal->z * zv) >> 16);
+        CLAMP(shade, 0, 0x1FFF);
+        m_VBuf[i].g = shade;
     }
 }
 
