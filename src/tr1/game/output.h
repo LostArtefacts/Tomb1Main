@@ -26,6 +26,9 @@ void Output_SetDrawDistFade(int32_t dist);
 void Output_SetDrawDistMax(int32_t dist);
 void Output_SetWaterColor(const RGB_F *color);
 
+void Output_SetLightAdder(int32_t adder);
+void Output_SetLightDivider(int32_t divider);
+
 void Output_FadeReset(void);
 void Output_FadeResetToBlack(void);
 void Output_FadeToBlack(bool allow_immediate);

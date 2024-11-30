@@ -22,9 +22,6 @@ extern PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES];
 extern MATRIX *g_MatrixPtr;
 extern MATRIX g_W2VMatrix;
 
-extern int32_t g_LsAdder;
-extern int32_t g_LsDivider;
-
 extern bool g_IDelay;
 extern int32_t g_IDCount;
 extern int32_t g_OptionSelected;

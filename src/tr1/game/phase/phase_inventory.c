@@ -459,10 +459,10 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
     const IMOTION_INFO *motion = &m_Motion;
 
     if (motion->status == RNG_DONE) {
-        g_LsAdder = LOW_LIGHT;
+        Output_SetLightAdder(LOW_LIGHT);
     } else if (inv_item == ring->list[ring->current_object]) {
         if (ring->rotating) {
-            g_LsAdder = LOW_LIGHT;
+            Output_SetLightAdder(LOW_LIGHT);
             for (int j = 0; j < frames; j++) {
                 if (inv_item->y_rot < 0) {
                     inv_item->y_rot += 512;
@@ -474,7 +474,7 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
             motion->status == RNG_SELECTED || motion->status == RNG_DESELECTING
             || motion->status == RNG_SELECTING || motion->status == RNG_DESELECT
             || motion->status == RNG_CLOSING_ITEM) {
-            g_LsAdder = HIGH_LIGHT;
+            Output_SetLightAdder(HIGH_LIGHT);
             for (int j = 0; j < frames; j++) {
                 if (inv_item->y_rot != inv_item->y_rot_sel) {
                     if (inv_item->y_rot_sel - inv_item->y_rot > 0
@@ -490,13 +490,13 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
             ring->number_of_objects == 1
             || (!g_Input.menu_left && !g_Input.menu_right)
             || !g_Input.menu_left) {
-            g_LsAdder = HIGH_LIGHT;
+            Output_SetLightAdder(HIGH_LIGHT);
             for (int j = 0; j < frames; j++) {
                 inv_item->y_rot += 256;
             }
         }
     } else {
-        g_LsAdder = LOW_LIGHT;
+        Output_SetLightAdder(LOW_LIGHT);
         for (int j = 0; j < frames; j++) {
             if (inv_item->y_rot < 0) {
                 inv_item->y_rot += 256;

@@ -390,8 +390,8 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     Matrix_RotYXZ(0, PHD_DEGREE * 15, 0);
     Matrix_RotYXZ(pu->rot_y, 0, 0);
 
-    g_LsDivider = 0x6000;
-    g_LsAdder = LOW_LIGHT;
+    Output_SetLightDivider(0x6000);
+    Output_SetLightAdder(LOW_LIGHT);
     Output_RotateLight(0, 0);
     Output_SetupAboveWater(false);
 

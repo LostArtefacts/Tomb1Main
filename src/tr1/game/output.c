@@ -44,6 +44,8 @@ typedef struct {
     XYZ_16 vertices[32];
 } SHADOW_INFO;
 
+static int32_t m_LsAdder = 0;
+static int32_t m_LsDivider = 0;
 static bool m_IsSkyboxEnabled = false;
 static bool m_IsWibbleEffect = false;
 static bool m_IsWaterEffect = false;
@@ -307,22 +309,22 @@ static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
     // TODO: refactor
     const int32_t vertex_count = mesh->num_lights;
     if (vertex_count > 0) {
-        if (g_LsDivider) {
+        if (m_LsDivider) {
             int32_t xv = (g_MatrixPtr->_00 * m_LsVectorView.x
                           + g_MatrixPtr->_10 * m_LsVectorView.y
                           + g_MatrixPtr->_20 * m_LsVectorView.z)
-                / g_LsDivider;
+                / m_LsDivider;
             int32_t yv = (g_MatrixPtr->_01 * m_LsVectorView.x
                           + g_MatrixPtr->_11 * m_LsVectorView.y
                           + g_MatrixPtr->_21 * m_LsVectorView.z)
-                / g_LsDivider;
+                / m_LsDivider;
             int32_t zv = (g_MatrixPtr->_02 * m_LsVectorView.x
                           + g_MatrixPtr->_12 * m_LsVectorView.y
                           + g_MatrixPtr->_22 * m_LsVectorView.z)
-                / g_LsDivider;
+                / m_LsDivider;
             for (int i = 0; i < vertex_count; i++) {
                 const XYZ_16 *const normal = &mesh->lighting.normals[i];
-                int16_t shade = g_LsAdder
+                int16_t shade = m_LsAdder
                     + ((normal->x * xv + normal->y * yv + normal->z * zv)
                        >> 16);
                 CLAMP(shade, 0, 0x1FFF);
@@ -330,7 +332,7 @@ static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
             }
             return;
         } else {
-            int16_t shade = g_LsAdder;
+            int16_t shade = m_LsAdder;
             CLAMP(shade, 0, 0x1FFF);
             for (int i = 0; i < vertex_count; i++) {
                 m_VBuf[i].g = shade;
@@ -338,7 +340,7 @@ static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
         }
     } else {
         for (int i = 0; i < -vertex_count; i++) {
-            int16_t shade = g_LsAdder + mesh->lighting.lights[i];
+            int16_t shade = m_LsAdder + mesh->lighting.lights[i];
             CLAMP(shade, 0, 0x1FFF);
             m_VBuf[i].g = shade;
         }
@@ -630,8 +632,8 @@ void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num)
     ROOM *r = &g_RoomInfo[room_num];
 
     if (r->num_lights == 0) {
-        g_LsAdder = r->ambient;
-        g_LsDivider = 0;
+        m_LsAdder = r->ambient;
+        m_LsDivider = 0;
     } else {
         int32_t ambient = 0x1FFF - r->ambient;
         int32_t brightest = 0;
@@ -661,13 +663,13 @@ void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num)
             }
         }
 
-        g_LsAdder = (ambient + brightest) / 2;
+        m_LsAdder = (ambient + brightest) / 2;
         if (brightest == ambient) {
-            g_LsDivider = 0;
+            m_LsDivider = 0;
         } else {
-            g_LsDivider = (1 << (W2V_SHIFT + 12)) / (brightest - g_LsAdder);
+            m_LsDivider = (1 << (W2V_SHIFT + 12)) / (brightest - m_LsAdder);
         }
-        g_LsAdder = 0x1FFF - g_LsAdder;
+        m_LsAdder = 0x1FFF - m_LsAdder;
 
         PHD_ANGLE angles[2];
         Math_GetVectorAngles(ls.x, ls.y, ls.z, angles);
@@ -675,16 +677,16 @@ void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num)
     }
 
     int32_t distance = g_MatrixPtr->_23 >> W2V_SHIFT;
-    g_LsAdder += M_CalcFogShade(distance);
-    CLAMPG(g_LsAdder, 0x1FFF);
+    m_LsAdder += M_CalcFogShade(distance);
+    CLAMPG(m_LsAdder, 0x1FFF);
 }
 
 void Output_CalculateStaticLight(int16_t adder)
 {
-    g_LsAdder = adder - 16 * 256;
+    m_LsAdder = adder - 16 * 256;
     int32_t distance = g_MatrixPtr->_23 >> W2V_SHIFT;
-    g_LsAdder += M_CalcFogShade(distance);
-    CLAMPG(g_LsAdder, 0x1FFF);
+    m_LsAdder += M_CalcFogShade(distance);
+    CLAMPG(m_LsAdder, 0x1FFF);
 }
 
 void Output_CalculateObjectLighting(
@@ -883,6 +885,16 @@ void Output_SetWaterColor(const RGB_F *color)
     m_WaterColor.r = color->r;
     m_WaterColor.g = color->g;
     m_WaterColor.b = color->b;
+}
+
+void Output_SetLightAdder(const int32_t adder)
+{
+    m_LsAdder = adder;
+}
+
+void Output_SetLightDivider(const int32_t divider)
+{
+    m_LsDivider = divider;
 }
 
 int32_t Output_GetNearZ(void)

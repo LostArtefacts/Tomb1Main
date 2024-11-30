@@ -430,7 +430,7 @@ void Inv_Ring_GetView(RING_INFO *ring, XYZ_32 *view_pos, XYZ_16 *view_rot)
 void Inv_Ring_Light(RING_INFO *ring)
 {
     PHD_ANGLE angles[2];
-    g_LsDivider = 0x6000;
+    Output_SetLightDivider(0x6000);
     Math_GetVectorAngles(ring->light.x, ring->light.y, ring->light.z, angles);
     Output_RotateLight(angles[1], angles[0]);
 }
