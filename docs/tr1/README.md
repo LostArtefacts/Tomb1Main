@@ -548,6 +548,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
     - **Atlantean Stronghold**: incorrect textures in rooms 2, 6, 7 and 75, and missing textures in rooms 5, 13, 19, 63 and 74
     - **The Hive**: incorrect textures in room 8, 13 and 18
 - fixed transparent eyes on the wolf and bat models in Peru
+- fixed incorrect transparent pixels on some Egypt textures
 - improved vertex movement when looking through water portals
 
 #### Audio
