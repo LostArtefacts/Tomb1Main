@@ -6,7 +6,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 #define CULTIST_1_HITPOINTS 25
 #define CULTIST_2_HITPOINTS 60
@@ -45,7 +45,7 @@ void Cultist1A_Setup(void)
         return;
     }
 
-    assert(g_Objects[O_CULT_1].loaded);
+    ASSERT(g_Objects[O_CULT_1].loaded);
     obj->frame_base = g_Objects[O_CULT_1].frame_base;
     obj->anim_idx = g_Objects[O_CULT_1].anim_idx;
 
@@ -74,7 +74,7 @@ void Cultist1B_Setup(void)
         return;
     }
 
-    assert(g_Objects[O_CULT_1].loaded);
+    ASSERT(g_Objects[O_CULT_1].loaded);
     obj->frame_base = g_Objects[O_CULT_1].frame_base;
     obj->anim_idx = g_Objects[O_CULT_1].anim_idx;
 

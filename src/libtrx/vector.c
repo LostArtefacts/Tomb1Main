@@ -1,8 +1,8 @@
 #include "vector.h"
 
+#include "debug.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -83,7 +83,7 @@ bool Vector_Contains(const VECTOR *const vector, const void *const item)
 
 void *Vector_Get(VECTOR *const vector, const int32_t index)
 {
-    assert(index >= 0 && index < vector->count);
+    ASSERT(index >= 0 && index < vector->count);
     char *const items = P(vector).items;
     return (void *)(items + index * vector->item_size);
 }
@@ -96,7 +96,7 @@ void Vector_Add(VECTOR *const vector, void *const item)
 
 void Vector_Insert(VECTOR *const vector, const int32_t index, void *const item)
 {
-    assert(index >= 0 && index <= vector->count);
+    ASSERT(index >= 0 && index <= vector->count);
     M_EnsureCapacity(vector, 1);
     char *const items = P(vector).items;
     if (index < vector->count) {
@@ -112,8 +112,8 @@ void Vector_Insert(VECTOR *const vector, const int32_t index, void *const item)
 void Vector_Swap(
     VECTOR *const vector, const int32_t index1, const int32_t index2)
 {
-    assert(index1 >= 0 && index1 < vector->count);
-    assert(index2 >= 0 && index2 < vector->count);
+    ASSERT(index1 >= 0 && index1 < vector->count);
+    ASSERT(index2 >= 0 && index2 < vector->count);
     if (index1 == index2) {
         return;
     }
@@ -139,7 +139,7 @@ bool Vector_Remove(VECTOR *const vector, const void *item)
 
 void Vector_RemoveAt(VECTOR *const vector, const int32_t index)
 {
-    assert(index >= 0 && index < vector->count);
+    ASSERT(index >= 0 && index < vector->count);
     char *const items = P(vector).items;
     memset(items + index * vector->item_size, 0, vector->item_size);
     if (index + 1 < vector->count) {

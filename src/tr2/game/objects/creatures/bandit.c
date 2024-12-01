@@ -5,7 +5,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 #define BANDIT1_HITPOINTS 45
 #define BANDIT2_HITPOINTS 50
@@ -69,7 +69,7 @@ void Bandit2B_Setup(void)
     }
 
     const OBJECT *const ref_obj = Object_GetObject(O_BANDIT_2);
-    assert(ref_obj->loaded);
+    ASSERT(ref_obj->loaded);
     obj->anim_idx = ref_obj->anim_idx;
     obj->frame_base = ref_obj->frame_base;
 

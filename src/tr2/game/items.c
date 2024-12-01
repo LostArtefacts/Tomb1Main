@@ -8,9 +8,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 static int16_t m_MaxUsedItemCount = 0;
 static BOUNDS_16 m_InterpolatedBounds = { 0 };
@@ -51,7 +50,7 @@ static OBJECT_BOUNDS M_ConvertBounds(const int16_t *const bounds_in)
 
 void __cdecl Item_InitialiseArray(const int32_t num_items)
 {
-    assert(num_items > 0);
+    ASSERT(num_items > 0);
     g_NextItemFree = g_LevelItemCount;
     g_PrevItemActive = NO_ITEM;
     g_NextItemActive = NO_ITEM;

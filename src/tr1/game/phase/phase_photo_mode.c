@@ -11,11 +11,11 @@
 #include "game/sound.h"
 #include "game/ui/widgets/photo_mode.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/game/console/common.h>
 #include <libtrx/game/game_string.h>
 #include <libtrx/game/ui/common.h>
 
-#include <assert.h>
 #include <stdio.h>
 
 typedef enum {
@@ -36,7 +36,7 @@ static void M_Draw(void);
 
 static void M_Start(const PHASE_PHOTO_MODE_ARGS *const args)
 {
-    assert(args != NULL);
+    ASSERT(args != NULL);
     m_Args = *args;
 
     m_Status = PS_NONE;

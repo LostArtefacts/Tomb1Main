@@ -1,9 +1,9 @@
 #include "bson.h"
 
+#include "debug.h"
 #include "log.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <float.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -59,8 +59,8 @@ static char *M_WriteValueWrapped(
 
 static bool M_GetMarkerSize(size_t *size, const char *key)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
     *size += 1; // marker
     *size += strlen(key); // key
     *size += 1; // NULL terminator
@@ -69,15 +69,15 @@ static bool M_GetMarkerSize(size_t *size, const char *key)
 
 static bool M_GetNullWrappedSize(size_t *size, const char *key)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
     return M_GetMarkerSize(size, key);
 }
 
 static bool M_GetBoolWrappedSize(size_t *size, const char *key)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -87,15 +87,15 @@ static bool M_GetBoolWrappedSize(size_t *size, const char *key)
 
 static bool M_GetInt32Size(size_t *size)
 {
-    assert(size);
+    ASSERT(size != NULL);
     *size += sizeof(int32_t);
     return true;
 }
 
 static bool M_GetInt32WrappedSize(size_t *size, const char *key)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -107,15 +107,15 @@ static bool M_GetInt32WrappedSize(size_t *size, const char *key)
 
 static bool M_GetDoubleSize(size_t *size)
 {
-    assert(size);
+    ASSERT(size != NULL);
     *size += sizeof(double);
     return true;
 }
 
 static bool M_GetDoubleWrappedSize(size_t *size, const char *key)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -128,11 +128,11 @@ static bool M_GetDoubleWrappedSize(size_t *size, const char *key)
 static bool M_GetNumberWrappedSize(
     size_t *size, const char *key, const JSON_NUMBER *number)
 {
-    assert(size);
-    assert(key);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
 
     char *str = number->number;
-    assert(str);
+    ASSERT(str != NULL);
 
     // hexadecimal numbers
     if (number->number_size >= 2 && (str[1] == 'x' || str[1] == 'X')) {
@@ -143,7 +143,7 @@ static bool M_GetNumberWrappedSize(
     if (str[0] == '+' || str[0] == '-') {
         str += 1;
     }
-    assert(str[0]);
+    ASSERT(str[0] != '\0');
 
     if (!strcmp(str, "Infinity")) {
         // BSON does not support Infinity.
@@ -162,8 +162,8 @@ static bool M_GetNumberWrappedSize(
 
 static bool M_GetStringSize(size_t *size, const JSON_STRING *string)
 {
-    assert(size);
-    assert(string);
+    ASSERT(size != NULL);
+    ASSERT(string != NULL);
     *size += sizeof(uint32_t); // size
     *size += string->string_size; // string
     *size += 1; // NULL terminator
@@ -173,9 +173,9 @@ static bool M_GetStringSize(size_t *size, const JSON_STRING *string)
 static bool M_GetStringWrappedSize(
     size_t *size, const char *key, const JSON_STRING *string)
 {
-    assert(size);
-    assert(key);
-    assert(string);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
+    ASSERT(string != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -187,8 +187,8 @@ static bool M_GetStringWrappedSize(
 
 static bool M_GetArraySize(size_t *size, const JSON_ARRAY *array)
 {
-    assert(size);
-    assert(array);
+    ASSERT(size != NULL);
+    ASSERT(array != NULL);
     char key[12];
     int idx = 0;
     *size += sizeof(int32_t); // object size
@@ -207,9 +207,9 @@ static bool M_GetArraySize(size_t *size, const JSON_ARRAY *array)
 static bool M_GetArrayWrappedSize(
     size_t *size, const char *key, const JSON_ARRAY *array)
 {
-    assert(size);
-    assert(key);
-    assert(array);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
+    ASSERT(array != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -221,8 +221,8 @@ static bool M_GetArrayWrappedSize(
 
 static bool M_GetObjectSize(size_t *size, const JSON_OBJECT *object)
 {
-    assert(size);
-    assert(object);
+    ASSERT(size != NULL);
+    ASSERT(object != NULL);
     *size += sizeof(int32_t); // object size
     for (JSON_OBJECT_ELEMENT *element = object->start; element != NULL;
          element = element->next) {
@@ -238,9 +238,9 @@ static bool M_GetObjectSize(size_t *size, const JSON_OBJECT *object)
 static bool M_GetObjectWrappedSize(
     size_t *size, const char *key, const JSON_OBJECT *object)
 {
-    assert(size);
-    assert(key);
-    assert(object);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
+    ASSERT(object != NULL);
     if (!M_GetMarkerSize(size, key)) {
         return false;
     }
@@ -252,8 +252,8 @@ static bool M_GetObjectWrappedSize(
 
 static bool M_GetValueSize(size_t *size, const JSON_VALUE *value)
 {
-    assert(size);
-    assert(value);
+    ASSERT(size != NULL);
+    ASSERT(value != NULL);
     switch (value->type) {
     case JSON_TYPE_ARRAY:
         return M_GetArraySize(size, (JSON_ARRAY *)value->payload);
@@ -268,9 +268,9 @@ static bool M_GetValueSize(size_t *size, const JSON_VALUE *value)
 static bool M_GetValueWrappedSize(
     size_t *size, const char *key, const JSON_VALUE *value)
 {
-    assert(size);
-    assert(key);
-    assert(value);
+    ASSERT(size != NULL);
+    ASSERT(key != NULL);
+    ASSERT(value != NULL);
     switch (value->type) {
     case JSON_TYPE_NULL:
         return M_GetNullWrappedSize(size, key);
@@ -294,8 +294,8 @@ static bool M_GetValueWrappedSize(
 
 static char *M_WriteMarker(char *data, const char *key, const uint8_t marker)
 {
-    assert(data);
-    assert(key);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
     *data++ = marker;
     strcpy(data, key);
     data += strlen(key);
@@ -305,15 +305,15 @@ static char *M_WriteMarker(char *data, const char *key, const uint8_t marker)
 
 static char *M_WriteNullWrapped(char *data, const char *key)
 {
-    assert(data);
-    assert(key);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
     return M_WriteMarker(data, key, '\x0A');
 }
 
 static char *M_WriteBoolWrapped(char *data, const char *key, bool value)
 {
-    assert(data);
-    assert(key);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
     data = M_WriteMarker(data, key, '\x08');
     *(int8_t *)data++ = (int8_t)value;
     return data;
@@ -321,7 +321,7 @@ static char *M_WriteBoolWrapped(char *data, const char *key, bool value)
 
 static char *M_WriteInt32(char *data, const int32_t value)
 {
-    assert(data);
+    ASSERT(data != NULL);
     *(int32_t *)data = value;
     data += sizeof(int32_t);
     return data;
@@ -330,15 +330,15 @@ static char *M_WriteInt32(char *data, const int32_t value)
 static char *M_WriteInt32Wrapped(
     char *data, const char *key, const int32_t value)
 {
-    assert(data);
-    assert(key);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
     data = M_WriteMarker(data, key, '\x10');
     return M_WriteInt32(data, value);
 }
 
 static char *M_WriteDouble(char *data, const double value)
 {
-    assert(data);
+    ASSERT(data != NULL);
     *(double *)data = value;
     data += sizeof(double);
     return data;
@@ -347,8 +347,8 @@ static char *M_WriteDouble(char *data, const double value)
 static char *M_WriteDoubleWrapped(
     char *data, const char *key, const double value)
 {
-    assert(data);
-    assert(key);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
     data = M_WriteMarker(data, key, '\x01');
     return M_WriteDouble(data, value);
 }
@@ -356,9 +356,9 @@ static char *M_WriteDoubleWrapped(
 static char *M_WriteNumberWrapped(
     char *data, const char *key, const JSON_NUMBER *number)
 {
-    assert(data);
-    assert(key);
-    assert(number);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
+    ASSERT(number != NULL);
     char *str = number->number;
 
     // hexadecimal numbers
@@ -371,7 +371,7 @@ static char *M_WriteNumberWrapped(
     if (str[0] == '+' || str[0] == '-') {
         str++;
     }
-    assert(str[0]);
+    ASSERT(str[0] != '\0');
 
     if (!strcmp(str, "Infinity")) {
         // BSON does not support Infinity.
@@ -390,8 +390,8 @@ static char *M_WriteNumberWrapped(
 
 static char *M_WriteString(char *data, const JSON_STRING *string)
 {
-    assert(data);
-    assert(string);
+    ASSERT(data != NULL);
+    ASSERT(string != NULL);
     *(uint32_t *)data = string->string_size + 1;
     data += sizeof(uint32_t);
     memcpy(data, string->string, string->string_size);
@@ -403,9 +403,9 @@ static char *M_WriteString(char *data, const JSON_STRING *string)
 static char *M_WriteStringWrapped(
     char *data, const char *key, const JSON_STRING *string)
 {
-    assert(data);
-    assert(key);
-    assert(string);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
+    ASSERT(string != NULL);
     data = M_WriteMarker(data, key, '\x02');
     data = M_WriteString(data, string);
     return data;
@@ -413,8 +413,8 @@ static char *M_WriteStringWrapped(
 
 static char *M_WriteArray(char *data, const JSON_ARRAY *array)
 {
-    assert(data);
-    assert(array);
+    ASSERT(data != NULL);
+    ASSERT(array != NULL);
     char key[12];
     int idx = 0;
     char *old = data;
@@ -433,9 +433,9 @@ static char *M_WriteArray(char *data, const JSON_ARRAY *array)
 static char *M_WriteArrayWrapped(
     char *data, const char *key, const JSON_ARRAY *array)
 {
-    assert(data);
-    assert(key);
-    assert(array);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
+    ASSERT(array != NULL);
     data = M_WriteMarker(data, key, '\x04');
     data = M_WriteArray(data, array);
     return data;
@@ -443,8 +443,8 @@ static char *M_WriteArrayWrapped(
 
 static char *M_WriteObject(char *data, const JSON_OBJECT *object)
 {
-    assert(data);
-    assert(object);
+    ASSERT(data != NULL);
+    ASSERT(object != NULL);
     char *old = data;
     data += sizeof(int32_t);
     for (JSON_OBJECT_ELEMENT *element = object->start; element != NULL;
@@ -459,9 +459,9 @@ static char *M_WriteObject(char *data, const JSON_OBJECT *object)
 static char *M_WriteObjectWrapped(
     char *data, const char *key, const JSON_OBJECT *object)
 {
-    assert(data);
-    assert(key);
-    assert(object);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
+    ASSERT(object != NULL);
     data = M_WriteMarker(data, key, '\x03');
     data = M_WriteObject(data, object);
     return data;
@@ -469,8 +469,8 @@ static char *M_WriteObjectWrapped(
 
 static char *M_WriteValue(char *data, const JSON_VALUE *value)
 {
-    assert(data);
-    assert(value);
+    ASSERT(data != NULL);
+    ASSERT(value != NULL);
     switch (value->type) {
     case JSON_TYPE_ARRAY:
         data = M_WriteArray(data, (JSON_ARRAY *)value->payload);
@@ -479,7 +479,7 @@ static char *M_WriteValue(char *data, const JSON_VALUE *value)
         data = M_WriteObject(data, (JSON_OBJECT *)value->payload);
         break;
     default:
-        assert(0);
+        ASSERT_FAIL();
     }
     return data;
 }
@@ -487,9 +487,9 @@ static char *M_WriteValue(char *data, const JSON_VALUE *value)
 static char *M_WriteValueWrapped(
     char *data, const char *key, const JSON_VALUE *value)
 {
-    assert(data);
-    assert(key);
-    assert(value);
+    ASSERT(data != NULL);
+    ASSERT(key != NULL);
+    ASSERT(value != NULL);
     switch (value->type) {
     case JSON_TYPE_NULL:
         return M_WriteNullWrapped(data, key);
@@ -512,7 +512,7 @@ static char *M_WriteValueWrapped(
 
 void *BSON_Write(const JSON_VALUE *value, size_t *out_size)
 {
-    assert(value);
+    ASSERT(value != NULL);
     *out_size = -1;
     if (value == NULL) {
         return NULL;
@@ -525,7 +525,7 @@ void *BSON_Write(const JSON_VALUE *value, size_t *out_size)
 
     char *data = Memory_Alloc(size);
     char *data_end = M_WriteValue(data, value);
-    assert((size_t)(data_end - data) == size);
+    ASSERT((size_t)(data_end - data) == size);
 
     if (out_size != NULL) {
         *out_size = size;

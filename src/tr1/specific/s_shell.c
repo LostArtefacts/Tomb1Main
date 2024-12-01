@@ -25,6 +25,8 @@
     #include <objbase.h>
     #include <windows.h>
 #endif
+#include <libtrx/debug.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_events.h>
@@ -33,7 +35,6 @@
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_video.h>
-#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -335,7 +336,7 @@ static void M_SetGLBackend(const GFX_GL_BACKEND backend)
         break;
 
     case GFX_GL_INVALID_BACKEND:
-        assert(false);
+        ASSERT_FAIL();
         break;
     }
 }

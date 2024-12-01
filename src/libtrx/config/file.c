@@ -1,11 +1,11 @@
 #include "config/file.h"
 
+#include "debug.h"
 #include "filesystem.h"
 #include "game/console/history.h"
 #include "log.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <string.h>
 
 #define EMPTY_ROOT "{}"
@@ -143,7 +143,7 @@ bool ConfigFile_Read(const CONFIG_IO_ARGS *const args)
     char *default_data = NULL;
     char *enforced_data = NULL;
 
-    assert(args->default_path != NULL);
+    ASSERT(args->default_path != NULL);
     if (!File_Load(args->default_path, &default_data, NULL)) {
         LOG_WARNING(
             "'%s' not loaded - default settings will apply",
@@ -168,7 +168,7 @@ bool ConfigFile_Write(const CONFIG_IO_ARGS *const args)
     char *old_data = NULL;
     char *enforced_data = NULL;
 
-    assert(args->default_path != NULL);
+    ASSERT(args->default_path != NULL);
     File_Load(args->default_path, &old_data, NULL);
 
     if (args->enforced_path != NULL) {

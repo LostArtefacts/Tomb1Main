@@ -1,13 +1,14 @@
 #include "memory.h"
 
-#include <assert.h>
+#include "debug.h"
+
 #include <stdlib.h>
 #include <string.h>
 
 void *Memory_Alloc(const size_t size)
 {
     void *result = malloc(size);
-    assert(result != NULL);
+    ASSERT(result != NULL);
     memset(result, 0, size);
     return result;
 }
@@ -15,7 +16,7 @@ void *Memory_Alloc(const size_t size)
 void *Memory_Realloc(void *const memory, const size_t size)
 {
     void *result = realloc(memory, size);
-    assert(result != NULL);
+    ASSERT(result != NULL);
     return result;
 }
 
@@ -28,7 +29,7 @@ void Memory_Free(void *const memory)
 
 void Memory_FreePointer(void *arg)
 {
-    assert(arg != NULL);
+    ASSERT(arg != NULL);
     void *memory;
     memcpy(&memory, arg, sizeof(void *));
     memcpy(arg, &(void *) { NULL }, sizeof(void *));
@@ -37,7 +38,7 @@ void Memory_FreePointer(void *arg)
 
 char *Memory_Dup(const char *const buffer, const size_t size)
 {
-    assert(buffer != NULL);
+    ASSERT(buffer != NULL);
     char *memory = Memory_Alloc(size);
     memcpy(memory, buffer, size);
     return memory;
@@ -45,7 +46,7 @@ char *Memory_Dup(const char *const buffer, const size_t size)
 
 char *Memory_DupStr(const char *const string)
 {
-    assert(string != NULL);
+    ASSERT(string != NULL);
     char *memory = Memory_Alloc(strlen(string) + 1);
     strcpy(memory, string);
     return memory;

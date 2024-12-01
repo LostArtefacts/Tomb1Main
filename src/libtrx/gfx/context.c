@@ -10,7 +10,6 @@
 #include "memory.h"
 
 #include <SDL2/SDL_video.h>
-#include <assert.h>
 #include <string.h>
 
 typedef struct {

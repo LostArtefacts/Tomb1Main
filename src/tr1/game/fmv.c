@@ -10,6 +10,7 @@
 #include "specific/s_output.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/engine/video.h>
 #include <libtrx/filesystem.h>
@@ -17,7 +18,6 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-#include <assert.h>
 #include <stddef.h>
 
 static bool m_Muted = false;
@@ -77,7 +77,7 @@ static void *M_LockSurface(void *const surface, void *const user_data)
 {
     GFX_2D_SURFACE_DESC *surface_desc = user_data;
     bool result = GFX_2D_Surface_Lock(surface, surface_desc);
-    assert(result);
+    ASSERT(result);
     return surface_desc->pixels;
 }
 

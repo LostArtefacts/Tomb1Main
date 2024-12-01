@@ -10,13 +10,13 @@
 #include "items.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/debug.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 #include <libtrx/virtual_file.h>
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -349,7 +349,7 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
             info->anim_frame_count++;
             info->anim_frame_mesh_rot_count += num_meshes;
         }
-        assert(VFile_GetPos(fp) == frame_data_end);
+        ASSERT(VFile_GetPos(fp) == frame_data_end);
 
         VFile_SetPos(fp, prev_pos);
     }
@@ -567,7 +567,7 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
         VFile_Read(fp, mesh_rots, sizeof(int32_t) * frame->nmeshes);
         mesh_rots += frame->nmeshes;
     }
-    assert(VFile_GetPos(fp) == frame_data_end);
+    ASSERT(VFile_GetPos(fp) == frame_data_end);
 
     for (int32_t i = 0; i < inj_info->anim_count; i++) {
         ANIM *anim = &g_Anims[level_info->anim_count + i];
@@ -599,7 +599,7 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
             }
         }
         anim->frame_ofs += level_info->anim_frame_data_count * 2;
-        assert(found);
+        ASSERT(found);
         if (anim->num_changes) {
             anim->change_idx += level_info->anim_change_count;
         }
@@ -726,7 +726,7 @@ static void M_ObjectData(
                     break;
                 }
             }
-            assert(found);
+            ASSERT(found);
         }
 
         if (num_meshes) {

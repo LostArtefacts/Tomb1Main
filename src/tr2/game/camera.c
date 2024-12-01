@@ -14,9 +14,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 #define CHASE_SPEED 10
 #define CHASE_ELEVATION (WALL_L * 3 / 2) // = 1536
@@ -39,7 +38,7 @@ void __cdecl Camera_Initialise(void)
 
 void __cdecl Camera_ResetPosition(void)
 {
-    assert(g_LaraItem);
+    ASSERT(g_LaraItem != NULL);
     g_Camera.shift = g_LaraItem->pos.y - WALL_L;
 
     g_Camera.target.x = g_LaraItem->pos.x;
@@ -890,7 +889,7 @@ void __cdecl Camera_UpdateCutscene(void)
 
 void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *fd)
 {
-    assert(false);
+    ASSERT_FAIL();
 }
 
 void Camera_RefreshFromTrigger(const TRIGGER *const trigger)

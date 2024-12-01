@@ -1,16 +1,15 @@
 #include "gfx/2d/2d_renderer.h"
 
+#include "debug.h"
 #include "gfx/gl/gl_core_3_3.h"
 #include "gfx/gl/utils.h"
 #include "log.h"
-
-#include <assert.h>
 
 void GFX_2D_Renderer_Init(
     GFX_2D_RENDERER *renderer, const GFX_CONFIG *const config)
 {
     LOG_INFO("");
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
 
     GFX_GL_Buffer_Init(&renderer->surface_buffer, GL_ARRAY_BUFFER);
     GFX_GL_Buffer_Bind(&renderer->surface_buffer);
@@ -53,7 +52,7 @@ void GFX_2D_Renderer_Init(
 void GFX_2D_Renderer_Close(GFX_2D_RENDERER *renderer)
 {
     LOG_INFO("");
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
 
     GFX_GL_VertexArray_Close(&renderer->surface_format);
     GFX_GL_Buffer_Close(&renderer->surface_buffer);
@@ -65,7 +64,7 @@ void GFX_2D_Renderer_Close(GFX_2D_RENDERER *renderer)
 void GFX_2D_Renderer_Upload(
     GFX_2D_RENDERER *renderer, GFX_2D_SURFACE_DESC *desc, const uint8_t *data)
 {
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     const uint32_t width = desc->width;
     const uint32_t height = desc->height;
 
@@ -91,7 +90,7 @@ void GFX_2D_Renderer_Upload(
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *renderer)
 {
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Buffer_Bind(&renderer->surface_buffer);
     GFX_GL_VertexArray_Bind(&renderer->surface_format);

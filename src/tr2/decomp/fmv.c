@@ -10,12 +10,12 @@
 #include "global/vars.h"
 #include "lib/ddraw.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/video.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-#include <assert.h>
 #include <string.h>
 
 static bool m_Muted = false;
@@ -251,7 +251,7 @@ static void *M_LockSurface(void *const surface_, void *const user_data)
 {
     LPDDS surface = surface_;
     LPDDSURFACEDESC desc = user_data;
-    assert(desc != NULL);
+    ASSERT(desc != NULL);
 
     HRESULT rc;
     while (true) {

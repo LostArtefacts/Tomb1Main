@@ -11,7 +11,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 void __cdecl Gun_Control(void)
 {
@@ -191,7 +191,7 @@ void __cdecl Gun_Control(void)
 
         if (g_Input.action) {
             AMMO_INFO *const ammo = Gun_GetAmmoInfo(g_Lara.gun_type);
-            assert(ammo != NULL);
+            ASSERT(ammo != NULL);
 
             if (ammo->ammo <= 0) {
                 ammo->ammo = 0;
@@ -377,21 +377,21 @@ AMMO_INFO *Gun_GetAmmoInfo(const LARA_GUN_TYPE gun_type)
 void Gun_SetLaraHandLMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id = Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_HAND_L, object_id);
 }
 
 void Gun_SetLaraHandRMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id = Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_HAND_R, object_id);
 }
 
 void Gun_SetLaraBackMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id = Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_TORSO, object_id);
     g_Lara.back_gun = object_id;
 }
@@ -399,13 +399,13 @@ void Gun_SetLaraBackMesh(const LARA_GUN_TYPE weapon_type)
 void Gun_SetLaraHolsterLMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id = Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_THIGH_L, object_id);
 }
 
 void Gun_SetLaraHolsterRMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id = Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_THIGH_R, object_id);
 }

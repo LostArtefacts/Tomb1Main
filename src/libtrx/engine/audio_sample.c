@@ -1,10 +1,10 @@
 #include "audio_internal.h"
 
+#include "debug.h"
 #include "log.h"
 #include "memory.h"
 
 #include <SDL2/SDL_audio.h>
-#include <assert.h>
 #include <errno.h>
 #include <libavcodec/avcodec.h>
 #include <libavcodec/codec.h>
@@ -90,8 +90,8 @@ static bool M_RecalculateChannelVolumes(int32_t sound_id)
 
 static int32_t M_ReadAVBuffer(void *opaque, uint8_t *dst, int32_t dst_size)
 {
-    assert(opaque != NULL);
-    assert(dst != NULL);
+    ASSERT(opaque != NULL);
+    ASSERT(dst != NULL);
     AUDIO_AV_BUFFER *src = opaque;
     int32_t read = dst_size >= src->remaining ? src->remaining : dst_size;
     if (!read) {
@@ -105,7 +105,7 @@ static int32_t M_ReadAVBuffer(void *opaque, uint8_t *dst, int32_t dst_size)
 
 static int64_t M_SeekAVBuffer(void *opaque, int64_t offset, int32_t whence)
 {
-    assert(opaque != NULL);
+    ASSERT(opaque != NULL);
     AUDIO_AV_BUFFER *src = opaque;
     if (whence & AVSEEK_SIZE) {
         return src->size;
@@ -138,7 +138,7 @@ static int64_t M_SeekAVBuffer(void *opaque, int64_t offset, int32_t whence)
 
 static bool M_Convert(const int32_t sample_id)
 {
-    assert(sample_id >= 0 && sample_id < m_LoadedSamplesCount);
+    ASSERT(sample_id >= 0 && sample_id < m_LoadedSamplesCount);
 
     bool result = false;
     AUDIO_SAMPLE *const sample = &m_LoadedSamples[sample_id];
@@ -480,7 +480,7 @@ bool Audio_Sample_UnloadAll(void)
 bool Audio_Sample_LoadSingle(
     const int32_t sample_id, const char *const data, const size_t size)
 {
-    assert(data != NULL);
+    ASSERT(data != NULL);
 
     if (!g_AudioDeviceID) {
         LOG_ERROR("Unitialized audio device");
@@ -510,14 +510,14 @@ bool Audio_Sample_LoadSingle(
 
 bool Audio_Sample_LoadMany(size_t count, const char **contents, size_t *sizes)
 {
-    assert(contents != NULL);
-    assert(sizes != NULL);
+    ASSERT(contents != NULL);
+    ASSERT(sizes != NULL);
 
     if (!g_AudioDeviceID) {
         return false;
     }
 
-    assert(count <= AUDIO_MAX_SAMPLES);
+    ASSERT(count <= AUDIO_MAX_SAMPLES);
 
     Audio_Sample_CloseAll();
     Audio_Sample_UnloadAll();

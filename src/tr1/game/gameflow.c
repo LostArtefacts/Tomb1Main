@@ -17,6 +17,7 @@
 #include "game/savegame.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
@@ -24,7 +25,6 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-#include <assert.h>
 #include <string.h>
 
 typedef struct {
@@ -1469,7 +1469,7 @@ void GameFlow_LoadStrings(int32_t level_num)
     }
 
     if (level_num >= 0) {
-        assert(level_num < g_GameFlow.level_count);
+        ASSERT(level_num < g_GameFlow.level_count);
         const GAMEFLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
         M_ScanLevelText(level->object_strings, Object_SetName);
         M_ScanLevelText(level->examine_strings, Object_SetDescription);

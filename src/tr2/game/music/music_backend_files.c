@@ -1,12 +1,11 @@
 
 #include "game/music/music_backend_files.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
-
-#include <assert.h>
 
 typedef struct {
     const char *dir;
@@ -36,26 +35,26 @@ static char *M_GetTrackFileName(const char *base_dir, int32_t track)
 
 static bool M_Init(MUSIC_BACKEND *const backend)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     const BACKEND_DATA *data = backend->data;
-    assert(data->dir != NULL);
+    ASSERT(data->dir != NULL);
     return File_DirExists(data->dir);
 }
 
 static const char *M_Describe(const MUSIC_BACKEND *const backend)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     const BACKEND_DATA *const data = backend->data;
-    assert(data != NULL);
+    ASSERT(data != NULL);
     return data->description;
 }
 
 static int32_t M_Play(
     const MUSIC_BACKEND *const backend, const int32_t track_id)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     const BACKEND_DATA *const data = backend->data;
-    assert(data != NULL);
+    ASSERT(data != NULL);
 
     char *file_path = M_GetTrackFileName(data->dir, track_id);
     if (file_path == NULL) {
@@ -68,7 +67,7 @@ static int32_t M_Play(
 
 MUSIC_BACKEND *Music_Backend_Files_Factory(const char *path)
 {
-    assert(path != NULL);
+    ASSERT(path != NULL);
 
     const char *description_fmt = "Directory (directory: %s)";
     const size_t description_size = snprintf(NULL, 0, description_fmt, path);

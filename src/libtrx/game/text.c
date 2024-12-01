@@ -1,10 +1,10 @@
 #include "game/text.h"
 
+#include "debug.h"
 #include "log.h"
 #include "memory.h"
 #include "utils.h"
 
-#include <assert.h>
 #include <string.h>
 #include <uthash.h>
 
@@ -171,7 +171,7 @@ void Text_ChangeText(TEXTSTRING *const text, const char *const content)
         return;
     }
 
-    assert(content != NULL);
+    ASSERT(content != NULL);
     Memory_FreePointer(&text->content);
     Memory_FreePointer(&text->glyphs);
     if (!text->flags.active) {

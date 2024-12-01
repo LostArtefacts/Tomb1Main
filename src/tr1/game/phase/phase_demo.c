@@ -26,10 +26,10 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -370,7 +370,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         return M_FadeOut();
     }
 
-    assert(false);
+    ASSERT_FAIL();
     return (PHASE_CONTROL) {
         .end = true,
         .command = { .action = GF_CONTINUE_SEQUENCE },

@@ -1,11 +1,11 @@
 #include "game/music/music_backend_cdaudio.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-#include <assert.h>
 #include <global/const.h>
 #include <inttypes.h>
 #include <stdarg.h>
@@ -30,7 +30,7 @@ static int32_t M_Play(const MUSIC_BACKEND *backend, int32_t track_id);
 
 static bool M_Parse(BACKEND_DATA *const data)
 {
-    assert(data != NULL);
+    ASSERT(data != NULL);
 
     char *track_content = NULL;
     size_t track_content_size;
@@ -104,9 +104,9 @@ parse_end:
 
 static bool M_Init(MUSIC_BACKEND *const backend)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     BACKEND_DATA *data = backend->data;
-    assert(data != NULL);
+    ASSERT(data != NULL);
 
     MYFILE *const fp = File_Open(data->path, FILE_OPEN_READ);
     if (fp == NULL) {
@@ -123,18 +123,18 @@ static bool M_Init(MUSIC_BACKEND *const backend)
 
 static const char *M_Describe(const MUSIC_BACKEND *const backend)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     const BACKEND_DATA *const data = backend->data;
-    assert(data != NULL);
+    ASSERT(data != NULL);
     return data->description;
 }
 
 static int32_t M_Play(
     const MUSIC_BACKEND *const backend, const int32_t track_id)
 {
-    assert(backend != NULL);
+    ASSERT(backend != NULL);
     const BACKEND_DATA *const data = backend->data;
-    assert(data != NULL);
+    ASSERT(data != NULL);
 
     const int32_t track_idx = track_id - 1;
     const CDAUDIO_TRACK *track = &data->tracks[track_idx];
@@ -157,7 +157,7 @@ static int32_t M_Play(
 
 MUSIC_BACKEND *Music_Backend_CDAudio_Factory(const char *path)
 {
-    assert(path != NULL);
+    ASSERT(path != NULL);
 
     const char *description_fmt = "CDAudio (path: %s)";
     const size_t description_size = snprintf(NULL, 0, description_fmt, path);

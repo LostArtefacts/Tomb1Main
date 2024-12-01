@@ -1,8 +1,7 @@
 #include "config/common.h"
 
 #include "config/file.h"
-
-#include <assert.h>
+#include "debug.h"
 
 EVENT_MANAGER *m_EventManager = NULL;
 
@@ -58,13 +57,13 @@ bool Config_Write(void)
 int32_t Config_SubscribeChanges(
     const EVENT_LISTENER listener, void *const user_data)
 {
-    assert(m_EventManager != NULL);
+    ASSERT(m_EventManager != NULL);
     return EventManager_Subscribe(
         m_EventManager, "write", NULL, listener, user_data);
 }
 
 void Config_UnsubscribeChanges(const int32_t listener_id)
 {
-    assert(m_EventManager != NULL);
+    ASSERT(m_EventManager != NULL);
     return EventManager_Unsubscribe(m_EventManager, listener_id);
 }

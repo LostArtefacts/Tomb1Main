@@ -13,9 +13,9 @@
 #include "global/vars.h"
 #include "math/matrix.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
 
-#include <assert.h>
 #include <stddef.h>
 
 OBJECT *Object_GetObject(GAME_OBJECT_ID object_id)
@@ -240,7 +240,7 @@ void Object_DrawInterpolatedObject(
     const FRAME_INFO *const frame1, const FRAME_INFO *const frame2,
     const int32_t frac, const int32_t rate)
 {
-    assert(frame1);
+    ASSERT(frame1 != NULL);
     int32_t clip = Output_GetObjectBounds(&frame1->bounds);
     if (!clip) {
         return;
@@ -250,7 +250,7 @@ void Object_DrawInterpolatedObject(
     int32_t mesh_num = 1;
     int32_t *bone = &g_AnimBones[object->bone_idx];
 
-    assert(rate);
+    ASSERT(rate != 0);
     if (!frac) {
         Matrix_TranslateRel(
             frame1->offset.x, frame1->offset.y, frame1->offset.z);
@@ -293,7 +293,7 @@ void Object_DrawInterpolatedObject(
             bone += 4;
         }
     } else {
-        assert(frame2);
+        ASSERT(frame2 != NULL);
         Matrix_InitInterpolate(frac, rate);
         Matrix_TranslateRel_ID(
             frame1->offset.x, frame1->offset.y, frame1->offset.z,

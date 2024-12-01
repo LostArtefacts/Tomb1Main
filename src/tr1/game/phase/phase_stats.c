@@ -17,7 +17,8 @@
 #include "global/types.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -239,7 +240,7 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
 static void M_Start(const PHASE_STATS_ARGS *const args)
 {
     if (args != NULL && args->total) {
-        assert(args->level_type);
+        ASSERT(args->level_type >= GFL_NORMAL);
         Output_LoadBackdropImage(args->background_path);
     } else {
         Output_LoadBackdropImage(NULL);

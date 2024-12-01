@@ -1,10 +1,10 @@
 #include "virtual_file.h"
 
+#include "debug.h"
 #include "filesystem.h"
 #include "log.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <string.h>
 
 VFILE *VFile_CreateFromPath(const char *const path)
@@ -55,21 +55,21 @@ size_t VFile_GetPos(const VFILE *file)
 
 void VFile_SetPos(VFILE *const file, const size_t pos)
 {
-    assert(pos <= file->size);
+    ASSERT(pos <= file->size);
     file->cur_ptr = file->content + pos;
 }
 
 void VFile_Skip(VFILE *file, int32_t offset)
 {
     const size_t cur_pos = VFile_GetPos(file);
-    assert(cur_pos + offset <= file->size);
+    ASSERT(cur_pos + offset <= file->size);
     file->cur_ptr += offset;
 }
 
 void VFile_Read(VFILE *file, void *target, size_t size)
 {
     const size_t cur_pos = VFile_GetPos(file);
-    assert(cur_pos + size <= file->size);
+    ASSERT(cur_pos + size <= file->size);
     memcpy(target, file->cur_ptr, size);
     file->cur_ptr += size;
 }

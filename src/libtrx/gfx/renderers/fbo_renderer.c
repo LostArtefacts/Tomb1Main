@@ -1,5 +1,6 @@
 #include "gfx/renderers/fbo_renderer.h"
 
+#include "debug.h"
 #include "gfx/common.h"
 #include "gfx/context.h"
 #include "gfx/gl/buffer.h"
@@ -14,7 +15,6 @@
 #include "memory.h"
 
 #include <SDL2/SDL_video.h>
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -66,10 +66,10 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
 {
     LOG_INFO("");
 
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     renderer->priv = (M_CONTEXT *)Memory_Alloc(sizeof(M_CONTEXT));
     M_CONTEXT *priv = renderer->priv;
-    assert(priv != NULL);
+    ASSERT(priv != NULL);
 
     priv->config = config;
 
@@ -148,9 +148,9 @@ static void M_Shutdown(GFX_RENDERER *renderer)
 {
     LOG_INFO("");
 
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     M_CONTEXT *priv = renderer->priv;
-    assert(priv != NULL);
+    ASSERT(priv != NULL);
 
     if (!priv->fbo) {
         return;
@@ -178,9 +178,9 @@ static void M_Reset(GFX_RENDERER *renderer)
 
 static void M_Render(GFX_RENDERER *renderer)
 {
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     M_CONTEXT *priv = renderer->priv;
-    assert(priv != NULL);
+    ASSERT(priv != NULL);
 
     const GLuint filter = priv->config->display_filter == GFX_TF_BILINEAR
         ? GL_LINEAR
@@ -227,9 +227,9 @@ static void M_Render(GFX_RENDERER *renderer)
 
 static void M_Bind(const GFX_RENDERER *renderer)
 {
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
     M_CONTEXT *priv = renderer->priv;
-    assert(priv != NULL);
+    ASSERT(priv != NULL);
     glBindFramebuffer(GL_FRAMEBUFFER, priv->fbo);
 }
 

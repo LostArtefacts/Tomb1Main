@@ -1,10 +1,10 @@
 #include "engine/image.h"
 
+#include "debug.h"
 #include "filesystem.h"
 #include "log.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <errno.h>
 #include <libavcodec/avcodec.h>
 #include <libavcodec/codec.h>
@@ -51,7 +51,7 @@ static IMAGE_BLIT M_GetBlit(
 
 static bool M_Init(const char *const path, IMAGE_READER_CONTEXT *const ctx)
 {
-    assert(ctx != NULL);
+    ASSERT(ctx != NULL);
     ctx->format_ctx = NULL;
     ctx->codec = NULL;
     ctx->codec_ctx = NULL;
@@ -188,9 +188,9 @@ static IMAGE *M_ConstructImage(
     IMAGE_READER_CONTEXT *const ctx, const int32_t target_width,
     const int32_t target_height, IMAGE_FIT_MODE fit_mode)
 {
-    assert(ctx != NULL);
-    assert(target_width > 0);
-    assert(target_height > 0);
+    ASSERT(ctx != NULL);
+    ASSERT(target_width > 0);
+    ASSERT(target_height > 0);
 
     IMAGE_BLIT blit = M_GetBlit(
         ctx->frame->width, ctx->frame->height, target_width, target_height,
@@ -302,7 +302,7 @@ static IMAGE_BLIT M_GetBlit(
         break;
 
     default:
-        assert(false);
+        ASSERT_FAIL();
         break;
     }
     return blit;
@@ -310,7 +310,7 @@ static IMAGE_BLIT M_GetBlit(
 
 IMAGE *Image_CreateFromFile(const char *const path)
 {
-    assert(path != NULL);
+    ASSERT(path != NULL);
 
     IMAGE_READER_CONTEXT ctx;
     if (!M_Init(path, &ctx)) {
@@ -329,7 +329,7 @@ IMAGE *Image_CreateFromFileInto(
     const char *const path, const int32_t target_width,
     const int32_t target_height, const IMAGE_FIT_MODE fit_mode)
 {
-    assert(path != NULL);
+    ASSERT(path != NULL);
 
     IMAGE_READER_CONTEXT ctx;
     if (!M_Init(path, &ctx)) {
@@ -346,8 +346,8 @@ IMAGE *Image_CreateFromFileInto(
 
 bool Image_SaveToFile(const IMAGE *const image, const char *const path)
 {
-    assert(image);
-    assert(path);
+    ASSERT(image != NULL);
+    ASSERT(path != NULL);
 
     bool result = false;
 
@@ -506,10 +506,10 @@ IMAGE *Image_Scale(
     const IMAGE *const source_image, size_t target_width, size_t target_height,
     IMAGE_FIT_MODE fit_mode)
 {
-    assert(source_image);
-    assert(source_image->data);
-    assert(target_width > 0);
-    assert(target_height > 0);
+    ASSERT(source_image != NULL);
+    ASSERT(source_image->data != NULL);
+    ASSERT(target_width > 0);
+    ASSERT(target_height > 0);
 
     IMAGE_BLIT blit = M_GetBlit(
         source_image->width, source_image->height, target_width, target_height,

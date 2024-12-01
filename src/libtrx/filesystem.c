@@ -1,12 +1,12 @@
 #include "filesystem.h"
 
+#include "debug.h"
 #include "log.h"
 #include "memory.h"
 #include "strings.h"
 #include "utils.h"
 
 #include <SDL2/SDL_filesystem.h>
-#include <assert.h>
 #include <dirent.h>
 #include <stdbool.h>
 
@@ -45,7 +45,7 @@ static void M_PathAppendPart(char *path, const char *part)
 
 static char *M_CasePath(char const *path)
 {
-    assert(path);
+    ASSERT(path != NULL);
 
     char *path_copy = Memory_DupStr(path);
     if (M_ExistsRaw(path)) {
@@ -394,7 +394,7 @@ void File_Close(MYFILE *file)
 
 bool File_Load(const char *path, char **output_data, size_t *output_size)
 {
-    assert(output_data != NULL);
+    ASSERT(output_data != NULL);
 
     MYFILE *fp = File_Open(path, FILE_OPEN_READ);
     if (!fp) {
@@ -426,7 +426,7 @@ bool File_Load(const char *path, char **output_data, size_t *output_size)
 void File_CreateDirectory(const char *path)
 {
     char *full_path = File_GetFullPath(path);
-    assert(full_path);
+    ASSERT(full_path != NULL);
 #if defined(_WIN32)
     _mkdir(full_path);
 #else

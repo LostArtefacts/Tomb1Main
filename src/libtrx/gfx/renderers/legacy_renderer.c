@@ -1,17 +1,17 @@
 #include "gfx/renderers/legacy_renderer.h"
 
+#include "debug.h"
 #include "gfx/context.h"
 #include "gfx/gl/utils.h"
 #include "gfx/screenshot.h"
 
 #include <SDL2/SDL_video.h>
-#include <assert.h>
 
 static void M_SwapBuffers(GFX_RENDERER *renderer);
 
 static void M_SwapBuffers(GFX_RENDERER *renderer)
 {
-    assert(renderer != NULL);
+    ASSERT(renderer != NULL);
 
     GFX_Context_SwitchToWindowViewportAR();
     if (GFX_Context_GetScheduledScreenshotPath()) {

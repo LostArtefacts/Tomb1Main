@@ -12,9 +12,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 #define NEAR_ANGLE (PHD_DEGREE * 15) // = 2730
 
@@ -203,7 +202,7 @@ int32_t __cdecl Gun_FireWeapon(
 {
     const WEAPON_INFO *const winfo = &g_Weapons[weapon_type];
     AMMO_INFO *const ammo = Gun_GetAmmoInfo(weapon_type);
-    assert(ammo != NULL);
+    ASSERT(ammo != NULL);
 
     if (ammo == &g_Lara.pistol_ammo || g_SaveGame.bonus_flag) {
         ammo->ammo = 1000;

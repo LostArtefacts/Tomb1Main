@@ -8,9 +8,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 #define SKIDOO_DRIVER_MIN_TURN (SKIDOO_MAX_TURN / 3) // = 364
 #define SKIDOO_DRIVER_TARGET_ANGLE (PHD_DEGREE * 15) // = 2730
@@ -188,7 +187,7 @@ void __cdecl SkidooDriver_Initialise(const int16_t item_num)
     ITEM *const skidoo_driver = Item_Get(item_num);
 
     const int16_t skidoo_item_num = Item_Create();
-    assert(skidoo_item_num != NO_ITEM);
+    ASSERT(skidoo_item_num != NO_ITEM);
 
     ITEM *const skidoo = Item_Get(skidoo_item_num);
     skidoo->object_id = O_SKIDOO_ARMED;

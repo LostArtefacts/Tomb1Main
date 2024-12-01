@@ -1,10 +1,9 @@
 #include "gfx/gl/texture.h"
 
+#include "debug.h"
 #include "gfx/gl/utils.h"
 #include "memory.h"
 #include "utils.h"
-
-#include <assert.h>
 
 GFX_GL_TEXTURE *GFX_GL_Texture_Create(GLenum target)
 {
@@ -23,7 +22,7 @@ void GFX_GL_Texture_Free(GFX_GL_TEXTURE *texture)
 
 void GFX_GL_Texture_Init(GFX_GL_TEXTURE *texture, GLenum target)
 {
-    assert(texture != NULL);
+    ASSERT(texture != NULL);
     texture->target = target;
     glGenTextures(1, &texture->id);
     GFX_GL_CheckError();
@@ -32,7 +31,7 @@ void GFX_GL_Texture_Init(GFX_GL_TEXTURE *texture, GLenum target)
 
 void GFX_GL_Texture_Close(GFX_GL_TEXTURE *texture)
 {
-    assert(texture != NULL);
+    ASSERT(texture != NULL);
     if (texture->initialized) {
         glDeleteTextures(1, &texture->id);
         GFX_GL_CheckError();
@@ -42,8 +41,8 @@ void GFX_GL_Texture_Close(GFX_GL_TEXTURE *texture)
 
 void GFX_GL_Texture_Bind(GFX_GL_TEXTURE *texture)
 {
-    assert(texture != NULL);
-    assert(texture->initialized);
+    ASSERT(texture != NULL);
+    ASSERT(texture->initialized);
     glBindTexture(texture->target, texture->id);
     GFX_GL_CheckError();
 }
@@ -52,8 +51,8 @@ void GFX_GL_Texture_Load(
     GFX_GL_TEXTURE *texture, const void *data, int width, int height,
     GLint internal_format, GLint format)
 {
-    assert(texture != NULL);
-    assert(texture->initialized);
+    ASSERT(texture != NULL);
+    ASSERT(texture->initialized);
 
     GFX_GL_Texture_Bind(texture);
 
@@ -70,8 +69,8 @@ void GFX_GL_Texture_Load(
 
 void GFX_GL_Texture_LoadFromBackBuffer(GFX_GL_TEXTURE *const texture)
 {
-    assert(texture != NULL);
-    assert(texture->initialized);
+    ASSERT(texture != NULL);
+    ASSERT(texture->initialized);
 
     GFX_GL_Texture_Bind(texture);
 

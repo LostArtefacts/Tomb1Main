@@ -14,7 +14,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 #define DRAGON_CLOSE 900
 #define DRAGON_FAR 2300
@@ -126,7 +126,7 @@ void Dragon_SetupFront(void)
         return;
     }
 
-    assert(g_Objects[O_DRAGON_BACK].loaded);
+    ASSERT(g_Objects[O_DRAGON_BACK].loaded);
     obj->control = Dragon_Control;
     obj->collision = Dragon_Collision;
 

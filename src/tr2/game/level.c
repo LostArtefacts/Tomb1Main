@@ -14,12 +14,11 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
-
-#include <assert.h>
 
 static void M_LoadFromFile(const char *file_name, int32_t level_num);
 static void __cdecl M_LoadRooms(VFILE *file);
@@ -111,7 +110,7 @@ static void __cdecl M_LoadRooms(VFILE *const file)
     }
 
     g_Rooms = GameBuf_Alloc(sizeof(ROOM) * g_RoomCount, GBUF_ROOMS);
-    assert(g_Rooms != NULL);
+    ASSERT(g_Rooms != NULL);
 
     for (int32_t i = 0; i < g_RoomCount; i++) {
         ROOM *const r = &g_Rooms[i];

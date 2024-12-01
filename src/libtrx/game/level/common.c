@@ -1,5 +1,6 @@
 #include "game/level/common.h"
 
+#include "debug.h"
 #include "game/gamebuf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
@@ -7,8 +8,6 @@
 #include "log.h"
 #include "utils.h"
 #include "vector.h"
-
-#include <assert.h>
 
 static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
@@ -169,7 +168,7 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
 
     const size_t total_read =
         (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
-    assert(total_read == mesh_length);
+    ASSERT(total_read == mesh_length);
 #endif
 }
 

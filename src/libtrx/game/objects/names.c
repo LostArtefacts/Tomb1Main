@@ -1,12 +1,11 @@
 #include "game/objects/names.h"
 
+#include "debug.h"
 #include "game/game_string.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
 #include "memory.h"
 #include "strings/fuzzy_match.h"
-
-#include <assert.h>
 
 typedef struct {
     char *name;
@@ -30,7 +29,7 @@ void Object_SetName(const GAME_OBJECT_ID object_id, const char *const name)
 {
     M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
     Memory_FreePointer(&entry->name);
-    assert(name != NULL);
+    ASSERT(name != NULL);
     entry->name = Memory_DupStr(name);
 }
 
@@ -39,7 +38,7 @@ void Object_SetDescription(
 {
     M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
     Memory_FreePointer(&entry->description);
-    assert(description != NULL);
+    ASSERT(description != NULL);
     entry->description = Memory_DupStr(description);
 }
 

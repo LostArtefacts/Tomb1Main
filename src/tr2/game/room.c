@@ -17,9 +17,8 @@
 #include "global/utils.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 static int16_t M_GetFloorTiltHeight(const SECTOR *sector, int32_t x, int32_t z);
 static int16_t M_GetCeilingTiltHeight(
@@ -591,7 +590,7 @@ SECTOR *__cdecl Room_GetSector(
         *room_num = sector->portal_room.wall;
     }
 
-    assert(sector != NULL);
+    ASSERT(sector != NULL);
 
     if (y >= sector->floor.height) {
         while (sector->portal_room.pit != NO_ROOM) {
@@ -716,7 +715,7 @@ int32_t __cdecl Room_GetHeight(
 
 void __cdecl Room_Legacy_TestTriggers(const int16_t *fd, bool heavy)
 {
-    assert(false);
+    ASSERT_FAIL();
 }
 
 void Room_TestTriggers(const ITEM *const item)
@@ -758,7 +757,7 @@ int32_t __cdecl Room_GetCeiling(
 
 int16_t __cdecl Room_Legacy_GetDoor(const SECTOR *const sector)
 {
-    assert(false);
+    ASSERT_FAIL();
     return NO_ROOM;
 }
 
@@ -877,7 +876,7 @@ void __cdecl Room_AddFlipItems(const ROOM *const r)
 void __cdecl Room_Legacy_TriggerMusicTrack(
     const int16_t track, const int16_t flags, const int16_t type)
 {
-    assert(false);
+    ASSERT_FAIL();
 }
 
 int32_t Room_GetTotalCount(void)

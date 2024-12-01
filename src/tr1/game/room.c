@@ -17,7 +17,6 @@
 
 #include <libtrx/utils.h>
 
-#include <assert.h>
 #include <stddef.h>
 
 int32_t g_FlipTimer = 0;

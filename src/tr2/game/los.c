@@ -7,9 +7,8 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 int32_t __cdecl LOS_CheckX(
     const GAME_VECTOR *const start, GAME_VECTOR *const target)
@@ -328,7 +327,7 @@ int32_t __cdecl LOS_CheckSmashable(
             default:
                 break;
             }
-            assert(z_extent != NULL);
+            ASSERT(z_extent != NULL);
 
             int32_t failure = 0;
             if (ABS(dz) > ABS(dx)) {

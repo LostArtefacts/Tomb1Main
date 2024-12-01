@@ -14,7 +14,7 @@
 #include "math/math.h"
 #include "math/matrix.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 // Camera speed option ranges from 1-10, so index 0 is unused.
 static double m_ManualCameraMultiplier[11] = {
@@ -617,7 +617,7 @@ void Camera_Reset(void)
 
 void Camera_ResetPosition(void)
 {
-    assert(g_LaraItem);
+    ASSERT(g_LaraItem != NULL);
     g_Camera.shift = g_LaraItem->pos.y - WALL_L;
 
     g_Camera.target.x = g_LaraItem->pos.x;

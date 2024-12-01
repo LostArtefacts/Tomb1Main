@@ -1,6 +1,7 @@
 #include "game/console/common.h"
 
 #include "./internal.h"
+#include "debug.h"
 #include "game/console/extern.h"
 #include "game/game_string.h"
 #include "game/ui/widgets/console.h"
@@ -8,7 +9,6 @@
 #include "memory.h"
 #include "strings.h"
 
-#include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -71,7 +71,7 @@ int32_t Console_GetMaxLogCount(void)
 
 void Console_Log(const char *fmt, ...)
 {
-    assert(fmt != NULL);
+    ASSERT(fmt != NULL);
 
     va_list va;
 
@@ -123,7 +123,7 @@ COMMAND_RESULT Console_Eval(const char *const cmdline)
         .prefix = prefix,
         .args = args,
     };
-    assert(matching_cmd->proc != NULL);
+    ASSERT(matching_cmd->proc != NULL);
     const COMMAND_RESULT result = matching_cmd->proc(&ctx);
     Memory_FreePointer(&prefix);
 

@@ -21,10 +21,10 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/memory.h>
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -421,7 +421,7 @@ bool Savegame_Load(const int32_t slot_num)
 {
     GAME_INFO *const game_info = &g_GameInfo;
     SAVEGAME_INFO *savegame_info = &m_SavegameInfo[slot_num];
-    assert(savegame_info->format);
+    ASSERT(savegame_info->format != 0);
 
     M_LoadPreprocess();
 
@@ -505,10 +505,10 @@ bool Savegame_Save(const int32_t slot_num)
 
 bool Savegame_UpdateDeathCounters(int32_t slot_num, GAME_INFO *game_info)
 {
-    assert(game_info);
-    assert(slot_num >= 0);
+    ASSERT(game_info != NULL);
+    ASSERT(slot_num >= 0);
     SAVEGAME_INFO *savegame_info = &m_SavegameInfo[slot_num];
-    assert(savegame_info->format);
+    ASSERT(savegame_info->format != 0);
 
     bool ret = false;
     const SAVEGAME_STRATEGY *strategy = &m_Strategies[0];
@@ -529,9 +529,9 @@ bool Savegame_UpdateDeathCounters(int32_t slot_num, GAME_INFO *game_info)
 
 bool Savegame_LoadOnlyResumeInfo(int32_t slot_num, GAME_INFO *game_info)
 {
-    assert(game_info);
+    ASSERT(game_info != NULL);
     SAVEGAME_INFO *savegame_info = &m_SavegameInfo[slot_num];
-    assert(savegame_info->format);
+    ASSERT(savegame_info->format != 0);
 
     bool ret = false;
     const SAVEGAME_STRATEGY *strategy = &m_Strategies[0];

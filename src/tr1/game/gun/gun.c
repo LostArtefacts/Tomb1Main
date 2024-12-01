@@ -12,7 +12,8 @@
 #include "global/vars.h"
 #include "math/matrix.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -331,7 +332,7 @@ void Gun_SetLaraHandLMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id =
         weapon_type == LGT_UNARMED ? O_LARA : Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_HAND_L, object_id);
 }
 
@@ -339,7 +340,7 @@ void Gun_SetLaraHandRMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id =
         weapon_type == LGT_UNARMED ? O_LARA : Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_HAND_R, object_id);
 }
 
@@ -347,7 +348,7 @@ void Gun_SetLaraBackMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id =
         weapon_type == LGT_UNARMED ? O_LARA : Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_TORSO, object_id);
     g_Lara.back_gun_type = weapon_type;
 }
@@ -356,7 +357,7 @@ void Gun_SetLaraHolsterLMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id =
         weapon_type == LGT_UNARMED ? O_LARA : Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_THIGH_L, object_id);
     g_Lara.holsters_gun_type = weapon_type;
 }
@@ -365,7 +366,7 @@ void Gun_SetLaraHolsterRMesh(const LARA_GUN_TYPE weapon_type)
 {
     const GAME_OBJECT_ID object_id =
         weapon_type == LGT_UNARMED ? O_LARA : Gun_GetWeaponAnim(weapon_type);
-    assert(object_id != NO_OBJECT);
+    ASSERT(object_id != NO_OBJECT);
     Lara_SwapSingleMesh(LM_THIGH_R, object_id);
     g_Lara.holsters_gun_type = weapon_type;
 }

@@ -10,11 +10,10 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 #define VBUF_VISIBLE(a, b, c)                                                  \
     (((a).ys - (b).ys) * ((c).xs - (b).xs)                                     \
@@ -4462,7 +4461,7 @@ bool __cdecl Output_MakeScreenshot(const char *const path)
         IMAGE_PIXEL *dst = &image->data[width * y];
         switch (desc.ddpfPixelFormat.dwRGBBitCount) {
         case 8:
-            assert(desc.ddpfPixelFormat.dwFlags & DDPF_PALETTEINDEXED8);
+            ASSERT(desc.ddpfPixelFormat.dwFlags & DDPF_PALETTEINDEXED8);
             for (int32_t x = 0; x < width; x++) {
                 dst->r = g_GamePalette8[*src].red;
                 dst->g = g_GamePalette8[*src].green;

@@ -5,10 +5,9 @@
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/game/ui/events.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 static const INPUT_ROLE m_LeftRoles[] = {
     // clang-format off
@@ -226,7 +225,7 @@ static bool M_ListenDebounce(UI_CONTROLS_CONTROLLER *const controller)
 
 void UI_ControlsController_Init(UI_CONTROLS_CONTROLLER *const controller)
 {
-    assert(controller->events == NULL);
+    ASSERT(controller->events == NULL);
     controller->backend = INPUT_BACKEND_KEYBOARD;
     controller->state = UI_CONTROLS_STATE_NAVIGATE_BACKEND;
 

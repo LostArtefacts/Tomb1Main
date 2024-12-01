@@ -8,10 +8,10 @@
 #include "global/vars.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/log.h>
 
-#include <assert.h>
 #include <stddef.h>
 #include <string.h>
 
@@ -143,7 +143,7 @@ static int32_t M_ClipVertices(
     int j = 0;
 
     for (int i = 0; i < vertex_count; i++) {
-        assert(j < (int)buffer_capacity);
+        ASSERT(j < (int)buffer_capacity);
         GFX_3D_VERTEX *v1 = &buffer[j];
         GFX_3D_VERTEX *v2 = l;
         l = &vertices[i];
@@ -182,7 +182,7 @@ static int32_t M_ClipVertices(
             j++;
         }
 
-        assert(j < (int)buffer_capacity);
+        ASSERT(j < (int)buffer_capacity);
         v1 = &buffer[j];
 
         if (l->x < m_SurfaceMinX) {
@@ -235,10 +235,10 @@ static int32_t M_ClipVertices(
     j = 0;
 
     for (int i = 0; i < vertex_count; i++) {
-        assert(j < (int)vertices_capacity);
+        ASSERT(j < (int)vertices_capacity);
         GFX_3D_VERTEX *v1 = &vertices[j];
         GFX_3D_VERTEX *v2 = l;
-        assert(i < (int)buffer_capacity);
+        ASSERT(i < (int)buffer_capacity);
         l = &buffer[i];
 
         if (v2->y < m_SurfaceMinY) {
@@ -275,7 +275,7 @@ static int32_t M_ClipVertices(
             j++;
         }
 
-        assert(j < (int)vertices_capacity);
+        ASSERT(j < (int)vertices_capacity);
         v1 = &vertices[j];
 
         if (l->y < m_SurfaceMinY) {

@@ -6,7 +6,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#include <assert.h>
+#include <libtrx/debug.h>
 
 #define XIAN_KNIGHT_HITPOINTS 80
 #define XIAN_KNIGHT_RADIUS (WALL_L / 5) // = 204
@@ -18,7 +18,7 @@ void XianKnight_Setup(void)
         return;
     }
 
-    assert(g_Objects[O_XIAN_KNIGHT_STATUE].loaded);
+    ASSERT(g_Objects[O_XIAN_KNIGHT_STATUE].loaded);
 
     obj->initialise = XianKnight_Initialise;
     obj->draw_routine = XianKnight_Draw;

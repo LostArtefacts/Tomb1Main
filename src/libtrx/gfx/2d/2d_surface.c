@@ -1,10 +1,10 @@
 #include "gfx/2d/2d_surface.h"
 
+#include "debug.h"
 #include "gfx/context.h"
 #include "log.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <string.h>
 
 GFX_2D_SURFACE *GFX_2D_Surface_Create(const GFX_2D_SURFACE_DESC *desc)
@@ -95,7 +95,7 @@ bool GFX_2D_Surface_Clear(GFX_2D_SURFACE *surface)
 
 bool GFX_2D_Surface_Lock(GFX_2D_SURFACE *surface, GFX_2D_SURFACE_DESC *out_desc)
 {
-    assert(surface != NULL);
+    ASSERT(surface != NULL);
     if (surface->is_locked) {
         LOG_ERROR("Surface is busy");
         return false;

@@ -1,10 +1,10 @@
 #include "gfx/screenshot.h"
 
+#include "debug.h"
 #include "engine/image.h"
 #include "gfx/gl/utils.h"
 #include "memory.h"
 
-#include <assert.h>
 #include <string.h>
 
 bool GFX_Screenshot_CaptureToFile(const char *path)
@@ -17,7 +17,7 @@ bool GFX_Screenshot_CaptureToFile(const char *path)
         NULL, &width, &height, 3, GL_RGB, GL_UNSIGNED_BYTE, true);
 
     IMAGE *image = Image_Create(width, height);
-    assert(image);
+    ASSERT(image != NULL);
 
     GFX_Screenshot_CaptureToBuffer(
         (uint8_t *)image->data, &width, &height, 3, GL_RGB, GL_UNSIGNED_BYTE,
@@ -35,8 +35,8 @@ void GFX_Screenshot_CaptureToBuffer(
     uint8_t *out_buffer, GLint *out_width, GLint *out_height, GLint depth,
     GLenum format, GLenum type, bool vflip)
 {
-    assert(out_width);
-    assert(out_height);
+    ASSERT(out_width != NULL);
+    ASSERT(out_height != NULL);
 
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);

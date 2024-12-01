@@ -5,9 +5,8 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
-
-#include <assert.h>
 
 void __cdecl LOT_InitialiseArray(void)
 {
@@ -60,7 +59,7 @@ bool __cdecl LOT_EnableBaddieAI(const int16_t item_num, const bool always)
                 return true;
             }
         }
-        assert(false);
+        ASSERT_FAIL();
     }
 
     int32_t worst_dist = 0;

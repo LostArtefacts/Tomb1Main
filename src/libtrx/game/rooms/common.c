@@ -1,11 +1,11 @@
 #include "game/rooms/common.h"
 
+#include "debug.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/rooms/const.h"
 #include "game/rooms/enum.h"
 
-#include <assert.h>
 #include <stddef.h>
 
 #define FD_NULL_INDEX 0
@@ -30,7 +30,7 @@ static const int16_t *M_ReadTrigger(
 static const int16_t *M_ReadTrigger(
     const int16_t *data, const int16_t fd_entry, SECTOR *const sector)
 {
-    assert(sector->trigger == NULL);
+    ASSERT(sector->trigger == NULL);
     TRIGGER *const trigger = GameBuf_Alloc(sizeof(TRIGGER), GBUF_FLOOR_DATA);
     sector->trigger = trigger;
 

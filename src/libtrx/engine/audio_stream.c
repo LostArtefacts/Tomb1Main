@@ -1,12 +1,12 @@
 #include "audio_internal.h"
 
+#include "debug.h"
 #include "filesystem.h"
 #include "log.h"
 #include "memory.h"
 
 #include <SDL2/SDL_audio.h>
 #include <SDL2/SDL_error.h>
-#include <assert.h>
 #include <errno.h>
 #include <libavcodec/avcodec.h>
 #include <libavcodec/codec.h>
@@ -83,7 +83,7 @@ static void M_Clear(AUDIO_STREAM_SOUND *stream);
 
 static void M_SeekToStart(AUDIO_STREAM_SOUND *stream)
 {
-    assert(stream != NULL);
+    ASSERT(stream != NULL);
 
     stream->timestamp = stream->start_at;
     if (stream->start_at <= 0.0) {
@@ -102,7 +102,7 @@ static void M_SeekToStart(AUDIO_STREAM_SOUND *stream)
 
 static bool M_DecodeFrame(AUDIO_STREAM_SOUND *stream)
 {
-    assert(stream != NULL);
+    ASSERT(stream != NULL);
 
     if (stream->stop_at > 0.0 && stream->timestamp >= stream->stop_at) {
         if (stream->is_looped) {
@@ -143,7 +143,7 @@ static bool M_DecodeFrame(AUDIO_STREAM_SOUND *stream)
 
 static bool M_EnqueueFrame(AUDIO_STREAM_SOUND *stream)
 {
-    assert(stream != NULL);
+    ASSERT(stream != NULL);
 
     int32_t error_code;
 
@@ -246,7 +246,7 @@ cleanup:
 
 static bool M_InitialiseFromPath(int32_t sound_id, const char *file_path)
 {
-    assert(file_path != NULL);
+    ASSERT(file_path != NULL);
 
     if (!g_AudioDeviceID || sound_id < 0
         || sound_id >= AUDIO_MAX_ACTIVE_STREAMS) {
@@ -368,7 +368,7 @@ cleanup:
 
 static void M_Clear(AUDIO_STREAM_SOUND *stream)
 {
-    assert(stream != NULL);
+    ASSERT(stream != NULL);
 
     stream->is_used = false;
     stream->is_playing = false;
@@ -444,7 +444,7 @@ int32_t Audio_Stream_CreateFromFile(const char *file_path)
         return AUDIO_NO_SOUND;
     }
 
-    assert(file_path != NULL);
+    ASSERT(file_path != NULL);
 
     for (int32_t sound_id = 0; sound_id < AUDIO_MAX_ACTIVE_STREAMS;
          sound_id++) {

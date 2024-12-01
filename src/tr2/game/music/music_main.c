@@ -11,8 +11,6 @@
 #include <libtrx/engine/audio.h>
 #include <libtrx/log.h>
 
-#include <assert.h>
-
 static MUSIC_TRACK_ID m_TrackCurrent = MX_INACTIVE;
 static MUSIC_TRACK_ID m_TrackLastPlayed = MX_INACTIVE;
 static MUSIC_TRACK_ID m_TrackDelayed = MX_INACTIVE;

@@ -2,11 +2,11 @@
 
 #include "config/common.h"
 #include "config/map.h"
+#include "debug.h"
 #include "game/game_string.h"
 #include "memory.h"
 #include "strings.h"
 
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -75,7 +75,7 @@ static bool M_GetCurrentValue(
         return false;
     }
 
-    assert(option->target != NULL);
+    ASSERT(option->target != NULL);
     switch (option->type) {
     case COT_BOOL:
         snprintf(
@@ -107,7 +107,7 @@ static bool M_SetCurrentValue(
         return CR_BAD_INVOCATION;
     }
 
-    assert(option->target != NULL);
+    ASSERT(option->target != NULL);
     switch (option->type) {
     case COT_BOOL:
         if (String_Match(new_value, "^(on|true|1)$")) {
@@ -242,7 +242,7 @@ const CONFIG_OPTION *Console_Cmd_Config_GetOptionFromTarget(
 COMMAND_RESULT Console_Cmd_Config_Helper(
     const CONFIG_OPTION *const option, const char *const new_value)
 {
-    assert(option != NULL);
+    ASSERT(option != NULL);
 
     char *normalized_name = M_NormalizeKey(option->name);
 
@@ -262,7 +262,7 @@ COMMAND_RESULT Console_Cmd_Config_Helper(
         Config_Write();
 
         char final_value[128];
-        assert(M_GetCurrentValue(option, final_value, 128));
+        ASSERT(M_GetCurrentValue(option, final_value, 128));
         Console_Log(GS(OSD_CONFIG_OPTION_SET), normalized_name, final_value);
         result = CR_SUCCESS;
     }

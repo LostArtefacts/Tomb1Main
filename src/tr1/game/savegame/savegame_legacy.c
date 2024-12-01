@@ -13,11 +13,11 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -108,7 +108,7 @@ static bool M_NeedsBaconLaraFix(char *buffer)
     // save_flags for Bacon Lara or not. Since savegames only contain very
     // concise information, we must make an educated guess here.
 
-    assert(buffer);
+    ASSERT(buffer != NULL);
 
     bool result = false;
     if (g_CurrentLevel != 14) {
@@ -428,7 +428,7 @@ static void M_SetCurrentPosition(int level_num)
 
 static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
 {
-    assert(game_info->current);
+    ASSERT(game_info->current != NULL);
     for (int i = 0; i < g_GameFlow.level_count; i++) {
         RESUME_INFO *current = &game_info->current[i];
         M_Read(&current->pistol_ammo, sizeof(uint16_t));
@@ -523,7 +523,7 @@ bool Savegame_Legacy_FillInfo(MYFILE *fp, SAVEGAME_INFO *info)
 
 bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
 {
-    assert(game_info);
+    ASSERT(game_info != NULL);
 
     int8_t tmp8;
     int16_t tmp16;
@@ -659,7 +659,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
 
 bool Savegame_Legacy_LoadOnlyResumeInfo(MYFILE *fp, GAME_INFO *game_info)
 {
-    assert(game_info);
+    ASSERT(game_info != NULL);
 
     char *buffer = Memory_Alloc(File_Size(fp));
     File_Seek(fp, 0, FILE_SEEK_SET);
@@ -676,7 +676,7 @@ bool Savegame_Legacy_LoadOnlyResumeInfo(MYFILE *fp, GAME_INFO *game_info)
 
 void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
 {
-    assert(game_info);
+    ASSERT(game_info != NULL);
 
     char *buffer = Memory_Alloc(SAVEGAME_LEGACY_MAX_BUFFER_SIZE);
     M_Reset(buffer);
@@ -689,7 +689,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     M_Write(title, SAVEGAME_LEGACY_TITLE_SIZE);
     M_Write(&g_SaveCounter, sizeof(int32_t));
 
-    assert(game_info->current);
+    ASSERT(game_info->current != NULL);
     for (int i = 0; i < g_GameFlow.level_count; i++) {
         RESUME_INFO *current = &game_info->current[i];
         M_Write(&current->pistol_ammo, sizeof(uint16_t));

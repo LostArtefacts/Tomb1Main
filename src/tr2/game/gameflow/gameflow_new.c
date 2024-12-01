@@ -4,12 +4,11 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/gameflow/types.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/log.h>
-
-#include <assert.h>
 
 GAMEFLOW_NEW g_GameflowNew;
 GAME_INFO g_GameInfo;
@@ -50,7 +49,7 @@ static void M_LoadObjectStrings(const int32_t level_num)
     }
 
     if (level_num >= 0) {
-        assert(level_num < gf->level_count);
+        ASSERT(level_num < gf->level_count);
         const GAMEFLOW_NEW_LEVEL *const level = &gf->levels[level_num];
         entry = level->object_strings;
         while (entry != NULL && entry->key != NULL) {
@@ -71,7 +70,7 @@ static void M_LoadGameStrings(const int32_t level_num)
     }
 
     if (level_num >= 0) {
-        assert(level_num < gf->level_count);
+        ASSERT(level_num < gf->level_count);
         const GAMEFLOW_NEW_LEVEL *const level = &gf->levels[level_num];
         entry = level->game_strings;
         while (entry != NULL && entry->key != NULL) {
@@ -267,7 +266,7 @@ void Gameflow_OverrideCommand(const GAMEFLOW_COMMAND command)
         break;
     default:
         LOG_ERROR("Not implemented");
-        assert(false);
+        ASSERT_FAIL();
         break;
     }
 }

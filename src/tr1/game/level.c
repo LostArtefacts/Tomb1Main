@@ -27,13 +27,13 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/debug.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 #include <libtrx/virtual_file.h>
 
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -457,7 +457,7 @@ static void M_LoadAnimFrames(VFILE *file)
                 break;
             }
         }
-        assert(found);
+        ASSERT(found);
     }
 
     Benchmark_End(benchmark, NULL);

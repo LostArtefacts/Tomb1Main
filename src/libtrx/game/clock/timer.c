@@ -1,6 +1,6 @@
+#include "debug.h"
 #include "game/clock.h"
 
-#include <assert.h>
 #include <stdio.h>
 
 static double M_GetElapsedUnit(CLOCK_TIMER *const timer, const double unit);
@@ -10,7 +10,7 @@ static bool M_CheckElapsedUnit(
 
 static double M_GetElapsedUnit(CLOCK_TIMER *const timer, const double unit)
 {
-    assert(timer != NULL);
+    ASSERT(timer != NULL);
     const double delta = Clock_GetHighPrecisionCounter() - timer->prev_counter;
     const double multiplier = Clock_GetSpeedMultiplier() / 1000.0;
     const double frames = delta * multiplier * unit;
@@ -22,7 +22,7 @@ static bool M_CheckElapsedUnit(
     CLOCK_TIMER *const timer, const double how_often, const double unit,
     bool bypass_turbo_cheat)
 {
-    assert(timer != NULL);
+    ASSERT(timer != NULL);
     const double delta = Clock_GetHighPrecisionCounter() - timer->prev_counter;
     const double multiplier =
         (bypass_turbo_cheat ? 1.0 : Clock_GetSpeedMultiplier()) / 1000.0;
@@ -40,7 +40,7 @@ static bool M_CheckElapsedUnit(
 
 void Clock_ResetTimer(CLOCK_TIMER *const timer)
 {
-    assert(timer != NULL);
+    ASSERT(timer != NULL);
     timer->prev_counter = Clock_GetHighPrecisionCounter();
     timer->prev_fps = Clock_GetCurrentFPS();
 }

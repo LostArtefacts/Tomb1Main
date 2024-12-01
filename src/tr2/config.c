@@ -6,8 +6,8 @@
 #include "game/shell.h"
 
 #include <libtrx/config/file.h>
+#include <libtrx/debug.h>
 
-#include <assert.h>
 #include <stdio.h>
 
 CONFIG g_Config = { 0 };
@@ -56,7 +56,7 @@ static void M_LoadInputLayout(
 
     for (size_t i = 0; i < arr->length; i++) {
         JSON_OBJECT *const bind_obj = JSON_ArrayGetObject(arr, i);
-        assert(bind_obj != NULL);
+        ASSERT(bind_obj != NULL);
         Input_AssignFromJSONObject(backend, layout, bind_obj);
     }
 }

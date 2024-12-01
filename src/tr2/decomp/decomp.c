@@ -34,6 +34,7 @@
 #include "lib/ddraw.h"
 #include "specific/s_flagged_string.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/ui/common.h>
@@ -42,7 +43,6 @@
 #include <libtrx/utils.h>
 
 #include <SDL2/SDL.h>
-#include <assert.h>
 #include <stdio.h>
 
 #define IDI_MAINICON 100
@@ -1551,12 +1551,12 @@ void __cdecl RenderStart(const bool is_reset)
     }
 
     if (g_SavedAppSettings.fullscreen) {
-        assert(g_SavedAppSettings.video_mode != NULL);
+        ASSERT(g_SavedAppSettings.video_mode != NULL);
 
         DISPLAY_MODE disp_mode = g_SavedAppSettings.video_mode->body;
 
         const bool result = WinVidGoFullScreen(&disp_mode);
-        assert(result);
+        ASSERT(result);
 
         CreateScreenBuffers();
         g_GameVid_Width = disp_mode.width;
@@ -1581,7 +1581,7 @@ void __cdecl RenderStart(const bool is_reset)
         const bool result = WinVidGoWindowed(
             g_SavedAppSettings.window_width, g_SavedAppSettings.window_height,
             &disp_mode);
-        assert(result);
+        ASSERT(result);
 
         g_GameVid_Width = disp_mode.width;
         g_GameVid_Height = disp_mode.height;
