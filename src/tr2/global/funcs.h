@@ -153,7 +153,6 @@
 #define OpenGameRegistryKey ((bool __cdecl (*)(LPCTSTR key))0x004523C0)
 #define CloseGameRegistryKey ((LONG __cdecl (*)(void))0x00452410)
 #define SE_WriteAppSettings ((bool __cdecl (*)(APP_SETTINGS *settings))0x00452420)
-#define SE_ReadAppSettings ((int32_t __cdecl (*)(APP_SETTINGS *settings))0x00452690)
 #define SE_GraphicsTestStart ((bool __cdecl (*)(void))0x004529E0)
 #define SE_GraphicsTestFinish ((void __cdecl (*)(void))0x00452AB0)
 #define SE_GraphicsTestExecute ((int32_t __cdecl (*)(void))0x00452AD0)

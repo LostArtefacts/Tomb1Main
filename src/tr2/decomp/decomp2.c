@@ -6,6 +6,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/utils.h>
 #include <libtrx/virtual_file.h>
 
 int32_t __cdecl CreateTexturePage(
@@ -600,4 +601,92 @@ BOOL __cdecl S_ReloadLevelGraphics(
     }
 
     return true;
+}
+
+int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *const settings)
+{
+    if (!OpenGameRegistryKey("System")) {
+        return 0;
+    }
+
+    bool rc;
+    GUID value;
+    rc = GetRegistryGuidValue("PreferredDisplayAdapterGUID", &value, 0);
+    settings->preferred_display_adapter =
+        WinVidGetDisplayAdapter(rc ? &value : 0);
+
+    settings->preferred_sound_adapter = NULL;
+    settings->preferred_joystick = NULL;
+
+    DISPLAY_MODE dm;
+    GetRegistryDwordValue(
+        "RenderMode", (DWORD *)&settings->render_mode, RM_HARDWARE);
+    GetRegistryBoolValue("Dither", &settings->dither, false);
+    GetRegistryBoolValue("ZBuffer", &settings->zbuffer, true);
+    GetRegistryBoolValue(
+        "BilinearFiltering", &settings->bilinear_filtering, true);
+    GetRegistryBoolValue("TripleBuffering", &settings->triple_buffering, false);
+    GetRegistryBoolValue("FullScreen", &settings->fullscreen, true);
+    GetRegistryDwordValue(
+        "WindowWidth", (DWORD *)&settings->window_width, 1280);
+    GetRegistryDwordValue(
+        "WindowHeight", (DWORD *)&settings->window_height, 720);
+    GetRegistryDwordValue(
+        "AspectMode", (DWORD *)&settings->aspect_mode, AM_4_3);
+    GetRegistryDwordValue("FullScreenWidth", (DWORD *)&dm.width, 1280);
+    GetRegistryDwordValue("FullScreenHeight", (DWORD *)&dm.height, 720);
+    GetRegistryDwordValue("FullScreenBPP", (DWORD *)&dm.bpp, 16);
+    GetRegistryBoolValue("SoundEnabled", &settings->sound_enabled, true);
+    GetRegistryBoolValue("LaraMic", &settings->lara_mic, false);
+    GetRegistryBoolValue("JoystickEnabled", &settings->joystick_enabled, true);
+    GetRegistryBoolValue(
+        "Disable16BitTextures", &settings->disable_16bit_textures, false);
+    GetRegistryBoolValue(
+        "DontSortPrimitives", &settings->dont_sort_primitives, false);
+    GetRegistryDwordValue(
+        "TexelAdjustMode", (DWORD *)&settings->texel_adjust_mode, TAM_ALWAYS);
+    GetRegistryDwordValue(
+        "NearestAdjustment", (DWORD *)&settings->nearest_adjustment, 16);
+    GetRegistryDwordValue(
+        "LinearAdjustment", (DWORD *)&settings->linear_adjustment, 128);
+    GetRegistryBoolValue("FlipBroken", &settings->flip_broken, false);
+
+    if (settings->render_mode != RM_HARDWARE
+        && settings->render_mode != RM_SOFTWARE) {
+        settings->render_mode = RM_SOFTWARE;
+    }
+    if (settings->aspect_mode != AM_ANY && settings->aspect_mode != AM_16_9) {
+        settings->aspect_mode = AM_4_3;
+    }
+    if (settings->texel_adjust_mode != TAM_DISABLED
+        && settings->texel_adjust_mode != TAM_BILINEAR_ONLY) {
+        settings->texel_adjust_mode = TAM_ALWAYS;
+    }
+    CLAMP(settings->nearest_adjustment, 0, 256);
+    CLAMP(settings->linear_adjustment, 0, 256);
+
+    GetRegistryBoolValue(
+        "PerspectiveCorrect", &settings->perspective_correct,
+        settings->render_mode != RM_SOFTWARE);
+
+    DISPLAY_MODE_LIST *disp_mode_list =
+        &settings->preferred_display_adapter->body.hw_disp_mode_list;
+    if (settings->render_mode == RM_SOFTWARE) {
+        dm.bpp = 8;
+        disp_mode_list =
+            &settings->preferred_display_adapter->body.sw_disp_mode_list;
+    }
+    dm.vga = VGA_NO_VGA;
+
+    const DISPLAY_MODE_NODE *head = disp_mode_list->head;
+    while (head != NULL) {
+        if (!CompareVideoModes(&head->body, &dm)) {
+            break;
+        }
+        head = head->next;
+    }
+    settings->video_mode = head;
+
+    CloseGameRegistryKey();
+    return IsNewRegistryKeyCreated() ? 2 : 1;
 }

@@ -211,3 +211,4 @@ BOOL __cdecl S_LoadLevelFile(
     const char *file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 void __cdecl S_UnloadLevelFile(void);
 BOOL __cdecl S_ReloadLevelGraphics(bool reload_palettes, bool reload_tex_pages);
+int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);

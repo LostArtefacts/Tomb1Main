@@ -4082,7 +4082,7 @@ typedef enum {
 0x004523C0  0x004E  -R      bool __cdecl OpenGameRegistryKey(LPCTSTR key);
 0x00452410  0x0005  -R      LONG __cdecl CloseGameRegistryKey(void);
 0x00452420  0x0262  -R      bool __cdecl SE_WriteAppSettings(APP_SETTINGS *settings);
-0x00452690  0x0348  -R      int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);
+0x00452690  0x0348  +R      int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);
 0x004529E0  0x00D7  -R      bool __cdecl SE_GraphicsTestStart(void);
 0x00452AB0  0x0014  -R      void __cdecl SE_GraphicsTestFinish(void);
 0x00452AD0  0x0003  -R      int32_t __cdecl SE_GraphicsTestExecute(void);

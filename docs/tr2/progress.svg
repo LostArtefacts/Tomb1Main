@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.63% (1003)</tspan> · <tspan class="known">16.96% (211)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">80.71% (1004)</tspan> · <tspan class="known">16.88% (210)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="602.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="126.70" height="6" x="602.28" y="0" class="known"/>
+<rect width="602.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="126.10" height="6" x="602.88" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1167,7 +1167,7 @@
 <rect width="12" height="12" x="570" y="315" class="known"><title>bool __cdecl OpenGameRegistryKey(LPCTSTR key);</title></rect>
 <rect width="12" height="12" x="585" y="315" class="known"><title>LONG __cdecl CloseGameRegistryKey(void);</title></rect>
 <rect width="12" height="12" x="600" y="315" class="known"><title>bool __cdecl SE_WriteAppSettings(APP_SETTINGS *settings);</title></rect>
-<rect width="12" height="12" x="615" y="315" class="known"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
+<rect width="12" height="12" x="615" y="315" class="decompiled"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
 <rect width="12" height="12" x="630" y="315" class="known"><title>bool __cdecl SE_GraphicsTestStart(void);</title></rect>
 <rect width="12" height="12" x="645" y="315" class="known"><title>void __cdecl SE_GraphicsTestFinish(void);</title></rect>
 <rect width="12" height="12" x="660" y="315" class="known"><title>int32_t __cdecl SE_GraphicsTestExecute(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.48%</tspan> · <tspan class="known">17.20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">82.72%</tspan> · <tspan class="known">16.95%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="616.10" height="6" x="0" y="0" class="decompiled"/>
-<rect width="128.46" height="6" x="616.10" y="0" class="known"/>
+<rect width="617.94" height="6" x="0" y="0" class="decompiled"/>
+<rect width="126.62" height="6" x="617.94" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1421,7 +1421,7 @@
 <rect width="24.48" height="23.09" x="266.96" y="351.91" class="decompiled"><title>int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const PHD_ANGLE *angles);</title></rect>
 <rect width="22.45" height="24.84" x="294.45" y="0" class="decompiled"><title>int32_t __cdecl Game_Control(int32_t nframes, int32_t demo_mode);</title></rect>
 <rect width="22.45" height="24.67" x="294.45" y="27.84" class="known"><title>INT_PTR __stdcall SE_GraphicsDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
-<rect width="22.45" height="24.38" x="294.45" y="55.51" class="known"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
+<rect width="22.45" height="24.38" x="294.45" y="55.51" class="decompiled"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
 <rect width="22.45" height="24.35" x="294.45" y="82.89" class="decompiled"><title>void __cdecl Output_InsertSprite_Sorted(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);</title></rect>
 <rect width="22.45" height="24.35" x="294.45" y="110.24" class="decompiled"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
 <rect width="22.45" height="24.25" x="294.45" y="137.58" class="decompiled"><title>void __cdecl HarpoonBolt_Control(int16_t item_num);</title></rect>
