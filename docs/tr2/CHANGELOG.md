@@ -8,6 +8,7 @@
 - changed config to store certain values in the .json file rather than Windows registry
     - music volume
     - sound volume
+    - game sizer
 - fixed a crash relating to audio decoding (#1895)
 - fixed depth problems when drawing certain rooms (#1853, regression from 0.6)
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo (#1606)

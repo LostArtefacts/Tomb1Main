@@ -34,6 +34,7 @@ typedef struct {
 
     struct {
         SCREENSHOT_FORMAT screenshot_format;
+        float sizer;
     } rendering;
 } CONFIG;
 

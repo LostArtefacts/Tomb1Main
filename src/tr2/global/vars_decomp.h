@@ -98,7 +98,6 @@
 #define g_BGND_PaletteIndex (*(int32_t*)0x00466400) // = -1
 #define g_GameClassName (*(const char(*)[])0x00466448)
 #define g_GameWindowName (*(const char(*)[])0x00466468)
-#define g_GameSizer (*(double*)0x00466480) // = 1.0
 #define g_FadeValue (*(int32_t*)0x00466490) // = 0x100000
 #define g_FadeLimit (*(int32_t*)0x00466494) // = 0x100000
 #define g_FadeAdder (*(int32_t*)0x00466498) // = 0x8000

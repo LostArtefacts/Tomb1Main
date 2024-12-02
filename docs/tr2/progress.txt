@@ -4270,7 +4270,7 @@ typedef enum {
 0x00466290  +       int8_t g_TextSpacing[80];
 0x004662E0  +       int8_t g_TextASCIIMap[];
 0x00466400  -       int32_t g_BGND_PaletteIndex = -1;
-0x00466480  -       double g_GameSizer = 1.0;
+0x00466480  +       double g_GameSizer = 1.0;
 0x00466488  +       double g_GameSizerCopy = 1.0;
 0x00466490  -       int32_t g_FadeValue = 0x100000;
 0x00466494  -       int32_t g_FadeLimit = 0x100000;

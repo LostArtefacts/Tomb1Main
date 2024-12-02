@@ -128,8 +128,6 @@ int32_t __cdecl Misc_Move3DPosTo3DPos(
     PHD_3DPOS *src_pos, const PHD_3DPOS *dst_pos, int32_t velocity,
     PHD_ANGLE ang_add);
 int32_t __cdecl LevelCompleteSequence(void);
-void __cdecl S_LoadSettings(void);
-void __cdecl S_SaveSettings(void);
 void __cdecl S_Wait(int32_t frames, BOOL input_check);
 BOOL __cdecl S_InitialiseSystem(void);
 void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);

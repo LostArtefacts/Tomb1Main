@@ -2758,20 +2758,6 @@ int32_t __cdecl LevelCompleteSequence(void)
     return GFD_EXIT_TO_TITLE;
 }
 
-void __cdecl S_LoadSettings(void)
-{
-    OpenGameRegistryKey("Game");
-    GetRegistryFloatValue("Sizer", &g_GameSizer, 1.0);
-    CloseGameRegistryKey();
-}
-
-void __cdecl S_SaveSettings(void)
-{
-    OpenGameRegistryKey("Game");
-    SetRegistryFloatValue("Sizer", g_GameSizer);
-    CloseGameRegistryKey();
-}
-
 void __cdecl S_Wait(int32_t frames, const BOOL input_check)
 {
     if (input_check) {
@@ -3093,26 +3079,26 @@ void __cdecl S_CopyBufferToScreen(void)
 
 void __cdecl IncreaseScreenSize(void)
 {
-    if (g_GameSizer < 1.0) {
-        g_GameSizer -= 0.08;
-        CLAMPG(g_GameSizer, 1.0);
+    if (g_Config.rendering.sizer < 1.0) {
+        g_Config.rendering.sizer += 0.08;
+        CLAMPG(g_Config.rendering.sizer, 1.0);
         setup_screen_size();
     }
 }
 
 void __cdecl DecreaseScreenSize(void)
 {
-    if (g_GameSizer > 0.44) {
-        g_GameSizer -= 0.08;
-        CLAMPL(g_GameSizer, 0.44);
+    if (g_Config.rendering.sizer > 0.44) {
+        g_Config.rendering.sizer -= 0.08;
+        CLAMPL(g_Config.rendering.sizer, 0.44);
         setup_screen_size();
     }
 }
 
 void __cdecl setup_screen_size(void)
 {
-    int32_t width = (double)g_GameVid_Width * g_GameSizer;
-    int32_t height = (double)g_GameVid_Height * g_GameSizer;
+    int32_t width = (double)g_GameVid_Width * g_Config.rendering.sizer;
+    int32_t height = (double)g_GameVid_Height * g_Config.rendering.sizer;
     CLAMPG(width, g_GameVid_Width);
     CLAMPG(height, g_GameVid_Height);
     const int32_t x = (g_GameVid_Width - width) / 2;

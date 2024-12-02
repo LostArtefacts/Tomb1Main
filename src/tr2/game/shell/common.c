@@ -34,8 +34,6 @@ static const char *m_CurrentGameflowPath = "cfg/TR2X_gameflow.json5";
 // TODO: refactor the hell out of me
 void __cdecl Shell_Main(void)
 {
-    g_GameSizer = 1.0;
-
     GameString_Init();
     EnumMap_Init();
     Config_Init();
@@ -65,7 +63,6 @@ void __cdecl Shell_Main(void)
 
     InitialiseStartInfo();
     S_FrontEndCheck();
-    S_LoadSettings();
 
     GameBuf_Init(GAMEBUF_MEM_CAP);
 
@@ -165,7 +162,6 @@ void __cdecl Shell_Main(void)
         }
     }
 
-    S_SaveSettings();
     Config_Write();
 }
 
