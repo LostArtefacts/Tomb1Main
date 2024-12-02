@@ -909,7 +909,7 @@ int32_t __cdecl Game_Cutscene_Start(const int32_t level_num)
         return 1;
     }
 
-    Music_SetVolume(255);
+    Music_SetVolume(10);
     g_CineFrameCurrent = 0;
 
     int32_t result;
@@ -921,11 +921,7 @@ int32_t __cdecl Game_Cutscene_Start(const int32_t level_num)
         result = Game_Cutscene_Control(nticks);
     } while (!result);
 
-    if (g_OptionMusicVolume) {
-        Music_SetVolume(25 * g_OptionMusicVolume + 5);
-    } else {
-        Music_SetVolume(0);
-    }
+    Music_SetVolume(g_Config.audio.music_volume);
     Music_Stop();
     g_SoundIsActive = old_sound_active;
     Sound_StopAllSamples();
@@ -2769,39 +2765,17 @@ void __cdecl S_LoadSettings(void)
 
     {
         DWORD tmp;
-        GetRegistryDwordValue("MusicVolume", &tmp, 7);
-        g_OptionMusicVolume = tmp;
-    }
-
-    {
-        DWORD tmp;
-        GetRegistryDwordValue("SoundFXVolume", &tmp, 10);
-        g_OptionSoundVolume = tmp;
-    }
-
-    {
-        DWORD tmp;
         GetRegistryDwordValue("DetailLevel", &tmp, 1);
         g_DetailLevel = tmp;
     }
 
     GetRegistryFloatValue("Sizer", &g_GameSizerCopy, 1.0);
     CloseGameRegistryKey();
-
-    Sound_SetMasterVolume(6 * g_OptionSoundVolume + 4);
-
-    if (g_OptionMusicVolume) {
-        Music_SetVolume(25 * g_OptionMusicVolume + 5);
-    } else {
-        Music_SetVolume(0);
-    }
 }
 
 void __cdecl S_SaveSettings(void)
 {
     OpenGameRegistryKey("Game");
-    SetRegistryDwordValue("MusicVolume", g_OptionMusicVolume);
-    SetRegistryDwordValue("SoundFxVolume", g_OptionSoundVolume);
     SetRegistryDwordValue("DetailLevel", g_DetailLevel);
     SetRegistryFloatValue("Sizer", g_GameSizerCopy);
     CloseGameRegistryKey();

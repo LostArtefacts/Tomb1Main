@@ -1,5 +1,6 @@
 #include "game/game.h"
 
+#include "config.h"
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/camera.h"
@@ -298,9 +299,7 @@ int32_t __cdecl Game_Loop(const bool demo_mode)
     Sound_StopAllSamples();
     Music_Stop();
 
-    if (g_OptionMusicVolume) {
-        Music_SetVolume(25 * g_OptionMusicVolume + 5);
-    }
+    Music_SetVolume(g_Config.audio.music_volume);
 
     return dir;
 }

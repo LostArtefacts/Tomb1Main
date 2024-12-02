@@ -1,5 +1,6 @@
 #include "game/music.h"
 
+#include "config.h"
 #include "game/music/music_backend.h"
 #include "game/music/music_backend_cdaudio.h"
 #include "game/music/music_backend_files.h"
@@ -85,7 +86,7 @@ bool __cdecl Music_Init(void)
 
     LOG_ERROR("Chosen music backend: %s", m_Backend->describe(m_Backend));
     result = true;
-    Music_SetVolume(25 * g_OptionMusicVolume + 5);
+    Music_SetVolume(g_Config.audio.music_volume);
 
 finish:
     m_TrackCurrent = MX_INACTIVE;
@@ -131,7 +132,7 @@ void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 
     M_StopActiveStream();
 
-    if (g_OptionMusicVolume == 0) {
+    if (g_Config.audio.music_volume == 0) {
         LOG_DEBUG("Not playing track %d because the game is silent", track_id);
         goto finish;
     }
@@ -194,7 +195,7 @@ double __cdecl Music_GetTimestamp(void)
 
 void __cdecl Music_SetVolume(int32_t volume)
 {
-    m_MusicVolume = volume ? volume / 255.0f : 0.0f;
+    m_MusicVolume = volume ? volume / 10.0f : 0.0f;
     if (m_AudioStreamID >= 0) {
         Audio_Stream_SetVolume(m_AudioStreamID, m_MusicVolume);
     }

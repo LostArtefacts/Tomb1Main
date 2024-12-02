@@ -51,6 +51,7 @@ typedef enum {
 
 #define DECIBEL_LUT_SIZE 512
 
+static float m_MasterVolume = 0.0f;
 static int32_t m_DecibelLUT[DECIBEL_LUT_SIZE] = { 0 };
 static SOUND_SLOT m_SoundSlots[SOUND_MAX_SLOTS] = { 0 };
 
@@ -67,7 +68,7 @@ static void M_UpdateSlot(SOUND_SLOT *const slot);
 
 static int32_t M_ConvertVolumeToDecibel(const int32_t volume)
 {
-    const double adjusted_volume = g_MasterVolume * volume;
+    const double adjusted_volume = m_MasterVolume * volume;
     const double scaler = 0x1.p-21; // 2.0e-21
     return (adjusted_volume * scaler - 1.0) * 5000.0;
 }
@@ -139,7 +140,7 @@ void __cdecl Sound_Init(void)
         return;
     }
 
-    Sound_SetMasterVolume(32);
+    Sound_SetMasterVolume(10);
     M_ClearAllSlots();
     g_SoundIsActive = true;
 }
@@ -156,7 +157,7 @@ void __cdecl Sound_Shutdown(void)
 
 void __cdecl Sound_SetMasterVolume(int32_t volume)
 {
-    g_MasterVolume = volume;
+    m_MasterVolume = volume * 64.0f / 10.0f;
 }
 
 void __cdecl Sound_UpdateEffects(void)

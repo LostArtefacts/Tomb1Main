@@ -71,8 +71,6 @@
 #define g_SaveGameRequester (*(REQUEST_INFO*)0x00465838)
 #define g_Inv_Chosen (*(int16_t*)0x00465A50) // = -1
 #define g_Inv_Mode (*(INVENTORY_MODE*)0x00465A54) // = INV_TITLE_MODE
-#define g_OptionSoundVolume (*(int16_t*)0x00465A5C) // = 165
-#define g_OptionMusicVolume (*(int16_t*)0x00465A60) // = 255
 #define g_JumpPermitted (*(int32_t*)0x00465AD4) // = 1
 #define g_LaraOldSlideAngle (*(int16_t*)0x00465AD8) // = 1
 #define g_Weapons (*(WEAPON_INFO(*)[])0x00465AE0)

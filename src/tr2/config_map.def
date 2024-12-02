@@ -9,3 +9,5 @@ CFG_ENUM(g_Config, rendering.screenshot_format, SCREENSHOT_FORMAT_JPEG, SCREENSH
 CFG_INT32(g_Config, rendering.turbo_speed, 0)
 CFG_INT32(g_Config, input.keyboard_layout, INPUT_LAYOUT_DEFAULT)
 CFG_INT32(g_Config, input.controller_layout, INPUT_LAYOUT_DEFAULT)
+CFG_INT32(g_Config, audio.sound_volume, 10)
+CFG_INT32(g_Config, audio.music_volume, 7)

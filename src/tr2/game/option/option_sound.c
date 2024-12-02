@@ -1,3 +1,4 @@
+#include "config.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/option/option.h"
@@ -15,16 +16,16 @@ static void M_ShutdownText(void);
 
 static void M_InitText(void)
 {
-    CLAMPG(g_OptionMusicVolume, 10);
-    CLAMPG(g_OptionSoundVolume, 10);
+    CLAMPG(g_Config.audio.music_volume, 10);
+    CLAMPG(g_Config.audio.sound_volume, 10);
 
     char text[8];
-    sprintf(text, "\\{icon music} %2d", g_OptionMusicVolume);
+    sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
     g_SoundText[0] = Text_Create(0, 0, text);
     Text_AddBackground(g_SoundText[0], 128, 0, 0, 0, TS_REQUESTED);
     Text_AddOutline(g_SoundText[0], TS_REQUESTED);
 
-    sprintf(text, "\\{icon sound} %2d", g_OptionSoundVolume);
+    sprintf(text, "\\{icon sound} %2d", g_Config.audio.sound_volume);
     g_SoundText[1] = Text_Create(0, 25, text);
 
     g_SoundText[2] = Text_Create(0, -32, " ");
@@ -82,51 +83,40 @@ void __cdecl Option_Sound(INVENTORY_ITEM *const item)
 
     if (g_SoundOptionLine) {
         bool changed = false;
-        if (g_Input.left && g_OptionSoundVolume > 0) {
+        if (g_Input.left && g_Config.audio.sound_volume > 0) {
             g_Inv_IsOptionsDelay = 1;
             g_Inv_OptionsDelayCounter = 10;
-            g_OptionSoundVolume--;
+            g_Config.audio.sound_volume--;
             changed = true;
-        } else if (g_Input.right && g_OptionSoundVolume < 10) {
+        } else if (g_Input.right && g_Config.audio.sound_volume < 10) {
             g_Inv_IsOptionsDelay = 1;
             g_Inv_OptionsDelayCounter = 10;
-            g_OptionSoundVolume++;
+            g_Config.audio.sound_volume++;
             changed = true;
         }
 
         if (changed) {
-            sprintf(text, "\\{icon sound} %2d", g_OptionSoundVolume);
+            sprintf(text, "\\{icon sound} %2d", g_Config.audio.sound_volume);
             Text_ChangeText(g_SoundText[1], text);
-            if (g_OptionSoundVolume) {
-                Sound_SetMasterVolume(6 * g_OptionSoundVolume + 4);
-            } else {
-                Sound_SetMasterVolume(0);
-            }
-
+            Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
         }
     } else {
         bool changed = false;
-        if (g_Input.left && g_OptionMusicVolume > 0) {
-            g_OptionMusicVolume--;
+        if (g_Input.left && g_Config.audio.music_volume > 0) {
+            g_Config.audio.music_volume--;
             changed = true;
-        } else if (g_Input.right && g_OptionMusicVolume < 10) {
-            g_OptionMusicVolume++;
+        } else if (g_Input.right && g_Config.audio.music_volume < 10) {
+            g_Config.audio.music_volume++;
             changed = true;
         }
 
         if (changed) {
             g_Inv_IsOptionsDelay = 1;
             g_Inv_OptionsDelayCounter = 10;
-            sprintf(text, "\\{icon music} %2d", g_OptionMusicVolume);
+            sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
             Text_ChangeText(g_SoundText[0], text);
-
-            if (g_OptionMusicVolume) {
-                Music_SetVolume(25 * g_OptionMusicVolume + 5);
-            } else {
-                Music_SetVolume(0);
-            }
-
+            Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
         }
     }

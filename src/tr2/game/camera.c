@@ -1,5 +1,6 @@
 #include "game/camera.h"
 
+#include "config.h"
 #include "decomp/decomp.h"
 #include "game/items.h"
 #include "game/los.h"
@@ -666,9 +667,7 @@ void __cdecl Camera_Update(void)
             g_Camera.underwater = 1;
         }
     } else if (g_Camera.underwater) {
-        if (g_OptionMusicVolume) {
-            Music_SetVolume(25 * g_OptionMusicVolume + 5);
-        }
+        Music_SetVolume(g_Config.audio.music_volume);
         g_Camera.underwater = 0;
     }
 

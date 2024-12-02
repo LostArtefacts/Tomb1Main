@@ -27,6 +27,11 @@ typedef struct {
     } gameplay;
 
     struct {
+        int32_t sound_volume;
+        int32_t music_volume;
+    } audio;
+
+    struct {
         int32_t turbo_speed;
         SCREENSHOT_FORMAT screenshot_format;
     } rendering;

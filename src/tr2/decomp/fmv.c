@@ -357,7 +357,9 @@ void __cdecl WinPlayFMV(const char *const file_name, const bool is_playback)
     while (video->is_playing) {
         Video_SetVolume(
             video,
-            m_Muted ? 0 : g_OptionSoundVolume / (float)Sound_GetMaxVolume());
+            m_Muted
+                ? 0
+                : g_Config.audio.sound_volume / (float)Sound_GetMaxVolume());
 
         Video_SetSurfaceSize(video, g_PhdWinWidth, g_PhdWinHeight);
 

@@ -4260,8 +4260,8 @@ typedef enum {
 0x00465618  -       BOOL g_GymInvOpenEnabled = TRUE;
 0x00465A50  -       int16_t g_Inv_Chosen = -1;
 0x00465A54  -       INVENTORY_MODE g_Inv_Mode = INV_TITLE_MODE;
-0x00465A5C  -       int16_t g_OptionSoundVolume = 165; // NOTE: value should be 10
-0x00465A60  -       int16_t g_OptionMusicVolume = 255; // NOTE: should be 10
+0x00465A5C  +       int16_t g_OptionSoundVolume = 165; // NOTE: value should be 10
+0x00465A60  +       int16_t g_OptionMusicVolume = 255; // NOTE: should be 10
 0x00465AD4  -       int32_t g_JumpPermitted = 1;
 0x00465AD8  -       int16_t g_LaraOldSlideAngle = 1;
 0x00465CD0  -       void (*__cdecl g_LaraControlRoutines[71])(ITEM *item, COLL_INFO *coll);

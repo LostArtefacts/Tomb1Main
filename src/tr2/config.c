@@ -3,7 +3,9 @@
 #include "config_map.h"
 #include "game/clock.h"
 #include "game/input.h"
+#include "game/music.h"
 #include "game/shell.h"
+#include "game/sound.h"
 
 #include <libtrx/config/file.h>
 #include <libtrx/debug.h>
@@ -128,6 +130,8 @@ void Config_Sanitize(void)
 
 void Config_ApplyChanges(void)
 {
+    Sound_SetMasterVolume(g_Config.audio.sound_volume);
+    Music_SetVolume(g_Config.audio.music_volume);
 }
 
 const CONFIG_OPTION *Config_GetOptionMap(void)
