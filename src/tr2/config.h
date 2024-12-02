@@ -20,10 +20,11 @@ typedef struct {
 
     struct {
         bool fix_m16_accuracy;
-        bool enable_cheats;
         bool fix_item_duplication_glitch;
-        bool enable_auto_item_selection;
         bool fix_floor_data_issues;
+        bool enable_cheats;
+        bool enable_auto_item_selection;
+        int32_t turbo_speed;
     } gameplay;
 
     struct {
@@ -32,7 +33,6 @@ typedef struct {
     } audio;
 
     struct {
-        int32_t turbo_speed;
         SCREENSHOT_FORMAT screenshot_format;
     } rendering;
 } CONFIG;

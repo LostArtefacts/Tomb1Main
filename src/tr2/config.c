@@ -124,7 +124,7 @@ void Config_DumpToJSON(JSON_OBJECT *root_obj)
 void Config_Sanitize(void)
 {
     CLAMP(
-        g_Config.rendering.turbo_speed, CLOCK_TURBO_SPEED_MIN,
+        g_Config.gameplay.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);
 }
 

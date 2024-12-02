@@ -6,16 +6,16 @@
 
 int32_t Clock_GetTurboSpeed(void)
 {
-    return g_Config.rendering.turbo_speed;
+    return g_Config.gameplay.turbo_speed;
 }
 
 void Clock_SetTurboSpeed(int32_t value)
 {
     CLAMP(value, CLOCK_TURBO_SPEED_MIN, CLOCK_TURBO_SPEED_MAX);
-    if (value == g_Config.rendering.turbo_speed) {
+    if (value == g_Config.gameplay.turbo_speed) {
         return;
     }
-    g_Config.rendering.turbo_speed = value;
+    g_Config.gameplay.turbo_speed = value;
     Config_Write();
     Console_Log(GS(OSD_SPEED_SET), value);
 }

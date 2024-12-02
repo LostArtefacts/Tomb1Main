@@ -210,7 +210,7 @@ void Config_Sanitize(void)
     CLAMP(g_Config.ui.text_scale, MIN_TEXT_SCALE, MAX_TEXT_SCALE);
     CLAMP(g_Config.ui.bar_scale, MIN_BAR_SCALE, MAX_BAR_SCALE);
     CLAMP(
-        g_Config.rendering.turbo_speed, CLOCK_TURBO_SPEED_MIN,
+        g_Config.gameplay.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);
     CLAMPL(g_Config.maximum_save_slots, 0);
     CLAMPL(g_Config.rendering.anisotropy_filter, 1.0);

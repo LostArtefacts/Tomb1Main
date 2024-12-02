@@ -103,6 +103,10 @@ typedef struct {
     bool enable_auto_item_selection;
 
     struct {
+        int32_t turbo_speed;
+    } gameplay;
+
+    struct {
         int32_t layout;
         int32_t cntlr_layout;
     } input;
@@ -124,7 +128,6 @@ typedef struct {
         bool enable_vsync;
         bool enable_fps_counter;
         float anisotropy_filter;
-        int32_t turbo_speed;
         bool pretty_pixels;
         bool enable_reflections;
     } rendering;
