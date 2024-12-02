@@ -2762,13 +2762,6 @@ int32_t __cdecl LevelCompleteSequence(void)
 void __cdecl S_LoadSettings(void)
 {
     OpenGameRegistryKey("Game");
-
-    {
-        DWORD tmp;
-        GetRegistryDwordValue("DetailLevel", &tmp, 1);
-        g_DetailLevel = tmp;
-    }
-
     GetRegistryFloatValue("Sizer", &g_GameSizerCopy, 1.0);
     CloseGameRegistryKey();
 }
@@ -2776,7 +2769,6 @@ void __cdecl S_LoadSettings(void)
 void __cdecl S_SaveSettings(void)
 {
     OpenGameRegistryKey("Game");
-    SetRegistryDwordValue("DetailLevel", g_DetailLevel);
     SetRegistryFloatValue("Sizer", g_GameSizerCopy);
     CloseGameRegistryKey();
 }

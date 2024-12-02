@@ -4735,7 +4735,7 @@ typedef enum {
 0x004D9EBC  -       int32_t g_SavedGames;
 0x0051A2CC  -       TEXTSTRING *g_PasswordText1;
 0x0051A2D0  -       int32_t g_PassportMode;
-0x0051A2D8  -       TEXTSTRING *g_DetailText[5];
+0x0051A2D8  +       TEXTSTRING *g_DetailText[5];
 0x0051A2F0  -       TEXTSTRING *g_SoundText[4];
 0x0051A290  +       TEXTSTRING *m_ControlsTextA[14]; // INPUT_ROLE_NUMBER_OF
 0x0051A258  +       TEXTSTRING *g_ControlsTextB[14]; // INPUT_ROLE_NUMBER_OF
@@ -4753,7 +4753,7 @@ typedef enum {
 0x00466B80  -       int16_t g_SavedLevels[24]; // MAX_LEVELS
 0x004654E8  -       int16_t g_Inv_MainQtys[];
 0x00465578  -       int16_t g_Inv_KeysQtys[];
-0x0046773C  -       int32_t g_DetailLevel;
+0x0046773C  +       int32_t g_DetailLevel;
 0x0051A250  +       int32_t g_LayoutPage;
 0x0051A24C  +       int32_t g_KeySelector;
 0x0051A248  +       int32_t g_KeyCursor;

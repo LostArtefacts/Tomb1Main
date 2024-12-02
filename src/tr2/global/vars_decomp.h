@@ -110,7 +110,6 @@
 #define g_DumpY (*(int16_t*)0x00466BE6)
 #define g_DumpWidth (*(int16_t*)0x00466BE8)
 #define g_DumpHeight (*(int16_t*)0x00466BEA)
-#define g_DetailLevel (*(int32_t*)0x0046773C)
 #define g_MidSort (*(int32_t*)0x0046C300) // = 0
 #define g_ViewportAspectRatio (*(float*)0x0046C304) // = 0.0f
 #define g_XGenY1 (*(int32_t*)0x0046C308)
@@ -371,7 +370,6 @@
 #define g_ScreenshotCounter (*(int32_t*)0x0051A240)
 #define g_PasswordText1 (*(TEXTSTRING **)0x0051A2CC)
 #define g_PassportMode (*(int32_t*)0x0051A2D0)
-#define g_DetailText (*(TEXTSTRING *(*)[5])0x0051A2D8)
 #define g_SoundText (*(TEXTSTRING *(*)[4])0x0051A2F0)
 #define g_WaterPalette (*(RGB_888(*)[256])0x0051B308)
 #define g_PicturePalette (*(RGB_888(*)[256])0x0051B608)

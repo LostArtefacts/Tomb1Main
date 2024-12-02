@@ -28,6 +28,7 @@
 - fixed wrongly positioned doors in Ice Palace and Floating Islands, which caused invisible walls (#1963)
 - fixed picking up the Gong Hammer in Ice Palace sometimes not opening the nearby door (#1716)
 - fixed room 98 in Wreck of the Maria Doria not having water (#1939)
+- removed unused detail level option
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
 - added a fly cheat key (#1642)
