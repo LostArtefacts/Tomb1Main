@@ -20,6 +20,8 @@
 #include <stdint.h>
 
 #define MAX_GAME_MODES 4
+#define MIN_NAME_WIDTH 140
+#define NAME_SPACER 15
 
 typedef enum {
     TEXT_PAGE_NAME = 0,
@@ -100,6 +102,7 @@ static void M_InitRequesters(void);
 static void M_InitText(void);
 static void M_ShutdownText(void);
 static void M_Close(INVENTORY_ITEM *inv_item);
+static void M_ChangePageTextContent(const char *text);
 static void M_DeterminePages(void);
 static void M_InitSaveRequester(int16_t page_num);
 static void M_RestoreSaveRequester(void);
@@ -166,6 +169,15 @@ static void M_Close(INVENTORY_ITEM *inv_item)
         inv_item->goal_frame = 0;
     }
     M_ShutdownText();
+}
+
+static void M_ChangePageTextContent(const char *const content)
+{
+    Text_ChangeText(m_Text[TEXT_PAGE_NAME], content);
+    const int32_t width = Text_GetWidth(m_Text[TEXT_PAGE_NAME]);
+    const int32_t x_pos = MAX(width, MIN_NAME_WIDTH) / 2 + NAME_SPACER;
+    Text_SetPos(m_Text[TEXT_LEFT_ARROW], -x_pos, -15);
+    Text_SetPos(m_Text[TEXT_RIGHT_ARROW], x_pos, -15);
 }
 
 static void M_DeterminePages(void)
@@ -408,7 +420,7 @@ static void M_ShowSelectLevel(void)
 
 static void M_LoadGame(void)
 {
-    Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_LOAD_GAME));
+    M_ChangePageTextContent(GS(PASSPORT_LOAD_GAME));
     g_SavegameRequester.is_blockable = true;
 
     if (m_PassportStatus.mode == PASSPORT_MODE_BROWSE) {
@@ -491,7 +503,7 @@ static void M_SelectLevel(void)
 
 static void M_SaveGame(void)
 {
-    Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_SAVE_GAME));
+    M_ChangePageTextContent(GS(PASSPORT_SAVE_GAME));
     g_SavegameRequester.is_blockable = false;
 
     if (m_PassportStatus.mode == PASSPORT_MODE_BROWSE) {
@@ -509,7 +521,7 @@ static void M_SaveGame(void)
 
 static void M_NewGame(void)
 {
-    Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_NEW_GAME));
+    M_ChangePageTextContent(GS(PASSPORT_NEW_GAME));
 
     if (m_PassportStatus.mode == PASSPORT_MODE_BROWSE) {
         if (g_InputDB.menu_confirm
@@ -566,7 +578,7 @@ static void M_NewGame(void)
 
 static void M_Restart(INVENTORY_ITEM *inv_item)
 {
-    Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_RESTART_LEVEL));
+    M_ChangePageTextContent(GS(PASSPORT_RESTART_LEVEL));
 
     if (Savegame_RestartAvailable(g_GameInfo.current_save_slot)) {
         if (g_InputDB.menu_confirm) {
@@ -668,14 +680,14 @@ void Option_Passport_Control(INVENTORY_ITEM *inv_item)
         break;
 
     case PASSPORT_MODE_EXIT_TITLE:
-        Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_EXIT_TO_TITLE));
+        M_ChangePageTextContent(GS(PASSPORT_EXIT_TO_TITLE));
         if (g_InputDB.menu_confirm) {
             g_GameInfo.passport_selection = PASSPORT_MODE_EXIT_TITLE;
         }
         break;
 
     case PASSPORT_MODE_EXIT_GAME:
-        Text_ChangeText(m_Text[TEXT_PAGE_NAME], GS(PASSPORT_EXIT_GAME));
+        M_ChangePageTextContent(GS(PASSPORT_EXIT_GAME));
         if (g_InputDB.menu_confirm) {
             g_GameInfo.passport_selection = PASSPORT_MODE_EXIT_GAME;
         }
