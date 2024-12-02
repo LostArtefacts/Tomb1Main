@@ -84,9 +84,6 @@ static void M_ToggleFullscreen(void)
         new_settings.window_width = CalculateWindowWidth(win_width, win_height);
         new_settings.triple_buffering = 0;
         GameApplySettings(&new_settings);
-
-        g_GameSizer = 1.0;
-        g_GameSizerCopy = 1.0;
         setup_screen_size();
     } else {
         const DISPLAY_MODE_LIST *const mode_list =

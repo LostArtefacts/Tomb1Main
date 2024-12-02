@@ -4,6 +4,7 @@
 - added optional automatic key/puzzle inventory item pre-selection (#1884)
 - added a search feature to the config tool (#1889)
 - added an option to fix rotation on some pickup items to better suit 3D pickup mode (#1613)
+- added an ability to use the game sizer at all times
 - changed config to store certain values in the .json file rather than Windows registry
     - music volume
     - sound volume

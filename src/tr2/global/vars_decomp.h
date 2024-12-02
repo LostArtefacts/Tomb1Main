@@ -99,7 +99,6 @@
 #define g_GameClassName (*(const char(*)[])0x00466448)
 #define g_GameWindowName (*(const char(*)[])0x00466468)
 #define g_GameSizer (*(double*)0x00466480) // = 1.0
-#define g_GameSizerCopy (*(double*)0x00466488) // = 1.0
 #define g_FadeValue (*(int32_t*)0x00466490) // = 0x100000
 #define g_FadeLimit (*(int32_t*)0x00466494) // = 0x100000
 #define g_FadeAdder (*(int32_t*)0x00466498) // = 0x8000
@@ -295,7 +294,6 @@
 #define g_IsGameWindowActive (*(bool*)0x004D8390)
 #define g_MessageLoopCounter (*(int32_t*)0x004D8394)
 #define IDID_SysKeyboard (*(LPDIRECTINPUTDEVICE*)0x004D8560)
-#define g_ScreenSizer (*(int32_t*)0x004D8568)
 #define g_IsVidSizeLock (*(int32_t*)0x004D856C)
 #define g_SampleFreqs (*(DWORD(*)[256])0x004D8570)
 #define g_SoundAdapterList (*(SOUND_ADAPTER_LIST*)0x004D8970)
@@ -374,7 +372,6 @@
 #define g_WaterPalette (*(RGB_888(*)[256])0x0051B308)
 #define g_PicturePalette (*(RGB_888(*)[256])0x0051B608)
 #define g_PhdWinRect (*(RECT*)0x0051B918)
-#define g_HiRes (*(int32_t*)0x0051B928)
 #define g_AnimTextureRanges (*(int16_t **)0x0051B92C)
 #define g_GamePalette8 (*(RGB_888(*)[256])0x0051B930)
 #define g_WinVidNeedToResetBuffers (*(bool*)0x0051BC30)

@@ -332,7 +332,6 @@ int16_t __cdecl TitleSequence(void)
 {
     GF_N_LoadStrings(-1);
 
-    TempVideoAdjust(1, 1.0);
     g_NoInputCounter = 0;
 
     if (!g_IsTitleLoaded) {
@@ -2762,14 +2761,14 @@ int32_t __cdecl LevelCompleteSequence(void)
 void __cdecl S_LoadSettings(void)
 {
     OpenGameRegistryKey("Game");
-    GetRegistryFloatValue("Sizer", &g_GameSizerCopy, 1.0);
+    GetRegistryFloatValue("Sizer", &g_GameSizer, 1.0);
     CloseGameRegistryKey();
 }
 
 void __cdecl S_SaveSettings(void)
 {
     OpenGameRegistryKey("Game");
-    SetRegistryFloatValue("Sizer", g_GameSizerCopy);
+    SetRegistryFloatValue("Sizer", g_GameSizer);
     CloseGameRegistryKey();
 }
 
@@ -2953,9 +2952,6 @@ void __cdecl S_InitialiseScreen(const GAMEFLOW_LEVEL_TYPE level_type)
     if (level_type < 0) {
         FadeToPal(0, g_GamePalette8);
     } else {
-        if (level_type != GFL_TITLE) {
-            TempVideoRemove();
-        }
         FadeToPal(FRAMES_PER_SECOND, g_GamePalette8);
     }
 
@@ -3029,13 +3025,6 @@ void __cdecl S_DrawScreenFBox(
     g_Output_InsertTransQuad(sx, sy, width + 1, height + 1, g_PhdNearZ + 8 * z);
 }
 
-void __cdecl S_FinishInventory(void)
-{
-    if (g_Inv_Mode != INV_TITLE_MODE) {
-        TempVideoRemove();
-    }
-}
-
 void __cdecl S_FadeToBlack(void)
 {
     memset(g_GamePalette8, 0, sizeof(g_GamePalette8));
@@ -3104,42 +3093,18 @@ void __cdecl S_CopyBufferToScreen(void)
 
 void __cdecl IncreaseScreenSize(void)
 {
-    if (g_GameSizer != 1.0) {
-        g_GameSizer = g_GameSizer - -0.08;
-        if (g_GameSizer > 1.0) {
-            g_GameSizer = 1.0;
-        }
-        g_GameSizerCopy = g_GameSizer;
+    if (g_GameSizer < 1.0) {
+        g_GameSizer -= 0.08;
+        CLAMPG(g_GameSizer, 1.0);
         setup_screen_size();
     }
 }
 
 void __cdecl DecreaseScreenSize(void)
 {
-    if (g_GameSizer != 0.44) {
-        g_GameSizer = g_GameSizer - 0.08;
-        if (g_GameSizer < 0.44) {
-            g_GameSizer = 0.44;
-        }
-        g_GameSizerCopy = g_GameSizer;
-        setup_screen_size();
-    }
-}
-
-void __cdecl TempVideoAdjust(const int32_t hires, const double sizer)
-{
-    g_IsVidSizeLock = true;
-    if (sizer != g_GameSizer) {
-        g_GameSizer = sizer;
-        setup_screen_size();
-    }
-}
-
-void __cdecl TempVideoRemove(void)
-{
-    g_IsVidSizeLock = false;
-    if (g_GameSizer != g_GameSizerCopy) {
-        g_GameSizer = g_GameSizerCopy;
+    if (g_GameSizer > 0.44) {
+        g_GameSizer -= 0.08;
+        CLAMPL(g_GameSizer, 0.44);
         setup_screen_size();
     }
 }

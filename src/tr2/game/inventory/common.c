@@ -110,10 +110,6 @@ void __cdecl Inv_Construct(void)
 {
     S_SetupAboveWater(0);
 
-    if (g_Inv_Mode != INV_TITLE_MODE) {
-        TempVideoAdjust(g_HiRes, 1.0);
-    }
-
     g_PhdWinRight = g_PhdWinMaxX;
     g_PhdWinLeft = 0;
     g_PhdWinTop = 0;
@@ -761,7 +757,6 @@ int32_t __cdecl Inv_Display(int32_t inventory_mode)
     } while (imo.status != RNG_DONE);
 
     M_RemoveAllText();
-    S_FinishInventory();
     g_Inv_IsActive = 0;
 
     // enable buffering

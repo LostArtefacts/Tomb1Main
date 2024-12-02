@@ -220,8 +220,6 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00447810, IncreaseScreenSize);
     INJECT(enable, 0x00447880, DecreaseScreenSize);
     INJECT(enable, 0x004478F0, setup_screen_size);
-    INJECT(enable, 0x00447990, TempVideoAdjust);
-    INJECT(enable, 0x004479D0, TempVideoRemove);
     INJECT(enable, 0x00447A10, S_FadeInInventory);
     INJECT(enable, 0x00447A50, S_FadeOutInventory);
     INJECT(enable, 0x00448430, CreateScreenBuffers);
@@ -253,7 +251,6 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044C200, S_DrawScreenLine);
     INJECT(enable, 0x0044C240, S_DrawScreenBox);
     INJECT(enable, 0x0044C360, S_DrawScreenFBox);
-    INJECT(enable, 0x0044C390, S_FinishInventory);
     INJECT(enable, 0x0044C3A0, S_FadeToBlack);
     INJECT(enable, 0x0044C3F0, S_Wait);
     INJECT(enable, 0x0044CA70, DisplayCredits);

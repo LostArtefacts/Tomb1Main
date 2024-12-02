@@ -4271,7 +4271,7 @@ typedef enum {
 0x004662E0  +       int8_t g_TextASCIIMap[];
 0x00466400  -       int32_t g_BGND_PaletteIndex = -1;
 0x00466480  -       double g_GameSizer = 1.0;
-0x00466488  -       double g_GameSizerCopy = 1.0;
+0x00466488  +       double g_GameSizerCopy = 1.0;
 0x00466490  -       int32_t g_FadeValue = 0x100000;
 0x00466494  -       int32_t g_FadeLimit = 0x100000;
 0x00466498  -       int32_t g_FadeAdder = 0x8000;
@@ -4434,7 +4434,7 @@ typedef enum {
 0x004D8370  -       int32_t g_FullScreenBPP;
 0x004D8374  -       int32_t g_FullScreenVGA;
 0x004D8378  -       uint8_t g_IsGameToExit;
-0x004D8568  -       int32_t g_ScreenSizer;
+0x004D8568  +       int32_t g_ScreenSizer;
 0x004D856C  -       int32_t g_IsVidSizeLock;
 0x004D8570  -       DWORD g_SampleFreqs[256];
 0x004D8970  -       SOUND_ADAPTER_LIST g_SoundAdapterList;
@@ -4479,7 +4479,7 @@ typedef enum {
 0x0051A23C  -       char *g_CmdLine;
 0x0051A240  -       int32_t g_ScreenshotCounter;
 0x0051B918  -       RECT g_PhdWinRect;
-0x0051B928  -       int32_t g_HiRes;
+0x0051B928  +       int32_t g_HiRes;
 0x0051B930  -       RGB_888 g_GamePalette8[256];
 0x0051BCC0  -       APP_SETTINGS g_SavedAppSettings;
 0x0051BD20  +       char g_ErrorMessage[128];

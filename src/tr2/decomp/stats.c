@@ -316,7 +316,6 @@ int32_t __cdecl LevelStats(const int32_t level_num)
 
     Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
 
-    TempVideoAdjust(g_HiRes, 1.0);
     FadeToPal(30, g_GamePalette8);
     Overlay_HideGameInfo();
     S_CopyScreenToBuffer();
@@ -354,7 +353,6 @@ int32_t __cdecl LevelStats(const int32_t level_num)
     g_SaveGame.current_level = level_num + 1;
     start->available = 0;
     S_FadeToBlack();
-    TempVideoRemove();
     return 0;
 }
 
