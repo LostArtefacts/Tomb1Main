@@ -32,6 +32,7 @@
 - fixed room 98 in Wreck of the Maria Doria not having water (#1939)
 - fixed a potential crash if Lara is on the skidoo in a room with many other adjoining rooms (#1987)
 - fixed a softlock in Home Sweet Home if the final cutscene is triggered while Lara is on water surface (#1701)
+- fixed Lara's left arm becoming stuck if a flare is drawn just before the final cutscene in Home Sweet Home (#1992)
 - removed unused detail level option
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06

@@ -1,6 +1,8 @@
 #include "game/objects/general/final_level_counter.h"
 
+#include "decomp/flares.h"
 #include "game/creature.h"
+#include "game/gun/gun.h"
 #include "game/items.h"
 #include "game/los.h"
 #include "game/lot.h"
@@ -63,14 +65,20 @@ static void __cdecl M_ActivateLastBoss(void)
 
 static void __cdecl M_PrepareCutscene(const int16_t item_num)
 {
+    if (g_Lara.gun_type == LGT_FLARE) {
+        Flare_Undraw();
+        g_Lara.flare_control_left = false;
+        g_Lara.left_arm.lock = false;
+    }
+
+    Gun_SetLaraHandLMesh(LGT_UNARMED);
+    Gun_SetLaraHandRMesh(LGT_UNARMED);
     g_Lara.water_status = LWS_ABOVE_WATER;
 
     ITEM *const item = &g_Items[item_num];
     Creature_Kill(item, 0, 0, LA_EXTRA_FINAL_ANIM);
 
     g_Camera.type = CAM_CINEMATIC;
-    g_Lara.mesh_ptrs[LM_HAND_R] =
-        g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
     g_CineFrameIdx = 428;
     g_CinePos.pos = item->pos;
     g_CinePos.rot = item->rot;
