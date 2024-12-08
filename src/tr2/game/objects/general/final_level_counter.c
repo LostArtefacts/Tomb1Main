@@ -63,6 +63,8 @@ static void __cdecl M_ActivateLastBoss(void)
 
 static void __cdecl M_PrepareCutscene(const int16_t item_num)
 {
+    g_Lara.water_status = LWS_ABOVE_WATER;
+
     ITEM *const item = &g_Items[item_num];
     Creature_Kill(item, 0, 0, LA_EXTRA_FINAL_ANIM);
 

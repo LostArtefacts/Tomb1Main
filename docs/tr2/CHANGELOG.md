@@ -31,6 +31,7 @@
 - fixed picking up the Gong Hammer in Ice Palace sometimes not opening the nearby door (#1716)
 - fixed room 98 in Wreck of the Maria Doria not having water (#1939)
 - fixed a potential crash if Lara is on the skidoo in a room with many other adjoining rooms (#1987)
+- fixed a softlock in Home Sweet Home if the final cutscene is triggered while Lara is on water surface (#1701)
 - removed unused detail level option
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06

@@ -41,6 +41,7 @@ decompilation process. We recognize that there is much work to be done.
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo
 - fixed the detonator key and gong hammer not activating their target items when manually selected from the inventory
 - fixed a potential crash if Lara is on the skidoo in a room with many other adjoining rooms
+- fixed a softlock in Home Sweet Home if the final cutscene is triggered while Lara is on water surface
 - fixed the following floor data issues:
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
     - **Wreck of the Maria Doria**: fixed room 98 not having water
