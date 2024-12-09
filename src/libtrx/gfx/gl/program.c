@@ -209,6 +209,13 @@ void GFX_GL_Program_Uniform1i(GFX_GL_PROGRAM *program, GLint loc, GLint v0)
     GFX_GL_CheckError();
 }
 
+void GFX_GL_Program_Uniform1f(GFX_GL_PROGRAM *program, GLint loc, GLfloat v0)
+{
+    ASSERT(program != NULL);
+    glUniform1f(loc, v0);
+    GFX_GL_CheckError();
+}
+
 void GFX_GL_Program_UniformMatrix4fv(
     GFX_GL_PROGRAM *program, GLint loc, GLsizei count, GLboolean transpose,
     const GLfloat *value)

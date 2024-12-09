@@ -116,6 +116,7 @@ sources = [
   'gfx/3d/3d_renderer.c',
   'gfx/3d/vertex_stream.c',
   'gfx/context.c',
+  'gfx/fade/fade_renderer.c',
   'gfx/gl/buffer.c',
   'gfx/gl/gl_core_3_3.c',
   'gfx/gl/program.c',
