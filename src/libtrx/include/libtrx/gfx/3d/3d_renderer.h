@@ -58,6 +58,8 @@ void GFX_3D_Renderer_SetDepthWritesEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled);
 void GFX_3D_Renderer_SetDepthTestEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled);
+void GFX_3D_Renderer_SetDepthBufferEnabled(
+    GFX_3D_RENDERER *renderer, bool is_enabled);
 void GFX_3D_Renderer_SetBlendingMode(
     GFX_3D_RENDERER *renderer, GFX_BLEND_MODE blend_mode);
 void GFX_3D_Renderer_SetTexturingEnabled(

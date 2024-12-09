@@ -371,6 +371,14 @@ void GFX_3D_Renderer_SetDepthTestEnabled(
     }
 }
 
+void GFX_3D_Renderer_SetDepthBufferEnabled(
+    GFX_3D_RENDERER *renderer, bool is_enabled)
+{
+    ASSERT(renderer != NULL);
+    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    glDepthFunc(is_enabled ? GL_LEQUAL : GL_ALWAYS);
+}
+
 void GFX_3D_Renderer_SetBlendingMode(
     GFX_3D_RENDERER *const renderer, const GFX_BLEND_MODE blend_mode)
 {
