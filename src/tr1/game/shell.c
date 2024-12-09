@@ -218,22 +218,6 @@ void Shell_Main(void)
     GameString_Shutdown();
 }
 
-void Shell_ExitSystem(const char *message)
-{
-    S_Shell_ShowFatalError(message);
-    Shell_Shutdown();
-}
-
-void Shell_ExitSystemFmt(const char *fmt, ...)
-{
-    va_list va;
-    va_start(va, fmt);
-    char message[150];
-    vsnprintf(message, 150, fmt, va);
-    va_end(va);
-    Shell_ExitSystem(message);
-}
-
 void Shell_ProcessInput(void)
 {
     if (g_InputDB.screenshot) {

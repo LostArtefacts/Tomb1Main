@@ -5,3 +5,5 @@ const char *g_TR2XVersion = "TR2X (non-Docker build)";
 #endif
 
 GAME_FLOW_DIR g_GF_OverrideDir = (GAME_FLOW_DIR)-1;
+
+SDL_Window *g_SDLWindow = NULL;

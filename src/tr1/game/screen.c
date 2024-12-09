@@ -2,11 +2,11 @@
 
 #include "config.h"
 #include "game/output.h"
+#include "game/shell.h"
 #include "game/viewport.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "math/matrix.h"
-#include "specific/s_shell.h"
 
 #include <libtrx/utils.h>
 
@@ -72,8 +72,8 @@ void Screen_Init(void)
 
     // set the first resolution size to desktop size
     res = &m_Resolutions[0];
-    res->width = S_Shell_GetCurrentDisplayWidth();
-    res->height = S_Shell_GetCurrentDisplayHeight();
+    res->width = Shell_GetCurrentDisplayWidth();
+    res->height = Shell_GetCurrentDisplayHeight();
 
     // select matching resolution from config
     if (g_Config.resolution_width > 0 && g_Config.resolution_height > 0) {

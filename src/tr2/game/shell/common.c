@@ -179,30 +179,6 @@ void __cdecl Shell_Shutdown(void)
     Config_Shutdown();
 }
 
-void __cdecl Shell_ExitSystem(const char *const message)
-{
-    MessageBoxA(NULL, message, NULL, MB_ICONWARNING);
-    Shell_Shutdown();
-    exit(1);
-}
-
-void __cdecl Shell_ExitSystemFmt(const char *fmt, ...)
-{
-    va_list va;
-    va_start(va, fmt);
-    int32_t size = vsnprintf(NULL, 0, fmt, va) + 1;
-    char *message = Memory_Alloc(size);
-    va_end(va);
-
-    va_start(va, fmt);
-    vsnprintf(message, size, fmt, va);
-    va_end(va);
-
-    Shell_ExitSystem(message);
-
-    Memory_FreePointer(&message);
-}
-
 const char *Shell_GetGameflowPath(void)
 {
     return m_CurrentGameflowPath;
@@ -263,4 +239,9 @@ void Shell_ProcessEvents(void)
             break;
         }
     }
+}
+
+SDL_Window *Shell_GetWindow(void)
+{
+    return g_SDLWindow;
 }

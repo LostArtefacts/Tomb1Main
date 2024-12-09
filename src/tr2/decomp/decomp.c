@@ -2620,8 +2620,8 @@ bool __cdecl WinVidCreateGameWindow(void)
         return false;
     }
 
-    SDL_Window *sdl_window = SDL_CreateWindowFrom(g_GameWindowHandle);
-    if (sdl_window == NULL) {
+    g_SDLWindow = SDL_CreateWindowFrom(g_GameWindowHandle);
+    if (g_SDLWindow == NULL) {
         Shell_ExitSystemFmt("Failed to create SDL window: %s", SDL_GetError());
         return false;
     }

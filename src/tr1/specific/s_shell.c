@@ -165,31 +165,13 @@ void S_Shell_Init(void)
     SDL_ShowWindow(m_Window);
 }
 
-void S_Shell_ShowFatalError(const char *message)
-{
-    LOG_ERROR("%s", message);
-    SDL_ShowSimpleMessageBox(
-        SDL_MESSAGEBOX_ERROR, "Tomb Raider Error", message, m_Window);
-    S_Shell_TerminateGame(1);
-}
-
-void S_Shell_TerminateGame(int exit_code)
-{
-    Shell_Shutdown();
-    if (m_Window) {
-        SDL_DestroyWindow(m_Window);
-    }
-    SDL_Quit();
-    exit(exit_code);
-}
-
 void S_Shell_SpinMessageLoop(void)
 {
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
         switch (event.type) {
         case SDL_QUIT:
-            S_Shell_TerminateGame(0);
+            Shell_Terminate(0);
             break;
 
         case SDL_WINDOWEVENT:
@@ -299,9 +281,7 @@ int main(int argc, char **argv)
     m_ArgStrings = argv;
 
     if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
-        char buf[256];
-        sprintf(buf, "Cannot initialize SDL: %s", SDL_GetError());
-        S_Shell_ShowFatalError(buf);
+        Shell_ExitSystemFmt("Cannot initialize SDL: %s", SDL_GetError());
         return 1;
     }
 
@@ -315,7 +295,7 @@ int main(int argc, char **argv)
 
     Shell_Main();
 
-    S_Shell_TerminateGame(0);
+    Shell_Terminate(0);
     return 0;
 }
 
@@ -392,21 +372,7 @@ bool S_Shell_GetCommandLine(int *arg_count, char ***args)
     return true;
 }
 
-void *S_Shell_GetWindowHandle(void)
+SDL_Window *Shell_GetWindow(void)
 {
-    return (void *)m_Window;
-}
-
-int S_Shell_GetCurrentDisplayWidth(void)
-{
-    SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-    return dm.w;
-}
-
-int S_Shell_GetCurrentDisplayHeight(void)
-{
-    SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-    return dm.h;
+    return m_Window;
 }
