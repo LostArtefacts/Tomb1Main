@@ -40,6 +40,11 @@ struct GFX_2D_RENDERER {
 
     GFX_2D_SURFACE_DESC desc;
     GFX_2D_SURFACE_DESC alpha_desc;
+    struct {
+        int32_t x;
+        int32_t y;
+    } repeat;
+
     GFX_2D_EFFECT effect;
     bool use_palette;
     bool use_alpha;
@@ -60,21 +65,34 @@ static const M_VERTEX m_Vertices[] = {
 static void M_UploadVertices(GFX_2D_RENDERER *const r)
 {
     const int32_t mapping[] = { 0, 1, 3, 3, 1, 2 };
-    r->vertex_count = 6;
-    r->vertices = Memory_Realloc(r->vertices, 6 * sizeof(M_VERTEX));
+    r->vertex_count = r->repeat.x * r->repeat.y * 6;
+    r->vertices = Memory_Realloc(
+        r->vertices, r->repeat.x * r->repeat.y * 6 * sizeof(M_VERTEX));
     M_VERTEX *ptr = r->vertices;
 
-    for (int32_t i = 0; i < 6; i++) {
-        ptr->x = m_Vertices[i].x;
-        ptr->y = m_Vertices[i].y;
-        ptr->u = r->desc.uv[mapping[i]].u;
-        ptr->v = r->desc.uv[mapping[i]].v;
-        ptr++;
-    }
+    for (int32_t y = 0; y < r->repeat.y; y++) {
+        for (int32_t x = 0; x < r->repeat.x; x++) {
+            for (int32_t i = 0; i < 6; i++) {
 
+                float xFactor = (float)x / (float)r->repeat.x;
+                float yFactor = (float)y / (float)r->repeat.y;
+                float xOffset = 1.0f / (float)r->repeat.x;
+                float yOffset = 1.0f / (float)r->repeat.y;
+
+                ptr->x = m_Vertices[i].x * xOffset + xFactor;
+                ptr->y = m_Vertices[i].y * yOffset + yFactor;
+                ptr->u = r->desc.uv[mapping[i]].u;
+                ptr->v = r->desc.uv[mapping[i]].v;
+
+                ptr++;
+            }
+        }
+    }
+    LOG_DEBUG("%d %d", r->repeat.x, r->repeat.y);
     GFX_GL_Buffer_Bind(&r->surface_buffer);
     GFX_GL_Buffer_Data(
-        &r->surface_buffer, sizeof(M_VERTEX) * 6, r->vertices, GL_STATIC_DRAW);
+        &r->surface_buffer, sizeof(M_VERTEX) * 6 * r->repeat.x * r->repeat.y,
+        r->vertices, GL_STATIC_DRAW);
 }
 
 GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
@@ -86,6 +104,8 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     r->effect = GFX_2D_EFFECT_NONE;
     r->use_palette = false;
     r->use_alpha = false;
+    r->repeat.x = 1;
+    r->repeat.y = 1;
 
     r->vertices = NULL;
     r->vertex_count = 6;
@@ -298,6 +318,20 @@ void GFX_2D_Renderer_SetPalette(
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     GFX_GL_CheckError();
+}
+
+void GFX_2D_Renderer_SetRepeat(
+    GFX_2D_RENDERER *const r, const int32_t x, const int32_t y)
+{
+    ASSERT(r != NULL);
+
+    if (r->repeat.x == x && r->repeat.y == y) {
+        return;
+    }
+
+    r->repeat.x = x;
+    r->repeat.y = y;
+    M_UploadVertices(r);
 }
 
 void GFX_2D_Renderer_SetEffect(

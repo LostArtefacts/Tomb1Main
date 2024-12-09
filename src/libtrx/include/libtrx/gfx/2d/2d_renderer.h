@@ -33,6 +33,7 @@ void GFX_2D_Renderer_Upload(
 
 void GFX_2D_Renderer_SetPalette(
     GFX_2D_RENDERER *renderer, const GFX_PALETTE_ENTRY *palette);
+void GFX_2D_Renderer_SetRepeat(GFX_2D_RENDERER *renderer, int32_t x, int32_t y);
 void GFX_2D_Renderer_SetEffect(GFX_2D_RENDERER *renderer, GFX_2D_EFFECT filter);
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *renderer);
