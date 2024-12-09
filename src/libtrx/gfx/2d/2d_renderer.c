@@ -13,7 +13,6 @@ struct GFX_2D_RENDERER {
     GFX_GL_VERTEX_ARRAY surface_format;
     GFX_GL_BUFFER surface_buffer;
     GFX_GL_TEXTURE surface_texture;
-    GFX_GL_SAMPLER sampler;
     GFX_GL_PROGRAM program;
 };
 
@@ -37,15 +36,6 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
 
     GFX_GL_Texture_Init(&r->surface_texture, GL_TEXTURE_2D);
 
-    GFX_GL_Sampler_Init(&r->sampler);
-    GFX_GL_Sampler_Bind(&r->sampler, 0);
-    GFX_GL_Sampler_Parameteri(&r->sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    GFX_GL_Sampler_Parameteri(&r->sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    GFX_GL_Sampler_Parameteri(
-        &r->sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    GFX_GL_Sampler_Parameteri(
-        &r->sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-
     GFX_GL_Program_Init(&r->program);
     GFX_GL_Program_AttachShader(
         &r->program, GL_VERTEX_SHADER, "shaders/2d.glsl", config->backend);
@@ -66,7 +56,6 @@ void GFX_2D_Renderer_Destroy(GFX_2D_RENDERER *const r)
     GFX_GL_VertexArray_Close(&r->surface_format);
     GFX_GL_Buffer_Close(&r->surface_buffer);
     GFX_GL_Texture_Close(&r->surface_texture);
-    GFX_GL_Sampler_Close(&r->sampler);
     GFX_GL_Program_Close(&r->program);
     Memory_Free(r);
 }
@@ -106,7 +95,6 @@ void GFX_2D_Renderer_Render(GFX_2D_RENDERER *const r)
     GFX_GL_Buffer_Bind(&r->surface_buffer);
     GFX_GL_VertexArray_Bind(&r->surface_format);
     GFX_GL_Texture_Bind(&r->surface_texture);
-    GFX_GL_Sampler_Bind(&r->sampler, 0);
 
     GLboolean blend = glIsEnabled(GL_BLEND);
     if (blend) {
