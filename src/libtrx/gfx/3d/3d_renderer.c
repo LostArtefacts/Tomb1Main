@@ -346,6 +346,7 @@ void GFX_3D_Renderer_SetTextureFilter(
     GFX_GL_Sampler_Parameteri(
         &renderer->sampler, GL_TEXTURE_MIN_FILTER,
         filter == GFX_TF_BILINEAR ? GL_LINEAR : GL_NEAREST);
+    GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Program_Uniform1i(
         &renderer->program, renderer->loc_smoothing_enabled,
         filter == GFX_TF_BILINEAR);
@@ -420,6 +421,7 @@ void GFX_3D_Renderer_SetTexturingEnabled(
 {
     ASSERT(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Program_Uniform1i(
         &renderer->program, renderer->loc_texturing_enabled, is_enabled);
 }
