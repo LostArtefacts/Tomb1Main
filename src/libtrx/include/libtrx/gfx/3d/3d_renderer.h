@@ -21,26 +21,10 @@ typedef enum {
     GFX_BLEND_MODE_MULTIPLY,
 } GFX_BLEND_MODE;
 
-typedef struct {
-    const GFX_CONFIG *config;
+typedef struct GFX_3D_RENDERER GFX_3D_RENDERER;
 
-    GFX_GL_PROGRAM program;
-    GFX_GL_SAMPLER sampler;
-    GFX_3D_VERTEX_STREAM vertex_stream;
-
-    GFX_GL_TEXTURE *textures[GFX_MAX_TEXTURES];
-    GFX_GL_TEXTURE *env_map_texture;
-    int selected_texture_num;
-
-    // shader variable locations
-    GLint loc_mat_projection;
-    GLint loc_mat_model_view;
-    GLint loc_texturing_enabled;
-    GLint loc_smoothing_enabled;
-} GFX_3D_RENDERER;
-
-void GFX_3D_Renderer_Init(GFX_3D_RENDERER *renderer, const GFX_CONFIG *config);
-void GFX_3D_Renderer_Close(GFX_3D_RENDERER *renderer);
+GFX_3D_RENDERER *GFX_3D_Renderer_Create(void);
+void GFX_3D_Renderer_Destroy(GFX_3D_RENDERER *renderer);
 
 void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *renderer);
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *renderer);
@@ -78,3 +62,5 @@ void GFX_3D_Renderer_SetBlendingMode(
     GFX_3D_RENDERER *renderer, GFX_BLEND_MODE blend_mode);
 void GFX_3D_Renderer_SetTexturingEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled);
+void GFX_3D_Renderer_SetAnisotropyFilter(
+    GFX_3D_RENDERER *renderer, float value);

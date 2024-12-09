@@ -90,13 +90,12 @@ static void M_UploadSurface(void *const surface, void *const user_data)
 
 static bool M_Play(const char *const file_path)
 {
-    GFX_2D_RENDERER *renderer_2d = GFX_Context_GetRenderer2D();
-
     VIDEO *video = Video_Open(file_path);
     if (video == NULL) {
         return false;
     }
 
+    GFX_2D_RENDERER *renderer_2d = GFX_2D_Renderer_Create();
     Audio_Shutdown();
 
     Video_SetSurfaceAllocatorFunc(video, M_AllocateSurface, NULL);
@@ -129,6 +128,7 @@ static bool M_Play(const char *const file_path)
     Video_Close(video);
 
     Audio_Init();
+    GFX_2D_Renderer_Destroy(renderer_2d);
     S_Output_ApplyRenderSettings();
 
     return true;

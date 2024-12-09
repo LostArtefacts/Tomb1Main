@@ -25,8 +25,6 @@ typedef struct {
 
     char *scheduled_screenshot_path;
     GFX_RENDERER *renderer;
-    GFX_2D_RENDERER renderer_2d;
-    GFX_3D_RENDERER renderer_3d;
 } GFX_CONTEXT;
 
 static GFX_CONTEXT m_Context = { 0 };
@@ -154,9 +152,6 @@ bool GFX_Context_Attach(void *window_handle, GFX_GL_BACKEND backend)
 
     // VSync defaults to on unless user disabled it in runtime json
     SDL_GL_SetSwapInterval(1);
-
-    GFX_2D_Renderer_Init(&m_Context.renderer_2d, &m_Context.config);
-    GFX_3D_Renderer_Init(&m_Context.renderer_3d, &m_Context.config);
     return true;
 }
 
@@ -169,9 +164,6 @@ void GFX_Context_Detach(void)
     if (m_Context.renderer != NULL && m_Context.renderer->shutdown != NULL) {
         m_Context.renderer->shutdown(m_Context.renderer);
     }
-
-    GFX_2D_Renderer_Close(&m_Context.renderer_2d);
-    GFX_3D_Renderer_Close(&m_Context.renderer_3d);
 
     SDL_GL_MakeCurrent(NULL, NULL);
 
@@ -195,13 +187,6 @@ void GFX_Context_SetWireframeMode(const bool enable)
 void GFX_Context_SetLineWidth(const int32_t line_width)
 {
     m_Context.config.line_width = line_width;
-}
-
-void GFX_Context_SetAnisotropyFilter(float value)
-{
-    GFX_GL_Sampler_Bind(&m_Context.renderer_3d.sampler, 0);
-    GFX_GL_Sampler_Parameterf(
-        &m_Context.renderer_3d.sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, value);
 }
 
 void GFX_Context_SetVSync(bool vsync)
@@ -314,12 +299,7 @@ void GFX_Context_ClearScheduledScreenshotPath(void)
     Memory_FreePointer(&m_Context.scheduled_screenshot_path);
 }
 
-GFX_2D_RENDERER *GFX_Context_GetRenderer2D(void)
+GFX_CONFIG *GFX_Context_GetConfig(void)
 {
-    return &m_Context.renderer_2d;
-}
-
-GFX_3D_RENDERER *GFX_Context_GetRenderer3D(void)
-{
-    return &m_Context.renderer_3d;
+    return &m_Context.config;
 }

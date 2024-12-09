@@ -69,7 +69,7 @@ static inline float M_GetUV(const uint16_t uv)
 
 static void M_ReleaseTextures(void)
 {
-    if (!m_Renderer3D) {
+    if (m_Renderer3D == NULL) {
         return;
     }
     for (int i = 0; i < GFX_MAX_TEXTURES; i++) {
@@ -817,7 +817,8 @@ void S_Output_ApplyRenderSettings(void)
     GFX_Context_SetRenderingMode(g_Config.rendering.render_mode);
     GFX_Context_SetWireframeMode(g_Config.rendering.enable_wireframe);
     GFX_Context_SetLineWidth(g_Config.rendering.wireframe_width);
-    GFX_Context_SetAnisotropyFilter(g_Config.rendering.anisotropy_filter);
+    GFX_3D_Renderer_SetAnisotropyFilter(
+        m_Renderer3D, g_Config.rendering.anisotropy_filter);
 
     if (m_PrimarySurface == NULL) {
         GFX_2D_SURFACE_DESC surface_desc = { 0 };
@@ -848,8 +849,8 @@ bool S_Output_Init(void)
         m_TextureSurfaces[i] = NULL;
     }
 
-    m_Renderer2D = GFX_Context_GetRenderer2D();
-    m_Renderer3D = GFX_Context_GetRenderer3D();
+    m_Renderer2D = GFX_2D_Renderer_Create();
+    m_Renderer3D = GFX_3D_Renderer_Create();
 
     S_Output_ApplyRenderSettings();
     GFX_3D_Renderer_SetPrimType(m_Renderer3D, GFX_3D_PRIM_TRI);
@@ -862,8 +863,14 @@ void S_Output_Shutdown(void)
     M_ReleaseTextures();
     M_ReleaseSurfaces();
     GFX_Context_Detach();
-    m_Renderer2D = NULL;
-    m_Renderer3D = NULL;
+    if (m_Renderer2D != NULL) {
+        GFX_2D_Renderer_Destroy(m_Renderer2D);
+        m_Renderer2D = NULL;
+    }
+    if (m_Renderer3D != NULL) {
+        GFX_3D_Renderer_Destroy(m_Renderer3D);
+        m_Renderer3D = NULL;
+    }
 }
 
 void S_Output_DrawFlatTriangle(
