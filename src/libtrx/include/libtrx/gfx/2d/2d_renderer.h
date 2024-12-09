@@ -14,6 +14,11 @@ typedef struct {
     uint8_t r, g, b;
 } GFX_PALETTE_ENTRY;
 
+typedef enum {
+    GFX_2D_EFFECT_NONE = 0,
+    GFX_2D_EFFECT_VIGNETTE = 1,
+} GFX_2D_EFFECT;
+
 typedef struct GFX_2D_RENDERER GFX_2D_RENDERER;
 
 GFX_2D_RENDERER *GFX_2D_Renderer_Create(void);
@@ -28,5 +33,6 @@ void GFX_2D_Renderer_Upload(
 
 void GFX_2D_Renderer_SetPalette(
     GFX_2D_RENDERER *renderer, const GFX_PALETTE_ENTRY *palette);
+void GFX_2D_Renderer_SetEffect(GFX_2D_RENDERER *renderer, GFX_2D_EFFECT filter);
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *renderer);

@@ -16,6 +16,7 @@ typedef enum {
     M_UNIFORM_TEXTURE_ALPHA,
     M_UNIFORM_PALETTE_ENABLED,
     M_UNIFORM_ALPHA_ENABLED,
+    M_UNIFORM_EFFECT,
     M_UNIFORM_NUMBER_OF,
 } M_UNIFORM;
 
@@ -39,6 +40,7 @@ struct GFX_2D_RENDERER {
 
     GFX_2D_SURFACE_DESC desc;
     GFX_2D_SURFACE_DESC alpha_desc;
+    GFX_2D_EFFECT effect;
     bool use_palette;
     bool use_alpha;
 
@@ -81,6 +83,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     GFX_2D_RENDERER *const r = Memory_Alloc(sizeof(GFX_2D_RENDERER));
     const GFX_CONFIG *const config = GFX_Context_GetConfig();
 
+    r->effect = GFX_2D_EFFECT_NONE;
     r->use_palette = false;
     r->use_alpha = false;
 
@@ -121,6 +124,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         { M_UNIFORM_TEXTURE_ALPHA, "texAlpha" },
         { M_UNIFORM_PALETTE_ENABLED, "paletteEnabled" },
         { M_UNIFORM_ALPHA_ENABLED, "alphaEnabled" },
+        { M_UNIFORM_EFFECT, "effect" },
         { -1, NULL },
     };
     for (int32_t i = 0; uniforms[i].name != NULL; i++) {
@@ -137,6 +141,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], r->use_palette);
     GFX_GL_Program_Uniform1i(
         &r->program, r->loc[M_UNIFORM_ALPHA_ENABLED], r->use_alpha);
+    GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_EFFECT], r->effect);
     GFX_GL_CheckError();
 
     return r;
@@ -293,6 +298,18 @@ void GFX_2D_Renderer_SetPalette(
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     GFX_GL_CheckError();
+}
+
+void GFX_2D_Renderer_SetEffect(
+    GFX_2D_RENDERER *const r, const GFX_2D_EFFECT effect)
+{
+    ASSERT(r != NULL);
+
+    if (r->effect != effect) {
+        GFX_GL_Program_Bind(&r->program);
+        GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_EFFECT], effect);
+        r->effect = effect;
+    }
 }
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *const r)

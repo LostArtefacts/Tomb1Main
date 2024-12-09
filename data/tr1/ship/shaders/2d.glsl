@@ -21,11 +21,15 @@ void main(void) {
 #else
 // Fragment shader
 
+#define EFFECT_NONE 0
+#define EFFECT_VIGNETTE 1
+
 uniform sampler2D texMain;
 uniform sampler1D texPalette;
 uniform sampler2D texAlpha;
 uniform bool paletteEnabled;
 uniform bool alphaEnabled;
+uniform int effect;
 
 #ifdef OGL33C
     #define OUTCOLOR outColor
@@ -59,6 +63,14 @@ void main(void) {
         OUTCOLOR = TEXTURE1D(texPalette, paletteIndex);
     } else {
         OUTCOLOR = TEXTURE2D(texMain, uv);
+    }
+
+    if (effect == EFFECT_VIGNETTE) {
+        float x_dist = vertCoords.x - 0.5;
+        float y_dist = vertCoords.y - 0.5;
+        float light = 256 - sqrt(x_dist * x_dist + y_dist * y_dist ) * 300.0;
+        light = clamp(light, 0, 255) / 255;
+        OUTCOLOR *= vec4(light, light, light, 1);
     }
 }
 #endif // VERTEX
