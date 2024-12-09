@@ -264,11 +264,19 @@ void GFX_2D_Renderer_Upload(
     if (r->desc.width != desc->width || r->desc.height != desc->height
         || r->desc.tex_format != desc->tex_format
         || r->desc.tex_type != desc->tex_type) {
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
         glTexImage2D(
             GL_TEXTURE_2D, 0, GL_RGBA, desc->width, desc->height, 0,
             desc->tex_format, desc->tex_type, data);
         GFX_GL_CheckError();
     } else {
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
         glTexSubImage2D(
             GL_TEXTURE_2D, 0, 0, 0, desc->width, desc->height, desc->tex_format,
             desc->tex_type, data);
