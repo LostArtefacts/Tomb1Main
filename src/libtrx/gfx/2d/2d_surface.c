@@ -7,6 +7,18 @@
 
 #include <string.h>
 
+static void M_FillDefaultUVs(GFX_2D_SURFACE *const surface)
+{
+    surface->desc.uv[0].u = 0;
+    surface->desc.uv[0].v = 0;
+    surface->desc.uv[1].u = 1;
+    surface->desc.uv[1].v = 0;
+    surface->desc.uv[2].u = 1;
+    surface->desc.uv[2].v = 1;
+    surface->desc.uv[3].u = 0;
+    surface->desc.uv[3].v = 1;
+}
+
 GFX_2D_SURFACE *GFX_2D_Surface_Create(const GFX_2D_SURFACE_DESC *const desc)
 {
     GFX_2D_SURFACE *surface = Memory_Alloc(sizeof(GFX_2D_SURFACE));
@@ -23,6 +35,7 @@ GFX_2D_SURFACE *GFX_2D_Surface_CreateFromImage(const IMAGE *const image)
     surface->desc.tex_format = GL_RGB;
     surface->desc.tex_type = GL_UNSIGNED_BYTE;
     surface->desc.pitch = surface->desc.width * (surface->desc.bit_count / 8);
+    M_FillDefaultUVs(surface);
     surface->buffer = Memory_Alloc(surface->desc.pitch * surface->desc.height);
     memcpy(
         surface->buffer, image->data,
@@ -63,6 +76,15 @@ void GFX_2D_Surface_Init(
     }
     if (!surface->desc.tex_type) {
         surface->desc.tex_type = GL_UNSIGNED_INT_8_8_8_8_REV;
+    }
+
+    bool uvs_supplied = false;
+    for (int32_t i = 0; i < 4; i++) {
+        uvs_supplied |=
+            surface->desc.uv[i].u != 0 || surface->desc.uv[i].v != 0;
+    }
+    if (!uvs_supplied) {
+        M_FillDefaultUVs(surface);
     }
 
     surface->desc.pitch = surface->desc.width * (surface->desc.bit_count / 8);

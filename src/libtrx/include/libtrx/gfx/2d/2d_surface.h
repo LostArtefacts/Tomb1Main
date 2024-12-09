@@ -7,12 +7,18 @@
 #include <stdint.h>
 
 typedef struct {
+    GLfloat u;
+    GLfloat v;
+} GFX_2D_SURFACE_UV;
+
+typedef struct {
     int32_t width;
     int32_t height;
     int32_t pitch;
     int32_t bit_count;
     GLenum tex_format;
     GLenum tex_type;
+    GFX_2D_SURFACE_UV uv[4];
 } GFX_2D_SURFACE_DESC;
 
 typedef struct {
