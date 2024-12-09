@@ -41,7 +41,6 @@ bool Config_Write(void)
     };
     const bool updated = ConfigFile_Write(&args);
     if (updated) {
-        Config_ApplyChanges();
         if (m_EventManager != NULL) {
             const EVENT event = {
                 .name = "write",
@@ -50,6 +49,7 @@ bool Config_Write(void)
             };
             EventManager_Fire(m_EventManager, &event);
         }
+        Config_ApplyChanges();
     }
     return updated;
 }
