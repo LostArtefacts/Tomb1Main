@@ -1,6 +1,7 @@
 #include "game/ui/events.h"
 
 #include "config/common.h"
+#include "debug.h"
 
 #include <stddef.h>
 
@@ -10,12 +11,14 @@ static void M_HandleConfigChange(const EVENT *event, void *data);
 
 static void M_HandleConfigChange(const EVENT *const event, void *const data)
 {
-    const EVENT new_event = {
-        .name = "canvas_resize",
-        .sender = NULL,
-        .data = NULL,
-    };
-    EventManager_Fire(m_EventManager, &new_event);
+    if (m_EventManager != NULL) {
+        const EVENT new_event = {
+            .name = "canvas_resize",
+            .sender = NULL,
+            .data = NULL,
+        };
+        EventManager_Fire(m_EventManager, &new_event);
+    }
 }
 
 void UI_Events_Init(void)
@@ -34,16 +37,21 @@ int32_t UI_Events_Subscribe(
     const char *const event_name, const UI_WIDGET *const sender,
     const EVENT_LISTENER listener, void *const user_data)
 {
+    ASSERT(m_EventManager != NULL);
     return EventManager_Subscribe(
         m_EventManager, event_name, sender, listener, user_data);
 }
 
 void UI_Events_Unsubscribe(const int32_t listener_id)
 {
-    EventManager_Unsubscribe(m_EventManager, listener_id);
+    if (m_EventManager != NULL) {
+        EventManager_Unsubscribe(m_EventManager, listener_id);
+    }
 }
 
 void UI_Events_Fire(const EVENT *const event)
 {
-    EventManager_Fire(m_EventManager, event);
+    if (m_EventManager != NULL) {
+        EventManager_Fire(m_EventManager, event);
+    }
 }
