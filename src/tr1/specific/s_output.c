@@ -118,8 +118,7 @@ static void M_FlipPrimaryBuffer(void)
 
 static void M_ClearSurface(GFX_2D_SURFACE *surface)
 {
-    bool result = GFX_2D_Surface_Clear(surface);
-    S_Output_CheckError(result);
+    GFX_2D_Surface_Clear(surface);
 }
 
 static void M_DrawTriangleFan(GFX_3D_VERTEX *vertices, int vertex_count)
@@ -471,16 +470,9 @@ void S_Output_ClearDepthBuffer(void)
 
 void S_Output_DrawBackdropSurface(void)
 {
-    if (!m_PictureSurface) {
+    if (m_PictureSurface == NULL) {
         return;
     }
-
-    if (m_PictureSurface->is_dirty) {
-        GFX_2D_Renderer_Upload(
-            m_Renderer2D, &m_PictureSurface->desc, m_PictureSurface->buffer);
-        m_PictureSurface->is_dirty = false;
-    }
-
     GFX_2D_Renderer_Render(m_Renderer2D);
 }
 
@@ -494,6 +486,8 @@ void S_Output_DownloadBackdropSurface(const IMAGE *const image)
     }
 
     m_PictureSurface = GFX_2D_Surface_CreateFromImage(image);
+    GFX_2D_Renderer_Upload(
+        m_Renderer2D, &m_PictureSurface->desc, m_PictureSurface->buffer);
 }
 
 void S_Output_SelectTexture(const int32_t texture_num)
@@ -1249,22 +1243,16 @@ void S_Output_DownloadTextures(int32_t pages)
     M_ReleaseTextures();
 
     for (int i = 0; i < pages; i++) {
-        GFX_2D_SURFACE_DESC surface_desc = { 0 };
-        bool result = GFX_2D_Surface_Lock(m_TextureSurfaces[i], &surface_desc);
-        S_Output_CheckError(result);
-
-        RGBA_8888 *output_ptr = surface_desc.pixels;
+        GFX_2D_SURFACE *const surface = m_TextureSurfaces[i];
+        RGBA_8888 *output_ptr = (RGBA_8888 *)surface->buffer;
         RGBA_8888 *input_ptr = g_TexturePagePtrs[i];
         memcpy(
             output_ptr, input_ptr,
-            surface_desc.width * surface_desc.height * sizeof(RGBA_8888));
-
-        result = GFX_2D_Surface_Unlock(m_TextureSurfaces[i]);
-        S_Output_CheckError(result);
+            surface->desc.width * surface->desc.height * sizeof(RGBA_8888));
 
         m_TextureMap[i] = GFX_3D_Renderer_RegisterTexturePage(
-            m_Renderer3D, surface_desc.pixels, surface_desc.width,
-            surface_desc.height);
+            m_Renderer3D, surface->buffer, surface->desc.width,
+            surface->desc.height);
     }
 
     m_SelectedTexture = -1;

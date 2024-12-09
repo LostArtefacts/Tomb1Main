@@ -53,13 +53,9 @@ static void M_DeallocateSurface(void *const surface, void *const user_data)
 
 static void M_ClearSurface(void *const surface, void *const user_data)
 {
-    GFX_2D_SURFACE_DESC surface_desc = { 0 };
-    bool result = GFX_2D_Surface_Lock(surface, &surface_desc);
-    if (!result) {
-        return;
-    }
-    memset(surface_desc.pixels, 0, surface_desc.pitch * surface_desc.height);
-    GFX_2D_Surface_Unlock(surface);
+    ASSERT(surface != NULL);
+    GFX_2D_SURFACE *const surface_ = surface;
+    memset(surface_->buffer, 0, surface_->desc.pitch * surface_->desc.height);
 }
 
 static void M_RenderBegin(void *surface, void *const user_data)
@@ -75,21 +71,19 @@ static void M_RenderEnd(void *surface, void *const user_data)
 
 static void *M_LockSurface(void *const surface, void *const user_data)
 {
-    GFX_2D_SURFACE_DESC *surface_desc = user_data;
-    bool result = GFX_2D_Surface_Lock(surface, surface_desc);
-    ASSERT(result);
-    return surface_desc->pixels;
+    ASSERT(surface != NULL);
+    GFX_2D_SURFACE *const surface_ = surface;
+    return surface_->buffer;
 }
 
 static void M_UnlockSurface(void *const surface, void *const user_data)
 {
-    GFX_2D_Surface_Unlock(surface);
 }
 
 static void M_UploadSurface(void *const surface, void *const user_data)
 {
-    GFX_2D_RENDERER *renderer_2d = user_data;
-    GFX_2D_SURFACE *surface_ = surface;
+    GFX_2D_RENDERER *const renderer_2d = user_data;
+    GFX_2D_SURFACE *const surface_ = surface;
     GFX_2D_Renderer_Upload(renderer_2d, &surface_->desc, surface_->buffer);
     GFX_2D_Renderer_Render(renderer_2d);
 }
@@ -97,7 +91,6 @@ static void M_UploadSurface(void *const surface, void *const user_data)
 static bool M_Play(const char *const file_path)
 {
     GFX_2D_RENDERER *renderer_2d = GFX_Context_GetRenderer2D();
-    GFX_2D_SURFACE_DESC surface_desc = { 0 };
 
     VIDEO *video = Video_Open(file_path);
     if (video == NULL) {
@@ -111,7 +104,7 @@ static bool M_Play(const char *const file_path)
     Video_SetSurfaceClearFunc(video, M_ClearSurface, NULL);
     Video_SetRenderBeginFunc(video, M_RenderBegin, NULL);
     Video_SetRenderEndFunc(video, M_RenderEnd, NULL);
-    Video_SetSurfaceLockFunc(video, M_LockSurface, &surface_desc);
+    Video_SetSurfaceLockFunc(video, M_LockSurface, NULL);
     Video_SetSurfaceUnlockFunc(video, M_UnlockSurface, NULL);
     Video_SetSurfaceUploadFunc(video, M_UploadSurface, renderer_2d);
 
