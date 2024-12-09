@@ -18,10 +18,16 @@ typedef struct {
 
     GFX_CONFIG config;
     GFX_RENDER_MODE render_mode;
+
+    // Size of the OpenGL framebuffer.
     int32_t display_width;
     int32_t display_height;
+
+    // Size of the SDL window.
     int32_t window_width;
     int32_t window_height;
+    // How much border (inside the SDL window) to add around the rendered game.
+    int32_t window_border;
 
     char *scheduled_screenshot_path;
     GFX_RENDERER *renderer;
@@ -64,30 +70,26 @@ void GFX_Context_SwitchToWindowViewport(void)
 
 void GFX_Context_SwitchToWindowViewportAR(void)
 {
-    // switch to window viewport at the aspect ratio of the display viewport
-    int vp_width = m_Context.window_width;
-    int vp_height = m_Context.window_height;
+    // Switch to window viewport at the aspect ratio of the display viewport.
+    const int32_t max_w = m_Context.window_width;
+    const int32_t max_h = m_Context.window_height;
+    int32_t vp_w = m_Context.window_width - m_Context.window_border;
+    int32_t vp_h = m_Context.window_height - m_Context.window_border;
 
-    // default to bottom left corner of the window
-    int vp_x = 0;
-    int vp_y = 0;
+    const int32_t hw = m_Context.display_height * vp_w;
+    const int32_t wh = m_Context.display_width * vp_h;
 
-    int hw = m_Context.display_height * vp_width;
-    int wh = m_Context.display_width * vp_height;
-
-    // create viewport offset if the window has a different
-    // aspect ratio than the current display mode
+    // Create viewport offset if the window has a different
+    // aspect ratio than the current display mode.
     if (hw > wh) {
-        int max_w = wh / m_Context.display_height;
-        vp_x = (vp_width - max_w) / 2;
-        vp_width = max_w;
+        vp_w = wh / m_Context.display_height;
     } else if (hw < wh) {
-        int max_h = hw / m_Context.display_width;
-        vp_y = (vp_height - max_h) / 2;
-        vp_height = max_h;
+        vp_h = hw / m_Context.display_width;
     }
 
-    glViewport(vp_x, vp_y, vp_width, vp_height);
+    const int32_t vp_x = (max_w - vp_w) / 2;
+    const int32_t vp_y = (max_h - vp_h) / 2;
+    glViewport(vp_x, vp_y, vp_w, vp_h);
     GFX_GL_CheckError();
 }
 
@@ -119,6 +121,7 @@ bool GFX_Context_Attach(void *window_handle, GFX_GL_BACKEND backend)
     m_Context.render_mode = -1;
     SDL_GetWindowSize(
         window_handle, &m_Context.window_width, &m_Context.window_height);
+    m_Context.window_border = 0;
     m_Context.display_width = m_Context.window_width;
     m_Context.display_height = m_Context.window_height;
 
@@ -192,6 +195,11 @@ void GFX_Context_SetLineWidth(const int32_t line_width)
 void GFX_Context_SetVSync(bool vsync)
 {
     SDL_GL_SetSwapInterval(vsync);
+}
+
+void GFX_Context_SetWindowBorder(const int32_t border_size)
+{
+    m_Context.window_border = border_size;
 }
 
 void GFX_Context_SetWindowSize(int32_t width, int32_t height)
