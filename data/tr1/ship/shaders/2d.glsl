@@ -23,7 +23,9 @@ void main(void) {
 
 uniform sampler2D texMain;
 uniform sampler1D texPalette;
+uniform sampler2D texAlpha;
 uniform bool paletteEnabled;
+uniform bool alphaEnabled;
 
 #ifdef OGL33C
     #define OUTCOLOR outColor
@@ -44,6 +46,13 @@ uniform bool paletteEnabled;
 
 void main(void) {
     vec2 uv = vertTexCoords;
+
+    if (alphaEnabled) {
+        float alpha = TEXTURE2D(texAlpha, uv).r;
+        if (alpha < 0.5) {
+            discard;
+        }
+    }
 
     if (paletteEnabled) {
         float paletteIndex = TEXTURE2D(texMain, uv).r;

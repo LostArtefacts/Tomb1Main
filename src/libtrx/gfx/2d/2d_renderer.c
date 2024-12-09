@@ -13,7 +13,9 @@
 typedef enum {
     M_UNIFORM_TEXTURE_MAIN,
     M_UNIFORM_TEXTURE_PALETTE,
+    M_UNIFORM_TEXTURE_ALPHA,
     M_UNIFORM_PALETTE_ENABLED,
+    M_UNIFORM_ALPHA_ENABLED,
     M_UNIFORM_NUMBER_OF,
 } M_UNIFORM;
 
@@ -29,13 +31,16 @@ struct GFX_2D_RENDERER {
     GFX_GL_BUFFER surface_buffer;
     GFX_GL_TEXTURE surface_texture;
     GFX_GL_TEXTURE palette_texture;
+    GFX_GL_TEXTURE alpha_texture;
     GFX_GL_PROGRAM program;
 
     M_VERTEX *vertices;
     int32_t vertex_count;
 
     GFX_2D_SURFACE_DESC desc;
+    GFX_2D_SURFACE_DESC alpha_desc;
     bool use_palette;
+    bool use_alpha;
 
     // shader variable locations
     GLint loc[M_UNIFORM_NUMBER_OF];
@@ -77,6 +82,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     const GFX_CONFIG *const config = GFX_Context_GetConfig();
 
     r->use_palette = false;
+    r->use_alpha = false;
 
     r->vertices = NULL;
     r->vertex_count = 6;
@@ -96,6 +102,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
 
     GFX_GL_Texture_Init(&r->surface_texture, GL_TEXTURE_2D);
     GFX_GL_Texture_Init(&r->palette_texture, GL_TEXTURE_1D);
+    GFX_GL_Texture_Init(&r->alpha_texture, GL_TEXTURE_2D);
 
     GFX_GL_Program_Init(&r->program);
     GFX_GL_Program_AttachShader(
@@ -111,7 +118,9 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     } uniforms[] = {
         { M_UNIFORM_TEXTURE_MAIN, "texMain" },
         { M_UNIFORM_TEXTURE_PALETTE, "texPalette" },
+        { M_UNIFORM_TEXTURE_ALPHA, "texAlpha" },
         { M_UNIFORM_PALETTE_ENABLED, "paletteEnabled" },
+        { M_UNIFORM_ALPHA_ENABLED, "alphaEnabled" },
         { -1, NULL },
     };
     for (int32_t i = 0; uniforms[i].name != NULL; i++) {
@@ -123,8 +132,11 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     GFX_GL_Program_Bind(&r->program);
     GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_TEXTURE_MAIN], 0);
     GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_TEXTURE_PALETTE], 1);
+    GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_TEXTURE_ALPHA], 2);
     GFX_GL_Program_Uniform1i(
         &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], r->use_palette);
+    GFX_GL_Program_Uniform1i(
+        &r->program, r->loc[M_UNIFORM_ALPHA_ENABLED], r->use_alpha);
     GFX_GL_CheckError();
 
     return r;
@@ -138,6 +150,7 @@ void GFX_2D_Renderer_Destroy(GFX_2D_RENDERER *const r)
     GFX_GL_Buffer_Close(&r->surface_buffer);
     GFX_GL_Texture_Close(&r->surface_texture);
     GFX_GL_Texture_Close(&r->palette_texture);
+    GFX_GL_Texture_Close(&r->alpha_texture);
     GFX_GL_Program_Close(&r->program);
     Memory_FreePointer(&r->vertices);
     Memory_Free(r);
@@ -147,6 +160,65 @@ void GFX_2D_Renderer_UploadSurface(
     GFX_2D_RENDERER *const r, GFX_2D_SURFACE *const surface)
 {
     GFX_2D_Renderer_Upload(r, &surface->desc, surface->buffer);
+}
+
+void GFX_2D_Renderer_UploadAlphaSurface(
+    GFX_2D_RENDERER *const r, GFX_2D_SURFACE *const surface)
+{
+    ASSERT(r != NULL);
+
+    if (surface == NULL) {
+        if (r->use_alpha) {
+            GFX_GL_Program_Bind(&r->program);
+            GFX_GL_Program_Uniform1i(
+                &r->program, r->loc[M_UNIFORM_ALPHA_ENABLED], false);
+        }
+        r->use_alpha = false;
+        return;
+    }
+
+    if (!r->use_alpha) {
+        GFX_GL_Program_Bind(&r->program);
+        GFX_GL_Program_Uniform1i(
+            &r->program, r->loc[M_UNIFORM_ALPHA_ENABLED], true);
+        GFX_GL_CheckError();
+        r->use_alpha = true;
+    }
+
+    glActiveTexture(GL_TEXTURE2);
+    GFX_GL_Texture_Bind(&r->alpha_texture);
+
+    // update buffer if the size is unchanged, otherwise create a new one
+    if (r->alpha_desc.width != surface->desc.width
+        || r->alpha_desc.height != surface->desc.height
+        || r->alpha_desc.tex_format != surface->desc.tex_format
+        || r->alpha_desc.tex_type != surface->desc.tex_type) {
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGBA, surface->desc.width,
+            surface->desc.height, 0, surface->desc.tex_format,
+            surface->desc.tex_type, surface->buffer);
+        GFX_GL_CheckError();
+    } else {
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        GFX_GL_CheckError();
+        glTexSubImage2D(
+            GL_TEXTURE_2D, 0, 0, 0, surface->desc.width, surface->desc.height,
+            surface->desc.tex_format, surface->desc.tex_type, surface->buffer);
+        GFX_GL_CheckError();
+    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    GFX_GL_CheckError();
+
+    r->alpha_desc = surface->desc;
 }
 
 void GFX_2D_Renderer_Upload(
@@ -238,6 +310,11 @@ void GFX_2D_Renderer_Render(GFX_2D_RENDERER *const r)
         glActiveTexture(GL_TEXTURE1);
         GFX_GL_Texture_Bind(&r->palette_texture);
     }
+    if (r->use_alpha) {
+        glActiveTexture(GL_TEXTURE2);
+        GFX_GL_Texture_Bind(&r->alpha_texture);
+    }
+
     GLboolean blend = glIsEnabled(GL_BLEND);
     if (blend) {
         glDisable(GL_BLEND);
