@@ -118,7 +118,7 @@ static void M_FlipPrimaryBuffer(void)
 
 static void M_ClearSurface(GFX_2D_SURFACE *surface)
 {
-    GFX_2D_Surface_Clear(surface);
+    GFX_2D_Surface_Clear(surface, 0);
 }
 
 static void M_DrawTriangleFan(GFX_3D_VERTEX *vertices, int vertex_count)

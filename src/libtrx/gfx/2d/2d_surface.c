@@ -75,7 +75,7 @@ void GFX_2D_Surface_Close(GFX_2D_SURFACE *surface)
     Memory_FreePointer(&surface->buffer);
 }
 
-void GFX_2D_Surface_Clear(GFX_2D_SURFACE *surface)
+void GFX_2D_Surface_Clear(GFX_2D_SURFACE *const surface, const uint8_t value)
 {
-    memset(surface->buffer, 0, surface->desc.pitch * surface->desc.height);
+    memset(surface->buffer, value, surface->desc.pitch * surface->desc.height);
 }

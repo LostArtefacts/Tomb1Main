@@ -28,4 +28,4 @@ void GFX_2D_Surface_Init(
     GFX_2D_SURFACE *surface, const GFX_2D_SURFACE_DESC *desc);
 void GFX_2D_Surface_Close(GFX_2D_SURFACE *surface);
 
-void GFX_2D_Surface_Clear(GFX_2D_SURFACE *surface);
+void GFX_2D_Surface_Clear(GFX_2D_SURFACE *surface, uint8_t value);
