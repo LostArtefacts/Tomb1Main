@@ -39,10 +39,13 @@ void GFX_3D_VertexStream_SetPrimType(
     GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_PRIM_TYPE prim_type);
 
 bool GFX_3D_VertexStream_PushPrimStrip(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count);
+    GFX_3D_VERTEX_STREAM *vertex_stream, const GFX_3D_VERTEX *vertices,
+    int count);
 bool GFX_3D_VertexStream_PushPrimFan(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count);
+    GFX_3D_VERTEX_STREAM *vertex_stream, const GFX_3D_VERTEX *vertices,
+    int count);
 bool GFX_3D_VertexStream_PushPrimList(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count);
+    GFX_3D_VERTEX_STREAM *vertex_stream, const GFX_3D_VERTEX *vertices,
+    int count);
 
 void GFX_3D_VertexStream_RenderPending(GFX_3D_VERTEX_STREAM *vertex_stream);

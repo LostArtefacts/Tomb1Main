@@ -281,7 +281,7 @@ bool GFX_3D_Renderer_UnregisterTexturePage(
 }
 
 void GFX_3D_Renderer_RenderPrimStrip(
-    GFX_3D_RENDERER *const renderer, GFX_3D_VERTEX *const vertices,
+    GFX_3D_RENDERER *const renderer, const GFX_3D_VERTEX *const vertices,
     const int count)
 {
     ASSERT(renderer != NULL);
@@ -291,7 +291,7 @@ void GFX_3D_Renderer_RenderPrimStrip(
 }
 
 void GFX_3D_Renderer_RenderPrimFan(
-    GFX_3D_RENDERER *const renderer, GFX_3D_VERTEX *const vertices,
+    GFX_3D_RENDERER *const renderer, const GFX_3D_VERTEX *const vertices,
     const int count)
 {
     ASSERT(renderer != NULL);
@@ -300,7 +300,7 @@ void GFX_3D_Renderer_RenderPrimFan(
 }
 
 void GFX_3D_Renderer_RenderPrimList(
-    GFX_3D_RENDERER *const renderer, GFX_3D_VERTEX *const vertices,
+    GFX_3D_RENDERER *const renderer, const GFX_3D_VERTEX *const vertices,
     const int count)
 {
     ASSERT(renderer != NULL);

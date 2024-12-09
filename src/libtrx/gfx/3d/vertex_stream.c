@@ -11,10 +11,11 @@ static const GLenum GL_PRIM_MODES[] = {
 };
 
 static void M_PushVertex(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertex);
+    GFX_3D_VERTEX_STREAM *vertex_stream, const GFX_3D_VERTEX *vertex);
 
 static void M_PushVertex(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertex)
+    GFX_3D_VERTEX_STREAM *const vertex_stream,
+    const GFX_3D_VERTEX *const vertex)
 {
     if (vertex_stream->pending_vertices.count + 1
         >= vertex_stream->pending_vertices.capacity) {
@@ -28,7 +29,7 @@ static void M_PushVertex(
         .data[vertex_stream->pending_vertices.count++] = *vertex;
 }
 
-void GFX_3D_VertexStream_Init(GFX_3D_VERTEX_STREAM *vertex_stream)
+void GFX_3D_VertexStream_Init(GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     vertex_stream->prim_type = GFX_3D_PRIM_TRI;
     vertex_stream->buffer_size = 0;
@@ -52,7 +53,7 @@ void GFX_3D_VertexStream_Init(GFX_3D_VERTEX_STREAM *vertex_stream)
     GFX_GL_CheckError();
 }
 
-void GFX_3D_VertexStream_Close(GFX_3D_VERTEX_STREAM *vertex_stream)
+void GFX_3D_VertexStream_Close(GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     GFX_GL_VertexArray_Close(&vertex_stream->vtc_format);
     GFX_GL_Buffer_Close(&vertex_stream->buffer);
@@ -60,19 +61,20 @@ void GFX_3D_VertexStream_Close(GFX_3D_VERTEX_STREAM *vertex_stream)
     Memory_FreePointer(&vertex_stream->pending_vertices.data);
 }
 
-void GFX_3D_VertexStream_Bind(GFX_3D_VERTEX_STREAM *vertex_stream)
+void GFX_3D_VertexStream_Bind(GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     GFX_GL_Buffer_Bind(&vertex_stream->buffer);
 }
 
 void GFX_3D_VertexStream_SetPrimType(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_PRIM_TYPE prim_type)
+    GFX_3D_VERTEX_STREAM *const vertex_stream, const GFX_3D_PRIM_TYPE prim_type)
 {
     vertex_stream->prim_type = prim_type;
 }
 
 bool GFX_3D_VertexStream_PushPrimStrip(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count)
+    GFX_3D_VERTEX_STREAM *const vertex_stream,
+    const GFX_3D_VERTEX *const vertices, const int count)
 {
     if (vertex_stream->prim_type != GFX_3D_PRIM_TRI) {
         LOG_ERROR("Unsupported prim type: %d", vertex_stream->prim_type);
@@ -96,7 +98,8 @@ bool GFX_3D_VertexStream_PushPrimStrip(
 }
 
 bool GFX_3D_VertexStream_PushPrimFan(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count)
+    GFX_3D_VERTEX_STREAM *const vertex_stream,
+    const GFX_3D_VERTEX *const vertices, const int count)
 {
     if (vertex_stream->prim_type != GFX_3D_PRIM_TRI) {
         LOG_ERROR("Unsupported prim type: %d", vertex_stream->prim_type);
@@ -120,7 +123,8 @@ bool GFX_3D_VertexStream_PushPrimFan(
 }
 
 bool GFX_3D_VertexStream_PushPrimList(
-    GFX_3D_VERTEX_STREAM *vertex_stream, GFX_3D_VERTEX *vertices, int count)
+    GFX_3D_VERTEX_STREAM *const vertex_stream,
+    const GFX_3D_VERTEX *const vertices, const int count)
 {
     for (int i = 0; i < count; i++) {
         M_PushVertex(vertex_stream, &vertices[i]);
@@ -128,7 +132,8 @@ bool GFX_3D_VertexStream_PushPrimList(
     return true;
 }
 
-void GFX_3D_VertexStream_RenderPending(GFX_3D_VERTEX_STREAM *vertex_stream)
+void GFX_3D_VertexStream_RenderPending(
+    GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     if (!vertex_stream->pending_vertices.count) {
         return;

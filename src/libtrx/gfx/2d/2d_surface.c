@@ -7,14 +7,14 @@
 
 #include <string.h>
 
-GFX_2D_SURFACE *GFX_2D_Surface_Create(const GFX_2D_SURFACE_DESC *desc)
+GFX_2D_SURFACE *GFX_2D_Surface_Create(const GFX_2D_SURFACE_DESC *const desc)
 {
     GFX_2D_SURFACE *surface = Memory_Alloc(sizeof(GFX_2D_SURFACE));
     GFX_2D_Surface_Init(surface, desc);
     return surface;
 }
 
-GFX_2D_SURFACE *GFX_2D_Surface_CreateFromImage(const IMAGE *image)
+GFX_2D_SURFACE *GFX_2D_Surface_CreateFromImage(const IMAGE *const image)
 {
     GFX_2D_SURFACE *surface = Memory_Alloc(sizeof(GFX_2D_SURFACE));
     surface->desc.width = image->width;
@@ -30,16 +30,16 @@ GFX_2D_SURFACE *GFX_2D_Surface_CreateFromImage(const IMAGE *image)
     return surface;
 }
 
-void GFX_2D_Surface_Free(GFX_2D_SURFACE *surface)
+void GFX_2D_Surface_Free(GFX_2D_SURFACE *const surface)
 {
     if (surface) {
         GFX_2D_Surface_Close(surface);
-        Memory_FreePointer(&surface);
+        Memory_Free(surface);
     }
 }
 
 void GFX_2D_Surface_Init(
-    GFX_2D_SURFACE *surface, const GFX_2D_SURFACE_DESC *desc)
+    GFX_2D_SURFACE *const surface, const GFX_2D_SURFACE_DESC *const desc)
 {
     surface->desc = *desc;
 
@@ -70,7 +70,7 @@ void GFX_2D_Surface_Init(
     surface->buffer = Memory_Alloc(surface->desc.pitch * surface->desc.height);
 }
 
-void GFX_2D_Surface_Close(GFX_2D_SURFACE *surface)
+void GFX_2D_Surface_Close(GFX_2D_SURFACE *const surface)
 {
     Memory_FreePointer(&surface->buffer);
 }
