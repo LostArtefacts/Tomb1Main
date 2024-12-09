@@ -57,7 +57,6 @@ void GFX_3D_VertexStream_Close(GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     GFX_GL_VertexArray_Close(&vertex_stream->vtc_format);
     GFX_GL_Buffer_Close(&vertex_stream->buffer);
-
     Memory_FreePointer(&vertex_stream->pending_vertices.data);
 }
 
@@ -139,6 +138,7 @@ void GFX_3D_VertexStream_RenderPending(
         return;
     }
 
+    GFX_GL_Buffer_Bind(&vertex_stream->buffer);
     GFX_GL_VertexArray_Bind(&vertex_stream->vtc_format);
 
     // resize GPU buffer if required
