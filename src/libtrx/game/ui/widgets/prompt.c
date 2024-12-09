@@ -11,7 +11,7 @@
 #include <string.h>
 
 static const char m_ValidPromptChars[] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.- ";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-: ";
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
