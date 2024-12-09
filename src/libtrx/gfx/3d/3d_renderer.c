@@ -73,7 +73,7 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     GFX_GL_Sampler_Init(&renderer->sampler);
     GFX_GL_Sampler_Bind(&renderer->sampler, 0);
     GFX_GL_Sampler_Parameterf(
-        &renderer->sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, 0);
+        &renderer->sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1);
     GFX_GL_Sampler_Parameteri(
         &renderer->sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     GFX_GL_Sampler_Parameteri(
