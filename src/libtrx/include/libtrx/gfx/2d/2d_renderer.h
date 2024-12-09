@@ -10,6 +10,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef struct {
+    uint8_t r, g, b;
+} GFX_PALETTE_ENTRY;
+
 typedef struct GFX_2D_RENDERER GFX_2D_RENDERER;
 
 GFX_2D_RENDERER *GFX_2D_Renderer_Create(void);
@@ -19,5 +23,8 @@ void GFX_2D_Renderer_UploadSurface(
     GFX_2D_RENDERER *renderer, GFX_2D_SURFACE *surface);
 void GFX_2D_Renderer_Upload(
     GFX_2D_RENDERER *renderer, GFX_2D_SURFACE_DESC *desc, const uint8_t *data);
+
+void GFX_2D_Renderer_SetPalette(
+    GFX_2D_RENDERER *renderer, const GFX_PALETTE_ENTRY *palette);
 
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *renderer);

@@ -22,23 +22,34 @@ void main(void) {
 // Fragment shader
 
 uniform sampler2D texMain;
+uniform sampler1D texPalette;
+uniform bool paletteEnabled;
 
 #ifdef OGL33C
     #define OUTCOLOR outColor
-    #define TEXTURE texture
+    #define TEXTURE2D texture
+    #define TEXTURE1D texture
 
     in vec2 vertTexCoords;
     in vec2 vertCoords;
     out vec4 outColor;
 #else
     #define OUTCOLOR gl_FragColor
-    #define TEXTURE texture2D
+    #define TEXTURE2D texture2D
+    #define TEXTURE1D texture1D
 
     varying vec2 vertTexCoords;
     varying vec2 vertCoords;
 #endif
 
 void main(void) {
-    OUTCOLOR = TEXTURE(texMain, vertTexCoords);
+    vec2 uv = vertTexCoords;
+
+    if (paletteEnabled) {
+        float paletteIndex = TEXTURE2D(texMain, uv).r;
+        OUTCOLOR = TEXTURE1D(texPalette, paletteIndex);
+    } else {
+        OUTCOLOR = TEXTURE2D(texMain, uv);
+    }
 }
 #endif // VERTEX

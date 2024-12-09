@@ -12,6 +12,8 @@
 
 typedef enum {
     M_UNIFORM_TEXTURE_MAIN,
+    M_UNIFORM_TEXTURE_PALETTE,
+    M_UNIFORM_PALETTE_ENABLED,
     M_UNIFORM_NUMBER_OF,
 } M_UNIFORM;
 
@@ -26,12 +28,14 @@ struct GFX_2D_RENDERER {
     GFX_GL_VERTEX_ARRAY vertex_format;
     GFX_GL_BUFFER surface_buffer;
     GFX_GL_TEXTURE surface_texture;
+    GFX_GL_TEXTURE palette_texture;
     GFX_GL_PROGRAM program;
 
     M_VERTEX *vertices;
     int32_t vertex_count;
 
     GFX_2D_SURFACE_DESC desc;
+    bool use_palette;
 
     // shader variable locations
     GLint loc[M_UNIFORM_NUMBER_OF];
@@ -72,6 +76,8 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     GFX_2D_RENDERER *const r = Memory_Alloc(sizeof(GFX_2D_RENDERER));
     const GFX_CONFIG *const config = GFX_Context_GetConfig();
 
+    r->use_palette = false;
+
     r->vertices = NULL;
     r->vertex_count = 6;
 
@@ -89,6 +95,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     GFX_GL_CheckError();
 
     GFX_GL_Texture_Init(&r->surface_texture, GL_TEXTURE_2D);
+    GFX_GL_Texture_Init(&r->palette_texture, GL_TEXTURE_1D);
 
     GFX_GL_Program_Init(&r->program);
     GFX_GL_Program_AttachShader(
@@ -103,6 +110,8 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         const char *name;
     } uniforms[] = {
         { M_UNIFORM_TEXTURE_MAIN, "texMain" },
+        { M_UNIFORM_TEXTURE_PALETTE, "texPalette" },
+        { M_UNIFORM_PALETTE_ENABLED, "paletteEnabled" },
         { -1, NULL },
     };
     for (int32_t i = 0; uniforms[i].name != NULL; i++) {
@@ -113,6 +122,9 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
 
     GFX_GL_Program_Bind(&r->program);
     GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_TEXTURE_MAIN], 0);
+    GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_TEXTURE_PALETTE], 1);
+    GFX_GL_Program_Uniform1i(
+        &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], r->use_palette);
     GFX_GL_CheckError();
 
     return r;
@@ -125,6 +137,7 @@ void GFX_2D_Renderer_Destroy(GFX_2D_RENDERER *const r)
     GFX_GL_VertexArray_Close(&r->vertex_format);
     GFX_GL_Buffer_Close(&r->surface_buffer);
     GFX_GL_Texture_Close(&r->surface_texture);
+    GFX_GL_Texture_Close(&r->palette_texture);
     GFX_GL_Program_Close(&r->program);
     Memory_FreePointer(&r->vertices);
     Memory_Free(r);
@@ -171,6 +184,45 @@ void GFX_2D_Renderer_Upload(
     }
 }
 
+void GFX_2D_Renderer_SetPalette(
+    GFX_2D_RENDERER *const r, const GFX_PALETTE_ENTRY *const palette)
+{
+    ASSERT(r != NULL);
+
+    if (palette == NULL) {
+        if (r->use_palette) {
+            GFX_GL_Program_Bind(&r->program);
+            GFX_GL_Program_Uniform1i(
+                &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], false);
+        }
+        r->use_palette = false;
+        return;
+    }
+
+    if (!r->use_palette) {
+        GFX_GL_Program_Bind(&r->program);
+        GFX_GL_Program_Uniform1i(
+            &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], true);
+        GFX_GL_CheckError();
+        r->use_palette = true;
+    }
+
+    glActiveTexture(GL_TEXTURE0);
+    GFX_GL_Texture_Bind(&r->surface_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glActiveTexture(GL_TEXTURE1);
+    GFX_GL_Texture_Bind(&r->palette_texture);
+    glTexImage1D(
+        GL_TEXTURE_1D, 0, GL_RGB8, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, palette);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    GFX_GL_CheckError();
+}
+
 void GFX_2D_Renderer_Render(GFX_2D_RENDERER *const r)
 {
     ASSERT(r != NULL);
@@ -182,6 +234,10 @@ void GFX_2D_Renderer_Render(GFX_2D_RENDERER *const r)
     glActiveTexture(GL_TEXTURE0);
     GFX_GL_Texture_Bind(&r->surface_texture);
 
+    if (r->use_palette) {
+        glActiveTexture(GL_TEXTURE1);
+        GFX_GL_Texture_Bind(&r->palette_texture);
+    }
     GLboolean blend = glIsEnabled(GL_BLEND);
     if (blend) {
         glDisable(GL_BLEND);
