@@ -450,6 +450,7 @@ void S_Output_RenderBegin(void)
     GFX_3D_Renderer_RenderBegin(m_Renderer3D);
     GFX_3D_Renderer_SetTextureFilter(
         m_Renderer3D, g_Config.rendering.texture_filter);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
 }
 
 void S_Output_RenderEnd(void)
@@ -620,7 +621,7 @@ void S_Output_Draw2DLine(
     S_Output_DisableTextureMode();
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_NORMAL);
     GFX_3D_Renderer_RenderPrimList(m_Renderer3D, vertices, vertex_count);
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
     GFX_3D_Renderer_SetPrimType(m_Renderer3D, GFX_3D_PRIM_TRI);
 }
 
@@ -666,7 +667,7 @@ void S_Output_Draw2DQuad(
     S_Output_DisableTextureMode();
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_NORMAL);
     M_DrawTriangleFan(vertices, vertex_count);
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
 }
 
 void S_Output_DrawLightningSegment(
@@ -755,7 +756,7 @@ void S_Output_DrawLightningSegment(
     if (vertex_count) {
         M_DrawTriangleFan(vertices, vertex_count);
     }
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
 }
 
 void S_Output_DrawShadow(PHD_VBUF *vbufs, int clip, int vertex_count)
@@ -788,7 +789,7 @@ void S_Output_DrawShadow(PHD_VBUF *vbufs, int clip, int vertex_count)
 
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_NORMAL);
     M_DrawTriangleFan(vertices, vertex_count);
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
 }
 
 void S_Output_ApplyRenderSettings(void)
@@ -1020,7 +1021,7 @@ void S_Output_DrawEnvMapTriangle(
     GFX_3D_Renderer_SelectTexture(m_Renderer3D, m_EnvMapTexture);
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_MULTIPLY);
     M_DrawTriangleFan(vertices, vertex_count);
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
     m_SelectedTexture = -1;
 }
 
@@ -1080,7 +1081,7 @@ void S_Output_DrawEnvMapQuad(
     GFX_3D_Renderer_SelectTexture(m_Renderer3D, m_EnvMapTexture);
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_MULTIPLY);
     GFX_3D_Renderer_RenderPrimStrip(m_Renderer3D, vertices, vertex_count);
-    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_OFF);
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_COLOR_KEY);
     m_SelectedTexture = -1;
 }
 

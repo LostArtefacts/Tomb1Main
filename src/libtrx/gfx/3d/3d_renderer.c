@@ -18,12 +18,14 @@ struct GFX_3D_RENDERER {
     GFX_GL_TEXTURE *textures[GFX_MAX_TEXTURES];
     GFX_GL_TEXTURE *env_map_texture;
     int selected_texture_num;
+    GFX_BLEND_MODE selected_blend_mode;
 
     // shader variable locations
     GLint loc_mat_projection;
     GLint loc_mat_model_view;
     GLint loc_texturing_enabled;
     GLint loc_smoothing_enabled;
+    GLint loc_color_key_enabled;
 };
 
 static void M_SelectTextureImpl(GFX_3D_RENDERER *renderer, int texture_num);
@@ -88,6 +90,8 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         GFX_GL_Program_UniformLocation(&renderer->program, "texturingEnabled");
     renderer->loc_smoothing_enabled =
         GFX_GL_Program_UniformLocation(&renderer->program, "smoothingEnabled");
+    renderer->loc_color_key_enabled =
+        GFX_GL_Program_UniformLocation(&renderer->program, "colorKeyEnabled");
 
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
@@ -375,19 +379,36 @@ void GFX_3D_Renderer_SetBlendingMode(
     GFX_3D_RENDERER *const renderer, const GFX_BLEND_MODE blend_mode)
 {
     ASSERT(renderer != NULL);
+    if (renderer->selected_blend_mode == blend_mode) {
+        return;
+    }
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
 
+    GFX_GL_Program_Bind(&renderer->program);
     switch (blend_mode) {
     case GFX_BLEND_MODE_OFF:
         glBlendFunc(GL_ONE, GL_ZERO);
+        GFX_GL_Program_Uniform1i(
+            &renderer->program, renderer->loc_color_key_enabled, false);
         break;
     case GFX_BLEND_MODE_NORMAL:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GFX_GL_Program_Uniform1i(
+            &renderer->program, renderer->loc_color_key_enabled, false);
         break;
     case GFX_BLEND_MODE_MULTIPLY:
         glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
+        GFX_GL_Program_Uniform1i(
+            &renderer->program, renderer->loc_color_key_enabled, false);
+        break;
+    case GFX_BLEND_MODE_COLOR_KEY:
+        glBlendFunc(GL_ONE, GL_ZERO);
+        GFX_GL_Program_Uniform1i(
+            &renderer->program, renderer->loc_color_key_enabled, true);
         break;
     }
+    GFX_GL_CheckError();
+    renderer->selected_blend_mode = blend_mode;
 }
 
 void GFX_3D_Renderer_SetTexturingEnabled(
