@@ -53,6 +53,12 @@ static void M_SelectTextureImpl(
     GFX_GL_Texture_Bind(texture);
 }
 
+static void M_RestoreTexture(GFX_3D_RENDERER *renderer)
+{
+    ASSERT(renderer != NULL);
+    M_SelectTextureImpl(renderer, renderer->selected_texture_num);
+}
+
 GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
 {
     LOG_INFO("");
@@ -143,7 +149,7 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
     GFX_3D_VertexStream_Bind(&renderer->vertex_stream);
     GFX_GL_Sampler_Bind(&renderer->sampler, 0);
 
-    GFX_3D_Renderer_RestoreTexture(renderer);
+    M_RestoreTexture(renderer);
 
     const float left = 0.0f;
     const float top = 0.0f;
@@ -192,7 +198,7 @@ int GFX_3D_Renderer_RegisterEnvironmentMap(GFX_3D_RENDERER *const renderer)
     GFX_GL_TEXTURE *const texture = GFX_GL_Texture_Create(GL_TEXTURE_2D);
     renderer->env_map_texture = texture;
 
-    GFX_3D_Renderer_RestoreTexture(renderer);
+    M_RestoreTexture(renderer);
     GFX_GL_CheckError();
     return GFX_ENV_MAP_TEXTURE;
 }
@@ -232,7 +238,7 @@ void GFX_3D_Renderer_FillEnvironmentMap(GFX_3D_RENDERER *const renderer)
     if (env_map != NULL) {
         GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
         GFX_GL_Texture_LoadFromBackBuffer(env_map);
-        GFX_3D_Renderer_RestoreTexture(renderer);
+        M_RestoreTexture(renderer);
     }
 }
 
@@ -254,7 +260,7 @@ int GFX_3D_Renderer_RegisterTexturePage(
         }
     }
 
-    GFX_3D_Renderer_RestoreTexture(renderer);
+    M_RestoreTexture(renderer);
 
     GFX_GL_CheckError();
     return texture_num;
@@ -321,12 +327,6 @@ void GFX_3D_Renderer_SelectTexture(
     M_SelectTextureImpl(renderer, texture_num);
 }
 
-void GFX_3D_Renderer_RestoreTexture(GFX_3D_RENDERER *const renderer)
-{
-    ASSERT(renderer != NULL);
-    M_SelectTextureImpl(renderer, renderer->selected_texture_num);
-}
-
 void GFX_3D_Renderer_SetPrimType(
     GFX_3D_RENDERER *const renderer, GFX_3D_PRIM_TYPE value)
 {
@@ -356,11 +356,7 @@ void GFX_3D_Renderer_SetDepthWritesEnabled(
 {
     ASSERT(renderer != NULL);
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
-    if (is_enabled) {
-        glDepthMask(GL_TRUE);
-    } else {
-        glDepthMask(GL_FALSE);
-    }
+    glDepthMask(is_enabled ? GL_TRUE : GL_FALSE);
 }
 
 void GFX_3D_Renderer_SetDepthTestEnabled(

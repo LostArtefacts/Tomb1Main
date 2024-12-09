@@ -42,7 +42,6 @@ bool GFX_3D_Renderer_UnregisterEnvironmentMap(
 void GFX_3D_Renderer_FillEnvironmentMap(GFX_3D_RENDERER *renderer);
 
 void GFX_3D_Renderer_SelectTexture(GFX_3D_RENDERER *renderer, int texture_num);
-void GFX_3D_Renderer_RestoreTexture(GFX_3D_RENDERER *renderer);
 
 void GFX_3D_Renderer_RenderPrimStrip(
     GFX_3D_RENDERER *renderer, const GFX_3D_VERTEX *vertices, int count);
