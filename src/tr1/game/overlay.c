@@ -737,6 +737,7 @@ void Overlay_HideGameInfo(void)
 
 void Overlay_DrawGameInfo(void)
 {
+    Output_ClearDepthBuffer();
     M_ResetBarLocations();
     Overlay_BarDrawHealth();
     M_BarDrawAir();

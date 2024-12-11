@@ -102,13 +102,10 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
 
-    // negate Z axis so the model is rendered behind the viewport, which is
-    // better than having a negative z_near in the ortho matrix, which seems
-    // to mess up depth testing
     GLfloat model_view[4][4] = {
         { +1.0f, +0.0f, +0.0f, +0.0f },
         { +0.0f, +1.0f, +0.0f, +0.0f },
-        { +0.0f, +0.0f, -1.0f, +0.0f },
+        { +0.0f, +0.0f, +1.0f, +0.0f },
         { +0.0f, +0.0f, +0.0f, +1.0f },
     };
     GFX_GL_Program_UniformMatrix4fv(
@@ -155,14 +152,12 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
     const float top = 0.0f;
     const float right = GFX_Context_GetDisplayWidth();
     const float bottom = GFX_Context_GetDisplayHeight();
-    const float z_near = -1e6;
-    const float z_far = 1e6;
     GLfloat projection[4][4] = {
         { 2.0f / (right - left), 0.0f, 0.0f, 0.0f },
         { 0.0f, 2.0f / (top - bottom), 0.0f, 0.0f },
-        { 0.0f, 0.0f, -2.0f / (z_far - z_near), 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
         { -(right + left) / (right - left), -(top + bottom) / (top - bottom),
-          -(z_far + z_near) / (z_far - z_near), 1.0f }
+          0.0f, 1.0f },
     };
 
     GFX_GL_Program_UniformMatrix4fv(

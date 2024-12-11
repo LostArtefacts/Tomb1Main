@@ -42,6 +42,9 @@ int32_t g_PhdLeft = 0;
 int32_t g_PhdBottom = 0;
 int32_t g_PhdRight = 0;
 int32_t g_PhdTop = 0;
+float g_FltResZ;
+float g_FltResZBuf;
+
 PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES] = { 0 };
 PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES] = { 0 };
 MATRIX *g_MatrixPtr = NULL;

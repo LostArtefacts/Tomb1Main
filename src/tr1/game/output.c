@@ -271,7 +271,7 @@ static bool M_CalcObjectVertices(
 
         int16_t clip_flags;
         if (zv < Output_GetNearZ()) {
-            clip_flags = -32768;
+            clip_flags = 0x8000;
         } else {
             clip_flags = 0;
 
@@ -849,7 +849,7 @@ void Output_DrawShadow(
 
 int32_t Output_GetDrawDistMin(void)
 {
-    return 127;
+    return 20;
 }
 
 int32_t Output_GetDrawDistFade(void)
@@ -870,6 +870,12 @@ void Output_SetDrawDistFade(int32_t dist)
 void Output_SetDrawDistMax(int32_t dist)
 {
     m_DrawDistMax = dist;
+
+    const double near_z = Output_GetNearZ();
+    const double far_z = Output_GetFarZ();
+    const double res_z = 0.99 * near_z * far_z / (far_z - near_z);
+    g_FltResZ = res_z;
+    g_FltResZBuf = 0.005 + res_z / near_z;
 }
 
 void Output_SetWaterColor(const RGB_F *color)
@@ -1007,7 +1013,8 @@ void Output_DrawScreenSprite(
     int32_t y2 = sy + (scale_v * (sprite->y2 >> 3) / PHD_ONE);
     if (x2 >= 0 && y2 >= 0 && x1 < Viewport_GetWidth()
         && y1 < Viewport_GetHeight()) {
-        S_Output_DrawSprite(x1, y1, x2, y2, 8 * z, sprnum, shade);
+        S_Output_DrawSprite(
+            x1, y1, x2, y2, Output_GetNearZ() + 8 * z, sprnum, shade);
     }
 }
 
@@ -1022,7 +1029,7 @@ void Output_DrawScreenSprite2D(
     int32_t y2 = sy + (scale_v * sprite->y2 / PHD_ONE);
     if (x2 >= 0 && y2 >= 0 && x1 < Viewport_GetWidth()
         && y1 < Viewport_GetHeight()) {
-        S_Output_DrawSprite(x1, y1, x2, y2, 200, sprnum, 0);
+        S_Output_DrawSprite(x1, y1, x2, y2, Output_GetNearZ() + 200, sprnum, 0);
     }
 }
 
@@ -1065,7 +1072,8 @@ void Output_DrawUISprite(
     int32_t y2 = y + (scale * sprite->y2 >> 16);
     if (x2 >= Viewport_GetMinX() && y2 >= Viewport_GetMinY()
         && x1 <= Viewport_GetMaxX() && y1 <= Viewport_GetMaxY()) {
-        S_Output_DrawSprite(x1, y1, x2, y2, 200, sprnum, shade);
+        S_Output_DrawSprite(
+            x1, y1, x2, y2, Output_GetNearZ() + 200, sprnum, shade);
     }
 }
 

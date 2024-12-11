@@ -145,6 +145,10 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
         break;
     }
 
+    Matrix_Pop();
+    Viewport_SetFOV(old_fov);
+
+    Output_ClearDepthBuffer();
     if (motion->status == RNG_SELECTED) {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
         if (inv_item->object_id == O_PASSPORT_CLOSED) {
@@ -152,9 +156,6 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
         }
         Option_Draw(inv_item);
     }
-
-    Matrix_Pop();
-    Viewport_SetFOV(old_fov);
 
     if ((motion->status != RNG_OPENING
          || (g_InvMode != INV_TITLE_MODE || !Output_FadeIsAnimating()))

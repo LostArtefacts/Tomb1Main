@@ -16,6 +16,7 @@
 #include <string.h>
 
 #define CLIP_VERTCOUNT_SCALE 4
+#define MAP_DEPTH(zv) (g_FltResZBuf - g_FltResZ * (1.0 / (double)(zv)))
 #define VBUF_VISIBLE(a, b, c)                                                  \
     (((a).ys - (b).ys) * ((c).xs - (b).xs)                                     \
      >= ((c).ys - (b).ys) * ((a).xs - (b).xs))
@@ -349,25 +350,25 @@ static int32_t M_ZedClipper(
 {
     const float multiplier = g_Config.brightness / 16.0f;
     const float near_z = Output_GetNearZ();
-    const float persp_o_near_z = g_PhdPersp / near_z;
+    const float persp_o_near_z = (double)g_PhdPersp / near_z;
 
     GFX_3D_VERTEX *v = &vertices[0];
-    POINT_INFO *pts0 = &pts[0];
-    POINT_INFO *pts1 = &pts[vertex_count - 1];
+    const POINT_INFO *pts0 = &pts[0];
+    const POINT_INFO *pts1 = &pts[vertex_count - 1];
     for (int i = 0; i < vertex_count; i++) {
-        int32_t diff0 = near_z - pts0->zv;
-        int32_t diff1 = near_z - pts1->zv;
+        const int32_t diff0 = near_z - pts0->zv;
+        const int32_t diff1 = near_z - pts1->zv;
         if ((diff0 | diff1) >= 0) {
             goto loop_end;
         }
 
         if ((diff0 ^ diff1) < 0) {
-            double clip = diff0 / (pts1->zv - pts0->zv);
+            const double clip = diff0 / (pts1->zv - pts0->zv);
             v->x = (pts0->xv + (pts1->xv - pts0->xv) * clip) * persp_o_near_z
                 + Viewport_GetCenterX();
             v->y = (pts0->yv + (pts1->yv - pts0->yv) * clip) * persp_o_near_z
                 + Viewport_GetCenterY();
-            v->z = near_z * 0.0001f;
+            v->z = MAP_DEPTH(pts0->zv + (pts1->zv - pts0->zv) * clip);
 
             v->w = 65536.0f / near_z;
             v->s = v->w * (pts0->u + (pts1->u - pts0->u) * clip) / 256.0f;
@@ -383,7 +384,7 @@ static int32_t M_ZedClipper(
         if (diff0 < 0) {
             v->x = pts0->xs;
             v->y = pts0->ys;
-            v->z = pts0->zv * 0.0001f;
+            v->z = MAP_DEPTH(pts0->zv);
 
             v->w = 65536.0f / pts0->zv;
             v->s = pts0->u * v->w / 256.0f;
@@ -531,7 +532,7 @@ void S_Output_DrawSprite(
     t2 = ((int)sprite->offset >> 8) + 0.5f;
     t3 = ((int)sprite->width >> 8) + t1;
     t4 = ((int)sprite->height >> 8) + t2;
-    vz = z * 0.0001f;
+    vz = MAP_DEPTH(z);
     t5 = 65536.0f / z;
 
     vertices[0].x = x1;
@@ -682,7 +683,7 @@ void S_Output_DrawLightningSegment(
     GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, GFX_BLEND_MODE_NORMAL);
     vertices[0].x = x1;
     vertices[0].y = y1;
-    vertices[0].z = z1 * 0.0001f;
+    vertices[0].z = MAP_DEPTH(z1);
     vertices[0].g = 0.0f;
     vertices[0].r = 0.0f;
     vertices[0].b = 255.0f;
@@ -698,7 +699,7 @@ void S_Output_DrawLightningSegment(
 
     vertices[2].x = thickness2 / 2 + x2;
     vertices[2].y = y2;
-    vertices[2].z = z2 * 0.0001f;
+    vertices[2].z = MAP_DEPTH(z2);
     vertices[2].b = 255.0f;
     vertices[2].g = 255.0f;
     vertices[2].r = 255.0f;
@@ -721,7 +722,7 @@ void S_Output_DrawLightningSegment(
     vertex_count = 4;
     vertices[0].x = thickness1 / 2 + x1;
     vertices[0].y = y1;
-    vertices[0].z = z1 * 0.0001f;
+    vertices[0].z = MAP_DEPTH(z1);
     vertices[0].b = 255.0f;
     vertices[0].g = 255.0f;
     vertices[0].r = 255.0f;
@@ -737,7 +738,7 @@ void S_Output_DrawLightningSegment(
 
     vertices[2].x = (thickness2 + x2);
     vertices[2].y = y2;
-    vertices[2].z = z2 * 0.0001f;
+    vertices[2].z = MAP_DEPTH(z2);
     vertices[2].g = 0.0f;
     vertices[2].r = 0.0f;
     vertices[2].b = 255.0f;
@@ -769,7 +770,7 @@ void S_Output_DrawShadow(PHD_VBUF *vbufs, int clip, int vertex_count)
         PHD_VBUF *vbuf = &vbufs[i];
         vertex->x = vbuf->xs;
         vertex->y = vbuf->ys;
-        vertex->z = vbuf->zv * 0.0001f - 16.0f;
+        vertex->z = MAP_DEPTH(vbuf->zv - (12 << W2V_SHIFT));
         vertex->b = 0.0f;
         vertex->g = 0.0f;
         vertex->r = 0.0f;
@@ -893,7 +894,7 @@ void S_Output_DrawFlatTriangle(
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
         vertices[i].y = src_vbuf[i]->ys;
-        vertices[i].z = src_vbuf[i]->zv * 0.0001f;
+        vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
         const float light = (8192.0f - src_vbuf[i]->g) * multiplier;
         vertices[i].r = color.r * light;
         vertices[i].g = color.g * light;
@@ -972,7 +973,7 @@ void S_Output_DrawEnvMapTriangle(
         for (int32_t i = 0; i < vertex_count; i++) {
             vertices[i].x = src_vbuf[i]->xs;
             vertices[i].y = src_vbuf[i]->ys;
-            vertices[i].z = src_vbuf[i]->zv * 0.0001f;
+            vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
             vertices[i].w = 65536.0f / src_vbuf[i]->zv;
             vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
@@ -1065,7 +1066,7 @@ void S_Output_DrawEnvMapQuad(
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
         vertices[i].y = src_vbuf[i]->ys;
-        vertices[i].z = src_vbuf[i]->zv * 0.0001f;
+        vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
         vertices[i].w = 65536.0f / src_vbuf[i]->zv;
         vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
@@ -1117,7 +1118,7 @@ void S_Output_DrawTexturedTriangle(
         for (int i = 0; i < vertex_count; i++) {
             vertices[i].x = src_vbuf[i]->xs;
             vertices[i].y = src_vbuf[i]->ys;
-            vertices[i].z = src_vbuf[i]->zv * 0.0001f;
+            vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
             vertices[i].w = 65536.0f / src_vbuf[i]->zv;
             vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
@@ -1220,7 +1221,7 @@ void S_Output_DrawTexturedQuad(
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
         vertices[i].y = src_vbuf[i]->ys;
-        vertices[i].z = src_vbuf[i]->zv * 0.0001f;
+        vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
         vertices[i].w = 65536.0f / src_vbuf[i]->zv;
         vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);

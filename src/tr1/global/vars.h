@@ -14,6 +14,9 @@ extern int32_t g_PhdLeft;
 extern int32_t g_PhdBottom;
 extern int32_t g_PhdRight;
 extern int32_t g_PhdTop;
+extern float g_FltResZ;
+extern float g_FltResZBuf;
+
 extern PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES];
 extern PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES];
 extern MATRIX *g_MatrixPtr;
