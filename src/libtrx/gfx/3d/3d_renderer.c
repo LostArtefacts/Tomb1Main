@@ -25,10 +25,18 @@ struct GFX_3D_RENDERER {
     GLint loc_mat_model_view;
     GLint loc_texturing_enabled;
     GLint loc_smoothing_enabled;
-    GLint loc_color_key_enabled;
+    GLint loc_alpha_point_discard;
+    GLint loc_alpha_threshold;
 };
 
+static void M_Flush(GFX_3D_RENDERER *renderer);
 static void M_SelectTextureImpl(GFX_3D_RENDERER *renderer, int texture_num);
+static void M_RestoreTexture(GFX_3D_RENDERER *const renderer);
+
+static void M_Flush(GFX_3D_RENDERER *const renderer)
+{
+    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+}
 
 static void M_SelectTextureImpl(
     GFX_3D_RENDERER *const renderer, const int texture_num)
@@ -53,7 +61,7 @@ static void M_SelectTextureImpl(
     GFX_GL_Texture_Bind(texture);
 }
 
-static void M_RestoreTexture(GFX_3D_RENDERER *renderer)
+static void M_RestoreTexture(GFX_3D_RENDERER *const renderer)
 {
     ASSERT(renderer != NULL);
     M_SelectTextureImpl(renderer, renderer->selected_texture_num);
@@ -96,8 +104,10 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         GFX_GL_Program_UniformLocation(&renderer->program, "texturingEnabled");
     renderer->loc_smoothing_enabled =
         GFX_GL_Program_UniformLocation(&renderer->program, "smoothingEnabled");
-    renderer->loc_color_key_enabled =
-        GFX_GL_Program_UniformLocation(&renderer->program, "colorKeyEnabled");
+    renderer->loc_alpha_point_discard =
+        GFX_GL_Program_UniformLocation(&renderer->program, "alphaPointDiscard");
+    renderer->loc_alpha_threshold =
+        GFX_GL_Program_UniformLocation(&renderer->program, "alphaThreshold");
 
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
@@ -111,6 +121,10 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     GFX_GL_Program_UniformMatrix4fv(
         &renderer->program, renderer->loc_mat_model_view, 1, GL_FALSE,
         &model_view[0][0]);
+    GFX_GL_Program_Uniform1i(
+        &renderer->program, renderer->loc_alpha_point_discard, false);
+    GFX_GL_Program_Uniform1f(
+        &renderer->program, renderer->loc_alpha_threshold, -1.0);
 
     GFX_3D_VertexStream_Init(&renderer->vertex_stream);
     GFX_GL_CheckError();
@@ -133,7 +147,6 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
 {
     ASSERT(renderer != NULL);
     glEnable(GL_BLEND);
-
     glLineWidth(renderer->config->line_width);
     glPolygonMode(
         GL_FRONT_AND_BACK,
@@ -173,14 +186,12 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *const renderer)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
-
-    GFX_GL_CheckError();
+    M_Flush(renderer);
 }
 
 void GFX_3D_Renderer_ClearDepth(GFX_3D_RENDERER *const renderer)
 {
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     glClear(GL_DEPTH_BUFFER_BIT);
     GFX_GL_CheckError();
 }
@@ -231,7 +242,7 @@ void GFX_3D_Renderer_FillEnvironmentMap(GFX_3D_RENDERER *const renderer)
 
     GFX_GL_TEXTURE *const env_map = renderer->env_map_texture;
     if (env_map != NULL) {
-        GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+        M_Flush(renderer);
         GFX_GL_Texture_LoadFromBackBuffer(env_map);
         M_RestoreTexture(renderer);
     }
@@ -262,7 +273,7 @@ int GFX_3D_Renderer_RegisterTexturePage(
 }
 
 bool GFX_3D_Renderer_UnregisterTexturePage(
-    GFX_3D_RENDERER *const renderer, int texture_num)
+    GFX_3D_RENDERER *const renderer, const int texture_num)
 {
     ASSERT(renderer != NULL);
     ASSERT(texture_num >= 0);
@@ -317,7 +328,7 @@ void GFX_3D_Renderer_SelectTexture(
     GFX_3D_RENDERER *const renderer, int texture_num)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     renderer->selected_texture_num = texture_num;
     M_SelectTextureImpl(renderer, texture_num);
 }
@@ -326,7 +337,7 @@ void GFX_3D_Renderer_SetPrimType(
     GFX_3D_RENDERER *const renderer, GFX_3D_PRIM_TYPE value)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     GFX_3D_VertexStream_SetPrimType(&renderer->vertex_stream, value);
 }
 
@@ -334,7 +345,7 @@ void GFX_3D_Renderer_SetTextureFilter(
     GFX_3D_RENDERER *const renderer, GFX_TEXTURE_FILTER filter)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     GFX_GL_Sampler_Parameteri(
         &renderer->sampler, GL_TEXTURE_MAG_FILTER,
         filter == GFX_TF_BILINEAR ? GL_LINEAR : GL_NEAREST);
@@ -351,28 +362,31 @@ void GFX_3D_Renderer_SetDepthWritesEnabled(
     GFX_3D_RENDERER *const renderer, const bool is_enabled)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     glDepthMask(is_enabled ? GL_TRUE : GL_FALSE);
+    GFX_GL_CheckError();
 }
 
 void GFX_3D_Renderer_SetDepthTestEnabled(
     GFX_3D_RENDERER *const renderer, const bool is_enabled)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     if (is_enabled) {
         glEnable(GL_DEPTH_TEST);
     } else {
         glDisable(GL_DEPTH_TEST);
     }
+    GFX_GL_CheckError();
 }
 
 void GFX_3D_Renderer_SetDepthBufferEnabled(
-    GFX_3D_RENDERER *renderer, bool is_enabled)
+    GFX_3D_RENDERER *const renderer, const bool is_enabled)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     glDepthFunc(is_enabled ? GL_LEQUAL : GL_ALWAYS);
+    GFX_GL_CheckError();
 }
 
 void GFX_3D_Renderer_SetBlendingMode(
@@ -382,40 +396,52 @@ void GFX_3D_Renderer_SetBlendingMode(
     if (renderer->selected_blend_mode == blend_mode) {
         return;
     }
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
 
     GFX_GL_Program_Bind(&renderer->program);
     switch (blend_mode) {
     case GFX_BLEND_MODE_OFF:
         glBlendFunc(GL_ONE, GL_ZERO);
-        GFX_GL_Program_Uniform1i(
-            &renderer->program, renderer->loc_color_key_enabled, false);
+        GFX_GL_CheckError();
         break;
     case GFX_BLEND_MODE_NORMAL:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        GFX_GL_Program_Uniform1i(
-            &renderer->program, renderer->loc_color_key_enabled, false);
+        GFX_GL_CheckError();
         break;
     case GFX_BLEND_MODE_MULTIPLY:
         glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
-        GFX_GL_Program_Uniform1i(
-            &renderer->program, renderer->loc_color_key_enabled, false);
-        break;
-    case GFX_BLEND_MODE_COLOR_KEY:
-        glBlendFunc(GL_ONE, GL_ZERO);
-        GFX_GL_Program_Uniform1i(
-            &renderer->program, renderer->loc_color_key_enabled, true);
+        GFX_GL_CheckError();
         break;
     }
     GFX_GL_CheckError();
     renderer->selected_blend_mode = blend_mode;
 }
 
+void GFX_3D_Renderer_SetAlphaPointDiscard(
+    GFX_3D_RENDERER *const renderer, const bool is_enabled)
+{
+    ASSERT(renderer != NULL);
+    M_Flush(renderer);
+    GFX_GL_Program_Bind(&renderer->program);
+    GFX_GL_Program_Uniform1f(
+        &renderer->program, renderer->loc_alpha_point_discard, is_enabled);
+}
+
+void GFX_3D_Renderer_SetAlphaThreshold(
+    GFX_3D_RENDERER *const renderer, const float threshold)
+{
+    ASSERT(renderer != NULL);
+    M_Flush(renderer);
+    GFX_GL_Program_Bind(&renderer->program);
+    GFX_GL_Program_Uniform1f(
+        &renderer->program, renderer->loc_alpha_threshold, threshold);
+}
+
 void GFX_3D_Renderer_SetTexturingEnabled(
     GFX_3D_RENDERER *const renderer, const bool is_enabled)
 {
     ASSERT(renderer != NULL);
-    GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+    M_Flush(renderer);
     GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Program_Uniform1i(
         &renderer->program, renderer->loc_texturing_enabled, is_enabled);

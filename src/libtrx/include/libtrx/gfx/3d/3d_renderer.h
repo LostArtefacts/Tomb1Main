@@ -19,7 +19,6 @@ typedef enum {
     GFX_BLEND_MODE_OFF,
     GFX_BLEND_MODE_NORMAL,
     GFX_BLEND_MODE_MULTIPLY,
-    GFX_BLEND_MODE_COLOR_KEY,
 } GFX_BLEND_MODE;
 
 typedef struct GFX_3D_RENDERER GFX_3D_RENDERER;
@@ -66,3 +65,6 @@ void GFX_3D_Renderer_SetTexturingEnabled(
     GFX_3D_RENDERER *renderer, bool is_enabled);
 void GFX_3D_Renderer_SetAnisotropyFilter(
     GFX_3D_RENDERER *renderer, float value);
+void GFX_3D_Renderer_SetAlphaPointDiscard(
+    GFX_3D_RENDERER *renderer, bool is_enabled);
+void GFX_3D_Renderer_SetAlphaThreshold(GFX_3D_RENDERER *renderer, float value);

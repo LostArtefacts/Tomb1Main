@@ -28,7 +28,8 @@ void main(void) {
 uniform sampler2D tex0;
 uniform bool texturingEnabled;
 uniform bool smoothingEnabled;
-uniform bool colorKeyEnabled;
+uniform bool alphaPointDiscard;
+uniform float alphaThreshold;
 
 #ifdef OGL33C
     #define OUTCOLOR outColor
@@ -54,7 +55,7 @@ void main(void) {
 
     if (texturingEnabled) {
 #if defined(GL_EXT_gpu_shader4) || defined(OGL33C)
-        if (colorKeyEnabled && smoothingEnabled) {
+        if (alphaPointDiscard && smoothingEnabled) {
             // do not use smoothing for chroma key
             ivec2 size = TEXTURESIZE(tex0, 0);
             int tx = int((vertTexCoords.x / vertTexCoords.z) * size.x) % size.x;
@@ -67,7 +68,7 @@ void main(void) {
 #endif
 
         vec4 texColor = TEXTURE(tex0, vertTexCoords.xy / vertTexCoords.z);
-        if (colorKeyEnabled && texColor.a == 0.0) {
+        if (alphaThreshold >= 0.0 && texColor.a <= alphaThreshold) {
             discard;
         }
 
