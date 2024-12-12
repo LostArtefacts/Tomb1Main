@@ -313,6 +313,7 @@
             "injections": [
                 "data/injections/obelisk_fd.bin",
                 "data/injections/obelisk_itemrots.bin",
+                "data/injections/obelisk_meshfixes.bin",
                 "data/injections/obelisk_skybox.bin",
                 "data/injections/obelisk_textures.bin",
             ],

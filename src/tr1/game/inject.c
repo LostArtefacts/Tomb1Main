@@ -21,7 +21,7 @@
 #include <stddef.h>
 
 #define INJECTION_MAGIC MKTAG('T', '1', 'M', 'J')
-#define INJECTION_CURRENT_VERSION 9
+#define INJECTION_CURRENT_VERSION 10
 #define NULL_FD_INDEX ((uint16_t)(-1))
 
 typedef enum {
@@ -34,6 +34,7 @@ typedef enum {
     INJ_VERSION_7 = 7,
     INJ_VERSION_8 = 8,
     INJ_VERSION_9 = 9,
+    INJ_VERSION_10 = 10,
 } INJECTION_VERSION;
 
 typedef enum {
@@ -170,6 +171,7 @@ static uint16_t *M_GetRoomFaceVertices(
 static void M_RoomDoorEdits(INJECTION *injection);
 
 static void M_ItemPositions(INJECTION *injection);
+static void M_FrameEdits(const INJECTION *injection);
 
 static void M_LoadFromFile(INJECTION *injection, const char *filename)
 {
@@ -311,6 +313,12 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
         info->item_position_count = VFile_ReadS32(fp);
     } else {
         info->item_position_count = 0;
+    }
+
+    if (injection->version > INJ_VERSION_9) {
+        info->frame_edit_count = VFile_ReadS32(fp);
+    } else {
+        info->frame_edit_count = 0;
     }
 
     // Get detailed frame counts
@@ -892,13 +900,22 @@ static void M_MeshEdits(INJECTION *injection, uint16_t *palette_map)
 static void M_ApplyMeshEdit(
     const MESH_EDIT *const mesh_edit, const uint16_t *const palette_map)
 {
-    const OBJECT *const object = Object_GetObject(mesh_edit->object_id);
-    if (!object->loaded) {
+    OBJECT_MESH *mesh;
+    if (mesh_edit->object_id < O_NUMBER_OF) {
+        const OBJECT *const object = Object_GetObject(mesh_edit->object_id);
+        if (!object->loaded) {
+            return;
+        }
+
+        mesh = Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
+    } else if (mesh_edit->object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
+        const STATIC_INFO *const info =
+            &g_StaticObjects[mesh_edit->object_id - O_NUMBER_OF];
+        mesh = Object_GetMesh(info->mesh_num);
+    } else {
+        LOG_WARNING("Invalid object ID %d", mesh_edit->object_id);
         return;
     }
-
-    OBJECT_MESH *const mesh =
-        Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
 
     mesh->center.x += mesh_edit->centre_shift.x;
     mesh->center.y += mesh_edit->centre_shift.y;
@@ -1642,6 +1659,33 @@ static void M_ItemPositions(INJECTION *injection)
     Benchmark_End(benchmark, NULL);
 }
 
+static void M_FrameEdits(const INJECTION *const injection)
+{
+    if (injection->version < INJ_VERSION_10) {
+        return;
+    }
+
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    VFILE *const fp = injection->fp;
+    for (int32_t i = 0; i < injection->info->frame_edit_count; i++) {
+        const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
+        const int32_t anim_idx = VFile_ReadS32(fp);
+        const int32_t packed_rot = VFile_ReadS32(fp);
+
+        const OBJECT *const obj = Object_GetObject(object_id);
+        if (!obj->loaded) {
+            continue;
+        }
+
+        const ANIM *const anim = &g_Anims[obj->anim_idx + anim_idx];
+        FRAME_INFO *const frame = anim->frame_ptr;
+        frame->mesh_rots[0] = packed_rot;
+    }
+
+    Benchmark_End(benchmark, NULL);
+}
+
 void Inject_Init(
     int32_t num_injections, char *filenames[], INJECTION_INFO *aggregate)
 {
@@ -1700,6 +1744,7 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
         M_AnimRangeEdits(injection);
 
         M_ItemPositions(injection);
+        M_FrameEdits(injection);
 
         // Realign base indices for the next injection.
         INJECTION_INFO *inj_info = injection->info;
