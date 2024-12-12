@@ -5,8 +5,8 @@ from pathlib import Path
 
 def get_current_version_changelog(changelog_path: Path) -> str:
     sections = [
-        section
-        for section in changelog_path.read_text().split("\n\n")
+        section.strip()
+        for section in re.split("^##", changelog_path.read_text(), flags=re.M)
         if re.search(r"- \w", section)
     ]
     if sections:
