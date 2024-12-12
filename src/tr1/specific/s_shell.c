@@ -17,14 +17,8 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-#include <libavcodec/version.h>
-
 #define SDL_MAIN_HANDLED
 
-#ifdef _WIN32
-    #include <objbase.h>
-    #include <windows.h>
-#endif
 #include <libtrx/debug.h>
 
 #include <SDL2/SDL.h>
@@ -248,53 +242,11 @@ int main(int argc, char **argv)
 
     LOG_INFO("Game directory: %s", File_GetGameDirectory());
 
-#ifdef _WIN32
-    // Enable HiDPI mode in Windows to detect DPI scaling
-    typedef enum {
-        PROCESS_DPI_UNAWARE = 0,
-        PROCESS_SYSTEM_DPI_AWARE = 1,
-        PROCESS_PER_MONITOR_DPI_AWARE = 2
-    } PROCESS_DPI_AWARENESS;
-
-    HRESULT(WINAPI * SetProcessDpiAwareness)
-    (PROCESS_DPI_AWARENESS dpiAwareness); // Windows 8.1 and later
-    void *shcore_dll = SDL_LoadObject("SHCORE.DLL");
-    if (shcore_dll) {
-        SetProcessDpiAwareness =
-            (HRESULT(WINAPI *)(PROCESS_DPI_AWARENESS))SDL_LoadFunction(
-                shcore_dll, "SetProcessDpiAwareness");
-        if (SetProcessDpiAwareness) {
-            SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-        }
-    }
-
-    // necessary for SDL_OpenAudioDevice to work with WASAPI
-    // https://www.mail-archive.com/ffmpeg-trac@avcodec.org/msg43300.html
-    CoInitializeEx(NULL, COINIT_MULTITHREADED);
-#endif
-
-#if LIBAVCODEC_VERSION_MAJOR <= 57
-    av_register_all();
-#endif
-
     m_ArgCount = argc;
     m_ArgStrings = argv;
 
-    if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
-        Shell_ExitSystemFmt("Cannot initialize SDL: %s", SDL_GetError());
-        return 1;
-    }
-
-    // Setup minimum properties of GL context
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
+    Shell_Setup();
     Shell_Main();
-
     Shell_Terminate(0);
     return 0;
 }
@@ -323,6 +275,16 @@ static void M_SetGLBackend(const GFX_GL_BACKEND backend)
 
 void S_Shell_CreateWindow(void)
 {
+    SDL_Window *const window = SDL_CreateWindow(
+        "TR1X", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720,
+        SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE
+            | SDL_WINDOW_OPENGL);
+
+    if (window == NULL) {
+        Shell_ExitSystem("System Error: cannot create window");
+        return;
+    }
+
     const GFX_GL_BACKEND backends_to_try[] = {
         // clang-format off
         GFX_GL_33C,
@@ -335,16 +297,6 @@ void S_Shell_CreateWindow(void)
         const GFX_GL_BACKEND backend = backends_to_try[i];
 
         M_SetGLBackend(backend);
-
-        SDL_Window *const window = SDL_CreateWindow(
-            "TR1X", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720,
-            SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN_DESKTOP
-                | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-
-        if (window == NULL) {
-            Shell_ExitSystem("System Error: cannot create window");
-            return;
-        }
 
         int32_t major;
         int32_t minor;

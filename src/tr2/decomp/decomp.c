@@ -60,6 +60,7 @@ int32_t __stdcall WinMain(
 
     g_AppResultCode = 0;
     g_IsGameToExit = false;
+    Shell_Setup();
     Shell_Main();
     Shell_Shutdown();
 

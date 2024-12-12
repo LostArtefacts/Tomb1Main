@@ -109,6 +109,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
 
     r->vertices = NULL;
     r->vertex_count = 6;
+    r->vertex_format.initialized = false;
 
     GFX_GL_Buffer_Init(&r->surface_buffer, GL_ARRAY_BUFFER);
     GFX_GL_Buffer_Bind(&r->surface_buffer);

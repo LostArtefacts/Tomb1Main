@@ -44,6 +44,7 @@
 - fixed resizing game window on the stats dialog cloning the UI elements, eventually crashing the game (#1999)
 - fixed exiting the game with Alt+F4 not immediately working in cutscenes
 - fixed game freezing when starting demo/credits/inventory offscreen
+- fixed problems when trying to launch the game with High DPI mode enabled (#1845)
 - fixed controllers dialog missing background in the software renderer mode (#1978, regression from 0.6)
 - fixed a crash relating to audio decoding (#1895, regression from 0.2)
 - fixed depth problems when drawing certain rooms (#1853, regression from 0.6)
