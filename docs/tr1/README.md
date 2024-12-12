@@ -549,6 +549,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
     - **The Hive**: incorrect textures in room 8, 13 and 18
 - fixed transparent eyes on the wolf and bat models in Peru
 - fixed incorrect transparent pixels on some Egypt textures
+- fixed doors at times disappearing if Lara is close to portals and the door's room is no longer visible
 - improved vertex movement when looking through water portals
 
 #### Audio
