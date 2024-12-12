@@ -812,7 +812,6 @@ int32_t __cdecl Skidoo_Control(void)
         Room_GetSector(skidoo->pos.x, skidoo->pos.y, skidoo->pos.z, &room_num);
     int32_t height =
         Room_GetHeight(sector, skidoo->pos.x, skidoo->pos.y, skidoo->pos.z);
-    Room_TestTriggers(g_LaraItem);
 
     bool dead = false;
     if (g_LaraItem->hit_points <= 0) {
@@ -881,6 +880,7 @@ int32_t __cdecl Skidoo_Control(void)
     skidoo->rot.z += (z_rot - skidoo->rot.z) >> 1;
 
     if (skidoo->flags & IF_ONE_SHOT) {
+        Room_TestTriggers(g_LaraItem);
         if (room_num != skidoo->room_num) {
             Item_NewRoom(g_Lara.skidoo, room_num);
         }
@@ -912,6 +912,7 @@ int32_t __cdecl Skidoo_Control(void)
             g_LaraItem->rot.z = 0;
         }
     }
+    Room_TestTriggers(g_LaraItem);
 
     Item_Animate(g_LaraItem);
     if (!dead && drive >= 0 && M_IsArmed(skidoo_data)) {
