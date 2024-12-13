@@ -34,6 +34,7 @@
             "type": "normal",
             "music": 59,
             "injections": [
+                "data/injections/egypt_cameras.bin",
                 "data/injections/egypt_fd.bin",
                 "data/injections/egypt_meshfixes.bin",
                 "data/injections/egypt_textures.bin",
@@ -56,6 +57,7 @@
             "type": "normal",
             "music": 59,
             "injections": [
+                "data/injections/cat_cameras.bin",
                 "data/injections/cat_fd.bin",
                 "data/injections/cat_itemrots.bin",
                 "data/injections/cat_meshfixes.bin",

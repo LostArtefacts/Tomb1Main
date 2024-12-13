@@ -33,6 +33,7 @@
 - fixed incorrect positions on static meshes in Obelisk of Khamoon, Return to Egypt and Temple of the Cat (#2006)
 - fixed incorrect picture strides on certain hardware (#1979)
 - fixed doors at times disappearing if Lara is close to portals and the door's room is no longer visible (#2005)
+- fixed camera positions in Return to Egypt and Temple of the Cat (#1317, regression from 4.1)
 
 ## [4.6.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...tr1-4.6.1) - 2024-11-25
 - added ability to disable saves completely by setting the save slot to 0 (#1954)
