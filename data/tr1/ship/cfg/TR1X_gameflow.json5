@@ -369,6 +369,7 @@
             "injections": [
                 "data/injections/cowboy_textures.bin",
                 "data/injections/kold_textures.bin",
+                "data/injections/mines_cameras.bin",
                 "data/injections/mines_fd.bin",
                 "data/injections/mines_itemrots.bin",
                 "data/injections/mines_pushblocks.bin",
