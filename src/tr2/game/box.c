@@ -248,18 +248,16 @@ TARGET_TYPE __cdecl Box_CalculateTarget(
     int32_t prime_free = BOX_CLIP_ALL;
     do {
         box = &g_Boxes[box_num];
-        int32_t height = box->height;
         if (lot->fly != 0) {
-            height -= WALL_L;
-        }
-        if (target->y > height - WALL_L) {
-            target->y = height - WALL_L;
+            CLAMPG(target->y, box->height - WALL_L);
+        } else {
+            CLAMPG(target->y, box->height);
         }
 
-        box_left = box->left << WALL_SHIFT;
-        box_right = (box->right << WALL_SHIFT) - 1;
-        box_top = box->top << WALL_SHIFT;
-        box_bottom = (box->bottom << WALL_SHIFT) - 1;
+        box_left = (int32_t)box->left << WALL_SHIFT;
+        box_right = ((int32_t)box->right << WALL_SHIFT) - 1;
+        box_top = (int32_t)box->top << WALL_SHIFT;
+        box_bottom = ((int32_t)box->bottom << WALL_SHIFT) - 1;
 
         if (item->pos.z >= box_left && item->pos.z <= box_right
             && item->pos.x >= box_top && item->pos.x <= box_bottom) {
@@ -366,17 +364,15 @@ TARGET_TYPE __cdecl Box_CalculateTarget(
     } while (box_num != NO_BOX);
 
     if ((prime_free & (BOX_CLIP_LEFT | BOX_CLIP_RIGHT)) != 0) {
-        target->z =
-            (((box_right - box_left - WALL_L) * Random_GetControl()) >> 15)
-            + box_left + WALL_L / 2;
+        target->z = box_left + WALL_L / 2
+            + (((box_right - box_left - WALL_L) * Random_GetControl()) >> 15);
     } else if ((prime_free & BOX_CLIP_SECONDARY) == 0) {
         CLAMP(target->z, box_left + BOX_BIFF, box_right - BOX_BIFF);
     }
 
     if ((prime_free & (BOX_CLIP_TOP | BOX_CLIP_BOTTOM)) != 0) {
-        target->x =
-            (((box_bottom - box_top - WALL_L) * Random_GetControl()) >> 15)
-            + box_top + WALL_L / 2;
+        target->x = box_top + WALL_L / 2
+            + (((box_bottom - box_top - WALL_L) * Random_GetControl()) >> 15);
     } else if ((prime_free & BOX_CLIP_SECONDARY) == 0) {
         CLAMP(target->x, box_top + BOX_BIFF, box_bottom - BOX_BIFF);
     }

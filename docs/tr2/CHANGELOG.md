@@ -56,6 +56,7 @@
 - fixed broken final stats screen in software rendering mode (#1915, regression from 0.6)
 - fixed screenshots not capturing level stats (#1925, regression from 0.6)
 - fixed screenshots sometimes crashing in the windowed mode (regression from 0.6)
+- fixed creatures being able to swim/fly above the ceiling up to one tile (#1936, regression from 0.1)
 - removed unused detail level option
 
 ## [0.6](https://github.com/LostArtefacts/TRX/compare/tr2-0.5...tr2-0.6) - 2024-11-06
