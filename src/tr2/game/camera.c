@@ -134,7 +134,7 @@ void __cdecl Camera_Move(const GAME_VECTOR *target, int32_t speed)
         g_Camera.pos.x, g_Camera.shift + g_Camera.pos.y, g_Camera.pos.z,
         g_Camera.target.x, g_Camera.target.y, g_Camera.target.z, 0);
 
-    if (g_Camera.is_lara_mic) {
+    if (g_Config.audio.enable_lara_mic) {
         g_Camera.actual_angle =
             g_Lara.torso_y_rot + g_Lara.head_y_rot + g_LaraItem->rot.y;
         g_Camera.mic_pos.x = g_LaraItem->pos.x;
@@ -835,7 +835,7 @@ void __cdecl Camera_LoadCutsceneFrame(void)
     Room_GetSector(
         g_Camera.pos.x, g_Camera.pos.y, g_Camera.pos.z, &g_Camera.pos.room_num);
 
-    if (g_Camera.is_lara_mic) {
+    if (g_Config.audio.enable_lara_mic) {
         g_Camera.actual_angle =
             g_Lara.torso_y_rot + g_Lara.head_y_rot + g_LaraItem->rot.y;
         g_Camera.mic_pos.x = g_LaraItem->pos.x;

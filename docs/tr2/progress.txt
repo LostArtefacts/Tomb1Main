@@ -185,7 +185,7 @@ typedef struct __unaligned { // decompiled
     bool triple_buffering; // TODO: remove this option
     bool fullscreen;
     bool sound_enabled;
-    bool lara_mic;
+    bool lara_mic; // TODO: remove this option
     bool joystick_enabled;
     bool disable_16bit_textures;
     bool dont_sort_primitives;
@@ -1215,7 +1215,7 @@ typedef struct __unaligned {
     ITEM *item;
     ITEM *last_item;
     OBJECT_VECTOR *fixed;
-    int32_t is_lara_mic;
+    int32_t is_lara_mic; // TODO: remove this - now stored in g_Config
     XYZ_32 mic_pos;
 } CAMERA_INFO;
 

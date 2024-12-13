@@ -681,7 +681,7 @@ typedef struct __unaligned {
     ITEM *item;
     ITEM *last_item;
     OBJECT_VECTOR *fixed;
-    int32_t is_lara_mic;
+    int32_t is_lara_mic; // TODO: remove this - now stored in g_Config
     XYZ_32 mic_pos;
 } CAMERA_INFO;
 
