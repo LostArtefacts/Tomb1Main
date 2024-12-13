@@ -35,6 +35,7 @@
 - fixed doors at times disappearing if Lara is close to portals and the door's room is no longer visible (#2005)
 - fixed camera positions in Return to Egypt and Temple of the Cat (#1317, regression from 4.1)
 - fixed being able to see the flipmap in Natla's Mines when moving the boat (#2019)
+- fixed an invisible wall in Temple of the Cat, due to a wrongly positioned door (#2021)
 
 ## [4.6.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...tr1-4.6.1) - 2024-11-25
 - added ability to disable saves completely by setting the save slot to 0 (#1954)
