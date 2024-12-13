@@ -67,7 +67,7 @@ bool Fader_Control(FADER *const fader)
     Input_Update();
     Shell_ProcessInput();
     Shell_ProcessEvents();
-    if (g_InputDB.any) {
+    if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         // cancel the fade immediately
         fader->current.frame = fader->duration + fader->debuff;
         return false;

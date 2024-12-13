@@ -308,7 +308,7 @@ static void M_DisplayLegal(void)
         Output_EndScene();
     }
 
-    if (!g_Input.any) {
+    if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
         S_Wait(6 * FRAMES_PER_SECOND, true);
     }
 

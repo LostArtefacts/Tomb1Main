@@ -443,7 +443,9 @@ void __cdecl DisplayCredits(void)
             Output_EndScene();
         }
 
-        S_Wait(15 * FRAMES_PER_SECOND, true);
+        if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
+            S_Wait(15 * FRAMES_PER_SECOND, true);
+        }
 
         Fader_InitTransparentToBlack(&fader, FRAMES_PER_SECOND / 2);
         while (Fader_Control(&fader)) {
