@@ -100,6 +100,14 @@ void Text_Shutdown(void)
     m_GlyphLookupKeyCap = 0;
 }
 
+void Text_DrawReset(void)
+{
+    for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {
+        TEXTSTRING *const text = &m_TextStrings[i];
+        text->flags.drawn = 0;
+    }
+}
+
 void Text_Draw(void)
 {
     for (int32_t i = 0; i < TEXT_MAX_STRINGS; i++) {

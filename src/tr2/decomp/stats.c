@@ -372,10 +372,12 @@ int32_t __cdecl GameStats(const int32_t level_num)
         Output_BeginScene();
         Output_DrawBackground();
         ShowEndStatsText();
-        Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
         Output_DrawBlackRectangle(fader.current.value);
+        Console_Draw();
+        Text_Draw();
+        Output_DrawPolyList();
         Output_EndScene();
     }
 
@@ -394,6 +396,7 @@ int32_t __cdecl GameStats(const int32_t level_num)
         Output_BeginScene();
         Output_DrawBackground();
         ShowEndStatsText();
+        Output_DrawPolyList();
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
@@ -411,10 +414,12 @@ int32_t __cdecl GameStats(const int32_t level_num)
         Output_BeginScene();
         Output_DrawBackground();
         ShowEndStatsText();
-        Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
         Output_DrawBlackRectangle(fader.current.value);
+        Console_Draw();
+        Text_Draw();
+        Output_DrawPolyList();
         Output_EndScene();
     }
 

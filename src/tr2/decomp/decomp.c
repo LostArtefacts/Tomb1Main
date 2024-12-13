@@ -436,10 +436,11 @@ void __cdecl DisplayCredits(void)
         while (Fader_Control(&fader)) {
             Output_BeginScene();
             Output_DrawBackground();
+            Output_DrawPolyList();
+            Output_DrawBlackRectangle(fader.current.value);
             Console_Draw();
             Text_Draw();
             Output_DrawPolyList();
-            Output_DrawBlackRectangle(fader.current.value);
             Output_EndScene();
         }
 
@@ -451,10 +452,11 @@ void __cdecl DisplayCredits(void)
         while (Fader_Control(&fader)) {
             Output_BeginScene();
             Output_DrawBackground();
+            Output_DrawPolyList();
+            Output_DrawBlackRectangle(fader.current.value);
             Console_Draw();
             Text_Draw();
             Output_DrawPolyList();
-            Output_DrawBlackRectangle(fader.current.value);
             Output_EndScene();
         }
 

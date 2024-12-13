@@ -609,6 +609,7 @@ bool __cdecl Output_MakeScreenshot(const char *const path)
 void Output_BeginScene(void)
 {
     g_MatrixPtr = g_MatrixStack;
+    Text_DrawReset();
     Render_BeginScene();
 }
 

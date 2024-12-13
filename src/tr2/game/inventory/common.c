@@ -461,11 +461,14 @@ static void M_Draw(
     }
 
     Overlay_DrawModeInfo();
-    Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
 
     Output_DrawBlackRectangle(fader->current.value);
+    Console_Draw();
+    Text_Draw();
+    Output_DrawPolyList();
+
     const int32_t frames = Output_EndScene() * TICKS_PER_FRAME;
 
     Sound_EndScene();

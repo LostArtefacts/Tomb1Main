@@ -53,7 +53,9 @@ typedef struct {
             uint32_t outline : 1;
             uint32_t hide : 1;
             uint32_t multiline : 1;
+
             uint32_t manual_draw : 1;
+            uint32_t drawn : 1;
         };
     } flags;
 
@@ -129,4 +131,5 @@ void Text_SetMultiline(TEXTSTRING *text, bool enable);
 int32_t Text_GetWidth(const TEXTSTRING *text);
 int32_t Text_GetHeight(const TEXTSTRING *text);
 
+void Text_DrawReset(void);
 void Text_Draw(void);

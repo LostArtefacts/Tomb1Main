@@ -113,6 +113,11 @@ RGBA_8888 Text_GetMenuColor(MENU_COLOR color)
 
 void Text_DrawText(TEXTSTRING *const text)
 {
+    if (text->flags.drawn) {
+        return;
+    }
+    text->flags.drawn = 1;
+
     if (text->flags.hide || text->glyphs == NULL) {
         return;
     }

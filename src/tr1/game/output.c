@@ -611,6 +611,7 @@ void Output_FlushTranslucentObjects(void)
 void Output_BeginScene(void)
 {
     Output_ApplyFOV();
+    Text_DrawReset();
 
     S_Output_RenderBegin();
     m_LightningCount = 0;
