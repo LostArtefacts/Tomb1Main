@@ -528,10 +528,14 @@ int32_t __cdecl GF_InterpretSequence(
 
         case GFE_GAME_COMPLETE:
             DisplayCredits();
-            if (GameStats(g_CurrentLevel)) {
-                return GFD_EXIT_TO_TITLE;
+            if (!g_IsGameToExit) {
+                GameStats(g_CurrentLevel);
             }
-            dir = GFD_EXIT_TO_TITLE;
+            if (g_IsGameToExit) {
+                dir = GFD_EXIT_GAME;
+            } else {
+                dir = GFD_EXIT_TO_TITLE;
+            }
             ptr++;
             break;
 
