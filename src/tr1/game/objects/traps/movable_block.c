@@ -2,11 +2,14 @@
 
 #include "game/collide.h"
 #include "game/effect_routines/floor_shake.h"
+#include "game/effects/blood.h"
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
+#include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -38,6 +41,8 @@ static bool M_TestDoor(ITEM *lara_item, COLL_INFO *coll);
 static bool M_TestDestination(ITEM *item, int32_t block_height);
 static bool M_TestPush(ITEM *item, int32_t block_height, DIRECTION quadrant);
 static bool M_TestPull(ITEM *item, int32_t block_height, DIRECTION quadrant);
+static bool M_TestDeathCollision(ITEM *item, const ITEM *lara);
+static void M_KillLara(const ITEM *item, ITEM *lara);
 
 static const OBJECT_BOUNDS *M_Bounds(void)
 {
@@ -213,6 +218,51 @@ static bool M_TestPull(ITEM *item, int32_t block_height, DIRECTION quadrant)
     return true;
 }
 
+static bool M_TestDeathCollision(ITEM *const item, const ITEM *const lara)
+{
+    return g_GameFlow.enable_killer_pushblocks && item->gravity
+        && Lara_TestBoundsCollide(item, 0);
+}
+
+static void M_KillLara(const ITEM *const item, ITEM *const lara)
+{
+    if (lara->hit_points <= 0) {
+        return;
+    }
+
+    lara->hit_points = -1;
+    lara->pos.y = lara->floor;
+    lara->speed = 0;
+    lara->fall_speed = 0;
+    lara->gravity = false;
+    lara->rot.x = 0;
+    lara->rot.z = 0;
+    lara->enable_shadow = false;
+    lara->current_anim_state = LS_SPECIAL;
+    lara->goal_anim_state = LS_SPECIAL;
+    Item_SwitchToAnim(lara, LA_ROLLING_BALL_DEATH, 0);
+
+    for (int32_t i = 0; i < 15; i++) {
+        const int32_t x = lara->pos.x + (Random_GetControl() - 0x4000) / 256;
+        const int32_t z = lara->pos.z + (Random_GetControl() - 0x4000) / 256;
+        const int32_t y = lara->pos.y - Random_GetControl() / 64;
+        const int32_t d = lara->rot.y + (Random_GetControl() - 0x4000) / 8;
+        Effect_Blood(x, y, z, item->speed * 2, d, lara->room_num);
+    }
+
+    if (!Object_GetObject(O_CAMERA_TARGET)->loaded) {
+        return;
+    }
+
+    const int16_t target_num = Item_Spawn(lara, O_CAMERA_TARGET);
+    if (target_num != NO_ITEM) {
+        ITEM *const target = Item_Get(target_num);
+        target->rot.y = g_Camera.target_angle;
+        target->pos.y = lara->floor - WALL_L;
+        Lara_SetDeathCameraTarget(target_num);
+    }
+}
+
 void MovableBlock_Setup(OBJECT *obj)
 {
     obj->initialise = MovableBlock_Initialise;
@@ -283,6 +333,11 @@ void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
     const OBJECT *const obj = &g_Objects[item->object_id];
+
+    if (M_TestDeathCollision(item, lara_item)) {
+        M_KillLara(item, lara_item);
+        return;
+    }
 
     if (item->current_anim_state == MOVABLE_BLOCK_STATE_STILL) {
         item->priv = (void *)false;

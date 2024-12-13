@@ -162,6 +162,7 @@ bool Lara_Cheat_EnterFlyMode(void)
     g_Lara.air = LARA_MAX_AIR;
     g_Lara.death_timer = 0;
     g_Lara.mesh_effects = 0;
+    g_LaraItem->enable_shadow = true;
     Lara_InitialiseMeshes(g_CurrentLevel);
     g_Camera.type = CAM_CHASE;
     Viewport_SetFOV(-1);

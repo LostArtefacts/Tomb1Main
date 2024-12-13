@@ -700,9 +700,19 @@ void Lara_State_Roll2(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Special(ITEM *item, COLL_INFO *coll)
 {
-    g_Camera.flags = FOLLOW_CENTRE;
-    g_Camera.target_angle = 170 * PHD_DEGREE;
-    g_Camera.target_elevation = -25 * PHD_DEGREE;
+    ITEM *const target_item = Lara_GetDeathCameraTarget();
+    if (target_item != NULL) {
+        g_Camera.item = target_item;
+        g_Camera.flags = CHASE_OBJECT;
+        g_Camera.type = CAM_FIXED;
+        g_Camera.target_angle = item->rot.y;
+        g_Camera.target_distance = WALL_L * 2;
+        g_Camera.target_elevation = -25 * PHD_DEGREE;
+    } else {
+        g_Camera.flags = FOLLOW_CENTRE;
+        g_Camera.target_angle = 170 * PHD_DEGREE;
+        g_Camera.target_elevation = -25 * PHD_DEGREE;
+    }
 }
 
 void Lara_State_UseMidas(ITEM *item, COLL_INFO *coll)

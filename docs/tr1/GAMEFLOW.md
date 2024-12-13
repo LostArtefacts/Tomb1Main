@@ -113,6 +113,19 @@ various pieces of global behaviour.
   </tr>
   <tr valign="top">
     <td>
+      <a name="enable-killer-pushblocks"></a>
+      <code>enable_killer_pushblocks</code>
+    </td>
+    <td>Boolean</td>
+    <td>No</td>
+    <td>
+      If enabled, when a pushblock falls from the air and lands on Lara, it will
+      kill her outright. Otherwise, Lara will clip on top of the block and
+      survive.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
       <a name="enable-tr2-item-drops"></a>
       <code>enable_tr2_item_drops</code>
     </td>

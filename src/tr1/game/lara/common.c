@@ -34,6 +34,8 @@
 #define LARA_MOVE_SPEED 16
 #define LARA_UW_DAMAGE 5
 
+static int16_t m_DeathCameraTarget = NO_ITEM;
+
 LARA_INFO *Lara_GetLaraInfo(void)
 {
     return &g_Lara;
@@ -42,6 +44,16 @@ LARA_INFO *Lara_GetLaraInfo(void)
 ITEM *Lara_GetItem(void)
 {
     return g_LaraItem;
+}
+
+ITEM *Lara_GetDeathCameraTarget(void)
+{
+    return m_DeathCameraTarget == -1 ? NULL : Item_Get(m_DeathCameraTarget);
+}
+
+void Lara_SetDeathCameraTarget(const int16_t item_num)
+{
+    m_DeathCameraTarget = item_num;
 }
 
 void Lara_Control(void)
@@ -581,6 +593,7 @@ void Lara_Initialise(int32_t level_num)
         g_LaraItem->hit_points = g_Config.start_lara_hitpoints;
     }
 
+    m_DeathCameraTarget = NO_ITEM;
     g_Lara.air = LARA_MAX_AIR;
     g_Lara.torso_rot.y = 0;
     g_Lara.torso_rot.x = 0;

@@ -130,6 +130,7 @@ void Item_Initialise(int16_t item_num)
     item->data = NULL;
     item->priv = NULL;
     item->carried_item = NULL;
+    item->enable_shadow = true;
 
     if (item->flags & IF_INVISIBLE) {
         item->status = IS_INVISIBLE;

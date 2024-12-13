@@ -403,6 +403,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added options to quiet or mute music while underwater
 - added a photo mode feature
 - added optional automatic key/puzzle inventory item pre-selection
+- added the ability for falling pushblocks to kill Lara outright if one lands directly on her
 - changed weapon pickup behavior when unarmed to set any weapon as the default weapon, not just pistols
 - fixed keys and items not working when drawing guns immediately after using them
 - fixed counting the secret in The Great Pyramid

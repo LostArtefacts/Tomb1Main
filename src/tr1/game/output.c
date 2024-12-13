@@ -806,6 +806,10 @@ void Output_DrawRoom(const ROOM_MESH *const mesh)
 void Output_DrawShadow(
     const int16_t size, const BOUNDS_16 *const bounds, const ITEM *const item)
 {
+    if (!item->enable_shadow) {
+        return;
+    }
+
     SHADOW_INFO shadow = { 0 };
     shadow.vertex_count = g_Config.enable_round_shadow ? 32 : 8;
 

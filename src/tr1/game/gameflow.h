@@ -79,6 +79,7 @@ typedef struct {
     } injections;
     bool enable_tr2_item_drops;
     bool convert_dropped_guns;
+    bool enable_killer_pushblocks;
 } GAMEFLOW;
 
 extern GAMEFLOW g_GameFlow;

@@ -9,6 +9,9 @@
 
 void Lara_Control(void);
 
+ITEM *Lara_GetDeathCameraTarget(void);
+void Lara_SetDeathCameraTarget(int16_t item_num);
+
 void Lara_ControlExtra(int16_t item_num);
 void Lara_Animate(ITEM *item);
 void Lara_AnimateUntil(ITEM *lara_item, int32_t goal);

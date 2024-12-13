@@ -46,6 +46,7 @@ typedef struct __PACKING {
     void *data;
     void *priv;
     CARRIED_ITEM *carried_item;
+    bool enable_shadow;
 #elif TR_VERSION == 2
     int16_t shade_1;
     int16_t shade_2;

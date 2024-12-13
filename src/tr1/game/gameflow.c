@@ -221,6 +221,8 @@ static bool M_LoadScriptMeta(JSON_OBJECT *obj)
         JSON_ObjectGetBool(obj, "enable_tr2_item_drops", false);
     g_GameFlow.convert_dropped_guns =
         JSON_ObjectGetBool(obj, "convert_dropped_guns", false);
+    g_GameFlow.enable_killer_pushblocks =
+        JSON_ObjectGetBool(obj, "enable_killer_pushblocks", true);
 
     return true;
 }

@@ -24,6 +24,7 @@
     Swedish, Turkish and possibly more.
 
     Importantly, Asian and Arabic languages remain unsupported at the moment.
+- added the ability for falling pushblocks to kill Lara outright if one lands directly on her (#2035)
 - fixed a potential invisible wall issue in custom levels with non-portal doors and certain geometry (#1958, regression from 4.3)
 - fixed transparent eyes on the wolf and bat models in Peru (#1945)
 - fixed incorrect transparent pixels on some Egypt textures (#1975)
