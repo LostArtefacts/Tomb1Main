@@ -21,7 +21,7 @@
 #include <stddef.h>
 
 #define INJECTION_MAGIC MKTAG('T', '1', 'M', 'J')
-#define INJECTION_CURRENT_VERSION 10
+#define INJECTION_CURRENT_VERSION 11
 #define NULL_FD_INDEX ((uint16_t)(-1))
 
 typedef enum {
@@ -35,6 +35,7 @@ typedef enum {
     INJ_VERSION_8 = 8,
     INJ_VERSION_9 = 9,
     INJ_VERSION_10 = 10,
+    INJ_VERSION_11 = 11,
 } INJECTION_VERSION;
 
 typedef enum {
@@ -172,6 +173,7 @@ static void M_RoomDoorEdits(INJECTION *injection);
 
 static void M_ItemPositions(INJECTION *injection);
 static void M_FrameEdits(const INJECTION *injection);
+static void M_CameraEdits(const INJECTION *injection);
 
 static void M_LoadFromFile(INJECTION *injection, const char *filename)
 {
@@ -319,6 +321,12 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
         info->frame_edit_count = VFile_ReadS32(fp);
     } else {
         info->frame_edit_count = 0;
+    }
+
+    if (injection->version > INJ_VERSION_10) {
+        info->camera_edit_count = VFile_ReadS32(fp);
+    } else {
+        info->camera_edit_count = 0;
     }
 
     // Get detailed frame counts
@@ -1686,6 +1694,36 @@ static void M_FrameEdits(const INJECTION *const injection)
     Benchmark_End(benchmark, NULL);
 }
 
+static void M_CameraEdits(const INJECTION *const injection)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    VFILE *const fp = injection->fp;
+    for (int32_t i = 0; i < injection->info->camera_edit_count; i++) {
+        const int16_t camera_num = VFile_ReadS16(fp);
+        const XYZ_32 pos = {
+            .x = VFile_ReadS32(fp),
+            .y = VFile_ReadS32(fp),
+            .z = VFile_ReadS32(fp),
+        };
+        const int16_t room_num = VFile_ReadS16(fp);
+        const int16_t flags = VFile_ReadS16(fp);
+
+        if (camera_num < 0 || camera_num >= g_NumberCameras) {
+            LOG_WARNING(
+                "Camera number %d is out of level camera range", camera_num);
+            continue;
+        }
+
+        OBJECT_VECTOR *const camera = &g_Camera.fixed[camera_num];
+        camera->pos = pos;
+        camera->data = room_num;
+        camera->flags = flags;
+    }
+
+    Benchmark_End(benchmark, NULL);
+}
+
 void Inject_Init(
     int32_t num_injections, char *filenames[], INJECTION_INFO *aggregate)
 {
@@ -1745,6 +1783,7 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
 
         M_ItemPositions(injection);
         M_FrameEdits(injection);
+        M_CameraEdits(injection);
 
         // Realign base indices for the next injection.
         INJECTION_INFO *inj_info = injection->info;
