@@ -34,6 +34,7 @@ void Game_DrawScene(bool draw_overlay)
         }
 
         Lara_Draw(g_LaraItem);
+        Output_FlushTranslucentObjects();
 
         if (draw_overlay) {
             Overlay_DrawGameInfo();
@@ -55,8 +56,8 @@ void Game_DrawScene(bool draw_overlay)
 
         Output_SetupAboveWater(false);
         Lara_Hair_Draw();
+        Output_FlushTranslucentObjects();
     }
 
-    Output_FlushTranslucentObjects();
     Output_DrawBackdropScreen();
 }

@@ -373,8 +373,6 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         return;
     }
 
-    Output_ClearDepthBuffer();
-
     // Reset the FOV and the W2V matrix in case they get changed by a cinematic
     // camera (when picking up the Scion). Move the viewport rather than
     // translating the object in order to avoid perspective distortion in the
