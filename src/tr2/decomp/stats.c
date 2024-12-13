@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/console/common.h"
+#include "game/fader.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/output.h"
@@ -364,10 +365,18 @@ int32_t __cdecl GameStats(const int32_t level_num)
 
     Overlay_HideGameInfo();
 
-    while (g_Input.any) {
-        Shell_ProcessEvents();
-        Input_Update();
-        Shell_ProcessInput();
+    FADER fader;
+    Fader_InitBlackToTransparent(&fader, FRAMES_PER_SECOND / 2);
+    Output_LoadBackgroundFromFile("data/end.pcx");
+    while (Fader_Control(&fader)) {
+        Output_BeginScene();
+        Output_DrawBackground();
+        ShowEndStatsText();
+        Console_Draw();
+        Text_Draw();
+        Output_DrawPolyList();
+        Output_DrawBlackRectangle(fader.current.value);
+        Output_EndScene();
     }
 
     while (true) {
@@ -391,14 +400,25 @@ int32_t __cdecl GameStats(const int32_t level_num)
         Output_EndScene();
     }
 
-    Requester_Shutdown(&g_StatsRequester);
-
     g_SaveGame.bonus_flag = 1;
     for (int32_t level = LV_FIRST; level <= g_GameFlow.num_levels; level++) {
         ModifyStartInfo(level);
     }
     g_SaveGame.current_level = LV_FIRST;
 
+    Fader_InitTransparentToBlack(&fader, FRAMES_PER_SECOND / 2);
+    while (Fader_Control(&fader)) {
+        Output_BeginScene();
+        Output_DrawBackground();
+        ShowEndStatsText();
+        Console_Draw();
+        Text_Draw();
+        Output_DrawPolyList();
+        Output_DrawBlackRectangle(fader.current.value);
+        Output_EndScene();
+    }
+
+    Requester_Shutdown(&g_StatsRequester);
     Output_UnloadBackground();
     return 0;
 }

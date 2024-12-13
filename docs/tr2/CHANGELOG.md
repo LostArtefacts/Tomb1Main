@@ -25,6 +25,7 @@
 - added optional automatic key/puzzle inventory item pre-selection (#1884)
 - added a search feature to the config tool (#1889)
 - added an option to fix rotation on some pickup items to better suit 3D pickup mode (#1613)
+- added background for the final game stats (#1584)
 - added the ability to turn fade effects on/off (#1623)
 - fixed a crash when trying to draw too many rooms at once (#1998)
 - fixed Lara getting stuck in her hit animation if she is hit while mounting the boat or skidoo (#1606)

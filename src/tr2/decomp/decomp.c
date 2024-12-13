@@ -426,7 +426,7 @@ void __cdecl DisplayCredits(void)
     Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
 
     FADER fader;
-    for (int32_t i = 0; i < 9; i++) {
+    for (int32_t i = 0; i < 8; i++) {
         char file_name[60];
         sprintf(file_name, "data/credit0%d.pcx", i + 1);
 
