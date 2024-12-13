@@ -652,10 +652,6 @@ void __cdecl Boat_Control(const int16_t item_num)
         Room_GetHeight(sector, boat->pos.x, boat->pos.y, boat->pos.z);
     const int32_t ceiling =
         Room_GetCeiling(sector, boat->pos.x, boat->pos.y, boat->pos.z);
-    if (g_Lara.skidoo == item_num) {
-        Room_TestTriggers(lara);
-        Room_TestTriggers(boat);
-    }
 
     const int32_t water_height =
         Room_GetWaterHeight(boat->pos.x, boat->pos.y, boat->pos.z, room_num);
@@ -731,6 +727,8 @@ void __cdecl Boat_Control(const int16_t item_num)
         lara->rot.x = boat->rot.x;
         lara->rot.y = boat->rot.y;
         lara->rot.z = boat->rot.z;
+        Room_TestTriggers(lara);
+        Room_TestTriggers(boat);
 
         sector = Room_GetSector(
             lara->pos.x, lara->pos.y - 5, lara->pos.z, &room_num);
