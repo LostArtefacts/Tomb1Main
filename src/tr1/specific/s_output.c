@@ -866,7 +866,7 @@ void S_Output_Shutdown(void)
 {
     M_ReleaseTextures();
     M_ReleaseSurfaces();
-    GFX_Context_Detach();
+
     if (m_Renderer2D != NULL) {
         GFX_2D_Renderer_Destroy(m_Renderer2D);
         m_Renderer2D = NULL;
@@ -875,6 +875,7 @@ void S_Output_Shutdown(void)
         GFX_3D_Renderer_Destroy(m_Renderer3D);
         m_Renderer3D = NULL;
     }
+    GFX_Context_Detach();
 }
 
 void S_Output_DrawFlatTriangle(
