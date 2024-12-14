@@ -337,6 +337,7 @@ void __cdecl Creature_Die(const int16_t item_num, const bool explode)
         if (explode) {
             Effect_ExplodingDeath(item_num, -1, 0);
         }
+        item->hit_points = DONT_TARGET;
         const int16_t vehicle_item_num = (int16_t)(intptr_t)item->data;
         ITEM *const vehicle_item = &g_Items[vehicle_item_num];
         vehicle_item->hit_points = 0;

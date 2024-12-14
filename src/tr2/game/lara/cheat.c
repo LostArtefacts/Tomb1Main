@@ -431,8 +431,8 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
 
 bool Lara_Cheat_KillEnemy(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
-    if ((item->hit_points == DONT_TARGET && item->object_id != O_WINSTON)) {
+    ITEM *const item = Item_Get(item_num);
+    if (item->hit_points <= 0 && item->object_id != O_WINSTON) {
         return false;
     }
 
