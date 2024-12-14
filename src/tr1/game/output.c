@@ -724,6 +724,20 @@ void Output_CalculateObjectLighting(
     Output_CalculateLight(offset.x, offset.y, offset.z, item->room_num);
 }
 
+void Output_CalculatePickupLight(const ITEM *const item)
+{
+    if (item->shade >= 0) {
+        m_LsAdder = item->shade;
+        m_LsDivider = 0;
+        const int32_t distance = g_MatrixPtr->_23 >> W2V_SHIFT;
+        m_LsAdder += M_CalcFogShade(distance);
+        CLAMPG(m_LsAdder, 0x1FFF);
+    } else {
+        Output_CalculateLight(
+            item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    }
+}
+
 void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
 {
     if (!M_CalcObjectVertices(mesh->vertices, mesh->num_vertices)) {

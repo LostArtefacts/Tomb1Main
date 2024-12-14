@@ -187,8 +187,7 @@ void Object_DrawPickupItem(ITEM *item)
         item->interp.result.rot.y, item->interp.result.rot.x,
         item->interp.result.rot.z);
 
-    Output_CalculateLight(
-        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculatePickupLight(item);
 
     frame = object->frame_base;
     int32_t clip = Output_GetObjectBounds(&frame->bounds);

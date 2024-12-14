@@ -47,6 +47,7 @@ void Output_ClearDepthBuffer(void);
 void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);
 void Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
+void Output_CalculatePickupLight(const ITEM *item);
 
 void Output_DrawObjectMesh(const OBJECT_MESH *mesh, int32_t clip);
 void Output_DrawObjectMesh_I(const OBJECT_MESH *mesh, int32_t clip);
