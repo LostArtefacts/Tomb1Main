@@ -15,6 +15,7 @@ void Music_Play(MUSIC_TRACK_ID track_id, MUSIC_PLAY_MODE mode);
 void __cdecl Music_Stop(void);
 bool __cdecl Music_PlaySynced(int16_t track_id);
 double __cdecl Music_GetTimestamp(void);
+bool Music_SeekTimestamp(double timestamp);
 void __cdecl Music_SetVolume(int32_t volume);
 MUSIC_TRACK_ID Music_GetCurrentTrack(void);
 MUSIC_TRACK_ID Music_GetLastPlayedTrack(void);

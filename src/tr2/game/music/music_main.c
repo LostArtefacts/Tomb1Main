@@ -193,6 +193,14 @@ double __cdecl Music_GetTimestamp(void)
     return Audio_Stream_GetTimestamp(m_AudioStreamID);
 }
 
+bool Music_SeekTimestamp(double timestamp)
+{
+    if (m_AudioStreamID < 0) {
+        return false;
+    }
+    return Audio_Stream_SeekTimestamp(m_AudioStreamID, timestamp);
+}
+
 void __cdecl Music_SetVolume(int32_t volume)
 {
     m_MusicVolume = volume ? volume / 10.0f : 0.0f;

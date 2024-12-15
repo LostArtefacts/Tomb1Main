@@ -24,6 +24,7 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
+#include <libtrx/log.h>
 #include <libtrx/utils.h>
 
 static int32_t m_FrameCount = 0;
@@ -189,6 +190,15 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
 int32_t __cdecl Game_ControlCinematic(void)
 {
     Fader_Control(&m_ExitFader);
+
+    const int32_t audio_cine_frame_idx =
+        Music_GetTimestamp() * FRAMES_PER_SECOND;
+    const int32_t game_cine_frame_idx = g_CineFrameIdx;
+    const int32_t audio_drift = ABS(audio_cine_frame_idx - game_cine_frame_idx);
+    if (audio_drift >= FRAMES_PER_SECOND * 0.2) {
+        LOG_DEBUG("Detected audio drift: %d frames", audio_drift);
+        Music_SeekTimestamp(game_cine_frame_idx / (double)FRAMES_PER_SECOND);
+    }
 
     if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
         return 4;
