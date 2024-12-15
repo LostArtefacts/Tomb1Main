@@ -8,14 +8,13 @@
 
 static Uint64 m_LastCounter = 0;
 static Uint64 m_InitCounter = 0;
-static Uint64 m_Counter = 0;
 static Uint64 m_Frequency = 0;
+static double m_Accumulator = 0.0;
 
 void Clock_Init(void)
 {
     m_Frequency = SDL_GetPerformanceFrequency();
     m_InitCounter = SDL_GetPerformanceCounter();
-    m_Counter = SDL_GetPerformanceCounter();
 }
 
 size_t Clock_GetDateTime(char *const buffer, const size_t size)
@@ -53,32 +52,65 @@ double Clock_GetHighPrecisionCounter(void)
 void Clock_SyncTick(void)
 {
     m_LastCounter = SDL_GetPerformanceCounter();
+    m_Accumulator = 0.0;
 }
 
 int32_t Clock_WaitTick(void)
 {
-    const Uint64 counter = SDL_GetPerformanceCounter();
+    const Uint64 current_counter = SDL_GetPerformanceCounter();
 
+    // If this is the first call, just initialize and return a frame.
     if (m_LastCounter == 0) {
-        m_LastCounter = counter;
+        m_LastCounter = current_counter;
         return 1;
     }
 
     const int32_t fps = Clock_GetCurrentFPS();
     const double speed_multiplier = Clock_GetSpeedMultiplier();
-    const double frame_duration =
-        (1.0 / (fps * speed_multiplier)) * SDL_GetPerformanceFrequency();
-    const double elapsed = (double)(counter - m_LastCounter);
 
-    int32_t elapsed_frames = (int32_t)(elapsed / frame_duration);
-    if (elapsed_frames < 1) {
-        const Uint32 delay_time =
-            (frame_duration - elapsed) * 1000 / SDL_GetPerformanceFrequency();
-        SDL_Delay(delay_time);
-        elapsed_frames = 1;
+    // The duration of one frame in performance counter units
+    const double frame_ticks = m_Frequency / (fps * speed_multiplier);
+
+    // Calculate elapsed ticks since last call
+    const double elapsed_ticks = (double)(current_counter - m_LastCounter);
+
+    // Add the elapsed ticks to the accumulator
+    m_Accumulator += elapsed_ticks;
+
+    // Determine how many frames we can "release" from the accumulator
+    int32_t frames = (int32_t)(m_Accumulator / frame_ticks);
+
+    if (frames < 1) {
+        // Not enough accumulated time for even one frame
+
+        // Calculate how long we should wait (in ms) to hit the frame boundary
+        double needed = frame_ticks - m_Accumulator;
+        double delay_ms = (needed / m_Frequency) * 1000.0;
+
+        if (delay_ms > 0) {
+            SDL_Delay((Uint32)delay_ms);
+        }
+
+        // After waiting, measure again to be accurate
+        const Uint64 after_delay_counter = SDL_GetPerformanceCounter();
+        const double after_delay_elapsed =
+            (double)(after_delay_counter - current_counter);
+        m_Accumulator += after_delay_elapsed;
+
+        // Now, we should have at least one frame available
+        frames = (int32_t)(m_Accumulator / frame_ticks);
+        if (frames < 1) {
+            // To avoid a possible floating-point corner case, ensure at least
+            // one frame
+            frames = 1;
+        }
     }
 
-    Clock_SyncTick();
+    // Consume the frames from the m_Accumulator
+    m_Accumulator -= frames * frame_ticks;
 
-    return elapsed_frames;
+    // Update the last counter to the current performance counter
+    m_LastCounter = SDL_GetPerformanceCounter();
+
+    return frames;
 }

@@ -47,6 +47,7 @@
 - fixed exiting the game with Alt+F4 not immediately working in cutscenes
 - fixed game freezing when starting demo/credits/inventory offscreen
 - fixed problems when trying to launch the game with High DPI mode enabled (#1845)
+- fixed clock drift accumulating with time, causing audio desync in cutscenes (#1935, regression from 0.6)
 - fixed controllers dialog missing background in the software renderer mode (#1978, regression from 0.6)
 - fixed a crash relating to audio decoding (#1895, regression from 0.2)
 - fixed depth problems when drawing certain rooms (#1853, regression from 0.6)
