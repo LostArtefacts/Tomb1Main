@@ -186,68 +186,50 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
     return 0;
 }
 
-int32_t __cdecl Game_ControlCinematic(const int32_t nframes)
+int32_t __cdecl Game_ControlCinematic(void)
 {
     Fader_Control(&m_ExitFader);
-    g_CineTickCount += g_CineTickRate * nframes;
 
-    if (g_CineTickCount >= 0) {
-        while (1) {
-            if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-                return 4;
-            }
-
-            Shell_ProcessEvents();
-            Input_Update();
-            if (g_InputDB.action) {
-                return 1;
-            }
-            if (g_InputDB.option) {
-                return 2;
-            }
-            Shell_ProcessInput();
-
-            g_DynamicLightCount = 0;
-
-            for (int32_t id = g_NextItemActive; id != NO_ITEM;) {
-                const ITEM *const item = &g_Items[id];
-                const OBJECT *obj = &g_Objects[item->object_id];
-                if (obj->control != NULL) {
-                    obj->control(id);
-                }
-                id = item->next_active;
-            }
-
-            for (int32_t id = g_NextEffectActive; id != NO_ITEM;) {
-                const FX *const fx = &g_Effects[id];
-                const OBJECT *const obj = &g_Objects[fx->object_id];
-                if (obj->control != NULL) {
-                    obj->control(id);
-                }
-                id = fx->next_active;
-            }
-
-            HairControl(1);
-            Camera_UpdateCutscene();
-
-            g_CineFrameIdx++;
-            if (g_CineFrameIdx >= g_NumCineFrames) {
-                return 1;
-            }
-
-            g_CineTickCount -= 0x10000;
-            if (g_CineTickCount < 0) {
-                break;
-            }
-        }
+    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
+        return 4;
     }
 
-    if (Music_GetTimestamp() < 0.0) {
-        g_CineFrameCurrent++;
-    } else {
-        // sync with music
-        g_CineFrameCurrent =
-            Music_GetTimestamp() * FRAMES_PER_SECOND * TICKS_PER_FRAME / 1000.0;
+    Shell_ProcessEvents();
+    Input_Update();
+    if (g_InputDB.action) {
+        return 1;
+    }
+    if (g_InputDB.option) {
+        return 2;
+    }
+    Shell_ProcessInput();
+
+    g_DynamicLightCount = 0;
+
+    for (int32_t id = g_NextItemActive; id != NO_ITEM;) {
+        const ITEM *const item = &g_Items[id];
+        const OBJECT *obj = &g_Objects[item->object_id];
+        if (obj->control != NULL) {
+            obj->control(id);
+        }
+        id = item->next_active;
+    }
+
+    for (int32_t id = g_NextEffectActive; id != NO_ITEM;) {
+        const FX *const fx = &g_Effects[id];
+        const OBJECT *const obj = &g_Objects[fx->object_id];
+        if (obj->control != NULL) {
+            obj->control(id);
+        }
+        id = fx->next_active;
+    }
+
+    HairControl(1);
+    Camera_UpdateCutscene();
+
+    g_CineFrameIdx++;
+    if (g_CineFrameIdx >= g_NumCineFrames) {
+        return 1;
     }
 
     return 0;
@@ -400,28 +382,28 @@ int32_t __cdecl Game_LoopCinematic(const int32_t level_num)
     const bool old_sound_active = g_SoundIsActive;
     g_SoundIsActive = false;
 
-    g_CineFrameIdx = 0;
-
     if (!Music_PlaySynced(g_CineTrackID)) {
         return 1;
     }
 
     Music_SetVolume(10);
-    g_CineFrameCurrent = 0;
+    g_CineFrameIdx = 0;
 
-    int32_t result;
+    int32_t result = 0;
     do {
-        Game_DrawCinematic();
-        int32_t nticks =
-            g_CineFrameCurrent - TICKS_PER_FRAME * (g_CineFrameIdx - 4);
-        CLAMPL(nticks, TICKS_PER_FRAME);
+        const int32_t nframes = Game_DrawCinematic();
         if (g_IsGameToExit && !m_Exiting) {
             m_Exiting = true;
             Fader_InitAnyToBlack(&m_ExitFader, FRAMES_PER_SECOND / 3);
         } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
             result = 5;
         } else {
-            result = Game_ControlCinematic(nticks);
+            for (int32_t i = 0; i < nframes; i++) {
+                result = Game_ControlCinematic();
+                if (result != 0) {
+                    break;
+                }
+            }
         }
     } while (!result);
 

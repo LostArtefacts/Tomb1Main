@@ -133,46 +133,6 @@ void __cdecl Game_SetCutsceneTrack(const int32_t track)
     g_CineTrackID = track;
 }
 
-int32_t __cdecl Game_Cutscene_Start(const int32_t level_num)
-{
-    if (!Level_Initialise(level_num, GFL_CUTSCENE)) {
-        return 2;
-    }
-
-    Room_InitCinematic();
-    CutscenePlayer1_Initialise(g_Lara.item_num);
-    g_Camera.target_angle = g_CineTargetAngle;
-
-    const bool old_sound_active = g_SoundIsActive;
-    g_SoundIsActive = false;
-
-    g_CineFrameIdx = 0;
-
-    if (!Music_PlaySynced(g_CineTrackID)) {
-        return 1;
-    }
-
-    Music_SetVolume(10);
-    g_CineFrameCurrent = 0;
-
-    int32_t result;
-    do {
-        Game_DrawCinematic();
-        int32_t nticks =
-            g_CineFrameCurrent - TICKS_PER_FRAME * (g_CineFrameIdx - 4);
-        CLAMPL(nticks, TICKS_PER_FRAME);
-        result = Game_ControlCinematic(nticks);
-    } while (!result);
-
-    Music_SetVolume(g_Config.audio.music_volume);
-    Music_Stop();
-    g_SoundIsActive = old_sound_active;
-    Sound_StopAllSamples();
-
-    g_LevelComplete = true;
-    return result;
-}
-
 void __cdecl CutscenePlayer_Control(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];

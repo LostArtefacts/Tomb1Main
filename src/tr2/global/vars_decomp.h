@@ -160,8 +160,6 @@
 #define g_IsWaterEffect (*(int32_t*)0x004D6C14)
 #define g_IsShadeEffect (*(int8_t*)0x004D6F78)
 #define g_GamePalette16 (*(PALETTEENTRY(*)[256])0x004D7380)
-#define g_CineFrameCurrent (*(int32_t*)0x004D7780)
-#define g_CineTickCount (*(int32_t*)0x004D7784)
 #define g_OriginalRoom (*(int32_t*)0x004D7788)
 #define g_IsChunkyCamera (*(int32_t*)0x004D778C)
 #define g_HeightType (*(int32_t*)0x004D7790)

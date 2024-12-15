@@ -4388,7 +4388,7 @@ typedef enum {
 0x004D6F78  -       int8_t g_IsShadeEffect;
 0x004D6F80  +       D3DTLVERTEX g_VBufferD3D[32];
 0x004D7380  -       PALETTEENTRY g_GamePalette16[256];
-0x004D7780  -       int32_t g_CineFrameCurrent;
+0x004D7780  +       int32_t g_CineFrameCurrent;
 0x004D778C  -       int32_t g_IsChunkyCamera;
 0x004D7794  -       int32_t g_NoInputCounter;
 0x004D7798  +       BOOL g_IsResetFlag;
@@ -4573,7 +4573,7 @@ typedef enum {
 0x005252B8  +       int32_t g_DrawRoomsCount;
 0x00525B20  +       int16_t g_DrawRoomsArray[100];
 0x00525BEC  -       int32_t g_DynamicLightCount;
-0x004D7784  -       int32_t g_CineTickCount;
+0x004D7784  +       int32_t g_CineTickCount;
 0x004D7788  -       int32_t g_OriginalRoom;
 0x00465518  -       INVENTORY_ITEM *g_Inv_MainList[];
 0x00465608  +       INVENTORY_ITEM *g_Inv_OptionList[];
