@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define Dog_Control ((void __cdecl (*)(int16_t item_num))0x00417160)
 #define Tiger_Control ((void __cdecl (*)(int16_t item_num))0x00417510)
 #define TRex_Control ((void __cdecl (*)(int16_t item_num))0x004186A0)
 #define Gun_DrawFlash ((void __cdecl (*)(LARA_GUN_TYPE weapon_type, int32_t clip))0x0041BD30)

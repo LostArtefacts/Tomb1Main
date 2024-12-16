@@ -1,6 +1,6 @@
 project('TR2X', ['c'],
   default_options: [
-    'c_std=c17',
+    'c_std=c2x',
     'warning_level=2',
   ],
 )
