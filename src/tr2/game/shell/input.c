@@ -19,6 +19,7 @@
 static void M_ToggleBilinearFiltering(void);
 static void M_TogglePerspectiveCorrection(void);
 static void M_ToggleZBuffer(void);
+static void M_CycleLightingContrast(void);
 static void M_ToggleFullscreen(void);
 static void M_ToggleRenderingMode(void);
 static void M_DecreaseResolutionOrBPP(void);
@@ -46,8 +47,8 @@ static void M_TogglePerspectiveCorrection(void)
         : SW_DETAIL_MEDIUM;
     Overlay_DisplayModeInfo(
         g_Config.rendering.enable_perspective_filter
-            ? "Perspective correction enabled"
-            : "Perspective correction disabled");
+            ? "Perspective Correction On"
+            : "Perspective Correction Off");
     Config_Write();
 }
 
@@ -64,6 +65,22 @@ static void M_ToggleZBuffer(void)
         Overlay_DisplayModeInfo(
             g_Config.rendering.enable_zbuffer ? "Z-Buffer On" : "Z-Buffer Off");
     }
+    Config_Write();
+}
+
+static void M_CycleLightingContrast(void)
+{
+    const int32_t direction = g_Input.slow ? -1 : 1;
+    LIGHTING_CONTRAST value = g_Config.rendering.lighting_contrast;
+    value += direction;
+    value += LIGHTING_CONTRAST_NUMBER_OF;
+    value %= LIGHTING_CONTRAST_NUMBER_OF;
+    g_Config.rendering.lighting_contrast = value;
+    char tmp[100];
+    sprintf(
+        tmp, "Lighting Contrast: %s",
+        ENUM_MAP_TO_STRING(LIGHTING_CONTRAST, value));
+    Overlay_DisplayModeInfo(tmp);
     Config_Write();
 }
 
@@ -162,6 +179,10 @@ void Shell_ProcessInput(void)
 
     if (g_InputDB.toggle_z_buffer) {
         M_ToggleZBuffer();
+    }
+
+    if (g_InputDB.cycle_lighting_contrast) {
+        M_CycleLightingContrast();
     }
 
     if (g_InputDB.toggle_fullscreen) {

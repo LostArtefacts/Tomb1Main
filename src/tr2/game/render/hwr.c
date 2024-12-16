@@ -34,10 +34,11 @@ static GFX_3D_VERTEX *m_HWR_VertexPtr = NULL;
 static void M_ShadeColor(
     GFX_3D_VERTEX *target, uint32_t red, uint32_t green, uint32_t blue,
     uint8_t alpha);
-static void M_ShadeLight(GFX_3D_VERTEX *target, uint32_t shade);
+static void M_ShadeLight(
+    GFX_3D_VERTEX *target, uint32_t shade, bool is_textured);
 static void M_ShadeLightColor(
-    GFX_3D_VERTEX *target, uint32_t shade, uint32_t red, uint32_t green,
-    uint32_t blue, uint8_t alpha);
+    GFX_3D_VERTEX *target, uint32_t shade, bool is_textured, uint32_t red,
+    uint32_t green, uint32_t blue, uint8_t alpha);
 
 static void M_ReleaseTextures(RENDERER *renderer);
 static void M_LoadTexturePages(
@@ -149,22 +150,37 @@ static void M_ShadeColor(
     target->a = alpha;
 }
 
-static void M_ShadeLight(GFX_3D_VERTEX *const target, const uint32_t shade)
+static void M_ShadeLight(
+    GFX_3D_VERTEX *const target, uint32_t shade, const bool is_textured)
 {
-    uint32_t value = (uint32_t)(0x1FFF - shade) >> 4;
-    CLAMPG(value, 0xFF);
-    M_ShadeColor(target, value, value, value, 0xFF);
+    M_ShadeLightColor(target, shade, is_textured, 255, 255, 255, 255);
 }
 
 static void M_ShadeLightColor(
-    GFX_3D_VERTEX *const target, uint32_t shade, uint32_t red, uint32_t green,
-    uint32_t blue, const uint8_t alpha)
+    GFX_3D_VERTEX *const target, uint32_t shade, const bool is_textured,
+    uint32_t red, uint32_t green, uint32_t blue, const uint8_t alpha)
 {
     CLAMPG(shade, 0x1FFF);
-    shade = 0x1FFF - shade;
-    red = (red * shade) >> 12;
-    green = (green * shade) >> 12;
-    blue = (blue * shade) >> 12;
+
+    if (g_Config.rendering.lighting_contrast == LIGHTING_CONTRAST_MEDIUM) {
+        CLAMPL(shade, 0x800);
+    }
+    if (g_Config.rendering.lighting_contrast != LIGHTING_CONTRAST_LOW
+        && is_textured) {
+        shade = 0x1000 + shade / 2;
+    }
+    if (g_Config.rendering.lighting_contrast == LIGHTING_CONTRAST_LOW
+        && !is_textured) {
+        CLAMPL(shade, 0x1000);
+    }
+
+    if (shade != 0x1000) {
+        const int32_t brightness = 0x1FFF - shade;
+        red = (red * brightness) >> 12;
+        green = (green * brightness) >> 12;
+        blue = (blue * brightness) >> 12;
+    }
+
     CLAMPG(red, 0xFF);
     CLAMPG(green, 0xFF);
     CLAMPG(blue, 0xFF);
@@ -263,7 +279,7 @@ static void M_DrawPolyTextured(
         vbuf_gl->w = vbuf->rhw;
         vbuf_gl->t = vbuf->v / (double)PHD_ONE;
         vbuf_gl->s = vbuf->u / (double)PHD_ONE;
-        M_ShadeLight(vbuf_gl, vbuf->g);
+        M_ShadeLight(vbuf_gl, vbuf->g, true);
     }
     M_DrawPrimitive(renderer, GFX_3D_PRIM_TRI, m_VBufferGL, vtx_count, true);
 }
@@ -279,7 +295,7 @@ static void M_DrawPolyFlat(
         vbuf_gl->y = vbuf->y;
         vbuf_gl->z = MAKE_DEPTH(vbuf);
         vbuf_gl->w = vbuf->rhw;
-        M_ShadeLightColor(vbuf_gl, vbuf->g, red, green, blue, 0xFF);
+        M_ShadeLightColor(vbuf_gl, vbuf->g, false, red, green, blue, 0xFF);
     }
     M_DrawPrimitive(renderer, GFX_3D_PRIM_TRI, m_VBufferGL, vtx_count, true);
 }
@@ -307,7 +323,7 @@ static void M_InsertPolyTextured(
         vbuf_gl->w = vbuf->rhw;
         vbuf_gl->s = vbuf->u / (double)PHD_ONE;
         vbuf_gl->t = vbuf->v / (double)PHD_ONE;
-        M_ShadeLight(vbuf_gl, vbuf->g);
+        M_ShadeLight(vbuf_gl, vbuf->g, true);
     }
 
     m_HWR_VertexPtr += vtx_count;
@@ -335,7 +351,7 @@ static void M_InsertPolyFlat(
         vbuf_gl->z = MAKE_DEPTH(vbuf);
         vbuf_gl->w = vbuf->rhw;
         M_ShadeLightColor(
-            vbuf_gl, vbuf->g, red, green, blue,
+            vbuf_gl, vbuf->g, false, red, green, blue,
             poly_type == POLY_HWR_TRANS ? 0x80 : 0xFF);
     }
 
@@ -387,7 +403,7 @@ static void M_InsertGT3_Sorted(
                 vbuf_gl->w = vtx[i]->rhw;
                 vbuf_gl->s = (double)uv[i]->u * vtx[i]->rhw / (double)PHD_ONE;
                 vbuf_gl->t = (double)uv[i]->v * vtx[i]->rhw / (double)PHD_ONE;
-                M_ShadeLight(vbuf_gl, vtx[i]->g);
+                M_ShadeLight(vbuf_gl, vtx[i]->g, true);
             }
 
             m_HWR_VertexPtr += 3;
@@ -479,7 +495,7 @@ static void M_InsertGT4_Sorted(
                 vbuf_gl->w = vtx[i]->rhw;
                 vbuf_gl->s = texture->uv[i].u * vtx[i]->rhw / (double)PHD_ONE;
                 vbuf_gl->t = texture->uv[i].v * vtx[i]->rhw / (double)PHD_ONE;
-                M_ShadeLight(vbuf_gl, vtx[i]->g);
+                M_ShadeLight(vbuf_gl, vtx[i]->g, true);
             }
 
             m_HWR_VertexPtr += 4;
@@ -998,7 +1014,7 @@ static void M_InsertGT3_ZBuffered(
                 vbuf_gl->w = vtx[i]->rhw;
                 vbuf_gl->s = (double)uv[i]->u * vtx[i]->rhw / (double)PHD_ONE;
                 vbuf_gl->t = (double)uv[i]->v * vtx[i]->rhw / (double)PHD_ONE;
-                M_ShadeLight(vbuf_gl, vtx[i]->g);
+                M_ShadeLight(vbuf_gl, vtx[i]->g, true);
             }
 
             M_SelectTexture(renderer, texture->tex_page);
@@ -1091,7 +1107,7 @@ static void M_InsertGT4_ZBuffered(
         vbuf_gl->w = vtx[i]->rhw;
         vbuf_gl->s = texture->uv[i].u * vtx[i]->rhw / (double)PHD_ONE;
         vbuf_gl->t = texture->uv[i].v * vtx[i]->rhw / (double)PHD_ONE;
-        M_ShadeLight(vbuf_gl, vtx[i]->g);
+        M_ShadeLight(vbuf_gl, vtx[i]->g, true);
     }
 
     M_SelectTexture(renderer, texture->tex_page);
@@ -1506,12 +1522,20 @@ static void M_EndScene(RENDERER *const renderer)
 
 static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
 {
+    M_PRIV *const priv = renderer->priv;
     if (!renderer->initialized) {
         return;
     }
     if (flags & (RENDER_RESET_TEXTURES | RENDER_RESET_PALETTE)) {
         LOG_DEBUG("Reloading textures");
         M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
+    }
+    if (flags & RENDER_RESET_PARAMS) {
+        GFX_3D_Renderer_SetBrightnessMultiplier(
+            priv->renderer_3d,
+            g_Config.rendering.lighting_contrast == LIGHTING_CONTRAST_LOW
+                ? 1.0
+                : 2.0);
     }
     M_ResetFuncPtrs(renderer);
 }

@@ -55,6 +55,7 @@ typedef struct {
         float wireframe_width;
         GFX_TEXTURE_FILTER texture_filter;
         SCREENSHOT_FORMAT screenshot_format;
+        LIGHTING_CONTRAST lighting_contrast;
         TEXEL_ADJUST_MODE texel_adjust_mode;
         int32_t nearest_adjustment;
         int32_t linear_adjustment;

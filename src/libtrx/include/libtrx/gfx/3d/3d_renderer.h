@@ -68,3 +68,5 @@ void GFX_3D_Renderer_SetAnisotropyFilter(
 void GFX_3D_Renderer_SetAlphaPointDiscard(
     GFX_3D_RENDERER *renderer, bool is_enabled);
 void GFX_3D_Renderer_SetAlphaThreshold(GFX_3D_RENDERER *renderer, float value);
+void GFX_3D_Renderer_SetBrightnessMultiplier(
+    GFX_3D_RENDERER *renderer, float value);

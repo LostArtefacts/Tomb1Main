@@ -30,6 +30,7 @@ uniform bool texturingEnabled;
 uniform bool smoothingEnabled;
 uniform bool alphaPointDiscard;
 uniform float alphaThreshold;
+uniform float brightnessMultiplier;
 
 #ifdef OGL33C
     #define OUTCOLOR outColor
@@ -72,7 +73,7 @@ void main(void) {
             discard;
         }
 
-        OUTCOLOR = vec4(OUTCOLOR.rgb * texColor.rgb, texColor.a);
+        OUTCOLOR = vec4(OUTCOLOR.rgb * texColor.rgb * brightnessMultiplier, texColor.a);
     }
 }
 #endif // VERTEX

@@ -290,7 +290,9 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
         || old->rendering.enable_perspective_filter
             != new->rendering.enable_perspective_filter
         || old->rendering.enable_wireframe != new->rendering.enable_wireframe
-        || old->rendering.texture_filter != new->rendering.texture_filter) {
+        || old->rendering.texture_filter != new->rendering.texture_filter
+        || old->rendering.lighting_contrast
+            != new->rendering.lighting_contrast) {
         Render_Reset(RENDER_RESET_PARAMS);
     }
 }

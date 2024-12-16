@@ -27,6 +27,7 @@ struct GFX_3D_RENDERER {
     GLint loc_smoothing_enabled;
     GLint loc_alpha_point_discard;
     GLint loc_alpha_threshold;
+    GLint loc_brightness_multiplier;
 };
 
 static void M_Flush(GFX_3D_RENDERER *renderer);
@@ -114,6 +115,8 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         GFX_GL_Program_UniformLocation(&renderer->program, "alphaPointDiscard");
     renderer->loc_alpha_threshold =
         GFX_GL_Program_UniformLocation(&renderer->program, "alphaThreshold");
+    renderer->loc_brightness_multiplier = GFX_GL_Program_UniformLocation(
+        &renderer->program, "brightnessMultiplier");
 
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
@@ -131,6 +134,8 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         &renderer->program, renderer->loc_alpha_point_discard, false);
     GFX_GL_Program_Uniform1f(
         &renderer->program, renderer->loc_alpha_threshold, -1.0);
+    GFX_GL_Program_Uniform1f(
+        &renderer->program, renderer->loc_brightness_multiplier, 1.0);
 
     GFX_3D_VertexStream_Init(&renderer->vertex_stream);
     return renderer;
@@ -425,13 +430,23 @@ void GFX_3D_Renderer_SetAlphaPointDiscard(
 }
 
 void GFX_3D_Renderer_SetAlphaThreshold(
-    GFX_3D_RENDERER *const renderer, const float threshold)
+    GFX_3D_RENDERER *const renderer, const float value)
 {
     ASSERT(renderer != NULL);
     M_Flush(renderer);
     GFX_GL_Program_Bind(&renderer->program);
     GFX_GL_Program_Uniform1f(
-        &renderer->program, renderer->loc_alpha_threshold, threshold);
+        &renderer->program, renderer->loc_alpha_threshold, value);
+}
+
+void GFX_3D_Renderer_SetBrightnessMultiplier(
+    GFX_3D_RENDERER *const renderer, const float value)
+{
+    ASSERT(renderer != NULL);
+    M_Flush(renderer);
+    GFX_GL_Program_Bind(&renderer->program);
+    GFX_GL_Program_Uniform1f(
+        &renderer->program, renderer->loc_brightness_multiplier, value);
 }
 
 void GFX_3D_Renderer_SetTexturingEnabled(
