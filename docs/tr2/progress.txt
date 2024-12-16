@@ -3139,7 +3139,7 @@ typedef enum {
 
 # game/dog.c
 0x00417160  0x0387  +       void __cdecl Dog_Control(int16_t item_num);
-0x00417510  0x027E  -       void __cdecl Tiger_Control(int16_t item_num);
+0x00417510  0x027E  +       void __cdecl Tiger_Control(int16_t item_num);
 
 # game/dragon.c
 0x004177B0  0x017F  +       void __cdecl Twinkle_Control(int16_t fx_num);
@@ -4797,6 +4797,7 @@ typedef enum {
 0x00466230  +       BITE g_SkidooLeftGun;
 0x00466240  +       BITE g_SkidooRightGun;
 0x00464130  +       BITE g_DogBite;
+0x00464140  +       BITE g_TigerBite;
 0x00465F40  -       int16_t g_MovableBlockBounds[];
 0x00465F58  -       int16_t g_ZiplineHandleBounds[];
 0x00465FF0  -       int16_t g_PickupBounds[];

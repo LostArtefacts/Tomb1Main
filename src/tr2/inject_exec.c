@@ -45,6 +45,7 @@
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/skidoo_driver.h"
+#include "game/objects/creatures/tiger.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
 #include "game/objects/effects/ember.h"
@@ -866,6 +867,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00416CA0, Diver_GetWaterSurface);
     INJECT(enable, 0x00416DB0, Diver_Control);
     INJECT(enable, 0x00417160, Dog_Control);
+    INJECT(enable, 0x00417510, Tiger_Control);
     INJECT(enable, 0x004177B0, Twinkle_Control);
     INJECT(enable, 0x00417AC0, Dragon_Collision);
     INJECT(enable, 0x00417DB0, Dragon_Bones);
