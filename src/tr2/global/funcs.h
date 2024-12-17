@@ -127,7 +127,6 @@
 #define Dart_Control ((void __cdecl (*)(int16_t item_num))0x00442980)
 #define DartEffect_Control ((void __cdecl (*)(int16_t fx_num))0x00442AE0)
 #define GiantYeti_Control ((void __cdecl (*)(int16_t item_num))0x00443050)
-#define Yeti_Control ((void __cdecl (*)(int16_t item_num))0x00443350)
 #define GetValidLevelsList ((void __cdecl (*)(REQUEST_INFO *req))0x0044C9D0)
 #define CalculateWibbleTable ((void __cdecl (*)(void))0x0044D780)
 #define S_GetObjectBounds ((int32_t __cdecl (*)(const BOUNDS_16 *bounds))0x00450CC0)

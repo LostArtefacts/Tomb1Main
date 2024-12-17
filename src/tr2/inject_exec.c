@@ -49,6 +49,7 @@
 #include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
 #include "game/objects/creatures/trex.h"
+#include "game/objects/creatures/yeti.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
 #include "game/objects/effects/ember.h"
@@ -963,6 +964,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);
     INJECT(enable, 0x00442F40, Ember_Control);
+    INJECT(enable, 0x00443350, Yeti_Control);
 }
 
 void Inject_Exec(void)

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.82% (1080)</tspan> · <tspan class="known">10.77% (134)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.90% (1081)</tspan> · <tspan class="known">10.69% (133)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="648.52" height="6" x="0" y="0" class="decompiled"/>
-<rect width="80.46" height="6" x="648.52" y="0" class="known"/>
+<rect width="649.12" height="6" x="0" y="0" class="decompiled"/>
+<rect width="79.86" height="6" x="649.12" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -869,7 +869,7 @@
 <rect width="12" height="12" x="600" y="225" class="decompiled"><title>void __cdecl EmberEmitter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="225" class="decompiled"><title>void __cdecl Ember_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="630" y="225" class="known"><title>void __cdecl GiantYeti_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="645" y="225" class="known"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="645" y="225" class="decompiled"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="660" y="225" class="decompiled"><title>void __cdecl BGND_Make640x480(uint8_t *bitmap, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="675" y="225" class="decompiled"><title>int32_t __cdecl BGND_AddTexture(int32_t tile_idx, BYTE *bitmap, int32_t pal_index, RGB_888 *bmp_pal);</title></rect>
 <rect width="12" height="12" x="690" y="225" class="decompiled"><title>void __cdecl BGND_GetPageHandles(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.53%</tspan> · <tspan class="known">12.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.98%</tspan> · <tspan class="known">11.70%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="653.88" height="6" x="0" y="0" class="decompiled"/>
-<rect width="90.68" height="6" x="653.88" y="0" class="known"/>
+<rect width="657.19" height="6" x="0" y="0" class="decompiled"/>
+<rect width="87.37" height="6" x="657.19" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1359,7 +1359,7 @@
 <rect width="31.67" height="35.34" x="142.32" y="0" class="decompiled"><title>void __cdecl Output_InsertGT3_ZBuffered(const PHD_VBUF *vtx0, const PHD_VBUF *vtx1, const PHD_VBUF *vtx2, const PHD_TEXTURE *texture, const PHD_UV *uv0, const PHD_UV *uv1, const PHD_UV *uv2);</title></rect>
 <rect width="31.67" height="34.77" x="142.32" y="38.34" class="decompiled"><title>void __cdecl Boat_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="33.69" x="142.32" y="76.11" class="known"><title>void __cdecl Object_SetupTrapObjects(void);</title></rect>
-<rect width="31.67" height="33.31" x="142.32" y="112.80" class="known"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
+<rect width="31.67" height="33.31" x="142.32" y="112.80" class="decompiled"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="32.16" x="142.32" y="149.10" class="known"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="31.08" x="142.32" y="184.26" class="known"><title>void __cdecl XianSpearman_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="30.65" x="142.32" y="218.34" class="decompiled"><title>BOOL __cdecl Level_LoadObjects(HANDLE handle);</title></rect>
