@@ -8,12 +8,12 @@
 #include "game/objects/creatures/big_eel.h"
 #include "game/objects/creatures/big_spider.h"
 #include "game/objects/creatures/bird.h"
+#include "game/objects/creatures/bird_guardian.h"
 #include "game/objects/creatures/cultist.h"
 #include "game/objects/creatures/diver.h"
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/eel.h"
-#include "game/objects/creatures/giant_yeti.h"
 #include "game/objects/creatures/jelly.h"
 #include "game/objects/creatures/monk.h"
 #include "game/objects/creatures/mouse.h"
@@ -147,7 +147,7 @@ void __cdecl Object_SetupBaddyObjects(void)
     Eel_Setup();
     XianKnight_Setup();
     XianSpearman_Setup();
-    GiantYeti_Setup();
+    BirdGuardian_Setup();
     TRex_Setup();
     Winston_Setup();
 }

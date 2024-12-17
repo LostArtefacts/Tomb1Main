@@ -136,7 +136,7 @@ void __cdecl Grenade_Control(int16_t item_num)
 
             if (target_item->hit_points <= 0) {
                 if (target_item->object_id != O_DRAGON_FRONT
-                    && target_item->object_id != O_GIANT_YETI) {
+                    && target_item->object_id != O_BIRD_GUARDIAN) {
                     Creature_Die(target_item_num, true);
                 }
             }

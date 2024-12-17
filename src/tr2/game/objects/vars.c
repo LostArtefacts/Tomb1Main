@@ -33,7 +33,7 @@ const GAME_OBJECT_ID g_EnemyObjects[] = {
     O_XIAN_KNIGHT,
     O_XIAN_KNIGHT_STATUE,
     O_YETI,
-    O_GIANT_YETI,
+    O_BIRD_GUARDIAN,
     O_EAGLE,
     O_BANDIT_1,
     O_BANDIT_2,

@@ -2139,7 +2139,7 @@ typedef enum { // decompiled
     O_XIAN_KNIGHT           = 43,
     O_XIAN_KNIGHT_STATUE    = 44,
     O_YETI                  = 45,
-    O_GIANT_YETI            = 46,
+    O_BIRD_GUARDIAN         = 46,
     O_EAGLE                 = 47,
     O_BANDIT_1              = 48,
     O_BANDIT_2              = 49,
@@ -3811,7 +3811,7 @@ typedef enum {
 0x00442F40  0x010B  +       void __cdecl Ember_Control(int16_t fx_num);
 
 # game/yeti.c
-0x00443050  0x02CA  -       void __cdecl GiantYeti_Control(int16_t item_num);
+0x00443050  0x02CA  -       void __cdecl BirdGuardian_Control(int16_t item_num);
 0x00443350  0x05ED  +       void __cdecl Yeti_Control(int16_t item_num);
 
 0x00443990  0x01B8  +R      void __cdecl BGND_Make640x480(uint8_t *bitmap, RGB_888 *palette);
