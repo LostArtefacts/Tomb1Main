@@ -939,6 +939,7 @@ typedef enum {
     RF_UNDERWATER  = 0x01,
     RF_OUTSIDE     = 0x08,
     RF_DYNAMIC_LIT = 0x10,
+    RF_NOT_INSIDE  = 0x20,
     RF_INSIDE      = 0x40,
 } ROOM_FLAG;
 
@@ -3286,7 +3287,7 @@ typedef enum {
 
 # game/hair.c
 0x00420EA0  0x0074  +       void __cdecl Lara_Hair_Initialise(void);
-0x00420F20  0x09E5  -       void __cdecl Lara_Hair_Control(bool in_cutscene);
+0x00420F20  0x09E5  +       void __cdecl Lara_Hair_Control(bool in_cutscene);
 0x00421920  0x0076  -       void __cdecl Lara_Hair_Draw(void);
 
 # game/health.c
@@ -4863,5 +4864,6 @@ typedef enum {
 0x0051B908  -       int32_t g_RoomLightShades[4];
 0x00526194  -       int32_t g_SunsetTimer;
 0x00521CD0  -       int32_t g_IsFirstHair;
+0x00521CE0  -       XYZ_32 g_HairVelocity[7]; // HAIR_SEGMENTS + 1
 0x00521D40  -       HAIR_SEGMENT g_HairSegments[7]; // HAIR_SEGMENTS + 1
-0x00521CF0  -       XYZ_32 g_HairVelocity[7]; // HAIR_SEGMENTS + 1
+0x004D7918  -       int32_t g_HairWind;

@@ -372,10 +372,10 @@ void Lara_Hair_Control(void)
                     m_Hair[i].pos.y = water_level;
                 else if (m_Hair[i].pos.y > height) {
                     m_Hair[i].pos.x = m_HVel[0].x;
+                    m_Hair[i].pos.z = m_HVel[0].z;
                     if (m_Hair[i].pos.y - height <= STEP_L) {
                         m_Hair[i].pos.y = height;
                     }
-                    m_Hair[i].pos.z = m_HVel[0].z;
                 }
                 break;
 

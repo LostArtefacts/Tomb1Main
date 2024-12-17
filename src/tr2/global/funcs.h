@@ -67,7 +67,6 @@
 #define XianSpearman_Control ((void __cdecl (*)(int16_t item_num))0x0041EFF0)
 #define WarriorSparkleTrail ((void __cdecl (*)(ITEM *item))0x0041F5D0)
 #define XianKnight_Control ((void __cdecl (*)(int16_t item_num))0x0041F670)
-#define Lara_Hair_Control ((void __cdecl (*)(bool in_cutscene))0x00420F20)
 #define Lara_Hair_Draw ((void __cdecl (*)(void))0x00421920)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)

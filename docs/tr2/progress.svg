@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.02% (1095)</tspan> · <tspan class="known">9.57% (119)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.10% (1096)</tspan> · <tspan class="known">9.49% (118)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="657.53" height="6" x="0" y="0" class="decompiled"/>
-<rect width="71.46" height="6" x="657.53" y="0" class="known"/>
+<rect width="658.13" height="6" x="0" y="0" class="decompiled"/>
+<rect width="70.86" height="6" x="658.13" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -388,7 +388,7 @@
 <rect width="12" height="12" x="135" y="90" class="decompiled"><title>int32_t __cdecl GF_InterpretSequence(int16_t *ptr, GAMEFLOW_LEVEL_TYPE type, int32_t seq_type);</title></rect>
 <rect width="12" height="12" x="150" y="90" class="decompiled"><title>void __cdecl GF_ModifyInventory(int32_t level, int32_t type);</title></rect>
 <rect width="12" height="12" x="165" y="90" class="decompiled"><title>void __cdecl Lara_Hair_Initialise(void);</title></rect>
-<rect width="12" height="12" x="180" y="90" class="known"><title>void __cdecl Lara_Hair_Control(bool in_cutscene);</title></rect>
+<rect width="12" height="12" x="180" y="90" class="decompiled"><title>void __cdecl Lara_Hair_Control(bool in_cutscene);</title></rect>
 <rect width="12" height="12" x="195" y="90" class="known"><title>void __cdecl Lara_Hair_Draw(void);</title></rect>
 <rect width="12" height="12" x="210" y="90" class="decompiled"><title>BOOL __cdecl Overlay_FlashCounter(void);</title></rect>
 <rect width="12" height="12" x="225" y="90" class="decompiled"><title>void __cdecl Overlay_DrawAssaultTimer(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.32%</tspan> · <tspan class="known">10.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.06%</tspan> · <tspan class="known">9.61%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="667.22" height="6" x="0" y="0" class="decompiled"/>
-<rect width="77.34" height="6" x="667.22" y="0" class="known"/>
+<rect width="672.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="71.81" height="6" x="672.75" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1341,7 +1341,7 @@
 <rect width="40.15" height="54.95" x="60.98" y="0" class="decompiled"><title>void __cdecl Lara_Draw_I(const ITEM *item, const FRAME_INFO *frame1, const FRAME_INFO *frame2, int32_t frac, int32_t rate);</title></rect>
 <rect width="40.15" height="49.99" x="60.98" y="57.95" class="decompiled"><title>bool __cdecl Input_Update(void);</title></rect>
 <rect width="40.15" height="47.99" x="60.98" y="110.94" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT4(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
-<rect width="40.15" height="45.70" x="60.98" y="161.94" class="known"><title>void __cdecl Lara_Hair_Control(bool in_cutscene);</title></rect>
+<rect width="40.15" height="45.70" x="60.98" y="161.94" class="decompiled"><title>void __cdecl Lara_Hair_Control(bool in_cutscene);</title></rect>
 <rect width="40.15" height="40.30" x="60.98" y="210.64" class="decompiled"><title>int32_t __cdecl Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt);</title></rect>
 <rect width="40.15" height="38.57" x="60.98" y="253.94" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT3(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="40.15" height="38.34" x="60.98" y="295.51" class="decompiled"><title>int32_t __cdecl Requester_Display(REQUEST_INFO *req, int32_t des, int32_t backgrounds);</title></rect>
