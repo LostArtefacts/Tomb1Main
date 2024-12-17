@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.98% (1082)</tspan> · <tspan class="known">10.61% (132)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.14% (1084)</tspan> · <tspan class="known">10.45% (130)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="649.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="79.26" height="6" x="649.72" y="0" class="known"/>
+<rect width="650.92" height="6" x="0" y="0" class="decompiled"/>
+<rect width="78.06" height="6" x="650.92" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1201,7 +1201,7 @@
 <rect width="12" height="12" x="330" y="330" class="decompiled"><title>HWND __cdecl SE_FindSetupDialog(void);</title></rect>
 <rect width="12" height="12" x="345" y="330" class="decompiled"><title>BOOL __cdecl Shell_Main(void);</title></rect>
 <rect width="12" height="12" x="360" y="330" class="decompiled"><title>int16_t __cdecl TitleSequence(void);</title></rect>
-<rect width="12" height="12" x="375" y="330" class="known"><title>void __cdecl CheckCheatMode(void);</title></rect>
+<rect width="12" height="12" x="375" y="330" class="decompiled"><title>void __cdecl Lara_Cheat_CheckKeys(void);</title></rect>
 <rect width="12" height="12" x="390" y="330" class="decompiled"><title>void __cdecl S_SaveSettings(void);</title></rect>
 <rect width="12" height="12" x="405" y="330" class="decompiled"><title>void __cdecl S_LoadSettings(void);</title></rect>
 <rect width="12" height="12" x="420" y="330" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_OutPlay(int32_t sample_id, uint16_t volume, int32_t pitch, int32_t pan);</title></rect>
@@ -1281,7 +1281,7 @@
 <rect width="12" height="12" x="30" y="360" class="decompiled"><title>bool __cdecl SE_RegisterSetupWindowClass(void);</title></rect>
 <rect width="12" height="12" x="45" y="360" class="decompiled"><title>LRESULT __stdcall SE_SetupWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="12" height="12" x="60" y="360" class="decompiled"><title>void __cdecl SE_PassMessageToImage(HWND hWnd, UINT uMsg, WPARAM wParam);</title></rect>
-<rect width="12" height="12" x="75" y="360" class="known"><title>void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);</title></rect>
+<rect width="12" height="12" x="75" y="360" class="decompiled"><title>void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);</title></rect>
 <rect width="12" height="12" x="90" y="360" class="decompiled"><title>void __cdecl Matrix_Push(void);</title></rect>
 <rect width="12" height="12" x="105" y="360" class="decompiled"><title>void __cdecl Matrix_PushUnit(void);</title></rect>
 <rect width="12" height="12" x="120" y="360" class="decompiled"><title>void __fastcall Output_FlatA(int32_t y0, int32_t y1, uint8_t color_idx); // actually, __watcall, which is esoteric and rarely supported</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.19%</tspan> · <tspan class="known">11.49%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.46%</tspan> · <tspan class="known">11.22%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="658.75" height="6" x="0" y="0" class="decompiled"/>
-<rect width="85.81" height="6" x="658.75" y="0" class="known"/>
+<rect width="660.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="83.79" height="6" x="660.77" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1430,7 +1430,7 @@
 <rect width="22.45" height="24.05" x="294.45" y="219.20" class="decompiled"><title>void __cdecl Lara_HangTest(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="22.45" height="23.86" x="294.45" y="246.25" class="decompiled"><title>void __cdecl Item_Animate(ITEM *item);</title></rect>
 <rect width="22.45" height="23.60" x="294.45" y="273.11" class="decompiled"><title>void __cdecl Gun_Pistols_Animate(LARA_GUN_TYPE weapon_type);</title></rect>
-<rect width="22.45" height="23.50" x="294.45" y="299.71" class="known"><title>void __cdecl CheckCheatMode(void);</title></rect>
+<rect width="22.45" height="23.50" x="294.45" y="299.71" class="decompiled"><title>void __cdecl Lara_Cheat_CheckKeys(void);</title></rect>
 <rect width="22.45" height="22.91" x="294.45" y="326.21" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="22.45" height="22.88" x="294.45" y="352.12" class="decompiled"><title>void __cdecl Lara_GetJointAbsPosition_I(ITEM *item, XYZ_32 *vec, int16_t *frame1, int16_t *frame2, int32_t frac, int32_t rate);</title></rect>
 <rect width="21.59" height="23.28" x="319.90" y="0" class="known"><title>void __cdecl Bandit1_Control(int16_t item_num);</title></rect>
@@ -2013,7 +2013,7 @@
 <rect width="6.65" height="6.54" x="588.61" y="293.59" class="decompiled"><title>void __cdecl Item_RemoveDrawn(int16_t item_num);</title></rect>
 <rect width="6.65" height="6.54" x="588.61" y="303.13" class="decompiled"><title>void __cdecl Music_Legacy_Play(int16_t track_id, bool is_looped);</title></rect>
 <rect width="6.65" height="6.54" x="588.61" y="312.67" class="decompiled"><title>BOOL __cdecl UT_CenterWindow(HWND hWnd);</title></rect>
-<rect width="6.65" height="6.46" x="588.61" y="322.21" class="known"><title>void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);</title></rect>
+<rect width="6.65" height="6.46" x="588.61" y="322.21" class="decompiled"><title>void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="331.67" class="decompiled"><title>int32_t __cdecl Output_VisibleZClip(const PHD_VBUF *vtx0, const PHD_VBUF *vtx1, const PHD_VBUF *vtx2);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="340.95" class="decompiled"><title>void __cdecl Overlay_AddDisplayPickup(GAME_OBJECT_ID object_id);</title></rect>
 <rect width="6.65" height="6.28" x="588.61" y="350.24" class="decompiled"><title>int16_t __cdecl Effect_Create(int16_t room_num);</title></rect>

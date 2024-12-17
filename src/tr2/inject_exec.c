@@ -25,6 +25,7 @@
 #include "game/inventory/ring.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
+#include "game/lara/cheat_keys.h"
 #include "game/lara/col.h"
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
@@ -577,17 +578,18 @@ static void M_Inventory(const bool enable)
 static void M_Lara_Control(const bool enable)
 {
     INJECT(enable, 0x00427580, Lara_HandleAboveWater);
-    INJECT(enable, 0x00431670, Lara_HandleSurface);
-    INJECT(enable, 0x00431F50, Lara_HandleUnderwater);
     INJECT(enable, 0x004302E0, Lara_Control);
-    INJECT(enable, 0x00430EF0, Lara_ControlExtra);
     INJECT(enable, 0x00430970, Lara_Animate);
     INJECT(enable, 0x00430C70, Lara_UseItem);
     INJECT(enable, 0x00430E30, Lara_Cheat_GetStuff);
+    INJECT(enable, 0x00430EF0, Lara_ControlExtra);
     INJECT(enable, 0x00430F10, Lara_InitialiseLoad);
     INJECT(enable, 0x00430F40, Lara_Initialise);
     INJECT(enable, 0x00431200, Lara_InitialiseInventory);
     INJECT(enable, 0x00431570, Lara_InitialiseMeshes);
+    INJECT(enable, 0x00431670, Lara_HandleSurface);
+    INJECT(enable, 0x00431F50, Lara_HandleUnderwater);
+    INJECT(enable, 0x00454D60, Lara_Cheat_CheckKeys);
 }
 
 static void M_Lara_Draw(const bool enable)

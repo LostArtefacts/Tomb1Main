@@ -11,6 +11,7 @@
 #include "game/input.h"
 #include "game/inventory/backpack.h"
 #include "game/inventory/common.h"
+#include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
 #include "game/music.h"
 #include "game/output.h"
@@ -48,7 +49,7 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
 
     while (m_FrameCount > 0) {
         if (!g_GameFlow.cheat_mode_check_disabled) {
-            CheckCheatMode();
+            Lara_Cheat_CheckKeys();
         }
 
         if (g_LevelComplete) {

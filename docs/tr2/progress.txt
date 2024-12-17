@@ -4145,7 +4145,7 @@ typedef enum {
 0x00454960  0x0011  @R      HWND __cdecl SE_FindSetupDialog(void);
 0x00454980  0x02D0  +       BOOL __cdecl Shell_Main(void);
 0x00454C50  0x0110  +R      int16_t __cdecl TitleSequence(void);
-0x00454D60  0x032D  -R      void __cdecl CheckCheatMode(void);
+0x00454D60  0x032D  +       void __cdecl Lara_Cheat_CheckKeys(void);
 0x004550C0  0x007D  +R      void __cdecl S_SaveSettings(void);
 0x00455140  0x00DB  +R      void __cdecl S_LoadSettings(void);
 0x00455220  0x0046  +       int32_t __cdecl S_Audio_Sample_OutPlay(int32_t sample_id, uint16_t volume, int32_t pitch, int32_t pan);
@@ -4225,7 +4225,7 @@ typedef enum {
 0x00456F30  0x0061  @R      bool __cdecl SE_RegisterSetupWindowClass(void);
 0x00456FA0  0x023A  @R      LRESULT __stdcall SE_SetupWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 0x004571E0  0x0026  @R      void __cdecl SE_PassMessageToImage(HWND hWnd, UINT uMsg, WPARAM wParam);
-0x00457210  0x006E  -R      void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);
+0x00457210  0x006E  @R      void __cdecl UT_MemBlt(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch);
 0x00457280  0x001E  +       void __cdecl Matrix_Push(void);
 0x0045729E  0x0033  +       void __cdecl Matrix_PushUnit(void);
 0x004572D4  0x0061  +       void __fastcall Output_FlatA(int32_t y0, int32_t y1, uint8_t color_idx); // actually, __watcall, which is esoteric and rarely supported
@@ -4837,3 +4837,7 @@ typedef enum {
 0x004663C0  +       BITE g_YetiLBite;
 0x004663D0  +       BITE g_YetiRBite;
 0x004663E0  +       BITE g_BirdGuardianBite;
+0x0051BDA4  +       int32_t g_CheatMode;
+0x0051BD1C  +       bool g_CheatFlare;
+0x0051BD18  +       int16_t g_CheatAngle;
+0x0051BD10  +       int32_t g_CheatTurn;

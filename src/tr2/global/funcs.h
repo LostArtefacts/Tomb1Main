@@ -136,6 +136,4 @@
 #define S_SetupBelowWater ((void __cdecl (*)(BOOL underwater))0x00451C90)
 #define S_SetupAboveWater ((void __cdecl (*)(BOOL underwater))0x00451CF0)
 #define S_AnimateTextures ((void __cdecl (*)(int32_t ticks))0x00451D20)
-#define CheckCheatMode ((void __cdecl (*)(void))0x00454D60)
-#define UT_MemBlt ((void __cdecl (*)(BYTE *dstBuf, DWORD dstX, DWORD dstY, DWORD width, DWORD height, DWORD dstPitch, BYTE *srcBuf, DWORD srcX, DWORD srcY, DWORD srcPitch))0x00457210)
 // clang-format on

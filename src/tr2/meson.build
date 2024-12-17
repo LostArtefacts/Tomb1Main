@@ -114,6 +114,7 @@ dll_sources = [
   'game/inventory/vars.c',
   'game/items.c',
   'game/lara/cheat.c',
+  'game/lara/cheat_keys.c',
   'game/lara/col.c',
   'game/lara/common.c',
   'game/lara/control.c',
