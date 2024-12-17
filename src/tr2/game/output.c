@@ -1054,3 +1054,71 @@ void __cdecl Output_CalculateStaticMeshLight(
 
     Output_CalculateStaticLight(adder);
 }
+
+void __cdecl Output_LightRoom(ROOM *const room)
+{
+    if (room->light_mode != 0) {
+        const ROOM_LIGHT_TABLE *const light_table =
+            &g_RoomLightTables[g_RoomLightShades[room->light_mode]];
+        int32_t vtx_count = *room->data;
+        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
+        for (int32_t i = 0; i < vtx_count; i++) {
+            const int32_t wibble =
+                light_table->table[vtx[i].light_table_value % WIBBLE_SIZE];
+            vtx[i].light_adder = vtx[i].light_base + wibble;
+        }
+    } else if (room->flags & RF_DYNAMIC_LIT) {
+        const int32_t vtx_count = *room->data;
+        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
+        for (int32_t i = 0; i < vtx_count; i++) {
+            vtx[i].light_adder = vtx[i].light_base;
+        }
+        room->flags &= ~RF_DYNAMIC_LIT;
+    }
+
+    const int32_t x_min = WALL_L;
+    const int32_t z_min = WALL_L;
+    const int32_t x_max = (room->size.x - 1) * WALL_L;
+    const int32_t z_max = (room->size.z - 1) * WALL_L;
+
+    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+        const LIGHT *const light = &g_DynamicLights[i];
+        const int32_t x = light->pos.x - room->pos.x;
+        const int32_t y = light->pos.y;
+        const int32_t z = light->pos.z - room->pos.z;
+        const int32_t radius = 1 << light->falloff_1;
+        if (x - radius > x_max || z - radius > z_max || x + radius < x_min
+            || z + radius < z_min) {
+            continue;
+        }
+
+        room->flags |= RF_DYNAMIC_LIT;
+
+        const int32_t vtx_count = *room->data;
+        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
+        for (int32_t j = 0; j < vtx_count; j++) {
+            ROOM_VERTEX *const v = &vtx[j];
+            if (v->light_adder == 0) {
+                continue;
+            }
+
+            const int32_t dx = v->pos.x - x;
+            const int32_t dy = v->pos.y - y;
+            const int32_t dz = v->pos.z - z;
+            if (dx < -radius || dx > radius || dy < -radius || dy > radius
+                || dz < -radius || dz > radius) {
+                continue;
+            }
+
+            const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
+            if (dist > SQUARE(radius)) {
+                continue;
+            }
+
+            const int32_t shade = (1 << light->intensity_1)
+                - (dist >> (2 * light->falloff_1 - light->intensity_1));
+            v->light_adder -= shade;
+            CLAMPL(v->light_adder, 0);
+        }
+    }
+}

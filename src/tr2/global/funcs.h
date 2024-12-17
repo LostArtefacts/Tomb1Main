@@ -126,7 +126,6 @@
 #define DartEmitter_Control ((void __cdecl (*)(int16_t item_num))0x00442840)
 #define Dart_Control ((void __cdecl (*)(int16_t item_num))0x00442980)
 #define DartEffect_Control ((void __cdecl (*)(int16_t fx_num))0x00442AE0)
-#define Output_LightRoom ((void __cdecl (*)(ROOM *room))0x004515F0)
 #define S_SetupBelowWater ((void __cdecl (*)(BOOL underwater))0x00451C90)
 #define S_SetupAboveWater ((void __cdecl (*)(BOOL underwater))0x00451CF0)
 #define S_AnimateTextures ((void __cdecl (*)(int32_t ticks))0x00451D20)

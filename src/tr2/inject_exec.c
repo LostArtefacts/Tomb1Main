@@ -421,6 +421,7 @@ static void M_Output(const bool enable)
     INJECT(enable, 0x00451180, Output_CalculateLight);
     INJECT(enable, 0x00451480, Output_CalculateStaticLight);
     INJECT(enable, 0x004514C0, Output_CalculateStaticMeshLight);
+    INJECT(enable, 0x004515F0, Output_LightRoom);
     INJECT(enable, 0x00451800, Output_DrawHealthBar);
     INJECT(enable, 0x004519D0, Output_DrawAirBar);
     INJECT(enable, 0x00451BD0, Output_AnimateTextures);

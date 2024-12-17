@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.62% (1090)</tspan> · <tspan class="known">9.97% (124)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.70% (1091)</tspan> · <tspan class="known">9.89% (123)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="654.53" height="6" x="0" y="0" class="decompiled"/>
-<rect width="74.46" height="6" x="654.53" y="0" class="known"/>
+<rect width="655.13" height="6" x="0" y="0" class="decompiled"/>
+<rect width="73.86" height="6" x="655.13" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1145,7 +1145,7 @@
 <rect width="12" height="12" x="240" y="315" class="decompiled"><title>void __cdecl Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="255" y="315" class="decompiled"><title>void __cdecl Output_CalculateStaticLight(int16_t adder);</title></rect>
 <rect width="12" height="12" x="270" y="315" class="decompiled"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
-<rect width="12" height="12" x="285" y="315" class="known"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
+<rect width="12" height="12" x="285" y="315" class="decompiled"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
 <rect width="12" height="12" x="300" y="315" class="decompiled"><title>void __cdecl Output_DrawHealthBar(int32_t percent);</title></rect>
 <rect width="12" height="12" x="315" y="315" class="decompiled"><title>void __cdecl Output_DrawAirBar(int32_t percent);</title></rect>
 <rect width="12" height="12" x="330" y="315" class="decompiled"><title>void __cdecl Output_AnimateTextures(int32_t ticks);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.05%</tspan> · <tspan class="known">10.62%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.20%</tspan> · <tspan class="known">10.47%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="665.19" height="6" x="0" y="0" class="decompiled"/>
-<rect width="79.37" height="6" x="665.19" y="0" class="known"/>
+<rect width="666.33" height="6" x="0" y="0" class="decompiled"/>
+<rect width="78.23" height="6" x="666.33" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1504,7 +1504,7 @@
 <rect width="17.35" height="18.40" x="390.77" y="86.91" class="decompiled"><title>void __cdecl Lara_Col_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="17.35" height="18.28" x="390.77" y="108.31" class="decompiled"><title>void __cdecl Switch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="17.35" height="18.12" x="390.77" y="129.59" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
-<rect width="17.35" height="18.12" x="390.77" y="150.71" class="known"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
+<rect width="17.35" height="18.12" x="390.77" y="150.71" class="decompiled"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
 <rect width="17.35" height="18.04" x="390.77" y="171.83" class="decompiled"><title>bool __cdecl ApplySettings(APP_SETTINGS *new_settings);</title></rect>
 <rect width="17.35" height="17.91" x="390.77" y="192.87" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="17.35" height="17.87" x="390.77" y="213.78" class="decompiled"><title>void __cdecl Bird_Control(int16_t item_num);</title></rect>

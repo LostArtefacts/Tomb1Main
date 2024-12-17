@@ -92,6 +92,14 @@ typedef struct __PACKING {
     FACE3 *face3s;
     ROOM_SPRITE *sprites;
 } ROOM_MESH;
+#elif TR_VERSION == 2
+typedef struct __PACKING {
+    XYZ_16 pos;
+    int16_t light_base;
+    uint8_t light_table_value;
+    uint8_t flags;
+    int16_t light_adder;
+} ROOM_VERTEX;
 #endif
 
 typedef struct __PACKING {
