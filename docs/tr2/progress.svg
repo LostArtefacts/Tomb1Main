@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.66% (1078)</tspan> · <tspan class="known">10.93% (136)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.74% (1079)</tspan> · <tspan class="known">10.85% (135)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="647.32" height="6" x="0" y="0" class="decompiled"/>
-<rect width="81.67" height="6" x="647.32" y="0" class="known"/>
+<rect width="647.92" height="6" x="0" y="0" class="decompiled"/>
+<rect width="81.07" height="6" x="647.92" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -810,7 +810,7 @@
 <rect width="12" height="12" x="465" y="210" class="known"><title>void __cdecl Collide_GetJointAbsPosition(const ITEM *item, const XYZ_32 *vec, int32_t joint);</title></rect>
 <rect width="12" height="12" x="480" y="210" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);</title></rect>
 <rect width="12" height="12" x="495" y="210" class="known"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
-<rect width="12" height="12" x="510" y="210" class="known"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="510" y="210" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="525" y="210" class="decompiled"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="540" y="210" class="decompiled"><title>void __cdecl Text_Init(void);</title></rect>
 <rect width="12" height="12" x="555" y="210" class="decompiled"><title>TEXTSTRING *__cdecl Text_Create(int32_t x, int32_t y, int32_t z, const char *text);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.33%</tspan> · <tspan class="known">12.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.48%</tspan> · <tspan class="known">12.19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="652.37" height="6" x="0" y="0" class="decompiled"/>
-<rect width="92.19" height="6" x="652.37" y="0" class="known"/>
+<rect width="653.50" height="6" x="0" y="0" class="decompiled"/>
+<rect width="91.06" height="6" x="653.50" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1503,7 +1503,7 @@
 <rect width="17.35" height="18.49" x="390.77" y="65.42" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>
 <rect width="17.35" height="18.40" x="390.77" y="86.91" class="decompiled"><title>void __cdecl Lara_Col_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="17.35" height="18.28" x="390.77" y="108.31" class="decompiled"><title>void __cdecl Switch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="17.35" height="18.12" x="390.77" y="129.59" class="known"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
+<rect width="17.35" height="18.12" x="390.77" y="129.59" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
 <rect width="17.35" height="18.12" x="390.77" y="150.71" class="known"><title>void __cdecl S_LightRoom(ROOM *room);</title></rect>
 <rect width="17.35" height="18.04" x="390.77" y="171.83" class="decompiled"><title>bool __cdecl ApplySettings(APP_SETTINGS *new_settings);</title></rect>
 <rect width="17.35" height="17.91" x="390.77" y="192.87" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>

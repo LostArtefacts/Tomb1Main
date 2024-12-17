@@ -3747,7 +3747,7 @@ typedef enum {
 
 # game/spider.c
 0x0043FFC0  0x00AC  -       void __cdecl Spider_Leap(int16_t item_num, int16_t angle);
-0x00440070  0x0206  -       void __cdecl Spider_Control(int16_t item_num);
+0x00440070  0x0206  +       void __cdecl Spider_Control(int16_t item_num);
 0x00440290  0x01A5  +       void __cdecl BigSpider_Control(int16_t item_num);
 
 # game/text.c

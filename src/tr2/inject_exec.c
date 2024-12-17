@@ -46,6 +46,7 @@
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/skidoo_driver.h"
+#include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
 #include "game/objects/creatures/trex.h"
 #include "game/objects/effects/body_part.h"
@@ -941,6 +942,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043EDD0, SkidooDriver_Control);
     INJECT(enable, 0x0043F1D0, SkidooArmed_Push);
     INJECT(enable, 0x0043F2F0, SkidooArmed_Collision);
+    INJECT(enable, 0x00440070, Spider_Control);
     INJECT(enable, 0x00440290, BigSpider_Control);
     INJECT(enable, 0x00440F10, Mine_Control);
     INJECT(enable, 0x00441110, SpikeWall_Control);
