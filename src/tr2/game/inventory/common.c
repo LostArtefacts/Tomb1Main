@@ -134,7 +134,7 @@ void __cdecl Inv_InitColors(void)
 
 void __cdecl Inv_Construct(void)
 {
-    S_SetupAboveWater(0);
+    Output_SetupAboveWater(0);
 
     g_PhdWinRight = g_PhdWinMaxX;
     g_PhdWinLeft = 0;
@@ -403,7 +403,7 @@ static void M_Draw(
     } else {
         Inv_DoInventoryBackground();
     }
-    S_AnimateTextures(g_Inv_NFrames);
+    Output_AnimateTextures(g_Inv_NFrames);
     Overlay_Animate(g_Inv_NFrames / 2);
 
     PHD_3DPOS view;

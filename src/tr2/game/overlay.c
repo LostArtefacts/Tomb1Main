@@ -404,7 +404,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     g_LsDivider = 0x6000;
     g_LsAdder = LOW_LIGHT;
     Output_RotateLight(0, 0);
-    S_SetupAboveWater(false);
+    Output_SetupAboveWater(false);
 
     Matrix_Push();
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);

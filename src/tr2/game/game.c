@@ -260,7 +260,7 @@ int32_t __cdecl Game_Draw(void)
     g_Camera.num_frames = frames * TICKS_PER_FRAME;
     Shell_ProcessEvents();
     Overlay_Animate(frames);
-    S_AnimateTextures(g_Camera.num_frames);
+    Output_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
 }
 
@@ -276,7 +276,7 @@ int32_t __cdecl Game_DrawCinematic(void)
     Output_DrawBlackRectangle(m_ExitFader.current.value);
     g_Camera.num_frames = Output_EndScene();
     Shell_ProcessEvents();
-    S_AnimateTextures(g_Camera.num_frames);
+    Output_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
 }
 

@@ -770,7 +770,7 @@ int16_t Output_FindColor(
     return best_idx;
 }
 
-void __cdecl Output_AnimateTextures(const int32_t ticks)
+void __cdecl Output_DoAnimateTextures(const int32_t ticks)
 {
     m_TickComp += ticks;
     while (m_TickComp > TICKS_PER_FRAME * 5) {
@@ -1121,4 +1121,12 @@ void __cdecl Output_LightRoom(ROOM *const room)
             CLAMPL(v->light_adder, 0);
         }
     }
+}
+
+void __cdecl Output_SetupBelowWater(const bool is_underwater)
+{
+    g_IsWet = is_underwater;
+    g_IsWaterEffect = true;
+    g_IsWibbleEffect = !is_underwater;
+    g_IsShadeEffect = true;
 }

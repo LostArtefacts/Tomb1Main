@@ -363,9 +363,9 @@ void __cdecl Room_DrawSingleRoomGeometry(const int16_t room_num)
     ROOM *const r = &g_Rooms[room_num];
 
     if (r->flags & RF_UNDERWATER) {
-        S_SetupBelowWater(g_CameraUnderwater);
+        Output_SetupBelowWater(g_CameraUnderwater);
     } else {
-        S_SetupAboveWater(g_CameraUnderwater);
+        Output_SetupAboveWater(g_CameraUnderwater);
     }
 
     Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
@@ -390,9 +390,9 @@ void __cdecl Room_DrawSingleRoomObjects(const int16_t room_num)
     ROOM *const r = &g_Rooms[room_num];
 
     if (r->flags & RF_UNDERWATER) {
-        S_SetupBelowWater(g_CameraUnderwater);
+        Output_SetupBelowWater(g_CameraUnderwater);
     } else {
-        S_SetupAboveWater(g_CameraUnderwater);
+        Output_SetupAboveWater(g_CameraUnderwater);
     }
 
     r->bound_active = 0;
@@ -499,7 +499,7 @@ void __cdecl Room_DrawAllRooms(const int16_t current_room)
         g_PhdWinBottom = g_OutsideBottom;
         g_PhdWinTop = g_OutsideTop;
         if (g_Objects[O_SKYBOX].loaded) {
-            S_SetupAboveWater(g_CameraUnderwater);
+            Output_SetupAboveWater(g_CameraUnderwater);
             Matrix_Push();
             g_MatrixPtr->_03 = 0;
             g_MatrixPtr->_13 = 0;
@@ -516,9 +516,9 @@ void __cdecl Room_DrawAllRooms(const int16_t current_room)
 
     if (g_Objects[O_LARA].loaded && !(g_LaraItem->flags & IF_ONE_SHOT)) {
         if (g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) {
-            S_SetupBelowWater(g_CameraUnderwater);
+            Output_SetupBelowWater(g_CameraUnderwater);
         } else {
-            S_SetupAboveWater(g_CameraUnderwater);
+            Output_SetupAboveWater(g_CameraUnderwater);
         }
         g_MidSort = g_Rooms[g_LaraItem->room_num].bound_active >> 8;
         if (g_MidSort) {

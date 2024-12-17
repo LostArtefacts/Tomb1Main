@@ -91,7 +91,7 @@ void Output_BeginScene(void);
 int32_t Output_EndScene(void);
 
 int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
-void __cdecl Output_AnimateTextures(int32_t ticks);
+void __cdecl Output_DoAnimateTextures(int32_t ticks);
 void __cdecl Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
 
@@ -104,3 +104,4 @@ void __cdecl Output_CalculateStaticMeshLight(
     int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2,
     const ROOM *room);
 void __cdecl Output_LightRoom(ROOM *room);
+void __cdecl Output_SetupBelowWater(bool is_underwater);

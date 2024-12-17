@@ -424,7 +424,8 @@ static void M_Output(const bool enable)
     INJECT(enable, 0x004515F0, Output_LightRoom);
     INJECT(enable, 0x00451800, Output_DrawHealthBar);
     INJECT(enable, 0x004519D0, Output_DrawAirBar);
-    INJECT(enable, 0x00451BD0, Output_AnimateTextures);
+    INJECT(enable, 0x00451BD0, Output_DoAnimateTextures);
+    INJECT(enable, 0x00451C90, Output_SetupBelowWater);
 }
 
 static void M_Music(const bool enable)
