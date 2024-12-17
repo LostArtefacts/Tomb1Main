@@ -13,6 +13,7 @@
 #include "game/inventory/common.h"
 #include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
+#include "game/lara/hair.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
@@ -173,7 +174,7 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
         }
 
         Lara_Control(0);
-        HairControl(0);
+        Lara_Hair_Control(false);
         Camera_Update();
         Sound_UpdateEffects();
 
@@ -235,7 +236,7 @@ int32_t __cdecl Game_ControlCinematic(void)
         id = fx->next_active;
     }
 
-    HairControl(1);
+    Lara_Hair_Control(true);
     Camera_UpdateCutscene();
 
     g_CineFrameIdx++;

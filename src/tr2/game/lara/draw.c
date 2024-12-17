@@ -1,6 +1,7 @@
 #include "game/lara/draw.h"
 
 #include "game/items.h"
+#include "game/lara/hair.h"
 #include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
@@ -131,7 +132,7 @@ void __cdecl Lara_Draw(const ITEM *const item)
     Output_InsertPolygons(g_Lara.mesh_ptrs[LM_HEAD], clip);
 
     *g_MatrixPtr = saved_matrix;
-    DrawHair();
+    Lara_Hair_Draw();
 
     Matrix_Pop();
 
@@ -438,7 +439,7 @@ void __cdecl Lara_Draw_I(
     Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_HEAD], clip);
 
     *g_MatrixPtr = saved_matrix;
-    DrawHair();
+    Lara_Hair_Draw();
     Matrix_Pop_I();
 
     if (g_Lara.back_gun) {

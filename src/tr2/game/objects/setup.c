@@ -1,6 +1,7 @@
 #include "game/objects/setup.h"
 
 #include "game/lara/control.h"
+#include "game/lara/hair.h"
 #include "game/objects/common.h"
 #include "game/objects/creatures/bandit.h"
 #include "game/objects/creatures/barracuda.h"
@@ -318,5 +319,5 @@ void __cdecl Object_SetupAllObjects(void)
     Object_SetupTrapObjects();
     Object_SetupGeneralObjects();
 
-    InitialiseHair();
+    Lara_Hair_Initialise();
 }

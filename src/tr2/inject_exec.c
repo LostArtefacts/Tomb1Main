@@ -29,6 +29,7 @@
 #include "game/lara/col.h"
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
+#include "game/lara/hair.h"
 #include "game/lara/look.h"
 #include "game/lara/misc.h"
 #include "game/lara/state.h"
@@ -136,6 +137,7 @@ static void M_Level(bool enable);
 static void M_Inventory(bool enable);
 static void M_Lara_Look(bool enable);
 static void M_Lara_Draw(bool enable);
+static void M_Lara_Hair(bool enable);
 static void M_Lara_Misc(bool enable);
 static void M_Lara_State(bool enable);
 static void M_Lara_Col(bool enable);
@@ -615,6 +617,11 @@ static void M_Lara_Look(const bool enable)
     INJECT(enable, 0x00427810, Lara_ResetLook);
 }
 
+static void M_Lara_Hair(const bool enable)
+{
+    INJECT(enable, 0x00420EA0, Lara_Hair_Initialise);
+}
+
 static void M_Lara_Misc(const bool enable)
 {
     INJECT(enable, 0x0042A0A0, Lara_GetCollisionInfo);
@@ -1021,6 +1028,7 @@ void Inject_Exec(void)
     M_Lara_Control(true);
     M_Lara_Draw(true);
     M_Lara_Look(true);
+    M_Lara_Hair(true);
     M_Lara_Misc(true);
     M_Lara_State(true);
     M_Lara_Col(true);
