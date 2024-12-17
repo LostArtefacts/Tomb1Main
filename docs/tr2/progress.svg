@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.58% (1077)</tspan> · <tspan class="known">11.01% (137)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.66% (1078)</tspan> · <tspan class="known">10.93% (136)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="646.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="82.27" height="6" x="646.72" y="0" class="known"/>
+<rect width="647.32" height="6" x="0" y="0" class="decompiled"/>
+<rect width="81.67" height="6" x="647.32" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -811,7 +811,7 @@
 <rect width="12" height="12" x="480" y="210" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);</title></rect>
 <rect width="12" height="12" x="495" y="210" class="known"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
 <rect width="12" height="12" x="510" y="210" class="known"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="525" y="210" class="known"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="525" y="210" class="decompiled"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="540" y="210" class="decompiled"><title>void __cdecl Text_Init(void);</title></rect>
 <rect width="12" height="12" x="555" y="210" class="decompiled"><title>TEXTSTRING *__cdecl Text_Create(int32_t x, int32_t y, int32_t z, const char *text);</title></rect>
 <rect width="12" height="12" x="570" y="210" class="decompiled"><title>void __cdecl Text_ChangeText(TEXTSTRING *string, const char *text);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.21%</tspan> · <tspan class="known">12.46%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.33%</tspan> · <tspan class="known">12.34%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="651.45" height="6" x="0" y="0" class="decompiled"/>
-<rect width="93.11" height="6" x="651.45" y="0" class="known"/>
+<rect width="652.37" height="6" x="0" y="0" class="decompiled"/>
+<rect width="92.19" height="6" x="652.37" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1547,7 +1547,7 @@
 <rect width="16.42" height="15.46" x="411.12" y="269.61" class="decompiled"><title>bool __cdecl LOT_EnableBaddieAI(int16_t item_num, bool always);</title></rect>
 <rect width="16.42" height="15.29" x="411.12" y="288.07" class="decompiled"><title>void __cdecl Output_InsertClippedPoly_Textured(int32_t vtx_count, float z, int16_t poly_type, int16_t tex_page);</title></rect>
 <rect width="16.42" height="14.99" x="411.12" y="306.35" class="decompiled"><title>void __cdecl Matrix_Interpolate(void);</title></rect>
-<rect width="16.42" height="14.99" x="411.12" y="324.34" class="known"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
+<rect width="16.42" height="14.99" x="411.12" y="324.34" class="decompiled"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
 <rect width="16.42" height="14.94" x="411.12" y="342.33" class="decompiled"><title>void __cdecl ClearBuffers(DWORD flags, DWORD fill_color);</title></rect>
 <rect width="16.42" height="14.73" x="411.12" y="360.27" class="decompiled"><title>void __cdecl Output_DrawPolyLine(const int16_t *obj_ptr);</title></rect>
 <rect width="16.18" height="14.91" x="430.54" y="41.42" class="decompiled"><title>int32_t __cdecl Camera_ShiftClamp(GAME_VECTOR *pos, int32_t clamp);</title></rect>

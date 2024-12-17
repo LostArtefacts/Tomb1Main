@@ -31,11 +31,6 @@
 #define DOG_UNBARK_CHANCE   0x500
 // clang-format on
 
-static const BITE m_DogBite = {
-    .pos = { .x = 0, .y = 30, .z = 141 },
-    .mesh_num = 20,
-};
-
 typedef enum {
     // clang-format off
     DOG_STATE_EMPTY    = 0,
@@ -55,6 +50,11 @@ typedef enum {
 typedef enum {
     DOG_ANIM_DEATH = 13,
 } DOG_ANIM;
+
+static const BITE m_DogBite = {
+    .pos = { .x = 0, .y = 30, .z = 141 },
+    .mesh_num = 20,
+};
 
 void Dog_Setup(void)
 {
@@ -84,11 +84,12 @@ void __cdecl Dog_Control(const int16_t item_num)
         return;
     }
 
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
     int16_t head = 0;
     int16_t angle = 0;
     int16_t tilt = 0;
-    ITEM *const item = Item_Get(item_num);
-    CREATURE *const creature = item->data;
 
     if (item->hit_points > 0) {
         AI_INFO info;

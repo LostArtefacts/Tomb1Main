@@ -23,11 +23,6 @@
 #define TIGER_ROAR_CHANCE    96
 // clang-format on
 
-static const BITE m_TigerBite = {
-    .pos = { .x = 19, .y = -13, .z = 3 },
-    .mesh_num = 26,
-};
-
 typedef enum {
     // clang-format off
     TIGER_STATE_EMPTY    = 0,
@@ -46,6 +41,11 @@ typedef enum {
 typedef enum {
     TIGER_ANIM_DEATH = 11,
 } TIGER_ANIM;
+
+static const BITE m_TigerBite = {
+    .pos = { .x = 19, .y = -13, .z = 3 },
+    .mesh_num = 26,
+};
 
 void Tiger_Setup(void)
 {
@@ -75,11 +75,12 @@ void __cdecl Tiger_Control(const int16_t item_num)
         return;
     }
 
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
     int16_t head = 0;
     int16_t angle = 0;
     int16_t tilt = 0;
-    ITEM *const item = Item_Get(item_num);
-    CREATURE *const creature = item->data;
 
     if (item->hit_points > 0) {
         AI_INFO info;

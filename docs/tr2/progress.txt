@@ -3748,7 +3748,7 @@ typedef enum {
 # game/spider.c
 0x0043FFC0  0x00AC  -       void __cdecl Spider_Leap(int16_t item_num, int16_t angle);
 0x00440070  0x0206  -       void __cdecl Spider_Control(int16_t item_num);
-0x00440290  0x01A5  -       void __cdecl BigSpider_Control(int16_t item_num);
+0x00440290  0x01A5  +       void __cdecl BigSpider_Control(int16_t item_num);
 
 # game/text.c
 0x00440450  0x002C  +       void __cdecl Text_Init(void);
@@ -4831,5 +4831,6 @@ typedef enum {
 0x0051E9C8  -       char *g_SavegameBufPtr;
 0x0051C210  +       LPDIRECTDRAWPALETTE g_TexturePalettes[16]; // MAX_PALETTES
 0x0051BDB8  +       TEXPAGE_DESC g_TexturePages[32]; // MAX_TEXTURE_PAGES
+0x00466280  +       BITE g_BigSpiderBite;
 0x0051C20D  -       uint8_t g_TexturesHaveCompatibleMasks;
 0x00467768  +       SHADOW_INFO g_ShadowInfo;
