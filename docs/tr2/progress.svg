@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.90% (1081)</tspan> · <tspan class="known">10.69% (133)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.98% (1082)</tspan> · <tspan class="known">10.61% (132)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="649.12" height="6" x="0" y="0" class="decompiled"/>
-<rect width="79.86" height="6" x="649.12" y="0" class="known"/>
+<rect width="649.72" height="6" x="0" y="0" class="decompiled"/>
+<rect width="79.26" height="6" x="649.72" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -868,7 +868,7 @@
 <rect width="12" height="12" x="585" y="225" class="decompiled"><title>void __cdecl Lara_TouchLava(ITEM *item);</title></rect>
 <rect width="12" height="12" x="600" y="225" class="decompiled"><title>void __cdecl EmberEmitter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="225" class="decompiled"><title>void __cdecl Ember_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="630" y="225" class="known"><title>void __cdecl GiantYeti_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="630" y="225" class="decompiled"><title>void __cdecl BirdGuardian_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="645" y="225" class="decompiled"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="660" y="225" class="decompiled"><title>void __cdecl BGND_Make640x480(uint8_t *bitmap, RGB_888 *palette);</title></rect>
 <rect width="12" height="12" x="675" y="225" class="decompiled"><title>int32_t __cdecl BGND_AddTexture(int32_t tile_idx, BYTE *bitmap, int32_t pal_index, RGB_888 *bmp_pal);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.98%</tspan> · <tspan class="known">11.70%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.19%</tspan> · <tspan class="known">11.49%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="657.19" height="6" x="0" y="0" class="decompiled"/>
-<rect width="87.37" height="6" x="657.19" y="0" class="known"/>
+<rect width="658.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="85.81" height="6" x="658.75" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1452,7 +1452,7 @@
 <rect width="20.94" height="21.96" x="344.49" y="24.96" class="decompiled"><title>void __cdecl Missile_Control(int16_t fx_num);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="49.91" class="decompiled"><title>BOOL __cdecl Shell_Main(void);</title></rect>
 <rect width="20.94" height="21.85" x="344.49" y="74.87" class="decompiled"><title>void __cdecl Lara_Animate(ITEM *item);</title></rect>
-<rect width="20.94" height="21.75" x="344.49" y="99.73" class="known"><title>void __cdecl GiantYeti_Control(int16_t item_num);</title></rect>
+<rect width="20.94" height="21.75" x="344.49" y="99.73" class="decompiled"><title>void __cdecl BirdGuardian_Control(int16_t item_num);</title></rect>
 <rect width="20.94" height="21.65" x="344.49" y="124.47" class="decompiled"><title>void __cdecl Output_DrawSprite(uint32_t flags, int32_t x, int32_t y, int32_t z, int16_t sprite_idx, int16_t shade, int16_t scale);</title></rect>
 <rect width="20.94" height="21.30" x="344.49" y="149.12" class="decompiled"><title>void __cdecl Lara_Initialise(int32_t type);</title></rect>
 <rect width="20.94" height="21.16" x="344.49" y="173.42" class="decompiled"><title>void __cdecl Skidoo_Animation(ITEM *skidoo, int32_t collide, int32_t dead);</title></rect>

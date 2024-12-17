@@ -42,6 +42,7 @@
 #include "game/objects/creatures/bartoli.h"
 #include "game/objects/creatures/big_spider.h"
 #include "game/objects/creatures/bird.h"
+#include "game/objects/creatures/bird_guardian.h"
 #include "game/objects/creatures/diver.h"
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
@@ -964,6 +965,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);
     INJECT(enable, 0x00442F40, Ember_Control);
+    INJECT(enable, 0x00443050, BirdGuardian_Control);
     INJECT(enable, 0x00443350, Yeti_Control);
 }
 
