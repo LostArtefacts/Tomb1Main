@@ -375,6 +375,7 @@
 #define g_IMMatrixPtr (*(MATRIX **)0x00526188)
 #define g_Rooms (*(ROOM **)0x0052618C)
 #define g_CameraUnderwater (*(BOOL*)0x00526190)
+#define g_SunsetTimer (*(int32_t*)0x00526194)
 #define g_OutsideRight (*(int32_t*)0x00526198)
 #define g_OutsideTop (*(int32_t*)0x005261AC)
 #define g_DemoPtr (*(uint32_t **)0x005261B0)

@@ -1137,3 +1137,21 @@ void __cdecl Output_SetupAboveWater(const bool is_underwater)
     g_IsWaterEffect = false;
     g_IsShadeEffect = is_underwater;
 }
+
+void __cdecl Output_AnimateTextures(const int32_t ticks)
+{
+    g_WibbleOffset = (g_WibbleOffset + (ticks / TICKS_PER_FRAME)) % WIBBLE_SIZE;
+    g_RoomLightShades[1] = Random_GetDraw() % WIBBLE_SIZE;
+    g_RoomLightShades[2] = (WIBBLE_SIZE - 1)
+            * (Math_Sin((g_WibbleOffset * PHD_360) / WIBBLE_SIZE) + 0x4000)
+        >> 15;
+
+    if (g_GF_SunsetEnabled) {
+        g_SunsetTimer += ticks;
+        CLAMPG(g_SunsetTimer, SUNSET_TIMEOUT);
+        g_RoomLightShades[3] =
+            g_SunsetTimer * (WIBBLE_SIZE - 1) / SUNSET_TIMEOUT;
+    }
+
+    Output_DoAnimateTextures(ticks);
+}

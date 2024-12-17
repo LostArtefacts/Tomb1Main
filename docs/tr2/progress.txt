@@ -4107,7 +4107,7 @@ typedef enum {
 0x00451BD0  0x00C0  +       void __cdecl Output_DoAnimateTextures(int32_t ticks);
 0x00451C90  0x0051  +       void __cdecl Output_SetupBelowWater(bool underwater);
 0x00451CF0  0x0021  +       void __cdecl Output_SetupAboveWater(bool underwater);
-0x00451D20  0x00B1  -       void __cdecl Output_AnimateTextures(int32_t ticks);
+0x00451D20  0x00B1  +       void __cdecl Output_AnimateTextures(int32_t ticks);
 0x00451DE0  0x0105  +R      void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 0x00451EF0  0x007E  +R      void __cdecl S_SyncPictureBufferPalette(void);
 0x00451F70  0x001C  +R      void __cdecl S_DontDisplayPicture(void);
@@ -4856,3 +4856,4 @@ typedef enum {
 0x0051A308  -       ROOM_LIGHT_TABLE g_RoomLightTables[32]; // WIBBLE_SIZE
 0x005251C0  -       LIGHT g_DynamicLights[10]; // MAX_DYNAMIC_LIGHTS
 0x0051B908  -       int32_t g_RoomLightShades[4];
+0x00526194  -       int32_t g_SunsetTimer;
