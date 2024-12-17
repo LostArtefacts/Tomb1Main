@@ -19,7 +19,7 @@ static void M_InitText(void)
     CLAMPG(g_Config.audio.music_volume, 10);
     CLAMPG(g_Config.audio.sound_volume, 10);
 
-    char text[8];
+    char text[32];
     sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
     g_SoundText[0] = Text_Create(0, 0, text);
     Text_AddBackground(g_SoundText[0], 128, 0, 0, 0, TS_REQUESTED);
@@ -57,7 +57,7 @@ void Option_Sound_Shutdown(void)
 
 void Option_Sound_Control(INVENTORY_ITEM *const item)
 {
-    char text[8];
+    char text[32];
 
     if (g_SoundText[0] == NULL) {
         M_InitText();

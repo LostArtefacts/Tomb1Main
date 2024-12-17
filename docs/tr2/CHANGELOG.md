@@ -1,4 +1,5 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...develop) - ××××-××-××
+- fixed a crash when selecting the sound option (#2057, regression from 0.6)
 
 ## [0.7](https://github.com/LostArtefacts/TRX/compare/tr2-0.6...tr2-0.7) - 2024-12-16
 - switched to OpenGL rendering (#1844)

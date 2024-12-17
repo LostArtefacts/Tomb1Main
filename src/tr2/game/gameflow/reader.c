@@ -182,6 +182,7 @@ bool GF_N_Load(const char *const path)
     GF_N_Shutdown();
 
     bool result = true;
+    JSON_VALUE *root = NULL;
 
     char *script_data = NULL;
     if (!File_Load(path, &script_data, NULL)) {
@@ -191,7 +192,7 @@ bool GF_N_Load(const char *const path)
     }
 
     JSON_PARSE_RESULT parse_result;
-    JSON_VALUE *root = JSON_ParseEx(
+    root = JSON_ParseEx(
         script_data, strlen(script_data), JSON_PARSE_FLAGS_ALLOW_JSON5, NULL,
         NULL, &parse_result);
     if (root == NULL) {
@@ -212,7 +213,7 @@ bool GF_N_Load(const char *const path)
     result &= M_LoadScriptLevels(root_obj, gf);
 
 end:
-    if (root) {
+    if (root != NULL) {
         JSON_ValueFree(root);
         root = NULL;
     }
