@@ -193,7 +193,8 @@ static void M_HandleKeyDown(const SDL_Event *const event)
     // but by the time Input_Update gets ran, we may already have lost
     // some keypresses if the player types really fast, so we need to
     // react sooner.
-    if (!FMV_IsPlaying() && !Console_IsOpened()
+    if (!FMV_IsPlaying() && g_Config.gameplay.enable_console
+        && !Console_IsOpened()
         && Input_IsPressed(
             INPUT_BACKEND_KEYBOARD, g_Config.input.keyboard_layout,
             INPUT_ROLE_ENTER_CONSOLE)) {

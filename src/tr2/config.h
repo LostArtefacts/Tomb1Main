@@ -28,6 +28,7 @@ typedef struct {
         bool fix_floor_data_issues;
         bool fix_flare_throw_priority;
         bool enable_cheats;
+        bool enable_console;
         bool enable_auto_item_selection;
         int32_t turbo_speed;
     } gameplay;

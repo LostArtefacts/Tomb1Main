@@ -57,6 +57,11 @@
           "Field": "enable_cheats",
           "DataType": "Bool",
           "DefaultValue": false
+        },
+        {
+          "Field": "enable_console",
+          "DataType": "Bool",
+          "DefaultValue": true
         }
       ]
     },

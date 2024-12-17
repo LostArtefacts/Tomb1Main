@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.7.1...develop) - ××××-××-××
 - added an option to use PS1 contrast levels, available under F8 (#1646)
+- added an option to allow disabling the developer console (#2063)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17
