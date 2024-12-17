@@ -168,6 +168,7 @@ const GAME_OBJECT_ID g_NullObjects[] = {
     O_MISSILE_5,
     O_EARTHQUAKE,
     O_SKYBOX,
+    O_PICKUP_AID,
     O_ALPHABET,
     // clang-format on
 };

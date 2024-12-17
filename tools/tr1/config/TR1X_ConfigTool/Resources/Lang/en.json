@@ -336,6 +336,10 @@
       "Title": "3D pickups",
       "Description": "Enables 3D models to be rendered in place of the sprites for pickup items."
     },
+    "enable_pickup_aids": {
+      "Title": "Pickup aids",
+      "Description": "Enables an intermittent twinkling effect near pickup items to highlight their presence."
+    },
     "enable_ps1_crystals": {
       "Title": "Enable PS1 save crystals",
       "Description": "Save crystals will be drawn with a purple tint, more similar to the PS1 type."

@@ -437,6 +437,11 @@
           "DefaultValue": true
         },
         {
+          "Field": "enable_pickup_aids",
+          "DataType": "Bool",
+          "DefaultValue": false
+        },
+        {
           "Field": "enable_ps1_crystals",
           "DataType": "Bool",
           "DefaultValue": true

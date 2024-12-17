@@ -1481,6 +1481,16 @@ provided with the game achieves.
   </tr>
   <tr valign="top">
     <td>
+      <code>pickup_aid.bin</code>
+    </td>
+    <td>
+      Injects a sprite sequence similar to the Midas twinkle effect, which is
+      used when the option for pickup aids is enabled. Custom levels should
+      define a suitable sprite sequence in slot 185.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
       <code>photo.bin</code>
     </td>
     <td>

@@ -336,6 +336,10 @@
       "Title": "Oggetti 3D",
       "Description": "Sostituisce gli oggetti recuperabili 2D con i rispettivi modelli 3D."
     },
+    "enable_pickup_aids": {
+      "Title": "Suggerimenti per il pickup",
+      "Description": "Abilita un effetto scintillante intermittente vicino agli oggetti raccolti per evidenziarne la presenza."
+    },
     "enable_ps1_crystals": {
       "Title": "Abilita i cristalli di salvataggio PS1",
       "Description": "I cristalli di salvataggio saranno di color viola, più simili a quelli PS1"

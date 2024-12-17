@@ -7,12 +7,22 @@
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
+#include "game/objects/effects/pickup_aid.h"
 #include "game/overlay.h"
+#include "game/random.h"
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/lara/common.h>
+#include <libtrx/game/objects/vars.h>
+
 #define LF_PICKUP_ERASE 42
 #define LF_PICKUP_UW 18
+#define AID_DIST_MIN (STEP_L * 5)
+#define AID_DIST_MAX (WALL_L * 8)
+#define AID_WAIT_MIN (LOGIC_FPS * 2.5)
+#define AID_WAIT_MAX (LOGIC_FPS * 5)
+#define AID_WAIT_BREAK_CHANCE 0x1200
 
 static XYZ_32 m_PickUpPosition = { 0, 0, -100 };
 static XYZ_32 m_PickUpPositionUW = { 0, -200, -350 };
@@ -50,8 +60,68 @@ static const OBJECT_BOUNDS m_PickUpBoundsUW = {
     },
 };
 
+static void M_Initialise(int16_t item_num);
+static void M_Control(int16_t item_num);
+static void M_SpawnPickupAid(const ITEM *item);
 static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item);
 static void M_GetAllAtLaraPos(ITEM *item, ITEM *lara_item);
+
+static void M_Initialise(int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    item->priv = (void *)(intptr_t)(-1);
+    if (item->status != IS_INVISIBLE) {
+        Item_AddActive(item_num);
+    }
+}
+
+static void M_Control(int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    if (item->status == IS_INVISIBLE || item->status == IS_DEACTIVATED) {
+        Item_RemoveActive(item_num);
+        return;
+    }
+
+    const ITEM *const lara = Lara_GetItem();
+    if (!g_Config.gameplay.enable_pickup_aids || item->fall_speed != 0
+        || lara == NULL || !Object_GetObject(O_PICKUP_AID)->loaded) {
+        return;
+    }
+
+    const int32_t distance = Item_GetDistance(lara, &item->pos);
+    if (distance < AID_DIST_MIN || distance > AID_DIST_MAX) {
+        return;
+    }
+
+    int32_t timer = (int32_t)(intptr_t)item->priv;
+    if (timer <= 0
+        || (timer < AID_WAIT_MIN && Random_GetDraw() < AID_WAIT_BREAK_CHANCE)) {
+        M_SpawnPickupAid(item);
+        timer = AID_WAIT_MAX;
+    } else {
+        timer--;
+    }
+
+    item->priv = (void *)(intptr_t)(int32_t)timer;
+}
+
+static void M_SpawnPickupAid(const ITEM *const item)
+{
+    const GAME_OBJECT_ID obj_id =
+        Object_GetCognate(item->object_id, g_ItemToInvObjectMap);
+    const OBJECT *const object = Object_GetObject(obj_id);
+    const FRAME_INFO *const frame = object->frame_base;
+
+    const GAME_VECTOR pos = {
+        .x = item->pos.x + 20 * (Random_GetDraw() - 0x4000) / 0x4000,
+        .y = item->pos.y - ABS(frame->bounds.max.y - frame->bounds.min.y)
+            - 10 * (1 + (Random_GetDraw() - 0x4000) / 0x4000),
+        .z = item->pos.z + 20 * (Random_GetDraw() - 0x4000) / 0x4000,
+        .room_num = item->room_num,
+    };
+    PickupAid_Spawn(&pos);
+}
 
 static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item)
 {
@@ -59,6 +129,7 @@ static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item)
     Inv_AddItem(item->object_id);
     item->status = IS_INVISIBLE;
     Item_RemoveDrawn(item_num);
+    Item_RemoveActive(item_num);
     g_GameInfo.current[g_CurrentLevel].stats.pickup_count++;
     g_Lara.interact_target.is_moving = false;
 }
@@ -82,6 +153,8 @@ void Pickup_Setup(OBJECT *obj)
     obj->collision = Pickup_Collision;
     obj->save_flags = 1;
     obj->bounds = Pickup_Bounds;
+    obj->initialise = M_Initialise;
+    obj->control = M_Control;
 }
 
 const OBJECT_BOUNDS *Pickup_Bounds(void)

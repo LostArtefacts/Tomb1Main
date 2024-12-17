@@ -336,6 +336,10 @@
       "Title": "Collectibles 3D",
       "Description": "Active les collectibles en 3D au lieu des objets en 2D."
     },
+    "enable_pickup_aids": {
+      "Title": "Aides collectibles",
+      "Description": "Permet un effet de scintillement intermittent à proximité des objets ramassés pour souligner leur présence."
+    },
     "enable_ps1_crystals": {
       "Title": "Activer les cristaux de sauvegarde PS1",
       "Description": "Les cristaux de sauvegarde seront dessinés avec une teinte violette, plus similaire au type PS1."

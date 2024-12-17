@@ -104,6 +104,7 @@ typedef struct {
 
     struct {
         int32_t turbo_speed;
+        bool enable_pickup_aids;
     } gameplay;
 
     struct {

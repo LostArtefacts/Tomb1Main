@@ -37,6 +37,7 @@
 #include "game/objects/effects/gunshot.h"
 #include "game/objects/effects/missile.h"
 #include "game/objects/effects/natla_gun.h"
+#include "game/objects/effects/pickup_aid.h"
 #include "game/objects/effects/ricochet.h"
 #include "game/objects/effects/splash.h"
 #include "game/objects/effects/twinkle.h"
@@ -244,6 +245,7 @@ static void M_SetupMiscObjects(void)
     Explosion_Setup(&g_Objects[O_EXPLOSION_1]);
     Ricochet_Setup(&g_Objects[O_RICOCHET_1]);
     Twinkle_Setup(&g_Objects[O_TWINKLE]);
+    PickupAid_Setup(&g_Objects[O_PICKUP_AID]);
     Splash_Setup(&g_Objects[O_SPLASH_1]);
     Waterfall_Setup(&g_Objects[O_WATERFALL]);
     BodyPart_Setup(&g_Objects[O_BODY_PART]);
