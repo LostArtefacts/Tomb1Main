@@ -33,6 +33,11 @@
           "DefaultValue": false
         },
         {
+          "Field": "fix_flare_throw_priority",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "fix_floor_data_issues",
           "DataType": "Bool",
           "DefaultValue": true

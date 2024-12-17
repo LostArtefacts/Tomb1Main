@@ -1,7 +1,9 @@
 #include "decomp/flares.h"
 
+#include "config.h"
 #include "decomp/effects.h"
 #include "game/gun/gun.h"
+#include "game/input.h"
 #include "game/inventory/backpack.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
@@ -20,6 +22,21 @@
 #define MAX_FLARE_AGE (60 * FRAMES_PER_SECOND) // = 1800
 #define FLARE_OLD_AGE (MAX_FLARE_AGE - 2 * FRAMES_PER_SECOND) // = 1740
 #define FLARE_YOUNG_AGE (FRAMES_PER_SECOND) // = 30
+
+static bool M_CanThrowFlare(void);
+
+static bool M_CanThrowFlare(void)
+{
+    if (g_Lara.gun_status != LGS_ARMLESS) {
+        return false;
+    }
+
+    return !g_Config.gameplay.fix_flare_throw_priority
+        || (!g_LaraItem->gravity && !g_Input.jump)
+        || g_LaraItem->current_anim_state == LS_FAST_FALL
+        || g_LaraItem->current_anim_state == LS_SWAN_DIVE
+        || g_LaraItem->current_anim_state == LS_FAST_DIVE;
+}
 
 int32_t __cdecl Flare_DoLight(const XYZ_32 *const pos, const int32_t flare_age)
 {
@@ -76,7 +93,7 @@ void __cdecl Flare_DoInHand(const int32_t flare_age)
         } else {
             Sound_Effect(SFX_LARA_FLARE_BURN, &g_LaraItem->pos, SPM_NORMAL);
         }
-    } else if (g_Lara.gun_status == LGS_ARMLESS) {
+    } else if (M_CanThrowFlare()) {
         g_Lara.gun_status = LGS_UNDRAW;
     }
 }
