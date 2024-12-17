@@ -1346,6 +1346,10 @@ typedef struct __unaligned {
     int16_t mesh_rots[];
 } FRAME_INFO;
 
+typedef struct __unaligned {
+    int32_t table[32]; // WIBBLE_SIZE
+} ROOM_LIGHT_TABLE;
+
 typedef enum {
     GF_S_PC_DETAIL_LEVELS      = 0,
     GF_S_PC_DEMO_MODE          = 1,

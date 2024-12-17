@@ -4,6 +4,7 @@
 #include "game/clock.h"
 #include "game/math.h"
 #include "game/matrix.h"
+#include "game/random.h"
 #include "game/render/common.h"
 #include "game/render/priv.h"
 #include "game/shell.h"
@@ -818,4 +819,18 @@ void __cdecl Output_InsertShadow(
         Render_InsertTransOctagon(g_PhdVBuf, 24);
     }
     Matrix_Pop();
+}
+
+void __cdecl Output_CalculateWibbleTable(void)
+{
+    for (int32_t i = 0; i < WIBBLE_SIZE; i++) {
+        const int32_t sine = Math_Sin(i * PHD_360 / WIBBLE_SIZE);
+        g_WibbleTable[i] = (sine * MAX_WIBBLE) >> W2V_SHIFT;
+        g_ShadesTable[i] = (sine * MAX_SHADE) >> W2V_SHIFT;
+        g_RandomTable[i] = (Random_GetDraw() >> 5) - 0x01FF;
+        for (int32_t j = 0; j < WIBBLE_SIZE; j++) {
+            g_RoomLightTables[i].table[j] = (j - (WIBBLE_SIZE / 2)) * i
+                * MAX_ROOM_LIGHT_UNIT / (WIBBLE_SIZE - 1);
+        }
+    }
 }

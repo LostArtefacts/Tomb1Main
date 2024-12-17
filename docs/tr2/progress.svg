@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.22% (1085)</tspan> · <tspan class="known">10.37% (129)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.30% (1086)</tspan> · <tspan class="known">10.29% (128)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="651.52" height="6" x="0" y="0" class="decompiled"/>
-<rect width="77.46" height="6" x="651.52" y="0" class="known"/>
+<rect width="652.12" height="6" x="0" y="0" class="decompiled"/>
+<rect width="76.86" height="6" x="652.12" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1102,7 +1102,7 @@
 <rect width="12" height="12" x="345" y="300" class="decompiled"><title>void __cdecl GameBuf_Reset(void);</title></rect>
 <rect width="12" height="12" x="360" y="300" class="decompiled"><title>void *__cdecl GameBuf_Alloc(size_t alloc_size, GAME_BUFFER buf_index);</title></rect>
 <rect width="12" height="12" x="375" y="300" class="decompiled"><title>void __cdecl GameBuf_Free(size_t free_size);</title></rect>
-<rect width="12" height="12" x="390" y="300" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
+<rect width="12" height="12" x="390" y="300" class="decompiled"><title>void __cdecl Output_CalculateWibbleTable(void);</title></rect>
 <rect width="12" height="12" x="405" y="300" class="decompiled"><title>void __cdecl Random_Seed(void);</title></rect>
 <rect width="12" height="12" x="420" y="300" class="decompiled"><title>BOOL __cdecl S_Input_Key(KEYMAP keymap);</title></rect>
 <rect width="12" height="12" x="435" y="300" class="decompiled"><title>bool __cdecl Input_Update(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.48%</tspan> · <tspan class="known">11.20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.54%</tspan> · <tspan class="known">11.13%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="660.92" height="6" x="0" y="0" class="decompiled"/>
-<rect width="83.64" height="6" x="660.92" y="0" class="known"/>
+<rect width="661.43" height="6" x="0" y="0" class="decompiled"/>
+<rect width="83.13" height="6" x="661.43" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1719,7 +1719,7 @@
 <rect width="10.64" height="11.23" x="494.60" y="209.77" class="decompiled"><title>void __cdecl Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="224.01" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);</title></rect>
 <rect width="10.64" height="11.11" x="494.60" y="238.12" class="decompiled"><title>BOOL __stdcall DInputEnumDevicesCallback(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);</title></rect>
-<rect width="10.64" height="11.11" x="494.60" y="252.23" class="known"><title>void __cdecl CalculateWibbleTable(void);</title></rect>
+<rect width="10.64" height="11.11" x="494.60" y="252.23" class="decompiled"><title>void __cdecl Output_CalculateWibbleTable(void);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="266.34" class="decompiled"><title>void __cdecl Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *data);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="280.39" class="decompiled"><title>int32_t __cdecl Lara_TestWaterStepOut(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.64" height="11.05" x="494.60" y="294.43" class="decompiled"><title>int32_t __cdecl S_Audio_Sample_Play(int32_t sample_id, int32_t volume, int32_t pitch, int32_t pan, int32_t flags);</title></rect>

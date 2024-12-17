@@ -94,3 +94,5 @@ int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
 void __cdecl Output_AnimateTextures(int32_t ticks);
 void __cdecl Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
+
+void __cdecl Output_CalculateWibbleTable(void);

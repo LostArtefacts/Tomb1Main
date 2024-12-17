@@ -373,7 +373,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
 BOOL __cdecl S_InitialiseSystem(void)
 {
     Random_Seed();
-    CalculateWibbleTable();
+    Output_CalculateWibbleTable();
     return 1;
 }
 

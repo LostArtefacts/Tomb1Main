@@ -25,6 +25,9 @@
 #define STEPUP_HEIGHT ((STEP_L * 3) / 2) // = 384
 #define SLOPE_DIF 60
 #define WIBBLE_SIZE 32
+#define MAX_WIBBLE 2
+#define MAX_SHADE 0x300
+#define MAX_ROOM_LIGHT_UNIT (0x2000 / (WIBBLE_SIZE / 2))
 
 #define GAME_FOV 80
 #define MIN_SQUARE SQUARE(WALL_L / 3)
