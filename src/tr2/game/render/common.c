@@ -364,3 +364,11 @@ void Render_InsertSprite(
         r->InsertSprite(r, z, x0, y0, x1, y1, sprite_idx, shade);
     }
 }
+
+void Render_SetWet(const bool is_wet)
+{
+    RENDERER *const r = M_GetRenderer();
+    if (r->SetWet != NULL) {
+        r->SetWet(r, is_wet);
+    }
+}

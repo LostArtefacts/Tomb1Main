@@ -890,7 +890,7 @@ static void M_InsertSprite_Sorted(
     }
 
     const bool old_shade = g_IsShadeEffect;
-    g_IsShadeEffect = 0;
+    g_IsShadeEffect = false;
     M_InsertPolyTextured(num_points, z, POLY_HWR_WGTMAP, sprite->tex_page);
     g_IsShadeEffect = old_shade;
 }

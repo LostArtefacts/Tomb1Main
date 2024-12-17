@@ -21,7 +21,7 @@ typedef struct {
     GFX_2D_RENDERER *renderer_2d;
     GFX_2D_SURFACE *surface;
     GFX_2D_SURFACE *surface_alpha;
-    GFX_PALETTE_ENTRY palette[256];
+    GFX_COLOR palette[256];
 } M_PRIV;
 
 static VERTEX_INFO m_VBuffer[32] = { 0 };
@@ -1401,6 +1401,18 @@ static void M_DrawPolyList(RENDERER *const renderer)
     GFX_2D_Renderer_Render(priv->renderer_2d);
 }
 
+static void M_SetWet(RENDERER *const renderer, const bool is_wet)
+{
+    M_PRIV *const priv = renderer->priv;
+    if (is_wet) {
+        GFX_2D_Renderer_SetTint(
+            priv->renderer_2d, (GFX_COLOR) { .r = 170, .g = 170, .b = 255 });
+    } else {
+        GFX_2D_Renderer_SetTint(
+            priv->renderer_2d, (GFX_COLOR) { .r = 255, .g = 255, .b = 255 });
+    }
+}
+
 static const int16_t *M_InsertObjectG3(
     RENDERER *const renderer, const int16_t *obj_ptr, const int32_t num,
     const SORT_TYPE sort_type)
@@ -2257,6 +2269,7 @@ void Renderer_SW_Prepare(RENDERER *const renderer)
     renderer->ResetPolyList = NULL;
     renderer->EnableZBuffer = NULL;
     renderer->ClearZBuffer = NULL;
+    renderer->SetWet = M_SetWet;
 
     renderer->InsertObjectG3 = M_InsertObjectG3;
     renderer->InsertObjectG4 = M_InsertObjectG4;

@@ -2,6 +2,7 @@
 - added an option to use PS1 contrast levels, available under F8 (#1646)
 - added an option to allow disabling the developer console (#2063)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
+- fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17
 - fixed a crash when selecting the sound option (#2057, regression from 0.6)

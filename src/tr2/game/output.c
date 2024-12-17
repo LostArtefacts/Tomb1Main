@@ -1126,6 +1126,7 @@ void __cdecl Output_LightRoom(ROOM *const room)
 void __cdecl Output_SetupBelowWater(const bool is_underwater)
 {
     g_IsWet = is_underwater;
+    Render_SetWet(is_underwater);
     g_IsWaterEffect = true;
     g_IsWibbleEffect = !is_underwater;
     g_IsShadeEffect = true;

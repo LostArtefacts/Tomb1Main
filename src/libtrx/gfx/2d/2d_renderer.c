@@ -16,6 +16,8 @@ typedef enum {
     M_UNIFORM_TEXTURE_ALPHA,
     M_UNIFORM_PALETTE_ENABLED,
     M_UNIFORM_ALPHA_ENABLED,
+    M_UNIFORM_TINT_ENABLED,
+    M_UNIFORM_TINT_COLOR,
     M_UNIFORM_EFFECT,
     M_UNIFORM_NUMBER_OF,
 } M_UNIFORM;
@@ -45,6 +47,7 @@ struct GFX_2D_RENDERER {
         int32_t y;
     } repeat;
 
+    GFX_COLOR tint_color;
     GFX_2D_EFFECT effect;
     bool use_palette;
     bool use_alpha;
@@ -102,6 +105,7 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
     const GFX_CONFIG *const config = GFX_Context_GetConfig();
 
     r->effect = GFX_2D_EFFECT_NONE;
+    r->tint_color = (GFX_COLOR) { .r = 255, .g = 255, .b = 255 };
     r->use_palette = false;
     r->use_alpha = false;
     r->repeat.x = 1;
@@ -145,6 +149,8 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         { M_UNIFORM_TEXTURE_ALPHA, "texAlpha" },
         { M_UNIFORM_PALETTE_ENABLED, "paletteEnabled" },
         { M_UNIFORM_ALPHA_ENABLED, "alphaEnabled" },
+        { M_UNIFORM_TINT_ENABLED, "tintEnabled" },
+        { M_UNIFORM_TINT_COLOR, "tintColor" },
         { M_UNIFORM_EFFECT, "effect" },
         { -1, NULL },
     };
@@ -162,6 +168,10 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         &r->program, r->loc[M_UNIFORM_PALETTE_ENABLED], r->use_palette);
     GFX_GL_Program_Uniform1i(
         &r->program, r->loc[M_UNIFORM_ALPHA_ENABLED], r->use_alpha);
+    GFX_GL_Program_Uniform1i(
+        &r->program, r->loc[M_UNIFORM_TINT_ENABLED],
+        r->tint_color.r != 255 || r->tint_color.g != 255
+            || r->tint_color.b != 255);
     GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_EFFECT], r->effect);
     GFX_GL_CheckError();
 
@@ -291,7 +301,7 @@ void GFX_2D_Renderer_Upload(
 }
 
 void GFX_2D_Renderer_SetPalette(
-    GFX_2D_RENDERER *const r, const GFX_PALETTE_ENTRY *const palette)
+    GFX_2D_RENDERER *const r, const GFX_COLOR *const palette)
 {
     ASSERT(r != NULL);
 
@@ -352,6 +362,22 @@ void GFX_2D_Renderer_SetEffect(
         GFX_GL_Program_Bind(&r->program);
         GFX_GL_Program_Uniform1i(&r->program, r->loc[M_UNIFORM_EFFECT], effect);
         r->effect = effect;
+    }
+}
+
+void GFX_2D_Renderer_SetTint(GFX_2D_RENDERER *const r, const GFX_COLOR color)
+{
+    ASSERT(r != NULL);
+    if (r->tint_color.r != color.r || r->tint_color.g != color.g
+        || r->tint_color.b != color.b) {
+        GFX_GL_Program_Bind(&r->program);
+        GFX_GL_Program_Uniform1i(
+            &r->program, r->loc[M_UNIFORM_TINT_ENABLED],
+            color.r != 255 || color.g != 255 || color.b != 255);
+        GFX_GL_Program_Uniform3f(
+            &r->program, r->loc[M_UNIFORM_TINT_COLOR], color.r / 255.0,
+            color.g / 255.0, color.b / 255.0);
+        r->tint_color = color;
     }
 }
 

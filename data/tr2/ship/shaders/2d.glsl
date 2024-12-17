@@ -29,6 +29,8 @@ uniform sampler1D texPalette;
 uniform sampler2D texAlpha;
 uniform bool paletteEnabled;
 uniform bool alphaEnabled;
+uniform bool tintEnabled;
+uniform vec3 tintColor;
 uniform int effect;
 
 #ifdef OGL33C
@@ -63,6 +65,10 @@ void main(void) {
         OUTCOLOR = TEXTURE1D(texPalette, paletteIndex);
     } else {
         OUTCOLOR = TEXTURE2D(texMain, uv);
+    }
+
+    if (tintEnabled) {
+        OUTCOLOR.rgb *= tintColor.rgb;
     }
 
     if (effect == EFFECT_VIGNETTE) {

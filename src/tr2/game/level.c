@@ -510,13 +510,6 @@ static void M_LoadDepthQ(VFILE *const file)
         }
     }
 
-    g_IsWet = 0;
-    for (int32_t i = 0; i < 256; i++) {
-        g_WaterPalette[i].red = g_GamePalette8[i].red * 2 / 3;
-        g_WaterPalette[i].green = g_GamePalette8[i].green * 2 / 3;
-        g_WaterPalette[i].blue = g_GamePalette8[i].blue;
-    }
-
     Benchmark_End(benchmark, NULL);
 }
 

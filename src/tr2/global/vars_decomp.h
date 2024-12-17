@@ -268,7 +268,6 @@
 #define g_PassportMode (*(int32_t*)0x0051A2D0)
 #define g_SoundText (*(TEXTSTRING *(*)[4])0x0051A2F0)
 #define g_RoomLightTables (*(ROOM_LIGHT_TABLE(*)[32])0x0051A308)
-#define g_WaterPalette (*(RGB_888(*)[256])0x0051B308)
 #define g_PicturePalette (*(RGB_888(*)[256])0x0051B608)
 #define g_RoomLightShades (*(int32_t(*)[4])0x0051B908)
 #define g_AnimTextureRanges (*(int16_t **)0x0051B92C)

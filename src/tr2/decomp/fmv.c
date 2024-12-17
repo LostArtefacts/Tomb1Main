@@ -113,9 +113,9 @@ static void M_Play(const char *const file_name)
 
     // Populate the palette with a palette corresponding to
     // AV_PIX_FMT_RGB8
-    GFX_PALETTE_ENTRY palette[256];
+    GFX_COLOR palette[256];
     for (int32_t i = 0; i < 256; i++) {
-        GFX_PALETTE_ENTRY *const col = &palette[i];
+        GFX_COLOR *const col = &palette[i];
         col->r = 0x24 * (i >> 5);
         col->g = 0x24 * ((i >> 2) & 7);
         col->b = 0x55 * (i & 3);

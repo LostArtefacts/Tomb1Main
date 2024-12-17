@@ -24,6 +24,7 @@ typedef struct RENDERER {
     void (*ClearZBuffer)(struct RENDERER *);
     void (*EnableZBuffer)(struct RENDERER *, bool, bool);
     void (*DrawPolyList)(struct RENDERER *);
+    void (*SetWet)(struct RENDERER *, bool);
 
     const int16_t *(*InsertGT4)(
         struct RENDERER *renderer, const int16_t *obj_ptr, int32_t num,
