@@ -1130,3 +1130,10 @@ void __cdecl Output_SetupBelowWater(const bool is_underwater)
     g_IsWibbleEffect = !is_underwater;
     g_IsShadeEffect = true;
 }
+
+void __cdecl Output_SetupAboveWater(const bool is_underwater)
+{
+    g_IsWibbleEffect = is_underwater;
+    g_IsWaterEffect = false;
+    g_IsShadeEffect = is_underwater;
+}

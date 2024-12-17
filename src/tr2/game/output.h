@@ -105,3 +105,4 @@ void __cdecl Output_CalculateStaticMeshLight(
     const ROOM *room);
 void __cdecl Output_LightRoom(ROOM *room);
 void __cdecl Output_SetupBelowWater(bool is_underwater);
+void __cdecl Output_SetupAboveWater(bool is_underwater);

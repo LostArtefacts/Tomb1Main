@@ -4106,7 +4106,7 @@ typedef enum {
 0x004519D0  0x01F6  +       void __cdecl Output_DrawAirBar(int32_t percent);
 0x00451BD0  0x00C0  +       void __cdecl Output_DoAnimateTextures(int32_t ticks);
 0x00451C90  0x0051  +       void __cdecl Output_SetupBelowWater(bool underwater);
-0x00451CF0  0x0021  -       void __cdecl Output_SetupAboveWater(bool underwater);
+0x00451CF0  0x0021  +       void __cdecl Output_SetupAboveWater(bool underwater);
 0x00451D20  0x00B1  -       void __cdecl Output_AnimateTextures(int32_t ticks);
 0x00451DE0  0x0105  +R      void __cdecl S_DisplayPicture(const char *file_name, BOOL is_title);
 0x00451EF0  0x007E  +R      void __cdecl S_SyncPictureBufferPalette(void);
