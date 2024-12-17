@@ -834,3 +834,69 @@ void __cdecl Output_CalculateWibbleTable(void)
         }
     }
 }
+
+int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *const bounds)
+{
+    const MATRIX *const m = g_MatrixPtr;
+    if (m->_23 >= g_PhdFarZ) {
+        return 0;
+    }
+
+    constexpr int32_t vtx_count = 8;
+    const XYZ_32 vtx[vtx_count] = {
+        { .x = bounds->min_x, .y = bounds->min_y, .z = bounds->min_z },
+        { .x = bounds->max_x, .y = bounds->min_y, .z = bounds->min_z },
+        { .x = bounds->max_x, .y = bounds->max_y, .z = bounds->min_z },
+        { .x = bounds->min_x, .y = bounds->max_y, .z = bounds->min_z },
+        { .x = bounds->min_x, .y = bounds->min_y, .z = bounds->max_z },
+        { .x = bounds->max_x, .y = bounds->min_y, .z = bounds->max_z },
+        { .x = bounds->max_x, .y = bounds->max_y, .z = bounds->max_z },
+        { .x = bounds->min_x, .y = bounds->max_y, .z = bounds->max_z },
+    };
+
+    int32_t y_min = 0x3FFFFFFF;
+    int32_t x_min = 0x3FFFFFFF;
+    int32_t y_max = -0x3FFFFFFF;
+    int32_t x_max = -0x3FFFFFFF;
+
+    int32_t num_z = 0;
+    for (int32_t i = 0; i < vtx_count; i++) {
+        const int32_t x = vtx[i].x;
+        const int32_t y = vtx[i].y;
+        const int32_t z = vtx[i].z;
+
+        const int32_t zv = x * m->_20 + y * m->_21 + z * m->_22 + m->_23;
+        if (zv <= g_PhdNearZ || zv >= g_PhdFarZ) {
+            continue;
+        }
+
+        num_z++;
+        const int32_t zp = zv / g_PhdPersp;
+        const int32_t xv = (x * m->_00 + y * m->_01 + z * m->_02 + m->_03) / zp;
+        const int32_t yv = (x * m->_10 + y * m->_11 + z * m->_12 + m->_13) / zp;
+        CLAMPG(x_min, xv);
+        CLAMPL(x_max, xv);
+        CLAMPG(y_min, yv);
+        CLAMPL(y_max, yv);
+    }
+
+    x_min += g_PhdWinCenterX;
+    x_max += g_PhdWinCenterX;
+    y_min += g_PhdWinCenterY;
+    y_max += g_PhdWinCenterY;
+
+    if (num_z == 0 || x_min > g_PhdWinRight || y_min > g_PhdWinBottom
+        || x_max < g_PhdWinLeft || y_max < g_PhdWinTop) {
+        // out of screen
+        return 0;
+    }
+
+    if (num_z < 8 || x_min < 0 || y_min < 0 || x_max > g_PhdWinMaxX
+        || y_max > g_PhdWinMaxY) {
+        // clipped
+        return -1;
+    }
+
+    // fully on screen
+    return 1;
+}

@@ -126,7 +126,6 @@
 #define DartEmitter_Control ((void __cdecl (*)(int16_t item_num))0x00442840)
 #define Dart_Control ((void __cdecl (*)(int16_t item_num))0x00442980)
 #define DartEffect_Control ((void __cdecl (*)(int16_t fx_num))0x00442AE0)
-#define S_GetObjectBounds ((int32_t __cdecl (*)(const BOUNDS_16 *bounds))0x00450CC0)
 #define S_CalculateLight ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t room_num))0x00451180)
 #define S_CalculateStaticLight ((void __cdecl (*)(int16_t adder))0x00451480)
 #define S_CalculateStaticMeshLight ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room))0x004514C0)

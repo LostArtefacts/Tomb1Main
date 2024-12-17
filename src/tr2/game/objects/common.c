@@ -35,7 +35,7 @@ void __cdecl Object_DrawAnimatingItem(const ITEM *item)
     Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
-    const int32_t clip = S_GetObjectBounds(&frames[0]->bounds);
+    const int32_t clip = Output_GetObjectBounds(&frames[0]->bounds);
     if (!clip) {
         Matrix_Pop();
         return;

@@ -416,6 +416,7 @@ static void M_Output(const bool enable)
     INJECT(enable, 0x0040C5B0, Output_DrawScreenSprite);
     INJECT(enable, 0x0041BA50, Output_InsertPolygons_I);
     INJECT(enable, 0x0044D780, Output_CalculateWibbleTable);
+    INJECT(enable, 0x00450CC0, Output_GetObjectBounds);
     INJECT(enable, 0x00450F80, Output_InsertShadow);
     INJECT(enable, 0x00451800, Output_DrawHealthBar);
     INJECT(enable, 0x004519D0, Output_DrawAirBar);

@@ -237,7 +237,7 @@ void Pickup_Draw(const ITEM *const item)
 
     S_CalculateLight(item->pos.x, item->pos.y, item->pos.z, item->room_num);
 
-    const int32_t clip = S_GetObjectBounds(&bounds);
+    const int32_t clip = Output_GetObjectBounds(&bounds);
     if (clip) {
         int32_t bit = 1;
         int16_t **meshpp = &g_Meshes[obj->mesh_idx];

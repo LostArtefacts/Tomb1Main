@@ -59,7 +59,7 @@ void __cdecl Lara_Draw(const ITEM *const item)
     Matrix_Push();
     Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
-    const int32_t clip = S_GetObjectBounds(&frame->bounds);
+    const int32_t clip = Output_GetObjectBounds(&frame->bounds);
     if (!clip) {
         Matrix_Pop();
         return;
@@ -358,7 +358,7 @@ void __cdecl Lara_Draw_I(
     Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
-    const int32_t clip = S_GetObjectBounds(&frame1->bounds);
+    const int32_t clip = Output_GetObjectBounds(&frame1->bounds);
 
     if (!clip) {
         Matrix_Pop();

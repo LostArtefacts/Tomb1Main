@@ -96,3 +96,4 @@ void __cdecl Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
 
 void __cdecl Output_CalculateWibbleTable(void);
+int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);

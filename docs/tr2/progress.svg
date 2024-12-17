@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.30% (1086)</tspan> · <tspan class="known">10.29% (128)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.38% (1087)</tspan> · <tspan class="known">10.21% (127)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="652.12" height="6" x="0" y="0" class="decompiled"/>
-<rect width="76.86" height="6" x="652.12" y="0" class="known"/>
+<rect width="652.72" height="6" x="0" y="0" class="decompiled"/>
+<rect width="76.26" height="6" x="652.72" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1139,7 +1139,7 @@
 <rect width="12" height="12" x="150" y="315" class="decompiled"><title>void __cdecl S_ClearScreen(void);</title></rect>
 <rect width="12" height="12" x="165" y="315" class="decompiled"><title>void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);</title></rect>
 <rect width="12" height="12" x="180" y="315" class="decompiled"><title>void __cdecl S_OutputPolyList(void);</title></rect>
-<rect width="12" height="12" x="195" y="315" class="known"><title>int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
+<rect width="12" height="12" x="195" y="315" class="decompiled"><title>int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
 <rect width="12" height="12" x="210" y="315" class="decompiled"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
 <rect width="12" height="12" x="225" y="315" class="decompiled"><title>void __cdecl Output_InsertShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="315" class="known"><title>void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.54%</tspan> · <tspan class="known">11.13%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.73%</tspan> · <tspan class="known">10.95%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="661.43" height="6" x="0" y="0" class="decompiled"/>
-<rect width="83.13" height="6" x="661.43" y="0" class="known"/>
+<rect width="662.79" height="6" x="0" y="0" class="decompiled"/>
+<rect width="81.77" height="6" x="662.79" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1465,7 +1465,7 @@
 <rect width="20.94" height="19.08" x="344.49" y="333.87" class="decompiled"><title>const int16_t *__cdecl Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip);</title></rect>
 <rect width="20.94" height="19.05" x="344.49" y="355.95" class="known"><title>void __cdecl Shark_Control(int16_t item_num);</title></rect>
 <rect width="19.34" height="20.62" x="368.43" y="0" class="known"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
-<rect width="19.34" height="20.18" x="368.43" y="23.62" class="known"><title>int32_t __cdecl S_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
+<rect width="19.34" height="20.18" x="368.43" y="23.62" class="decompiled"><title>int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
 <rect width="19.34" height="20.10" x="368.43" y="46.80" class="decompiled"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
 <rect width="19.34" height="19.81" x="368.43" y="69.90" class="decompiled"><title>void __cdecl Output_Init(int16_t x, int16_t y, int32_t width, int32_t height, int32_t near_z, int32_t far_z, int16_t view_angle, int32_t screen_width, int32_t screen_height);</title></rect>
 <rect width="19.34" height="19.77" x="368.43" y="92.71" class="decompiled"><title>int32_t __cdecl Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>

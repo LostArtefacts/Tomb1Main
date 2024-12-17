@@ -342,7 +342,7 @@ static void M_DrawItem(
                                  * (g_Anims[obj->anim_idx].interpolation >> 8)];
 
     Matrix_Push();
-    const int32_t clip = S_GetObjectBounds(&frame_ptr->bounds);
+    const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
     if (!clip) {
         Matrix_Pop();
         return;
