@@ -231,7 +231,7 @@ typedef enum {
     LA_EXTRA_SHARK_KILL  = 3,
     LA_EXTRA_AIRLOCK     = 4,
     LA_EXTRA_GONG_BONG   = 5,
-    LA_EXTRA_DINO_KILL   = 6,
+    LA_EXTRA_TREX_KILL   = 6,
     LA_EXTRA_PULL_DAGGER = 7,
     LA_EXTRA_START_ANIM  = 8,
     LA_EXTRA_START_HOUSE = 9,

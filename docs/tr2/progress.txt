@@ -1961,7 +1961,7 @@ typedef enum { // decompiled
     LA_EXTRA_SHARK_KILL  = 3,
     LA_EXTRA_AIRLOCK     = 4,
     LA_EXTRA_GONG_BONG   = 5,
-    LA_EXTRA_DINO_KILL   = 6,
+    LA_EXTRA_TREX_KILL   = 6,
     LA_EXTRA_PULL_DAGGER = 7,
     LA_EXTRA_START_ANIM  = 8,
     LA_EXTRA_START_HOUSE = 9,
@@ -3150,7 +3150,7 @@ typedef enum {
 0x00417E90  0x0519  +       void __cdecl Dragon_Control(int16_t back_num);
 0x004183E0  0x0114  +       void __cdecl Bartoli_Initialise(int16_t item_num);
 0x00418500  0x0193  +       void __cdecl Bartoli_Control(int16_t item_num);
-0x004186A0  0x0287  -       void __cdecl TRex_Control(int16_t item_num);
+0x004186A0  0x0287  +       void __cdecl TRex_Control(int16_t item_num);
 
 # game/draw.c
 0x00418950  0x0037  +       int32_t __cdecl Game_DrawCinematic(void);

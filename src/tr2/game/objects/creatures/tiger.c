@@ -16,10 +16,10 @@
 #define TIGER_RADIUS         (WALL_L / 3) // = 341
 #define TIGER_WALK_TURN      (PHD_DEGREE * 3) // = 546
 #define TIGER_RUN_TURN       (PHD_DEGREE * 6) // = 1092
-#define TIGER_BITE_DAMAGE    100
 #define TIGER_ATTACK_1_RANGE SQUARE(WALL_L / 3) // = 116281
 #define TIGER_ATTACK_2_RANGE SQUARE(WALL_L * 3 / 2) // = 2359296
 #define TIGER_ATTACK_3_RANGE SQUARE(WALL_L) // = 1048576
+#define TIGER_BITE_DAMAGE    100
 #define TIGER_ROAR_CHANCE    96
 // clang-format on
 

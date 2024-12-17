@@ -16,12 +16,12 @@
 #define DOG_RADIUS          (WALL_L / 3) // = 341
 #define DOG_WALK_TURN       (3 * PHD_DEGREE) // = 546
 #define DOG_RUN_TURN        (6 * PHD_DEGREE) // = 1092
-#define DOG_LEAP_DAMAGE     200
-#define DOG_BITE_DAMAGE     100
-#define DOG_LUNGE_DAMAGE    100
 #define DOG_ATTACK_1_RANGE  SQUARE(WALL_L / 3) // = 116281
 #define DOG_ATTACK_2_RANGE  SQUARE(WALL_L * 3 / 4) // = 589824
 #define DOG_ATTACK_3_RANGE  SQUARE(WALL_L * 2 / 3) // = 465124
+#define DOG_LEAP_DAMAGE     200
+#define DOG_BITE_DAMAGE     100
+#define DOG_LUNGE_DAMAGE    100
 #define DOG_BARK_CHANCE     0x300
 #define DOG_CROUCH_CHANCE   (DOG_BARK_CHANCE + 0x300) // = 0x600
 #define DOG_STAND_CHANCE    (DOG_CROUCH_CHANCE + 0x500) // = 0xB00

@@ -46,6 +46,7 @@
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/skidoo_driver.h"
 #include "game/objects/creatures/tiger.h"
+#include "game/objects/creatures/trex.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
 #include "game/objects/effects/ember.h"
@@ -874,6 +875,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00417E90, Dragon_Control);
     INJECT(enable, 0x004183E0, Bartoli_Initialise);
     INJECT(enable, 0x00418500, Bartoli_Control);
+    INJECT(enable, 0x004186A0, TRex_Control);
     INJECT(enable, 0x004199E0, Object_DrawSpriteItem);
     INJECT(enable, 0x00419A70, Object_DrawAnimatingItem);
     INJECT(enable, 0x0041C990, Bubble_Control);
