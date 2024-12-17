@@ -186,7 +186,7 @@
     },
     "enable_console": {
       "Title": "Console",
-      "Description": "Enables developer console."
+      "Description": "Enables the developer console."
     },
     "start_lara_hitpoints": {
       "Title": "Lara's starting health",

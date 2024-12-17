@@ -38,6 +38,7 @@
 - fixed camera positions in Return to Egypt and Temple of the Cat (#1317, regression from 4.1)
 - fixed being able to see the flipmap in Natla's Mines when moving the boat (#2019)
 - fixed an invisible wall in Temple of the Cat, due to a wrongly positioned door (#2021)
+- fixed the `enable_console` config option not being adhered to (#2063, regression from 4.5)
 
 ## [4.6.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.6...tr1-4.6.1) - 2024-11-25
 - added ability to disable saves completely by setting the save slot to 0 (#1954)
