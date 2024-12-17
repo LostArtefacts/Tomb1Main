@@ -35,3 +35,4 @@ void __cdecl IncreaseScreenSize(void);
 BOOL __cdecl S_LoadLevelFile(
     const char *file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 void __cdecl S_UnloadLevelFile(void);
+void __cdecl GetValidLevelsList(REQUEST_INFO *req);

@@ -165,6 +165,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044B4B0, S_LoadLevelFile);
     INJECT(enable, 0x0044B4D0, S_UnloadLevelFile);
     INJECT(enable, 0x0044C3F0, S_Wait);
+    INJECT(enable, 0x0044C9D0, GetValidLevelsList);
     INJECT(enable, 0x0044CA70, DisplayCredits);
     INJECT(enable, 0x0044D610, S_InitialiseSystem);
     INJECT(enable, 0x0044E520, WinMain);

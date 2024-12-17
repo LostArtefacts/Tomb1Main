@@ -23,6 +23,7 @@
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/random.h"
+#include "game/requester.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -459,4 +460,12 @@ void __cdecl S_UnloadLevelFile(void)
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
     g_TextureInfoCount = 0;
+}
+
+void __cdecl GetValidLevelsList(REQUEST_INFO *const req)
+{
+    Requester_RemoveAllItems(req);
+    for (int32_t i = 1; i < g_GameFlow.num_levels; i++) {
+        Requester_AddItem(req, g_GF_LevelNames[i], 0, NULL, 0);
+    }
 }

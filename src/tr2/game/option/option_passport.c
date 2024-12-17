@@ -1,3 +1,4 @@
+#include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/input.h"
 #include "game/option/option.h"

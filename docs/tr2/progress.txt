@@ -4021,7 +4021,7 @@ typedef enum {
 0x0044C990  0x000A  +       void __cdecl Random_SeedControl(int32_t seed);
 0x0044C9A0  0x001E  +       int32_t __cdecl Random_GetDraw(void);
 0x0044C9C0  0x000A  +       void __cdecl Random_SeedDraw(int32_t seed);
-0x0044C9D0  0x0044  -R      void __cdecl GetValidLevelsList(REQUEST_INFO *req);
+0x0044C9D0  0x0044  +R      void __cdecl GetValidLevelsList(REQUEST_INFO *req);
 0x0044CA20  0x004C  +R      void __cdecl GetSavedGamesList(REQUEST_INFO *req);
 0x0044CA70  0x0233  +R      void __cdecl DisplayCredits(void);
 0x0044CCB0  0x0165  +R      BOOL __cdecl S_FrontEndCheck(void);

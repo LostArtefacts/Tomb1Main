@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.14% (1084)</tspan> · <tspan class="known">10.45% (130)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.22% (1085)</tspan> · <tspan class="known">10.37% (129)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="650.92" height="6" x="0" y="0" class="decompiled"/>
-<rect width="78.06" height="6" x="650.92" y="0" class="known"/>
+<rect width="651.52" height="6" x="0" y="0" class="decompiled"/>
+<rect width="77.46" height="6" x="651.52" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1077,7 +1077,7 @@
 <rect width="12" height="12" x="720" y="285" class="decompiled"><title>void __cdecl Random_SeedControl(int32_t seed);</title></rect>
 <rect width="12" height="12" x="735" y="285" class="decompiled"><title>int32_t __cdecl Random_GetDraw(void);</title></rect>
 <rect width="12" height="12" x="0" y="300" class="decompiled"><title>void __cdecl Random_SeedDraw(int32_t seed);</title></rect>
-<rect width="12" height="12" x="15" y="300" class="known"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
+<rect width="12" height="12" x="15" y="300" class="decompiled"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="30" y="300" class="decompiled"><title>void __cdecl GetSavedGamesList(REQUEST_INFO *req);</title></rect>
 <rect width="12" height="12" x="45" y="300" class="decompiled"><title>void __cdecl DisplayCredits(void);</title></rect>
 <rect width="12" height="12" x="60" y="300" class="decompiled"><title>BOOL __cdecl S_FrontEndCheck(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.46%</tspan> · <tspan class="known">11.22%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.48%</tspan> · <tspan class="known">11.20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="660.77" height="6" x="0" y="0" class="decompiled"/>
-<rect width="83.79" height="6" x="660.77" y="0" class="known"/>
+<rect width="660.92" height="6" x="0" y="0" class="decompiled"/>
+<rect width="83.64" height="6" x="660.92" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2176,7 +2176,7 @@
 <rect width="4.60" height="4.43" x="640.25" y="276.01" class="decompiled"><title>void __cdecl FallingBlock_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.60" height="4.43" x="640.25" y="283.44" class="decompiled"><title>HRESULT __cdecl DDrawSurfaceCreate(LPDDSDESC dsp, LPDDS *surface);</title></rect>
 <rect width="4.60" height="4.43" x="640.25" y="290.86" class="decompiled"><title>void __cdecl BitMaskGetNumberOfBits(uint32_t bit_mask, uint32_t *bit_depth, uint32_t *bit_offset);</title></rect>
-<rect width="4.60" height="4.43" x="640.25" y="298.29" class="known"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
+<rect width="4.60" height="4.43" x="640.25" y="298.29" class="decompiled"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="305.71" class="known"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="313.03" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="320.34" class="known"><title>void __cdecl Cultist1_Initialise(int16_t item_num);</title></rect>
