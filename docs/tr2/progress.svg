@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.74% (1079)</tspan> · <tspan class="known">10.85% (135)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">86.82% (1080)</tspan> · <tspan class="known">10.77% (134)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="647.92" height="6" x="0" y="0" class="decompiled"/>
-<rect width="81.07" height="6" x="647.92" y="0" class="known"/>
+<rect width="648.52" height="6" x="0" y="0" class="decompiled"/>
+<rect width="80.46" height="6" x="648.52" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -809,7 +809,7 @@
 <rect width="12" height="12" x="450" y="210" class="known"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
 <rect width="12" height="12" x="465" y="210" class="known"><title>void __cdecl Collide_GetJointAbsPosition(const ITEM *item, const XYZ_32 *vec, int32_t joint);</title></rect>
 <rect width="12" height="12" x="480" y="210" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);</title></rect>
-<rect width="12" height="12" x="495" y="210" class="known"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
+<rect width="12" height="12" x="495" y="210" class="decompiled"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
 <rect width="12" height="12" x="510" y="210" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="525" y="210" class="decompiled"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="540" y="210" class="decompiled"><title>void __cdecl Text_Init(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.48%</tspan> · <tspan class="known">12.19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.53%</tspan> · <tspan class="known">12.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="653.50" height="6" x="0" y="0" class="decompiled"/>
-<rect width="91.06" height="6" x="653.50" y="0" class="known"/>
+<rect width="653.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="90.68" height="6" x="653.88" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1830,7 +1830,7 @@
 <rect width="8.97" height="9.06" x="655.38" y="161.47" class="decompiled"><title>void __cdecl SyncSurfacePalettes(void *src_data, int32_t width, int32_t height, int32_t src_pitch, RGB_888 *src_palette, void *dst_data, int32_t dst_pitch, RGB_888 *dst_palette, bool preserve_sys_palette);</title></rect>
 <rect width="8.90" height="9.06" x="667.36" y="161.47" class="decompiled"><title>int32_t __cdecl Lara_TestEdgeCatch(ITEM *item, COLL_INFO *coll, int32_t *edge);</title></rect>
 <rect width="8.84" height="9.06" x="679.26" y="161.47" class="decompiled"><title>void __cdecl Requester_AddItem(REQUEST_INFO *req, const char *text1, uint32_t flags1, const char *text2, uint32_t flags2);</title></rect>
-<rect width="8.84" height="9.06" x="691.10" y="161.47" class="known"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
+<rect width="8.84" height="9.06" x="691.10" y="161.47" class="decompiled"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
 <rect width="8.77" height="9.06" x="702.93" y="161.47" class="decompiled"><title>bool __cdecl Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);</title></rect>
 <rect width="8.77" height="9.06" x="714.70" y="161.47" class="decompiled"><title>int32_t __cdecl Item_GetAnimChange(ITEM *item, const ANIM *anim);</title></rect>
 <rect width="8.77" height="9.06" x="726.47" y="161.47" class="decompiled"><title>int16_t __cdecl Effect_MissileFlame(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE yrot, int16_t room_num);</title></rect>

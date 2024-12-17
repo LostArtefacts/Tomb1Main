@@ -35,6 +35,10 @@ typedef enum {
     // clang-format on
 } SPIDER_STATE;
 
+typedef enum {
+    SPIDER_ANIM_LEAP = 2,
+} SPIDER_ANIM;
+
 static const BITE m_SpiderBite = {
     .pos = { .x = 0, .y = 0, .z = 41 },
     .mesh_num = 1,
@@ -59,6 +63,27 @@ void Spider_Setup(void)
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+}
+
+void __cdecl Spider_Leap(const int16_t item_num, const int16_t angle)
+{
+    ITEM *const item = Item_Get(item_num);
+    const XYZ_32 old_pos = item->pos;
+    const int16_t old_room_num = item->room_num;
+
+    Creature_Animate(item_num, angle, 0);
+    if (item->pos.y > old_pos.y - STEP_L * 3 / 2) {
+        return;
+    }
+
+    item->pos = old_pos;
+    if (item->room_num != old_room_num) {
+        Item_NewRoom(item_num, old_room_num);
+    }
+    item->anim_num = g_Objects[O_SPIDER].anim_idx + SPIDER_ANIM_LEAP;
+    item->frame_num = g_Anims[item->anim_num].frame_base;
+    item->current_anim_state = SPIDER_STATE_ATTACK_2;
+    Creature_Animate(item_num, angle, 0);
 }
 
 void __cdecl Spider_Control(const int16_t item_num)
