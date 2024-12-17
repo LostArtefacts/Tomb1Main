@@ -1009,3 +1009,11 @@ void __cdecl Output_CalculateLight(
     g_LsAdder += M_CalcFogShade(depth);
     CLAMPG(g_LsAdder, 0x1FFF);
 }
+
+void __cdecl Output_CalculateStaticLight(const int16_t adder)
+{
+    g_LsAdder = adder - 0x1000;
+    const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
+    g_LsAdder += M_CalcFogShade(depth);
+    CLAMPG(g_LsAdder, 0x1FFF);
+}
