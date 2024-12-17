@@ -100,3 +100,6 @@ int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);
 void __cdecl Output_CalculateLight(
     int32_t x, int32_t y, int32_t z, int16_t room_num);
 void __cdecl Output_CalculateStaticLight(int16_t adder);
+void __cdecl Output_CalculateStaticMeshLight(
+    int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2,
+    const ROOM *room);

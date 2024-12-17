@@ -1017,3 +1017,40 @@ void __cdecl Output_CalculateStaticLight(const int16_t adder)
     g_LsAdder += M_CalcFogShade(depth);
     CLAMPG(g_LsAdder, 0x1FFF);
 }
+
+void __cdecl Output_CalculateStaticMeshLight(
+    const int32_t x, const int32_t y, const int32_t z, const int32_t shade_1,
+    const int32_t shade_2, const ROOM *const room)
+{
+    int32_t adder = shade_1;
+    if (room->light_mode != 0) {
+        adder += (shade_2 - shade_1) * g_RoomLightShades[room->light_mode]
+            / (WIBBLE_SIZE - 1);
+    }
+
+    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+        const LIGHT *const light = &g_DynamicLights[i];
+        const int32_t dx = x - light->pos.x;
+        const int32_t dy = y - light->pos.y;
+        const int32_t dz = z - light->pos.z;
+        const int32_t radius = 1 << light->falloff_1;
+        if (dx < -radius || dx > radius || dy < -radius || dy > radius
+            || dz < -radius || dz > radius) {
+            continue;
+        }
+
+        const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
+        if (dist > SQUARE(radius)) {
+            continue;
+        }
+
+        const int32_t shade = (1 << light->intensity_1)
+            - (dist >> (2 * light->falloff_1 - light->intensity_1));
+        adder -= shade;
+        if (adder < 0) {
+            break;
+        }
+    }
+
+    Output_CalculateStaticLight(adder);
+}

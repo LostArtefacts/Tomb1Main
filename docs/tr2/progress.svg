@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.54% (1089)</tspan> · <tspan class="known">10.05% (125)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.62% (1090)</tspan> · <tspan class="known">9.97% (124)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="653.93" height="6" x="0" y="0" class="decompiled"/>
-<rect width="75.06" height="6" x="653.93" y="0" class="known"/>
+<rect width="654.53" height="6" x="0" y="0" class="decompiled"/>
+<rect width="74.46" height="6" x="654.53" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1144,7 +1144,7 @@
 <rect width="12" height="12" x="225" y="315" class="decompiled"><title>void __cdecl Output_InsertShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="315" class="decompiled"><title>void __cdecl Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="255" y="315" class="decompiled"><title>void __cdecl Output_CalculateStaticLight(int16_t adder);</title></rect>
-<rect width="12" height="12" x="270" y="315" class="known"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
+<rect width="12" height="12" x="270" y="315" class="decompiled"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
 <rect width="12" height="12" x="285" y="315" class="known"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
 <rect width="12" height="12" x="300" y="315" class="decompiled"><title>void __cdecl Output_DrawHealthBar(int32_t percent);</title></rect>
 <rect width="12" height="12" x="315" y="315" class="decompiled"><title>void __cdecl Output_DrawAirBar(int32_t percent);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.96%</tspan> · <tspan class="known">10.71%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.05%</tspan> · <tspan class="known">10.62%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="664.56" height="6" x="0" y="0" class="decompiled"/>
-<rect width="80" height="6" x="664.56" y="0" class="known"/>
+<rect width="665.19" height="6" x="0" y="0" class="decompiled"/>
+<rect width="79.37" height="6" x="665.19" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1651,7 +1651,7 @@
 <rect width="12.78" height="12.56" x="626.33" y="92.62" class="known"><title>int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);</title></rect>
 <rect width="12.78" height="12.56" x="642.11" y="92.62" class="decompiled"><title>void __cdecl HWR_InitState(void);</title></rect>
 <rect width="12.73" height="12.56" x="657.89" y="92.62" class="decompiled"><title>void __cdecl Lara_Col_Hang(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="12.57" height="12.56" x="673.61" y="92.62" class="known"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
+<rect width="12.57" height="12.56" x="673.61" y="92.62" class="decompiled"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
 <rect width="12.35" height="12.56" x="689.18" y="92.62" class="decompiled"><title>BOOL __cdecl S_Input_Key(KEYMAP keymap);</title></rect>
 <rect width="12.25" height="12.56" x="704.53" y="92.62" class="decompiled"><title>void __cdecl Item_Kill(int16_t item_num);</title></rect>
 <rect width="12.14" height="12.56" x="719.78" y="92.62" class="decompiled"><title>void __cdecl Gun_InitialiseNewWeapon(void);</title></rect>
