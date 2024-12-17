@@ -4090,10 +4090,10 @@ typedef enum {
 0x00450CC0  0x0270  +R      int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);
 0x00450F30  0x0046  +R      void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 0x00450F80  0x01F1  +       void __cdecl Output_InsertShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
-0x00451180  0x02F6  -R      void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
-0x00451480  0x0031  -R      void __cdecl S_CalculateStaticLight(int16_t adder);
-0x004514C0  0x0124  -R      void __cdecl S_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);
-0x004515F0  0x0206  -R      void __cdecl S_LightRoom(ROOM *room);
+0x00451180  0x02F6  +       void __cdecl Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
+0x00451480  0x0031  -R      void __cdecl Output_CalculateStaticLight(int16_t adder);
+0x004514C0  0x0124  -R      void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);
+0x004515F0  0x0206  -R      void __cdecl Output_LightRoom(ROOM *room);
 0x00451800  0x01CC  +       void __cdecl Output_DrawHealthBar(int32_t percent);
 0x004519D0  0x01F6  +       void __cdecl Output_DrawAirBar(int32_t percent);
 0x00451BD0  0x00C0  +       void __cdecl Output_AnimateTextures(int32_t ticks);
@@ -4846,3 +4846,5 @@ typedef enum {
 0x0051BD18  +       int16_t g_CheatAngle;
 0x0051BD10  +       int32_t g_CheatTurn;
 0x0051A308  -       ROOM_LIGHT_TABLE g_RoomLightTables[32]; // WIBBLE_SIZE
+0x005251C0  -       LIGHT g_DynamicLights[10]; // MAX_DYNAMIC_LIGHTS
+0x0051B908  -       int32_t g_RoomLightShades[4];

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.38% (1087)</tspan> · <tspan class="known">10.21% (127)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">87.46% (1088)</tspan> · <tspan class="known">10.13% (126)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="652.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="76.26" height="6" x="652.72" y="0" class="known"/>
+<rect width="653.32" height="6" x="0" y="0" class="decompiled"/>
+<rect width="75.66" height="6" x="653.32" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1142,10 +1142,10 @@
 <rect width="12" height="12" x="195" y="315" class="decompiled"><title>int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
 <rect width="12" height="12" x="210" y="315" class="decompiled"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>
 <rect width="12" height="12" x="225" y="315" class="decompiled"><title>void __cdecl Output_InsertShadow(int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);</title></rect>
-<rect width="12" height="12" x="240" y="315" class="known"><title>void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="255" y="315" class="known"><title>void __cdecl S_CalculateStaticLight(int16_t adder);</title></rect>
-<rect width="12" height="12" x="270" y="315" class="known"><title>void __cdecl S_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
-<rect width="12" height="12" x="285" y="315" class="known"><title>void __cdecl S_LightRoom(ROOM *room);</title></rect>
+<rect width="12" height="12" x="240" y="315" class="decompiled"><title>void __cdecl Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="255" y="315" class="known"><title>void __cdecl Output_CalculateStaticLight(int16_t adder);</title></rect>
+<rect width="12" height="12" x="270" y="315" class="known"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
+<rect width="12" height="12" x="285" y="315" class="known"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
 <rect width="12" height="12" x="300" y="315" class="decompiled"><title>void __cdecl Output_DrawHealthBar(int32_t percent);</title></rect>
 <rect width="12" height="12" x="315" y="315" class="decompiled"><title>void __cdecl Output_DrawAirBar(int32_t percent);</title></rect>
 <rect width="12" height="12" x="330" y="315" class="decompiled"><title>void __cdecl Output_AnimateTextures(int32_t ticks);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.73%</tspan> · <tspan class="known">10.95%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.95%</tspan> · <tspan class="known">10.72%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="662.79" height="6" x="0" y="0" class="decompiled"/>
-<rect width="81.77" height="6" x="662.79" y="0" class="known"/>
+<rect width="664.45" height="6" x="0" y="0" class="decompiled"/>
+<rect width="80.11" height="6" x="664.45" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1437,7 +1437,7 @@
 <rect width="21.59" height="23.11" x="319.90" y="26.28" class="decompiled"><title>void __cdecl Lara_Push(ITEM *item, ITEM *lara_item, COLL_INFO *coll, int32_t spaz_on, int32_t big_push);</title></rect>
 <rect width="21.59" height="22.84" x="319.90" y="52.39" class="decompiled"><title>int32_t __cdecl LOS_CheckSmashable(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
 <rect width="21.59" height="22.81" x="319.90" y="78.23" class="decompiled"><title>void __fastcall Output_GTMapA(int32_t y0, int32_t y1, uint8_t *tex_page); // actually, __watcall, which is esoteric and rarely supported</title></rect>
-<rect width="21.59" height="22.57" x="319.90" y="104.04" class="known"><title>void __cdecl S_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
+<rect width="21.59" height="22.57" x="319.90" y="104.04" class="decompiled"><title>void __cdecl Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
 <rect width="21.59" height="22.27" x="319.90" y="129.61" class="decompiled"><title>void __cdecl Dragon_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="21.59" height="22.23" x="319.90" y="154.88" class="decompiled"><title>int32_t __cdecl LOS_CheckX(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
 <rect width="21.59" height="22.20" x="319.90" y="180.11" class="decompiled"><title>int32_t __cdecl LOS_CheckZ(const GAME_VECTOR *start, GAME_VECTOR *target);</title></rect>
@@ -1504,7 +1504,7 @@
 <rect width="17.35" height="18.40" x="390.77" y="86.91" class="decompiled"><title>void __cdecl Lara_Col_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="17.35" height="18.28" x="390.77" y="108.31" class="decompiled"><title>void __cdecl Switch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="17.35" height="18.12" x="390.77" y="129.59" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
-<rect width="17.35" height="18.12" x="390.77" y="150.71" class="known"><title>void __cdecl S_LightRoom(ROOM *room);</title></rect>
+<rect width="17.35" height="18.12" x="390.77" y="150.71" class="known"><title>void __cdecl Output_LightRoom(ROOM *room);</title></rect>
 <rect width="17.35" height="18.04" x="390.77" y="171.83" class="decompiled"><title>bool __cdecl ApplySettings(APP_SETTINGS *new_settings);</title></rect>
 <rect width="17.35" height="17.91" x="390.77" y="192.87" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
 <rect width="17.35" height="17.87" x="390.77" y="213.78" class="decompiled"><title>void __cdecl Bird_Control(int16_t item_num);</title></rect>
@@ -1651,7 +1651,7 @@
 <rect width="12.78" height="12.56" x="626.33" y="92.62" class="known"><title>int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);</title></rect>
 <rect width="12.78" height="12.56" x="642.11" y="92.62" class="decompiled"><title>void __cdecl HWR_InitState(void);</title></rect>
 <rect width="12.73" height="12.56" x="657.89" y="92.62" class="decompiled"><title>void __cdecl Lara_Col_Hang(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="12.57" height="12.56" x="673.61" y="92.62" class="known"><title>void __cdecl S_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
+<rect width="12.57" height="12.56" x="673.61" y="92.62" class="known"><title>void __cdecl Output_CalculateStaticMeshLight(int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2, ROOM *room);</title></rect>
 <rect width="12.35" height="12.56" x="689.18" y="92.62" class="decompiled"><title>BOOL __cdecl S_Input_Key(KEYMAP keymap);</title></rect>
 <rect width="12.25" height="12.56" x="704.53" y="92.62" class="decompiled"><title>void __cdecl Item_Kill(int16_t item_num);</title></rect>
 <rect width="12.14" height="12.56" x="719.78" y="92.62" class="decompiled"><title>void __cdecl Gun_InitialiseNewWeapon(void);</title></rect>
@@ -2307,7 +2307,7 @@
 <rect width="3.57" height="3.19" x="668.09" y="365.63" class="decompiled"><title>void __cdecl Matrix_RotZ_I(int16_t ang);</title></rect>
 <rect width="3.57" height="3.19" x="668.09" y="371.81" class="decompiled"><title>int32_t __cdecl Music_GetRealTrack(int32_t track);</title></rect>
 <rect width="3.36" height="3.39" x="674.66" y="302.76" class="decompiled"><title>void __cdecl S_Audio_Sample_AdjustTrackPitch(int32_t track_id, int32_t pitch);</title></rect>
-<rect width="3.36" height="3.39" x="674.66" y="309.15" class="known"><title>void __cdecl S_CalculateStaticLight(int16_t adder);</title></rect>
+<rect width="3.36" height="3.39" x="674.66" y="309.15" class="known"><title>void __cdecl Output_CalculateStaticLight(int16_t adder);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="315.54" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="321.80" class="decompiled"><title>void __cdecl Effect_InitialiseArray(void);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="328.06" class="decompiled"><title>void __cdecl Lara_State_PushBlock(ITEM *item, COLL_INFO *coll);</title></rect>

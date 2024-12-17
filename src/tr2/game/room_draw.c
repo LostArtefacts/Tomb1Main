@@ -374,7 +374,7 @@ void __cdecl Room_DrawSingleRoomGeometry(const int16_t room_num)
     g_PhdWinTop = r->bound_top;
     g_PhdWinBottom = r->bound_bottom;
 
-    S_LightRoom(r);
+    Output_LightRoom(r);
     if (g_Outside > 0 && !(r->flags & RF_INSIDE)) {
         Output_InsertRoom(r->data, true);
     } else {
@@ -418,7 +418,7 @@ void __cdecl Room_DrawSingleRoomObjects(const int16_t room_num)
         Matrix_RotY(mesh->rot.y);
         const int16_t bounds = Output_GetObjectBounds(&static_obj->draw_bounds);
         if (bounds) {
-            S_CalculateStaticMeshLight(
+            Output_CalculateStaticMeshLight(
                 mesh->pos.x, mesh->pos.y, mesh->pos.z, mesh->shade_1,
                 mesh->shade_2, r);
             Output_InsertPolygons(g_Meshes[static_obj->mesh_idx], bounds);

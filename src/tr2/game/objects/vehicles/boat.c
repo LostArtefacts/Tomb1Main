@@ -8,6 +8,7 @@
 #include "game/lara/look.h"
 #include "game/math.h"
 #include "game/objects/common.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -290,7 +291,8 @@ void __cdecl Boat_DoShift(const int32_t boat_num)
 void __cdecl Boat_DoWakeEffect(const ITEM *const boat)
 {
     g_MatrixPtr->_23 = 0;
-    S_CalculateLight(boat->pos.x, boat->pos.y, boat->pos.z, boat->room_num);
+    Output_CalculateLight(
+        boat->pos.x, boat->pos.y, boat->pos.z, boat->room_num);
 
     const int16_t frame =
         (Random_GetDraw() * g_Objects[O_WATER_SPRITE].mesh_count) >> 15;

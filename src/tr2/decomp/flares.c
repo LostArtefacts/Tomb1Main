@@ -114,7 +114,7 @@ void __cdecl Flare_DrawInAir(const ITEM *const item)
             Matrix_TranslateRel(-6, 6, 80);
             Matrix_RotX(-90 * PHD_DEGREE);
             Matrix_RotY((int16_t)(2 * Random_GetDraw()));
-            S_CalculateStaticLight(8 * 256);
+            Output_CalculateStaticLight(8 * 256);
             Output_InsertPolygons(
                 g_Meshes[g_Objects[O_FLARE_FIRE].mesh_idx], clip);
         }

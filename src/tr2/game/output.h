@@ -97,3 +97,5 @@ void __cdecl Output_InsertShadow(
 
 void __cdecl Output_CalculateWibbleTable(void);
 int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);
+void __cdecl Output_CalculateLight(
+    int32_t x, int32_t y, int32_t z, int16_t room_num);

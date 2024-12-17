@@ -144,10 +144,10 @@ void __cdecl Effect_Draw(const int16_t fx_num)
     if (g_MatrixPtr->_23 > g_PhdNearZ && g_MatrixPtr->_23 < g_PhdFarZ) {
         Matrix_RotYXZ(fx->rot.y, fx->rot.x, fx->rot.z);
         if (object->mesh_count) {
-            S_CalculateStaticLight(fx->shade);
+            Output_CalculateStaticLight(fx->shade);
             Output_InsertPolygons(g_Meshes[object->mesh_idx], -1);
         } else {
-            S_CalculateStaticLight(fx->shade);
+            Output_CalculateStaticLight(fx->shade);
             Output_InsertPolygons(g_Meshes[fx->frame_num], -1);
         }
     }

@@ -3,6 +3,7 @@
 #include "config.h"
 #include "game/clock.h"
 #include "game/math.h"
+#include "game/math_misc.h"
 #include "game/matrix.h"
 #include "game/random.h"
 #include "game/render/common.h"
@@ -15,11 +16,24 @@
 
 static int32_t m_TickComp = 0;
 
+static int32_t M_CalcFogShade(int32_t depth);
+
 static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr);
 
 static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
     INV_COLOR bar_color_main, INV_COLOR bar_color_highlight);
+
+static int32_t M_CalcFogShade(const int32_t depth)
+{
+    if (depth > FOG_START) {
+        return depth - FOG_START;
+    }
+    if (depth > FOG_END) {
+        return 0x1FFF;
+    }
+    return 0;
+}
 
 static void M_InsertBar(
     const int32_t l, const int32_t t, const int32_t w, const int32_t h,
@@ -899,4 +913,99 @@ int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *const bounds)
 
     // fully on screen
     return 1;
+}
+
+void __cdecl Output_CalculateLight(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t room_num)
+{
+    const ROOM *const r = &g_Rooms[room_num];
+
+    int32_t brightest_shade = 0;
+    XYZ_32 brightest_pos = { 0 };
+
+    if (r->light_mode != 0) {
+        const int32_t light_shade = g_RoomLightShades[r->light_mode];
+        for (int32_t i = 0; i < r->num_lights; i++) {
+            const LIGHT *const light = &r->lights[i];
+            const int32_t dx = x - light->pos.x;
+            const int32_t dy = y - light->pos.y;
+            const int32_t dz = z - light->pos.z;
+
+            const int32_t falloff_1 = SQUARE(light->falloff_1) >> 12;
+            const int32_t falloff_2 = SQUARE(light->falloff_2) >> 12;
+            const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
+
+            const int32_t shade_1 =
+                falloff_1 * light->intensity_1 / (falloff_1 + dist);
+            const int32_t shade_2 =
+                falloff_2 * light->intensity_2 / (falloff_2 + dist);
+            const int32_t shade =
+                shade_1 + (shade_2 - shade_1) * light_shade / (WIBBLE_SIZE - 1);
+
+            if (shade > brightest_shade) {
+                brightest_shade = shade;
+                brightest_pos = light->pos;
+            }
+        }
+    } else {
+        for (int32_t i = 0; i < r->num_lights; i++) {
+            const LIGHT *const light = &r->lights[i];
+            const int32_t dx = x - light->pos.x;
+            const int32_t dy = y - light->pos.y;
+            const int32_t dz = z - light->pos.z;
+            const int32_t falloff_1 =
+                (light->falloff_1 * light->falloff_1) >> 12;
+            const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
+            const int32_t shade =
+                falloff_1 * light->intensity_1 / (falloff_1 + dist);
+            if (shade > brightest_shade) {
+                brightest_shade = shade;
+                brightest_pos = light->pos;
+            }
+        }
+    }
+
+    int32_t adder = brightest_shade;
+    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+        const LIGHT *const light = &g_DynamicLights[i];
+        const int32_t dx = x - light->pos.x;
+        const int32_t dy = y - light->pos.y;
+        const int32_t dz = z - light->pos.z;
+        const int32_t radius = 1 << light->falloff_1;
+        if (dx < -radius || dx > radius || dy < -radius || dy > radius
+            || dz < -radius || dz > radius) {
+            continue;
+        }
+
+        const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
+        if (dist > SQUARE(radius)) {
+            continue;
+        }
+
+        const int32_t shade = (1 << light->intensity_1)
+            - (dist >> (2 * light->falloff_1 - light->intensity_1));
+        if (shade > brightest_shade) {
+            brightest_shade = shade;
+            brightest_pos = light->pos;
+        }
+        adder += shade;
+    }
+
+    adder /= 2;
+    if (adder != 0) {
+        g_LsAdder = r->ambient_1 - adder;
+        g_LsDivider = (1 << (W2V_SHIFT + 12)) / adder;
+        int16_t angles[2];
+        Math_GetVectorAngles(
+            x - brightest_pos.x, y - brightest_pos.y, z - brightest_pos.z,
+            angles);
+        Output_RotateLight(angles[1], angles[0]);
+    } else {
+        g_LsAdder = r->ambient_1;
+        g_LsDivider = 0;
+    }
+
+    const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
+    g_LsAdder += M_CalcFogShade(depth);
+    CLAMPG(g_LsAdder, 0x1FFF);
 }

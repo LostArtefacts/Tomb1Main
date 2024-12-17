@@ -302,7 +302,7 @@ void __cdecl Skidoo_DoSnowEffect(ITEM *const skidoo)
 
     g_MatrixPtr->_23 = 0;
 
-    S_CalculateLight(fx->pos.x, fx->pos.y, fx->pos.z, fx->room_num);
+    Output_CalculateLight(fx->pos.x, fx->pos.y, fx->pos.z, fx->room_num);
     fx->shade = g_LsAdder - 512;
     CLAMPL(fx->shade, 0);
 }

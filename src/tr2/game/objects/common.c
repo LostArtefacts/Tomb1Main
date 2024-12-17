@@ -147,7 +147,7 @@ void __cdecl Object_DrawUnclippedItem(const ITEM *const item)
 
 void __cdecl Object_DrawSpriteItem(const ITEM *const item)
 {
-    S_CalculateStaticMeshLight(
+    Output_CalculateStaticMeshLight(
         item->pos.x, item->pos.y, item->pos.z, item->shade_1, item->shade_2,
         Room_Get(item->room_num));
 

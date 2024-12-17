@@ -4,6 +4,7 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/objects/effects/missile_common.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -20,7 +21,8 @@ int32_t __cdecl Effect_ExplodingDeath(
     ITEM *const item = &g_Items[item_num];
     const OBJECT *const object = &g_Objects[item->object_id];
 
-    S_CalculateLight(item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculateLight(
+        item->pos.x, item->pos.y, item->pos.z, item->room_num);
 
     const FRAME_INFO *const best_frame = Item_GetBestFrame(item);
 
