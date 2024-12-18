@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.26% (1098)</tspan> · <tspan class="known">9.32% (116)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.34% (1099)</tspan> · <tspan class="known">9.24% (115)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="659.33" height="6" x="0" y="0" class="decompiled"/>
-<rect width="69.66" height="6" x="659.33" y="0" class="known"/>
+<rect width="659.93" height="6" x="0" y="0" class="decompiled"/>
+<rect width="69.06" height="6" x="659.93" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -734,7 +734,7 @@
 <rect width="12" height="12" x="75" y="195" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="195" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="195" class="decompiled"><title>int16_t __cdecl Effect_GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="120" y="195" class="known"><title>int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="120" y="195" class="decompiled"><title>int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="135" y="195" class="known"><title>int16_t __cdecl Effect_GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="150" y="195" class="known"><title>int32_t __cdecl ShotLara(ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation, int32_t damage);</title></rect>
 <rect width="12" height="12" x="165" y="195" class="known"><title>void __cdecl Cultist1_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.13%</tspan> · <tspan class="known">9.55%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.18%</tspan> · <tspan class="known">9.49%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="673.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="71.33" height="6" x="673.24" y="0" class="known"/>
+<rect width="673.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="70.92" height="6" x="673.64" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1807,7 +1807,7 @@
 <rect width="9.90" height="9.03" x="585.79" y="149.44" class="decompiled"><title>int32_t __cdecl Lara_LandedBad(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="9.90" height="9.03" x="598.69" y="149.44" class="decompiled"><title>void __cdecl Room_AlterFloorHeight(ITEM *item, int32_t height);</title></rect>
 <rect width="9.83" height="9.03" x="611.58" y="149.44" class="decompiled"><title>void __cdecl Lara_CheatGetStuff(void);</title></rect>
-<rect width="9.76" height="9.03" x="624.41" y="149.44" class="known"><title>int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
+<rect width="9.76" height="9.03" x="624.41" y="149.44" class="decompiled"><title>int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="9.76" height="9.03" x="637.17" y="149.44" class="decompiled"><title>int32_t __cdecl BGND_AddTexture(int32_t tile_idx, BYTE *bitmap, int32_t pal_index, RGB_888 *bmp_pal);</title></rect>
 <rect width="9.76" height="9.03" x="649.93" y="149.44" class="decompiled"><title>bool __cdecl D3DSetViewport(void);</title></rect>
 <rect width="9.69" height="9.03" x="662.69" y="149.44" class="decompiled"><title>void __cdecl Creature_Die(int16_t item_num, int32_t explode);</title></rect>

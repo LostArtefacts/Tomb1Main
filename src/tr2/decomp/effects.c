@@ -276,3 +276,17 @@ int16_t __cdecl Effect_GunShot(
     fx->shade = HIGH_LIGHT;
     return fx_num;
 }
+
+int16_t __cdecl Effect_GunHit(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t y_rot, const int16_t room_num)
+{
+    XYZ_32 vec = { 0 };
+    Collide_GetJointAbsPosition(
+        g_LaraItem, &vec, Random_GetControl() * 25 / 0x7FFF);
+    DoBloodSplat(
+        vec.x, vec.y, vec.z, g_LaraItem->speed, g_LaraItem->rot.y,
+        g_LaraItem->room_num);
+    Sound_Effect(SFX_LARA_BULLETHIT, &g_LaraItem->pos, SPM_NORMAL);
+    return Effect_GunShot(x, y, z, speed, y_rot, room_num);
+}

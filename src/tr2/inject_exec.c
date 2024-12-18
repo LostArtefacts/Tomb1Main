@@ -211,6 +211,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041D780, FX_LaraHandsFree);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
     INJECT(enable, 0x00435F20, Effect_GunShot);
+    INJECT(enable, 0x00435F90, Effect_GunHit);
 }
 
 static void M_DecompFlares(const bool enable)
