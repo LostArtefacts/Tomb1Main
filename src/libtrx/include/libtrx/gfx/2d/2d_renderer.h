@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../common.h"
 #include "../config.h"
 #include "../gl/buffer.h"
 #include "../gl/program.h"
@@ -9,10 +10,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
-typedef struct {
-    uint8_t r, g, b;
-} GFX_COLOR;
 
 typedef enum {
     GFX_2D_EFFECT_NONE = 0,

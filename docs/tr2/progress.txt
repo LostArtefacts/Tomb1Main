@@ -4664,7 +4664,7 @@ typedef enum {
 0x005251B0  -       FRAME_INFO *g_AnimFrames;
 0x0051BC38  -       int32_t g_IsWet;
 0x0051B308  +       RGB_888 g_WaterPalette[256];
-0x004BF2D8  -       uint8_t g_DepthQIndex[256];
+0x004BF2D8  +       uint8_t g_DepthQIndex[256];
 0x004D7C74  -       int32_t g_NumCameras;
 0x0051B92C  -       int16_t *g_AnimTextureRanges;
 0x005262F4  -       int16_t g_CineLoaded;

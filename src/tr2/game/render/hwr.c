@@ -24,6 +24,7 @@ typedef struct {
     GFX_2D_SURFACE *surface_tex[GFX_MAX_TEXTURES];
     int32_t texture_map[GFX_MAX_TEXTURES];
     int32_t env_map_texture;
+    GFX_COLOR palette[256];
 } M_PRIV;
 
 static VERTEX_INFO m_VBuffer[32] = { 0 };
@@ -42,7 +43,7 @@ static void M_ShadeLightColor(
 
 static void M_ReleaseTextures(RENDERER *renderer);
 static void M_LoadTexturePages(
-    RENDERER *renderer, int32_t pages_count, uint16_t *const *pages_buffer);
+    RENDERER *renderer, int32_t pages_count, uint8_t *const *pages_buffer);
 static void M_SelectTexture(RENDERER *renderer, int32_t tex_source);
 static void M_EnableColorKey(RENDERER *renderer, bool state);
 static bool M_VertexBufferFull(void);
@@ -204,8 +205,7 @@ static void M_ReleaseTextures(RENDERER *const renderer)
 }
 
 static void M_LoadTexturePages(
-    RENDERER *renderer, const int32_t pages_count,
-    uint16_t *const *pages_buffer)
+    RENDERER *renderer, const int32_t pages_count, uint8_t *const *pages_buffer)
 {
     M_PRIV *const priv = renderer->priv;
     int32_t page_idx = -1;
@@ -214,11 +214,12 @@ static void M_LoadTexturePages(
 
     for (int32_t i = 0; i < pages_count; i++) {
         GFX_2D_SURFACE *const surface = priv->surface_tex[i];
-        const uint16_t *input_ptr = pages_buffer[i];
+        const uint8_t *input_ptr = pages_buffer[i];
         RGBA_8888 *output_ptr = (RGBA_8888 *)surface->buffer;
         for (int32_t y = 0; y < TEXTURE_PAGE_HEIGHT; y++) {
             for (int32_t x = 0; x < TEXTURE_PAGE_WIDTH; x++) {
-                *output_ptr++ = Render_ARGB1555To8888(*input_ptr++);
+                output_ptr->r = *input_ptr++;
+                output_ptr++;
             }
         }
 
@@ -1479,7 +1480,7 @@ static void M_Open(RENDERER *const renderer)
         }
     }
 
-    M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
+    M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer8);
     renderer->open = true;
 }
 
@@ -1528,7 +1529,7 @@ static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
     }
     if (flags & (RENDER_RESET_TEXTURES | RENDER_RESET_PALETTE)) {
         LOG_DEBUG("Reloading textures");
-        M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
+        M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer8);
     }
     if (flags & RENDER_RESET_PARAMS) {
         GFX_3D_Renderer_SetBrightnessMultiplier(
@@ -1538,6 +1539,22 @@ static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
                 : 2.0);
     }
     M_ResetFuncPtrs(renderer);
+
+    if (flags & RENDER_RESET_PALETTE) {
+        for (int32_t i = 0; i < 256; i++) {
+            priv->palette[i].r = g_GamePalette8[i].r;
+            priv->palette[i].g = g_GamePalette8[i].g;
+            priv->palette[i].b = g_GamePalette8[i].b;
+        }
+        uint8_t light_map[32][256];
+        for (int32_t i = 0; i < 32; i++) {
+            for (int32_t j = 0; j < 256; j++) {
+                light_map[i][j] = g_DepthQTable[i].index[j];
+            }
+        }
+        GFX_3D_Renderer_SetPalette(
+            priv->renderer_3d, priv->palette, 256, &light_map[0][0], 32);
+    }
 }
 
 static void M_ResetPolyList(RENDERER *const renderer)

@@ -70,3 +70,7 @@ void GFX_3D_Renderer_SetAlphaPointDiscard(
 void GFX_3D_Renderer_SetAlphaThreshold(GFX_3D_RENDERER *renderer, float value);
 void GFX_3D_Renderer_SetBrightnessMultiplier(
     GFX_3D_RENDERER *renderer, float value);
+
+void GFX_3D_Renderer_SetPalette(
+    GFX_3D_RENDERER *renderer, const GFX_COLOR *palette, size_t palette_size,
+    const uint8_t *light_map, size_t light_map_size);

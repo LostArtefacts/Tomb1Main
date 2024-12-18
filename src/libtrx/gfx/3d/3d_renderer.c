@@ -6,6 +6,7 @@
 #include "log.h"
 #include "memory.h"
 
+#include <limits.h>
 #include <stddef.h>
 
 struct GFX_3D_RENDERER {
@@ -15,8 +16,11 @@ struct GFX_3D_RENDERER {
     GFX_GL_SAMPLER sampler;
     GFX_3D_VERTEX_STREAM vertex_stream;
 
+    bool use_palette;
     GFX_GL_TEXTURE *textures[GFX_MAX_TEXTURES];
     GFX_GL_TEXTURE *env_map_texture;
+    GFX_GL_TEXTURE palette_texture;
+    GFX_GL_TEXTURE light_map_texture;
     int selected_texture_num;
     GFX_BLEND_MODE selected_blend_mode;
 
@@ -28,6 +32,9 @@ struct GFX_3D_RENDERER {
     GLint loc_alpha_point_discard;
     GLint loc_alpha_threshold;
     GLint loc_brightness_multiplier;
+    GLint loc_palette_enabled;
+    GLint loc_palette;
+    GLint loc_light_map;
 };
 
 static void M_Flush(GFX_3D_RENDERER *renderer);
@@ -59,13 +66,13 @@ static void M_SelectTextureImpl(
         texture = renderer->textures[texture_num];
     }
 
+    glActiveTexture(GL_TEXTURE0);
     if (texture == NULL) {
         glBindTexture(GL_TEXTURE_2D, 0);
         GFX_GL_CheckError();
-        return;
+    } else {
+        GFX_GL_Texture_Bind(texture);
     }
-
-    GFX_GL_Texture_Bind(texture);
 }
 
 static void M_RestoreTexture(GFX_3D_RENDERER *const renderer)
@@ -80,6 +87,7 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     GFX_3D_RENDERER *const renderer = Memory_Alloc(sizeof(GFX_3D_RENDERER));
     renderer->config = GFX_Context_GetConfig();
 
+    renderer->use_palette = true;
     renderer->selected_texture_num = GFX_NO_TEXTURE;
     for (int i = 0; i < GFX_MAX_TEXTURES; i++) {
         renderer->textures[i] = NULL;
@@ -93,6 +101,9 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         &renderer->sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     GFX_GL_Sampler_Parameteri(
         &renderer->sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    GFX_GL_Texture_Init(&renderer->palette_texture, GL_TEXTURE_1D);
+    GFX_GL_Texture_Init(&renderer->light_map_texture, GL_TEXTURE_2D);
 
     GFX_GL_Program_Init(&renderer->program);
     GFX_GL_Program_AttachShader(
@@ -117,6 +128,12 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         GFX_GL_Program_UniformLocation(&renderer->program, "alphaThreshold");
     renderer->loc_brightness_multiplier = GFX_GL_Program_UniformLocation(
         &renderer->program, "brightnessMultiplier");
+    renderer->loc_palette_enabled =
+        GFX_GL_Program_UniformLocation(&renderer->program, "paletteEnabled");
+    renderer->loc_palette =
+        GFX_GL_Program_UniformLocation(&renderer->program, "texPalette");
+    renderer->loc_light_map =
+        GFX_GL_Program_UniformLocation(&renderer->program, "texLightMap");
 
     GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
@@ -136,9 +153,63 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
         &renderer->program, renderer->loc_alpha_threshold, -1.0);
     GFX_GL_Program_Uniform1f(
         &renderer->program, renderer->loc_brightness_multiplier, 1.0);
+    GFX_GL_Program_Uniform1i(
+        &renderer->program, renderer->loc_palette_enabled,
+        renderer->use_palette);
+    GFX_GL_Program_Uniform1i(&renderer->program, renderer->loc_palette, 1);
+    GFX_GL_Program_Uniform1i(&renderer->program, renderer->loc_light_map, 2);
 
     GFX_3D_VertexStream_Init(&renderer->vertex_stream);
     return renderer;
+}
+
+void GFX_3D_Renderer_SetPalette(
+    GFX_3D_RENDERER *const r, const GFX_COLOR *const palette,
+    const size_t palette_size, const uint8_t *const light_map,
+    const size_t light_map_size)
+{
+    ASSERT(r != NULL);
+
+    if (palette == NULL) {
+        if (r->use_palette) {
+            GFX_GL_Program_Bind(&r->program);
+            GFX_GL_Program_Uniform1i(
+                &r->program, r->loc_palette_enabled, false);
+        }
+        r->use_palette = false;
+        return;
+    }
+
+    if (!r->use_palette) {
+        GFX_GL_Program_Bind(&r->program);
+        GFX_GL_Program_Uniform1i(&r->program, r->loc_palette_enabled, true);
+        GFX_GL_CheckError();
+        r->use_palette = true;
+    }
+
+    glActiveTexture(GL_TEXTURE1);
+    GFX_GL_Texture_Bind(&r->palette_texture);
+    glTexImage1D(
+        GL_TEXTURE_1D, 0, GL_RGB8, palette_size, 0, GL_RGB, GL_UNSIGNED_BYTE,
+        palette);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    GFX_GL_CheckError();
+
+    if (light_map != NULL) {
+        glActiveTexture(GL_TEXTURE2);
+        GFX_GL_Texture_Bind(&r->light_map_texture);
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RED, 256, 32, 0, GL_RED, GL_UNSIGNED_BYTE,
+            light_map);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        GFX_GL_CheckError();
+    }
 }
 
 void GFX_3D_Renderer_Destroy(GFX_3D_RENDERER *const renderer)
@@ -149,6 +220,8 @@ void GFX_3D_Renderer_Destroy(GFX_3D_RENDERER *const renderer)
     GFX_3D_VertexStream_Close(&renderer->vertex_stream);
     GFX_GL_Program_Close(&renderer->program);
     GFX_GL_Sampler_Close(&renderer->sampler);
+    GFX_GL_Texture_Close(&renderer->palette_texture);
+    GFX_GL_Texture_Close(&renderer->light_map_texture);
     Memory_Free(renderer);
 }
 
@@ -185,6 +258,13 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     GFX_GL_CheckError();
+
+    if (renderer->use_palette) {
+        glActiveTexture(GL_TEXTURE1);
+        GFX_GL_Texture_Bind(&renderer->palette_texture);
+        glActiveTexture(GL_TEXTURE2);
+        GFX_GL_Texture_Bind(&renderer->light_map_texture);
+    }
 }
 
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *const renderer)

@@ -500,10 +500,6 @@ static void M_LoadDepthQ(VFILE *const file)
         g_DepthQTable[i].index[0] = 0;
     }
 
-    for (int32_t i = 0; i < 256; i++) {
-        g_DepthQIndex[i] = g_DepthQTable[24].index[i];
-    }
-
     for (int32_t i = 0; i < 32; i++) {
         for (int32_t j = 0; j < 256; j++) {
             g_GouraudTable[j].index[i] = g_DepthQTable[i].index[j];
