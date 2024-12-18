@@ -1,5 +1,6 @@
 #include "game/objects/vehicles/boat.h"
 
+#include "decomp/decomp.h"
 #include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/gamebuf.h"

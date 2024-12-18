@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.99% (1107)</tspan> · <tspan class="known">8.60% (107)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.07% (1108)</tspan> · <tspan class="known">8.52% (106)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="664.73" height="6" x="0" y="0" class="decompiled"/>
-<rect width="64.25" height="6" x="664.73" y="0" class="known"/>
+<rect width="665.33" height="6" x="0" y="0" class="decompiled"/>
+<rect width="63.65" height="6" x="665.33" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -782,7 +782,7 @@
 <rect width="12" height="12" x="45" y="210" class="decompiled"><title>void __cdecl Skidoo_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="60" y="210" class="decompiled"><title>void __cdecl Skidoo_BaddieCollision(const ITEM *skidoo);</title></rect>
 <rect width="12" height="12" x="75" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_TestHeight(const ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *pos);</title></rect>
-<rect width="12" height="12" x="90" y="210" class="known"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
+<rect width="12" height="12" x="90" y="210" class="decompiled"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
 <rect width="12" height="12" x="105" y="210" class="known"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
 <rect width="12" height="12" x="120" y="210" class="known"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
 <rect width="12" height="12" x="135" y="210" class="decompiled"><title>void __cdecl Skidoo_DoSnowEffect(ITEM *skidoo);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.65%</tspan> · <tspan class="known">9.03%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.83%</tspan> · <tspan class="known">8.84%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="677.13" height="6" x="0" y="0" class="decompiled"/>
-<rect width="67.43" height="6" x="677.13" y="0" class="known"/>
+<rect width="678.52" height="6" x="0" y="0" class="decompiled"/>
+<rect width="66.04" height="6" x="678.52" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1464,7 +1464,7 @@
 <rect width="20.94" height="19.11" x="344.49" y="311.76" class="decompiled"><title>void __cdecl Tiger_Control(int16_t item_num);</title></rect>
 <rect width="20.94" height="19.08" x="344.49" y="333.87" class="decompiled"><title>const int16_t *__cdecl Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip);</title></rect>
 <rect width="20.94" height="19.05" x="344.49" y="355.95" class="known"><title>void __cdecl Shark_Control(int16_t item_num);</title></rect>
-<rect width="19.34" height="20.62" x="368.43" y="0" class="known"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
+<rect width="19.34" height="20.62" x="368.43" y="0" class="decompiled"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
 <rect width="19.34" height="20.18" x="368.43" y="23.62" class="decompiled"><title>int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);</title></rect>
 <rect width="19.34" height="20.10" x="368.43" y="46.80" class="decompiled"><title>void __cdecl Flare_Control(int16_t item_num);</title></rect>
 <rect width="19.34" height="19.81" x="368.43" y="69.90" class="decompiled"><title>void __cdecl Output_Init(int16_t x, int16_t y, int32_t width, int32_t height, int32_t near_z, int32_t far_z, int16_t view_angle, int32_t screen_width, int32_t screen_height);</title></rect>

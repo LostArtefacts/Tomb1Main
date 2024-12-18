@@ -39,3 +39,4 @@ void __cdecl GetValidLevelsList(REQUEST_INFO *req);
 void __cdecl InitialiseGameFlags(void);
 void __cdecl InitialiseLevelFlags(void);
 void __cdecl GetCarriedItems(void);
+int32_t __cdecl DoShift(ITEM *vehicle, const XYZ_32 *pos, const XYZ_32 *old);

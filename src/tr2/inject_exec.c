@@ -164,6 +164,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0043A3E0, InitialiseGameFlags);
     INJECT(enable, 0x0043A450, InitialiseLevelFlags);
     INJECT(enable, 0x0043C780, GetCarriedItems);
+    INJECT(enable, 0x0043D320, DoShift);
     INJECT(enable, 0x00444FB0, WinVidFindGameWindow);
     INJECT(enable, 0x00447810, IncreaseScreenSize);
     INJECT(enable, 0x00447880, DecreaseScreenSize);

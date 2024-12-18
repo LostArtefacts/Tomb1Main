@@ -90,7 +90,6 @@
 #define Jelly_Control ((void __cdecl (*)(int16_t item_num))0x0043C850)
 #define Baracudda_Control ((void __cdecl (*)(int16_t item_num))0x0043C970)
 #define Shark_Control ((void __cdecl (*)(int16_t item_num))0x0043CBA0)
-#define DoShift ((int32_t __cdecl (*)(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old))0x0043D320)
 #define DoDynamics ((int32_t __cdecl (*)(int32_t height, int32_t fall_speed, int32_t *y))0x0043D5A0)
 #define GetCollisionAnim ((int32_t __cdecl (*)(ITEM *skidoo, XYZ_32 *moved))0x0043D600)
 #define Collide_TestCollision ((int32_t __cdecl (*)(ITEM *item, const ITEM *lara_item))0x0043F9B0)
