@@ -90,7 +90,6 @@
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define Mouse_Control ((void __cdecl (*)(int16_t item_num))0x00438EF0)
 #define Object_SetupTrapObjects ((void __cdecl (*)(void))0x0043B4C0)
-#define GetCarriedItems ((void __cdecl (*)(void))0x0043C780)
 #define Jelly_Control ((void __cdecl (*)(int16_t item_num))0x0043C850)
 #define Baracudda_Control ((void __cdecl (*)(int16_t item_num))0x0043C970)
 #define Shark_Control ((void __cdecl (*)(int16_t item_num))0x0043CBA0)

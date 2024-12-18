@@ -20,6 +20,7 @@
 #include "game/lot.h"
 #include "game/math.h"
 #include "game/music.h"
+#include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/random.h"
@@ -501,4 +502,34 @@ void __cdecl InitialiseLevelFlags(void)
     g_SaveGame.statistics.hits = 0;
     g_SaveGame.statistics.shots = 0;
     g_SaveGame.statistics.medipacks = 0;
+}
+
+void __cdecl GetCarriedItems(void)
+{
+    for (int32_t item_num = 0; item_num < g_LevelItemCount; item_num++) {
+        ITEM *const item = Item_Get(item_num);
+        if (!g_Objects[item->object_id].intelligent) {
+            continue;
+        }
+        item->carried_item = NO_ITEM;
+
+        const ROOM *const room = Room_Get(item->room_num);
+        int16_t pickup_item_num = room->item_num;
+        do {
+            ITEM *const pickup_item = Item_Get(pickup_item_num);
+
+            if (pickup_item->pos.x == item->pos.x
+                && pickup_item->pos.y == item->pos.y
+                && pickup_item->pos.z == item->pos.z
+                && Object_IsObjectType(
+                    pickup_item->object_id, g_PickupObjects)) {
+                pickup_item->carried_item = item->carried_item;
+                item->carried_item = pickup_item_num;
+                Item_RemoveDrawn(pickup_item_num);
+                pickup_item->room_num = NO_ROOM;
+            }
+
+            pickup_item_num = pickup_item->next_item;
+        } while (pickup_item_num != NO_ITEM);
+    }
 }
