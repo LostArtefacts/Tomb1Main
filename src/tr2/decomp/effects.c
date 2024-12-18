@@ -290,3 +290,19 @@ int16_t __cdecl Effect_GunHit(
     Sound_Effect(SFX_LARA_BULLETHIT, &g_LaraItem->pos, SPM_NORMAL);
     return Effect_GunShot(x, y, z, speed, y_rot, room_num);
 }
+
+int16_t __cdecl Effect_GunMiss(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t y_rot, const int16_t room_num)
+{
+    GAME_VECTOR pos = {
+    .pos = {
+        .x = g_LaraItem->pos.x + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
+        .y = g_LaraItem->floor,
+        .z = g_LaraItem->pos.z + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
+    },
+      .room_num = g_LaraItem->room_num,
+  };
+    Richochet(&pos);
+    return Effect_GunShot(x, y, z, speed, y_rot, room_num);
+}
