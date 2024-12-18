@@ -252,3 +252,27 @@ void __cdecl FX_LaraHandsFree(ITEM *const item)
 {
     g_Lara.gun_status = LGS_ARMLESS;
 }
+
+int16_t __cdecl Effect_GunShot(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t y_rot, const int16_t room_num)
+{
+    const int16_t fx_num = Effect_Create(room_num);
+    if (fx_num == NO_ITEM) {
+        return fx_num;
+    }
+
+    FX *const fx = &g_Effects[fx_num];
+    fx->pos.x = x;
+    fx->pos.y = y;
+    fx->pos.z = z;
+    fx->room_num = room_num;
+    fx->rot.z = 0;
+    fx->rot.x = 0;
+    fx->rot.y = y_rot;
+    fx->counter = 3;
+    fx->frame_num = 0;
+    fx->object_id = O_GUN_FLASH;
+    fx->shade = HIGH_LIGHT;
+    return fx_num;
+}

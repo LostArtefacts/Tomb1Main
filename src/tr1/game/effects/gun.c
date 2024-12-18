@@ -70,7 +70,7 @@ int16_t Effect_RocketGun(
         fx->object_id = O_MISSILE_3;
         fx->frame_num = 0;
         fx->speed = ROCKET_SPEED;
-        fx->shade = 4096;
+        fx->shade = HIGH_LIGHT;
         M_ShootAtLara(fx);
     }
     return fx_num;

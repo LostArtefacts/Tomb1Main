@@ -1,5 +1,6 @@
 #include "decomp/skidoo.h"
 
+#include "decomp/effects.h"
 #include "decomp/flares.h"
 #include "game/creature.h"
 #include "game/effects.h"
@@ -790,8 +791,8 @@ void __cdecl Skidoo_Guns(void)
     AddDynamicLight(x, y, z, 12, 11);
 
     ITEM *const skidoo = Item_Get(g_Lara.skidoo);
-    Creature_Effect(skidoo, &g_Skidoo_LeftGun, GunShot);
-    Creature_Effect(skidoo, &g_Skidoo_RightGun, GunShot);
+    Creature_Effect(skidoo, &g_Skidoo_LeftGun, Effect_GunShot);
+    Creature_Effect(skidoo, &g_Skidoo_RightGun, Effect_GunShot);
 }
 
 int32_t __cdecl Skidoo_Control(void)

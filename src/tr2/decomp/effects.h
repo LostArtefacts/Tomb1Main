@@ -19,3 +19,7 @@ void __cdecl FX_Bubbles(ITEM *item);
 void __cdecl Splash(const ITEM *item);
 
 void __cdecl FX_LaraHandsFree(ITEM *item);
+
+int16_t __cdecl Effect_GunShot(
+    int32_t x, int32_t y, int32_t z, int16_t speed, int16_t yrot,
+    int16_t room_num);
