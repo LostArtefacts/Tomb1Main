@@ -469,3 +469,25 @@ void __cdecl GetValidLevelsList(REQUEST_INFO *const req)
         Requester_AddItem(req, g_GF_LevelNames[i], 0, NULL, 0);
     }
 }
+
+void __cdecl InitialiseGameFlags(void)
+{
+    for (int32_t i = 0; i < MAX_CD_TRACKS; i++) {
+        g_MusicTrackFlags[i] = 0;
+    }
+    for (GAME_OBJECT_ID object_id = 0; object_id < O_NUMBER_OF; object_id++) {
+        g_Objects[object_id].loaded = 0;
+    }
+
+    g_FlipStatus = false;
+    for (int32_t i = 0; i < MAX_FLIP_MAPS; i++) {
+        g_FlipMaps[i] = 0;
+    }
+
+    g_SunsetTimer = 0;
+    g_AmmoTextInfo = NULL;
+    g_LevelComplete = false;
+    g_FlipEffect = -1;
+    g_DetonateAllMines = false;
+    g_IsMonkAngry = false;
+}

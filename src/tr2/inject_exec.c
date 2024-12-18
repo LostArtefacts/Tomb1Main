@@ -161,6 +161,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x00412660, CutscenePlayerGen_Initialise);
     INJECT(enable, 0x00414220, Misc_Move3DPosTo3DPos);
     INJECT(enable, 0x0043A280, Level_Initialise);
+    INJECT(enable, 0x0043A3E0, InitialiseGameFlags);
     INJECT(enable, 0x00444FB0, WinVidFindGameWindow);
     INJECT(enable, 0x00447810, IncreaseScreenSize);
     INJECT(enable, 0x00447880, DecreaseScreenSize);

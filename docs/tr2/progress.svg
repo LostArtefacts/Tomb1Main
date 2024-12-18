@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.50% (1101)</tspan> · <tspan class="known">9.08% (113)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.59% (1102)</tspan> · <tspan class="known">9% (112)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="661.13" height="6" x="0" y="0" class="decompiled"/>
-<rect width="67.85" height="6" x="661.13" y="0" class="known"/>
+<rect width="661.73" height="6" x="0" y="0" class="decompiled"/>
+<rect width="67.25" height="6" x="661.73" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -767,7 +767,7 @@
 <rect width="12" height="12" x="570" y="195" class="decompiled"><title>void __cdecl WriteSG(const void *pointer, int32_t size);</title></rect>
 <rect width="12" height="12" x="585" y="195" class="decompiled"><title>void __cdecl ReadSG(void *pointer, int32_t size);</title></rect>
 <rect width="12" height="12" x="600" y="195" class="decompiled"><title>int32_t __cdecl Level_Initialise(int32_t level_num, int32_t level_type);</title></rect>
-<rect width="12" height="12" x="615" y="195" class="known"><title>void __cdecl InitialiseGameFlags(void);</title></rect>
+<rect width="12" height="12" x="615" y="195" class="decompiled"><title>void __cdecl InitialiseGameFlags(void);</title></rect>
 <rect width="12" height="12" x="630" y="195" class="known"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
 <rect width="12" height="12" x="645" y="195" class="decompiled"><title>void __cdecl Object_SetupBaddyObjects(void);</title></rect>
 <rect width="12" height="12" x="660" y="195" class="known"><title>void __cdecl Object_SetupTrapObjects(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.36%</tspan> · <tspan class="known">9.31%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.39%</tspan> · <tspan class="known">9.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="674.99" height="6" x="0" y="0" class="decompiled"/>
-<rect width="69.57" height="6" x="674.99" y="0" class="known"/>
+<rect width="675.20" height="6" x="0" y="0" class="decompiled"/>
+<rect width="69.36" height="6" x="675.20" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2051,7 +2051,7 @@
 <rect width="6.33" height="5.72" x="598.27" y="351.85" class="decompiled"><title>void __cdecl InitialiseStartInfo(void);</title></rect>
 <rect width="6.33" height="5.72" x="598.27" y="360.56" class="decompiled"><title>void __cdecl IncreaseScreenSize(void);</title></rect>
 <rect width="6.33" height="5.72" x="598.27" y="369.28" class="decompiled"><title>void __cdecl DecreaseScreenSize(void);</title></rect>
-<rect width="6" height="5.94" x="607.59" y="235.22" class="known"><title>void __cdecl InitialiseGameFlags(void);</title></rect>
+<rect width="6" height="5.94" x="607.59" y="235.22" class="decompiled"><title>void __cdecl InitialiseGameFlags(void);</title></rect>
 <rect width="6" height="5.94" x="616.60" y="235.22" class="decompiled"><title>DWORD __cdecl CalculateCompatibleColor(COLOR_BIT_MASKS *mask, int32_t red, int32_t green, int32_t blue, int32_t alpha);</title></rect>
 <rect width="6" height="5.94" x="625.60" y="235.22" class="decompiled"><title>int32_t __cdecl Music_GetFrames(void);</title></rect>
 <rect width="6" height="5.94" x="634.61" y="235.22" class="decompiled"><title>bool __cdecl SE_RegisterSetupWindowClass(void);</title></rect>
