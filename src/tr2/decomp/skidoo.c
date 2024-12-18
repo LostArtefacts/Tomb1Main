@@ -788,7 +788,7 @@ void __cdecl Skidoo_Guns(void)
     const int32_t x = g_LaraItem->pos.x + (sy >> 4);
     const int32_t z = g_LaraItem->pos.z + (cy >> 4);
     const int32_t y = g_LaraItem->pos.y - 512;
-    AddDynamicLight(x, y, z, 12, 11);
+    Output_AddDynamicLight(x, y, z, 12, 11);
 
     ITEM *const skidoo = Item_Get(g_Lara.skidoo);
     Creature_Effect(skidoo, &g_Skidoo_LeftGun, Effect_GunShot);

@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define AddDynamicLight ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff))0x0041C0F0)
 #define BigEel_Control ((void __cdecl (*)(int16_t item_num))0x0041C140)
 #define Eel_Control ((void __cdecl (*)(int16_t item_num))0x0041C2E0)
 #define DoBloodSplat ((int16_t __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num))0x0041C5D0)

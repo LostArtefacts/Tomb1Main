@@ -302,20 +302,20 @@ static void M_Room(const bool enable)
     INJECT(enable, 0x00414B70, Room_GetSector);
     INJECT(enable, 0x00414D10, Room_GetWaterHeight);
     INJECT(enable, 0x00414E80, Room_GetHeight);
+    INJECT(enable, 0x004151F0, Room_Legacy_TestTriggers);
     INJECT(enable, 0x00415930, Room_GetCeiling);
     INJECT(enable, 0x00415B90, Room_Legacy_GetDoor);
-    INJECT(enable, 0x004151F0, Room_Legacy_TestTriggers);
-    INJECT(enable, 0x004340B0, Room_AlterFloorHeight);
     INJECT(enable, 0x00416640, Room_FlipMap);
     INJECT(enable, 0x00416700, Room_RemoveFlipItems);
     INJECT(enable, 0x004167A0, Room_AddFlipItems);
+    INJECT(enable, 0x00416800, Room_Legacy_TriggerMusicTrack);
+    INJECT(enable, 0x004189D0, Room_DrawAllRooms);
     INJECT(enable, 0x00418C80, Room_GetBounds);
     INJECT(enable, 0x00418E50, Room_SetBounds);
     INJECT(enable, 0x004191D0, Room_Clip);
-    INJECT(enable, 0x004189D0, Room_DrawAllRooms);
     INJECT(enable, 0x004195B0, Room_DrawSingleRoomGeometry);
     INJECT(enable, 0x00419670, Room_DrawSingleRoomObjects);
-    INJECT(enable, 0x00416800, Room_Legacy_TriggerMusicTrack);
+    INJECT(enable, 0x004340B0, Room_AlterFloorHeight);
 }
 
 static void M_Matrix(const bool enable)
@@ -424,6 +424,7 @@ static void M_Output(const bool enable)
     INJECT(enable, 0x0040C5B0, Output_DrawScreenSprite);
     INJECT(enable, 0x0041BA50, Output_InsertPolygons_I);
     INJECT(enable, 0x0041BEA0, Output_CalculateObjectLighting);
+    INJECT(enable, 0x0041C0F0, Output_AddDynamicLight);
     INJECT(enable, 0x0044D780, Output_CalculateWibbleTable);
     INJECT(enable, 0x00450CC0, Output_GetObjectBounds);
     INJECT(enable, 0x00450F80, Output_InsertShadow);

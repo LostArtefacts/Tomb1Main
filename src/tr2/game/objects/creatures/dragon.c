@@ -8,6 +8,7 @@
 #include "game/lot.h"
 #include "game/math.h"
 #include "game/objects/common.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -284,7 +285,7 @@ void __cdecl Dragon_Control(const int16_t item_num)
         } else {
             if (creature->flags > -20) {
                 // clang-format off
-                AddDynamicLight(
+                Output_AddDynamicLight(
                     dragon_front_item->pos.x,
                     dragon_front_item->pos.y,
                     dragon_front_item->pos.z,

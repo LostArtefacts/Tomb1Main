@@ -5,6 +5,7 @@
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -46,7 +47,7 @@ void __cdecl Missile_Control(const int16_t fx_num)
             fx->counter = 6;
             Sound_Effect(SFX_CIRCLE_BLADE_HIT, &fx->pos, SPM_NORMAL);
         } else if (fx->object_id == O_MISSILE_FLAME) {
-            AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 14, 11);
+            Output_AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 14, 11);
             Effect_Kill(fx_num);
         }
         return;
@@ -82,7 +83,7 @@ void __cdecl Missile_Control(const int16_t fx_num)
         CreateBubble(&fx->pos, fx->room_num);
     } else if (fx->object_id == O_MISSILE_FLAME) {
         if (!fx->counter--) {
-            AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 14, 11);
+            Output_AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 14, 11);
             Sound_Effect(SFX_DRAGON_FIRE, &fx->pos, SPM_NORMAL);
             Effect_Kill(fx_num);
         }

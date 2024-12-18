@@ -109,3 +109,6 @@ void __cdecl Output_LightRoom(ROOM *room);
 void __cdecl Output_SetupBelowWater(bool is_underwater);
 void __cdecl Output_SetupAboveWater(bool is_underwater);
 void __cdecl Output_AnimateTextures(int32_t ticks);
+
+void __cdecl Output_AddDynamicLight(
+    int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);

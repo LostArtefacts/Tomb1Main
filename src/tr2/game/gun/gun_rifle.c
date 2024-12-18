@@ -7,6 +7,7 @@
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -84,7 +85,7 @@ void __cdecl Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
         const int32_t x = g_LaraItem->pos.x + (s >> (W2V_SHIFT - 10));
         const int32_t y = g_LaraItem->pos.y - WALL_L / 2;
         const int32_t z = g_LaraItem->pos.z + (c >> (W2V_SHIFT - 10));
-        AddDynamicLight(x, y, z, 12, 11);
+        Output_AddDynamicLight(x, y, z, 12, 11);
     }
 }
 

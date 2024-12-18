@@ -3203,7 +3203,7 @@ typedef enum {
 0x0041BF90  0x0092  +       int32_t __cdecl Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate);
 0x0041C030  0x007C  +       BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);
 0x0041C0B0  0x0035  +       FRAME_INFO *__cdecl Item_GetBestFrame(const ITEM *item);
-0x0041C0F0  0x0048  -R      void __cdecl AddDynamicLight(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);
+0x0041C0F0  0x0048  +       void __cdecl Output_AddDynamicLight(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);
 
 # game/eel.c
 0x0041C140  0x019D  -       void __cdecl BigEel_Control(int16_t item_num);

@@ -171,7 +171,7 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
     }
 
     // clang-format off
-    AddDynamicLight(
+    Output_AddDynamicLight(
         item->pos.x,
         item->pos.y,
         item->pos.z,

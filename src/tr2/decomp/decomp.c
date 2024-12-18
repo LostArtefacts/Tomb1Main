@@ -156,7 +156,7 @@ void __cdecl CutscenePlayer_Control(const int16_t item_num)
         pos.y = 0;
         pos.z = 0;
         Collide_GetJointAbsPosition(item, &pos, 0);
-        AddDynamicLight(pos.x, pos.y, pos.z, 12, 11);
+        Output_AddDynamicLight(pos.x, pos.y, pos.z, 12, 11);
     }
 
     Item_Animate(item);
