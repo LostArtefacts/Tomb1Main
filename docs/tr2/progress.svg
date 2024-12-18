@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.07% (1108)</tspan> · <tspan class="known">8.52% (106)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.15% (1109)</tspan> · <tspan class="known">8.44% (105)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="665.33" height="6" x="0" y="0" class="decompiled"/>
-<rect width="63.65" height="6" x="665.33" y="0" class="known"/>
+<rect width="665.93" height="6" x="0" y="0" class="decompiled"/>
+<rect width="63.05" height="6" x="665.93" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -783,7 +783,7 @@
 <rect width="12" height="12" x="60" y="210" class="decompiled"><title>void __cdecl Skidoo_BaddieCollision(const ITEM *skidoo);</title></rect>
 <rect width="12" height="12" x="75" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_TestHeight(const ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *pos);</title></rect>
 <rect width="12" height="12" x="90" y="210" class="decompiled"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
-<rect width="12" height="12" x="105" y="210" class="known"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
+<rect width="12" height="12" x="105" y="210" class="decompiled"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
 <rect width="12" height="12" x="120" y="210" class="known"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
 <rect width="12" height="12" x="135" y="210" class="decompiled"><title>void __cdecl Skidoo_DoSnowEffect(ITEM *skidoo);</title></rect>
 <rect width="12" height="12" x="150" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_Dynamics(ITEM *skidoo);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.83%</tspan> · <tspan class="known">8.84%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.86%</tspan> · <tspan class="known">8.82%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="678.52" height="6" x="0" y="0" class="decompiled"/>
-<rect width="66.04" height="6" x="678.52" y="0" class="known"/>
+<rect width="678.70" height="6" x="0" y="0" class="decompiled"/>
+<rect width="65.86" height="6" x="678.70" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2106,7 +2106,7 @@
 <rect width="5.35" height="5.45" x="616.17" y="295.22" class="decompiled"><title>void __cdecl Shell_Cleanup(void);</title></rect>
 <rect width="5.35" height="5.35" x="616.17" y="303.67" class="decompiled"><title>void __cdecl Requester_Item_LeftAlign(REQUEST_INFO *req, TEXTSTRING *txt);</title></rect>
 <rect width="5.35" height="5.35" x="616.17" y="312.02" class="decompiled"><title>void __cdecl Lara_State_FastDive(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="5.35" height="5.35" x="616.17" y="320.36" class="known"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
+<rect width="5.35" height="5.35" x="616.17" y="320.36" class="decompiled"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
 <rect width="5.35" height="5.35" x="616.17" y="328.71" class="decompiled"><title>bool __cdecl DDrawCreate(LPGUID lpGUID);</title></rect>
 <rect width="5.35" height="5.25" x="616.17" y="337.06" class="decompiled"><title>void __cdecl Lara_State_UWDeath(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.35" height="5.25" x="616.17" y="345.31" class="decompiled"><title>void __cdecl LOT_InitialiseArray(void);</title></rect>

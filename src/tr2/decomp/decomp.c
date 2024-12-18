@@ -46,7 +46,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-#define IDI_MAINICON 100
+// TODO: delegate these constants to individual vehicle code
+#define VEHICLE_MIN_BOUNCE 50
+#define VEHICLE_MAX_KICK -80
 
 int32_t __stdcall WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
@@ -617,4 +619,22 @@ int32_t __cdecl DoShift(
     }
 
     return 0;
+}
+
+int32_t __cdecl DoDynamics(
+    const int32_t height, const int32_t fall_speed, int32_t *const out_y)
+{
+    if (height > *out_y) {
+        *out_y += fall_speed;
+        if (*out_y > height - VEHICLE_MIN_BOUNCE) {
+            *out_y = height;
+            return 0;
+        }
+        return fall_speed + GRAVITY;
+    }
+
+    int32_t kick = 4 * (height - *out_y);
+    CLAMPL(kick, VEHICLE_MAX_KICK);
+    CLAMPG(*out_y, height);
+    return fall_speed + ((kick - fall_speed) >> 3);
 }
