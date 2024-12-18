@@ -3713,7 +3713,7 @@ typedef enum {
 # game/setup.c
 0x0043A280  0x015F  +       int32_t __cdecl Level_Initialise(int32_t level_num, int32_t level_type);
 0x0043A3E0  0x0061  +R      void __cdecl InitialiseGameFlags(void);
-0x0043A450  0x0027  -R      void __cdecl InitialiseLevelFlags(void);
+0x0043A450  0x0027  +R      void __cdecl InitialiseLevelFlags(void);
 0x0043A480  0x103B  +       void __cdecl Object_SetupBaddyObjects(void);
 0x0043B4C0  0x05FD  -       void __cdecl Object_SetupTrapObjects(void);
 0x0043BAC0  0x0C4C  +       void __cdecl Object_SetupGeneralObjects(void);

@@ -491,3 +491,14 @@ void __cdecl InitialiseGameFlags(void)
     g_DetonateAllMines = false;
     g_IsMonkAngry = false;
 }
+
+void __cdecl InitialiseLevelFlags(void)
+{
+    g_SaveGame.statistics.secrets = 0;
+    g_SaveGame.statistics.timer = 0;
+    g_SaveGame.statistics.kills = 0;
+    g_SaveGame.statistics.distance = 0;
+    g_SaveGame.statistics.hits = 0;
+    g_SaveGame.statistics.shots = 0;
+    g_SaveGame.statistics.medipacks = 0;
+}

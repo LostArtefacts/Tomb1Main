@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.59% (1102)</tspan> · <tspan class="known">9% (112)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.67% (1103)</tspan> · <tspan class="known">8.92% (111)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="661.73" height="6" x="0" y="0" class="decompiled"/>
-<rect width="67.25" height="6" x="661.73" y="0" class="known"/>
+<rect width="662.33" height="6" x="0" y="0" class="decompiled"/>
+<rect width="66.65" height="6" x="662.33" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -768,7 +768,7 @@
 <rect width="12" height="12" x="585" y="195" class="decompiled"><title>void __cdecl ReadSG(void *pointer, int32_t size);</title></rect>
 <rect width="12" height="12" x="600" y="195" class="decompiled"><title>int32_t __cdecl Level_Initialise(int32_t level_num, int32_t level_type);</title></rect>
 <rect width="12" height="12" x="615" y="195" class="decompiled"><title>void __cdecl InitialiseGameFlags(void);</title></rect>
-<rect width="12" height="12" x="630" y="195" class="known"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
+<rect width="12" height="12" x="630" y="195" class="decompiled"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
 <rect width="12" height="12" x="645" y="195" class="decompiled"><title>void __cdecl Object_SetupBaddyObjects(void);</title></rect>
 <rect width="12" height="12" x="660" y="195" class="known"><title>void __cdecl Object_SetupTrapObjects(void);</title></rect>
 <rect width="12" height="12" x="675" y="195" class="decompiled"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.39%</tspan> · <tspan class="known">9.28%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.40%</tspan> · <tspan class="known">9.27%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="675.20" height="6" x="0" y="0" class="decompiled"/>
-<rect width="69.36" height="6" x="675.20" y="0" class="known"/>
+<rect width="675.29" height="6" x="0" y="0" class="decompiled"/>
+<rect width="69.27" height="6" x="675.29" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2360,7 +2360,7 @@
 <rect width="2.67" height="2.85" x="722.22" y="314.78" class="decompiled"><title>int32_t __cdecl CalculateWindowHeight(int32_t width, int32_t height);</title></rect>
 <rect width="2.53" height="2.85" x="727.89" y="314.78" class="decompiled"><title>void __cdecl Matrix_Push_I(void);</title></rect>
 <rect width="2.53" height="2.85" x="733.42" y="314.78" class="decompiled"><title>void __cdecl Lara_State_PPReady(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="2.53" height="2.85" x="738.94" y="314.78" class="known"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
+<rect width="2.53" height="2.85" x="738.94" y="314.78" class="decompiled"><title>void __cdecl InitialiseLevelFlags(void);</title></rect>
 <rect width="2.53" height="2.85" x="744.47" y="314.78" class="decompiled"><title>void __cdecl Text_Draw(void);</title></rect>
 <rect width="2.47" height="2.92" x="687.21" y="320.63" class="decompiled"><title>void __cdecl S_FadeOutInventory(BOOL isFade);</title></rect>
 <rect width="2.47" height="2.77" x="687.21" y="326.55" class="decompiled"><title>void __cdecl Inv_Ring_MotionRadius(RING_INFO *ring, int16_t target);</title></rect>
