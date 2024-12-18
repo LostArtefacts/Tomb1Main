@@ -2,6 +2,7 @@
 
 #include "decomp/effects.h"
 #include "game/box.h"
+#include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/los.h"
@@ -28,7 +29,9 @@
 #define TARGET_TOLERANCE 0x400000
 
 #define CREATURE_ATTACK_RANGE SQUARE(WALL_L * 3) // = 0x900000 = 9437184
+#define CREATURE_SHOOT_TARGETING_SPEED 300
 #define CREATURE_SHOOT_RANGE SQUARE(WALL_L * 8) // = 0x4000000 = 67108864
+#define CREATURE_SHOOT_HIT_CHANCE 0x2000
 
 void __cdecl Creature_Initialise(const int16_t item_num)
 {
@@ -951,4 +954,79 @@ bool Creature_IsEnemy(const ITEM *const item)
 bool Creature_IsAlly(const ITEM *const item)
 {
     return Object_IsObjectType(item->object_id, g_AllyObjects);
+}
+
+int32_t __cdecl Creature_ShootAtLara(
+    ITEM *const item, AI_INFO *const info, BITE *const gun,
+    const int16_t extra_rotation, const int32_t damage)
+{
+    const CREATURE *const creature = item->data;
+    ITEM *const target_item = creature->enemy;
+
+    bool is_targetable;
+    bool is_hit;
+    if (info->distance > CREATURE_SHOOT_RANGE
+        || !Creature_CanTargetEnemy(item, info)) {
+        is_targetable = false;
+        is_hit = false;
+    } else {
+        int32_t distance =
+            (((target_item->speed * Math_Sin(info->enemy_facing)) >> W2V_SHIFT)
+             * CREATURE_SHOOT_RANGE)
+            / CREATURE_SHOOT_TARGETING_SPEED;
+        distance = info->distance + SQUARE(distance);
+        if (distance > CREATURE_SHOOT_RANGE) {
+            is_hit = false;
+        } else {
+            const int32_t chance = CREATURE_SHOOT_HIT_CHANCE
+                + (CREATURE_SHOOT_RANGE - info->distance)
+                    / (CREATURE_SHOOT_RANGE / 0x5000);
+            is_hit = Random_GetControl() < chance;
+        }
+        is_targetable = true;
+    }
+
+    int16_t fx_num = NO_ITEM;
+    if (target_item == g_LaraItem) {
+        if (is_hit) {
+            fx_num = Creature_Effect(item, gun, Effect_GunHit);
+            Item_TakeDamage(target_item, damage, true);
+        } else if (is_targetable) {
+            fx_num = Creature_Effect(item, gun, Effect_GunMiss);
+        }
+    } else {
+        fx_num = Creature_Effect(item, gun, Effect_GunShot);
+        if (is_hit) {
+            Item_TakeDamage(target_item, damage / 10, true);
+        }
+    }
+
+    if (fx_num != NO_ITEM) {
+        g_Effects[fx_num].rot.y += extra_rotation;
+    }
+
+    GAME_VECTOR start = {
+        .pos = {
+            .x = item->pos.x,
+            .y = item->pos.y - STEP_L * 3,
+            .z = item->pos.z,
+        },
+        .room_num = item->room_num,
+    };
+
+    GAME_VECTOR target = {
+        .pos = {
+            .x = target_item->pos.x,
+            .y = target_item->pos.y - STEP_L * 3,
+            .z = target_item->pos.z,
+        },
+        .room_num = target_item->room_num,
+    };
+
+    const int16_t item_to_smash = LOS_CheckSmashable(&start, &target);
+    if (item_to_smash != NO_ITEM) {
+        Gun_SmashItem(item_to_smash, LGT_UNARMED);
+    }
+
+    return is_targetable;
 }

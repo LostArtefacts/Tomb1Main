@@ -78,7 +78,6 @@
 #define GeneralControl ((void __cdecl (*)(int16_t item_num))0x00435C90)
 #define Glow_Control ((void __cdecl (*)(int16_t fx_num))0x00435E90)
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
-#define ShotLara ((int32_t __cdecl (*)(ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation, int32_t damage))0x00436100)
 #define Cultist1_Initialise ((void __cdecl (*)(int16_t item_num))0x004362D0)
 #define Cultist1_Control ((void __cdecl (*)(int16_t item_num))0x00436320)
 #define Cultist3_Initialise ((void __cdecl (*)(int16_t item_num))0x00436750)

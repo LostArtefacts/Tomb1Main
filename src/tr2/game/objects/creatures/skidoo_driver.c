@@ -150,8 +150,10 @@ static int16_t M_ControlAlive(ITEM *const driver_item, ITEM *const skidoo_item)
                 ? SKIDOO_DRIVER_SHOT_DAMAGE
                 : SKIDOO_DRIVER_LARA_DAMAGE;
 
-            if (ShotLara(skidoo_item, &info, &g_Skidoo_RightGun, 0, damage)
-                + ShotLara(skidoo_item, &info, &g_Skidoo_LeftGun, 0, damage)) {
+            if (Creature_ShootAtLara(
+                    skidoo_item, &info, &g_Skidoo_RightGun, 0, damage)
+                || Creature_ShootAtLara(
+                    skidoo_item, &info, &g_Skidoo_LeftGun, 0, damage)) {
                 driver_data->flags = 5;
             }
         }
