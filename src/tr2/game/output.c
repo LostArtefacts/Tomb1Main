@@ -1055,6 +1055,34 @@ void __cdecl Output_CalculateStaticMeshLight(
     Output_CalculateStaticLight(adder);
 }
 
+void __cdecl Output_CalculateObjectLighting(
+    const ITEM *const item, const BOUNDS_16 *const bounds)
+{
+    if (item->shade_1 >= 0) {
+        Output_CalculateStaticMeshLight(
+            item->pos.x, item->pos.y, item->pos.z, item->shade_1, item->shade_2,
+            &g_Rooms[item->room_num]);
+        return;
+    }
+
+    Matrix_PushUnit();
+
+    Matrix_TranslateSet(0, 0, 0);
+    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_TranslateRel(
+        (bounds->min_x + bounds->max_x) / 2,
+        (bounds->max_y + bounds->min_y) / 2,
+        (bounds->max_z + bounds->min_z) / 2);
+    const XYZ_32 pos = {
+        .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
+        .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),
+        .z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT),
+    };
+    Matrix_Pop();
+
+    Output_CalculateLight(pos.x, pos.y, pos.z, item->room_num);
+}
+
 void __cdecl Output_LightRoom(ROOM *const room)
 {
     if (room->light_mode != 0) {

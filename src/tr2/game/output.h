@@ -103,6 +103,8 @@ void __cdecl Output_CalculateStaticLight(int16_t adder);
 void __cdecl Output_CalculateStaticMeshLight(
     int32_t x, int32_t y, int32_t z, int32_t shade_1, int32_t shade_2,
     const ROOM *room);
+void __cdecl Output_CalculateObjectLighting(
+    const ITEM *item, const BOUNDS_16 *bounds);
 void __cdecl Output_LightRoom(ROOM *room);
 void __cdecl Output_SetupBelowWater(bool is_underwater);
 void __cdecl Output_SetupAboveWater(bool is_underwater);
