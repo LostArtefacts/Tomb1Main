@@ -50,6 +50,14 @@
 #define VEHICLE_MIN_BOUNCE 50
 #define VEHICLE_MAX_KICK -80
 
+// TODO: delegate this enum to individual vehicle code
+typedef enum {
+    LA_VEHICLE_HIT_LEFT = 11,
+    LA_VEHICLE_HIT_RIGHT = 12,
+    LA_VEHICLE_HIT_FRONT = 13,
+    LA_VEHICLE_HIT_BACK = 14,
+} LARA_ANIM_VEHICLE;
+
 int32_t __stdcall WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
     int32_t nShowCmd)
@@ -637,4 +645,32 @@ int32_t __cdecl DoDynamics(
     CLAMPL(kick, VEHICLE_MAX_KICK);
     CLAMPG(*out_y, height);
     return fall_speed + ((kick - fall_speed) >> 3);
+}
+
+int32_t __cdecl GetCollisionAnim(const ITEM *const vehicle, XYZ_32 *const moved)
+{
+    moved->x = vehicle->pos.x - moved->x;
+    moved->z = vehicle->pos.z - moved->z;
+
+    if (moved->x != 0 || moved->z != 0) {
+        const int32_t c = Math_Cos(vehicle->rot.y);
+        const int32_t s = Math_Sin(vehicle->rot.y);
+        const int32_t front = (moved->x * s + moved->z * c) >> W2V_SHIFT;
+        const int32_t side = (moved->x * c - moved->z * s) >> W2V_SHIFT;
+        if (ABS(front) > ABS(side)) {
+            if (front > 0) {
+                return LA_VEHICLE_HIT_BACK;
+            } else {
+                return LA_VEHICLE_HIT_FRONT;
+            }
+        } else {
+            if (side > 0) {
+                return LA_VEHICLE_HIT_LEFT;
+            } else {
+                return LA_VEHICLE_HIT_RIGHT;
+            }
+        }
+    }
+
+    return 0;
 }

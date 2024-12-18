@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.15% (1109)</tspan> · <tspan class="known">8.44% (105)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.23% (1110)</tspan> · <tspan class="known">8.36% (104)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="665.93" height="6" x="0" y="0" class="decompiled"/>
-<rect width="63.05" height="6" x="665.93" y="0" class="known"/>
+<rect width="666.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="62.45" height="6" x="666.54" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -784,7 +784,7 @@
 <rect width="12" height="12" x="75" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_TestHeight(const ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *pos);</title></rect>
 <rect width="12" height="12" x="90" y="210" class="decompiled"><title>int32_t __cdecl DoShift(ITEM *skidoo, XYZ_32 *pos, XYZ_32 *old);</title></rect>
 <rect width="12" height="12" x="105" y="210" class="decompiled"><title>int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
-<rect width="12" height="12" x="120" y="210" class="known"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
+<rect width="12" height="12" x="120" y="210" class="decompiled"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
 <rect width="12" height="12" x="135" y="210" class="decompiled"><title>void __cdecl Skidoo_DoSnowEffect(ITEM *skidoo);</title></rect>
 <rect width="12" height="12" x="150" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_Dynamics(ITEM *skidoo);</title></rect>
 <rect width="12" height="12" x="165" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_UserControl(ITEM *skidoo, int32_t height, int32_t *pitch);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.86%</tspan> · <tspan class="known">8.82%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.90%</tspan> · <tspan class="known">8.77%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="678.70" height="6" x="0" y="0" class="decompiled"/>
-<rect width="65.86" height="6" x="678.70" y="0" class="known"/>
+<rect width="679.02" height="6" x="0" y="0" class="decompiled"/>
+<rect width="65.54" height="6" x="679.02" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1908,7 +1908,7 @@
 <rect width="7.93" height="8.01" x="578.50" y="185.25" class="known"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
 <rect width="7.93" height="8.01" x="589.43" y="185.25" class="decompiled"><title>bool __cdecl GetRegistryGuidValue(LPCTSTR lpValueName, GUID *value, GUID *defaultValue);</title></rect>
 <rect width="7.86" height="8.01" x="600.36" y="185.25" class="decompiled"><title>void __cdecl Lara_Col_Reach(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="7.86" height="8.01" x="611.22" y="185.25" class="known"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
+<rect width="7.86" height="8.01" x="611.22" y="185.25" class="decompiled"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>
 <rect width="7.86" height="8.01" x="622.07" y="185.25" class="decompiled"><title>void __cdecl FlameEmitter_Control(int16_t item_num);</title></rect>
 <rect width="7.86" height="8.01" x="632.93" y="185.25" class="decompiled"><title>bool __cdecl WinVidCopyBitmapToBuffer(LPDDS surface, const BYTE *bitmap);</title></rect>
 <rect width="7.78" height="8.01" x="643.78" y="185.25" class="decompiled"><title>void __cdecl CutscenePlayer1_Initialise(int16_t item_num);</title></rect>

@@ -41,3 +41,4 @@ void __cdecl InitialiseLevelFlags(void);
 void __cdecl GetCarriedItems(void);
 int32_t __cdecl DoShift(ITEM *vehicle, const XYZ_32 *pos, const XYZ_32 *old);
 int32_t __cdecl DoDynamics(int32_t height, int32_t fall_speed, int32_t *out_y);
+int32_t __cdecl GetCollisionAnim(const ITEM *vehicle, XYZ_32 *moved);
