@@ -3,6 +3,7 @@
 #include "game/items.h"
 #include "game/math.h"
 #include "game/matrix.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "global/vars.h"
@@ -287,6 +288,20 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
         g_HairVelocity[i].y = s->pos.y - g_HairVelocity[0].y;
         g_HairVelocity[i].z = s->pos.z - g_HairVelocity[0].z;
 
+        Matrix_Pop();
+    }
+}
+
+void __cdecl Lara_Hair_Draw(void)
+{
+    int16_t **mesh_ptr = &g_Meshes[g_Objects[O_LARA_HAIR].mesh_idx];
+    for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
+        const HAIR_SEGMENT *const s = &g_HairSegments[i];
+        Matrix_Push();
+        Matrix_TranslateAbs(s->pos.x, s->pos.y, s->pos.z);
+        Matrix_RotY(s->rot.y);
+        Matrix_RotX(s->rot.x);
+        Output_InsertPolygons(*mesh_ptr++, 1);
         Matrix_Pop();
     }
 }

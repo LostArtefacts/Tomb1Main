@@ -4,3 +4,4 @@
 
 void __cdecl Lara_Hair_Initialise(void);
 void __cdecl Lara_Hair_Control(bool in_cutscene);
+void __cdecl Lara_Hair_Draw(void);

@@ -621,6 +621,7 @@ static void M_Lara_Hair(const bool enable)
 {
     INJECT(enable, 0x00420EA0, Lara_Hair_Initialise);
     INJECT(enable, 0x00420F20, Lara_Hair_Control);
+    INJECT(enable, 0x00421920, Lara_Hair_Draw);
 }
 
 static void M_Lara_Misc(const bool enable)

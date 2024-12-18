@@ -3288,7 +3288,7 @@ typedef enum {
 # game/hair.c
 0x00420EA0  0x0074  +       void __cdecl Lara_Hair_Initialise(void);
 0x00420F20  0x09E5  +       void __cdecl Lara_Hair_Control(bool in_cutscene);
-0x00421920  0x0076  -       void __cdecl Lara_Hair_Draw(void);
+0x00421920  0x0076  +       void __cdecl Lara_Hair_Draw(void);
 
 # game/health.c
 0x004219A0  0x002D  +       BOOL __cdecl Overlay_FlashCounter(void);
