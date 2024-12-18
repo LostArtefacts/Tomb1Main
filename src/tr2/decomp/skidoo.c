@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "decomp/effects.h"
 #include "decomp/flares.h"
+#include "game/collide.h"
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/gamebuf.h"

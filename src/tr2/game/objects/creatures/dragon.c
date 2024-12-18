@@ -1,6 +1,7 @@
 #include "game/objects/creatures/dragon.h"
 
 #include "decomp/effects.h"
+#include "game/collide.h"
 #include "game/creature.h"
 #include "game/input.h"
 #include "game/lara/control.h"

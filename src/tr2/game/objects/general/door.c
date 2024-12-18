@@ -1,6 +1,7 @@
 #include "game/objects/general/door.h"
 
 #include "game/box.h"
+#include "game/collide.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/misc.h"

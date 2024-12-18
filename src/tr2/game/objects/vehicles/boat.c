@@ -2,6 +2,7 @@
 
 #include "decomp/decomp.h"
 #include "decomp/effects.h"
+#include "game/collide.h"
 #include "game/effects.h"
 #include "game/gamebuf.h"
 #include "game/input.h"

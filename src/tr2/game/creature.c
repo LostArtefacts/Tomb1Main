@@ -2,6 +2,7 @@
 
 #include "decomp/effects.h"
 #include "game/box.h"
+#include "game/collide.h"
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/lara/misc.h"

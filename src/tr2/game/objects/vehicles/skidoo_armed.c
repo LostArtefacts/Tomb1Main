@@ -1,5 +1,6 @@
 #include "game/objects/vehicles/skidoo_armed.h"
 
+#include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"

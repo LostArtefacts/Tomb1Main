@@ -1,5 +1,6 @@
 #include "game/objects/common.h"
 
+#include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/matrix.h"
