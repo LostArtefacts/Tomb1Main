@@ -14,3 +14,6 @@ int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);
 
 int32_t __cdecl Collide_GetSpheres(
     const ITEM *item, SPHERE *spheres, bool world_space);
+
+void __cdecl Collide_GetJointAbsPosition(
+    const ITEM *item, XYZ_32 *out_vec, int32_t joint);

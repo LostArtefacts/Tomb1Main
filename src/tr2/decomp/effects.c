@@ -1,5 +1,6 @@
 #include "decomp/effects.h"
 
+#include "game/collide.h"
 #include "game/effects.h"
 #include "game/math.h"
 #include "game/matrix.h"

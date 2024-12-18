@@ -3,6 +3,7 @@
 #include "config.h"
 #include "decomp/savegame.h"
 #include "game/clock.h"
+#include "game/collide.h"
 #include "game/console/common.h"
 #include "game/effects.h"
 #include "game/fader.h"
