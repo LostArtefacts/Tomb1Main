@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.75% (1104)</tspan> · <tspan class="known">8.84% (110)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">88.83% (1105)</tspan> · <tspan class="known">8.76% (109)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="662.93" height="6" x="0" y="0" class="decompiled"/>
-<rect width="66.05" height="6" x="662.93" y="0" class="known"/>
+<rect width="663.53" height="6" x="0" y="0" class="decompiled"/>
+<rect width="65.45" height="6" x="663.53" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -309,7 +309,7 @@
 <rect width="12" height="12" x="450" y="60" class="decompiled"><title>void __cdecl Output_InsertPolygons_I(int16_t *ptr, int32_t clip);</title></rect>
 <rect width="12" height="12" x="465" y="60" class="decompiled"><title>void __cdecl Matrix_Interpolate(void);</title></rect>
 <rect width="12" height="12" x="480" y="60" class="decompiled"><title>void __cdecl Matrix_InterpolateArm(void);</title></rect>
-<rect width="12" height="12" x="495" y="60" class="known"><title>void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);</title></rect>
+<rect width="12" height="12" x="495" y="60" class="decompiled"><title>void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);</title></rect>
 <rect width="12" height="12" x="510" y="60" class="known"><title>void __cdecl Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);</title></rect>
 <rect width="12" height="12" x="525" y="60" class="decompiled"><title>int32_t __cdecl Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate);</title></rect>
 <rect width="12" height="12" x="540" y="60" class="decompiled"><title>BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.46%</tspan> · <tspan class="known">9.21%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.56%</tspan> · <tspan class="known">9.12%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="675.74" height="6" x="0" y="0" class="decompiled"/>
-<rect width="68.82" height="6" x="675.74" y="0" class="known"/>
+<rect width="676.46" height="6" x="0" y="0" class="decompiled"/>
+<rect width="68.10" height="6" x="676.46" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1610,7 +1610,7 @@
 <rect width="14.12" height="13.47" x="534.83" y="76.15" class="decompiled"><title>void __cdecl Camera_Shift(int32_t *x, int32_t *y, int32_t *h, int32_t target_x, int32_t target_y, int32_t target_h, int32_t left, int32_t top, int32_t right, int32_t bottom);</title></rect>
 <rect width="14.02" height="13.47" x="551.96" y="76.15" class="decompiled"><title>const int16_t *__cdecl Output_InsertRoomSprite(const int16_t *obj_ptr, int32_t vtx_count);</title></rect>
 <rect width="13.77" height="13.47" x="568.98" y="76.15" class="decompiled"><title>void __cdecl Lara_Col_Climbing(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="13.67" height="13.47" x="585.75" y="76.15" class="known"><title>void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);</title></rect>
+<rect width="13.67" height="13.47" x="585.75" y="76.15" class="decompiled"><title>void __cdecl Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip);</title></rect>
 <rect width="13.57" height="13.47" x="602.42" y="76.15" class="decompiled"><title>INT_PTR __stdcall SE_SoundDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="13.52" height="13.47" x="618.99" y="76.15" class="decompiled"><title>void __cdecl Lara_State_Stop(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="13.52" height="13.47" x="635.52" y="76.15" class="decompiled"><title>void __cdecl MovableBlock_Control(int16_t item_num);</title></rect>

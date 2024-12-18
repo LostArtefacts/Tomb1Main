@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define Gun_DrawFlash ((void __cdecl (*)(LARA_GUN_TYPE weapon_type, int32_t clip))0x0041BD30)
 #define Output_CalculateObjectLighting ((void __cdecl (*)(const ITEM *item, const BOUNDS_16 *bounds))0x0041BEA0)
 #define AddDynamicLight ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff))0x0041C0F0)
 #define BigEel_Control ((void __cdecl (*)(int16_t item_num))0x0041C140)

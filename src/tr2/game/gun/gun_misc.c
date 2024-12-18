@@ -7,6 +7,7 @@
 #include "game/math_misc.h"
 #include "game/matrix.h"
 #include "game/objects/general/window.h"
+#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "global/funcs.h"
@@ -355,4 +356,56 @@ void __cdecl Gun_SmashItem(
     default:
         break;
     }
+}
+
+void __cdecl Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
+{
+    int16_t shade;
+    int32_t y;
+    int32_t z;
+
+    switch (weapon_type) {
+    case LGT_MAGNUMS:
+        shade = HIGH_LIGHT;
+        y = 215;
+        z = 65;
+        break;
+
+    case LGT_UZIS:
+        shade = 2560;
+        y = 200;
+        z = 50;
+        break;
+
+    case LGT_SHOTGUN:
+        return;
+
+    case LGT_M16:
+        Matrix_TranslateRel(0, 400, 99);
+        Matrix_RotYXZ(
+            0, -85 * PHD_DEGREE, ((2 * Random_GetDraw()) & 0x4000) + 0x2000);
+        Output_CalculateStaticLight(2560);
+        Output_InsertPolygons(g_Meshes[g_Objects[O_M16_FLASH].mesh_idx], clip);
+        return;
+
+    case LGT_FLARE:
+        Matrix_TranslateRel(11, 32, 80);
+        Matrix_RotX(-PHD_90);
+        Matrix_RotY(2 * Random_GetDraw());
+        Output_CalculateStaticLight(2048);
+        Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_FIRE].mesh_idx], clip);
+        return;
+
+    default:
+        shade = LOW_LIGHT;
+        y = 185;
+        z = 40;
+        break;
+    }
+
+    Matrix_TranslateRel(0, y, z);
+    Matrix_RotYXZ(0, -PHD_90, 2 * Random_GetDraw());
+    Output_CalculateStaticLight(shade);
+    Output_InsertPolygons(g_Meshes[g_Objects[O_GUN_FLASH].mesh_idx], clip);
+    return;
 }
