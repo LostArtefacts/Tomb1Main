@@ -284,6 +284,7 @@ static void M_Collide(const bool enable)
     INJECT(enable, 0x004128F0, Collide_GetCollisionInfo);
     INJECT(enable, 0x00412FE0, Collide_CollideStaticObjects);
     INJECT(enable, 0x0043F9B0, Collide_TestCollision);
+    INJECT(enable, 0x0043FAE0, Collide_GetSpheres);
 }
 
 static void M_Game(const bool enable)

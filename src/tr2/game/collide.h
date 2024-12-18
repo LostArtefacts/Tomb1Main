@@ -11,3 +11,6 @@ int32_t __cdecl Collide_CollideStaticObjects(
     int32_t height);
 
 int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);
+
+int32_t __cdecl Collide_GetSpheres(
+    const ITEM *item, SPHERE *spheres, bool world_space);

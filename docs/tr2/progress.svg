@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.31% (1111)</tspan> · <tspan class="known">8.28% (103)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.39% (1112)</tspan> · <tspan class="known">8.20% (102)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="667.14" height="6" x="0" y="0" class="decompiled"/>
-<rect width="61.85" height="6" x="667.14" y="0" class="known"/>
+<rect width="667.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="61.25" height="6" x="667.74" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -806,7 +806,7 @@
 <rect width="12" height="12" x="405" y="210" class="decompiled"><title>void __cdecl Sound_Shutdown(void);</title></rect>
 <rect width="12" height="12" x="420" y="210" class="decompiled"><title>void __cdecl Sound_Init(void);</title></rect>
 <rect width="12" height="12" x="435" y="210" class="decompiled"><title>int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);</title></rect>
-<rect width="12" height="12" x="450" y="210" class="known"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
+<rect width="12" height="12" x="450" y="210" class="decompiled"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
 <rect width="12" height="12" x="465" y="210" class="known"><title>void __cdecl Collide_GetJointAbsPosition(const ITEM *item, const XYZ_32 *vec, int32_t joint);</title></rect>
 <rect width="12" height="12" x="480" y="210" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);</title></rect>
 <rect width="12" height="12" x="495" y="210" class="decompiled"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.99%</tspan> · <tspan class="known">8.69%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.20%</tspan> · <tspan class="known">8.47%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="679.66" height="6" x="0" y="0" class="decompiled"/>
-<rect width="64.90" height="6" x="679.66" y="0" class="known"/>
+<rect width="681.26" height="6" x="0" y="0" class="decompiled"/>
+<rect width="63.30" height="6" x="681.26" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1445,7 +1445,7 @@
 <rect width="21.59" height="21.83" x="319.90" y="230.38" class="decompiled"><title>void __cdecl WinPlayFMV(const char *file_name, bool is_playback);</title></rect>
 <rect width="21.59" height="21.76" x="319.90" y="255.20" class="decompiled"><title>bool __cdecl SE_ShowSetupDialog(HWND hParent, bool isDefault);</title></rect>
 <rect width="21.59" height="21.63" x="319.90" y="279.97" class="decompiled"><title>void __cdecl Option_Detail(INVENTORY_ITEM *item);</title></rect>
-<rect width="21.59" height="21.56" x="319.90" y="304.59" class="known"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
+<rect width="21.59" height="21.56" x="319.90" y="304.59" class="decompiled"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
 <rect width="21.59" height="21.46" x="319.90" y="329.15" class="decompiled"><title>void __cdecl Skidoo_Draw(const ITEM *item);</title></rect>
 <rect width="21.59" height="21.39" x="319.90" y="353.61" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG3_ZBuffered(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="20.94" height="21.96" x="344.49" y="0" class="decompiled"><title>int32_t __cdecl Output_XYClipper(int32_t vtx_count, VERTEX_INFO *vtx);</title></rect>

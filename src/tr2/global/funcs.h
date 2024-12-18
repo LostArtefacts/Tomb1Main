@@ -90,7 +90,6 @@
 #define Jelly_Control ((void __cdecl (*)(int16_t item_num))0x0043C850)
 #define Baracudda_Control ((void __cdecl (*)(int16_t item_num))0x0043C970)
 #define Shark_Control ((void __cdecl (*)(int16_t item_num))0x0043CBA0)
-#define Collide_GetSpheres ((int32_t __cdecl (*)(const ITEM *item, SPHERE *spheres, bool world_space))0x0043FAE0)
 #define Collide_GetJointAbsPosition ((void __cdecl (*)(const ITEM *item, const XYZ_32 *vec, int32_t joint))0x0043FDC0)
 #define BaddieBiteEffect ((void __cdecl (*)(ITEM *item, BITE *bite))0x0043FF60)
 #define Hook_Control ((void __cdecl (*)(int16_t item_num))0x00441370)
