@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.55% (1114)</tspan> · <tspan class="known">8.04% (100)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.63% (1115)</tspan> · <tspan class="known">7.96% (99)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="668.94" height="6" x="0" y="0" class="decompiled"/>
-<rect width="60.05" height="6" x="668.94" y="0" class="known"/>
+<rect width="669.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="59.45" height="6" x="669.54" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -316,7 +316,7 @@
 <rect width="12" height="12" x="555" y="60" class="decompiled"><title>FRAME_INFO *__cdecl Item_GetBestFrame(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="570" y="60" class="decompiled"><title>void __cdecl Output_AddDynamicLight(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);</title></rect>
 <rect width="12" height="12" x="585" y="60" class="decompiled"><title>void __cdecl BigEel_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="600" y="60" class="known"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="600" y="60" class="decompiled"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="60" class="decompiled"><title>int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);</title></rect>
 <rect width="12" height="12" x="630" y="60" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
 <rect width="12" height="12" x="645" y="60" class="known"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.44%</tspan> · <tspan class="known">8.23%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.58%</tspan> · <tspan class="known">8.09%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="683.06" height="6" x="0" y="0" class="decompiled"/>
-<rect width="61.51" height="6" x="683.06" y="0" class="known"/>
+<rect width="684.11" height="6" x="0" y="0" class="decompiled"/>
+<rect width="60.45" height="6" x="684.11" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1519,7 +1519,7 @@
 <rect width="17.55" height="16.75" x="431.79" y="21.68" class="decompiled"><title>int32_t __cdecl GF_LoadScriptFile(const char *fname);</title></rect>
 <rect width="17.46" height="16.75" x="452.34" y="21.68" class="decompiled"><title>void __cdecl Matrix_RotYXZpack(uint32_t rpack);</title></rect>
 <rect width="17.25" height="16.75" x="472.80" y="21.68" class="decompiled"><title>void __cdecl Camera_Look(const ITEM *item);</title></rect>
-<rect width="17.21" height="16.75" x="493.05" y="21.68" class="known"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
+<rect width="17.21" height="16.75" x="493.05" y="21.68" class="decompiled"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="17" height="16.75" x="513.27" y="21.68" class="decompiled"><title>void __cdecl Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);</title></rect>
 <rect width="17" height="16.75" x="533.27" y="21.68" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="17" height="16.75" x="553.27" y="21.68" class="decompiled"><title>void __cdecl SE_GraphicsDlgFullScreenModesUpdate(HWND hwndDlg);</title></rect>

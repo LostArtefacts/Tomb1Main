@@ -49,6 +49,7 @@
 #include "game/objects/creatures/diver.h"
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
+#include "game/objects/creatures/eel.h"
 #include "game/objects/creatures/skidoo_driver.h"
 #include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
@@ -921,6 +922,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004199E0, Object_DrawSpriteItem);
     INJECT(enable, 0x00419A70, Object_DrawAnimatingItem);
     INJECT(enable, 0x0041C140, BigEel_Control);
+    INJECT(enable, 0x0041C2E0, Eel_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);

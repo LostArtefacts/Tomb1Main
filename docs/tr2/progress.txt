@@ -3207,7 +3207,7 @@ typedef enum {
 
 # game/eel.c
 0x0041C140  0x019D  +       void __cdecl BigEel_Control(int16_t item_num);
-0x0041C2E0  0x01E1  -       void __cdecl Eel_Control(int16_t item_num);
+0x0041C2E0  0x01E1  +       void __cdecl Eel_Control(int16_t item_num);
 
 # game/effects.c
 0x0041C4D0  0x008C  +       int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);
