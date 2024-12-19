@@ -2,6 +2,7 @@
 
 #include "game/creature.h"
 #include "game/objects/creatures/cultist_common.h"
+#include "game/random.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -90,4 +91,15 @@ void Cultist1B_Setup(void)
     obj->save_anim = 1;
 
     g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
+}
+
+void __cdecl Cultist1_Initialise(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    if (Random_GetControl() < 0x4000) {
+        item->mesh_bits &= ~0b00110000;
+    }
+    if (item->object_id == O_CULT_1B) {
+        item->mesh_bits &= ~0b00011111'10000000'00000000;
+    }
 }
