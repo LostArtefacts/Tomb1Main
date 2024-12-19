@@ -52,6 +52,7 @@
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/eel.h"
 #include "game/objects/creatures/jelly.h"
+#include "game/objects/creatures/mouse.h"
 #include "game/objects/creatures/shark.h"
 #include "game/objects/creatures/skidoo_driver.h"
 #include "game/objects/creatures/spider.h"
@@ -981,6 +982,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00438D80, Switch_Trigger);
     INJECT(enable, 0x00438E40, Keyhole_Trigger);
     INJECT(enable, 0x00438E80, Pickup_Trigger);
+    INJECT(enable, 0x00438EF0, Mouse_Control);
     INJECT(enable, 0x0043A480, Object_SetupBaddyObjects);
     INJECT(enable, 0x0043BAC0, Object_SetupGeneralObjects);
     INJECT(enable, 0x0043C710, Object_SetupAllObjects);

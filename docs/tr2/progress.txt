@@ -3698,7 +3698,7 @@ typedef enum {
 0x00438EC0  0x0023  -R      void __cdecl Secret_Control(int16_t item_num);
 
 # game/rat.c
-0x00438EF0  0x01DC  -       void __cdecl Mouse_Control(int16_t item_num);
+0x00438EF0  0x01DC  +       void __cdecl Mouse_Control(int16_t item_num);
 
 # game/savegame.c
 0x004390E0  0x0062  +R      void __cdecl InitialiseStartInfo(void);
@@ -4870,3 +4870,4 @@ typedef enum {
 0x004641E0  -       BITE g_BigEelBite;
 0x00466210  -       BITE g_BarracudaBite;
 0x00466220  -       BITE g_SharkBite;
+0x00466118  -       BITE g_MouseBite;

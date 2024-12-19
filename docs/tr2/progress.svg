@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.87% (1118)</tspan> · <tspan class="known">7.72% (96)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.95% (1119)</tspan> · <tspan class="known">7.64% (95)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="671.34" height="6" x="0" y="0" class="decompiled"/>
-<rect width="57.65" height="6" x="671.34" y="0" class="known"/>
+<rect width="671.94" height="6" x="0" y="0" class="decompiled"/>
+<rect width="57.05" height="6" x="671.94" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -757,7 +757,7 @@
 <rect width="12" height="12" x="420" y="195" class="decompiled"><title>int32_t __cdecl Keyhole_Trigger(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="195" class="decompiled"><title>int32_t __cdecl Pickup_Trigger(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="450" y="195" class="known"><title>void __cdecl Secret_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="465" y="195" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="465" y="195" class="decompiled"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="480" y="195" class="decompiled"><title>void __cdecl InitialiseStartInfo(void);</title></rect>
 <rect width="12" height="12" x="495" y="195" class="decompiled"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
 <rect width="12" height="12" x="510" y="195" class="decompiled"><title>void __cdecl CreateStartInfo(int32_t level_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.01%</tspan> · <tspan class="known">7.67%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.15%</tspan> · <tspan class="known">7.53%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="687.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="57.28" height="6" x="687.28" y="0" class="known"/>
+<rect width="688.32" height="6" x="0" y="0" class="decompiled"/>
+<rect width="56.24" height="6" x="688.32" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1521,7 +1521,7 @@
 <rect width="17.25" height="16.75" x="472.80" y="21.68" class="decompiled"><title>void __cdecl Camera_Look(const ITEM *item);</title></rect>
 <rect width="17.21" height="16.75" x="493.05" y="21.68" class="decompiled"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="17" height="16.75" x="513.27" y="21.68" class="decompiled"><title>void __cdecl Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);</title></rect>
-<rect width="17" height="16.75" x="533.27" y="21.68" class="known"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
+<rect width="17" height="16.75" x="533.27" y="21.68" class="decompiled"><title>void __cdecl Mouse_Control(int16_t item_num);</title></rect>
 <rect width="17" height="16.75" x="553.27" y="21.68" class="decompiled"><title>void __cdecl SE_GraphicsDlgFullScreenModesUpdate(HWND hwndDlg);</title></rect>
 <rect width="16.96" height="16.75" x="573.27" y="21.68" class="decompiled"><title>void __cdecl Creature_GetBaddieTarget(int16_t item_num, int32_t goody);</title></rect>
 <rect width="16.79" height="16.75" x="593.23" y="21.68" class="decompiled"><title>void __cdecl Flare_Create(int32_t thrown);</title></rect>
