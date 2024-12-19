@@ -52,7 +52,6 @@
 #define FX_AssaultStop ((void __cdecl (*)(ITEM *item))0x0041DA50)
 #define FX_AssaultReset ((void __cdecl (*)(ITEM *item))0x0041DA70)
 #define FX_AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)
-#define Knife ((int16_t __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num))0x0041DB50)
 #define Cultist2_Control ((void __cdecl (*)(int16_t item_num))0x0041DBD0)
 #define Monk_Control ((void __cdecl (*)(int16_t item_num))0x0041E000)
 #define Worker3_Control ((void __cdecl (*)(int16_t item_num))0x0041E4D0)

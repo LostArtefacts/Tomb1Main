@@ -3267,7 +3267,7 @@ typedef enum {
 0x0041DA90  0x00B2  -       void __cdecl FX_AssaultFinished(ITEM *item);
 
 # game/enemies.c
-0x0041DB50  0x0076  -R      int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
+0x0041DB50  0x0076  +R      int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x0041DBD0  0x040B  -       void __cdecl Cultist2_Control(int16_t item_num);
 0x0041E000  0x04A1  -       void __cdecl Monk_Control(int16_t item_num);
 0x0041E4D0  0x05BD  -R      void __cdecl Worker3_Control(int16_t item_num);

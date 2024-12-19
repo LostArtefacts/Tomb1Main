@@ -297,13 +297,38 @@ int16_t __cdecl Effect_GunMiss(
     const int16_t y_rot, const int16_t room_num)
 {
     GAME_VECTOR pos = {
-    .pos = {
-        .x = g_LaraItem->pos.x + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
-        .y = g_LaraItem->floor,
-        .z = g_LaraItem->pos.z + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
-    },
-      .room_num = g_LaraItem->room_num,
-  };
+        .pos = {
+            .x = g_LaraItem->pos.x + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
+            .y = g_LaraItem->floor,
+            .z = g_LaraItem->pos.z + ((Random_GetDraw() - 0x4000) << 9) / 0x7FFF,
+        },
+        .room_num = g_LaraItem->room_num,
+    };
     Richochet(&pos);
     return Effect_GunShot(x, y, z, speed, y_rot, room_num);
+}
+
+int16_t __cdecl Knife(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t y_rot, const int16_t room_num)
+{
+    const int16_t fx_num = Effect_Create(room_num);
+    if (fx_num == NO_ITEM) {
+        return fx_num;
+    }
+
+    FX *const fx = &g_Effects[fx_num];
+    fx->pos.x = x;
+    fx->pos.y = y;
+    fx->pos.z = z;
+    fx->room_num = room_num;
+    fx->rot.x = 0;
+    fx->rot.y = y_rot;
+    fx->rot.z = 0;
+    fx->speed = 150;
+    fx->frame_num = 0;
+    fx->object_id = O_MISSILE_KNIFE;
+    fx->shade = 3584;
+    Missile_ShootAtLara(fx);
+    return fx_num;
 }
