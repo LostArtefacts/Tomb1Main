@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.27% (1123)</tspan> · <tspan class="known">7.32% (91)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.35% (1124)</tspan> · <tspan class="known">7.23% (90)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="674.34" height="6" x="0" y="0" class="decompiled"/>
-<rect width="54.64" height="6" x="674.34" y="0" class="known"/>
+<rect width="674.94" height="6" x="0" y="0" class="decompiled"/>
+<rect width="54.04" height="6" x="674.94" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -739,7 +739,7 @@
 <rect width="12" height="12" x="150" y="195" class="decompiled"><title>int32_t __cdecl Creature_ShootAtLara(ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation, int32_t damage);</title></rect>
 <rect width="12" height="12" x="165" y="195" class="decompiled"><title>void __cdecl Cultist1_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="180" y="195" class="decompiled"><title>void __cdecl Cultist1_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="195" y="195" class="known"><title>void __cdecl Cultist3_Initialise(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="195" y="195" class="decompiled"><title>void __cdecl Cultist3_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="210" y="195" class="known"><title>void __cdecl Cultist3_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="225" y="195" class="known"><title>void __cdecl Worker1_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="195" class="known"><title>void __cdecl Worker2_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.80%</tspan> · <tspan class="known">6.87%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.83%</tspan> · <tspan class="known">6.85%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="693.23" height="6" x="0" y="0" class="decompiled"/>
-<rect width="51.33" height="6" x="693.23" y="0" class="known"/>
+<rect width="693.41" height="6" x="0" y="0" class="decompiled"/>
+<rect width="51.15" height="6" x="693.41" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2121,7 +2121,7 @@
 <rect width="4.94" height="5.47" x="624.52" y="295.22" class="decompiled"><title>LPCTSTR __cdecl GuidBinaryToString(GUID *guid);</title></rect>
 <rect width="4.94" height="5.36" x="624.52" y="303.69" class="decompiled"><title>void __cdecl Creature_Underwater(ITEM *item, int32_t depth);</title></rect>
 <rect width="4.94" height="5.36" x="624.52" y="312.05" class="decompiled"><title>const SECTOR *__cdecl Camera_GoodPosition(int32_t x, int32_t y, int32_t z, int16_t room_num);</title></rect>
-<rect width="4.94" height="5.36" x="624.52" y="320.41" class="known"><title>void __cdecl Cultist3_Initialise(int16_t item_num);</title></rect>
+<rect width="4.94" height="5.36" x="624.52" y="320.41" class="decompiled"><title>void __cdecl Cultist3_Initialise(int16_t item_num);</title></rect>
 <rect width="4.94" height="5.26" x="624.52" y="328.77" class="decompiled"><title>void __cdecl Gun_Pistols_SetArmInfo(LARA_ARM *arm, int32_t frame);</title></rect>
 <rect width="4.94" height="5.26" x="624.52" y="337.03" class="decompiled"><title>void __cdecl LOT_DisableBaddieAI(int16_t item_num);</title></rect>
 <rect width="4.94" height="5.26" x="624.52" y="345.29" class="decompiled"><title>void __cdecl Trapdoor_Control(int16_t item_num);</title></rect>
