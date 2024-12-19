@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.47% (1113)</tspan> · <tspan class="known">8.12% (101)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.55% (1114)</tspan> · <tspan class="known">8.04% (100)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="668.34" height="6" x="0" y="0" class="decompiled"/>
-<rect width="60.65" height="6" x="668.34" y="0" class="known"/>
+<rect width="668.94" height="6" x="0" y="0" class="decompiled"/>
+<rect width="60.05" height="6" x="668.94" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -315,7 +315,7 @@
 <rect width="12" height="12" x="540" y="60" class="decompiled"><title>BOUNDS_16 *__cdecl Item_GetBoundsAccurate(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="60" class="decompiled"><title>FRAME_INFO *__cdecl Item_GetBestFrame(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="570" y="60" class="decompiled"><title>void __cdecl Output_AddDynamicLight(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);</title></rect>
-<rect width="12" height="12" x="585" y="60" class="known"><title>void __cdecl BigEel_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="585" y="60" class="decompiled"><title>void __cdecl BigEel_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="600" y="60" class="known"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="60" class="decompiled"><title>int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);</title></rect>
 <rect width="12" height="12" x="630" y="60" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.32%</tspan> · <tspan class="known">8.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.44%</tspan> · <tspan class="known">8.23%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="682.15" height="6" x="0" y="0" class="decompiled"/>
-<rect width="62.41" height="6" x="682.15" y="0" class="known"/>
+<rect width="683.06" height="6" x="0" y="0" class="decompiled"/>
+<rect width="61.51" height="6" x="683.06" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1552,7 +1552,7 @@
 <rect width="16.42" height="14.73" x="411.12" y="360.27" class="decompiled"><title>void __cdecl Output_DrawPolyLine(const int16_t *obj_ptr);</title></rect>
 <rect width="16.18" height="14.91" x="430.54" y="41.42" class="decompiled"><title>int32_t __cdecl Camera_ShiftClamp(GAME_VECTOR *pos, int32_t clamp);</title></rect>
 <rect width="16.18" height="14.91" x="449.72" y="41.42" class="decompiled"><title>int32_t __cdecl Lara_TestHangJump(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="16.13" height="14.91" x="468.90" y="41.42" class="known"><title>void __cdecl BigEel_Control(int16_t item_num);</title></rect>
+<rect width="16.13" height="14.91" x="468.90" y="41.42" class="decompiled"><title>void __cdecl BigEel_Control(int16_t item_num);</title></rect>
 <rect width="16.09" height="14.91" x="488.03" y="41.42" class="decompiled"><title>void __cdecl Lara_Col_ClimbDown(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="15.99" height="14.91" x="507.11" y="41.42" class="decompiled"><title>void __cdecl Collide_GetJointAbsPosition(const ITEM *item, XYZ_32 *out_vec, int32_t joint);</title></rect>
 <rect width="15.90" height="14.91" x="526.11" y="41.42" class="decompiled"><title>SECTOR *__cdecl Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num);</title></rect>

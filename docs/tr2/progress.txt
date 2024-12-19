@@ -3206,7 +3206,7 @@ typedef enum {
 0x0041C0F0  0x0048  +       void __cdecl Output_AddDynamicLight(int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);
 
 # game/eel.c
-0x0041C140  0x019D  -       void __cdecl BigEel_Control(int16_t item_num);
+0x0041C140  0x019D  +       void __cdecl BigEel_Control(int16_t item_num);
 0x0041C2E0  0x01E1  -       void __cdecl Eel_Control(int16_t item_num);
 
 # game/effects.c
@@ -4867,3 +4867,4 @@ typedef enum {
 0x00521CE0  -       XYZ_32 g_HairVelocity[7]; // HAIR_SEGMENTS + 1
 0x00521D40  -       HAIR_SEGMENT g_HairSegments[7]; // HAIR_SEGMENTS + 1
 0x004D7918  -       int32_t g_HairWind;
+0x004641E0  -       BITE g_BigEelBite;

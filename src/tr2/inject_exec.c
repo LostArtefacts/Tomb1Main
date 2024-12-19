@@ -42,6 +42,7 @@
 #include "game/music.h"
 #include "game/objects/common.h"
 #include "game/objects/creatures/bartoli.h"
+#include "game/objects/creatures/big_eel.h"
 #include "game/objects/creatures/big_spider.h"
 #include "game/objects/creatures/bird.h"
 #include "game/objects/creatures/bird_guardian.h"
@@ -919,6 +920,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004186A0, TRex_Control);
     INJECT(enable, 0x004199E0, Object_DrawSpriteItem);
     INJECT(enable, 0x00419A70, Object_DrawAnimatingItem);
+    INJECT(enable, 0x0041C140, BigEel_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
