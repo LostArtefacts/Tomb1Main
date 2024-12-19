@@ -9,27 +9,34 @@
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#define DIVER_SWIM_TURN (3 * PHD_DEGREE) // = 546
-#define DIVER_FRONT_ARC PHD_45
-#define DIVER_DIE_ANIM 16
-#define DIVER_HITPOINTS 20
-#define DIVER_RADIUS (WALL_L / 3) // = 341
+// clang-format off
+#define DIVER_SWIM_TURN     (3 * PHD_DEGREE) // = 546
+#define DIVER_FRONT_ARC     PHD_45
+#define DIVER_DIE_ANIM      16
+#define DIVER_HITPOINTS     20
+#define DIVER_RADIUS        (WALL_L / 3) // = 341
 #define DIVER_HARPOON_SPEED 150
-
-static BITE m_DiverBite = { .pos = { .x = 17, .y = 164, .z = 44, }, .mesh_num = 18 };
+// clang-format on
 
 typedef enum {
-    DIVER_STATE_EMPTY = 0,
-    DIVER_STATE_SWIM_1 = 1,
-    DIVER_STATE_SWIM_2 = 2,
+    // clang-format off
+    DIVER_STATE_EMPTY   = 0,
+    DIVER_STATE_SWIM_1  = 1,
+    DIVER_STATE_SWIM_2  = 2,
     DIVER_STATE_SHOOT_1 = 3,
-    DIVER_STATE_AIM_1 = 4,
-    DIVER_STATE_NULL_1 = 5,
-    DIVER_STATE_AIM_2 = 6,
+    DIVER_STATE_AIM_1   = 4,
+    DIVER_STATE_NULL_1  = 5,
+    DIVER_STATE_AIM_2   = 6,
     DIVER_STATE_SHOOT_2 = 7,
-    DIVER_STATE_NULL_2 = 8,
-    DIVER_STATE_DEATH = 9,
+    DIVER_STATE_NULL_2  = 8,
+    DIVER_STATE_DEATH   = 9,
+    // clang-format on
 } DIVER_STATE;
+
+static const BITE m_DiverBite = {
+    .pos = { .x = 17, .y = 164, .z = 44 },
+    .mesh_num = 18,
+};
 
 static const SECTOR *M_GetRelSector(const ROOM *r, int32_t x, int32_t z);
 
