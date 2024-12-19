@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.71% (1116)</tspan> · <tspan class="known">7.88% (98)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.79% (1117)</tspan> · <tspan class="known">7.80% (97)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="670.14" height="6" x="0" y="0" class="decompiled"/>
-<rect width="58.85" height="6" x="670.14" y="0" class="known"/>
+<rect width="670.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="58.25" height="6" x="670.74" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -774,7 +774,7 @@
 <rect width="12" height="12" x="675" y="195" class="decompiled"><title>void __cdecl Object_SetupGeneralObjects(void);</title></rect>
 <rect width="12" height="12" x="690" y="195" class="decompiled"><title>void __cdecl Object_SetupAllObjects(void);</title></rect>
 <rect width="12" height="12" x="705" y="195" class="decompiled"><title>void __cdecl GetCarriedItems(void);</title></rect>
-<rect width="12" height="12" x="720" y="195" class="known"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="720" y="195" class="decompiled"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="735" y="195" class="decompiled"><title>void __cdecl Barracuda_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="210" class="known"><title>void __cdecl Shark_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="15" y="210" class="decompiled"><title>void __cdecl Skidoo_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.74%</tspan> · <tspan class="known">7.94%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.82%</tspan> · <tspan class="known">7.85%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="685.29" height="6" x="0" y="0" class="decompiled"/>
-<rect width="59.28" height="6" x="685.29" y="0" class="known"/>
+<rect width="685.89" height="6" x="0" y="0" class="decompiled"/>
+<rect width="58.67" height="6" x="685.89" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1660,7 +1660,7 @@
 <rect width="12.24" height="12.41" x="464.87" y="123.60" class="decompiled"><title>void __cdecl SE_SoundDlgUpdate(HWND hwndDlg);</title></rect>
 <rect width="12.24" height="12.36" x="464.87" y="139.01" class="decompiled"><title>HRESULT __stdcall EnumTextureFormatsCallback(LPDDSDESC lpDdsd, LPVOID lpContext);</title></rect>
 <rect width="12.24" height="12.30" x="464.87" y="154.36" class="decompiled"><title>void __cdecl SkidooArmed_Push(const ITEM *item, ITEM *lara_item, int32_t radius);</title></rect>
-<rect width="12.24" height="12.14" x="464.87" y="169.66" class="known"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
+<rect width="12.24" height="12.14" x="464.87" y="169.66" class="decompiled"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
 <rect width="12.24" height="12.14" x="464.87" y="184.80" class="decompiled"><title>void __cdecl S_DrawScreenBox(int32_t sx, int32_t sy, int32_t z, int32_t width, int32_t height, BYTE color_idx, const GOURAUD_OUTLINE *gour, uint16_t flags);</title></rect>
 <rect width="12.24" height="12.08" x="464.87" y="199.94" class="decompiled"><title>void __cdecl SpikeCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12.24" height="12.03" x="464.87" y="215.02" class="decompiled"><title>void __cdecl Bartoli_Initialise(int16_t item_num);</title></rect>

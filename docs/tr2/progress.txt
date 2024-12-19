@@ -3721,7 +3721,7 @@ typedef enum {
 0x0043C780  0x00CE  +R      void __cdecl GetCarriedItems(void);
 
 # game/shark.c
-0x0043C850  0x0116  -R      void __cdecl Jelly_Control(int16_t item_num);
+0x0043C850  0x0116  +       void __cdecl Jelly_Control(int16_t item_num);
 0x0043C970  0x021B  +       void __cdecl Barracuda_Control(int16_t item_num);
 0x0043CBA0  0x027C  -R      void __cdecl Shark_Control(int16_t item_num);
 

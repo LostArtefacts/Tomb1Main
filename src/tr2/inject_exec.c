@@ -51,6 +51,7 @@
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
 #include "game/objects/creatures/eel.h"
+#include "game/objects/creatures/jelly.h"
 #include "game/objects/creatures/skidoo_driver.h"
 #include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
@@ -982,6 +983,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043A480, Object_SetupBaddyObjects);
     INJECT(enable, 0x0043BAC0, Object_SetupGeneralObjects);
     INJECT(enable, 0x0043C710, Object_SetupAllObjects);
+    INJECT(enable, 0x0043C850, Jelly_Control);
     INJECT(enable, 0x0043C970, Barracuda_Control);
     INJECT(enable, 0x0043ED40, SkidooDriver_Initialise);
     INJECT(enable, 0x0043EDD0, SkidooDriver_Control);
@@ -992,7 +994,6 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00440290, BigSpider_Control);
     INJECT(enable, 0x00440F10, Mine_Control);
     INJECT(enable, 0x00441110, SpikeWall_Control);
-    INJECT(enable, 0x00441250, SpikeCeiling_Control);
     INJECT(enable, 0x00441250, SpikeCeiling_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
