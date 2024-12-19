@@ -48,6 +48,7 @@
 #include "game/objects/creatures/bird.h"
 #include "game/objects/creatures/bird_guardian.h"
 #include "game/objects/creatures/cultist_1.h"
+#include "game/objects/creatures/cultist_2.h"
 #include "game/objects/creatures/diver.h"
 #include "game/objects/creatures/dog.h"
 #include "game/objects/creatures/dragon.h"
@@ -931,6 +932,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041C2E0, Eel_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
+    INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x00432FE0, Missile_Control);

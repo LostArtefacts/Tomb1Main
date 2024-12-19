@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.19% (1122)</tspan> · <tspan class="known">7.40% (92)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.27% (1123)</tspan> · <tspan class="known">7.32% (91)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="673.74" height="6" x="0" y="0" class="decompiled"/>
-<rect width="55.24" height="6" x="673.74" y="0" class="known"/>
+<rect width="674.34" height="6" x="0" y="0" class="decompiled"/>
+<rect width="54.64" height="6" x="674.34" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -373,7 +373,7 @@
 <rect width="12" height="12" x="660" y="75" class="known"><title>void __cdecl FX_AssaultReset(ITEM *item);</title></rect>
 <rect width="12" height="12" x="675" y="75" class="known"><title>void __cdecl FX_AssaultFinished(ITEM *item);</title></rect>
 <rect width="12" height="12" x="690" y="75" class="decompiled"><title>int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="705" y="75" class="known"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="705" y="75" class="decompiled"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="720" y="75" class="known"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="735" y="75" class="known"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="90" class="known"><title>void __cdecl XianKnight_Draw(const ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.50%</tspan> · <tspan class="known">7.17%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.80%</tspan> · <tspan class="known">6.87%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="690.97" height="6" x="0" y="0" class="decompiled"/>
-<rect width="53.59" height="6" x="690.97" y="0" class="known"/>
+<rect width="693.23" height="6" x="0" y="0" class="decompiled"/>
+<rect width="51.33" height="6" x="693.23" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1389,7 +1389,7 @@
 <rect width="27.60" height="25.77" x="208.58" y="208.16" class="decompiled"><title>void __cdecl ShowEndStatsText(void);</title></rect>
 <rect width="27.60" height="25.69" x="208.58" y="236.92" class="decompiled"><title>int32_t __cdecl Output_XYGClipper(int32_t vtx_count, VERTEX_INFO *vtx);</title></rect>
 <rect width="27.60" height="25.55" x="208.58" y="265.61" class="decompiled"><title>void __cdecl Inv_DrawInventoryItem(INVENTORY_ITEM *inv_item);</title></rect>
-<rect width="27.60" height="25.06" x="208.58" y="294.16" class="known"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
+<rect width="27.60" height="25.06" x="208.58" y="294.16" class="decompiled"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
 <rect width="27.60" height="24.98" x="208.58" y="322.23" class="known"><title>void __cdecl Bandit2_Control(int16_t item_num);</title></rect>
 <rect width="27.60" height="24.79" x="208.58" y="350.21" class="decompiled"><title>void __cdecl Cultist1_Control(int16_t item_num);</title></rect>
 <rect width="24.79" height="27.49" x="239.18" y="0" class="decompiled"><title>void __cdecl Grenade_Control(int16_t item_num);</title></rect>
