@@ -18,43 +18,49 @@
 
 #include <libtrx/debug.h>
 
-#define DRAGON_CLOSE 900
-#define DRAGON_FAR 2300
-#define DRAGON_MID ((DRAGON_CLOSE + DRAGON_FAR) / 2) // = 1600
-#define DRAGON_L_COL -512
-#define DRAGON_R_COL +512
-#define DRAGON_ALMOST_LIVE 100
-#define DRAGON_CLOSE_RANGE 9437184
-#define DRAGON_STOP_RANGE 37748736
+// clang-format off
+#define DRAGON_CLOSE        900
+#define DRAGON_FAR          2300
+#define DRAGON_MID          ((DRAGON_CLOSE + DRAGON_FAR) / 2) // = 1600
+#define DRAGON_L_COL        -512
+#define DRAGON_R_COL        +512
+#define DRAGON_ALMOST_LIVE  100
+#define DRAGON_CLOSE_RANGE  9437184
+#define DRAGON_STOP_RANGE   37748736
 #define DRAGON_TOUCH_DAMAGE 10
 #define DRAGON_SWIPE_DAMAGE 250
-#define DRAGON_WALK_TURN (PHD_DEGREE * 2) // = 364
-#define DRAGON_NEED_TURN (PHD_DEGREE) // = 182
-#define DRAGON_TOUCH_L 0x7F000000
-#define DRAGON_TOUCH_R 0x000000FE
-#define DRAGON_LIVE_TIME 330
-#define DRAGON_HITPOINTS 300
-#define DRAGON_RADIUS (WALL_L / 3) // = 341
+#define DRAGON_WALK_TURN    (PHD_DEGREE * 2) // = 364
+#define DRAGON_NEED_TURN    (PHD_DEGREE) // = 182
+#define DRAGON_TOUCH_L      0x7F000000
+#define DRAGON_TOUCH_R      0x000000FE
+#define DRAGON_LIVE_TIME    330
+#define DRAGON_HITPOINTS    300
+#define DRAGON_RADIUS       (WALL_L / 3) // = 341
+// clang-format on
 
 typedef enum {
-    DRAGON_STATE_EMPTY = 0,
-    DRAGON_STATE_WALK = 1,
-    DRAGON_STATE_LEFT = 2,
-    DRAGON_STATE_RIGHT = 3,
-    DRAGON_STATE_AIM = 4,
-    DRAGON_STATE_FIRE = 5,
-    DRAGON_STATE_STOP = 6,
-    DRAGON_STATE_TURN_LEFT = 7,
-    DRAGON_STATE_TURN_RIGHT = 8,
-    DRAGON_STATE_SWIPE_LEFT = 9,
+    // clang-format off
+    DRAGON_STATE_EMPTY       = 0,
+    DRAGON_STATE_WALK        = 1,
+    DRAGON_STATE_LEFT        = 2,
+    DRAGON_STATE_RIGHT       = 3,
+    DRAGON_STATE_AIM         = 4,
+    DRAGON_STATE_FIRE        = 5,
+    DRAGON_STATE_STOP        = 6,
+    DRAGON_STATE_TURN_LEFT   = 7,
+    DRAGON_STATE_TURN_RIGHT  = 8,
+    DRAGON_STATE_SWIPE_LEFT  = 9,
     DRAGON_STATE_SWIPE_RIGHT = 10,
-    DRAGON_STATE_DEATH = 11,
+    DRAGON_STATE_DEATH       = 11,
+    // clang-format on
 } DRAGON_STATE;
 
 typedef enum {
-    DRAGON_ANIM_DIE = 21,
-    DRAGON_ANIM_DEAD = 22,
+    // clang-format off
+    DRAGON_ANIM_DIE       = 21,
+    DRAGON_ANIM_DEAD      = 22,
     DRAGON_ANIM_RESURRECT = 23,
+    // clang-format on
 } DRAGON_ANIM;
 
 static const BITE m_DragonMouth = {
