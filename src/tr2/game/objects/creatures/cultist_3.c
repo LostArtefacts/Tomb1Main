@@ -82,3 +82,222 @@ void __cdecl Cultist3_Initialise(const int16_t item_num)
     item->goal_anim_state = CULTIST_3_STATE_WAIT;
     item->current_anim_state = CULTIST_3_STATE_WAIT;
 }
+
+void __cdecl Cultist3_Control(const int16_t item_num)
+{
+    if (!Creature_Activate(item_num)) {
+        return;
+    }
+
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
+    int16_t head = 0;
+    int16_t tilt = 0;
+    int16_t angle = 0;
+    int16_t body = 0;
+    int16_t left = 0;
+    int16_t right = 0;
+
+    if (item->hit_points <= 0) {
+        if (item->current_anim_state != CULTIST_3_STATE_DEATH) {
+            item->anim_num =
+                g_Objects[O_CULT_3].anim_idx + CULTIST_3_ANIM_DEATH;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = CULTIST_3_STATE_DEATH;
+        }
+    } else {
+        AI_INFO info;
+        Creature_AIInfo(item, &info);
+        Creature_Mood(item, &info, MOOD_ATTACK);
+
+        angle = Creature_Turn(item, creature->maximum_turn);
+
+        switch (item->current_anim_state) {
+        case CULTIST_3_STATE_STOP:
+        case CULTIST_3_STATE_WAIT:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->mood == MOOD_BORED && g_LaraItem->hit_points <= 0) {
+                item->goal_anim_state = CULTIST_3_STATE_WAIT;
+            } else if (Creature_CanTargetEnemy(item, &info)) {
+                if (info.distance > CULTIST_3_STOP_RANGE) {
+                    item->goal_anim_state = CULTIST_3_STATE_WALK;
+                } else {
+                    item->goal_anim_state = CULTIST_3_STATE_AIM_2;
+                }
+            } else if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = CULTIST_3_STATE_RUN;
+            } else if (creature->mood == MOOD_ATTACK) {
+                if (info.distance > CULTIST_3_RUN_RANGE || info.ahead == 0) {
+                    item->goal_anim_state = CULTIST_3_STATE_RUN;
+                } else {
+                    item->goal_anim_state = CULTIST_3_STATE_WALK;
+                }
+            } else if (creature->mood == MOOD_STALK || info.ahead == 0) {
+                item->goal_anim_state = CULTIST_3_STATE_WALK;
+            }
+            break;
+
+        case CULTIST_3_STATE_WALK:
+            creature->maximum_turn = CULTIST_3_WALK_TURN;
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (Creature_CanTargetEnemy(item, &info)) {
+                if (info.distance < CULTIST_3_STOP_RANGE
+                    || info.zone_num != info.enemy_zone_num) {
+                    item->goal_anim_state = CULTIST_3_STATE_STOP;
+                } else if (info.angle < 0) {
+                    item->goal_anim_state = CULTIST_3_STATE_AIM_L;
+                } else {
+                    item->goal_anim_state = CULTIST_3_STATE_AIM_R;
+                }
+            } else if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = CULTIST_3_STATE_RUN;
+            } else if (
+                creature->mood == MOOD_STALK || creature->mood == MOOD_ATTACK) {
+                if (info.distance > CULTIST_3_RUN_RANGE || info.ahead == 0) {
+                    item->goal_anim_state = CULTIST_3_STATE_RUN;
+                }
+            } else if (g_LaraItem->hit_points <= 0) {
+                item->goal_anim_state = CULTIST_3_STATE_WAIT;
+            } else if (info.ahead != 0) {
+                item->goal_anim_state = CULTIST_3_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_3_STATE_RUN:
+            creature->maximum_turn = CULTIST_3_RUN_TURN;
+            tilt = angle / 4;
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (Creature_CanTargetEnemy(item, &info)) {
+                if (info.zone_num != info.enemy_zone_num) {
+                    item->goal_anim_state = CULTIST_3_STATE_STOP;
+                } else if (info.angle < 0) {
+                    item->goal_anim_state = CULTIST_3_STATE_AIM_L;
+                } else {
+                    item->goal_anim_state = CULTIST_3_STATE_AIM_R;
+                }
+            } else if (creature->mood == MOOD_BORED) {
+                if (g_LaraItem->hit_points <= 0) {
+                    item->goal_anim_state = CULTIST_3_STATE_WAIT;
+                } else {
+                    item->goal_anim_state = CULTIST_3_STATE_STOP;
+                }
+            } else if (info.ahead != 0 && info.distance < CULTIST_3_RUN_RANGE) {
+                item->goal_anim_state = CULTIST_3_STATE_WALK;
+            }
+            break;
+
+        case CULTIST_3_STATE_AIM_L:
+            creature->flags = 0;
+            if (info.ahead != 0) {
+                head = info.angle;
+                left = info.angle;
+            }
+            if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_3_STATE_SHOOT_L;
+            } else {
+                item->goal_anim_state = CULTIST_3_STATE_WALK;
+            }
+            break;
+
+        case CULTIST_3_STATE_AIM_R:
+            creature->flags = 0;
+            if (info.ahead != 0) {
+                head = info.angle;
+                right = info.angle;
+            }
+            if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_3_STATE_SHOOT_R;
+            } else {
+                item->goal_anim_state = CULTIST_3_STATE_WALK;
+            }
+            break;
+
+        case CULTIST_3_STATE_AIM_2:
+            creature->flags = 0;
+            if (info.ahead != 0) {
+                body = info.angle;
+            }
+            if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_3_STATE_SHOOT_2;
+            } else {
+                item->goal_anim_state = CULTIST_3_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_3_STATE_SHOOT_L:
+            if (info.ahead != 0) {
+                head = info.angle;
+                left = info.angle;
+            }
+            if (creature->flags == 0) {
+                Creature_ShootAtLara(
+                    item, &info, &m_Cultist3LeftGun, head,
+                    CULTIST_3_SHOT_DAMAGE);
+                creature->flags = 1;
+            }
+            break;
+
+        case CULTIST_3_STATE_SHOOT_R:
+            if (info.ahead != 0) {
+                head = info.angle;
+                right = info.angle;
+            }
+            if (creature->flags == 0) {
+                Creature_ShootAtLara(
+                    item, &info, &m_Cultist3RightGun, head,
+                    CULTIST_3_SHOT_DAMAGE);
+                creature->flags = 1;
+            }
+            break;
+
+        case CULTIST_3_STATE_SHOOT_2:
+            if (info.ahead != 0) {
+                body = info.angle;
+            }
+            if (creature->flags == 0) {
+                Creature_ShootAtLara(
+                    item, &info, &m_Cultist3LeftGun, 0, CULTIST_3_SHOT_DAMAGE);
+                Creature_ShootAtLara(
+                    item, &info, &m_Cultist3RightGun, 0, CULTIST_3_SHOT_DAMAGE);
+                creature->flags = 1;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    Creature_Tilt(item, tilt);
+
+    TOGGLE_BIT(g_AnimBones[g_Objects[O_CULT_3].bone_idx], BF_ROT_Y, body != 0);
+    TOGGLE_BIT(
+        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 2 * 4], BF_ROT_Y, left != 0);
+    TOGGLE_BIT(
+        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 6 * 4], BF_ROT_Y,
+        right != 0);
+    TOGGLE_BIT(
+        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 10 * 4], BF_ROT_Y,
+        head != 0);
+
+    if (body != 0) {
+        Creature_Head(item, body);
+    } else if (left != 0) {
+        Creature_Head(item, left);
+        Creature_Neck(item, head);
+    } else if (right != 0) {
+        Creature_Head(item, right);
+        Creature_Neck(item, head);
+    } else if (head != 0) {
+        Creature_Head(item, head);
+    }
+
+    Creature_Animate(item_num, angle, 0);
+}

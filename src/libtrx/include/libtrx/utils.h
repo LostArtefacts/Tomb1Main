@@ -35,6 +35,14 @@
     } while (0)
 
 #define ALIGN(a, bytes) ((a + (bytes) - 1) & (~(bytes - 1)))
+#define TOGGLE_BIT(target_var, target_bit, condition)                          \
+    do {                                                                       \
+        if (condition) {                                                       \
+            (target_var) |= (target_bit);                                      \
+        } else {                                                               \
+            (target_var) &= ~(target_bit);                                     \
+        }                                                                      \
+    } while (0)
 
 #define MKTAG(a, b, c, d)                                                      \
     ((a) | ((b) << 8) | ((c) << 16) | ((unsigned)(d) << 24))

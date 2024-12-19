@@ -3677,7 +3677,7 @@ typedef enum {
 0x004362D0  0x0043  +       void __cdecl Cultist1_Initialise(int16_t item_num);
 0x00436320  0x0401  +       void __cdecl Cultist1_Control(int16_t item_num);
 0x00436750  0x0050  +       void __cdecl Cultist3_Initialise(int16_t item_num);
-0x004367A0  0x053C  -       void __cdecl Cultist3_Control(int16_t item_num);
+0x004367A0  0x053C  +       void __cdecl Cultist3_Control(int16_t item_num);
 0x00436D10  0x03CA  -       void __cdecl Worker1_Control(int16_t item_num);
 0x00437110  0x042A  -       void __cdecl Worker2_Control(int16_t item_num);
 0x00437570  0x030B  -       void __cdecl Bandit1_Control(int16_t item_num);
@@ -4874,3 +4874,5 @@ typedef enum {
 0x00465F80  -       BITE g_Cultist1Gun;
 0x004642C8  -       BITE g_Cultist2LeftHand;
 0x004642D8  -       BITE g_Cultist2RightHand;
+0x00465F90  -       BITE g_Cultist3LeftGun;
+0x00465FA0  -       BITE g_Cultist3RightGun;

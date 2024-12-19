@@ -83,6 +83,8 @@
 #define g_ZiplineHandleBounds (*(int16_t(*)[])0x00465F58)
 #define g_ZiplineHandlePosition (*(XYZ_32*)0x00465F70)
 #define g_Cultist1Gun (*(BITE*)0x00465F80)
+#define g_Cultist3LeftGun (*(BITE*)0x00465F90)
+#define g_Cultist3RightGun (*(BITE*)0x00465FA0)
 #define g_PickupBounds (*(int16_t(*)[])0x00465FF0)
 #define g_PickupPosition (*(XYZ_32*)0x00466008)
 #define g_GongBounds (*(int16_t(*)[])0x00466018)
