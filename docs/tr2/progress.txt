@@ -3722,7 +3722,7 @@ typedef enum {
 
 # game/shark.c
 0x0043C850  0x0116  -R      void __cdecl Jelly_Control(int16_t item_num);
-0x0043C970  0x021B  -R      void __cdecl Baracudda_Control(int16_t item_num);
+0x0043C970  0x021B  +       void __cdecl Barracuda_Control(int16_t item_num);
 0x0043CBA0  0x027C  -R      void __cdecl Shark_Control(int16_t item_num);
 
 # game/skidoo.c
@@ -4868,3 +4868,4 @@ typedef enum {
 0x00521D40  -       HAIR_SEGMENT g_HairSegments[7]; // HAIR_SEGMENTS + 1
 0x004D7918  -       int32_t g_HairWind;
 0x004641E0  -       BITE g_BigEelBite;
+0x00466210  -       BITE g_BarracudaBite;

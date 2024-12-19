@@ -41,6 +41,7 @@
 #include "game/matrix.h"
 #include "game/music.h"
 #include "game/objects/common.h"
+#include "game/objects/creatures/barracuda.h"
 #include "game/objects/creatures/bartoli.h"
 #include "game/objects/creatures/big_eel.h"
 #include "game/objects/creatures/big_spider.h"
@@ -981,6 +982,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043A480, Object_SetupBaddyObjects);
     INJECT(enable, 0x0043BAC0, Object_SetupGeneralObjects);
     INJECT(enable, 0x0043C710, Object_SetupAllObjects);
+    INJECT(enable, 0x0043C970, Barracuda_Control);
     INJECT(enable, 0x0043ED40, SkidooDriver_Initialise);
     INJECT(enable, 0x0043EDD0, SkidooDriver_Control);
     INJECT(enable, 0x0043F1D0, SkidooArmed_Push);

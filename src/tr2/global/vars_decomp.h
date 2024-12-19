@@ -95,6 +95,7 @@
 #define g_KeyholePosition (*(XYZ_32*)0x004660E0)
 #define g_PuzzleHoleBounds (*(int16_t(*)[])0x004660F0)
 #define g_PuzzleHolePosition (*(XYZ_32*)0x00466108)
+#define g_BarracudaBite (*(BITE*)0x00466210)
 #define g_BGND_PaletteIndex (*(int32_t*)0x00466400) // = -1
 #define g_FadeValue (*(int32_t*)0x00466490) // = 0x100000
 #define g_FadeLimit (*(int32_t*)0x00466494) // = 0x100000

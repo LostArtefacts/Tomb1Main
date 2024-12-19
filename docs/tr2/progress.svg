@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.63% (1115)</tspan> · <tspan class="known">7.96% (99)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">89.71% (1116)</tspan> · <tspan class="known">7.88% (98)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="669.54" height="6" x="0" y="0" class="decompiled"/>
-<rect width="59.45" height="6" x="669.54" y="0" class="known"/>
+<rect width="670.14" height="6" x="0" y="0" class="decompiled"/>
+<rect width="58.85" height="6" x="670.14" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -775,7 +775,7 @@
 <rect width="12" height="12" x="690" y="195" class="decompiled"><title>void __cdecl Object_SetupAllObjects(void);</title></rect>
 <rect width="12" height="12" x="705" y="195" class="decompiled"><title>void __cdecl GetCarriedItems(void);</title></rect>
 <rect width="12" height="12" x="720" y="195" class="known"><title>void __cdecl Jelly_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="735" y="195" class="known"><title>void __cdecl Baracudda_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="735" y="195" class="decompiled"><title>void __cdecl Barracuda_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="210" class="known"><title>void __cdecl Shark_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="15" y="210" class="decompiled"><title>void __cdecl Skidoo_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="30" y="210" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOn(int16_t item_num, COLL_INFO *coll);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.58%</tspan> · <tspan class="known">8.09%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.74%</tspan> · <tspan class="known">7.94%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="684.11" height="6" x="0" y="0" class="decompiled"/>
-<rect width="60.45" height="6" x="684.11" y="0" class="known"/>
+<rect width="685.29" height="6" x="0" y="0" class="decompiled"/>
+<rect width="59.28" height="6" x="685.29" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1497,7 +1497,7 @@
 <rect width="17.82" height="18.68" x="667.21" y="0" class="decompiled"><title>void __cdecl BGND_DrawInGameBackground(void);</title></rect>
 <rect width="17.67" height="18.68" x="688.04" y="0" class="decompiled"><title>void __cdecl Gun_GetNewTarget(WEAPON_INFO *winfo);</title></rect>
 <rect width="17.67" height="18.68" x="708.70" y="0" class="decompiled"><title>int32_t __cdecl Lara_TestWaterClimbOut(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="17.63" height="18.68" x="729.37" y="0" class="known"><title>void __cdecl Baracudda_Control(int16_t item_num);</title></rect>
+<rect width="17.63" height="18.68" x="729.37" y="0" class="decompiled"><title>void __cdecl Barracuda_Control(int16_t item_num);</title></rect>
 <rect width="17.35" height="18.89" x="390.77" y="21.68" class="decompiled"><title>int32_t __cdecl Output_XGenXGUV(const int16_t *obj_ptr);</title></rect>
 <rect width="17.35" height="18.85" x="390.77" y="43.57" class="decompiled"><title>void __cdecl Room_DrawSingleRoomObjects(int16_t room_num);</title></rect>
 <rect width="17.35" height="18.49" x="390.77" y="65.42" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>

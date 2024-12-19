@@ -86,7 +86,6 @@
 #define Mouse_Control ((void __cdecl (*)(int16_t item_num))0x00438EF0)
 #define Object_SetupTrapObjects ((void __cdecl (*)(void))0x0043B4C0)
 #define Jelly_Control ((void __cdecl (*)(int16_t item_num))0x0043C850)
-#define Baracudda_Control ((void __cdecl (*)(int16_t item_num))0x0043C970)
 #define Shark_Control ((void __cdecl (*)(int16_t item_num))0x0043CBA0)
 #define BaddieBiteEffect ((void __cdecl (*)(ITEM *item, BITE *bite))0x0043FF60)
 #define Hook_Control ((void __cdecl (*)(int16_t item_num))0x00441370)
