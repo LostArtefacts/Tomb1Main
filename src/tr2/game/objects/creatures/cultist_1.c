@@ -3,12 +3,49 @@
 #include "game/creature.h"
 #include "game/objects/creatures/cultist_common.h"
 #include "game/random.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
+#include <libtrx/utils.h>
 
-#define CULTIST_1_HITPOINTS 25
+// clang-format off
+#define CULTIST_1_HITPOINTS     25
+#define CULTIST_1_SHOOT_DAMAGE  50
+#define CULTIST_1_WALK_TURN     (PHD_DEGREE * 5) // = 910
+#define CULTIST_1_RUN_TURN      (PHD_DEGREE * 5) // = 910
+#define CULTIST_1_RUN_RANGE     SQUARE(WALL_L * 2) // = 4194304
+#define CULTIST_1_POSE_CHANCE   0x500 // = 1280
+#define CULTIST_1_UNPOSE_CHANCE 0x100 // = 256
+#define CULTIST_1_WALK_CHANCE   (CULTIST_1_POSE_CHANCE + 0x500) // = 2560
+#define CULTIST_1_UNWALK_CHANCE 0x300 // = 768
+// clang-format on
+
+typedef enum {
+    // clang-format off
+    CULTIST_1_STATE_EMPTY   = 0,
+    CULTIST_1_STATE_WALK    = 1,
+    CULTIST_1_STATE_RUN     = 2,
+    CULTIST_1_STATE_STOP    = 3,
+    CULTIST_1_STATE_WAIT_1  = 4,
+    CULTIST_1_STATE_WAIT_2  = 5,
+    CULTIST_1_STATE_AIM_1   = 6,
+    CULTIST_1_STATE_SHOOT_1 = 7,
+    CULTIST_1_STATE_AIM_2   = 8,
+    CULTIST_1_STATE_SHOOT_2 = 9,
+    CULTIST_1_STATE_AIM_3   = 10,
+    CULTIST_1_STATE_SHOOT_3 = 11,
+    CULTIST_1_STATE_DEATH   = 12,
+    // clang-format on
+} CULTIST_1_STATE;
+
+typedef enum {
+    CULTIST_1_ANIM_DEATH = 20,
+} CULTIST_1_ANIM;
+
+static const BITE m_Cultist1Gun = {
+    .pos = { .x = 3, .y = 331, .z = 56 },
+    .mesh_num = 10,
+};
 
 void Cultist1_Setup(void)
 {
@@ -102,4 +139,172 @@ void __cdecl Cultist1_Initialise(const int16_t item_num)
     if (item->object_id == O_CULT_1B) {
         item->mesh_bits &= ~0b00011111'10000000'00000000;
     }
+}
+
+void __cdecl Cultist1_Control(const int16_t item_num)
+{
+    if (!Creature_Activate(item_num)) {
+        return;
+    }
+
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
+    int16_t head = 0;
+    int16_t tilt = 0;
+    int16_t angle = 0;
+
+    if (item->hit_points <= 0) {
+        if (item->current_anim_state != CULTIST_1_STATE_DEATH) {
+            item->anim_num = g_Objects[O_CULT_1].anim_idx
+                + Random_GetControl() / 0x4000 + CULTIST_1_ANIM_DEATH;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = CULTIST_1_STATE_DEATH;
+        }
+    } else {
+        AI_INFO info;
+        Creature_AIInfo(item, &info);
+        Creature_Mood(item, &info, MOOD_BORED);
+
+        angle = Creature_Turn(item, creature->maximum_turn);
+
+        switch (item->current_anim_state) {
+        case CULTIST_1_STATE_STOP:
+            creature->maximum_turn = 0;
+            if (item->required_anim_state != CULTIST_1_STATE_EMPTY) {
+                item->goal_anim_state = item->required_anim_state;
+            }
+            break;
+
+        case CULTIST_1_STATE_WAIT_1:
+            if (creature->mood == MOOD_ESCAPE) {
+                item->required_anim_state = CULTIST_1_STATE_RUN;
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            } else if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+                item->required_anim_state = Random_GetControl() < 0x4000
+                    ? CULTIST_1_STATE_AIM_1
+                    : CULTIST_1_STATE_AIM_3;
+            } else if (creature->mood == MOOD_BORED && info.ahead != 0) {
+                const int16_t random = Random_GetControl();
+                if (random < CULTIST_1_POSE_CHANCE) {
+                    item->required_anim_state = CULTIST_1_STATE_WAIT_2;
+                    item->goal_anim_state = CULTIST_1_STATE_STOP;
+                } else if (random < CULTIST_1_WALK_CHANCE) {
+                    item->required_anim_state = CULTIST_1_STATE_WALK;
+                    item->goal_anim_state = CULTIST_1_STATE_STOP;
+                }
+            } else if (
+                creature->mood == MOOD_BORED
+                || info.distance < CULTIST_1_RUN_RANGE) {
+                item->required_anim_state = CULTIST_1_STATE_WALK;
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            } else {
+                item->required_anim_state = CULTIST_1_STATE_RUN;
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_1_STATE_WAIT_2:
+            if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+                item->required_anim_state = CULTIST_1_STATE_AIM_1;
+            } else if (
+                creature->mood != MOOD_BORED
+                || Random_GetControl() < CULTIST_1_UNPOSE_CHANCE
+                || info.ahead == 0) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_1_STATE_WALK:
+            creature->maximum_turn = CULTIST_1_WALK_TURN;
+            if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = CULTIST_1_STATE_RUN;
+            } else if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+                item->required_anim_state = Random_GetControl() < 0x4000
+                    ? CULTIST_1_STATE_AIM_1
+                    : CULTIST_1_STATE_AIM_3;
+            } else if (info.distance > CULTIST_1_RUN_RANGE || info.ahead == 0) {
+                item->goal_anim_state = CULTIST_1_STATE_RUN;
+            } else if (
+                creature->mood == MOOD_BORED && info.ahead != 0
+                && Random_GetControl() < CULTIST_1_UNWALK_CHANCE) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_1_STATE_RUN:
+            creature->maximum_turn = CULTIST_1_RUN_TURN;
+            creature->flags = 0;
+            tilt = angle / 4;
+            if (creature->mood == MOOD_ESCAPE) {
+                if (Creature_CanTargetEnemy(item, &info)) {
+                    item->goal_anim_state = CULTIST_1_STATE_SHOOT_2;
+                }
+            } else if (Creature_CanTargetEnemy(item, &info)) {
+                if (info.distance < CULTIST_1_RUN_RANGE
+                    || info.zone_num != info.enemy_zone_num) {
+                    item->goal_anim_state = CULTIST_1_STATE_STOP;
+                } else {
+                    item->goal_anim_state = CULTIST_1_STATE_SHOOT_2;
+                }
+            } else if (creature->mood == MOOD_BORED) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_1_STATE_AIM_1:
+        case CULTIST_1_STATE_AIM_3:
+            creature->flags = 0;
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            } else if (Creature_CanTargetEnemy(item, &info)) {
+                item->goal_anim_state =
+                    item->current_anim_state == CULTIST_1_STATE_AIM_1
+                    ? CULTIST_1_STATE_SHOOT_1
+                    : CULTIST_1_STATE_SHOOT_3;
+            } else {
+                item->goal_anim_state = CULTIST_1_STATE_STOP;
+            }
+            break;
+
+        case CULTIST_1_STATE_SHOOT_1:
+        case CULTIST_1_STATE_SHOOT_3:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->flags == 0) {
+                Creature_ShootAtLara(
+                    item, &info, &m_Cultist1Gun, head, CULTIST_1_SHOOT_DAMAGE);
+                creature->flags = 1;
+            }
+            break;
+
+        case CULTIST_1_STATE_SHOOT_2:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (item->required_anim_state == CULTIST_1_STATE_EMPTY) {
+                if (!Creature_ShootAtLara(
+                        item, &info, &m_Cultist1Gun, head,
+                        CULTIST_1_SHOOT_DAMAGE)) {
+                    item->goal_anim_state = CULTIST_1_STATE_RUN;
+                }
+                item->required_anim_state = CULTIST_1_STATE_SHOOT_2;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    Creature_Tilt(item, tilt);
+    Creature_Head(item, head);
+    Creature_Animate(item_num, angle, 0);
 }

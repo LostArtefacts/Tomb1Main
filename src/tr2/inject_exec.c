@@ -974,6 +974,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00435B40, BridgeTilt2_Ceiling);
     INJECT(enable, 0x00435D70, Detonator_Control);
     INJECT(enable, 0x004362D0, Cultist1_Initialise);
+    INJECT(enable, 0x00436320, Cultist1_Control);
     INJECT(enable, 0x00437E70, Pickup_Collision);
     INJECT(enable, 0x004382F0, Switch_Collision);
     INJECT(enable, 0x00438500, Switch_CollisionUW);

@@ -3675,7 +3675,7 @@ typedef enum {
 0x00436050  0x00A7  +       int16_t __cdecl Effect_GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00436100  0x01C4  +       int32_t __cdecl Creature_ShootAtLara(ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation, int32_t damage);
 0x004362D0  0x0043  +       void __cdecl Cultist1_Initialise(int16_t item_num);
-0x00436320  0x0401  -       void __cdecl Cultist1_Control(int16_t item_num);
+0x00436320  0x0401  +       void __cdecl Cultist1_Control(int16_t item_num);
 0x00436750  0x0050  -       void __cdecl Cultist3_Initialise(int16_t item_num);
 0x004367A0  0x053C  -       void __cdecl Cultist3_Control(int16_t item_num);
 0x00436D10  0x03CA  -       void __cdecl Worker1_Control(int16_t item_num);
@@ -4871,3 +4871,4 @@ typedef enum {
 0x00466210  -       BITE g_BarracudaBite;
 0x00466220  -       BITE g_SharkBite;
 0x00466118  -       BITE g_MouseBite;
+0x00465F80  -       BITE g_Cultist1Gun;

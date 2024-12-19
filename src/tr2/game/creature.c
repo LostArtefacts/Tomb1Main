@@ -958,7 +958,7 @@ bool Creature_IsAlly(const ITEM *const item)
 }
 
 int32_t __cdecl Creature_ShootAtLara(
-    ITEM *const item, AI_INFO *const info, BITE *const gun,
+    ITEM *const item, const AI_INFO *const info, const BITE *const gun,
     const int16_t extra_rotation, const int32_t damage)
 {
     const CREATURE *const creature = item->data;

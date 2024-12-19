@@ -34,5 +34,5 @@ int32_t __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);
 bool Creature_IsEnemy(const ITEM *item);
 bool Creature_IsAlly(const ITEM *item);
 int32_t __cdecl Creature_ShootAtLara(
-    ITEM *item, AI_INFO *info, BITE *gun, int16_t extra_rotation,
+    ITEM *item, const AI_INFO *info, const BITE *gun, int16_t extra_rotation,
     int32_t damage);
