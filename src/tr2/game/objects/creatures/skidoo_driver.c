@@ -180,8 +180,8 @@ void SkidooDriver_Setup(void)
     obj->hit_points = 1;
 
     obj->save_position = 1;
-    obj->save_anim = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 }
 
 void __cdecl SkidooDriver_Initialise(const int16_t item_num)

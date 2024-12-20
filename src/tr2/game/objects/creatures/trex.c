@@ -58,12 +58,13 @@ void TRex_Setup(void)
     obj->pivot_length = 1800;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 40] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 10 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 11 * 4] |= BF_ROT_Y;
 }
 
 void __cdecl TRex_Control(const int16_t item_num)

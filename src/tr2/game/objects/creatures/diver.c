@@ -92,14 +92,14 @@ void Diver_Setup(void)
     obj->pivot_length = 50;
 
     obj->intelligent = 1;
-    obj->water_creature = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
+    obj->water_creature = 1;
 
-    g_AnimBones[obj->bone_idx + 40] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 56] |= BF_ROT_Z;
+    g_AnimBones[obj->bone_idx + 10 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 14 * 4] |= BF_ROT_Z;
 }
 
 void __cdecl Diver_Control(int16_t item_num)

@@ -50,10 +50,10 @@ void BigSpider_Setup(void)
     obj->shadow_size = UNIT_SHADOW / 2;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 }
 
 void __cdecl BigSpider_Control(const int16_t item_num)

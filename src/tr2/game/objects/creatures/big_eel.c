@@ -53,10 +53,10 @@ void BigEel_Setup(void)
 
     obj->hit_points = BIG_EEL_HITPOINTS;
 
-    obj->water_creature = 1;
     obj->save_hitpoints = 1;
-    obj->save_anim = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
+    obj->water_creature = 1;
 }
 
 void __cdecl BigEel_Control(const int16_t item_num)

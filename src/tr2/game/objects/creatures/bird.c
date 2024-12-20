@@ -56,10 +56,10 @@ void Bird_SetupEagle(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 }
 
 void Bird_SetupCrow(void)
@@ -73,16 +73,16 @@ void Bird_SetupCrow(void)
     obj->control = Bird_Control;
     obj->collision = Creature_Collision;
 
-    obj->shadow_size = UNIT_SHADOW / 2;
     obj->hit_points = CROW_HITPOINTS;
     obj->radius = BIRD_RADIUS;
+    obj->shadow_size = UNIT_SHADOW / 2;
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 }
 
 void __cdecl Bird_Initialise(const int16_t item_num)

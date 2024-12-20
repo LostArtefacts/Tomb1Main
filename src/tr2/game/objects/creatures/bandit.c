@@ -27,13 +27,13 @@ void Bandit1_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 24] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 32] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 8 * 4] |= BF_ROT_Y;
 }
 
 void Bandit2_Setup(void)
@@ -52,13 +52,13 @@ void Bandit2_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 24] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 32] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 8 * 4] |= BF_ROT_Y;
 }
 
 void Bandit2B_Setup(void)
@@ -82,11 +82,11 @@ void Bandit2B_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 24] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 32] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 8 * 4] |= BF_ROT_Y;
 }

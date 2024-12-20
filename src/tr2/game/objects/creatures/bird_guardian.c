@@ -66,10 +66,12 @@ void BirdGuardian_Setup(void)
     obj->radius = BIRD_GUARDIAN_RADIUS;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
+
+    g_AnimBones[obj->bone_idx + 14 * 4] |= BF_ROT_Y;
 }
 
 void __cdecl BirdGuardian_Control(const int16_t item_num)

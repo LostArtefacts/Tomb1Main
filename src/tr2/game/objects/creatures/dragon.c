@@ -143,12 +143,12 @@ void Dragon_SetupFront(void)
     obj->pivot_length = 300;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 40] |= BF_ROT_Z;
+    g_AnimBones[obj->bone_idx + 10 * 4] |= BF_ROT_Z;
 }
 
 void Dragon_SetupBack(void)

@@ -29,13 +29,13 @@ void Worker1_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 16] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 52] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 13 * 4] |= BF_ROT_Y;
 }
 
 void Worker2_Setup(void)
@@ -54,13 +54,13 @@ void Worker2_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 16] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 52] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 13 * 4] |= BF_ROT_Y;
 }
 
 void Worker3_Setup(void)
@@ -79,13 +79,13 @@ void Worker3_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
     g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 16] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
 }
 
 void Worker4_Setup(void)
@@ -104,13 +104,13 @@ void Worker4_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
     g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 16] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
 }
 
 void Worker5_Setup(void)
@@ -129,10 +129,11 @@ void Worker5_Setup(void)
     obj->pivot_length = 0;
 
     obj->intelligent = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 16] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
+    g_AnimBones[obj->bone_idx + 13 * 4] |= BF_ROT_Y;
 }

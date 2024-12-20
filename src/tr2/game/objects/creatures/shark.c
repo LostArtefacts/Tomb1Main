@@ -65,11 +65,13 @@ void Shark_Setup(void)
     obj->pivot_length = 200;
 
     obj->intelligent = 1;
-    obj->water_creature = 1;
-    obj->save_anim = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
+    obj->save_anim = 1;
+    obj->water_creature = 1;
+
+    g_AnimBones[obj->bone_idx + 9 * 4] |= BF_ROT_Y;
 }
 
 void __cdecl Shark_Control(const int16_t item_num)

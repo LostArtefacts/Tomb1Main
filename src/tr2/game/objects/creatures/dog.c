@@ -71,11 +71,13 @@ void Dog_Setup(void)
     obj->shadow_size = UNIT_SHADOW / 2;
     obj->pivot_length = 300;
 
-    obj->save_anim = 1;
+    obj->intelligent = 1;
     obj->save_position = 1;
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
-    obj->intelligent = 1;
+    obj->save_anim = 1;
+
+    g_AnimBones[obj->bone_idx + 19 * 4] |= BF_ROT_Y;
 }
 
 void __cdecl Dog_Control(const int16_t item_num)
