@@ -63,6 +63,7 @@
 #include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
 #include "game/objects/creatures/trex.h"
+#include "game/objects/creatures/worker_1.h"
 #include "game/objects/creatures/yeti.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
@@ -983,6 +984,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00436320, Cultist1_Control);
     INJECT(enable, 0x00436750, Cultist3_Initialise);
     INJECT(enable, 0x004367A0, Cultist3_Control);
+    INJECT(enable, 0x00436D10, Worker1_Control);
     INJECT(enable, 0x00437570, Bandit1_Control);
     INJECT(enable, 0x004378B0, Bandit2_Control);
     INJECT(enable, 0x00437E70, Pickup_Collision);
