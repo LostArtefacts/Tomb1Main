@@ -79,8 +79,11 @@ static void M_AnimateDrop(CARRIED_ITEM *const item)
 
     ITEM *const pickup = Item_Get(item->spawn_num);
     int16_t room_num = pickup->room_num;
-    const SECTOR *const sector =
-        Room_GetSector(pickup->pos.x, pickup->pos.y, pickup->pos.z, &room_num);
+    // For cases where a flyer has dropped an item exactly on a portal, we need
+    // to ensure that the initial sector is in the room above, hence we test
+    // slightly above the initial y position.
+    const SECTOR *const sector = Room_GetSector(
+        pickup->pos.x, pickup->pos.y - 10, pickup->pos.z, &room_num);
     const int16_t height =
         Room_GetHeight(sector, pickup->pos.x, pickup->pos.y, pickup->pos.z);
     const bool in_water = g_RoomInfo[pickup->room_num].flags & RF_UNDERWATER;

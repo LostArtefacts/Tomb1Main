@@ -1,4 +1,5 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...develop) - ××××-××-××
+- fixed falling pickup items not being drawn when they land in rare cases (#2088)
 
 ## [4.7](https://github.com/LostArtefacts/TRX/compare/tr1-4.6.1...tr1-4.7) - 2024-12-20
 - added support for Wayland in binary Linux builds (#1927)
