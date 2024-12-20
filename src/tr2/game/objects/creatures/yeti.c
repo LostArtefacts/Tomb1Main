@@ -112,10 +112,11 @@ void __cdecl Yeti_Control(const int16_t item_num)
     if (item->hit_points > 0) {
         AI_INFO info;
         Creature_AIInfo(item, &info);
+        Creature_Mood(item, &info, MOOD_ATTACK);
+
         if (info.ahead) {
             head = info.angle;
         }
-        Creature_Mood(item, &info, MOOD_ATTACK);
         angle = Creature_Turn(item, creature->maximum_turn);
 
         switch (item->current_anim_state) {

@@ -71,8 +71,8 @@ void __cdecl BigSpider_Control(const int16_t item_num)
     if (item->hit_points > 0) {
         AI_INFO info;
         Creature_AIInfo(item, &info);
-
         Creature_Mood(item, &info, MOOD_ATTACK);
+
         angle = Creature_Turn(item, BIG_SPIDER_TURN);
 
         switch (item->current_anim_state) {

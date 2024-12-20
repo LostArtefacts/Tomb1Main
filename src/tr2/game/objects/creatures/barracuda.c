@@ -77,7 +77,6 @@ void __cdecl Barracuda_Control(const int16_t item_num)
     if (item->hit_points > 0) {
         AI_INFO info;
         Creature_AIInfo(&g_Items[item_num], &info);
-
         Creature_Mood(item, &info, MOOD_BORED);
 
         int16_t head = 0;
