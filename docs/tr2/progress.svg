@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.44% (1150)</tspan> · <tspan class="known">5.14% (64)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.52% (1151)</tspan> · <tspan class="known">5.06% (63)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="690.55" height="6" x="0" y="0" class="decompiled"/>
-<rect width="38.43" height="6" x="690.55" y="0" class="known"/>
+<rect width="691.16" height="6" x="0" y="0" class="decompiled"/>
+<rect width="37.83" height="6" x="691.16" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -848,7 +848,7 @@
 <rect width="12" height="12" x="285" y="225" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="300" y="225" class="decompiled"><title>void __cdecl RollingBall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="315" y="225" class="decompiled"><title>void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
-<rect width="12" height="12" x="330" y="225" class="known"><title>void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
+<rect width="12" height="12" x="330" y="225" class="decompiled"><title>void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="345" y="225" class="decompiled"><title>void __cdecl Trapdoor_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="360" y="225" class="decompiled"><title>void __cdecl Trapdoor_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="375" y="225" class="decompiled"><title>void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.43%</tspan> · <tspan class="known">2.24%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.53%</tspan> · <tspan class="known">2.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="727.79" height="6" x="0" y="0" class="decompiled"/>
-<rect width="16.77" height="6" x="727.79" y="0" class="known"/>
+<rect width="728.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="16.02" height="6" x="728.54" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1605,7 +1605,7 @@
 <rect width="14.53" height="13.47" x="448.40" y="76.15" class="decompiled"><title>void __cdecl Lara_SwimCollision(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.33" height="13.47" x="465.93" y="76.15" class="decompiled"><title>void __cdecl Lara_HandleSurface(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.23" height="13.47" x="483.26" y="76.15" class="decompiled"><title>void __cdecl Inv_Construct(void);</title></rect>
-<rect width="14.18" height="13.47" x="500.48" y="76.15" class="known"><title>void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
+<rect width="14.18" height="13.47" x="500.48" y="76.15" class="decompiled"><title>void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
 <rect width="14.18" height="13.47" x="517.66" y="76.15" class="known"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
 <rect width="14.12" height="13.47" x="534.83" y="76.15" class="decompiled"><title>void __cdecl Camera_Shift(int32_t *x, int32_t *y, int32_t *h, int32_t target_x, int32_t target_y, int32_t target_h, int32_t left, int32_t top, int32_t right, int32_t bottom);</title></rect>
 <rect width="14.02" height="13.47" x="551.96" y="76.15" class="decompiled"><title>const int16_t *__cdecl Output_InsertRoomSprite(const int16_t *obj_ptr, int32_t vtx_count);</title></rect>

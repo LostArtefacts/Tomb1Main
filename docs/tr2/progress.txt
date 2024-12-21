@@ -3822,7 +3822,7 @@ typedef enum {
 0x00441B30  0x003C  +       void __cdecl RollingBall_Initialise(int16_t item_num);
 0x00441B70  0x0347  +       void __cdecl RollingBall_Control(int16_t item_num);
 0x00441EC0  0x024A  +       void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
-0x00442110  0x0155  -       void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
+0x00442110  0x0155  +       void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
 0x00442270  0x004F  +       void __cdecl Trapdoor_Control(int16_t item_num);
 0x004422C0  0x003A  +       void __cdecl Trapdoor_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00442300  0x003F  +       void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
