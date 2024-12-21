@@ -3,6 +3,10 @@
 #include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/room.h"
+#include "global/vars.h"
+
+#include <libtrx/game/lara/common.h>
+#include <libtrx/utils.h>
 
 #define MAX_ROOMIES 2
 
@@ -31,4 +35,28 @@ void __cdecl DyingMonk_Initialise(const int16_t item_num)
     }
 
     item->data = roomies;
+}
+
+void __cdecl DyingMonk_Control(const int16_t item_num)
+{
+    const ITEM *const item = Item_Get(item_num);
+    const int32_t *const roomies = item->data;
+
+    for (int32_t i = 0; i < MAX_ROOMIES; i++) {
+        int32_t test_item_num = roomies[i];
+        if (test_item_num != NO_ITEM) {
+            const ITEM *const test_item = Item_Get(test_item_num);
+            if (test_item->hit_points > 0) {
+                return;
+            }
+        }
+    }
+
+    const ITEM *const lara_item = Lara_GetItem();
+    const int32_t dx = ABS(lara_item->pos.x - item->pos.x);
+    const int32_t dz = ABS(lara_item->pos.z - item->pos.z);
+    if (dx < WALL_L && dz < WALL_L && !lara_item->gravity
+        && lara_item->pos.y == item->pos.y) {
+        g_LevelComplete = true;
+    }
 }

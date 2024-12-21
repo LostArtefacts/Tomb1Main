@@ -967,6 +967,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004341A0, Object_DrawUnclippedItem);
     INJECT(enable, 0x00434400, FinalLevelCounter_Control);
     INJECT(enable, 0x004346F0, DyingMonk_Initialise);
+    INJECT(enable, 0x00434770, DyingMonk_Control);
     INJECT(enable, 0x00434800, GongBonger_Control);
     INJECT(enable, 0x004348C0, Zipline_Collision);
     INJECT(enable, 0x00434980, Zipline_Control);

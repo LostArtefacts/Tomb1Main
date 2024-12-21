@@ -35,7 +35,6 @@ _docker_run *args:
         --rm \
         --user \
         {{HOST_USER_UID}}:{{HOST_USER_GID}} \
-        --network host \
         -v {{CWD}}:/app/ \
         {{args}}
 
