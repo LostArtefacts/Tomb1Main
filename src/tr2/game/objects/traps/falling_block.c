@@ -85,3 +85,13 @@ void __cdecl FallingBlock_Ceiling(
         *out_height = item->pos.y - origin + STEP_L;
     }
 }
+
+void FallingBlock_Setup(OBJECT *const obj)
+{
+    obj->ceiling = FallingBlock_Ceiling;
+    obj->control = FallingBlock_Control;
+    obj->floor = FallingBlock_Floor;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
+}

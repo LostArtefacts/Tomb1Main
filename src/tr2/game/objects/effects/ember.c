@@ -32,3 +32,10 @@ void __cdecl Ember_Control(const int16_t fx_num)
         Effect_NewRoom(fx_num, room_num);
     }
 }
+
+void Ember_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_EMBER);
+    obj->control = Ember_Control;
+    obj->semi_transparent = 1;
+}

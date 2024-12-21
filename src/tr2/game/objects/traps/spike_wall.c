@@ -3,6 +3,7 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
+#include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
@@ -61,4 +62,13 @@ void __cdecl SpikeWall_Control(const int16_t item_num)
     if (item->touch_bits) {
         M_HitLara(item);
     }
+}
+
+void SpikeWall_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_SPIKE_WALL);
+    obj->control = SpikeWall_Control;
+    obj->collision = Object_Collision;
+    obj->save_position = 1;
+    obj->save_flags = 1;
 }

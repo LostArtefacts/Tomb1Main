@@ -36,7 +36,10 @@
 #include "game/objects/effects/blood.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
+#include "game/objects/effects/dart_effect.h"
+#include "game/objects/effects/ember.h"
 #include "game/objects/effects/explosion.h"
+#include "game/objects/effects/flame.h"
 #include "game/objects/effects/glow.h"
 #include "game/objects/effects/gun_flash.h"
 #include "game/objects/effects/missile_flame.h"
@@ -57,6 +60,7 @@
 #include "game/objects/general/bridge_tilt_2.h"
 #include "game/objects/general/camera_target.h"
 #include "game/objects/general/clock_chimes.h"
+#include "game/objects/general/copter.h"
 #include "game/objects/general/cutscene_player.h"
 #include "game/objects/general/detonator.h"
 #include "game/objects/general/ding_dong.h"
@@ -66,6 +70,7 @@
 #include "game/objects/general/final_cutscene.h"
 #include "game/objects/general/final_level_counter.h"
 #include "game/objects/general/flare_item.h"
+#include "game/objects/general/general.h"
 #include "game/objects/general/gong_bonger.h"
 #include "game/objects/general/grenade.h"
 #include "game/objects/general/harpoon_bolt.h"
@@ -73,6 +78,8 @@
 #include "game/objects/general/keyhole.h"
 #include "game/objects/general/lara_alarm.h"
 #include "game/objects/general/lift.h"
+#include "game/objects/general/mini_copter.h"
+#include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
 #include "game/objects/general/secret.h"
@@ -80,6 +87,30 @@
 #include "game/objects/general/switch.h"
 #include "game/objects/general/trapdoor.h"
 #include "game/objects/general/window.h"
+#include "game/objects/general/zipline.h"
+#include "game/objects/traps/blade.h"
+#include "game/objects/traps/dart.h"
+#include "game/objects/traps/dart_emitter.h"
+#include "game/objects/traps/dying_monk.h"
+#include "game/objects/traps/ember_emitter.h"
+#include "game/objects/traps/falling_block.h"
+#include "game/objects/traps/falling_ceiling.h"
+#include "game/objects/traps/flame_emitter.h"
+#include "game/objects/traps/gondola.h"
+#include "game/objects/traps/hook.h"
+#include "game/objects/traps/icicle.h"
+#include "game/objects/traps/killer_statue.h"
+#include "game/objects/traps/mine.h"
+#include "game/objects/traps/pendulum.h"
+#include "game/objects/traps/power_saw.h"
+#include "game/objects/traps/propeller.h"
+#include "game/objects/traps/rolling_ball.h"
+#include "game/objects/traps/spike_ceiling.h"
+#include "game/objects/traps/spike_wall.h"
+#include "game/objects/traps/spikes.h"
+#include "game/objects/traps/spinning_blade.h"
+#include "game/objects/traps/spring_board.h"
+#include "game/objects/traps/teeth_trap.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 #include "game/objects/vehicles/skidoo_fast.h"
@@ -158,6 +189,41 @@ void __cdecl Object_SetupBaddyObjects(void)
     Winston_Setup();
 }
 
+void __cdecl Object_SetupTrapObjects(void)
+{
+    Blade_Setup();
+    DartEmitter_Setup();
+    Dart_Setup();
+    DyingMonk_Setup();
+    EmberEmitter_Setup();
+    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_1));
+    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_2));
+    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_3));
+    FallingCeiling_Setup();
+    FlameEmitter_Setup();
+    General_Setup();
+    Gondola_Setup();
+    Hook_Setup();
+    Icicle_Setup();
+    KillerStatue_Setup();
+    Mine_Setup();
+    Pendulum_Setup(Object_GetObject(O_PENDULUM_1));
+    Pendulum_Setup(Object_GetObject(O_PENDULUM_2));
+    PowerSaw_Setup();
+    Propeller_Setup(Object_GetObject(O_PROPELLER_1), false);
+    Propeller_Setup(Object_GetObject(O_PROPELLER_2), true);
+    Propeller_Setup(Object_GetObject(O_PROPELLER_3), false);
+    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_1));
+    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_2));
+    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_3));
+    SpikeCeiling_Setup();
+    SpikeWall_Setup();
+    Spikes_Setup();
+    SpinningBlade_Setup();
+    SpringBoard_Setup();
+    TeethTrap_Setup();
+}
+
 void __cdecl Object_SetupGeneralObjects(void)
 {
     Boat_Setup();
@@ -171,6 +237,7 @@ void __cdecl Object_SetupGeneralObjects(void)
     Detonator2_Setup();
     FlareItem_Setup();
     Lift_Setup();
+    Zipline_Setup();
 
     // misc non-interactive objects
     AlarmSound_Setup();
@@ -185,6 +252,14 @@ void __cdecl Object_SetupGeneralObjects(void)
     GongBonger_Setup();
     HotLiquid_Setup();
     LaraAlarm_Setup();
+    Copter_Setup();
+    MiniCopter_Setup();
+
+    // push blocks
+    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_1));
+    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_2));
+    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_3));
+    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_4));
 
     // projectiles
     Grenade_Setup();
@@ -209,6 +284,9 @@ void __cdecl Object_SetupGeneralObjects(void)
     SnowSprite_Setup();
     WaterSprite_Setup();
     Waterfall_Setup();
+    Flame_Setup();
+    DartEffect_Setup();
+    Ember_Setup();
 
     // geometry objects
     BridgeFlat_Setup();

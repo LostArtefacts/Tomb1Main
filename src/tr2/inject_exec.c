@@ -105,6 +105,7 @@
 #include "game/objects/traps/ember_emitter.h"
 #include "game/objects/traps/falling_block.h"
 #include "game/objects/traps/flame_emitter.h"
+#include "game/objects/traps/gondola.h"
 #include "game/objects/traps/mine.h"
 #include "game/objects/traps/rolling_ball.h"
 #include "game/objects/traps/spike_ceiling.h"
@@ -1018,6 +1019,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00438E80, Pickup_Trigger);
     INJECT(enable, 0x00438EF0, Mouse_Control);
     INJECT(enable, 0x0043A480, Object_SetupBaddyObjects);
+    INJECT(enable, 0x0043B4C0, Object_SetupTrapObjects);
     INJECT(enable, 0x0043BAC0, Object_SetupGeneralObjects);
     INJECT(enable, 0x0043C710, Object_SetupAllObjects);
     INJECT(enable, 0x0043C850, Jelly_Control);

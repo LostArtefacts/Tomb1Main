@@ -34,7 +34,7 @@ void DartEmitter_Control(int16_t item_num)
         int16_t dart_item_num = Item_Create();
         if (dart_item_num != NO_ITEM) {
             ITEM *dart = &g_Items[dart_item_num];
-            dart->object_id = O_DARTS;
+            dart->object_id = O_DART;
             dart->room_num = item->room_num;
             dart->shade = -1;
             dart->rot.y = item->rot.y;

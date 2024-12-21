@@ -10,6 +10,7 @@
 #include "game/lara/look.h"
 #include "game/math.h"
 #include "game/objects/common.h"
+#include "game/objects/traps/gondola.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
@@ -45,8 +46,6 @@
 #define BOAT_MAX_TURN (PHD_DEGREE * 4) // = 728
 #define BOAT_SOUND_CEILING (WALL_L * 5) // = 5120
 
-#define GONDOLA_SINK_SPEED 50
-
 typedef enum {
     BOAT_STATE_GET_ON = 0,
     BOAT_STATE_STILL = 1,
@@ -57,14 +56,6 @@ typedef enum {
     BOAT_STATE_FALL = 6,
     BOAT_STATE_DEATH = 8,
 } BOAT_STATE;
-
-typedef enum {
-    GONDOLA_STATE_EMPTY = 0,
-    GONDOLA_STATE_FLOATING = 1,
-    GONDOLA_STATE_CRASH = 2,
-    GONDOLA_STATE_SINK = 3,
-    GONDOLA_STATE_LAND = 4,
-} GONDOLA_STATE;
 
 void __cdecl Boat_Initialise(const int16_t item_num)
 {
@@ -826,41 +817,5 @@ void __cdecl Boat_Control(const int16_t item_num)
         lara->pos.y = pos.y;
         boat->anim_num = g_Objects[O_BOAT].anim_idx;
         boat->frame_num = g_Anims[boat->anim_num].frame_base;
-    }
-}
-
-void __cdecl Gondola_Control(const int16_t item_num)
-{
-    ITEM *const gondola = &g_Items[item_num];
-
-    switch (gondola->current_anim_state) {
-    case GONDOLA_STATE_FLOATING:
-        if (gondola->goal_anim_state == GONDOLA_STATE_CRASH) {
-            gondola->mesh_bits = 0xFF;
-            Effect_ExplodingDeath(item_num, 240, 0);
-        }
-        break;
-
-    case GONDOLA_STATE_SINK: {
-        gondola->pos.y = gondola->pos.y + GONDOLA_SINK_SPEED;
-        int16_t room_num = gondola->room_num;
-        const SECTOR *const sector = Room_GetSector(
-            gondola->pos.x, gondola->pos.y, gondola->pos.z, &room_num);
-        const int32_t height = Room_GetHeight(
-            sector, gondola->pos.x, gondola->pos.y, gondola->pos.z);
-        gondola->floor = height;
-
-        if (gondola->pos.y >= height) {
-            gondola->goal_anim_state = GONDOLA_STATE_LAND;
-            gondola->pos.y = height;
-        }
-        break;
-    }
-    }
-
-    Item_Animate(gondola);
-
-    if (gondola->status == IS_DEACTIVATED) {
-        Item_RemoveActive(item_num);
     }
 }

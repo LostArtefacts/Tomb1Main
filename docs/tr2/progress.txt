@@ -2170,7 +2170,7 @@ typedef enum { // decompiled
     O_PENDULUM_1            = 58,
     O_SPIKES                = 59,
     O_ROLLING_BALL_1        = 60,
-    O_DARTS                 = 61,
+    O_DART                  = 61,
     O_DART_EMITTER          = 62,
     O_DRAWBRIDGE            = 63,
     O_TEETH_TRAP            = 64,
@@ -3730,7 +3730,7 @@ typedef enum {
 0x0043A3E0  0x0061  +R      void __cdecl InitialiseGameFlags(void);
 0x0043A450  0x0027  +R      void __cdecl InitialiseLevelFlags(void);
 0x0043A480  0x103B  +       void __cdecl Object_SetupBaddyObjects(void);
-0x0043B4C0  0x05FD  -       void __cdecl Object_SetupTrapObjects(void);
+0x0043B4C0  0x05FD  +       void __cdecl Object_SetupTrapObjects(void);
 0x0043BAC0  0x0C4C  +       void __cdecl Object_SetupGeneralObjects(void);
 0x0043C710  0x0068  +       void __cdecl Object_SetupAllObjects(void);
 0x0043C780  0x00CE  +R      void __cdecl GetCarriedItems(void);
@@ -3822,7 +3822,7 @@ typedef enum {
 0x00441B30  0x003C  +       void __cdecl RollingBall_Initialise(int16_t item_num);
 0x00441B70  0x0347  +       void __cdecl RollingBall_Control(int16_t item_num);
 0x00441EC0  0x024A  +       void __cdecl RollingBall_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
-0x00442110  0x0155  -       void __cdecl Spike_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
+0x00442110  0x0155  -       void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);
 0x00442270  0x004F  +       void __cdecl Trapdoor_Control(int16_t item_num);
 0x004422C0  0x003A  +       void __cdecl Trapdoor_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00442300  0x003F  +       void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);

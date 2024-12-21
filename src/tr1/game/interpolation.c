@@ -118,7 +118,7 @@ void Interpolation_Commit(void)
             continue;
         }
 
-        const int32_t max_xz = item->object_id == O_DARTS ? 200 : 128;
+        const int32_t max_xz = item->object_id == O_DART ? 200 : 128;
         const int32_t max_y = MAX(128, item->fall_speed * 2);
         INTERPOLATE(item, pos.x, ratio, max_xz);
         INTERPOLATE(item, pos.y, ratio, max_y);

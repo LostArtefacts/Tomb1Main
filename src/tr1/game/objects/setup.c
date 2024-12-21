@@ -154,7 +154,7 @@ static void M_SetupTraps(void)
     ThorsHammerHead_Setup(&g_Objects[O_THORS_HEAD]);
     MidasTouch_Setup(&g_Objects[O_MIDAS_TOUCH]);
     DartEmitter_Setup(&g_Objects[O_DART_EMITTER]);
-    Dart_Setup(&g_Objects[O_DARTS]);
+    Dart_Setup(&g_Objects[O_DART]);
     DartEffect_Setup(&g_Objects[O_DART_EFFECT]);
     FlameEmitter_Setup(&g_Objects[O_FLAME_EMITTER]);
     Flame_Setup(&g_Objects[O_FLAME]);

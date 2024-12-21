@@ -17,4 +17,3 @@ int32_t __cdecl Boat_Dynamics(int16_t boat_num);
 int32_t __cdecl Boat_UserControl(ITEM *boat);
 void __cdecl Boat_Animation(const ITEM *boat, int32_t collide);
 void __cdecl Boat_Control(int16_t item_num);
-void __cdecl Gondola_Control(int16_t item_num);

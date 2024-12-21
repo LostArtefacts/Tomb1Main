@@ -168,15 +168,15 @@ int32_t __cdecl MovableBlock_TestPull(
 
 void __cdecl MovableBlock_Initialise(const int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status != IS_INVISIBLE) {
-        Room_AlterFloorHeight(&g_Items[item_num], -WALL_L);
+        Room_AlterFloorHeight(item, -WALL_L);
     }
 }
 
 void __cdecl MovableBlock_Control(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->flags & IF_ONE_SHOT) {
         Room_AlterFloorHeight(item, WALL_L);
@@ -323,4 +323,15 @@ void __cdecl MovableBlock_Draw(const ITEM *const item)
     } else {
         Object_DrawAnimatingItem(item);
     }
+}
+
+void MovableBlock_Setup(OBJECT *const obj)
+{
+    obj->initialise = MovableBlock_Initialise;
+    obj->control = MovableBlock_Control;
+    obj->collision = MovableBlock_Collision;
+    obj->draw_routine = MovableBlock_Draw;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
 }

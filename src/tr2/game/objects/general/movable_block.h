@@ -19,3 +19,5 @@ void __cdecl MovableBlock_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 
 void __cdecl MovableBlock_Draw(const ITEM *item);
+
+void MovableBlock_Setup(OBJECT *obj);

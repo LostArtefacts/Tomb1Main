@@ -3,6 +3,7 @@
 #include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/items.h"
+#include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -103,4 +104,12 @@ void __cdecl Mine_Control(const int16_t item_num)
     }
 
     M_Explode(item);
+}
+
+void Mine_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_MINE);
+    obj->control = Mine_Control;
+    obj->collision = Object_Collision;
+    obj->save_flags = 1;
 }

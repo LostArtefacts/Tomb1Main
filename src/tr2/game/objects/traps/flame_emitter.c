@@ -2,11 +2,12 @@
 
 #include "game/effects.h"
 #include "game/items.h"
+#include "game/objects/common.h"
 #include "global/vars.h"
 
 void __cdecl FlameEmitter_Control(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Item_IsTriggerActive(item)) {
         if (item->data != NULL) {
@@ -27,4 +28,12 @@ void __cdecl FlameEmitter_Control(const int16_t item_num)
         }
         item->data = (void *)(fx_num + 1);
     }
+}
+
+void FlameEmitter_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_FLAME_EMITTER);
+    obj->control = FlameEmitter_Control;
+    obj->draw_routine = Object_DrawDummyItem;
+    obj->save_flags = 1;
 }

@@ -4,6 +4,7 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
+#include "game/objects/traps/rolling_ball.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
@@ -121,4 +122,15 @@ void __cdecl Zipline_Control(const int16_t item_num)
     Item_RemoveActive(item_num);
     item->status = IS_INACTIVE;
     item->flags &= ~IF_ONE_SHOT;
+}
+
+void Zipline_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_ZIPLINE_HANDLE);
+    obj->initialise = RollingBall_Initialise;
+    obj->control = Zipline_Control;
+    obj->collision = Zipline_Collision;
+    obj->save_position = 1;
+    obj->save_flags = 1;
+    obj->save_anim = 1;
 }

@@ -2,6 +2,7 @@
 
 #include "game/gamebuf.h"
 #include "game/items.h"
+#include "game/objects/common.h"
 #include "game/room.h"
 #include "global/vars.h"
 
@@ -59,4 +60,13 @@ void __cdecl DyingMonk_Control(const int16_t item_num)
         && lara_item->pos.y == item->pos.y) {
         g_LevelComplete = true;
     }
+}
+
+void DyingMonk_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_DYING_MONK);
+    obj->initialise = DyingMonk_Initialise;
+    obj->control = DyingMonk_Control;
+    obj->collision = Object_Collision;
+    obj->save_flags = 1;
 }

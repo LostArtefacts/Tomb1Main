@@ -64,3 +64,10 @@ void __cdecl Flame_Control(const int16_t fx_num)
         }
     }
 }
+
+void Flame_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_FLAME);
+    obj->control = Flame_Control;
+    obj->semi_transparent = 1;
+}

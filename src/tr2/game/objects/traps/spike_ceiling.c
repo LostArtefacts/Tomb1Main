@@ -2,6 +2,7 @@
 
 #include "game/items.h"
 #include "game/lara/control.h"
+#include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
@@ -55,4 +56,13 @@ void __cdecl SpikeCeiling_Control(const int16_t item_num)
     if (item->touch_bits) {
         M_HitLara(item);
     }
+}
+
+void SpikeCeiling_Setup(void)
+{
+    OBJECT *const obj = Object_GetObject(O_CEILING_SPIKES);
+    obj->control = SpikeCeiling_Control;
+    obj->collision = Object_Collision_Trap;
+    obj->save_position = 1;
+    obj->save_flags = 1;
 }
