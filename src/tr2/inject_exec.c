@@ -101,6 +101,7 @@
 #include "game/objects/general/window.h"
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
+#include "game/objects/traps/blade.h"
 #include "game/objects/traps/dying_monk.h"
 #include "game/objects/traps/ember_emitter.h"
 #include "game/objects/traps/falling_block.h"
@@ -1043,6 +1044,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00441400, Propeller_Control);
     INJECT(enable, 0x00441590, SpinningBlade_Control);
     INJECT(enable, 0x00441710, Icicle_Control);
+    INJECT(enable, 0x00441810, Blade_Initialise);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00441EC0, RollingBall_Collision);

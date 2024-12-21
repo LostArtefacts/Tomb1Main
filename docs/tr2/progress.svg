@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.04% (1145)</tspan> · <tspan class="known">5.55% (69)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.12% (1146)</tspan> · <tspan class="known">5.47% (68)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="687.55" height="6" x="0" y="0" class="decompiled"/>
-<rect width="41.43" height="6" x="687.55" y="0" class="known"/>
+<rect width="688.15" height="6" x="0" y="0" class="decompiled"/>
+<rect width="40.83" height="6" x="688.15" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -840,7 +840,7 @@
 <rect width="12" height="12" x="165" y="225" class="decompiled"><title>void __cdecl Propeller_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="180" y="225" class="decompiled"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="195" y="225" class="decompiled"><title>void __cdecl Icicle_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="210" y="225" class="known"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="210" y="225" class="decompiled"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="225" y="225" class="known"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="225" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="225" class="known"><title>void __cdecl KillerStatue_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.21%</tspan> · <tspan class="known">2.47%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.22%</tspan> · <tspan class="known">2.45%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="726.14" height="6" x="0" y="0" class="decompiled"/>
-<rect width="18.42" height="6" x="726.14" y="0" class="known"/>
+<rect width="726.27" height="6" x="0" y="0" class="decompiled"/>
+<rect width="18.29" height="6" x="726.27" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2211,7 +2211,7 @@
 <rect width="4.23" height="3.89" x="699.41" y="275.68" class="decompiled"><title>void __cdecl Output_DrawPolyWGTMap(const int16_t *obj_ptr);</title></rect>
 <rect width="4.23" height="3.89" x="706.64" y="275.68" class="decompiled"><title>void __cdecl Boat_Initialise(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="713.86" y="275.68" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
-<rect width="4.23" height="3.89" x="721.09" y="275.68" class="known"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
+<rect width="4.23" height="3.89" x="721.09" y="275.68" class="decompiled"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="728.32" y="275.68" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
 <rect width="4.23" height="3.89" x="735.55" y="275.68" class="decompiled"><title>int32_t __cdecl RenderErrorBox(int32_t error_code);</title></rect>
 <rect width="4.23" height="3.89" x="742.77" y="275.68" class="decompiled"><title>void __cdecl Shell_ExitSystem(const char *message);</title></rect>
