@@ -3832,7 +3832,7 @@ typedef enum {
 0x00442610  0x003E  +       void __cdecl FallingBlock_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00442650  0x0044  +       void __cdecl FallingBlock_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x004426A0  0x00BD  +       void __cdecl TeethTrap_Control(int16_t item_num);
-0x00442760  0x00E0  -       void __cdecl FallingCeiling_Control(int16_t item_num);
+0x00442760  0x00E0  +       void __cdecl FallingCeiling_Control(int16_t item_num);
 0x00442840  0x013E  -       void __cdecl DartEmitter_Control(int16_t item_num);
 0x00442980  0x0155  -       void __cdecl Dart_Control(int16_t item_num);
 0x00442AE0  0x004B  -       void __cdecl DartEffect_Control(int16_t fx_num);

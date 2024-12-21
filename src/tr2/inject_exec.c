@@ -105,6 +105,7 @@
 #include "game/objects/traps/dying_monk.h"
 #include "game/objects/traps/ember_emitter.h"
 #include "game/objects/traps/falling_block.h"
+#include "game/objects/traps/falling_ceiling.h"
 #include "game/objects/traps/flame_emitter.h"
 #include "game/objects/traps/gondola.h"
 #include "game/objects/traps/hook.h"
@@ -1066,6 +1067,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442610, FallingBlock_Floor);
     INJECT(enable, 0x00442650, FallingBlock_Ceiling);
     INJECT(enable, 0x004426A0, TeethTrap_Control);
+    INJECT(enable, 0x00442760, FallingCeiling_Control);
     INJECT(enable, 0x00442B30, FlameEmitter_Control);
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);
