@@ -1050,6 +1050,21 @@ typedef enum {
     FBBOX_ROT   = 9,
 } FRAME_BBOX_INFO;
 
+typedef struct __unaligned {
+    union {
+        int32_t flags;
+        struct {
+            uint32_t matrix_pop:  1;
+            uint32_t matrix_push: 1;
+            uint32_t rot_x:       1;
+            uint32_t rot_y:       1;
+            uint32_t rot_z:       1;
+            uint32_t pad:         11;
+        };
+    };
+    XYZ_32 pos;
+} BONE;
+
 typedef enum {
     BF_MATRIX_POP  = 1,
     BF_MATRIX_PUSH = 2,

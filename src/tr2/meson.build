@@ -160,6 +160,7 @@ dll_sources = [
   'game/objects/creatures/worker_1.c',
   'game/objects/creatures/worker_2.c',
   'game/objects/creatures/worker_3.c',
+  'game/objects/creatures/xian_common.c',
   'game/objects/creatures/xian_knight.c',
   'game/objects/creatures/xian_spearman.c',
   'game/objects/creatures/yeti.c',

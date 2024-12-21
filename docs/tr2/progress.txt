@@ -1669,6 +1669,21 @@ typedef enum {
     FBBOX_ROT   = 9,
 } FRAME_BBOX_INFO;
 
+typedef struct __unaligned {
+    union {
+        int32_t flags;
+        struct {
+            uint32_t matrix_pop:  1;
+            uint32_t matrix_push: 1;
+            uint32_t rot_x:       1;
+            uint32_t rot_y:       1;
+            uint32_t rot_z:       1;
+            uint32_t pad:         11;
+        };
+    };
+    XYZ_32 pos;
+} BONE;
+
 typedef enum {
     BF_MATRIX_POP  = 1,
     BF_MATRIX_PUSH = 2,
@@ -3271,7 +3286,7 @@ typedef enum {
 0x0041DBD0  0x040B  +       void __cdecl Cultist2_Control(int16_t item_num);
 0x0041E000  0x04A1  +       void __cdecl Monk_Control(int16_t item_num);
 0x0041E4D0  0x05BD  +       void __cdecl Worker3_Control(int16_t item_num);
-0x0041EAE0  0x03F7  -       void __cdecl XianKnight_Draw(const ITEM *item);
+0x0041EAE0  0x03F7  +       void __cdecl XianWarrior_Draw(const ITEM *item);
 0x0041EEE0  0x00A8  -R      void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);
 0x0041EF90  0x0058  -       void __cdecl XianKnight_Initialise(int16_t item_num);
 0x0041EFF0  0x0590  -R      void __cdecl XianSpearman_Control(int16_t item_num);

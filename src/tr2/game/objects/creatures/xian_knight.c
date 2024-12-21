@@ -2,6 +2,7 @@
 
 #include "game/creature.h"
 #include "game/objects/common.h"
+#include "game/objects/creatures/xian_common.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -21,7 +22,7 @@ void XianKnight_Setup(void)
     ASSERT(g_Objects[O_XIAN_KNIGHT_STATUE].loaded);
 
     obj->initialise = XianKnight_Initialise;
-    obj->draw_routine = XianKnight_Draw;
+    obj->draw_routine = XianWarrior_Draw;
     obj->control = XianKnight_Control;
     obj->collision = Creature_Collision;
 

@@ -102,7 +102,7 @@ void __cdecl Object_DrawAnimatingItem(const ITEM *item)
                 if (bone_flags & BF_MATRIX_POP) {
                     Matrix_Pop();
                 }
-                if ((bone_flags & BF_MATRIX_PUSH)) {
+                if (bone_flags & BF_MATRIX_PUSH) {
                     Matrix_Push();
                 }
 
