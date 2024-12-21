@@ -63,7 +63,6 @@
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define BaddieBiteEffect ((void __cdecl (*)(ITEM *item, BITE *bite))0x0043FF60)
-#define SpringBoard_Control ((void __cdecl (*)(int16_t item_num))0x00441A50)
 #define Spikes_Collision ((void __cdecl (*)(int16_t item_num, ITEM *litem, COLL_INFO *coll))0x00442110)
 #define Pendulum_Control ((void __cdecl (*)(int16_t item_num))0x004423F0)
 #define TeethTrap_Control ((void __cdecl (*)(int16_t item_num))0x004426A0)

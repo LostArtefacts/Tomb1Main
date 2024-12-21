@@ -109,7 +109,7 @@
 #include "game/objects/traps/spike_wall.h"
 #include "game/objects/traps/spikes.h"
 #include "game/objects/traps/spinning_blade.h"
-#include "game/objects/traps/spring_board.h"
+#include "game/objects/traps/springboard.h"
 #include "game/objects/traps/teeth_trap.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
@@ -220,7 +220,7 @@ void __cdecl Object_SetupTrapObjects(void)
     SpikeWall_Setup();
     Spikes_Setup();
     SpinningBlade_Setup();
-    SpringBoard_Setup();
+    Springboard_Setup();
     TeethTrap_Setup();
 }
 
