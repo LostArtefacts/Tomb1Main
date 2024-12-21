@@ -118,6 +118,7 @@
 #include "game/objects/traps/spike_wall.h"
 #include "game/objects/traps/spikes.h"
 #include "game/objects/traps/spinning_blade.h"
+#include "game/objects/traps/teeth_trap.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 #include "game/option/option.h"
@@ -1063,6 +1064,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00442500, FallingBlock_Control);
     INJECT(enable, 0x00442610, FallingBlock_Floor);
     INJECT(enable, 0x00442650, FallingBlock_Ceiling);
+    INJECT(enable, 0x004426A0, TeethTrap_Control);
     INJECT(enable, 0x00442B30, FlameEmitter_Control);
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);

@@ -14,16 +14,8 @@
 #define g_CineTickRate (*(int32_t*)0x004640B8) // = 0x8000
 #define g_FlipEffect (*(int32_t*)0x004640C4) // = -1
 #define g_BoxLines (*(int32_t(*)[12][2])0x00464180)
-#define g_BigEelBite (*(BITE*)0x004641E0)
 #define g_AssaultBestTime (*(int32_t*)0x004641F0) // = -1
 #define g_EffectRoutines (*((void(__cdecl  *(*)[32])(ITEM *item))0x004641F8))
-#define g_MonkHit (*(BITE*)0x00464278)
-#define g_Worker3Hit (*(BITE*)0x00464288)
-#define g_XianSpearmanLeftSpear (*(BITE*)0x00464298)
-#define g_XianSpearmanRightSpear (*(BITE*)0x004642A8)
-#define g_XianKnightSword (*(BITE*)0x004642B8)
-#define g_Cultist2LeftHand (*(BITE*)0x004642C8)
-#define g_Cultist2RightHand (*(BITE*)0x004642D8)
 #define g_GF_NumSecrets (*(int16_t*)0x004642E8) // = 3
 #define g_GF_MusicTracks (*(int16_t(*)[16])0x004642F0)
 #define g_CineTargetAngle (*(int16_t*)0x00464310) // = 0x4000
@@ -87,13 +79,6 @@
 #define g_MovableBlockBounds (*(int16_t(*)[])0x00465F40)
 #define g_ZiplineHandleBounds (*(int16_t(*)[])0x00465F58)
 #define g_ZiplineHandlePosition (*(XYZ_32*)0x00465F70)
-#define g_Cultist1Gun (*(BITE*)0x00465F80)
-#define g_Cultist3LeftGun (*(BITE*)0x00465F90)
-#define g_Cultist3RightGun (*(BITE*)0x00465FA0)
-#define g_Worker1Gun (*(BITE*)0x00465FB0)
-#define g_Worker2Gun (*(BITE*)0x00465FC0)
-#define g_Bandit1Gun (*(BITE*)0x00465FD0)
-#define g_Bandit2Gun (*(BITE*)0x00465FE0)
 #define g_PickupBounds (*(int16_t(*)[])0x00465FF0)
 #define g_PickupPosition (*(XYZ_32*)0x00466008)
 #define g_GongBounds (*(int16_t(*)[])0x00466018)
@@ -109,9 +94,6 @@
 #define g_KeyholePosition (*(XYZ_32*)0x004660E0)
 #define g_PuzzleHoleBounds (*(int16_t(*)[])0x004660F0)
 #define g_PuzzleHolePosition (*(XYZ_32*)0x00466108)
-#define g_MouseBite (*(BITE*)0x00466118)
-#define g_BarracudaBite (*(BITE*)0x00466210)
-#define g_SharkBite (*(BITE*)0x00466220)
 #define g_BGND_PaletteIndex (*(int32_t*)0x00466400) // = -1
 #define g_FadeValue (*(int32_t*)0x00466490) // = 0x100000
 #define g_FadeLimit (*(int32_t*)0x00466494) // = 0x100000

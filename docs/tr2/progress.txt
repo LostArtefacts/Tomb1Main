@@ -3776,7 +3776,7 @@ typedef enum {
 0x0043F9B0  0x0128  +       int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);
 0x0043FAE0  0x02D8  +       int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);
 0x0043FDC0  0x019A  +       void __cdecl Collide_GetJointAbsPosition(const ITEM *item, XYZ_32 *out_vec, int32_t joint);
-0x0043FF60  0x005D  -R      void __cdecl BaddieBiteEffect(ITEM *item, BITE *bite);
+0x0043FF60  0x005D  -R      void __cdecl BaddieBiteEffect(ITEM *item, const BITE *bite);
 
 # game/spider.c
 0x0043FFC0  0x00AC  +       void __cdecl Spider_Leap(int16_t item_num, int16_t angle);
@@ -3831,7 +3831,7 @@ typedef enum {
 0x00442500  0x0105  +       void __cdecl FallingBlock_Control(int16_t item_num);
 0x00442610  0x003E  +       void __cdecl FallingBlock_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00442650  0x0044  +       void __cdecl FallingBlock_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
-0x004426A0  0x00BD  -       void __cdecl TeethTrap_Control(int16_t item_num);
+0x004426A0  0x00BD  +       void __cdecl TeethTrap_Control(int16_t item_num);
 0x00442760  0x00E0  -       void __cdecl FallingCeiling_Control(int16_t item_num);
 0x00442840  0x013E  -       void __cdecl DartEmitter_Control(int16_t item_num);
 0x00442980  0x0155  -       void __cdecl Dart_Control(int16_t item_num);
@@ -4882,21 +4882,27 @@ typedef enum {
 0x00521CE0  -       XYZ_32 g_HairVelocity[7]; // HAIR_SEGMENTS + 1
 0x00521D40  -       HAIR_SEGMENT g_HairSegments[7]; // HAIR_SEGMENTS + 1
 0x004D7918  -       int32_t g_HairWind;
-0x004641E0  -       BITE g_BigEelBite;
-0x00466210  -       BITE g_BarracudaBite;
-0x00466220  -       BITE g_SharkBite;
-0x00466118  -       BITE g_MouseBite;
-0x00465F80  -       BITE g_Cultist1Gun;
-0x004642C8  -       BITE g_Cultist2LeftHand;
-0x004642D8  -       BITE g_Cultist2RightHand;
-0x00465F90  -       BITE g_Cultist3LeftGun;
-0x00465FA0  -       BITE g_Cultist3RightGun;
-0x00465FD0  -       BITE g_Bandit1Gun;
-0x00465FE0  -       BITE g_Bandit2Gun;
-0x00465FB0  -       BITE g_Worker1Gun;
-0x00465FC0  -       BITE g_Worker2Gun;
-0x00464288  -       BITE g_Worker3Hit;
-0x00464278  -       BITE g_MonkHit;
-0x004642A8  -       BITE g_XianSpearmanRightSpear;
-0x00464298  -       BITE g_XianSpearmanLeftSpear;
-0x004642B8  -       BITE g_XianKnightSword;
+0x004641E0  +       BITE g_BigEelBite;
+0x00466210  +       BITE g_BarracudaBite;
+0x00466220  +       BITE g_SharkBite;
+0x00466118  +       BITE g_MouseBite;
+0x00465F80  +       BITE g_Cultist1Gun;
+0x004642C8  +       BITE g_Cultist2LeftHand;
+0x004642D8  +       BITE g_Cultist2RightHand;
+0x00465F90  +       BITE g_Cultist3LeftGun;
+0x00465FA0  +       BITE g_Cultist3RightGun;
+0x00465FD0  +       BITE g_Bandit1Gun;
+0x00465FE0  +       BITE g_Bandit2Gun;
+0x00465FB0  +       BITE g_Worker1Gun;
+0x00465FC0  +       BITE g_Worker2Gun;
+0x00464288  +       BITE g_Worker3Hit;
+0x00464278  +       BITE g_MonkHit;
+0x004642A8  +       BITE g_XianSpearmanRightSpear;
+0x00464298  +       BITE g_XianSpearmanLeftSpear;
+0x004642B8  +       BITE g_XianKnightSword;
+0x00466360  +       BITE g_TeethTrapTeeth1A;
+0x00466370  +       BITE g_TeethTrapTeeth1B;
+0x00466380  +       BITE g_TeethTrapTeeth2A;
+0x00466390  +       BITE g_TeethTrapTeeth2B;
+0x004663A0  +       BITE g_TeethTrapTeeth3A;
+0x004663B0  +       BITE g_TeethTrapTeeth3B;
