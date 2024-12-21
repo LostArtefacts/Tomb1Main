@@ -63,6 +63,7 @@
 #include "game/objects/creatures/spider.h"
 #include "game/objects/creatures/tiger.h"
 #include "game/objects/creatures/trex.h"
+#include "game/objects/creatures/winston.h"
 #include "game/objects/creatures/worker_1.h"
 #include "game/objects/creatures/worker_2.h"
 #include "game/objects/creatures/worker_3.h"
@@ -991,6 +992,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00437110, Worker2_Control);
     INJECT(enable, 0x00437570, Bandit1_Control);
     INJECT(enable, 0x004378B0, Bandit2_Control);
+    INJECT(enable, 0x00437CF0, Winston_Control);
     INJECT(enable, 0x00437E70, Pickup_Collision);
     INJECT(enable, 0x004382F0, Switch_Collision);
     INJECT(enable, 0x00438500, Switch_CollisionUW);

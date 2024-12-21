@@ -3682,7 +3682,7 @@ typedef enum {
 0x00437110  0x042A  +       void __cdecl Worker2_Control(int16_t item_num);
 0x00437570  0x030B  +       void __cdecl Bandit1_Control(int16_t item_num);
 0x004378B0  0x0408  +       void __cdecl Bandit2_Control(int16_t item_num);
-0x00437CF0  0x0172  -       void __cdecl Winston_Control(int16_t item_num);
+0x00437CF0  0x0172  +       void __cdecl Winston_Control(int16_t item_num);
 
 # game/pickup.c
 0x00437E70  0x0480  +       void __cdecl Pickup_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);

@@ -2,11 +2,26 @@
 
 #include "game/creature.h"
 #include "game/objects/common.h"
+#include "game/random.h"
+#include "game/sound.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#define WINSTON_RADIUS (WALL_L / 10) // = 102
+#include <libtrx/utils.h>
+
+// clang-format off
+#define WINSTON_RADIUS     (WALL_L / 10) // = 102
+#define WINSTON_STOP_RANGE SQUARE(WALL_L * 3 / 2) // = 2359296
+// clang-format on
+
+typedef enum {
+    // clang-format off
+    WINSTON_STATE_EMPTY = 0,
+    WINSTON_STATE_STOP  = 1,
+    WINSTON_STATE_WALK  = 2,
+    // clang-format on
+} WINSTON_STATE;
 
 void Winston_Setup(void)
 {
@@ -26,4 +41,53 @@ void Winston_Setup(void)
     obj->save_position = 1;
     obj->save_flags = 1;
     obj->save_anim = 1;
+}
+
+void __cdecl Winston_Control(const int16_t item_num)
+{
+    if (!Creature_Activate(item_num)) {
+        return;
+    }
+
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
+    AI_INFO info;
+    Creature_AIInfo(item, &info);
+    Creature_Mood(item, &info, MOOD_ATTACK);
+
+    int16_t angle = Creature_Turn(item, creature->maximum_turn);
+
+    if (item->current_anim_state == WINSTON_STATE_STOP) {
+        if (item->goal_anim_state != WINSTON_STATE_WALK
+            && (info.distance > WINSTON_STOP_RANGE || info.ahead == 0)) {
+            item->goal_anim_state = WINSTON_STATE_WALK;
+            Sound_Effect(SFX_WINSTON_GRUNT_2, &item->pos, SPM_NORMAL);
+        }
+    } else if (info.distance < WINSTON_STOP_RANGE) {
+        if (info.ahead != 0) {
+            item->goal_anim_state = WINSTON_STATE_STOP;
+            if ((creature->flags & 1) != 0) {
+                creature->flags--;
+            }
+        } else if ((creature->flags & 1) == 0) {
+            Sound_Effect(SFX_WINSTON_GRUNT_1, &item->pos, SPM_NORMAL);
+            Sound_Effect(SFX_WINSTON_CUPS, &item->pos, SPM_NORMAL);
+            creature->flags |= 1;
+        }
+    }
+
+    if (item->touch_bits != 0 && (creature->flags & 2) == 0) {
+        Sound_Effect(SFX_WINSTON_GRUNT_3, &item->pos, SPM_NORMAL);
+        Sound_Effect(SFX_WINSTON_CUPS, &item->pos, SPM_NORMAL);
+        creature->flags |= 2;
+    } else if (item->touch_bits == 0 && (creature->flags & 2) != 0) {
+        creature->flags -= 2;
+    }
+
+    if (Random_GetDraw() < 0x100) {
+        Sound_Effect(SFX_WINSTON_CUPS, &item->pos, SPM_NORMAL);
+    }
+
+    Creature_Animate(item_num, angle, 0);
 }

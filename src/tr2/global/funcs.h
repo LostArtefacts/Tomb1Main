@@ -70,7 +70,6 @@
 #define GeneralControl ((void __cdecl (*)(int16_t item_num))0x00435C90)
 #define Glow_Control ((void __cdecl (*)(int16_t fx_num))0x00435E90)
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
-#define Winston_Control ((void __cdecl (*)(int16_t item_num))0x00437CF0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define Object_SetupTrapObjects ((void __cdecl (*)(void))0x0043B4C0)
 #define BaddieBiteEffect ((void __cdecl (*)(ITEM *item, BITE *bite))0x0043FF60)
