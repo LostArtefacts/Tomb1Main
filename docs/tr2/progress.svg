@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.72% (1141)</tspan> · <tspan class="known">5.87% (73)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.80% (1142)</tspan> · <tspan class="known">5.79% (72)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="685.15" height="6" x="0" y="0" class="decompiled"/>
-<rect width="43.84" height="6" x="685.15" y="0" class="known"/>
+<rect width="685.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="43.23" height="6" x="685.75" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -836,7 +836,7 @@
 <rect width="12" height="12" x="105" y="225" class="decompiled"><title>void __cdecl Mine_Control(int16_t mine_num);</title></rect>
 <rect width="12" height="12" x="120" y="225" class="decompiled"><title>void __cdecl SpikeWall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="135" y="225" class="decompiled"><title>void __cdecl SpikeCeiling_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="150" y="225" class="known"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="150" y="225" class="decompiled"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="165" y="225" class="known"><title>void __cdecl Propeller_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="180" y="225" class="known"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="195" y="225" class="known"><title>void __cdecl Icicle_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.87%</tspan> · <tspan class="known">2.81%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.90%</tspan> · <tspan class="known">2.77%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="723.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="20.98" height="6" x="723.58" y="0" class="known"/>
+<rect width="723.88" height="6" x="0" y="0" class="decompiled"/>
+<rect width="20.68" height="6" x="723.88" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1940,7 +1940,7 @@
 <rect width="7.64" height="7.53" x="567.57" y="367.47" class="decompiled"><title>int32_t __cdecl CreateTexturePalette(const RGB_888 *pal);</title></rect>
 <rect width="7.94" height="7.16" x="578.21" y="196.26" class="decompiled"><title>void __cdecl Lara_SwimTurn(ITEM *item);</title></rect>
 <rect width="7.94" height="7.16" x="589.15" y="196.26" class="decompiled"><title>void __cdecl Sound_EndScene(void);</title></rect>
-<rect width="7.94" height="7.16" x="600.09" y="196.26" class="known"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
+<rect width="7.94" height="7.16" x="600.09" y="196.26" class="decompiled"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
 <rect width="7.86" height="7.16" x="611.04" y="196.26" class="decompiled"><title>void __cdecl Output_DrawPickup(int32_t sx, int32_t sy, int32_t scale, int16_t sprite_idx, int16_t shade);</title></rect>
 <rect width="7.86" height="7.16" x="621.89" y="196.26" class="decompiled"><title>void __cdecl Lara_State_Tread(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.86" height="7.16" x="632.75" y="196.26" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
