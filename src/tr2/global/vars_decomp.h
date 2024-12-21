@@ -85,6 +85,8 @@
 #define g_Cultist1Gun (*(BITE*)0x00465F80)
 #define g_Cultist3LeftGun (*(BITE*)0x00465F90)
 #define g_Cultist3RightGun (*(BITE*)0x00465FA0)
+#define g_Worker1Gun (*(BITE*)0x00465FB0)
+#define g_Worker2Gun (*(BITE*)0x00465FC0)
 #define g_Bandit1Gun (*(BITE*)0x00465FD0)
 #define g_Bandit2Gun (*(BITE*)0x00465FE0)
 #define g_PickupBounds (*(int16_t(*)[])0x00465FF0)

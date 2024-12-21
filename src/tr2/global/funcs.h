@@ -71,7 +71,6 @@
 #define GeneralControl ((void __cdecl (*)(int16_t item_num))0x00435C90)
 #define Glow_Control ((void __cdecl (*)(int16_t fx_num))0x00435E90)
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
-#define Worker2_Control ((void __cdecl (*)(int16_t item_num))0x00437110)
 #define Winston_Control ((void __cdecl (*)(int16_t item_num))0x00437CF0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define Object_SetupTrapObjects ((void __cdecl (*)(void))0x0043B4C0)
