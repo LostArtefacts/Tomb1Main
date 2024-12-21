@@ -1,14 +1,69 @@
 #include "game/objects/creatures/worker_3.h"
 
 #include "game/creature.h"
+#include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/objects/creatures/worker_common.h"
+#include "game/random.h"
+#include "game/sound.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
-#define WORKER_3_HITPOINTS 27
-#define WORKER_4_HITPOINTS 27
+#include <libtrx/utils.h>
+
+// clang-format off
+#define WORKER_3_HITPOINTS      27
+#define WORKER_4_HITPOINTS      27
+#define WORKER_3_HIT_DAMAGE     80
+#define WORKER_3_SWIPE_DAMAGE   100
+#define WORKER_3_WALK_TURN      (PHD_DEGREE * 5) // = 910
+#define WORKER_3_RUN_TURN       (PHD_DEGREE * 6) // = 1092
+#define WORKER_3_ATTACK_0_RANGE SQUARE(WALL_L / 2) // = 262144 = 0x40000
+#define WORKER_3_ATTACK_1_RANGE SQUARE(WALL_L) // = 1048576 = 0x100000
+#define WORKER_3_ATTACK_2_RANGE SQUARE(WALL_L * 3 / 2) // = WORKER_3_ATTACK_2_RANGE
+#define WORKER_3_WALK_RANGE     SQUARE(WALL_L * 2) // = 4194304 = 0x400000
+#define WORKER_3_WALK_CHANCE    0x100
+#define WORKER_3_WAIT_CHANCE    0x100
+#define WORKER_3_TOUCH_BITS     0b00000110'00000000 // = 0x600
+#define WORKER_3_VAULT_SHIFT    260
+// clang-format on
+
+typedef enum {
+    // clang-format off
+    WORKER_3_STATE_EMPTY   = 0,
+    WORKER_3_STATE_STOP    = 1,
+    WORKER_3_STATE_WALK    = 2,
+    WORKER_3_STATE_PUNCH_2 = 3,
+    WORKER_3_STATE_AIM_2   = 4,
+    WORKER_3_STATE_WAIT    = 5,
+    WORKER_3_STATE_AIM_1   = 6,
+    WORKER_3_STATE_AIM_0   = 7,
+    WORKER_3_STATE_PUNCH_1 = 8,
+    WORKER_3_STATE_PUNCH_0 = 9,
+    WORKER_3_STATE_RUN     = 10,
+    WORKER_3_STATE_DEATH   = 11,
+    WORKER_3_STATE_CLIMB_3 = 12,
+    WORKER_3_STATE_CLIMB_1 = 13,
+    WORKER_3_STATE_CLIMB_2 = 14,
+    WORKER_3_STATE_FALL_3  = 15,
+    // clang-format on
+} WORKER_3_STATE;
+
+typedef enum {
+    // clang-format off
+    WORKER_3_ANIM_DEATH   = 26,
+    WORKER_3_ANIM_CLIMB_1 = 28,
+    WORKER_3_ANIM_CLIMB_2 = 29,
+    WORKER_3_ANIM_CLIMB_3 = 27,
+    WORKER_3_ANIM_FALL_3  = 30,
+    // clang-format on
+} WORKER_3_ANIM;
+
+static const BITE m_Worker3Hit = {
+    .pos = { .x = 247, .y = 10, .z = 11 },
+    .mesh_num = 10,
+};
 
 void Worker3_Setup(void)
 {
@@ -58,4 +113,237 @@ void Worker4_Setup(void)
 
     g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
     g_AnimBones[obj->bone_idx + 4 * 4] |= BF_ROT_Y;
+}
+
+void __cdecl Worker3_Control(const int16_t item_num)
+{
+    if (!Creature_Activate(item_num)) {
+        return;
+    }
+
+    ITEM *const item = Item_Get(item_num);
+    CREATURE *const creature = item->data;
+
+    int16_t tilt = 0;
+    int16_t angle = 0;
+    int16_t neck = 0;
+    int16_t head = 0;
+
+    if (item->hit_points <= 0) {
+        if (item->current_anim_state != WORKER_3_STATE_DEATH) {
+            item->anim_num =
+                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_DEATH;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = WORKER_3_STATE_DEATH;
+        }
+    } else {
+        AI_INFO info;
+        Creature_AIInfo(item, &info);
+        Creature_Mood(item, &info, MOOD_BORED);
+
+        angle = Creature_Turn(item, creature->maximum_turn);
+
+        switch (item->current_anim_state) {
+        case WORKER_3_STATE_STOP:
+            creature->flags = 0;
+            if (info.ahead != 0) {
+                neck = info.angle;
+            }
+            creature->maximum_turn = 0;
+            if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            } else if (creature->mood == MOOD_BORED) {
+                if (item->required_anim_state != WORKER_3_STATE_EMPTY) {
+                    item->goal_anim_state = item->required_anim_state;
+                } else if (Random_GetControl() < 0x4000) {
+                    item->goal_anim_state = WORKER_3_STATE_WALK;
+                } else {
+                    item->goal_anim_state = WORKER_3_STATE_WAIT;
+                }
+            } else if (info.bite == 0) {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            } else if (info.distance < WORKER_3_ATTACK_0_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_AIM_0;
+            } else if (info.distance < WORKER_3_ATTACK_1_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_AIM_1;
+            } else if (info.distance < WORKER_3_WALK_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_WALK;
+            } else {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            }
+            break;
+
+        case WORKER_3_STATE_WAIT:
+            if (info.ahead != 0) {
+                neck = info.angle;
+            }
+            if (creature->mood != MOOD_BORED) {
+                item->goal_anim_state = WORKER_3_STATE_STOP;
+            } else if (Random_GetControl() < WORKER_3_WALK_CHANCE) {
+                item->required_anim_state = WORKER_3_STATE_WALK;
+                item->goal_anim_state = WORKER_3_STATE_STOP;
+            }
+            break;
+
+        case WORKER_3_STATE_WALK:
+            if (info.ahead != 0) {
+                neck = info.angle;
+            }
+            creature->maximum_turn = WORKER_3_WALK_TURN;
+            if (creature->mood == MOOD_ESCAPE) {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            } else if (creature->mood == MOOD_BORED) {
+                if (Random_GetControl() < WORKER_3_WAIT_CHANCE) {
+                    item->required_anim_state = WORKER_3_STATE_WAIT;
+                    item->goal_anim_state = WORKER_3_STATE_STOP;
+                }
+            } else if (info.bite == 0) {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            } else if (info.distance < WORKER_3_ATTACK_0_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_STOP;
+            } else if (info.distance < WORKER_3_ATTACK_2_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_AIM_2;
+            } else {
+                item->goal_anim_state = WORKER_3_STATE_RUN;
+            }
+            break;
+
+        case WORKER_3_STATE_RUN:
+            if (info.ahead != 0) {
+                neck = info.angle;
+            }
+            creature->maximum_turn = WORKER_3_RUN_TURN;
+            tilt = angle / 2;
+            if (creature->mood == MOOD_ESCAPE) {
+            } else if (creature->mood == MOOD_BORED) {
+                item->goal_anim_state = WORKER_3_STATE_WALK;
+            } else if (info.ahead != 0 && info.distance < WORKER_3_WALK_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_WALK;
+            }
+            break;
+
+        case WORKER_3_STATE_AIM_0:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            creature->flags = 0;
+            if (info.bite != 0 && info.distance < WORKER_3_ATTACK_0_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_PUNCH_0;
+            } else {
+                item->goal_anim_state = WORKER_3_STATE_STOP;
+            }
+            break;
+
+        case WORKER_3_STATE_AIM_1:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            creature->flags = 0;
+            if (info.ahead != 0 && info.distance < WORKER_3_ATTACK_1_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_PUNCH_1;
+            } else {
+                item->goal_anim_state = WORKER_3_STATE_STOP;
+            }
+            break;
+
+        case WORKER_3_STATE_AIM_2:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            creature->flags = 0;
+            if (info.bite != 0 && info.distance < WORKER_3_ATTACK_2_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_PUNCH_2;
+            } else {
+                item->goal_anim_state = WORKER_3_STATE_WALK;
+            }
+            break;
+
+        case WORKER_3_STATE_PUNCH_0:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->flags == 0
+                && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
+                Lara_TakeDamage(WORKER_3_HIT_DAMAGE, true);
+                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Sound_Effect(SFX_ENEMY_HIT_2, &item->pos, SPM_NORMAL);
+                creature->flags = 1;
+            }
+            break;
+
+        case WORKER_3_STATE_PUNCH_1:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->flags == 0
+                && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
+                Lara_TakeDamage(WORKER_3_HIT_DAMAGE, true);
+                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Sound_Effect(SFX_ENEMY_HIT_1, &item->pos, SPM_NORMAL);
+                creature->flags = 1;
+            }
+            if (info.ahead != 0 && info.distance > WORKER_3_ATTACK_1_RANGE
+                && info.distance < WORKER_3_ATTACK_2_RANGE) {
+                item->goal_anim_state = WORKER_3_STATE_PUNCH_2;
+            }
+            break;
+
+        case WORKER_3_STATE_PUNCH_2:
+            if (info.ahead != 0) {
+                head = info.angle;
+            }
+            if (creature->flags != 2
+                && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
+                Lara_TakeDamage(WORKER_3_SWIPE_DAMAGE, true);
+                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Sound_Effect(SFX_ENEMY_HIT_1, &item->pos, SPM_NORMAL);
+                creature->flags = 2;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    Creature_Tilt(item, tilt);
+    Creature_Head(item, head);
+    Creature_Neck(item, neck);
+
+    if (item->current_anim_state >= WORKER_3_STATE_CLIMB_3) {
+        Creature_Animate(item_num, angle, 0);
+    } else {
+        switch (Creature_Vault(item_num, angle, 2, WORKER_3_VAULT_SHIFT)) {
+        case -4:
+            item->anim_num =
+                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_FALL_3;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = WORKER_3_STATE_FALL_3;
+            break;
+
+        case 2:
+            item->anim_num =
+                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_1;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = WORKER_3_STATE_CLIMB_1;
+            break;
+
+        case 3:
+            item->anim_num =
+                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_2;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = WORKER_3_STATE_CLIMB_2;
+            break;
+
+        case 4:
+            item->anim_num =
+                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_3;
+            item->frame_num = g_Anims[item->anim_num].frame_base;
+            item->current_anim_state = WORKER_3_STATE_CLIMB_3;
+            break;
+
+        default:
+            return;
+        }
+    }
 }

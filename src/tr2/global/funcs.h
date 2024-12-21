@@ -53,7 +53,6 @@
 #define FX_AssaultReset ((void __cdecl (*)(ITEM *item))0x0041DA70)
 #define FX_AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)
 #define Monk_Control ((void __cdecl (*)(int16_t item_num))0x0041E000)
-#define Worker3_Control ((void __cdecl (*)(int16_t item_num))0x0041E4D0)
 #define XianKnight_Draw ((void __cdecl (*)(const ITEM *item))0x0041EAE0)
 #define XianDamage ((void __cdecl (*)(ITEM *item, CREATURE *xian, int32_t damage))0x0041EEE0)
 #define XianKnight_Initialise ((void __cdecl (*)(int16_t item_num))0x0041EF90)

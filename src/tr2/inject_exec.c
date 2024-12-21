@@ -65,6 +65,7 @@
 #include "game/objects/creatures/trex.h"
 #include "game/objects/creatures/worker_1.h"
 #include "game/objects/creatures/worker_2.h"
+#include "game/objects/creatures/worker_3.h"
 #include "game/objects/creatures/yeti.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
@@ -938,6 +939,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
+    INJECT(enable, 0x0041E4D0, Worker3_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x00432FE0, Missile_Control);

@@ -17,6 +17,7 @@
 #define g_BigEelBite (*(BITE*)0x004641E0)
 #define g_AssaultBestTime (*(int32_t*)0x004641F0) // = -1
 #define g_EffectRoutines (*((void(__cdecl  *(*)[32])(ITEM *item))0x004641F8))
+#define g_Worker3Hit (*(BITE*)0x00464288)
 #define g_Cultist2LeftHand (*(BITE*)0x004642C8)
 #define g_Cultist2RightHand (*(BITE*)0x004642D8)
 #define g_GF_NumSecrets (*(int16_t*)0x004642E8) // = 3

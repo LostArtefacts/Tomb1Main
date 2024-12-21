@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.76% (1129)</tspan> · <tspan class="known">6.83% (85)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.84% (1130)</tspan> · <tspan class="known">6.75% (84)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="677.94" height="6" x="0" y="0" class="decompiled"/>
-<rect width="51.04" height="6" x="677.94" y="0" class="known"/>
+<rect width="678.55" height="6" x="0" y="0" class="decompiled"/>
+<rect width="50.44" height="6" x="678.55" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -375,7 +375,7 @@
 <rect width="12" height="12" x="690" y="75" class="decompiled"><title>int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="705" y="75" class="decompiled"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="720" y="75" class="known"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="735" y="75" class="known"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="735" y="75" class="decompiled"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="90" class="known"><title>void __cdecl XianKnight_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="90" class="known"><title>void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
 <rect width="12" height="12" x="30" y="90" class="known"><title>void __cdecl XianKnight_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.34%</tspan> · <tspan class="known">5.33%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.77%</tspan> · <tspan class="known">4.90%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="704.75" height="6" x="0" y="0" class="decompiled"/>
-<rect width="39.81" height="6" x="704.75" y="0" class="known"/>
+<rect width="707.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="36.60" height="6" x="707.96" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1360,7 +1360,7 @@
 <rect width="31.67" height="34.77" x="142.32" y="38.34" class="decompiled"><title>void __cdecl Boat_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="33.69" x="142.32" y="76.11" class="known"><title>void __cdecl Object_SetupTrapObjects(void);</title></rect>
 <rect width="31.67" height="33.31" x="142.32" y="112.80" class="decompiled"><title>void __cdecl Yeti_Control(int16_t item_num);</title></rect>
-<rect width="31.67" height="32.16" x="142.32" y="149.10" class="known"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
+<rect width="31.67" height="32.16" x="142.32" y="149.10" class="decompiled"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="31.08" x="142.32" y="184.26" class="known"><title>void __cdecl XianSpearman_Control(int16_t item_num);</title></rect>
 <rect width="31.67" height="30.65" x="142.32" y="218.34" class="decompiled"><title>BOOL __cdecl Level_LoadObjects(HANDLE handle);</title></rect>
 <rect width="31.67" height="29.07" x="142.32" y="251.99" class="decompiled"><title>void __cdecl Cultist3_Control(int16_t item_num);</title></rect>
