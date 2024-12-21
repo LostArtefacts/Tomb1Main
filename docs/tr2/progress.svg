@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.88% (1143)</tspan> · <tspan class="known">5.71% (71)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.96% (1144)</tspan> · <tspan class="known">5.63% (70)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="686.35" height="6" x="0" y="0" class="decompiled"/>
-<rect width="42.63" height="6" x="686.35" y="0" class="known"/>
+<rect width="686.95" height="6" x="0" y="0" class="decompiled"/>
+<rect width="42.03" height="6" x="686.95" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -838,7 +838,7 @@
 <rect width="12" height="12" x="135" y="225" class="decompiled"><title>void __cdecl SpikeCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="150" y="225" class="decompiled"><title>void __cdecl Hook_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="165" y="225" class="decompiled"><title>void __cdecl Propeller_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="180" y="225" class="known"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="180" y="225" class="decompiled"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="195" y="225" class="known"><title>void __cdecl Icicle_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="210" y="225" class="known"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="225" y="225" class="known"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.02%</tspan> · <tspan class="known">2.65%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.13%</tspan> · <tspan class="known">2.54%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="724.75" height="6" x="0" y="0" class="decompiled"/>
-<rect width="19.81" height="6" x="724.75" y="0" class="known"/>
+<rect width="725.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="18.98" height="6" x="725.58" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1577,7 +1577,7 @@
 <rect width="14.86" height="14.79" x="430.54" y="186.27" class="decompiled"><title>void __cdecl Twinkle_Control(int16_t fx_num);</title></rect>
 <rect width="14.86" height="14.65" x="430.54" y="204.06" class="decompiled"><title>void __cdecl S_Audio_Sample_Init2(HWND hwnd);</title></rect>
 <rect width="14.86" height="14.65" x="430.54" y="221.71" class="decompiled"><title>void __cdecl SE_GraphicsDlgInit(HWND hwndDlg);</title></rect>
-<rect width="14.86" height="14.60" x="430.54" y="239.36" class="known"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
+<rect width="14.86" height="14.60" x="430.54" y="239.36" class="decompiled"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
 <rect width="14.86" height="14.51" x="430.54" y="256.96" class="decompiled"><title>void __cdecl Lift_FloorCeiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *floor, int32_t *ceiling);</title></rect>
 <rect width="14.86" height="14.37" x="430.54" y="274.47" class="decompiled"><title>void __cdecl Lara_Col_Run(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.86" height="14.32" x="430.54" y="291.84" class="decompiled"><title>void __cdecl Output_InsertPoly_Gouraud(int32_t vtx_count, float z, int32_t red, int32_t green, int32_t blue, int16_t poly_type);</title></rect>

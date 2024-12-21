@@ -112,6 +112,7 @@
 #include "game/objects/traps/rolling_ball.h"
 #include "game/objects/traps/spike_ceiling.h"
 #include "game/objects/traps/spike_wall.h"
+#include "game/objects/traps/spinning_blade.h"
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 #include "game/option/option.h"
@@ -1039,6 +1040,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00441250, SpikeCeiling_Control);
     INJECT(enable, 0x00441370, Hook_Control);
     INJECT(enable, 0x00441400, Propeller_Control);
+    INJECT(enable, 0x00441590, SpinningBlade_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00441EC0, RollingBall_Collision);

@@ -1,7 +1,84 @@
 #include "game/objects/traps/spinning_blade.h"
 
+#include "game/items.h"
+#include "game/lara/control.h"
+#include "game/math.h"
 #include "game/objects/common.h"
+#include "game/room.h"
+#include "game/sound.h"
 #include "global/funcs.h"
+
+#include <libtrx/game/lara/common.h>
+
+#define SPINNING_BLADE_DAMAGE 100
+
+typedef enum {
+    // clang-format off
+    SPINNING_BLADE_STATE_EMPTY = 0,
+    SPINNING_BLADE_STATE_STOP  = 1,
+    SPINNING_BLADE_STATE_SPIN  = 2,
+    // clang-format on
+} SPINNING_BLADE_STATE;
+
+void __cdecl SpinningBlade_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    bool spinning = false;
+
+    if (item->current_anim_state == SPINNING_BLADE_STATE_SPIN) {
+        if (item->goal_anim_state != SPINNING_BLADE_STATE_STOP) {
+            const int32_t x = item->pos.x
+                + ((WALL_L * 3 / 2 * Math_Sin(item->rot.y)) >> W2V_SHIFT);
+            const int32_t z = item->pos.z
+                + ((WALL_L * 3 / 2 * Math_Cos(item->rot.y)) >> W2V_SHIFT);
+
+            int16_t room_num = item->room_num;
+            const SECTOR *const sector =
+                Room_GetSector(x, item->pos.y, z, &room_num);
+            if (Room_GetHeight(sector, x, item->pos.y, z) == NO_HEIGHT) {
+                item->goal_anim_state = SPINNING_BLADE_STATE_STOP;
+            }
+        }
+
+        spinning = true;
+
+        if (item->touch_bits != 0) {
+            Lara_TakeDamage(SPINNING_BLADE_DAMAGE, true);
+
+            const ITEM *const lara_item = Lara_GetItem();
+            DoLotsOfBlood(
+                lara_item->pos.x, lara_item->pos.y - WALL_L / 2,
+                lara_item->pos.z, item->speed * 2, lara_item->rot.y,
+                lara_item->room_num, 2);
+        }
+
+        Sound_Effect(SFX_ROLLING_BLADE, &item->pos, SPM_NORMAL);
+    } else {
+        if (Item_IsTriggerActive(item)) {
+            item->goal_anim_state = SPINNING_BLADE_STATE_SPIN;
+        }
+        spinning = false;
+    }
+
+    Item_Animate(item);
+
+    int16_t room_num = item->room_num;
+    const SECTOR *const sector =
+        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
+    const int32_t height =
+        Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
+    item->pos.y = height;
+    item->floor = height;
+    if (room_num != item->room_num) {
+        Item_NewRoom(item_num, room_num);
+    }
+
+    if (spinning) {
+        if (item->current_anim_state == SPINNING_BLADE_STATE_STOP) {
+            item->rot.y += PHD_180;
+        }
+    }
+}
 
 void SpinningBlade_Setup(void)
 {
