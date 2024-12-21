@@ -1,7 +1,7 @@
 #include "game/objects/traps/power_saw.h"
 
 #include "game/objects/common.h"
-#include "global/funcs.h"
+#include "game/objects/traps/propeller.h"
 
 void PowerSaw_Setup(void)
 {
