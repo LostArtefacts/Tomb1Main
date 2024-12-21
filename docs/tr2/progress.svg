@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.20% (1147)</tspan> · <tspan class="known">5.39% (67)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.28% (1148)</tspan> · <tspan class="known">5.31% (66)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="688.75" height="6" x="0" y="0" class="decompiled"/>
-<rect width="40.23" height="6" x="688.75" y="0" class="known"/>
+<rect width="689.35" height="6" x="0" y="0" class="decompiled"/>
+<rect width="39.63" height="6" x="689.35" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -842,7 +842,7 @@
 <rect width="12" height="12" x="195" y="225" class="decompiled"><title>void __cdecl Icicle_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="210" y="225" class="decompiled"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="225" y="225" class="decompiled"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="240" y="225" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="240" y="225" class="decompiled"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="225" class="known"><title>void __cdecl KillerStatue_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="270" y="225" class="known"><title>void __cdecl SpringBoard_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="285" y="225" class="decompiled"><title>void __cdecl RollingBall_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.27%</tspan> · <tspan class="known">2.41%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.29%</tspan> · <tspan class="known">2.39%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="726.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="17.98" height="6" x="726.58" y="0" class="known"/>
+<rect width="726.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="17.82" height="6" x="726.74" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2164,7 +2164,7 @@
 <rect width="4.89" height="4.46" x="664.27" y="261.02" class="decompiled"><title>int32_t __cdecl Creature_Activate(int16_t item_num);</title></rect>
 <rect width="4.89" height="4.46" x="672.17" y="261.02" class="decompiled"><title>void __cdecl Matrix_TranslateRel_ID(int32_t x, int32_t y, int32_t z, int32_t x2, int32_t y2, int32_t z2);</title></rect>
 <rect width="4.89" height="4.46" x="680.06" y="261.02" class="decompiled"><title>void __cdecl Lara_State_Extra_YetiKill(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="4.78" height="4.46" x="687.96" y="261.02" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
+<rect width="4.78" height="4.46" x="687.96" y="261.02" class="decompiled"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="4.78" height="4.46" x="695.74" y="261.02" class="decompiled"><title>HRESULT __cdecl DDrawSurfaceRestoreLost(LPDDS surface1, LPDDS surface2, bool blank);</title></rect>
 <rect width="4.78" height="4.46" x="703.52" y="261.02" class="decompiled"><title>DWORD __cdecl GetRenderBitDepth(DWORD dwRGBBitCount);</title></rect>
 <rect width="4.78" height="4.46" x="711.31" y="261.02" class="decompiled"><title>void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);</title></rect>

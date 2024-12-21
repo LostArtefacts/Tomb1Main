@@ -7,6 +7,7 @@
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
+#include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>
 
@@ -19,6 +20,24 @@ typedef enum {
     SPINNING_BLADE_STATE_SPIN  = 2,
     // clang-format on
 } SPINNING_BLADE_STATE;
+
+typedef enum {
+    // clang-format off
+    SPINNING_BLADE_ANIM_SPIN_FAST = 0,
+    SPINNING_BLADE_ANIM_SPIN_SLOW = 1,
+    SPINNING_BLADE_ANIM_SPIN_END  = 2,
+    SPINNING_BLADE_ANIM_STOP      = 3,
+    // clang-format on
+} SPINNING_BLADE_ANIM;
+
+void __cdecl M_Initialise(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    const OBJECT *const obj = Object_GetObject(item->object_id);
+    item->anim_num = obj->anim_idx + SPINNING_BLADE_ANIM_STOP;
+    item->frame_num = g_Anims[item->anim_num].frame_base;
+    item->current_anim_state = SPINNING_BLADE_STATE_STOP;
+}
 
 void __cdecl SpinningBlade_Control(const int16_t item_num)
 {
@@ -83,7 +102,7 @@ void __cdecl SpinningBlade_Control(const int16_t item_num)
 void SpinningBlade_Setup(void)
 {
     OBJECT *const obj = Object_GetObject(O_SPINNING_BLADE);
-    obj->initialise = KillerStatue_Initialise;
+    obj->initialise = M_Initialise;
     obj->control = SpinningBlade_Control;
     obj->collision = Object_Collision;
     obj->save_position = 1;
