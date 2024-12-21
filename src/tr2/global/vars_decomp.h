@@ -21,6 +21,7 @@
 #define g_Worker3Hit (*(BITE*)0x00464288)
 #define g_XianSpearmanLeftSpear (*(BITE*)0x00464298)
 #define g_XianSpearmanRightSpear (*(BITE*)0x004642A8)
+#define g_XianKnightSword (*(BITE*)0x004642B8)
 #define g_Cultist2LeftHand (*(BITE*)0x004642C8)
 #define g_Cultist2RightHand (*(BITE*)0x004642D8)
 #define g_GF_NumSecrets (*(int16_t*)0x004642E8) // = 3

@@ -950,6 +950,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041EEE0, XianSpearman_DoDamage);
     INJECT(enable, 0x0041EFF0, XianSpearman_Control);
     INJECT(enable, 0x0041F5D0, XianKnight_SparkleTrail);
+    INJECT(enable, 0x0041F670, XianKnight_Control);
     INJECT(enable, 0x0042C0F0, HarpoonBolt_Control);
     INJECT(enable, 0x0042C530, Grenade_Control);
     INJECT(enable, 0x00432FE0, Missile_Control);

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.40% (1137)</tspan> · <tspan class="known">6.19% (77)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.48% (1138)</tspan> · <tspan class="known">6.11% (76)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="682.75" height="6" x="0" y="0" class="decompiled"/>
-<rect width="46.24" height="6" x="682.75" y="0" class="known"/>
+<rect width="683.35" height="6" x="0" y="0" class="decompiled"/>
+<rect width="45.64" height="6" x="683.35" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -381,7 +381,7 @@
 <rect width="12" height="12" x="30" y="90" class="decompiled"><title>void __cdecl XianWarrior_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="90" class="decompiled"><title>void __cdecl XianSpearman_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="90" class="decompiled"><title>void __cdecl XianKnight_SparkleTrail(ITEM *item);</title></rect>
-<rect width="12" height="12" x="75" y="90" class="known"><title>void __cdecl XianKnight_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="75" y="90" class="decompiled"><title>void __cdecl XianKnight_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="90" y="90" class="decompiled"><title>int32_t __cdecl GF_LoadScriptFile(const char *fname);</title></rect>
 <rect width="12" height="12" x="105" y="90" class="decompiled"><title>int32_t __cdecl GF_DoFrontendSequence(void);</title></rect>
 <rect width="12" height="12" x="120" y="90" class="decompiled"><title>int32_t __cdecl GF_DoLevelSequence(int32_t level, GAMEFLOW_LEVEL_TYPE type);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.06%</tspan> · <tspan class="known">3.61%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.34%</tspan> · <tspan class="known">3.33%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="717.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="26.98" height="6" x="717.58" y="0" class="known"/>
+<rect width="719.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="24.89" height="6" x="719.67" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1401,7 +1401,7 @@
 <rect width="24.79" height="26.20" x="239.18" y="178.38" class="decompiled"><title>void __cdecl Text_DrawText(const TEXTSTRING *string);</title></rect>
 <rect width="24.79" height="26.17" x="239.18" y="207.59" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectG4(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="24.79" height="25.96" x="239.18" y="236.76" class="decompiled"><title>void __cdecl Worker1_Control(int16_t item_num);</title></rect>
-<rect width="24.79" height="25.49" x="239.18" y="265.73" class="known"><title>void __cdecl XianKnight_Control(int16_t item_num);</title></rect>
+<rect width="24.79" height="25.49" x="239.18" y="265.73" class="decompiled"><title>void __cdecl XianKnight_Control(int16_t item_num);</title></rect>
 <rect width="24.79" height="25.22" x="239.18" y="294.21" class="decompiled"><title>HRESULT __stdcall EnumDisplayModesCallback(LPDDSDESC lpDDSurfaceDesc, LPVOID lpContext);</title></rect>
 <rect width="24.79" height="24.86" x="239.18" y="322.43" class="decompiled"><title>void __cdecl RenderStart(bool is_reset);</title></rect>
 <rect width="24.79" height="24.71" x="239.18" y="350.29" class="decompiled"><title>BOOL __cdecl Level_LoadRooms(HANDLE handle);</title></rect>

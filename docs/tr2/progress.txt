@@ -3291,7 +3291,7 @@ typedef enum {
 0x0041EF90  0x0058  +       void __cdecl XianWarrior_Initialise(int16_t item_num);
 0x0041EFF0  0x0590  +       void __cdecl XianSpearman_Control(int16_t item_num);
 0x0041F5D0  0x0098  +       void __cdecl XianKnight_SparkleTrail(ITEM *item);
-0x0041F670  0x03BA  -       void __cdecl XianKnight_Control(int16_t item_num);
+0x0041F670  0x03BA  +       void __cdecl XianKnight_Control(int16_t item_num);
 
 # game/gameflow.c
 0x0041FA60  0x01E9  +       int32_t __cdecl GF_LoadScriptFile(const char *fname);
@@ -4899,3 +4899,4 @@ typedef enum {
 0x00464278  -       BITE g_MonkHit;
 0x004642A8  -       BITE g_XianSpearmanRightSpear;
 0x00464298  -       BITE g_XianSpearmanLeftSpear;
+0x004642B8  -       BITE g_XianKnightSword;

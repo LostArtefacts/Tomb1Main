@@ -52,7 +52,6 @@
 #define FX_AssaultStop ((void __cdecl (*)(ITEM *item))0x0041DA50)
 #define FX_AssaultReset ((void __cdecl (*)(ITEM *item))0x0041DA70)
 #define FX_AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)
-#define XianKnight_Control ((void __cdecl (*)(int16_t item_num))0x0041F670)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)
 #define InitialiseFinalLevel ((void __cdecl (*)(void))0x00434330)
