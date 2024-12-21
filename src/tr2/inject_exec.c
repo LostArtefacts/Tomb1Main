@@ -101,6 +101,7 @@
 #include "game/objects/general/window.h"
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
+#include "game/objects/traps/dying_monk.h"
 #include "game/objects/traps/ember_emitter.h"
 #include "game/objects/traps/falling_block.h"
 #include "game/objects/traps/flame_emitter.h"
@@ -965,6 +966,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434170, MovableBlock_Draw);
     INJECT(enable, 0x004341A0, Object_DrawUnclippedItem);
     INJECT(enable, 0x00434400, FinalLevelCounter_Control);
+    INJECT(enable, 0x004346F0, DyingMonk_Initialise);
     INJECT(enable, 0x00434800, GongBonger_Control);
     INJECT(enable, 0x004348C0, Zipline_Collision);
     INJECT(enable, 0x00434980, Zipline_Control);
