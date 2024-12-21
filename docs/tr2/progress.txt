@@ -3269,7 +3269,7 @@ typedef enum {
 # game/enemies.c
 0x0041DB50  0x0076  +R      int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x0041DBD0  0x040B  +       void __cdecl Cultist2_Control(int16_t item_num);
-0x0041E000  0x04A1  -       void __cdecl Monk_Control(int16_t item_num);
+0x0041E000  0x04A1  +       void __cdecl Monk_Control(int16_t item_num);
 0x0041E4D0  0x05BD  +       void __cdecl Worker3_Control(int16_t item_num);
 0x0041EAE0  0x03F7  -       void __cdecl XianKnight_Draw(const ITEM *item);
 0x0041EEE0  0x00A8  -R      void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);
@@ -4881,3 +4881,4 @@ typedef enum {
 0x00465FB0  -       BITE g_Worker1Gun;
 0x00465FC0  -       BITE g_Worker2Gun;
 0x00464288  -       BITE g_Worker3Hit;
+0x00464278  -       BITE g_MonkHit;

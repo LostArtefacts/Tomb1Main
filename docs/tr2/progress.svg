@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">90.92% (1131)</tspan> · <tspan class="known">6.67% (83)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91% (1132)</tspan> · <tspan class="known">6.59% (82)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="679.15" height="6" x="0" y="0" class="decompiled"/>
-<rect width="49.84" height="6" x="679.15" y="0" class="known"/>
+<rect width="679.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="49.24" height="6" x="679.75" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -374,7 +374,7 @@
 <rect width="12" height="12" x="675" y="75" class="known"><title>void __cdecl FX_AssaultFinished(ITEM *item);</title></rect>
 <rect width="12" height="12" x="690" y="75" class="decompiled"><title>int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="705" y="75" class="decompiled"><title>void __cdecl Cultist2_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="720" y="75" class="known"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="720" y="75" class="decompiled"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="735" y="75" class="decompiled"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="90" class="known"><title>void __cdecl XianKnight_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="90" class="known"><title>void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.88%</tspan> · <tspan class="known">4.79%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.23%</tspan> · <tspan class="known">4.44%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="708.77" height="6" x="0" y="0" class="decompiled"/>
-<rect width="35.79" height="6" x="708.77" y="0" class="known"/>
+<rect width="711.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="33.20" height="6" x="711.36" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1373,7 +1373,7 @@
 <rect width="28.59" height="29.36" x="176.99" y="98.23" class="decompiled"><title>void __cdecl Option_Controls_ShowControls(void);</title></rect>
 <rect width="28.59" height="28.33" x="176.99" y="130.59" class="decompiled"><title>void __cdecl Camera_Update(void);</title></rect>
 <rect width="28.59" height="28.20" x="176.99" y="161.92" class="decompiled"><title>void __cdecl Output_InsertTrans8(const PHD_VBUF *vbuf, int16_t shade);</title></rect>
-<rect width="28.59" height="28.12" x="176.99" y="193.12" class="known"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
+<rect width="28.59" height="28.12" x="176.99" y="193.12" class="decompiled"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
 <rect width="28.59" height="28.07" x="176.99" y="224.25" class="decompiled"><title>LRESULT __stdcall WinVidGameWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="28.59" height="28.04" x="176.99" y="255.32" class="decompiled"><title>int32_t __cdecl Skidoo_Dynamics(ITEM *skidoo);</title></rect>
 <rect width="28.59" height="28.02" x="176.99" y="286.36" class="decompiled"><title>void __cdecl Option_Sound(INVENTORY_ITEM *item);</title></rect>
