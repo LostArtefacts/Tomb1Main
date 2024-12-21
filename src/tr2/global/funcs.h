@@ -63,7 +63,6 @@
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 #define BaddieBiteEffect ((void __cdecl (*)(ITEM *item, BITE *bite))0x0043FF60)
-#define Blade_Control ((void __cdecl (*)(int16_t item_num))0x00441850)
 #define KillerStatue_Initialise ((void __cdecl (*)(int16_t item_num))0x004418F0)
 #define KillerStatue_Control ((void __cdecl (*)(int16_t item_num))0x00441940)
 #define SpringBoard_Control ((void __cdecl (*)(int16_t item_num))0x00441A50)

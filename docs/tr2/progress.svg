@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.12% (1146)</tspan> · <tspan class="known">5.47% (68)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.20% (1147)</tspan> · <tspan class="known">5.39% (67)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="688.15" height="6" x="0" y="0" class="decompiled"/>
-<rect width="40.83" height="6" x="688.15" y="0" class="known"/>
+<rect width="688.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="40.23" height="6" x="688.75" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -841,7 +841,7 @@
 <rect width="12" height="12" x="180" y="225" class="decompiled"><title>void __cdecl SpinningBlade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="195" y="225" class="decompiled"><title>void __cdecl Icicle_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="210" y="225" class="decompiled"><title>void __cdecl Blade_Initialise(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="225" y="225" class="known"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="225" y="225" class="decompiled"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="225" class="known"><title>void __cdecl KillerStatue_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="225" class="known"><title>void __cdecl KillerStatue_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="270" y="225" class="known"><title>void __cdecl SpringBoard_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.22%</tspan> · <tspan class="known">2.45%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.27%</tspan> · <tspan class="known">2.41%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="726.27" height="6" x="0" y="0" class="decompiled"/>
-<rect width="18.29" height="6" x="726.27" y="0" class="known"/>
+<rect width="726.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="17.98" height="6" x="726.58" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1905,7 +1905,7 @@
 <rect width="7.86" height="8.16" x="556.72" y="355.76" class="decompiled"><title>void __cdecl Music_SetVolume(int32_t volume);</title></rect>
 <rect width="7.86" height="8.08" x="556.72" y="366.92" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT4_ZBuffered(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>
 <rect width="7.93" height="8.01" x="567.57" y="185.25" class="decompiled"><title>void __cdecl Lara_State_Extra_SharkKill(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="7.93" height="8.01" x="578.50" y="185.25" class="known"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
+<rect width="7.93" height="8.01" x="578.50" y="185.25" class="decompiled"><title>void __cdecl Blade_Control(int16_t item_num);</title></rect>
 <rect width="7.93" height="8.01" x="589.43" y="185.25" class="decompiled"><title>bool __cdecl GetRegistryGuidValue(LPCTSTR lpValueName, GUID *value, GUID *defaultValue);</title></rect>
 <rect width="7.86" height="8.01" x="600.36" y="185.25" class="decompiled"><title>void __cdecl Lara_Col_Reach(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.86" height="8.01" x="611.22" y="185.25" class="decompiled"><title>int32_t __cdecl GetCollisionAnim(ITEM *skidoo, XYZ_32 *moved);</title></rect>

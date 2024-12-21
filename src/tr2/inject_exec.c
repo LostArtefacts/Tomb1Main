@@ -1045,6 +1045,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00441590, SpinningBlade_Control);
     INJECT(enable, 0x00441710, Icicle_Control);
     INJECT(enable, 0x00441810, Blade_Initialise);
+    INJECT(enable, 0x00441850, Blade_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00441EC0, RollingBall_Collision);
