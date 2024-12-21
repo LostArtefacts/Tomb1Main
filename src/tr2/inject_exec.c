@@ -1038,6 +1038,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0043EDD0, SkidooDriver_Control);
     INJECT(enable, 0x0043F1D0, SkidooArmed_Push);
     INJECT(enable, 0x0043F2F0, SkidooArmed_Collision);
+    INJECT(enable, 0x0043FF60, TeethTrap_Bite);
     INJECT(enable, 0x0043FFC0, Spider_Leap);
     INJECT(enable, 0x00440070, Spider_Control);
     INJECT(enable, 0x00440290, BigSpider_Control);

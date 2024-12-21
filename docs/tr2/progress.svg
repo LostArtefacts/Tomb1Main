@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.68% (1153)</tspan> · <tspan class="known">4.90% (61)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.77% (1154)</tspan> · <tspan class="known">4.82% (60)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="692.36" height="6" x="0" y="0" class="decompiled"/>
-<rect width="36.63" height="6" x="692.36" y="0" class="known"/>
+<rect width="692.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="36.03" height="6" x="692.96" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -808,7 +808,7 @@
 <rect width="12" height="12" x="435" y="210" class="decompiled"><title>int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);</title></rect>
 <rect width="12" height="12" x="450" y="210" class="decompiled"><title>int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);</title></rect>
 <rect width="12" height="12" x="465" y="210" class="decompiled"><title>void __cdecl Collide_GetJointAbsPosition(const ITEM *item, XYZ_32 *out_vec, int32_t joint);</title></rect>
-<rect width="12" height="12" x="480" y="210" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, const BITE *bite);</title></rect>
+<rect width="12" height="12" x="480" y="210" class="decompiled"><title>void __cdecl TeethTrap_Bite(ITEM *item, const BITE *bite);</title></rect>
 <rect width="12" height="12" x="495" y="210" class="decompiled"><title>void __cdecl Spider_Leap(int16_t item_num, int16_t angle);</title></rect>
 <rect width="12" height="12" x="510" y="210" class="decompiled"><title>void __cdecl Spider_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="525" y="210" class="decompiled"><title>void __cdecl BigSpider_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.66%</tspan> · <tspan class="known">2.01%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.69%</tspan> · <tspan class="known">1.98%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="729.53" height="6" x="0" y="0" class="decompiled"/>
-<rect width="15.03" height="6" x="729.53" y="0" class="known"/>
+<rect width="729.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="14.82" height="6" x="729.74" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2072,7 +2072,7 @@
 <rect width="5.57" height="6" x="607.59" y="262.25" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="271.25" class="decompiled"><title>void __cdecl Inv_Ring_MotionItemSelect(RING_INFO *ring, INVENTORY_ITEM *inv_item);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="280.25" class="decompiled"><title>void __cdecl Lara_Col_ClimbLeft(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="5.57" height="6" x="607.59" y="289.25" class="known"><title>void __cdecl BaddieBiteEffect(ITEM *item, const BITE *bite);</title></rect>
+<rect width="5.57" height="6" x="607.59" y="289.25" class="decompiled"><title>void __cdecl TeethTrap_Bite(ITEM *item, const BITE *bite);</title></rect>
 <rect width="5.57" height="6" x="607.59" y="298.26" class="decompiled"><title>LRESULT __stdcall SE_NewPropSheetWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="5.57" height="5.90" x="607.59" y="307.26" class="decompiled"><title>int16_t __cdecl Creature_Effect(ITEM *item, BITE *bite, int16_t (*__cdecl spawn)(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num));</title></rect>
 <rect width="5.57" height="5.90" x="607.59" y="316.16" class="decompiled"><title>void __cdecl Room_AddFlipItems(ROOM *r);</title></rect>

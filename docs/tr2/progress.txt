@@ -3776,7 +3776,7 @@ typedef enum {
 0x0043F9B0  0x0128  +       int32_t __cdecl Collide_TestCollision(ITEM *item, const ITEM *lara_item);
 0x0043FAE0  0x02D8  +       int32_t __cdecl Collide_GetSpheres(const ITEM *item, SPHERE *spheres, bool world_space);
 0x0043FDC0  0x019A  +       void __cdecl Collide_GetJointAbsPosition(const ITEM *item, XYZ_32 *out_vec, int32_t joint);
-0x0043FF60  0x005D  -R      void __cdecl BaddieBiteEffect(ITEM *item, const BITE *bite);
+0x0043FF60  0x005D  +       void __cdecl TeethTrap_Bite(ITEM *item, const BITE *bite);
 
 # game/spider.c
 0x0043FFC0  0x00AC  +       void __cdecl Spider_Leap(int16_t item_num, int16_t angle);
