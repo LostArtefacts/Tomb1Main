@@ -3835,7 +3835,7 @@ typedef enum {
 0x00442760  0x00E0  +       void __cdecl FallingCeiling_Control(int16_t item_num);
 0x00442840  0x013E  +       void __cdecl DartEmitter_Control(int16_t item_num);
 0x00442980  0x0155  +       void __cdecl Dart_Control(int16_t item_num);
-0x00442AE0  0x004B  -       void __cdecl DartEffect_Control(int16_t fx_num);
+0x00442AE0  0x004B  +       void __cdecl DartEffect_Control(int16_t fx_num);
 0x00442B30  0x0090  +       void __cdecl FlameEmitter_Control(int16_t item_num);
 0x00442BC0  0x0164  +       void __cdecl Flame_Control(int16_t fx_num);
 0x00442D30  0x0049  +       void __cdecl Lara_CatchFire(void);

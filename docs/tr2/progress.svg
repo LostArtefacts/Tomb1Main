@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.01% (1157)</tspan> · <tspan class="known">4.58% (57)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.09% (1158)</tspan> · <tspan class="known">4.50% (56)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="694.76" height="6" x="0" y="0" class="decompiled"/>
-<rect width="34.23" height="6" x="694.76" y="0" class="known"/>
+<rect width="695.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="33.63" height="6" x="695.36" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -861,7 +861,7 @@
 <rect width="12" height="12" x="480" y="225" class="decompiled"><title>void __cdecl FallingCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="495" y="225" class="decompiled"><title>void __cdecl DartEmitter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="510" y="225" class="decompiled"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="525" y="225" class="known"><title>void __cdecl DartEffect_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="525" y="225" class="decompiled"><title>void __cdecl DartEffect_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="540" y="225" class="decompiled"><title>void __cdecl FlameEmitter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="555" y="225" class="decompiled"><title>void __cdecl Flame_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="570" y="225" class="decompiled"><title>void __cdecl Lara_CatchFire(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.95%</tspan> · <tspan class="known">1.73%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.97%</tspan> · <tspan class="known">1.70%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="731.67" height="6" x="0" y="0" class="decompiled"/>
-<rect width="12.89" height="6" x="731.67" y="0" class="known"/>
+<rect width="731.83" height="6" x="0" y="0" class="decompiled"/>
+<rect width="12.73" height="6" x="731.83" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2143,7 +2143,7 @@
 <rect width="4.66" height="5.12" x="727.02" y="252.89" class="decompiled"><title>int32_t __cdecl Boat_DoDynamics(int32_t height, int32_t fall_speed, int32_t *y);</title></rect>
 <rect width="4.66" height="5.12" x="734.68" y="252.89" class="decompiled"><title>void __cdecl Lara_State_FastTurn(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.66" height="5.12" x="742.34" y="252.89" class="decompiled"><title>void __cdecl Flare_SetArm(int32_t frame);</title></rect>
-<rect width="4.80" height="4.98" x="632.45" y="261.02" class="known"><title>void __cdecl DartEffect_Control(int16_t fx_num);</title></rect>
+<rect width="4.80" height="4.98" x="632.45" y="261.02" class="decompiled"><title>void __cdecl DartEffect_Control(int16_t fx_num);</title></rect>
 <rect width="4.80" height="4.98" x="632.45" y="268.99" class="decompiled"><title>void __cdecl SE_OptionsStrCat(LPTSTR *dstString, bool isEnabled, bool *isNext, LPCTSTR srcString);</title></rect>
 <rect width="4.80" height="4.87" x="632.45" y="276.97" class="decompiled"><title>void __cdecl Lara_State_BackJump(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.80" height="4.87" x="632.45" y="284.84" class="decompiled"><title>DISPLAY_MODE *__thiscall InsertDisplayModeInListTail(DISPLAY_MODE_LIST *modeList);</title></rect>
