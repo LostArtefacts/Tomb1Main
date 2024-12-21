@@ -111,6 +111,7 @@
 #include "game/objects/traps/icicle.h"
 #include "game/objects/traps/killer_statue.h"
 #include "game/objects/traps/mine.h"
+#include "game/objects/traps/pendulum.h"
 #include "game/objects/traps/propeller.h"
 #include "game/objects/traps/rolling_ball.h"
 #include "game/objects/traps/spike_ceiling.h"
@@ -1058,6 +1059,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004422C0, Trapdoor_Floor);
     INJECT(enable, 0x00442300, Trapdoor_Ceiling);
     INJECT(enable, 0x00442340, Trapdoor_IsItemOnTop);
+    INJECT(enable, 0x004423F0, Pendulum_Control);
     INJECT(enable, 0x00442500, FallingBlock_Control);
     INJECT(enable, 0x00442610, FallingBlock_Floor);
     INJECT(enable, 0x00442650, FallingBlock_Ceiling);
