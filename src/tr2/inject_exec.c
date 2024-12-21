@@ -102,6 +102,7 @@
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
 #include "game/objects/traps/blade.h"
+#include "game/objects/traps/dart.h"
 #include "game/objects/traps/dart_emitter.h"
 #include "game/objects/traps/dying_monk.h"
 #include "game/objects/traps/ember_emitter.h"
@@ -1070,6 +1071,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x004426A0, TeethTrap_Control);
     INJECT(enable, 0x00442760, FallingCeiling_Control);
     INJECT(enable, 0x00442840, DartEmitter_Control);
+    INJECT(enable, 0x00442980, Dart_Control);
     INJECT(enable, 0x00442B30, FlameEmitter_Control);
     INJECT(enable, 0x00442BC0, Flame_Control);
     INJECT(enable, 0x00442E70, EmberEmitter_Control);

@@ -62,6 +62,5 @@
 #define Glow_Control ((void __cdecl (*)(int16_t fx_num))0x00435E90)
 #define GunFlash_Control ((void __cdecl (*)(int16_t fx_num))0x00435ED0)
 #define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
-#define Dart_Control ((void __cdecl (*)(int16_t item_num))0x00442980)
 #define DartEffect_Control ((void __cdecl (*)(int16_t fx_num))0x00442AE0)
 // clang-format on

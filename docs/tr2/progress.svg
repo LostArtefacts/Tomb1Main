@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">92.93% (1156)</tspan> · <tspan class="known">4.66% (58)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.01% (1157)</tspan> · <tspan class="known">4.58% (57)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="694.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="34.83" height="6" x="694.16" y="0" class="known"/>
+<rect width="694.76" height="6" x="0" y="0" class="decompiled"/>
+<rect width="34.23" height="6" x="694.76" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -860,7 +860,7 @@
 <rect width="12" height="12" x="465" y="225" class="decompiled"><title>void __cdecl TeethTrap_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="480" y="225" class="decompiled"><title>void __cdecl FallingCeiling_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="495" y="225" class="decompiled"><title>void __cdecl DartEmitter_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="510" y="225" class="known"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="510" y="225" class="decompiled"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="525" y="225" class="known"><title>void __cdecl DartEffect_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="540" y="225" class="decompiled"><title>void __cdecl FlameEmitter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="555" y="225" class="decompiled"><title>void __cdecl Flame_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.85%</tspan> · <tspan class="known">1.83%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.95%</tspan> · <tspan class="known">1.73%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="730.92" height="6" x="0" y="0" class="decompiled"/>
-<rect width="13.64" height="6" x="730.92" y="0" class="known"/>
+<rect width="731.67" height="6" x="0" y="0" class="decompiled"/>
+<rect width="12.89" height="6" x="731.67" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1606,7 +1606,7 @@
 <rect width="14.33" height="13.47" x="465.93" y="76.15" class="decompiled"><title>void __cdecl Lara_HandleSurface(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.23" height="13.47" x="483.26" y="76.15" class="decompiled"><title>void __cdecl Inv_Construct(void);</title></rect>
 <rect width="14.18" height="13.47" x="500.48" y="76.15" class="decompiled"><title>void __cdecl Spikes_Collision(int16_t item_num, ITEM *litem, COLL_INFO *coll);</title></rect>
-<rect width="14.18" height="13.47" x="517.66" y="76.15" class="known"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
+<rect width="14.18" height="13.47" x="517.66" y="76.15" class="decompiled"><title>void __cdecl Dart_Control(int16_t item_num);</title></rect>
 <rect width="14.12" height="13.47" x="534.83" y="76.15" class="decompiled"><title>void __cdecl Camera_Shift(int32_t *x, int32_t *y, int32_t *h, int32_t target_x, int32_t target_y, int32_t target_h, int32_t left, int32_t top, int32_t right, int32_t bottom);</title></rect>
 <rect width="14.02" height="13.47" x="551.96" y="76.15" class="decompiled"><title>const int16_t *__cdecl Output_InsertRoomSprite(const int16_t *obj_ptr, int32_t vtx_count);</title></rect>
 <rect width="13.77" height="13.47" x="568.98" y="76.15" class="decompiled"><title>void __cdecl Lara_Col_Climbing(ITEM *item, COLL_INFO *coll);</title></rect>
