@@ -1,6 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...develop) - ××××-××-××
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
 - fixed falling pickup items not being drawn when they land in rare cases (#2088)
+- fixed unbinding keys not working for controllers (#2090, regression from 4.6)
 
 ## [4.7](https://github.com/LostArtefacts/TRX/compare/tr1-4.6.1...tr1-4.7) - 2024-12-20
 - added support for Wayland in binary Linux builds (#1927)
