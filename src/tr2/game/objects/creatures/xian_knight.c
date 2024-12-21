@@ -12,6 +12,15 @@
 #define XIAN_KNIGHT_HITPOINTS 80
 #define XIAN_KNIGHT_RADIUS (WALL_L / 5) // = 204
 
+static void M_Initialise(int16_t item_num);
+
+static void M_Initialise(const int16_t item_num)
+{
+    ITEM *const item = &g_Items[item_num];
+    item->status = IS_INACTIVE;
+    item->mesh_bits = 0;
+}
+
 void XianKnight_Setup(void)
 {
     OBJECT *const obj = &g_Objects[O_XIAN_KNIGHT];
@@ -21,7 +30,7 @@ void XianKnight_Setup(void)
 
     ASSERT(g_Objects[O_XIAN_KNIGHT_STATUE].loaded);
 
-    obj->initialise = XianKnight_Initialise;
+    obj->initialise = M_Initialise;
     obj->draw_routine = XianWarrior_Draw;
     obj->control = XianKnight_Control;
     obj->collision = Creature_Collision;

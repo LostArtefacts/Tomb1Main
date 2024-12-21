@@ -80,6 +80,20 @@ static const BITE m_XianSpearmanRightSpear = {
     .mesh_num = 18,
 };
 
+static void M_Initialise(int16_t item_num);
+
+static void M_Initialise(const int16_t item_num)
+{
+    ITEM *const item = &g_Items[item_num];
+    item->anim_num =
+        g_Objects[O_XIAN_SPEARMAN].anim_idx + XIAN_SPEARMAN_ANIM_START;
+    item->frame_num = g_Anims[item->anim_num].frame_base;
+    item->goal_anim_state = XIAN_SPEARMAN_STATE_START;
+    item->current_anim_state = XIAN_SPEARMAN_STATE_START;
+    item->status = IS_INACTIVE;
+    item->mesh_bits = 0;
+}
+
 void XianSpearman_Setup(void)
 {
     OBJECT *const obj = &g_Objects[O_XIAN_SPEARMAN];
@@ -88,7 +102,7 @@ void XianSpearman_Setup(void)
     }
 
     ASSERT(g_Objects[O_XIAN_SPEARMAN_STATUE].loaded);
-    obj->initialise = XianKnight_Initialise;
+    obj->initialise = M_Initialise;
     obj->draw_routine = XianWarrior_Draw;
     obj->control = XianSpearman_Control;
     obj->collision = Creature_Collision;
