@@ -3289,7 +3289,7 @@ typedef enum {
 0x0041EAE0  0x03F7  +       void __cdecl XianWarrior_Draw(const ITEM *item);
 0x0041EEE0  0x00A8  +       void __cdecl XianSpearman_DoDamage(ITEM *item, CREATURE *xian, int32_t damage);
 0x0041EF90  0x0058  -       void __cdecl XianKnight_Initialise(int16_t item_num);
-0x0041EFF0  0x0590  -R      void __cdecl XianSpearman_Control(int16_t item_num);
+0x0041EFF0  0x0590  +       void __cdecl XianSpearman_Control(int16_t item_num);
 0x0041F5D0  0x0098  -R      void __cdecl WarriorSparkleTrail(ITEM *item);
 0x0041F670  0x03BA  -       void __cdecl XianKnight_Control(int16_t item_num);
 
