@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.32% (1136)</tspan> · <tspan class="known">6.27% (78)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.40% (1137)</tspan> · <tspan class="known">6.19% (77)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="682.15" height="6" x="0" y="0" class="decompiled"/>
-<rect width="46.84" height="6" x="682.15" y="0" class="known"/>
+<rect width="682.75" height="6" x="0" y="0" class="decompiled"/>
+<rect width="46.24" height="6" x="682.75" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -380,7 +380,7 @@
 <rect width="12" height="12" x="15" y="90" class="decompiled"><title>void __cdecl XianSpearman_DoDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
 <rect width="12" height="12" x="30" y="90" class="decompiled"><title>void __cdecl XianWarrior_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="90" class="decompiled"><title>void __cdecl XianSpearman_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="60" y="90" class="known"><title>void __cdecl WarriorSparkleTrail(ITEM *item);</title></rect>
+<rect width="12" height="12" x="60" y="90" class="decompiled"><title>void __cdecl XianKnight_SparkleTrail(ITEM *item);</title></rect>
 <rect width="12" height="12" x="75" y="90" class="known"><title>void __cdecl XianKnight_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="90" y="90" class="decompiled"><title>int32_t __cdecl GF_LoadScriptFile(const char *fname);</title></rect>
 <rect width="12" height="12" x="105" y="90" class="decompiled"><title>int32_t __cdecl GF_DoFrontendSequence(void);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.02%</tspan> · <tspan class="known">3.66%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.06%</tspan> · <tspan class="known">3.61%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="717.25" height="6" x="0" y="0" class="decompiled"/>
-<rect width="27.31" height="6" x="717.25" y="0" class="known"/>
+<rect width="717.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="26.98" height="6" x="717.58" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1878,7 +1878,7 @@
 <rect width="8.15" height="8.39" x="545.57" y="242.78" class="decompiled"><title>void __cdecl Camera_Fixed(void);</title></rect>
 <rect width="8.15" height="8.39" x="545.57" y="254.16" class="decompiled"><title>int16_t __cdecl Room_GetTiltType(const SECTOR *sector, int32_t x, int32_t y, int32_t z);</title></rect>
 <rect width="8.15" height="8.39" x="545.57" y="265.55" class="decompiled"><title>void __cdecl Lara_Col_FastFall(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="8.15" height="8.31" x="545.57" y="276.94" class="known"><title>void __cdecl WarriorSparkleTrail(ITEM *item);</title></rect>
+<rect width="8.15" height="8.31" x="545.57" y="276.94" class="decompiled"><title>void __cdecl XianKnight_SparkleTrail(ITEM *item);</title></rect>
 <rect width="8.15" height="8.31" x="545.57" y="288.25" class="decompiled"><title>void __cdecl CreateBackBuffer(void);</title></rect>
 <rect width="8.15" height="8.31" x="545.57" y="299.56" class="decompiled"><title>bool __cdecl CreateTexturePageSurface(TEXPAGE_DESC *desc);</title></rect>
 <rect width="8.15" height="8.24" x="545.57" y="310.87" class="decompiled"><title>void __cdecl Overlay_DrawAirBar(bool flash_state);</title></rect>

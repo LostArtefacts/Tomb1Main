@@ -1,8 +1,11 @@
 #include "game/objects/creatures/xian_knight.h"
 
 #include "game/creature.h"
+#include "game/effects.h"
 #include "game/objects/common.h"
 #include "game/objects/creatures/xian_common.h"
+#include "game/random.h"
+#include "game/sound.h"
 #include "global/const.h"
 #include "global/funcs.h"
 #include "global/vars.h"
@@ -19,6 +22,22 @@ static void M_Initialise(const int16_t item_num)
     ITEM *const item = &g_Items[item_num];
     item->status = IS_INACTIVE;
     item->mesh_bits = 0;
+}
+
+void __cdecl XianKnight_SparkleTrail(const ITEM *const item)
+{
+    const int16_t fx_num = Effect_Create(item->room_num);
+    if (fx_num != NO_ITEM) {
+        FX *const fx = &g_Effects[fx_num];
+        fx->object_id = O_TWINKLE;
+        fx->pos.x = item->pos.x + (Random_GetDraw() << 8 >> 15) - 128;
+        fx->pos.y = item->pos.y + (Random_GetDraw() << 8 >> 15) - 256;
+        fx->pos.z = item->pos.z + (Random_GetDraw() << 8 >> 15) - 128;
+        fx->room_num = item->room_num;
+        fx->counter = -30;
+        fx->frame_num = 0;
+    }
+    Sound_Effect(SFX_WARRIOR_HOVER, &item->pos, SPM_NORMAL);
 }
 
 void XianKnight_Setup(void)
