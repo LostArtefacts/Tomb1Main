@@ -325,7 +325,8 @@ Following are each of the properties available within a level.
       Players can examine items in the inventory when this text has been
       defined. Use <code>\n</code> in the text to create new lines; you can also
       use <code>\f</code> to force a page break. Long text will be automatically
-      wrapped and paginated as necessary.
+      wrapped and paginated as necessary. If an empty string is defined, the UI
+      will not be shown and the inventory item simply focussed instead.
     </td>
   </tr>
   <tr valign="top">

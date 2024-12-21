@@ -36,6 +36,7 @@ typedef struct {
     UI_WIDGET *page_label;
     int32_t current_page;
     VECTOR *page_content;
+    bool shown;
 } UI_PAGINATOR;
 
 static void M_DoLayout(UI_PAGINATOR *self);
@@ -107,7 +108,7 @@ static void M_Control(UI_PAGINATOR *const self)
 
 static void M_Draw(UI_PAGINATOR *const self)
 {
-    if (self->window->draw != NULL) {
+    if (self->shown && self->window->draw != NULL) {
         self->window->draw(self->window);
     }
 }
@@ -148,6 +149,8 @@ UI_WIDGET *UI_Paginator_Create(
         .set_position = (UI_WIDGET_SET_POSITION)M_SetPosition,
         .free = (UI_WIDGET_FREE)M_Free,
     };
+
+    self->shown = !String_IsEmpty(text);
 
     self->outer_stack = UI_Stack_Create(
         UI_STACK_LAYOUT_VERTICAL, UI_STACK_AUTO_SIZE, UI_STACK_AUTO_SIZE);
