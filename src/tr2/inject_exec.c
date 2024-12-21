@@ -107,6 +107,7 @@
 #include "game/objects/traps/flame_emitter.h"
 #include "game/objects/traps/gondola.h"
 #include "game/objects/traps/hook.h"
+#include "game/objects/traps/icicle.h"
 #include "game/objects/traps/mine.h"
 #include "game/objects/traps/propeller.h"
 #include "game/objects/traps/rolling_ball.h"
@@ -1041,6 +1042,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00441370, Hook_Control);
     INJECT(enable, 0x00441400, Propeller_Control);
     INJECT(enable, 0x00441590, SpinningBlade_Control);
+    INJECT(enable, 0x00441710, Icicle_Control);
     INJECT(enable, 0x00441B30, RollingBall_Initialise);
     INJECT(enable, 0x00441B70, RollingBall_Control);
     INJECT(enable, 0x00441EC0, RollingBall_Collision);
