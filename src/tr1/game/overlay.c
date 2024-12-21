@@ -259,10 +259,6 @@ static double M_GetBarToTextScale(void)
 
 void Overlay_BarDraw(BAR_INFO *bar_info, RENDER_SCALE_REF scale_ref)
 {
-    if (!g_Config.ui.enable_game_ui) {
-        return;
-    }
-
     const RGBA_8888 rgb_bgnd = { 0, 0, 0, 255 };
     const RGBA_8888 rgb_border = { 53, 53, 53, 255 };
 
@@ -519,6 +515,9 @@ static void M_DrawPickups(void)
 
 static void M_BarDrawAir(void)
 {
+    if (!g_Config.ui.enable_game_ui) {
+        return;
+    }
     m_AirBar.value = g_Lara.air;
     CLAMP(m_AirBar.value, 0, m_AirBar.max_value);
 
@@ -553,6 +552,9 @@ static void M_BarDrawAir(void)
 
 static void M_BarDrawEnemy(void)
 {
+    if (!g_Config.ui.enable_game_ui) {
+        return;
+    }
     if (!g_Lara.target) {
         return;
     }
@@ -690,6 +692,9 @@ void Overlay_BarHealthTimerTick(void)
 
 void Overlay_BarDrawHealth(void)
 {
+    if (!g_Config.ui.enable_game_ui) {
+        return;
+    }
     static int32_t old_hit_points = 0;
 
     m_HealthBar.value = g_LaraItem->hit_points;
