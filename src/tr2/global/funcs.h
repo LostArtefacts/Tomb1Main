@@ -52,7 +52,6 @@
 #define FX_AssaultStop ((void __cdecl (*)(ITEM *item))0x0041DA50)
 #define FX_AssaultReset ((void __cdecl (*)(ITEM *item))0x0041DA70)
 #define FX_AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)
-#define XianDamage ((void __cdecl (*)(ITEM *item, CREATURE *xian, int32_t damage))0x0041EEE0)
 #define XianKnight_Initialise ((void __cdecl (*)(int16_t item_num))0x0041EF90)
 #define XianSpearman_Control ((void __cdecl (*)(int16_t item_num))0x0041EFF0)
 #define WarriorSparkleTrail ((void __cdecl (*)(ITEM *item))0x0041F5D0)

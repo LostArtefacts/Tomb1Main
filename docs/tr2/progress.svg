@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.08% (1133)</tspan> · <tspan class="known">6.51% (81)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">91.16% (1134)</tspan> · <tspan class="known">6.43% (80)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="680.35" height="6" x="0" y="0" class="decompiled"/>
-<rect width="48.64" height="6" x="680.35" y="0" class="known"/>
+<rect width="680.95" height="6" x="0" y="0" class="decompiled"/>
+<rect width="48.04" height="6" x="680.95" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -377,7 +377,7 @@
 <rect width="12" height="12" x="720" y="75" class="decompiled"><title>void __cdecl Monk_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="735" y="75" class="decompiled"><title>void __cdecl Worker3_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="0" y="90" class="decompiled"><title>void __cdecl XianWarrior_Draw(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="15" y="90" class="known"><title>void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
+<rect width="12" height="12" x="15" y="90" class="decompiled"><title>void __cdecl XianSpearman_DoDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
 <rect width="12" height="12" x="30" y="90" class="known"><title>void __cdecl XianKnight_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="90" class="known"><title>void __cdecl XianSpearman_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="90" class="known"><title>void __cdecl WarriorSparkleTrail(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.53%</tspan> · <tspan class="known">4.15%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.57%</tspan> · <tspan class="known">4.10%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="713.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="30.98" height="6" x="713.58" y="0" class="known"/>
+<rect width="713.94" height="6" x="0" y="0" class="decompiled"/>
+<rect width="30.62" height="6" x="713.94" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1846,7 +1846,7 @@
 <rect width="8.64" height="8.97" x="533.93" y="270.60" class="decompiled"><title>void __cdecl Matrix_RotY(int16_t ry);</title></rect>
 <rect width="8.64" height="8.97" x="533.93" y="282.57" class="decompiled"><title>void __cdecl Matrix_RotZ(int16_t rz);</title></rect>
 <rect width="8.64" height="8.97" x="533.93" y="294.54" class="decompiled"><title>void __cdecl Creature_Float(int16_t item_num);</title></rect>
-<rect width="8.64" height="8.97" x="533.93" y="306.52" class="known"><title>void __cdecl XianDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
+<rect width="8.64" height="8.97" x="533.93" y="306.52" class="decompiled"><title>void __cdecl XianSpearman_DoDamage(ITEM *item, CREATURE *xian, int32_t damage);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="318.49" class="decompiled"><title>void __cdecl Output_InsertSprite(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="330.39" class="decompiled"><title>int32_t __cdecl Box_ValidBox(const ITEM *item, int16_t zone_num, int16_t box_num);</title></rect>
 <rect width="8.64" height="8.90" x="533.93" y="342.29" class="decompiled"><title>void __cdecl Missile_ShootAtLara(FX *fx);</title></rect>
