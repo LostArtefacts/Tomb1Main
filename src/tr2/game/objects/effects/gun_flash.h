@@ -3,3 +3,4 @@
 #include "global/types.h"
 
 void GunFlash_Setup(void);
+void __cdecl GunFlash_Control(int16_t fx_num);

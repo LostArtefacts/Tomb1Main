@@ -3684,7 +3684,7 @@ typedef enum {
 # game/people.c
 0x00435E00  0x0085  +       bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);
 0x00435E90  0x003B  +       void __cdecl Glow_Control(int16_t fx_num);
-0x00435ED0  0x004E  -R      void __cdecl GunFlash_Control(int16_t fx_num);
+0x00435ED0  0x004E  +       void __cdecl GunFlash_Control(int16_t fx_num);
 0x00435F20  0x0066  +       int16_t __cdecl Effect_GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00435F90  0x00B9  +       int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00436050  0x00A7  +       int16_t __cdecl Effect_GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
