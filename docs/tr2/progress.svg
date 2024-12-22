@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.78% (1204)</tspan> · <tspan class="known">0.80% (10)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.86% (1205)</tspan> · <tspan class="known">0.72% (9)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="722.98" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6" height="6" x="722.98" y="0" class="known"/>
+<rect width="723.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="5.40" height="6" x="723.58" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -691,7 +691,7 @@
 <rect width="12" height="12" x="180" y="180" class="decompiled"><title>void __cdecl Room_AlterFloorHeight(ITEM *item, int32_t height);</title></rect>
 <rect width="12" height="12" x="195" y="180" class="decompiled"><title>void __cdecl MovableBlock_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="210" y="180" class="decompiled"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
-<rect width="12" height="12" x="225" y="180" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="225" y="180" class="decompiled"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="180" class="known"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="180" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="12" height="12" x="270" y="180" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.23%</tspan> · <tspan class="known">0.45%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.29%</tspan> · <tspan class="known">0.38%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="741.22" height="6" x="0" y="0" class="decompiled"/>
-<rect width="3.34" height="6" x="741.22" y="0" class="known"/>
+<rect width="741.69" height="6" x="0" y="0" class="decompiled"/>
+<rect width="2.87" height="6" x="741.69" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1741,7 +1741,7 @@
 <rect width="10.30" height="10.72" x="643.96" y="122.62" class="decompiled"><title>void __cdecl Window_2_Control(int16_t item_num);</title></rect>
 <rect width="10.30" height="10.72" x="657.26" y="122.62" class="decompiled"><title>void __cdecl BGND_DrawQuad(float sx, float sy, float width, float height, D3DCOLOR color);</title></rect>
 <rect width="10.30" height="10.72" x="670.56" y="122.62" class="decompiled"><title>INT_PTR __stdcall SE_AdvancedDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
-<rect width="10.24" height="10.72" x="683.86" y="122.62" class="known"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
+<rect width="10.24" height="10.72" x="683.86" y="122.62" class="decompiled"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
 <rect width="10.24" height="10.72" x="697.10" y="122.62" class="decompiled"><title>void __cdecl ModifyStartInfo(int32_t level_num);</title></rect>
 <rect width="10.24" height="10.72" x="710.34" y="122.62" class="decompiled"><title>void __cdecl Springboard_Control(int16_t item_num);</title></rect>
 <rect width="10.24" height="10.72" x="723.58" y="122.62" class="decompiled"><title>void __cdecl S_LoadSettings(void);</title></rect>
