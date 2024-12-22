@@ -1303,7 +1303,7 @@ typedef struct __unaligned { // decompiled
     CREATURE *creature;
 } LARA_INFO;
 
-typedef enum {
+typedef enum { // decompiled
     SFX_LARA_FEET = 0,
     SFX_LARA_CLIMB_2 = 1,
     SFX_LARA_NO = 2,

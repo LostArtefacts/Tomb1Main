@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/sound/ids.h>
+
 #define SOUND_DEFAULT_PITCH 0x10000
 
 void __cdecl Sound_Init(void);
