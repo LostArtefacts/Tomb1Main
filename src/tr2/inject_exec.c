@@ -95,6 +95,7 @@
 #include "game/objects/general/bridge_tilt_1.h"
 #include "game/objects/general/bridge_tilt_2.h"
 #include "game/objects/general/clock_chimes.h"
+#include "game/objects/general/copter.h"
 #include "game/objects/general/detonator.h"
 #include "game/objects/general/ding_dong.h"
 #include "game/objects/general/door.h"
@@ -1078,6 +1079,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00435AD0, BridgeTilt1_Ceiling);
     INJECT(enable, 0x00435B10, BridgeTilt2_Floor);
     INJECT(enable, 0x00435B40, BridgeTilt2_Ceiling);
+    INJECT(enable, 0x00435B80, Copter_Control);
     INJECT(enable, 0x00435D70, Detonator_Control);
     INJECT(enable, 0x004362D0, Cultist1_Initialise);
     INJECT(enable, 0x00436320, Cultist1_Control);

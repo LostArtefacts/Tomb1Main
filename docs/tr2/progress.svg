@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.19% (1209)</tspan> · <tspan class="known">0.40% (5)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.27% (1210)</tspan> · <tspan class="known">0.32% (4)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="725.98" height="6" x="0" y="0" class="decompiled"/>
-<rect width="3" height="6" x="725.98" y="0" class="known"/>
+<rect width="726.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="2.40" height="6" x="726.58" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -727,7 +727,7 @@
 <rect width="12" height="12" x="720" y="180" class="decompiled"><title>void __cdecl BridgeTilt1_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="735" y="180" class="decompiled"><title>void __cdecl BridgeTilt2_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="0" y="195" class="decompiled"><title>void __cdecl BridgeTilt2_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
-<rect width="12" height="12" x="15" y="195" class="known"><title>void __cdecl CopterControl(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="15" y="195" class="decompiled"><title>void __cdecl Copter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="30" y="195" class="known"><title>void __cdecl GeneralControl(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="195" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="195" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.48%</tspan> · <tspan class="known">0.19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.56%</tspan> · <tspan class="known">0.11%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="743.14" height="6" x="0" y="0" class="decompiled"/>
-<rect width="1.42" height="6" x="743.14" y="0" class="known"/>
+<rect width="743.73" height="6" x="0" y="0" class="decompiled"/>
+<rect width="0.84" height="6" x="743.73" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1673,7 +1673,7 @@
 <rect width="12.24" height="11.76" x="464.87" y="319.35" class="decompiled"><title>void __cdecl ScreenshotPCX(void);</title></rect>
 <rect width="12.24" height="11.70" x="464.87" y="334.11" class="decompiled"><title>bool __cdecl S_Audio_Sample_Load(int32_t sample_id, LPWAVEFORMATEX format, const void *data, int32_t data_size);</title></rect>
 <rect width="12.24" height="11.59" x="464.87" y="348.81" class="decompiled"><title>void __cdecl Lara_State_Compress(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="12.24" height="11.59" x="464.87" y="363.41" class="known"><title>void __cdecl CopterControl(int16_t item_num);</title></rect>
+<rect width="12.24" height="11.59" x="464.87" y="363.41" class="decompiled"><title>void __cdecl Copter_Control(int16_t item_num);</title></rect>
 <rect width="11.49" height="12.29" x="480.11" y="108.19" class="decompiled"><title>void __cdecl Ember_Control(int16_t fx_num);</title></rect>
 <rect width="11.49" height="12.29" x="480.11" y="123.47" class="decompiled"><title>bool __cdecl WinVidGoWindowed(int32_t width, int32_t height, DISPLAY_MODE *dispMode);</title></rect>
 <rect width="11.49" height="12.23" x="480.11" y="138.76" class="decompiled"><title>void __cdecl Inv_InitColors(void);</title></rect>
