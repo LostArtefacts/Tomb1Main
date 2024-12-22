@@ -72,6 +72,7 @@
 #include "game/objects/creatures/xian_knight.h"
 #include "game/objects/creatures/xian_spearman.h"
 #include "game/objects/creatures/yeti.h"
+#include "game/objects/effects/blood.h"
 #include "game/objects/effects/body_part.h"
 #include "game/objects/effects/bubble.h"
 #include "game/objects/effects/dart_effect.h"
@@ -958,6 +959,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00419A70, Object_DrawAnimatingItem);
     INJECT(enable, 0x0041C140, BigEel_Control);
     INJECT(enable, 0x0041C2E0, Eel_Control);
+    INJECT(enable, 0x0041C6E0, Blood_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
