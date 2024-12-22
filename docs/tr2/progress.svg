@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.45% (1175)</tspan> · <tspan class="known">3.14% (39)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.53% (1176)</tspan> · <tspan class="known">3.05% (38)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="705.57" height="6" x="0" y="0" class="decompiled"/>
-<rect width="23.42" height="6" x="705.57" y="0" class="known"/>
+<rect width="706.17" height="6" x="0" y="0" class="decompiled"/>
+<rect width="22.82" height="6" x="706.17" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -341,7 +341,7 @@
 <rect width="12" height="12" x="180" y="75" class="decompiled"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
 <rect width="12" height="12" x="195" y="75" class="decompiled"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
 <rect width="12" height="12" x="210" y="75" class="decompiled"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
-<rect width="12" height="12" x="225" y="75" class="known"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
+<rect width="12" height="12" x="225" y="75" class="decompiled"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="75" class="known"><title>void __cdecl FX_Explosion(ITEM *item);</title></rect>
 <rect width="12" height="12" x="255" y="75" class="known"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="75" class="known"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.55%</tspan> · <tspan class="known">1.12%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.56%</tspan> · <tspan class="known">1.11%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.40" height="6" x="736.16" y="0" class="known"/>
+<rect width="736.25" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.31" height="6" x="736.25" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2331,7 +2331,7 @@
 <rect width="3.05" height="3.17" x="743.95" y="302.76" class="decompiled"><title>void __cdecl Demo_GetInput(void);</title></rect>
 <rect width="3.39" height="2.85" x="681.03" y="308.93" class="decompiled"><title>BOOL __cdecl Overlay_FlashCounter(void);</title></rect>
 <rect width="3.39" height="2.85" x="687.41" y="308.93" class="decompiled"><title>void __cdecl WinInStart(void);</title></rect>
-<rect width="3.24" height="2.85" x="693.80" y="308.93" class="known"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
+<rect width="3.24" height="2.85" x="693.80" y="308.93" class="decompiled"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
 <rect width="3.24" height="2.85" x="700.04" y="308.93" class="decompiled"><title>void __cdecl Overlay_DrawModeInfo(void);</title></rect>
 <rect width="3.24" height="2.85" x="706.29" y="308.93" class="decompiled"><title>void __cdecl Inv_Ring_CalcAdders(RING_INFO *ring, int16_t rotation_duration);</title></rect>
 <rect width="3.24" height="2.85" x="712.53" y="308.93" class="decompiled"><title>void __cdecl Inv_Ring_MotionSetup(RING_INFO *ring, int16_t status, int16_t status_target, int16_t frames);</title></rect>

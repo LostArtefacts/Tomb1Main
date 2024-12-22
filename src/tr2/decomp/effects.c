@@ -453,3 +453,12 @@ void __cdecl FX_Rubble(ITEM *const item)
     g_Camera.bounce = -350;
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_Chandelier(ITEM *const item)
+{
+    Sound_Effect(SFX_CHAIN_PULLEY, NULL, SPM_NORMAL);
+    g_FlipTimer++;
+    if (g_FlipTimer > FRAMES_PER_SECOND) {
+        g_FlipEffect = -1;
+    }
+}
