@@ -6,7 +6,6 @@
 #include "game/math.h"
 #include "game/output.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 static bool m_UziRight = false;

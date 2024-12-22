@@ -25,7 +25,6 @@
 #include "game/stats.h"
 #include "game/text.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 
@@ -398,11 +397,7 @@ static void M_Draw(
     ring->camera.pos.z = ring->radius + 598;
 
     Output_BeginScene();
-    if (g_Inv_Mode == INV_TITLE_MODE) {
-        Inv_DoInventoryPicture();
-    } else {
-        Inv_DoInventoryBackground();
-    }
+    Output_DrawBackground();
     Output_AnimateTextures(g_Inv_NFrames);
     Overlay_Animate(g_Inv_NFrames / 2);
 
@@ -1109,48 +1104,6 @@ GAME_OBJECT_ID Inv_GetItemOption(const GAME_OBJECT_ID object_id)
     }
 
     return Object_GetCognate(object_id, g_ItemToInvObjectMap);
-}
-
-void __cdecl Inv_DoInventoryPicture(void)
-{
-    Output_DrawBackground();
-}
-
-void __cdecl Inv_DoInventoryBackground(void)
-{
-    Output_DrawBackground();
-    if (!g_Objects[O_INV_BACKGROUND].loaded) {
-        return;
-    }
-
-    int16_t angles[2];
-    Math_GetVectorAngles(0, 4096, 0, angles);
-    PHD_3DPOS view;
-    view.pos.x = 0;
-    view.pos.y = -512;
-    view.pos.z = 0;
-    view.rot.x = angles[1];
-    view.rot.y = angles[0];
-    view.rot.z = 0;
-    Matrix_GenerateW2V(&view);
-
-    g_LsDivider = 0x6000;
-    Math_GetVectorAngles(-1536, 256, 1024, angles);
-    Output_RotateLight(angles[1], angles[0]);
-
-    Matrix_Push();
-    Matrix_TranslateAbs(0, 12288, 0);
-    Matrix_RotYXZ(0, PHD_90, PHD_180);
-
-    const int16_t *rot =
-        g_Anims[g_Objects[O_INV_BACKGROUND].anim_idx].frame_ptr + FBBOX_ROT;
-    Matrix_RotYXZsuperpack(&rot, 0);
-    Matrix_RotYXZ(PHD_180, 0, 0);
-
-    Output_InsertInventoryBackground(
-        g_Meshes[g_Objects[O_INV_BACKGROUND].mesh_idx]);
-
-    Matrix_Pop();
 }
 
 void __cdecl Inv_RingIsOpen(RING_INFO *const ring)

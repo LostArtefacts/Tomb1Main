@@ -11,7 +11,6 @@
 #include "game/overlay.h"
 #include "game/requester.h"
 #include "gameflow/gameflow_new.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>

@@ -3,7 +3,6 @@
 #include "game/option/option.h"
 #include "game/requester.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <stdio.h>

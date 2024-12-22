@@ -6,7 +6,6 @@
 #include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void __cdecl Lara_Draw(const ITEM *const item)

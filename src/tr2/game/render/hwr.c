@@ -6,7 +6,6 @@
 #include "game/render/priv.h"
 #include "game/render/util.h"
 #include "game/shell.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

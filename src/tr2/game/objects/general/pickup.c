@@ -15,7 +15,6 @@
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #define LF_PICKUP_ERASE 42

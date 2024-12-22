@@ -10,7 +10,6 @@
 #include "game/lara/control.h"
 #include "game/overlay.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/screenshot.h>

@@ -114,7 +114,6 @@
 #include "game/objects/vehicles/boat.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 #include "game/objects/vehicles/skidoo_fast.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 

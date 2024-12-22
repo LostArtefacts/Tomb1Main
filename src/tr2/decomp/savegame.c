@@ -16,7 +16,6 @@
 #include "game/room.h"
 #include "game/shell.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/filesystem.h>

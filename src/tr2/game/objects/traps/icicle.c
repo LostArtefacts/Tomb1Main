@@ -4,7 +4,6 @@
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/room.h"
-#include "global/funcs.h"
 
 #define ICICLE_HIT_DAMAGE 200
 

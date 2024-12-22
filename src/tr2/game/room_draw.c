@@ -5,7 +5,6 @@
 #include "game/lara/draw.h"
 #include "game/matrix.h"
 #include "game/output.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

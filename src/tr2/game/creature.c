@@ -14,7 +14,6 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

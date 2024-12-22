@@ -20,7 +20,6 @@
 #include "game/sound.h"
 #include "game/text.h"
 #include "game/viewport.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/enum_map.h>

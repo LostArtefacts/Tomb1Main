@@ -3,7 +3,6 @@
 #include "game/inventory/backpack.h"
 #include "game/math_misc.h"
 #include "game/output.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #define RING_OPEN_FRAMES 32

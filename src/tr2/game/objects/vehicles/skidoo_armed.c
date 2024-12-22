@@ -6,7 +6,6 @@
 #include "game/lara/misc.h"
 #include "game/math.h"
 #include "game/objects/creatures/skidoo_driver.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #define SKIDOO_ARMED_RADIUS (WALL_L / 3) // = 341

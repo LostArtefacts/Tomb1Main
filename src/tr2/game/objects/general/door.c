@@ -7,7 +7,6 @@
 #include "game/lara/misc.h"
 #include "game/objects/common.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/utils.h"
 #include "global/vars.h"
 

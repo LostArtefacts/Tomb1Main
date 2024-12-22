@@ -6,7 +6,6 @@
 #include "game/render/common.h"
 #include "game/shell.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

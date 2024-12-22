@@ -5,7 +5,6 @@
 #include "game/requester.h"
 #include "game/sound.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 typedef enum {

@@ -12,7 +12,6 @@
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

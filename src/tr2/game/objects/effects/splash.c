@@ -2,7 +2,6 @@
 
 #include "game/effects.h"
 #include "game/math.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void Splash_Setup(void)

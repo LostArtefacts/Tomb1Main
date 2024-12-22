@@ -4,7 +4,6 @@
 #include "game/option/option.h"
 #include "game/sound.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

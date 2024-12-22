@@ -4,7 +4,6 @@
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

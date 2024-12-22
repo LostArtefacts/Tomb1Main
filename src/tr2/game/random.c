@@ -1,6 +1,5 @@
 #include "game/random.h"
 
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <time.h>

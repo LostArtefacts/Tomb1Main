@@ -2,7 +2,6 @@
 
 #include "decomp/flares.h"
 #include "game/objects/general/pickup.h"
-#include "global/funcs.h"
 
 void FlareItem_Setup(void)
 {

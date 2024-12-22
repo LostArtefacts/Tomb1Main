@@ -5,7 +5,6 @@
 #include "game/console/common.h"
 #include "game/game_string.h"
 #include "game/shell.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/game/input/backends/base.h>

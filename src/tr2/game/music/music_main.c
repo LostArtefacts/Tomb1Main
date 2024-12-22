@@ -5,7 +5,6 @@
 #include "game/music/music_backend_cdaudio.h"
 #include "game/music/music_backend_files.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 

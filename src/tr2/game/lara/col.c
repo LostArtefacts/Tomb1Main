@@ -9,7 +9,6 @@
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

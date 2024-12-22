@@ -3,7 +3,6 @@
 #include "decomp/decomp.h"
 #include "game/input.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

@@ -32,7 +32,6 @@
 #include "game/text.h"
 #include "game/viewport.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

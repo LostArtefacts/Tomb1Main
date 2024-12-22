@@ -1,7 +1,6 @@
 #include "game/option/option.h"
 
 #include "game/input.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void Option_Control(INVENTORY_ITEM *const item)

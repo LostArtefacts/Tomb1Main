@@ -11,7 +11,6 @@
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 static struct {

@@ -2,7 +2,6 @@
 
 #include "game/inventory/common.h"
 #include "game/items.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void __cdecl Inv_InsertItem(INVENTORY_ITEM *const inv_item)

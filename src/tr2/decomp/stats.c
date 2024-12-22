@@ -11,7 +11,6 @@
 #include "game/requester.h"
 #include "game/shell.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 

@@ -5,7 +5,6 @@
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

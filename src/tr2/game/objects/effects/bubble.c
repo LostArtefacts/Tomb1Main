@@ -3,7 +3,6 @@
 #include "game/effects.h"
 #include "game/math.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void Bubble_Setup(void)

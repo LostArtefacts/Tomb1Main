@@ -13,7 +13,6 @@
 #include "game/room.h"
 #include "game/sound.h"
 #include "game/stats.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 

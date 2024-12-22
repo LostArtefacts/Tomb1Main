@@ -3,7 +3,6 @@
 #include "game/matrix.h"
 #include "game/output.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 static void M_RemoveActive(const int16_t fx_num);

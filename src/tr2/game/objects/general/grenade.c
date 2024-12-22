@@ -8,7 +8,6 @@
 #include "game/objects/general/window.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #define M_BLAST_RADIUS (WALL_L / 2) // = 512

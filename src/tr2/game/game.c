@@ -23,7 +23,6 @@
 #include "game/sound.h"
 #include "game/stats.h"
 #include "game/text.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/log.h>

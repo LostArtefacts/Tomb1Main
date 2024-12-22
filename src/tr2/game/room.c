@@ -13,7 +13,6 @@
 #include "game/objects/general/switch.h"
 #include "game/shell.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/utils.h"
 #include "global/vars.h"
 

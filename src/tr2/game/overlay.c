@@ -10,7 +10,6 @@
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/viewport.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
