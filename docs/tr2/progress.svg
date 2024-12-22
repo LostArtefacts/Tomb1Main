@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.81% (1167)</tspan> · <tspan class="known">3.78% (47)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.89% (1168)</tspan> · <tspan class="known">3.70% (46)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="700.76" height="6" x="0" y="0" class="decompiled"/>
-<rect width="28.22" height="6" x="700.76" y="0" class="known"/>
+<rect width="701.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="27.62" height="6" x="701.36" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -333,7 +333,7 @@
 <rect width="12" height="12" x="60" y="75" class="decompiled"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="75" y="75" class="decompiled"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="75" class="decompiled"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="105" y="75" class="known"><title>void __cdecl Waterfall_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="105" y="75" class="decompiled"><title>void __cdecl Waterfall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="120" y="75" class="known"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="known"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
 <rect width="12" height="12" x="150" y="75" class="known"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.32%</tspan> · <tspan class="known">1.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.42%</tspan> · <tspan class="known">1.26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="734.47" height="6" x="0" y="0" class="decompiled"/>
-<rect width="10.09" height="6" x="734.47" y="0" class="known"/>
+<rect width="735.17" height="6" x="0" y="0" class="decompiled"/>
+<rect width="9.39" height="6" x="735.17" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1626,7 +1626,7 @@
 <rect width="13.47" height="13.02" x="448.40" y="140.93" class="decompiled"><title>void __cdecl Inv_Ring_DoMotions(RING_INFO *ring);</title></rect>
 <rect width="13.47" height="13.02" x="448.40" y="156.95" class="decompiled"><title>void __cdecl DartEmitter_Control(int16_t item_num);</title></rect>
 <rect width="13.47" height="12.97" x="448.40" y="172.97" class="decompiled"><title>void __cdecl Output_InsertTransQuad_Sorted(int32_t x, int32_t y, int32_t width, int32_t height, int32_t z);</title></rect>
-<rect width="13.47" height="12.97" x="448.40" y="188.94" class="known"><title>void __cdecl Waterfall_Control(int16_t fx_num);</title></rect>
+<rect width="13.47" height="12.97" x="448.40" y="188.94" class="decompiled"><title>void __cdecl Waterfall_Control(int16_t item_num);</title></rect>
 <rect width="13.47" height="12.92" x="448.40" y="204.91" class="decompiled"><title>void __cdecl RestoreLostBuffers(void);</title></rect>
 <rect width="13.47" height="12.87" x="448.40" y="220.83" class="decompiled"><title>void __cdecl Item_AlignPosition(XYZ_32 *vec, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="13.47" height="12.87" x="448.40" y="236.70" class="decompiled"><title>void __cdecl CreateScreenBuffers(void);</title></rect>

@@ -105,6 +105,7 @@
 #include "game/objects/general/puzzle_hole.h"
 #include "game/objects/general/switch.h"
 #include "game/objects/general/trapdoor.h"
+#include "game/objects/general/waterfall.h"
 #include "game/objects/general/window.h"
 #include "game/objects/general/zipline.h"
 #include "game/objects/setup.h"
@@ -973,6 +974,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041CBE0, WaterSprite_Control);
     INJECT(enable, 0x0041CC90, SnowSprite_Control);
     INJECT(enable, 0x0041CD20, HotLiquid_Control);
+    INJECT(enable, 0x0041CE00, Waterfall_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
