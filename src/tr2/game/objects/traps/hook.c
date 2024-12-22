@@ -1,10 +1,10 @@
 #include "game/objects/traps/hook.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
-#include "global/funcs.h"
 
 #include <libtrx/game/lara/common.h>
 

@@ -1,12 +1,12 @@
 #include "game/objects/traps/spinning_blade.h"
 
+#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>

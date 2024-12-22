@@ -6,7 +6,6 @@
 #include "game/math.h"
 #include "game/objects/general/window.h"
 #include "game/room.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 void HarpoonBolt_Setup(void)

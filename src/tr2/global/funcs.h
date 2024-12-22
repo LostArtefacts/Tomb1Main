@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define DoLotsOfBlood ((void __cdecl (*)(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num))0x0041C630)
 #define Blood_Control ((void __cdecl (*)(int16_t fx_num))0x0041C6E0)
 #define Explosion_Control ((void __cdecl (*)(int16_t fx_num))0x0041C770)
 #define Richochet ((void __cdecl (*)(GAME_VECTOR *pos))0x0041C7F0)

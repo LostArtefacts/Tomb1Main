@@ -39,3 +39,7 @@ int16_t __cdecl Knife(
 int16_t __cdecl DoBloodSplat(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction,
     int16_t room_num);
+
+void __cdecl DoLotsOfBlood(
+    int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction,
+    int16_t room_num, int32_t num);

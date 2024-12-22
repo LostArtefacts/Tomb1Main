@@ -351,3 +351,16 @@ int16_t __cdecl DoBloodSplat(
     }
     return fx_num;
 }
+
+void __cdecl DoLotsOfBlood(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t direction, const int16_t room_num, const int32_t num)
+{
+    for (int32_t i = 0; i < num; i++) {
+        DoBloodSplat(
+            x - (Random_GetDraw() << 9) / 0x8000 + 256,
+            y - (Random_GetDraw() << 9) / 0x8000 + 256,
+            z - (Random_GetDraw() << 9) / 0x8000 + 256, speed, direction,
+            room_num);
+    }
+}

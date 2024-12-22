@@ -1,12 +1,12 @@
 #include "game/objects/traps/spike_wall.h"
 
+#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #define SPIKE_WALL_DAMAGE 20
