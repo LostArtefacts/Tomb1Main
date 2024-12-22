@@ -1,5 +1,7 @@
 #include "global/vars.h"
 
+#include "decomp/effects.h"
+
 #include <libtrx/game/sound/ids.h>
 
 #ifndef MESON_BUILD
@@ -23,7 +25,42 @@ int32_t g_CineTrackID = 1;
 int32_t g_CineTickRate = 0x8000; // PHD_ONE/TICKS_PER_FRAME
 int32_t g_FlipEffect = -1;
 uint32_t g_AssaultBestTime = -1;
-void (*g_EffectRoutines[32])(ITEM *item);
+
+void (*g_EffectRoutines[])(ITEM *item) = {
+    FX_Turn180,
+    FX_FloorShake,
+    FX_LaraNormal,
+    FX_Bubbles,
+    FX_FinishLevel,
+    FX_Flood,
+    FX_Chandelier,
+    FX_Rubble,
+    FX_Piston,
+    FX_Curtain,
+    FX_SetChange,
+    FX_Explosion,
+    FX_LaraHandsFree,
+    FX_FlipMap,
+    FX_LaraDrawRightGun,
+    FX_LaraDrawLeftGun,
+    FX_Empty,
+    FX_Empty,
+    FX_SwapMeshesWithMeshSwap1,
+    FX_SwapMeshesWithMeshSwap2,
+    FX_SwapMeshesWithMeshSwap3,
+    FX_InvisibilityOn,
+    FX_InvisibilityOff,
+    FX_DynamicLightOn,
+    FX_DynamicLightOff,
+    FX_Statue,
+    FX_ResetHair,
+    FX_Boiler,
+    FX_AssaultReset,
+    FX_AssaultStop,
+    FX_AssaultStart,
+    FX_AssaultFinished,
+};
+
 int16_t g_CineTargetAngle = PHD_90;
 int32_t g_OverlayStatus = 1;
 int16_t g_Inv_MainObjectsCount = 8;

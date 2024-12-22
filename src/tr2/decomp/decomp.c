@@ -58,27 +58,6 @@ typedef enum {
     LA_VEHICLE_HIT_BACK = 14,
 } LARA_ANIM_VEHICLE;
 
-int32_t __stdcall WinMain(
-    HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
-    int32_t nShowCmd)
-{
-    g_CmdLine = lpCmdLine;
-    HWND game_window = WinVidFindGameWindow();
-    if (game_window) {
-        SetForegroundWindow(game_window);
-        return 0;
-    }
-
-    g_AppResultCode = 0;
-    g_IsGameToExit = false;
-    Shell_Setup();
-    Shell_Main();
-    Shell_Shutdown();
-
-cleanup:
-    return g_AppResultCode;
-}
-
 int16_t __cdecl TitleSequence(void)
 {
     GF_N_LoadStrings(-1);
@@ -132,11 +111,6 @@ int16_t __cdecl TitleSequence(void)
     }
 
     return GFD_EXIT_GAME;
-}
-
-HWND __cdecl WinVidFindGameWindow(void)
-{
-    return FindWindowA(CLASS_NAME, WINDOW_NAME);
 }
 
 void __cdecl Game_SetCutsceneTrack(const int32_t track)

@@ -3,18 +3,13 @@
 #include "global/types.h"
 
 #include <stdint.h>
-#include <windows.h>
 
 // TODO: This is a placeholder file containing functions that originated from
 // the decompilation phase, and they are currently disorganized. Eventually,
 // they'll need to be properly modularized. The same applies to all files
 // within the decomp/ directory which are scheduled for extensive refactoring.
 
-int32_t __stdcall WinMain(
-    HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
-    int32_t nShowCmd);
 int16_t __cdecl TitleSequence(void);
-HWND __cdecl WinVidFindGameWindow(void);
 void __cdecl Game_SetCutsceneTrack(int32_t track);
 void __cdecl CutscenePlayer_Control(int16_t item_num);
 void __cdecl Lara_Control_Cutscene(int16_t item_num);

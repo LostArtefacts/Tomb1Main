@@ -185,6 +185,10 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
     // clang-format on
 }
 
+void FX_Empty(ITEM *const item)
+{
+}
+
 void __cdecl FX_AssaultStart(ITEM *const item)
 {
     g_SaveGame.statistics.timer = 0;

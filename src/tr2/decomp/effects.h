@@ -11,6 +11,7 @@ int16_t __cdecl Effect_MissileFlame(
 
 void __cdecl Effect_CreateBartoliLight(int16_t item_num);
 
+void FX_Empty(ITEM *item);
 void __cdecl FX_AssaultStart(ITEM *item);
 
 void __cdecl CreateBubble(const XYZ_32 *pos, int16_t room_num);

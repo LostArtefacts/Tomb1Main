@@ -182,9 +182,7 @@ cleanup:
 
 void Pickup_Setup(OBJECT *const obj)
 {
-    // TODO: change this to Pickup_Collision after we decompile
-    // both comparisons in ExtractSaveGameInfo() and GetCarriedItems()
-    obj->collision = (void *)0x00437E70;
+    obj->collision = Pickup_Collision;
     obj->draw_routine = Pickup_Draw;
     obj->save_position = 1;
     obj->save_flags = 1;

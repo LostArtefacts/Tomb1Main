@@ -24,7 +24,7 @@ extern int32_t g_CineTrackID;
 extern int32_t g_CineTickRate;
 extern int32_t g_FlipEffect;
 extern uint32_t g_AssaultBestTime;
-extern void (*g_EffectRoutines[32])(ITEM *item);
+extern void (*g_EffectRoutines[])(ITEM *item);
 extern int16_t g_CineTargetAngle;
 extern int32_t g_OverlayStatus;
 extern int16_t g_Inv_MainObjectsCount;

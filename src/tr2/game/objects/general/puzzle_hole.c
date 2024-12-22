@@ -55,9 +55,7 @@ static void M_MarkDone(ITEM *const puzzle_hole_item)
 void PuzzleHole_Setup(OBJECT *const obj, const bool done)
 {
     if (!done) {
-        // TODO: change this to PuzzleHole_Collision after we decompile
-        // the comparison in ExtractSaveGameInfo()
-        obj->collision = (void *)0x00438A80;
+        obj->collision = PuzzleHole_Collision;
     }
     obj->save_flags = 1;
 }
