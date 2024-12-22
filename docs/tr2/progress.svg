@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.22% (1197)</tspan> · <tspan class="known">1.37% (17)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.30% (1198)</tspan> · <tspan class="known">1.29% (16)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="718.78" height="6" x="0" y="0" class="decompiled"/>
-<rect width="10.21" height="6" x="718.78" y="0" class="known"/>
+<rect width="719.38" height="6" x="0" y="0" class="decompiled"/>
+<rect width="9.61" height="6" x="719.38" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -349,7 +349,7 @@
 <rect width="12" height="12" x="300" y="75" class="decompiled"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
 <rect width="12" height="12" x="315" y="75" class="decompiled"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="330" y="75" class="decompiled"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="345" y="75" class="decompiled"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="360" y="75" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="375" y="75" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
 <rect width="12" height="12" x="390" y="75" class="known"><title>void __cdecl ClockChimes_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.87%</tspan> · <tspan class="known">0.81%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.90%</tspan> · <tspan class="known">0.78%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="738.54" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.03" height="6" x="738.54" y="0" class="known"/>
+<rect width="738.76" height="6" x="0" y="0" class="decompiled"/>
+<rect width="5.80" height="6" x="738.76" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2035,7 +2035,7 @@
 <rect width="6.39" height="6.19" x="721.93" y="226.03" class="unused"><title>sub_447AC0</title></rect>
 <rect width="6.39" height="6.19" x="731.32" y="226.03" class="decompiled"><title>void __cdecl SE_ControlsDlgUpdate(HWND hwndDlg);</title></rect>
 <rect width="6.30" height="6.19" x="740.70" y="226.03" class="decompiled"><title>void __cdecl Object_Collision_Trap(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
-<rect width="6.33" height="6.16" x="598.27" y="235.22" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
+<rect width="6.33" height="6.16" x="598.27" y="235.22" class="decompiled"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="6.33" height="6.16" x="598.27" y="244.38" class="decompiled"><title>int32_t __cdecl Lara_HitCeiling(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.33" height="6.16" x="598.27" y="253.54" class="decompiled"><title>void __cdecl UpdateGameResolution(void);</title></rect>
 <rect width="6.33" height="6.07" x="598.27" y="262.71" class="decompiled"><title>int32_t __cdecl GF_DoLevelSequence(int32_t level, GAMEFLOW_LEVEL_TYPE type);</title></rect>

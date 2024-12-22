@@ -86,6 +86,7 @@
 #include "game/objects/effects/splash.h"
 #include "game/objects/effects/twinkle.h"
 #include "game/objects/effects/water_sprite.h"
+#include "game/objects/general/alarm_sound.h"
 #include "game/objects/general/bell.h"
 #include "game/objects/general/bridge_common.h"
 #include "game/objects/general/bridge_flat.h"
@@ -1006,6 +1007,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041CE00, Waterfall_Control);
     INJECT(enable, 0x0041D210, DingDong_Control);
     INJECT(enable, 0x0041D250, LaraAlarm_Control);
+    INJECT(enable, 0x0041D290, AlarmSound_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
