@@ -45,3 +45,5 @@ void __cdecl DoLotsOfBlood(
     int16_t room_num, int32_t num);
 
 void __cdecl Richochet(const GAME_VECTOR *pos);
+
+void __cdecl FX_FinishLevel(ITEM *item);

@@ -377,3 +377,8 @@ void __cdecl Richochet(const GAME_VECTOR *const pos)
         Sound_Effect(SFX_LARA_RICOCHET, &fx->pos, SPM_NORMAL);
     }
 }
+
+void __cdecl FX_FinishLevel(ITEM *const item)
+{
+    g_LevelComplete = true;
+}

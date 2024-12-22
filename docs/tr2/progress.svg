@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.89% (1168)</tspan> · <tspan class="known">3.70% (46)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.97% (1169)</tspan> · <tspan class="known">3.62% (45)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="701.36" height="6" x="0" y="0" class="decompiled"/>
-<rect width="27.62" height="6" x="701.36" y="0" class="known"/>
+<rect width="701.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="27.02" height="6" x="701.96" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -334,7 +334,7 @@
 <rect width="12" height="12" x="75" y="75" class="decompiled"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="75" class="decompiled"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="75" class="decompiled"><title>void __cdecl Waterfall_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="120" y="75" class="known"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
+<rect width="12" height="12" x="120" y="75" class="decompiled"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="known"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
 <rect width="12" height="12" x="150" y="75" class="known"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
 <rect width="12" height="12" x="165" y="75" class="known"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.42%</tspan> · <tspan class="known">1.26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.42%</tspan> · <tspan class="known">1.25%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="735.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="9.39" height="6" x="735.17" y="0" class="known"/>
+<rect width="735.19" height="6" x="0" y="0" class="decompiled"/>
+<rect width="9.37" height="6" x="735.19" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2509,7 +2509,7 @@
 <rect width="0.35" height="0.22" x="728.85" y="374.78" class="decompiled"><title>void __cdecl ScreenDump(void);</title></rect>
 <rect width="0.35" height="0.22" x="732.20" y="357.17" class="decompiled"><title>LONG __cdecl CloseRegistryKey(void);</title></rect>
 <rect width="0.10" height="0.22" x="735.55" y="357.17" class="decompiled"><title>LPCTSTR __cdecl DecodeErrorMessage(DWORD error_code);</title></rect>
-<rect width="0.10" height="0.22" x="738.65" y="357.17" class="known"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
+<rect width="0.10" height="0.22" x="738.65" y="357.17" class="decompiled"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="0.10" height="0.22" x="741.49" y="357.17" class="known"><title>void __cdecl FX_DynamicLightOff(ITEM *item);</title></rect>
 <rect width="0.10" height="0.22" x="744.32" y="357.17" class="decompiled"><title>void __cdecl Lara_State_Null(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="0.10" height="0.22" x="747.16" y="357.17" class="decompiled"><title>void __cdecl Lara_State_UWTwist(ITEM *item, COLL_INFO *coll);</title></rect>
