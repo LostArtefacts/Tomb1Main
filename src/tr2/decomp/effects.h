@@ -68,3 +68,4 @@ void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);
 void __cdecl FX_InvisibilityOn(ITEM *item);
 void __cdecl FX_InvisibilityOff(ITEM *item);
 void __cdecl FX_DynamicLightOn(ITEM *item);
+void __cdecl FX_DynamicLightOff(ITEM *item);

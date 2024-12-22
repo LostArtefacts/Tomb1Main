@@ -572,3 +572,8 @@ void __cdecl FX_DynamicLightOn(ITEM *const item)
 {
     item->dynamic_light = 1;
 }
+
+void __cdecl FX_DynamicLightOff(ITEM *const item)
+{
+    item->dynamic_light = 0;
+}
