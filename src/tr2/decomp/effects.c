@@ -567,3 +567,8 @@ void __cdecl FX_InvisibilityOff(ITEM *const item)
 {
     item->status = IS_ACTIVE;
 }
+
+void __cdecl FX_DynamicLightOn(ITEM *const item)
+{
+    item->dynamic_light = 1;
+}

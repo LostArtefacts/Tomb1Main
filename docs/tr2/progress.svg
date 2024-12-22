@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.58% (1189)</tspan> · <tspan class="known">2.01% (25)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.66% (1190)</tspan> · <tspan class="known">1.93% (24)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="713.97" height="6" x="0" y="0" class="decompiled"/>
-<rect width="15.01" height="6" x="713.97" y="0" class="known"/>
+<rect width="714.57" height="6" x="0" y="0" class="decompiled"/>
+<rect width="14.41" height="6" x="714.57" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -365,7 +365,7 @@
 <rect width="12" height="12" x="540" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="75" class="decompiled"><title>void __cdecl FX_InvisibilityOn(ITEM *item);</title></rect>
 <rect width="12" height="12" x="570" y="75" class="decompiled"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
-<rect width="12" height="12" x="585" y="75" class="known"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
+<rect width="12" height="12" x="585" y="75" class="decompiled"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
 <rect width="12" height="12" x="600" y="75" class="known"><title>void __cdecl FX_DynamicLightOff(ITEM *item);</title></rect>
 <rect width="12" height="12" x="615" y="75" class="known"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
 <rect width="12" height="12" x="630" y="75" class="decompiled"><title>void __cdecl FX_AssaultStart(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.76%</tspan> · <tspan class="known">0.92%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.76%</tspan> · <tspan class="known">0.91%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="737.72" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.84" height="6" x="737.72" y="0" class="known"/>
+<rect width="737.74" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.83" height="6" x="737.74" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2523,7 +2523,7 @@
 <rect width="0.11" height="0.10" x="738.18" y="360.38" class="decompiled"><title>void __cdecl SE_ControlsJoystickSet(HWND hwndDlg, JOYSTICK_NODE *joystick);</title></rect>
 <rect width="0.11" height="0.10" x="741.29" y="360.38" class="decompiled"><title>void __cdecl Sound_SetMasterVolume(int32_t volume);</title></rect>
 <rect width="0.10" height="0.10" x="744.40" y="360.38" class="decompiled"><title>void __cdecl FX_InvisibilityOn(ITEM *item);</title></rect>
-<rect width="0.10" height="0.10" x="747.20" y="360.38" class="known"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
+<rect width="0.10" height="0.10" x="747.20" y="360.38" class="decompiled"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
 <rect width="0.10" height="0.10" x="735.07" y="363.05" class="decompiled"><title>void __cdecl WinVidClearMinWindowSize(void);</title></rect>
 <rect width="0.10" height="0.10" x="737.67" y="363.05" class="decompiled"><title>void __cdecl WinVidClearMaxWindowSize(void);</title></rect>
 <rect width="0.10" height="0.10" x="740.26" y="363.05" class="decompiled"><title>bool __cdecl Direct3DInit(void);</title></rect>
