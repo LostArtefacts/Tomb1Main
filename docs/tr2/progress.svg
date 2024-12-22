@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.29% (1173)</tspan> · <tspan class="known">3.30% (41)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.37% (1174)</tspan> · <tspan class="known">3.22% (40)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="704.37" height="6" x="0" y="0" class="decompiled"/>
-<rect width="24.62" height="6" x="704.37" y="0" class="known"/>
+<rect width="704.97" height="6" x="0" y="0" class="decompiled"/>
+<rect width="24.02" height="6" x="704.97" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -339,7 +339,7 @@
 <rect width="12" height="12" x="150" y="75" class="decompiled"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
 <rect width="12" height="12" x="165" y="75" class="decompiled"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="12" height="12" x="180" y="75" class="decompiled"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
-<rect width="12" height="12" x="195" y="75" class="known"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
+<rect width="12" height="12" x="195" y="75" class="decompiled"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
 <rect width="12" height="12" x="210" y="75" class="known"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
 <rect width="12" height="12" x="225" y="75" class="known"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="75" class="known"><title>void __cdecl FX_Explosion(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.50%</tspan> · <tspan class="known">1.18%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.54%</tspan> · <tspan class="known">1.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="735.77" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.79" height="6" x="735.77" y="0" class="known"/>
+<rect width="736.08" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.48" height="6" x="736.08" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1912,7 +1912,7 @@
 <rect width="7.86" height="8.01" x="622.07" y="185.25" class="decompiled"><title>void __cdecl FlameEmitter_Control(int16_t item_num);</title></rect>
 <rect width="7.86" height="8.01" x="632.93" y="185.25" class="decompiled"><title>bool __cdecl WinVidCopyBitmapToBuffer(LPDDS surface, const BYTE *bitmap);</title></rect>
 <rect width="7.78" height="8.01" x="643.78" y="185.25" class="decompiled"><title>void __cdecl CutscenePlayer1_Initialise(int16_t item_num);</title></rect>
-<rect width="7.78" height="8.01" x="654.56" y="185.25" class="known"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
+<rect width="7.78" height="8.01" x="654.56" y="185.25" class="decompiled"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
 <rect width="7.70" height="8.01" x="665.34" y="185.25" class="decompiled"><title>void __cdecl HWR_LoadTexturePages(int32_t pages_count, void *pages_buf, RGB_888 *palette);</title></rect>
 <rect width="7.63" height="8.01" x="676.05" y="185.25" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="7.55" height="8.01" x="686.68" y="185.25" class="decompiled"><title>const int16_t *__cdecl Output_InsertObjectGT4_Sorted(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);</title></rect>

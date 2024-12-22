@@ -422,3 +422,27 @@ void __cdecl FX_Boiler(ITEM *const item)
     Sound_Effect(SFX_UNKNOWN_1, NULL, SPM_NORMAL);
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_Flood(ITEM *const item)
+{
+    if (g_FlipTimer > 4 * FRAMES_PER_SECOND) {
+        g_FlipEffect = -1;
+        g_FlipTimer++;
+        return;
+    }
+
+    XYZ_32 pos = {
+        .x = g_LaraItem->pos.x,
+        .y = g_Camera.target.pos.y,
+        .z = g_LaraItem->pos.z,
+    };
+
+    if (g_FlipTimer >= FRAMES_PER_SECOND) {
+        pos.y += 100 * (g_FlipTimer - FRAMES_PER_SECOND);
+    } else {
+        pos.y += 100 * (FRAMES_PER_SECOND - g_FlipTimer);
+    }
+
+    Sound_Effect(SFX_WATERFALL_LOOP, &pos, SPM_NORMAL);
+    g_FlipTimer++;
+}
