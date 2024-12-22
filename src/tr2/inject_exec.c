@@ -100,6 +100,7 @@
 #include "game/objects/general/grenade.h"
 #include "game/objects/general/harpoon_bolt.h"
 #include "game/objects/general/keyhole.h"
+#include "game/objects/general/lara_alarm.h"
 #include "game/objects/general/lift.h"
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
@@ -1004,6 +1005,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041CD20, HotLiquid_Control);
     INJECT(enable, 0x0041CE00, Waterfall_Control);
     INJECT(enable, 0x0041D210, DingDong_Control);
+    INJECT(enable, 0x0041D250, LaraAlarm_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);

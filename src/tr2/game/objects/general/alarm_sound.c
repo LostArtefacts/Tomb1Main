@@ -1,6 +1,7 @@
 #include "game/objects/general/alarm_sound.h"
 
-#include "global/funcs.h"
+#include "game/output.h"
+#include "game/sound.h"
 
 void AlarmSound_Setup(void)
 {

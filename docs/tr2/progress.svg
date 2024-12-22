@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.14% (1196)</tspan> · <tspan class="known">1.45% (18)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.22% (1197)</tspan> · <tspan class="known">1.37% (17)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="718.18" height="6" x="0" y="0" class="decompiled"/>
-<rect width="10.81" height="6" x="718.18" y="0" class="known"/>
+<rect width="718.78" height="6" x="0" y="0" class="decompiled"/>
+<rect width="10.21" height="6" x="718.78" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -348,7 +348,7 @@
 <rect width="12" height="12" x="285" y="75" class="decompiled"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
 <rect width="12" height="12" x="300" y="75" class="decompiled"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
 <rect width="12" height="12" x="315" y="75" class="decompiled"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="330" y="75" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="330" y="75" class="decompiled"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="360" y="75" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="375" y="75" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.85%</tspan> · <tspan class="known">0.82%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.87%</tspan> · <tspan class="known">0.81%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="738.41" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.15" height="6" x="738.41" y="0" class="known"/>
+<rect width="738.54" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.03" height="6" x="738.54" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2246,7 +2246,7 @@
 <rect width="3.68" height="3.84" x="654.99" y="289.50" class="decompiled"><title>void __cdecl Item_ShiftCol(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="296.34" class="decompiled"><title>int32_t __cdecl Game_DrawCinematic(void);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="303.18" class="decompiled"><title>int32_t __cdecl Game_Draw(void);</title></rect>
-<rect width="3.68" height="3.84" x="654.99" y="310.01" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
+<rect width="3.68" height="3.84" x="654.99" y="310.01" class="decompiled"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="316.85" class="decompiled"><title>void __cdecl Text_ChangeText(TEXTSTRING *string, const char *text);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="323.68" class="decompiled"><title>uint32_t __cdecl Text_GetScaleH(uint32_t value);</title></rect>
 <rect width="3.68" height="3.84" x="654.99" y="330.52" class="decompiled"><title>bool __cdecl D3DIsSupported(LPD3DDEVICEDESC desc);</title></rect>
