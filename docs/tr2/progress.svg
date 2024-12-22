@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.03% (1207)</tspan> · <tspan class="known">0.56% (7)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.11% (1208)</tspan> · <tspan class="known">0.48% (6)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="724.78" height="6" x="0" y="0" class="decompiled"/>
-<rect width="4.20" height="6" x="724.78" y="0" class="known"/>
+<rect width="725.38" height="6" x="0" y="0" class="decompiled"/>
+<rect width="3.60" height="6" x="725.38" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -695,7 +695,7 @@
 <rect width="12" height="12" x="240" y="180" class="decompiled"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="255" y="180" class="decompiled"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="12" height="12" x="270" y="180" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="285" y="180" class="known"><title>void __cdecl MiniCopterControl(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="285" y="180" class="decompiled"><title>void __cdecl MiniCopter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="300" y="180" class="decompiled"><title>void __cdecl DyingMonk_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="315" y="180" class="decompiled"><title>void __cdecl DyingMonk_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="330" y="180" class="decompiled"><title>void __cdecl GongBonger_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.35%</tspan> · <tspan class="known">0.32%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.42%</tspan> · <tspan class="known">0.26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="742.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="2.39" height="6" x="742.17" y="0" class="known"/>
+<rect width="742.64" height="6" x="0" y="0" class="decompiled"/>
+<rect width="1.92" height="6" x="742.64" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1749,7 +1749,7 @@
 <rect width="10.16" height="10.74" x="508.24" y="136.34" class="decompiled"><title>void __cdecl Room_TriggerMusicTrackImpl(int16_t value, int16_t flags, int16_t type);</title></rect>
 <rect width="10.16" height="10.68" x="508.24" y="150.09" class="decompiled"><title>void __cdecl Effect_CreateBartoliLight(int16_t item_num);</title></rect>
 <rect width="10.16" height="10.68" x="508.24" y="163.77" class="decompiled"><title>void __cdecl Dragon_Bones(int16_t item_num);</title></rect>
-<rect width="10.16" height="10.68" x="508.24" y="177.45" class="known"><title>void __cdecl MiniCopterControl(int16_t item_num);</title></rect>
+<rect width="10.16" height="10.68" x="508.24" y="177.45" class="decompiled"><title>void __cdecl MiniCopter_Control(int16_t item_num);</title></rect>
 <rect width="10.16" height="10.55" x="508.24" y="191.13" class="decompiled"><title>void __cdecl Camera_Clip(int32_t *x, int32_t *y, int32_t *h, int32_t target_x, int32_t target_y, int32_t target_h, int32_t left, int32_t top, int32_t right, int32_t bottom);</title></rect>
 <rect width="10.16" height="10.55" x="508.24" y="204.69" class="decompiled"><title>void __cdecl Lara_Col_ForwardJump(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.16" height="10.55" x="508.24" y="218.24" class="decompiled"><title>bool __cdecl SE_GraphicsTestStart(void);</title></rect>

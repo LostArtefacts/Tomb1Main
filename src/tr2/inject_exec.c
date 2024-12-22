@@ -107,6 +107,7 @@
 #include "game/objects/general/keyhole.h"
 #include "game/objects/general/lara_alarm.h"
 #include "game/objects/general/lift.h"
+#include "game/objects/general/mini_copter.h"
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
@@ -1044,6 +1045,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434210, Earthquake_Control);
     INJECT(enable, 0x004342F0, FinalCutscene_Control);
     INJECT(enable, 0x00434400, FinalLevelCounter_Control);
+    INJECT(enable, 0x00434610, MiniCopter_Control);
     INJECT(enable, 0x004346F0, DyingMonk_Initialise);
     INJECT(enable, 0x00434770, DyingMonk_Control);
     INJECT(enable, 0x00434800, GongBonger_Control);
