@@ -590,3 +590,10 @@ void __cdecl FX_AssaultStop(ITEM *const item)
     g_IsAssaultTimerDisplay = true;
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_AssaultReset(ITEM *const item)
+{
+    g_IsAssaultTimerActive = false;
+    g_IsAssaultTimerDisplay = false;
+    g_FlipEffect = -1;
+}

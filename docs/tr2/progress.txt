@@ -3278,7 +3278,7 @@ typedef enum {
 0x0041DA10  0x0005  +       void __cdecl FX_ResetHair(ITEM *item);
 0x0041DA20  0x0024  +       void __cdecl FX_AssaultStart(ITEM *item);
 0x0041DA50  0x001F  +       void __cdecl FX_AssaultStop(ITEM *item);
-0x0041DA70  0x0017  -       void __cdecl FX_AssaultReset(ITEM *item);
+0x0041DA70  0x0017  +       void __cdecl FX_AssaultReset(ITEM *item);
 0x0041DA90  0x00B2  -       void __cdecl FX_AssaultFinished(ITEM *item);
 
 # game/enemies.c
