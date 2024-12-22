@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.18% (1184)</tspan> · <tspan class="known">2.41% (30)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.26% (1185)</tspan> · <tspan class="known">2.33% (29)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="710.97" height="6" x="0" y="0" class="decompiled"/>
-<rect width="18.01" height="6" x="710.97" y="0" class="known"/>
+<rect width="711.57" height="6" x="0" y="0" class="decompiled"/>
+<rect width="17.41" height="6" x="711.57" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -360,7 +360,7 @@
 <rect width="12" height="12" x="465" y="75" class="decompiled"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
 <rect width="12" height="12" x="480" y="75" class="decompiled"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="495" y="75" class="decompiled"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
-<rect width="12" height="12" x="510" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
+<rect width="12" height="12" x="510" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
 <rect width="12" height="12" x="525" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *item);</title></rect>
 <rect width="12" height="12" x="540" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="75" class="known"><title>void __cdecl FX_InvisibilityOn(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.64%</tspan> · <tspan class="known">1.03%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.67%</tspan> · <tspan class="known">1%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.88" height="6" x="0" y="0" class="decompiled"/>
-<rect width="7.68" height="6" x="736.88" y="0" class="known"/>
+<rect width="737.09" height="6" x="0" y="0" class="decompiled"/>
+<rect width="7.47" height="6" x="737.09" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2044,7 +2044,7 @@
 <rect width="6.33" height="5.90" x="598.27" y="289.93" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="6.33" height="5.90" x="598.27" y="298.83" class="decompiled"><title>int32_t __cdecl GameInit(bool skip_cd_init);</title></rect>
 <rect width="6.33" height="5.90" x="598.27" y="307.72" class="decompiled"><title>void __thiscall SE_DrawBitmap(BITMAP_RESOURCE *bmpRsrc, HDC hdc, int32_t x, int32_t y);</title></rect>
-<rect width="6.33" height="5.81" x="598.27" y="316.62" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
+<rect width="6.33" height="5.81" x="598.27" y="316.62" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
 <rect width="6.33" height="5.81" x="598.27" y="325.42" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *item);</title></rect>
 <rect width="6.33" height="5.81" x="598.27" y="334.23" class="decompiled"><title>void __cdecl Inv_Ring_MotionInit(RING_INFO *ring, int16_t frames, int16_t status, int16_t status_target);</title></rect>
 <rect width="6.33" height="5.81" x="598.27" y="343.04" class="decompiled"><title>void __cdecl Inv_Ring_MotionItemDeselect(RING_INFO *ring, INVENTORY_ITEM *inv_item);</title></rect>

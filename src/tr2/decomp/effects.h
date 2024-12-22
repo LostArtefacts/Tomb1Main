@@ -62,3 +62,4 @@ void __cdecl FX_SetChange(ITEM *item);
 void __cdecl FX_FlipMap(ITEM *item);
 void __cdecl FX_LaraDrawRightGun(ITEM *item);
 void __cdecl FX_LaraDrawLeftGun(ITEM *item);
+void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);

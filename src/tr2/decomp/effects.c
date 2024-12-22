@@ -518,3 +518,15 @@ void __cdecl FX_LaraDrawLeftGun(ITEM *const item)
         tmp);
     SWAP(g_Lara.mesh_ptrs[LM_HAND_L], g_Meshes[obj->mesh_idx + LM_HAND_L], tmp);
 }
+
+void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *const item)
+{
+    const OBJECT *const obj_1 = Object_GetObject(item->object_id);
+    const OBJECT *const obj_2 = Object_GetObject(O_MESH_SWAP_1);
+    for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
+        int16_t *tmp;
+        SWAP(
+            g_Meshes[obj_1->mesh_idx + mesh_idx],
+            g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
+    }
+}
