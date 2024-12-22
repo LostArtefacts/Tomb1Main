@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.94% (1181)</tspan> · <tspan class="known">2.65% (33)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.02% (1182)</tspan> · <tspan class="known">2.57% (32)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="709.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="19.82" height="6" x="709.17" y="0" class="known"/>
+<rect width="709.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="19.22" height="6" x="709.77" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -357,7 +357,7 @@
 <rect width="12" height="12" x="420" y="75" class="known"><title>void __cdecl SphereOfDoom_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="435" y="75" class="known"><title>void __cdecl SphereOfDoom_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="450" y="75" class="decompiled"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
-<rect width="12" height="12" x="465" y="75" class="known"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
+<rect width="12" height="12" x="465" y="75" class="decompiled"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
 <rect width="12" height="12" x="480" y="75" class="known"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="495" y="75" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="510" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.60%</tspan> · <tspan class="known">1.07%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.61%</tspan> · <tspan class="known">1.07%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.57" height="6" x="0" y="0" class="decompiled"/>
-<rect width="7.99" height="6" x="736.57" y="0" class="known"/>
+<rect width="736.59" height="6" x="0" y="0" class="decompiled"/>
+<rect width="7.98" height="6" x="736.59" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2558,7 +2558,7 @@
 <rect width="0.10" height="0.10" x="747.97" y="368.07" class="decompiled"><title>int __cdecl Player_ShutDownVideo(LPVOID);</title></rect>
 <rect width="0.10" height="0.10" x="741.90" y="370.53" class="decompiled"><title>int __cdecl Player_ShutDownSound(LPVOID);</title></rect>
 <rect width="0.10" height="0.10" x="741.90" y="373.16" class="decompiled"><title>int __cdecl Player_StopTimer(LPVOID);</title></rect>
-<rect width="0.10" height="0.10" x="741.90" y="375.80" class="known"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
+<rect width="0.10" height="0.10" x="741.90" y="375.80" class="decompiled"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
 <rect width="0.10" height="0.10" x="743.78" y="370.53" class="known"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
 <rect width="0.10" height="0.10" x="745.86" y="370.53" class="decompiled"><title>void __cdecl Inv_DoInventoryPicture(void);</title></rect>
 <rect width="0.10" height="0.10" x="747.93" y="370.53" class="unused"><title>sub_444BB0</title></rect>

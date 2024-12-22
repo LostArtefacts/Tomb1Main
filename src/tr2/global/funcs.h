@@ -15,7 +15,6 @@
 #define SphereOfDoom_Collision ((void __cdecl (*)(int16_t item_num, ITEM *lara_item, COLL_INFO *coll))0x0041D430)
 #define SphereOfDoom_Control ((void __cdecl (*)(int16_t item_num))0x0041D560)
 #define SphereOfDoom_Draw ((void __cdecl (*)(const ITEM *item))0x0041D650)
-#define FX_FlipMap ((void __cdecl (*)(ITEM *item))0x0041D790)
 #define FX_LaraDrawRightGun ((void __cdecl (*)(ITEM *item))0x0041D7A0)
 #define FX_LaraDrawLeftGun ((void __cdecl (*)(ITEM *item))0x0041D7F0)
 #define FX_SwapMeshesWithMeshSwap1 ((void __cdecl (*)(ITEM *item))0x0041D840)

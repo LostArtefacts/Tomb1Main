@@ -59,3 +59,4 @@ void __cdecl FX_Piston(ITEM *item);
 void __cdecl FX_Curtain(ITEM *item);
 void __cdecl FX_Statue(ITEM *item);
 void __cdecl FX_SetChange(ITEM *item);
+void __cdecl FX_FlipMap(ITEM *item);

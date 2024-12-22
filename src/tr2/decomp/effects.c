@@ -493,3 +493,8 @@ void __cdecl FX_SetChange(ITEM *const item)
     Sound_Effect(SFX_STAGE_BACKDROP, NULL, SPM_NORMAL);
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_FlipMap(ITEM *const item)
+{
+    Room_FlipMap();
+}
