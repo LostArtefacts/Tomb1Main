@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define FX_LaraNormal ((void __cdecl (*)(ITEM *item))0x0041D010)
 #define FX_Boiler ((void __cdecl (*)(ITEM *item))0x0041D050)
 #define FX_Flood ((void __cdecl (*)(ITEM *item))0x0041D070)
 #define FX_Rubble ((void __cdecl (*)(ITEM *item))0x0041D100)

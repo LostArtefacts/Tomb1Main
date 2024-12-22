@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.13% (1171)</tspan> · <tspan class="known">3.46% (43)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.21% (1172)</tspan> · <tspan class="known">3.38% (42)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="703.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="25.82" height="6" x="703.16" y="0" class="known"/>
+<rect width="703.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="25.22" height="6" x="703.77" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -337,7 +337,7 @@
 <rect width="12" height="12" x="120" y="75" class="decompiled"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="decompiled"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
 <rect width="12" height="12" x="150" y="75" class="decompiled"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
-<rect width="12" height="12" x="165" y="75" class="known"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
+<rect width="12" height="12" x="165" y="75" class="decompiled"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="12" height="12" x="180" y="75" class="known"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
 <rect width="12" height="12" x="195" y="75" class="known"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
 <rect width="12" height="12" x="210" y="75" class="known"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.47%</tspan> · <tspan class="known">1.20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.49%</tspan> · <tspan class="known">1.19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="735.57" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.99" height="6" x="735.57" y="0" class="known"/>
+<rect width="735.71" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.85" height="6" x="735.71" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2188,7 +2188,7 @@
 <rect width="4.60" height="4.10" x="640.25" y="363.80" class="decompiled"><title>void __cdecl Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z);</title></rect>
 <rect width="4.60" height="4.10" x="640.25" y="370.90" class="decompiled"><title>void __cdecl WinVidSetMinWindowSize(int32_t width, int32_t height);</title></rect>
 <rect width="4.49" height="4.20" x="647.85" y="268.48" class="decompiled"><title>void __cdecl WinVidSetMaxWindowSize(int32_t width, int32_t height);</title></rect>
-<rect width="4.37" height="4.20" x="655.34" y="268.48" class="known"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
+<rect width="4.37" height="4.20" x="655.34" y="268.48" class="decompiled"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="4.37" height="4.20" x="662.71" y="268.48" class="decompiled"><title>void __cdecl Inv_Ring_Light(RING_INFO *ring);</title></rect>
 <rect width="4.37" height="4.20" x="670.08" y="268.48" class="decompiled"><title>void __cdecl Lara_State_FastFall(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="4.37" height="4.20" x="677.45" y="268.48" class="decompiled"><title>void __cdecl Skidoo_Initialise(int16_t item_num);</title></rect>

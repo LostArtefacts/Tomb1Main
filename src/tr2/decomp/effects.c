@@ -406,3 +406,13 @@ void __cdecl FX_FloorShake(ITEM *const item)
             max_bounce * (SQUARE(WALL_L) - dist / 256) / SQUARE(WALL_L);
     }
 }
+
+void __cdecl FX_LaraNormal(ITEM *const item)
+{
+    item->current_anim_state = LS_STOP;
+    item->goal_anim_state = LS_STOP;
+    item->anim_num = LA_STAND_STILL;
+    item->frame_num = g_Anims[item->anim_num].frame_base;
+    g_Camera.type = CAM_CHASE;
+    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+}
