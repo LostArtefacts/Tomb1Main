@@ -475,3 +475,9 @@ void __cdecl FX_Piston(ITEM *const item)
     Sound_Effect(SFX_PULLEY_CRANE, NULL, SPM_NORMAL);
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_Curtain(ITEM *const item)
+{
+    Sound_Effect(SFX_CURTAIN, NULL, SPM_NORMAL);
+    g_FlipEffect = -1;
+}
