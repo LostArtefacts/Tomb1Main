@@ -342,7 +342,7 @@ int32_t __cdecl LevelCompleteSequence(void)
     return GFD_EXIT_TO_TITLE;
 }
 
-void __cdecl S_Wait(int32_t frames, const BOOL input_check)
+void __cdecl S_Wait(int32_t frames, const bool input_check)
 {
     if (input_check) {
         while (frames > 0) {
@@ -382,7 +382,7 @@ void __cdecl S_Wait(int32_t frames, const BOOL input_check)
     }
 }
 
-BOOL __cdecl S_InitialiseSystem(void)
+bool __cdecl S_InitialiseSystem(void)
 {
     Random_Seed();
     Output_CalculateWibbleTable();
@@ -458,7 +458,7 @@ void __cdecl DecreaseScreenSize(void)
     }
 }
 
-BOOL __cdecl S_LoadLevelFile(
+bool __cdecl S_LoadLevelFile(
     const char *const file_name, const int32_t level_num,
     const GAMEFLOW_LEVEL_TYPE level_type)
 {

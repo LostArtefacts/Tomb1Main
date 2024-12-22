@@ -191,7 +191,7 @@ static void M_ModifyInventory_Item(
 }
 
 // TODO: inline me into GF_LoadScriptFile
-BOOL __cdecl GF_LoadFromFile(const char *const file_name)
+bool __cdecl GF_LoadFromFile(const char *const file_name)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     DWORD bytes_read;

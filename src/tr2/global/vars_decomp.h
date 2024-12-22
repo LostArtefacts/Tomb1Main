@@ -6,8 +6,6 @@
 #include "inject_util.h"
 
 // clang-format off
-#define g_IID_IDirectDrawSurface3 (*(GUID*)0x00463150)
-#define g_IID_IDirect3DTexture2 (*(GUID*)0x00463170)
 #define g_PerspectiveDistance (*(uint32_t*)0x00464060) // = 0x3000000
 #define g_PolyDrawRoutines (*((void(__cdecl  *(*)[9])(const int16_t *obj_ptr))0x00464068))
 #define g_CineTrackID (*(int32_t*)0x004640B0) // = 1
@@ -236,7 +234,6 @@
 #define g_IsGameWindowActive (*(bool*)0x004D8390)
 #define g_MessageLoopCounter (*(int32_t*)0x004D8394)
 #define g_IsSoundEnabled (*(uint8_t*)0x004D8D80)
-#define g_ColorBitMasks (*(COLOR_BIT_MASKS*)0x004D92E8)
 #define g_TexturePageCount (*(int32_t*)0x004D9360)
 #define g_LabTextureUVFlag (*(uint8_t(*)[2048])0x004D93F0)
 #define g_LevelFilePalettesOffset (*(int32_t*)0x004D9BF4)

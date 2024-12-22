@@ -35,14 +35,14 @@ typedef struct __unaligned {
     int32_t _23;
 } MATRIX;
 
-typedef enum {
+typedef enum { // decompiled
     VGA_NO_VGA    = 0,
     VGA_256_COLOR = 1,
     VGA_MODEX     = 2,
     VGA_STANDARD  = 3,
 } VGA_MODE;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     LPBITMAPINFO bmp_info;
     void *bmp_data;
     HPALETTE hPalette;
@@ -238,7 +238,7 @@ typedef struct __unaligned {
     };
 } RGBA_8888;
 
-typedef struct {
+typedef struct { // decompiled
     struct {
         uint32_t r;
         uint32_t g;
@@ -2543,7 +2543,7 @@ typedef struct __unaligned {
     float rhw2;
 } XBUF_XGUVP;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     uint8_t manufacturer;
     uint8_t version;
     uint8_t rle;
@@ -2564,7 +2564,7 @@ typedef struct __unaligned {
     uint8_t reserved_data[54];
 } PCX_HEADER;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     uint8_t id_length;
     uint8_t color_map_type;
     uint8_t data_type_code;
@@ -2651,7 +2651,7 @@ typedef enum { // decompiled
     GBUF_NUM_MALLOC_TYPES         = 47,
 } GAME_BUFFER;
 
-typedef enum {
+typedef enum { // decompiled
     CLRB_PRIMARY_BUFFER          = 0x0001,
     CLRB_BACK_BUFFER             = 0x0002,
     CLRB_THIRD_BUFFER            = 0x0004,
@@ -4592,8 +4592,8 @@ typedef enum {
 0x004D837C  +       int32_t g_GameWindowY;
 0x004D7EE0  +       LPDIRECTDRAW3 g_DDraw;
 0x004D8380  +       int32_t g_GameWindowX;
-0x00463150  -       GUID g_IID_IDirectDrawSurface3;
-0x00463170  -       GUID g_IID_IDirect3DTexture2;
+0x00463150  +       GUID g_IID_IDirectDrawSurface3;
+0x00463170  +       GUID g_IID_IDirect3DTexture2;
 0x004640A0  +       BITE g_CrowBite;
 0x00464090  +       BITE g_BirdBite;
 0x005263C0  -       int16_t *g_FlyZone[2];
@@ -4634,7 +4634,7 @@ typedef enum {
 0x00466BE8  +       int16_t g_DumpWidth;
 0x00466BEA  +       int16_t g_DumpHeight;
 0x0051C1B8  -       TEXTURE_FORMAT g_TextureFormat;
-0x004D92E8  -       COLOR_BIT_MASKS g_ColorBitMasks;
+0x004D92E8  +       COLOR_BIT_MASKS g_ColorBitMasks;
 0x0051BC30  +       bool g_WinVidNeedToResetBuffers;
 0x004D7E88  -       bool g_BGND_PictureIsReady;
 0x004D7E90  -       int32_t g_BGND_TexturePageIndexes[5];

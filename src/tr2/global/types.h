@@ -2,6 +2,12 @@
 
 #include "global/types_decomp.h"
 
+#include <libtrx/game/collision.h>
+#include <libtrx/game/effects.h>
+#include <libtrx/game/gameflow/types.h>
+#include <libtrx/game/lot.h>
+#include <libtrx/game/objects/common.h>
+
 typedef struct {
     uint16_t draw_type;
     uint16_t tex_page;

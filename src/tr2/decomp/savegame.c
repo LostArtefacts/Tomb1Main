@@ -870,7 +870,7 @@ void __cdecl GetSavedGamesList(REQUEST_INFO *const req)
         sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
 }
 
-BOOL __cdecl S_FrontEndCheck(void)
+bool __cdecl S_FrontEndCheck(void)
 {
     Requester_Init(&g_LoadGameRequester);
 

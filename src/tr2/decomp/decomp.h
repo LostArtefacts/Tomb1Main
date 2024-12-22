@@ -26,13 +26,13 @@ int32_t __cdecl Misc_Move3DPosTo3DPos(
     PHD_3DPOS *src_pos, const PHD_3DPOS *dst_pos, int32_t velocity,
     int16_t ang_add);
 int32_t __cdecl LevelCompleteSequence(void);
-void __cdecl S_Wait(int32_t frames, BOOL input_check);
-BOOL __cdecl S_InitialiseSystem(void);
+void __cdecl S_Wait(int32_t frames, bool input_check);
+bool __cdecl S_InitialiseSystem(void);
 void __cdecl DisplayCredits(void);
 void __cdecl S_InitialisePolyList(bool clear_back_buffer);
 void __cdecl DecreaseScreenSize(void);
 void __cdecl IncreaseScreenSize(void);
-BOOL __cdecl S_LoadLevelFile(
+bool __cdecl S_LoadLevelFile(
     const char *file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 void __cdecl S_UnloadLevelFile(void);
 void __cdecl GetValidLevelsList(REQUEST_INFO *req);

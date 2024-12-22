@@ -4,20 +4,14 @@
 
 #include "const.h"
 
-#include <libtrx/game/collision.h>
-#include <libtrx/game/effects.h>
-#include <libtrx/game/gameflow/types.h>
 #include <libtrx/game/items.h>
 #include <libtrx/game/lara/types.h>
-#include <libtrx/game/lot.h>
 #include <libtrx/game/math.h>
-#include <libtrx/game/objects/common.h>
 #include <libtrx/game/rooms/types.h>
 #include <libtrx/game/text.h>
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <windows.h>
 
 #pragma pack(push, 1)
 
@@ -36,20 +30,6 @@ typedef struct __unaligned {
     int32_t _22;
     int32_t _23;
 } MATRIX;
-
-typedef enum {
-    VGA_NO_VGA    = 0,
-    VGA_256_COLOR = 1,
-    VGA_MODEX     = 2,
-    VGA_STANDARD  = 3,
-} VGA_MODE;
-
-typedef struct __unaligned {
-    LPBITMAPINFO bmp_info;
-    void *bmp_data;
-    HPALETTE hPalette;
-    DWORD flags;
-} BITMAP_RESOURCE;
 
 typedef enum {
     RM_UNKNOWN  = 0,
@@ -102,15 +82,6 @@ typedef struct __unaligned {
         uint8_t a;
     };
 } RGBA_8888;
-
-typedef struct {
-    struct {
-        uint32_t r;
-        uint32_t g;
-        uint32_t b;
-        uint32_t a;
-    } mask, depth, offset;
-} COLOR_BIT_MASKS;
 
 typedef struct __unaligned {
     uint8_t index[256];
@@ -1237,42 +1208,6 @@ typedef struct __unaligned {
 } XBUF_XGUVP;
 
 typedef struct __unaligned {
-    uint8_t manufacturer;
-    uint8_t version;
-    uint8_t rle;
-    uint8_t bpp;
-    uint16_t x_min;
-    uint16_t y_min;
-    uint16_t x_max;
-    uint16_t y_max;
-    uint16_t h_dpi;
-    uint16_t v_dpi;
-    RGB_888 palette[16];
-    uint8_t reserved;
-    uint8_t planes;
-    uint16_t bytes_per_line;
-    uint16_t pal_pnterpret;
-    uint16_t h_res;
-    uint16_t v_res;
-    uint8_t reserved_data[54];
-} PCX_HEADER;
-
-typedef struct __unaligned {
-    uint8_t id_length;
-    uint8_t color_map_type;
-    uint8_t data_type_code;
-    uint16_t color_map_origin;
-    uint16_t color_map_length;
-    uint8_t color_map_depth;
-    uint16_t x_origin;
-    uint16_t y_origin;
-    uint16_t width;
-    uint16_t height;
-    uint8_t bpp;
-    uint8_t image_descriptor;
-} TGA_HEADER;
-
-typedef struct __unaligned {
     int16_t number;
     int16_t volume;
     int16_t randomness;
@@ -1292,18 +1227,6 @@ typedef enum {
     SF_FLIP = 0x40,
     SF_UNFLIP = 0x80,
 } SOUND_FLAG;
-
-typedef enum {
-    CLRB_PRIMARY_BUFFER          = 0x0001,
-    CLRB_BACK_BUFFER             = 0x0002,
-    CLRB_THIRD_BUFFER            = 0x0004,
-    CLRB_Z_BUFFER                = 0x0008,
-    CLRB_RENDER_BUFFER           = 0x0010,
-    CLRB_PICTURE_BUFFER          = 0x0020,
-    CLRB_WINDOWED_PRIMARY_BUFFER = 0x0040,
-    CLRB_RESERVED                = 0x0080,
-    CLRB_PHDWINSIZE              = 0x0100,
-} CLEAR_BUFFER_FLAGS;
 
 typedef enum {
     AC_NULL          = 0,
