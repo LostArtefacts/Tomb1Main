@@ -3642,7 +3642,7 @@ typedef enum {
 
 # game/objects.c
 0x00434210  0x00DB  +       void __cdecl Earthquake_Control(int16_t item_num);
-0x004342F0  0x003C  -       void __cdecl FinalCutscene_Control(int16_t item_num);
+0x004342F0  0x003C  +       void __cdecl FinalCutscene_Control(int16_t item_num);
 0x00434330  0x009D  -R      void __cdecl InitialiseFinalLevel(void);
 0x00434400  0x020F  +       void __cdecl FinalLevelCounter_Control(int16_t item_num);
 0x00434610  0x00D9  -R      void __cdecl MiniCopterControl(int16_t item_num);

@@ -99,6 +99,7 @@
 #include "game/objects/general/door.h"
 #include "game/objects/general/drawbridge.h"
 #include "game/objects/general/earthquake.h"
+#include "game/objects/general/final_cutscene.h"
 #include "game/objects/general/final_level_counter.h"
 #include "game/objects/general/gong_bonger.h"
 #include "game/objects/general/grenade.h"
@@ -1040,6 +1041,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434170, MovableBlock_Draw);
     INJECT(enable, 0x004341A0, Object_DrawUnclippedItem);
     INJECT(enable, 0x00434210, Earthquake_Control);
+    INJECT(enable, 0x004342F0, FinalCutscene_Control);
     INJECT(enable, 0x00434400, FinalLevelCounter_Control);
     INJECT(enable, 0x004346F0, DyingMonk_Initialise);
     INJECT(enable, 0x00434770, DyingMonk_Control);

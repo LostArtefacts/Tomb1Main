@@ -1,6 +1,18 @@
 #include "game/objects/general/final_cutscene.h"
 
-#include "global/funcs.h"
+#include "game/items.h"
+#include "global/vars.h"
+
+void __cdecl FinalCutscene_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    if (g_FinalBossActive >= 5 * FRAMES_PER_SECOND) {
+        item->status = IS_ACTIVE;
+        Item_Animate(item);
+    } else {
+        item->status = IS_INVISIBLE;
+    }
+}
 
 void FinalCutscene_Setup(void)
 {
