@@ -28,7 +28,6 @@ class ProjectPaths:
 TR1Paths = ProjectPaths(folder_name="tr1")
 
 TR2Paths = ProjectPaths(folder_name="tr2")
-TR2Paths.progress_file = TR2Paths.docs_dir / "progress.txt"
-TR2Paths.progress_svg = TR2Paths.docs_dir / "progress.svg"
+TR2Paths.progress_file = TR2Paths.docs_dir / "symbols.txt"
 
 PROJECT_PATHS = {1: TR1Paths, 2: TR2Paths}

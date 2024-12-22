@@ -74,13 +74,6 @@ def extract_symbol_name(c_declaration: str) -> str | None:
     return result
 
 
-class SymbolStatus(StrEnum):
-    DECOMPILED = auto()
-    KNOWN = auto()
-    TODO = auto()
-    UNUSED = auto()
-
-
 class ProgressFileSection(StrEnum):
     TYPES = "types"
     FUNCTIONS = "functions"
@@ -92,7 +85,6 @@ class Symbol:
     offset: int
     signature: str
     size: int | None = None
-    flags: str = ""
 
     @property
     def name(self) -> str:
@@ -103,30 +95,8 @@ class Symbol:
         return f"0x{self.offset:08X}"
 
     @property
-    def is_decompiled(self) -> bool:
-        return "+" in self.flags or "@" in self.flags
-
-    @property
-    def is_called(self) -> bool:
-        return "*" in self.flags
-
-    @property
-    def is_unused(self) -> bool:
-        return "x" in self.flags
-
-    @property
     def is_known(self) -> bool:
         return not re.search(r"(\s|^)sub_", self.signature)
-
-    @property
-    def status(self) -> SymbolStatus:
-        if self.is_decompiled:
-            return SymbolStatus.DECOMPILED
-        elif self.is_unused:
-            return SymbolStatus.UNUSED
-        elif self.is_known:
-            return SymbolStatus.KNOWN
-        return SymbolStatus.TODO
 
 
 @dataclass
@@ -173,23 +143,21 @@ def parse_progress_file(path: Path) -> ProgressFile:
             continue
 
         if section == ProgressFileSection.FUNCTIONS:
-            offset, size, flags, signature = re.split(r"\s+", line, maxsplit=3)
+            offset, size, signature = re.split(r"\s+", line, maxsplit=2)
             result.functions.append(
                 Symbol(
                     signature=signature,
                     offset=to_int(offset),
                     size=to_int(size),
-                    flags=flags,
                 )
             )
 
         if section == ProgressFileSection.VARIABLES:
-            offset, flags, signature = re.split(r"\s+", line, maxsplit=2)
+            offset, signature = re.split(r"\s+", line, maxsplit=1)
             result.variables.append(
                 Symbol(
                     signature=signature,
                     offset=to_int(offset),
-                    flags=flags,
                 )
             )
 

@@ -82,12 +82,9 @@ See [the changelog](docs/tr1/CHANGELOG.md).
 Please refer to the [detailed documentation](docs/tr1/).
 
 ## TR2X - Tomb Raider 2
-
-### Overview
-TR2X serves as a sequel to TR1X, currently focusing on the decompilation of Tomb Raider 2.
-
 ### Decompilation Progress
-![Decompilation Progress](docs/tr2/progress.svg)
+Decompilation is currently complete, and we're shifting our focus towards
+enriching the game with new features.
 
 ### Download
 Download the latest release:

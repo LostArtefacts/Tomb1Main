@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Converts progress.txt to an IDC script usable with IDA Free, that propagates
+"""Converts symbols.txt to an IDC script usable with IDA Free, that propagates
 the IDA database with typing information, function declarations and variable
 declarations.
 """
@@ -59,22 +59,6 @@ def import_symbol(symbol: Symbol, file) -> None:
                 f"set_name(0x{symbol.offset:x}, {json.dumps(symbol.name)});",
                 file=file,
             )
-
-        if "+" in symbol.flags:
-            color = 0xA0FFA0
-        elif "@" in symbol.flags:
-            color = 0xA0C0A0
-        elif "x" in symbol.flags:
-            color = 0xA0A0A0
-        elif known:
-            color = 0xA0FFFF
-        else:
-            color = 0xEEEEEE
-
-        print(
-            f"set_color(0x{symbol.offset:x}, CIC_FUNC, 0x{color:x});",
-            file=file,
-        )
 
 
 def generate_symbols(symbols: list[Symbol], file) -> None:
