@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define FX_Statue ((void __cdecl (*)(ITEM *item))0x0041D1D0)
 #define FX_SetChange ((void __cdecl (*)(ITEM *item))0x0041D1F0)
 #define DingDong_Control ((void __cdecl (*)(int16_t item_num))0x0041D210)
 #define LaraAlarm_Control ((void __cdecl (*)(int16_t item_num))0x0041D250)

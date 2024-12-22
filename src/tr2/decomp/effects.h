@@ -57,3 +57,4 @@ void __cdecl FX_Chandelier(ITEM *item);
 void __cdecl FX_Explosion(ITEM *item);
 void __cdecl FX_Piston(ITEM *item);
 void __cdecl FX_Curtain(ITEM *item);
+void __cdecl FX_Statue(ITEM *item);
