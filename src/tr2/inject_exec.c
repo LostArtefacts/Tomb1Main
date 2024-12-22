@@ -108,6 +108,7 @@
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
+#include "game/objects/general/sphere_of_doom.h"
 #include "game/objects/general/switch.h"
 #include "game/objects/general/trapdoor.h"
 #include "game/objects/general/waterfall.h"
@@ -1013,6 +1014,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041D300, BirdTweeter_Control);
     INJECT(enable, 0x0041D360, DoChimeSound);
     INJECT(enable, 0x0041D3C0, ClockChimes_Control);
+    INJECT(enable, 0x0041D430, SphereOfDoom_Collision);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
