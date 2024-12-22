@@ -462,3 +462,10 @@ void __cdecl FX_Chandelier(ITEM *const item)
         g_FlipEffect = -1;
     }
 }
+
+void __cdecl FX_Explosion(ITEM *const item)
+{
+    Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_NORMAL);
+    g_Camera.bounce = -75;
+    g_FlipEffect = -1;
+}

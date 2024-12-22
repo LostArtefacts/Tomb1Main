@@ -266,6 +266,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041D070, FX_Flood);
     INJECT(enable, 0x0041D100, FX_Rubble);
     INJECT(enable, 0x0041D130, FX_Chandelier);
+    INJECT(enable, 0x0041D160, FX_Explosion);
     INJECT(enable, 0x0041D780, FX_LaraHandsFree);
     INJECT(enable, 0x0041DB50, Knife);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
