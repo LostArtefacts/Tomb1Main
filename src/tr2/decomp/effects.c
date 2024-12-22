@@ -542,3 +542,18 @@ void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *const item)
             g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
     }
 }
+
+void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *const item)
+{
+    OBJECT *const obj_1 = Object_GetObject(item->object_id);
+    OBJECT *const obj_2 = Object_GetObject(O_LARA_SWAP);
+    for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
+        int16_t *tmp;
+        SWAP(
+            g_Meshes[obj_1->mesh_idx + mesh_idx],
+            g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
+        if (item == g_LaraItem) {
+            g_Lara.mesh_ptrs[mesh_idx] = g_Meshes[obj_1->mesh_idx + mesh_idx];
+        }
+    }
+}

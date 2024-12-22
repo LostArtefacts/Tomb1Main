@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.34% (1186)</tspan> · <tspan class="known">2.25% (28)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.42% (1187)</tspan> · <tspan class="known">2.17% (27)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="712.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="16.81" height="6" x="712.17" y="0" class="known"/>
+<rect width="712.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="16.21" height="6" x="712.77" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -362,7 +362,7 @@
 <rect width="12" height="12" x="495" y="75" class="decompiled"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="510" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
 <rect width="12" height="12" x="525" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *item);</title></rect>
-<rect width="12" height="12" x="540" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
+<rect width="12" height="12" x="540" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="75" class="known"><title>void __cdecl FX_InvisibilityOn(ITEM *item);</title></rect>
 <rect width="12" height="12" x="570" y="75" class="known"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
 <rect width="12" height="12" x="585" y="75" class="known"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.70%</tspan> · <tspan class="known">0.97%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.75%</tspan> · <tspan class="known">0.93%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="737.31" height="6" x="0" y="0" class="decompiled"/>
-<rect width="7.25" height="6" x="737.31" y="0" class="known"/>
+<rect width="737.65" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.91" height="6" x="737.65" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1872,7 +1872,7 @@
 <rect width="8.04" height="8.72" x="738.96" y="173.53" class="decompiled"><title>void __cdecl Item_NewRoom(int16_t item_num, int16_t room_num);</title></rect>
 <rect width="8.15" height="8.61" x="545.57" y="185.25" class="decompiled"><title>bool __cdecl S_Audio_Sample_Init(void);</title></rect>
 <rect width="8.15" height="8.54" x="545.57" y="196.86" class="decompiled"><title>void __cdecl Lara_CollideStop(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="8.15" height="8.46" x="545.57" y="208.40" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
+<rect width="8.15" height="8.46" x="545.57" y="208.40" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
 <rect width="8.15" height="8.46" x="545.57" y="219.86" class="decompiled"><title>void __cdecl Level_LoadDemoExternal(LPCTSTR level_name);</title></rect>
 <rect width="8.15" height="8.46" x="545.57" y="231.32" class="decompiled"><title>int32_t __cdecl Game_Loop(bool demo_mode);</title></rect>
 <rect width="8.15" height="8.39" x="545.57" y="242.78" class="decompiled"><title>void __cdecl Camera_Fixed(void);</title></rect>
