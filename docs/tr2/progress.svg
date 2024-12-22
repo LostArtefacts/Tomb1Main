@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.61% (1177)</tspan> · <tspan class="known">2.97% (37)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.69% (1178)</tspan> · <tspan class="known">2.89% (36)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="706.77" height="6" x="0" y="0" class="decompiled"/>
-<rect width="22.22" height="6" x="706.77" y="0" class="known"/>
+<rect width="707.37" height="6" x="0" y="0" class="decompiled"/>
+<rect width="21.62" height="6" x="707.37" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -343,7 +343,7 @@
 <rect width="12" height="12" x="210" y="75" class="decompiled"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
 <rect width="12" height="12" x="225" y="75" class="decompiled"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="75" class="decompiled"><title>void __cdecl FX_Explosion(ITEM *item);</title></rect>
-<rect width="12" height="12" x="255" y="75" class="known"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
+<rect width="12" height="12" x="255" y="75" class="decompiled"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="75" class="known"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
 <rect width="12" height="12" x="285" y="75" class="known"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
 <rect width="12" height="12" x="300" y="75" class="known"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.57%</tspan> · <tspan class="known">1.10%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.58%</tspan> · <tspan class="known">1.09%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.33" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.23" height="6" x="736.33" y="0" class="known"/>
+<rect width="736.39" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.17" height="6" x="736.39" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2424,7 +2424,7 @@
 <rect width="1.76" height="2.06" x="712.93" y="331.27" class="decompiled"><title>void __cdecl Lara_State_Special(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.76" height="2.06" x="717.69" y="331.27" class="decompiled"><title>void __cdecl Lara_State_Extra_GongBong(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.59" height="2.06" x="722.44" y="331.27" class="decompiled"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
-<rect width="1.59" height="2.06" x="727.04" y="331.27" class="known"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
+<rect width="1.59" height="2.06" x="727.04" y="331.27" class="decompiled"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="731.63" y="331.27" class="known"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="736.22" y="331.27" class="known"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="740.81" y="331.27" class="known"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>

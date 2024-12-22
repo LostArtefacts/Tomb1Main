@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define FX_Piston ((void __cdecl (*)(ITEM *item))0x0041D190)
 #define FX_Curtain ((void __cdecl (*)(ITEM *item))0x0041D1B0)
 #define FX_Statue ((void __cdecl (*)(ITEM *item))0x0041D1D0)
 #define FX_SetChange ((void __cdecl (*)(ITEM *item))0x0041D1F0)
