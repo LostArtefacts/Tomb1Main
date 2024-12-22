@@ -93,6 +93,7 @@
 #include "game/objects/general/bridge_flat.h"
 #include "game/objects/general/bridge_tilt_1.h"
 #include "game/objects/general/bridge_tilt_2.h"
+#include "game/objects/general/clock_chimes.h"
 #include "game/objects/general/detonator.h"
 #include "game/objects/general/ding_dong.h"
 #include "game/objects/general/door.h"
@@ -1010,6 +1011,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041D250, LaraAlarm_Control);
     INJECT(enable, 0x0041D290, AlarmSound_Control);
     INJECT(enable, 0x0041D300, BirdTweeter_Control);
+    INJECT(enable, 0x0041D360, DoChimeSound);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);

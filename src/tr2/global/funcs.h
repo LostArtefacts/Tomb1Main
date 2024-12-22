@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define DoChimeSound ((void __cdecl (*)(ITEM *item))0x0041D360)
 #define ClockChimes_Control ((void __cdecl (*)(int16_t item_num))0x0041D3C0)
 #define SphereOfDoom_Collision ((void __cdecl (*)(int16_t item_num, ITEM *lara_item, COLL_INFO *coll))0x0041D430)
 #define SphereOfDoom_Control ((void __cdecl (*)(int16_t item_num))0x0041D560)

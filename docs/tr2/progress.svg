@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.38% (1199)</tspan> · <tspan class="known">1.21% (15)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.46% (1200)</tspan> · <tspan class="known">1.13% (14)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="719.98" height="6" x="0" y="0" class="decompiled"/>
-<rect width="9.01" height="6" x="719.98" y="0" class="known"/>
+<rect width="720.58" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.41" height="6" x="720.58" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -351,7 +351,7 @@
 <rect width="12" height="12" x="330" y="75" class="decompiled"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="75" class="decompiled"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="360" y="75" class="decompiled"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="375" y="75" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
+<rect width="12" height="12" x="375" y="75" class="decompiled"><title>void __cdecl DoChimeSound(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="390" y="75" class="known"><title>void __cdecl ClockChimes_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="405" y="75" class="known"><title>void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="420" y="75" class="known"><title>void __cdecl SphereOfDoom_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.92%</tspan> · <tspan class="known">0.75%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.95%</tspan> · <tspan class="known">0.72%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="738.96" height="6" x="0" y="0" class="decompiled"/>
-<rect width="5.60" height="6" x="738.96" y="0" class="known"/>
+<rect width="739.16" height="6" x="0" y="0" class="decompiled"/>
+<rect width="5.40" height="6" x="739.16" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2084,7 +2084,7 @@
 <rect width="5.57" height="5.71" x="607.59" y="369.29" class="decompiled"><title>void __cdecl WinInReadKeyboard(LPVOID lpInputData);</title></rect>
 <rect width="5.45" height="5.73" x="616.17" y="244.16" class="decompiled"><title>int32_t __cdecl Demo_Control(int32_t level_num);</title></rect>
 <rect width="5.45" height="5.73" x="624.62" y="244.16" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
-<rect width="5.45" height="5.73" x="633.07" y="244.16" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
+<rect width="5.45" height="5.73" x="633.07" y="244.16" class="decompiled"><title>void __cdecl DoChimeSound(const ITEM *item);</title></rect>
 <rect width="5.45" height="5.73" x="641.53" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_Splat(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.45" height="5.73" x="649.98" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_ClimbRight(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.45" height="5.73" x="658.43" y="244.16" class="decompiled"><title>void __cdecl HWR_ResetZBuffer(void);</title></rect>
