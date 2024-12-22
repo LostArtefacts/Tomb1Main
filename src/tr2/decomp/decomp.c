@@ -675,3 +675,35 @@ int32_t __cdecl GetCollisionAnim(const ITEM *const vehicle, XYZ_32 *const moved)
 
     return 0;
 }
+
+void __cdecl InitialiseFinalLevel(void)
+{
+    g_FinalBossActive = 0;
+    g_FinalBossCount = 0;
+    g_FinalLevelCount = 0;
+
+    for (int32_t item_num = 0; item_num < g_LevelItemCount; item_num++) {
+        const ITEM *const item = Item_Get(item_num);
+
+        switch (item->object_id) {
+        case O_DOG:
+        case O_CULT_1:
+        case O_WORKER_3:
+            g_FinalLevelCount++;
+            break;
+
+        case O_CULT_3:
+            g_FinalBossItem[g_FinalBossCount] = item_num;
+            g_FinalBossCount++;
+            if (item->status == IS_ACTIVE) {
+                g_FinalBossActive = 1;
+            } else if (item->status == IS_DEACTIVATED) {
+                g_FinalBossActive = 2;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+}

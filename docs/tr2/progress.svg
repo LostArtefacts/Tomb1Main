@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.95% (1206)</tspan> · <tspan class="known">0.64% (8)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.03% (1207)</tspan> · <tspan class="known">0.56% (7)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="724.18" height="6" x="0" y="0" class="decompiled"/>
-<rect width="4.80" height="6" x="724.18" y="0" class="known"/>
+<rect width="724.78" height="6" x="0" y="0" class="decompiled"/>
+<rect width="4.20" height="6" x="724.78" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -693,7 +693,7 @@
 <rect width="12" height="12" x="210" y="180" class="decompiled"><title>void __cdecl Object_DrawUnclippedItem(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="225" y="180" class="decompiled"><title>void __cdecl Earthquake_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="240" y="180" class="decompiled"><title>void __cdecl FinalCutscene_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="255" y="180" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
+<rect width="12" height="12" x="255" y="180" class="decompiled"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="12" height="12" x="270" y="180" class="decompiled"><title>void __cdecl FinalLevelCounter_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="285" y="180" class="known"><title>void __cdecl MiniCopterControl(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="300" y="180" class="decompiled"><title>void __cdecl DyingMonk_Initialise(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.31%</tspan> · <tspan class="known">0.37%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.35%</tspan> · <tspan class="known">0.32%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="741.83" height="6" x="0" y="0" class="decompiled"/>
-<rect width="2.73" height="6" x="741.83" y="0" class="known"/>
+<rect width="742.17" height="6" x="0" y="0" class="decompiled"/>
+<rect width="2.39" height="6" x="742.17" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1867,7 +1867,7 @@
 <rect width="8.25" height="8.72" x="683.27" y="173.53" class="decompiled"><title>void __cdecl setup_screen_size(void);</title></rect>
 <rect width="8.11" height="8.72" x="694.52" y="173.53" class="decompiled"><title>void __cdecl Output_DrawScreenSprite(int32_t sx, int32_t sy, int32_t sz, int32_t scale_h, int32_t scale_v, int16_t sprite_idx, int16_t shade, uint16_t flags);</title></rect>
 <rect width="8.11" height="8.72" x="705.63" y="173.53" class="decompiled"><title>int32_t __cdecl Flare_DoLight(XYZ_32 *pos, int32_t flare_age);</title></rect>
-<rect width="8.11" height="8.72" x="716.74" y="173.53" class="known"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
+<rect width="8.11" height="8.72" x="716.74" y="173.53" class="decompiled"><title>void __cdecl InitialiseFinalLevel(void);</title></rect>
 <rect width="8.11" height="8.72" x="727.85" y="173.53" class="decompiled"><title>void __cdecl CreateClipper(void);</title></rect>
 <rect width="8.04" height="8.72" x="738.96" y="173.53" class="decompiled"><title>void __cdecl Item_NewRoom(int16_t item_num, int16_t room_num);</title></rect>
 <rect width="8.15" height="8.61" x="545.57" y="185.25" class="decompiled"><title>bool __cdecl S_Audio_Sample_Init(void);</title></rect>

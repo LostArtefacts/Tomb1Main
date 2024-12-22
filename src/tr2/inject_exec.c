@@ -227,6 +227,7 @@ static void M_DecompGeneral(const bool enable)
     INJECT(enable, 0x0044D610, S_InitialiseSystem);
     INJECT(enable, 0x0044E520, WinMain);
     INJECT(enable, 0x00454C50, TitleSequence);
+    INJECT(enable, 0x00434330, InitialiseFinalLevel);
 }
 
 static void M_DecompSkidoo(const bool enable)
