@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define SnowSprite_Control ((void __cdecl (*)(int16_t fx_num))0x0041CC90)
 #define HotLiquid_Control ((void __cdecl (*)(int16_t fx_num))0x0041CD20)
 #define Waterfall_Control ((void __cdecl (*)(int16_t fx_num))0x0041CE00)
 #define FX_FinishLevel ((void __cdecl (*)(ITEM *item))0x0041CF40)
