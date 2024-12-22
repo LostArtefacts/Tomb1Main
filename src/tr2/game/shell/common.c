@@ -448,7 +448,6 @@ void __cdecl Shell_Main(void)
                 gf_option = g_GameFlow.title_replace;
             } else {
                 gf_option = TitleSequence();
-                g_GF_StartGame = 1;
             }
             break;
 

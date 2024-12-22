@@ -384,7 +384,7 @@ int32_t __cdecl GF_DoLevelSequence(
 int32_t __cdecl GF_InterpretSequence(
     const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type, const int32_t seq_type)
 {
-    g_GF_NoFloor = false;
+    g_GF_NoFloor = 0;
     g_GF_DeadlyWater = false;
     g_GF_SunsetEnabled = false;
     g_GF_LaraStartAnim = 0;
@@ -439,7 +439,6 @@ int32_t __cdecl GF_InterpretSequence(
                     return GFD_EXIT_TO_TITLE;
                 }
                 dir = Game_Start(ptr[1], type);
-                g_GF_StartGame = 0;
                 if (type == GFL_SAVED) {
                     type = GFL_NORMAL;
                 }

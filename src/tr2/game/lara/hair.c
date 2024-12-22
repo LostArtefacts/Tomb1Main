@@ -17,24 +17,29 @@ typedef struct __PACKING {
     XYZ_16 rot;
 } HAIR_SEGMENT;
 
+static bool m_IsFirstHair;
+static XYZ_32 m_HairVelocity[HAIR_SEGMENTS + 1];
+static HAIR_SEGMENT m_HairSegments[HAIR_SEGMENTS + 1];
+static int32_t m_HairWind;
+
 void __cdecl Lara_Hair_Initialise(void)
 {
     const int32_t *const bone_base =
         &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
-    g_IsFirstHair = 1;
-    g_HairSegments[0].rot.x = -PHD_90;
-    g_HairSegments[0].rot.y = 0;
+    m_IsFirstHair = true;
+    m_HairSegments[0].rot.x = -PHD_90;
+    m_HairSegments[0].rot.y = 0;
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
         const int32_t *bone = bone_base + 4 * i;
-        g_HairSegments[i + 1].pos.x = bone[1];
-        g_HairSegments[i + 1].pos.y = bone[2];
-        g_HairSegments[i + 1].pos.z = bone[3];
-        g_HairSegments[i + 1].rot.x = -PHD_90;
-        g_HairSegments[i + 1].rot.y = 0;
-        g_HairSegments[i + 1].rot.z = 0;
-        g_HairVelocity[i].x = 0;
-        g_HairVelocity[i].y = 0;
-        g_HairVelocity[i].z = 0;
+        m_HairSegments[i + 1].pos.x = bone[1];
+        m_HairSegments[i + 1].pos.y = bone[2];
+        m_HairSegments[i + 1].pos.z = bone[3];
+        m_HairSegments[i + 1].rot.x = -PHD_90;
+        m_HairSegments[i + 1].rot.y = 0;
+        m_HairSegments[i + 1].rot.z = 0;
+        m_HairVelocity[i].x = 0;
+        m_HairVelocity[i].y = 0;
+        m_HairVelocity[i].z = 0;
     }
 }
 
@@ -157,16 +162,16 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
 
     bone = &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
 
-    HAIR_SEGMENT *const fs = &g_HairSegments[0];
+    HAIR_SEGMENT *const fs = &m_HairSegments[0];
     fs->pos.x = pos.x;
     fs->pos.y = pos.y;
     fs->pos.z = pos.z;
 
-    if (g_IsFirstHair) {
-        g_IsFirstHair = false;
+    if (m_IsFirstHair) {
+        m_IsFirstHair = false;
         for (int32_t i = 1; i <= HAIR_SEGMENTS; i++, bone += 4) {
-            const HAIR_SEGMENT *const ps = &g_HairSegments[i - 1];
-            HAIR_SEGMENT *const s = &g_HairSegments[i];
+            const HAIR_SEGMENT *const ps = &m_HairSegments[i - 1];
+            HAIR_SEGMENT *const s = &m_HairSegments[i];
 
             Matrix_PushUnit();
             g_MatrixPtr->_03 = ps->pos.x << W2V_SHIFT;
@@ -181,7 +186,7 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
 
             Matrix_Pop();
         }
-        g_HairWind = 0;
+        m_HairWind = 0;
         return;
     }
 
@@ -207,26 +212,26 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
     if (g_Rooms[room_num].flags & RF_NOT_INSIDE) {
         const int32_t random = Random_GetDraw() & 7;
         if (random != 0) {
-            g_HairWind += random - 4;
-            if (g_HairWind < 0) {
-                g_HairWind = 0;
-            } else if (g_HairWind >= 8) {
-                g_HairWind--;
+            m_HairWind += random - 4;
+            if (m_HairWind < 0) {
+                m_HairWind = 0;
+            } else if (m_HairWind >= 8) {
+                m_HairWind--;
             }
         }
     } else {
-        g_HairWind = 0;
+        m_HairWind = 0;
     }
 
     for (int32_t i = 1; i <= HAIR_SEGMENTS; i++, bone += 4) {
-        HAIR_SEGMENT *const ps = &g_HairSegments[i - 1];
-        HAIR_SEGMENT *const s = &g_HairSegments[i];
+        HAIR_SEGMENT *const ps = &m_HairSegments[i - 1];
+        HAIR_SEGMENT *const s = &m_HairSegments[i];
 
-        g_HairVelocity[0] = s->pos;
+        m_HairVelocity[0] = s->pos;
 
-        s->pos.x += g_HairVelocity[i].x * 3 / 4;
-        s->pos.y += g_HairVelocity[i].y * 3 / 4;
-        s->pos.z += g_HairVelocity[i].z * 3 / 4;
+        s->pos.x += m_HairVelocity[i].x * 3 / 4;
+        s->pos.y += m_HairVelocity[i].y * 3 / 4;
+        s->pos.z += m_HairVelocity[i].z * 3 / 4;
 
         switch (g_Lara.water_status) {
         case LWS_ABOVE_WATER:
@@ -235,7 +240,7 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
                 s->pos.y = water_height;
             } else {
                 CLAMPG(s->pos.y, height);
-                s->pos.z += g_HairWind;
+                s->pos.z += m_HairWind;
             }
             break;
 
@@ -284,9 +289,9 @@ void __cdecl Lara_Hair_Control(const bool in_cutscene)
         s->pos.y = g_MatrixPtr->_13 >> W2V_SHIFT;
         s->pos.z = g_MatrixPtr->_23 >> W2V_SHIFT;
 
-        g_HairVelocity[i].x = s->pos.x - g_HairVelocity[0].x;
-        g_HairVelocity[i].y = s->pos.y - g_HairVelocity[0].y;
-        g_HairVelocity[i].z = s->pos.z - g_HairVelocity[0].z;
+        m_HairVelocity[i].x = s->pos.x - m_HairVelocity[0].x;
+        m_HairVelocity[i].y = s->pos.y - m_HairVelocity[0].y;
+        m_HairVelocity[i].z = s->pos.z - m_HairVelocity[0].z;
 
         Matrix_Pop();
     }
@@ -296,7 +301,7 @@ void __cdecl Lara_Hair_Draw(void)
 {
     int16_t **mesh_ptr = &g_Meshes[g_Objects[O_LARA_HAIR].mesh_idx];
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
-        const HAIR_SEGMENT *const s = &g_HairSegments[i];
+        const HAIR_SEGMENT *const s = &m_HairSegments[i];
         Matrix_Push();
         Matrix_TranslateAbs(s->pos.x, s->pos.y, s->pos.z);
         Matrix_RotY(s->rot.y);

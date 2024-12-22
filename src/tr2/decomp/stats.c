@@ -81,8 +81,8 @@ void __cdecl ShowGymStatsText(const char *const time_str, const int32_t type)
     g_StatsRequester.pix_width = 304;
     g_StatsRequester.x_pos = 0;
     g_StatsRequester.z_pos = 0;
-    g_StatsRequester.pitem_strings1 = g_ValidLevelStrings1;
-    g_StatsRequester.pitem_strings2 = g_ValidLevelStrings2;
+    g_StatsRequester.pitem_strings1 = (char *)g_ValidLevelStrings1;
+    g_StatsRequester.pitem_strings2 = (char *)g_ValidLevelStrings2;
     g_StatsRequester.item_string_len = MAX_LEVEL_NAME_SIZE;
 
     Requester_Init(&g_StatsRequester);
@@ -142,8 +142,8 @@ void __cdecl ShowStatsText(const char *const time_str, const int32_t type)
     g_StatsRequester.pix_width = 304;
     g_StatsRequester.x_pos = 0;
     g_StatsRequester.z_pos = 0;
-    g_StatsRequester.pitem_strings1 = g_ValidLevelStrings1;
-    g_StatsRequester.pitem_strings2 = g_ValidLevelStrings2;
+    g_StatsRequester.pitem_strings1 = (char *)g_ValidLevelStrings1;
+    g_StatsRequester.pitem_strings2 = (char *)g_ValidLevelStrings2;
     g_StatsRequester.item_string_len = MAX_LEVEL_NAME_SIZE;
 
     Requester_Init(&g_StatsRequester);
@@ -239,8 +239,8 @@ void __cdecl ShowEndStatsText(void)
     g_StatsRequester.pix_width = 304;
     g_StatsRequester.x_pos = 0;
     g_StatsRequester.z_pos = 0;
-    g_StatsRequester.pitem_strings1 = g_ValidLevelStrings1;
-    g_StatsRequester.pitem_strings2 = g_ValidLevelStrings2;
+    g_StatsRequester.pitem_strings1 = (char *)g_ValidLevelStrings1;
+    g_StatsRequester.pitem_strings2 = (char *)g_ValidLevelStrings2;
     g_StatsRequester.item_string_len = MAX_LEVEL_NAME_SIZE;
 
     Requester_Init(&g_StatsRequester);

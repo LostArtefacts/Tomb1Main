@@ -12,8 +12,11 @@
 #include <stdint.h>
 
 MATRIX *g_MatrixPtr = NULL;
+MATRIX *g_IMMatrixPtr = NULL;
+MATRIX g_W2VMatrix;
 
 static MATRIX m_MatrixStack[40] = {};
+static MATRIX m_IMMatrixStack[256] = {};
 
 void Matrix_ResetStack(void)
 {
@@ -382,7 +385,7 @@ void __cdecl Matrix_InitInterpolate(int32_t frac, int32_t rate)
 {
     g_IMRate = rate;
     g_IMFrac = frac;
-    g_IMMatrixPtr = g_IMMatrixStack;
+    g_IMMatrixPtr = m_IMMatrixStack;
     *g_IMMatrixPtr = *g_MatrixPtr;
 }
 

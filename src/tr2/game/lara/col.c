@@ -211,6 +211,10 @@ void __cdecl Lara_SurfaceCollision(ITEM *const item, COLL_INFO *const coll)
     Lara_TestWaterStepOut(item, coll);
 }
 
+void Lara_Col_Empty(ITEM *item, COLL_INFO *coll)
+{
+}
+
 void __cdecl Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 {
     item->gravity = 0;

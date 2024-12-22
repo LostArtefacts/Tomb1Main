@@ -7,6 +7,7 @@
 // TODO: make static
 void __cdecl Lara_SwimTurn(ITEM *item);
 
+void Lara_State_Empty(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_State_Walk(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_State_Run(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_State_Stop(ITEM *item, COLL_INFO *coll);

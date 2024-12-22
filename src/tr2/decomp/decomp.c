@@ -63,7 +63,6 @@ int32_t __stdcall WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine,
     int32_t nShowCmd)
 {
-    g_GameModule = hInstance;
     g_CmdLine = lpCmdLine;
     HWND game_window = WinVidFindGameWindow();
     if (game_window) {

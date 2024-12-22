@@ -9,6 +9,7 @@ bool __cdecl Lara_TestWaterClimbOut(ITEM *item, const COLL_INFO *coll);
 bool __cdecl Lara_TestWaterStepOut(ITEM *item, const COLL_INFO *coll);
 void __cdecl Lara_SurfaceCollision(ITEM *item, COLL_INFO *coll);
 
+void Lara_Col_Empty(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_Col_Walk(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_Col_Run(ITEM *item, COLL_INFO *coll);
 void __cdecl Lara_Col_Stop(ITEM *item, COLL_INFO *coll);

@@ -34,6 +34,10 @@ void __cdecl Lara_SwimTurn(ITEM *const item)
     }
 }
 
+void Lara_State_Empty(ITEM *item, COLL_INFO *coll)
+{
+}
+
 void __cdecl Lara_State_Walk(ITEM *item, COLL_INFO *coll)
 {
     if (item->hit_points <= 0) {
