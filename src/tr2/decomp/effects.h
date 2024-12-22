@@ -44,7 +44,7 @@ void __cdecl DoLotsOfBlood(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction,
     int16_t room_num, int32_t num);
 
-void __cdecl Richochet(const GAME_VECTOR *pos);
+void __cdecl Ricochet(const GAME_VECTOR *pos);
 
 void __cdecl FX_FinishLevel(ITEM *item);
 void __cdecl FX_Turn180(ITEM *item);

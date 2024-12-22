@@ -519,7 +519,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added support for animated room sprites, which also restores intended behavior in, for example, The Cistern room 0
 - added skybox support, with a default option provided for Lost Valley, Colosseum and Obelisk of Khamoon; custom level builders can use object slot `184`
 - added reflections of Midas Hand death animation and savegame crystals
-- changed the Scion in The Great Pyramid from spawning blood when hit to a richochet effect
+- changed the Scion in The Great Pyramid from spawning blood when hit to a ricochet effect
 - fixed thin black lines between polygons
 - fixed black screen flashing when navigating the inventory
 - fixed detail levels text flashing with any option change

@@ -272,7 +272,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x00417A10, Effect_MissileFlame);
     INJECT(enable, 0x0041C5D0, DoBloodSplat);
     INJECT(enable, 0x0041C630, DoLotsOfBlood);
-    INJECT(enable, 0x0041C7F0, Richochet);
+    INJECT(enable, 0x0041C7F0, Ricochet);
     INJECT(enable, 0x0041CA90, Splash);
     INJECT(enable, 0x0041CF40, FX_FinishLevel);
     INJECT(enable, 0x0041CF50, FX_Turn180);
@@ -1011,7 +1011,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041C2E0, Eel_Control);
     INJECT(enable, 0x0041C6E0, Blood_Control);
     INJECT(enable, 0x0041C770, Explosion_Control);
-    INJECT(enable, 0x0041C870, Richochet_Control);
+    INJECT(enable, 0x0041C870, Ricochet_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0041CBE0, WaterSprite_Control);

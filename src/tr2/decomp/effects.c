@@ -309,7 +309,7 @@ int16_t __cdecl Effect_GunMiss(
         },
         .room_num = g_LaraItem->room_num,
     };
-    Richochet(&pos);
+    Ricochet(&pos);
     return Effect_GunShot(x, y, z, speed, y_rot, room_num);
 }
 
@@ -370,7 +370,7 @@ void __cdecl DoLotsOfBlood(
     }
 }
 
-void __cdecl Richochet(const GAME_VECTOR *const pos)
+void __cdecl Ricochet(const GAME_VECTOR *const pos)
 {
     const int16_t fx_num = Effect_Create(pos->room_num);
     if (fx_num != NO_ITEM) {

@@ -270,7 +270,7 @@ int32_t __cdecl Gun_FireWeapon(
         const int16_t item_to_smash = LOS_CheckSmashable(&start, &hit_pos);
         if (item_to_smash == NO_ITEM) {
             if (!object_on_los) {
-                Richochet(&hit_pos);
+                Ricochet(&hit_pos);
             }
             return -1;
         } else {
