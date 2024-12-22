@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.49% (1163)</tspan> · <tspan class="known">4.10% (51)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.57% (1164)</tspan> · <tspan class="known">4.02% (50)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="698.36" height="6" x="0" y="0" class="decompiled"/>
-<rect width="30.62" height="6" x="698.36" y="0" class="known"/>
+<rect width="698.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="30.02" height="6" x="698.96" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -324,7 +324,7 @@
 <rect width="12" height="12" x="675" y="60" class="decompiled"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="690" y="60" class="decompiled"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="705" y="60" class="decompiled"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
-<rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="720" y="60" class="decompiled"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
 <rect width="12" height="12" x="15" y="75" class="decompiled"><title>void __cdecl Bubble_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.15%</tspan> · <tspan class="known">1.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.17%</tspan> · <tspan class="known">1.51%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="733.20" height="6" x="0" y="0" class="decompiled"/>
-<rect width="11.36" height="6" x="733.20" y="0" class="known"/>
+<rect width="733.30" height="6" x="0" y="0" class="decompiled"/>
+<rect width="11.26" height="6" x="733.30" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2308,7 +2308,7 @@
 <rect width="3.57" height="3.19" x="668.09" y="371.81" class="decompiled"><title>int32_t __cdecl Music_GetRealTrack(int32_t track);</title></rect>
 <rect width="3.36" height="3.39" x="674.66" y="302.76" class="decompiled"><title>void __cdecl S_Audio_Sample_AdjustTrackPitch(int32_t track_id, int32_t pitch);</title></rect>
 <rect width="3.36" height="3.39" x="674.66" y="309.15" class="decompiled"><title>void __cdecl Output_CalculateStaticLight(int16_t adder);</title></rect>
-<rect width="3.36" height="3.26" x="674.66" y="315.54" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
+<rect width="3.36" height="3.26" x="674.66" y="315.54" class="decompiled"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="321.80" class="decompiled"><title>void __cdecl Effect_InitialiseArray(void);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="328.06" class="decompiled"><title>void __cdecl Lara_State_PushBlock(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="3.36" height="3.26" x="674.66" y="334.32" class="decompiled"><title>void __cdecl Lara_State_Pickup(ITEM *item, COLL_INFO *coll);</title></rect>

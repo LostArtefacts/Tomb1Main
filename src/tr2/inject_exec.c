@@ -80,6 +80,7 @@
 #include "game/objects/effects/explosion.h"
 #include "game/objects/effects/flame.h"
 #include "game/objects/effects/missile_common.h"
+#include "game/objects/effects/ricochet.h"
 #include "game/objects/effects/splash.h"
 #include "game/objects/effects/twinkle.h"
 #include "game/objects/general/bell.h"
@@ -963,6 +964,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041C2E0, Eel_Control);
     INJECT(enable, 0x0041C6E0, Blood_Control);
     INJECT(enable, 0x0041C770, Explosion_Control);
+    INJECT(enable, 0x0041C870, Richochet_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
