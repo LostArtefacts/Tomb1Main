@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.06% (1195)</tspan> · <tspan class="known">1.53% (19)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">96.14% (1196)</tspan> · <tspan class="known">1.45% (18)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="717.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="11.41" height="6" x="717.58" y="0" class="known"/>
+<rect width="718.18" height="6" x="0" y="0" class="decompiled"/>
+<rect width="10.81" height="6" x="718.18" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -347,7 +347,7 @@
 <rect width="12" height="12" x="270" y="75" class="decompiled"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
 <rect width="12" height="12" x="285" y="75" class="decompiled"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
 <rect width="12" height="12" x="300" y="75" class="decompiled"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
-<rect width="12" height="12" x="315" y="75" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="315" y="75" class="decompiled"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="330" y="75" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="360" y="75" class="known"><title>void __cdecl BirdTweeter_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.83%</tspan> · <tspan class="known">0.84%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.85%</tspan> · <tspan class="known">0.82%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="738.28" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.28" height="6" x="738.28" y="0" class="known"/>
+<rect width="738.41" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.15" height="6" x="738.41" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2195,7 +2195,7 @@
 <rect width="4.37" height="4.20" x="684.82" y="268.48" class="decompiled"><title>bool __cdecl WinVidInit(void);</title></rect>
 <rect width="4.37" height="4.20" x="692.19" y="268.48" class="decompiled"><title>void __cdecl Option_Controls_DefaultConflict(void);</title></rect>
 <rect width="4.37" height="4.20" x="699.56" y="268.48" class="decompiled"><title>void __cdecl UpdateTicks(void);</title></rect>
-<rect width="4.26" height="4.20" x="706.93" y="268.48" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
+<rect width="4.26" height="4.20" x="706.93" y="268.48" class="decompiled"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="4.26" height="4.20" x="714.19" y="268.48" class="decompiled"><title>void __cdecl Trapdoor_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.14" height="4.20" x="721.44" y="268.48" class="decompiled"><title>void __cdecl Flare_Ready(void);</title></rect>
 <rect width="4.14" height="4.20" x="728.58" y="268.48" class="decompiled"><title>void __cdecl FallingBlock_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
