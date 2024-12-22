@@ -487,3 +487,9 @@ void __cdecl FX_Statue(ITEM *const item)
     Sound_Effect(SFX_STONE_DOOR_SLIDE, NULL, SPM_NORMAL);
     g_FlipEffect = -1;
 }
+
+void __cdecl FX_SetChange(ITEM *const item)
+{
+    Sound_Effect(SFX_STAGE_BACKDROP, NULL, SPM_NORMAL);
+    g_FlipEffect = -1;
+}

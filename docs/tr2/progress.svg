@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.86% (1180)</tspan> · <tspan class="known">2.73% (34)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.94% (1181)</tspan> · <tspan class="known">2.65% (33)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="708.57" height="6" x="0" y="0" class="decompiled"/>
-<rect width="20.42" height="6" x="708.57" y="0" class="known"/>
+<rect width="709.17" height="6" x="0" y="0" class="decompiled"/>
+<rect width="19.82" height="6" x="709.17" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -346,7 +346,7 @@
 <rect width="12" height="12" x="255" y="75" class="decompiled"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="75" class="decompiled"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
 <rect width="12" height="12" x="285" y="75" class="decompiled"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
-<rect width="12" height="12" x="300" y="75" class="known"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
+<rect width="12" height="12" x="300" y="75" class="decompiled"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
 <rect width="12" height="12" x="315" y="75" class="known"><title>void __cdecl DingDong_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="330" y="75" class="known"><title>void __cdecl LaraAlarm_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="75" class="known"><title>void __cdecl AlarmSound_Control(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.60%</tspan> · <tspan class="known">1.08%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.60%</tspan> · <tspan class="known">1.07%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.51" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.05" height="6" x="736.51" y="0" class="known"/>
+<rect width="736.57" height="6" x="0" y="0" class="decompiled"/>
+<rect width="7.99" height="6" x="736.57" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2427,7 +2427,7 @@
 <rect width="1.59" height="2.06" x="727.04" y="331.27" class="decompiled"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="731.63" y="331.27" class="decompiled"><title>void __cdecl FX_Curtain(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="736.22" y="331.27" class="decompiled"><title>void __cdecl FX_Statue(ITEM *item);</title></rect>
-<rect width="1.59" height="2.06" x="740.81" y="331.27" class="known"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
+<rect width="1.59" height="2.06" x="740.81" y="331.27" class="decompiled"><title>void __cdecl FX_SetChange(ITEM *item);</title></rect>
 <rect width="1.59" height="2.06" x="745.41" y="331.27" class="decompiled"><title>void __cdecl Lara_State_Reach(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="336.33" class="decompiled"><title>bool __cdecl S_Audio_Sample_DSoundCreate(GUID *guid);</title></rect>
 <rect width="1.96" height="1.69" x="708.01" y="341.02" class="decompiled"><title>void __cdecl S_DontDisplayPicture(void);</title></rect>
