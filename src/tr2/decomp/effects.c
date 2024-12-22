@@ -14,6 +14,8 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/utils.h>
+
 #define BARTOLI_LIGHT_RANGE (5 * WALL_L) // = 5120
 
 int32_t __cdecl Effect_ExplodingDeath(
@@ -387,4 +389,20 @@ void __cdecl FX_Turn180(ITEM *const item)
 {
     item->rot.x = -item->rot.x;
     item->rot.y += PHD_180;
+}
+
+void __cdecl FX_FloorShake(ITEM *const item)
+{
+    const int32_t max_dist = WALL_L * 16; // = 0x4000
+    const int32_t max_bounce = 100;
+
+    const int32_t dx = item->pos.x - g_Camera.pos.pos.x;
+    const int32_t dy = item->pos.y - g_Camera.pos.pos.y;
+    const int32_t dz = item->pos.z - g_Camera.pos.pos.z;
+    const int32_t dist = SQUARE(dz) + SQUARE(dy) + SQUARE(dx);
+
+    if (ABS(dx) < max_dist && ABS(dy) < max_dist && ABS(dz) < max_dist) {
+        g_Camera.bounce =
+            max_bounce * (SQUARE(WALL_L) - dist / 256) / SQUARE(WALL_L);
+    }
 }

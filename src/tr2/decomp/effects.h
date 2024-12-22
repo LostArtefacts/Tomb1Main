@@ -48,3 +48,4 @@ void __cdecl Richochet(const GAME_VECTOR *pos);
 
 void __cdecl FX_FinishLevel(ITEM *item);
 void __cdecl FX_Turn180(ITEM *item);
+void __cdecl FX_FloorShake(ITEM *item);

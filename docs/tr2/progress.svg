@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.05% (1170)</tspan> · <tspan class="known">3.54% (44)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.13% (1171)</tspan> · <tspan class="known">3.46% (43)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="702.56" height="6" x="0" y="0" class="decompiled"/>
-<rect width="26.42" height="6" x="702.56" y="0" class="known"/>
+<rect width="703.16" height="6" x="0" y="0" class="decompiled"/>
+<rect width="25.82" height="6" x="703.16" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -336,7 +336,7 @@
 <rect width="12" height="12" x="105" y="75" class="decompiled"><title>void __cdecl Waterfall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="120" y="75" class="decompiled"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="decompiled"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
-<rect width="12" height="12" x="150" y="75" class="known"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
+<rect width="12" height="12" x="150" y="75" class="decompiled"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
 <rect width="12" height="12" x="165" y="75" class="known"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="12" height="12" x="180" y="75" class="known"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
 <rect width="12" height="12" x="195" y="75" class="known"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.43%</tspan> · <tspan class="known">1.25%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.47%</tspan> · <tspan class="known">1.20%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="735.24" height="6" x="0" y="0" class="decompiled"/>
-<rect width="9.32" height="6" x="735.24" y="0" class="known"/>
+<rect width="735.57" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.99" height="6" x="735.57" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1886,7 +1886,7 @@
 <rect width="8.15" height="8.16" x="545.57" y="333.35" class="decompiled"><title>void __cdecl Output_DrawScreenSprite2D(int32_t sx, int32_t sy, int32_t sz, int32_t scale_h, int32_t scale_v, int16_t sprite_idx, int16_t shade, uint16_t flags);</title></rect>
 <rect width="8.15" height="8.16" x="545.57" y="344.51" class="decompiled"><title>void __cdecl Lara_Control_Cutscene(int16_t item_num);</title></rect>
 <rect width="8.15" height="8.16" x="545.57" y="355.67" class="decompiled"><title>void __cdecl Room_RemoveFlipItems(ROOM *r);</title></rect>
-<rect width="8.15" height="8.16" x="545.57" y="366.84" class="known"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
+<rect width="8.15" height="8.16" x="545.57" y="366.84" class="decompiled"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="185.25" class="decompiled"><title>void __cdecl Lara_State_Zipline(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="196.72" class="decompiled"><title>void __cdecl Lara_Col_Compress( ITEM *item, COLL_INFO *coll );</title></rect>
 <rect width="7.86" height="8.46" x="556.72" y="208.18" class="decompiled"><title>void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);</title></rect>

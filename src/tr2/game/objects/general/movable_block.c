@@ -1,5 +1,6 @@
 #include "game/objects/general/movable_block.h"
 
+#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -8,7 +9,6 @@
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/utils.h"
 #include "global/vars.h"
 
