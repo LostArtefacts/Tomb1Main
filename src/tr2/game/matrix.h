@@ -5,10 +5,29 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef struct {
+    int32_t _00;
+    int32_t _01;
+    int32_t _02;
+    int32_t _03;
+    int32_t _10;
+    int32_t _11;
+    int32_t _12;
+    int32_t _13;
+    int32_t _20;
+    int32_t _21;
+    int32_t _22;
+    int32_t _23;
+} MATRIX;
+
+extern MATRIX *g_MatrixPtr;
+
+void Matrix_ResetStack(void);
+void __cdecl Matrix_GenerateW2V(const PHD_3DPOS *viewpos);
+
 void __cdecl Matrix_Push(void);
 void __cdecl Matrix_PushUnit(void);
 void __cdecl Matrix_Pop(void);
-void __cdecl Matrix_GenerateW2V(const PHD_3DPOS *viewpos);
 void __cdecl Matrix_LookAt(
     int32_t xsrc, int32_t ysrc, int32_t zsrc, int32_t xtar, int32_t ytar,
     int32_t ztar, int16_t roll);

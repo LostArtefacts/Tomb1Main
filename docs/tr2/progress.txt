@@ -20,7 +20,7 @@ typedef struct __unaligned { // decompiled
     int16_t z;
 } XYZ_16;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int32_t _00;
     int32_t _01;
     int32_t _02;
@@ -4384,7 +4384,7 @@ typedef enum {
 0x004B2A1C  -       int32_t g_PhdWinMaxY;
 0x004B2A20  +       void (*__cdecl g_Output_InsertSprite)(int32_t z, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t sprite_idx, int16_t shade);
 0x004B2A24  -       float g_FltNearZ;
-0x004B2A28  -       MATRIX *g_MatrixPtr;
+0x004B2A28  +       MATRIX *g_MatrixPtr;
 0x004B2A2C  +       const int16_t *(*__cdecl g_Output_DrawObjectGT3)(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
 0x004B2A30  +       const int16_t *(*__cdecl g_Output_DrawObjectGT4)(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
 0x004B2A38  -       int32_t g_RandomTable[32];
@@ -4399,7 +4399,7 @@ typedef enum {
 0x004BCB08  +       const int16_t *(*__cdecl g_Output_DrawObjectG4)(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
 0x004BCB10  -       int16_t g_ShadesTable[32];
 0x004BCB50  +       const int16_t *(*__cdecl g_Output_DrawObjectG3)(const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
-0x004BCB58  -       MATRIX g_MatrixStack[];
+0x004BCB58  +       MATRIX g_MatrixStack[];
 0x004BD2D8  -       DEPTHQ_ENTRY g_DepthQTable[32];
 0x004BF3D8  +       int32_t g_PhdScreenWidth;
 0x004BF3DC  -       int32_t g_LsDivider;

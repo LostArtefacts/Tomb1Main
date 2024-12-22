@@ -16,21 +16,6 @@
 #pragma pack(push, 1)
 
 // clang-format off
-typedef struct __unaligned {
-    int32_t _00;
-    int32_t _01;
-    int32_t _02;
-    int32_t _03;
-    int32_t _10;
-    int32_t _11;
-    int32_t _12;
-    int32_t _13;
-    int32_t _20;
-    int32_t _21;
-    int32_t _22;
-    int32_t _23;
-} MATRIX;
-
 typedef enum {
     RM_UNKNOWN  = 0,
     RM_SOFTWARE = 1,
