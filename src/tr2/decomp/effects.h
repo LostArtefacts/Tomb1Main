@@ -72,3 +72,4 @@ void __cdecl FX_DynamicLightOff(ITEM *item);
 void __cdecl FX_ResetHair(ITEM *item);
 void __cdecl FX_AssaultStop(ITEM *item);
 void __cdecl FX_AssaultReset(ITEM *item);
+void __cdecl FX_AssaultFinished(ITEM *item);

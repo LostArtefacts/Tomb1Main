@@ -1,10 +1,12 @@
 #include "decomp/effects.h"
 
+#include "decomp/stats.h"
 #include "game/collide.h"
 #include "game/effects.h"
 #include "game/lara/hair.h"
 #include "game/math.h"
 #include "game/matrix.h"
+#include "game/music.h"
 #include "game/objects/effects/missile_common.h"
 #include "game/output.h"
 #include "game/random.h"
@@ -595,5 +597,41 @@ void __cdecl FX_AssaultReset(ITEM *const item)
 {
     g_IsAssaultTimerActive = false;
     g_IsAssaultTimerDisplay = false;
+    g_FlipEffect = -1;
+}
+
+void __cdecl FX_AssaultFinished(ITEM *const item)
+{
+    if (g_IsAssaultTimerActive) {
+        AddAssaultTime(g_SaveGame.statistics.timer);
+
+        if ((int32_t)g_AssaultBestTime < 0) {
+            if (g_SaveGame.statistics.timer < 100 * FRAMES_PER_SECOND) {
+                // "Gosh! That was my best time yet!"
+                Music_Legacy_Play(MX_GYM_HINT_15, false);
+                g_AssaultBestTime = g_SaveGame.statistics.timer;
+            } else {
+                // "Congratulations! You did it! But perhaps I could've been
+                // faster."
+                Music_Legacy_Play(MX_GYM_HINT_17, false);
+                g_AssaultBestTime = 100 * FRAMES_PER_SECOND;
+            }
+        } else if (g_SaveGame.statistics.timer < g_AssaultBestTime) {
+            // "Gosh! That was my best time yet!"
+            Music_Legacy_Play(MX_GYM_HINT_15, false);
+            g_AssaultBestTime = g_SaveGame.statistics.timer;
+        } else if (
+            g_SaveGame.statistics.timer
+            < g_AssaultBestTime + 5 * FRAMES_PER_SECOND) {
+            // "Almost. Perhaps another try and I might beat it."
+            Music_Legacy_Play(MX_GYM_HINT_16, false);
+        } else {
+            // "Great. But nowhere near my best time."
+            Music_Legacy_Play(MX_GYM_HINT_14, false);
+        }
+
+        g_IsAssaultTimerActive = false;
+    }
+
     g_FlipEffect = -1;
 }

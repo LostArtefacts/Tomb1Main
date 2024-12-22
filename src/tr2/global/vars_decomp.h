@@ -14,7 +14,7 @@
 #define g_CineTickRate (*(int32_t*)0x004640B8) // = 0x8000
 #define g_FlipEffect (*(int32_t*)0x004640C4) // = -1
 #define g_BoxLines (*(int32_t(*)[12][2])0x00464180)
-#define g_AssaultBestTime (*(int32_t*)0x004641F0) // = -1
+#define g_AssaultBestTime (*(uint32_t*)0x004641F0) // = -1
 #define g_EffectRoutines (*((void(__cdecl  *(*)[32])(ITEM *item))0x004641F8))
 #define g_GF_NumSecrets (*(int16_t*)0x004642E8) // = 3
 #define g_GF_MusicTracks (*(int16_t(*)[16])0x004642F0)

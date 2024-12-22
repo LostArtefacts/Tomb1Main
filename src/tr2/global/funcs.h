@@ -15,7 +15,6 @@
 #define SphereOfDoom_Collision ((void __cdecl (*)(int16_t item_num, ITEM *lara_item, COLL_INFO *coll))0x0041D430)
 #define SphereOfDoom_Control ((void __cdecl (*)(int16_t item_num))0x0041D560)
 #define SphereOfDoom_Draw ((void __cdecl (*)(const ITEM *item))0x0041D650)
-#define FX_AssaultFinished ((void __cdecl (*)(ITEM *item))0x0041DA90)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)
 #define InitialiseFinalLevel ((void __cdecl (*)(void))0x00434330)

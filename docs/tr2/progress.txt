@@ -3279,7 +3279,7 @@ typedef enum {
 0x0041DA20  0x0024  +       void __cdecl FX_AssaultStart(ITEM *item);
 0x0041DA50  0x001F  +       void __cdecl FX_AssaultStop(ITEM *item);
 0x0041DA70  0x0017  +       void __cdecl FX_AssaultReset(ITEM *item);
-0x0041DA90  0x00B2  -       void __cdecl FX_AssaultFinished(ITEM *item);
+0x0041DA90  0x00B2  +       void __cdecl FX_AssaultFinished(ITEM *item);
 
 # game/enemies.c
 0x0041DB50  0x0076  +R      int16_t __cdecl Knife(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
@@ -4313,7 +4313,7 @@ typedef enum {
 0x004640B8  -       int32_t g_CineTickRate = 0x8000; // 0x8000 = PHD_ONE/TICKS_PER_FRAME
 0x004640BC  +       int16_t g_CD_TrackID = -1;
 0x004640C4  -       int32_t g_FlipEffect = -1;
-0x004641F0  -       int32_t g_AssaultBestTime = -1;
+0x004641F0  -       uint32_t g_AssaultBestTime = -1;
 0x004641F8  -       void (*__cdecl g_EffectRoutines[32])(ITEM *item);
 0x00464310  -       int16_t g_CineTargetAngle = 0x4000; // PHD_90
 0x004644E0  -       int32_t g_OverlayStatus = 1;
