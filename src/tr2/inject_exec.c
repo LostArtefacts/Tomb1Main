@@ -103,6 +103,7 @@
 #include "game/objects/general/earthquake.h"
 #include "game/objects/general/final_cutscene.h"
 #include "game/objects/general/final_level_counter.h"
+#include "game/objects/general/general.h"
 #include "game/objects/general/gong_bonger.h"
 #include "game/objects/general/grenade.h"
 #include "game/objects/general/harpoon_bolt.h"
@@ -1080,6 +1081,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00435B10, BridgeTilt2_Floor);
     INJECT(enable, 0x00435B40, BridgeTilt2_Ceiling);
     INJECT(enable, 0x00435B80, Copter_Control);
+    INJECT(enable, 0x00435C90, General_Control);
     INJECT(enable, 0x00435D70, Detonator_Control);
     INJECT(enable, 0x004362D0, Cultist1_Initialise);
     INJECT(enable, 0x00436320, Cultist1_Control);

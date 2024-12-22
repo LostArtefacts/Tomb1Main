@@ -3678,7 +3678,7 @@ typedef enum {
 0x00435B10  0x002F  +       void __cdecl BridgeTilt2_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00435B40  0x0034  +       void __cdecl BridgeTilt2_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);
 0x00435B80  0x010C  +       void __cdecl Copter_Control(int16_t item_num);
-0x00435C90  0x00D2  -R      void __cdecl GeneralControl(int16_t item_num);
+0x00435C90  0x00D2  +       void __cdecl General_Control(int16_t item_num);
 0x00435D70  0x008D  +       void __cdecl Detonator_Control(int16_t item_num);
 
 # game/people.c

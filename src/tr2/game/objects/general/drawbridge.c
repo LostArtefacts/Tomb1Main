@@ -1,7 +1,7 @@
 #include "game/objects/general/drawbridge.h"
 
 #include "game/objects/general/door.h"
-#include "global/funcs.h"
+#include "game/objects/general/general.h"
 
 typedef enum {
     DRAWBRIDGE_STATE_CLOSED = DOOR_STATE_CLOSED,
@@ -14,7 +14,7 @@ void Drawbridge_Setup(void)
     if (!obj->loaded) {
         return;
     }
-    obj->control = GeneralControl;
+    obj->control = General_Control;
     obj->collision = Drawbridge_Collision;
     obj->ceiling = Drawbridge_Ceiling;
     obj->floor = Drawbridge_Floor;

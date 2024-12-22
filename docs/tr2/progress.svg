@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.27% (1210)</tspan> · <tspan class="known">0.32% (4)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.35% (1211)</tspan> · <tspan class="known">0.24% (3)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="726.58" height="6" x="0" y="0" class="decompiled"/>
-<rect width="2.40" height="6" x="726.58" y="0" class="known"/>
+<rect width="727.18" height="6" x="0" y="0" class="decompiled"/>
+<rect width="1.80" height="6" x="727.18" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -728,7 +728,7 @@
 <rect width="12" height="12" x="735" y="180" class="decompiled"><title>void __cdecl BridgeTilt2_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="0" y="195" class="decompiled"><title>void __cdecl BridgeTilt2_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="12" height="12" x="15" y="195" class="decompiled"><title>void __cdecl Copter_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="30" y="195" class="known"><title>void __cdecl GeneralControl(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="30" y="195" class="decompiled"><title>void __cdecl General_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="195" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="195" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
 <rect width="12" height="12" x="75" y="195" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.56%</tspan> · <tspan class="known">0.11%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.62%</tspan> · <tspan class="known">0.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="743.73" height="6" x="0" y="0" class="decompiled"/>
-<rect width="0.84" height="6" x="743.73" y="0" class="known"/>
+<rect width="744.18" height="6" x="0" y="0" class="decompiled"/>
+<rect width="0.38" height="6" x="744.18" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1761,7 +1761,7 @@
 <rect width="10.16" height="10.30" x="508.24" y="298.63" class="decompiled"><title>void __cdecl Flare_DoInHand(int32_t flare_age);</title></rect>
 <rect width="10.16" height="10.30" x="508.24" y="311.93" class="decompiled"><title>void __cdecl CreateWindowPalette(void);</title></rect>
 <rect width="10.16" height="10.24" x="508.24" y="325.23" class="decompiled"><title>int32_t __cdecl Output_XGenX(const int16_t *obj_ptr);</title></rect>
-<rect width="10.16" height="10.24" x="508.24" y="338.47" class="known"><title>void __cdecl GeneralControl(int16_t item_num);</title></rect>
+<rect width="10.16" height="10.24" x="508.24" y="338.47" class="decompiled"><title>void __cdecl General_Control(int16_t item_num);</title></rect>
 <rect width="10.16" height="10.24" x="508.24" y="351.71" class="decompiled"><title>DWORD __cdecl EncodeLinePCX(BYTE *src, DWORD width, BYTE *dst);</title></rect>
 <rect width="10.16" height="10.05" x="508.24" y="364.95" class="decompiled"><title>void __cdecl UpdateFrame(bool need_run_message_loop, LPRECT rect);</title></rect>
 <rect width="10.05" height="10.10" x="521.40" y="136.34" class="decompiled"><title>void __cdecl Lara_TestWaterDepth(ITEM *item, COLL_INFO *coll);</title></rect>
