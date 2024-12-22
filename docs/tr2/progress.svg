@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.02% (1182)</tspan> · <tspan class="known">2.57% (32)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.10% (1183)</tspan> · <tspan class="known">2.49% (31)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="709.77" height="6" x="0" y="0" class="decompiled"/>
-<rect width="19.22" height="6" x="709.77" y="0" class="known"/>
+<rect width="710.37" height="6" x="0" y="0" class="decompiled"/>
+<rect width="18.61" height="6" x="710.37" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -358,7 +358,7 @@
 <rect width="12" height="12" x="435" y="75" class="known"><title>void __cdecl SphereOfDoom_Draw(const ITEM *item);</title></rect>
 <rect width="12" height="12" x="450" y="75" class="decompiled"><title>void __cdecl FX_LaraHandsFree(ITEM *item);</title></rect>
 <rect width="12" height="12" x="465" y="75" class="decompiled"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
-<rect width="12" height="12" x="480" y="75" class="known"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
+<rect width="12" height="12" x="480" y="75" class="decompiled"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="495" y="75" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="12" height="12" x="510" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap1(ITEM *item);</title></rect>
 <rect width="12" height="12" x="525" y="75" class="known"><title>void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.61%</tspan> · <tspan class="known">1.07%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.63%</tspan> · <tspan class="known">1.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.59" height="6" x="0" y="0" class="decompiled"/>
-<rect width="7.98" height="6" x="736.59" y="0" class="known"/>
+<rect width="736.73" height="6" x="0" y="0" class="decompiled"/>
+<rect width="7.83" height="6" x="736.73" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2177,7 +2177,7 @@
 <rect width="4.60" height="4.43" x="640.25" y="283.44" class="decompiled"><title>HRESULT __cdecl DDrawSurfaceCreate(LPDDSDESC dsp, LPDDS *surface);</title></rect>
 <rect width="4.60" height="4.43" x="640.25" y="290.86" class="decompiled"><title>void __cdecl BitMaskGetNumberOfBits(uint32_t bit_mask, uint32_t *bit_depth, uint32_t *bit_offset);</title></rect>
 <rect width="4.60" height="4.43" x="640.25" y="298.29" class="decompiled"><title>void __cdecl GetValidLevelsList(REQUEST_INFO *req);</title></rect>
-<rect width="4.60" height="4.32" x="640.25" y="305.71" class="known"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
+<rect width="4.60" height="4.32" x="640.25" y="305.71" class="decompiled"><title>void __cdecl FX_LaraDrawRightGun(ITEM *item);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="313.03" class="known"><title>void __cdecl FX_LaraDrawLeftGun(ITEM *item);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="320.34" class="decompiled"><title>void __cdecl Cultist1_Initialise(int16_t item_num);</title></rect>
 <rect width="4.60" height="4.32" x="640.25" y="327.66" class="decompiled"><title>void __cdecl WinVidShowGameWindow(int32_t nCmdShow);</title></rect>
