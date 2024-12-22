@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.33% (1161)</tspan> · <tspan class="known">4.26% (53)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.41% (1162)</tspan> · <tspan class="known">4.18% (52)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="697.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="31.83" height="6" x="697.16" y="0" class="known"/>
+<rect width="697.76" height="6" x="0" y="0" class="decompiled"/>
+<rect width="31.23" height="6" x="697.76" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -322,7 +322,7 @@
 <rect width="12" height="12" x="645" y="60" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="660" y="60" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
 <rect width="12" height="12" x="675" y="60" class="decompiled"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="690" y="60" class="known"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="690" y="60" class="decompiled"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="705" y="60" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.08%</tspan> · <tspan class="known">1.59%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.12%</tspan> · <tspan class="known">1.55%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="732.67" height="6" x="0" y="0" class="decompiled"/>
-<rect width="11.89" height="6" x="732.67" y="0" class="known"/>
+<rect width="732.95" height="6" x="0" y="0" class="decompiled"/>
+<rect width="11.61" height="6" x="732.95" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1958,7 +1958,7 @@
 <rect width="7.40" height="7.29" x="578.21" y="216.71" class="decompiled"><title>void __cdecl Lara_Col_Roll(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.29" x="578.21" y="227" class="decompiled"><title>void __cdecl SkidooArmed_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="237.29" class="decompiled"><title>int32_t __cdecl Room_FindByPos(int32_t x, int32_t y, int32_t z);</title></rect>
-<rect width="7.40" height="7.13" x="578.21" y="247.42" class="known"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
+<rect width="7.40" height="7.13" x="578.21" y="247.42" class="decompiled"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="257.55" class="decompiled"><title>int32_t __cdecl Lara_DeflectEdge(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="267.68" class="decompiled"><title>void __cdecl SkidooDriver_Initialise(int16_t item_num);</title></rect>
 <rect width="7.40" height="7.13" x="578.21" y="277.81" class="decompiled"><title>bool __cdecl WinInputInit(void);</title></rect>
