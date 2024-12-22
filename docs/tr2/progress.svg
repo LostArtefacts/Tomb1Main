@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.74% (1191)</tspan> · <tspan class="known">1.85% (23)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.82% (1192)</tspan> · <tspan class="known">1.77% (22)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="715.17" height="6" x="0" y="0" class="decompiled"/>
-<rect width="13.81" height="6" x="715.17" y="0" class="known"/>
+<rect width="715.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="13.21" height="6" x="715.77" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -367,7 +367,7 @@
 <rect width="12" height="12" x="570" y="75" class="decompiled"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
 <rect width="12" height="12" x="585" y="75" class="decompiled"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
 <rect width="12" height="12" x="600" y="75" class="decompiled"><title>void __cdecl FX_DynamicLightOff(ITEM *item);</title></rect>
-<rect width="12" height="12" x="615" y="75" class="known"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
+<rect width="12" height="12" x="615" y="75" class="decompiled"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
 <rect width="12" height="12" x="630" y="75" class="decompiled"><title>void __cdecl FX_AssaultStart(ITEM *item);</title></rect>
 <rect width="12" height="12" x="645" y="75" class="known"><title>void __cdecl FX_AssaultStop(ITEM *item);</title></rect>
 <rect width="12" height="12" x="660" y="75" class="known"><title>void __cdecl FX_AssaultReset(ITEM *item);</title></rect>
@@ -1326,8 +1326,8 @@
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
 <text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.76%</tspan> · <tspan class="known">0.91%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="737.76" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.80" height="6" x="737.76" y="0" class="known"/>
+<rect width="737.77" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.79" height="6" x="737.77" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2559,7 +2559,7 @@
 <rect width="0.10" height="0.10" x="741.90" y="370.53" class="decompiled"><title>int __cdecl Player_ShutDownSound(LPVOID);</title></rect>
 <rect width="0.10" height="0.10" x="741.90" y="373.16" class="decompiled"><title>int __cdecl Player_StopTimer(LPVOID);</title></rect>
 <rect width="0.10" height="0.10" x="741.90" y="375.80" class="decompiled"><title>void __cdecl FX_FlipMap(ITEM *item);</title></rect>
-<rect width="0.10" height="0.10" x="743.78" y="370.53" class="known"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
+<rect width="0.10" height="0.10" x="743.78" y="370.53" class="decompiled"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
 <rect width="0.10" height="0.10" x="745.86" y="370.53" class="decompiled"><title>void __cdecl Inv_DoInventoryPicture(void);</title></rect>
 <rect width="0.10" height="0.10" x="747.93" y="370.53" class="unused"><title>sub_444BB0</title></rect>
 <rect width="0.10" height="0.10" x="743.78" y="372.53" class="unused"><title>sub_4473A0</title></rect>

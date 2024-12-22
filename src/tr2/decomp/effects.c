@@ -2,6 +2,7 @@
 
 #include "game/collide.h"
 #include "game/effects.h"
+#include "game/lara/hair.h"
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/objects/effects/missile_common.h"
@@ -576,4 +577,9 @@ void __cdecl FX_DynamicLightOn(ITEM *const item)
 void __cdecl FX_DynamicLightOff(ITEM *const item)
 {
     item->dynamic_light = 0;
+}
+
+void __cdecl FX_ResetHair(ITEM *const item)
+{
+    Lara_Hair_Initialise();
 }
