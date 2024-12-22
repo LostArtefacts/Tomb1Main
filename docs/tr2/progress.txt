@@ -3260,7 +3260,7 @@ typedef enum {
 0x0041D290  0x0067  +       void __cdecl AlarmSound_Control(int16_t item_num);
 0x0041D300  0x005D  +       void __cdecl BirdTweeter_Control(int16_t item_num);
 0x0041D360  0x0059  +R      void __cdecl DoChimeSound(const ITEM *item);
-0x0041D3C0  0x0068  -       void __cdecl ClockChimes_Control(int16_t item_num);
+0x0041D3C0  0x0068  +       void __cdecl ClockChimes_Control(int16_t item_num);
 0x0041D430  0x0128  -       void __cdecl SphereOfDoom_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 0x0041D560  0x00F0  -       void __cdecl SphereOfDoom_Control(int16_t item_num);
 0x0041D650  0x012D  -       void __cdecl SphereOfDoom_Draw(const ITEM *item);

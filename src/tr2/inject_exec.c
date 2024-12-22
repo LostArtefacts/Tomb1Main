@@ -1012,6 +1012,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041D290, AlarmSound_Control);
     INJECT(enable, 0x0041D300, BirdTweeter_Control);
     INJECT(enable, 0x0041D360, DoChimeSound);
+    INJECT(enable, 0x0041D3C0, ClockChimes_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
