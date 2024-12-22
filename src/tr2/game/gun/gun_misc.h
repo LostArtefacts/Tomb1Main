@@ -35,7 +35,7 @@ void __cdecl Gun_GetNewTarget(const WEAPON_INFO *winfo);
 void __cdecl Gun_AimWeapon(const WEAPON_INFO *winfo, LARA_ARM *arm);
 int32_t __cdecl Gun_FireWeapon(
     LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src,
-    const PHD_ANGLE *angles);
+    const int16_t *angles);
 void __cdecl Gun_FindTargetPoint(const ITEM *item, GAME_VECTOR *target);
 void __cdecl Gun_HitTarget(
     ITEM *item, const GAME_VECTOR *hit_pos, int32_t damage);

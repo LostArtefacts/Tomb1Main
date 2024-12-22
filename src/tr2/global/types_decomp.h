@@ -22,8 +22,6 @@
 #pragma pack(push, 1)
 
 // clang-format off
-typedef int16_t PHD_ANGLE;
-
 typedef struct __unaligned {
     int32_t _00;
     int32_t _01;

@@ -8,8 +8,6 @@ typedef LPDIRECTDRAWSURFACE3 LPDDS; // decompiled
 typedef LPDIRECTDRAW3 LPDD; // decompiled
 typedef D3DTEXTUREHANDLE HWR_TEXTURE_HANDLE; // decompiled
 
-typedef int16_t PHD_ANGLE;
-
 typedef struct __unaligned { // decompiled
     int32_t x;
     int32_t y;
@@ -3133,7 +3131,7 @@ typedef enum {
 0x00413E10  0x0137  +       int32_t __cdecl Item_TestPosition(int16_t *bounds, ITEM *src_item, ITEM *dst_item);
 0x00413F50  0x013B  +       void __cdecl Item_AlignPosition(XYZ_32 *vec, ITEM *src_item, ITEM *dst_item);
 0x00414090  0x0187  +       int32_t __cdecl Lara_MovePosition(XYZ_32 *vec, ITEM *item, ITEM *lara_item);
-0x00414220  0x016E  +R      int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, PHD_ANGLE ang_add);
+0x00414220  0x016E  +R      int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, int16_t ang_add);
 
 # game/control.c
 0x00414390  0x0356  +       int32_t __cdecl Game_Control(int32_t nframes, int32_t demo_mode);
@@ -3227,8 +3225,8 @@ typedef enum {
 # game/effects.c
 0x0041C4D0  0x008C  +       int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);
 0x0041C560  0x0068  +       void __cdecl Sound_UpdateEffects(void);
-0x0041C5D0  0x0059  +R      int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);
-0x0041C630  0x00A4  +R      void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);
+0x0041C5D0  0x0059  +R      int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num);
+0x0041C630  0x00A4  +R      void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num, int32_t num);
 0x0041C6E0  0x0082  +       void __cdecl Blood_Control(int16_t fx_num);
 0x0041C770  0x007F  +       void __cdecl Explosion_Control(int16_t fx_num);
 0x0041C7F0  0x0072  +R      void __cdecl Ricochet(GAME_VECTOR *pos);
@@ -3494,10 +3492,10 @@ typedef enum {
 0x0042AB70  0x00AD  +       int32_t __cdecl Lara_TestEdgeCatch(ITEM *item, COLL_INFO *coll, int32_t *edge);
 0x0042AC20  0x016D  +       int32_t __cdecl Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll);
 0x0042AD90  0x019E  +       int32_t __cdecl Lara_TestHangJump(ITEM *item, COLL_INFO *coll);
-0x0042AF30  0x00B1  +       int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, PHD_ANGLE angle);
+0x0042AF30  0x00B1  +       int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, int16_t angle);
 0x0042AFF0  0x02E7  +       int32_t __cdecl Lara_TestVault(ITEM *item, COLL_INFO *coll);
 0x0042B2E0  0x0130  +       int32_t __cdecl Lara_TestSlide(ITEM *item, COLL_INFO *coll);
-0x0042B410  0x0075  +       int16_t __cdecl Lara_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);
+0x0042B410  0x0075  +       int16_t __cdecl Lara_FloorFront(ITEM *item, int16_t ang, int32_t dist);
 0x0042B490  0x00BB  +       int32_t __cdecl Lara_LandedBad(ITEM *item, COLL_INFO *coll);
 0x0042B550  0x038F  +       void __cdecl Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint);
 0x0042B8E0  0x031A  +       void __cdecl Lara_GetJointAbsPosition_I(ITEM *item, XYZ_32 *vec, int16_t *frame1, int16_t *frame2, int32_t frac, int32_t rate);
@@ -3554,7 +3552,7 @@ typedef enum {
 0x0042EF30  0x021C  +       void __cdecl Gun_GetNewTarget(WEAPON_INFO *winfo);
 0x0042F150  0x00AA  +       void __cdecl Gun_FindTargetPoint(const ITEM *item, GAME_VECTOR *target);
 0x0042F200  0x00C1  +       void __cdecl Gun_AimWeapon(WEAPON_INFO *winfo, LARA_ARM *arm);
-0x0042F2D0  0x0360  +       int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const PHD_ANGLE *angles);
+0x0042F2D0  0x0360  +       int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const int16_t *angles);
 0x0042F640  0x0096  +       void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);
 0x0042F6E0  0x0051  +       void __cdecl Gun_SmashItem(int16_t item_num, LARA_GUN_TYPE weapon_type);
 0x0042F740  0x003B  +       GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);

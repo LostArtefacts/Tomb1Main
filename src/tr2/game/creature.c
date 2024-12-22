@@ -122,7 +122,7 @@ void __cdecl Creature_AIInfo(ITEM *const item, AI_INFO *const info)
     const int32_t x = enemy->pos.x
         - ((object->pivot_length * Math_Sin(item->rot.y)) >> W2V_SHIFT)
         - item->pos.x;
-    PHD_ANGLE angle = Math_Atan(z, x);
+    int16_t angle = Math_Atan(z, x);
     if (creature->enemy != NULL) {
         info->distance = SQUARE(x) + SQUARE(z);
     } else {

@@ -201,7 +201,7 @@ void __cdecl Gun_AimWeapon(const WEAPON_INFO *const winfo, LARA_ARM *const arm)
 
 int32_t __cdecl Gun_FireWeapon(
     const LARA_GUN_TYPE weapon_type, ITEM *const target, const ITEM *const src,
-    const PHD_ANGLE *const angles)
+    const int16_t *const angles)
 {
     const WEAPON_INFO *const winfo = &g_Weapons[weapon_type];
     AMMO_INFO *const ammo = Gun_GetAmmoInfo(weapon_type);

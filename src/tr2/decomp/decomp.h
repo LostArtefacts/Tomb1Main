@@ -24,7 +24,7 @@ int32_t __cdecl Level_Initialise(
     int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
 int32_t __cdecl Misc_Move3DPosTo3DPos(
     PHD_3DPOS *src_pos, const PHD_3DPOS *dst_pos, int32_t velocity,
-    PHD_ANGLE ang_add);
+    int16_t ang_add);
 int32_t __cdecl LevelCompleteSequence(void);
 void __cdecl S_Wait(int32_t frames, BOOL input_check);
 BOOL __cdecl S_InitialiseSystem(void);

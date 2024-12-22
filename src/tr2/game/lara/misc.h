@@ -29,7 +29,7 @@ int32_t __cdecl Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll);
 
 int32_t __cdecl Lara_TestHangJump(ITEM *item, COLL_INFO *coll);
 
-int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, PHD_ANGLE angle);
+int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, int16_t angle);
 
 int32_t __cdecl Lara_TestVault(ITEM *item, COLL_INFO *coll);
 

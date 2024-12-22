@@ -291,7 +291,7 @@ int32_t __cdecl Level_Initialise(
 
 int32_t __cdecl Misc_Move3DPosTo3DPos(
     PHD_3DPOS *const src_pos, const PHD_3DPOS *const dst_pos,
-    const int32_t velocity, const PHD_ANGLE ang_add)
+    const int32_t velocity, const int16_t ang_add)
 {
     // TODO: this function's only usage is in Lara_MovePosition. inline it
     const XYZ_32 dpos = {
@@ -312,9 +312,9 @@ int32_t __cdecl Misc_Move3DPosTo3DPos(
 
 #define ADJUST_ROT(source, target, rot)                                        \
     do {                                                                       \
-        if ((PHD_ANGLE)(target - source) > rot) {                              \
+        if ((int16_t)(target - source) > rot) {                                \
             source += rot;                                                     \
-        } else if ((PHD_ANGLE)(target - source) < -rot) {                      \
+        } else if ((int16_t)(target - source) < -rot) {                        \
             source -= rot;                                                     \
         } else {                                                               \
             source = target;                                                   \

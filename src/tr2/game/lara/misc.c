@@ -32,7 +32,7 @@ static void __cdecl M_TakeHit(
 static void __cdecl M_TakeHit(
     ITEM *const lara_item, const int32_t dx, const int32_t dz)
 {
-    const PHD_ANGLE hit_angle = lara_item->rot.y + PHD_180 - Math_Atan(dz, dx);
+    const int16_t hit_angle = lara_item->rot.y + PHD_180 - Math_Atan(dz, dx);
     g_Lara.hit_direction = Math_GetDirection(hit_angle);
     if (g_Lara.hit_frame == 0) {
         Sound_Effect(SFX_LARA_INJURY, &lara_item->pos, SPM_NORMAL);
@@ -609,7 +609,7 @@ int32_t __cdecl Lara_TestHangJump(ITEM *item, COLL_INFO *coll)
     return 1;
 }
 
-int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, PHD_ANGLE angle)
+int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, int16_t angle)
 {
     int32_t x = item->pos.x;
     int32_t y = item->pos.y;

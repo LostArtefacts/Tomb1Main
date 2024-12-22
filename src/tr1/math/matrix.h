@@ -16,10 +16,10 @@ bool Matrix_Push(void);
 bool Matrix_PushUnit(void);
 void Matrix_Pop(void);
 
-void Matrix_RotX(PHD_ANGLE rx);
-void Matrix_RotY(PHD_ANGLE ry);
-void Matrix_RotZ(PHD_ANGLE rz);
-void Matrix_RotYXZ(PHD_ANGLE ry, PHD_ANGLE rx, PHD_ANGLE rz);
+void Matrix_RotX(int16_t rx);
+void Matrix_RotY(int16_t ry);
+void Matrix_RotZ(int16_t rz);
+void Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);
 void Matrix_RotYXZpack(int32_t rots);
 void Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z);

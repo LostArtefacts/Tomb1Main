@@ -240,7 +240,7 @@
 <rect width="12" height="12" x="180" y="45" class="decompiled"><title>int32_t __cdecl Item_TestPosition(int16_t *bounds, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="12" height="12" x="195" y="45" class="decompiled"><title>void __cdecl Item_AlignPosition(XYZ_32 *vec, ITEM *src_item, ITEM *dst_item);</title></rect>
 <rect width="12" height="12" x="210" y="45" class="decompiled"><title>int32_t __cdecl Lara_MovePosition(XYZ_32 *vec, ITEM *item, ITEM *lara_item);</title></rect>
-<rect width="12" height="12" x="225" y="45" class="decompiled"><title>int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, PHD_ANGLE ang_add);</title></rect>
+<rect width="12" height="12" x="225" y="45" class="decompiled"><title>int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, int16_t ang_add);</title></rect>
 <rect width="12" height="12" x="240" y="45" class="decompiled"><title>int32_t __cdecl Game_Control(int32_t nframes, int32_t demo_mode);</title></rect>
 <rect width="12" height="12" x="255" y="45" class="decompiled"><title>void __cdecl Item_Animate(ITEM *item);</title></rect>
 <rect width="12" height="12" x="270" y="45" class="decompiled"><title>int32_t __cdecl Item_GetAnimChange(ITEM *item, const ANIM *anim);</title></rect>
@@ -318,8 +318,8 @@
 <rect width="12" height="12" x="600" y="60" class="decompiled"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="60" class="decompiled"><title>int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);</title></rect>
 <rect width="12" height="12" x="630" y="60" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
-<rect width="12" height="12" x="645" y="60" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
-<rect width="12" height="12" x="660" y="60" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
+<rect width="12" height="12" x="645" y="60" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="660" y="60" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num, int32_t num);</title></rect>
 <rect width="12" height="12" x="675" y="60" class="decompiled"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="690" y="60" class="decompiled"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="705" y="60" class="decompiled"><title>void __cdecl Ricochet(GAME_VECTOR *pos);</title></rect>
@@ -567,10 +567,10 @@
 <rect width="12" height="12" x="585" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestEdgeCatch(ITEM *item, COLL_INFO *coll, int32_t *edge);</title></rect>
 <rect width="12" height="12" x="600" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="615" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestHangJump(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="12" height="12" x="630" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, PHD_ANGLE angle);</title></rect>
+<rect width="12" height="12" x="630" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, int16_t angle);</title></rect>
 <rect width="12" height="12" x="645" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestVault(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="660" y="135" class="decompiled"><title>int32_t __cdecl Lara_TestSlide(ITEM *item, COLL_INFO *coll);</title></rect>
-<rect width="12" height="12" x="675" y="135" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);</title></rect>
+<rect width="12" height="12" x="675" y="135" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, int16_t ang, int32_t dist);</title></rect>
 <rect width="12" height="12" x="690" y="135" class="decompiled"><title>int32_t __cdecl Lara_LandedBad(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="705" y="135" class="decompiled"><title>void __cdecl Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint);</title></rect>
 <rect width="12" height="12" x="720" y="135" class="decompiled"><title>void __cdecl Lara_GetJointAbsPosition_I(ITEM *item, XYZ_32 *vec, int16_t *frame1, int16_t *frame2, int32_t frac, int32_t rate);</title></rect>
@@ -619,7 +619,7 @@
 <rect width="12" height="12" x="615" y="150" class="decompiled"><title>void __cdecl Gun_GetNewTarget(WEAPON_INFO *winfo);</title></rect>
 <rect width="12" height="12" x="630" y="150" class="decompiled"><title>void __cdecl Gun_FindTargetPoint(const ITEM *item, GAME_VECTOR *target);</title></rect>
 <rect width="12" height="12" x="645" y="150" class="decompiled"><title>void __cdecl Gun_AimWeapon(WEAPON_INFO *winfo, LARA_ARM *arm);</title></rect>
-<rect width="12" height="12" x="660" y="150" class="decompiled"><title>int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const PHD_ANGLE *angles);</title></rect>
+<rect width="12" height="12" x="660" y="150" class="decompiled"><title>int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const int16_t *angles);</title></rect>
 <rect width="12" height="12" x="675" y="150" class="decompiled"><title>void __cdecl Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int32_t damage);</title></rect>
 <rect width="12" height="12" x="690" y="150" class="decompiled"><title>void __cdecl Gun_SmashItem(int16_t item_num, LARA_GUN_TYPE weapon_type);</title></rect>
 <rect width="12" height="12" x="705" y="150" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
@@ -1416,7 +1416,7 @@
 <rect width="24.48" height="23.63" x="266.96" y="272.48" class="decompiled"><title>void __cdecl Camera_Move(const GAME_VECTOR *target, int32_t speed);</title></rect>
 <rect width="24.48" height="23.45" x="266.96" y="299.11" class="decompiled"><title>void __cdecl Lara_InitialiseInventory(int32_t level_num);</title></rect>
 <rect width="24.48" height="23.36" x="266.96" y="325.56" class="decompiled"><title>void __cdecl Inv_RingNotActive(INVENTORY_ITEM *inv_item);</title></rect>
-<rect width="24.48" height="23.09" x="266.96" y="351.91" class="decompiled"><title>int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const PHD_ANGLE *angles);</title></rect>
+<rect width="24.48" height="23.09" x="266.96" y="351.91" class="decompiled"><title>int32_t __cdecl Gun_FireWeapon(LARA_GUN_TYPE weapon_type, ITEM *target, const ITEM *src, const int16_t *angles);</title></rect>
 <rect width="22.45" height="24.84" x="294.45" y="0" class="decompiled"><title>int32_t __cdecl Game_Control(int32_t nframes, int32_t demo_mode);</title></rect>
 <rect width="22.45" height="24.67" x="294.45" y="27.84" class="decompiled"><title>INT_PTR __stdcall SE_GraphicsDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);</title></rect>
 <rect width="22.45" height="24.38" x="294.45" y="55.51" class="decompiled"><title>int32_t __cdecl SE_ReadAppSettings(APP_SETTINGS *settings);</title></rect>
@@ -1585,7 +1585,7 @@
 <rect width="14.86" height="14.09" x="430.54" y="360.91" class="decompiled"><title>int32_t __cdecl Boat_CheckGetOn(int16_t item_num, COLL_INFO *coll);</title></rect>
 <rect width="15.11" height="13.82" x="448.40" y="59.33" class="decompiled"><title>void __cdecl Creature_Kill(ITEM *item, int32_t kill_anim, int32_t kill_state, int32_t lara_kill_state);</title></rect>
 <rect width="15.11" height="13.82" x="466.51" y="59.33" class="decompiled"><title>int32_t __cdecl Game_Cutscene_Control(int32_t nframes);</title></rect>
-<rect width="15.06" height="13.82" x="484.61" y="59.33" class="decompiled"><title>int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, PHD_ANGLE ang_add);</title></rect>
+<rect width="15.06" height="13.82" x="484.61" y="59.33" class="decompiled"><title>int32_t __cdecl Misc_Move3DPosTo3DPos(PHD_3DPOS *src_pos, const PHD_3DPOS *dest_pos, int32_t velocity, int16_t ang_add);</title></rect>
 <rect width="15.01" height="13.82" x="502.67" y="59.33" class="decompiled"><title>const int16_t *__cdecl Output_CalcVerticeLight(const int16_t *obj_ptr);</title></rect>
 <rect width="15.01" height="13.82" x="520.68" y="59.33" class="decompiled"><title>int32_t __cdecl Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="14.96" height="13.82" x="538.69" y="59.33" class="decompiled"><title>void __cdecl HWR_DrawPolyList(void);</title></rect>
@@ -1818,7 +1818,7 @@
 <rect width="9.32" height="9.06" x="533.93" y="161.47" class="decompiled"><title>void __cdecl Lara_Col_Roll2(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="9.25" height="9.06" x="546.24" y="161.47" class="decompiled"><title>void __cdecl FX_AssaultFinished(ITEM *item);</title></rect>
 <rect width="9.25" height="9.06" x="558.49" y="161.47" class="decompiled"><title>int32_t __cdecl Skidoo_TestHeight(const ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *pos);</title></rect>
-<rect width="9.18" height="9.06" x="570.74" y="161.47" class="decompiled"><title>int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, PHD_ANGLE angle);</title></rect>
+<rect width="9.18" height="9.06" x="570.74" y="161.47" class="decompiled"><title>int32_t __cdecl Lara_TestHangSwingIn(ITEM *item, int16_t angle);</title></rect>
 <rect width="9.18" height="9.06" x="582.92" y="161.47" class="decompiled"><title>int32_t __cdecl Drawbridge_IsItemOnTop(const ITEM *item, int32_t x, int32_t y);</title></rect>
 <rect width="9.18" height="9.06" x="595.10" y="161.47" class="decompiled"><title>void __cdecl Output_AnimateTextures(int32_t ticks);</title></rect>
 <rect width="9.11" height="9.06" x="607.28" y="161.47" class="decompiled"><title>void __cdecl Camera_Initialise(void);</title></rect>
@@ -1852,7 +1852,7 @@
 <rect width="8.64" height="8.90" x="533.93" y="366.10" class="decompiled"><title>bool __cdecl ShowDDrawGameWindow(bool active);</title></rect>
 <rect width="8.68" height="8.72" x="545.57" y="173.53" class="decompiled"><title>void __cdecl Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="8.61" height="8.72" x="557.24" y="173.53" class="decompiled"><title>int32_t __cdecl Box_EscapeBox(const ITEM *item, const ITEM *enemy, int16_t box_num);</title></rect>
-<rect width="8.61" height="8.72" x="568.85" y="173.53" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
+<rect width="8.61" height="8.72" x="568.85" y="173.53" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num, int32_t num);</title></rect>
 <rect width="8.53" height="8.72" x="580.45" y="173.53" class="decompiled"><title>void __cdecl Requester_Shutdown(REQUEST_INFO *req);</title></rect>
 <rect width="8.53" height="8.72" x="591.99" y="173.53" class="decompiled"><title>void __cdecl Lara_State_Extra_FinalAnim(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="8.53" height="8.72" x="603.52" y="173.53" class="decompiled"><title>int32_t __cdecl Trapdoor_IsItemOnTop(const ITEM *item, int32_t x, int32_t z);</title></rect>
@@ -1991,7 +1991,7 @@
 <rect width="7.22" height="6.58" x="619.45" y="216.45" class="decompiled"><title>void __cdecl Lara_Hair_Draw(void);</title></rect>
 <rect width="7.22" height="6.58" x="629.68" y="216.45" class="decompiled"><title>void __cdecl Lara_State_Glide(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.22" height="6.58" x="639.90" y="216.45" class="decompiled"><title>bool __cdecl GetRegistryBoolValue(LPCTSTR lpValueName, bool *pValue, bool defaultValue);</title></rect>
-<rect width="7.14" height="6.58" x="650.12" y="216.45" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);</title></rect>
+<rect width="7.14" height="6.58" x="650.12" y="216.45" class="decompiled"><title>int16_t __cdecl Lara_FloorFront(ITEM *item, int16_t ang, int32_t dist);</title></rect>
 <rect width="7.14" height="6.58" x="660.25" y="216.45" class="decompiled"><title>void __cdecl Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="7.14" height="6.58" x="670.39" y="216.45" class="decompiled"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="7.05" height="6.58" x="680.53" y="216.45" class="decompiled"><title>void __cdecl Lara_Hair_Initialise(void);</title></rect>
@@ -2081,7 +2081,7 @@
 <rect width="5.57" height="5.71" x="607.59" y="360.58" class="decompiled"><title>void __cdecl Item_AddActive(int16_t item_num);</title></rect>
 <rect width="5.57" height="5.71" x="607.59" y="369.29" class="decompiled"><title>void __cdecl WinInReadKeyboard(LPVOID lpInputData);</title></rect>
 <rect width="5.45" height="5.73" x="616.17" y="244.16" class="decompiled"><title>int32_t __cdecl Demo_Control(int32_t level_num);</title></rect>
-<rect width="5.45" height="5.73" x="624.62" y="244.16" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
+<rect width="5.45" height="5.73" x="624.62" y="244.16" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num);</title></rect>
 <rect width="5.45" height="5.73" x="633.07" y="244.16" class="decompiled"><title>void __cdecl DoChimeSound(const ITEM *item);</title></rect>
 <rect width="5.45" height="5.73" x="641.53" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_Splat(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.45" height="5.73" x="649.98" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_ClimbRight(ITEM *item, COLL_INFO *coll);</title></rect>

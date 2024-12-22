@@ -77,7 +77,7 @@ void __cdecl Matrix_LookAt(
     int32_t xsrc, int32_t ysrc, int32_t zsrc, int32_t xtar, int32_t ytar,
     int32_t ztar, int16_t roll)
 {
-    PHD_ANGLE angles[2];
+    int16_t angles[2];
     Math_GetVectorAngles(xtar - xsrc, ytar - ysrc, ztar - zsrc, angles);
 
     PHD_3DPOS viewer;
@@ -90,7 +90,7 @@ void __cdecl Matrix_LookAt(
     Matrix_GenerateW2V(&viewer);
 }
 
-void __cdecl Matrix_RotX(PHD_ANGLE rx)
+void __cdecl Matrix_RotX(int16_t rx)
 {
     if (!rx) {
         return;
@@ -117,7 +117,7 @@ void __cdecl Matrix_RotX(PHD_ANGLE rx)
     mptr->_22 = r1 >> W2V_SHIFT;
 }
 
-void __cdecl Matrix_RotY(PHD_ANGLE ry)
+void __cdecl Matrix_RotY(int16_t ry)
 {
     if (!ry) {
         return;
@@ -144,7 +144,7 @@ void __cdecl Matrix_RotY(PHD_ANGLE ry)
     mptr->_22 = r1 >> W2V_SHIFT;
 }
 
-void __cdecl Matrix_RotZ(PHD_ANGLE rz)
+void __cdecl Matrix_RotZ(int16_t rz)
 {
     if (!rz) {
         return;
@@ -240,9 +240,9 @@ void __cdecl Matrix_RotYXZpack(uint32_t rpack)
     MATRIX *mptr = g_MatrixPtr;
     int32_t r0, r1;
 
-    PHD_ANGLE rx = (rpack >> 14) & 0xFFC0;
-    PHD_ANGLE ry = (rpack >> 4) & 0xFFC0;
-    PHD_ANGLE rz = (rpack & 0x3FF) << 6;
+    int16_t rx = (rpack >> 14) & 0xFFC0;
+    int16_t ry = (rpack >> 4) & 0xFFC0;
+    int16_t rz = (rpack & 0x3FF) << 6;
 
     if (ry) {
         int32_t sy = Math_Sin(ry);
