@@ -1,10 +1,10 @@
 #include "game/objects/traps/pendulum.h"
 
+#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/random.h"
 #include "game/room.h"
-#include "global/funcs.h"
 
 #include <libtrx/game/lara/common.h>
 

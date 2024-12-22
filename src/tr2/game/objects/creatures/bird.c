@@ -1,8 +1,8 @@
 #include "game/objects/creatures/bird.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/types.h"
 #include "global/vars.h"
 

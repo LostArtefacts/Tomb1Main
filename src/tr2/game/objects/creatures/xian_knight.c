@@ -1,5 +1,6 @@
 #include "game/objects/creatures/xian_knight.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/items.h"
@@ -10,7 +11,6 @@
 #include "game/random.h"
 #include "game/sound.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>

@@ -1,11 +1,11 @@
 #include "game/objects/creatures/trex.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

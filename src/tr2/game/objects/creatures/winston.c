@@ -1,11 +1,11 @@
 #include "game/objects/creatures/winston.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/sound.h"
 #include "global/const.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

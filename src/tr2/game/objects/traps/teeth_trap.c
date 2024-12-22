@@ -1,10 +1,10 @@
 #include "game/objects/traps/teeth_trap.h"
 
+#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
-#include "global/funcs.h"
 
 #define TEETH_TRAP_DAMAGE 400
 

@@ -1,5 +1,6 @@
 #include "game/gun/gun_misc.h"
 
+#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/gun/gun.h"
 #include "game/items.h"

@@ -4,7 +4,6 @@
 #include "game/creature.h"
 #include "game/objects/creatures/cultist_common.h"
 #include "game/random.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

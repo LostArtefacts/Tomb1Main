@@ -1,5 +1,6 @@
 #include "game/objects/traps/dart.h"
 
+#include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
@@ -7,7 +8,6 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>

@@ -1,8 +1,8 @@
 #include "game/objects/creatures/cultist_3.h"
 
+#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/objects/creatures/cultist_common.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

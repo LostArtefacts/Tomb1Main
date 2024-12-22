@@ -1,8 +1,8 @@
 #include "game/objects/traps/springboard.h"
 
+#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/objects/common.h"
-#include "global/funcs.h"
 #include "global/utils.h"
 #include "global/vars.h"
 

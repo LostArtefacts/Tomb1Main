@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.09% (1158)</tspan> · <tspan class="known">4.50% (56)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.17% (1159)</tspan> · <tspan class="known">4.42% (55)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="695.36" height="6" x="0" y="0" class="decompiled"/>
-<rect width="33.63" height="6" x="695.36" y="0" class="known"/>
+<rect width="695.96" height="6" x="0" y="0" class="decompiled"/>
+<rect width="33.03" height="6" x="695.96" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -319,7 +319,7 @@
 <rect width="12" height="12" x="600" y="60" class="decompiled"><title>void __cdecl Eel_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="615" y="60" class="decompiled"><title>int32_t __cdecl Lara_IsNearItem(PHD_3DPOS *pos, int32_t distance);</title></rect>
 <rect width="12" height="12" x="630" y="60" class="decompiled"><title>void __cdecl Sound_UpdateEffects(void);</title></rect>
-<rect width="12" height="12" x="645" y="60" class="known"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
+<rect width="12" height="12" x="645" y="60" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="660" y="60" class="known"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
 <rect width="12" height="12" x="675" y="60" class="known"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="690" y="60" class="known"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.97%</tspan> · <tspan class="known">1.70%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98%</tspan> · <tspan class="known">1.68%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="731.83" height="6" x="0" y="0" class="decompiled"/>
-<rect width="12.73" height="6" x="731.83" y="0" class="known"/>
+<rect width="732.03" height="6" x="0" y="0" class="decompiled"/>
+<rect width="12.53" height="6" x="732.03" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2083,7 +2083,7 @@
 <rect width="5.57" height="5.71" x="607.59" y="360.58" class="decompiled"><title>void __cdecl Item_AddActive(int16_t item_num);</title></rect>
 <rect width="5.57" height="5.71" x="607.59" y="369.29" class="decompiled"><title>void __cdecl WinInReadKeyboard(LPVOID lpInputData);</title></rect>
 <rect width="5.45" height="5.73" x="616.17" y="244.16" class="decompiled"><title>int32_t __cdecl Demo_Control(int32_t level_num);</title></rect>
-<rect width="5.45" height="5.73" x="624.62" y="244.16" class="known"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
+<rect width="5.45" height="5.73" x="624.62" y="244.16" class="decompiled"><title>int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num);</title></rect>
 <rect width="5.45" height="5.73" x="633.07" y="244.16" class="known"><title>void __cdecl DoChimeSound(ITEM *item);</title></rect>
 <rect width="5.45" height="5.73" x="641.53" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_Splat(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="5.45" height="5.73" x="649.98" y="244.16" class="decompiled"><title>void __cdecl Lara_Col_ClimbRight(ITEM *item, COLL_INFO *coll);</title></rect>

@@ -1,5 +1,6 @@
 #include "game/objects/traps/rolling_ball.h"
 
+#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
@@ -9,7 +10,6 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
-#include "global/funcs.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

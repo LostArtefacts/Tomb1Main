@@ -332,3 +332,22 @@ int16_t __cdecl Knife(
     Missile_ShootAtLara(fx);
     return fx_num;
 }
+
+int16_t __cdecl DoBloodSplat(
+    const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
+    const int16_t direction, const int16_t room_num)
+{
+    const int16_t fx_num = Effect_Create(room_num);
+    if (fx_num != NO_ITEM) {
+        FX *const fx = &g_Effects[fx_num];
+        fx->pos.x = x;
+        fx->pos.y = y;
+        fx->pos.z = z;
+        fx->rot.y = direction;
+        fx->speed = speed;
+        fx->frame_num = 0;
+        fx->object_id = O_BLOOD;
+        fx->counter = 0;
+    }
+    return fx_num;
+}
