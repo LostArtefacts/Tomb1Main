@@ -116,6 +116,7 @@
 #include "game/objects/general/movable_block.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/puzzle_hole.h"
+#include "game/objects/general/secret.h"
 #include "game/objects/general/sphere_of_doom.h"
 #include "game/objects/general/switch.h"
 #include "game/objects/general/trapdoor.h"
@@ -1106,6 +1107,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00438D80, Switch_Trigger);
     INJECT(enable, 0x00438E40, Keyhole_Trigger);
     INJECT(enable, 0x00438E80, Pickup_Trigger);
+    INJECT(enable, 0x00438EC0, Secret2_Control);
     INJECT(enable, 0x00438EF0, Mouse_Control);
     INJECT(enable, 0x0043A480, Object_SetupBaddyObjects);
     INJECT(enable, 0x0043B4C0, Object_SetupTrapObjects);

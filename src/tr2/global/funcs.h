@@ -6,5 +6,4 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define Secret_Control ((void __cdecl (*)(int16_t item_num))0x00438EC0)
 // clang-format on
