@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.35% (1211)</tspan> · <tspan class="known">0.24% (3)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.43% (1212)</tspan> · <tspan class="known">0.16% (2)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="727.18" height="6" x="0" y="0" class="decompiled"/>
-<rect width="1.80" height="6" x="727.18" y="0" class="known"/>
+<rect width="727.78" height="6" x="0" y="0" class="decompiled"/>
+<rect width="1.20" height="6" x="727.78" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -731,7 +731,7 @@
 <rect width="12" height="12" x="30" y="195" class="decompiled"><title>void __cdecl General_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="45" y="195" class="decompiled"><title>void __cdecl Detonator_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="60" y="195" class="decompiled"><title>bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);</title></rect>
-<rect width="12" height="12" x="75" y="195" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="75" y="195" class="decompiled"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="90" y="195" class="known"><title>void __cdecl GunFlash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="195" class="decompiled"><title>int16_t __cdecl Effect_GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="120" y="195" class="decompiled"><title>int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.62%</tspan> · <tspan class="known">0.05%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.64%</tspan> · <tspan class="known">0.03%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="744.18" height="6" x="0" y="0" class="decompiled"/>
-<rect width="0.38" height="6" x="744.18" y="0" class="known"/>
+<rect width="744.31" height="6" x="0" y="0" class="decompiled"/>
+<rect width="0.25" height="6" x="744.31" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2220,7 +2220,7 @@
 <rect width="4.14" height="3.86" x="647.85" y="296.40" class="decompiled"><title>GAME_OBJECT_ID Gun_GetWeaponAnim(const LARA_GUN_TYPE gun_type);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="303.26" class="decompiled"><title>void __cdecl Drawbridge_Ceiling(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="310.12" class="decompiled"><title>int32_t __cdecl Bridge_GetOffset(const ITEM *item, int32_t x, int32_t z);</title></rect>
-<rect width="4.14" height="3.86" x="647.85" y="316.98" class="known"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
+<rect width="4.14" height="3.86" x="647.85" y="316.98" class="decompiled"><title>void __cdecl Glow_Control(int16_t fx_num);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="323.83" class="decompiled"><title>void __cdecl WaitPrimaryBufferFlip(void);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="330.69" class="decompiled"><title>void __cdecl S_RemoveCtrlText(void);</title></rect>
 <rect width="4.14" height="3.86" x="647.85" y="337.55" class="decompiled"><title>void __cdecl TexturePageReleaseVidMemSurface(TEXPAGE_DESC *page);</title></rect>

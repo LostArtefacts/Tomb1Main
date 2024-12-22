@@ -79,6 +79,7 @@
 #include "game/objects/effects/ember.h"
 #include "game/objects/effects/explosion.h"
 #include "game/objects/effects/flame.h"
+#include "game/objects/effects/glow.h"
 #include "game/objects/effects/hot_liquid.h"
 #include "game/objects/effects/missile_common.h"
 #include "game/objects/effects/ricochet.h"
@@ -1083,6 +1084,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00435B80, Copter_Control);
     INJECT(enable, 0x00435C90, General_Control);
     INJECT(enable, 0x00435D70, Detonator_Control);
+    INJECT(enable, 0x00435E90, Glow_Control);
     INJECT(enable, 0x004362D0, Cultist1_Initialise);
     INJECT(enable, 0x00436320, Cultist1_Control);
     INJECT(enable, 0x00436750, Cultist3_Initialise);
