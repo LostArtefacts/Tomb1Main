@@ -5,7 +5,6 @@
 #include "const.h"
 
 #include <libtrx/game/items.h>
-#include <libtrx/game/lara/types.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/rooms/types.h>
 #include <libtrx/game/text.h>
