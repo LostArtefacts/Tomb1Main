@@ -274,6 +274,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041D780, FX_LaraHandsFree);
     INJECT(enable, 0x0041D790, FX_FlipMap);
     INJECT(enable, 0x0041D7A0, FX_LaraDrawRightGun);
+    INJECT(enable, 0x0041D7F0, FX_LaraDrawLeftGun);
     INJECT(enable, 0x0041DB50, Knife);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
     INJECT(enable, 0x00435F20, Effect_GunShot);
