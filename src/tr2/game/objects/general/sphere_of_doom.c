@@ -2,6 +2,8 @@
 
 #include "game/items.h"
 #include "game/math.h"
+#include "game/matrix.h"
+#include "game/output.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/funcs.h"
@@ -70,6 +72,35 @@ void __cdecl SphereOfDoom_Control(const int16_t item_num)
     if (item->timer > 60 * 64) {
         Item_Kill(item_num);
     }
+}
+
+void __cdecl SphereOfDoom_Draw(const ITEM *const item)
+{
+    Matrix_Push();
+    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_RotY(item->rot.y);
+
+    MATRIX *const mptr = g_MatrixPtr;
+    mptr->_00 = (mptr->_00 * item->timer) >> 8;
+    mptr->_01 = (mptr->_01 * item->timer) >> 8;
+    mptr->_02 = (mptr->_02 * item->timer) >> 8;
+    mptr->_10 = (mptr->_10 * item->timer) >> 8;
+    mptr->_11 = (mptr->_11 * item->timer) >> 8;
+    mptr->_12 = (mptr->_12 * item->timer) >> 8;
+    mptr->_20 = (mptr->_20 * item->timer) >> 8;
+    mptr->_21 = (mptr->_21 * item->timer) >> 8;
+    mptr->_22 = (mptr->_22 * item->timer) >> 8;
+
+    const FRAME_INFO *const frame_ptr =
+        (FRAME_INFO *)g_Anims[item->anim_num].frame_ptr;
+    const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
+    if (clip) {
+        Output_CalculateObjectLighting(item, &frame_ptr->bounds);
+        Output_InsertPolygons(
+            g_Meshes[g_Objects[item->object_id].mesh_idx], clip);
+    }
+
+    Matrix_Pop();
 }
 
 void SphereOfDoom_Setup(OBJECT *const obj, const bool transparent)

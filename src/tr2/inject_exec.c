@@ -1016,6 +1016,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041D3C0, ClockChimes_Control);
     INJECT(enable, 0x0041D430, SphereOfDoom_Collision);
     INJECT(enable, 0x0041D560, SphereOfDoom_Control);
+    INJECT(enable, 0x0041D650, SphereOfDoom_Draw);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
