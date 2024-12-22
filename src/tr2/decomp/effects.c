@@ -446,3 +446,10 @@ void __cdecl FX_Flood(ITEM *const item)
     Sound_Effect(SFX_WATERFALL_LOOP, &pos, SPM_NORMAL);
     g_FlipTimer++;
 }
+
+void __cdecl FX_Rubble(ITEM *const item)
+{
+    Sound_Effect(SFX_MASSIVE_CRASH, NULL, SPM_NORMAL);
+    g_Camera.bounce = -350;
+    g_FlipEffect = -1;
+}

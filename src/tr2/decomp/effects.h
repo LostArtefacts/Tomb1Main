@@ -52,3 +52,4 @@ void __cdecl FX_FloorShake(ITEM *item);
 void __cdecl FX_LaraNormal(ITEM *item);
 void __cdecl FX_Boiler(ITEM *item);
 void __cdecl FX_Flood(ITEM *item);
+void __cdecl FX_Rubble(ITEM *item);

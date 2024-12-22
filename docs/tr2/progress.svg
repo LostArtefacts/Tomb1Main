@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.37% (1174)</tspan> · <tspan class="known">3.22% (40)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.45% (1175)</tspan> · <tspan class="known">3.14% (39)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="704.97" height="6" x="0" y="0" class="decompiled"/>
-<rect width="24.02" height="6" x="704.97" y="0" class="known"/>
+<rect width="705.57" height="6" x="0" y="0" class="decompiled"/>
+<rect width="23.42" height="6" x="705.57" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -340,7 +340,7 @@
 <rect width="12" height="12" x="165" y="75" class="decompiled"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="12" height="12" x="180" y="75" class="decompiled"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
 <rect width="12" height="12" x="195" y="75" class="decompiled"><title>void __cdecl FX_Flood(ITEM *item);</title></rect>
-<rect width="12" height="12" x="210" y="75" class="known"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
+<rect width="12" height="12" x="210" y="75" class="decompiled"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
 <rect width="12" height="12" x="225" y="75" class="known"><title>void __cdecl FX_Chandelier(ITEM *item);</title></rect>
 <rect width="12" height="12" x="240" y="75" class="known"><title>void __cdecl FX_Explosion(ITEM *item);</title></rect>
 <rect width="12" height="12" x="255" y="75" class="known"><title>void __cdecl FX_Piston(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.54%</tspan> · <tspan class="known">1.14%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.55%</tspan> · <tspan class="known">1.12%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="736.08" height="6" x="0" y="0" class="decompiled"/>
-<rect width="8.48" height="6" x="736.08" y="0" class="known"/>
+<rect width="736.16" height="6" x="0" y="0" class="decompiled"/>
+<rect width="8.40" height="6" x="736.16" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2381,7 +2381,7 @@
 <rect width="2.72" height="2.22" x="727.29" y="320.63" class="decompiled"><title>int16_t __cdecl Text_GetTextLength(const char *text);</title></rect>
 <rect width="2.72" height="2.22" x="733.01" y="320.63" class="decompiled"><title>bool __cdecl DInputEnumDevices(JOYSTICK_LIST *joystickList);</title></rect>
 <rect width="2.72" height="2.22" x="738.73" y="320.63" class="decompiled"><title>void __cdecl HWR_TexSource(HWR_TEXTURE_HANDLE tex_source);</title></rect>
-<rect width="2.56" height="2.22" x="744.44" y="320.63" class="known"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
+<rect width="2.56" height="2.22" x="744.44" y="320.63" class="decompiled"><title>void __cdecl FX_Rubble(ITEM *item);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="325.85" class="known"><title>void __cdecl FX_Explosion(ITEM *item);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="331.07" class="decompiled"><title>void __cdecl Lara_Col_BackJump(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="2.57" height="2.21" x="692.67" y="336.28" class="decompiled"><title>void __cdecl Lara_Col_RightJump(ITEM *item, COLL_INFO *coll);</title></rect>
