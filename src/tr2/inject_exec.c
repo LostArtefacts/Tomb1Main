@@ -83,6 +83,7 @@
 #include "game/objects/effects/ricochet.h"
 #include "game/objects/effects/splash.h"
 #include "game/objects/effects/twinkle.h"
+#include "game/objects/effects/water_sprite.h"
 #include "game/objects/general/bell.h"
 #include "game/objects/general/bridge_common.h"
 #include "game/objects/general/bridge_flat.h"
@@ -967,6 +968,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x0041C870, Richochet_Control);
     INJECT(enable, 0x0041C990, Bubble_Control);
     INJECT(enable, 0x0041CB60, Splash_Control);
+    INJECT(enable, 0x0041CBE0, WaterSprite_Control);
     INJECT(enable, 0x0041DBD0, Cultist2_Control);
     INJECT(enable, 0x0041E000, Monk_Control);
     INJECT(enable, 0x0041E4D0, Worker3_Control);
