@@ -279,6 +279,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041D8B0, FX_SwapMeshesWithMeshSwap2);
     INJECT(enable, 0x0041D920, FX_SwapMeshesWithMeshSwap3);
     INJECT(enable, 0x0041D9C0, FX_InvisibilityOn);
+    INJECT(enable, 0x0041D9D0, FX_InvisibilityOff);
     INJECT(enable, 0x0041DB50, Knife);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
     INJECT(enable, 0x00435F20, Effect_GunShot);

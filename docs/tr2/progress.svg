@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.50% (1188)</tspan> · <tspan class="known">2.09% (26)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">95.58% (1189)</tspan> · <tspan class="known">2.01% (25)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="713.37" height="6" x="0" y="0" class="decompiled"/>
-<rect width="15.61" height="6" x="713.37" y="0" class="known"/>
+<rect width="713.97" height="6" x="0" y="0" class="decompiled"/>
+<rect width="15.01" height="6" x="713.97" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -364,7 +364,7 @@
 <rect width="12" height="12" x="525" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap2(ITEM *item);</title></rect>
 <rect width="12" height="12" x="540" y="75" class="decompiled"><title>void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *item);</title></rect>
 <rect width="12" height="12" x="555" y="75" class="decompiled"><title>void __cdecl FX_InvisibilityOn(ITEM *item);</title></rect>
-<rect width="12" height="12" x="570" y="75" class="known"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
+<rect width="12" height="12" x="570" y="75" class="decompiled"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
 <rect width="12" height="12" x="585" y="75" class="known"><title>void __cdecl FX_DynamicLightOn(ITEM *item);</title></rect>
 <rect width="12" height="12" x="600" y="75" class="known"><title>void __cdecl FX_DynamicLightOff(ITEM *item);</title></rect>
 <rect width="12" height="12" x="615" y="75" class="known"><title>void __cdecl FX_ResetHair(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.75%</tspan> · <tspan class="known">0.92%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.76%</tspan> · <tspan class="known">0.92%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="737.67" height="6" x="0" y="0" class="decompiled"/>
-<rect width="6.89" height="6" x="737.67" y="0" class="known"/>
+<rect width="737.72" height="6" x="0" y="0" class="decompiled"/>
+<rect width="6.84" height="6" x="737.72" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2464,7 +2464,7 @@
 <rect width="1.28" height="1.46" x="717.27" y="345.15" class="decompiled"><title>void __cdecl SE_GraphicsAdapterSet(HWND hwndDlg, DISPLAY_ADAPTER_NODE *adapter);</title></rect>
 <rect width="1.28" height="1.46" x="721.55" y="345.15" class="decompiled"><title>void __cdecl S_Audio_Sample_OutCloseTrack(int32_t track_id);</title></rect>
 <rect width="1.09" height="1.46" x="725.82" y="345.15" class="decompiled"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
-<rect width="1.09" height="1.46" x="729.92" y="345.15" class="known"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
+<rect width="1.09" height="1.46" x="729.92" y="345.15" class="decompiled"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
 <rect width="1.09" height="1.46" x="734.01" y="345.15" class="decompiled"><title>void __cdecl BridgeFlat_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="1.09" height="1.46" x="738.10" y="345.15" class="decompiled"><title>void __cdecl HWR_BeginScene(void);</title></rect>
 <rect width="0.91" height="1.46" x="742.19" y="345.15" class="decompiled"><title>void __cdecl Overlay_InitialisePickUpDisplay(void);</title></rect>

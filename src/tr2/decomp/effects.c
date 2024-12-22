@@ -562,3 +562,8 @@ void __cdecl FX_InvisibilityOn(ITEM *const item)
 {
     item->status = IS_INVISIBLE;
 }
+
+void __cdecl FX_InvisibilityOff(ITEM *const item)
+{
+    item->status = IS_ACTIVE;
+}
