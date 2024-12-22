@@ -7,6 +7,7 @@
 #include "game/game.h"
 #include "game/gun/gun.h"
 #include "game/inventory/backpack.h"
+#include "game/music.h"
 #include "game/overlay.h"
 #include "game/requester.h"
 #include "gameflow/gameflow_new.h"

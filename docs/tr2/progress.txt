@@ -2375,7 +2375,7 @@ typedef enum { // decompiled
     O_NUMBER_OF             = 265,
 } GAME_OBJECT_ID;
 
-typedef enum {
+typedef enum { // decompiled
     MX_INACTIVE                = -1,
     MX_UNUSED_0                = 0, // 2.mp3
     MX_UNUSED_1                = 1, // 2.mp3
