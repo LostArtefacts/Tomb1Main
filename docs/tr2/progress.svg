@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.41% (1162)</tspan> · <tspan class="known">4.18% (52)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.49% (1163)</tspan> · <tspan class="known">4.10% (51)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="697.76" height="6" x="0" y="0" class="decompiled"/>
-<rect width="31.23" height="6" x="697.76" y="0" class="known"/>
+<rect width="698.36" height="6" x="0" y="0" class="decompiled"/>
+<rect width="30.62" height="6" x="698.36" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -323,7 +323,7 @@
 <rect width="12" height="12" x="660" y="60" class="decompiled"><title>void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);</title></rect>
 <rect width="12" height="12" x="675" y="60" class="decompiled"><title>void __cdecl Blood_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="690" y="60" class="decompiled"><title>void __cdecl Explosion_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="705" y="60" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
+<rect width="12" height="12" x="705" y="60" class="decompiled"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="12" height="12" x="720" y="60" class="known"><title>void __cdecl Richochet_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="735" y="60" class="decompiled"><title>void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);</title></rect>
 <rect width="12" height="12" x="0" y="75" class="decompiled"><title>void __cdecl FX_Bubbles(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.12%</tspan> · <tspan class="known">1.55%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.15%</tspan> · <tspan class="known">1.52%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="732.95" height="6" x="0" y="0" class="decompiled"/>
-<rect width="11.61" height="6" x="732.95" y="0" class="known"/>
+<rect width="733.20" height="6" x="0" y="0" class="decompiled"/>
+<rect width="11.36" height="6" x="733.20" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2000,7 +2000,7 @@
 <rect width="7.05" height="6.58" x="690.57" y="216.45" class="decompiled"><title>void __cdecl Lara_Col_Jumper(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="6.96" height="6.58" x="700.62" y="216.45" class="decompiled"><title>void __cdecl GameWindowCalculateSizeFromClient(int32_t *width, int32_t *height);</title></rect>
 <rect width="6.88" height="6.58" x="710.58" y="216.45" class="decompiled"><title>void __cdecl Matrix_LookAt(int32_t xsrc, int32_t ysrc, int32_t zsrc, int32_t xtar, int32_t ytar, int32_t ztar, int16_t roll);</title></rect>
-<rect width="6.88" height="6.58" x="720.46" y="216.45" class="known"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
+<rect width="6.88" height="6.58" x="720.46" y="216.45" class="decompiled"><title>void __cdecl Richochet(GAME_VECTOR *pos);</title></rect>
 <rect width="6.88" height="6.58" x="730.34" y="216.45" class="decompiled"><title>void __cdecl Lara_LookLeftRight(void);</title></rect>
 <rect width="6.79" height="6.58" x="740.21" y="216.45" class="decompiled"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
 <rect width="6.65" height="6.71" x="588.61" y="226.03" class="decompiled"><title>void __thiscall WinVidGetColorBitMasks(COLOR_BIT_MASKS *bm, LPDDPIXELFORMAT pixel_format);</title></rect>

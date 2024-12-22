@@ -364,3 +364,16 @@ void __cdecl DoLotsOfBlood(
             room_num);
     }
 }
+
+void __cdecl Richochet(const GAME_VECTOR *const pos)
+{
+    const int16_t fx_num = Effect_Create(pos->room_num);
+    if (fx_num != NO_ITEM) {
+        FX *const fx = &g_Effects[fx_num];
+        fx->object_id = O_RICOCHET;
+        fx->pos = pos->pos;
+        fx->counter = 4;
+        fx->frame_num = -3 * Random_GetDraw() / 0x8000;
+        Sound_Effect(SFX_LARA_RICOCHET, &fx->pos, SPM_NORMAL);
+    }
+}

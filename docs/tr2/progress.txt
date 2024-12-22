@@ -3231,7 +3231,7 @@ typedef enum {
 0x0041C630  0x00A4  +R      void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE direction, int16_t room_num, int32_t num);
 0x0041C6E0  0x0082  +       void __cdecl Blood_Control(int16_t fx_num);
 0x0041C770  0x007F  +       void __cdecl Explosion_Control(int16_t fx_num);
-0x0041C7F0  0x0072  -R      void __cdecl Richochet(GAME_VECTOR *pos);
+0x0041C7F0  0x0072  +R      void __cdecl Richochet(GAME_VECTOR *pos);
 0x0041C870  0x0030  -       void __cdecl Richochet_Control(int16_t fx_num);
 0x0041C8A0  0x0064  +R      void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);
 0x0041C910  0x0078  +       void __cdecl FX_Bubbles(ITEM *item);
