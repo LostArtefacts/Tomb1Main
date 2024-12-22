@@ -283,6 +283,7 @@ static void M_DecompEffects(const bool enable)
     INJECT(enable, 0x0041D9F0, FX_DynamicLightOn);
     INJECT(enable, 0x0041DA00, FX_DynamicLightOff);
     INJECT(enable, 0x0041DA10, FX_ResetHair);
+    INJECT(enable, 0x0041DA50, FX_AssaultStop);
     INJECT(enable, 0x0041DB50, Knife);
     INJECT(enable, 0x00433360, Effect_ExplodingDeath);
     INJECT(enable, 0x00435F20, Effect_GunShot);

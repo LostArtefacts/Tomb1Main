@@ -583,3 +583,10 @@ void __cdecl FX_ResetHair(ITEM *const item)
 {
     Lara_Hair_Initialise();
 }
+
+void __cdecl FX_AssaultStop(ITEM *const item)
+{
+    g_IsAssaultTimerActive = false;
+    g_IsAssaultTimerDisplay = true;
+    g_FlipEffect = -1;
+}
