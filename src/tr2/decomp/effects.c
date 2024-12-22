@@ -557,3 +557,8 @@ void __cdecl FX_SwapMeshesWithMeshSwap3(ITEM *const item)
         }
     }
 }
+
+void __cdecl FX_InvisibilityOn(ITEM *const item)
+{
+    item->status = IS_INVISIBLE;
+}

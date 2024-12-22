@@ -15,7 +15,6 @@
 #define SphereOfDoom_Collision ((void __cdecl (*)(int16_t item_num, ITEM *lara_item, COLL_INFO *coll))0x0041D430)
 #define SphereOfDoom_Control ((void __cdecl (*)(int16_t item_num))0x0041D560)
 #define SphereOfDoom_Draw ((void __cdecl (*)(const ITEM *item))0x0041D650)
-#define FX_InvisibilityOn ((void __cdecl (*)(ITEM *item))0x0041D9C0)
 #define FX_InvisibilityOff ((void __cdecl (*)(ITEM *item))0x0041D9D0)
 #define FX_DynamicLightOn ((void __cdecl (*)(ITEM *item))0x0041D9F0)
 #define FX_DynamicLightOff ((void __cdecl (*)(ITEM *item))0x0041DA00)
