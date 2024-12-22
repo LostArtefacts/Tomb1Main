@@ -382,3 +382,9 @@ void __cdecl FX_FinishLevel(ITEM *const item)
 {
     g_LevelComplete = true;
 }
+
+void __cdecl FX_Turn180(ITEM *const item)
+{
+    item->rot.x = -item->rot.x;
+    item->rot.y += PHD_180;
+}

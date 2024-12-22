@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.97% (1169)</tspan> · <tspan class="known">3.62% (45)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">94.05% (1170)</tspan> · <tspan class="known">3.54% (44)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="701.96" height="6" x="0" y="0" class="decompiled"/>
-<rect width="27.02" height="6" x="701.96" y="0" class="known"/>
+<rect width="702.56" height="6" x="0" y="0" class="decompiled"/>
+<rect width="26.42" height="6" x="702.56" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -335,7 +335,7 @@
 <rect width="12" height="12" x="90" y="75" class="decompiled"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="75" class="decompiled"><title>void __cdecl Waterfall_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="120" y="75" class="decompiled"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
-<rect width="12" height="12" x="135" y="75" class="known"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
+<rect width="12" height="12" x="135" y="75" class="decompiled"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
 <rect width="12" height="12" x="150" y="75" class="known"><title>void __cdecl FX_FloorShake(ITEM *item);</title></rect>
 <rect width="12" height="12" x="165" y="75" class="known"><title>void __cdecl FX_LaraNormal(ITEM *item);</title></rect>
 <rect width="12" height="12" x="180" y="75" class="known"><title>void __cdecl FX_Boiler(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.42%</tspan> · <tspan class="known">1.25%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.43%</tspan> · <tspan class="known">1.25%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="735.19" height="6" x="0" y="0" class="decompiled"/>
-<rect width="9.37" height="6" x="735.19" y="0" class="known"/>
+<rect width="735.24" height="6" x="0" y="0" class="decompiled"/>
+<rect width="9.32" height="6" x="735.24" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -2463,7 +2463,7 @@
 <rect width="1.59" height="1.16" x="745.41" y="340.99" class="unused"><title>sub_44E860</title></rect>
 <rect width="1.28" height="1.46" x="717.27" y="345.15" class="decompiled"><title>void __cdecl SE_GraphicsAdapterSet(HWND hwndDlg, DISPLAY_ADAPTER_NODE *adapter);</title></rect>
 <rect width="1.28" height="1.46" x="721.55" y="345.15" class="decompiled"><title>void __cdecl S_Audio_Sample_OutCloseTrack(int32_t track_id);</title></rect>
-<rect width="1.09" height="1.46" x="725.82" y="345.15" class="known"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
+<rect width="1.09" height="1.46" x="725.82" y="345.15" class="decompiled"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
 <rect width="1.09" height="1.46" x="729.92" y="345.15" class="known"><title>void __cdecl FX_InvisibilityOff(ITEM *item);</title></rect>
 <rect width="1.09" height="1.46" x="734.01" y="345.15" class="decompiled"><title>void __cdecl BridgeFlat_Floor(const ITEM *item, int32_t x, int32_t y, int32_t z, int32_t *out_height);</title></rect>
 <rect width="1.09" height="1.46" x="738.10" y="345.15" class="decompiled"><title>void __cdecl HWR_BeginScene(void);</title></rect>
