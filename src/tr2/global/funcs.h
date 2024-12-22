@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define BigBowl_Control ((void __cdecl (*)(int16_t item_num))0x00434C10)
 #define CopterControl ((void __cdecl (*)(int16_t item_num))0x00435B80)
 #define GeneralControl ((void __cdecl (*)(int16_t item_num))0x00435C90)
 #define Glow_Control ((void __cdecl (*)(int16_t fx_num))0x00435E90)

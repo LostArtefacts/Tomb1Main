@@ -88,6 +88,7 @@
 #include "game/objects/effects/water_sprite.h"
 #include "game/objects/general/alarm_sound.h"
 #include "game/objects/general/bell.h"
+#include "game/objects/general/big_bowl.h"
 #include "game/objects/general/bird_tweeter.h"
 #include "game/objects/general/bridge_common.h"
 #include "game/objects/general/bridge_flat.h"
@@ -1051,6 +1052,7 @@ static void M_Objects(const bool enable)
     INJECT(enable, 0x00434800, GongBonger_Control);
     INJECT(enable, 0x004348C0, Zipline_Collision);
     INJECT(enable, 0x00434980, Zipline_Control);
+    INJECT(enable, 0x00434C10, BigBowl_Control);
     INJECT(enable, 0x00434D00, Bell_Control);
     INJECT(enable, 0x00434D80, Window_Initialise);
     INJECT(enable, 0x00434E00, Window_Smash);

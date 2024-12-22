@@ -1,6 +1,59 @@
 #include "game/objects/general/big_bowl.h"
 
-#include "global/funcs.h"
+#include "game/effects.h"
+#include "game/items.h"
+#include "game/objects/common.h"
+#include "game/random.h"
+#include "game/room.h"
+#include "global/vars.h"
+
+typedef enum {
+    // clang-format off
+    BIG_BOWL_STATE_TIP  = 0,
+    BIG_BOWL_STATE_POUR = 1,
+    // clang-format on
+} BIG_BOWL_STATE;
+
+static void M_CreateHotLiquid(const ITEM *bowl_item);
+
+static void M_CreateHotLiquid(const ITEM *const bowl_item)
+{
+    const int16_t fx_num = Effect_Create(bowl_item->room_num);
+    const OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
+    if (fx_num != NO_ITEM) {
+        FX *const fx = &g_Effects[fx_num];
+        fx->object_id = O_HOT_LIQUID;
+        fx->pos.x = bowl_item->pos.x + STEP_L * 2;
+        fx->pos.z = bowl_item->pos.z + STEP_L * 2;
+        fx->pos.y = bowl_item->pos.y + STEP_L * 2 + 100;
+        fx->room_num = bowl_item->room_num;
+        fx->frame_num = (obj->mesh_count * Random_GetDraw()) >> 15;
+        fx->fall_speed = 0;
+        fx->shade = 2048;
+    }
+}
+
+void __cdecl BigBowl_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+
+    if (item->current_anim_state == BIG_BOWL_STATE_POUR) {
+        M_CreateHotLiquid(item);
+        item->timer++;
+        if (item->timer == 5 * FRAMES_PER_SECOND && !g_FlipStatus) {
+            // TODO: poorly hardcoded flimap number
+            g_FlipMaps[4] = IF_CODE_BITS | IF_ONE_SHOT;
+            Room_FlipMap();
+        }
+    }
+
+    Item_Animate(item);
+
+    if (item->status == IS_DEACTIVATED
+        && item->timer >= FRAMES_PER_SECOND * 7) {
+        Item_RemoveActive(item_num);
+    }
+}
 
 void BigBowl_Setup(void)
 {

@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.11% (1208)</tspan> · <tspan class="known">0.48% (6)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">97.19% (1209)</tspan> · <tspan class="known">0.40% (5)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="725.38" height="6" x="0" y="0" class="decompiled"/>
-<rect width="3.60" height="6" x="725.38" y="0" class="known"/>
+<rect width="725.98" height="6" x="0" y="0" class="decompiled"/>
+<rect width="3" height="6" x="725.98" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -701,7 +701,7 @@
 <rect width="12" height="12" x="330" y="180" class="decompiled"><title>void __cdecl GongBonger_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="345" y="180" class="decompiled"><title>void __cdecl Zipline_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);</title></rect>
 <rect width="12" height="12" x="360" y="180" class="decompiled"><title>void __cdecl Zipline_Control(int16_t item_num);</title></rect>
-<rect width="12" height="12" x="375" y="180" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
+<rect width="12" height="12" x="375" y="180" class="decompiled"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="390" y="180" class="decompiled"><title>void __cdecl Bell_Control(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="405" y="180" class="decompiled"><title>void __cdecl Window_Initialise(int16_t item_num);</title></rect>
 <rect width="12" height="12" x="420" y="180" class="decompiled"><title>void __cdecl Window_Smash(int16_t item_num);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.42%</tspan> · <tspan class="known">0.26%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">99.48%</tspan> · <tspan class="known">0.19%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="742.64" height="6" x="0" y="0" class="decompiled"/>
-<rect width="1.92" height="6" x="742.64" y="0" class="known"/>
+<rect width="743.14" height="6" x="0" y="0" class="decompiled"/>
+<rect width="1.42" height="6" x="743.14" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1728,7 +1728,7 @@
 <rect width="10.64" height="10.87" x="494.60" y="336.46" class="decompiled"><title>bool __cdecl DInputJoystickCreate(void);</title></rect>
 <rect width="10.64" height="10.87" x="494.60" y="350.33" class="decompiled"><title>void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);</title></rect>
 <rect width="10.64" height="10.81" x="494.60" y="364.19" class="decompiled"><title>void __cdecl Effect_Kill(int16_t fx_num);</title></rect>
-<rect width="10.72" height="10.72" x="508.24" y="122.62" class="known"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
+<rect width="10.72" height="10.72" x="508.24" y="122.62" class="decompiled"><title>void __cdecl BigBowl_Control(int16_t item_num);</title></rect>
 <rect width="10.66" height="10.72" x="521.97" y="122.62" class="decompiled"><title>void __cdecl Lara_SlideSlope(ITEM *item, COLL_INFO *coll);</title></rect>
 <rect width="10.66" height="10.72" x="535.63" y="122.62" class="decompiled"><title>bool __cdecl WinVidSpinMessageLoop(bool needWait);</title></rect>
 <rect width="10.66" height="10.72" x="549.29" y="122.62" class="decompiled"><title>BOOL __stdcall S_Audio_Sample_DSoundEnumCallback(LPGUID guid, LPCTSTR description, LPCTSTR module, LPVOID context);</title></rect>
