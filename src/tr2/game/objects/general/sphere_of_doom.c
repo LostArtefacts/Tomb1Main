@@ -1,7 +1,9 @@
 #include "game/objects/general/sphere_of_doom.h"
 
+#include "game/items.h"
 #include "game/math.h"
 #include "game/room.h"
+#include "game/sound.h"
 #include "global/funcs.h"
 #include "global/vars.h"
 
@@ -47,6 +49,27 @@ void __cdecl SphereOfDoom_Collision(
     lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
     lara_item->current_anim_state = LS_FORWARD_JUMP;
     lara_item->goal_anim_state = LS_FORWARD_JUMP;
+}
+
+void __cdecl SphereOfDoom_Control(const int16_t item_num)
+{
+    ITEM *const item = Item_Get(item_num);
+    item->timer += 64;
+    item->rot.y += item->object_id == O_SPHERE_OF_DOOM_2 ? PHD_DEGREE * 10
+                                                         : -PHD_DEGREE * 10;
+    const int32_t dx = item->pos.x - g_LaraItem->pos.x;
+    const int32_t dy = item->pos.y - g_LaraItem->pos.y;
+    const int32_t dz = item->pos.z - g_LaraItem->pos.z;
+    const int32_t radius = (SPHERE_OF_DOOM_RADIUS * item->timer) >> 8;
+    const int32_t dist = Math_Sqrt(SQUARE(dx) + SQUARE(dy) + SQUARE(dz));
+    XYZ_32 pos = g_LaraItem->pos;
+    pos.x += ((dist - radius) * dx) / radius;
+    pos.y += ((dist - radius) * dy) / radius;
+    pos.z += ((dist - radius) * dz) / radius;
+    Sound_Effect(SFX_MARCO_BARTOLLI_TRANSFORM, &pos, SPM_NORMAL);
+    if (item->timer > 60 * 64) {
+        Item_Kill(item_num);
+    }
 }
 
 void SphereOfDoom_Setup(OBJECT *const obj, const bool transparent)

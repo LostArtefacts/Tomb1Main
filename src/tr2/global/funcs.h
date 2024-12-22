@@ -6,7 +6,6 @@
 
 // clang-format off
 #define Output_InsertInventoryBackground ((void __cdecl (*)(const int16_t *obj_ptr))0x00401D50)
-#define SphereOfDoom_Control ((void __cdecl (*)(int16_t item_num))0x0041D560)
 #define SphereOfDoom_Draw ((void __cdecl (*)(const ITEM *item))0x0041D650)
 #define Earthquake_Control ((void __cdecl (*)(int16_t item_num))0x00434210)
 #define FinalCutscene_Control ((void __cdecl (*)(int16_t item_num))0x004342F0)
