@@ -17,12 +17,90 @@
 #define PIX_FMT_GL GL_UNSIGNED_BYTE
 #define ALPHA_FMT uint8_t
 
+typedef enum {
+    POLY_GTMAP,
+    POLY_WGTMAP,
+    POLY_GTMAP_PERSP,
+    POLY_WGTMAP_PERSP,
+    POLY_LINE,
+    POLY_FLAT,
+    POLY_GOURAUD,
+    POLY_TRANS,
+    POLY_SPRITE,
+} POLY_TYPE;
+
 typedef struct {
     GFX_2D_RENDERER *renderer_2d;
     GFX_2D_SURFACE *surface;
     GFX_2D_SURFACE *surface_alpha;
     GFX_COLOR palette[256];
 } M_PRIV;
+
+#pragma pack(push, 1)
+typedef struct {
+    uint16_t x;
+    uint16_t y;
+} XGEN_X;
+
+typedef struct {
+    int32_t x1;
+    int32_t x2;
+} XBUF_X;
+
+typedef struct {
+    int16_t x;
+    int16_t y;
+    int16_t g;
+} XGEN_XG;
+
+typedef struct {
+    int32_t x1;
+    int32_t g1;
+    int32_t x2;
+    int32_t g2;
+} XBUF_XG;
+
+typedef struct {
+    uint16_t x;
+    uint16_t y;
+    uint16_t g;
+    uint16_t u;
+    uint16_t v;
+} XGEN_XGUV;
+
+typedef struct {
+    int32_t x1;
+    int32_t g1;
+    int32_t u1;
+    int32_t v1;
+    int32_t x2;
+    int32_t g2;
+    int32_t u2;
+    int32_t v2;
+} XBUF_XGUV;
+
+typedef struct {
+    uint16_t x;
+    uint16_t y;
+    uint16_t g;
+    float rhw;
+    float u;
+    float v;
+} XGEN_XGUVP;
+
+typedef struct {
+    int32_t x1;
+    int32_t g1;
+    float u1;
+    float v1;
+    float rhw1;
+    int32_t x2;
+    int32_t g2;
+    float u2;
+    float v2;
+    float rhw2;
+} XBUF_XGUVP;
+#pragma pack(pop)
 
 static VERTEX_INFO m_VBuffer[32] = { 0 };
 
@@ -113,9 +191,17 @@ static void M_InsertSprite(
 
 static void (*m_PolyDrawRoutines[])(
     const int16_t *, GFX_2D_SURFACE *, GFX_2D_SURFACE *) = {
-    M_DrawPolyGTMap,       M_DrawPolyWGTMap, M_DrawPolyGTMapPersp,
-    M_DrawPolyWGTMapPersp, M_DrawPolyLine,   M_DrawPolyFlat,
-    M_DrawPolyGouraud,     M_DrawPolyTrans,  M_DrawScaledSpriteC,
+    // clang-format off
+    [POLY_GTMAP]        = M_DrawPolyGTMap,
+    [POLY_WGTMAP]       = M_DrawPolyWGTMap,
+    [POLY_GTMAP_PERSP]  = M_DrawPolyGTMapPersp,
+    [POLY_WGTMAP_PERSP] = M_DrawPolyWGTMapPersp,
+    [POLY_LINE]         = M_DrawPolyLine,
+    [POLY_FLAT]         = M_DrawPolyFlat,
+    [POLY_GOURAUD]      = M_DrawPolyGouraud,
+    [POLY_TRANS]        = M_DrawPolyTrans,
+    [POLY_SPRITE]       = M_DrawScaledSpriteC,
+    // clang-format on
 };
 
 static void __fastcall M_FlatA(

@@ -189,23 +189,6 @@ typedef struct __unaligned {
     uint32_t render_height;
 } REQUEST_INFO;
 
-typedef enum {
-    POLY_GTMAP        = 0,
-    POLY_WGTMAP       = 1,
-    POLY_GTMAP_PERSP  = 2,
-    POLY_WGTMAP_PERSP = 3,
-    POLY_LINE         = 4,
-    POLY_FLAT         = 5,
-    POLY_GOURAUD      = 6,
-    POLY_TRANS        = 7,
-    POLY_SPRITE       = 8,
-    POLY_HWR_GTMAP    = 9,
-    POLY_HWR_WGTMAP   = 10,
-    POLY_HWR_GOURAUD  = 11,
-    POLY_HWR_LINE     = 12,
-    POLY_HWR_TRANS    = 13,
-} POLY_TYPE;
-
 typedef struct __unaligned {
     uint32_t best_time[10];
     uint32_t best_finish[10];
@@ -720,70 +703,6 @@ typedef enum {
     HT_SMALL_SLOPE = 1,
     HT_BIG_SLOPE   = 2,
 } HEIGHT_TYPE;
-
-typedef struct __unaligned {
-    uint16_t x;
-    uint16_t y;
-} XGEN_X;
-
-typedef struct __unaligned {
-    int32_t x1;
-    int32_t x2;
-} XBUF_X;
-
-typedef struct __unaligned {
-    int16_t x;
-    int16_t y;
-    int16_t g;
-} XGEN_XG;
-
-typedef struct __unaligned {
-    int32_t x1;
-    int32_t g1;
-    int32_t x2;
-    int32_t g2;
-} XBUF_XG;
-
-typedef struct __unaligned {
-    uint16_t x;
-    uint16_t y;
-    uint16_t g;
-    uint16_t u;
-    uint16_t v;
-} XGEN_XGUV;
-
-typedef struct __unaligned {
-    int32_t x1;
-    int32_t g1;
-    int32_t u1;
-    int32_t v1;
-    int32_t x2;
-    int32_t g2;
-    int32_t u2;
-    int32_t v2;
-} XBUF_XGUV;
-
-typedef struct __unaligned {
-    uint16_t x;
-    uint16_t y;
-    uint16_t g;
-    float rhw;
-    float u;
-    float v;
-} XGEN_XGUVP;
-
-typedef struct __unaligned {
-    int32_t x1;
-    int32_t g1;
-    float u1;
-    float v1;
-    float rhw1;
-    int32_t x2;
-    int32_t g2;
-    float u2;
-    float v2;
-    float rhw2;
-} XBUF_XGUVP;
 
 typedef struct __unaligned {
     int16_t number;

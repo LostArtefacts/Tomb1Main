@@ -17,6 +17,14 @@
 #define MAKE_DEPTH_FROM_RHW(rhw) (g_FltResZBuf - g_FltResZORhw * (rhw))
 #define MAKE_DEPTH(v) MAKE_DEPTH_FROM_RHW((v)->rhw)
 
+typedef enum {
+    POLY_HWR_GTMAP,
+    POLY_HWR_WGTMAP,
+    POLY_HWR_GOURAUD,
+    POLY_HWR_LINE,
+    POLY_HWR_TRANS,
+} POLY_HWR_TYPE;
+
 typedef struct {
     GFX_2D_RENDERER *renderer_2d;
     GFX_3D_RENDERER *renderer_3d;
@@ -373,7 +381,7 @@ static void M_InsertGT3_Sorted(
 
     const double zv =
         Render_CalculatePolyZ(sort_type, vtx0->zv, vtx1->zv, vtx2->zv, -1.0);
-    const POLY_TYPE poly_type =
+    const POLY_HWR_TYPE poly_type =
         texture->draw_type == DRAW_OPAQUE ? POLY_HWR_GTMAP : POLY_HWR_WGTMAP;
     const PHD_VBUF *const vtx[3] = { vtx0, vtx1, vtx2 };
     const PHD_UV *const uv[3] = { uv0, uv1, uv2 };
@@ -466,7 +474,7 @@ static void M_InsertGT4_Sorted(
 
     const double zv = Render_CalculatePolyZ(
         sort_type, vtx0->zv, vtx1->zv, vtx2->zv, vtx3->zv);
-    const POLY_TYPE poly_type =
+    const POLY_HWR_TYPE poly_type =
         texture->draw_type == DRAW_OPAQUE ? POLY_HWR_GTMAP : POLY_HWR_WGTMAP;
     const PHD_VBUF *const vtx[4] = { vtx0, vtx1, vtx2, vtx3 };
 

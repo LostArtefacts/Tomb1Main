@@ -453,7 +453,7 @@ typedef struct __unaligned {
     uint32_t render_height;
 } REQUEST_INFO;
 
-typedef enum {
+typedef enum { // decompiled
     POLY_GTMAP        = 0,
     POLY_WGTMAP       = 1,
     POLY_GTMAP_PERSP  = 2,
@@ -2479,30 +2479,30 @@ typedef enum { // decompiled
     DIR_WEST    = 3,
 } DIRECTION;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     uint16_t x;
     uint16_t y;
 } XGEN_X;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int32_t x1;
     int32_t x2;
 } XBUF_X;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int16_t x;
     int16_t y;
     int16_t g;
 } XGEN_XG;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int32_t x1;
     int32_t g1;
     int32_t x2;
     int32_t g2;
 } XBUF_XG;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     uint16_t x;
     uint16_t y;
     uint16_t g;
@@ -2510,7 +2510,7 @@ typedef struct __unaligned {
     uint16_t v;
 } XGEN_XGUV;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int32_t x1;
     int32_t g1;
     int32_t u1;
@@ -2521,7 +2521,7 @@ typedef struct __unaligned {
     int32_t v2;
 } XBUF_XGUV;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     uint16_t x;
     uint16_t y;
     uint16_t g;
@@ -2530,7 +2530,7 @@ typedef struct __unaligned {
     float v;
 } XGEN_XGUVP;
 
-typedef struct __unaligned {
+typedef struct __unaligned { // decompiled
     int32_t x1;
     int32_t g1;
     float u1;
