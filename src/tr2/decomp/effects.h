@@ -50,3 +50,4 @@ void __cdecl FX_FinishLevel(ITEM *item);
 void __cdecl FX_Turn180(ITEM *item);
 void __cdecl FX_FloorShake(ITEM *item);
 void __cdecl FX_LaraNormal(ITEM *item);
+void __cdecl FX_Boiler(ITEM *item);

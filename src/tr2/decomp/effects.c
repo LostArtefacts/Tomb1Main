@@ -416,3 +416,9 @@ void __cdecl FX_LaraNormal(ITEM *const item)
     g_Camera.type = CAM_CHASE;
     Output_AlterFOV(GAME_FOV * PHD_DEGREE);
 }
+
+void __cdecl FX_Boiler(ITEM *const item)
+{
+    Sound_Effect(SFX_UNKNOWN_1, NULL, SPM_NORMAL);
+    g_FlipEffect = -1;
+}
