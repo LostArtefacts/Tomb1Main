@@ -69,10 +69,10 @@
 </g>
 <g transform="translate(0 116)">
 <text x="0" y="7.50">Tomb2.exe progress according to the physical function order:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.73% (1166)</tspan> · <tspan class="known">3.86% (48)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">93.81% (1167)</tspan> · <tspan class="known">3.78% (47)</tspan> · <tspan class="todo">0% (0)</tspan> · <tspan class="unused">2.41% (30)</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="700.16" height="6" x="0" y="0" class="decompiled"/>
-<rect width="28.82" height="6" x="700.16" y="0" class="known"/>
+<rect width="700.76" height="6" x="0" y="0" class="decompiled"/>
+<rect width="28.22" height="6" x="700.76" y="0" class="known"/>
 <rect width="18.01" height="6" x="728.99" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -332,7 +332,7 @@
 <rect width="12" height="12" x="45" y="75" class="decompiled"><title>void __cdecl Splash_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="60" y="75" class="decompiled"><title>void __cdecl WaterSprite_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="75" y="75" class="decompiled"><title>void __cdecl SnowSprite_Control(int16_t fx_num);</title></rect>
-<rect width="12" height="12" x="90" y="75" class="known"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
+<rect width="12" height="12" x="90" y="75" class="decompiled"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="105" y="75" class="known"><title>void __cdecl Waterfall_Control(int16_t fx_num);</title></rect>
 <rect width="12" height="12" x="120" y="75" class="known"><title>void __cdecl FX_FinishLevel(ITEM *item);</title></rect>
 <rect width="12" height="12" x="135" y="75" class="known"><title>void __cdecl FX_Turn180(ITEM *item);</title></rect>
@@ -1324,10 +1324,10 @@
 </g>
 <g transform="translate(0 546)">
 <text x="0" y="7.50">Tomb2.exe progress according to the function sizes:</text>
-<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.26%</tspan> · <tspan class="known">1.42%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
+<text class="todo" style="font-size: 12px; " x="747" y="9"><tspan text-anchor="end"><tspan class="decompiled">98.32%</tspan> · <tspan class="known">1.35%</tspan> · <tspan class="todo">0%</tspan> · <tspan class="unused">0.33%</tspan></tspan></text>
 <g transform="translate(0 20)">
-<rect width="733.99" height="6" x="0" y="0" class="decompiled"/>
-<rect width="10.57" height="6" x="733.99" y="0" class="known"/>
+<rect width="734.47" height="6" x="0" y="0" class="decompiled"/>
+<rect width="10.09" height="6" x="734.47" y="0" class="known"/>
 <rect width="2.44" height="6" x="744.56" y="0" class="unused"/>
 </g>
 <g transform="translate(0 31)">
@@ -1736,7 +1736,7 @@
 <rect width="10.60" height="10.72" x="576.56" y="122.62" class="decompiled"><title>int32_t __cdecl Skidoo_CheckGetOn(int16_t item_num, COLL_INFO *coll);</title></rect>
 <rect width="10.54" height="10.72" x="590.16" y="122.62" class="decompiled"><title>void __cdecl FallingCeiling_Control(int16_t item_num);</title></rect>
 <rect width="10.54" height="10.72" x="603.70" y="122.62" class="decompiled"><title>BOOL __cdecl SelectDrive(void);</title></rect>
-<rect width="10.42" height="10.72" x="617.24" y="122.62" class="known"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
+<rect width="10.42" height="10.72" x="617.24" y="122.62" class="decompiled"><title>void __cdecl HotLiquid_Control(int16_t fx_num);</title></rect>
 <rect width="10.30" height="10.72" x="630.66" y="122.62" class="decompiled"><title>void __cdecl CutscenePlayer_Control(int16_t item_num);</title></rect>
 <rect width="10.30" height="10.72" x="643.96" y="122.62" class="decompiled"><title>void __cdecl Window_2_Control(int16_t item_num);</title></rect>
 <rect width="10.30" height="10.72" x="657.26" y="122.62" class="decompiled"><title>void __cdecl BGND_DrawQuad(float sx, float sy, float width, float height, D3DCOLOR color);</title></rect>
