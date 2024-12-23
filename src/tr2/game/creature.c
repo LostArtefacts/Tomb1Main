@@ -986,23 +986,23 @@ int32_t __cdecl Creature_ShootAtLara(
         is_targetable = true;
     }
 
-    int16_t fx_num = NO_ITEM;
+    int16_t effect_num = NO_ITEM;
     if (target_item == g_LaraItem) {
         if (is_hit) {
-            fx_num = Creature_Effect(item, gun, Effect_GunHit);
+            effect_num = Creature_Effect(item, gun, Effect_GunHit);
             Item_TakeDamage(target_item, damage, true);
         } else if (is_targetable) {
-            fx_num = Creature_Effect(item, gun, Effect_GunMiss);
+            effect_num = Creature_Effect(item, gun, Effect_GunMiss);
         }
     } else {
-        fx_num = Creature_Effect(item, gun, Effect_GunShot);
+        effect_num = Creature_Effect(item, gun, Effect_GunShot);
         if (is_hit) {
             Item_TakeDamage(target_item, damage / 10, true);
         }
     }
 
-    if (fx_num != NO_ITEM) {
-        g_Effects[fx_num].rot.y += extra_rotation;
+    if (effect_num != NO_ITEM) {
+        g_Effects[effect_num].rot.y += extra_rotation;
     }
 
     GAME_VECTOR start = {

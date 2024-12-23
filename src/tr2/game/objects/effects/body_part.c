@@ -17,28 +17,28 @@ void BodyPart_Setup(void)
     obj->mesh_count = 0;
 }
 
-void __cdecl BodyPart_Control(const int16_t fx_num)
+void __cdecl BodyPart_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    fx->rot.x += 5 * PHD_DEGREE;
-    fx->rot.z += 10 * PHD_DEGREE;
-    fx->pos.x += (fx->speed * Math_Sin(fx->rot.y)) >> W2V_SHIFT;
-    fx->pos.z += (fx->speed * Math_Cos(fx->rot.y)) >> W2V_SHIFT;
-    fx->pos.y += fx->fall_speed;
-    fx->fall_speed += GRAVITY;
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->rot.x += 5 * PHD_DEGREE;
+    effect->rot.z += 10 * PHD_DEGREE;
+    effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
+    effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
+    effect->pos.y += effect->fall_speed;
+    effect->fall_speed += GRAVITY;
 
-    int16_t room_num = fx->room_num;
+    int16_t room_num = effect->room_num;
     const SECTOR *const sector =
-        Room_GetSector(fx->pos.x, fx->pos.y, fx->pos.z, &room_num);
+        Room_GetSector(effect->pos.x, effect->pos.y, effect->pos.z, &room_num);
 
-    if (!(g_Rooms[fx->room_num].flags & RF_UNDERWATER)
+    if (!(g_Rooms[effect->room_num].flags & RF_UNDERWATER)
         && (g_Rooms[room_num].flags & RF_UNDERWATER)) {
-        const int16_t fx_num = Effect_Create(fx->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *const splash_fx = &g_Effects[fx_num];
-            splash_fx->pos.x = fx->pos.x;
-            splash_fx->pos.y = fx->pos.y;
-            splash_fx->pos.z = fx->pos.z;
+        const int16_t effect_num = Effect_Create(effect->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *const splash_fx = &g_Effects[effect_num];
+            splash_fx->pos.x = effect->pos.x;
+            splash_fx->pos.y = effect->pos.y;
+            splash_fx->pos.z = effect->pos.z;
             splash_fx->rot.y = 0;
             splash_fx->speed = 0;
             splash_fx->frame_num = 0;
@@ -47,46 +47,46 @@ void __cdecl BodyPart_Control(const int16_t fx_num)
     }
 
     const int32_t ceiling =
-        Room_GetCeiling(sector, fx->pos.x, fx->pos.y, fx->pos.z);
-    if (fx->pos.y < ceiling) {
-        fx->pos.y = ceiling;
-        fx->fall_speed = -fx->fall_speed;
+        Room_GetCeiling(sector, effect->pos.x, effect->pos.y, effect->pos.z);
+    if (effect->pos.y < ceiling) {
+        effect->pos.y = ceiling;
+        effect->fall_speed = -effect->fall_speed;
     }
 
     const int32_t height =
-        Room_GetHeight(sector, fx->pos.x, fx->pos.y, fx->pos.z);
-    if (fx->pos.y >= height) {
-        if (fx->counter) {
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->counter = 0;
-            fx->object_id = O_EXPLOSION;
-            fx->shade = HIGH_LIGHT;
-            Sound_Effect(SFX_EXPLOSION_1, &fx->pos, SPM_NORMAL);
+        Room_GetHeight(sector, effect->pos.x, effect->pos.y, effect->pos.z);
+    if (effect->pos.y >= height) {
+        if (effect->counter) {
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->counter = 0;
+            effect->object_id = O_EXPLOSION;
+            effect->shade = HIGH_LIGHT;
+            Sound_Effect(SFX_EXPLOSION_1, &effect->pos, SPM_NORMAL);
         } else {
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
         return;
     }
 
-    if (Lara_IsNearItem(&fx->pos, 2 * fx->counter)) {
-        Lara_TakeDamage(fx->counter, true);
+    if (Lara_IsNearItem(&effect->pos, 2 * effect->counter)) {
+        Lara_TakeDamage(effect->counter, true);
 
-        if (fx->counter == 0) {
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->counter = 0;
-            fx->object_id = O_EXPLOSION;
-            fx->shade = HIGH_LIGHT;
-            Sound_Effect(SFX_EXPLOSION_1, &fx->pos, SPM_NORMAL);
+        if (effect->counter == 0) {
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->counter = 0;
+            effect->object_id = O_EXPLOSION;
+            effect->shade = HIGH_LIGHT;
+            Sound_Effect(SFX_EXPLOSION_1, &effect->pos, SPM_NORMAL);
             g_Lara.spaz_effect_count = 5;
-            g_Lara.spaz_effect = fx;
+            g_Lara.spaz_effect = effect;
         } else {
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
     }
 
-    if (room_num != fx->room_num) {
-        Effect_NewRoom(fx_num, room_num);
+    if (room_num != effect->room_num) {
+        Effect_NewRoom(effect_num, room_num);
     }
 }

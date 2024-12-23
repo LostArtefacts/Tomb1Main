@@ -806,7 +806,7 @@ void __cdecl Room_FlipMap(void)
 
         // TODO: is this really necessary given the assignments above?
         r->item_num = flipped->item_num;
-        r->fx_num = flipped->fx_num;
+        r->effect_num = flipped->effect_num;
 
         Room_AddFlipItems(r);
     }

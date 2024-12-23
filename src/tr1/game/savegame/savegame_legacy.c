@@ -343,7 +343,7 @@ static void M_ReadLara(LARA_INFO *lara)
     M_Read(&lara->spaz_effect_count, sizeof(int16_t));
 
     lara->spaz_effect = NULL;
-    M_Skip(4); // pointer to FX
+    M_Skip(4); // pointer to EFFECT
 
     M_Read(&lara->mesh_effects, sizeof(int32_t));
     for (int i = 0; i < LM_NUMBER_OF; i++) {

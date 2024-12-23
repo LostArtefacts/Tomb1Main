@@ -274,22 +274,22 @@ int16_t __cdecl Diver_Harpoon(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
-    const int16_t fx_num = Effect_Create(room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->pos.x = x;
-        fx->pos.y = y;
-        fx->pos.z = z;
-        fx->room_num = room_num;
-        fx->rot.x = 0;
-        fx->rot.y = y_rot;
-        fx->rot.z = 0;
-        fx->speed = DIVER_HARPOON_SPEED;
-        fx->fall_speed = 0;
-        fx->frame_num = 0;
-        fx->object_id = O_MISSILE_HARPOON;
-        fx->shade = 3584;
-        Missile_ShootAtLara(fx);
+    const int16_t effect_num = Effect_Create(room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->pos.x = x;
+        effect->pos.y = y;
+        effect->pos.z = z;
+        effect->room_num = room_num;
+        effect->rot.x = 0;
+        effect->rot.y = y_rot;
+        effect->rot.z = 0;
+        effect->speed = DIVER_HARPOON_SPEED;
+        effect->fall_speed = 0;
+        effect->frame_num = 0;
+        effect->object_id = O_MISSILE_HARPOON;
+        effect->shade = 3584;
+        Missile_ShootAtLara(effect);
     }
-    return fx_num;
+    return effect_num;
 }

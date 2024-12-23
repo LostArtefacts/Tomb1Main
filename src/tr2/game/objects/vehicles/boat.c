@@ -291,35 +291,36 @@ void __cdecl Boat_DoWakeEffect(const ITEM *const boat)
         (Random_GetDraw() * g_Objects[O_WATER_SPRITE].mesh_count) >> 15;
 
     for (int32_t i = 0; i < 3; i++) {
-        const int16_t fx_num = Effect_Create(boat->room_num);
-        if (fx_num == NO_ITEM) {
+        const int16_t effect_num = Effect_Create(boat->room_num);
+        if (effect_num == NO_ITEM) {
             continue;
         }
 
-        FX *const fx = &g_Effects[fx_num];
-        fx->object_id = O_WATER_SPRITE;
-        fx->room_num = boat->room_num;
-        fx->frame_num = frame;
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->object_id = O_WATER_SPRITE;
+        effect->room_num = boat->room_num;
+        effect->frame_num = frame;
 
         const int32_t c = Math_Cos(boat->rot.y);
         const int32_t s = Math_Sin(boat->rot.y);
         const int32_t w = (1 - i) * BOAT_SIDE;
         const int32_t h = BOAT_WAKE;
-        fx->pos.x = boat->pos.x + ((-c * w - s * h) >> W2V_SHIFT);
-        fx->pos.y = boat->pos.y;
-        fx->pos.z = boat->pos.z + ((-c * h + s * w) >> W2V_SHIFT);
-        fx->rot.y = boat->rot.y + (i << W2V_SHIFT) - PHD_90;
+        effect->pos.x = boat->pos.x + ((-c * w - s * h) >> W2V_SHIFT);
+        effect->pos.y = boat->pos.y;
+        effect->pos.z = boat->pos.z + ((-c * h + s * w) >> W2V_SHIFT);
+        effect->rot.y = boat->rot.y + (i << W2V_SHIFT) - PHD_90;
 
-        fx->counter = 20;
-        fx->speed = boat->speed >> 2;
+        effect->counter = 20;
+        effect->speed = boat->speed >> 2;
         if (boat->speed < 64) {
-            fx->fall_speed = (Random_GetDraw() * (ABS(boat->speed) - 64)) >> 15;
+            effect->fall_speed =
+                (Random_GetDraw() * (ABS(boat->speed) - 64)) >> 15;
         } else {
-            fx->fall_speed = 0;
+            effect->fall_speed = 0;
         }
 
-        fx->shade = g_LsAdder - 768;
-        CLAMPL(fx->shade, 0);
+        effect->shade = g_LsAdder - 768;
+        CLAMPL(effect->shade, 0);
     }
 }
 

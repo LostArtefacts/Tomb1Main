@@ -35,7 +35,7 @@ static const char *M_GetBufferName(const GAME_BUFFER buffer)
         case GBUF_FLOOR_DATA:               return "Floor Data";
         case GBUF_ITEMS:                    return "ITEMS!!";
         case GBUF_CAMERAS:                  return "Cameras";
-        case GBUF_SOUND_FX:                 return "Sound FX";
+        case GBUF_SOUND_FX:                 return "Sound EFFECT";
         case GBUF_BOXES:                    return "Boxes";
         case GBUF_OVERLAPS:                 return "Overlaps";
         case GBUF_GROUND_ZONE:              return "GroundZone";

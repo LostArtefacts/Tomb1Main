@@ -4,4 +4,4 @@
 
 void BodyPart_Setup(void);
 
-void __cdecl BodyPart_Control(int16_t fx_num);
+void __cdecl BodyPart_Control(int16_t effect_num);

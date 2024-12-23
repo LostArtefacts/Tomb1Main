@@ -16,73 +16,74 @@ void Flame_Setup(OBJECT *obj)
     obj->control = Flame_Control;
 }
 
-void Flame_Control(int16_t fx_num)
+void Flame_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
+    EFFECT *effect = &g_Effects[effect_num];
 
-    fx->frame_num--;
-    if (fx->frame_num <= g_Objects[O_FLAME].nmeshes) {
-        fx->frame_num = 0;
+    effect->frame_num--;
+    if (effect->frame_num <= g_Objects[O_FLAME].nmeshes) {
+        effect->frame_num = 0;
     }
 
-    if (fx->counter < 0) {
+    if (effect->counter < 0) {
         if (g_Lara.water_status == LWS_CHEAT) {
-            fx->counter = 0;
+            effect->counter = 0;
             Sound_StopEffect(SFX_FIRE, NULL);
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
 
-        fx->pos.x = 0;
-        fx->pos.y = 0;
-        if (fx->counter == -1) {
-            fx->pos.z = -100;
+        effect->pos.x = 0;
+        effect->pos.y = 0;
+        if (effect->counter == -1) {
+            effect->pos.z = -100;
         } else {
-            fx->pos.z = 0;
+            effect->pos.z = 0;
         }
 
-        Collide_GetJointAbsPosition(g_LaraItem, &fx->pos, -1 - fx->counter);
+        Collide_GetJointAbsPosition(
+            g_LaraItem, &effect->pos, -1 - effect->counter);
 
         int32_t y = Room_GetWaterHeight(
             g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z,
             g_LaraItem->room_num);
 
-        if (y != NO_HEIGHT && fx->pos.y > y) {
-            fx->counter = 0;
+        if (y != NO_HEIGHT && effect->pos.y > y) {
+            effect->counter = 0;
             Sound_StopEffect(SFX_FIRE, NULL);
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         } else {
-            if (fx->room_num != g_LaraItem->room_num) {
-                Effect_NewRoom(fx_num, g_LaraItem->room_num);
+            if (effect->room_num != g_LaraItem->room_num) {
+                Effect_NewRoom(effect_num, g_LaraItem->room_num);
             }
-            Sound_Effect(SFX_FIRE, &fx->pos, SPM_NORMAL);
+            Sound_Effect(SFX_FIRE, &effect->pos, SPM_NORMAL);
             Lara_TakeDamage(FLAME_ONFIRE_DAMAGE, true);
         }
         return;
     }
 
-    Sound_Effect(SFX_FIRE, &fx->pos, SPM_NORMAL);
-    if (fx->counter) {
-        fx->counter--;
-    } else if (Lara_IsNearItem(&fx->pos, 600)) {
+    Sound_Effect(SFX_FIRE, &effect->pos, SPM_NORMAL);
+    if (effect->counter) {
+        effect->counter--;
+    } else if (Lara_IsNearItem(&effect->pos, 600)) {
         if (g_Lara.water_status == LWS_CHEAT) {
             return;
         }
 
-        int32_t x = g_LaraItem->pos.x - fx->pos.x;
-        int32_t z = g_LaraItem->pos.z - fx->pos.z;
+        int32_t x = g_LaraItem->pos.x - effect->pos.x;
+        int32_t z = g_LaraItem->pos.z - effect->pos.z;
         int32_t distance = SQUARE(x) + SQUARE(z);
 
         Lara_TakeDamage(FLAME_TOONEAR_DAMAGE, true);
 
         if (distance < SQUARE(300)) {
-            fx->counter = 100;
+            effect->counter = 100;
 
-            fx_num = Effect_Create(g_LaraItem->room_num);
-            if (fx_num != NO_ITEM) {
-                fx = &g_Effects[fx_num];
-                fx->frame_num = 0;
-                fx->object_id = O_FLAME;
-                fx->counter = -1;
+            effect_num = Effect_Create(g_LaraItem->room_num);
+            if (effect_num != NO_ITEM) {
+                effect = &g_Effects[effect_num];
+                effect->frame_num = 0;
+                effect->object_id = O_FLAME;
+                effect->counter = -1;
             }
         }
     }

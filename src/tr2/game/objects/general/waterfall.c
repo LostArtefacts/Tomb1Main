@@ -29,16 +29,18 @@ void __cdecl Waterfall_Control(const int16_t item_num)
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
     Sound_Effect(SFX_WATERFALL_LOOP, &item->pos, SPM_NORMAL);
 
-    const int16_t fx_num = Effect_Create(item->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->object_id = O_SPLASH;
-        fx->pos.x = item->pos.x + ((Random_GetDraw() - 0x4000) << 10) / 0x7FFF;
-        fx->pos.y = item->pos.y;
-        fx->pos.z = item->pos.z + ((Random_GetDraw() - 0x4000) << 10) / 0x7FFF;
-        fx->speed = 0;
-        fx->frame_num = 0;
-        fx->shade = g_LsAdder;
+    const int16_t effect_num = Effect_Create(item->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->object_id = O_SPLASH;
+        effect->pos.x =
+            item->pos.x + ((Random_GetDraw() - 0x4000) << 10) / 0x7FFF;
+        effect->pos.y = item->pos.y;
+        effect->pos.z =
+            item->pos.z + ((Random_GetDraw() - 0x4000) << 10) / 0x7FFF;
+        effect->speed = 0;
+        effect->frame_num = 0;
+        effect->shade = g_LsAdder;
     }
 }
 

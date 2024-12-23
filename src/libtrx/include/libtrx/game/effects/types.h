@@ -32,4 +32,4 @@ typedef struct __PACKING {
         } result, prev;
     } interp;
 #endif
-} FX;
+} EFFECT;

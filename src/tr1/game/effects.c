@@ -9,7 +9,7 @@
 
 #include <stddef.h>
 
-FX *g_Effects = NULL;
+EFFECT *g_Effects = NULL;
 int16_t g_NextFxActive = NO_ITEM;
 
 static int16_t m_NextFxFree = NO_ITEM;
@@ -28,127 +28,128 @@ void Effect_InitialiseArray(void)
 
 void Effect_Control(void)
 {
-    int16_t fx_num = g_NextFxActive;
-    while (fx_num != NO_ITEM) {
-        FX *fx = &g_Effects[fx_num];
-        OBJECT *obj = &g_Objects[fx->object_id];
+    int16_t effect_num = g_NextFxActive;
+    while (effect_num != NO_ITEM) {
+        EFFECT *effect = &g_Effects[effect_num];
+        OBJECT *obj = &g_Objects[effect->object_id];
         if (obj->control) {
-            obj->control(fx_num);
+            obj->control(effect_num);
         }
-        fx_num = fx->next_active;
+        effect_num = effect->next_active;
     }
 }
 
 int16_t Effect_Create(int16_t room_num)
 {
-    int16_t fx_num = m_NextFxFree;
-    if (fx_num == NO_ITEM) {
-        return fx_num;
+    int16_t effect_num = m_NextFxFree;
+    if (effect_num == NO_ITEM) {
+        return effect_num;
     }
 
-    FX *fx = &g_Effects[fx_num];
-    m_NextFxFree = fx->next_free;
+    EFFECT *effect = &g_Effects[effect_num];
+    m_NextFxFree = effect->next_free;
 
     ROOM *r = &g_RoomInfo[room_num];
-    fx->room_num = room_num;
-    fx->next_draw = r->fx_num;
-    r->fx_num = fx_num;
+    effect->room_num = room_num;
+    effect->next_draw = r->effect_num;
+    r->effect_num = effect_num;
 
-    fx->next_active = g_NextFxActive;
-    g_NextFxActive = fx_num;
+    effect->next_active = g_NextFxActive;
+    g_NextFxActive = effect_num;
 
-    return fx_num;
+    return effect_num;
 }
 
-void Effect_Kill(int16_t fx_num)
+void Effect_Kill(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
+    EFFECT *effect = &g_Effects[effect_num];
 
-    if (g_NextFxActive == fx_num) {
-        g_NextFxActive = fx->next_active;
+    if (g_NextFxActive == effect_num) {
+        g_NextFxActive = effect->next_active;
     } else {
         int16_t linknum = g_NextFxActive;
         while (linknum != NO_ITEM) {
-            FX *fx_link = &g_Effects[linknum];
-            if (fx_link->next_active == fx_num) {
-                fx_link->next_active = fx->next_active;
+            EFFECT *fx_link = &g_Effects[linknum];
+            if (fx_link->next_active == effect_num) {
+                fx_link->next_active = effect->next_active;
             }
             linknum = fx_link->next_active;
         }
     }
 
-    ROOM *r = &g_RoomInfo[fx->room_num];
-    if (r->fx_num == fx_num) {
-        r->fx_num = fx->next_draw;
+    ROOM *r = &g_RoomInfo[effect->room_num];
+    if (r->effect_num == effect_num) {
+        r->effect_num = effect->next_draw;
     } else {
-        int16_t linknum = r->fx_num;
+        int16_t linknum = r->effect_num;
         while (linknum != NO_ITEM) {
-            FX *fx_link = &g_Effects[linknum];
-            if (fx_link->next_draw == fx_num) {
-                fx_link->next_draw = fx->next_draw;
+            EFFECT *fx_link = &g_Effects[linknum];
+            if (fx_link->next_draw == effect_num) {
+                fx_link->next_draw = effect->next_draw;
                 break;
             }
             linknum = fx_link->next_draw;
         }
     }
 
-    fx->next_free = m_NextFxFree;
-    m_NextFxFree = fx_num;
+    effect->next_free = m_NextFxFree;
+    m_NextFxFree = effect_num;
 }
 
-void Effect_NewRoom(int16_t fx_num, int16_t room_num)
+void Effect_NewRoom(int16_t effect_num, int16_t room_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    ROOM *r = &g_RoomInfo[fx->room_num];
+    EFFECT *effect = &g_Effects[effect_num];
+    ROOM *r = &g_RoomInfo[effect->room_num];
 
-    int16_t linknum = r->fx_num;
-    if (linknum == fx_num) {
-        r->fx_num = fx->next_draw;
+    int16_t linknum = r->effect_num;
+    if (linknum == effect_num) {
+        r->effect_num = effect->next_draw;
     } else {
         for (; linknum != NO_ITEM; linknum = g_Effects[linknum].next_draw) {
-            if (g_Effects[linknum].next_draw == fx_num) {
-                g_Effects[linknum].next_draw = fx->next_draw;
+            if (g_Effects[linknum].next_draw == effect_num) {
+                g_Effects[linknum].next_draw = effect->next_draw;
                 break;
             }
         }
     }
 
     r = &g_RoomInfo[room_num];
-    fx->room_num = room_num;
-    fx->next_draw = r->fx_num;
-    r->fx_num = fx_num;
+    effect->room_num = room_num;
+    effect->next_draw = r->effect_num;
+    r->effect_num = effect_num;
 }
 
 void Effect_Draw(const int16_t fxnum)
 {
-    const FX *const fx = &g_Effects[fxnum];
-    const OBJECT *const object = &g_Objects[fx->object_id];
+    const EFFECT *const effect = &g_Effects[fxnum];
+    const OBJECT *const object = &g_Objects[effect->object_id];
     if (!object->loaded) {
         return;
     }
 
     if (object->nmeshes < 0) {
         Output_DrawSprite(
-            fx->interp.result.pos.x, fx->interp.result.pos.y,
-            fx->interp.result.pos.z, object->mesh_idx - fx->frame_num, 4096);
+            effect->interp.result.pos.x, effect->interp.result.pos.y,
+            effect->interp.result.pos.z, object->mesh_idx - effect->frame_num,
+            4096);
     } else {
         Matrix_Push();
         Matrix_TranslateAbs(
-            fx->interp.result.pos.x, fx->interp.result.pos.y,
-            fx->interp.result.pos.z);
+            effect->interp.result.pos.x, effect->interp.result.pos.y,
+            effect->interp.result.pos.z);
         if (g_MatrixPtr->_23 > Output_GetNearZ()
             && g_MatrixPtr->_23 < Output_GetFarZ()) {
             Matrix_RotYXZ(
-                fx->interp.result.rot.y, fx->interp.result.rot.x,
-                fx->interp.result.rot.z);
+                effect->interp.result.rot.y, effect->interp.result.rot.x,
+                effect->interp.result.rot.z);
             if (object->nmeshes) {
-                Output_CalculateStaticLight(fx->shade);
+                Output_CalculateStaticLight(effect->shade);
                 Object_DrawMesh(object->mesh_idx, -1, false);
             } else {
                 Output_CalculateLight(
-                    fx->interp.result.pos.x, fx->interp.result.pos.y,
-                    fx->interp.result.pos.z, fx->room_num);
-                Object_DrawMesh(fx->frame_num, -1, false);
+                    effect->interp.result.pos.x, effect->interp.result.pos.y,
+                    effect->interp.result.pos.z, effect->room_num);
+                Object_DrawMesh(effect->frame_num, -1, false);
             }
         }
         Matrix_Pop();
@@ -157,7 +158,7 @@ void Effect_Draw(const int16_t fxnum)
 
 void Effect_RunActiveFlipEffect(void)
 {
-    // XXX: Some of the FX routines rely on the item to be not null!
+    // XXX: Some of the EFFECT routines rely on the item to be not null!
     if (g_FlipEffect != -1) {
         g_EffectRoutines[g_FlipEffect](NULL);
     }

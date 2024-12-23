@@ -154,7 +154,7 @@ typedef struct __PACKING {
     int16_t test_bottom;
 #endif
     int16_t item_num;
-    int16_t fx_num;
+    int16_t effect_num;
     int16_t flipped_room;
     uint16_t flags;
 } ROOM;

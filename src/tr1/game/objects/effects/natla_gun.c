@@ -10,24 +10,26 @@ void NatlaGun_Setup(OBJECT *obj)
     obj->control = NatlaGun_Control;
 }
 
-void NatlaGun_Control(int16_t fx_num)
+void NatlaGun_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    OBJECT *object = &g_Objects[fx->object_id];
+    EFFECT *effect = &g_Effects[effect_num];
+    OBJECT *object = &g_Objects[effect->object_id];
 
-    fx->frame_num--;
-    if (fx->frame_num <= object->nmeshes) {
-        Effect_Kill(fx_num);
+    effect->frame_num--;
+    if (effect->frame_num <= object->nmeshes) {
+        Effect_Kill(effect_num);
     }
 
-    if (fx->frame_num == -1) {
+    if (effect->frame_num == -1) {
         return;
     }
 
-    int32_t z = fx->pos.z + ((fx->speed * Math_Cos(fx->rot.y)) >> W2V_SHIFT);
-    int32_t x = fx->pos.x + ((fx->speed * Math_Sin(fx->rot.y)) >> W2V_SHIFT);
-    int32_t y = fx->pos.y;
-    int16_t room_num = fx->room_num;
+    int32_t z = effect->pos.z
+        + ((effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT);
+    int32_t x = effect->pos.x
+        + ((effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT);
+    int32_t y = effect->pos.y;
+    int16_t room_num = effect->room_num;
     const SECTOR *const sector = Room_GetSector(x, y, z, &room_num);
 
     if (y >= Room_GetHeight(sector, x, y, z)
@@ -35,15 +37,15 @@ void NatlaGun_Control(int16_t fx_num)
         return;
     }
 
-    fx_num = Effect_Create(room_num);
-    if (fx_num != NO_ITEM) {
-        FX *newfx = &g_Effects[fx_num];
+    effect_num = Effect_Create(room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *newfx = &g_Effects[effect_num];
         newfx->pos.x = x;
         newfx->pos.y = y;
         newfx->pos.z = z;
-        newfx->rot.y = fx->rot.y;
+        newfx->rot.y = effect->rot.y;
         newfx->room_num = room_num;
-        newfx->speed = fx->speed;
+        newfx->speed = effect->speed;
         newfx->frame_num = 0;
         newfx->object_id = O_MISSILE_1;
     }

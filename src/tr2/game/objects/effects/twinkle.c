@@ -10,8 +10,8 @@
 #define DISAPPEAR_RANGE STEP_L
 
 static XYZ_32 M_GetTargetPos(const ITEM *item);
-static void M_NudgeTowardsItem(FX *fx, const XYZ_32 *target_pos);
-static bool M_ShouldDisappear(const FX *fx, const XYZ_32 *target_pos);
+static void M_NudgeTowardsItem(EFFECT *effect, const XYZ_32 *target_pos);
+static bool M_ShouldDisappear(const EFFECT *effect, const XYZ_32 *target_pos);
 
 static XYZ_32 M_GetTargetPos(const ITEM *const item)
 {
@@ -28,19 +28,20 @@ static XYZ_32 M_GetTargetPos(const ITEM *const item)
     return pos;
 }
 
-static void M_NudgeTowardsItem(FX *const fx, const XYZ_32 *const target_pos)
+static void M_NudgeTowardsItem(
+    EFFECT *const effect, const XYZ_32 *const target_pos)
 {
-    fx->pos.x += (target_pos->x - fx->pos.x) >> 4;
-    fx->pos.y += (target_pos->y - fx->pos.y) >> 4;
-    fx->pos.z += (target_pos->z - fx->pos.z) >> 4;
+    effect->pos.x += (target_pos->x - effect->pos.x) >> 4;
+    effect->pos.y += (target_pos->y - effect->pos.y) >> 4;
+    effect->pos.z += (target_pos->z - effect->pos.z) >> 4;
 }
 
 static bool M_ShouldDisappear(
-    const FX *const fx, const XYZ_32 *const target_pos)
+    const EFFECT *const effect, const XYZ_32 *const target_pos)
 {
-    const int32_t dx = ABS(fx->pos.x - target_pos->x);
-    const int32_t dy = ABS(fx->pos.y - target_pos->y);
-    const int32_t dz = ABS(fx->pos.z - target_pos->z);
+    const int32_t dx = ABS(effect->pos.x - target_pos->x);
+    const int32_t dy = ABS(effect->pos.y - target_pos->y);
+    const int32_t dz = ABS(effect->pos.z - target_pos->z);
     return dx < DISAPPEAR_RANGE && dy < DISAPPEAR_RANGE && dz < DISAPPEAR_RANGE;
 }
 
@@ -50,26 +51,26 @@ void Twinkle_Setup(void)
     obj->control = Twinkle_Control;
 }
 
-void __cdecl Twinkle_Control(const int16_t fx_num)
+void __cdecl Twinkle_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    fx->frame_num--;
-    if (fx->frame_num <= g_Objects[fx->object_id].mesh_count) {
-        fx->frame_num = 0;
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->frame_num--;
+    if (effect->frame_num <= g_Objects[effect->object_id].mesh_count) {
+        effect->frame_num = 0;
     }
 
-    if (fx->counter < 0) {
-        fx->counter++;
-        if (fx->counter == 0) {
-            Effect_Kill(fx_num);
+    if (effect->counter < 0) {
+        effect->counter++;
+        if (effect->counter == 0) {
+            Effect_Kill(effect_num);
         }
         return;
     }
 
-    const ITEM *const item = Item_Get(fx->counter);
+    const ITEM *const item = Item_Get(effect->counter);
     const XYZ_32 target_pos = M_GetTargetPos(item);
-    M_NudgeTowardsItem(fx, &target_pos);
-    if (M_ShouldDisappear(fx, &target_pos)) {
-        Effect_Kill(fx_num);
+    M_NudgeTowardsItem(effect, &target_pos);
+    if (M_ShouldDisappear(effect, &target_pos)) {
+        Effect_Kill(effect_num);
     }
 }

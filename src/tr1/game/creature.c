@@ -694,15 +694,15 @@ bool Creature_ShootAtLara(
                - CREATURE_MISS_CHANCE);
     }
 
-    int16_t fx_num;
+    int16_t effect_num;
     if (hit) {
-        fx_num = Creature_Effect(item, gun, Effect_GunShotHit);
+        effect_num = Creature_Effect(item, gun, Effect_GunShotHit);
     } else {
-        fx_num = Creature_Effect(item, gun, Effect_GunShotMiss);
+        effect_num = Creature_Effect(item, gun, Effect_GunShotMiss);
     }
 
-    if (fx_num != NO_ITEM) {
-        g_Effects[fx_num].rot.y += extra_rotation;
+    if (effect_num != NO_ITEM) {
+        g_Effects[effect_num].rot.y += extra_rotation;
     }
 
     if (hit) {

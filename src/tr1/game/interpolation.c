@@ -138,16 +138,16 @@ void Interpolation_Commit(void)
         INTERPOLATE_ROT(g_LaraItem, rot.z, ratio, PHD_45);
     }
 
-    int16_t fx_num = g_NextFxActive;
-    while (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        INTERPOLATE(fx, pos.x, ratio, 128);
-        INTERPOLATE(fx, pos.y, ratio, MAX(128, fx->fall_speed * 2));
-        INTERPOLATE(fx, pos.z, ratio, 128);
-        INTERPOLATE_ROT(fx, rot.x, ratio, PHD_45);
-        INTERPOLATE_ROT(fx, rot.y, ratio, PHD_45);
-        INTERPOLATE_ROT(fx, rot.z, ratio, PHD_45);
-        fx_num = fx->next_active;
+    int16_t effect_num = g_NextFxActive;
+    while (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        INTERPOLATE(effect, pos.x, ratio, 128);
+        INTERPOLATE(effect, pos.y, ratio, MAX(128, effect->fall_speed * 2));
+        INTERPOLATE(effect, pos.z, ratio, 128);
+        INTERPOLATE_ROT(effect, rot.x, ratio, PHD_45);
+        INTERPOLATE_ROT(effect, rot.y, ratio, PHD_45);
+        INTERPOLATE_ROT(effect, rot.z, ratio, PHD_45);
+        effect_num = effect->next_active;
     }
 
     if (Lara_Hair_IsActive()) {
@@ -208,16 +208,16 @@ void Interpolation_Remember(void)
         REMEMBER(g_LaraItem, rot.z);
     }
 
-    int16_t fx_num = g_NextFxActive;
-    while (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        REMEMBER(fx, pos.x);
-        REMEMBER(fx, pos.y);
-        REMEMBER(fx, pos.z);
-        REMEMBER(fx, rot.x);
-        REMEMBER(fx, rot.y);
-        REMEMBER(fx, rot.z);
-        fx_num = fx->next_active;
+    int16_t effect_num = g_NextFxActive;
+    while (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        REMEMBER(effect, pos.x);
+        REMEMBER(effect, pos.y);
+        REMEMBER(effect, pos.z);
+        REMEMBER(effect, rot.x);
+        REMEMBER(effect, rot.y);
+        REMEMBER(effect, rot.z);
+        effect_num = effect->next_active;
     }
 
     if (Lara_Hair_IsActive()) {

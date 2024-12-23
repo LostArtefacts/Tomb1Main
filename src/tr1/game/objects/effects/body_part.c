@@ -15,60 +15,60 @@ void BodyPart_Setup(OBJECT *obj)
     obj->loaded = 1;
 }
 
-void BodyPart_Control(int16_t fx_num)
+void BodyPart_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->rot.x += 5 * PHD_DEGREE;
-    fx->rot.z += 10 * PHD_DEGREE;
-    fx->pos.z += (fx->speed * Math_Cos(fx->rot.y)) >> W2V_SHIFT;
-    fx->pos.x += (fx->speed * Math_Sin(fx->rot.y)) >> W2V_SHIFT;
-    fx->fall_speed += GRAVITY;
-    fx->pos.y += fx->fall_speed;
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->rot.x += 5 * PHD_DEGREE;
+    effect->rot.z += 10 * PHD_DEGREE;
+    effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
+    effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
+    effect->fall_speed += GRAVITY;
+    effect->pos.y += effect->fall_speed;
 
-    int16_t room_num = fx->room_num;
+    int16_t room_num = effect->room_num;
     const SECTOR *const sector =
-        Room_GetSector(fx->pos.x, fx->pos.y, fx->pos.z, &room_num);
+        Room_GetSector(effect->pos.x, effect->pos.y, effect->pos.z, &room_num);
 
     const int32_t ceiling =
-        Room_GetCeiling(sector, fx->pos.x, fx->pos.y, fx->pos.z);
-    if (fx->pos.y < ceiling) {
-        fx->fall_speed = -fx->fall_speed;
-        fx->pos.y = ceiling;
+        Room_GetCeiling(sector, effect->pos.x, effect->pos.y, effect->pos.z);
+    if (effect->pos.y < ceiling) {
+        effect->fall_speed = -effect->fall_speed;
+        effect->pos.y = ceiling;
     }
 
     const int32_t height =
-        Room_GetHeight(sector, fx->pos.x, fx->pos.y, fx->pos.z);
-    if (fx->pos.y >= height) {
-        if (fx->counter > 0) {
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->counter = 0;
-            fx->object_id = O_EXPLOSION_1;
-            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &fx->pos, SPM_NORMAL);
+        Room_GetHeight(sector, effect->pos.x, effect->pos.y, effect->pos.z);
+    if (effect->pos.y >= height) {
+        if (effect->counter > 0) {
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->counter = 0;
+            effect->object_id = O_EXPLOSION_1;
+            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &effect->pos, SPM_NORMAL);
         } else {
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
         return;
     }
 
-    if (Lara_IsNearItem(&fx->pos, ABS(fx->counter) * 2)) {
-        Lara_TakeDamage(ABS(fx->counter), true);
+    if (Lara_IsNearItem(&effect->pos, ABS(effect->counter) * 2)) {
+        Lara_TakeDamage(ABS(effect->counter), true);
 
-        if (fx->counter > 0) {
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->counter = 0;
-            fx->object_id = O_EXPLOSION_1;
-            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &fx->pos, SPM_NORMAL);
+        if (effect->counter > 0) {
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->counter = 0;
+            effect->object_id = O_EXPLOSION_1;
+            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &effect->pos, SPM_NORMAL);
 
             g_Lara.spaz_effect_count = 5;
-            g_Lara.spaz_effect = fx;
+            g_Lara.spaz_effect = effect;
         } else {
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
     }
 
-    if (room_num != fx->room_num) {
-        Effect_NewRoom(fx_num, room_num);
+    if (room_num != effect->room_num) {
+        Effect_NewRoom(effect_num, room_num);
     }
 }

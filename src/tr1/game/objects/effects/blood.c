@@ -10,17 +10,17 @@ void Blood_Setup(OBJECT *obj)
     obj->control = Blood_Control;
 }
 
-void Blood_Control(int16_t fx_num)
+void Blood_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->pos.x += (Math_Sin(fx->rot.y) * fx->speed) >> W2V_SHIFT;
-    fx->pos.z += (Math_Cos(fx->rot.y) * fx->speed) >> W2V_SHIFT;
-    fx->counter++;
-    if (fx->counter == 4) {
-        fx->counter = 0;
-        fx->frame_num--;
-        if (fx->frame_num <= g_Objects[fx->object_id].nmeshes) {
-            Effect_Kill(fx_num);
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->pos.x += (Math_Sin(effect->rot.y) * effect->speed) >> W2V_SHIFT;
+    effect->pos.z += (Math_Cos(effect->rot.y) * effect->speed) >> W2V_SHIFT;
+    effect->counter++;
+    if (effect->counter == 4) {
+        effect->counter = 0;
+        effect->frame_num--;
+        if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
+            Effect_Kill(effect_num);
         }
     }
 }

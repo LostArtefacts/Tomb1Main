@@ -4,17 +4,17 @@
 #include "game/objects/common.h"
 #include "global/vars.h"
 
-void __cdecl DartEffect_Control(int16_t fx_num)
+void __cdecl DartEffect_Control(int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    const OBJECT *const obj = Object_GetObject(fx->object_id);
+    EFFECT *const effect = &g_Effects[effect_num];
+    const OBJECT *const obj = Object_GetObject(effect->object_id);
 
-    fx->counter++;
-    if (fx->counter >= 3) {
-        fx->frame_num--;
-        fx->counter = 0;
-        if (fx->frame_num <= obj->mesh_count) {
-            Effect_Kill(fx_num);
+    effect->counter++;
+    if (effect->counter >= 3) {
+        effect->frame_num--;
+        effect->counter = 0;
+        if (effect->frame_num <= obj->mesh_count) {
+            Effect_Kill(effect_num);
         }
     }
 }

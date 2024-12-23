@@ -440,11 +440,11 @@ void __cdecl Room_DrawSingleRoomObjects(const int16_t room_num)
         item_num = item->next_item;
     }
 
-    int16_t fx_num = r->fx_num;
-    while (fx_num != NO_ITEM) {
-        const FX *const fx = &g_Effects[fx_num];
-        Effect_Draw(fx_num);
-        fx_num = fx->next_free;
+    int16_t effect_num = r->effect_num;
+    while (effect_num != NO_ITEM) {
+        const EFFECT *const effect = &g_Effects[effect_num];
+        Effect_Draw(effect_num);
+        effect_num = effect->next_free;
     }
 
     Matrix_Pop();

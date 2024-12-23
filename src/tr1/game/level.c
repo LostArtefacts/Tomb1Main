@@ -252,7 +252,7 @@ static void M_LoadRooms(VFILE *file)
         r->bound_bottom = 0;
         r->bound_right = 0;
         r->item_num = NO_ITEM;
-        r->fx_num = NO_ITEM;
+        r->effect_num = NO_ITEM;
     }
 
     const int32_t fd_length = VFile_ReadS32(file);
@@ -1130,7 +1130,7 @@ bool Level_Initialise(int32_t level_num)
         Lara_Initialise(level_num);
     }
 
-    g_Effects = GameBuf_Alloc(NUM_EFFECTS * sizeof(FX), GBUF_EFFECTS);
+    g_Effects = GameBuf_Alloc(NUM_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS);
     Effect_InitialiseArray();
     LOT_InitialiseArray();
 

@@ -4,4 +4,4 @@
 
 void Twinkle_Setup(void);
 
-void __cdecl Twinkle_Control(int16_t fx_num);
+void __cdecl Twinkle_Control(int16_t effect_num);

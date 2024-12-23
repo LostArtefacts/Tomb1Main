@@ -3,4 +3,4 @@
 #include <stdint.h>
 
 void DartEffect_Setup(void);
-void __cdecl DartEffect_Control(int16_t fx_num);
+void __cdecl DartEffect_Control(int16_t effect_num);

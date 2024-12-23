@@ -4,29 +4,29 @@
 #include "game/math.h"
 #include "global/vars.h"
 
-void __cdecl WaterSprite_Control(const int16_t fx_num)
+void __cdecl WaterSprite_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    const OBJECT *const obj = Object_GetObject(fx->object_id);
+    EFFECT *const effect = &g_Effects[effect_num];
+    const OBJECT *const obj = Object_GetObject(effect->object_id);
 
-    fx->counter--;
-    if (fx->counter % 4 == 0) {
-        fx->frame_num--;
-        if (fx->frame_num <= obj->mesh_count) {
-            fx->frame_num = 0;
+    effect->counter--;
+    if (effect->counter % 4 == 0) {
+        effect->frame_num--;
+        if (effect->frame_num <= obj->mesh_count) {
+            effect->frame_num = 0;
         }
     }
 
-    if (fx->counter == 0 || fx->fall_speed > 0) {
-        Effect_Kill(fx_num);
+    if (effect->counter == 0 || effect->fall_speed > 0) {
+        Effect_Kill(effect_num);
         return;
     }
 
-    fx->pos.x += (fx->speed * Math_Sin(fx->rot.y)) >> W2V_SHIFT;
-    fx->pos.z += (fx->speed * Math_Cos(fx->rot.y)) >> W2V_SHIFT;
-    if (fx->fall_speed != 0) {
-        fx->pos.y += fx->fall_speed;
-        fx->fall_speed += GRAVITY;
+    effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
+    effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
+    if (effect->fall_speed != 0) {
+        effect->pos.y += effect->fall_speed;
+        effect->fall_speed += GRAVITY;
     }
 }
 

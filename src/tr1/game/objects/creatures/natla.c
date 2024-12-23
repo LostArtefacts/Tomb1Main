@@ -127,12 +127,13 @@ void Natla_Control(int16_t item_num)
                 item->goal_anim_state = NATLA_STATE_RUN;
             }
             if (timer >= 20) {
-                int16_t fx_num =
+                int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    gun = fx->rot.x;
-                    Sound_Effect(SFX_ATLANTEAN_NEEDLE, &fx->pos, SPM_NORMAL);
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    gun = effect->rot.x;
+                    Sound_Effect(
+                        SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
                 }
                 timer = 0;
             }
@@ -141,12 +142,13 @@ void Natla_Control(int16_t item_num)
         case NATLA_STATE_RUN:
             tilt = angle;
             if (timer >= 20) {
-                int16_t fx_num =
+                int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    gun = fx->rot.x;
-                    Sound_Effect(SFX_ATLANTEAN_NEEDLE, &fx->pos, SPM_NORMAL);
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    gun = effect->rot.x;
+                    Sound_Effect(
+                        SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
                 }
                 timer = 0;
             }
@@ -253,12 +255,13 @@ void Natla_Control(int16_t item_num)
                 item->goal_anim_state = NATLA_STATE_STOP;
             }
             if (timer >= 30) {
-                int16_t fx_num =
+                int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    gun = fx->rot.x;
-                    Sound_Effect(SFX_ATLANTEAN_NEEDLE, &fx->pos, SPM_NORMAL);
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    gun = effect->rot.x;
+                    Sound_Effect(
+                        SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
                 }
                 timer = 0;
             }
@@ -276,21 +279,23 @@ void Natla_Control(int16_t item_num)
 
         case NATLA_STATE_SHOOT:
             if (!item->required_anim_state) {
-                int16_t fx_num =
+                int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    gun = fx->rot.x;
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    gun = effect->rot.x;
                 }
-                fx_num = Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    fx->rot.y += (Random_GetControl() - 0x4000) / 4;
+                effect_num =
+                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    effect->rot.y += (Random_GetControl() - 0x4000) / 4;
                 }
-                fx_num = Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
-                if (fx_num != NO_ITEM) {
-                    FX *fx = &g_Effects[fx_num];
-                    fx->rot.y += (Random_GetControl() - 0x4000) / 4;
+                effect_num =
+                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                if (effect_num != NO_ITEM) {
+                    EFFECT *effect = &g_Effects[effect_num];
+                    effect->rot.y += (Random_GetControl() - 0x4000) / 4;
                 }
                 item->required_anim_state = NATLA_STATE_STOP;
             }

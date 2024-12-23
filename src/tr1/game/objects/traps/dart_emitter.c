@@ -63,16 +63,16 @@ void DartEmitter_Control(int16_t item_num)
             Item_AddActive(dart_item_num);
             dart->status = IS_ACTIVE;
 
-            int16_t fx_num = Effect_Create(dart->room_num);
-            if (fx_num != NO_ITEM) {
-                FX *fx = &g_Effects[fx_num];
-                fx->pos = dart->pos;
-                fx->rot = dart->rot;
-                fx->speed = 0;
-                fx->frame_num = 0;
-                fx->counter = 0;
-                fx->object_id = O_DART_EFFECT;
-                Sound_Effect(SFX_DARTS, &fx->pos, SPM_NORMAL);
+            int16_t effect_num = Effect_Create(dart->room_num);
+            if (effect_num != NO_ITEM) {
+                EFFECT *effect = &g_Effects[effect_num];
+                effect->pos = dart->pos;
+                effect->rot = dart->rot;
+                effect->speed = 0;
+                effect->frame_num = 0;
+                effect->counter = 0;
+                effect->object_id = O_DART_EFFECT;
+                Sound_Effect(SFX_DARTS, &effect->pos, SPM_NORMAL);
             }
         }
     }

@@ -17,17 +17,17 @@ void FlameEmitter_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
     if (Item_IsTriggerActive(item)) {
         if (!item->data) {
-            int16_t fx_num = Effect_Create(item->room_num);
-            if (fx_num != NO_ITEM) {
-                FX *fx = &g_Effects[fx_num];
-                fx->pos.x = item->pos.x;
-                fx->pos.y = item->pos.y;
-                fx->pos.z = item->pos.z;
-                fx->frame_num = 0;
-                fx->object_id = O_FLAME;
-                fx->counter = 0;
+            int16_t effect_num = Effect_Create(item->room_num);
+            if (effect_num != NO_ITEM) {
+                EFFECT *effect = &g_Effects[effect_num];
+                effect->pos.x = item->pos.x;
+                effect->pos.y = item->pos.y;
+                effect->pos.z = item->pos.z;
+                effect->frame_num = 0;
+                effect->object_id = O_FLAME;
+                effect->counter = 0;
             }
-            item->data = (void *)(intptr_t)(fx_num + 1);
+            item->data = (void *)(intptr_t)(effect_num + 1);
         }
     } else if (item->data) {
         Sound_StopEffect(SFX_FIRE, NULL);

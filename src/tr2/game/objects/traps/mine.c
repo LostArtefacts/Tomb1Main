@@ -59,16 +59,16 @@ static void M_DetonateAll(
 
 static void M_Explode(ITEM *const mine_item)
 {
-    const int16_t fx_num = Effect_Create(mine_item->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->object_id = O_EXPLOSION;
-        fx->pos.x = mine_item->pos.x;
-        fx->pos.y = mine_item->pos.y - WALL_L;
-        fx->pos.z = mine_item->pos.z;
-        fx->speed = 0;
-        fx->frame_num = 0;
-        fx->counter = 0;
+    const int16_t effect_num = Effect_Create(mine_item->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->object_id = O_EXPLOSION;
+        effect->pos.x = mine_item->pos.x;
+        effect->pos.y = mine_item->pos.y - WALL_L;
+        effect->pos.z = mine_item->pos.z;
+        effect->speed = 0;
+        effect->frame_num = 0;
+        effect->counter = 0;
     }
 
     Splash(mine_item);

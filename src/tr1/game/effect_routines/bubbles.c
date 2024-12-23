@@ -32,15 +32,15 @@ void FX_Bubbles(ITEM *item)
     Collide_GetJointAbsPosition(item, &offset, LM_HEAD);
 
     for (int i = 0; i < count; i++) {
-        int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->pos.x = offset.x;
-            fx->pos.y = offset.y;
-            fx->pos.z = offset.z;
-            fx->object_id = O_BUBBLES_1;
-            fx->frame_num = -((Random_GetDraw() * 3) / 0x8000);
-            fx->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->pos.x = offset.x;
+            effect->pos.y = offset.y;
+            effect->pos.z = offset.z;
+            effect->object_id = O_BUBBLES_1;
+            effect->frame_num = -((Random_GetDraw() * 3) / 0x8000);
+            effect->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
         }
     }
 }

@@ -13,22 +13,22 @@ int16_t Effect_GunShot(
     int32_t x, int32_t y, int32_t z, int16_t speed, PHD_ANGLE y_rot,
     int16_t room_num)
 {
-    int16_t fx_num = Effect_Create(room_num);
-    if (fx_num != NO_ITEM) {
-        FX *fx = &g_Effects[fx_num];
-        fx->pos.x = x;
-        fx->pos.y = y;
-        fx->pos.z = z;
-        fx->room_num = room_num;
-        fx->rot.x = 0;
-        fx->rot.y = y_rot;
-        fx->rot.z = 0;
-        fx->counter = 3;
-        fx->frame_num = 0;
-        fx->object_id = O_GUN_FLASH;
-        fx->shade = HIGH_LIGHT;
+    int16_t effect_num = Effect_Create(room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *effect = &g_Effects[effect_num];
+        effect->pos.x = x;
+        effect->pos.y = y;
+        effect->pos.z = z;
+        effect->room_num = room_num;
+        effect->rot.x = 0;
+        effect->rot.y = y_rot;
+        effect->rot.z = 0;
+        effect->counter = 3;
+        effect->frame_num = 0;
+        effect->object_id = O_GUN_FLASH;
+        effect->shade = HIGH_LIGHT;
     }
-    return fx_num;
+    return effect_num;
 }
 
 int16_t Effect_GunShotHit(

@@ -10,15 +10,15 @@ void DartEffect_Setup(OBJECT *obj)
     obj->draw_routine = Object_DrawSpriteItem;
 }
 
-void DartEffect_Control(int16_t fx_num)
+void DartEffect_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->counter++;
-    if (fx->counter >= 3) {
-        fx->counter = 0;
-        fx->frame_num--;
-        if (fx->frame_num <= g_Objects[fx->object_id].nmeshes) {
-            Effect_Kill(fx_num);
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->counter++;
+    if (effect->counter >= 3) {
+        effect->counter = 0;
+        effect->frame_num--;
+        if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
+            Effect_Kill(effect_num);
         }
     }
 }

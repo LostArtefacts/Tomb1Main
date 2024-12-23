@@ -8,13 +8,13 @@ void GunShot_Setup(OBJECT *obj)
     obj->control = GunShot_Control;
 }
 
-void GunShot_Control(int16_t fx_num)
+void GunShot_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->counter--;
-    if (!fx->counter) {
-        Effect_Kill(fx_num);
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->counter--;
+    if (!effect->counter) {
+        Effect_Kill(effect_num);
         return;
     }
-    fx->rot.z = Random_GetControl();
+    effect->rot.z = Random_GetControl();
 }

@@ -61,16 +61,16 @@ static void M_Initialise(const int16_t item_num)
 
 void __cdecl XianKnight_SparkleTrail(const ITEM *const item)
 {
-    const int16_t fx_num = Effect_Create(item->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->object_id = O_TWINKLE;
-        fx->pos.x = item->pos.x + (Random_GetDraw() << 8 >> 15) - 128;
-        fx->pos.y = item->pos.y + (Random_GetDraw() << 8 >> 15) - 256;
-        fx->pos.z = item->pos.z + (Random_GetDraw() << 8 >> 15) - 128;
-        fx->room_num = item->room_num;
-        fx->counter = -30;
-        fx->frame_num = 0;
+    const int16_t effect_num = Effect_Create(item->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->object_id = O_TWINKLE;
+        effect->pos.x = item->pos.x + (Random_GetDraw() << 8 >> 15) - 128;
+        effect->pos.y = item->pos.y + (Random_GetDraw() << 8 >> 15) - 256;
+        effect->pos.z = item->pos.z + (Random_GetDraw() << 8 >> 15) - 128;
+        effect->room_num = item->room_num;
+        effect->counter = -30;
+        effect->frame_num = 0;
     }
     Sound_Effect(SFX_WARRIOR_HOVER, &item->pos, SPM_NORMAL);
 }

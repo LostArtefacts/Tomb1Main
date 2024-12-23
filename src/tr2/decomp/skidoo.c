@@ -279,8 +279,8 @@ int32_t __cdecl Skidoo_TestHeight(
 
 void __cdecl Skidoo_DoSnowEffect(ITEM *const skidoo)
 {
-    const int16_t fx_num = Effect_Create(skidoo->room_num);
-    if (fx_num == NO_ITEM) {
+    const int16_t effect_num = Effect_Create(skidoo->room_num);
+    if (effect_num == NO_ITEM) {
         return;
     }
 
@@ -288,25 +288,26 @@ void __cdecl Skidoo_DoSnowEffect(ITEM *const skidoo)
     const int32_t sy = Math_Sin(skidoo->rot.y);
     const int32_t cy = Math_Cos(skidoo->rot.y);
     const int32_t x = (SKIDOO_SIDE * (Random_GetDraw() - 0x4000)) >> 14;
-    FX *const fx = &g_Effects[fx_num];
-    fx->pos.x = skidoo->pos.x - ((sy * SKIDOO_SNOW + cy * x) >> W2V_SHIFT);
-    fx->pos.y = skidoo->pos.y + ((sx * SKIDOO_SNOW) >> W2V_SHIFT);
-    fx->pos.z = skidoo->pos.z - ((cy * SKIDOO_SNOW - sy * x) >> W2V_SHIFT);
-    fx->room_num = skidoo->room_num;
-    fx->object_id = O_SNOW_SPRITE;
-    fx->frame_num = 0;
-    fx->speed = 0;
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->pos.x = skidoo->pos.x - ((sy * SKIDOO_SNOW + cy * x) >> W2V_SHIFT);
+    effect->pos.y = skidoo->pos.y + ((sx * SKIDOO_SNOW) >> W2V_SHIFT);
+    effect->pos.z = skidoo->pos.z - ((cy * SKIDOO_SNOW - sy * x) >> W2V_SHIFT);
+    effect->room_num = skidoo->room_num;
+    effect->object_id = O_SNOW_SPRITE;
+    effect->frame_num = 0;
+    effect->speed = 0;
     if (skidoo->speed < 64) {
-        fx->fall_speed = (Random_GetDraw() * ABS(skidoo->speed)) >> 15;
+        effect->fall_speed = (Random_GetDraw() * ABS(skidoo->speed)) >> 15;
     } else {
-        fx->fall_speed = 0;
+        effect->fall_speed = 0;
     }
 
     g_MatrixPtr->_23 = 0;
 
-    Output_CalculateLight(fx->pos.x, fx->pos.y, fx->pos.z, fx->room_num);
-    fx->shade = g_LsAdder - 512;
-    CLAMPL(fx->shade, 0);
+    Output_CalculateLight(
+        effect->pos.x, effect->pos.y, effect->pos.z, effect->room_num);
+    effect->shade = g_LsAdder - 512;
+    CLAMPL(effect->shade, 0);
 }
 
 int32_t __cdecl Skidoo_Dynamics(ITEM *const skidoo)
@@ -687,16 +688,16 @@ void __cdecl Skidoo_Animation(
 
 void __cdecl Skidoo_Explode(const ITEM *const skidoo)
 {
-    const int16_t fx_num = Effect_Create(skidoo->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->pos.x = skidoo->pos.x;
-        fx->pos.y = skidoo->pos.y;
-        fx->pos.z = skidoo->pos.z;
-        fx->speed = 0;
-        fx->frame_num = 0;
-        fx->counter = 0;
-        fx->object_id = O_EXPLOSION;
+    const int16_t effect_num = Effect_Create(skidoo->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->pos.x = skidoo->pos.x;
+        effect->pos.y = skidoo->pos.y;
+        effect->pos.z = skidoo->pos.z;
+        effect->speed = 0;
+        effect->frame_num = 0;
+        effect->counter = 0;
+        effect->object_id = O_EXPLOSION;
     }
 
     Effect_ExplodingDeath(g_Lara.skidoo, ~(SKIDOO_GUN_MESH - 1), 0);

@@ -5,21 +5,23 @@
 #include "game/output.h"
 #include "global/vars.h"
 
-void __cdecl Explosion_Control(const int16_t fx_num)
+void __cdecl Explosion_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    const OBJECT *const obj = Object_GetObject(fx->object_id);
-    fx->counter++;
-    if (fx->counter == 2) {
-        fx->frame_num--;
-        fx->counter = 0;
-        if (fx->frame_num > obj->mesh_count) {
-            Output_AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 13, 11);
+    EFFECT *const effect = &g_Effects[effect_num];
+    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    effect->counter++;
+    if (effect->counter == 2) {
+        effect->frame_num--;
+        effect->counter = 0;
+        if (effect->frame_num > obj->mesh_count) {
+            Output_AddDynamicLight(
+                effect->pos.x, effect->pos.y, effect->pos.z, 13, 11);
         } else {
-            Effect_Kill(fx_num);
+            Effect_Kill(effect_num);
         }
     } else {
-        Output_AddDynamicLight(fx->pos.x, fx->pos.y, fx->pos.z, 12, 10);
+        Output_AddDynamicLight(
+            effect->pos.x, effect->pos.y, effect->pos.z, 12, 10);
     }
 }
 

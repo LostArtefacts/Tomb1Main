@@ -1797,15 +1797,15 @@ void __cdecl Lara_CatchFire(void)
         return;
     }
 
-    const int16_t fx_num = Effect_Create(g_LaraItem->room_num);
-    if (fx_num == NO_ITEM) {
+    const int16_t effect_num = Effect_Create(g_LaraItem->room_num);
+    if (effect_num == NO_ITEM) {
         return;
     }
 
-    FX *const fx = &g_Effects[fx_num];
-    fx->frame_num = 0;
-    fx->object_id = O_FLAME;
-    fx->counter = -1;
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->frame_num = 0;
+    effect->object_id = O_FLAME;
+    effect->counter = -1;
     g_Lara.burn = 1;
 }
 
@@ -1828,13 +1828,13 @@ void __cdecl Lara_TouchLava(ITEM *const item)
     item->hit_status = 1;
 
     for (int32_t i = 0; i < 10; i++) {
-        const int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *const fx = &g_Effects[fx_num];
-            fx->object_id = O_FLAME;
-            fx->frame_num =
+        const int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *const effect = &g_Effects[effect_num];
+            effect->object_id = O_FLAME;
+            effect->frame_num =
                 g_Objects[O_FLAME].mesh_count * Random_GetControl() / 0x7FFF;
-            fx->counter = -1 - 24 * Random_GetControl() / 0x7FFF;
+            effect->counter = -1 - 24 * Random_GetControl() / 0x7FFF;
         }
     }
 }
@@ -1848,14 +1848,14 @@ void __cdecl Lara_Extinguish(void)
     g_Lara.burn = 0;
 
     // put out flame objects
-    int16_t fx_num = g_NextEffectActive;
-    while (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        const int16_t next_fx_num = fx->next_active;
-        if (fx->object_id == O_FLAME && fx->counter < 0) {
-            fx->counter = 0;
-            Effect_Kill(fx_num);
+    int16_t effect_num = g_NextEffectActive;
+    while (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        const int16_t next_fx_num = effect->next_active;
+        if (effect->object_id == O_FLAME && effect->counter < 0) {
+            effect->counter = 0;
+            Effect_Kill(effect_num);
         }
-        fx_num = next_fx_num;
+        effect_num = next_fx_num;
     }
 }

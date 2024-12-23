@@ -43,16 +43,16 @@ void Dart_Control(int16_t item_num)
     item->floor = Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
     if (item->pos.y >= item->floor) {
         Item_Kill(item_num);
-        int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->pos.x = old_x;
-            fx->pos.y = item->pos.y;
-            fx->pos.z = old_z;
-            fx->speed = 0;
-            fx->counter = 6;
-            fx->frame_num = -3 * Random_GetControl() / 0x8000;
-            fx->object_id = O_RICOCHET_1;
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->pos.x = old_x;
+            effect->pos.y = item->pos.y;
+            effect->pos.z = old_z;
+            effect->speed = 0;
+            effect->counter = 6;
+            effect->frame_num = -3 * Random_GetControl() / 0x8000;
+            effect->object_id = O_RICOCHET_1;
         }
     }
 }

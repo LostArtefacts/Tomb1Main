@@ -34,18 +34,18 @@ void Scion3_Control(int16_t item_num)
     }
 
     if (counter % 10 == 0) {
-        int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->pos.x = item->pos.x + (Random_GetControl() - 0x4000) / 32;
-            fx->pos.y =
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->pos.x = item->pos.x + (Random_GetControl() - 0x4000) / 32;
+            effect->pos.y =
                 item->pos.y + (Random_GetControl() - 0x4000) / 256 - 500;
-            fx->pos.z = item->pos.z + (Random_GetControl() - 0x4000) / 32;
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->object_id = O_EXPLOSION_1;
-            fx->counter = 0;
-            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &fx->pos, SPM_NORMAL);
+            effect->pos.z = item->pos.z + (Random_GetControl() - 0x4000) / 32;
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->object_id = O_EXPLOSION_1;
+            effect->counter = 0;
+            Sound_Effect(SFX_ATLANTEAN_EXPLODE, &effect->pos, SPM_NORMAL);
             g_Camera.bounce = -200;
         }
     }

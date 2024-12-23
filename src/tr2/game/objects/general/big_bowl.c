@@ -18,18 +18,18 @@ static void M_CreateHotLiquid(const ITEM *bowl_item);
 
 static void M_CreateHotLiquid(const ITEM *const bowl_item)
 {
-    const int16_t fx_num = Effect_Create(bowl_item->room_num);
+    const int16_t effect_num = Effect_Create(bowl_item->room_num);
     const OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->object_id = O_HOT_LIQUID;
-        fx->pos.x = bowl_item->pos.x + STEP_L * 2;
-        fx->pos.z = bowl_item->pos.z + STEP_L * 2;
-        fx->pos.y = bowl_item->pos.y + STEP_L * 2 + 100;
-        fx->room_num = bowl_item->room_num;
-        fx->frame_num = (obj->mesh_count * Random_GetDraw()) >> 15;
-        fx->fall_speed = 0;
-        fx->shade = 2048;
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->object_id = O_HOT_LIQUID;
+        effect->pos.x = bowl_item->pos.x + STEP_L * 2;
+        effect->pos.z = bowl_item->pos.z + STEP_L * 2;
+        effect->pos.y = bowl_item->pos.y + STEP_L * 2 + 100;
+        effect->room_num = bowl_item->room_num;
+        effect->frame_num = (obj->mesh_count * Random_GetDraw()) >> 15;
+        effect->fall_speed = 0;
+        effect->shade = 2048;
     }
 }
 

@@ -19,14 +19,14 @@ static void M_Explode(int16_t grenade_item_num, XYZ_32 pos);
 static void M_Explode(int16_t grenade_item_num, const XYZ_32 pos)
 {
     const ITEM *const grenade_item = Item_Get(grenade_item_num);
-    const int16_t fx_num = Effect_Create(grenade_item->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *const fx = &g_Effects[fx_num];
-        fx->pos = pos;
-        fx->speed = 0;
-        fx->frame_num = 0;
-        fx->counter = 0;
-        fx->object_id = O_EXPLOSION;
+    const int16_t effect_num = Effect_Create(grenade_item->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *const effect = &g_Effects[effect_num];
+        effect->pos = pos;
+        effect->speed = 0;
+        effect->frame_num = 0;
+        effect->counter = 0;
+        effect->object_id = O_EXPLOSION;
     }
     Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_NORMAL);
     Item_Kill(grenade_item_num);

@@ -3,18 +3,18 @@
 #include "game/effects.h"
 #include "global/vars.h"
 
-void __cdecl Glow_Control(const int16_t fx_num)
+void __cdecl Glow_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
+    EFFECT *const effect = &g_Effects[effect_num];
 
-    fx->counter--;
-    if (fx->counter == 0) {
-        Effect_Kill(fx_num);
+    effect->counter--;
+    if (effect->counter == 0) {
+        Effect_Kill(effect_num);
         return;
     }
 
-    fx->shade += fx->speed;
-    fx->frame_num += fx->fall_speed;
+    effect->shade += effect->speed;
+    effect->frame_num += effect->fall_speed;
 }
 
 void Glow_Setup(void)

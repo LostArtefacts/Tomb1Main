@@ -567,9 +567,10 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
             if (header_version >= VERSION_3
                 && item->object_id == O_FLAME_EMITTER
                 && g_Config.enable_enhanced_saves) {
-                int32_t fx_num = JSON_ObjectGetInt(item_obj, "fx_num", -1);
-                if (fx_num != -1) {
-                    item->data = (void *)(intptr_t)(fx_num + 1);
+                int32_t effect_num =
+                    JSON_ObjectGetInt(item_obj, "effect_num", -1);
+                if (effect_num != -1) {
+                    item->data = (void *)(intptr_t)(effect_num + 1);
                 }
             }
 
@@ -630,13 +631,14 @@ static bool M_LoadFx(JSON_ARRAY *fx_arr)
     }
 
     if (!fx_arr) {
-        LOG_ERROR("Malformed save: invalid or missing fx array");
+        LOG_ERROR("Malformed save: invalid or missing effect array");
         return false;
     }
 
     if ((signed)fx_arr->length >= NUM_EFFECTS) {
         LOG_WARNING(
-            "Malformed save: expected a max of %d fx, got %d. fx over the "
+            "Malformed save: expected a max of %d effect, got %d. effect over "
+            "the "
             "maximum will not be created.",
             NUM_EFFECTS - 1, fx_arr->length);
     }
@@ -644,7 +646,7 @@ static bool M_LoadFx(JSON_ARRAY *fx_arr)
     for (int i = 0; i < (signed)fx_arr->length; i++) {
         JSON_OBJECT *fx_obj = JSON_ArrayGetObject(fx_arr, i);
         if (!fx_obj) {
-            LOG_ERROR("Malformed save: invalid fx data");
+            LOG_ERROR("Malformed save: invalid effect data");
             return false;
         }
 
@@ -660,18 +662,18 @@ static bool M_LoadFx(JSON_ARRAY *fx_arr)
         int16_t counter = JSON_ObjectGetInt(fx_obj, "counter", 0);
         int16_t shade = JSON_ObjectGetInt(fx_obj, "shade", 0);
 
-        int16_t fx_num = Effect_Create(room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->pos.x = x;
-            fx->pos.y = y;
-            fx->pos.z = z;
-            fx->object_id = object_id;
-            fx->speed = speed;
-            fx->fall_speed = fall_speed;
-            fx->frame_num = frame_num;
-            fx->counter = counter;
-            fx->shade = shade;
+        int16_t effect_num = Effect_Create(room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->pos.x = x;
+            effect->pos.y = y;
+            effect->pos.z = z;
+            effect->object_id = object_id;
+            effect->speed = speed;
+            effect->fall_speed = fall_speed;
+            effect->frame_num = frame_num;
+            effect->counter = counter;
+            effect->shade = shade;
         }
     }
 
@@ -1088,9 +1090,9 @@ static JSON_ARRAY *M_DumpItems(void)
             }
 
             if (item->object_id == O_FLAME_EMITTER && item->data) {
-                int32_t fx_num = (int32_t)(intptr_t)item->data - 1;
-                fx_num = fx_order.id_map[fx_num];
-                JSON_ObjectAppendInt(item_obj, "fx_num", fx_num);
+                int32_t effect_num = (int32_t)(intptr_t)item->data - 1;
+                effect_num = fx_order.id_map[effect_num];
+                JSON_ObjectAppendInt(item_obj, "effect_num", effect_num);
             }
 
             if (item->object_id == O_BACON_LARA && item->data) {
@@ -1136,17 +1138,17 @@ static JSON_ARRAY *M_DumpFx(void)
     for (int16_t linknum = g_NextFxActive; linknum != NO_ITEM;
          linknum = g_Effects[linknum].next_active) {
         JSON_OBJECT *fx_obj = JSON_ObjectNew();
-        FX *fx = &g_Effects[linknum];
-        JSON_ObjectAppendInt(fx_obj, "x", fx->pos.x);
-        JSON_ObjectAppendInt(fx_obj, "y", fx->pos.y);
-        JSON_ObjectAppendInt(fx_obj, "z", fx->pos.z);
-        JSON_ObjectAppendInt(fx_obj, "room_number", fx->room_num);
-        JSON_ObjectAppendInt(fx_obj, "object_number", fx->object_id);
-        JSON_ObjectAppendInt(fx_obj, "speed", fx->speed);
-        JSON_ObjectAppendInt(fx_obj, "fall_speed", fx->fall_speed);
-        JSON_ObjectAppendInt(fx_obj, "frame_number", fx->frame_num);
-        JSON_ObjectAppendInt(fx_obj, "counter", fx->counter);
-        JSON_ObjectAppendInt(fx_obj, "shade", fx->shade);
+        EFFECT *effect = &g_Effects[linknum];
+        JSON_ObjectAppendInt(fx_obj, "x", effect->pos.x);
+        JSON_ObjectAppendInt(fx_obj, "y", effect->pos.y);
+        JSON_ObjectAppendInt(fx_obj, "z", effect->pos.z);
+        JSON_ObjectAppendInt(fx_obj, "room_number", effect->room_num);
+        JSON_ObjectAppendInt(fx_obj, "object_number", effect->object_id);
+        JSON_ObjectAppendInt(fx_obj, "speed", effect->speed);
+        JSON_ObjectAppendInt(fx_obj, "fall_speed", effect->fall_speed);
+        JSON_ObjectAppendInt(fx_obj, "frame_number", effect->frame_num);
+        JSON_ObjectAppendInt(fx_obj, "counter", effect->counter);
+        JSON_ObjectAppendInt(fx_obj, "shade", effect->shade);
         JSON_ArrayAppendObject(fx_arr, fx_obj);
     }
 
@@ -1383,7 +1385,7 @@ bool Savegame_BSON_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     }
 
     if (header.version >= VERSION_3) {
-        if (!M_LoadFx(JSON_ObjectGetArray(root_obj, "fx"))) {
+        if (!M_LoadFx(JSON_ObjectGetArray(root_obj, "effect"))) {
             goto cleanup;
         }
     }
@@ -1465,7 +1467,7 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     JSON_ObjectAppendObject(root_obj, "flipmap", M_DumpFlipmaps());
     JSON_ObjectAppendArray(root_obj, "cameras", M_DumpCameras());
     JSON_ObjectAppendArray(root_obj, "items", M_DumpItems());
-    JSON_ObjectAppendArray(root_obj, "fx", M_DumpFx());
+    JSON_ObjectAppendArray(root_obj, "effect", M_DumpFx());
     JSON_ObjectAppendObject(root_obj, "lara", M_DumpLara(&g_Lara));
     JSON_ObjectAppendObject(root_obj, "music", M_DumpCurrentMusic());
     JSON_ObjectAppendArray(

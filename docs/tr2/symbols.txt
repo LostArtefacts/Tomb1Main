@@ -670,7 +670,7 @@ typedef struct __unaligned {
     int16_t frame_num;
     int16_t counter;
     int16_t shade;
-} FX;
+} EFFECT;
 
 typedef struct __unaligned {
     int16_t zone_num;
@@ -982,7 +982,7 @@ typedef struct __unaligned {
     int16_t test_top;
     int16_t test_bottom;
     int16_t item_num;
-    int16_t fx_num;
+    int16_t effect_num;
     int16_t flipped_room;
     uint16_t flags;
 } ROOM;
@@ -1278,7 +1278,7 @@ typedef struct __unaligned {
     };
     int32_t water_surface_dist;
     XYZ_32 last_pos;
-    FX *spaz_effect;
+    EFFECT *spaz_effect;
     uint32_t mesh_effects;
     int16_t *mesh_ptrs[15];
     ITEM *target;
@@ -3167,7 +3167,7 @@ typedef enum {
 0x00417510  0x027E  void __cdecl Tiger_Control(int16_t item_num);
 
 # game/dragon.c
-0x004177B0  0x017F  void __cdecl Twinkle_Control(int16_t fx_num);
+0x004177B0  0x017F  void __cdecl Twinkle_Control(int16_t effect_num);
 0x00417930  0x00D9  void __cdecl Effect_CreateBartoliLight(int16_t item_num);
 0x00417A10  0x00AB  int16_t __cdecl Effect_MissileFlame(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00417AC0  0x02ED  void __cdecl Dragon_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
@@ -3186,7 +3186,7 @@ typedef enum {
 0x004191D0  0x03D2  void __cdecl Room_Clip(ROOM *r);
 0x004195B0  0x00B4  void __cdecl Room_DrawSingleRoomGeometry(int16_t room_num);
 0x00419670  0x0218  void __cdecl Room_DrawSingleRoomObjects(int16_t room_num);
-0x00419890  0x0147  void __cdecl Effect_Draw(int16_t fx_num);
+0x00419890  0x0147  void __cdecl Effect_Draw(int16_t effect_num);
 0x004199E0  0x0083  void __cdecl Object_DrawSpriteItem(const ITEM *item);
 0x00419A70  0x0378  void __cdecl Object_DrawAnimatingItem(const ITEM *item);
 0x00419DF0  0x0D02  void __cdecl Lara_Draw(const ITEM *item);
@@ -3221,18 +3221,18 @@ typedef enum {
 0x0041C560  0x0068  void __cdecl Sound_UpdateEffects(void);
 0x0041C5D0  0x0059  int16_t __cdecl DoBloodSplat(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num);
 0x0041C630  0x00A4  void __cdecl DoLotsOfBlood(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t direction, int16_t room_num, int32_t num);
-0x0041C6E0  0x0082  void __cdecl Blood_Control(int16_t fx_num);
-0x0041C770  0x007F  void __cdecl Explosion_Control(int16_t fx_num);
+0x0041C6E0  0x0082  void __cdecl Blood_Control(int16_t effect_num);
+0x0041C770  0x007F  void __cdecl Explosion_Control(int16_t effect_num);
 0x0041C7F0  0x0072  void __cdecl Ricochet(GAME_VECTOR *pos);
-0x0041C870  0x0030  void __cdecl Ricochet_Control(int16_t fx_num);
+0x0041C870  0x0030  void __cdecl Ricochet_Control(int16_t effect_num);
 0x0041C8A0  0x0064  void __cdecl CreateBubble(XYZ_32 *pos, int16_t room_num);
 0x0041C910  0x0078  void __cdecl FX_Bubbles(ITEM *item);
-0x0041C990  0x00F3  void __cdecl Bubble_Control(int16_t fx_num);
+0x0041C990  0x00F3  void __cdecl Bubble_Control(int16_t effect_num);
 0x0041CA90  0x00C2  void __cdecl Splash(ITEM *item);
-0x0041CB60  0x0071  void __cdecl Splash_Control(int16_t fx_num);
-0x0041CBE0  0x00AE  void __cdecl WaterSprite_Control(int16_t fx_num);
-0x0041CC90  0x008C  void __cdecl SnowSprite_Control(int16_t fx_num);
-0x0041CD20  0x00DE  void __cdecl HotLiquid_Control(int16_t fx_num);
+0x0041CB60  0x0071  void __cdecl Splash_Control(int16_t effect_num);
+0x0041CBE0  0x00AE  void __cdecl WaterSprite_Control(int16_t effect_num);
+0x0041CC90  0x008C  void __cdecl SnowSprite_Control(int16_t effect_num);
+0x0041CD20  0x00DE  void __cdecl HotLiquid_Control(int16_t effect_num);
 0x0041CE00  0x013D  void __cdecl Waterfall_Control(int16_t item_num);
 0x0041CF40  0x000B  void __cdecl FX_FinishLevel(ITEM *item);
 0x0041CF50  0x0016  void __cdecl FX_Turn180(ITEM *item);
@@ -3379,8 +3379,8 @@ typedef enum {
 0x00427270  0x007C  int32_t __cdecl Item_GlobalReplace(GAME_OBJECT_ID src_object_id, GAME_OBJECT_ID dst_object_id);
 0x004272F0  0x0030  void __cdecl Effect_InitialiseArray(void);
 0x00427320  0x006C  int16_t __cdecl Effect_Create(int16_t room_num);
-0x00427390  0x00E3  void __cdecl Effect_Kill(int16_t fx_num);
-0x00427480  0x0093  void __cdecl Effect_NewRoom(int16_t fx_num, int16_t room_num);
+0x00427390  0x00E3  void __cdecl Effect_Kill(int16_t effect_num);
+0x00427480  0x0093  void __cdecl Effect_NewRoom(int16_t effect_num, int16_t room_num);
 0x00427520  0x0058  void __cdecl Item_ClearKilled(void);
 
 # game/lara.c
@@ -3616,10 +3616,10 @@ typedef enum {
 0x00432F90  0x0049  void __cdecl LOT_ClearLOT(LOT_INFO *lot);
 
 # game/missile.c
-0x00432FE0  0x02D0  void __cdecl Missile_Control(int16_t fx_num);
-0x004332B0  0x00A7  void __cdecl Missile_ShootAtLara(FX *fx);
+0x00432FE0  0x02D0  void __cdecl Missile_Control(int16_t effect_num);
+0x004332B0  0x00A7  void __cdecl Missile_ShootAtLara(EFFECT *effect);
 0x00433360  0x0386  int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);
-0x004336F0  0x0200  void __cdecl BodyPart_Control(int16_t fx_num);
+0x004336F0  0x0200  void __cdecl BodyPart_Control(int16_t effect_num);
 
 # game/moveblock.c
 0x004338F0  0x002C  void __cdecl MovableBlock_Initialise(int16_t item_num);
@@ -3675,8 +3675,8 @@ typedef enum {
 
 # game/people.c
 0x00435E00  0x0085  bool __cdecl Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);
-0x00435E90  0x003B  void __cdecl Glow_Control(int16_t fx_num);
-0x00435ED0  0x004E  void __cdecl GunFlash_Control(int16_t fx_num);
+0x00435E90  0x003B  void __cdecl Glow_Control(int16_t effect_num);
+0x00435ED0  0x004E  void __cdecl GunFlash_Control(int16_t effect_num);
 0x00435F20  0x0066  int16_t __cdecl Effect_GunShot(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00435F90  0x00B9  int16_t __cdecl Effect_GunHit(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
 0x00436050  0x00A7  int16_t __cdecl Effect_GunMiss(int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot, int16_t room_num);
@@ -3827,13 +3827,13 @@ typedef enum {
 0x00442760  0x00E0  void __cdecl FallingCeiling_Control(int16_t item_num);
 0x00442840  0x013E  void __cdecl DartEmitter_Control(int16_t item_num);
 0x00442980  0x0155  void __cdecl Dart_Control(int16_t item_num);
-0x00442AE0  0x004B  void __cdecl DartEffect_Control(int16_t fx_num);
+0x00442AE0  0x004B  void __cdecl DartEffect_Control(int16_t effect_num);
 0x00442B30  0x0090  void __cdecl FlameEmitter_Control(int16_t item_num);
-0x00442BC0  0x0164  void __cdecl Flame_Control(int16_t fx_num);
+0x00442BC0  0x0164  void __cdecl Flame_Control(int16_t effect_num);
 0x00442D30  0x0049  void __cdecl Lara_CatchFire(void);
 0x00442D80  0x00E6  void __cdecl Lara_TouchLava(ITEM *item);
 0x00442E70  0x00C5  void __cdecl EmberEmitter_Control(int16_t item_num);
-0x00442F40  0x010B  void __cdecl Ember_Control(int16_t fx_num);
+0x00442F40  0x010B  void __cdecl Ember_Control(int16_t effect_num);
 
 # game/yeti.c
 0x00443050  0x02CA  void __cdecl BirdGuardian_Control(int16_t item_num);
@@ -4544,7 +4544,7 @@ typedef enum {
 0x0051E9E0  SAVEGAME_INFO g_SaveGame;
 0x005206E0  LARA_INFO g_Lara;
 0x005207BC  ITEM *g_LaraItem;
-0x005207C0  FX *g_Effects;
+0x005207C0  EFFECT *g_Effects;
 0x005207C4  int16_t g_NextEffectFree;
 0x005207C6  int16_t g_NextItemFree;
 0x005207C8  int16_t g_NextItemActive;

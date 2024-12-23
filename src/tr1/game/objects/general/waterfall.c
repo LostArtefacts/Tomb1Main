@@ -31,17 +31,17 @@ void Waterfall_Control(int16_t item_num)
 
     if (ABS(x) <= WATERFALL_RANGE && ABS(z) <= WATERFALL_RANGE
         && ABS(y) <= WATERFALL_RANGE) {
-        int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->pos.x = item->pos.x
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->pos.x = item->pos.x
                 + ((Random_GetDraw() - 0x4000) << WALL_SHIFT) / 0x7FFF;
-            fx->pos.z = item->pos.z
+            effect->pos.z = item->pos.z
                 + ((Random_GetDraw() - 0x4000) << WALL_SHIFT) / 0x7FFF;
-            fx->pos.y = item->pos.y;
-            fx->speed = 0;
-            fx->frame_num = 0;
-            fx->object_id = O_SPLASH_1;
+            effect->pos.y = item->pos.y;
+            effect->speed = 0;
+            effect->frame_num = 0;
+            effect->object_id = O_SPLASH_1;
         }
     }
 }

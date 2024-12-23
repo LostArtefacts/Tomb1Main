@@ -181,7 +181,7 @@ static void M_LoadRooms(VFILE *const file)
         r->bound_bottom = 0;
         r->bound_right = 0;
         r->item_num = NO_ITEM;
-        r->fx_num = NO_ITEM;
+        r->effect_num = NO_ITEM;
     }
 
     // TODO: store this temporarily in a m_LevelInfo property similar to TR1 and

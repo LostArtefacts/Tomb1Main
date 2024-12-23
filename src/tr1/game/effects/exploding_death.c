@@ -32,24 +32,24 @@ int32_t Effect_ExplodingDeath(
 
     int32_t bit = 1;
     if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
-        int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *fx = &g_Effects[fx_num];
-            fx->room_num = item->room_num;
-            fx->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
-            fx->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
-            fx->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
-            fx->rot.y = (Random_GetControl() - 0x4000) * 2;
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *effect = &g_Effects[effect_num];
+            effect->room_num = item->room_num;
+            effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
+            effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
+            effect->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
+            effect->rot.y = (Random_GetControl() - 0x4000) * 2;
             if (item->object_id == O_TORSO) {
-                fx->speed = Random_GetControl() >> 7;
-                fx->fall_speed = -Random_GetControl() >> 7;
+                effect->speed = Random_GetControl() >> 7;
+                effect->fall_speed = -Random_GetControl() >> 7;
             } else {
-                fx->speed = Random_GetControl() >> 8;
-                fx->fall_speed = -Random_GetControl() >> 8;
+                effect->speed = Random_GetControl() >> 8;
+                effect->fall_speed = -Random_GetControl() >> 8;
             }
-            fx->counter = damage;
-            fx->frame_num = object->mesh_idx;
-            fx->object_id = O_BODY_PART;
+            effect->counter = damage;
+            effect->frame_num = object->mesh_idx;
+            effect->object_id = O_BODY_PART;
         }
         item->mesh_bits -= bit;
     }
@@ -84,24 +84,24 @@ int32_t Effect_ExplodingDeath(
 
         bit <<= 1;
         if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
-            int16_t fx_num = Effect_Create(item->room_num);
-            if (fx_num != NO_ITEM) {
-                FX *fx = &g_Effects[fx_num];
-                fx->room_num = item->room_num;
-                fx->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
-                fx->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
-                fx->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
-                fx->rot.y = (Random_GetControl() - 0x4000) * 2;
+            int16_t effect_num = Effect_Create(item->room_num);
+            if (effect_num != NO_ITEM) {
+                EFFECT *effect = &g_Effects[effect_num];
+                effect->room_num = item->room_num;
+                effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
+                effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
+                effect->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
+                effect->rot.y = (Random_GetControl() - 0x4000) * 2;
                 if (item->object_id == O_TORSO) {
-                    fx->speed = Random_GetControl() >> 7;
-                    fx->fall_speed = -Random_GetControl() >> 7;
+                    effect->speed = Random_GetControl() >> 7;
+                    effect->fall_speed = -Random_GetControl() >> 7;
                 } else {
-                    fx->speed = Random_GetControl() >> 8;
-                    fx->fall_speed = -Random_GetControl() >> 8;
+                    effect->speed = Random_GetControl() >> 8;
+                    effect->fall_speed = -Random_GetControl() >> 8;
                 }
-                fx->counter = damage;
-                fx->object_id = O_BODY_PART;
-                fx->frame_num = object->mesh_idx + i;
+                effect->counter = damage;
+                effect->object_id = O_BODY_PART;
+                effect->frame_num = object->mesh_idx + i;
             }
             item->mesh_bits -= bit;
         }

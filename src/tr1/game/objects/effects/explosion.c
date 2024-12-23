@@ -8,15 +8,15 @@ void Explosion_Setup(OBJECT *obj)
     obj->control = Explosion_Control;
 }
 
-void Explosion_Control(int16_t fx_num)
+void Explosion_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->counter++;
-    if (fx->counter == 2) {
-        fx->counter = 0;
-        fx->frame_num--;
-        if (fx->frame_num <= g_Objects[fx->object_id].nmeshes) {
-            Effect_Kill(fx_num);
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->counter++;
+    if (effect->counter == 2) {
+        effect->counter = 0;
+        effect->frame_num--;
+        if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
+            Effect_Kill(effect_num);
         }
     }
 }

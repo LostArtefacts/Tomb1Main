@@ -132,10 +132,10 @@ void Centaur_Control(int16_t item_num)
         case CENTAUR_STATE_SHOOT:
             if (item->required_anim_state == CENTAUR_STATE_EMPTY) {
                 item->required_anim_state = CENTAUR_STATE_AIM;
-                int16_t fx_num =
+                int16_t effect_num =
                     Creature_Effect(item, &m_CentaurRocket, Effect_RocketGun);
-                if (fx_num != NO_ITEM) {
-                    centaur->neck_rotation = g_Effects[fx_num].rot.x;
+                if (effect_num != NO_ITEM) {
+                    centaur->neck_rotation = g_Effects[effect_num].rot.x;
                 }
             }
             break;

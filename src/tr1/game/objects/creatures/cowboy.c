@@ -148,10 +148,10 @@ void Cowboy_Control(int16_t item_num)
                         item, info.distance, &m_CowboyGun2, head,
                         COWBOY_SHOT_DAMAGE);
                 } else {
-                    int16_t fx_num =
+                    int16_t effect_num =
                         Creature_Effect(item, &m_CowboyGun2, Effect_GunShot);
-                    if (fx_num != NO_ITEM) {
-                        g_Effects[fx_num].rot.y += head;
+                    if (effect_num != NO_ITEM) {
+                        g_Effects[effect_num].rot.y += head;
                     }
                 }
             }

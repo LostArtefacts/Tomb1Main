@@ -16,17 +16,17 @@ void __cdecl FlameEmitter_Control(const int16_t item_num)
             item->data = NULL;
         }
     } else if (item->data == NULL) {
-        const int16_t fx_num = Effect_Create(item->room_num);
-        if (fx_num != NO_ITEM) {
-            FX *const fx = &g_Effects[fx_num];
-            fx->pos.x = item->pos.x;
-            fx->pos.y = item->pos.y;
-            fx->pos.z = item->pos.z;
-            fx->frame_num = 0;
-            fx->object_id = O_FLAME;
-            fx->counter = 0;
+        const int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_ITEM) {
+            EFFECT *const effect = &g_Effects[effect_num];
+            effect->pos.x = item->pos.x;
+            effect->pos.y = item->pos.y;
+            effect->pos.z = item->pos.z;
+            effect->frame_num = 0;
+            effect->object_id = O_FLAME;
+            effect->counter = 0;
         }
-        item->data = (void *)(fx_num + 1);
+        item->data = (void *)(effect_num + 1);
     }
 }
 

@@ -11,15 +11,15 @@ void Splash_Setup(void)
     obj->semi_transparent = 1;
 }
 
-void __cdecl Splash_Control(const int16_t fx_num)
+void __cdecl Splash_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    fx->frame_num--;
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->frame_num--;
 
-    if (fx->frame_num > g_Objects[fx->object_id].mesh_count) {
-        fx->pos.x += (fx->speed * Math_Sin(fx->rot.y)) >> W2V_SHIFT;
-        fx->pos.z += (fx->speed * Math_Cos(fx->rot.y)) >> W2V_SHIFT;
+    if (effect->frame_num > g_Objects[effect->object_id].mesh_count) {
+        effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
+        effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
     } else {
-        Effect_Kill(fx_num);
+        Effect_Kill(effect_num);
     }
 }

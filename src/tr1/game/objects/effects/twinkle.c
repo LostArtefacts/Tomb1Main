@@ -11,30 +11,30 @@ void Twinkle_Setup(OBJECT *obj)
     obj->control = Twinkle_Control;
 }
 
-void Twinkle_Control(int16_t fx_num)
+void Twinkle_Control(int16_t effect_num)
 {
-    FX *fx = &g_Effects[fx_num];
-    fx->counter++;
-    if (fx->counter == 1) {
-        fx->counter = 0;
-        fx->frame_num--;
-        if (fx->frame_num <= g_Objects[fx->object_id].nmeshes) {
-            Effect_Kill(fx_num);
+    EFFECT *effect = &g_Effects[effect_num];
+    effect->counter++;
+    if (effect->counter == 1) {
+        effect->counter = 0;
+        effect->frame_num--;
+        if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
+            Effect_Kill(effect_num);
         }
     }
 }
 
 void Twinkle_Spawn(GAME_VECTOR *pos)
 {
-    int16_t fx_num = Effect_Create(pos->room_num);
-    if (fx_num != NO_ITEM) {
-        FX *fx = &g_Effects[fx_num];
-        fx->pos.x = pos->x;
-        fx->pos.y = pos->y;
-        fx->pos.z = pos->z;
-        fx->counter = 0;
-        fx->object_id = O_TWINKLE;
-        fx->frame_num = 0;
+    int16_t effect_num = Effect_Create(pos->room_num);
+    if (effect_num != NO_ITEM) {
+        EFFECT *effect = &g_Effects[effect_num];
+        effect->pos.x = pos->x;
+        effect->pos.y = pos->y;
+        effect->pos.z = pos->z;
+        effect->counter = 0;
+        effect->object_id = O_TWINKLE;
+        effect->frame_num = 0;
     }
 }
 

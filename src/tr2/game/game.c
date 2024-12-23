@@ -160,15 +160,15 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
         }
 
         {
-            int16_t fx_num = g_NextEffectActive;
-            while (fx_num != NO_ITEM) {
-                FX *const fx = &g_Effects[fx_num];
-                const OBJECT *const object = &g_Objects[fx->object_id];
-                const int32_t next = fx->next_active;
+            int16_t effect_num = g_NextEffectActive;
+            while (effect_num != NO_ITEM) {
+                EFFECT *const effect = &g_Effects[effect_num];
+                const OBJECT *const object = &g_Objects[effect->object_id];
+                const int32_t next = effect->next_active;
                 if (object->control != NULL) {
-                    object->control(fx_num);
+                    object->control(effect_num);
                 }
-                fx_num = next;
+                effect_num = next;
             }
         }
 
@@ -227,12 +227,12 @@ int32_t __cdecl Game_ControlCinematic(void)
     }
 
     for (int32_t id = g_NextEffectActive; id != NO_ITEM;) {
-        const FX *const fx = &g_Effects[id];
-        const OBJECT *const obj = &g_Objects[fx->object_id];
+        const EFFECT *const effect = &g_Effects[id];
+        const OBJECT *const obj = &g_Objects[effect->object_id];
         if (obj->control != NULL) {
             obj->control(id);
         }
-        id = fx->next_active;
+        id = effect->next_active;
     }
 
     Lara_Hair_Control(true);

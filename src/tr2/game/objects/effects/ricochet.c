@@ -3,12 +3,12 @@
 #include "game/effects.h"
 #include "global/vars.h"
 
-void __cdecl Ricochet_Control(const int16_t fx_num)
+void __cdecl Ricochet_Control(const int16_t effect_num)
 {
-    FX *const fx = &g_Effects[fx_num];
-    fx->counter--;
-    if (fx->counter == 0) {
-        Effect_Kill(fx_num);
+    EFFECT *const effect = &g_Effects[effect_num];
+    effect->counter--;
+    if (effect->counter == 0) {
+        Effect_Kill(effect_num);
     }
 }
 
