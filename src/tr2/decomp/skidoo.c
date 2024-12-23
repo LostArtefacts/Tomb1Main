@@ -700,7 +700,7 @@ void __cdecl Skidoo_Explode(const ITEM *const skidoo)
         effect->object_id = O_EXPLOSION;
     }
 
-    Effect_ExplodingDeath(g_Lara.skidoo, ~(SKIDOO_GUN_MESH - 1), 0);
+    Item_Explode(g_Lara.skidoo, ~(SKIDOO_GUN_MESH - 1), 0);
     Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_NORMAL);
     g_Lara.skidoo = NO_ITEM;
 }

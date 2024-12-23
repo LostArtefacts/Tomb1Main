@@ -1,6 +1,5 @@
 #include "game/objects/creatures/statue.h"
 
-#include "game/effects/exploding_death.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lot.h"
@@ -73,7 +72,7 @@ void Statue_Control(int16_t item_num)
 
     if (y > -WALL_L && y < WALL_L
         && SQUARE(x) + SQUARE(z) < SQUARE(STATUE_EXPLODE_DIST)) {
-        Effect_ExplodingDeath(item_num, -1, 0);
+        Item_Explode(item_num, -1, 0);
         Item_Kill(item_num);
         item->status = IS_DEACTIVATED;
 

@@ -124,7 +124,7 @@ void __cdecl XianKnight_Control(const int16_t item_num)
             Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_NORMAL);
             item->mesh_bits = -1;
             item->object_id = O_XIAN_KNIGHT_STATUE;
-            Effect_ExplodingDeath(item_num, -1, 0);
+            Item_Explode(item_num, -1, 0);
             item->object_id = O_XIAN_KNIGHT;
             LOT_DisableBaddieAI(item_num);
             Item_Kill(item_num);

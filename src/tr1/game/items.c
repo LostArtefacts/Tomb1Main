@@ -3,11 +3,14 @@
 #include "config.h"
 #include "game/anim.h"
 #include "game/carrier.h"
+#include "game/effects.h"
 #include "game/interpolation.h"
+#include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/const.h"
+#include "global/types.h"
 #include "global/vars.h"
 #include "math/math.h"
 #include "math/matrix.h"
@@ -851,4 +854,109 @@ ITEM *Item_Get(const int16_t item_num)
         return NULL;
     }
     return &g_Items[item_num];
+}
+
+int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
+{
+    ITEM *const item = Item_Get(item_num);
+    const OBJECT *const obj = Object_GetObject(item->object_id);
+
+    const FRAME_INFO *const frame = Item_GetBestFrame(item);
+
+    Matrix_PushUnit();
+    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+
+    int32_t *packed_rotation = frame->mesh_rots;
+    Matrix_RotYXZpack(*packed_rotation++);
+
+    int32_t *bone = &g_AnimBones[obj->bone_idx];
+#if 0
+    // XXX: present in OG, removed by GLrage on the grounds that it sometimes
+    // crashes.
+    int16_t *extra_rotation = (int16_t*)item->data;
+#endif
+
+    int32_t bit = 1;
+    if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
+        int16_t effect_num = Effect_Create(item->room_num);
+        if (effect_num != NO_EFFECT) {
+            EFFECT *effect = Effect_Get(effect_num);
+            effect->room_num = item->room_num;
+            effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
+            effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
+            effect->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
+            effect->rot.y = (Random_GetControl() - 0x4000) * 2;
+            if (item->object_id == O_TORSO) {
+                effect->speed = Random_GetControl() >> 7;
+                effect->fall_speed = -Random_GetControl() >> 7;
+            } else {
+                effect->speed = Random_GetControl() >> 8;
+                effect->fall_speed = -Random_GetControl() >> 8;
+            }
+            effect->counter = damage;
+            effect->frame_num = obj->mesh_idx;
+            effect->object_id = O_BODY_PART;
+        }
+        item->mesh_bits -= bit;
+    }
+
+    for (int i = 1; i < obj->nmeshes; i++) {
+        int32_t bone_extra_flags = *bone++;
+        if (bone_extra_flags & BEB_POP) {
+            Matrix_Pop();
+        }
+        if (bone_extra_flags & BEB_PUSH) {
+            Matrix_Push();
+        }
+
+        Matrix_TranslateRel(bone[0], bone[1], bone[2]);
+        Matrix_RotYXZpack(*packed_rotation++);
+
+#if 0
+    if (extra_rotation) {
+        if (bone_extra_flags & (BEB_ROT_X | BEB_ROT_Y | BEB_ROT_Z)) {
+            if (bone_extra_flags & BEB_ROT_Y) {
+                Matrix_RotY(*extra_rotation++);
+            }
+            if (bone_extra_flags & BEB_ROT_X) {
+                Matrix_RotX(*extra_rotation++);
+            }
+            if (bone_extra_flags & BEB_ROT_Z) {
+                Matrix_RotZ(*extra_rotation++);
+            }
+        }
+    }
+#endif
+
+        bit <<= 1;
+        if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
+            int16_t effect_num = Effect_Create(item->room_num);
+            if (effect_num != NO_EFFECT) {
+                EFFECT *effect = Effect_Get(effect_num);
+                effect->room_num = item->room_num;
+                effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
+                effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
+                effect->pos.z = (g_MatrixPtr->_23 >> W2V_SHIFT) + item->pos.z;
+                effect->rot.y = (Random_GetControl() - 0x4000) * 2;
+                if (item->object_id == O_TORSO) {
+                    effect->speed = Random_GetControl() >> 7;
+                    effect->fall_speed = -Random_GetControl() >> 7;
+                } else {
+                    effect->speed = Random_GetControl() >> 8;
+                    effect->fall_speed = -Random_GetControl() >> 8;
+                }
+                effect->counter = damage;
+                effect->object_id = O_BODY_PART;
+                effect->frame_num = obj->mesh_idx + i;
+            }
+            item->mesh_bits -= bit;
+        }
+
+        bone += 3;
+    }
+
+    Matrix_Pop();
+
+    return !(item->mesh_bits & (0x7FFFFFFF >> (31 - obj->nmeshes)));
 }

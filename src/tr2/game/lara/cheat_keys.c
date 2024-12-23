@@ -54,7 +54,7 @@ static void M_GiveItems(void)
 
 static void M_ExplodeLara(void)
 {
-    Effect_ExplodingDeath(g_Lara.item_num, -1, 1);
+    Item_Explode(g_Lara.item_num, -1, 1);
     g_LaraItem->hit_points = 0;
     g_LaraItem->flags |= IF_ONE_SHOT;
 }

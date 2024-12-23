@@ -1,7 +1,6 @@
 #include "game/objects/creatures/torso.h"
 
 #include "game/creature.h"
-#include "game/effects/exploding_death.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
@@ -252,7 +251,7 @@ void Torso_Control(int16_t item_num)
 
     if (item->status == IS_DEACTIVATED) {
         Sound_Effect(SFX_ATLANTEAN_DEATH, &item->pos, SPM_NORMAL);
-        Effect_ExplodingDeath(item_num, -1, TORSO_PART_DAMAGE);
+        Item_Explode(item_num, -1, TORSO_PART_DAMAGE);
         Room_TestTriggers(item);
 
         Item_Kill(item_num);

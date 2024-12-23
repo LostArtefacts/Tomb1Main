@@ -122,7 +122,6 @@ sources = [
   'game/effect_routines/turn_180.c',
   'game/effects.c',
   'game/effects/blood.c',
-  'game/effects/exploding_death.c',
   'game/effects/gun.c',
   'game/effects/gunshot.c',
   'game/fmv.c',

@@ -339,7 +339,7 @@ void __cdecl Creature_Die(const int16_t item_num, const bool explode)
 
     if (item->object_id == O_SKIDOO_DRIVER) {
         if (explode) {
-            Effect_ExplodingDeath(item_num, -1, 0);
+            Item_Explode(item_num, -1, 0);
         }
         item->hit_points = DONT_TARGET;
         const int16_t vehicle_item_num = (int16_t)(intptr_t)item->data;
@@ -351,7 +351,7 @@ void __cdecl Creature_Die(const int16_t item_num, const bool explode)
     item->collidable = 0;
     item->hit_points = DONT_TARGET;
     if (explode) {
-        Effect_ExplodingDeath(item_num, -1, 0);
+        Item_Explode(item_num, -1, 0);
         Item_Kill(item_num);
     } else {
         Item_RemoveActive(item_num);

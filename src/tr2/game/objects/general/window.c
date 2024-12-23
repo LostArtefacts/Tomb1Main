@@ -89,7 +89,7 @@ void __cdecl Window_2_Control(const int16_t item_num)
 
     item->mesh_bits = ~1;
     item->collidable = 0;
-    Effect_ExplodingDeath(item_num, 65278, 0);
+    Item_Explode(item_num, 65278, 0);
     Sound_Effect(SFX_BRITTLE_GROUND_BREAK, &item->pos, SPM_NORMAL);
 
     item->flags |= IF_ONE_SHOT;
@@ -112,7 +112,7 @@ void __cdecl Window_Smash(const int16_t item_num)
 
     item->collidable = 0;
     item->mesh_bits = ~1;
-    Effect_ExplodingDeath(item_num, 65278, 0);
+    Item_Explode(item_num, 65278, 0);
     Sound_Effect(SFX_GLASS_BREAK, &item->pos, SPM_NORMAL);
 
     item->flags |= IF_ONE_SHOT;

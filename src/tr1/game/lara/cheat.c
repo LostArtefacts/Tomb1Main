@@ -3,7 +3,6 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/console/common.h"
-#include "game/effects/exploding_death.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/inventory.h"
@@ -114,7 +113,7 @@ void Lara_Cheat_Control(void)
                 g_Lara.uzis.ammo = 5000;
                 Sound_Effect(SFX_LARA_HOLSTER, NULL, SPM_ALWAYS);
             } else if (as == LS_SWAN_DIVE) {
-                Effect_ExplodingDeath(g_Lara.item_num, -1, 1);
+                Item_Explode(g_Lara.item_num, -1, 1);
                 Sound_Effect(SFX_EXPLOSION_CHEAT, &g_LaraItem->pos, SPM_NORMAL);
                 g_LaraItem->hit_points = 0;
                 g_LaraItem->flags |= IF_INVISIBLE;
@@ -364,7 +363,7 @@ bool Lara_Cheat_KillEnemy(const int16_t item_num)
         return false;
     }
 
-    Effect_ExplodingDeath(item_num, -1, 0);
+    Item_Explode(item_num, -1, 0);
     Sound_Effect(SFX_EXPLOSION_CHEAT, &item->pos, SPM_NORMAL);
     Item_Kill(item_num);
     LOT_DisableBaddieAI(item_num);

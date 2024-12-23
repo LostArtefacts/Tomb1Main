@@ -14,7 +14,7 @@ void __cdecl Gondola_Control(const int16_t item_num)
     case GONDOLA_STATE_FLOATING:
         if (gondola->goal_anim_state == GONDOLA_STATE_CRASH) {
             gondola->mesh_bits = 0xFF;
-            Effect_ExplodingDeath(item_num, 240, 0);
+            Item_Explode(item_num, 240, 0);
         }
         break;
 

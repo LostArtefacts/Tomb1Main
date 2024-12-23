@@ -3618,7 +3618,7 @@ typedef enum {
 # game/missile.c
 0x00432FE0  0x02D0  void __cdecl Missile_Control(int16_t effect_num);
 0x004332B0  0x00A7  void __cdecl Missile_ShootAtLara(EFFECT *effect);
-0x00433360  0x0386  int32_t __cdecl Effect_ExplodingDeath(int16_t item_num, int32_t mesh_bits, int16_t damage);
+0x00433360  0x0386  int32_t __cdecl Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage);
 0x004336F0  0x0200  void __cdecl BodyPart_Control(int16_t effect_num);
 
 # game/moveblock.c

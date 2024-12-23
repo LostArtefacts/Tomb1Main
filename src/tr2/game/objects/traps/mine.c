@@ -42,13 +42,13 @@ static void M_DetonateAll(
 {
     ITEM *const boat_item = Item_Get(boat_item_num);
     if (g_Lara.skidoo == boat_item_num) {
-        Effect_ExplodingDeath(g_Lara.item_num, -1, 0);
+        Item_Explode(g_Lara.item_num, -1, 0);
         g_LaraItem->hit_points = 0;
         g_LaraItem->flags |= IF_ONE_SHOT;
     }
 
     boat_item->object_id = O_BOAT_BITS;
-    Effect_ExplodingDeath(boat_item_num, -1, 0);
+    Item_Explode(boat_item_num, -1, 0);
     Item_Kill(boat_item_num);
     boat_item->object_id = O_BOAT;
 

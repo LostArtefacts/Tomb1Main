@@ -3,7 +3,6 @@
 #include "game/carrier.h"
 #include "game/creature.h"
 #include "game/effects/blood.h"
-#include "game/effects/exploding_death.h"
 #include "game/effects/gun.h"
 #include "game/items.h"
 #include "game/lara/common.h"
@@ -123,7 +122,7 @@ void Mutant_FlyerControl(int16_t item_num)
     int16_t angle = 0;
 
     if (item->hit_points <= 0) {
-        Effect_ExplodingDeath(
+        Item_Explode(
             item_num, -1,
             m_EnableExplosions ? FLYER_PART_DAMAGE : -FLYER_PART_DAMAGE);
         Sound_Effect(SFX_ATLANTEAN_DEATH, &item->pos, SPM_NORMAL);
