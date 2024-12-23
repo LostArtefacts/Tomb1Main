@@ -6,6 +6,7 @@
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory/backpack.h"
+#include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
 #include "game/lara/col.h"
@@ -772,7 +773,7 @@ void __cdecl Lara_Animate(ITEM *const item)
 
             case AC_EFFECT:
                 const int32_t frame = cmd_ptr[0];
-                const int32_t fx_func_idx = cmd_ptr[1] & 0x3FFF;
+                const int32_t action_id = cmd_ptr[1] & 0x3FFF;
                 const ANIM_COMMAND_ENVIRONMENT type =
                     (cmd_ptr[1] & 0xC000) >> 14;
                 cmd_ptr += 2;
@@ -786,7 +787,7 @@ void __cdecl Lara_Animate(ITEM *const item)
                         && (g_Lara.water_surface_dist >= 0
                             || g_Lara.water_surface_dist == NO_HEIGHT))
                     || (type == ACE_WATER && g_Lara.water_surface_dist < 0)) {
-                    g_EffectRoutines[fx_func_idx](item);
+                    ItemAction_Run(action_id, item);
                 }
                 break;
 

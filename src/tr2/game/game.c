@@ -12,6 +12,7 @@
 #include "game/input.h"
 #include "game/inventory/backpack.h"
 #include "game/inventory/common.h"
+#include "game/item_actions.h"
 #include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
 #include "game/lara/hair.h"
@@ -177,6 +178,8 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
         Lara_Hair_Control(false);
         Camera_Update();
         Sound_UpdateEffects();
+        Sound_EndScene();
+        ItemAction_RunActive();
 
         g_HealthBarTimer--;
         if (g_CurrentLevel || g_IsAssaultTimerActive) {

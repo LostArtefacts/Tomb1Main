@@ -172,11 +172,3 @@ void Effect_Draw(const int16_t effect_num)
         Matrix_Pop();
     }
 }
-
-void Effect_RunActiveFlipEffect(void)
-{
-    // XXX: Some of the EFFECT routines rely on the item to be not null!
-    if (g_FlipEffect != -1) {
-        g_EffectRoutines[g_FlipEffect](NULL);
-    }
-}

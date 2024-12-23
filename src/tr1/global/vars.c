@@ -1,33 +1,8 @@
 #include "global/vars.h"
 
-#include "game/effect_routines/bubbles.h"
-#include "game/effect_routines/chain_block.h"
-#include "game/effect_routines/earthquake.h"
-#include "game/effect_routines/explosion.h"
-#include "game/effect_routines/finish_level.h"
-#include "game/effect_routines/flicker.h"
-#include "game/effect_routines/flipmap.h"
-#include "game/effect_routines/flood.h"
-#include "game/effect_routines/floor_shake.h"
-#include "game/effect_routines/lara_effects.h"
-#include "game/effect_routines/powerup.h"
-#include "game/effect_routines/raising_block.h"
-#include "game/effect_routines/sand.h"
-#include "game/effect_routines/stairs2slope.h"
-#include "game/effect_routines/turn_180.h"
-
 #include <stddef.h>
 
 int32_t g_FPSCounter = 0;
-
-void (*g_EffectRoutines[])(ITEM *item) = {
-    FX_Turn180,       FX_FloorShake,   FX_LaraNormal,
-    FX_Bubbles,       FX_FinishLevel,  FX_Earthquake,
-    FX_Flood,         FX_RaisingBlock, FX_Stairs2Slope,
-    FX_DropSand,      FX_PowerUp,      FX_Explosion,
-    FX_LaraHandsFree, FX_FlipMap,      FX_LaraDrawRightGun,
-    FX_ChainBlock,    FX_Flicker,
-};
 
 int16_t g_SampleLUT[MAX_SAMPLES] = { 0 };
 SAMPLE_INFO *g_SampleInfos = NULL;

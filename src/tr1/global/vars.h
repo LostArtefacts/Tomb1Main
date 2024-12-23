@@ -33,8 +33,6 @@ extern int32_t g_Sound_MasterVolume;
 
 extern int32_t g_FPSCounter;
 
-extern void (*g_EffectRoutines[])(ITEM *item);
-
 extern LARA_INFO g_Lara;
 extern ITEM *g_LaraItem;
 extern CAMERA_INFO g_Camera;

@@ -19,6 +19,8 @@
 #include <libtrx/debug.h>
 #include <libtrx/utils.h>
 
+int32_t g_FlipEffect = -1;
+
 void Room_MarkToBeDrawn(int16_t room_num);
 static int16_t M_GetFloorTiltHeight(const SECTOR *sector, int32_t x, int32_t z);
 static int16_t M_GetCeilingTiltHeight(

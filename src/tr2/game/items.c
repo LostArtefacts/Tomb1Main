@@ -1,6 +1,7 @@
 #include "game/items.h"
 
 #include "game/effects.h"
+#include "game/item_actions.h"
 #include "game/math.h"
 #include "game/matrix.h"
 #include "game/output.h"
@@ -555,11 +556,11 @@ void __cdecl Item_Animate(ITEM *const item)
 
             case AC_EFFECT: {
                 const int32_t frame = cmd_ptr[0];
-                const int32_t fx_func_idx = cmd_ptr[1] & 0x3FFF;
+                const int32_t action_id = cmd_ptr[1] & 0x3FFF;
                 cmd_ptr += 2;
 
                 if (item->frame_num == frame) {
-                    g_EffectRoutines[fx_func_idx](item);
+                    ItemAction_Run(action_id, item);
                 }
                 break;
             }

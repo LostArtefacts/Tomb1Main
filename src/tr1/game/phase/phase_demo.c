@@ -8,6 +8,7 @@
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/interpolation.h"
+#include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
 #include "game/lara/common.h"
@@ -309,7 +310,7 @@ static PHASE_CONTROL M_Run(int32_t nframes)
 
         Camera_Update();
         Sound_ResetAmbient();
-        Effect_RunActiveFlipEffect();
+        ItemAction_RunActive();
         Sound_UpdateEffects();
         Overlay_BarHealthTimerTick();
 

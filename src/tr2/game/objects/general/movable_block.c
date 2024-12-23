@@ -1,8 +1,8 @@
 #include "game/objects/general/movable_block.h"
 
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/input.h"
+#include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
@@ -198,7 +198,7 @@ void __cdecl MovableBlock_Control(const int16_t item_num)
         item->gravity = 0;
         item->pos.y = height;
         item->status = IS_DEACTIVATED;
-        FX_FloorShake(item);
+        ItemAction_Run(ITEM_ACTION_FLOOR_SHAKE, item);
         Sound_Effect(SFX_ENEMY_GRUNT, &item->pos, SPM_ALWAYS);
     }
 

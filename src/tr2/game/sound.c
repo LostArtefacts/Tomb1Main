@@ -162,18 +162,12 @@ void __cdecl Sound_SetMasterVolume(int32_t volume)
 void __cdecl Sound_UpdateEffects(void)
 {
     for (int32_t i = 0; i < g_SoundEffectCount; i++) {
-        OBJECT_VECTOR *sound = &g_SoundEffects[i];
+        OBJECT_VECTOR *const sound = &g_SoundEffects[i];
         if ((g_FlipStatus && (sound->flags & SF_FLIP))
             || (!g_FlipStatus && (sound->flags & SF_UNFLIP))) {
             Sound_Effect(sound->data, &sound->pos, SPM_NORMAL);
         }
     }
-
-    if (g_FlipEffect != -1) {
-        g_EffectRoutines[g_FlipEffect](NULL);
-    }
-
-    Sound_EndScene();
 }
 
 void __cdecl Sound_Effect(

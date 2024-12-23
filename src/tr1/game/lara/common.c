@@ -7,6 +7,7 @@
 #include "game/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
+#include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
 #include "game/lara/control.h"
@@ -426,7 +427,7 @@ void Lara_Animate(ITEM *item)
 
             case AC_EFFECT:
                 if (item->frame_num == command[0]) {
-                    g_EffectRoutines[command[1]](item);
+                    ItemAction_Run(command[1], item);
                 }
                 command += 2;
                 break;

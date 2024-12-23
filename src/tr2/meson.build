@@ -105,6 +105,7 @@ sources = [
   'game/inventory/common.c',
   'game/inventory/ring.c',
   'game/inventory/vars.c',
+  'game/item_actions.c',
   'game/items.c',
   'game/lara/cheat.c',
   'game/lara/cheat_keys.c',

@@ -5,6 +5,7 @@
 #include "game/carrier.h"
 #include "game/effects.h"
 #include "game/interpolation.h"
+#include "game/item_actions.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -660,7 +661,7 @@ void Item_Animate(ITEM *item)
 
             case AC_EFFECT:
                 if (item->frame_num == command[0]) {
-                    g_EffectRoutines[command[1]](item);
+                    ItemAction_Run(command[1], item);
                 }
                 command += 2;
                 break;
