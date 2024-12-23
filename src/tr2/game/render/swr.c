@@ -107,7 +107,7 @@ static VERTEX_INFO m_VBuffer[32] = { 0 };
 static void __fastcall M_FlatA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
 static void __fastcall M_TransA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t depth_q);
+    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t depth);
 static void __fastcall M_GourA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
 static void __fastcall M_GTMapA(
@@ -233,18 +233,17 @@ static void __fastcall M_FlatA(
 
 static void __fastcall M_TransA(
     GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t depth_q)
+    const uint8_t depth)
 {
     int32_t y_size = y2 - y1;
-    // TODO: depth_q should be at most 32 here
-    if (y_size <= 0 || depth_q > 32) {
+    if (y_size <= 0 || depth >= LIGHT_MAP_SIZE) {
         return;
     }
 
     const int32_t stride = target_surface->desc.pitch;
     const XBUF_X *xbuf = (const XBUF_X *)g_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
-    const DEPTHQ_ENTRY *qt = g_DepthQTable + depth_q;
+    const DEPTHQ_ENTRY *qt = g_DepthQTable + depth;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -1297,7 +1296,7 @@ static void M_DrawScaledSpriteC(
         return;
     }
 
-    const DEPTHQ_ENTRY *const depth_q = &g_DepthQTable[shade >> 8];
+    const DEPTHQ_ENTRY *const depth = &g_DepthQTable[shade >> 8];
     const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
 
     int32_t u_base = 0x4000;
@@ -1326,7 +1325,7 @@ static void M_DrawScaledSpriteC(
     ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[y0 * stride + x0];
     const int32_t dst_add = stride - width;
 
-    const bool is_depth_q = depth_q != &g_DepthQTable[16];
+    const bool is_depth_q = depth != &g_DepthQTable[16];
 
     for (int32_t i = 0; i < height; i++) {
         int32_t u = u_base;
@@ -1334,7 +1333,7 @@ static void M_DrawScaledSpriteC(
         for (int32_t j = 0; j < width; j++) {
             const uint8_t pix = src[u >> 16];
             if (pix != 0) {
-                *draw_ptr = is_depth_q ? depth_q->index[pix] : pix;
+                *draw_ptr = is_depth_q ? depth->index[pix] : pix;
                 *alpha_ptr = 255;
             }
             u += u_add;
@@ -2308,7 +2307,7 @@ static void M_InsertTransQuad(
     g_Sort3DPtr++;
 
     *g_Info3DPtr++ = POLY_TRANS;
-    *g_Info3DPtr++ = 32;
+    *g_Info3DPtr++ = 24;
     *g_Info3DPtr++ = 4; // number of vertices
     *g_Info3DPtr++ = x;
     *g_Info3DPtr++ = y;

@@ -27,6 +27,7 @@
 #define WIBBLE_SIZE 32
 #define MAX_WIBBLE 2
 #define MAX_SHADE 0x300
+#define LIGHT_MAP_SIZE 32
 #define MAX_ROOM_LIGHT_UNIT (0x2000 / (WIBBLE_SIZE / 2))
 
 #define GAME_FOV 80
