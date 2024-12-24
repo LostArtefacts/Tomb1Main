@@ -62,7 +62,7 @@ static void M_Initialise(const int16_t item_num)
 void __cdecl XianKnight_SparkleTrail(const ITEM *const item)
 {
     const int16_t effect_num = Effect_Create(item->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->object_id = O_TWINKLE;
         effect->pos.x = item->pos.x + (Random_GetDraw() << 8 >> 15) - 128;

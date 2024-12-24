@@ -139,7 +139,7 @@ void Interpolation_Commit(void)
     }
 
     int16_t effect_num = g_NextFxActive;
-    while (effect_num != NO_ITEM) {
+    while (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         INTERPOLATE(effect, pos.x, ratio, 128);
         INTERPOLATE(effect, pos.y, ratio, MAX(128, effect->fall_speed * 2));
@@ -209,7 +209,7 @@ void Interpolation_Remember(void)
     }
 
     int16_t effect_num = g_NextFxActive;
-    while (effect_num != NO_ITEM) {
+    while (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         REMEMBER(effect, pos.x);
         REMEMBER(effect, pos.y);

@@ -79,7 +79,7 @@ void Flame_Control(int16_t effect_num)
             effect->counter = 100;
 
             effect_num = Effect_Create(g_LaraItem->room_num);
-            if (effect_num != NO_ITEM) {
+            if (effect_num != NO_EFFECT) {
                 effect = &g_Effects[effect_num];
                 effect->frame_num = 0;
                 effect->object_id = O_FLAME;

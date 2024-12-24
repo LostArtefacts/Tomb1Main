@@ -6,6 +6,7 @@
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/demo.h"
+#include "game/effects.h"
 #include "game/fader.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
@@ -161,7 +162,7 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
 
         {
             int16_t effect_num = g_NextEffectActive;
-            while (effect_num != NO_ITEM) {
+            while (effect_num != NO_EFFECT) {
                 EFFECT *const effect = &g_Effects[effect_num];
                 const OBJECT *const object = &g_Objects[effect->object_id];
                 const int32_t next = effect->next_active;
@@ -226,7 +227,7 @@ int32_t __cdecl Game_ControlCinematic(void)
         id = item->next_active;
     }
 
-    for (int32_t id = g_NextEffectActive; id != NO_ITEM;) {
+    for (int32_t id = g_NextEffectActive; id != NO_EFFECT;) {
         const EFFECT *const effect = &g_Effects[id];
         const OBJECT *const obj = &g_Objects[effect->object_id];
         if (obj->control != NULL) {

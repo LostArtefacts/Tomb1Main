@@ -25,7 +25,7 @@ void PickupAid_Setup(OBJECT *const obj)
 void PickupAid_Spawn(const GAME_VECTOR *const pos)
 {
     const int16_t effect_num = Effect_Create(pos->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->pos.x = pos->x;
         effect->pos.y = pos->y;

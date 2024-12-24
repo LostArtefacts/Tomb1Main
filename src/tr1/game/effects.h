@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+#define NO_EFFECT (-1)
+
 extern EFFECT *g_Effects;
 extern int16_t g_NextFxActive;
 

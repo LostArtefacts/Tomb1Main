@@ -663,7 +663,7 @@ static bool M_LoadFx(JSON_ARRAY *fx_arr)
         int16_t shade = JSON_ObjectGetInt(fx_obj, "shade", 0);
 
         int16_t effect_num = Effect_Create(room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *effect = &g_Effects[effect_num];
             effect->pos.x = x;
             effect->pos.y = y;

@@ -20,7 +20,7 @@ static void M_Explode(int16_t grenade_item_num, const XYZ_32 pos)
 {
     const ITEM *const grenade_item = Item_Get(grenade_item_num);
     const int16_t effect_num = Effect_Create(grenade_item->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->pos = pos;
         effect->speed = 0;

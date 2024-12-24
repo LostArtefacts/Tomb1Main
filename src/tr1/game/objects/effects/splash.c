@@ -37,7 +37,7 @@ void Splash_Spawn(ITEM *item)
 
     for (int i = 0; i < 10; i++) {
         int16_t effect_num = Effect_Create(room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *effect = &g_Effects[effect_num];
             effect->pos.x = item->pos.x;
             effect->pos.y = wh;

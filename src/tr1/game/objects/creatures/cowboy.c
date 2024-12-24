@@ -150,7 +150,7 @@ void Cowboy_Control(int16_t item_num)
                 } else {
                     int16_t effect_num =
                         Creature_Effect(item, &m_CowboyGun2, Effect_GunShot);
-                    if (effect_num != NO_ITEM) {
+                    if (effect_num != NO_EFFECT) {
                         g_Effects[effect_num].rot.y += head;
                     }
                 }

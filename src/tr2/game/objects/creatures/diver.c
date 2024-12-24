@@ -275,7 +275,7 @@ int16_t __cdecl Diver_Harpoon(
     const int16_t y_rot, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->pos.x = x;
         effect->pos.y = y;

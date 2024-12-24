@@ -3,6 +3,7 @@
 #include "decomp/effects.h"
 #include "game/box.h"
 #include "game/collide.h"
+#include "game/effects.h"
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
@@ -986,7 +987,7 @@ int32_t __cdecl Creature_ShootAtLara(
         is_targetable = true;
     }
 
-    int16_t effect_num = NO_ITEM;
+    int16_t effect_num = NO_EFFECT;
     if (target_item == g_LaraItem) {
         if (is_hit) {
             effect_num = Creature_Effect(item, gun, Effect_GunHit);
@@ -1001,7 +1002,7 @@ int32_t __cdecl Creature_ShootAtLara(
         }
     }
 
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         g_Effects[effect_num].rot.y += extra_rotation;
     }
 

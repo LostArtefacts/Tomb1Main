@@ -17,7 +17,7 @@ static void M_RemoveActive(const int16_t effect_num)
         return;
     }
 
-    while (link_num != NO_ITEM) {
+    while (link_num != NO_EFFECT) {
         if (g_Effects[link_num].next_active == effect_num) {
             g_Effects[link_num].next_active = effect->next_active;
             return;
@@ -35,7 +35,7 @@ static void M_RemoveDrawn(const int16_t effect_num)
         return;
     }
 
-    while (link_num != NO_ITEM) {
+    while (link_num != NO_EFFECT) {
         if (g_Effects[link_num].next_free == effect_num) {
             g_Effects[link_num].next_free = effect->next_free;
             return;
@@ -47,20 +47,20 @@ static void M_RemoveDrawn(const int16_t effect_num)
 void __cdecl Effect_InitialiseArray(void)
 {
     g_NextEffectFree = 0;
-    g_NextEffectActive = NO_ITEM;
+    g_NextEffectActive = NO_EFFECT;
 
     for (int32_t i = 0; i < MAX_EFFECTS - 1; i++) {
         EFFECT *const effect = &g_Effects[i];
         effect->next_free = i + 1;
     }
-    g_Effects[MAX_EFFECTS - 1].next_free = NO_ITEM;
+    g_Effects[MAX_EFFECTS - 1].next_free = NO_EFFECT;
 }
 
 int16_t __cdecl Effect_Create(const int16_t room_num)
 {
     int16_t effect_num = g_NextEffectFree;
-    if (effect_num == NO_ITEM) {
-        return NO_ITEM;
+    if (effect_num == NO_EFFECT) {
+        return NO_EFFECT;
     }
 
     EFFECT *const effect = &g_Effects[effect_num];
@@ -98,7 +98,7 @@ void __cdecl Effect_NewRoom(const int16_t effect_num, const int16_t room_num)
     if (link_num == effect_num) {
         room->effect_num = effect->next_free;
     } else {
-        while (link_num != NO_ITEM) {
+        while (link_num != NO_EFFECT) {
             if (g_Effects[link_num].next_free == effect_num) {
                 g_Effects[link_num].next_free = effect->next_free;
                 break;

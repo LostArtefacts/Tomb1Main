@@ -701,7 +701,7 @@ bool Creature_ShootAtLara(
         effect_num = Creature_Effect(item, gun, Effect_GunShotMiss);
     }
 
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         g_Effects[effect_num].rot.y += extra_rotation;
     }
 

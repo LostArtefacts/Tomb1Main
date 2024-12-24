@@ -30,7 +30,7 @@ void __cdecl Waterfall_Control(const int16_t item_num)
     Sound_Effect(SFX_WATERFALL_LOOP, &item->pos, SPM_NORMAL);
 
     const int16_t effect_num = Effect_Create(item->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->object_id = O_SPLASH;
         effect->pos.x =

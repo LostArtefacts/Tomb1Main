@@ -20,7 +20,7 @@ static void M_CreateHotLiquid(const ITEM *const bowl_item)
 {
     const int16_t effect_num = Effect_Create(bowl_item->room_num);
     const OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->object_id = O_HOT_LIQUID;
         effect->pos.x = bowl_item->pos.x + STEP_L * 2;

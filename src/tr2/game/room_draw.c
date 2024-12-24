@@ -441,7 +441,7 @@ void __cdecl Room_DrawSingleRoomObjects(const int16_t room_num)
     }
 
     int16_t effect_num = r->effect_num;
-    while (effect_num != NO_ITEM) {
+    while (effect_num != NO_EFFECT) {
         const EFFECT *const effect = &g_Effects[effect_num];
         Effect_Draw(effect_num);
         effect_num = effect->next_free;

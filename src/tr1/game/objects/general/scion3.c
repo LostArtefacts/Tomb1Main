@@ -35,7 +35,7 @@ void Scion3_Control(int16_t item_num)
 
     if (counter % 10 == 0) {
         int16_t effect_num = Effect_Create(item->room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *effect = &g_Effects[effect_num];
             effect->pos.x = item->pos.x + (Random_GetControl() - 0x4000) / 32;
             effect->pos.y =

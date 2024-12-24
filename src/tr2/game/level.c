@@ -1,6 +1,7 @@
 #include "game/level.h"
 
 #include "decomp/decomp.h"
+#include "game/effects.h"
 #include "game/gamebuf.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/inject.h"
@@ -181,7 +182,7 @@ static void M_LoadRooms(VFILE *const file)
         r->bound_bottom = 0;
         r->bound_right = 0;
         r->item_num = NO_ITEM;
-        r->effect_num = NO_ITEM;
+        r->effect_num = NO_EFFECT;
     }
 
     // TODO: store this temporarily in a m_LevelInfo property similar to TR1 and

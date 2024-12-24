@@ -48,7 +48,7 @@ int32_t __cdecl Effect_ExplodingDeath(
     int32_t bit = 1;
     if ((mesh_bits & bit) && (item->mesh_bits & bit)) {
         const int16_t effect_num = Effect_Create(item->room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *const effect = &g_Effects[effect_num];
             effect->pos.x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
             effect->pos.y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
@@ -96,7 +96,7 @@ int32_t __cdecl Effect_ExplodingDeath(
         bit <<= 1;
         if ((mesh_bits & bit) && (item->mesh_bits & bit)) {
             const int16_t effect_num = Effect_Create(item->room_num);
-            if (effect_num != NO_ITEM) {
+            if (effect_num != NO_EFFECT) {
                 EFFECT *const effect = &g_Effects[effect_num];
                 effect->pos.x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
                 effect->pos.y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
@@ -126,7 +126,7 @@ int16_t __cdecl Effect_MissileFlame(
     const int16_t y_rot, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return effect_num;
     }
 
@@ -160,7 +160,7 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
     const ITEM *const item = &g_Items[item_num];
 
     const int16_t effect_num = Effect_Create(item->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->object_id = O_TWINKLE;
 
@@ -201,7 +201,7 @@ void __cdecl FX_AssaultStart(ITEM *const item)
 void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return;
     }
 
@@ -242,7 +242,7 @@ void __cdecl Splash(const ITEM *const item)
 
     for (int32_t i = 0; i < 10; i++) {
         const int16_t effect_num = Effect_Create(room_num);
-        if (effect_num == NO_ITEM) {
+        if (effect_num == NO_EFFECT) {
             continue;
         }
 
@@ -267,7 +267,7 @@ int16_t __cdecl Effect_GunShot(
     const int16_t y_rot, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return effect_num;
     }
 
@@ -321,7 +321,7 @@ int16_t __cdecl Knife(
     const int16_t y_rot, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return effect_num;
     }
 
@@ -346,7 +346,7 @@ int16_t __cdecl DoBloodSplat(
     const int16_t direction, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->pos.x = x;
         effect->pos.y = y;
@@ -376,7 +376,7 @@ void __cdecl DoLotsOfBlood(
 void __cdecl Ricochet(const GAME_VECTOR *const pos)
 {
     const int16_t effect_num = Effect_Create(pos->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->object_id = O_RICOCHET;
         effect->pos = pos->pos;

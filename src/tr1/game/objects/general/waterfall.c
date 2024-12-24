@@ -32,7 +32,7 @@ void Waterfall_Control(int16_t item_num)
     if (ABS(x) <= WATERFALL_RANGE && ABS(z) <= WATERFALL_RANGE
         && ABS(y) <= WATERFALL_RANGE) {
         int16_t effect_num = Effect_Create(item->room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *effect = &g_Effects[effect_num];
             effect->pos.x = item->pos.x
                 + ((Random_GetDraw() - 0x4000) << WALL_SHIFT) / 0x7FFF;

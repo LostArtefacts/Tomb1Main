@@ -292,7 +292,7 @@ void __cdecl Boat_DoWakeEffect(const ITEM *const boat)
 
     for (int32_t i = 0; i < 3; i++) {
         const int16_t effect_num = Effect_Create(boat->room_num);
-        if (effect_num == NO_ITEM) {
+        if (effect_num == NO_EFFECT) {
             continue;
         }
 

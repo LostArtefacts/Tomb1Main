@@ -252,7 +252,7 @@ static void M_LoadRooms(VFILE *file)
         r->bound_bottom = 0;
         r->bound_right = 0;
         r->item_num = NO_ITEM;
-        r->effect_num = NO_ITEM;
+        r->effect_num = NO_EFFECT;
     }
 
     const int32_t fd_length = VFile_ReadS32(file);

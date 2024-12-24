@@ -33,7 +33,7 @@ void FX_Bubbles(ITEM *item)
 
     for (int i = 0; i < count; i++) {
         int16_t effect_num = Effect_Create(item->room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *effect = &g_Effects[effect_num];
             effect->pos.x = offset.x;
             effect->pos.y = offset.y;

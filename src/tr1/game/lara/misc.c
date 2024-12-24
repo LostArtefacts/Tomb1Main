@@ -918,7 +918,7 @@ void Lara_CatchFire(void)
 
     for (int32_t i = 0; i < 10; i++) {
         const int16_t effect_num = Effect_Create(g_LaraItem->room_num);
-        if (effect_num != NO_ITEM) {
+        if (effect_num != NO_EFFECT) {
             EFFECT *const effect = &g_Effects[effect_num];
             effect->object_id = O_FLAME;
             effect->frame_num =
@@ -932,7 +932,7 @@ void Lara_Extinguish(void)
 {
     // put out flame objects
     int16_t effect_num = g_NextFxActive;
-    while (effect_num != NO_ITEM) {
+    while (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         const int16_t next_effect_num = effect->next_active;
         if (effect->object_id == O_FLAME && effect->counter < 0) {

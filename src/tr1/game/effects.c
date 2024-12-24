@@ -10,26 +10,26 @@
 #include <stddef.h>
 
 EFFECT *g_Effects = NULL;
-int16_t g_NextFxActive = NO_ITEM;
+int16_t g_NextFxActive = NO_EFFECT;
 
-static int16_t m_NextFxFree = NO_ITEM;
+static int16_t m_NextFxFree = NO_EFFECT;
 
 void Effect_InitialiseArray(void)
 {
-    g_NextFxActive = NO_ITEM;
+    g_NextFxActive = NO_EFFECT;
     m_NextFxFree = 0;
     for (int i = 0; i < NUM_EFFECTS - 1; i++) {
         g_Effects[i].next_draw = i + 1;
         g_Effects[i].next_free = i + 1;
     }
-    g_Effects[NUM_EFFECTS - 1].next_draw = NO_ITEM;
-    g_Effects[NUM_EFFECTS - 1].next_free = NO_ITEM;
+    g_Effects[NUM_EFFECTS - 1].next_draw = NO_EFFECT;
+    g_Effects[NUM_EFFECTS - 1].next_free = NO_EFFECT;
 }
 
 void Effect_Control(void)
 {
     int16_t effect_num = g_NextFxActive;
-    while (effect_num != NO_ITEM) {
+    while (effect_num != NO_EFFECT) {
         EFFECT *effect = &g_Effects[effect_num];
         OBJECT *obj = &g_Objects[effect->object_id];
         if (obj->control) {
@@ -42,7 +42,7 @@ void Effect_Control(void)
 int16_t Effect_Create(int16_t room_num)
 {
     int16_t effect_num = m_NextFxFree;
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return effect_num;
     }
 
@@ -68,7 +68,7 @@ void Effect_Kill(int16_t effect_num)
         g_NextFxActive = effect->next_active;
     } else {
         int16_t linknum = g_NextFxActive;
-        while (linknum != NO_ITEM) {
+        while (linknum != NO_EFFECT) {
             EFFECT *fx_link = &g_Effects[linknum];
             if (fx_link->next_active == effect_num) {
                 fx_link->next_active = effect->next_active;
@@ -82,7 +82,7 @@ void Effect_Kill(int16_t effect_num)
         r->effect_num = effect->next_draw;
     } else {
         int16_t linknum = r->effect_num;
-        while (linknum != NO_ITEM) {
+        while (linknum != NO_EFFECT) {
             EFFECT *fx_link = &g_Effects[linknum];
             if (fx_link->next_draw == effect_num) {
                 fx_link->next_draw = effect->next_draw;
@@ -105,7 +105,7 @@ void Effect_NewRoom(int16_t effect_num, int16_t room_num)
     if (linknum == effect_num) {
         r->effect_num = effect->next_draw;
     } else {
-        for (; linknum != NO_ITEM; linknum = g_Effects[linknum].next_draw) {
+        for (; linknum != NO_EFFECT; linknum = g_Effects[linknum].next_draw) {
             if (g_Effects[linknum].next_draw == effect_num) {
                 g_Effects[linknum].next_draw = effect->next_draw;
                 break;

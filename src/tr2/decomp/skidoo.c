@@ -280,7 +280,7 @@ int32_t __cdecl Skidoo_TestHeight(
 void __cdecl Skidoo_DoSnowEffect(ITEM *const skidoo)
 {
     const int16_t effect_num = Effect_Create(skidoo->room_num);
-    if (effect_num == NO_ITEM) {
+    if (effect_num == NO_EFFECT) {
         return;
     }
 
@@ -689,7 +689,7 @@ void __cdecl Skidoo_Animation(
 void __cdecl Skidoo_Explode(const ITEM *const skidoo)
 {
     const int16_t effect_num = Effect_Create(skidoo->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *const effect = &g_Effects[effect_num];
         effect->pos.x = skidoo->pos.x;
         effect->pos.y = skidoo->pos.y;

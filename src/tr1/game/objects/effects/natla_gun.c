@@ -38,7 +38,7 @@ void NatlaGun_Control(int16_t effect_num)
     }
 
     effect_num = Effect_Create(room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *newfx = &g_Effects[effect_num];
         newfx->pos.x = x;
         newfx->pos.y = y;

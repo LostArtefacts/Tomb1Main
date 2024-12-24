@@ -22,7 +22,7 @@ void Ricochet_Control(int16_t effect_num)
 void Ricochet_Spawn(GAME_VECTOR *pos)
 {
     int16_t effect_num = Effect_Create(pos->room_num);
-    if (effect_num != NO_ITEM) {
+    if (effect_num != NO_EFFECT) {
         EFFECT *effect = &g_Effects[effect_num];
         effect->pos.x = pos->x;
         effect->pos.y = pos->y;
