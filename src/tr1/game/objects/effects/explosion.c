@@ -10,7 +10,7 @@ void Explosion_Setup(OBJECT *obj)
 
 void Explosion_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->counter++;
     if (effect->counter == 2) {
         effect->counter = 0;

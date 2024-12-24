@@ -53,7 +53,7 @@ void Twinkle_Setup(void)
 
 void __cdecl Twinkle_Control(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->frame_num--;
     if (effect->frame_num <= g_Objects[effect->object_id].mesh_count) {
         effect->frame_num = 0;

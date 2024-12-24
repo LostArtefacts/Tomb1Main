@@ -19,7 +19,7 @@ void BodyPart_Setup(void)
 
 void __cdecl BodyPart_Control(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->rot.x += 5 * PHD_DEGREE;
     effect->rot.z += 10 * PHD_DEGREE;
     effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
@@ -35,7 +35,7 @@ void __cdecl BodyPart_Control(const int16_t effect_num)
         && (g_Rooms[room_num].flags & RF_UNDERWATER)) {
         const int16_t effect_num = Effect_Create(effect->room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *const splash_fx = &g_Effects[effect_num];
+            EFFECT *const splash_fx = Effect_Get(effect_num);
             splash_fx->pos.x = effect->pos.x;
             splash_fx->pos.y = effect->pos.y;
             splash_fx->pos.z = effect->pos.z;

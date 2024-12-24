@@ -15,7 +15,7 @@ int16_t Effect_GunShot(
 {
     int16_t effect_num = Effect_Create(room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         effect->pos.x = x;
         effect->pos.y = y;
         effect->pos.z = z;

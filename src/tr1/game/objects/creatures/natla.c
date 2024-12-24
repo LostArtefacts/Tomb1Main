@@ -130,7 +130,7 @@ void Natla_Control(int16_t item_num)
                 int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
                     Sound_Effect(
                         SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
@@ -145,7 +145,7 @@ void Natla_Control(int16_t item_num)
                 int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
                     Sound_Effect(
                         SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
@@ -258,7 +258,7 @@ void Natla_Control(int16_t item_num)
                 int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
                     Sound_Effect(
                         SFX_ATLANTEAN_NEEDLE, &effect->pos, SPM_NORMAL);
@@ -282,19 +282,19 @@ void Natla_Control(int16_t item_num)
                 int16_t effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
                 }
                 effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     effect->rot.y += (Random_GetControl() - 0x4000) / 4;
                 }
                 effect_num =
                     Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
                 if (effect_num != NO_EFFECT) {
-                    EFFECT *effect = &g_Effects[effect_num];
+                    EFFECT *effect = Effect_Get(effect_num);
                     effect->rot.y += (Random_GetControl() - 0x4000) / 4;
                 }
                 item->required_anim_state = NATLA_STATE_STOP;

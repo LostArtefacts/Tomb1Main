@@ -13,7 +13,7 @@ void Bubble_Setup(OBJECT *obj)
 
 void Bubble_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->rot.y += 9 * PHD_DEGREE;
     effect->rot.x += 13 * PHD_DEGREE;
 

@@ -15,7 +15,7 @@ void Ember_Setup(OBJECT *obj)
 
 void Ember_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
     effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
     effect->fall_speed += GRAVITY;

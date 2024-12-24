@@ -12,7 +12,7 @@ void DartEffect_Setup(OBJECT *obj)
 
 void DartEffect_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->counter++;
     if (effect->counter >= 3) {
         effect->counter = 0;

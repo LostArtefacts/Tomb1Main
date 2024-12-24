@@ -15,7 +15,7 @@ void Splash_Setup(OBJECT *obj)
 
 void Splash_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->frame_num--;
     if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
         Effect_Kill(effect_num);
@@ -38,7 +38,7 @@ void Splash_Spawn(ITEM *item)
     for (int i = 0; i < 10; i++) {
         int16_t effect_num = Effect_Create(room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *effect = &g_Effects[effect_num];
+            EFFECT *effect = Effect_Get(effect_num);
             effect->pos.x = item->pos.x;
             effect->pos.y = wh;
             effect->pos.z = item->pos.z;

@@ -24,7 +24,7 @@ void Missile_Setup(OBJECT *obj)
 
 void Missile_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
 
     int32_t speed = (effect->speed * Math_Cos(effect->rot.x)) >> W2V_SHIFT;
     effect->pos.y += (effect->speed * Math_Sin(-effect->rot.x)) >> W2V_SHIFT;

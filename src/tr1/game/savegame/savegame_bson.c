@@ -121,9 +121,9 @@ static void M_GetFXOrder(SAVEGAME_BSON_FX_ORDER *order)
         order->id_map[i] = -1;
     }
 
-    for (int16_t linknum = g_NextFxActive; linknum != NO_ITEM;
-         linknum = g_Effects[linknum].next_active) {
-        order->id_map[linknum] = order->count;
+    for (int16_t link_num = g_NextFxActive; link_num != NO_ITEM;
+         link_num = Effect_Get(link_num)->next_active) {
+        order->id_map[link_num] = order->count;
         order->count++;
     }
 }
@@ -664,7 +664,7 @@ static bool M_LoadFx(JSON_ARRAY *fx_arr)
 
         int16_t effect_num = Effect_Create(room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *effect = &g_Effects[effect_num];
+            EFFECT *effect = Effect_Get(effect_num);
             effect->pos.x = x;
             effect->pos.y = y;
             effect->pos.z = z;
@@ -772,7 +772,7 @@ static bool M_LoadLara(
         lara_obj, "spaz_effect_count", lara->spaz_effect_count);
     int spaz_effect = JSON_ObjectGetInt(lara_obj, "spaz_effect", 0);
     lara->spaz_effect = spaz_effect && g_Config.enable_enhanced_saves
-        ? &g_Effects[spaz_effect]
+        ? Effect_Get(spaz_effect)
         : NULL;
 
     lara->mesh_effects =
@@ -1135,10 +1135,10 @@ static JSON_ARRAY *M_DumpFx(void)
     SAVEGAME_BSON_FX_ORDER fx_order;
     M_GetFXOrder(&fx_order);
 
-    for (int16_t linknum = g_NextFxActive; linknum != NO_ITEM;
-         linknum = g_Effects[linknum].next_active) {
+    for (int16_t link_num = g_NextFxActive; link_num != NO_ITEM;
+         link_num = Effect_Get(link_num)->next_active) {
         JSON_OBJECT *fx_obj = JSON_ObjectNew();
-        EFFECT *effect = &g_Effects[linknum];
+        EFFECT *effect = Effect_Get(link_num);
         JSON_ObjectAppendInt(fx_obj, "x", effect->pos.x);
         JSON_ObjectAppendInt(fx_obj, "y", effect->pos.y);
         JSON_ObjectAppendInt(fx_obj, "z", effect->pos.z);

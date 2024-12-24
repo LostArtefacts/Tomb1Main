@@ -61,7 +61,7 @@ static void M_Explode(ITEM *const mine_item)
 {
     const int16_t effect_num = Effect_Create(mine_item->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_EXPLOSION;
         effect->pos.x = mine_item->pos.x;
         effect->pos.y = mine_item->pos.y - WALL_L;

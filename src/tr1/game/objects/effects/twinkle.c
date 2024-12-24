@@ -13,7 +13,7 @@ void Twinkle_Setup(OBJECT *obj)
 
 void Twinkle_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->counter++;
     if (effect->counter == 1) {
         effect->counter = 0;
@@ -28,7 +28,7 @@ void Twinkle_Spawn(GAME_VECTOR *pos)
 {
     int16_t effect_num = Effect_Create(pos->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         effect->pos.x = pos->x;
         effect->pos.y = pos->y;
         effect->pos.z = pos->z;

@@ -36,7 +36,7 @@ int16_t Effect_ShardGun(
 {
     int16_t effect_num = Effect_Create(room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         effect->room_num = room_num;
         effect->pos.x = x;
         effect->pos.y = y;
@@ -59,7 +59,7 @@ int16_t Effect_RocketGun(
 {
     int16_t effect_num = Effect_Create(room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         effect->room_num = room_num;
         effect->pos.x = x;
         effect->pos.y = y;

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "global/types.h"
-
-#include <stdint.h>
+#include <libtrx/game/effects/types.h>
 
 #define NO_EFFECT (-1)
 
@@ -10,9 +8,10 @@ extern EFFECT *g_Effects;
 extern int16_t g_NextFxActive;
 
 void Effect_InitialiseArray(void);
+EFFECT *Effect_Get(int16_t effect_num);
 void Effect_Control(void);
 int16_t Effect_Create(int16_t room_num);
 void Effect_Kill(int16_t effect_num);
 void Effect_NewRoom(int16_t effect_num, int16_t room_num);
-void Effect_Draw(int16_t fxnum);
+void Effect_Draw(int16_t effect_num);
 void Effect_RunActiveFlipEffect(void);

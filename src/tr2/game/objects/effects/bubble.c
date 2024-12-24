@@ -13,7 +13,7 @@ void Bubble_Setup(void)
 
 void __cdecl Bubble_Control(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->rot.y += 9 * PHD_DEGREE;
     effect->rot.x += 13 * PHD_DEGREE;
 

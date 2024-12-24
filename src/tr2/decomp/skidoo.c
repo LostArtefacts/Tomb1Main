@@ -288,7 +288,7 @@ void __cdecl Skidoo_DoSnowEffect(ITEM *const skidoo)
     const int32_t sy = Math_Sin(skidoo->rot.y);
     const int32_t cy = Math_Cos(skidoo->rot.y);
     const int32_t x = (SKIDOO_SIDE * (Random_GetDraw() - 0x4000)) >> 14;
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->pos.x = skidoo->pos.x - ((sy * SKIDOO_SNOW + cy * x) >> W2V_SHIFT);
     effect->pos.y = skidoo->pos.y + ((sx * SKIDOO_SNOW) >> W2V_SHIFT);
     effect->pos.z = skidoo->pos.z - ((cy * SKIDOO_SNOW - sy * x) >> W2V_SHIFT);
@@ -690,7 +690,7 @@ void __cdecl Skidoo_Explode(const ITEM *const skidoo)
 {
     const int16_t effect_num = Effect_Create(skidoo->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->pos.x = skidoo->pos.x;
         effect->pos.y = skidoo->pos.y;
         effect->pos.z = skidoo->pos.z;

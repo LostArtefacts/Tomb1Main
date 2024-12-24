@@ -34,7 +34,7 @@ int32_t Effect_ExplodingDeath(
     if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
         int16_t effect_num = Effect_Create(item->room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *effect = &g_Effects[effect_num];
+            EFFECT *effect = Effect_Get(effect_num);
             effect->room_num = item->room_num;
             effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
             effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;
@@ -86,7 +86,7 @@ int32_t Effect_ExplodingDeath(
         if ((bit & mesh_bits) && (bit & item->mesh_bits)) {
             int16_t effect_num = Effect_Create(item->room_num);
             if (effect_num != NO_EFFECT) {
-                EFFECT *effect = &g_Effects[effect_num];
+                EFFECT *effect = Effect_Get(effect_num);
                 effect->room_num = item->room_num;
                 effect->pos.x = (g_MatrixPtr->_03 >> W2V_SHIFT) + item->pos.x;
                 effect->pos.y = (g_MatrixPtr->_13 >> W2V_SHIFT) + item->pos.y;

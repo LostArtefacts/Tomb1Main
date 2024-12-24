@@ -24,7 +24,7 @@ static void M_Hit(const int16_t item_num)
 
     const int16_t effect_num = Effect_Create(item->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_RICOCHET;
         effect->pos = item->pos;
         effect->rot = item->rot;

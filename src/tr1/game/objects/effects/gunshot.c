@@ -10,7 +10,7 @@ void GunShot_Setup(OBJECT *obj)
 
 void GunShot_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->counter--;
     if (!effect->counter) {
         Effect_Kill(effect_num);

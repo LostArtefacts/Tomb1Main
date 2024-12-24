@@ -296,7 +296,7 @@ void __cdecl Boat_DoWakeEffect(const ITEM *const boat)
             continue;
         }
 
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_WATER_SPRITE;
         effect->room_num = boat->room_num;
         effect->frame_num = frame;

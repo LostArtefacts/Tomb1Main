@@ -12,7 +12,7 @@ void NatlaGun_Setup(OBJECT *obj)
 
 void NatlaGun_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     OBJECT *object = &g_Objects[effect->object_id];
 
     effect->frame_num--;
@@ -39,14 +39,14 @@ void NatlaGun_Control(int16_t effect_num)
 
     effect_num = Effect_Create(room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *newfx = &g_Effects[effect_num];
-        newfx->pos.x = x;
-        newfx->pos.y = y;
-        newfx->pos.z = z;
-        newfx->rot.y = effect->rot.y;
-        newfx->room_num = room_num;
-        newfx->speed = effect->speed;
-        newfx->frame_num = 0;
-        newfx->object_id = O_MISSILE_1;
+        EFFECT *new_effect = Effect_Get(effect_num);
+        new_effect->pos.x = x;
+        new_effect->pos.y = y;
+        new_effect->pos.z = z;
+        new_effect->rot.y = effect->rot.y;
+        new_effect->room_num = room_num;
+        new_effect->speed = effect->speed;
+        new_effect->frame_num = 0;
+        new_effect->object_id = O_MISSILE_1;
     }
 }

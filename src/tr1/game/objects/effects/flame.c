@@ -18,7 +18,7 @@ void Flame_Setup(OBJECT *obj)
 
 void Flame_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
 
     effect->frame_num--;
     if (effect->frame_num <= g_Objects[O_FLAME].nmeshes) {
@@ -80,7 +80,7 @@ void Flame_Control(int16_t effect_num)
 
             effect_num = Effect_Create(g_LaraItem->room_num);
             if (effect_num != NO_EFFECT) {
-                effect = &g_Effects[effect_num];
+                effect = Effect_Get(effect_num);
                 effect->frame_num = 0;
                 effect->object_id = O_FLAME;
                 effect->counter = -1;

@@ -20,7 +20,7 @@ void EmberEmitter_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
     int16_t effect_num = Effect_Create(item->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         effect->pos.x = item->pos.x;
         effect->pos.y = item->pos.y;
         effect->pos.z = item->pos.z;

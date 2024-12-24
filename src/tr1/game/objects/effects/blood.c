@@ -12,7 +12,7 @@ void Blood_Setup(OBJECT *obj)
 
 void Blood_Control(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     effect->pos.x += (Math_Sin(effect->rot.y) * effect->speed) >> W2V_SHIFT;
     effect->pos.z += (Math_Cos(effect->rot.y) * effect->speed) >> W2V_SHIFT;
     effect->counter++;

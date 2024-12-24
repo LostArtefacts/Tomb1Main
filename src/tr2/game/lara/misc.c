@@ -1802,7 +1802,7 @@ void __cdecl Lara_CatchFire(void)
         return;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->frame_num = 0;
     effect->object_id = O_FLAME;
     effect->counter = -1;
@@ -1830,7 +1830,7 @@ void __cdecl Lara_TouchLava(ITEM *const item)
     for (int32_t i = 0; i < 10; i++) {
         const int16_t effect_num = Effect_Create(item->room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *const effect = &g_Effects[effect_num];
+            EFFECT *const effect = Effect_Get(effect_num);
             effect->object_id = O_FLAME;
             effect->frame_num =
                 g_Objects[O_FLAME].mesh_count * Random_GetControl() / 0x7FFF;
@@ -1850,12 +1850,12 @@ void __cdecl Lara_Extinguish(void)
     // put out flame objects
     int16_t effect_num = g_NextEffectActive;
     while (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
-        const int16_t next_fx_num = effect->next_active;
+        EFFECT *const effect = Effect_Get(effect_num);
+        const int16_t next_effect_num = effect->next_active;
         if (effect->object_id == O_FLAME && effect->counter < 0) {
             effect->counter = 0;
             Effect_Kill(effect_num);
         }
-        effect_num = next_fx_num;
+        effect_num = next_effect_num;
     }
 }

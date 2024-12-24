@@ -65,7 +65,7 @@ void DartEmitter_Control(int16_t item_num)
 
             int16_t effect_num = Effect_Create(dart->room_num);
             if (effect_num != NO_EFFECT) {
-                EFFECT *effect = &g_Effects[effect_num];
+                EFFECT *effect = Effect_Get(effect_num);
                 effect->pos = dart->pos;
                 effect->rot = dart->rot;
                 effect->speed = 0;

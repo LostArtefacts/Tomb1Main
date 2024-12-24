@@ -5,7 +5,7 @@
 
 void __cdecl Ricochet_Control(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->counter--;
     if (effect->counter == 0) {
         Effect_Kill(effect_num);

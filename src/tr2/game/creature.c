@@ -1003,7 +1003,7 @@ int32_t __cdecl Creature_ShootAtLara(
     }
 
     if (effect_num != NO_EFFECT) {
-        g_Effects[effect_num].rot.y += extra_rotation;
+        Effect_Get(effect_num)->rot.y += extra_rotation;
     }
 
     GAME_VECTOR start = {

@@ -15,7 +15,7 @@
 
 void __cdecl Missile_Control(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
 
     if (effect->object_id == O_MISSILE_HARPOON
         && !(Room_Get(effect->room_num)->flags & RF_UNDERWATER)) {

@@ -49,7 +49,7 @@ int32_t __cdecl Effect_ExplodingDeath(
     if ((mesh_bits & bit) && (item->mesh_bits & bit)) {
         const int16_t effect_num = Effect_Create(item->room_num);
         if (effect_num != NO_EFFECT) {
-            EFFECT *const effect = &g_Effects[effect_num];
+            EFFECT *const effect = Effect_Get(effect_num);
             effect->pos.x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
             effect->pos.y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
             effect->pos.z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);
@@ -97,7 +97,7 @@ int32_t __cdecl Effect_ExplodingDeath(
         if ((mesh_bits & bit) && (item->mesh_bits & bit)) {
             const int16_t effect_num = Effect_Create(item->room_num);
             if (effect_num != NO_EFFECT) {
-                EFFECT *const effect = &g_Effects[effect_num];
+                EFFECT *const effect = Effect_Get(effect_num);
                 effect->pos.x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
                 effect->pos.y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
                 effect->pos.z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);
@@ -130,7 +130,7 @@ int16_t __cdecl Effect_MissileFlame(
         return effect_num;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->pos.x = x;
     effect->pos.y = y;
     effect->pos.z = z;
@@ -161,7 +161,7 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
 
     const int16_t effect_num = Effect_Create(item->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_TWINKLE;
 
         effect->rot.y = 2 * Random_GetDraw();
@@ -205,7 +205,7 @@ void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
         return;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->pos = *pos;
     effect->object_id = O_BUBBLE;
     effect->frame_num = -((Random_GetDraw() * 3) / 0x8000);
@@ -246,7 +246,7 @@ void __cdecl Splash(const ITEM *const item)
             continue;
         }
 
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_SPLASH;
         effect->pos.x = item->pos.x;
         effect->pos.y = water_height;
@@ -271,7 +271,7 @@ int16_t __cdecl Effect_GunShot(
         return effect_num;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->pos.x = x;
     effect->pos.y = y;
     effect->pos.z = z;
@@ -325,7 +325,7 @@ int16_t __cdecl Knife(
         return effect_num;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     effect->pos.x = x;
     effect->pos.y = y;
     effect->pos.z = z;
@@ -347,7 +347,7 @@ int16_t __cdecl DoBloodSplat(
 {
     const int16_t effect_num = Effect_Create(room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->pos.x = x;
         effect->pos.y = y;
         effect->pos.z = z;
@@ -377,7 +377,7 @@ void __cdecl Ricochet(const GAME_VECTOR *const pos)
 {
     const int16_t effect_num = Effect_Create(pos->room_num);
     if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = &g_Effects[effect_num];
+        EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_RICOCHET;
         effect->pos = pos->pos;
         effect->counter = 4;

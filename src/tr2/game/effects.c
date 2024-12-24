@@ -10,7 +10,7 @@ static void M_RemoveDrawn(const int16_t effect_num);
 
 static void M_RemoveActive(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     int16_t link_num = g_NextEffectActive;
     if (link_num == effect_num) {
         g_NextEffectActive = effect->next_active;
@@ -28,7 +28,7 @@ static void M_RemoveActive(const int16_t effect_num)
 
 static void M_RemoveDrawn(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     int16_t link_num = g_Rooms[effect->room_num].effect_num;
     if (link_num == effect_num) {
         g_Rooms[effect->room_num].effect_num = effect->next_free;
@@ -50,10 +50,15 @@ void __cdecl Effect_InitialiseArray(void)
     g_NextEffectActive = NO_EFFECT;
 
     for (int32_t i = 0; i < MAX_EFFECTS - 1; i++) {
-        EFFECT *const effect = &g_Effects[i];
+        EFFECT *const effect = Effect_Get(i);
         effect->next_free = i + 1;
     }
     g_Effects[MAX_EFFECTS - 1].next_free = NO_EFFECT;
+}
+
+EFFECT *Effect_Get(const int16_t effect_num)
+{
+    return &g_Effects[effect_num];
 }
 
 int16_t __cdecl Effect_Create(const int16_t room_num)
@@ -63,7 +68,7 @@ int16_t __cdecl Effect_Create(const int16_t room_num)
         return NO_EFFECT;
     }
 
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     g_NextEffectFree = effect->next_free;
 
     ROOM *const room = &g_Rooms[room_num];
@@ -81,7 +86,7 @@ int16_t __cdecl Effect_Create(const int16_t room_num)
 
 void __cdecl Effect_Kill(const int16_t effect_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     M_RemoveActive(effect_num);
     M_RemoveDrawn(effect_num);
 
@@ -91,7 +96,7 @@ void __cdecl Effect_Kill(const int16_t effect_num)
 
 void __cdecl Effect_NewRoom(const int16_t effect_num, const int16_t room_num)
 {
-    EFFECT *const effect = &g_Effects[effect_num];
+    EFFECT *const effect = Effect_Get(effect_num);
     ROOM *room = &g_Rooms[effect->room_num];
 
     int16_t link_num = room->effect_num;
@@ -115,7 +120,7 @@ void __cdecl Effect_NewRoom(const int16_t effect_num, const int16_t room_num)
 
 void __cdecl Effect_Draw(const int16_t effect_num)
 {
-    const EFFECT *const effect = &g_Effects[effect_num];
+    const EFFECT *const effect = Effect_Get(effect_num);
     const OBJECT *const object = &g_Objects[effect->object_id];
     if (!object->loaded) {
         return;

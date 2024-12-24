@@ -163,7 +163,7 @@ int32_t __cdecl Game_Control(int32_t nframes, const bool demo_mode)
         {
             int16_t effect_num = g_NextEffectActive;
             while (effect_num != NO_EFFECT) {
-                EFFECT *const effect = &g_Effects[effect_num];
+                EFFECT *const effect = Effect_Get(effect_num);
                 const OBJECT *const object = &g_Objects[effect->object_id];
                 const int32_t next = effect->next_active;
                 if (object->control != NULL) {
@@ -228,7 +228,7 @@ int32_t __cdecl Game_ControlCinematic(void)
     }
 
     for (int32_t id = g_NextEffectActive; id != NO_EFFECT;) {
-        const EFFECT *const effect = &g_Effects[id];
+        const EFFECT *const effect = Effect_Get(id);
         const OBJECT *const obj = &g_Objects[effect->object_id];
         if (obj->control != NULL) {
             obj->control(id);

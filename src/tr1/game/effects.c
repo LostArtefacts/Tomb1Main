@@ -30,13 +30,18 @@ void Effect_Control(void)
 {
     int16_t effect_num = g_NextFxActive;
     while (effect_num != NO_EFFECT) {
-        EFFECT *effect = &g_Effects[effect_num];
+        EFFECT *effect = Effect_Get(effect_num);
         OBJECT *obj = &g_Objects[effect->object_id];
         if (obj->control) {
             obj->control(effect_num);
         }
         effect_num = effect->next_active;
     }
+}
+
+EFFECT *Effect_Get(const int16_t effect_num)
+{
+    return &g_Effects[effect_num];
 }
 
 int16_t Effect_Create(int16_t room_num)
@@ -46,7 +51,7 @@ int16_t Effect_Create(int16_t room_num)
         return effect_num;
     }
 
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     m_NextFxFree = effect->next_free;
 
     ROOM *r = &g_RoomInfo[room_num];
@@ -62,18 +67,18 @@ int16_t Effect_Create(int16_t room_num)
 
 void Effect_Kill(int16_t effect_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
 
     if (g_NextFxActive == effect_num) {
         g_NextFxActive = effect->next_active;
     } else {
-        int16_t linknum = g_NextFxActive;
-        while (linknum != NO_EFFECT) {
-            EFFECT *fx_link = &g_Effects[linknum];
+        int16_t link_num = g_NextFxActive;
+        while (link_num != NO_EFFECT) {
+            EFFECT *fx_link = Effect_Get(link_num);
             if (fx_link->next_active == effect_num) {
                 fx_link->next_active = effect->next_active;
             }
-            linknum = fx_link->next_active;
+            link_num = fx_link->next_active;
         }
     }
 
@@ -81,14 +86,14 @@ void Effect_Kill(int16_t effect_num)
     if (r->effect_num == effect_num) {
         r->effect_num = effect->next_draw;
     } else {
-        int16_t linknum = r->effect_num;
-        while (linknum != NO_EFFECT) {
-            EFFECT *fx_link = &g_Effects[linknum];
+        int16_t link_num = r->effect_num;
+        while (link_num != NO_EFFECT) {
+            EFFECT *fx_link = Effect_Get(link_num);
             if (fx_link->next_draw == effect_num) {
                 fx_link->next_draw = effect->next_draw;
                 break;
             }
-            linknum = fx_link->next_draw;
+            link_num = fx_link->next_draw;
         }
     }
 
@@ -98,16 +103,17 @@ void Effect_Kill(int16_t effect_num)
 
 void Effect_NewRoom(int16_t effect_num, int16_t room_num)
 {
-    EFFECT *effect = &g_Effects[effect_num];
+    EFFECT *effect = Effect_Get(effect_num);
     ROOM *r = &g_RoomInfo[effect->room_num];
 
-    int16_t linknum = r->effect_num;
-    if (linknum == effect_num) {
+    int16_t link_num = r->effect_num;
+    if (link_num == effect_num) {
         r->effect_num = effect->next_draw;
     } else {
-        for (; linknum != NO_EFFECT; linknum = g_Effects[linknum].next_draw) {
-            if (g_Effects[linknum].next_draw == effect_num) {
-                g_Effects[linknum].next_draw = effect->next_draw;
+        for (; link_num != NO_EFFECT;
+             link_num = Effect_Get(link_num)->next_draw) {
+            if (Effect_Get(link_num)->next_draw == effect_num) {
+                Effect_Get(link_num)->next_draw = effect->next_draw;
                 break;
             }
         }
@@ -119,9 +125,9 @@ void Effect_NewRoom(int16_t effect_num, int16_t room_num)
     r->effect_num = effect_num;
 }
 
-void Effect_Draw(const int16_t fxnum)
+void Effect_Draw(const int16_t effect_num)
 {
-    const EFFECT *const effect = &g_Effects[fxnum];
+    const EFFECT *const effect = Effect_Get(effect_num);
     const OBJECT *const object = &g_Objects[effect->object_id];
     if (!object->loaded) {
         return;
