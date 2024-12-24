@@ -45,6 +45,7 @@ static struct {
     bool enable_enhanced_look;
     bool enable_tr2_jumping;
     bool enable_tr2_swimming;
+    bool enable_tr2_swim_cancel;
     bool enable_wading;
     bool fix_bear_ai;
     TARGET_LOCK_MODE target_mode;
@@ -160,12 +161,14 @@ static void M_PrepareConfig(void)
     m_OldConfig.enable_enhanced_look = g_Config.enable_enhanced_look;
     m_OldConfig.enable_tr2_jumping = g_Config.enable_tr2_jumping;
     m_OldConfig.enable_tr2_swimming = g_Config.enable_tr2_swimming;
+    m_OldConfig.enable_tr2_swim_cancel = g_Config.enable_tr2_swim_cancel;
     m_OldConfig.enable_wading = g_Config.enable_wading;
     m_OldConfig.target_mode = g_Config.target_mode;
     m_OldConfig.fix_bear_ai = g_Config.fix_bear_ai;
     g_Config.enable_enhanced_look = false;
     g_Config.enable_tr2_jumping = false;
     g_Config.enable_tr2_swimming = false;
+    g_Config.enable_tr2_swim_cancel = false;
     g_Config.enable_wading = false;
     g_Config.target_mode = TLM_FULL;
     g_Config.fix_bear_ai = false;
@@ -177,6 +180,7 @@ static void M_RestoreConfig(void)
     g_Config.enable_enhanced_look = m_OldConfig.enable_enhanced_look;
     g_Config.enable_tr2_jumping = m_OldConfig.enable_tr2_jumping;
     g_Config.enable_tr2_swimming = m_OldConfig.enable_tr2_swimming;
+    g_Config.enable_tr2_swim_cancel = m_OldConfig.enable_tr2_swim_cancel;
     g_Config.enable_wading = m_OldConfig.enable_wading;
     g_Config.fix_bear_ai = m_OldConfig.fix_bear_ai;
 }
