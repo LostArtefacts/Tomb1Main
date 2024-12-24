@@ -138,7 +138,7 @@ void Interpolation_Commit(void)
         INTERPOLATE_ROT(g_LaraItem, rot.z, ratio, PHD_45);
     }
 
-    int16_t effect_num = g_NextFxActive;
+    int16_t effect_num = Effect_GetActiveNum();
     while (effect_num != NO_EFFECT) {
         EFFECT *const effect = Effect_Get(effect_num);
         INTERPOLATE(effect, pos.x, ratio, 128);
@@ -208,7 +208,7 @@ void Interpolation_Remember(void)
         REMEMBER(g_LaraItem, rot.z);
     }
 
-    int16_t effect_num = g_NextFxActive;
+    int16_t effect_num = Effect_GetActiveNum();
     while (effect_num != NO_EFFECT) {
         EFFECT *const effect = Effect_Get(effect_num);
         REMEMBER(effect, pos.x);

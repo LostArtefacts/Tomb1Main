@@ -154,7 +154,6 @@ extern ITEM *g_LaraItem;
 extern EFFECT *g_Effects;
 extern int16_t g_NextItemFree;
 extern int16_t g_NextItemActive;
-extern int16_t g_NextEffectActive;
 extern int16_t g_PrevItemActive;
 extern PICKUP_INFO g_Pickups[12];
 extern GAME_FLOW g_GameFlow;

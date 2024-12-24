@@ -1848,7 +1848,7 @@ void __cdecl Lara_Extinguish(void)
     g_Lara.burn = 0;
 
     // put out flame objects
-    int16_t effect_num = g_NextEffectActive;
+    int16_t effect_num = Effect_GetActiveNum();
     while (effect_num != NO_EFFECT) {
         EFFECT *const effect = Effect_Get(effect_num);
         const int16_t next_effect_num = effect->next_active;

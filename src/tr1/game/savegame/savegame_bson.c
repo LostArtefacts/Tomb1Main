@@ -121,7 +121,7 @@ static void M_GetFXOrder(SAVEGAME_BSON_FX_ORDER *order)
         order->id_map[i] = -1;
     }
 
-    for (int16_t link_num = g_NextFxActive; link_num != NO_ITEM;
+    for (int16_t link_num = Effect_GetActiveNum(); link_num != NO_ITEM;
          link_num = Effect_Get(link_num)->next_active) {
         order->id_map[link_num] = order->count;
         order->count++;
@@ -1135,7 +1135,7 @@ static JSON_ARRAY *M_DumpFx(void)
     SAVEGAME_BSON_FX_ORDER fx_order;
     M_GetFXOrder(&fx_order);
 
-    for (int16_t link_num = g_NextFxActive; link_num != NO_ITEM;
+    for (int16_t link_num = Effect_GetActiveNum(); link_num != NO_ITEM;
          link_num = Effect_Get(link_num)->next_active) {
         JSON_OBJECT *fx_obj = JSON_ObjectNew();
         EFFECT *effect = Effect_Get(link_num);

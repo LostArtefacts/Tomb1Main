@@ -5,6 +5,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+static int16_t m_NextEffectActive;
 static int16_t m_NextEffectFree;
 
 static void M_RemoveActive(const int16_t effect_num);
@@ -13,9 +14,9 @@ static void M_RemoveDrawn(const int16_t effect_num);
 static void M_RemoveActive(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    int16_t link_num = g_NextEffectActive;
+    int16_t link_num = m_NextEffectActive;
     if (link_num == effect_num) {
-        g_NextEffectActive = effect->next_active;
+        m_NextEffectActive = effect->next_active;
         return;
     }
 
@@ -49,7 +50,7 @@ static void M_RemoveDrawn(const int16_t effect_num)
 void __cdecl Effect_InitialiseArray(void)
 {
     m_NextEffectFree = 0;
-    g_NextEffectActive = NO_EFFECT;
+    m_NextEffectActive = NO_EFFECT;
 
     for (int32_t i = 0; i < MAX_EFFECTS - 1; i++) {
         EFFECT *const effect = Effect_Get(i);
@@ -61,6 +62,11 @@ void __cdecl Effect_InitialiseArray(void)
 EFFECT *Effect_Get(const int16_t effect_num)
 {
     return &g_Effects[effect_num];
+}
+
+int16_t Effect_GetActiveNum(void)
+{
+    return m_NextEffectActive;
 }
 
 int16_t __cdecl Effect_Create(const int16_t room_num)
@@ -78,8 +84,8 @@ int16_t __cdecl Effect_Create(const int16_t room_num)
     effect->next_free = room->effect_num;
     room->effect_num = effect_num;
 
-    effect->next_active = g_NextEffectActive;
-    g_NextEffectActive = effect_num;
+    effect->next_active = m_NextEffectActive;
+    m_NextEffectActive = effect_num;
 
     effect->shade = 0x1000;
 

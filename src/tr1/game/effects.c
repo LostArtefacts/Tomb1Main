@@ -10,13 +10,13 @@
 #include <stddef.h>
 
 EFFECT *g_Effects = NULL;
-int16_t g_NextFxActive = NO_EFFECT;
 
+static int16_t m_NextEffectActive = NO_EFFECT;
 static int16_t m_NextEffectFree = NO_EFFECT;
 
 void Effect_InitialiseArray(void)
 {
-    g_NextFxActive = NO_EFFECT;
+    m_NextEffectActive = NO_EFFECT;
     m_NextEffectFree = 0;
     for (int i = 0; i < NUM_EFFECTS - 1; i++) {
         g_Effects[i].next_draw = i + 1;
@@ -28,7 +28,7 @@ void Effect_InitialiseArray(void)
 
 void Effect_Control(void)
 {
-    int16_t effect_num = g_NextFxActive;
+    int16_t effect_num = m_NextEffectActive;
     while (effect_num != NO_EFFECT) {
         EFFECT *effect = Effect_Get(effect_num);
         OBJECT *obj = &g_Objects[effect->object_id];
@@ -42,6 +42,11 @@ void Effect_Control(void)
 EFFECT *Effect_Get(const int16_t effect_num)
 {
     return &g_Effects[effect_num];
+}
+
+int16_t Effect_GetActiveNum(void)
+{
+    return m_NextEffectActive;
 }
 
 int16_t Effect_Create(int16_t room_num)
@@ -59,8 +64,8 @@ int16_t Effect_Create(int16_t room_num)
     effect->next_draw = r->effect_num;
     r->effect_num = effect_num;
 
-    effect->next_active = g_NextFxActive;
-    g_NextFxActive = effect_num;
+    effect->next_active = m_NextEffectActive;
+    m_NextEffectActive = effect_num;
 
     return effect_num;
 }
@@ -69,10 +74,10 @@ void Effect_Kill(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
 
-    if (g_NextFxActive == effect_num) {
-        g_NextFxActive = effect->next_active;
+    if (m_NextEffectActive == effect_num) {
+        m_NextEffectActive = effect->next_active;
     } else {
-        int16_t link_num = g_NextFxActive;
+        int16_t link_num = m_NextEffectActive;
         while (link_num != NO_EFFECT) {
             EFFECT *fx_link = Effect_Get(link_num);
             if (fx_link->next_active == effect_num) {

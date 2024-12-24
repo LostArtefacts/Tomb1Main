@@ -190,7 +190,6 @@ ITEM *g_LaraItem = NULL;
 EFFECT *g_Effects = NULL;
 int16_t g_NextItemFree;
 int16_t g_NextItemActive;
-int16_t g_NextEffectActive;
 int16_t g_PrevItemActive;
 PICKUP_INFO g_Pickups[12];
 GAME_FLOW g_GameFlow;
