@@ -30,7 +30,6 @@ static const int16_t *M_ReadTrigger(
 static const int16_t *M_ReadTrigger(
     const int16_t *data, const int16_t fd_entry, SECTOR *const sector)
 {
-    ASSERT(sector->trigger == NULL);
     TRIGGER *const trigger = GameBuf_Alloc(sizeof(TRIGGER), GBUF_FLOOR_DATA);
 
     const int16_t trig_setup = *data++;
@@ -49,10 +48,23 @@ static const int16_t *M_ReadTrigger(
         }
     }
 
-    sector->trigger = trigger;
-    sector->trigger->command =
-        GameBuf_Alloc(sizeof(TRIGGER_CMD), GBUF_FLOOR_DATA);
-    TRIGGER_CMD *cmd = sector->trigger->command;
+    TRIGGER_CMD *cmd;
+    if (sector->trigger == NULL) {
+        sector->trigger = trigger;
+        sector->trigger->command =
+            GameBuf_Alloc(sizeof(TRIGGER_CMD), GBUF_FLOOR_DATA);
+        cmd = sector->trigger->command;
+    } else {
+        // Some old TRLEs have incorrectly formatted floor data, with multiple
+        // trigger entries defined where regular triggers overlap dummies. In
+        // this case we link the new commands onto the old.
+        cmd = sector->trigger->command;
+        while (cmd->next_cmd != NULL) {
+            cmd = cmd->next_cmd;
+        }
+        cmd->next_cmd = GameBuf_Alloc(sizeof(TRIGGER_CMD), GBUF_FLOOR_DATA);
+        cmd = cmd->next_cmd;
+    }
 
     while (true) {
         int16_t command = *data++;

@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7.1...develop) - ××××-××-××
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
+- fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21
 - changed the inventory examine UI to auto-hide if the item description is empty (#2097)
