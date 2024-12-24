@@ -1,9 +1,9 @@
 #include "game/objects/creatures/big_spider.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 // clang-format off
@@ -116,7 +116,7 @@ void __cdecl BigSpider_Control(const int16_t item_num)
         case BIG_SPIDER_STATE_ATTACK_1:
             if (!creature->flags && item->touch_bits != 0) {
                 Lara_TakeDamage(BIG_SPIDER_DAMAGE, true);
-                Creature_Effect(item, &m_SpiderBite, DoBloodSplat);
+                Creature_Effect(item, &m_SpiderBite, Spawn_Blood);
                 creature->flags = 1;
             }
             break;

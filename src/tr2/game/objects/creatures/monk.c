@@ -1,11 +1,11 @@
 #include "game/objects/creatures/monk.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -241,7 +241,7 @@ void __cdecl Monk_Control(const int16_t item_num)
                     && (item->touch_bits & MONK_TOUCH_BITS) != 0) {
                     Lara_TakeDamage(MONK_BIFF_DAMAGE, true);
                     Sound_Effect(SFX_MONK_CRUNCH, &item->pos, SPM_NORMAL);
-                    Creature_Effect(item, &m_MonkHit, DoBloodSplat);
+                    Creature_Effect(item, &m_MonkHit, Spawn_Blood);
                     creature->flags |= 0x1000;
                 }
             } else if (

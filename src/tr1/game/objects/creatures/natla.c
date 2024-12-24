@@ -3,13 +3,13 @@
 #include "config.h"
 #include "game/creature.h"
 #include "game/effects.h"
-#include "game/effects/gun.h"
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/music.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
@@ -128,7 +128,7 @@ void Natla_Control(int16_t item_num)
             }
             if (timer >= 20) {
                 int16_t effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_ShardGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
@@ -143,7 +143,7 @@ void Natla_Control(int16_t item_num)
             tilt = angle;
             if (timer >= 20) {
                 int16_t effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_ShardGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_ShardGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
@@ -256,7 +256,7 @@ void Natla_Control(int16_t item_num)
             }
             if (timer >= 30) {
                 int16_t effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_RocketGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
@@ -280,19 +280,19 @@ void Natla_Control(int16_t item_num)
         case NATLA_STATE_SHOOT:
             if (!item->required_anim_state) {
                 int16_t effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_RocketGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     gun = effect->rot.x;
                 }
                 effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_RocketGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     effect->rot.y += (Random_GetControl() - 0x4000) / 4;
                 }
                 effect_num =
-                    Creature_Effect(item, &m_NatlaGun, Effect_RocketGun);
+                    Creature_Effect(item, &m_NatlaGun, Spawn_RocketGun);
                 if (effect_num != NO_EFFECT) {
                     EFFECT *effect = Effect_Get(effect_num);
                     effect->rot.y += (Random_GetControl() - 0x4000) / 4;

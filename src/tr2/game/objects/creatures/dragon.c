@@ -1,6 +1,5 @@
 #include "game/objects/creatures/dragon.h"
 
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/creature.h"
 #include "game/input.h"
@@ -12,6 +11,7 @@
 #include "game/output.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -279,7 +279,7 @@ void __cdecl Dragon_Control(const int16_t item_num)
             dragon_front_item->current_anim_state = DRAGON_STATE_DEATH;
             creature->flags = 0;
         } else if (creature->flags >= 0) {
-            Effect_CreateBartoliLight(dragon_front_item_num);
+            Spawn_MysticLight(dragon_front_item_num);
             creature->flags++;
             if (creature->flags == DRAGON_LIVE_TIME) {
                 dragon_front_item->goal_anim_state = DRAGON_STATE_STOP;
@@ -387,7 +387,7 @@ void __cdecl Dragon_Control(const int16_t item_num)
             if (creature->flags != 0) {
                 if (info.ahead) {
                     Creature_Effect(
-                        dragon_front_item, &m_DragonMouth, Effect_MissileFlame);
+                        dragon_front_item, &m_DragonMouth, Spawn_FireStream);
                 }
                 creature->flags--;
             } else {

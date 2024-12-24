@@ -1,11 +1,11 @@
 #include "game/objects/creatures/diver.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/los.h"
 #include "game/objects/effects/missile_common.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 

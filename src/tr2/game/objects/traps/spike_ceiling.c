@@ -1,11 +1,11 @@
 #include "game/objects/traps/spike_ceiling.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #define SPIKE_CEILING_DAMAGE 20
@@ -36,7 +36,7 @@ static void M_HitLara(ITEM *const item)
 {
     Lara_TakeDamage(SPIKE_CEILING_DAMAGE, true);
 
-    DoLotsOfBlood(
+    Spawn_BloodBath(
         g_LaraItem->pos.x, item->pos.y + LARA_HEIGHT, g_LaraItem->pos.z,
         SPIKE_CEILING_SPEED, item->rot.y, g_LaraItem->room_num, 3);
     item->touch_bits = 0;

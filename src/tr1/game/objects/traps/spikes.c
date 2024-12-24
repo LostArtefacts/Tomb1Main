@@ -1,10 +1,10 @@
 #include "game/objects/traps/spikes.h"
 
 #include "game/collide.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 
 #define SPIKE_DAMAGE 15
 
@@ -42,7 +42,7 @@ void Spikes_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         int32_t x = lara_item->pos.x + (Random_GetControl() - 0x4000) / 256;
         int32_t z = lara_item->pos.z + (Random_GetControl() - 0x4000) / 256;
         int32_t y = lara_item->pos.y - Random_GetControl() / 64;
-        Effect_Blood(x, y, z, 20, Random_GetControl(), item->room_num);
+        Spawn_Blood(x, y, z, 20, Random_GetControl(), item->room_num);
         num--;
     }
 

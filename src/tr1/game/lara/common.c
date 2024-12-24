@@ -15,11 +15,11 @@
 #include "game/lot.h"
 #include "game/music.h"
 #include "game/objects/common.h"
-#include "game/objects/effects/splash.h"
 #include "game/objects/vars.h"
 #include "game/room.h"
 #include "game/savegame.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
@@ -133,7 +133,7 @@ void Lara_Control(void)
             g_Lara.head_rot.y = 0;
             g_Lara.torso_rot.x = 0;
             g_Lara.torso_rot.y = 0;
-            Splash_Spawn(item);
+            Spawn_Splash(item);
         }
 
         break;

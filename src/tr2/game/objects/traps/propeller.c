@@ -1,10 +1,10 @@
 #include "game/objects/traps/propeller.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 
 #include <libtrx/game/lara/common.h>
 
@@ -28,7 +28,7 @@ void __cdecl Propeller_Control(const int16_t item_num)
             Lara_TakeDamage(PROPELLER_DAMAGE, true);
 
             const ITEM *const lara_item = Lara_GetItem();
-            DoLotsOfBlood(
+            Spawn_BloodBath(
                 lara_item->pos.x, lara_item->pos.y - WALL_L / 2,
                 lara_item->pos.z, Random_GetDraw() >> 10, item->rot.y + 0x4000,
                 lara_item->room_num, 3);

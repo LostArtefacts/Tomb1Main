@@ -1,12 +1,12 @@
 #include "game/objects/traps/dart.h"
 
 #include "game/effects.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #define DART_DAMAGE 50
@@ -24,7 +24,7 @@ void Dart_Control(int16_t item_num)
     ITEM *item = &g_Items[item_num];
     if (item->touch_bits) {
         Lara_TakeDamage(DART_DAMAGE, true);
-        Effect_Blood(
+        Spawn_Blood(
             item->pos.x, item->pos.y, item->pos.z, g_LaraItem->speed,
             g_LaraItem->rot.y, g_LaraItem->room_num);
     }

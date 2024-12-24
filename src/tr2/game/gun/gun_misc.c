@@ -1,6 +1,5 @@
 #include "game/gun/gun_misc.h"
 
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/gun/gun.h"
 #include "game/items.h"
@@ -12,6 +11,7 @@
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
@@ -269,7 +269,7 @@ int32_t __cdecl Gun_FireWeapon(
         const int16_t item_to_smash = LOS_CheckSmashable(&start, &hit_pos);
         if (item_to_smash == NO_ITEM) {
             if (!object_on_los) {
-                Ricochet(&hit_pos);
+                Spawn_Ricochet(&hit_pos);
             }
             return -1;
         } else {
@@ -321,7 +321,7 @@ void __cdecl Gun_HitTarget(
     Item_TakeDamage(item, damage, true);
 
     if (hit_pos != NULL) {
-        DoBloodSplat(
+        Spawn_Blood(
             hit_pos->pos.x, hit_pos->pos.y, hit_pos->pos.z, item->speed,
             item->rot.y, item->room_num);
     }

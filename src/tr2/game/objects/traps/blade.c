@@ -1,9 +1,9 @@
 #include "game/objects/traps/blade.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 // clang-format off
@@ -51,7 +51,7 @@ void __cdecl Blade_Control(const int16_t item_num)
     if ((item->touch_bits & BLADE_TOUCH_BITS) != 0
         && item->current_anim_state == BLADE_STATE_CUT) {
         Lara_TakeDamage(BLADE_CUT_DAMAGE, true);
-        DoLotsOfBlood(
+        Spawn_BloodBath(
             g_LaraItem->pos.x, item->pos.y - STEP_L, g_LaraItem->pos.z,
             g_LaraItem->speed, g_LaraItem->rot.y, g_LaraItem->room_num, 2);
     }

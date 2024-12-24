@@ -1,10 +1,10 @@
 #include "game/objects/creatures/yeti.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -233,7 +233,7 @@ void __cdecl Yeti_Control(const int16_t item_num)
             head = 0;
             if (creature->flags == 0
                 && (item->touch_bits & YETI_TOUCH_BITS_R) != 0) {
-                Creature_Effect(item, &m_YetiBiteR, DoBloodSplat);
+                Creature_Effect(item, &m_YetiBiteR, Spawn_Blood);
                 Lara_TakeDamage(YETI_PUNCH_DAMAGE, true);
                 creature->flags = 1;
                 break;
@@ -248,10 +248,10 @@ void __cdecl Yeti_Control(const int16_t item_num)
             if (creature->flags == 0
                 && (item->touch_bits & YETI_TOUCH_BITS_LR) != 0) {
                 if ((item->touch_bits & YETI_TOUCH_BITS_L) != 0) {
-                    Creature_Effect(item, &m_YetiBiteL, DoBloodSplat);
+                    Creature_Effect(item, &m_YetiBiteL, Spawn_Blood);
                 }
                 if ((item->touch_bits & YETI_TOUCH_BITS_R) != 0) {
-                    Creature_Effect(item, &m_YetiBiteR, DoBloodSplat);
+                    Creature_Effect(item, &m_YetiBiteR, Spawn_Blood);
                 }
                 Lara_TakeDamage(YETI_THUMP_DAMAGE, true);
                 creature->flags = 1;
@@ -265,10 +265,10 @@ void __cdecl Yeti_Control(const int16_t item_num)
             if (creature->flags != 0
                 && (item->touch_bits & YETI_TOUCH_BITS_LR) != 0) {
                 if ((item->touch_bits & YETI_TOUCH_BITS_L) != 0) {
-                    Creature_Effect(item, &m_YetiBiteL, DoBloodSplat);
+                    Creature_Effect(item, &m_YetiBiteL, Spawn_Blood);
                 }
                 if ((item->touch_bits & YETI_TOUCH_BITS_R) != 0) {
-                    Creature_Effect(item, &m_YetiBiteR, DoBloodSplat);
+                    Creature_Effect(item, &m_YetiBiteR, Spawn_Blood);
                 }
                 Lara_TakeDamage(YETI_CHARGE_DAMAGE, true);
                 creature->flags = 1;

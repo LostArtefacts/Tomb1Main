@@ -4,7 +4,6 @@
 #include "game/carrier.h"
 #include "game/collide.h"
 #include "game/effects.h"
-#include "game/effects/gunshot.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/los.h"
@@ -13,6 +12,7 @@
 #include "game/objects/vars.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 #include "math/math.h"
 
@@ -696,9 +696,9 @@ bool Creature_ShootAtLara(
 
     int16_t effect_num;
     if (hit) {
-        effect_num = Creature_Effect(item, gun, Effect_GunShotHit);
+        effect_num = Creature_Effect(item, gun, Spawn_GunShotHit);
     } else {
-        effect_num = Creature_Effect(item, gun, Effect_GunShotMiss);
+        effect_num = Creature_Effect(item, gun, Spawn_GunShotMiss);
     }
 
     if (effect_num != NO_EFFECT) {

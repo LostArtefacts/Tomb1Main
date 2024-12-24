@@ -265,7 +265,7 @@ void __cdecl Object_SetupGeneralObjects(void)
     HarpoonBolt_Setup();
     MissileFlame_Setup();
     MissileHarpoon_Setup();
-    MissileKnife_Setup();
+    MissileSpawn_Knife_Setup();
     SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_1), true);
     SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_2), true);
     SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_3), false);
@@ -276,10 +276,10 @@ void __cdecl Object_SetupGeneralObjects(void)
     Bubble_Setup();
     Explosion_Setup();
     Glow_Setup();
-    Splash_Setup();
+    Spawn_Splash_Setup();
     Twinkle_Setup();
     GunFlash_Setup();
-    Ricochet_Setup();
+    Spawn_Ricochet_Setup();
     SnowSprite_Setup();
     WaterSprite_Setup();
     Waterfall_Setup();

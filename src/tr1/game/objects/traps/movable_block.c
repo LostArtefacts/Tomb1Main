@@ -1,7 +1,6 @@
 #include "game/objects/traps/movable_block.h"
 
 #include "game/collide.h"
-#include "game/effects/blood.h"
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/item_actions.h"
@@ -12,6 +11,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -247,7 +247,7 @@ static void M_KillLara(const ITEM *const item, ITEM *const lara)
         const int32_t z = lara->pos.z + (Random_GetControl() - 0x4000) / 256;
         const int32_t y = lara->pos.y - Random_GetControl() / 64;
         const int32_t d = lara->rot.y + (Random_GetControl() - 0x4000) / 8;
-        Effect_Blood(x, y, z, item->speed * 2, d, lara->room_num);
+        Spawn_Blood(x, y, z, item->speed * 2, d, lara->room_num);
     }
 
     if (!Object_GetObject(O_CAMERA_TARGET)->loaded) {

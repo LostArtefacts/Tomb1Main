@@ -2,9 +2,9 @@
 
 #include "game/creature.h"
 #include "game/effects.h"
-#include "game/effects/gunshot.h"
 #include "game/items.h"
 #include "game/lot.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -149,7 +149,7 @@ void Cowboy_Control(int16_t item_num)
                         COWBOY_SHOT_DAMAGE);
                 } else {
                     int16_t effect_num =
-                        Creature_Effect(item, &m_CowboyGun2, Effect_GunShot);
+                        Creature_Effect(item, &m_CowboyGun2, Spawn_GunShot);
                     if (effect_num != NO_EFFECT) {
                         Effect_Get(effect_num)->rot.y += head;
                     }

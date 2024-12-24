@@ -1,7 +1,6 @@
 #include "game/objects/vehicles/boat.h"
 
 #include "decomp/decomp.h"
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/effects.h"
 #include "game/gamebuf.h"
@@ -16,6 +15,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>

@@ -1,12 +1,12 @@
 #include "game/objects/traps/spinning_blade.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>
@@ -65,7 +65,7 @@ void __cdecl SpinningBlade_Control(const int16_t item_num)
             Lara_TakeDamage(SPINNING_BLADE_DAMAGE, true);
 
             const ITEM *const lara_item = Lara_GetItem();
-            DoLotsOfBlood(
+            Spawn_BloodBath(
                 lara_item->pos.x, lara_item->pos.y - WALL_L / 2,
                 lara_item->pos.z, item->speed * 2, lara_item->rot.y,
                 lara_item->room_num, 2);

@@ -1,11 +1,11 @@
 #include "game/objects/traps/pendulum.h"
 
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -40,7 +40,7 @@ void Pendulum_Control(int16_t item_num)
         int32_t z = g_LaraItem->pos.z + (Random_GetControl() - 0x4000) / 256;
         int32_t y = g_LaraItem->pos.y - Random_GetControl() / 44;
         int32_t d = g_LaraItem->rot.y + (Random_GetControl() - 0x4000) / 8;
-        Effect_Blood(x, y, z, g_LaraItem->speed, d, g_LaraItem->room_num);
+        Spawn_Blood(x, y, z, g_LaraItem->speed, d, g_LaraItem->room_num);
     }
 
     const SECTOR *const sector =

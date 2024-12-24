@@ -1,6 +1,5 @@
 #include "game/creature.h"
 
-#include "decomp/effects.h"
 #include "game/box.h"
 #include "game/collide.h"
 #include "game/effects.h"
@@ -14,6 +13,7 @@
 #include "game/objects/vars.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -990,13 +990,13 @@ int32_t __cdecl Creature_ShootAtLara(
     int16_t effect_num = NO_EFFECT;
     if (target_item == g_LaraItem) {
         if (is_hit) {
-            effect_num = Creature_Effect(item, gun, Effect_GunHit);
+            effect_num = Creature_Effect(item, gun, Spawn_GunHit);
             Item_TakeDamage(target_item, damage, true);
         } else if (is_targetable) {
-            effect_num = Creature_Effect(item, gun, Effect_GunMiss);
+            effect_num = Creature_Effect(item, gun, Spawn_GunMiss);
         }
     } else {
-        effect_num = Creature_Effect(item, gun, Effect_GunShot);
+        effect_num = Creature_Effect(item, gun, Spawn_GunShot);
         if (is_hit) {
             Item_TakeDamage(target_item, damage / 10, true);
         }

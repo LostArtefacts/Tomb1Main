@@ -1,11 +1,11 @@
 #include "game/objects/creatures/eel.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -105,7 +105,7 @@ void __cdecl Eel_Control(const int16_t item_num)
             if (item->required_anim_state == EEL_STATE_EMPTY
                 && (item->touch_bits & EEL_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(EEL_DAMAGE, true);
-                Creature_Effect(item, &m_EelBite, DoBloodSplat);
+                Creature_Effect(item, &m_EelBite, Spawn_Blood);
                 item->required_anim_state = EEL_STATE_STOP;
             }
             break;

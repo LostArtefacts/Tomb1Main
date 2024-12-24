@@ -1,7 +1,7 @@
 #include "game/objects/creatures/bird.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -185,9 +185,9 @@ void __cdecl Bird_Control(const int16_t item_num)
             g_LaraItem->hit_points -= BIRD_DAMAGE;
             g_LaraItem->hit_status = 1;
             if (item->object_id == O_CROW) {
-                Creature_Effect(item, &m_CrowBite, DoBloodSplat);
+                Creature_Effect(item, &m_CrowBite, Spawn_Blood);
             } else {
-                Creature_Effect(item, &m_BirdBite, DoBloodSplat);
+                Creature_Effect(item, &m_BirdBite, Spawn_Blood);
             }
             bird->flags = 1;
         }

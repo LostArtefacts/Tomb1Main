@@ -1,11 +1,11 @@
 #include "game/objects/creatures/lion.h"
 
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -182,7 +182,7 @@ void Lion_Control(int16_t item_num)
         case LION_STATE_ATTACK_2:
             if (item->required_anim_state == LION_STATE_EMPTY
                 && (item->touch_bits & LION_TOUCH)) {
-                Creature_Effect(item, &m_LionBite, Effect_Blood);
+                Creature_Effect(item, &m_LionBite, Spawn_Blood);
                 Lara_TakeDamage(LION_BITE_DAMAGE, true);
                 item->required_anim_state = LION_STATE_STOP;
             }

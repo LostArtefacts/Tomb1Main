@@ -2,12 +2,12 @@
 
 #include "game/carrier.h"
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -135,7 +135,7 @@ void Rat_Control(int16_t item_num)
         case RAT_STATE_ATTACK_1:
             if (item->required_anim_state == RAT_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
-                Creature_Effect(item, &m_RatBite, Effect_Blood);
+                Creature_Effect(item, &m_RatBite, Spawn_Blood);
                 Lara_TakeDamage(RAT_BITE_DAMAGE, true);
                 item->required_anim_state = RAT_STATE_STOP;
             }
@@ -144,7 +144,7 @@ void Rat_Control(int16_t item_num)
         case RAT_STATE_ATTACK_2:
             if (item->required_anim_state == RAT_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
-                Creature_Effect(item, &m_RatBite, Effect_Blood);
+                Creature_Effect(item, &m_RatBite, Spawn_Blood);
                 Lara_TakeDamage(RAT_CHARGE_DAMAGE, true);
                 item->required_anim_state = RAT_STATE_RUN;
             }
@@ -244,7 +244,7 @@ void Vole_Control(int16_t item_num)
         case VOLE_STATE_ATTACK:
             if (item->required_anim_state == VOLE_STATE_EMPTY && info.ahead
                 && (item->touch_bits & RAT_TOUCH)) {
-                Creature_Effect(item, &m_RatBite, Effect_Blood);
+                Creature_Effect(item, &m_RatBite, Spawn_Blood);
                 Lara_TakeDamage(RAT_BITE_DAMAGE, true);
                 item->required_anim_state = VOLE_STATE_SWIM;
             }

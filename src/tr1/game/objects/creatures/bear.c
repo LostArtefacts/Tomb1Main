@@ -2,11 +2,11 @@
 
 #include "config.h"
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -227,7 +227,7 @@ void Bear_Control(int16_t item_num)
 
         case BEAR_STATE_ATTACK_1:
             if (!item->required_anim_state && (item->touch_bits & BEAR_TOUCH)) {
-                Creature_Effect(item, &m_BearHeadBite, Effect_Blood);
+                Creature_Effect(item, &m_BearHeadBite, Spawn_Blood);
                 Lara_TakeDamage(BEAR_ATTACK_DAMAGE, true);
                 item->required_anim_state = BEAR_STATE_STOP;
             }

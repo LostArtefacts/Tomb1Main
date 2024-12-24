@@ -2,4 +2,4 @@
 
 #include "global/types.h"
 
-void MissileKnife_Setup(void);
+void MissileSpawn_Knife_Setup(void);

@@ -1,6 +1,5 @@
 #include "game/objects/creatures/xian_spearman.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
@@ -9,6 +8,7 @@
 #include "game/objects/creatures/xian_common.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -128,7 +128,7 @@ void __cdecl XianSpearman_DoDamage(
     if ((creature->flags & 1) == 0
         && (item->touch_bits & XIAN_SPEARMAN_TOUCH_R_BITS) != 0) {
         Lara_TakeDamage(damage, true);
-        Creature_Effect(item, &m_XianSpearmanRightSpear, DoBloodSplat);
+        Creature_Effect(item, &m_XianSpearmanRightSpear, Spawn_Blood);
         creature->flags |= 1;
         Sound_Effect(SFX_CRUNCH_2, &item->pos, SPM_NORMAL);
     }
@@ -136,7 +136,7 @@ void __cdecl XianSpearman_DoDamage(
     if ((creature->flags & 2) == 0
         && (item->touch_bits & XIAN_SPEARMAN_TOUCH_L_BITS) != 0) {
         Lara_TakeDamage(damage, true);
-        Creature_Effect(item, &m_XianSpearmanLeftSpear, DoBloodSplat);
+        Creature_Effect(item, &m_XianSpearmanLeftSpear, Spawn_Blood);
         creature->flags |= 2;
         Sound_Effect(SFX_CRUNCH_2, &item->pos, SPM_NORMAL);
     }

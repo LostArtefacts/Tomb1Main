@@ -3,7 +3,7 @@
 #include "game/effects.h"
 #include "global/vars.h"
 
-void __cdecl Ricochet_Control(const int16_t effect_num)
+void __cdecl Spawn_Ricochet_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
     effect->counter--;
@@ -12,8 +12,8 @@ void __cdecl Ricochet_Control(const int16_t effect_num)
     }
 }
 
-void Ricochet_Setup(void)
+void Spawn_Ricochet_Setup(void)
 {
     OBJECT *const obj = Object_GetObject(O_RICOCHET);
-    obj->control = Ricochet_Control;
+    obj->control = Spawn_Ricochet_Control;
 }

@@ -1,7 +1,6 @@
 #include "decomp/flares.h"
 
 #include "config.h"
-#include "decomp/effects.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory/backpack.h"
@@ -12,6 +11,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -87,7 +87,7 @@ void __cdecl Flare_DoInHand(const int32_t flare_age)
         if (g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) {
             Sound_Effect(SFX_LARA_FLARE_BURN, &g_LaraItem->pos, SPM_UNDERWATER);
             if (Random_GetDraw() < 0x4000) {
-                CreateBubble(&vec, g_LaraItem->room_num);
+                Spawn_Bubble(&vec, g_LaraItem->room_num);
             }
         } else {
             Sound_Effect(SFX_LARA_FLARE_BURN, &g_LaraItem->pos, SPM_NORMAL);
@@ -430,7 +430,7 @@ void __cdecl Flare_Control(const int16_t item_num)
         if ((g_Rooms[item->room_num].flags & RF_UNDERWATER)) {
             Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_UNDERWATER);
             if (Random_GetDraw() < 0x4000) {
-                CreateBubble(&item->pos, item->room_num);
+                Spawn_Bubble(&item->pos, item->room_num);
             }
         } else {
             Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_NORMAL);

@@ -1,10 +1,10 @@
 #include "game/objects/traps/pendulum.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 
 #include <libtrx/game/lara/common.h>
 
@@ -23,7 +23,7 @@ void __cdecl Pendulum_Control(const int16_t item_num)
             .z = lara_item->pos.z + (Random_GetControl() - 0x4000) / 256,
             .y = lara_item->pos.y - Random_GetControl() / 44,
         };
-        DoBloodSplat(
+        Spawn_Blood(
             pos.x, pos.y, pos.z, lara_item->speed,
             lara_item->rot.y + (Random_GetControl() - 0x4000) / 8,
             lara_item->room_num);

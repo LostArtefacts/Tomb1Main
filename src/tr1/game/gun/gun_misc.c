@@ -2,14 +2,13 @@
 
 #include "config.h"
 #include "game/collide.h"
-#include "game/effects/blood.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/los.h"
-#include "game/objects/effects/ricochet.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
@@ -485,7 +484,7 @@ int32_t Gun_FireWeapon(
     vdest.y = vsrc.y + g_MatrixPtr->_21;
     vdest.z = vsrc.z + g_MatrixPtr->_22;
     LOS_Check(&vsrc, &vdest);
-    Ricochet_Spawn(&vdest);
+    Spawn_Ricochet(&vdest);
     return -1;
 }
 
@@ -505,9 +504,9 @@ void Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int16_t damage)
         pos.y = hitpos->y;
         pos.z = hitpos->z;
         pos.room_num = item->room_num;
-        Ricochet_Spawn(&pos);
+        Spawn_Ricochet(&pos);
     } else {
-        Effect_Blood(
+        Spawn_Blood(
             hitpos->x, hitpos->y, hitpos->z, item->speed, item->rot.y,
             item->room_num);
     }

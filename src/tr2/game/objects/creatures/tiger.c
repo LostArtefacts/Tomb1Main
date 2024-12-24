@@ -1,10 +1,10 @@
 #include "game/objects/creatures/tiger.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -162,7 +162,7 @@ void __cdecl Tiger_Control(const int16_t item_num)
             if (creature->flags == 0
                 && (item->touch_bits & TIGER_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(TIGER_BITE_DAMAGE, true);
-                Creature_Effect(item, &m_TigerBite, DoBloodSplat);
+                Creature_Effect(item, &m_TigerBite, Spawn_Blood);
                 creature->flags = 1;
             }
             break;

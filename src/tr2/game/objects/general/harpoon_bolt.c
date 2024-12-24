@@ -1,11 +1,11 @@
 #include "game/objects/general/harpoon_bolt.h"
 
-#include "decomp/effects.h"
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/math.h"
 #include "game/objects/general/window.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 void HarpoonBolt_Setup(void)
@@ -93,7 +93,7 @@ void __cdecl HarpoonBolt_Control(const int16_t item_num)
             Window_Smash(target_num);
         } else {
             if (target_obj->intelligent && target_item->status == IS_ACTIVE) {
-                DoLotsOfBlood(
+                Spawn_BloodBath(
                     item->pos.x, item->pos.y, item->pos.z, 0, 0, item->room_num,
                     5);
                 Gun_HitTarget(target_item, NULL, g_Weapons[LGT_HARPOON].damage);
@@ -109,6 +109,6 @@ void __cdecl HarpoonBolt_Control(const int16_t item_num)
     if (item->pos.y >= item->floor || item->pos.y <= ceiling) {
         Item_Kill(item_num);
     } else if (Room_Get(item->room_num)->flags & RF_UNDERWATER) {
-        CreateBubble(&item->pos, item->room_num);
+        Spawn_Bubble(&item->pos, item->room_num);
     }
 }

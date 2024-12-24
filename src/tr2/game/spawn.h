@@ -2,38 +2,38 @@
 
 #include "game/items.h"
 
-int16_t __cdecl Effect_MissileFlame(
+int16_t __cdecl Spawn_FireStream(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num);
 
-void __cdecl Effect_CreateBartoliLight(int16_t item_num);
+void __cdecl Spawn_MysticLight(int16_t item_num);
 
-void __cdecl CreateBubble(const XYZ_32 *pos, int16_t room_num);
+void __cdecl Spawn_Bubble(const XYZ_32 *pos, int16_t room_num);
 
-void __cdecl Splash(const ITEM *item);
+void __cdecl Spawn_Splash(const ITEM *item);
 
-int16_t __cdecl Effect_GunShot(
+int16_t __cdecl Spawn_GunShot(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t yrot,
     int16_t room_num);
 
-int16_t __cdecl Effect_GunHit(
+int16_t __cdecl Spawn_GunHit(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num);
 
-int16_t __cdecl Effect_GunMiss(
+int16_t __cdecl Spawn_GunMiss(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num);
 
-int16_t __cdecl Knife(
+int16_t __cdecl Spawn_Knife(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num);
 
-int16_t __cdecl DoBloodSplat(
+int16_t __cdecl Spawn_Blood(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num);
 
-void __cdecl DoLotsOfBlood(
+void __cdecl Spawn_BloodBath(
     int32_t x, int32_t y, int32_t z, int16_t speed, int16_t y_rot,
     int16_t room_num, int32_t count);
 
-void __cdecl Ricochet(const GAME_VECTOR *pos);
+void __cdecl Spawn_Ricochet(const GAME_VECTOR *pos);

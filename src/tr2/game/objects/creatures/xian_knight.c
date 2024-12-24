@@ -1,6 +1,5 @@
 #include "game/objects/creatures/xian_knight.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/items.h"
@@ -10,6 +9,7 @@
 #include "game/objects/creatures/xian_common.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -255,7 +255,7 @@ void __cdecl XianKnight_Control(const int16_t item_num)
         if (creature->flags == 0
             && (item->touch_bits & XIAN_KNIGHT_TOUCH_BITS) != 0) {
             Lara_TakeDamage(XIAN_KNIGHT_HACK_DAMAGE, true);
-            Creature_Effect(item, &m_XianKnightSword, DoBloodSplat);
+            Creature_Effect(item, &m_XianKnightSword, Spawn_Blood);
             creature->flags = 1;
         }
         break;

@@ -1,12 +1,12 @@
 #include "game/objects/creatures/worker_3.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/objects/creatures/worker_common.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -265,7 +265,7 @@ void __cdecl Worker3_Control(const int16_t item_num)
             if (creature->flags == 0
                 && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(WORKER_3_HIT_DAMAGE, true);
-                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Creature_Effect(item, &m_Worker3Hit, Spawn_Blood);
                 Sound_Effect(SFX_ENEMY_HIT_2, &item->pos, SPM_NORMAL);
                 creature->flags = 1;
             }
@@ -278,7 +278,7 @@ void __cdecl Worker3_Control(const int16_t item_num)
             if (creature->flags == 0
                 && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(WORKER_3_HIT_DAMAGE, true);
-                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Creature_Effect(item, &m_Worker3Hit, Spawn_Blood);
                 Sound_Effect(SFX_ENEMY_HIT_1, &item->pos, SPM_NORMAL);
                 creature->flags = 1;
             }
@@ -295,7 +295,7 @@ void __cdecl Worker3_Control(const int16_t item_num)
             if (creature->flags != 2
                 && (item->touch_bits & WORKER_3_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(WORKER_3_SWIPE_DAMAGE, true);
-                Creature_Effect(item, &m_Worker3Hit, DoBloodSplat);
+                Creature_Effect(item, &m_Worker3Hit, Spawn_Blood);
                 Sound_Effect(SFX_ENEMY_HIT_1, &item->pos, SPM_NORMAL);
                 creature->flags = 2;
             }

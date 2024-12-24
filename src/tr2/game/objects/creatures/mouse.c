@@ -1,10 +1,10 @@
 #include "game/objects/creatures/mouse.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -146,7 +146,7 @@ void __cdecl Mouse_Control(const int16_t item_num)
             if (item->required_anim_state == MOUSE_STATE_EMPTY
                 && (item->touch_bits & MOUSE_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(MOUSE_BITE_DAMAGE, true);
-                Creature_Effect(item, &m_MouseBite, DoBloodSplat);
+                Creature_Effect(item, &m_MouseBite, Spawn_Blood);
                 item->required_anim_state = MOUSE_STATE_STOP;
             }
             break;

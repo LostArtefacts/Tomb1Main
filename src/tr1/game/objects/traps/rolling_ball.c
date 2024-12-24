@@ -1,13 +1,13 @@
 #include "game/objects/traps/rolling_ball.h"
 
 #include "game/collide.h"
-#include "game/effects/blood.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
@@ -143,7 +143,7 @@ void RollingBall_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         x = item->pos.x + (x << WALL_SHIFT) / 2 / d;
         z = item->pos.z + (z << WALL_SHIFT) / 2 / d;
         y = item->pos.y - WALL_L / 2 + (y << WALL_SHIFT) / 2 / d;
-        Effect_Blood(x, y, z, item->speed, item->rot.y, item->room_num);
+        Spawn_Blood(x, y, z, item->speed, item->rot.y, item->room_num);
     } else {
         lara_item->hit_status = 1;
         if (lara_item->hit_points > 0) {
@@ -168,7 +168,7 @@ void RollingBall_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
                 z = lara_item->pos.z + (Random_GetControl() - 0x4000) / 256;
                 y = lara_item->pos.y - Random_GetControl() / 64;
                 d = item->rot.y + (Random_GetControl() - 0x4000) / 8;
-                Effect_Blood(x, y, z, item->speed * 2, d, item->room_num);
+                Spawn_Blood(x, y, z, item->speed * 2, d, item->room_num);
             }
         }
     }

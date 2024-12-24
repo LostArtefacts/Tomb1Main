@@ -1,11 +1,11 @@
 #include "game/objects/creatures/jelly.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lot.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 

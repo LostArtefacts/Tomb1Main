@@ -1,6 +1,5 @@
 #include "game/objects/effects/missile_common.h"
 
-#include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
@@ -9,6 +8,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -81,7 +81,7 @@ void __cdecl Missile_Control(const int16_t effect_num)
 
     if (effect->object_id == O_MISSILE_HARPOON
         && (Room_Get(effect->room_num)->flags & RF_UNDERWATER)) {
-        CreateBubble(&effect->pos, effect->room_num);
+        Spawn_Bubble(&effect->pos, effect->room_num);
     } else if (effect->object_id == O_MISSILE_FLAME) {
         if (!effect->counter--) {
             Output_AddDynamicLight(

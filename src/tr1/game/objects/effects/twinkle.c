@@ -3,6 +3,7 @@
 #include "game/collide.h"
 #include "game/effects.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -24,20 +25,6 @@ void Twinkle_Control(int16_t effect_num)
     }
 }
 
-void Twinkle_Spawn(GAME_VECTOR *pos)
-{
-    int16_t effect_num = Effect_Create(pos->room_num);
-    if (effect_num != NO_EFFECT) {
-        EFFECT *effect = Effect_Get(effect_num);
-        effect->pos.x = pos->x;
-        effect->pos.y = pos->y;
-        effect->pos.z = pos->z;
-        effect->counter = 0;
-        effect->object_id = O_TWINKLE;
-        effect->frame_num = 0;
-    }
-}
-
 void Twinkle_SparkleItem(ITEM *item, int mesh_mask)
 {
     SPHERE slist[34];
@@ -54,7 +41,7 @@ void Twinkle_SparkleItem(ITEM *item, int mesh_mask)
                 sptr->y + sptr->r * (Random_GetDraw() - 0x4000) / 0x4000;
             effect_pos.z =
                 sptr->z + sptr->r * (Random_GetDraw() - 0x4000) / 0x4000;
-            Twinkle_Spawn(&effect_pos);
+            Spawn_Twinkle(&effect_pos);
         }
     }
 }

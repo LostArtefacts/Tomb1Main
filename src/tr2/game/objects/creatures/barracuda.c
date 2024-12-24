@@ -1,9 +1,9 @@
 #include "game/objects/creatures/barracuda.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -130,7 +130,7 @@ void __cdecl Barracuda_Control(const int16_t item_num)
             if (creature->flags == 0
                 && (item->touch_bits & BARRACUDA_TOUCH_BITS) != 0) {
                 Lara_TakeDamage(BARRACUDA_BITE_DAMAGE, true);
-                Creature_Effect(item, &m_BarracudaBite, DoBloodSplat);
+                Creature_Effect(item, &m_BarracudaBite, Spawn_Blood);
                 creature->flags = 1;
             }
             break;

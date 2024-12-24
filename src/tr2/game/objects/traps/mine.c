@@ -1,12 +1,12 @@
 #include "game/objects/traps/mine.h"
 
-#include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -71,7 +71,7 @@ static void M_Explode(ITEM *const mine_item)
         effect->counter = 0;
     }
 
-    Splash(mine_item);
+    Spawn_Splash(mine_item);
     Sound_Effect(SFX_EXPLOSION_1, &mine_item->pos, SPM_NORMAL);
 
     mine_item->flags |= IF_ONE_SHOT;

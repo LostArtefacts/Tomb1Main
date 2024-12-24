@@ -1,11 +1,11 @@
 #include "game/objects/creatures/wolf.h"
 
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -204,7 +204,7 @@ void Wolf_Control(int16_t item_num)
             tilt = angle;
             if (item->required_anim_state == WOLF_STATE_EMPTY
                 && (item->touch_bits & WOLF_TOUCH)) {
-                Creature_Effect(item, &m_WolfJawBite, Effect_Blood);
+                Creature_Effect(item, &m_WolfJawBite, Spawn_Blood);
                 Lara_TakeDamage(WOLF_POUNCE_DAMAGE, true);
                 item->required_anim_state = WOLF_STATE_RUN;
             }
@@ -214,7 +214,7 @@ void Wolf_Control(int16_t item_num)
         case WOLF_STATE_BITE:
             if (item->required_anim_state == WOLF_STATE_EMPTY
                 && (item->touch_bits & WOLF_TOUCH) && info.ahead) {
-                Creature_Effect(item, &m_WolfJawBite, Effect_Blood);
+                Creature_Effect(item, &m_WolfJawBite, Spawn_Blood);
                 Lara_TakeDamage(WOLF_BITE_DAMAGE, true);
                 item->required_anim_state = WOLF_STATE_CROUCH;
             }

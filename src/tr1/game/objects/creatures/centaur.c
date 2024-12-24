@@ -2,13 +2,12 @@
 
 #include "game/creature.h"
 #include "game/effects.h"
-#include "game/effects/blood.h"
-#include "game/effects/gun.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -132,7 +131,7 @@ void Centaur_Control(int16_t item_num)
             if (item->required_anim_state == CENTAUR_STATE_EMPTY) {
                 item->required_anim_state = CENTAUR_STATE_AIM;
                 int16_t effect_num =
-                    Creature_Effect(item, &m_CentaurRocket, Effect_RocketGun);
+                    Creature_Effect(item, &m_CentaurRocket, Spawn_RocketGun);
                 if (effect_num != NO_EFFECT) {
                     centaur->neck_rotation = Effect_Get(effect_num)->rot.x;
                 }
@@ -142,7 +141,7 @@ void Centaur_Control(int16_t item_num)
         case CENTAUR_STATE_WARNING:
             if (item->required_anim_state == CENTAUR_STATE_EMPTY
                 && (item->touch_bits & CENTAUR_TOUCH)) {
-                Creature_Effect(item, &m_CentaurRear, Effect_Blood);
+                Creature_Effect(item, &m_CentaurRear, Spawn_Blood);
                 Lara_TakeDamage(CENTAUR_REAR_DAMAGE, true);
                 item->required_anim_state = CENTAUR_STATE_STOP;
             }

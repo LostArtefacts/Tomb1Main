@@ -1,11 +1,11 @@
 #include "game/objects/creatures/bat.h"
 
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -131,7 +131,7 @@ void Bat_Control(int16_t item_num)
 
         case BAT_STATE_ATTACK:
             if (item->touch_bits) {
-                Creature_Effect(item, &m_BatBite, Effect_Blood);
+                Creature_Effect(item, &m_BatBite, Spawn_Blood);
                 Lara_TakeDamage(BAT_ATTACK_DAMAGE, true);
             } else {
                 item->goal_anim_state = BAT_STATE_FLY;

@@ -1,10 +1,10 @@
 #include "game/objects/traps/teeth_trap.h"
 
 #include "game/collide.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
+#include "game/spawn.h"
 
 #define TEETH_TRAP_DAMAGE 400
 
@@ -30,7 +30,7 @@ static void M_BiteEffect(ITEM *item, BITE *bite)
         .z = bite->z,
     };
     Collide_GetJointAbsPosition(item, &pos, bite->mesh_num);
-    Effect_Blood(pos.x, pos.y, pos.z, item->speed, item->rot.y, item->room_num);
+    Spawn_Blood(pos.x, pos.y, pos.z, item->speed, item->rot.y, item->room_num);
 }
 
 void TeethTrap_Setup(OBJECT *obj)

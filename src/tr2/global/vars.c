@@ -1,6 +1,6 @@
 #include "global/vars.h"
 
-#include "decomp/effects.h"
+#include "game/spawn.h"
 
 #include <libtrx/game/sound/ids.h>
 

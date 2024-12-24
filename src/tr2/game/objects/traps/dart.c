@@ -1,6 +1,5 @@
 #include "game/objects/traps/dart.h"
 
-#include "decomp/effects.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
@@ -8,6 +7,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>
@@ -41,7 +41,7 @@ void __cdecl Dart_Control(const int16_t item_num)
     if (item->touch_bits != 0) {
         Lara_TakeDamage(DART_DAMAGE, true);
         const ITEM *const lara_item = Lara_GetItem();
-        DoBloodSplat(
+        Spawn_Blood(
             item->pos.x, item->pos.y, item->pos.z, lara_item->speed,
             lara_item->rot.y, lara_item->room_num);
     }

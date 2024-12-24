@@ -1,9 +1,9 @@
 #include "game/objects/creatures/cultist_2.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/objects/creatures/cultist_common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -210,7 +210,7 @@ void __cdecl Cultist2_Control(const int16_t item_num)
                 head = info.angle;
             }
             if (creature->flags == 0) {
-                Creature_Effect(item, &m_Cultist2LeftHand, Knife);
+                Creature_Effect(item, &m_Cultist2LeftHand, Spawn_Knife);
                 creature->flags = 1;
             }
             break;
@@ -220,7 +220,7 @@ void __cdecl Cultist2_Control(const int16_t item_num)
                 head = info.angle;
             }
             if (creature->flags == 0) {
-                Creature_Effect(item, &m_Cultist2RightHand, Knife);
+                Creature_Effect(item, &m_Cultist2RightHand, Spawn_Knife);
                 creature->flags = 1;
             }
             break;
@@ -230,8 +230,8 @@ void __cdecl Cultist2_Control(const int16_t item_num)
                 head = info.angle;
             }
             if (creature->flags == 0) {
-                Creature_Effect(item, &m_Cultist2LeftHand, Knife);
-                Creature_Effect(item, &m_Cultist2RightHand, Knife);
+                Creature_Effect(item, &m_Cultist2LeftHand, Spawn_Knife);
+                Creature_Effect(item, &m_Cultist2RightHand, Spawn_Knife);
                 creature->flags = CULTIST_2_STATE_STOP;
             }
             break;

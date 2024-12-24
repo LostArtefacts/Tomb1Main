@@ -1,13 +1,13 @@
 #include "game/objects/general/pickup.h"
 
 #include "config.h"
+#include "game/effects.h"
 #include "game/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
-#include "game/objects/effects/pickup_aid.h"
 #include "game/overlay.h"
 #include "game/random.h"
 #include "global/const.h"
@@ -120,7 +120,18 @@ static void M_SpawnPickupAid(const ITEM *const item)
         .z = item->pos.z + 20 * (Random_GetDraw() - 0x4000) / 0x4000,
         .room_num = item->room_num,
     };
-    PickupAid_Spawn(&pos);
+
+    const int16_t effect_num = Effect_Create(pos.room_num);
+    if (effect_num != NO_EFFECT) {
+        EFFECT *const effect = Effect_Get(effect_num);
+        effect->room_num = pos.room_num;
+        effect->pos.x = pos.x;
+        effect->pos.y = pos.y;
+        effect->pos.z = pos.z;
+        effect->counter = 0;
+        effect->object_id = O_PICKUP_AID;
+        effect->frame_num = 0;
+    }
 }
 
 static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item)

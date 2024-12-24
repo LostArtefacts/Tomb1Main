@@ -1,6 +1,5 @@
 #include "game/objects/traps/rolling_ball.h"
 
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/gamebuf.h"
 #include "game/items.h"
@@ -10,6 +9,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -172,7 +172,7 @@ void __cdecl RollingBall_Collision(
         int32_t dist = Math_Sqrt(SQUARE(dx) + SQUARE(dy) + SQUARE(dz));
         CLAMPL(dist, WALL_L / 2);
 
-        DoBloodSplat(
+        Spawn_Blood(
             item->pos.x + (dx * WALL_L / 2) / dist,
             item->pos.y + (dy * WALL_L / 2) / dist - WALL_L / 2,
             item->pos.z + (dz * WALL_L / 2) / dist, item->speed, item->rot.y,
@@ -196,7 +196,7 @@ void __cdecl RollingBall_Collision(
             g_Camera.target_elevation = -25 * PHD_DEGREE;
 
             for (int32_t i = 0; i < 15; i++) {
-                DoBloodSplat(
+                Spawn_Blood(
                     lara_item->pos.x + (Random_GetControl() - 0x4000) / 256,
                     lara_item->pos.z + (Random_GetControl() - 0x4000) / 256,
                     lara_item->pos.y - Random_GetControl() / 64,

@@ -1,10 +1,10 @@
 #include "game/objects/creatures/dog.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -179,7 +179,7 @@ void __cdecl Dog_Control(const int16_t item_num)
             creature->maximum_turn = 0;
             if (creature->flags != 1 && info.ahead != 0
                 && (item->touch_bits & DOG_TOUCH_BITS) != 0) {
-                Creature_Effect(item, &m_DogBite, DoBloodSplat);
+                Creature_Effect(item, &m_DogBite, Spawn_Blood);
                 Lara_TakeDamage(DOG_BITE_DAMAGE, true);
                 creature->flags = 1;
             }
@@ -194,7 +194,7 @@ void __cdecl Dog_Control(const int16_t item_num)
         case DOG_STATE_ATTACK_2:
             if (creature->flags != 2
                 && (item->touch_bits & DOG_TOUCH_BITS) != 0) {
-                Creature_Effect(item, &m_DogBite, DoBloodSplat);
+                Creature_Effect(item, &m_DogBite, Spawn_Blood);
                 Lara_TakeDamage(DOG_LUNGE_DAMAGE, true);
                 creature->flags = 2;
             }
@@ -209,7 +209,7 @@ void __cdecl Dog_Control(const int16_t item_num)
             creature->maximum_turn = DOG_RUN_TURN;
             if (creature->flags != 3
                 && (item->touch_bits & DOG_TOUCH_BITS) != 0) {
-                Creature_Effect(item, &m_DogBite, DoBloodSplat);
+                Creature_Effect(item, &m_DogBite, Spawn_Blood);
                 Lara_TakeDamage(DOG_LUNGE_DAMAGE, true);
                 creature->flags = 3;
             }

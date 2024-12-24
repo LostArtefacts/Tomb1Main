@@ -21,17 +21,3 @@ void PickupAid_Setup(OBJECT *const obj)
 {
     obj->control = M_Control;
 }
-
-void PickupAid_Spawn(const GAME_VECTOR *const pos)
-{
-    const int16_t effect_num = Effect_Create(pos->room_num);
-    if (effect_num != NO_EFFECT) {
-        EFFECT *const effect = Effect_Get(effect_num);
-        effect->pos.x = pos->x;
-        effect->pos.y = pos->y;
-        effect->pos.z = pos->z;
-        effect->counter = 0;
-        effect->object_id = O_PICKUP_AID;
-        effect->frame_num = 0;
-    }
-}

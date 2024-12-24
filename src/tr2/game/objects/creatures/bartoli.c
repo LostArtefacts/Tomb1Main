@@ -1,9 +1,9 @@
 #include "game/objects/creatures/bartoli.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/shell.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -133,7 +133,7 @@ void __cdecl Bartoli_Control(const int16_t item_num)
         g_Camera.bounce = item->timer;
     }
 
-    Effect_CreateBartoliLight(item_num);
+    Spawn_MysticLight(item_num);
     Item_Animate(item);
 
     if (item->timer == BOOM_TIME + 0) {

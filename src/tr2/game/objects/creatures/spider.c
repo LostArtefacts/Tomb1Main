@@ -1,6 +1,5 @@
 #include "game/objects/creatures/spider.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
@@ -8,6 +7,7 @@
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -152,7 +152,7 @@ void __cdecl Spider_Control(const int16_t item_num)
         case SPIDER_STATE_ATTACK_2:
         case SPIDER_STATE_ATTACK_3:
             if (creature->flags == 0 && item->touch_bits != 0) {
-                Creature_Effect(item, &m_SpiderBite, DoBloodSplat);
+                Creature_Effect(item, &m_SpiderBite, Spawn_Blood);
                 Lara_TakeDamage(SPIDER_DAMAGE, true);
                 creature->flags = 1;
             }

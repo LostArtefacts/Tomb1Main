@@ -1,10 +1,10 @@
 #include "game/objects/traps/killer_statue.h"
 
-#include "decomp/effects.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>
@@ -55,7 +55,7 @@ void __cdecl KillerStatue_Control(const int16_t item_num)
         Lara_TakeDamage(KILLER_STATUE_CUT_DAMAGE, true);
 
         const ITEM *const lara_item = Lara_GetItem();
-        DoBloodSplat(
+        Spawn_Blood(
             g_LaraItem->pos.x + (Random_GetControl() - 0x4000) / 256,
             g_LaraItem->pos.y - Random_GetControl() / 44,
             g_LaraItem->pos.z + (Random_GetControl() - 0x4000) / 256,

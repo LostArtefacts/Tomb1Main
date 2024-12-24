@@ -1,4 +1,4 @@
-#include "decomp/effects.h"
+#include "game/spawn.h"
 
 #include "game/collide.h"
 #include "game/effects.h"
@@ -12,7 +12,7 @@
 
 #define BARTOLI_LIGHT_RANGE (5 * WALL_L) // = 5120
 
-int16_t __cdecl Effect_MissileFlame(
+int16_t __cdecl Spawn_FireStream(
     const int32_t x, const int32_t y, const int32_t z, int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
@@ -46,7 +46,7 @@ int16_t __cdecl Effect_MissileFlame(
     return effect_num;
 }
 
-void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
+void __cdecl Spawn_MysticLight(const int16_t item_num)
 {
     const ITEM *const item = &g_Items[item_num];
 
@@ -76,7 +76,7 @@ void __cdecl Effect_CreateBartoliLight(const int16_t item_num)
     // clang-format on
 }
 
-void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
+void __cdecl Spawn_Bubble(const XYZ_32 *const pos, const int16_t room_num)
 {
     const int16_t effect_num = Effect_Create(room_num);
     if (effect_num == NO_EFFECT) {
@@ -90,7 +90,7 @@ void __cdecl CreateBubble(const XYZ_32 *const pos, const int16_t room_num)
     effect->speed = 10 + ((Random_GetDraw() * 6) / 0x8000);
 }
 
-void __cdecl Splash(const ITEM *const item)
+void __cdecl Spawn_Splash(const ITEM *const item)
 {
     const int32_t water_height = Room_GetWaterHeight(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
@@ -114,7 +114,7 @@ void __cdecl Splash(const ITEM *const item)
     }
 }
 
-int16_t __cdecl Effect_GunShot(
+int16_t __cdecl Spawn_GunShot(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
@@ -138,21 +138,21 @@ int16_t __cdecl Effect_GunShot(
     return effect_num;
 }
 
-int16_t __cdecl Effect_GunHit(
+int16_t __cdecl Spawn_GunHit(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
     XYZ_32 vec = { 0 };
     Collide_GetJointAbsPosition(
         g_LaraItem, &vec, Random_GetControl() * 25 / 0x7FFF);
-    DoBloodSplat(
+    Spawn_Blood(
         vec.x, vec.y, vec.z, g_LaraItem->speed, g_LaraItem->rot.y,
         g_LaraItem->room_num);
     Sound_Effect(SFX_LARA_BULLETHIT, &g_LaraItem->pos, SPM_NORMAL);
-    return Effect_GunShot(x, y, z, speed, y_rot, room_num);
+    return Spawn_GunShot(x, y, z, speed, y_rot, room_num);
 }
 
-int16_t __cdecl Effect_GunMiss(
+int16_t __cdecl Spawn_GunMiss(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
@@ -164,11 +164,11 @@ int16_t __cdecl Effect_GunMiss(
         },
         .room_num = g_LaraItem->room_num,
     };
-    Ricochet(&pos);
-    return Effect_GunShot(x, y, z, speed, y_rot, room_num);
+    Spawn_Ricochet(&pos);
+    return Spawn_GunShot(x, y, z, speed, y_rot, room_num);
 }
 
-int16_t __cdecl Knife(
+int16_t __cdecl Spawn_Knife(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
@@ -193,7 +193,7 @@ int16_t __cdecl Knife(
     return effect_num;
 }
 
-int16_t __cdecl DoBloodSplat(
+int16_t __cdecl Spawn_Blood(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num)
 {
@@ -212,19 +212,19 @@ int16_t __cdecl DoBloodSplat(
     return effect_num;
 }
 
-void __cdecl DoLotsOfBlood(
+void __cdecl Spawn_BloodBath(
     const int32_t x, const int32_t y, const int32_t z, const int16_t speed,
     const int16_t y_rot, const int16_t room_num, const int32_t count)
 {
     for (int32_t i = 0; i < count; i++) {
-        DoBloodSplat(
+        Spawn_Blood(
             x - (Random_GetDraw() << 9) / 0x8000 + 256,
             y - (Random_GetDraw() << 9) / 0x8000 + 256,
             z - (Random_GetDraw() << 9) / 0x8000 + 256, speed, y_rot, room_num);
     }
 }
 
-void __cdecl Ricochet(const GAME_VECTOR *const pos)
+void __cdecl Spawn_Ricochet(const GAME_VECTOR *const pos)
 {
     const int16_t effect_num = Effect_Create(pos->room_num);
     if (effect_num != NO_EFFECT) {

@@ -2,5 +2,5 @@
 
 #include "global/types.h"
 
-void Splash_Setup(void);
-void __cdecl Splash_Control(int16_t effect_num);
+void Spawn_Splash_Setup(void);
+void __cdecl Spawn_Splash_Control(int16_t effect_num);

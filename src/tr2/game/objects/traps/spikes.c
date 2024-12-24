@@ -1,9 +1,9 @@
 #include "game/objects/traps/spikes.h"
 
-#include "decomp/effects.h"
 #include "game/collide.h"
 #include "game/items.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #define SPIKE_DAMAGE 15
@@ -40,7 +40,7 @@ void __cdecl Spikes_Collision(
             .z = lara_item->pos.z + (Random_GetControl() - 0x4000) / 256,
             .y = lara_item->pos.y - Random_GetControl() / 64,
         };
-        DoBloodSplat(
+        Spawn_Blood(
             pos.x, pos.y, pos.z, 20, Random_GetControl(), item->room_num);
     }
 

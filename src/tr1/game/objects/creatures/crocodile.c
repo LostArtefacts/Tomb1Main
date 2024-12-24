@@ -3,11 +3,11 @@
 #include "config.h"
 #include "game/carrier.h"
 #include "game/creature.h"
-#include "game/effects/blood.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/lot.h"
 #include "game/room.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -174,7 +174,7 @@ void Croc_Control(int16_t item_num)
 
         case CROCODILE_STATE_ATTACK_1:
             if (item->required_anim_state == CROCODILE_STATE_EMPTY) {
-                Creature_Effect(item, &m_CrocodileBite, Effect_Blood);
+                Creature_Effect(item, &m_CrocodileBite, Spawn_Blood);
                 Lara_TakeDamage(CROCODILE_BITE_DAMAGE, true);
                 item->required_anim_state = CROCODILE_STATE_STOP;
             }
@@ -304,7 +304,7 @@ void Alligator_Control(int16_t item_num)
 
         if (info.bite && item->touch_bits) {
             if (item->required_anim_state == ALLIGATOR_STATE_EMPTY) {
-                Creature_Effect(item, &m_CrocodileBite, Effect_Blood);
+                Creature_Effect(item, &m_CrocodileBite, Spawn_Blood);
                 Lara_TakeDamage(ALLIGATOR_BITE_DAMAGE, true);
                 item->required_anim_state = ALLIGATOR_STATE_SWIM;
             }

@@ -1,7 +1,6 @@
 #include "decomp/skidoo.h"
 
 #include "decomp/decomp.h"
-#include "decomp/effects.h"
 #include "decomp/flares.h"
 #include "game/collide.h"
 #include "game/creature.h"
@@ -21,6 +20,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -140,7 +140,7 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
             Lara_TakeDamage(100, true);
         }
     } else if (object->intelligent && item->status == IS_ACTIVE) {
-        DoLotsOfBlood(
+        Spawn_BloodBath(
             item->pos.x, skidoo->pos.y - STEP_L, item->pos.z, skidoo->speed,
             skidoo->rot.y, item->room_num, 3);
         Gun_HitTarget(item, NULL, item->hit_points);
@@ -793,8 +793,8 @@ void __cdecl Skidoo_Guns(void)
     Output_AddDynamicLight(x, y, z, 12, 11);
 
     ITEM *const skidoo = Item_Get(g_Lara.skidoo);
-    Creature_Effect(skidoo, &g_Skidoo_LeftGun, Effect_GunShot);
-    Creature_Effect(skidoo, &g_Skidoo_RightGun, Effect_GunShot);
+    Creature_Effect(skidoo, &g_Skidoo_LeftGun, Spawn_GunShot);
+    Creature_Effect(skidoo, &g_Skidoo_RightGun, Spawn_GunShot);
 }
 
 int32_t __cdecl Skidoo_Control(void)

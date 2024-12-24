@@ -1,6 +1,5 @@
 #include "game/item_actions.h"
 
-#include "decomp/effects.h"
 #include "decomp/stats.h"
 #include "game/collide.h"
 #include "game/lara/hair.h"
@@ -9,6 +8,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "game/stats.h"
 #include "global/vars.h"
 
@@ -94,7 +94,7 @@ void M_Bubbles(ITEM *const item)
     XYZ_32 offset = { .x = 0, .y = 0, .z = 50 };
     Collide_GetJointAbsPosition(item, &offset, LM_HEAD);
     for (int32_t i = 0; i < count; i++) {
-        CreateBubble(&offset, item->room_num);
+        Spawn_Bubble(&offset, item->room_num);
     }
 }
 

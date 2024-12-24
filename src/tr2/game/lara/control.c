@@ -1,6 +1,5 @@
 #include "game/lara/control.h"
 
-#include "decomp/effects.h"
 #include "decomp/skidoo.h"
 #include "game/creature.h"
 #include "game/gun/gun.h"
@@ -17,6 +16,7 @@
 #include "game/music.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -482,7 +482,7 @@ void __cdecl Lara_Control(const int16_t item_num)
                 g_Lara.torso_x_rot = 0;
                 g_Lara.head_y_rot = 0;
                 g_Lara.head_x_rot = 0;
-                Splash(item);
+                Spawn_Splash(item);
             }
             break;
 

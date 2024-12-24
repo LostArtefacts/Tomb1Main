@@ -1,10 +1,10 @@
 #include "game/objects/creatures/bird_guardian.h"
 
-#include "decomp/effects.h"
 #include "game/creature.h"
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/random.h"
+#include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -171,13 +171,13 @@ void __cdecl BirdGuardian_Control(const int16_t item_num)
         case BIRD_GUARDIAN_STATE_PUNCH_3:
             if ((creature->flags & 1) == 0
                 && (item->touch_bits & BIRD_GUARDIAN_TOUCH_BITS_R) != 0) {
-                Creature_Effect(item, &m_BirdGuardianBiteR, DoBloodSplat);
+                Creature_Effect(item, &m_BirdGuardianBiteR, Spawn_Blood);
                 Lara_TakeDamage(BIRD_GUARDIAN_PUNCH_DAMAGE, true);
                 creature->flags |= 1;
             }
             if ((creature->flags & 2) == 0
                 && (item->touch_bits & BIRD_GUARDIAN_TOUCH_BITS_L) != 0) {
-                Creature_Effect(item, &m_BirdGuardianBiteL, DoBloodSplat);
+                Creature_Effect(item, &m_BirdGuardianBiteL, Spawn_Blood);
                 Lara_TakeDamage(BIRD_GUARDIAN_PUNCH_DAMAGE, true);
                 creature->flags |= 2;
             }
