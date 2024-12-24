@@ -231,7 +231,7 @@ int32_t __cdecl Level_Initialise(
         || level_type == GFL_DEMO) {
         GetCarriedItems();
     }
-    g_Effects = GameBuf_Alloc(MAX_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS_ARRAY);
+
     Effect_InitialiseArray();
     LOT_InitialiseArray();
     Inv_InitColors();

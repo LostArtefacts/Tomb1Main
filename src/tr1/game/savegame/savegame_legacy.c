@@ -235,9 +235,9 @@ static void M_WriteLara(LARA_INFO *lara)
     M_Write(&lara->current_active, sizeof(int16_t));
     M_Write(&lara->spaz_effect_count, sizeof(int16_t));
 
-    // OG just writes the pointer address (!)
+    // OG just writes the pointer address (!).
     if (lara->spaz_effect) {
-        tmp32 = (size_t)lara->spaz_effect - (size_t)g_Effects;
+        tmp32 = Effect_GetNum(lara->spaz_effect);
     }
     M_Write(&tmp32, sizeof(int32_t));
 

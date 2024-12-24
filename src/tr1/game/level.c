@@ -1130,7 +1130,6 @@ bool Level_Initialise(int32_t level_num)
         Lara_Initialise(level_num);
     }
 
-    g_Effects = GameBuf_Alloc(NUM_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS);
     Effect_InitialiseArray();
     LOT_InitialiseArray();
 

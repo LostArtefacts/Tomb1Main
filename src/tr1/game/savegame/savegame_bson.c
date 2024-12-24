@@ -1221,7 +1221,7 @@ static JSON_OBJECT *M_DumpLara(LARA_INFO *lara)
         lara_obj, "spaz_effect_count", lara->spaz_effect_count);
     JSON_ObjectAppendInt(
         lara_obj, "spaz_effect",
-        lara->spaz_effect ? lara->spaz_effect - g_Effects : 0);
+        lara->spaz_effect ? Effect_GetNum(lara->spaz_effect) : 0);
 
     JSON_ObjectAppendInt(lara_obj, "mesh_effects", lara->mesh_effects);
     JSON_ARRAY *lara_meshes_arr = JSON_ArrayNew();

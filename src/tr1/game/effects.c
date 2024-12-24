@@ -1,5 +1,6 @@
 #include "game/effects.h"
 
+#include "game/gamebuf.h"
 #include "game/output.h"
 #include "game/room.h"
 #include "global/const.h"
@@ -9,21 +10,21 @@
 
 #include <stddef.h>
 
-EFFECT *g_Effects = NULL;
-
+static EFFECT *m_Effects = NULL;
 static int16_t m_NextEffectActive = NO_EFFECT;
 static int16_t m_NextEffectFree = NO_EFFECT;
 
 void Effect_InitialiseArray(void)
 {
+    m_Effects = GameBuf_Alloc(NUM_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS);
     m_NextEffectActive = NO_EFFECT;
     m_NextEffectFree = 0;
     for (int i = 0; i < NUM_EFFECTS - 1; i++) {
-        g_Effects[i].next_draw = i + 1;
-        g_Effects[i].next_free = i + 1;
+        m_Effects[i].next_draw = i + 1;
+        m_Effects[i].next_free = i + 1;
     }
-    g_Effects[NUM_EFFECTS - 1].next_draw = NO_EFFECT;
-    g_Effects[NUM_EFFECTS - 1].next_free = NO_EFFECT;
+    m_Effects[NUM_EFFECTS - 1].next_draw = NO_EFFECT;
+    m_Effects[NUM_EFFECTS - 1].next_free = NO_EFFECT;
 }
 
 void Effect_Control(void)
@@ -41,7 +42,12 @@ void Effect_Control(void)
 
 EFFECT *Effect_Get(const int16_t effect_num)
 {
-    return &g_Effects[effect_num];
+    return &m_Effects[effect_num];
+}
+
+int16_t Effect_GetNum(const EFFECT *effect)
+{
+    return effect - m_Effects;
 }
 
 int16_t Effect_GetActiveNum(void)
