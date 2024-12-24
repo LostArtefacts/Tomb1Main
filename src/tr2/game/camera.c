@@ -893,8 +893,8 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
 {
     int16_t target_ok = 2;
 
-    for (int32_t i = 0; i < trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &trigger->commands[i];
+    const TRIGGER_CMD *cmd = trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type == TO_CAMERA) {
             const TRIGGER_CAMERA_DATA *const cam_data =
                 (TRIGGER_CAMERA_DATA *)cmd->parameter;

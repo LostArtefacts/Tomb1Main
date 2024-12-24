@@ -230,9 +230,8 @@ static void M_TestSectorTrigger(
         }
     }
 
-    for (int32_t i = 0; i < trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &trigger->commands[i];
-
+    const TRIGGER_CMD *cmd = trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         switch (cmd->type) {
         case TO_OBJECT: {
             const int16_t item_num = (int16_t)(intptr_t)cmd->parameter;
@@ -690,8 +689,8 @@ int32_t Room_GetHeight(
         return height;
     }
 
-    for (int32_t i = 0; i < pit_sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &pit_sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = pit_sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != TO_OBJECT) {
             continue;
         }
@@ -732,8 +731,8 @@ int32_t Room_GetCeiling(
         return height;
     }
 
-    for (int32_t i = 0; i < pit_sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &pit_sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = pit_sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != TO_OBJECT) {
             continue;
         }

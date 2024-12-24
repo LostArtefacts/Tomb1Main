@@ -5,9 +5,10 @@
 
 #include <stdbool.h>
 
-typedef struct __PACKING {
+typedef struct __PACKING TRIGGER_CMD {
     TRIGGER_OBJECT type;
     void *parameter;
+    struct TRIGGER_CMD *next_cmd;
 } TRIGGER_CMD;
 
 typedef struct __PACKING {
@@ -23,8 +24,7 @@ typedef struct __PACKING {
     int16_t mask;
     bool one_shot;
     int16_t item_index;
-    int32_t command_count;
-    TRIGGER_CMD *commands;
+    TRIGGER_CMD *command;
 } TRIGGER;
 
 typedef struct __PACKING {

@@ -66,9 +66,8 @@ static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector)
         return;
     }
 
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
-
+    const TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type == TO_SECRET) {
             const int16_t secret_num = 1 << (int16_t)(intptr_t)cmd->parameter;
             if (!(m_SecretRoom & secret_num)) {

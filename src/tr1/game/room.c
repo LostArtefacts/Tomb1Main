@@ -334,8 +334,8 @@ int16_t Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
         return height;
     }
 
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != TO_OBJECT) {
             continue;
         }
@@ -361,8 +361,8 @@ int16_t Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
         return height;
     }
 
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != TO_OBJECT) {
             continue;
         }
@@ -749,9 +749,8 @@ static void M_TestSectorTrigger(
         }
     }
 
-    for (int32_t i = 0; i < trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &trigger->commands[i];
-
+    const TRIGGER_CMD *cmd = trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         switch (cmd->type) {
         case TO_OBJECT: {
             const int16_t item_num = (int16_t)(intptr_t)cmd->parameter;
@@ -959,8 +958,8 @@ bool Room_IsOnWalkable(
 
     int16_t height = sector->floor.height;
     bool object_found = false;
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != TO_OBJECT) {
             continue;
         }

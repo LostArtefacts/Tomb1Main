@@ -32,7 +32,6 @@ static const int16_t *M_ReadTrigger(
 {
     ASSERT(sector->trigger == NULL);
     TRIGGER *const trigger = GameBuf_Alloc(sizeof(TRIGGER), GBUF_FLOOR_DATA);
-    sector->trigger = trigger;
 
     const int16_t trig_setup = *data++;
     trigger->type = FD_TRIG_TYPE(fd_entry);
@@ -40,7 +39,6 @@ static const int16_t *M_ReadTrigger(
     trigger->one_shot = FD_TRIG_ONE_SHOT(trig_setup);
     trigger->mask = FD_TRIG_MASK(trig_setup);
     trigger->item_index = NO_ITEM;
-    trigger->command_count = 0;
 
     if (trigger->type == TT_SWITCH || trigger->type == TT_KEY
         || trigger->type == TT_PICKUP) {
@@ -51,23 +49,13 @@ static const int16_t *M_ReadTrigger(
         }
     }
 
-    const int16_t *command_data = data;
-    while (true) {
-        trigger->command_count++;
-        int16_t command = *data++;
-        if (FD_TRIG_CMD_TYPE(command) == TO_CAMERA) {
-            command = *data++;
-        }
-        if (FD_IS_DONE(command)) {
-            break;
-        }
-    }
+    sector->trigger = trigger;
+    sector->trigger->command =
+        GameBuf_Alloc(sizeof(TRIGGER_CMD), GBUF_FLOOR_DATA);
+    TRIGGER_CMD *cmd = sector->trigger->command;
 
-    trigger->commands = GameBuf_Alloc(
-        sizeof(TRIGGER_CMD) * trigger->command_count, GBUF_FLOOR_DATA);
-    for (int32_t i = 0; i < trigger->command_count; i++) {
-        int16_t command = *command_data++;
-        TRIGGER_CMD *const cmd = &trigger->commands[i];
+    while (true) {
+        int16_t command = *data++;
         cmd->type = FD_TRIG_CMD_TYPE(command);
 
         if (cmd->type == TO_CAMERA) {
@@ -76,13 +64,21 @@ static const int16_t *M_ReadTrigger(
             cmd->parameter = (void *)cam_data;
             cam_data->camera_num = FD_TRIG_CMD_ARG(command);
 
-            command = *command_data++;
+            command = *data++;
             cam_data->timer = FD_TRIG_TIMER(command);
             cam_data->glide = FD_TRIG_CAM_GLIDE(command);
             cam_data->one_shot = FD_TRIG_ONE_SHOT(command);
         } else {
             cmd->parameter = (void *)(intptr_t)FD_TRIG_CMD_ARG(command);
         }
+
+        if (FD_IS_DONE(command)) {
+            cmd->next_cmd = NULL;
+            break;
+        }
+
+        cmd->next_cmd = GameBuf_Alloc(sizeof(TRIGGER_CMD), GBUF_FLOOR_DATA);
+        cmd = cmd->next_cmd;
     }
 
     return data;

@@ -214,8 +214,8 @@ static void M_TriggerParameterChange(
     // If we can find an action item for the given sector that matches
     // the command type and old (current) parameter, change it to the
     // new parameter.
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
+    TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type != cmd_type) {
             continue;
         }
@@ -242,8 +242,8 @@ static void M_SetMusicOneShot(const SECTOR *const sector)
         return;
     }
 
-    for (int32_t i = 0; i < sector->trigger->command_count; i++) {
-        const TRIGGER_CMD *const cmd = &sector->trigger->commands[i];
+    const TRIGGER_CMD *cmd = sector->trigger->command;
+    for (; cmd != NULL; cmd = cmd->next_cmd) {
         if (cmd->type == TO_CD) {
             sector->trigger->one_shot = true;
             break;
