@@ -152,7 +152,6 @@ extern SAVEGAME_INFO g_SaveGame;
 extern LARA_INFO g_Lara;
 extern ITEM *g_LaraItem;
 extern EFFECT *g_Effects;
-extern int16_t g_NextEffectFree;
 extern int16_t g_NextItemFree;
 extern int16_t g_NextItemActive;
 extern int16_t g_NextEffectActive;

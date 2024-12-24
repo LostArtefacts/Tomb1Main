@@ -12,12 +12,12 @@
 EFFECT *g_Effects = NULL;
 int16_t g_NextFxActive = NO_EFFECT;
 
-static int16_t m_NextFxFree = NO_EFFECT;
+static int16_t m_NextEffectFree = NO_EFFECT;
 
 void Effect_InitialiseArray(void)
 {
     g_NextFxActive = NO_EFFECT;
-    m_NextFxFree = 0;
+    m_NextEffectFree = 0;
     for (int i = 0; i < NUM_EFFECTS - 1; i++) {
         g_Effects[i].next_draw = i + 1;
         g_Effects[i].next_free = i + 1;
@@ -46,13 +46,13 @@ EFFECT *Effect_Get(const int16_t effect_num)
 
 int16_t Effect_Create(int16_t room_num)
 {
-    int16_t effect_num = m_NextFxFree;
+    int16_t effect_num = m_NextEffectFree;
     if (effect_num == NO_EFFECT) {
         return effect_num;
     }
 
     EFFECT *effect = Effect_Get(effect_num);
-    m_NextFxFree = effect->next_free;
+    m_NextEffectFree = effect->next_free;
 
     ROOM *r = &g_RoomInfo[room_num];
     effect->room_num = room_num;
@@ -97,8 +97,8 @@ void Effect_Kill(int16_t effect_num)
         }
     }
 
-    effect->next_free = m_NextFxFree;
-    m_NextFxFree = effect_num;
+    effect->next_free = m_NextEffectFree;
+    m_NextEffectFree = effect_num;
 }
 
 void Effect_NewRoom(int16_t effect_num, int16_t room_num)

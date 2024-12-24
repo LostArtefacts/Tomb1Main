@@ -188,7 +188,6 @@ SAVEGAME_INFO g_SaveGame;
 LARA_INFO g_Lara;
 ITEM *g_LaraItem = NULL;
 EFFECT *g_Effects = NULL;
-int16_t g_NextEffectFree;
 int16_t g_NextItemFree;
 int16_t g_NextItemActive;
 int16_t g_NextEffectActive;
