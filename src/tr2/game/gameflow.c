@@ -9,6 +9,7 @@
 #include "game/inventory/backpack.h"
 #include "game/music.h"
 #include "game/overlay.h"
+#include "game/phase.h"
 #include "game/requester.h"
 #include "gameflow/gameflow_new.h"
 #include "global/vars.h"
@@ -445,19 +446,10 @@ int32_t GF_InterpretSequence(
         case GFE_CUTSCENE:
             if (type != GFL_SAVED) {
                 const int16_t level = g_CurrentLevel;
-                const int32_t result = Game_LoopCinematic(ptr[1]);
-                g_CurrentLevel = level;
-                // TODO: make Game_LoopCinematic return GAME_FLOW_DIR
-                if (result == 2
-                    && (type == GFL_STORY || type == GFL_MID_STORY)) {
-                    return GFD_EXIT_TO_TITLE;
-                }
-                if (result == 3) {
-                    return GFD_EXIT_GAME;
-                }
-                if (result == 4) {
-                    dir = g_GF_OverrideDir;
-                    g_GF_OverrideDir = (GAME_FLOW_DIR)-1;
+                PHASE *const cutscene_phase = Phase_Cutscene_Create(ptr[1]);
+                GAME_FLOW_DIR dir = PhaseExecutor_Run(cutscene_phase);
+                Phase_Cutscene_Destroy(cutscene_phase);
+                if (dir != (GAME_FLOW_DIR)-1) {
                     return dir;
                 }
             }

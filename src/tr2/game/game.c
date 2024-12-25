@@ -168,48 +168,6 @@ int32_t Game_Control(int32_t nframes, const bool demo_mode)
     return 0;
 }
 
-int32_t Game_ControlCinematic(void)
-{
-    Fader_Control(&m_ExitFader);
-
-    const int32_t audio_cine_frame_idx =
-        Music_GetTimestamp() * FRAMES_PER_SECOND;
-    const int32_t game_cine_frame_idx = g_CineFrameIdx;
-    const int32_t audio_drift = ABS(audio_cine_frame_idx - game_cine_frame_idx);
-    if (audio_drift >= FRAMES_PER_SECOND * 0.2) {
-        LOG_DEBUG("Detected audio drift: %d frames", audio_drift);
-        Music_SeekTimestamp(game_cine_frame_idx / (double)FRAMES_PER_SECOND);
-    }
-
-    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        return 4;
-    }
-
-    Shell_ProcessEvents();
-    Input_Update();
-    if (g_InputDB.action) {
-        return 1;
-    }
-    if (g_InputDB.option) {
-        return 2;
-    }
-    Shell_ProcessInput();
-
-    g_DynamicLightCount = 0;
-
-    Item_Control();
-    Effect_Control();
-    Lara_Hair_Control(true);
-    Camera_UpdateCutscene();
-
-    g_CineFrameIdx++;
-    if (g_CineFrameIdx >= g_NumCineFrames) {
-        return 1;
-    }
-
-    return 0;
-}
-
 int32_t Game_Draw(void)
 {
     Output_BeginScene();
@@ -224,22 +182,6 @@ int32_t Game_Draw(void)
     g_Camera.num_frames = frames * TICKS_PER_FRAME;
     Shell_ProcessEvents();
     Overlay_Animate(frames);
-    Output_AnimateTextures(g_Camera.num_frames);
-    return g_Camera.num_frames;
-}
-
-int32_t Game_DrawCinematic(void)
-{
-    g_CameraUnderwater = false;
-    Output_BeginScene();
-    Room_DrawAllRooms(g_Camera.pos.room_num);
-    Output_DrawPolyList();
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
-    Output_DrawBlackRectangle(m_ExitFader.current.value);
-    g_Camera.num_frames = Output_EndScene(true);
-    Shell_ProcessEvents();
     Output_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
 }
@@ -342,53 +284,6 @@ GAME_FLOW_DIR Game_Loop(const bool demo_mode)
     Music_SetVolume(g_Config.audio.music_volume);
 
     return dir;
-}
-
-int32_t Game_LoopCinematic(const int32_t level_num)
-{
-    if (!Level_Initialise(level_num, GFL_CUTSCENE)) {
-        return 2;
-    }
-
-    Room_InitCinematic();
-    CutscenePlayer1_Initialise(g_Lara.item_num);
-    g_Camera.target_angle = g_CineTargetAngle;
-
-    const bool old_sound_active = g_SoundIsActive;
-    g_SoundIsActive = false;
-
-    if (!Music_PlaySynced(g_CineTrackID)) {
-        return 1;
-    }
-
-    Music_SetVolume(10);
-    g_CineFrameIdx = 0;
-
-    int32_t result = 0;
-    do {
-        const int32_t nframes = Game_DrawCinematic();
-        if (g_IsGameToExit && !m_Exiting) {
-            m_Exiting = true;
-            Fader_InitAnyToBlack(&m_ExitFader, FRAMES_PER_SECOND / 3);
-        } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
-            result = 5;
-        } else {
-            for (int32_t i = 0; i < nframes; i++) {
-                result = Game_ControlCinematic();
-                if (result != 0) {
-                    break;
-                }
-            }
-        }
-    } while (!result);
-
-    Music_SetVolume(g_Config.audio.music_volume);
-    Music_Stop();
-    g_SoundIsActive = old_sound_active;
-    Sound_StopAllSamples();
-
-    g_LevelComplete = true;
-    return result;
 }
 
 GAMEFLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)

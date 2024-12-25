@@ -16,6 +16,7 @@
 #include "game/input.h"
 #include "game/music.h"
 #include "game/output.h"
+#include "game/phase.h"
 #include "game/random.h"
 #include "game/render/common.h"
 #include "game/sound.h"
@@ -420,11 +421,9 @@ void Shell_Main(void)
             break;
 
         case GFD_START_CINE:
-            if (Game_LoopCinematic(gf_param) == 3) {
-                gf_option = GFD_EXIT_GAME;
-            } else {
-                gf_option = GFD_EXIT_TO_TITLE;
-            }
+            PHASE *const cutscene_phase = Phase_Cutscene_Create(gf_param);
+            gf_option = PhaseExecutor_Run(cutscene_phase);
+            Phase_Cutscene_Destroy(cutscene_phase);
             break;
 
         case GFD_START_DEMO:
