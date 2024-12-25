@@ -382,7 +382,19 @@ GAME_FLOW_DIR DisplayCredits(void)
         }
     }
 
-    GameStats(g_CurrentLevel);
+    {
+        PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+            .show_final_stats = true,
+            .fade_in_time = FRAMES_PER_SECOND / 2,
+            .fade_out_time = FRAMES_PER_SECOND / 2,
+        });
+        const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+
+        Phase_Stats_Destroy(phase);
+        if (dir != (GAME_FLOW_DIR)-1) {
+            return dir;
+        }
+    }
 
     return GFD_EXIT_TO_TITLE;
 }

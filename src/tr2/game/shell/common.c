@@ -511,7 +511,7 @@ void Shell_GoWindowed(int32_t x, int32_t y, int32_t width, int32_t height)
     }
 }
 
-// TODO: try to call this function in a single place after introducing phasers.
+// TODO: try to call this function in a single place after introducing phases.
 void Shell_ProcessEvents(void)
 {
     SDL_Event event;

@@ -3,9 +3,27 @@
 #include "game/option/option.h"
 #include "game/requester.h"
 #include "game/sound.h"
+#include "game/ui/widgets/stats_dialog.h"
 #include "global/vars.h"
 
 #include <stdio.h>
+
+static UI_WIDGET *m_Dialog = NULL;
+
+static void M_Init(void);
+
+static void M_Init(void)
+{
+    m_Dialog = UI_StatsDialog_Create(false);
+}
+
+static void M_Shutdown(void)
+{
+    if (m_Dialog != NULL) {
+        m_Dialog->free(m_Dialog);
+        m_Dialog = NULL;
+    }
+}
 
 void Option_Compass_Control(INVENTORY_ITEM *const item)
 {
@@ -16,7 +34,10 @@ void Option_Compass_Control(INVENTORY_ITEM *const item)
     if (g_CurrentLevel == LV_GYM) {
         ShowGymStatsText(buffer, 1);
     } else {
-        ShowStatsText(buffer, 1);
+        if (m_Dialog == NULL) {
+            M_Init();
+        }
+        m_Dialog->control(m_Dialog);
     }
 
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
@@ -29,9 +50,13 @@ void Option_Compass_Control(INVENTORY_ITEM *const item)
 
 void Option_Compass_Draw(INVENTORY_ITEM *const item)
 {
+    if (m_Dialog != NULL) {
+        m_Dialog->draw(m_Dialog);
+    }
 }
 
 void Option_Compass_Shutdown(void)
 {
     Requester_Shutdown(&g_StatsRequester);
+    M_Shutdown();
 }

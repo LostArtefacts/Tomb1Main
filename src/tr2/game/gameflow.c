@@ -447,7 +447,7 @@ int32_t GF_InterpretSequence(
             if (type != GFL_SAVED) {
                 const int16_t level = g_CurrentLevel;
                 PHASE *const cutscene_phase = Phase_Cutscene_Create(ptr[1]);
-                GAME_FLOW_DIR dir = PhaseExecutor_Run(cutscene_phase);
+                dir = PhaseExecutor_Run(cutscene_phase);
                 Phase_Cutscene_Destroy(cutscene_phase);
                 if (dir != (GAME_FLOW_DIR)-1) {
                     return dir;
@@ -458,8 +458,25 @@ int32_t GF_InterpretSequence(
 
         case GFE_LEVEL_COMPLETE:
             if (type != GFL_STORY && type != GFL_MID_STORY) {
-                if (LevelStats(g_CurrentLevel)) {
-                    return GFD_EXIT_TO_TITLE;
+                START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
+                start->statistics.timer = g_SaveGame.statistics.timer;
+                start->statistics.shots = g_SaveGame.statistics.shots;
+                start->statistics.hits = g_SaveGame.statistics.hits;
+                start->statistics.distance = g_SaveGame.statistics.distance;
+                start->statistics.kills = g_SaveGame.statistics.kills;
+                start->statistics.secrets = g_SaveGame.statistics.secrets;
+                start->statistics.medipacks = g_SaveGame.statistics.medipacks;
+
+                PHASE *const stats_phase =
+                    Phase_Stats_Create((PHASE_STATS_ARGS) {
+                        .show_final_stats = false,
+                        .fade_in_time = 0,
+                        .fade_out_time = 0,
+                    });
+                dir = PhaseExecutor_Run(stats_phase);
+                Phase_Stats_Destroy(stats_phase);
+                if (dir != (GAME_FLOW_DIR)-1) {
+                    return dir;
                 }
                 dir = GFD_START_GAME | (g_CurrentLevel + 1);
             }
@@ -512,6 +529,14 @@ int32_t GF_InterpretSequence(
             break;
 
         case GFE_GAME_COMPLETE:
+            START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
+            start->statistics.timer = g_SaveGame.statistics.timer;
+            start->statistics.shots = g_SaveGame.statistics.shots;
+            start->statistics.hits = g_SaveGame.statistics.hits;
+            start->statistics.distance = g_SaveGame.statistics.distance;
+            start->statistics.kills = g_SaveGame.statistics.kills;
+            start->statistics.secrets = g_SaveGame.statistics.secrets;
+            start->statistics.medipacks = g_SaveGame.statistics.medipacks;
             dir = DisplayCredits();
             ptr++;
             break;

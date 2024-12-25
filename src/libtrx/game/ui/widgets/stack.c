@@ -180,6 +180,28 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
     // calculate main axis placement
     int32_t x = -999;
     int32_t y = -999;
+
+    int32_t spacing_h = 0;
+    int32_t remainder_h = 0;
+    if (self->children->count > 1 && self->layout == UI_STACK_LAYOUT_HORIZONTAL
+        && self->align.h == UI_STACK_H_ALIGN_DISTRIBUTE
+        && self_width > children_width) {
+        spacing_h = (self_width - children_width) / (self->children->count - 1);
+        remainder_h =
+            (self_width - children_width) % (self->children->count - 1);
+    }
+
+    int32_t spacing_v = 0;
+    int32_t remainder_v = 0;
+    if (self->children->count > 1 && self->layout == UI_STACK_LAYOUT_VERTICAL
+        && self->align.v == UI_STACK_V_ALIGN_DISTRIBUTE
+        && self_height > children_height) {
+        spacing_v =
+            (self_height - children_height) / (self->children->count - 1);
+        remainder_v =
+            (self_height - children_height) % (self->children->count - 1);
+    }
+
     switch (self->layout) {
     case UI_STACK_LAYOUT_HORIZONTAL:
         switch (self->align.h) {
@@ -191,6 +213,9 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
             break;
         case UI_STACK_H_ALIGN_RIGHT:
             x = self->x + self_width - children_width;
+            break;
+        case UI_STACK_H_ALIGN_DISTRIBUTE:
+            x = self->x;
             break;
         }
         break;
@@ -205,6 +230,9 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
             break;
         case UI_STACK_V_ALIGN_BOTTOM:
             y = self->y + self_height - children_height;
+            break;
+        case UI_STACK_V_ALIGN_DISTRIBUTE:
+            y = self->y;
             break;
         }
         break;
@@ -228,6 +256,8 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
             case UI_STACK_V_ALIGN_BOTTOM:
                 y = self->y + self_height - child_height;
                 break;
+            default:
+                break;
             }
             break;
 
@@ -242,6 +272,8 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
             case UI_STACK_H_ALIGN_RIGHT:
                 x = self->x + self_width - child_width;
                 break;
+            default:
+                break;
             }
             break;
         }
@@ -251,10 +283,18 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
         // calculate main axis offset
         switch (self->layout) {
         case UI_STACK_LAYOUT_HORIZONTAL:
-            x += child_width;
+            x += child_width + spacing_h;
+            if (remainder_h > 0) {
+                x += 1;
+                remainder_h--;
+            }
             break;
         case UI_STACK_LAYOUT_VERTICAL:
-            y += child_height;
+            y += child_height + spacing_v;
+            if (remainder_v > 0) {
+                y += 1;
+                remainder_v--;
+            }
             break;
         }
     }

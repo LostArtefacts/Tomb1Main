@@ -6,7 +6,6 @@
 #include "game/ui/widgets/controls_layout_editor.h"
 
 #include <libtrx/game/ui/common.h>
-#include <libtrx/game/ui/widgets/stack.h>
 #include <libtrx/game/ui/widgets/window.h>
 #include <libtrx/memory.h>
 

@@ -8,6 +8,7 @@
 typedef struct {
     UI_WIDGET_VTABLE vtable;
     TEXTSTRING *frame;
+    TEXTSTRING *title_frame;
     UI_WIDGET *root;
     UI_WIDGET *title_label;
     struct {
@@ -17,6 +18,7 @@ typedef struct {
         int32_t bottom;
     } border;
     int32_t title_margin;
+    int32_t title_padding;
 } UI_WINDOW;
 
 static void M_SyncChildren(UI_WINDOW *self);
@@ -31,7 +33,7 @@ static int32_t M_GetWidth(const UI_WINDOW *const self)
 {
     const int32_t title_width = self->title_label != NULL
         ? self->title_label->get_width(self->title_label)
-            + 2 * self->title_margin
+            + 2 * self->title_margin + 2 * self->title_padding
         : 0;
     const int32_t root_width = self->root->get_width(self->root)
         + self->border.left + self->border.right;
@@ -42,7 +44,7 @@ static int32_t M_GetHeight(const UI_WINDOW *const self)
 {
     const int32_t title_height = self->title_label != NULL
         ? self->title_label->get_height(self->title_label)
-            + 2 * self->title_margin
+            + 2 * self->title_margin + 2 * self->title_padding
         : 0;
     const int32_t root_height = self->root->get_height(self->root)
         + self->border.top + self->border.bottom;
@@ -52,27 +54,35 @@ static int32_t M_GetHeight(const UI_WINDOW *const self)
 static void M_SetPosition(
     UI_WINDOW *const self, const int32_t x, const int32_t y)
 {
+    const int32_t w = M_GetWidth(self);
+    const int32_t h = M_GetHeight(self);
+
     if (self->title_label != NULL) {
         self->title_label->set_position(
-            self->title_label, x + self->title_margin, y + self->title_margin);
+            self->title_label,
+            x + (w - self->title_label->get_width(self->title_label)) / 2,
+            y + self->title_margin + self->title_padding);
+
         self->root->set_position(
-            self->root,
-            x + self->border.left
-                + (self->title_label->get_width(self->title_label)
-                   - self->root->get_width(self->root))
-                    / 2,
-            y + self->title_margin
-                + self->title_label->get_height(self->title_label)
-                + self->title_margin + self->border.top);
+            self->root, x + (w - self->root->get_width(self->root)) / 2,
+            y + self->title_label->get_height(self->title_label)
+                + self->title_margin * 2 + self->title_padding * 2
+                + self->border.top);
+
+        Text_SetPos(
+            self->title_frame, x + self->title_margin,
+            y + TEXT_HEIGHT_FIXED + self->title_margin);
+        Text_AddBackground(
+            self->title_frame, w - self->title_margin * 2,
+            TEXT_HEIGHT_FIXED + self->title_padding * 2,
+            (w - self->title_margin * 2) / 2, 0, TS_REQUESTED);
+        Text_AddOutline(self->title_frame, TS_REQUESTED);
     } else {
         self->root->set_position(
             self->root, x + self->border.left, y + self->border.top);
     }
 
     Text_SetPos(self->frame, x, y + TEXT_HEIGHT_FIXED);
-
-    const int32_t w = M_GetWidth(self);
-    const int32_t h = M_GetHeight(self);
     Text_AddBackground(self->frame, w, h, w / 2, 0, TS_BACKGROUND);
     Text_AddOutline(self->frame, TS_BACKGROUND);
 }
@@ -91,6 +101,7 @@ static void M_Draw(UI_WINDOW *const self)
     }
     if (self->title_label != NULL) {
         self->title_label->draw(self->title_label);
+        Text_DrawText(self->title_frame);
     }
     Text_DrawText(self->frame);
 }
@@ -99,6 +110,7 @@ static void M_Free(UI_WINDOW *const self)
 {
     if (self->title_label != NULL) {
         self->title_label->free(self->title_label);
+        Text_Remove(self->title_frame);
     }
     Text_Remove(self->frame);
     Memory_Free(self);
@@ -124,6 +136,7 @@ UI_WIDGET *UI_Window_Create(
     self->border.bottom = border_bottom;
     self->border.left = border_left;
     self->title_margin = 2;
+    self->title_padding = 1;
 
     self->frame = Text_Create(0, 0, "");
     self->frame->pos.z = 32;
@@ -138,11 +151,14 @@ void UI_Window_SetTitle(UI_WIDGET *const widget, const char *const text)
     if (self->title_label != NULL) {
         self->title_label->free(self->title_label);
         self->title_label = NULL;
+        Text_Remove(self->title_frame);
     }
     if (text != NULL) {
         self->title_label =
             UI_Label_Create(text, UI_LABEL_AUTO_SIZE, UI_LABEL_AUTO_SIZE);
-        UI_Label_AddFrame(self->title_label);
+        self->title_frame = Text_Create(0, 0, "");
+        self->title_frame->pos.z = 16;
+        self->title_frame->flags.manual_draw = 1;
     }
 }
 

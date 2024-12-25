@@ -20,7 +20,8 @@ void Fader_Init(
     fader->current.value = initial;
     fader->current.frame = 0;
 
-    if (!g_Config.visuals.enable_fade_effects) {
+    if (!g_Config.visuals.enable_fade_effects || duration == 0) {
+        fader->debuff = 0;
         fader->current.frame = fader->duration + fader->debuff;
         fader->current.value = target;
     }
@@ -47,7 +48,7 @@ bool Fader_IsActive(const FADER *const fader)
     if (!g_Config.visuals.enable_fade_effects) {
         return false;
     }
-    return fader->current.frame <= fader->duration + fader->debuff;
+    return fader->current.frame < fader->duration + fader->debuff;
 }
 
 bool Fader_Control(FADER *const fader)
