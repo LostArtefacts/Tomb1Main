@@ -27,8 +27,6 @@ static void *M_LockSurface(void *surface, void *user_data);
 static void M_UnlockSurface(void *surface, void *user_data);
 static void M_UploadSurface(void *surface, void *user_data);
 
-static void M_EnterFMVMode(void);
-static void M_ExitFMVMode(void);
 static void M_Play(const char *file_name);
 
 static void *M_AllocateSurface(
@@ -85,18 +83,6 @@ static void M_UploadSurface(void *const surface, void *const user_data)
     GFX_2D_SURFACE *surface_ = surface;
     GFX_2D_Renderer_Upload(renderer_2d, &surface_->desc, surface_->buffer);
     GFX_2D_Renderer_Render(renderer_2d);
-}
-
-static void M_EnterFMVMode(void)
-{
-    Music_Stop();
-}
-
-static void M_ExitFMVMode(void)
-{
-    if (!g_IsGameToExit) {
-        Render_Reset(RENDER_RESET_ALL);
-    }
 }
 
 static void M_Play(const char *const file_name)
@@ -165,9 +151,16 @@ static void M_Play(const char *const file_name)
 
 void FMV_Play(const char *const file_name)
 {
-    M_EnterFMVMode();
+    Music_Stop();
+    if (!g_Config.gameplay.enable_fmv) {
+        return;
+    }
+
     M_Play(file_name);
-    M_ExitFMVMode();
+
+    if (!g_IsGameToExit) {
+        Render_Reset(RENDER_RESET_ALL);
+    }
 }
 
 bool FMV_IsPlaying(void)

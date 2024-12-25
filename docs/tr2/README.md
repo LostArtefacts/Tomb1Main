@@ -107,6 +107,7 @@ game with new enhancements and features.
 
 #### Mods
 - added developer console (accessible with `/`, see [COMMANDS.md](COMMANDS.md) for details)
+- added ability to disable FMVs
 
 #### Miscellaneous
 - added .jpeg/.png screenshots

@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.7.1...develop) - ××××-××-××
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
+- added the ability to turn FMVs off (#2110)
 - added an option to use PS1 contrast levels, available under F8 (#1646)
 - added an option to allow disabling the developer console (#2063)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)

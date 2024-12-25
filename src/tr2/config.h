@@ -23,21 +23,22 @@ typedef struct {
     } visuals;
 
     struct {
+        int32_t sound_volume;
+        int32_t music_volume;
+        bool enable_lara_mic;
+    } audio;
+
+    struct {
         bool fix_m16_accuracy;
         bool fix_item_duplication_glitch;
         bool fix_floor_data_issues;
         bool fix_flare_throw_priority;
         bool enable_cheats;
         bool enable_console;
+        bool enable_fmv;
         bool enable_auto_item_selection;
         int32_t turbo_speed;
     } gameplay;
-
-    struct {
-        int32_t sound_volume;
-        int32_t music_volume;
-        bool enable_lara_mic;
-    } audio;
 
     struct {
         bool is_fullscreen;

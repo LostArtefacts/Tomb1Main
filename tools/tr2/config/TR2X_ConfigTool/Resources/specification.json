@@ -73,6 +73,11 @@
           "Field": "enable_auto_item_selection",
           "DataType": "Bool",
           "DefaultValue": true
+        },
+        {
+          "Field": "enable_fmv",
+          "DataType": "Bool",
+          "DefaultValue": true
         }
       ]
     },

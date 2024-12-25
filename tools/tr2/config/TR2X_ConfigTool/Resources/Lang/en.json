@@ -30,6 +30,10 @@
       "Title": "Console",
       "Description": "Enables the developer console."
     },
+    "enable_fmv": {
+      "Title": "Enable FMVs",
+      "Description": "Enables FMVs playing."
+    },
     "fix_m16_accuracy": {
       "Title": "Fix M16 accuracy",
       "Description": "Fixes the accuracy of the M16 while Lara is running."
