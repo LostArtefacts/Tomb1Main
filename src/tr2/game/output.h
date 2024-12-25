@@ -88,7 +88,7 @@ void Output_LoadBackgroundFromObject(void);
 void Output_UnloadBackground(void);
 
 void Output_BeginScene(void);
-int32_t Output_EndScene(void);
+int32_t Output_EndScene(bool sync_ticks);
 
 int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
 void Output_DoAnimateTextures(int32_t ticks);

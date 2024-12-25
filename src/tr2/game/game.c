@@ -260,7 +260,7 @@ int32_t Game_Draw(void)
     Output_DrawPolyList();
 
     Output_DrawBlackRectangle(m_ExitFader.current.value);
-    const int32_t frames = Output_EndScene();
+    const int32_t frames = Output_EndScene(true);
     g_Camera.num_frames = frames * TICKS_PER_FRAME;
     Shell_ProcessEvents();
     Overlay_Animate(frames);
@@ -278,7 +278,7 @@ int32_t Game_DrawCinematic(void)
     Text_Draw();
     Output_DrawPolyList();
     Output_DrawBlackRectangle(m_ExitFader.current.value);
-    g_Camera.num_frames = Output_EndScene();
+    g_Camera.num_frames = Output_EndScene(true);
     Shell_ProcessEvents();
     Output_AnimateTextures(g_Camera.num_frames);
     return g_Camera.num_frames;
@@ -352,7 +352,7 @@ int16_t Game_Start(
     return GFD_START_GAME | LV_FIRST;
 }
 
-int32_t Game_Loop(const bool demo_mode)
+GAME_FLOW_DIR Game_Loop(const bool demo_mode)
 {
     g_OverlayStatus = 1;
     Camera_Initialise();

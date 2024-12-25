@@ -464,7 +464,7 @@ static void M_Draw(
     Text_Draw();
     Output_DrawPolyList();
 
-    const int32_t frames = Output_EndScene() * TICKS_PER_FRAME;
+    const int32_t frames = Output_EndScene(true) * TICKS_PER_FRAME;
 
     Sound_EndScene();
     Shell_ProcessEvents();

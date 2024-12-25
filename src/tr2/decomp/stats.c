@@ -339,7 +339,7 @@ int32_t LevelStats(const int32_t level_num)
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
-        Output_EndScene();
+        Output_EndScene(true);
     }
 
     Requester_Shutdown(&g_StatsRequester);
@@ -377,7 +377,7 @@ int32_t GameStats(const int32_t level_num)
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
-        Output_EndScene();
+        Output_EndScene(true);
     }
 
     while (true) {
@@ -399,7 +399,7 @@ int32_t GameStats(const int32_t level_num)
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
-        Output_EndScene();
+        Output_EndScene(true);
     }
 
     g_SaveGame.bonus_flag = 1;
@@ -419,7 +419,7 @@ int32_t GameStats(const int32_t level_num)
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
-        Output_EndScene();
+        Output_EndScene(true);
     }
 
     Requester_Shutdown(&g_StatsRequester);

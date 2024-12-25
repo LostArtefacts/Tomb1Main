@@ -346,7 +346,7 @@ void S_Wait(int32_t frames, const bool input_check)
         Console_Draw();
         Text_Draw();
         Output_DrawPolyList();
-        frames -= Output_EndScene() * TICKS_PER_FRAME;
+        frames -= Output_EndScene(true) * TICKS_PER_FRAME;
 
         if (g_IsGameToExit) {
             break;
@@ -379,7 +379,7 @@ void DisplayCredits(void)
             Console_Draw();
             Text_Draw();
             Output_DrawPolyList();
-            Output_EndScene();
+            Output_EndScene(true);
         }
 
         if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
@@ -395,7 +395,7 @@ void DisplayCredits(void)
             Console_Draw();
             Text_Draw();
             Output_DrawPolyList();
-            Output_EndScene();
+            Output_EndScene(true);
         }
 
         Output_UnloadBackground();

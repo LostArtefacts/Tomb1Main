@@ -308,7 +308,7 @@ static void M_DisplayLegal(void)
         Output_DrawBackground();
         Output_DrawPolyList();
         Output_DrawBlackRectangle(fader.current.value);
-        Output_EndScene();
+        Output_EndScene(true);
     }
 
     if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
@@ -321,7 +321,7 @@ static void M_DisplayLegal(void)
         Output_DrawBackground();
         Output_DrawPolyList();
         Output_DrawBlackRectangle(fader.current.value);
-        Output_EndScene();
+        Output_EndScene(true);
     }
     Output_UnloadBackground();
 }
