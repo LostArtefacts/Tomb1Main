@@ -129,6 +129,7 @@ static void M_InsertLine_ZBuffered(
     RENDERER *renderer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
     int32_t z, uint8_t color_idx);
 
+static void M_ResetParams(RENDERER *renderer);
 static void M_ResetFuncPtrs(RENDERER *renderer);
 static void M_Init(RENDERER *renderer);
 static void M_Shutdown(RENDERER *renderer);
@@ -1428,6 +1429,15 @@ static void M_ResetFuncPtrs(RENDERER *const renderer)
     }
 }
 
+static void M_ResetParams(RENDERER *const renderer)
+{
+    M_PRIV *const priv = renderer->priv;
+    GFX_3D_Renderer_SetBrightnessMultiplier(
+        priv->renderer_3d,
+        g_Config.rendering.lighting_contrast == LIGHTING_CONTRAST_LOW ? 1.0
+                                                                      : 2.0);
+}
+
 static void M_Init(RENDERER *const renderer)
 {
     M_PRIV *const priv = Memory_Alloc(sizeof(M_PRIV));
@@ -1441,6 +1451,7 @@ static void M_Init(RENDERER *const renderer)
 
     renderer->initialized = true;
     renderer->priv = priv;
+    M_ResetParams(renderer);
 }
 
 static void M_Shutdown(RENDERER *const renderer)
@@ -1538,11 +1549,7 @@ static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
         M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
     }
     if (flags & RENDER_RESET_PARAMS) {
-        GFX_3D_Renderer_SetBrightnessMultiplier(
-            priv->renderer_3d,
-            g_Config.rendering.lighting_contrast == LIGHTING_CONTRAST_LOW
-                ? 1.0
-                : 2.0);
+        M_ResetParams(renderer);
     }
     M_ResetFuncPtrs(renderer);
 }
