@@ -2,12 +2,12 @@
 
 #include "config.h"
 #include "decomp/decomp.h"
-#include "decomp/fmv.h"
 #include "decomp/savegame.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/demo.h"
 #include "game/fader.h"
+#include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/gamebuf.h"

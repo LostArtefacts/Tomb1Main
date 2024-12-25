@@ -1,4 +1,4 @@
-#include "decomp/fmv.h"
+#include "game/fmv.h"
 
 #include "config.h"
 #include "game/input.h"

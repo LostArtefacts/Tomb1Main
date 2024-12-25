@@ -1,9 +1,9 @@
 #include "game/gameflow.h"
 
 #include "decomp/decomp.h"
-#include "decomp/fmv.h"
 #include "decomp/stats.h"
 #include "game/demo.h"
+#include "game/fmv.h"
 #include "game/game.h"
 #include "game/gun/gun.h"
 #include "game/inventory/backpack.h"
