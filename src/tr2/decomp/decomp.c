@@ -2,11 +2,11 @@
 
 #include "config.h"
 #include "decomp/savegame.h"
+#include "decomp/stats.h"
 #include "game/clock.h"
 #include "game/collide.h"
 #include "game/console/common.h"
 #include "game/effects.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/gamebuf.h"
 #include "game/gameflow.h"
@@ -24,6 +24,7 @@
 #include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/overlay.h"
+#include "game/phase.h"
 #include "game/random.h"
 #include "game/requester.h"
 #include "game/room.h"
@@ -354,55 +355,36 @@ void S_Wait(int32_t frames, const bool input_check)
     }
 }
 
-void DisplayCredits(void)
+GAME_FLOW_DIR DisplayCredits(void)
 {
     S_UnloadLevelFile();
-    if (!Level_Initialise(0, 0)) {
-        return;
+    if (!Level_Initialise(0, GFL_TITLE)) {
+        return GFD_EXIT_TO_TITLE;
     }
 
     Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
 
-    FADER fader;
     for (int32_t i = 0; i < 8; i++) {
         char file_name[60];
         sprintf(file_name, "data/credit0%d.pcx", i + 1);
 
-        Fader_InitBlackToTransparent(&fader, FRAMES_PER_SECOND / 2);
-        Output_LoadBackgroundFromFile(file_name);
+        PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
+            .file_name = file_name,
+            .display_time = 15 * FRAMES_PER_SECOND,
+            .fade_in_time = FRAMES_PER_SECOND / 2,
+            .fade_out_time = FRAMES_PER_SECOND / 2,
+        });
+        const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+        Phase_Picture_Destroy(phase);
 
-        while (Fader_Control(&fader)) {
-            Output_BeginScene();
-            Output_DrawBackground();
-            Output_DrawPolyList();
-            Output_DrawBlackRectangle(fader.current.value);
-            Console_Draw();
-            Text_Draw();
-            Output_DrawPolyList();
-            Output_EndScene(true);
-        }
-
-        if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
-            S_Wait(15 * FRAMES_PER_SECOND, true);
-        }
-
-        Fader_InitTransparentToBlack(&fader, FRAMES_PER_SECOND / 2);
-        while (Fader_Control(&fader)) {
-            Output_BeginScene();
-            Output_DrawBackground();
-            Output_DrawPolyList();
-            Output_DrawBlackRectangle(fader.current.value);
-            Console_Draw();
-            Text_Draw();
-            Output_DrawPolyList();
-            Output_EndScene(true);
-        }
-
-        Output_UnloadBackground();
-        if (g_IsGameToExit) {
-            break;
+        if (dir != (GAME_FLOW_DIR)-1) {
+            return dir;
         }
     }
+
+    GameStats(g_CurrentLevel);
+
+    return GFD_EXIT_TO_TITLE;
 }
 
 void IncreaseScreenSize(void)

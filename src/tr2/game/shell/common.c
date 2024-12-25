@@ -6,7 +6,6 @@
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/demo.h"
-#include "game/fader.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
@@ -301,30 +300,14 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
 
 static void M_DisplayLegal(void)
 {
-    Output_LoadBackgroundFromFile("data\\legal.pcx");
-    FADER fader;
-    Fader_InitBlackToTransparent(&fader, FRAMES_PER_SECOND);
-    while (Fader_Control(&fader)) {
-        Output_BeginScene();
-        Output_DrawBackground();
-        Output_DrawPolyList();
-        Output_DrawBlackRectangle(fader.current.value);
-        Output_EndScene(true);
-    }
-
-    if (!g_InputDB.menu_confirm && !g_InputDB.menu_back) {
-        S_Wait(6 * FRAMES_PER_SECOND, true);
-    }
-
-    Fader_InitAnyToBlack(&fader, FRAMES_PER_SECOND / 3);
-    while (Fader_Control(&fader)) {
-        Output_BeginScene();
-        Output_DrawBackground();
-        Output_DrawPolyList();
-        Output_DrawBlackRectangle(fader.current.value);
-        Output_EndScene(true);
-    }
-    Output_UnloadBackground();
+    PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
+        .file_name = "data/legal.pcx",
+        .display_time = 6 * FRAMES_PER_SECOND,
+        .fade_in_time = FRAMES_PER_SECOND,
+        .fade_out_time = FRAMES_PER_SECOND / 3,
+    });
+    PhaseExecutor_Run(phase);
+    Phase_Picture_Destroy(phase);
 }
 
 // TODO: refactor the hell out of me
