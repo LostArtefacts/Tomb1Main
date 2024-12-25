@@ -18,8 +18,6 @@
 
 static bool m_Muted = false;
 
-static void M_Play(const char *file_name);
-
 static void *M_AllocateSurface(int32_t width, int32_t height, void *user_data);
 static void M_DeallocateSurface(void *surface, void *user_data);
 static void M_ClearSurface(void *surface, void *user_data);
@@ -28,6 +26,10 @@ static void M_RenderEnd(void *surface, void *user_data);
 static void *M_LockSurface(void *surface, void *user_data);
 static void M_UnlockSurface(void *surface, void *user_data);
 static void M_UploadSurface(void *surface, void *user_data);
+
+static void M_EnterFMVMode(void);
+static void M_ExitFMVMode(void);
+static void M_Play(const char *file_name);
 
 static void *M_AllocateSurface(
     const int32_t width, const int32_t height, void *const user_data)
@@ -85,10 +87,9 @@ static void M_UploadSurface(void *const surface, void *const user_data)
     GFX_2D_Renderer_Render(renderer_2d);
 }
 
-static bool M_EnterFMVMode(void)
+static void M_EnterFMVMode(void)
 {
     Music_Stop();
-    return true;
 }
 
 static void M_ExitFMVMode(void)
@@ -100,9 +101,7 @@ static void M_ExitFMVMode(void)
 
 static void M_Play(const char *const file_name)
 {
-    const char *full_path = File_GetFullPath(file_name);
-
-    VIDEO *video = Video_Open(file_name);
+    VIDEO *const video = Video_Open(file_name);
     if (video == NULL) {
         return;
     }
@@ -161,27 +160,14 @@ static void M_Play(const char *const file_name)
     Video_Close(video);
 
     GFX_2D_Renderer_Destroy(renderer_2d);
-    Memory_FreePointer(&full_path);
     g_IsFMVPlaying = false;
 }
 
-bool FMV_Play(const char *const file_name)
+void FMV_Play(const char *const file_name)
 {
-    if (M_EnterFMVMode()) {
-        M_Play(file_name);
-    }
+    M_EnterFMVMode();
+    M_Play(file_name);
     M_ExitFMVMode();
-    return g_IsGameToExit;
-}
-
-bool FMV_PlayIntro(const char *const file_name_1, const char *const file_name_2)
-{
-    if (M_EnterFMVMode()) {
-        M_Play(file_name_1);
-        M_Play(file_name_2);
-    }
-    M_ExitFMVMode();
-    return g_IsGameToExit;
 }
 
 bool FMV_IsPlaying(void)

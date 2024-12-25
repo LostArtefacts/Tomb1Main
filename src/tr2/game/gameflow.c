@@ -416,14 +416,8 @@ int32_t GF_InterpretSequence(
 
         case GFE_PLAY_FMV:
             if (type != GFL_SAVED) {
-                if (ptr[2] == GFE_PLAY_FMV) {
-                    if (FMV_PlayIntro(
-                            g_GF_FMVFilenames[ptr[1]],
-                            g_GF_FMVFilenames[ptr[3]])) {
-                        return GFD_EXIT_GAME;
-                    }
-                    ptr += 2;
-                } else if (FMV_Play(g_GF_FMVFilenames[ptr[1]])) {
+                FMV_Play(g_GF_FMVFilenames[ptr[1]]);
+                if (g_IsGameToExit) {
                     return GFD_EXIT_GAME;
                 }
             }
