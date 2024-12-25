@@ -354,13 +354,6 @@ void S_Wait(int32_t frames, const bool input_check)
     }
 }
 
-bool S_InitialiseSystem(void)
-{
-    Random_Seed();
-    Output_CalculateWibbleTable();
-    return 1;
-}
-
 void DisplayCredits(void)
 {
     S_UnloadLevelFile();

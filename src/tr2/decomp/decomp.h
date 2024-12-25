@@ -21,7 +21,6 @@ int32_t Misc_Move3DPosTo3DPos(
     int16_t ang_add);
 int32_t LevelCompleteSequence(void);
 void S_Wait(int32_t frames, bool input_check);
-bool S_InitialiseSystem(void);
 void DisplayCredits(void);
 void S_InitialisePolyList(bool clear_back_buffer);
 void DecreaseScreenSize(void);
