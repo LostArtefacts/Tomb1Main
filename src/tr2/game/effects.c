@@ -64,6 +64,20 @@ void Effect_InitialiseArray(void)
     m_Effects[MAX_EFFECTS - 1].next_free = NO_EFFECT;
 }
 
+void Effect_Control(void)
+{
+    int16_t effect_num = Effect_GetActiveNum();
+    while (effect_num != NO_EFFECT) {
+        const EFFECT *const effect = Effect_Get(effect_num);
+        const OBJECT *const object = Object_GetObject(effect->object_id);
+        const int16_t next = effect->next_active;
+        if (object->control != NULL) {
+            object->control(effect_num);
+        }
+        effect_num = next;
+    }
+}
+
 EFFECT *Effect_Get(const int16_t effect_num)
 {
     return &m_Effects[effect_num];

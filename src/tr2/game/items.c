@@ -66,6 +66,20 @@ void Item_InitialiseArray(const int32_t num_items)
     g_Items[num_items - 1].next_item = NO_ITEM;
 }
 
+void Item_Control(void)
+{
+    int16_t item_num = g_NextItemActive;
+    while (item_num != NO_ITEM) {
+        const ITEM *const item = Item_Get(item_num);
+        const int16_t next = item->next_active;
+        const OBJECT *object = Object_GetObject(item->object_id);
+        if (!(item->flags & IF_KILLED) && object->control != NULL) {
+            object->control(item_num);
+        }
+        item_num = next;
+    }
+}
+
 int32_t Item_GetTotalCount(void)
 {
     return m_MaxUsedItemCount;

@@ -148,33 +148,9 @@ int32_t Game_Control(int32_t nframes, const bool demo_mode)
 
         g_DynamicLightCount = 0;
 
-        {
-            int16_t item_num = g_NextItemActive;
-            while (item_num != NO_ITEM) {
-                ITEM *const item = &g_Items[item_num];
-                const int16_t next = item->next_active;
-                const OBJECT *object = &g_Objects[item->object_id];
-                if (!(item->flags & IF_KILLED) && object->control != NULL) {
-                    object->control(item_num);
-                }
-                item_num = next;
-            }
-        }
-
-        {
-            int16_t effect_num = Effect_GetActiveNum();
-            while (effect_num != NO_EFFECT) {
-                EFFECT *const effect = Effect_Get(effect_num);
-                const OBJECT *const object = &g_Objects[effect->object_id];
-                const int32_t next = effect->next_active;
-                if (object->control != NULL) {
-                    object->control(effect_num);
-                }
-                effect_num = next;
-            }
-        }
-
-        Lara_Control(0);
+        Item_Control();
+        Effect_Control();
+        Lara_Control(false);
         Lara_Hair_Control(false);
         Camera_Update();
         Sound_UpdateEffects();
@@ -221,24 +197,8 @@ int32_t Game_ControlCinematic(void)
 
     g_DynamicLightCount = 0;
 
-    for (int32_t id = g_NextItemActive; id != NO_ITEM;) {
-        const ITEM *const item = &g_Items[id];
-        const OBJECT *obj = &g_Objects[item->object_id];
-        if (obj->control != NULL) {
-            obj->control(id);
-        }
-        id = item->next_active;
-    }
-
-    for (int32_t id = Effect_GetActiveNum(); id != NO_EFFECT;) {
-        const EFFECT *const effect = Effect_Get(id);
-        const OBJECT *const obj = &g_Objects[effect->object_id];
-        if (obj->control != NULL) {
-            obj->control(id);
-        }
-        id = effect->next_active;
-    }
-
+    Item_Control();
+    Effect_Control();
     Lara_Hair_Control(true);
     Camera_UpdateCutscene();
 

@@ -5,6 +5,7 @@
 #define NO_EFFECT (-1)
 
 void Effect_InitialiseArray(void);
+void Effect_Control(void);
 EFFECT *Effect_Get(int16_t effect_num);
 int16_t Effect_GetNum(const EFFECT *effect);
 int16_t Effect_GetActiveNum(void);

@@ -4,6 +4,7 @@
 
 void Item_InitialiseArray(int32_t num_items);
 int32_t Item_GetTotalCount(void);
+void Item_Control(void);
 int16_t Item_Create(void);
 void Item_Kill(int16_t item_num);
 void Item_Initialise(int16_t item_num);
