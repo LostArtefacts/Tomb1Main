@@ -27,6 +27,7 @@ game with new enhancements and features.
 - added optional fixes for the following gameplay glitches:
   - QWOP animation
   - step bug
+  - free flare from underwater pickup
 - changed inventory to pause the music rather than muting it
 - fixed killing the T-Rex with a grenade launcher crashing the game
 - fixed secret rewards not displaying shotgun ammo

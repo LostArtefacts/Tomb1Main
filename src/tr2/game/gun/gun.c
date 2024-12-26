@@ -1,5 +1,6 @@
 #include "game/gun/gun.h"
 
+#include "config.h"
 #include "decomp/flares.h"
 #include "game/gun/gun_misc.h"
 #include "game/gun/gun_pistols.h"
@@ -30,7 +31,10 @@ void Gun_Control(void)
         } else if (g_InputDB.use_flare) {
             if (g_Lara.gun_type == LGT_FLARE) {
                 g_Lara.gun_status = LGS_UNDRAW;
-            } else if (Inv_RequestItem(O_FLARES_ITEM)) {
+            } else if (
+                Inv_RequestItem(O_FLARES_ITEM)
+                && (!g_Config.gameplay.fix_free_flare_glitch
+                    || g_LaraItem->current_anim_state != LS_PICKUP)) {
                 g_Lara.request_gun_type = LGT_FLARE;
             }
         }
