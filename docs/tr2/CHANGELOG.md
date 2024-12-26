@@ -3,6 +3,7 @@
 - added the ability to turn FMVs off (#2110)
 - added an option to use PS1 contrast levels, available under F8 (#1646)
 - added an option to allow disabling the developer console (#2063)
+- added an optional fix for the QWOP glitch (#2122)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 - fixed some enemies not looking at Lara (#2080, regression from 0.6)

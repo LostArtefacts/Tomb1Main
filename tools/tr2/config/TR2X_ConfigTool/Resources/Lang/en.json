@@ -42,6 +42,10 @@
       "Title": "Fix item duplication glitch",
       "Description": "Fixes the ability to duplicate usage of key items in the inventory."
     },
+    "fix_qwop_glitch": {
+      "Title": "Fix QWOP glitch",
+      "Description": "Fixes Lara entering the QWOP animation."
+    },
     "fix_flare_throw_priority": {
       "Title": "Fix flare throwing priority",
       "Description": "Fixes Lara prioritising throwing a spent flare while in mid-air, which can lead to being unable to grab ledges."

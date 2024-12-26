@@ -1,5 +1,6 @@
 #include "game/lara/col.h"
 
+#include "config.h"
 #include "game/collide.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -277,6 +278,11 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
 {
+    if (g_Config.gameplay.fix_qwop_glitch) {
+        item->gravity = 0;
+        item->fall_speed = 0;
+    }
+
     g_Lara.move_angle = item->rot.y;
     coll->slopes_are_walls = 1;
     coll->bad_pos = NO_BAD_POS;
