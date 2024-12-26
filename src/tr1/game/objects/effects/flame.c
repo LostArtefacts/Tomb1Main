@@ -30,6 +30,7 @@ void Flame_Control(int16_t effect_num)
             effect->counter = 0;
             Sound_StopEffect(SFX_FIRE, NULL);
             Effect_Kill(effect_num);
+            return;
         }
 
         effect->pos.x = 0;

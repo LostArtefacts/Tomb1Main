@@ -2,6 +2,7 @@
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
 - fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
 - fixed a desync in the Lost Valley demo if responsive swim cancellation was enabled (#2113, regression from 4.6)
+- fixed the game hanging when Lara is on fire and enters the fly cheat on the same frame as reaching water (#2116, regression from 0.8)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21
 - changed the inventory examine UI to auto-hide if the item description is empty (#2097)
