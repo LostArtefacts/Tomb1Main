@@ -32,6 +32,7 @@ typedef struct {
         bool fix_m16_accuracy;
         bool fix_item_duplication_glitch;
         bool fix_qwop_glitch;
+        bool fix_step_glitch;
         bool fix_floor_data_issues;
         bool fix_flare_throw_priority;
         bool enable_cheats;

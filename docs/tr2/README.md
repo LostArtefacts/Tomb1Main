@@ -26,6 +26,7 @@ game with new enhancements and features.
 - added optional automatic key/puzzle inventory item pre-selection
 - added optional fixes for the following gameplay glitches:
   - QWOP animation
+  - step bug
 - changed inventory to pause the music rather than muting it
 - fixed killing the T-Rex with a grenade launcher crashing the game
 - fixed secret rewards not displaying shotgun ammo

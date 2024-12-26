@@ -38,6 +38,11 @@
           "DefaultValue": false
         },
         {
+          "Field": "fix_step_glitch",
+          "DataType": "Bool",
+          "DefaultValue": false
+        },
+        {
           "Field": "fix_flare_throw_priority",
           "DataType": "Bool",
           "DefaultValue": true

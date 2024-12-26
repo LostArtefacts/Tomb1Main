@@ -319,12 +319,18 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
 
     if (coll->side_mid.floor >= -STEPUP_HEIGHT
         && coll->side_mid.floor < -STEP_L / 2) {
-        if (item->frame_num >= 3 && item->frame_num <= 14) {
-            item->anim_num = LA_RUN_UP_STEP_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+        if (g_Config.gameplay.fix_step_glitch
+            && (coll->side_front.floor < -STEPUP_HEIGHT
+                || coll->side_front.floor >= -STEP_L / 2)) {
+            coll->side_mid.floor = 0;
         } else {
-            item->anim_num = LA_RUN_UP_STEP_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            if (item->frame_num >= 3 && item->frame_num <= 14) {
+                item->anim_num = LA_RUN_UP_STEP_LEFT;
+                item->frame_num = g_Anims[item->anim_num].frame_base;
+            } else {
+                item->anim_num = LA_RUN_UP_STEP_RIGHT;
+                item->frame_num = g_Anims[item->anim_num].frame_base;
+            }
         }
     }
 

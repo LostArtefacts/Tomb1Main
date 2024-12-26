@@ -46,6 +46,10 @@
       "Title": "Fix QWOP glitch",
       "Description": "Fixes Lara entering the QWOP animation."
     },
+    "fix_step_glitch": {
+      "Title": "Fix step glitch",
+      "Description": "Fixes Lara sometimes being pushed into walls adjacent to steps when running up them in a specific way."
+    },
     "fix_flare_throw_priority": {
       "Title": "Fix flare throwing priority",
       "Description": "Fixes Lara prioritising throwing a spent flare while in mid-air, which can lead to being unable to grab ledges."
