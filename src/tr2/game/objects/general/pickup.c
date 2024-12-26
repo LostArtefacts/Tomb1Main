@@ -167,6 +167,9 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
             lara_item->goal_anim_state = LS_TREAD;
             lara_item->current_anim_state = LS_FLARE_PICKUP;
         } else {
+            if (g_Config.gameplay.fix_pickup_drift_glitch) {
+                lara_item->fall_speed = 0;
+            }
             lara_item->goal_anim_state = LS_PICKUP;
             do {
                 Lara_Animate(lara_item);

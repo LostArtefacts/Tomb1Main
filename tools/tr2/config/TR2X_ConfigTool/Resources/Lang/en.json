@@ -54,6 +54,10 @@
       "Title": "Fix free flare glitch",
       "Description": "Fixes the ability to spawn a free flare when pressing the flare input while picking up any item."
     },
+    "fix_pickup_drift_glitch": {
+      "Title": "Fix underwater pickup glitch",
+      "Description": "Fixes Lara sometimes drifting when collecting underwater items, which can push her into walls."
+    },
     "fix_flare_throw_priority": {
       "Title": "Fix flare throwing priority",
       "Description": "Fixes Lara prioritising throwing a spent flare while in mid-air, which can lead to being unable to grab ledges."

@@ -34,6 +34,7 @@ typedef struct {
         bool fix_qwop_glitch;
         bool fix_step_glitch;
         bool fix_free_flare_glitch;
+        bool fix_pickup_drift_glitch;
         bool fix_floor_data_issues;
         bool fix_flare_throw_priority;
         bool enable_cheats;
