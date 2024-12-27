@@ -101,6 +101,7 @@ game with new enhancements and features.
 - fixed Lara's underwater hue being retained when re-entering a boat
 - fixed distant rooms sometimes not appearing, causing the skybox to be visible when it shouldn't
 - fixed rendering problems on certain Intel GPUs
+- fixed bubbles spawning from flares if Lara is in shallow water
 - improved FMV mode behavior - stopped switching screen resolutions
 - improved vertex movement when looking through water portals
 - improved support for non-4:3 aspect ratios
@@ -110,6 +111,7 @@ game with new enhancements and features.
 - fixed the audio not being in sync when Lara strikes the gong in Ice Palace
 - fixed sound settings resuming the music
 - fixed wrong default music volume (being very loud on some setups)
+- fixed flare sound effects not always playing when Lara is in shallow water
 
 #### Mods
 - added developer console (accessible with `/`, see [COMMANDS.md](COMMANDS.md) for details)

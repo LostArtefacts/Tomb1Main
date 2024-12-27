@@ -23,6 +23,9 @@
 #define FLARE_YOUNG_AGE (FRAMES_PER_SECOND) // = 30
 
 static bool M_CanThrowFlare(void);
+static void M_DoIgniteEffects(XYZ_32 flare_pos, int16_t room_num);
+static void M_DoBurnEffects(
+    XYZ_32 sound_pos, XYZ_32 flare_pos, int16_t room_num);
 
 static bool M_CanThrowFlare(void)
 {
@@ -35,6 +38,29 @@ static bool M_CanThrowFlare(void)
         || g_LaraItem->current_anim_state == LS_FAST_FALL
         || g_LaraItem->current_anim_state == LS_SWAN_DIVE
         || g_LaraItem->current_anim_state == LS_FAST_DIVE;
+}
+
+static void M_DoIgniteEffects(const XYZ_32 flare_pos, int16_t room_num)
+{
+    Room_GetSector(flare_pos.x, flare_pos.y, flare_pos.z, &room_num);
+    const ROOM *const room = Room_Get(room_num);
+    const SOUND_PLAY_MODE mode =
+        (room->flags & RF_UNDERWATER) != 0 ? SPM_UNDERWATER : SPM_NORMAL;
+    Sound_Effect(SFX_LARA_FLARE_IGNITE, &flare_pos, mode);
+}
+
+static void M_DoBurnEffects(
+    const XYZ_32 sound_pos, const XYZ_32 flare_pos, int16_t room_num)
+{
+    Room_GetSector(flare_pos.x, flare_pos.y, flare_pos.z, &room_num);
+    if ((Room_Get(room_num)->flags & RF_UNDERWATER) != 0) {
+        Sound_Effect(SFX_LARA_FLARE_BURN, &sound_pos, SPM_UNDERWATER);
+        if (Random_GetDraw() < 0x4000) {
+            Spawn_Bubble(&flare_pos, room_num);
+        }
+    } else {
+        Sound_Effect(SFX_LARA_FLARE_BURN, &sound_pos, SPM_NORMAL);
+    }
 }
 
 int32_t Flare_DoLight(const XYZ_32 *const pos, const int32_t flare_age)
@@ -80,18 +106,15 @@ void Flare_DoInHand(const int32_t flare_age)
     };
     Lara_GetJointAbsPosition(&vec, LM_HAND_L);
 
+    if (flare_age == 0) {
+        M_DoIgniteEffects(vec, g_LaraItem->room_num);
+    }
+
     g_Lara.left_arm.flash_gun = Flare_DoLight(&vec, flare_age);
 
     if (g_Lara.flare_age < MAX_FLARE_AGE) {
         g_Lara.flare_age++;
-        if (g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) {
-            Sound_Effect(SFX_LARA_FLARE_BURN, &g_LaraItem->pos, SPM_UNDERWATER);
-            if (Random_GetDraw() < 0x4000) {
-                Spawn_Bubble(&vec, g_LaraItem->room_num);
-            }
-        } else {
-            Sound_Effect(SFX_LARA_FLARE_BURN, &g_LaraItem->pos, SPM_NORMAL);
-        }
+        M_DoBurnEffects(g_LaraItem->pos, vec, g_LaraItem->room_num);
     } else if (M_CanThrowFlare()) {
         g_Lara.gun_status = LGS_UNDRAW;
     }
@@ -227,13 +250,6 @@ void Flare_Draw(void)
         }
     } else if (frame_num >= LF_FL_IGNITE && frame_num <= LF_FL_2_HOLD - 2) {
         if (frame_num == LF_FL_IGNITE) {
-            if ((g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) != 0) {
-                Sound_Effect(
-                    SFX_LARA_FLARE_IGNITE, &g_LaraItem->pos, SPM_UNDERWATER);
-            } else {
-                Sound_Effect(
-                    SFX_LARA_FLARE_IGNITE, &g_LaraItem->pos, SPM_NORMAL);
-            }
             g_Lara.flare_age = 0;
         }
         Flare_DoInHand(g_Lara.flare_age);
@@ -427,14 +443,7 @@ void Flare_Control(const int16_t item_num)
 
     if (Flare_DoLight(&item->pos, flare_age)) {
         flare_age |= 0x8000u;
-        if ((g_Rooms[item->room_num].flags & RF_UNDERWATER)) {
-            Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_UNDERWATER);
-            if (Random_GetDraw() < 0x4000) {
-                Spawn_Bubble(&item->pos, item->room_num);
-            }
-        } else {
-            Sound_Effect(SFX_LARA_FLARE_BURN, &item->pos, SPM_NORMAL);
-        }
+        M_DoBurnEffects(item->pos, item->pos, item->room_num);
     }
 
     item->data = (void *)flare_age;
