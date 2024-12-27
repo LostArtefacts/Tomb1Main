@@ -1,7 +1,6 @@
 #include "game/objects/general/door.h"
 
 #include "game/collide.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
@@ -9,6 +8,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 typedef struct {
@@ -138,8 +138,7 @@ void Door_Setup(OBJECT *obj)
 void Door_Initialise(int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    DOOR_DATA *const door =
-        GameBuf_Alloc(sizeof(DOOR_DATA), GBUF_EXTRA_DOOR_STUFF);
+    DOOR_DATA *const door = GameBuf_Alloc(sizeof(DOOR_DATA), GBUF_ITEM_DATA);
     item->data = door;
 
     int32_t dx = 0;

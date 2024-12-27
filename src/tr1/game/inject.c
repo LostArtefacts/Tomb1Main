@@ -1,7 +1,6 @@
 #include "game/inject.h"
 
 #include "config.h"
-#include "game/gamebuf.h"
 #include "game/output.h"
 #include "game/packer.h"
 #include "game/room.h"
@@ -11,6 +10,7 @@
 
 #include <libtrx/benchmark.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>

@@ -9,7 +9,6 @@
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/gameflow/reader.h"
 #include "game/input.h"
@@ -24,6 +23,7 @@
 #include "global/vars.h"
 
 #include <libtrx/enum_map.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/shell.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
@@ -354,7 +354,6 @@ void Shell_Main(void)
     S_FrontEndCheck();
 
     GameBuf_Init(GAMEBUF_MEM_CAP);
-    GameBuf_Reset();
     M_DisplayLegal();
 
     const bool is_frontend_fail = GF_DoFrontendSequence();

@@ -6,7 +6,6 @@
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/level.h"
@@ -24,6 +23,7 @@
 
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#define GAMEBUF_MEM_CAP 0x8000000
 #define LEVEL_TITLE_SIZE 25
 #define TIMESTAMP_SIZE 20
 
@@ -70,7 +71,7 @@ void Shell_Init(const char *gameflow_path)
     Savegame_Init();
     Savegame_ScanSavedGames();
     Savegame_HighlightNewestSlot();
-    GameBuf_Init();
+    GameBuf_Init(GAMEBUF_MEM_CAP);
     Console_Init();
 }
 

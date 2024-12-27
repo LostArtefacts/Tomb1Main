@@ -1,6 +1,5 @@
 #include "game/objects/creatures/statue.h"
 
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/objects/common.h"
@@ -9,6 +8,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #define STATUE_EXPLODE_DIST (WALL_L * 7 / 2) // = 3584

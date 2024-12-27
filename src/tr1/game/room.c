@@ -1,7 +1,6 @@
 #include "game/room.h"
 
 #include "game/camera.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/lot.h"
@@ -15,6 +14,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #include <stddef.h>

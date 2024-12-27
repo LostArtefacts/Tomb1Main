@@ -1,11 +1,11 @@
 #include "game/lot.h"
 
 #include "game/box.h"
-#include "game/gamebuf.h"
 #include "global/const.h"
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 void LOT_InitialiseArray(void)

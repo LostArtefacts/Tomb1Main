@@ -1,12 +1,12 @@
 #include "game/objects/creatures/pod.h"
 
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/objects/common.h"
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #define POD_EXPLODE_DIST (WALL_L * 4) // = 4096

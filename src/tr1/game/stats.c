@@ -2,7 +2,6 @@
 
 #include "game/carrier.h"
 #include "game/clock.h"
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/items.h"
 #include "game/objects/common.h"
@@ -11,6 +10,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/log.h>
 
 #include <stdbool.h>
@@ -151,13 +151,13 @@ void Stats_ComputeTotal(
 void Stats_ObserveRoomsLoad(void)
 {
     m_CachedSectorArray =
-        GameBuf_Alloc(g_RoomCount * sizeof(SECTOR *), GBUF_ROOM_SECTOR);
+        GameBuf_Alloc(g_RoomCount * sizeof(SECTOR *), GBUF_ROOM_SECTORS);
     for (int i = 0; i < g_RoomCount; i++) {
         const ROOM *current_room_info = &g_RoomInfo[i];
         const int32_t count =
             current_room_info->size.x * current_room_info->size.z;
         m_CachedSectorArray[i] =
-            GameBuf_Alloc(count * sizeof(SECTOR), GBUF_ROOM_SECTOR);
+            GameBuf_Alloc(count * sizeof(SECTOR), GBUF_ROOM_SECTORS);
         memcpy(
             m_CachedSectorArray[i], current_room_info->sectors,
             count * sizeof(SECTOR));

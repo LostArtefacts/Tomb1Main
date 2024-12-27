@@ -4,7 +4,6 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/inject.h"
 #include "game/inventory/inventory_vars.h"
@@ -28,6 +27,7 @@
 
 #include <libtrx/benchmark.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -167,7 +167,8 @@ static void M_LoadRooms(VFILE *file)
             r->portals = NULL;
         } else {
             r->portals = GameBuf_Alloc(
-                sizeof(uint16_t) + sizeof(PORTAL) * num_doors, GBUF_ROOM_DOOR);
+                sizeof(uint16_t) + sizeof(PORTAL) * num_doors,
+                GBUF_ROOM_PORTALS);
             r->portals->count = num_doors;
             for (int32_t j = 0; j < num_doors; j++) {
                 PORTAL *const portal = &r->portals->portal[j];
@@ -188,7 +189,7 @@ static void M_LoadRooms(VFILE *file)
         r->size.x = VFile_ReadS16(file);
         const int32_t sector_count = r->size.x * r->size.z;
         r->sectors =
-            GameBuf_Alloc(sizeof(SECTOR) * sector_count, GBUF_ROOM_SECTOR);
+            GameBuf_Alloc(sizeof(SECTOR) * sector_count, GBUF_ROOM_SECTORS);
         for (int32_t j = 0; j < sector_count; j++) {
             SECTOR *const sector = &r->sectors[j];
             sector->idx = VFile_ReadU16(file);
@@ -653,15 +654,15 @@ static void M_LoadBoxes(VFILE *file)
 
     for (int i = 0; i < 2; i++) {
         g_GroundZone[i] =
-            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_GROUNDZONE);
+            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_GROUND_ZONE);
         VFile_Read(file, g_GroundZone[i], sizeof(int16_t) * g_NumberBoxes);
 
         g_GroundZone2[i] =
-            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_GROUNDZONE);
+            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_GROUND_ZONE);
         VFile_Read(file, g_GroundZone2[i], sizeof(int16_t) * g_NumberBoxes);
 
         g_FlyZone[i] =
-            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_FLYZONE);
+            GameBuf_Alloc(sizeof(int16_t) * g_NumberBoxes, GBUF_FLY_ZONE);
         VFile_Read(file, g_FlyZone[i], sizeof(int16_t) * g_NumberBoxes);
     }
 
@@ -808,7 +809,7 @@ static void M_LoadDemo(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     g_DemoData =
-        GameBuf_Alloc(sizeof(uint32_t) * DEMO_COUNT_MAX, GBUF_LOADDEMO_BUFFER);
+        GameBuf_Alloc(sizeof(uint32_t) * DEMO_COUNT_MAX, GBUF_DEMO_BUFFER);
     const uint16_t size = VFile_ReadS16(file);
     LOG_INFO("%d demo buffer size", size);
     if (size != 0) {

@@ -1,11 +1,11 @@
 #include "game/lot.h"
 
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/shell.h"
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #include <stddef.h>
@@ -16,7 +16,7 @@ static CREATURE *m_BaddieSlots = NULL;
 void LOT_InitialiseArray(void)
 {
     m_BaddieSlots =
-        GameBuf_Alloc(NUM_SLOTS * sizeof(CREATURE), GBUF_CREATURE_INFO);
+        GameBuf_Alloc(NUM_SLOTS * sizeof(CREATURE), GBUF_CREATURE_DATA);
     for (int i = 0; i < NUM_SLOTS; i++) {
         CREATURE *creature = &m_BaddieSlots[i];
         creature->item_num = NO_ITEM;

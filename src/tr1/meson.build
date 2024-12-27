@@ -108,7 +108,6 @@ sources = [
   'game/game/game_draw.c',
   'game/game/game_main_menu.c',
   'game/game_string.c',
-  'game/gamebuf.c',
   'game/gameflow.c',
   'game/gun/gun.c',
   'game/gun/gun_misc.c',

@@ -90,7 +90,6 @@ sources = [
   'game/fmv.c',
   'game/game.c',
   'game/game_string.c',
-  'game/gamebuf.c',
   'game/gameflow.c',
   'game/gameflow/gameflow_new.c',
   'game/gameflow/reader.c',

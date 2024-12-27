@@ -2,7 +2,6 @@
 
 #include "decomp/decomp.h"
 #include "game/effects.h"
-#include "game/gamebuf.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/inject.h"
 #include "game/items.h"
@@ -18,6 +17,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
@@ -121,7 +121,7 @@ static void M_LoadRooms(VFILE *const file)
         r->size.x = VFile_ReadS16(file);
 
         r->sectors = GameBuf_Alloc(
-            sizeof(SECTOR) * r->size.z * r->size.x, GBUF_ROOM_FLOOR);
+            sizeof(SECTOR) * r->size.z * r->size.x, GBUF_ROOM_SECTORS);
         for (int32_t i = 0; i < r->size.z * r->size.x; i++) {
             SECTOR *const sector = &r->sectors[i];
             sector->idx = VFile_ReadU16(file);
@@ -264,8 +264,8 @@ static void M_LoadAnimChanges(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anim_changes = VFile_ReadS32(file);
     LOG_INFO("anim changes: %d", num_anim_changes);
-    g_AnimChanges =
-        GameBuf_Alloc(sizeof(ANIM_CHANGE) * num_anim_changes, GBUF_STRUCTS);
+    g_AnimChanges = GameBuf_Alloc(
+        sizeof(ANIM_CHANGE) * num_anim_changes, GBUF_ANIM_CHANGES);
     for (int32_t i = 0; i < num_anim_changes; i++) {
         ANIM_CHANGE *const change = &g_AnimChanges[i];
         change->goal_anim_state = VFile_ReadS16(file);
@@ -673,7 +673,7 @@ static void M_LoadDemo(VFILE *const file)
 
     // TODO: is the allocation necessary if there's no demo data?
     // TODO: do not hardcode the allocation size
-    g_DemoPtr = GameBuf_Alloc(36000, GBUF_LOAD_DEMO_BUFFER);
+    g_DemoPtr = GameBuf_Alloc(36000, GBUF_DEMO_BUFFER);
 
     const int32_t demo_size = VFile_ReadU16(file);
     LOG_DEBUG("demo input size: %d", demo_size);

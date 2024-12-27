@@ -1,7 +1,6 @@
 #include "game/objects/traps/lightning_emitter.h"
 
 #include "game/collide.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/output.h"
@@ -13,6 +12,8 @@
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/matrix.h"
+
+#include <libtrx/game/gamebuf.h>
 
 #define LIGHTNING_DAMAGE 400
 #define LIGHTNING_STEPS 8
@@ -43,7 +44,7 @@ void LightningEmitter_Setup(OBJECT *obj)
 
 void LightningEmitter_Initialise(int16_t item_num)
 {
-    LIGHTNING *l = GameBuf_Alloc(sizeof(LIGHTNING), GBUF_TRAP_DATA);
+    LIGHTNING *l = GameBuf_Alloc(sizeof(LIGHTNING), GBUF_ITEM_DATA);
     g_Items[item_num].data = l;
 
     if (g_Objects[g_Items[item_num].object_id].nmeshes > 1) {

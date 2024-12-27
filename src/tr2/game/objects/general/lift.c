@@ -1,9 +1,10 @@
 #include "game/objects/general/lift.h"
 
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/room.h"
 #include "global/vars.h"
+
+#include <libtrx/game/gamebuf.h>
 
 #define LIFT_WAIT_TIME (3 * FRAMES_PER_SECOND) // = 90
 #define LIFT_SHIFT 16
@@ -32,7 +33,7 @@ void Lift_Initialise(const int16_t item_num)
     ITEM *const item = Item_Get(item_num);
 
     LIFT_INFO *const lift_data =
-        GameBuf_Alloc(sizeof(LIFT_INFO), GBUF_TEMP_ALLOC);
+        GameBuf_Alloc(sizeof(LIFT_INFO), GBUF_ITEM_DATA);
     lift_data->start_height = item->pos.y;
     lift_data->wait_time = 0;
 

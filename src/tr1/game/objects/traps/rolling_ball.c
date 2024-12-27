@@ -1,7 +1,6 @@
 #include "game/objects/traps/rolling_ball.h"
 
 #include "game/collide.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
@@ -12,6 +11,7 @@
 #include "global/vars.h"
 #include "math/math.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #define ROLLINGBALL_DAMAGE_AIR 100
@@ -29,7 +29,7 @@ void RollingBall_Setup(OBJECT *obj)
 void RollingBall_Initialise(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
-    GAME_VECTOR *data = GameBuf_Alloc(sizeof(GAME_VECTOR), GBUF_TRAP_DATA);
+    GAME_VECTOR *data = GameBuf_Alloc(sizeof(GAME_VECTOR), GBUF_ITEM_DATA);
     item->data = data;
     data->x = item->pos.x;
     data->y = item->pos.y;

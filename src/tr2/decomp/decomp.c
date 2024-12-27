@@ -8,7 +8,6 @@
 #include "game/console/common.h"
 #include "game/effects.h"
 #include "game/game.h"
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
@@ -38,6 +37,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>

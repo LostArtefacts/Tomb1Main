@@ -2,13 +2,14 @@
 
 #include "game/box.h"
 #include "game/collide.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "global/utils.h"
 #include "global/vars.h"
+
+#include <libtrx/game/gamebuf.h>
 
 typedef struct __PACKING {
     DOORPOS_DATA d1;
@@ -106,7 +107,7 @@ void Door_Setup(OBJECT *const obj)
 void Door_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    DOOR_DATA *door = GameBuf_Alloc(sizeof(DOOR_DATA), GBUF_EXTRA_DOOR_STUFF);
+    DOOR_DATA *door = GameBuf_Alloc(sizeof(DOOR_DATA), GBUF_ITEM_DATA);
     item->data = door;
 
     int32_t dx = 0;

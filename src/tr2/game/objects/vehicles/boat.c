@@ -3,7 +3,6 @@
 #include "decomp/decomp.h"
 #include "game/collide.h"
 #include "game/effects.h"
-#include "game/gamebuf.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/look.h"
@@ -18,6 +17,7 @@
 #include "game/spawn.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #define BOAT_FALL_ANIM 15
@@ -59,7 +59,7 @@ typedef enum {
 
 void Boat_Initialise(const int16_t item_num)
 {
-    BOAT_INFO *boat_data = GameBuf_Alloc(sizeof(BOAT_INFO), GBUF_TEMP_ALLOC);
+    BOAT_INFO *boat_data = GameBuf_Alloc(sizeof(BOAT_INFO), GBUF_ITEM_DATA);
     boat_data->boat_turn = 0;
     boat_data->left_fallspeed = 0;
     boat_data->right_fallspeed = 0;

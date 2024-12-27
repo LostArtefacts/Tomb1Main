@@ -3,7 +3,6 @@
 #include "config.h"
 #include "game/clock.h"
 #include "game/console/common.h"
-#include "game/gamebuf.h"
 #include "game/overlay.h"
 #include "game/phase/phase.h"
 #include "game/random.h"
@@ -20,6 +19,7 @@
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/console/common.h>
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>

@@ -1,12 +1,13 @@
 #include "game/effects.h"
 
-#include "game/gamebuf.h"
 #include "game/matrix.h"
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/room.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/game/gamebuf.h>
 
 static EFFECT *m_Effects = NULL;
 static int16_t m_NextEffectFree = NO_EFFECT;
@@ -53,7 +54,7 @@ static void M_RemoveDrawn(const int16_t effect_num)
 
 void Effect_InitialiseArray(void)
 {
-    m_Effects = GameBuf_Alloc(MAX_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS_ARRAY);
+    m_Effects = GameBuf_Alloc(MAX_EFFECTS * sizeof(EFFECT), GBUF_EFFECTS);
     m_NextEffectFree = 0;
     m_NextEffectActive = NO_EFFECT;
 

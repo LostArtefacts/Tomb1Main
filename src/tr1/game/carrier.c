@@ -1,6 +1,5 @@
 #include "game/carrier.h"
 
-#include "game/gamebuf.h"
 #include "game/gameflow.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -11,6 +10,7 @@
 #include "global/vars.h"
 #include "math/math_misc.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/log.h>
 #include <libtrx/vector.h>
 

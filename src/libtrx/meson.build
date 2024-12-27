@@ -92,6 +92,7 @@ sources = [
   'game/console/common.c',
   'game/console/history.c',
   'game/game_string.c',
+  'game/gamebuf.c',
   'game/input/backends/controller.c',
   'game/input/backends/internal.c',
   'game/input/backends/keyboard.c',

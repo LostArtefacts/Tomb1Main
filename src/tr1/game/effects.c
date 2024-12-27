@@ -1,12 +1,13 @@
 #include "game/effects.h"
 
-#include "game/gamebuf.h"
 #include "game/output.h"
 #include "game/room.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
 #include "math/matrix.h"
+
+#include <libtrx/game/gamebuf.h>
 
 #include <stddef.h>
 

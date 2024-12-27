@@ -2,13 +2,13 @@
 
 #include "game/carrier.h"
 #include "game/creature.h"
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
 #define MUMMY_HITPOINTS 18

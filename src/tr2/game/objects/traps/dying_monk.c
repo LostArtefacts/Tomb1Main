@@ -1,11 +1,11 @@
 #include "game/objects/traps/dying_monk.h"
 
-#include "game/gamebuf.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "global/vars.h"
 
+#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/lara/common.h>
 #include <libtrx/utils.h>
 
@@ -16,7 +16,7 @@ void DyingMonk_Initialise(const int16_t item_num)
     ITEM *const item = Item_Get(item_num);
 
     int32_t *const roomies =
-        GameBuf_Alloc(sizeof(int32_t) * MAX_ROOMIES, GBUF_TEMP_ALLOC);
+        GameBuf_Alloc(sizeof(int32_t) * MAX_ROOMIES, GBUF_ITEM_DATA);
     for (int32_t i = 0; i < MAX_ROOMIES; i++) {
         roomies[i] = NO_ITEM;
     }
