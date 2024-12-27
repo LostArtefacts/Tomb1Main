@@ -504,7 +504,6 @@ bool Audio_Sample_LoadSingle(
     sample->original_size = size;
     memcpy(sample->original_data, data, size);
     m_LoadedSamplesCount++;
-    LOG_ERROR("Sample %d loaded (%d bytes)", sample_id, size);
     return true;
 }
 
