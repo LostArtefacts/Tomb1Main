@@ -10,6 +10,7 @@
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 - fixed some enemies not looking at Lara (#2080, regression from 0.6)
+- fixed the camera getting stuck at the start of Home Sweet Home (#2129, regression from 0.7)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17
 - fixed a crash when selecting the sound option (#2057, regression from 0.6)

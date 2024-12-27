@@ -30,6 +30,7 @@
 
 void Camera_Initialise(void)
 {
+    g_Camera.last = NO_CAMERA;
     Camera_ResetPosition();
     Output_AlterFOV(GAME_FOV * PHD_DEGREE);
     Camera_Update();
