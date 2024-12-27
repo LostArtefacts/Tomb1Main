@@ -14,6 +14,8 @@
 
 #include <libtrx/utils.h>
 
+static bool m_JumpPermitted = true;
+
 void Lara_SwimTurn(ITEM *const item)
 {
     if (g_Input.forward) {
@@ -93,12 +95,12 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
     }
 
     if (item->anim_num == LA_RUN_START) {
-        g_JumpPermitted = 0;
+        m_JumpPermitted = false;
     } else if (item->anim_num != LA_RUN || item->frame_num == 4) {
-        g_JumpPermitted = 1;
+        m_JumpPermitted = true;
     }
 
-    if (g_Input.jump && g_JumpPermitted && !item->gravity) {
+    if (g_Input.jump && m_JumpPermitted && !item->gravity) {
         item->goal_anim_state = LS_FORWARD_JUMP;
     } else if (g_Input.forward) {
         if (g_Lara.water_status == LWS_WADE) {

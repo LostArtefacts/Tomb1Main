@@ -31,7 +31,6 @@ int16_t g_Inv_MainObjectsCount = 8;
 BOOL g_GymInvOpenEnabled = TRUE;
 int16_t g_Inv_Chosen = -1;
 INVENTORY_MODE g_Inv_Mode = INV_TITLE_MODE;
-int32_t g_JumpPermitted = 1;
 int16_t g_LaraOldSlideAngle = 1;
 int32_t g_FadeValue = 0x100000;
 int32_t g_FadeLimit = 0x100000;

@@ -29,7 +29,6 @@ extern int16_t g_Inv_MainObjectsCount;
 extern BOOL g_GymInvOpenEnabled;
 extern int16_t g_Inv_Chosen;
 extern INVENTORY_MODE g_Inv_Mode;
-extern int32_t g_JumpPermitted;
 extern int16_t g_LaraOldSlideAngle;
 extern int32_t g_FadeValue;
 extern int32_t g_FadeLimit;
