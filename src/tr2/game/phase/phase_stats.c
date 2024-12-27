@@ -47,7 +47,9 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
         Output_LoadBackgroundFromObject();
     }
-    p->dialog = UI_StatsDialog_Create(p->args.show_final_stats);
+    p->dialog = UI_StatsDialog_Create(
+        p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
+                                 : UI_STATS_DIALOG_MODE_LEVEL);
     Fader_InitBlackToTransparent(&p->fader, p->args.fade_in_time);
     return (PHASE_CONTROL) { .end = false };
 }

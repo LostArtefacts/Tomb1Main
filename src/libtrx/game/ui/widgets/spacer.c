@@ -12,16 +12,21 @@ static int32_t M_GetWidth(const UI_SPACER *self);
 static int32_t M_GetHeight(const UI_SPACER *self);
 static void M_SetPosition(UI_SPACER *self, int32_t x, int32_t y);
 static void M_Control(UI_SPACER *self);
-static void M_Draw(UI_SPACER *self);
 static void M_Free(UI_SPACER *self);
 
 static int32_t M_GetWidth(const UI_SPACER *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return self->width;
 }
 
 static int32_t M_GetHeight(const UI_SPACER *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return self->height;
 }
 

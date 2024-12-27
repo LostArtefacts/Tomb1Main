@@ -1,6 +1,7 @@
 #include "game/ui/widgets/stats_dialog.h"
 
 #include "game/game_string.h"
+#include "game/input.h"
 #include "game/stats.h"
 #include "global/vars.h"
 
@@ -12,6 +13,9 @@
 
 #include <stdio.h>
 
+#define VISIBLE_ROWS 7
+#define ROW_HEIGHT 18
+
 typedef struct {
     UI_WIDGET *stack;
     UI_WIDGET *left_label;
@@ -22,14 +26,17 @@ typedef struct {
     UI_WIDGET_VTABLE vtable;
     UI_WIDGET *window;
     UI_WIDGET *outer_stack;
+    int32_t visible_row_count;
+    int32_t visible_row_offset;
     int32_t row_count;
     M_ROW *rows;
 } UI_STATS_DIALOG;
 
-static void M_AddRow(
+static M_ROW *M_AddRow(
     UI_STATS_DIALOG *self, const char *left_text, const char *right_text);
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
+static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *self);
 static void M_DoLayout(UI_STATS_DIALOG *self);
 
 static int32_t M_GetWidth(const UI_STATS_DIALOG *self);
@@ -39,7 +46,7 @@ static void M_Control(UI_STATS_DIALOG *self);
 static void M_Draw(UI_STATS_DIALOG *self);
 static void M_Free(UI_STATS_DIALOG *self);
 
-static void M_AddRow(
+static M_ROW *M_AddRow(
     UI_STATS_DIALOG *const self, const char *const left_text,
     const char *const right_text)
 {
@@ -47,14 +54,24 @@ static void M_AddRow(
     self->rows = Memory_Realloc(self->rows, sizeof(M_ROW) * self->row_count);
     M_ROW *const row = &self->rows[self->row_count - 1];
 
-    row->left_label = UI_Label_Create(left_text, UI_LABEL_AUTO_SIZE, 18);
-    row->right_label = UI_Label_Create(right_text, UI_LABEL_AUTO_SIZE, 18);
     row->stack =
         UI_Stack_Create(UI_STACK_LAYOUT_HORIZONTAL, 290, UI_STACK_AUTO_SIZE);
     UI_Stack_SetHAlign(row->stack, UI_STACK_H_ALIGN_DISTRIBUTE);
-    UI_Stack_AddChild(row->stack, row->left_label);
-    UI_Stack_AddChild(row->stack, row->right_label);
     UI_Stack_AddChild(self->outer_stack, row->stack);
+
+    row->left_label =
+        UI_Label_Create(left_text, UI_LABEL_AUTO_SIZE, ROW_HEIGHT);
+    UI_Stack_AddChild(row->stack, row->left_label);
+
+    if (right_text != NULL) {
+        row->right_label =
+            UI_Label_Create(right_text, UI_LABEL_AUTO_SIZE, ROW_HEIGHT);
+        UI_Stack_AddChild(row->stack, row->right_label);
+    } else {
+        row->right_label = NULL;
+        UI_Stack_SetHAlign(row->stack, UI_STACK_H_ALIGN_CENTER);
+    }
+    return row;
 }
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
@@ -163,6 +180,33 @@ static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
     M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_DISTANCE_TRAVELLED], buf);
 }
 
+static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
+{
+    if (!g_Assault.best_time[0]) {
+        M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_NO_TIMES_SET], NULL);
+        return;
+    }
+
+    for (int32_t i = 0; i < 10; i++) {
+        char left_buf[32] = "";
+        char right_buf[32] = "";
+        if (g_Assault.best_time[i]) {
+            sprintf(
+                left_buf, "%2d: %s %d", i + 1,
+                g_GF_GameStrings[GF_S_GAME_MISC_FINISH],
+                g_Assault.best_finish[i]);
+
+            const int32_t sec = g_Assault.best_time[i] / FRAMES_PER_SECOND;
+            sprintf(
+                right_buf, "%02d:%02d.%-2d", sec / 60, sec % 60,
+                g_Assault.best_time[i] % FRAMES_PER_SECOND
+                    / (FRAMES_PER_SECOND / 10));
+        }
+
+        M_AddRow(self, left_buf, right_buf);
+    }
+}
+
 static void M_DoLayout(UI_STATS_DIALOG *const self)
 {
     M_SetPosition(
@@ -191,6 +235,25 @@ static void M_Control(UI_STATS_DIALOG *const self)
     if (self->window->control != NULL) {
         self->window->control(self->window);
     }
+
+    if (g_InputDB.menu_down) {
+        if (self->visible_row_offset + self->visible_row_count
+            < self->row_count) {
+            self->rows[self->visible_row_offset].stack->is_hidden = true;
+            self->rows[self->visible_row_offset + self->visible_row_count]
+                .stack->is_hidden = false;
+            self->visible_row_offset++;
+            M_DoLayout(self);
+        }
+    } else if (g_InputDB.menu_up) {
+        if (self->visible_row_offset > 0) {
+            self->rows[self->visible_row_offset + self->visible_row_count - 1]
+                .stack->is_hidden = true;
+            self->rows[self->visible_row_offset - 1].stack->is_hidden = false;
+            self->visible_row_offset--;
+            M_DoLayout(self);
+        }
+    }
 }
 
 static void M_Draw(UI_STATS_DIALOG *const self)
@@ -204,7 +267,9 @@ static void M_Free(UI_STATS_DIALOG *const self)
 {
     for (int32_t i = 0; i < self->row_count; i++) {
         self->rows[i].left_label->free(self->rows[i].left_label);
-        self->rows[i].right_label->free(self->rows[i].right_label);
+        if (self->rows[i].right_label != NULL) {
+            self->rows[i].right_label->free(self->rows[i].right_label);
+        }
         self->rows[i].stack->free(self->rows[i].stack);
     }
     self->outer_stack->free(self->outer_stack);
@@ -212,7 +277,7 @@ static void M_Free(UI_STATS_DIALOG *const self)
     Memory_Free(self);
 }
 
-UI_WIDGET *UI_StatsDialog_Create(const bool show_final_stats)
+UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
 {
     UI_STATS_DIALOG *const self = Memory_Alloc(sizeof(UI_STATS_DIALOG));
     self->vtable = (UI_WIDGET_VTABLE) {
@@ -224,20 +289,36 @@ UI_WIDGET *UI_StatsDialog_Create(const bool show_final_stats)
         .free = (UI_WIDGET_FREE)M_Free,
     };
 
+    self->visible_row_count = VISIBLE_ROWS;
     self->outer_stack = UI_Stack_Create(
-        UI_STACK_LAYOUT_VERTICAL, UI_STACK_AUTO_SIZE, UI_STACK_AUTO_SIZE);
+        UI_STACK_LAYOUT_VERTICAL, UI_STACK_AUTO_SIZE,
+        ROW_HEIGHT * self->visible_row_count);
 
     self->window = UI_Window_Create(self->outer_stack, 8, 8, 8, 8);
 
-    if (show_final_stats) {
+    switch (mode) {
+    case UI_STATS_DIALOG_MODE_LEVEL:
+        UI_Window_SetTitle(self->window, g_GF_LevelNames[g_CurrentLevel]);
+        M_AddLevelStatsRows(self);
+        break;
+
+    case UI_STATS_DIALOG_MODE_FINAL:
         UI_Window_SetTitle(
             self->window, g_GF_GameStrings[GF_S_GAME_MISC_FINAL_STATISTICS]);
         M_AddFinalStatsRows(self);
-    } else {
-        UI_Window_SetTitle(self->window, g_GF_LevelNames[g_CurrentLevel]);
-        M_AddLevelStatsRows(self);
+        break;
+
+    case UI_STATS_DIALOG_MODE_ASSAULT_COURSE:
+        UI_Window_SetTitle(
+            self->window, g_GF_GameStrings[GF_S_GAME_MISC_BEST_TIMES]);
+        M_AddAssaultCourseStatsRows(self);
+        break;
     }
 
+    for (int32_t y = self->visible_row_count; y < self->row_count; y++) {
+        self->rows[y].stack->is_hidden = true;
+    }
     M_DoLayout(self);
+
     return (UI_WIDGET *)self;
 }

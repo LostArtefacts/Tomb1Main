@@ -21,7 +21,6 @@ typedef struct {
     int32_t title_padding;
 } UI_WINDOW;
 
-static void M_SyncChildren(UI_WINDOW *self);
 static int32_t M_GetWidth(const UI_WINDOW *self);
 static int32_t M_GetHeight(const UI_WINDOW *self);
 static void M_SetPosition(UI_WINDOW *self, int32_t x, int32_t y);
@@ -31,6 +30,9 @@ static void M_Free(UI_WINDOW *self);
 
 static int32_t M_GetWidth(const UI_WINDOW *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     const int32_t title_width = self->title_label != NULL
         ? self->title_label->get_width(self->title_label)
             + 2 * self->title_margin + 2 * self->title_padding
@@ -42,6 +44,9 @@ static int32_t M_GetWidth(const UI_WINDOW *const self)
 
 static int32_t M_GetHeight(const UI_WINDOW *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     const int32_t title_height = self->title_label != NULL
         ? self->title_label->get_height(self->title_label)
             + 2 * self->title_margin + 2 * self->title_padding
@@ -96,6 +101,9 @@ static void M_Control(UI_WINDOW *const self)
 
 static void M_Draw(UI_WINDOW *const self)
 {
+    if (self->vtable.is_hidden) {
+        return;
+    }
     if (self->root->draw != NULL) {
         self->root->draw(self->root);
     }

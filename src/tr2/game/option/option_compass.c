@@ -14,7 +14,9 @@ static void M_Init(void);
 
 static void M_Init(void)
 {
-    m_Dialog = UI_StatsDialog_Create(false);
+    m_Dialog = UI_StatsDialog_Create(
+        g_CurrentLevel == LV_GYM ? UI_STATS_DIALOG_MODE_ASSAULT_COURSE
+                                 : UI_STATS_DIALOG_MODE_LEVEL);
 }
 
 static void M_Shutdown(void)
@@ -31,14 +33,10 @@ void Option_Compass_Control(INVENTORY_ITEM *const item)
     const int32_t sec = g_SaveGame.statistics.timer / FRAMES_PER_SECOND;
     sprintf(buffer, "%02d:%02d:%02d", sec / 3600, sec / 60 % 60, sec % 60);
 
-    if (g_CurrentLevel == LV_GYM) {
-        ShowGymStatsText(buffer, 1);
-    } else {
-        if (m_Dialog == NULL) {
-            M_Init();
-        }
-        m_Dialog->control(m_Dialog);
+    if (m_Dialog == NULL) {
+        M_Init();
     }
+    m_Dialog->control(m_Dialog);
 
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         item->anim_direction = 1;

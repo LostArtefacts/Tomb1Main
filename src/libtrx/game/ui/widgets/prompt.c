@@ -70,11 +70,17 @@ static void M_UpdateCaretLabel(UI_PROMPT *const self)
 
 static int32_t M_GetWidth(const UI_PROMPT *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return self->label->get_width(self->label);
 }
 
 static int32_t M_GetHeight(const UI_PROMPT *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return self->label->get_height(self->label);
 }
 
@@ -99,6 +105,9 @@ static void M_Control(UI_PROMPT *const self)
 
 static void M_Draw(UI_PROMPT *const self)
 {
+    if (self->vtable.is_hidden) {
+        return;
+    }
     if (self->label->draw != NULL) {
         self->label->draw(self->label);
     }

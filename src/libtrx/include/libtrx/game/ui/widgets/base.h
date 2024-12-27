@@ -20,6 +20,7 @@ typedef struct UI_WIDGET {
     UI_WIDGET_GET_HEIGHT get_height;
     UI_WIDGET_SET_POSITION set_position;
     UI_WIDGET_FREE free;
+    bool is_hidden;
 } UI_WIDGET;
 
 typedef UI_WIDGET UI_WIDGET_VTABLE;

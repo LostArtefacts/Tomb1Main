@@ -130,11 +130,17 @@ static void M_UpdateLogCount(UI_CONSOLE *const self)
 
 static int32_t M_GetWidth(const UI_CONSOLE *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return UI_GetCanvasWidth() - 2 * WINDOW_MARGIN;
 }
 
 static int32_t M_GetHeight(const UI_CONSOLE *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     return UI_GetCanvasHeight() - 2 * WINDOW_MARGIN;
 }
 
@@ -152,6 +158,9 @@ static void M_Control(UI_CONSOLE *const self)
 
 static void M_Draw(UI_CONSOLE *const self)
 {
+    if (self->vtable.is_hidden) {
+        return;
+    }
     if (self->container->draw != NULL) {
         self->container->draw(self->container);
     }

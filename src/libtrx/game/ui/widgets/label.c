@@ -19,6 +19,9 @@ static void M_Free(UI_LABEL *self);
 
 static int32_t M_GetWidth(const UI_LABEL *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     if (self->width != UI_LABEL_AUTO_SIZE) {
         return self->width;
     }
@@ -27,6 +30,9 @@ static int32_t M_GetWidth(const UI_LABEL *const self)
 
 static int32_t M_GetHeight(const UI_LABEL *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     if (self->height != UI_LABEL_AUTO_SIZE) {
         return self->height;
     }
@@ -41,6 +47,9 @@ static void M_SetPosition(
 
 static void M_Draw(UI_LABEL *const self)
 {
+    if (self->vtable.is_hidden) {
+        return;
+    }
     Text_DrawText(self->text);
 }
 

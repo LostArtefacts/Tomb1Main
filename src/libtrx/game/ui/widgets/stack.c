@@ -66,6 +66,9 @@ static int32_t M_GetChildrenHeight(const UI_STACK *const self)
 
 static int32_t M_GetWidth(const UI_STACK *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     if (self->width != UI_STACK_AUTO_SIZE) {
         return self->width;
     }
@@ -74,6 +77,9 @@ static int32_t M_GetWidth(const UI_STACK *const self)
 
 static int32_t M_GetHeight(const UI_STACK *const self)
 {
+    if (self->vtable.is_hidden) {
+        return 0;
+    }
     if (self->height != UI_STACK_AUTO_SIZE) {
         return self->height;
     }
@@ -100,6 +106,9 @@ static void M_Control(UI_STACK *const self)
 
 static void M_Draw(UI_STACK *const self)
 {
+    if (self->vtable.is_hidden) {
+        return;
+    }
     for (int32_t i = 0; i < self->children->count; i++) {
         UI_WIDGET *const child = *(UI_WIDGET **)Vector_Get(self->children, i);
         if (child->draw != NULL) {
