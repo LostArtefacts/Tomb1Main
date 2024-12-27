@@ -28,6 +28,21 @@
           "DefaultValue": true
         },
         {
+          "Field": "fix_flare_throw_priority",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
+          "Field": "fix_floor_data_issues",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
+          "Field": "fix_item_rots",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "fix_item_duplication_glitch",
           "DataType": "Bool",
           "DefaultValue": false
@@ -51,21 +66,6 @@
           "Field": "fix_pickup_drift_glitch",
           "DataType": "Bool",
           "DefaultValue": false
-        },
-        {
-          "Field": "fix_flare_throw_priority",
-          "DataType": "Bool",
-          "DefaultValue": true
-        },
-        {
-          "Field": "fix_floor_data_issues",
-          "DataType": "Bool",
-          "DefaultValue": true
-        },
-        {
-          "Field": "fix_item_rots",
-          "DataType": "Bool",
-          "DefaultValue": true
         }
       ]
     },
