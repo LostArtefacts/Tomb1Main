@@ -51,7 +51,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
                                  : UI_STATS_DIALOG_MODE_LEVEL);
     Fader_InitBlackToTransparent(&p->fader, p->args.fade_in_time);
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_End(PHASE *const phase)
@@ -64,34 +64,38 @@ static void M_End(PHASE *const phase)
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
+    Input_Update();
+
     switch (p->state) {
     case STATE_FADE_IN:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || g_IsGameToExit) {
             M_FadeOut(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (!Fader_Control(&p->fader)) {
             p->state = STATE_WAIT;
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
         break;
 
     case STATE_WAIT:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || g_IsGameToExit) {
             M_FadeOut(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
         break;
 
     case STATE_FADE_OUT:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back
             || !Fader_Control(&p->fader)) {
-            return (PHASE_CONTROL) { .end = true, .dir = (GAME_FLOW_DIR)-1 };
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .dir = (GAME_FLOW_DIR)-1,
+            };
         }
     }
 
     p->dialog->control(p->dialog);
-
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(PHASE *const phase)

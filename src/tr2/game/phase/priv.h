@@ -2,8 +2,14 @@
 
 #include "global/types.h"
 
+typedef enum {
+    PHASE_ACTION_CONTINUE,
+    PHASE_ACTION_NO_WAIT,
+    PHASE_ACTION_END,
+} PHASE_ACTION;
+
 typedef struct {
-    bool end;
+    PHASE_ACTION action;
     GAME_FLOW_DIR dir;
 } PHASE_CONTROL;
 

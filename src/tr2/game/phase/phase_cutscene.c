@@ -51,7 +51,10 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PRIV *const p = phase->priv;
 
     if (!Level_Initialise(p->level_num, GFL_CUTSCENE)) {
-        return (PHASE_CONTROL) { .end = true, .dir = GFD_EXIT_TO_TITLE };
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .dir = GFD_EXIT_TO_TITLE,
+        };
     }
 
     Room_InitCinematic();
@@ -62,12 +65,15 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     g_SoundIsActive = false;
 
     if (!Music_PlaySynced(g_CineTrackID)) {
-        return (PHASE_CONTROL) { .end = true, .dir = GFD_EXIT_TO_TITLE };
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .dir = GFD_EXIT_TO_TITLE,
+        };
     }
 
     Music_SetVolume(10);
     g_CineFrameIdx = 0;
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) {};
 }
 
 static void M_End(PHASE *const phase)
@@ -89,7 +95,10 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         p->exiting = true;
         Fader_InitAnyToBlack(&p->exit_fader, FRAMES_PER_SECOND / 3);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
-        return (PHASE_CONTROL) { .end = true, .dir = GFD_EXIT_GAME };
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .dir = GFD_EXIT_GAME,
+        };
     } else {
         Fader_Control(&p->exit_fader);
 
@@ -99,7 +108,10 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         Input_Update();
 
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            return (PHASE_CONTROL) { .end = true, .dir = (GAME_FLOW_DIR)-1 };
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .dir = (GAME_FLOW_DIR)-1,
+            };
         }
 
         Shell_ProcessInput();
@@ -113,14 +125,17 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 
         g_CineFrameIdx++;
         if (g_CineFrameIdx >= g_NumCineFrames) {
-            return (PHASE_CONTROL) { .end = true, .dir = (GAME_FLOW_DIR)-1 };
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .dir = (GAME_FLOW_DIR)-1,
+            };
         }
 
         g_Camera.num_frames = num_frames;
         Output_AnimateTextures(num_frames);
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) {};
 }
 
 static void M_Draw(PHASE *const phase)

@@ -6,7 +6,6 @@
 #include "global/types.h"
 #include "global/vars.h"
 
-#include <libtrx/log.h>
 #include <libtrx/memory.h>
 
 #include <stdbool.h>
@@ -21,12 +20,15 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
     if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
         const GAME_FLOW_DIR dir = g_GF_OverrideDir;
         g_GF_OverrideDir = -1;
-        return (PHASE_CONTROL) { .end = true, .dir = dir };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
     }
     if (phase != NULL && phase->control != NULL) {
         return phase->control(phase, nframes);
     }
-    return (PHASE_CONTROL) { .end = true };
+    return (PHASE_CONTROL) {
+        .action = PHASE_ACTION_END,
+        .dir = (GAME_FLOW_DIR)-1,
+    };
 }
 
 static void M_Draw(PHASE *const phase)
@@ -53,7 +55,7 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
 
     if (phase->start != NULL) {
         control = phase->start(phase);
-        if (control.end) {
+        if (control.action == PHASE_ACTION_END) {
             return control.dir;
         } else if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
             const GAME_FLOW_DIR dir = g_GF_OverrideDir;
@@ -68,13 +70,15 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
     while (true) {
         control = M_Control(phase, nframes);
 
-        if (control.end) {
-            M_Draw(phase);
-            break;
-        }
-
         M_Draw(phase);
-        nframes = M_Wait(phase);
+        if (control.action == PHASE_ACTION_END) {
+            break;
+        } else if (control.action == PHASE_ACTION_NO_WAIT) {
+            nframes = 0;
+            continue;
+        } else {
+            nframes = M_Wait(phase);
+        }
     }
 
     if (phase->end != NULL) {
