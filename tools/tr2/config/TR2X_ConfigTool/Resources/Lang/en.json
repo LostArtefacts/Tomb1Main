@@ -62,6 +62,10 @@
       "Title": "Fix flare throwing priority",
       "Description": "Fixes Lara prioritising throwing a spent flare while in mid-air, which can lead to being unable to grab ledges."
     },
+    "fix_walk_run_jump": {
+      "Title": "Fix walk-run-jump breaking",
+      "Description": "Fixes Lara at times not being able to jump immediately after going from her walking to running animation."
+    },
     "fix_floor_data_issues": {
       "Title": "Fix floor data issues",
       "Description": "Fixes original issues with floor data/triggers."

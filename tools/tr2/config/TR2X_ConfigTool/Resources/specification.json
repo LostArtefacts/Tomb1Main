@@ -33,6 +33,11 @@
           "DefaultValue": true
         },
         {
+          "Field": "fix_walk_run_jump",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "fix_floor_data_issues",
           "DataType": "Bool",
           "DefaultValue": true

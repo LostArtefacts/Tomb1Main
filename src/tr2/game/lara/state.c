@@ -1,5 +1,6 @@
 #include "game/lara/state.h"
 
+#include "config.h"
 #include "game/input.h"
 #include "game/inventory/backpack.h"
 #include "game/lara/control.h"
@@ -60,6 +61,9 @@ void Lara_State_Walk(ITEM *item, COLL_INFO *coll)
         } else if (g_Input.slow) {
             item->goal_anim_state = LS_WALK;
         } else {
+            if (g_Config.gameplay.fix_walk_run_jump) {
+                m_JumpPermitted = true;
+            }
             item->goal_anim_state = LS_RUN;
         }
     } else {

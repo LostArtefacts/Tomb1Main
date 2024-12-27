@@ -37,6 +37,7 @@ typedef struct {
         bool fix_pickup_drift_glitch;
         bool fix_floor_data_issues;
         bool fix_flare_throw_priority;
+        bool fix_walk_run_jump;
         bool enable_cheats;
         bool enable_console;
         bool enable_fmv;
