@@ -8,6 +8,8 @@ typedef struct {
     int32_t target;
     int32_t debuff;
     int32_t duration;
+
+    bool is_active;
     struct {
         int32_t frame;
         int32_t value;

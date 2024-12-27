@@ -20,8 +20,10 @@ void Fader_Init(
     fader->current.value = initial;
     fader->current.frame = 0;
 
-    if (!g_Config.visuals.enable_fade_effects || duration == 0) {
-        fader->debuff = 0;
+    if (g_Config.visuals.enable_fade_effects && duration > 0) {
+        fader->is_active = true;
+    } else {
+        fader->is_active = false;
         fader->current.frame = fader->duration + fader->debuff;
         fader->current.value = target;
     }
@@ -48,12 +50,12 @@ bool Fader_IsActive(const FADER *const fader)
     if (!g_Config.visuals.enable_fade_effects) {
         return false;
     }
-    return fader->current.frame < fader->duration + fader->debuff;
+    return fader->is_active;
 }
 
 bool Fader_Control(FADER *const fader)
 {
-    if (!Fader_IsActive(fader)) {
+    if (!fader->is_active) {
         return false;
     }
 
@@ -64,13 +66,16 @@ bool Fader_Control(FADER *const fader)
         fader->current.value, MIN(fader->initial, fader->target),
         MAX(fader->initial, fader->target));
     fader->current.frame++;
+    fader->is_active = fader->current.frame <= fader->duration + fader->debuff;
 
     Input_Update();
     Shell_ProcessInput();
     Shell_ProcessEvents();
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         // cancel the fade immediately
+        fader->is_active = false;
         fader->current.frame = fader->duration + fader->debuff;
+        fader->current.value = fader->target;
         return false;
     }
 
