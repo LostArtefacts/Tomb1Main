@@ -7,42 +7,66 @@
 
 #include <libtrx/utils.h>
 
-void Fader_Init(
-    FADER *const fader, const int32_t initial, const int32_t target,
-    const int32_t duration, const int32_t debuff)
+#define TRANSPARENT 0
+#define OPAQUE 255
+
+void Fader_Init(FADER *const fader, const FADER_ARGS args)
 {
-    fader->initial = initial;
-    fader->target = target;
-    fader->duration = duration;
-    // This value controls how much to keep the last frame after the animation
-    // is done.
-    fader->debuff = debuff;
-    fader->current.value = initial;
+    fader->args = args;
+    fader->current.value = args.initial;
     fader->current.frame = 0;
 
-    if (g_Config.visuals.enable_fade_effects && duration > 0) {
+    if (g_Config.visuals.enable_fade_effects && args.duration > 0) {
         fader->is_active = true;
     } else {
         fader->is_active = false;
-        fader->current.frame = fader->duration + fader->debuff;
-        fader->current.value = target;
+        fader->current.frame = args.duration + args.debuff;
+        fader->current.value = args.target;
     }
 }
 
 void Fader_InitBlackToTransparent(FADER *const fader, const int32_t duration)
 {
-    Fader_Init(fader, 255, 0, duration, 0);
+    Fader_Init(
+        fader,
+        (FADER_ARGS) {
+            .initial = OPAQUE,
+            .target = TRANSPARENT,
+            .duration = duration,
+            .debuff = 0,
+        });
 }
 
 void Fader_InitTransparentToBlack(FADER *const fader, const int32_t duration)
 {
-    Fader_Init(fader, 0, 255, duration, FRAMES_PER_SECOND / 6);
+    Fader_Init(
+        fader,
+        (FADER_ARGS) {
+            .initial = TRANSPARENT,
+            .target = OPAQUE,
+            .duration = duration,
+            .debuff = FRAMES_PER_SECOND / 6,
+        });
 }
 
 void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
 {
     Fader_Init(
-        fader, fader->current.value, 255, duration, FRAMES_PER_SECOND / 6);
+        fader,
+        (FADER_ARGS) {
+            .initial = fader->current.value,
+            .target = OPAQUE,
+            .duration = duration,
+            .debuff = FRAMES_PER_SECOND / 6,
+        });
+}
+
+int32_t Fader_GetCurrentValue(const FADER *const fader)
+{
+    if (!g_Config.visuals.enable_fade_effects || fader->args.duration == 0) {
+        return TRANSPARENT;
+    }
+    return fader->current.value;
 }
 
 bool Fader_IsActive(const FADER *const fader)
@@ -59,14 +83,15 @@ bool Fader_Control(FADER *const fader)
         return false;
     }
 
-    fader->current.value = fader->initial
-        + (fader->target - fader->initial)
-            * (fader->current.frame / (float)MAX(1.0, fader->duration));
+    fader->current.value = fader->args.initial
+        + (fader->args.target - fader->args.initial)
+            * (fader->current.frame / (float)MAX(1.0, fader->args.duration));
     CLAMP(
-        fader->current.value, MIN(fader->initial, fader->target),
-        MAX(fader->initial, fader->target));
+        fader->current.value, MIN(fader->args.initial, fader->args.target),
+        MAX(fader->args.initial, fader->args.target));
     fader->current.frame++;
-    fader->is_active = fader->current.frame <= fader->duration + fader->debuff;
+    fader->is_active =
+        fader->current.frame <= fader->args.duration + fader->args.debuff;
 
     Input_Update();
     Shell_ProcessInput();
@@ -74,8 +99,8 @@ bool Fader_Control(FADER *const fader)
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         // cancel the fade immediately
         fader->is_active = false;
-        fader->current.frame = fader->duration + fader->debuff;
-        fader->current.value = fader->target;
+        fader->current.frame = fader->args.duration + fader->args.debuff;
+        fader->current.value = fader->args.target;
         return false;
     }
 

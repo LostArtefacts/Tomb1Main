@@ -101,7 +101,7 @@ static void M_Draw(PHASE *const phase)
     p->dialog->draw(p->dialog);
     Text_Draw();
     Output_DrawPolyList();
-    Output_DrawBlackRectangle(p->fader.current.value);
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->fader));
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();

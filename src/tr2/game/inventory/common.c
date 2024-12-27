@@ -459,7 +459,7 @@ static void M_Draw(
     Text_Draw();
     Output_DrawPolyList();
 
-    Output_DrawBlackRectangle(fader->current.value);
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(fader));
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
