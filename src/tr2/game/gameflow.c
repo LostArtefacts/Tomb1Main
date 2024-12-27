@@ -1,6 +1,7 @@
 #include "game/gameflow.h"
 
 #include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "decomp/stats.h"
 #include "game/demo.h"
 #include "game/fmv.h"
@@ -475,6 +476,11 @@ int32_t GF_InterpretSequence(
                     });
                 dir = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);
+
+                CreateStartInfo(g_CurrentLevel + 1);
+                g_SaveGame.current_level = g_CurrentLevel + 1;
+                start->available = 0;
+
                 if (dir != (GAME_FLOW_DIR)-1) {
                     return dir;
                 }
