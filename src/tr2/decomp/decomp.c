@@ -84,7 +84,7 @@ int16_t TitleSequence(void)
     }
 
     if (dir == GFD_START_DEMO) {
-        return GFD_START_DEMO;
+        return GFD_START_DEMO | 0xFF;
     }
 
     if (g_Inv_Chosen == O_PHOTO_OPTION) {

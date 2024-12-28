@@ -8,6 +8,7 @@
 - added an optional fix for drawing a free flare during the underwater pickup animation (#2123)
 - added an optional fix for Lara drifting into walls when collecting underwater items (#2096)
 - added an option to control how music is played while underwater (#1937)
+- added an optional demo number argument to the `/demo` command
 - changed demo to be interrupted only by esc or action keys
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation (#1587)

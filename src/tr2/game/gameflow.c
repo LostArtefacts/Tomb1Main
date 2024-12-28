@@ -651,10 +651,9 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
     }
 }
 
-GAME_FLOW_DIR GF_StartDemo(int32_t level_num)
+GAME_FLOW_DIR GF_StartDemo(const int32_t level_num)
 {
-    level_num = Demo_ChooseLevel(level_num);
-    if (level_num == -1) {
+    if (level_num < 0) {
         return GFD_EXIT_TO_TITLE;
     }
     PHASE *const demo_phase = Phase_Demo_Create(level_num);

@@ -1,5 +1,6 @@
 #include "game/console/cmd/play_demo.h"
 
+#include "game/game_string.h"
 #include "game/gameflow/common.h"
 #include "strings.h"
 
@@ -7,12 +8,26 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
 {
-    if (!String_IsEmpty(ctx->args)) {
+    int32_t demo_to_load = -1;
+    if (String_ParseInteger(ctx->args, &demo_to_load)) {
+        demo_to_load--;
+        if (demo_to_load >= 0 && demo_to_load < Gameflow_GetDemoCount()) {
+            Gameflow_OverrideCommand((GAMEFLOW_COMMAND) {
+                .action = GF_START_DEMO,
+                .param = demo_to_load,
+            });
+            return CR_SUCCESS;
+        } else {
+            Console_Log(GS(OSD_INVALID_DEMO));
+            return CR_FAILURE;
+        }
+    } else if (String_IsEmpty(ctx->args)) {
+        Gameflow_OverrideCommand(
+            (GAMEFLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 });
+        return CR_SUCCESS;
+    } else {
         return CR_BAD_INVOCATION;
     }
-
-    Gameflow_OverrideCommand((GAMEFLOW_COMMAND) { .action = GF_START_DEMO });
-    return CR_SUCCESS;
 }
 
 CONSOLE_COMMAND g_Console_Cmd_PlayDemo = {

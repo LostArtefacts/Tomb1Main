@@ -732,6 +732,7 @@
         "OSD_GIVE_ITEM_CHEAT": "Lara's backpack just got way heavier!",
         "OSD_HEAL_ALREADY_FULL_HP": "Lara's already at full health",
         "OSD_HEAL_SUCCESS": "Healed Lara back to full health",
+        "OSD_INVALID_DEMO": "Invalid demo",
         "OSD_INVALID_ITEM": "Unknown item: %s",
         "OSD_INVALID_LEVEL": "Invalid level",
         "OSD_INVALID_OBJECT": "Invalid object",

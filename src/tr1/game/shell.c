@@ -13,6 +13,7 @@
 #include "game/option.h"
 #include "game/output.h"
 #include "game/phase/phase.h"
+#include "game/phase/phase_demo.h"
 #include "game/savegame.h"
 #include "game/screen.h"
 #include "game/sound.h"
@@ -172,10 +173,13 @@ void Shell_Main(void)
             command = GameFlow_InterpretSequence(command.param, GFL_CUTSCENE);
             break;
 
-        case GF_START_DEMO:
-            Phase_Set(PHASE_DEMO, NULL);
+        case GF_START_DEMO: {
+            PHASE_DEMO_ARGS *const args = Memory_Alloc(sizeof(PHASE_DEMO_ARGS));
+            args->demo_num = command.param;
+            Phase_Set(PHASE_DEMO, args);
             command = Phase_Run();
             break;
+        }
 
         case GF_LEVEL_COMPLETE:
             command = (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };

@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7.1...develop) - ××××-××-××
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
+- added an optional demo number argument to the `/demo` command
 - changed demo to be interrupted only by esc or action keys
 - fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
 - fixed a desync in the Lost Valley demo if responsive swim cancellation was enabled (#2113, regression from 4.6)

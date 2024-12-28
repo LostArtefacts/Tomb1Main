@@ -239,7 +239,7 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
     if (m_StartDemo) {
         return (PHASE_CONTROL) {
             .end = true,
-            .command = { .action = GF_START_DEMO },
+            .command = { .action = GF_START_DEMO, .param = -1 },
         };
     }
 

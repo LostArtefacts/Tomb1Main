@@ -409,7 +409,9 @@ void Shell_Main(void)
             break;
 
         case GFD_START_DEMO:
-            gf_option = GF_DoLevelSequence(Demo_ChooseLevel(-1), GFL_DEMO);
+            const int32_t level_num = Demo_ChooseLevel((int8_t)gf_param);
+            gf_option = level_num >= 0 ? GF_DoLevelSequence(level_num, GFL_DEMO)
+                                       : GFD_EXIT_TO_TITLE;
             break;
 
         case GFD_LEVEL_COMPLETE:

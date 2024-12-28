@@ -3,9 +3,7 @@
 #include "game/input.h"
 #include "global/vars.h"
 
-#include <libtrx/log.h>
-
-static int32_t m_DemoLevel = 0;
+static int32_t m_DemoIdx = 0;
 static INPUT_STATE m_OldDemoInputDB = { 0 };
 
 static int32_t M_GetNextLevel(void);
@@ -15,20 +13,23 @@ static int32_t M_GetNextLevel(void)
     if (g_GameFlow.num_demos <= 0) {
         return -1;
     }
-    if (m_DemoLevel >= g_GameFlow.num_demos) {
-        m_DemoLevel = 0;
-    }
-    const int32_t level_num = g_GF_ValidDemos[m_DemoLevel];
-    m_DemoLevel++;
+    const int32_t level_num = g_GF_ValidDemos[m_DemoIdx];
+    m_DemoIdx++;
+    m_DemoIdx %= g_GameFlow.num_demos;
     return level_num;
 }
 
-int32_t Demo_ChooseLevel(int32_t level_num)
+int32_t Demo_ChooseLevel(int32_t demo_num)
 {
-    if (level_num < 0) {
-        level_num = M_GetNextLevel();
+    if (demo_num < 0) {
+        return M_GetNextLevel();
+    } else if (g_GameFlow.num_demos <= 0) {
+        return -1;
+    } else if (demo_num < 0 || demo_num >= g_GameFlow.num_demos) {
+        return -1;
+    } else {
+        return g_GF_ValidDemos[demo_num];
     }
-    return level_num;
 }
 
 bool Demo_GetInput(void)

@@ -221,6 +221,11 @@ int32_t Gameflow_GetLevelCount(void)
     return g_GameflowNew.level_count;
 }
 
+int32_t Gameflow_GetDemoCount(void)
+{
+    return g_GameFlow.num_demos;
+}
+
 const char *Gameflow_GetLevelFileName(int32_t level_num)
 {
     return g_GF_LevelFileNames[level_num];
@@ -253,7 +258,7 @@ void Gameflow_OverrideCommand(const GAMEFLOW_COMMAND command)
         g_GF_OverrideDir = GFD_START_FMV;
         break;
     case GF_START_DEMO:
-        g_GF_OverrideDir = GFD_START_DEMO;
+        g_GF_OverrideDir = GFD_START_DEMO | (command.param & 0xFF);
         break;
     case GF_EXIT_TO_TITLE:
         g_GF_OverrideDir = GFD_EXIT_TO_TITLE;

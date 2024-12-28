@@ -52,7 +52,8 @@ Currently supported commands:
   Saves the game to the specified savegame slot.
 
 - `/demo`  
-  Starts the demo.
+  `/demo {num}`  
+  Starts the specified demo. If no number is chosen, the demos will cycle.
 
 - `/title`  
   Exits the game to main screen.

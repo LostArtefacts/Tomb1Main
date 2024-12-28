@@ -58,7 +58,7 @@ static int32_t m_DemoLevel = -1;
 static uint32_t *m_DemoPtr = NULL;
 
 static bool M_ProcessInput(void);
-static int32_t M_ChooseLevel(void);
+static int32_t M_ChooseLevel(int32_t demo_num);
 static void M_PrepareConfig(void);
 static void M_RestoreConfig(void);
 static void M_PrepareResumeInfo(void);
@@ -131,10 +131,10 @@ static bool M_ProcessInput(void)
     return true;
 }
 
-static int32_t M_ChooseLevel(void)
+static int32_t M_ChooseLevel(const int32_t demo_num)
 {
     bool any_demos = false;
-    for (int i = g_GameFlow.first_level_num; i < g_GameFlow.last_level_num;
+    for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
          i++) {
         if (g_GameFlow.levels[i].demo) {
             any_demos = true;
@@ -144,6 +144,21 @@ static int32_t M_ChooseLevel(void)
         return -1;
     }
 
+    if (demo_num >= 0) {
+        int32_t j = 0;
+        for (int32_t i = g_GameFlow.first_level_num;
+             i <= g_GameFlow.last_level_num; i++) {
+            if (g_GameFlow.levels[i].demo) {
+                if (j == demo_num) {
+                    return i;
+                }
+                j++;
+            }
+        }
+        return -1;
+    }
+
+    // pick the next demo
     int16_t level_num = m_DemoLevel;
     do {
         level_num++;
@@ -218,7 +233,7 @@ static void M_Start(const PHASE_DEMO_ARGS *const args)
         return;
     }
 
-    m_DemoLevel = M_ChooseLevel();
+    m_DemoLevel = M_ChooseLevel(args != NULL ? args->demo_num : -1);
     if (m_DemoLevel == -1) {
         m_State = STATE_INVALID;
         return;

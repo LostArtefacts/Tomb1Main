@@ -1374,6 +1374,18 @@ int32_t Gameflow_GetLevelCount(void)
     return g_GameFlow.level_count;
 }
 
+int32_t Gameflow_GetDemoCount(void)
+{
+    int32_t demo_count = 0;
+    for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
+         i++) {
+        if (g_GameFlow.levels[i].demo) {
+            demo_count++;
+        }
+    }
+    return demo_count;
+}
+
 const char *Gameflow_GetLevelFileName(int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_file;
