@@ -5,6 +5,9 @@
 #include "game/objects/vars.h"
 #include "global/vars.h"
 
+static int16_t m_MainQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+static int16_t m_KeysQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+
 void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
 {
     int32_t n;
@@ -18,10 +21,10 @@ void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
 
         for (int32_t i = g_Inv_MainObjectsCount; i > n - 1; i--) {
             g_Inv_MainList[i + 1] = g_Inv_MainList[i];
-            g_Inv_MainQtys[i + 1] = g_Inv_MainQtys[i];
+            m_MainQtys[i + 1] = m_MainQtys[i];
         }
         g_Inv_MainList[n] = inv_item;
-        g_Inv_MainQtys[n] = 1;
+        m_MainQtys[n] = 1;
         g_Inv_MainObjectsCount++;
     } else {
         for (n = 0; n < g_Inv_KeyObjectsCount; n++) {
@@ -32,10 +35,10 @@ void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
 
         for (int32_t i = g_Inv_KeyObjectsCount; i > n - 1; i--) {
             g_Inv_KeysList[i + 1] = g_Inv_KeysList[i];
-            g_Inv_KeysQtys[i + 1] = g_Inv_KeysQtys[i];
+            m_KeysQtys[i + 1] = m_KeysQtys[i];
         }
         g_Inv_KeysList[n] = inv_item;
-        g_Inv_KeysQtys[n] = 1;
+        m_KeysQtys[n] = 1;
         g_Inv_KeyObjectsCount++;
     }
 }
@@ -48,7 +51,7 @@ int32_t Inv_AddItem(const GAME_OBJECT_ID object_id)
         const INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
         if (inv_item->object_id == inv_object_id) {
             const int32_t qty = object_id == O_FLARES_ITEM ? FLARE_AMMO_QTY : 1;
-            g_Inv_MainQtys[i] += qty;
+            m_MainQtys[i] += qty;
             return true;
         }
     }
@@ -56,7 +59,7 @@ int32_t Inv_AddItem(const GAME_OBJECT_ID object_id)
     for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
         const INVENTORY_ITEM *const inv_item = g_Inv_KeysList[i];
         if (inv_item->object_id == inv_object_id) {
-            g_Inv_KeysQtys[i]++;
+            m_KeysQtys[i]++;
             return true;
         }
     }
@@ -307,13 +310,13 @@ int32_t Inv_RequestItem(const GAME_OBJECT_ID object_id)
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
         if (g_Inv_MainList[i]->object_id == inv_object_id) {
-            return g_Inv_MainQtys[i];
+            return m_MainQtys[i];
         }
     }
 
     for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
         if (g_Inv_KeysList[i]->object_id == inv_object_id) {
-            return g_Inv_KeysQtys[i];
+            return m_KeysQtys[i];
         }
     }
 
@@ -333,28 +336,28 @@ int32_t Inv_RemoveItem(const GAME_OBJECT_ID object_id)
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
         if (g_Inv_MainList[i]->object_id == inv_object_id) {
-            g_Inv_MainQtys[i]--;
-            if (g_Inv_MainQtys[i] > 0) {
+            m_MainQtys[i]--;
+            if (m_MainQtys[i] > 0) {
                 return true;
             }
             g_Inv_MainObjectsCount--;
             for (int32_t j = i; j < g_Inv_MainObjectsCount; j++) {
                 g_Inv_MainList[j] = g_Inv_MainList[j + 1];
-                g_Inv_MainQtys[j] = g_Inv_MainQtys[j + 1];
+                m_MainQtys[j] = m_MainQtys[j + 1];
             }
         }
     }
 
     for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
         if (g_Inv_KeysList[i]->object_id == inv_object_id) {
-            g_Inv_KeysQtys[i]--;
-            if (g_Inv_KeysQtys[i] > 0) {
+            m_KeysQtys[i]--;
+            if (m_KeysQtys[i] > 0) {
                 return true;
             }
             g_Inv_KeyObjectsCount--;
             for (int32_t j = i; j < g_Inv_KeyObjectsCount; j++) {
                 g_Inv_KeysList[j] = g_Inv_KeysList[j + 1];
-                g_Inv_KeysQtys[j] = g_Inv_KeysQtys[j + 1];
+                m_KeysQtys[j] = m_KeysQtys[j + 1];
             }
             return true;
         }

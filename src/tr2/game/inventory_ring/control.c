@@ -30,6 +30,11 @@
 #define TITLE_RING_OBJECTS 3
 #define OPTION_RING_OBJECTS 3
 
+static int32_t m_NFrames = 2;
+static TEXTSTRING *m_UpArrow1 = NULL;
+static TEXTSTRING *m_UpArrow2 = NULL;
+static TEXTSTRING *m_DownArrow1 = NULL;
+static TEXTSTRING *m_DownArrow2 = NULL;
 static TEXTSTRING *m_VersionText = NULL;
 
 static void M_RemoveItemsText(void);
@@ -62,14 +67,14 @@ static void M_RemoveAllText(void)
     g_Inv_TagText = NULL;
     Text_Remove(g_Inv_RingText);
     g_Inv_RingText = NULL;
-    Text_Remove(g_Inv_UpArrow1);
-    g_Inv_UpArrow1 = NULL;
-    Text_Remove(g_Inv_UpArrow2);
-    g_Inv_UpArrow2 = NULL;
-    Text_Remove(g_Inv_DownArrow1);
-    g_Inv_DownArrow1 = NULL;
-    Text_Remove(g_Inv_DownArrow2);
-    g_Inv_DownArrow2 = NULL;
+    Text_Remove(m_UpArrow1);
+    m_UpArrow1 = NULL;
+    Text_Remove(m_UpArrow2);
+    m_UpArrow2 = NULL;
+    Text_Remove(m_DownArrow1);
+    m_DownArrow1 = NULL;
+    Text_Remove(m_DownArrow2);
+    m_DownArrow2 = NULL;
 
     Text_Remove(m_VersionText);
     m_VersionText = NULL;
@@ -116,7 +121,6 @@ static void M_Construct(void)
     g_PhdWinTop = 0;
     g_PhdWinBottom = g_PhdWinMaxY;
 
-    g_Inv_IsActive = 1;
     g_Inv_Chosen = 0;
 
     if (g_Inv_Mode == INV_TITLE_MODE) {
@@ -220,24 +224,24 @@ static void M_RingIsOpen(RING_INFO *const ring)
         return;
     }
 
-    if (g_Inv_UpArrow1 == NULL) {
+    if (m_UpArrow1 == NULL) {
         if (ring->type == RT_OPTION
             || (ring->type == RT_MAIN && g_Inv_KeyObjectsCount > 0)) {
-            g_Inv_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
-            g_Inv_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
-            Text_AlignRight(g_Inv_UpArrow2, true);
+            m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
+            m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
+            Text_AlignRight(m_UpArrow2, true);
         }
     }
 
-    if (g_Inv_DownArrow1 == NULL
+    if (m_DownArrow1 == NULL
         && ((
             (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
             || ring->type == RT_KEYS))) {
-        g_Inv_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
-        Text_AlignBottom(g_Inv_DownArrow1, true);
-        g_Inv_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
-        Text_AlignBottom(g_Inv_DownArrow2, true);
-        Text_AlignRight(g_Inv_DownArrow2, true);
+        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow1, true);
+        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow2, true);
+        Text_AlignRight(m_DownArrow2, true);
     }
 }
 
@@ -247,14 +251,14 @@ static void M_RingIsNotOpen(RING_INFO *const ring)
     g_Inv_TagText = NULL;
     Text_Remove(g_Inv_RingText);
     g_Inv_RingText = NULL;
-    Text_Remove(g_Inv_UpArrow1);
-    g_Inv_UpArrow1 = NULL;
-    Text_Remove(g_Inv_UpArrow2);
-    g_Inv_UpArrow2 = NULL;
-    Text_Remove(g_Inv_DownArrow1);
-    g_Inv_DownArrow1 = NULL;
-    Text_Remove(g_Inv_DownArrow2);
-    g_Inv_DownArrow2 = NULL;
+    Text_Remove(m_UpArrow1);
+    m_UpArrow1 = NULL;
+    Text_Remove(m_UpArrow2);
+    m_UpArrow2 = NULL;
+    Text_Remove(m_DownArrow1);
+    m_DownArrow1 = NULL;
+    Text_Remove(m_DownArrow2);
+    m_DownArrow2 = NULL;
 }
 
 static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
@@ -617,8 +621,8 @@ static void M_Draw(
 
     Output_BeginScene();
     Output_DrawBackground();
-    Output_AnimateTextures(g_Inv_NFrames);
-    Overlay_Animate(g_Inv_NFrames / 2);
+    Output_AnimateTextures(m_NFrames);
+    Overlay_Animate(m_NFrames / 2);
 
     PHD_3DPOS view;
     InvRing_GetView(ring, &view);
@@ -638,7 +642,7 @@ static void M_Draw(
         Matrix_RotYXZ(angle, 0, 0);
         Matrix_TranslateRel(ring->radius, 0, 0);
         Matrix_RotYXZ(PHD_90, inv_item->x_rot_pt, 0);
-        M_DrawItem(ring, motion, inv_item, g_Inv_NFrames);
+        M_DrawItem(ring, motion, inv_item, m_NFrames);
         angle += ring->angle_adder;
         Matrix_Pop();
     }
@@ -687,7 +691,7 @@ static void M_Draw(
 
     Sound_EndScene();
     Shell_ProcessEvents();
-    g_Inv_NFrames = frames;
+    m_NFrames = frames;
     g_Camera.num_frames = frames;
 }
 
@@ -717,7 +721,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 
     Output_AlterFOV(80 * PHD_DEGREE);
     g_Inv_Mode = inventory_mode;
-    g_Inv_NFrames = 2;
+    m_NFrames = 2;
 
     M_Construct();
     if (inventory_mode == INV_TITLE_MODE) {
@@ -763,7 +767,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
     }
 
     Sound_Effect(SFX_MENU_SPININ, 0, SPM_ALWAYS);
-    g_Inv_NFrames = 2;
+    m_NFrames = 2;
 
     do {
         if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
@@ -811,7 +815,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
         }
 
-        for (int32_t frame = 0; frame < g_Inv_NFrames; frame++) {
+        for (int32_t frame = 0; frame < m_NFrames; frame++) {
             if (g_Inv_IsOptionsDelay) {
                 if (g_Inv_OptionsDelayCounter) {
                     g_Inv_OptionsDelayCounter--;
@@ -1051,7 +1055,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 }
 
                 bool busy = false;
-                for (int32_t frame = 0; frame < g_Inv_NFrames; frame++) {
+                for (int32_t frame = 0; frame < m_NFrames; frame++) {
                     busy = false;
                     if (inv_item->y_rot == inv_item->y_rot_sel) {
                         busy = M_AnimateInventoryItem(inv_item);
@@ -1115,7 +1119,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 
             case RNG_CLOSING_ITEM: {
                 INVENTORY_ITEM *inv_item = ring.list[ring.current_object];
-                for (int32_t frame = 0; frame < g_Inv_NFrames; frame++) {
+                for (int32_t frame = 0; frame < m_NFrames; frame++) {
                     if (!M_AnimateInventoryItem(inv_item)) {
                         if (inv_item->object_id == O_PASSPORT_OPTION) {
                             inv_item->object_id = O_PASSPORT_CLOSED;
@@ -1182,7 +1186,6 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
     }
 
     M_End(&ring);
-    g_Inv_IsActive = 0;
 
     // enable buffering
     g_OldInputDB = (INPUT_STATE) { 0 };

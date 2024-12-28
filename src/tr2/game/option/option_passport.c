@@ -14,6 +14,8 @@ typedef enum {
     PASSPORT_MODE_SELECT_LEVEL = 2,
 } PASSPORT_MODE;
 
+static TEXTSTRING *m_LevelText = NULL;
+
 void Option_Passport_Control(INVENTORY_ITEM *const item)
 {
     Text_Remove(g_Inv_ItemText[IT_NAME]);
@@ -61,8 +63,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                     Text_CentreH(g_PasswordText1, true);
                 }
 
-                Text_Remove(g_Inv_LevelText);
-                g_Inv_LevelText = NULL;
+                Text_Remove(m_LevelText);
+                m_LevelText = NULL;
                 Text_Remove(g_Inv_TagText);
                 g_Inv_TagText = NULL;
                 Text_Remove(g_Inv_RingText);
@@ -140,8 +142,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
             }
 
             if (g_Inv_Mode != INV_TITLE_MODE && g_CurrentLevel != LV_GYM) {
-                Text_Remove(g_Inv_LevelText);
-                g_Inv_LevelText = NULL;
+                Text_Remove(m_LevelText);
+                m_LevelText = NULL;
                 Text_Remove(g_Inv_TagText);
                 g_Inv_TagText = NULL;
                 Text_Remove(g_Inv_RingText);
@@ -158,8 +160,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (g_GameFlow.play_any_level) {
-                Text_Remove(g_Inv_LevelText);
-                g_Inv_LevelText = NULL;
+                Text_Remove(m_LevelText);
+                m_LevelText = NULL;
                 Text_Remove(g_Inv_TagText);
                 g_Inv_TagText = NULL;
                 Text_Remove(g_Inv_ItemText[IT_NAME]);
@@ -277,8 +279,8 @@ void Option_Passport_Shutdown(void)
 {
     Text_Remove(g_Inv_ItemText[IT_NAME]);
     g_Inv_ItemText[IT_NAME] = NULL;
-    Text_Remove(g_Inv_LevelText);
-    g_Inv_LevelText = NULL;
+    Text_Remove(m_LevelText);
+    m_LevelText = NULL;
     Text_Remove(g_Inv_RingText);
     g_Inv_RingText = NULL;
     Text_Remove(g_Inv_TagText);

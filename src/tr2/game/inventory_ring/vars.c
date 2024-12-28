@@ -19,21 +19,13 @@ uint16_t g_Inv_KeyObjectsCount;
 uint16_t g_Inv_KeysCurrent;
 uint16_t g_Inv_OptionCurrent;
 TEXTSTRING *g_Inv_RingText = NULL;
-TEXTSTRING *g_Inv_UpArrow1 = NULL;
-TEXTSTRING *g_Inv_UpArrow2 = NULL;
-TEXTSTRING *g_Inv_DownArrow1 = NULL;
-TEXTSTRING *g_Inv_DownArrow2 = NULL;
-uint16_t g_Inv_IsActive;
 bool g_Inv_DemoMode;
 bool g_Inv_IsOptionsDelay;
 int32_t g_Inv_OptionsDelayCounter;
 int32_t g_Inv_ExtraData[8];
 int32_t g_Inv_NFrames = 2;
 TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF] = {};
-TEXTSTRING *g_Inv_LevelText = NULL;
 TEXTSTRING *g_Inv_TagText = NULL;
-int16_t g_Inv_MainQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
-int16_t g_Inv_KeysQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
 uint16_t g_InvColors[INV_COLOR_NUMBER_OF];
 
 INVENTORY_ITEM *g_Inv_MainList[23] = {
