@@ -6,7 +6,7 @@
 #include "game/console/common.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/lara/control.h"
 #include "game/overlay.h"
 #include "global/const.h"

@@ -3,7 +3,7 @@
 #include "config.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/lara/misc.h"
 #include "game/math.h"
 #include "game/matrix.h"

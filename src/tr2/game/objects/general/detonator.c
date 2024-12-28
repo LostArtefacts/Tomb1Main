@@ -1,8 +1,8 @@
 #include "game/objects/general/detonator.h"
 
+#include "game/gameflow.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
-#include "game/inventory/common.h"
+#include "game/inventory.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/output.h"
@@ -107,7 +107,7 @@ void Detonator_Collision(
     }
 
     if (g_Inv_Chosen == NO_OBJECT) {
-        Inv_DisplayKeys(item->object_id);
+        GF_ShowInventoryKeys(item->object_id);
     }
 
     if (g_Inv_Chosen != O_KEY_OPTION_2) {

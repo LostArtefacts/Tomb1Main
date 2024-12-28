@@ -1,4 +1,4 @@
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 
 #include <libtrx/game/backpack.h>
 

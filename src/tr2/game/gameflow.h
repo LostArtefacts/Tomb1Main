@@ -14,3 +14,5 @@ void GF_ModifyInventory(int32_t level, int32_t type);
 
 GAME_FLOW_DIR GF_StartDemo(int32_t level_num);
 GAME_FLOW_DIR GF_StartGame(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
+GAME_FLOW_DIR GF_ShowInventory(INVENTORY_MODE mode);
+GAME_FLOW_DIR GF_ShowInventoryKeys(GAME_OBJECT_ID receptacle_type_id);

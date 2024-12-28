@@ -6,7 +6,7 @@
 #include "game/creature.h"
 #include "game/game_string.h"
 #include "game/gun/gun.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/math.h"

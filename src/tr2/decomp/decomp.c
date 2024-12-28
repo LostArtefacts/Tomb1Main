@@ -11,8 +11,8 @@
 #include "game/gameflow.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
-#include "game/inventory/common.h"
+#include "game/inventory.h"
+#include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
@@ -73,7 +73,7 @@ int16_t TitleSequence(void)
         Music_Play(g_GameFlow.title_track, MPM_LOOPED);
     }
 
-    return Inv_Display(INV_TITLE_MODE);
+    return GF_ShowInventory(INV_TITLE_MODE);
 }
 
 void Game_SetCutsceneTrack(const int32_t track)
@@ -197,7 +197,7 @@ int32_t Level_Initialise(
 
     Effect_InitialiseArray();
     LOT_InitialiseArray();
-    Inv_InitColors();
+    InvRing_Init();
     Overlay_HideGameInfo();
     Overlay_InitialisePickUpDisplay();
     g_HealthBarTimer = 100;

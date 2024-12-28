@@ -1,7 +1,8 @@
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 
-#include "game/inventory/common.h"
+#include "game/inventory_ring.h"
 #include "game/items.h"
+#include "game/objects/vars.h"
 #include "global/vars.h"
 
 void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
@@ -323,13 +324,7 @@ void Inv_RemoveAllItems(void)
 {
     g_Inv_MainObjectsCount = 0;
     g_Inv_KeyObjectsCount = 0;
-    Inv_ClearSelection();
-}
-
-void Inv_ClearSelection(void)
-{
-    g_Inv_MainCurrent = 0;
-    g_Inv_KeysCurrent = 0;
+    InvRing_ClearSelection();
 }
 
 int32_t Inv_RemoveItem(const GAME_OBJECT_ID object_id)
@@ -366,4 +361,12 @@ int32_t Inv_RemoveItem(const GAME_OBJECT_ID object_id)
     }
 
     return false;
+}
+
+GAME_OBJECT_ID Inv_GetItemOption(const GAME_OBJECT_ID object_id)
+{
+    if (Object_IsObjectType(object_id, g_InvObjects)) {
+        return object_id;
+    }
+    return Object_GetCognate(object_id, g_ItemToInvObjectMap);
 }

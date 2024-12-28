@@ -3,10 +3,11 @@
 #include "game/camera.h"
 #include "game/demo.h"
 #include "game/effects.h"
+#include "game/gameflow.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
-#include "game/inventory/common.h"
+#include "game/inventory.h"
+#include "game/inventory_ring.h"
 #include "game/item_actions.h"
 #include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
@@ -77,7 +78,7 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
         }
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;
-            const GAME_FLOW_DIR dir = Inv_Display(INV_DEATH_MODE);
+            const GAME_FLOW_DIR dir = GF_ShowInventory(INV_DEATH_MODE);
             if (dir != (GAME_FLOW_DIR)-1) {
                 return dir;
             }
@@ -100,11 +101,11 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
         } else {
             GAME_FLOW_DIR dir;
             if (g_OverlayStatus == -1) {
-                dir = Inv_Display(INV_LOAD_MODE);
+                dir = GF_ShowInventory(INV_LOAD_MODE);
             } else if (g_OverlayStatus == -2) {
-                dir = Inv_Display(INV_SAVE_MODE);
+                dir = GF_ShowInventory(INV_SAVE_MODE);
             } else {
-                dir = Inv_Display(INV_GAME_MODE);
+                dir = GF_ShowInventory(INV_GAME_MODE);
             }
             g_OverlayStatus = 1;
             if (dir != (GAME_FLOW_DIR)-1) {

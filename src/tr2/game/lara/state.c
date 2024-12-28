@@ -2,7 +2,7 @@
 
 #include "config.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/lara/control.h"
 #include "game/lara/look.h"
 #include "game/lara/misc.h"

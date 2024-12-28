@@ -1,6 +1,6 @@
 #include "game/lara/cheat_keys.h"
 
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/sound.h"
 #include "global/vars.h"
 

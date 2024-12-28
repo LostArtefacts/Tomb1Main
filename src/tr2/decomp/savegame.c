@@ -1,7 +1,7 @@
 #include "decomp/savegame.h"
 
 #include "decomp/skidoo.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"

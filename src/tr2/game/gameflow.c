@@ -7,7 +7,8 @@
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/gun/gun.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
+#include "game/inventory_ring.h"
 #include "game/music.h"
 #include "game/overlay.h"
 #include "game/phase.h"
@@ -669,4 +670,14 @@ GAME_FLOW_DIR GF_StartGame(
     const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
     Phase_Game_Destroy(phase);
     return dir;
+}
+
+GAME_FLOW_DIR GF_ShowInventory(const INVENTORY_MODE mode)
+{
+    return InvRing_Display(mode);
+}
+
+GAME_FLOW_DIR GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
+{
+    return InvRing_DisplayKeys(receptacle_type_id);
 }

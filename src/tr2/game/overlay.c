@@ -4,7 +4,7 @@
 #include "decomp/decomp.h"
 #include "game/clock.h"
 #include "game/console/common.h"
-#include "game/inventory/common.h"
+#include "game/inventory.h"
 #include "game/matrix.h"
 #include "game/music.h"
 #include "game/objects/common.h"

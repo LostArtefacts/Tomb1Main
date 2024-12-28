@@ -4,7 +4,7 @@
 #include "game/creature.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
-#include "game/inventory/backpack.h"
+#include "game/inventory.h"
 #include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
