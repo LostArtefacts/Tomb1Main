@@ -30,10 +30,6 @@
       "pc": "PC",
       "ps1": "PS1"
     },
-    "screenshot_format": {
-      "jpg": "JPEG",
-      "png": "PNG"
-    },
     "ui_color": {
       "gold": "Gold (default for health)",
       "red": "Red",
@@ -57,13 +53,6 @@
       "full-lock": "Full lock",
       "semi-lock": "Semi lock",
       "no-lock": "No lock"
-    },
-    "underwater_music": {
-      "full": "Full",
-      "quiet": "Quiet",
-      "full_no_ambient": "Full but no ambient",
-      "quiet_no_ambient": "Quiet but no ambient",
-      "none": "None"
     },
     "music_load_condition": {
       "never": "Never",
