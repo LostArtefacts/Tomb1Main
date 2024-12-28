@@ -18,11 +18,190 @@ typedef struct __PACKING {
 } HAIR_SEGMENT;
 
 static bool m_IsFirstHair;
+static SPHERE m_HairSpheres[HAIR_SEGMENTS - 1];
 static XYZ_32 m_HairVelocity[HAIR_SEGMENTS + 1];
 static HAIR_SEGMENT m_HairSegments[HAIR_SEGMENTS + 1];
 static int32_t m_HairWind;
 
-void Lara_Hair_Initialise(void)
+static void M_CalculateSpheres(const FRAME_INFO *frame);
+static void M_CalculateSpheres_I(
+    const FRAME_INFO *frame_1, const FRAME_INFO *frame_2, int32_t frac,
+    int32_t rate);
+
+static void M_CalculateSpheres(const FRAME_INFO *const frame)
+{
+    const int16_t *mesh_rots = frame->mesh_rots;
+    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    Matrix_RotYXZsuperpack(&mesh_rots, 0);
+
+    Matrix_Push();
+    const int16_t *mesh = g_Lara.mesh_ptrs[LM_HIPS];
+    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    m_HairSpheres[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[0].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[0].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[0].r = mesh[3];
+    Matrix_Pop();
+
+    const int32_t *bone = &g_AnimBones[g_Objects[O_LARA].bone_idx];
+    Matrix_TranslateRel(bone[25], bone[26], bone[27]);
+    if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
+        && (g_Items[g_Lara.weapon_item].current_anim_state == 0
+            || g_Items[g_Lara.weapon_item].current_anim_state == 2
+            || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
+        mesh_rots =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num
+                      * (g_Anims[g_Lara.right_arm.anim_num].interpolation >> 8)
+                  + FBBOX_ROT];
+        Matrix_RotYXZsuperpack(&mesh_rots, 7);
+    } else {
+        Matrix_RotYXZsuperpack(&mesh_rots, 6);
+    }
+    Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+    Matrix_Push();
+    mesh = g_Lara.mesh_ptrs[LM_TORSO];
+    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    m_HairSpheres[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[1].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[1].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[1].r = mesh[3];
+    Matrix_Pop();
+
+    Matrix_Push();
+    Matrix_TranslateRel(bone[29], bone[30], bone[31]);
+    Matrix_RotYXZsuperpack(&mesh_rots, 0);
+
+    mesh = g_Lara.mesh_ptrs[LM_UARM_R];
+    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    m_HairSpheres[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[3].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[3].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[3].r = mesh[3] * 3 / 2;
+    Matrix_Pop();
+
+    Matrix_Push();
+    Matrix_TranslateRel(bone[41], bone[42], bone[43]);
+    Matrix_RotYXZsuperpack(&mesh_rots, 2);
+    mesh = g_Lara.mesh_ptrs[LM_UARM_L];
+    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    m_HairSpheres[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[4].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[4].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[4].r = mesh[3] * 3 / 2;
+    Matrix_Pop();
+
+    Matrix_TranslateRel(bone[53], bone[54], bone[55]);
+    Matrix_RotYXZsuperpack(&mesh_rots, 2);
+    Matrix_RotYXZ(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
+
+    Matrix_Push();
+    mesh = g_Lara.mesh_ptrs[LM_HEAD];
+    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    m_HairSpheres[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[2].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[2].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[2].r = mesh[3];
+    Matrix_Pop();
+
+    Matrix_TranslateRel(0, -23, -55);
+}
+
+static void M_CalculateSpheres_I(
+    const FRAME_INFO *const frame_1, const FRAME_INFO *const frame_2,
+    const int32_t frac, const int32_t rate)
+{
+    const int16_t *mesh_rots_1 = frame_1->mesh_rots;
+    const int16_t *mesh_rots_2 = frame_2->mesh_rots;
+    Matrix_InitInterpolate(frac, rate);
+    Matrix_TranslateRel_ID(
+        frame_1->offset.x, frame_1->offset.y, frame_1->offset.z,
+        frame_2->offset.x, frame_2->offset.y, frame_2->offset.z);
+    Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
+
+    Matrix_Push_I();
+    const int16_t *mesh = g_Lara.mesh_ptrs[LM_HIPS];
+    Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
+    Matrix_Interpolate();
+    m_HairSpheres[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[0].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[0].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[0].r = mesh[3];
+    Matrix_Pop_I();
+
+    const int32_t *bone = &g_AnimBones[g_Objects[O_LARA].bone_idx];
+    Matrix_TranslateRel_I(bone[25], bone[26], bone[27]);
+    if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
+        && (g_Items[g_Lara.weapon_item].current_anim_state == 0
+            || g_Items[g_Lara.weapon_item].current_anim_state == 2
+            || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
+        mesh_rots_1 =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num
+                      * (g_Anims[g_Lara.right_arm.anim_num].interpolation >> 8)
+                  + FBBOX_ROT];
+        mesh_rots_2 = mesh_rots_1;
+        Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 7);
+    } else {
+        Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 6);
+    }
+    Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+
+    Matrix_Push_I();
+    mesh = g_Lara.mesh_ptrs[LM_TORSO];
+    Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
+    Matrix_Interpolate();
+    m_HairSpheres[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[1].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[1].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[1].r = mesh[3];
+    Matrix_Pop_I();
+
+    Matrix_Push_I();
+    Matrix_TranslateRel_I(bone[29], bone[30], bone[31]);
+    Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
+
+    mesh = g_Lara.mesh_ptrs[LM_UARM_R];
+    Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
+    Matrix_Interpolate();
+    m_HairSpheres[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[3].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[3].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[3].r = mesh[3] * 3 / 2;
+    Matrix_Pop_I();
+
+    Matrix_Push_I();
+    Matrix_TranslateRel_I(bone[41], bone[42], bone[43]);
+    Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 2);
+
+    mesh = g_Lara.mesh_ptrs[LM_UARM_L];
+    Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
+    Matrix_Interpolate();
+    m_HairSpheres[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[4].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[4].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[4].r = mesh[3] * 3 / 2;
+    Matrix_Pop_I();
+
+    Matrix_TranslateRel_I(bone[53], bone[54], bone[55]);
+    Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 2);
+    Matrix_RotYXZ_I(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
+
+    Matrix_Push_I();
+    mesh = g_Lara.mesh_ptrs[LM_HEAD];
+    Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
+    Matrix_Interpolate();
+    m_HairSpheres[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
+    m_HairSpheres[2].y = g_MatrixPtr->_13 >> W2V_SHIFT;
+    m_HairSpheres[2].z = g_MatrixPtr->_23 >> W2V_SHIFT;
+    m_HairSpheres[2].r = mesh[3];
+    Matrix_Pop_I();
+
+    Matrix_TranslateRel_I(0, -23, -55);
+    Matrix_Interpolate();
+}
+
+void __cdecl Lara_Hair_Initialise(void)
 {
     const int32_t *const bone_base =
         &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
@@ -45,15 +224,15 @@ void Lara_Hair_Initialise(void)
 
 void Lara_Hair_Control(const bool in_cutscene)
 {
-    const FRAME_INFO *frame1;
-    const FRAME_INFO *frame2;
+    const FRAME_INFO *frame_1;
+    const FRAME_INFO *frame_2;
     int32_t frac;
     int32_t rate;
     if (g_Lara.hit_direction < 0) {
         FRAME_INFO *frmptr[2];
         frac = Item_GetFrames(g_LaraItem, frmptr, &rate);
-        frame1 = frmptr[0];
-        frame2 = frmptr[1];
+        frame_1 = frmptr[0];
+        frame_2 = frmptr[1];
     } else {
         LARA_ANIMATION lara_anim;
         switch (g_Lara.hit_direction) {
@@ -73,14 +252,10 @@ void Lara_Hair_Control(const bool in_cutscene)
 
         const int16_t *const frame_ptr = g_Anims[lara_anim].frame_ptr;
         const int32_t interpolation = g_Anims[lara_anim].interpolation;
-        frame1 =
+        frame_1 =
             (FRAME_INFO *)&frame_ptr[g_Lara.hit_frame * (interpolation >> 8)];
         frac = 0;
     }
-
-    const int32_t *bone;
-    const int16_t *mesh;
-    SPHERE spheres[5];
 
     Matrix_PushUnit();
     g_MatrixPtr->_03 = g_LaraItem->pos.x << W2V_SHIFT;
@@ -88,172 +263,10 @@ void Lara_Hair_Control(const bool in_cutscene)
     g_MatrixPtr->_23 = g_LaraItem->pos.z << W2V_SHIFT;
     Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
 
-    if (frac != 0) {
-        const int16_t *mesh_rots1 = frame1->mesh_rots;
-        const int16_t *mesh_rots2 = frame2->mesh_rots;
-        Matrix_InitInterpolate(frac, rate);
-        Matrix_TranslateRel_ID(
-            frame1->offset.x, frame1->offset.y, frame1->offset.z,
-            frame2->offset.x, frame2->offset.y, frame2->offset.z);
-        Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 0);
-
-        Matrix_Push_I();
-        mesh = g_Lara.mesh_ptrs[LM_HIPS];
-        Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
-        Matrix_Interpolate();
-        spheres[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[0].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[0].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[0].r = mesh[3];
-        Matrix_Pop_I();
-
-        bone = &g_AnimBones[g_Objects[O_LARA].bone_idx];
-        Matrix_TranslateRel_I(bone[25], bone[26], bone[27]);
-        if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
-            && (g_Items[g_Lara.weapon_item].current_anim_state == 0
-                || g_Items[g_Lara.weapon_item].current_anim_state == 2
-                || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
-            mesh_rots1 =
-                &g_Lara.right_arm.frame_base
-                     [g_Lara.right_arm.frame_num
-                          * (g_Anims[g_Lara.right_arm.anim_num].interpolation
-                             >> 8)
-                      + FBBOX_ROT];
-            mesh_rots2 = mesh_rots1;
-            Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 7);
-        } else {
-            Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 6);
-        }
-        Matrix_RotYXZ_I(
-            g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
-
-        Matrix_Push_I();
-        mesh = g_Lara.mesh_ptrs[LM_TORSO];
-        Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
-        Matrix_Interpolate();
-        spheres[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[1].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[1].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[1].r = mesh[3];
-        Matrix_Pop_I();
-
-        Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[29], bone[30], bone[31]);
-        Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 0);
-
-        mesh = g_Lara.mesh_ptrs[LM_UARM_R];
-        Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
-        Matrix_Interpolate();
-        spheres[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[3].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[3].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[3].r = mesh[3] * 3 / 2;
-        Matrix_Pop_I();
-
-        Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[41], bone[42], bone[43]);
-        Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 2);
-        mesh = g_Lara.mesh_ptrs[LM_UARM_L];
-        Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
-        Matrix_Interpolate();
-        spheres[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[4].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[4].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[4].r = mesh[3] * 3 / 2;
-        Matrix_Pop_I();
-
-        Matrix_TranslateRel_I(bone[53], bone[54], bone[55]);
-        Matrix_RotYXZsuperpack_I(&mesh_rots1, &mesh_rots2, 2);
-        Matrix_RotYXZ_I(
-            g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
-        Matrix_Push_I();
-        mesh = g_Lara.mesh_ptrs[LM_HEAD];
-        Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
-        Matrix_Interpolate();
-        spheres[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[2].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[2].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[2].r = mesh[3];
-        Matrix_Pop_I();
-
-        Matrix_TranslateRel_I(0, -23, -55);
-        Matrix_Interpolate();
+    if (frac == 0) {
+        M_CalculateSpheres(frame_1);
     } else {
-        const int16_t *mesh_rots = frame1->mesh_rots;
-        Matrix_TranslateRel(
-            frame1->offset.x, frame1->offset.y, frame1->offset.z);
-        Matrix_RotYXZsuperpack(&mesh_rots, 0);
-        Matrix_Push();
-        mesh = g_Lara.mesh_ptrs[LM_HIPS];
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
-        spheres[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[0].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[0].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[0].r = mesh[3];
-        Matrix_Pop();
-
-        bone = &g_AnimBones[g_Objects[O_LARA].bone_idx];
-        Matrix_TranslateRel(bone[25], bone[26], bone[27]);
-        if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
-            && (g_Items[g_Lara.weapon_item].current_anim_state == 0
-                || g_Items[g_Lara.weapon_item].current_anim_state == 2
-                || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
-            mesh_rots =
-                &g_Lara.right_arm.frame_base
-                     [g_Lara.right_arm.frame_num
-                          * (g_Anims[g_Lara.right_arm.anim_num].interpolation
-                             >> 8)
-                      + FBBOX_ROT];
-            Matrix_RotYXZsuperpack(&mesh_rots, 7);
-        } else {
-            Matrix_RotYXZsuperpack(&mesh_rots, 6);
-        }
-        Matrix_RotYXZ(
-            g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
-        Matrix_Push();
-        mesh = g_Lara.mesh_ptrs[LM_TORSO];
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
-        spheres[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[1].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[1].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[1].r = mesh[3];
-        Matrix_Pop();
-
-        Matrix_Push();
-        Matrix_TranslateRel(bone[29], bone[30], bone[31]);
-        Matrix_RotYXZsuperpack(&mesh_rots, 0);
-        mesh = g_Lara.mesh_ptrs[LM_UARM_R];
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
-        spheres[3].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[3].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[3].r = mesh[3] * 3 / 2;
-        Matrix_Pop();
-
-        Matrix_Push();
-        Matrix_TranslateRel(bone[41], bone[42], bone[43]);
-        Matrix_RotYXZsuperpack(&mesh_rots, 2);
-        mesh = g_Lara.mesh_ptrs[LM_UARM_L];
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
-        spheres[4].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[4].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[4].r = mesh[3] * 3 / 2;
-        Matrix_Pop();
-
-        Matrix_TranslateRel(bone[53], bone[54], bone[55]);
-        Matrix_RotYXZsuperpack(&mesh_rots, 2);
-        Matrix_RotYXZ(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
-        Matrix_Push();
-        mesh = g_Lara.mesh_ptrs[LM_HEAD];
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
-        spheres[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
-        spheres[2].y = g_MatrixPtr->_13 >> W2V_SHIFT;
-        spheres[2].z = g_MatrixPtr->_23 >> W2V_SHIFT;
-        spheres[2].r = mesh[3];
-        Matrix_Pop();
-
-        Matrix_TranslateRel(0, -23, -55);
+        M_CalculateSpheres_I(frame_1, frame_2, frac, rate);
     }
 
     const XYZ_32 pos = {
@@ -263,7 +276,7 @@ void Lara_Hair_Control(const bool in_cutscene)
     };
     Matrix_Pop();
 
-    bone = &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
+    const int32_t *bone = &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
 
     HAIR_SEGMENT *const fs = &m_HairSegments[0];
     fs->pos.x = pos.x;
@@ -300,11 +313,11 @@ void Lara_Hair_Control(const bool in_cutscene)
     } else {
         water_height = Room_GetWaterHeight(
             g_LaraItem->pos.x
-                + (frame1->bounds.min_x + frame1->bounds.max_x) / 2,
+                + (frame_1->bounds.min_x + frame_1->bounds.max_x) / 2,
             g_LaraItem->pos.y
-                + (frame1->bounds.max_y + frame1->bounds.min_y) / 2,
+                + (frame_1->bounds.max_y + frame_1->bounds.min_y) / 2,
             g_LaraItem->pos.z
-                + (frame1->bounds.max_z + frame1->bounds.min_z) / 2,
+                + (frame_1->bounds.max_z + frame_1->bounds.min_z) / 2,
             room_num);
     }
 
@@ -361,7 +374,7 @@ void Lara_Hair_Control(const bool in_cutscene)
         }
 
         for (int32_t j = 0; j < 5; j++) {
-            const SPHERE *const sphere = &spheres[j];
+            const SPHERE *const sphere = &m_HairSpheres[j];
             const int32_t dx = s->pos.x - sphere->x;
             const int32_t dy = s->pos.y - sphere->y;
             const int32_t dz = s->pos.z - sphere->z;
