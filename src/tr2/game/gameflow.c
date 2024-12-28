@@ -433,7 +433,7 @@ int32_t GF_InterpretSequence(
                 if (type == GFL_MID_STORY) {
                     return GFD_EXIT_TO_TITLE;
                 }
-                dir = Game_Start(ptr[1], type);
+                dir = GF_StartGame(ptr[1], type);
                 if (type == GFL_SAVED) {
                     type = GFL_NORMAL;
                 }
@@ -659,5 +659,14 @@ GAME_FLOW_DIR GF_StartDemo(const int32_t level_num)
     PHASE *const demo_phase = Phase_Demo_Create(level_num);
     const GAME_FLOW_DIR dir = PhaseExecutor_Run(demo_phase);
     Phase_Demo_Destroy(demo_phase);
+    return dir;
+}
+
+GAME_FLOW_DIR GF_StartGame(
+    const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
+{
+    PHASE *const phase = Phase_Game_Create(level_num, level_type);
+    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+    Phase_Game_Destroy(phase);
     return dir;
 }

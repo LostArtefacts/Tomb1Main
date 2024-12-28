@@ -143,15 +143,6 @@ void Game_Draw(void)
     Output_DrawPolyList();
 }
 
-GAME_FLOW_DIR Game_Start(
-    const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
-{
-    PHASE *const phase = Phase_Game_Create(level_num, level_type);
-    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
-    Phase_Game_Destroy(phase);
-    return dir;
-}
-
 GAMEFLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
 {
     return g_GameInfo.current_level.type;
