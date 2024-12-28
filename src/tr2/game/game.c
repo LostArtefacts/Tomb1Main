@@ -49,7 +49,7 @@ GAME_FLOW_DIR Game_ControlRaw(const int32_t num_frames, const bool demo_mode)
     Game_ProcessInput();
 
     if (demo_mode) {
-        if (g_InputDB.any) {
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             return g_GameFlow.on_demo_interrupt;
         }
         if (!Demo_GetInput()) {

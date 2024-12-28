@@ -332,7 +332,7 @@ static PHASE_CONTROL M_Run(int32_t nframes)
             args->phase_arg = demo_args;
             Phase_Set(PHASE_PHOTO_MODE, args);
             return (PHASE_CONTROL) { .end = false };
-        } else if (g_InputDB.any) {
+        } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             m_State = STATE_FADE_OUT;
             goto end;
         }
