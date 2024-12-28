@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "game/clock.h"
+#include "game/inventory_ring.h"
 #include "game/math.h"
 #include "game/math_misc.h"
 #include "game/matrix.h"

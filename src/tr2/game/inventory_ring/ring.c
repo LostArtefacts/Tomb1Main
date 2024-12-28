@@ -1,6 +1,7 @@
 #include "game/inventory_ring/ring.h"
 
 #include "game/inventory.h"
+#include "game/inventory_ring/vars.h"
 #include "game/math_misc.h"
 #include "game/output.h"
 #include "global/vars.h"

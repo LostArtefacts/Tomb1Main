@@ -5,6 +5,7 @@
 #include "game/camera.h"
 #include "game/fader.h"
 #include "game/game.h"
+#include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
 #include "game/music.h"
