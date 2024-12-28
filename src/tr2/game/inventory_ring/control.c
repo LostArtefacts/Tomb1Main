@@ -41,15 +41,18 @@ static void M_RemoveItemsText(void);
 static void M_RemoveAllText(void);
 static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
-static void M_End(RING_INFO *ring);
+static void M_End(INV_RING *ring);
 
 static void M_Construct(void);
-static void M_RingIsOpen(RING_INFO *ring);
-static void M_RingIsNotOpen(RING_INFO *ring);
-static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
+static void M_RingIsOpen(INV_RING *ring);
+static void M_RingIsNotOpen(INV_RING *ring);
+static void M_RingNotActive(const INV_ITEM *inv_item);
 static void M_RingActive(void);
-static void M_SelectMeshes(INVENTORY_ITEM *inv_item);
-static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
+static void M_SelectMeshes(INV_ITEM *inv_item);
+static void M_DrawItem(
+    const INV_RING *ring, INV_ITEM *inv_item, int32_t frames);
+static void M_Draw(INV_RING *const ring, FADER *const fader);
+static bool M_AnimateInventoryItem(INV_ITEM *inv_item);
 
 static void M_RemoveItemsText(void)
 {
@@ -99,11 +102,11 @@ static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
     }
 }
 
-static void M_End(RING_INFO *const ring)
+static void M_End(INV_RING *const ring)
 {
     M_RemoveAllText();
     if (ring->list != NULL) {
-        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+        INV_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item != NULL) {
             Option_Shutdown(inv_item);
         }
@@ -144,7 +147,7 @@ static void M_Construct(void)
     }
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
+        INV_ITEM *const inv_item = g_Inv_MainList[i];
         inv_item->meshes_drawn = inv_item->meshes_sel;
         inv_item->current_frame = 0;
         inv_item->goal_frame = 0;
@@ -160,7 +163,7 @@ static void M_Construct(void)
     }
 
     for (int32_t i = 0; i < g_Inv_OptionObjectsCount; i++) {
-        INVENTORY_ITEM *const inv_item = g_Inv_OptionList[i];
+        INV_ITEM *const inv_item = g_Inv_OptionList[i];
         inv_item->current_frame = 0;
         inv_item->goal_frame = 0;
         inv_item->anim_count = 0;
@@ -187,7 +190,7 @@ static void M_Construct(void)
     }
 }
 
-static void M_RingIsOpen(RING_INFO *const ring)
+static void M_RingIsOpen(INV_RING *const ring)
 {
     if (g_Inv_Mode == INV_TITLE_MODE) {
         return;
@@ -245,7 +248,7 @@ static void M_RingIsOpen(RING_INFO *const ring)
     }
 }
 
-static void M_RingIsNotOpen(RING_INFO *const ring)
+static void M_RingIsNotOpen(INV_RING *const ring)
 {
     Text_Remove(g_Inv_TagText);
     g_Inv_TagText = NULL;
@@ -261,7 +264,7 @@ static void M_RingIsNotOpen(RING_INFO *const ring)
     m_DownArrow2 = NULL;
 }
 
-static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
+static void M_RingNotActive(const INV_ITEM *const inv_item)
 {
     if (g_Inv_ItemText[0] == NULL) {
         if (inv_item->object_id != O_PASSPORT_OPTION) {
@@ -343,7 +346,7 @@ static void M_RingActive(void)
     M_RemoveItemsText();
 }
 
-static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
+static void M_SelectMeshes(INV_ITEM *const inv_item)
 {
     switch (inv_item->object_id) {
     case O_PASSPORT_OPTION:
@@ -380,7 +383,7 @@ static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
     }
 }
 
-static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
+static bool M_AnimateInventoryItem(INV_ITEM *const inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
         M_SelectMeshes(inv_item);
@@ -431,10 +434,9 @@ void InvRing_Init(void)
 }
 
 static void M_DrawItem(
-    const RING_INFO *const ring, const IMOTION_INFO *const motion,
-    INVENTORY_ITEM *const inv_item, const int32_t frames)
+    const INV_RING *const ring, INV_ITEM *const inv_item, const int32_t frames)
 {
-    if (motion->status == RNG_DONE) {
+    if (ring->motion.status == RNG_DONE) {
         g_LsAdder = LOW_LIGHT;
     } else if (inv_item == ring->list[ring->current_object]) {
         if (ring->rotating) {
@@ -447,9 +449,11 @@ static void M_DrawItem(
                 }
             }
         } else if (
-            motion->status == RNG_SELECTED || motion->status == RNG_DESELECTING
-            || motion->status == RNG_SELECTING || motion->status == RNG_DESELECT
-            || motion->status == RNG_CLOSING_ITEM) {
+            ring->motion.status == RNG_SELECTED
+            || ring->motion.status == RNG_DESELECTING
+            || ring->motion.status == RNG_SELECTING
+            || ring->motion.status == RNG_DESELECT
+            || ring->motion.status == RNG_CLOSING_ITEM) {
             g_LsAdder = HIGH_LIGHT;
             for (int32_t k = 0; k < frames; k++) {
                 const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
@@ -614,8 +618,7 @@ static void M_DrawItem(
     Matrix_Pop();
 }
 
-static void M_Draw(
-    RING_INFO *const ring, IMOTION_INFO *const motion, FADER *const fader)
+static void M_Draw(INV_RING *const ring, FADER *const fader)
 {
     ring->camera.pos.z = ring->radius + 598;
 
@@ -637,23 +640,24 @@ static void M_Draw(
 
     int32_t angle = 0;
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        INVENTORY_ITEM *const inv_item = ring->list[i];
+        INV_ITEM *const inv_item = ring->list[i];
         Matrix_Push();
         Matrix_RotYXZ(angle, 0, 0);
         Matrix_TranslateRel(ring->radius, 0, 0);
         Matrix_RotYXZ(PHD_90, inv_item->x_rot_pt, 0);
-        M_DrawItem(ring, motion, inv_item, m_NFrames);
+        M_DrawItem(ring, inv_item, m_NFrames);
         angle += ring->angle_adder;
         Matrix_Pop();
     }
 
     if (ring->list != NULL && !ring->rotating
-        && (motion->status == RNG_OPEN || motion->status == RNG_SELECTING
-            || motion->status == RNG_SELECTED
-            || motion->status == RNG_DESELECTING
-            || motion->status == RNG_DESELECT
-            || motion->status == RNG_CLOSING_ITEM)) {
-        const INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+        && (ring->motion.status == RNG_OPEN
+            || ring->motion.status == RNG_SELECTING
+            || ring->motion.status == RNG_SELECTED
+            || ring->motion.status == RNG_DESELECTING
+            || ring->motion.status == RNG_DESELECT
+            || ring->motion.status == RNG_CLOSING_ITEM)) {
+        const INV_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item != NULL) {
             switch (inv_item->object_id) {
             case O_SMALL_MEDIPACK_OPTION:
@@ -670,8 +674,8 @@ static void M_Draw(
     Matrix_Pop();
     Output_DrawPolyList();
 
-    if (motion->status == RNG_SELECTED) {
-        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+    if (ring->motion.status == RNG_SELECTED) {
+        INV_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item->object_id == O_PASSPORT_CLOSED) {
             inv_item->object_id = O_PASSPORT_OPTION;
         }
@@ -701,8 +705,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 
     Clock_SyncTick();
     Stats_StartTimer();
-    RING_INFO ring = { 0 };
-    IMOTION_INFO imo = { 0 };
+    INV_RING ring = { 0 };
 
     if (inventory_mode == INV_TITLE_MODE) {
         Output_LoadBackgroundFromFile("data/title.pcx");
@@ -712,7 +715,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 
     bool demo_needed = false;
     bool pass_open = false;
-    if (inventory_mode == INV_KEYS_MODE && !g_Inv_KeyObjectsCount) {
+    if (inventory_mode == INV_KEYS_MODE && g_Inv_KeyObjectsCount == 0) {
         g_Inv_Chosen = NO_OBJECT;
         return (GAME_FLOW_DIR)-1;
     }
@@ -727,7 +730,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
     if (inventory_mode == INV_TITLE_MODE) {
         Fader_InitBlackToTransparent(&fader, FRAMES_PER_SECOND / 3);
         while (Fader_IsActive(&fader)) {
-            M_Draw(&ring, &imo, &fader);
+            M_Draw(&ring, &fader);
             Fader_Control(&fader);
         }
     }
@@ -744,24 +747,23 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
     case INV_DEATH_MODE:
         InvRing_InitRing(
             &ring, 1, g_Inv_OptionList, g_Inv_OptionObjectsCount,
-            g_Inv_OptionCurrent, &imo);
+            g_Inv_OptionCurrent);
         break;
 
     case INV_KEYS_MODE:
         InvRing_InitRing(
-            &ring, 2, g_Inv_KeysList, g_Inv_KeyObjectsCount, g_Inv_MainCurrent,
-            &imo);
+            &ring, 2, g_Inv_KeysList, g_Inv_KeyObjectsCount, g_Inv_MainCurrent);
         break;
 
     default:
         if (g_Inv_MainObjectsCount) {
             InvRing_InitRing(
                 &ring, 0, g_Inv_MainList, g_Inv_MainObjectsCount,
-                g_Inv_MainCurrent, &imo);
+                g_Inv_MainCurrent);
         } else {
             InvRing_InitRing(
                 &ring, 1, g_Inv_OptionList, g_Inv_OptionObjectsCount,
-                g_Inv_OptionCurrent, &imo);
+                g_Inv_OptionCurrent);
         }
         break;
     }
@@ -771,7 +773,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 
     do {
         if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-            INVENTORY_ITEM *inv_item = ring.list[ring.current_object];
+            INV_ITEM *inv_item = ring.list[ring.current_object];
             M_End(&ring);
             return GFD_OVERRIDE;
         }
@@ -827,7 +829,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
         }
 
         if (!ring.rotating) {
-            switch (imo.status) {
+            switch (ring.motion.status) {
             case RNG_OPEN:
                 if (g_Input.right && ring.number_of_objects > 1) {
                     InvRing_RotateLeft(&ring);
@@ -869,7 +871,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                     }
 
                     g_SoundOptionLine = 0;
-                    INVENTORY_ITEM *inv_item;
+                    INV_ITEM *inv_item;
                     if (ring.type == RT_MAIN) {
                         g_Inv_MainCurrent = ring.current_object;
                         inv_item = g_Inv_MainList[ring.current_object];
@@ -926,7 +928,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                             InvRing_MotionRotation(
                                 &ring, PHD_180, ring.ring_pos.rot.y + PHD_180);
                             InvRing_MotionCameraPitch(&ring, 0x2000);
-                            imo.misc = 0x2000;
+                            ring.motion.misc = 0x2000;
                         }
                         g_InputDB = (INPUT_STATE) { 0 };
                     } else if (ring.type == RT_MAIN) {
@@ -937,7 +939,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                             InvRing_MotionRotation(
                                 &ring, PHD_180, ring.ring_pos.rot.y + PHD_180);
                             InvRing_MotionCameraPitch(&ring, 0x2000);
-                            imo.misc = 0x2000;
+                            ring.motion.misc = 0x2000;
                         }
                         g_Input = (INPUT_STATE) { 0 };
                         g_InputDB = (INPUT_STATE) { 0 };
@@ -953,7 +955,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                             InvRing_MotionRotation(
                                 &ring, PHD_180, ring.ring_pos.rot.y + PHD_180);
                             InvRing_MotionCameraPitch(&ring, -0x2000);
-                            imo.misc = -0x2000;
+                            ring.motion.misc = -0x2000;
                         }
                         g_Input = (INPUT_STATE) { 0 };
                         g_InputDB = (INPUT_STATE) { 0 };
@@ -966,7 +968,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                             InvRing_MotionRotation(
                                 &ring, PHD_180, ring.ring_pos.rot.y + PHD_180);
                             InvRing_MotionCameraPitch(&ring, -0x2000);
-                            imo.misc = -0x2000;
+                            ring.motion.misc = -0x2000;
                         }
                         g_InputDB = (INPUT_STATE) { 0 };
                     }
@@ -976,9 +978,9 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             case RNG_MAIN2OPTION:
                 InvRing_MotionSetup(&ring, RNG_OPENING, RNG_OPEN, 24);
                 InvRing_MotionRadius(&ring, 688);
-                ring.camera_pitch = -(int16_t)(imo.misc);
-                imo.camera_pitch_rate = imo.misc / 24;
-                imo.camera_pitch_target = 0;
+                ring.camera_pitch = -(int16_t)(ring.motion.misc);
+                ring.motion.camera_pitch_rate = ring.motion.misc / 24;
+                ring.motion.camera_pitch_target = 0;
                 ring.list = g_Inv_OptionList;
                 ring.type = RT_OPTION;
                 g_Inv_MainCurrent = ring.current_object;
@@ -989,15 +991,15 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 InvRing_MotionRotation(
                     &ring, PHD_180,
                     -16384 - ring.angle_adder * ring.current_object);
-                ring.ring_pos.rot.y = imo.rotate_target + PHD_180;
+                ring.ring_pos.rot.y = ring.motion.rotate_target + PHD_180;
                 break;
 
             case RNG_MAIN2KEYS:
                 InvRing_MotionSetup(&ring, RNG_OPENING, RNG_OPEN, 24);
                 InvRing_MotionRadius(&ring, 688);
-                imo.camera_pitch_target = 0;
-                ring.camera_pitch = -(int16_t)(imo.misc);
-                imo.camera_pitch_rate = imo.misc / 24;
+                ring.motion.camera_pitch_target = 0;
+                ring.camera_pitch = -(int16_t)(ring.motion.misc);
+                ring.motion.camera_pitch_rate = ring.motion.misc / 24;
                 g_Inv_MainCurrent = ring.current_object;
                 g_Inv_MainObjectsCount = ring.number_of_objects;
                 ring.list = g_Inv_KeysList;
@@ -1008,15 +1010,15 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 InvRing_MotionRotation(
                     &ring, PHD_180,
                     -16384 - ring.angle_adder * ring.current_object);
-                ring.ring_pos.rot.y = imo.rotate_target + PHD_180;
+                ring.ring_pos.rot.y = ring.motion.rotate_target + PHD_180;
                 break;
 
             case RNG_KEYS2MAIN:
                 InvRing_MotionSetup(&ring, RNG_OPENING, RNG_OPEN, 24);
                 InvRing_MotionRadius(&ring, 688);
-                ring.camera_pitch = -(int16_t)(imo.misc);
-                imo.camera_pitch_rate = imo.misc / 24;
-                imo.camera_pitch_target = 0;
+                ring.camera_pitch = -(int16_t)(ring.motion.misc);
+                ring.motion.camera_pitch_rate = ring.motion.misc / 24;
+                ring.motion.camera_pitch_target = 0;
                 ring.list = g_Inv_MainList;
                 ring.type = RT_MAIN;
                 g_Inv_KeysCurrent = ring.current_object;
@@ -1026,17 +1028,17 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 InvRing_MotionRotation(
                     &ring, PHD_180,
                     -16384 - ring.angle_adder * ring.current_object);
-                ring.ring_pos.rot.y = imo.rotate_target + PHD_180;
+                ring.ring_pos.rot.y = ring.motion.rotate_target + PHD_180;
                 break;
 
             case RNG_OPTION2MAIN:
                 InvRing_MotionSetup(&ring, RNG_OPENING, RNG_OPEN, 24);
                 InvRing_MotionRadius(&ring, 688);
-                ring.camera_pitch = -(int16_t)(imo.misc);
-                imo.camera_pitch_rate = imo.misc / 24;
+                ring.camera_pitch = -(int16_t)(ring.motion.misc);
+                ring.motion.camera_pitch_rate = ring.motion.misc / 24;
                 g_Inv_OptionCurrent = ring.current_object;
                 g_Inv_OptionObjectsCount = ring.number_of_objects;
-                imo.camera_pitch_target = 0;
+                ring.motion.camera_pitch_target = 0;
                 ring.list = g_Inv_MainList;
                 ring.type = RT_MAIN;
                 ring.number_of_objects = g_Inv_MainObjectsCount;
@@ -1045,11 +1047,11 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 InvRing_MotionRotation(
                     &ring, PHD_180,
                     -16384 - ring.angle_adder * ring.current_object);
-                ring.ring_pos.rot.y = imo.rotate_target + PHD_180;
+                ring.ring_pos.rot.y = ring.motion.rotate_target + PHD_180;
                 break;
 
             case RNG_SELECTED: {
-                INVENTORY_ITEM *inv_item = ring.list[ring.current_object];
+                INV_ITEM *inv_item = ring.list[ring.current_object];
                 if (inv_item->object_id == O_PASSPORT_CLOSED) {
                     inv_item->object_id = O_PASSPORT_OPTION;
                 }
@@ -1118,7 +1120,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                 break;
 
             case RNG_CLOSING_ITEM: {
-                INVENTORY_ITEM *inv_item = ring.list[ring.current_object];
+                INV_ITEM *inv_item = ring.list[ring.current_object];
                 for (int32_t frame = 0; frame < m_NFrames; frame++) {
                     if (!M_AnimateInventoryItem(inv_item)) {
                         if (inv_item->object_id == O_PASSPORT_OPTION) {
@@ -1126,8 +1128,8 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
                             inv_item->current_frame = 0;
                         }
 
-                        imo.count = 16;
-                        imo.status = imo.status_target;
+                        ring.motion.count = 16;
+                        ring.motion.status = ring.motion.status_target;
                         InvRing_MotionItemDeselect(&ring, inv_item);
                         break;
                     }
@@ -1136,7 +1138,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             }
 
             case RNG_EXITING_INVENTORY:
-                if (!imo.count) {
+                if (!ring.motion.count) {
                     InvRing_MotionSetup(&ring, RNG_CLOSING, RNG_DONE, 32);
                     InvRing_MotionRadius(&ring, 0);
                     InvRing_MotionCameraPos(&ring, -1536);
@@ -1150,11 +1152,14 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             }
         }
 
-        if (imo.status == RNG_OPEN || imo.status == RNG_SELECTING
-            || imo.status == RNG_SELECTED || imo.status == RNG_DESELECTING
-            || imo.status == RNG_DESELECT || imo.status == RNG_CLOSING_ITEM) {
+        if (ring.motion.status == RNG_OPEN
+            || ring.motion.status == RNG_SELECTING
+            || ring.motion.status == RNG_SELECTED
+            || ring.motion.status == RNG_DESELECTING
+            || ring.motion.status == RNG_DESELECT
+            || ring.motion.status == RNG_CLOSING_ITEM) {
             if (!ring.rotating && !g_Input.menu_left && !g_Input.menu_right) {
-                INVENTORY_ITEM *const inv_item = ring.list[ring.current_object];
+                INV_ITEM *const inv_item = ring.list[ring.current_object];
                 M_RingNotActive(inv_item);
             }
             M_RingIsOpen(&ring);
@@ -1162,10 +1167,12 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             M_RingIsNotOpen(&ring);
         }
 
-        if (imo.status == RNG_OPENING || imo.status == RNG_CLOSING
-            || imo.status == RNG_MAIN2OPTION || imo.status == RNG_OPTION2MAIN
-            || imo.status == RNG_EXITING_INVENTORY || imo.status == RNG_DONE
-            || ring.rotating) {
+        if (ring.motion.status == RNG_OPENING
+            || ring.motion.status == RNG_CLOSING
+            || ring.motion.status == RNG_MAIN2OPTION
+            || ring.motion.status == RNG_OPTION2MAIN
+            || ring.motion.status == RNG_EXITING_INVENTORY
+            || ring.motion.status == RNG_DONE || ring.rotating) {
             M_RingActive();
         }
 
@@ -1173,14 +1180,14 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             Stats_UpdateTimer();
         }
 
-        M_Draw(&ring, &imo, &fader);
+        M_Draw(&ring, &fader);
         Fader_Control(&fader);
-    } while (imo.status != RNG_DONE);
+    } while (ring.motion.status != RNG_DONE);
 
     if (inventory_mode == INV_TITLE_MODE || g_IsGameToExit) {
         Fader_InitTransparentToBlack(&fader, FRAMES_PER_SECOND / 3);
         while (Fader_IsActive(&fader)) {
-            M_Draw(&ring, &imo, &fader);
+            M_Draw(&ring, &fader);
             Fader_Control(&fader);
         }
     }

@@ -16,9 +16,9 @@
 
 static GAME_OBJECT_ID m_RequestedObjectID = NO_OBJECT;
 
-static void M_HandleRequestedObject(RING_INFO *ring);
+static void M_HandleRequestedObject(INV_RING *ring);
 
-static void M_HandleRequestedObject(RING_INFO *const ring)
+static void M_HandleRequestedObject(INV_RING *const ring)
 {
     if (m_RequestedObjectID == NO_OBJECT) {
         return;
@@ -41,8 +41,8 @@ void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID object_id)
 }
 
 void InvRing_InitRing(
-    RING_INFO *const ring, const RING_TYPE type, INVENTORY_ITEM **const list,
-    const int16_t qty, const int16_t current, IMOTION_INFO *const imo)
+    INV_RING *const ring, const RING_TYPE type, INV_ITEM **const list,
+    const int16_t qty, const int16_t current)
 {
     ring->type = type;
     ring->list = list;
@@ -66,8 +66,6 @@ void InvRing_InitRing(
     ring->rot_adder_l = 0;
     ring->rot_adder_r = 0;
 
-    ring->imo = imo;
-
     ring->camera.pos.x = 0;
     ring->camera.pos.y = RING_CAMERA_START_HEIGHT;
     ring->camera.pos.z = 896;
@@ -86,7 +84,7 @@ void InvRing_InitRing(
     ring->ring_pos.pos.y = 0;
     ring->ring_pos.pos.z = 0;
     ring->ring_pos.rot.x = 0;
-    ring->ring_pos.rot.y = imo->rotate_target + RING_OPEN_ROTATION;
+    ring->ring_pos.rot.y = ring->motion.rotate_target + RING_OPEN_ROTATION;
     ring->ring_pos.rot.z = 0;
 
     ring->light.x = -1536;
@@ -94,7 +92,7 @@ void InvRing_InitRing(
     ring->light.z = 1024;
 }
 
-void InvRing_GetView(const RING_INFO *const ring, PHD_3DPOS *const view)
+void InvRing_GetView(const INV_RING *const ring, PHD_3DPOS *const view)
 {
     int16_t angles[2];
 
@@ -109,7 +107,7 @@ void InvRing_GetView(const RING_INFO *const ring, PHD_3DPOS *const view)
     view->rot.z = 0;
 }
 
-void InvRing_Light(const RING_INFO *const ring)
+void InvRing_Light(const INV_RING *const ring)
 {
     g_LsDivider = 0x6000;
     int16_t angles[2];
@@ -117,64 +115,64 @@ void InvRing_Light(const RING_INFO *const ring)
     Output_RotateLight(angles[1], angles[0]);
 }
 
-void InvRing_CalcAdders(RING_INFO *const ring, const int16_t rotation_duration)
+void InvRing_CalcAdders(INV_RING *const ring, const int16_t rotation_duration)
 {
     ring->angle_adder = PHD_360 / ring->number_of_objects;
     ring->rot_adder_l = ring->angle_adder / rotation_duration;
     ring->rot_adder_r = -ring->angle_adder / rotation_duration;
 }
 
-void InvRing_DoMotions(RING_INFO *const ring)
+void InvRing_DoMotions(INV_RING *const ring)
 {
-    IMOTION_INFO *const imo = ring->imo;
+    INV_RING_MOTION *const motion = &ring->motion;
 
-    if (imo->count != 0) {
-        ring->radius += imo->radius_rate;
-        ring->camera.pos.y += imo->camera_y_rate;
-        ring->ring_pos.rot.y += imo->rotate_rate;
-        ring->camera_pitch += imo->camera_pitch_rate;
+    if (motion->count != 0) {
+        ring->radius += motion->radius_rate;
+        ring->camera.pos.y += motion->camera_y_rate;
+        ring->ring_pos.rot.y += motion->rotate_rate;
+        ring->camera_pitch += motion->camera_pitch_rate;
 
-        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
-        inv_item->x_rot_pt += imo->item_pt_x_rot_rate;
-        inv_item->x_rot += imo->item_x_rot_rate;
-        inv_item->y_trans += imo->item_y_trans_rate;
-        inv_item->z_trans += imo->item_z_trans_rate;
+        INV_ITEM *const inv_item = ring->list[ring->current_object];
+        inv_item->x_rot_pt += motion->item_pt_x_rot_rate;
+        inv_item->x_rot += motion->item_x_rot_rate;
+        inv_item->y_trans += motion->item_y_trans_rate;
+        inv_item->z_trans += motion->item_z_trans_rate;
 
-        imo->count--;
-        if (imo->count == 0) {
-            imo->status = imo->status_target;
+        motion->count--;
+        if (motion->count == 0) {
+            motion->status = motion->status_target;
 
-            if (imo->radius_rate != 0) {
-                imo->radius_rate = 0;
-                ring->radius = imo->radius_target;
+            if (motion->radius_rate != 0) {
+                motion->radius_rate = 0;
+                ring->radius = motion->radius_target;
             }
-            if (imo->camera_y_rate != 0) {
-                imo->camera_y_rate = 0;
-                ring->camera.pos.y = imo->camera_y_target;
+            if (motion->camera_y_rate != 0) {
+                motion->camera_y_rate = 0;
+                ring->camera.pos.y = motion->camera_y_target;
             }
-            if (imo->rotate_rate != 0) {
-                imo->rotate_rate = 0;
-                ring->ring_pos.rot.y = imo->rotate_target;
+            if (motion->rotate_rate != 0) {
+                motion->rotate_rate = 0;
+                ring->ring_pos.rot.y = motion->rotate_target;
             }
-            if (imo->item_pt_x_rot_rate != 0) {
-                imo->item_pt_x_rot_rate = 0;
-                inv_item->x_rot_pt = imo->item_pt_x_rot_target;
+            if (motion->item_pt_x_rot_rate != 0) {
+                motion->item_pt_x_rot_rate = 0;
+                inv_item->x_rot_pt = motion->item_pt_x_rot_target;
             }
-            if (imo->item_x_rot_rate != 0) {
-                imo->item_x_rot_rate = 0;
-                inv_item->x_rot = imo->item_x_rot_target;
+            if (motion->item_x_rot_rate != 0) {
+                motion->item_x_rot_rate = 0;
+                inv_item->x_rot = motion->item_x_rot_target;
             }
-            if (imo->item_y_trans_rate != 0) {
-                imo->item_y_trans_rate = 0;
-                inv_item->y_trans = imo->item_y_trans_target;
+            if (motion->item_y_trans_rate != 0) {
+                motion->item_y_trans_rate = 0;
+                inv_item->y_trans = motion->item_y_trans_target;
             }
-            if (imo->item_z_trans_rate != 0) {
-                imo->item_z_trans_rate = 0;
-                inv_item->z_trans = imo->item_z_trans_target;
+            if (motion->item_z_trans_rate != 0) {
+                motion->item_z_trans_rate = 0;
+                inv_item->z_trans = motion->item_z_trans_target;
             }
-            if (imo->camera_pitch_rate != 0) {
-                imo->camera_pitch_rate = 0;
-                ring->camera_pitch = imo->camera_pitch_target;
+            if (motion->camera_pitch_rate != 0) {
+                motion->camera_pitch_rate = 0;
+                ring->camera_pitch = motion->camera_pitch_target;
             }
         }
     }
@@ -192,7 +190,7 @@ void InvRing_DoMotions(RING_INFO *const ring)
     }
 }
 
-void InvRing_RotateLeft(RING_INFO *const ring)
+void InvRing_RotateLeft(INV_RING *const ring)
 {
     ring->rotating = 1;
     if (ring->current_object == 0) {
@@ -204,7 +202,7 @@ void InvRing_RotateLeft(RING_INFO *const ring)
     ring->rot_adder = ring->rot_adder_l;
 }
 
-void InvRing_RotateRight(RING_INFO *const ring)
+void InvRing_RotateRight(INV_RING *const ring)
 {
     ring->rotating = 1;
     if (ring->current_object + 1 >= ring->number_of_objects) {
@@ -217,101 +215,101 @@ void InvRing_RotateRight(RING_INFO *const ring)
 }
 
 void InvRing_MotionInit(
-    RING_INFO *const ring, const int16_t frames, const RING_STATUS status,
+    INV_RING *const ring, const int16_t frames, const RING_STATUS status,
     const RING_STATUS status_target)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->count = frames;
-    imo->status = status;
-    imo->status_target = status_target;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->count = frames;
+    motion->status = status;
+    motion->status_target = status_target;
 
-    imo->radius_target = 0;
-    imo->radius_rate = 0;
-    imo->camera_y_target = 0;
-    imo->camera_y_rate = 0;
-    imo->camera_pitch_target = 0;
-    imo->camera_pitch_rate = 0;
-    imo->rotate_target = 0;
-    imo->rotate_rate = 0;
-    imo->item_pt_x_rot_target = 0;
-    imo->item_pt_x_rot_rate = 0;
-    imo->item_x_rot_target = 0;
-    imo->item_x_rot_rate = 0;
-    imo->item_y_trans_target = 0;
-    imo->item_y_trans_rate = 0;
-    imo->item_z_trans_target = 0;
-    imo->item_z_trans_rate = 0;
+    motion->radius_target = 0;
+    motion->radius_rate = 0;
+    motion->camera_y_target = 0;
+    motion->camera_y_rate = 0;
+    motion->camera_pitch_target = 0;
+    motion->camera_pitch_rate = 0;
+    motion->rotate_target = 0;
+    motion->rotate_rate = 0;
+    motion->item_pt_x_rot_target = 0;
+    motion->item_pt_x_rot_rate = 0;
+    motion->item_x_rot_target = 0;
+    motion->item_x_rot_rate = 0;
+    motion->item_y_trans_target = 0;
+    motion->item_y_trans_rate = 0;
+    motion->item_z_trans_target = 0;
+    motion->item_z_trans_rate = 0;
 
-    imo->misc = 0;
+    motion->misc = 0;
 }
 
 void InvRing_MotionSetup(
-    RING_INFO *const ring, const RING_STATUS status,
+    INV_RING *const ring, const RING_STATUS status,
     const RING_STATUS status_target, const int16_t frames)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->count = frames;
-    imo->status = status;
-    imo->status_target = status_target;
-    imo->radius_rate = 0;
-    imo->camera_y_rate = 0;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->count = frames;
+    motion->status = status;
+    motion->status_target = status_target;
+    motion->radius_rate = 0;
+    motion->camera_y_rate = 0;
 }
 
-void InvRing_MotionRadius(RING_INFO *const ring, const int16_t target)
+void InvRing_MotionRadius(INV_RING *const ring, const int16_t target)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->radius_target = target;
-    imo->radius_rate = (target - ring->radius) / imo->count;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->radius_target = target;
+    motion->radius_rate = (target - ring->radius) / motion->count;
 }
 
 void InvRing_MotionRotation(
-    RING_INFO *const ring, const int16_t rotation, const int16_t target)
+    INV_RING *const ring, const int16_t rotation, const int16_t target)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->rotate_target = target;
-    imo->rotate_rate = rotation / imo->count;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->rotate_target = target;
+    motion->rotate_rate = rotation / motion->count;
 }
 
-void InvRing_MotionCameraPos(RING_INFO *const ring, const int16_t target)
+void InvRing_MotionCameraPos(INV_RING *const ring, const int16_t target)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->camera_y_target = target;
-    imo->camera_y_rate = (target - ring->camera.pos.y) / imo->count;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->camera_y_target = target;
+    motion->camera_y_rate = (target - ring->camera.pos.y) / motion->count;
 }
 
-void InvRing_MotionCameraPitch(RING_INFO *const ring, const int16_t target)
+void InvRing_MotionCameraPitch(INV_RING *const ring, const int16_t target)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->camera_pitch_target = target;
-    imo->camera_pitch_rate = target / imo->count;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->camera_pitch_target = target;
+    motion->camera_pitch_rate = target / motion->count;
 }
 
 void InvRing_MotionItemSelect(
-    RING_INFO *const ring, const INVENTORY_ITEM *const inv_item)
+    INV_RING *const ring, const INV_ITEM *const inv_item)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->item_pt_x_rot_target = inv_item->x_rot_pt_sel;
-    imo->item_pt_x_rot_rate = inv_item->x_rot_pt_sel / imo->count;
-    imo->item_x_rot_target = inv_item->x_rot_sel;
-    imo->item_x_rot_rate =
-        (inv_item->x_rot_sel - inv_item->x_rot_nosel) / imo->count;
-    imo->item_y_trans_target = inv_item->y_trans_sel;
-    imo->item_y_trans_rate = inv_item->y_trans_sel / imo->count;
-    imo->item_z_trans_target = inv_item->z_trans_sel;
-    imo->item_z_trans_rate = inv_item->z_trans_sel / imo->count;
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->item_pt_x_rot_target = inv_item->x_rot_pt_sel;
+    motion->item_pt_x_rot_rate = inv_item->x_rot_pt_sel / motion->count;
+    motion->item_x_rot_target = inv_item->x_rot_sel;
+    motion->item_x_rot_rate =
+        (inv_item->x_rot_sel - inv_item->x_rot_nosel) / motion->count;
+    motion->item_y_trans_target = inv_item->y_trans_sel;
+    motion->item_y_trans_rate = inv_item->y_trans_sel / motion->count;
+    motion->item_z_trans_target = inv_item->z_trans_sel;
+    motion->item_z_trans_rate = inv_item->z_trans_sel / motion->count;
 }
 
 void InvRing_MotionItemDeselect(
-    RING_INFO *const ring, const INVENTORY_ITEM *const inv_item)
+    INV_RING *const ring, const INV_ITEM *const inv_item)
 {
-    IMOTION_INFO *const imo = ring->imo;
-    imo->item_pt_x_rot_target = 0;
-    imo->item_pt_x_rot_rate = -(inv_item->x_rot_pt_sel / imo->count);
-    imo->item_x_rot_target = inv_item->x_rot_nosel;
-    imo->item_x_rot_rate =
-        (inv_item->x_rot_nosel - inv_item->x_rot_sel) / imo->count;
-    imo->item_y_trans_target = 0;
-    imo->item_y_trans_rate = -(inv_item->y_trans_sel / imo->count);
-    imo->item_z_trans_target = 0;
-    imo->item_z_trans_rate = -(inv_item->z_trans_sel / imo->count);
+    INV_RING_MOTION *const motion = &ring->motion;
+    motion->item_pt_x_rot_target = 0;
+    motion->item_pt_x_rot_rate = -(inv_item->x_rot_pt_sel / motion->count);
+    motion->item_x_rot_target = inv_item->x_rot_nosel;
+    motion->item_x_rot_rate =
+        (inv_item->x_rot_nosel - inv_item->x_rot_sel) / motion->count;
+    motion->item_y_trans_target = 0;
+    motion->item_y_trans_rate = -(inv_item->y_trans_sel / motion->count);
+    motion->item_z_trans_target = 0;
+    motion->item_z_trans_rate = -(inv_item->z_trans_sel / motion->count);
 }

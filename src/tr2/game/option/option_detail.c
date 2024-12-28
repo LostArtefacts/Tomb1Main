@@ -3,11 +3,11 @@
 #include "game/text.h"
 #include "global/vars.h"
 
-void Option_Detail_Control(INVENTORY_ITEM *const item)
+void Option_Detail_Control(INV_ITEM *const item)
 {
 }
 
-void Option_Detail_Draw(INVENTORY_ITEM *const item)
+void Option_Detail_Draw(INV_ITEM *const item)
 {
 }
 

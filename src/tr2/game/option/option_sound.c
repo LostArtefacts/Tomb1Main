@@ -55,7 +55,7 @@ void Option_Sound_Shutdown(void)
     M_ShutdownText();
 }
 
-void Option_Sound_Control(INVENTORY_ITEM *const item)
+void Option_Sound_Control(INV_ITEM *const item)
 {
     char text[32];
 
@@ -126,6 +126,6 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
     }
 }
 
-void Option_Sound_Draw(INVENTORY_ITEM *const item)
+void Option_Sound_Draw(INV_ITEM *const item)
 {
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../collision.h"
+#include "../items/types.h"
 #include "../types.h"
 
 #include <stdint.h>
