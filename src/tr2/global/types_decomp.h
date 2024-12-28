@@ -401,19 +401,24 @@ typedef enum {
 } LEVEL_TYPE;
 
 typedef enum {
-    INV_COLOR_BLACK      = 0,
-    INV_COLOR_GRAY       = 1,
-    INV_COLOR_WHITE      = 2,
-    INV_COLOR_RED        = 3,
-    INV_COLOR_ORANGE     = 4,
-    INV_COLOR_YELLOW     = 5,
-    INV_COLOR_DARK_GREEN = 12,
-    INV_COLOR_GREEN      = 13,
-    INV_COLOR_CYAN       = 14,
-    INV_COLOR_BLUE       = 15,
-    INV_COLOR_MAGENTA    = 16,
-    INV_COLOR_NUMBER_OF  = 17,
-} INV_COLOR;
+    COLOR_BLACK      = 0,
+    COLOR_GRAY       = 1,
+    COLOR_WHITE      = 2,
+    COLOR_RED        = 3,
+    COLOR_ORANGE     = 4,
+    COLOR_YELLOW     = 5,
+    COLOR_DARK_GREEN = 12,
+    COLOR_GREEN      = 13,
+    COLOR_CYAN       = 14,
+    COLOR_BLUE       = 15,
+    COLOR_MAGENTA    = 16,
+    COLOR_NUMBER_OF  = 17,
+} COLOR_NAME;
+
+typedef struct {
+    RGB_888 rgb;
+    uint8_t palette_index;
+} NAMED_COLOR;
 
 typedef enum {
     INV_GAME_MODE  = 0,

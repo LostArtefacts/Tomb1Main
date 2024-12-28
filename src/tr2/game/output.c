@@ -23,7 +23,7 @@ static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr);
 
 static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
-    INV_COLOR bar_color_main, INV_COLOR bar_color_highlight);
+    COLOR_NAME bar_color_main, COLOR_NAME bar_color_highlight);
 
 static int32_t M_CalcFogShade(const int32_t depth)
 {
@@ -38,26 +38,27 @@ static int32_t M_CalcFogShade(const int32_t depth)
 
 static void M_InsertBar(
     const int32_t l, const int32_t t, const int32_t w, const int32_t h,
-    const int32_t percent, const INV_COLOR bar_color_main,
-    const INV_COLOR bar_color_highlight)
+    const int32_t percent, const COLOR_NAME bar_color_main,
+    const COLOR_NAME bar_color_highlight)
 {
     const int32_t z_offset = 8;
     Render_InsertFlatRect(
         l, t, l + w, t + h, g_PhdNearZ + z_offset * 5,
-        g_InvColors[INV_COLOR_WHITE]);
+        g_NamedColors[COLOR_WHITE].palette_index);
     Render_InsertFlatRect(
         l + 1, t + 1, l + w, t + h, g_PhdNearZ + z_offset * 4,
-        g_InvColors[INV_COLOR_GRAY]);
+        g_NamedColors[COLOR_GRAY].palette_index);
     Render_InsertFlatRect(
         l + 1, t + 1, l + w - 1, t + h - 1, g_PhdNearZ + z_offset * 3,
-        g_InvColors[INV_COLOR_BLACK]);
+        g_NamedColors[COLOR_BLACK].palette_index);
 
     Render_InsertFlatRect(
         l + 2, t + 2, l + (w - 2) * percent / 100, t + h - 2,
-        g_PhdNearZ + z_offset * 2, g_InvColors[bar_color_main]);
+        g_PhdNearZ + z_offset * 2, g_NamedColors[bar_color_main].palette_index);
     Render_InsertFlatRect(
         l + 2, t + 3, l + (w - 2) * percent / 100, t + 4,
-        g_PhdNearZ + z_offset * 1, g_InvColors[bar_color_highlight]);
+        g_PhdNearZ + z_offset * 1,
+        g_NamedColors[bar_color_highlight].palette_index);
 }
 
 static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
@@ -681,7 +682,9 @@ void Output_UnloadBackground(void)
 void Output_InsertBackPolygon(
     const int32_t x0, const int32_t y0, const int32_t x1, const int32_t y1)
 {
-    Render_InsertFlatRect(x0, y0, x1, y1, g_PhdFarZ + 1, g_InvColors[0]);
+    Render_InsertFlatRect(
+        x0, y0, x1, y1, g_PhdFarZ + 1,
+        g_NamedColors[COLOR_BLACK].palette_index);
 }
 
 void Output_DrawBlackRectangle(int32_t opacity)
@@ -739,15 +742,14 @@ void Output_DrawScreenFBox(
 void Output_DrawHealthBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
-    M_InsertBar(6, 6, 105, 9, percent, INV_COLOR_RED, INV_COLOR_ORANGE);
+    M_InsertBar(6, 6, 105, 9, percent, COLOR_RED, COLOR_ORANGE);
 }
 
 void Output_DrawAirBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
     M_InsertBar(
-        g_PhdWinWidth - 112, 6, 105, 9, percent, INV_COLOR_BLUE,
-        INV_COLOR_WHITE);
+        g_PhdWinWidth - 112, 6, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
 }
 
 int16_t Output_FindColor(

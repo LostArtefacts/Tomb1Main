@@ -53,7 +53,7 @@ void InvRing_InitRing(
 
     M_HandleRequestedObject(ring);
 
-    if (g_Inv_Mode == INV_TITLE_MODE) {
+    if (ring->mode == INV_TITLE_MODE) {
         ring->camera_pitch = 1024;
     } else {
         ring->camera_pitch = 0;

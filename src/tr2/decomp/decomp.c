@@ -12,7 +12,6 @@
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
 #include "game/inventory.h"
-#include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
@@ -197,7 +196,6 @@ int32_t Level_Initialise(
 
     Effect_InitialiseArray();
     LOT_InitialiseArray();
-    InvRing_Init();
     Overlay_HideGameInfo();
     Overlay_InitialisePickUpDisplay();
     g_HealthBarTimer = 100;

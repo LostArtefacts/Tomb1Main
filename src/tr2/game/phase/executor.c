@@ -56,8 +56,14 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
     if (phase->start != NULL) {
         control = phase->start(phase);
         if (control.action == PHASE_ACTION_END) {
+            if (phase->end != NULL) {
+                phase->end(phase);
+            }
             return control.dir;
         } else if (g_IsGameToExit) {
+            if (phase->end != NULL) {
+                phase->end(phase);
+            }
             return GFD_EXIT_GAME;
         }
     }

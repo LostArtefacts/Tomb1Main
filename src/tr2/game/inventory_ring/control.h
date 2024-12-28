@@ -4,9 +4,8 @@
 
 #include <libtrx/game/objects/types.h>
 
-void InvRing_Init(void);
-
-int32_t InvRing_Display(INVENTORY_MODE inventory_mode);
-int32_t InvRing_DisplayKeys(GAME_OBJECT_ID receptacle_type_id);
+INV_RING *InvRing_Open(INVENTORY_MODE mode);
+GAME_FLOW_DIR InvRing_Control(INV_RING *ring, int32_t num_frames);
+GAME_FLOW_DIR InvRing_Close(INV_RING *ring);
 
 void InvRing_ClearSelection(void);

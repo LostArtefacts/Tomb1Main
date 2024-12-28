@@ -86,6 +86,7 @@ typedef struct {
 } INV_RING_MOTION;
 
 typedef struct {
+    INVENTORY_MODE mode;
     INV_ITEM **list;
     int16_t type;
     int16_t radius;
@@ -103,4 +104,7 @@ typedef struct {
     PHD_3DPOS camera;
     XYZ_32 light;
     INV_RING_MOTION motion;
+
+    bool demo_needed;
+    bool pass_open;
 } INV_RING;

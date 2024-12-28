@@ -6,6 +6,7 @@
 #include "game/inject.h"
 #include "game/items.h"
 #include "game/objects/setup.h"
+#include "game/output.h"
 #include "game/render/common.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -531,6 +532,13 @@ static void M_LoadPalettes(VFILE *const file)
     }
 
     VFile_Read(file, g_GamePalette16, sizeof(PALETTEENTRY) * 256);
+
+    for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
+        g_NamedColors[i].palette_index = Output_FindColor(
+            g_NamedColors[i].rgb.red, g_NamedColors[i].rgb.green,
+            g_NamedColors[i].rgb.blue);
+    }
+
     Benchmark_End(benchmark, NULL);
 }
 

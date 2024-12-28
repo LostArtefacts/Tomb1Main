@@ -165,8 +165,6 @@ void InvRing_Draw(INV_RING *const ring)
 {
     ring->camera.pos.z = ring->radius + 598;
 
-    Output_DrawBackground();
-
     PHD_3DPOS view;
     InvRing_GetView(ring, &view);
     Matrix_GenerateW2V(&view);
@@ -221,15 +219,4 @@ void InvRing_Draw(INV_RING *const ring)
         }
         Option_Draw(inv_item);
     }
-
-    Overlay_DrawModeInfo();
-    Text_Draw();
-    Output_DrawPolyList();
-
-#if 0
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(fader));
-#endif
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
 }

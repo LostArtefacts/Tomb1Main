@@ -1,5 +1,6 @@
 #include "game/gameflow.h"
 
+#include "config.h"
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "decomp/stats.h"
@@ -9,7 +10,9 @@
 #include "game/gun/gun.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
+#include "game/inventory_ring/ring.h"
 #include "game/music.h"
+#include "game/objects/vars.h"
 #include "game/overlay.h"
 #include "game/phase.h"
 #include "game/requester.h"
@@ -674,10 +677,18 @@ GAME_FLOW_DIR GF_StartGame(
 
 GAME_FLOW_DIR GF_ShowInventory(const INVENTORY_MODE mode)
 {
-    return InvRing_Display(mode);
+    PHASE *const phase = Phase_Inventory_Create(mode);
+    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+    Phase_Game_Destroy(phase);
+    return dir;
 }
 
 GAME_FLOW_DIR GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
 {
-    return InvRing_DisplayKeys(receptacle_type_id);
+    if (g_Config.gameplay.enable_auto_item_selection) {
+        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
+            receptacle_type_id, g_KeyItemToReceptacleMap);
+        InvRing_SetRequestedObjectID(object_id);
+    }
+    return GF_ShowInventory(INV_KEYS_MODE);
 }

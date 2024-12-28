@@ -311,3 +311,4 @@ extern ROOM_LIGHT_TABLE g_RoomLightTables[WIBBLE_SIZE];
 extern LIGHT g_DynamicLights[MAX_DYNAMIC_LIGHTS];
 extern int32_t g_RoomLightShades[4];
 extern int32_t g_SunsetTimer;
+extern NAMED_COLOR g_NamedColors[];
