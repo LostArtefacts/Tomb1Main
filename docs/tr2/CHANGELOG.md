@@ -17,6 +17,7 @@
 - fixed the camera getting stuck at the start of Home Sweet Home (#2129, regression from 0.7)
 - fixed bubbles spawning from flares if Lara is in shallow water (#1590)
 - fixed flare sound effects not always playing when Lara is in shallow water (#1590)
+- improved the animation of Lara's braid (#2094)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17
 - fixed a crash when selecting the sound option (#2057, regression from 0.6)
