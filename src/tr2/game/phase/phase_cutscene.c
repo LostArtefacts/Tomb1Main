@@ -33,7 +33,7 @@ static void M_FixAudioDrift(void);
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
-static void M_Draw(PHASE *const phase);
+static void M_Draw(PHASE *phase);
 
 static void M_FixAudioDrift(void)
 {
@@ -100,20 +100,16 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             .dir = GFD_EXIT_GAME,
         };
     } else {
+        M_FixAudioDrift();
         Fader_Control(&p->exit_fader);
 
-        M_FixAudioDrift();
-
-        Shell_ProcessEvents();
         Input_Update();
-
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .dir = (GAME_FLOW_DIR)-1,
             };
         }
-
         Shell_ProcessInput();
 
         g_DynamicLightCount = 0;

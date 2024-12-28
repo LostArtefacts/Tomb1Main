@@ -34,7 +34,121 @@ static int32_t m_FrameCount = 0;
 static bool m_Exiting = false;
 static FADER m_ExitFader = { 0 };
 
-int32_t Game_Control(int32_t nframes, const bool demo_mode)
+GAME_FLOW_DIR Game_ControlRaw(const int32_t num_frames, const bool demo_mode)
+{
+    if (!g_GameFlow.cheat_mode_check_disabled) {
+        Lara_Cheat_CheckKeys();
+    }
+
+    if (g_LevelComplete) {
+        return GFD_START_GAME | LV_FIRST;
+    }
+
+    Input_Update();
+    Shell_ProcessInput();
+    Game_ProcessInput();
+
+    if (demo_mode) {
+        if (g_InputDB.any) {
+            return g_GameFlow.on_demo_interrupt;
+        }
+        if (!Demo_GetInput()) {
+            g_Input = (INPUT_STATE) { 0 };
+            return g_GameFlow.on_demo_end;
+        }
+    } else if (g_GameFlow.no_input_timeout) {
+        if (g_InputDB.any) {
+            g_NoInputCounter = 0;
+        } else {
+            g_NoInputCounter++;
+            if (g_NoInputCounter > g_GameFlow.no_input_time) {
+                return GFD_START_DEMO;
+            }
+        }
+    }
+
+    if (g_Lara.death_timer > DEATH_WAIT
+        || (g_Lara.death_timer > DEATH_WAIT_INPUT && g_Input.any)
+        || g_OverlayStatus == 2) {
+        if (demo_mode) {
+            return g_GameFlow.on_death_demo_mode;
+        }
+        if (g_CurrentLevel == LV_GYM) {
+            return GFD_EXIT_TO_TITLE;
+        }
+        if (g_GameFlow.on_death_in_game) {
+            return g_GameFlow.on_death_in_game;
+        }
+        if (g_OverlayStatus == 2) {
+            g_OverlayStatus = 1;
+            const GAME_FLOW_DIR dir = Inv_Display(INV_DEATH_MODE);
+            if (dir != 0) {
+                return dir;
+            }
+        } else {
+            g_OverlayStatus = 2;
+        }
+    }
+
+    if (((g_InputDB.load || g_InputDB.save || g_InputDB.option)
+         || g_OverlayStatus <= 0)
+        && g_Lara.death_timer == 0 && !g_Lara.extra_anim) {
+        if (g_OverlayStatus > 0) {
+            if (g_GameFlow.load_save_disabled) {
+                g_OverlayStatus = 0;
+            } else if (g_Input.load) {
+                g_OverlayStatus = -1;
+            } else {
+                g_OverlayStatus = g_Input.save ? -2 : 0;
+            }
+        } else {
+            GAME_FLOW_DIR dir;
+            if (g_OverlayStatus == -1) {
+                dir = Inv_Display(INV_LOAD_MODE);
+            } else if (g_OverlayStatus == -2) {
+                dir = Inv_Display(INV_SAVE_MODE);
+            } else {
+                dir = Inv_Display(INV_GAME_MODE);
+            }
+            if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
+                return GFD_OVERRIDE;
+            }
+            g_OverlayStatus = 1;
+
+            if (dir != 0) {
+                if (g_Inv_ExtraData[0] == 1) {
+                    if (g_CurrentLevel == LV_GYM) {
+                        return GFD_START_GAME | LV_FIRST;
+                    }
+                    CreateSaveGameInfo();
+                    const int16_t slot_num = g_Inv_ExtraData[1];
+                    S_SaveGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
+                } else {
+                    return dir;
+                }
+            }
+        }
+    }
+
+    g_DynamicLightCount = 0;
+
+    Item_Control();
+    Effect_Control();
+    Lara_Control(false);
+    Lara_Hair_Control(false);
+    Camera_Update();
+    Sound_UpdateEffects();
+    Sound_EndScene();
+    ItemAction_RunActive();
+
+    g_HealthBarTimer--;
+    if (g_CurrentLevel || g_IsAssaultTimerActive) {
+        Stats_UpdateTimer();
+    }
+    return (GAME_FLOW_DIR)-1;
+}
+
+GAME_FLOW_DIR Game_Control(int32_t num_frames, const bool demo_mode)
 {
     Fader_Control(&m_ExitFader);
 
@@ -42,130 +156,21 @@ int32_t Game_Control(int32_t nframes, const bool demo_mode)
         return GFD_OVERRIDE;
     }
 
-    CLAMPG(nframes, MAX_FRAMES);
-    m_FrameCount += nframes;
+    CLAMPG(num_frames, MAX_FRAMES);
+    m_FrameCount += num_frames;
 
     if (m_FrameCount <= 0) {
-        return 0;
+        return -1;
     }
 
+    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
     while (m_FrameCount > 0) {
-        if (!g_GameFlow.cheat_mode_check_disabled) {
-            Lara_Cheat_CheckKeys();
-        }
-
-        if (g_LevelComplete) {
-            return GFD_START_GAME | LV_FIRST;
-        }
-
         Shell_ProcessEvents();
-        Input_Update();
-        Shell_ProcessInput();
-        Game_ProcessInput();
-
-        if (demo_mode) {
-            if (g_InputDB.any) {
-                return g_GameFlow.on_demo_interrupt;
-            }
-            if (!Demo_GetInput()) {
-                g_Input = (INPUT_STATE) { 0 };
-                return g_GameFlow.on_demo_end;
-            }
-        } else if (g_GameFlow.no_input_timeout) {
-            if (g_InputDB.any) {
-                g_NoInputCounter = 0;
-            } else {
-                g_NoInputCounter++;
-                if (g_NoInputCounter > g_GameFlow.no_input_time) {
-                    return GFD_START_DEMO;
-                }
-            }
-        }
-
-        if (g_Lara.death_timer > DEATH_WAIT
-            || (g_Lara.death_timer > DEATH_WAIT_INPUT && g_Input.any)
-            || g_OverlayStatus == 2) {
-            if (demo_mode) {
-                return g_GameFlow.on_death_demo_mode;
-            }
-            if (g_CurrentLevel == LV_GYM) {
-                return GFD_EXIT_TO_TITLE;
-            }
-            if (g_GameFlow.on_death_in_game) {
-                return g_GameFlow.on_death_in_game;
-            }
-            if (g_OverlayStatus == 2) {
-                g_OverlayStatus = 1;
-                const GAME_FLOW_DIR dir = Inv_Display(INV_DEATH_MODE);
-                if (dir != 0) {
-                    return dir;
-                }
-            } else {
-                g_OverlayStatus = 2;
-            }
-        }
-
-        if (((g_InputDB.load || g_InputDB.save || g_InputDB.option)
-             || g_OverlayStatus <= 0)
-            && g_Lara.death_timer == 0 && !g_Lara.extra_anim) {
-            if (g_OverlayStatus > 0) {
-                if (g_GameFlow.load_save_disabled) {
-                    g_OverlayStatus = 0;
-                } else if (g_Input.load) {
-                    g_OverlayStatus = -1;
-                } else {
-                    g_OverlayStatus = g_Input.save ? -2 : 0;
-                }
-            } else {
-                GAME_FLOW_DIR dir;
-                if (g_OverlayStatus == -1) {
-                    dir = Inv_Display(INV_LOAD_MODE);
-                } else if (g_OverlayStatus == -2) {
-                    dir = Inv_Display(INV_SAVE_MODE);
-                } else {
-                    dir = Inv_Display(INV_GAME_MODE);
-                }
-                if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-                    return GFD_OVERRIDE;
-                }
-                g_OverlayStatus = 1;
-
-                if (dir != 0) {
-                    if (g_Inv_ExtraData[0] == 1) {
-                        if (g_CurrentLevel == LV_GYM) {
-                            return GFD_START_GAME | LV_FIRST;
-                        }
-                        CreateSaveGameInfo();
-                        const int16_t slot_num = g_Inv_ExtraData[1];
-                        S_SaveGame(
-                            &g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
-                    } else {
-                        return dir;
-                    }
-                }
-            }
-        }
-
-        g_DynamicLightCount = 0;
-
-        Item_Control();
-        Effect_Control();
-        Lara_Control(false);
-        Lara_Hair_Control(false);
-        Camera_Update();
-        Sound_UpdateEffects();
-        Sound_EndScene();
-        ItemAction_RunActive();
-
-        g_HealthBarTimer--;
-        if (g_CurrentLevel || g_IsAssaultTimerActive) {
-            Stats_UpdateTimer();
-        }
-
+        dir = Game_ControlRaw(num_frames, demo_mode);
         m_FrameCount -= 2;
     }
 
-    return 0;
+    return dir;
 }
 
 int32_t Game_Draw(void)
@@ -259,23 +264,20 @@ GAME_FLOW_DIR Game_Loop(const bool demo_mode)
     g_OverlayStatus = 1;
     Camera_Initialise();
     g_NoInputCounter = 0;
-    g_GameMode = demo_mode ? GAMEMODE_IN_DEMO : GAMEMODE_IN_GAME;
 
     Stats_StartTimer();
     GAME_FLOW_DIR dir = Game_Control(1, demo_mode);
-    while (dir == 0) {
-        const int32_t nframes = Game_Draw();
+    while (dir == (GAME_FLOW_DIR)-1) {
+        const int32_t num_frames = Game_Draw();
         if (g_IsGameToExit && !m_Exiting) {
             m_Exiting = true;
             Fader_InitAnyToBlack(&m_ExitFader, FRAMES_PER_SECOND / 3);
         } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
             dir = GFD_EXIT_GAME;
         } else {
-            dir = Game_Control(nframes, demo_mode);
+            dir = Game_Control(num_frames, demo_mode);
         }
     }
-
-    g_GameMode = GAMEMODE_NOT_IN_GAME;
 
     Overlay_HideGameInfo();
     Sound_StopAllSamples();

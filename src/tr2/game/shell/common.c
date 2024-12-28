@@ -409,7 +409,7 @@ void Shell_Main(void)
             break;
 
         case GFD_START_DEMO:
-            gf_option = Demo_Control(-1);
+            gf_option = GF_DoLevelSequence(Demo_ChooseLevel(-1), GFL_DEMO);
             break;
 
         case GFD_LEVEL_COMPLETE:

@@ -251,6 +251,7 @@ sources = [
   'game/overlay.c',
   'game/phase/executor.c',
   'game/phase/phase_cutscene.c',
+  'game/phase/phase_demo.c',
   'game/phase/phase_picture.c',
   'game/phase/phase_stats.c',
   'game/random.c',

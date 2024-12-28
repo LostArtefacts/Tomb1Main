@@ -320,7 +320,6 @@ extern int16_t g_GF_ValidDemos[MAX_DEMO_FILES];
 extern int32_t g_GF_LaraStartAnim;
 extern int32_t g_GF_ScriptVersion;
 
-extern GAMEMODE g_GameMode;
 extern TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF];
 extern TEXTSTRING *g_Inv_LevelText;
 extern TEXTSTRING *g_Inv_TagText;

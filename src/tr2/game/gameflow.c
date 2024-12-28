@@ -492,7 +492,7 @@ int32_t GF_InterpretSequence(
         case GFE_DEMO_PLAY:
             if (type != GFL_SAVED && type != GFL_STORY
                 && type != GFL_MID_STORY) {
-                return Demo_Start(ptr[1]);
+                return GF_StartDemo(ptr[1]);
             }
             ptr += 2;
             break;
@@ -649,4 +649,16 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
             g_GF_Add2InvItems[i] = 0;
         }
     }
+}
+
+GAME_FLOW_DIR GF_StartDemo(int32_t level_num)
+{
+    level_num = Demo_ChooseLevel(level_num);
+    if (level_num == -1) {
+        return GFD_EXIT_TO_TITLE;
+    }
+    PHASE *const demo_phase = Phase_Demo_Create(level_num);
+    const GAME_FLOW_DIR dir = PhaseExecutor_Run(demo_phase);
+    Phase_Demo_Destroy(demo_phase);
+    return dir;
 }

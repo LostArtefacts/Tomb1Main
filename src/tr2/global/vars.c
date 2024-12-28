@@ -1424,7 +1424,6 @@ int16_t g_GF_ValidDemos[MAX_DEMO_FILES] = {};
 int32_t g_GF_LaraStartAnim;
 int32_t g_GF_ScriptVersion;
 
-GAMEMODE g_GameMode;
 TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF] = {};
 TEXTSTRING *g_Inv_LevelText = NULL;
 TEXTSTRING *g_Inv_TagText = NULL;
