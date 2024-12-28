@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/demo.h"
@@ -102,6 +103,7 @@ static void M_End(RING_INFO *const ring)
         }
     }
     Output_UnloadBackground();
+    Music_Stop();
 }
 
 void Inv_InitColors(void)
@@ -491,7 +493,7 @@ int32_t Inv_Display(int32_t inventory_mode)
     bool pass_open = false;
     if (inventory_mode == INV_KEYS_MODE && !g_Inv_KeyObjectsCount) {
         g_Inv_Chosen = NO_OBJECT;
-        return 0;
+        return (GAME_FLOW_DIR)-1;
     }
 
     Overlay_HideGameInfo();
@@ -973,7 +975,7 @@ int32_t Inv_Display(int32_t inventory_mode)
         return GFD_EXIT_GAME;
     }
     if (demo_needed) {
-        return GFD_START_DEMO;
+        return GFD_START_DEMO | 0xFF;
     }
 
     if (g_Inv_Chosen == NO_OBJECT) {
@@ -981,7 +983,14 @@ int32_t Inv_Display(int32_t inventory_mode)
             && g_Config.audio.music_volume != 0) {
             Music_Unpause();
         }
-        return 0;
+        return (GAME_FLOW_DIR)-1;
+    }
+
+    if (inventory_mode != INV_TITLE_MODE) {
+        Music_Unpause();
+    }
+    if (g_Config.gameplay.fix_item_duplication_glitch) {
+        Inv_ClearSelection();
     }
 
     switch (g_Inv_Chosen) {
@@ -989,12 +998,48 @@ int32_t Inv_Display(int32_t inventory_mode)
         if (g_Inv_ExtraData[0] == 1 && g_Config.audio.music_volume != 0) {
             Music_Unpause();
         }
-        return 1;
+
+        if (g_Inv_ExtraData[0] == 0) {
+            // first passport page: load game.
+            Inv_RemoveAllItems();
+            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
+            return GFD_START_SAVED_GAME | g_Inv_ExtraData[1];
+        } else if (g_Inv_ExtraData[0] == 1) {
+            // second passport page:
+            if (inventory_mode == INV_TITLE_MODE) {
+                // title mode - new game or select level.
+                if (g_GameFlow.play_any_level) {
+                    return g_Inv_ExtraData[1] + 1;
+                } else {
+                    InitialiseStartInfo();
+                    return GFD_START_GAME | LV_FIRST;
+                }
+            } else {
+                // game mode - save game (or start the game if in Lara's Home)
+                if (g_CurrentLevel == LV_GYM) {
+                    InitialiseStartInfo();
+                    return GFD_START_GAME | LV_FIRST;
+                } else {
+                    CreateSaveGameInfo();
+                    const int16_t slot_num = g_Inv_ExtraData[1];
+                    S_SaveGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
+                }
+            }
+        } else {
+            // third passport page:
+            if (inventory_mode == INV_TITLE_MODE) {
+                // title mode - exit the game
+                return GFD_EXIT_GAME;
+            } else {
+                // game mode - exit to title
+                return GFD_EXIT_TO_TITLE;
+            }
+        }
+        break;
 
     case O_PHOTO_OPTION:
         if (g_GameFlow.gym_enabled) {
-            g_Inv_ExtraData[1] = 0;
-            return 1;
+            return GFD_START_GAME | LV_GYM;
         }
         break;
 
@@ -1015,15 +1060,7 @@ int32_t Inv_Display(int32_t inventory_mode)
         break;
     }
 
-    if (inventory_mode != INV_TITLE_MODE) {
-        Music_Unpause();
-    }
-
-    if (g_Config.gameplay.fix_item_duplication_glitch) {
-        Inv_ClearSelection();
-    }
-
-    return 0;
+    return (GAME_FLOW_DIR)-1;
 }
 
 int32_t Inv_DisplayKeys(const GAME_OBJECT_ID receptacle_type_id)

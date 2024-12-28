@@ -57,10 +57,6 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
         control = phase->start(phase);
         if (control.action == PHASE_ACTION_END) {
             return control.dir;
-        } else if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-            const GAME_FLOW_DIR dir = g_GF_OverrideDir;
-            g_GF_OverrideDir = -1;
-            return dir;
         } else if (g_IsGameToExit) {
             return GFD_EXIT_GAME;
         }

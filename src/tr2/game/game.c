@@ -1,6 +1,5 @@
 #include "game/game.h"
 
-#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/demo.h"
 #include "game/effects.h"
@@ -32,7 +31,13 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
     }
 
     if (g_LevelComplete) {
-        return GFD_START_GAME | LV_FIRST;
+        if (g_GameFlow.demo_version && g_GameFlow.single_level) {
+            return GFD_EXIT_TO_TITLE;
+        }
+        if (g_CurrentLevel == LV_GYM) {
+            return GFD_EXIT_TO_TITLE;
+        }
+        return GFD_LEVEL_COMPLETE | g_CurrentLevel;
     }
 
     Input_Update();
@@ -53,7 +58,7 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
         } else {
             g_NoInputCounter++;
             if (g_NoInputCounter > g_GameFlow.no_input_time) {
-                return GFD_START_DEMO;
+                return GFD_START_DEMO | 0xFF;
             }
         }
     }
@@ -73,7 +78,7 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;
             const GAME_FLOW_DIR dir = Inv_Display(INV_DEATH_MODE);
-            if (dir != 0) {
+            if (dir != (GAME_FLOW_DIR)-1) {
                 return dir;
             }
         } else {
@@ -101,22 +106,9 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
             } else {
                 dir = Inv_Display(INV_GAME_MODE);
             }
-            if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-                return GFD_OVERRIDE;
-            }
             g_OverlayStatus = 1;
-
-            if (dir != 0) {
-                if (g_Inv_ExtraData[0] == 1) {
-                    if (g_CurrentLevel == LV_GYM) {
-                        return GFD_START_GAME | LV_FIRST;
-                    }
-                    CreateSaveGameInfo();
-                    const int16_t slot_num = g_Inv_ExtraData[1];
-                    S_SaveGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
-                } else {
-                    return dir;
-                }
+            if (dir != (GAME_FLOW_DIR)-1) {
+                return dir;
             }
         }
     }

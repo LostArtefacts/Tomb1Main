@@ -73,45 +73,7 @@ int16_t TitleSequence(void)
         Music_Play(g_GameFlow.title_track, MPM_LOOPED);
     }
 
-    GAME_FLOW_DIR dir = Inv_Display(INV_TITLE_MODE);
-    Output_UnloadBackground();
-    Music_Stop();
-
-    if (dir == GFD_OVERRIDE) {
-        dir = g_GF_OverrideDir;
-        g_GF_OverrideDir = (GAME_FLOW_DIR)-1;
-        return dir;
-    }
-
-    if (dir == GFD_START_DEMO) {
-        return GFD_START_DEMO | 0xFF;
-    }
-
-    if (g_Inv_Chosen == O_PHOTO_OPTION) {
-        return GFD_START_GAME | LV_GYM;
-    }
-
-    if (g_Inv_Chosen == O_PASSPORT_OPTION) {
-        const int32_t slot_num = g_Inv_ExtraData[1];
-
-        if (g_Inv_ExtraData[0] == 0) {
-            Inv_RemoveAllItems();
-            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
-            return GFD_START_SAVED_GAME | slot_num;
-        }
-
-        if (g_Inv_ExtraData[0] == 1) {
-            InitialiseStartInfo();
-            int32_t level_id = LV_FIRST;
-            if (g_GameFlow.play_any_level) {
-                level_id = LV_FIRST + slot_num;
-            }
-            return GFD_START_GAME | level_id;
-        }
-        return GFD_EXIT_GAME;
-    }
-
-    return GFD_EXIT_GAME;
+    return Inv_Display(INV_TITLE_MODE);
 }
 
 void Game_SetCutsceneTrack(const int32_t track)

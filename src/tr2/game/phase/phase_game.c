@@ -84,71 +84,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     }
 
     if (dir != (GAME_FLOW_DIR)-1) {
-        if (dir == GFD_EXIT_TO_TITLE || dir == GFD_START_DEMO) {
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
-        }
-
-        if (dir == GFD_EXIT_GAME) {
-            g_CurrentLevel = 0;
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
-        }
-
-        if (g_LevelComplete) {
-            if (g_GameFlow.demo_version && g_GameFlow.single_level) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .dir = GFD_EXIT_TO_TITLE,
-                };
-            }
-
-            if (g_CurrentLevel == LV_GYM) {
-                // TODO: fade to black
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .dir = GFD_EXIT_TO_TITLE,
-                };
-            }
-
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .dir = GFD_LEVEL_COMPLETE | g_CurrentLevel,
-            };
-        }
-
-        // TODO: fade to black
-        if (!g_Inv_Chosen) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .dir = GFD_EXIT_TO_TITLE,
-            };
-        }
-
-        if (g_Inv_ExtraData[0] == 0) {
-            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .dir = GFD_START_SAVED_GAME | g_Inv_ExtraData[1],
-            };
-        }
-
-        if (g_Inv_ExtraData[0] != 1) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .dir = GFD_EXIT_TO_TITLE,
-            };
-        }
-
-        if (g_GameFlow.play_any_level) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .dir = g_Inv_ExtraData[1] + 1,
-            };
-        }
-
-        return (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .dir = GFD_START_GAME | LV_FIRST,
-        };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
     }
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }

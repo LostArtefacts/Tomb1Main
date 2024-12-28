@@ -376,6 +376,11 @@ void Shell_Main(void)
         const int16_t gf_param = gf_option & 0x00FF;
 
         switch (gf_dir) {
+        case GFD_OVERRIDE:
+            gf_option = g_GF_OverrideDir;
+            g_GF_OverrideDir = -1;
+            break;
+
         case GFD_START_GAME:
             if (g_GameFlow.single_level >= 0) {
                 gf_option =
