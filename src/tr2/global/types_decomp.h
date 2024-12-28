@@ -623,13 +623,6 @@ typedef struct __unaligned {
 } CAMERA_INFO;
 
 typedef enum {
-    SPM_NORMAL     = 0,
-    SPM_UNDERWATER = 1,
-    SPM_ALWAYS     = 2,
-    SPM_PITCH      = 4,
-} SOUND_PLAY_MODE;
-
-typedef enum {
     CF_NORMAL        = 0,
     CF_FOLLOW_CENTRE = 1,
     CF_NO_CHUNKY     = 2,

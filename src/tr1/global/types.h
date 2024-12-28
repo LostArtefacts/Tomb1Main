@@ -13,6 +13,7 @@
 #include <libtrx/game/math.h>
 #include <libtrx/game/objects/common.h>
 #include <libtrx/game/rooms.h>
+#include <libtrx/game/sound/enum.h>
 #include <libtrx/game/sound/ids.h>
 #include <libtrx/game/text.h>
 
@@ -327,20 +328,6 @@ typedef enum {
     BT_ENEMY_HEALTH = 2,
     BT_PROGRESS = 3,
 } BAR_TYPE;
-
-typedef enum {
-    SPM_NORMAL = 0,
-    SPM_UNDERWATER = 1,
-    SPM_ALWAYS = 2,
-} SOUND_PLAY_MODE;
-
-typedef enum {
-    UMM_FULL,
-    UMM_QUIET,
-    UMM_FULL_NO_AMBIENT,
-    UMM_QUIET_NO_AMBIENT,
-    UMM_NONE,
-} UNDERWATER_MUSIC_MODE;
 
 typedef enum {
     GBF_NGPLUS = 1 << 0,

@@ -8,6 +8,7 @@
 #include <libtrx/game/lara/types.h>
 #include <libtrx/game/lot.h>
 #include <libtrx/game/objects/common.h>
+#include <libtrx/game/sound/enum.h>
 
 typedef struct {
     uint16_t draw_type;
