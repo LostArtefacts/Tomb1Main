@@ -1,13 +1,9 @@
 #include "game/game.h"
 
-#include "config.h"
-#include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/camera.h"
-#include "game/console/common.h"
 #include "game/demo.h"
 #include "game/effects.h"
-#include "game/fader.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
 #include "game/inventory/backpack.h"
@@ -19,22 +15,17 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/room.h"
+#include "game/phase.h"
 #include "game/room_draw.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
-#include "game/text.h"
 #include "global/vars.h"
 
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 
-static int32_t m_FrameCount = 0;
-static bool m_Exiting = false;
-static FADER m_ExitFader = { 0 };
-
-GAME_FLOW_DIR Game_ControlRaw(const int32_t num_frames, const bool demo_mode)
+GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
 {
     if (!g_GameFlow.cheat_mode_check_disabled) {
         Lara_Cheat_CheckKeys();
@@ -141,6 +132,10 @@ GAME_FLOW_DIR Game_ControlRaw(const int32_t num_frames, const bool demo_mode)
     Sound_EndScene();
     ItemAction_RunActive();
 
+    g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
+    Overlay_Animate(num_frames);
+    Output_AnimateTextures(g_Camera.num_frames);
+
     g_HealthBarTimer--;
     if (g_CurrentLevel || g_IsAssaultTimerActive) {
         Stats_UpdateTimer();
@@ -148,143 +143,20 @@ GAME_FLOW_DIR Game_ControlRaw(const int32_t num_frames, const bool demo_mode)
     return (GAME_FLOW_DIR)-1;
 }
 
-GAME_FLOW_DIR Game_Control(int32_t num_frames, const bool demo_mode)
+void Game_Draw(void)
 {
-    Fader_Control(&m_ExitFader);
-
-    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        return GFD_OVERRIDE;
-    }
-
-    CLAMPG(num_frames, MAX_FRAMES);
-    m_FrameCount += num_frames;
-
-    if (m_FrameCount <= 0) {
-        return -1;
-    }
-
-    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
-    while (m_FrameCount > 0) {
-        Shell_ProcessEvents();
-        dir = Game_ControlRaw(num_frames, demo_mode);
-        m_FrameCount -= 2;
-    }
-
-    return dir;
-}
-
-int32_t Game_Draw(void)
-{
-    Output_BeginScene();
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
-
     Overlay_DrawGameInfo(true);
     Output_DrawPolyList();
-
-    Output_DrawBlackRectangle(m_ExitFader.current.value);
-    const int32_t frames = Output_EndScene(true);
-    g_Camera.num_frames = frames * TICKS_PER_FRAME;
-    Shell_ProcessEvents();
-    Overlay_Animate(frames);
-    Output_AnimateTextures(g_Camera.num_frames);
-    return g_Camera.num_frames;
 }
 
-int16_t Game_Start(
+GAME_FLOW_DIR Game_Start(
     const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
 {
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
-        g_CurrentLevel = level_num;
-    }
-    if (level_type != GFL_SAVED) {
-        ModifyStartInfo(level_num);
-    }
-    g_IsTitleLoaded = false;
-    if (level_type != GFL_SAVED) {
-        InitialiseLevelFlags();
-    }
-    if (!Level_Initialise(level_num, level_type)) {
-        g_CurrentLevel = 0;
-        return GFD_EXIT_GAME;
-    }
-
-    GAME_FLOW_DIR dir = Game_Loop(false);
-    if (dir == GFD_OVERRIDE) {
-        dir = g_GF_OverrideDir;
-        g_GF_OverrideDir = (GAME_FLOW_DIR)-1;
-        return dir;
-    }
-    if (dir == GFD_EXIT_TO_TITLE || dir == GFD_START_DEMO) {
-        return dir;
-    }
-
-    if (dir == GFD_EXIT_GAME) {
-        g_CurrentLevel = 0;
-        return dir;
-    }
-
-    if (g_LevelComplete) {
-        if (g_GameFlow.demo_version && g_GameFlow.single_level) {
-            return GFD_EXIT_TO_TITLE;
-        }
-
-        if (g_CurrentLevel == LV_GYM) {
-            // TODO: fade to black
-            return GFD_EXIT_TO_TITLE;
-        }
-
-        return GFD_LEVEL_COMPLETE | g_CurrentLevel;
-    }
-
-    // TODO: fade to black
-    if (!g_Inv_Chosen) {
-        return GFD_EXIT_TO_TITLE;
-    }
-
-    if (g_Inv_ExtraData[0] == 0) {
-        S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
-        return GFD_START_SAVED_GAME | g_Inv_ExtraData[1];
-    }
-
-    if (g_Inv_ExtraData[0] != 1) {
-        return GFD_EXIT_TO_TITLE;
-    }
-
-    if (g_GameFlow.play_any_level) {
-        return g_Inv_ExtraData[1] + 1;
-    }
-
-    return GFD_START_GAME | LV_FIRST;
-}
-
-GAME_FLOW_DIR Game_Loop(const bool demo_mode)
-{
-    g_OverlayStatus = 1;
-    Camera_Initialise();
-    g_NoInputCounter = 0;
-
-    Stats_StartTimer();
-    GAME_FLOW_DIR dir = Game_Control(1, demo_mode);
-    while (dir == (GAME_FLOW_DIR)-1) {
-        const int32_t num_frames = Game_Draw();
-        if (g_IsGameToExit && !m_Exiting) {
-            m_Exiting = true;
-            Fader_InitAnyToBlack(&m_ExitFader, FRAMES_PER_SECOND / 3);
-        } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
-            dir = GFD_EXIT_GAME;
-        } else {
-            dir = Game_Control(num_frames, demo_mode);
-        }
-    }
-
-    Overlay_HideGameInfo();
-    Sound_StopAllSamples();
-    Music_Stop();
-
-    Music_SetVolume(g_Config.audio.music_volume);
-
+    PHASE *const phase = Phase_Game_Create(level_num, level_type);
+    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+    Phase_Game_Destroy(phase);
     return dir;
 }
 

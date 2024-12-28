@@ -3,11 +3,8 @@
 #include "config.h"
 #include "decomp/decomp.h"
 #include "game/camera.h"
-#include "game/demo.h"
 #include "game/fader.h"
 #include "game/game.h"
-#include "game/gameflow.h"
-#include "game/input.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
 #include "game/music.h"
@@ -16,11 +13,8 @@
 #include "game/phase/priv.h"
 #include "game/random.h"
 #include "game/room.h"
-#include "game/room_draw.h"
-#include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
-#include "game/text.h"
 #include "global/vars.h"
 
 #include <libtrx/log.h>
@@ -186,10 +180,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     } else {
         Fader_Control(&p->exit_fader);
 
-        const GAME_FLOW_DIR dir = Game_ControlRaw(num_frames, true);
-        g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
-        Overlay_Animate(num_frames);
-        Output_AnimateTextures(g_Camera.num_frames);
+        const GAME_FLOW_DIR dir = Game_Control(num_frames, true);
         if (dir != (GAME_FLOW_DIR)-1) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
@@ -203,11 +194,8 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    Room_DrawAllRooms(g_Camera.pos.room_num);
-    Output_DrawPolyList();
-    Overlay_DrawGameInfo(true);
-    Output_DrawPolyList();
-    Output_DrawBlackRectangle(p->exit_fader.current.value);
+    Game_Draw();
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->exit_fader));
 }
 
 PHASE *Phase_Demo_Create(const int32_t level_num)
