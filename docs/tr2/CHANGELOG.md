@@ -7,6 +7,7 @@
 - added an optional fix for the step glitch, where Lara can be pushed into walls (#2124)
 - added an optional fix for drawing a free flare during the underwater pickup animation (#2123)
 - added an optional fix for Lara drifting into walls when collecting underwater items (#2096)
+- added an option to control how music is played while underwater (#1937)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation (#1587)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)

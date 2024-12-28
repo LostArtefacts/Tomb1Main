@@ -107,6 +107,7 @@ game with new enhancements and features.
 - improved support for non-4:3 aspect ratios
 
 #### Audio
+- added an option to control how music is played while underwater rather than simply muting it
 - fixed music not playing with certain game versions
 - fixed the audio not being in sync when Lara strikes the gong in Ice Palace
 - fixed sound settings resuming the music

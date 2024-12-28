@@ -26,6 +26,7 @@ typedef struct {
         int32_t sound_volume;
         int32_t music_volume;
         bool enable_lara_mic;
+        UNDERWATER_MUSIC_MODE underwater_music_mode;
     } audio;
 
     struct {

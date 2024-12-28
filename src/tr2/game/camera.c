@@ -28,6 +28,59 @@
 
 #define MAX_ELEVATION (85 * PHD_DEGREE) // = 15470
 
+static void M_AdjustMusicVolume(bool underwater);
+static void M_EnsureEnvironment(void);
+
+static void M_AdjustMusicVolume(const bool underwater)
+{
+    const bool is_ambient =
+        Music_GetCurrentPlayingTrack() == Music_GetCurrentLoopedTrack();
+    double multiplier = 1.0;
+
+    if (underwater) {
+        switch (g_Config.audio.underwater_music_mode) {
+        case UMM_QUIET:
+            multiplier = 0.5;
+            break;
+        case UMM_NONE:
+            multiplier = 0.0;
+            break;
+        case UMM_FULL_NO_AMBIENT:
+            multiplier = is_ambient ? 0.0 : 1.0;
+            break;
+        case UMM_QUIET_NO_AMBIENT:
+            multiplier = is_ambient ? 0.0 : 0.5;
+            break;
+        case UMM_FULL:
+        default:
+            multiplier = 1.0;
+            break;
+        }
+    }
+
+    Music_SetVolume(g_Config.audio.music_volume * multiplier);
+}
+
+static void M_EnsureEnvironment(void)
+{
+    if (g_Camera.pos.room_num == NO_ROOM) {
+        return;
+    }
+
+    const ROOM *const room = Room_Get(g_Camera.pos.room_num);
+    if ((room->flags & RF_UNDERWATER) != 0) {
+        M_AdjustMusicVolume(true);
+        Sound_Effect(SFX_UNDERWATER, NULL, SPM_ALWAYS);
+        g_Camera.underwater = true;
+    } else {
+        M_AdjustMusicVolume(false);
+        if (g_Camera.underwater) {
+            Sound_StopEffect(SFX_UNDERWATER);
+            g_Camera.underwater = false;
+        }
+    }
+}
+
 void Camera_Initialise(void)
 {
     g_Camera.last = NO_CAMERA;
@@ -659,16 +712,7 @@ void Camera_Fixed(void)
 
 void Camera_Update(void)
 {
-    if (g_Rooms[g_Camera.pos.room_num].flags & RF_UNDERWATER) {
-        Sound_Effect(SFX_UNDERWATER, NULL, SPM_ALWAYS);
-        if (!g_Camera.underwater) {
-            Music_SetVolume(0);
-            g_Camera.underwater = 1;
-        }
-    } else if (g_Camera.underwater) {
-        Music_SetVolume(g_Config.audio.music_volume);
-        g_Camera.underwater = 0;
-    }
+    M_EnsureEnvironment();
 
     if (g_Camera.type == CAM_CINEMATIC) {
         Camera_LoadCutsceneFrame();

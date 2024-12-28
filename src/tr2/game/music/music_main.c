@@ -208,9 +208,14 @@ void Music_SetVolume(int32_t volume)
     }
 }
 
-MUSIC_TRACK_ID Music_GetCurrentTrack(void)
+MUSIC_TRACK_ID Music_GetCurrentPlayingTrack(void)
 {
     return m_TrackCurrent != MX_INACTIVE ? m_TrackCurrent : m_TrackLooped;
+}
+
+MUSIC_TRACK_ID Music_GetCurrentLoopedTrack(void)
+{
+    return m_TrackLooped;
 }
 
 MUSIC_TRACK_ID Music_GetLastPlayedTrack(void)

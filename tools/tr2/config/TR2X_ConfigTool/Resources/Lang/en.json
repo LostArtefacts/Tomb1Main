@@ -15,6 +15,13 @@
       "any": "Any",
       "16:9": "16:9",
       "4:3": "4:3"
+    },
+    "underwater_music": {
+      "full": "Full",
+      "quiet": "Quiet",
+      "full_no_ambient": "Full but no ambient",
+      "quiet_no_ambient": "Quiet but no ambient",
+      "none": "None"
     }
   },
   "Properties": {
@@ -89,6 +96,10 @@
     "enable_lara_mic" : {
       "Title": "Microphone at Lara",
       "Description": "Set the microphone to be at Lara's position. If disabled, the microphone will be at the camera's position."
+    },
+    "underwater_music_mode": {
+      "Title": "Underwater music behavior",
+      "Description": "Changes how music is played when the camera is underwater.\n- Full: music plays normally while underwater.\n- Quiet: music plays at half volume while underwater.\n- Full but no ambient: music plays normally while underwater, but ambient music is muted.\n- Quiet but no ambient: music plays at half volume while underwater, but ambient music is muted.\n- None: no music plays while underwater (OG TR2)."
     },
     "enable_fade_effects": {
       "Title": "Fade effects",
