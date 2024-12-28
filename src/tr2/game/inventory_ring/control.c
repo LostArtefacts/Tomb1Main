@@ -3,12 +3,11 @@
 #include "config.h"
 #include "decomp/savegame.h"
 #include "game/clock.h"
-#include "game/console/common.h"
 #include "game/demo.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/input.h"
 #include "game/inventory.h"
+#include "game/inventory_ring/draw.h"
 #include "game/inventory_ring/ring.h"
 #include "game/inventory_ring/vars.h"
 #include "game/lara/control.h"
@@ -49,9 +48,8 @@ static void M_RingIsNotOpen(INV_RING *ring);
 static void M_RingNotActive(const INV_ITEM *inv_item);
 static void M_RingActive(void);
 static void M_SelectMeshes(INV_ITEM *inv_item);
-static void M_DrawItem(
-    const INV_RING *ring, INV_ITEM *inv_item, int32_t frames);
-static void M_Draw(INV_RING *const ring, FADER *const fader);
+static void M_UpdateInventoryItem(
+    const INV_RING *ring, INV_ITEM *inv_item, int32_t num_frames);
 static bool M_AnimateInventoryItem(INV_ITEM *inv_item);
 
 static void M_RemoveItemsText(void)
@@ -383,6 +381,52 @@ static void M_SelectMeshes(INV_ITEM *const inv_item)
     }
 }
 
+static void M_UpdateInventoryItem(
+    const INV_RING *const ring, INV_ITEM *const inv_item,
+    const int32_t num_frames)
+{
+    if (ring->motion.status == RNG_DONE
+        || inv_item != ring->list[ring->current_object]) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            if (inv_item->y_rot < 0) {
+                inv_item->y_rot += 256;
+            } else if (inv_item->y_rot > 0) {
+                inv_item->y_rot -= 256;
+            }
+        }
+    } else if (ring->rotating) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            if (inv_item->y_rot > 0) {
+                inv_item->y_rot -= 512;
+            } else if (inv_item->y_rot < 0) {
+                inv_item->y_rot += 512;
+            }
+        }
+    } else if (
+        ring->motion.status == RNG_SELECTED
+        || ring->motion.status == RNG_DESELECTING
+        || ring->motion.status == RNG_SELECTING
+        || ring->motion.status == RNG_DESELECT
+        || ring->motion.status == RNG_CLOSING_ITEM) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
+            if (delta != 0) {
+                if (delta > 0 && delta < PHD_180) {
+                    inv_item->y_rot += 1024;
+                } else {
+                    inv_item->y_rot -= 1024;
+                }
+                inv_item->y_rot &= ~(1024 - 1);
+            }
+        }
+    } else if (
+        ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            inv_item->y_rot += 256;
+        }
+    }
+}
+
 static bool M_AnimateInventoryItem(INV_ITEM *const inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
@@ -433,276 +477,8 @@ void InvRing_Init(void)
     }
 }
 
-static void M_DrawItem(
-    const INV_RING *const ring, INV_ITEM *const inv_item, const int32_t frames)
-{
-    if (ring->motion.status == RNG_DONE) {
-        g_LsAdder = LOW_LIGHT;
-    } else if (inv_item == ring->list[ring->current_object]) {
-        if (ring->rotating) {
-            g_LsAdder = LOW_LIGHT;
-            for (int32_t k = 0; k < frames; k++) {
-                if (inv_item->y_rot > 0) {
-                    inv_item->y_rot -= 512;
-                } else if (inv_item->y_rot < 0) {
-                    inv_item->y_rot += 512;
-                }
-            }
-        } else if (
-            ring->motion.status == RNG_SELECTED
-            || ring->motion.status == RNG_DESELECTING
-            || ring->motion.status == RNG_SELECTING
-            || ring->motion.status == RNG_DESELECT
-            || ring->motion.status == RNG_CLOSING_ITEM) {
-            g_LsAdder = HIGH_LIGHT;
-            for (int32_t k = 0; k < frames; k++) {
-                const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
-                if (delta != 0) {
-                    if (delta > 0 && delta < PHD_180) {
-                        inv_item->y_rot += 1024;
-                    } else {
-                        inv_item->y_rot -= 1024;
-                    }
-                    inv_item->y_rot &= ~(1024 - 1);
-                }
-            }
-        } else if (
-            ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
-            g_LsAdder = HIGH_LIGHT;
-            for (int32_t k = 0; k < frames; k++) {
-                inv_item->y_rot += 256;
-            }
-        }
-    } else {
-        g_LsAdder = LOW_LIGHT;
-        for (int32_t k = 0; k < frames; k++) {
-            if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 256;
-            } else if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 256;
-            }
-        }
-    }
-
-    int32_t minutes;
-    int32_t hours;
-    int32_t seconds;
-    if (inv_item->object_id == O_COMPASS_OPTION) {
-        const int32_t total_seconds =
-            g_SaveGame.statistics.timer / FRAMES_PER_SECOND;
-        hours = (total_seconds % 43200) * PHD_DEGREE * -360 / 43200;
-        minutes = (total_seconds % 3600) * PHD_DEGREE * -360 / 3600;
-        seconds = (total_seconds % 60) * PHD_DEGREE * -360 / 60;
-    } else {
-        seconds = 0;
-        minutes = 0;
-        hours = 0;
-    }
-
-    Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
-    Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);
-    const OBJECT *const obj = &g_Objects[inv_item->object_id];
-    if ((obj->flags & 1) == 0) {
-        return;
-    }
-
-    if (obj->mesh_count < 0) {
-        Output_DrawSprite(0, 0, 0, 0, obj->mesh_idx, 0, 0);
-        return;
-    }
-
-    if (inv_item->sprite_list != NULL) {
-        const int32_t zv = g_MatrixPtr->_23;
-        const int32_t zp = zv / g_PhdPersp;
-        const int32_t sx = g_PhdWinCenterX + g_MatrixPtr->_03 / zp;
-        const int32_t sy = g_PhdWinCenterY + g_MatrixPtr->_13 / zp;
-
-        INVENTORY_SPRITE **sprite_list = inv_item->sprite_list;
-        INVENTORY_SPRITE *sprite;
-        while ((sprite = *sprite_list++)) {
-            if (zv < g_PhdNearZ || zv > g_PhdFarZ) {
-                break;
-            }
-
-            while (sprite->shape) {
-                switch (sprite->shape) {
-                case SHAPE_SPRITE:
-                    Output_DrawScreenSprite(
-                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
-                        sprite->param1, sprite->param2,
-                        g_Objects[O_ALPHABET].mesh_idx + sprite->sprite_num,
-                        4096, 0);
-                    break;
-
-                case SHAPE_LINE:
-                    Output_DrawScreenLine(
-                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
-                        sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
-                    break;
-
-                case SHAPE_BOX:
-                    Output_DrawScreenBox(
-                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
-                        sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
-                    break;
-
-                case SHAPE_FBOX:
-                    Output_DrawScreenFBox(
-                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
-                        sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
-                    break;
-
-                default:
-                    break;
-                }
-                sprite++;
-            }
-        }
-    }
-
-    FRAME_INFO *frame_ptr = (FRAME_INFO *)&obj->frame_base
-                                [inv_item->current_frame
-                                 * (g_Anims[obj->anim_idx].interpolation >> 8)];
-
-    Matrix_Push();
-    const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
-    if (!clip) {
-        Matrix_Pop();
-        return;
-    }
-
-    const int32_t *bone = &g_AnimBones[obj->bone_idx];
-    Matrix_TranslateRel(
-        frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
-    const int16_t *rot = frame_ptr->mesh_rots;
-    Matrix_RotYXZsuperpack(&rot, 0);
-
-    for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
-        if (mesh_idx > 0) {
-            const int32_t bone_flags = bone[0];
-            if (bone_flags & BF_MATRIX_POP) {
-                Matrix_Pop();
-            }
-            if (bone_flags & BF_MATRIX_PUSH) {
-                Matrix_Push();
-            }
-
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
-            Matrix_RotYXZsuperpack(&rot, 0);
-            bone += 4;
-
-            if (inv_item->object_id == O_COMPASS_OPTION) {
-                if (mesh_idx == 6) {
-                    Matrix_RotZ(seconds);
-                    const int32_t tmp = inv_item->reserved[0];
-                    inv_item->reserved[0] = seconds;
-                    inv_item->reserved[1] = tmp;
-                }
-                if (mesh_idx == 5) {
-                    Matrix_RotZ(minutes);
-                }
-                if (mesh_idx == 4) {
-                    Matrix_RotZ(hours);
-                }
-            }
-        }
-
-        if (inv_item->meshes_drawn & (1 << mesh_idx)) {
-            Output_InsertPolygons(g_Meshes[obj->mesh_idx + mesh_idx], clip);
-        }
-    }
-
-    Matrix_Pop();
-}
-
-static void M_Draw(INV_RING *const ring, FADER *const fader)
-{
-    ring->camera.pos.z = ring->radius + 598;
-
-    Output_BeginScene();
-    Output_DrawBackground();
-    Output_AnimateTextures(m_NFrames);
-    Overlay_Animate(m_NFrames / 2);
-
-    PHD_3DPOS view;
-    InvRing_GetView(ring, &view);
-    Matrix_GenerateW2V(&view);
-    InvRing_Light(ring);
-
-    Matrix_Push();
-    Matrix_TranslateAbs(
-        ring->ring_pos.pos.x, ring->ring_pos.pos.y, ring->ring_pos.pos.z);
-    Matrix_RotYXZ(
-        ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
-
-    int32_t angle = 0;
-    for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        INV_ITEM *const inv_item = ring->list[i];
-        Matrix_Push();
-        Matrix_RotYXZ(angle, 0, 0);
-        Matrix_TranslateRel(ring->radius, 0, 0);
-        Matrix_RotYXZ(PHD_90, inv_item->x_rot_pt, 0);
-        M_DrawItem(ring, inv_item, m_NFrames);
-        angle += ring->angle_adder;
-        Matrix_Pop();
-    }
-
-    if (ring->list != NULL && !ring->rotating
-        && (ring->motion.status == RNG_OPEN
-            || ring->motion.status == RNG_SELECTING
-            || ring->motion.status == RNG_SELECTED
-            || ring->motion.status == RNG_DESELECTING
-            || ring->motion.status == RNG_DESELECT
-            || ring->motion.status == RNG_CLOSING_ITEM)) {
-        const INV_ITEM *const inv_item = ring->list[ring->current_object];
-        if (inv_item != NULL) {
-            switch (inv_item->object_id) {
-            case O_SMALL_MEDIPACK_OPTION:
-            case O_LARGE_MEDIPACK_OPTION:
-                Overlay_DrawHealthBar();
-                break;
-
-            default:
-                break;
-            }
-        }
-    }
-
-    Matrix_Pop();
-    Output_DrawPolyList();
-
-    if (ring->motion.status == RNG_SELECTED) {
-        INV_ITEM *const inv_item = ring->list[ring->current_object];
-        if (inv_item->object_id == O_PASSPORT_CLOSED) {
-            inv_item->object_id = O_PASSPORT_OPTION;
-        }
-        Option_Draw(inv_item);
-    }
-
-    Overlay_DrawModeInfo();
-    Text_Draw();
-    Output_DrawPolyList();
-
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(fader));
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
-
-    const int32_t frames = Output_EndScene(true) * TICKS_PER_FRAME;
-
-    Sound_EndScene();
-    Shell_ProcessEvents();
-    m_NFrames = frames;
-    g_Camera.num_frames = frames;
-}
-
 int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
 {
-    FADER fader = { 0 };
-
     Clock_SyncTick();
     Stats_StartTimer();
     INV_RING ring = { 0 };
@@ -727,6 +503,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
     m_NFrames = 2;
 
     M_Construct();
+#if 0
     if (inventory_mode == INV_TITLE_MODE) {
         Fader_InitBlackToTransparent(&fader, FRAMES_PER_SECOND / 3);
         while (Fader_IsActive(&fader)) {
@@ -734,6 +511,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             Fader_Control(&fader);
         }
     }
+#endif
 
     Sound_StopAllSamples();
     if (inventory_mode != INV_TITLE_MODE) {
@@ -1180,10 +958,23 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             Stats_UpdateTimer();
         }
 
-        M_Draw(&ring, &fader);
-        Fader_Control(&fader);
+        for (int32_t i = 0; i < ring.number_of_objects; i++) {
+            M_UpdateInventoryItem(&ring, ring.list[i], m_NFrames);
+        }
+
+        Output_BeginScene();
+        InvRing_Draw(&ring);
+        Output_EndScene(false);
+
+        Sound_EndScene();
+        const int32_t frames = Clock_WaitTick() * TICKS_PER_FRAME;
+        Output_AnimateTextures(m_NFrames);
+        Overlay_Animate(m_NFrames / 2);
+        m_NFrames = frames;
+        g_Camera.num_frames = frames;
     } while (ring.motion.status != RNG_DONE);
 
+#if 0
     if (inventory_mode == INV_TITLE_MODE || g_IsGameToExit) {
         Fader_InitTransparentToBlack(&fader, FRAMES_PER_SECOND / 3);
         while (Fader_IsActive(&fader)) {
@@ -1191,6 +982,7 @@ int32_t InvRing_Display(INVENTORY_MODE inventory_mode)
             Fader_Control(&fader);
         }
     }
+#endif
 
     M_End(&ring);
 
