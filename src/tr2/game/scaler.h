@@ -2,5 +2,9 @@
 
 #include <stdint.h>
 
-int32_t Scaler_Calc(int32_t unit);
-int32_t Scaler_CalcInverse(int32_t unit);
+typedef enum {
+    SCALER_TARGET_BAR,
+} SCALER_TARGET;
+
+int32_t Scaler_Calc(int32_t unit, SCALER_TARGET target);
+int32_t Scaler_CalcInverse(int32_t unit, SCALER_TARGET target);

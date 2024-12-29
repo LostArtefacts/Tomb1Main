@@ -9,6 +9,7 @@
 - added an optional fix for Lara drifting into walls when collecting underwater items (#2096)
 - added an option to control how music is played while underwater (#1937)
 - added an optional demo number argument to the `/demo` command
+- added an option to set the bar scaling (no UI for it yet) (#2149)
 - changed demo to be interrupted only by esc or action keys
 - fixed health bar and air bar scaling (#2149)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)

@@ -65,8 +65,10 @@ static void M_InsertBar(
 
     for (int32_t i = 0; i < 5; i++) {
         Render_InsertFlatRect(
-            Scaler_Calc(rects[i].x1), Scaler_Calc(rects[i].y1),
-            Scaler_Calc(rects[i].x2), Scaler_Calc(rects[i].y2),
+            Scaler_Calc(rects[i].x1, SCALER_TARGET_BAR),
+            Scaler_Calc(rects[i].y1, SCALER_TARGET_BAR),
+            Scaler_Calc(rects[i].x2, SCALER_TARGET_BAR),
+            Scaler_Calc(rects[i].y2, SCALER_TARGET_BAR),
             g_PhdNearZ + z_offset * (5 - i),
             g_NamedColors[rects[i].color].palette_index);
     }
@@ -756,7 +758,7 @@ void Output_DrawHealthBar(const int32_t percent)
 void Output_DrawAirBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
-    const int32_t w = Scaler_CalcInverse(g_PhdWinWidth);
+    const int32_t w = Scaler_CalcInverse(g_PhdWinWidth, SCALER_TARGET_BAR);
     M_InsertBar(w - 112, 6, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
 }
 

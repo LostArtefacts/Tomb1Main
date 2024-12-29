@@ -23,6 +23,10 @@ typedef struct {
     } visuals;
 
     struct {
+        double bar_scale;
+    } ui;
+
+    struct {
         int32_t sound_volume;
         int32_t music_volume;
         bool enable_lara_mic;
