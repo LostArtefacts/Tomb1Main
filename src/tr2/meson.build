@@ -76,7 +76,6 @@ sources = [
   'decomp/savegame.c',
   'decomp/skidoo.c',
   'decomp/stats.c',
-  'game/backpack.c',
   'game/box.c',
   'game/camera.c',
   'game/clock.c',

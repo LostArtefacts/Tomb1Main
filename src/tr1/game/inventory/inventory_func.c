@@ -187,13 +187,6 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     return false;
 }
 
-void Inv_AddItemNTimes(const GAME_OBJECT_ID object_id, int32_t qty)
-{
-    for (int i = 0; i < qty; i++) {
-        Inv_AddItem(object_id);
-    }
-}
-
 void Inv_InsertItem(INVENTORY_ITEM *inv_item)
 {
     int n;

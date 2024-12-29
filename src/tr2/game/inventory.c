@@ -43,7 +43,7 @@ void Inv_InsertItem(INV_ITEM *const inv_item)
     }
 }
 
-int32_t Inv_AddItem(const GAME_OBJECT_ID object_id)
+bool Inv_AddItem(const GAME_OBJECT_ID object_id)
 {
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
 
@@ -294,13 +294,6 @@ int32_t Inv_AddItem(const GAME_OBJECT_ID object_id)
 
     default:
         return false;
-    }
-}
-
-void Inv_AddItemNTimes(GAME_OBJECT_ID object_id, int32_t qty)
-{
-    for (int32_t i = 0; i < qty; i++) {
-        Inv_AddItem(object_id);
     }
 }
 

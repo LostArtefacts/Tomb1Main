@@ -91,7 +91,6 @@ sources = [
   'config.c',
   'config_map.c',
   'game/anim.c',
-  'game/backpack.c',
   'game/box.c',
   'game/camera/common.c',
   'game/camera/photo_mode.c',

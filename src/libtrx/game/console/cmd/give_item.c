@@ -1,8 +1,8 @@
 #include "game/console/cmd/give_item.h"
 
-#include "game/backpack.h"
 #include "game/game.h"
 #include "game/game_string.h"
+#include "game/inventory.h"
 #include "game/lara/cheat.h"
 #include "game/objects/common.h"
 #include "game/objects/names.h"
@@ -67,7 +67,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         if (obj_name == NULL) {
             obj_name = args;
         }
-        Backpack_AddItemNTimes(object_id, num);
+        Inv_AddItemNTimes(object_id, num);
         Console_Log(GS(OSD_GIVE_ITEM), obj_name);
         found = true;
     }
