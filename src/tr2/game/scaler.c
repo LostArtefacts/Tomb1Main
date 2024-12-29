@@ -25,6 +25,8 @@ int32_t Scaler_Calc(const int32_t unit, const SCALER_TARGET target)
     case SCALER_TARGET_BAR:
         scale = g_Config.ui.bar_scale;
         break;
+    default:
+        break;
     }
 
     return M_DoCalc(unit, 640, 480, scale);

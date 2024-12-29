@@ -105,6 +105,7 @@ static void M_SyncToWindow(void)
 static void M_RefreshRendererViewport(void)
 {
     Viewport_Reset();
+    UI_Events_Fire(&(EVENT) { .name = "canvas_resize" });
 }
 
 static void M_SyncFromWindow(void)

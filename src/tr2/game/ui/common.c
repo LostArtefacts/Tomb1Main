@@ -1,4 +1,6 @@
 #include "config.h"
+#include "game/scaler.h"
+#include "global/vars.h"
 
 #include <libtrx/game/ui/common.h>
 
@@ -6,12 +8,12 @@
 
 int32_t UI_GetCanvasWidth(void)
 {
-    return 640;
+    return Scaler_CalcInverse(g_PhdWinWidth, SCALER_TARGET_TEXT);
 }
 
 int32_t UI_GetCanvasHeight(void)
 {
-    return 480;
+    return Scaler_CalcInverse(g_PhdWinHeight, SCALER_TARGET_TEXT);
 }
 
 UI_INPUT UI_TranslateInput(uint32_t system_keycode)

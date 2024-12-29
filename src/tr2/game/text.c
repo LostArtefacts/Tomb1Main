@@ -2,9 +2,17 @@
 
 #include "decomp/decomp.h"
 #include "game/output.h"
+#include "game/scaler.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
+
+static int32_t M_Scale(const int32_t value);
+
+static int32_t M_Scale(const int32_t value)
+{
+    return Scaler_Calc(value, SCALER_TARGET_TEXT);
+}
 
 void Text_DrawBorder(
     const int32_t x, const int32_t y, const int32_t z, const int32_t width,
@@ -47,8 +55,8 @@ void Text_DrawText(TEXTSTRING *const text)
 
     int32_t box_w = 0;
     int32_t box_h = 0;
-    const int32_t scale_h = Text_GetScaleH(text->scale.h);
-    const int32_t scale_v = Text_GetScaleV(text->scale.v);
+    const int32_t scale_h = M_Scale(text->scale.h);
+    const int32_t scale_v = M_Scale(text->scale.v);
 
     if (text->flags.flash) {
         text->flash.count -= g_Camera.num_frames;
@@ -59,13 +67,11 @@ void Text_DrawText(TEXTSTRING *const text)
         }
     }
 
-    int32_t x =
-        (text->pos.x * Text_GetScaleH(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
-    int32_t y =
-        (text->pos.y * Text_GetScaleV(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
+    int32_t x = (text->pos.x * M_Scale(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
+    int32_t y = (text->pos.y * M_Scale(TEXT_BASE_SCALE)) / TEXT_BASE_SCALE;
     int32_t z = text->pos.z;
     int32_t text_width =
-        Text_GetWidth(text) * Text_GetScaleH(TEXT_BASE_SCALE) / TEXT_BASE_SCALE;
+        Text_GetWidth(text) * M_Scale(TEXT_BASE_SCALE) / TEXT_BASE_SCALE;
 
     if (text->flags.centre_h) {
         x += (g_PhdWinWidth - text_width) / 2;
@@ -80,11 +86,11 @@ void Text_DrawText(TEXTSTRING *const text)
     }
 
     int32_t box_x = x
-        + (text->background.offset.x * Text_GetScaleH(TEXT_BASE_SCALE))
+        + (text->background.offset.x * M_Scale(TEXT_BASE_SCALE))
             / TEXT_BASE_SCALE
         - ((2 * scale_h) / TEXT_BASE_SCALE);
     int32_t box_y = y
-        + (text->background.offset.y * Text_GetScaleV(TEXT_BASE_SCALE))
+        + (text->background.offset.y * M_Scale(TEXT_BASE_SCALE))
             / TEXT_BASE_SCALE
         - ((4 * scale_v) / TEXT_BASE_SCALE)
         - ((11 * scale_v) / TEXT_BASE_SCALE);
@@ -93,7 +99,7 @@ void Text_DrawText(TEXTSTRING *const text)
     const GLYPH_INFO **glyph_ptr = text->glyphs;
     while (*glyph_ptr != NULL) {
         if (text->flags.multiline && (*glyph_ptr)->role == GLYPH_NEWLINE) {
-            y += TEXT_HEIGHT * Text_GetScaleV(text->scale.v) / TEXT_BASE_SCALE;
+            y += TEXT_HEIGHT * M_Scale(text->scale.v) / TEXT_BASE_SCALE;
             x = start_x;
             glyph_ptr++;
             continue;
@@ -153,16 +159,6 @@ void Text_DrawText(TEXTSTRING *const text)
     if (text->flags.outline) {
         Text_DrawBorder(box_x, box_y, z, box_w, box_h);
     }
-}
-
-int32_t Text_GetScaleH(const uint32_t value)
-{
-    return value * g_PhdWinWidth / 640;
-}
-
-int32_t Text_GetScaleV(const uint32_t value)
-{
-    return value * g_PhdWinHeight / 480;
 }
 
 int32_t Text_GetMaxLineLength(void)

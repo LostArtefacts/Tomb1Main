@@ -97,6 +97,7 @@ static void M_HandleCanvasResize(const EVENT *event, void *data)
 {
     UI_CONSOLE *const self = (UI_CONSOLE *)data;
     UI_Stack_SetSize(self->container, M_GetWidth(self), M_GetHeight(self));
+    M_SetPosition(self, WINDOW_MARGIN, WINDOW_MARGIN);
 }
 
 static void M_HandleKeyDown(const EVENT *const event, void *const user_data)
@@ -161,6 +162,7 @@ static void M_Draw(UI_CONSOLE *const self)
     if (self->vtable.is_hidden) {
         return;
     }
+
     if (self->container->draw != NULL) {
         self->container->draw(self->container);
     }
@@ -208,8 +210,6 @@ UI_WIDGET *UI_Console_Create(void)
 
     self->prompt = UI_Prompt_Create(UI_LABEL_AUTO_SIZE, UI_LABEL_AUTO_SIZE);
     UI_Stack_AddChild(self->container, self->prompt);
-
-    M_SetPosition(self, WINDOW_MARGIN, WINDOW_MARGIN);
 
     int32_t i = 0;
     self->listeners[i++] = UI_Events_Subscribe(

@@ -15,9 +15,11 @@ typedef struct {
     UI_WIDGET *window;
     UI_WIDGET *backend_selector;
     UI_WIDGET *layout_editor;
+    int32_t listener;
 } UI_CONTROLS_DIALOG;
 
 static void M_DoLayout(UI_CONTROLS_DIALOG *self);
+static void M_HandleCanvasResize(const EVENT *event, void *data);
 static int32_t M_GetWidth(const UI_CONTROLS_DIALOG *self);
 static int32_t M_GetHeight(const UI_CONTROLS_DIALOG *self);
 static void M_SetPosition(UI_CONTROLS_DIALOG *self, int32_t x, int32_t y);
@@ -30,6 +32,12 @@ static void M_DoLayout(UI_CONTROLS_DIALOG *const self)
     M_SetPosition(
         self, (UI_GetCanvasWidth() - M_GetWidth(self)) / 2,
         (UI_GetCanvasHeight() - M_GetHeight(self)) * 2 / 3);
+}
+
+static void M_HandleCanvasResize(const EVENT *event, void *data)
+{
+    UI_CONTROLS_DIALOG *const self = (UI_CONTROLS_DIALOG *)data;
+    M_DoLayout(self);
 }
 
 static int32_t M_GetWidth(const UI_CONTROLS_DIALOG *const self)
@@ -81,6 +89,7 @@ static void M_Free(UI_CONTROLS_DIALOG *const self)
     self->layout_editor->free(self->layout_editor);
     self->backend_selector->free(self->backend_selector);
     self->window->free(self->window);
+    UI_Events_Unsubscribe(self->listener);
     Memory_Free(self);
 }
 
@@ -104,6 +113,9 @@ UI_WIDGET *UI_ControlsDialog_Create(UI_CONTROLS_CONTROLLER *const controller)
     self->window = UI_Window_Create(self->backend_selector, 5, 5, 10, 5);
 
     UI_Window_SetTitle(self->window, GS(CONTROL_CUSTOMIZE));
+
+    self->listener =
+        UI_Events_Subscribe("canvas_resize", NULL, M_HandleCanvasResize, self);
 
     M_DoLayout(self);
     return (UI_WIDGET *)self;
