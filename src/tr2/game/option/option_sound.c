@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 
+static TEXTSTRING *m_SoundText[4];
+
 static void M_InitText(void);
 static void M_ShutdownText(void);
 
@@ -21,32 +23,32 @@ static void M_InitText(void)
 
     char text[32];
     sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
-    g_SoundText[0] = Text_Create(0, 0, text);
-    Text_AddBackground(g_SoundText[0], 128, 0, 0, 0, TS_REQUESTED);
-    Text_AddOutline(g_SoundText[0], TS_REQUESTED);
+    m_SoundText[0] = Text_Create(0, 0, text);
+    Text_AddBackground(m_SoundText[0], 128, 0, 0, 0, TS_REQUESTED);
+    Text_AddOutline(m_SoundText[0], TS_REQUESTED);
 
     sprintf(text, "\\{icon sound} %2d", g_Config.audio.sound_volume);
-    g_SoundText[1] = Text_Create(0, 25, text);
+    m_SoundText[1] = Text_Create(0, 25, text);
 
-    g_SoundText[2] = Text_Create(0, -32, " ");
-    Text_AddBackground(g_SoundText[2], 140, 85, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(g_SoundText[2], TS_BACKGROUND);
+    m_SoundText[2] = Text_Create(0, -32, " ");
+    Text_AddBackground(m_SoundText[2], 140, 85, 0, 0, TS_BACKGROUND);
+    Text_AddOutline(m_SoundText[2], TS_BACKGROUND);
 
-    g_SoundText[3] = Text_Create(0, -30, g_GF_PCStrings[GF_S_PC_SET_VOLUMES]);
-    Text_AddBackground(g_SoundText[3], 136, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(g_SoundText[3], TS_HEADING);
+    m_SoundText[3] = Text_Create(0, -30, g_GF_PCStrings[GF_S_PC_SET_VOLUMES]);
+    Text_AddBackground(m_SoundText[3], 136, 0, 0, 0, TS_HEADING);
+    Text_AddOutline(m_SoundText[3], TS_HEADING);
 
     for (int32_t i = 0; i < 4; i++) {
-        Text_CentreH(g_SoundText[i], true);
-        Text_CentreV(g_SoundText[i], true);
+        Text_CentreH(m_SoundText[i], true);
+        Text_CentreV(m_SoundText[i], true);
     }
 }
 
 static void M_ShutdownText(void)
 {
     for (int32_t i = 0; i < 4; i++) {
-        Text_Remove(g_SoundText[i]);
-        g_SoundText[i] = NULL;
+        Text_Remove(m_SoundText[i]);
+        m_SoundText[i] = NULL;
     }
 }
 
@@ -59,26 +61,26 @@ void Option_Sound_Control(INV_ITEM *const item)
 {
     char text[32];
 
-    if (g_SoundText[0] == NULL) {
+    if (m_SoundText[0] == NULL) {
         M_InitText();
     }
 
     if (g_InputDB.forward && g_SoundOptionLine > 0) {
-        Text_RemoveOutline(g_SoundText[g_SoundOptionLine]);
-        Text_RemoveBackground(g_SoundText[g_SoundOptionLine]);
+        Text_RemoveOutline(m_SoundText[g_SoundOptionLine]);
+        Text_RemoveBackground(m_SoundText[g_SoundOptionLine]);
         g_SoundOptionLine--;
         Text_AddBackground(
-            g_SoundText[g_SoundOptionLine], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(g_SoundText[g_SoundOptionLine], TS_REQUESTED);
+            m_SoundText[g_SoundOptionLine], 128, 0, 0, 0, TS_REQUESTED);
+        Text_AddOutline(m_SoundText[g_SoundOptionLine], TS_REQUESTED);
     }
 
     if (g_InputDB.back && g_SoundOptionLine < 1) {
-        Text_RemoveOutline(g_SoundText[g_SoundOptionLine]);
-        Text_RemoveBackground(g_SoundText[g_SoundOptionLine]);
+        Text_RemoveOutline(m_SoundText[g_SoundOptionLine]);
+        Text_RemoveBackground(m_SoundText[g_SoundOptionLine]);
         g_SoundOptionLine++;
         Text_AddBackground(
-            g_SoundText[g_SoundOptionLine], 128, 0, 0, 0, TS_REQUESTED);
-        Text_AddOutline(g_SoundText[g_SoundOptionLine], TS_REQUESTED);
+            m_SoundText[g_SoundOptionLine], 128, 0, 0, 0, TS_REQUESTED);
+        Text_AddOutline(m_SoundText[g_SoundOptionLine], TS_REQUESTED);
     }
 
     if (g_SoundOptionLine) {
@@ -97,7 +99,7 @@ void Option_Sound_Control(INV_ITEM *const item)
 
         if (changed) {
             sprintf(text, "\\{icon sound} %2d", g_Config.audio.sound_volume);
-            Text_ChangeText(g_SoundText[1], text);
+            Text_ChangeText(m_SoundText[1], text);
             Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
         }
@@ -115,7 +117,7 @@ void Option_Sound_Control(INV_ITEM *const item)
             g_Inv_IsOptionsDelay = 1;
             g_Inv_OptionsDelayCounter = 10;
             sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
-            Text_ChangeText(g_SoundText[0], text);
+            Text_ChangeText(m_SoundText[0], text);
             Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
         }

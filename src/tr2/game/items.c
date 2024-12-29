@@ -1,6 +1,7 @@
 #include "game/items.h"
 
 #include "game/effects.h"
+#include "game/gameflow/gameflow_new.h"
 #include "game/item_actions.h"
 #include "game/math.h"
 #include "game/matrix.h"
@@ -14,6 +15,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/utils.h>
 
+static int16_t m_NextItemFree;
 static int16_t m_MaxUsedItemCount = 0;
 static BOUNDS_16 m_InterpolatedBounds = { 0 };
 
@@ -54,11 +56,11 @@ static OBJECT_BOUNDS M_ConvertBounds(const int16_t *const bounds_in)
 void Item_InitialiseArray(const int32_t num_items)
 {
     ASSERT(num_items > 0);
-    g_NextItemFree = g_LevelItemCount;
+    m_NextItemFree = g_LevelItemCount;
     g_PrevItemActive = NO_ITEM;
     g_NextItemActive = NO_ITEM;
     m_MaxUsedItemCount = g_LevelItemCount;
-    for (int32_t i = g_NextItemFree; i < num_items - 1; i++) {
+    for (int32_t i = m_NextItemFree; i < num_items - 1; i++) {
         ITEM *const item = &g_Items[i];
         item->active = 0;
         item->next_item = i + 1;
@@ -87,10 +89,10 @@ int32_t Item_GetTotalCount(void)
 
 int16_t Item_Create(void)
 {
-    const int16_t item_num = g_NextItemFree;
+    const int16_t item_num = m_NextItemFree;
     if (item_num != NO_ITEM) {
         g_Items[item_num].flags = 0;
-        g_NextItemFree = g_Items[item_num].next_item;
+        m_NextItemFree = g_Items[item_num].next_item;
     }
     m_MaxUsedItemCount = MAX(m_MaxUsedItemCount, item_num + 1);
     return item_num;
@@ -109,8 +111,8 @@ void Item_Kill(const int16_t item_num)
     if (item_num < g_LevelItemCount) {
         item->flags |= IF_KILLED;
     } else {
-        item->next_item = g_NextItemFree;
-        g_NextItemFree = item_num;
+        item->next_item = m_NextItemFree;
+        m_NextItemFree = item_num;
     }
 
     while (m_MaxUsedItemCount > 0
@@ -173,7 +175,7 @@ void Item_Initialise(const int16_t item_num)
     const SECTOR *const sector = &room->sectors[dx * room->size.z + dz];
     item->floor = sector->floor.height;
 
-    if (g_SaveGame.bonus_flag && !g_IsDemoLevelType) {
+    if (g_SaveGame.bonus_flag && g_GameInfo.current_level.type != GFL_DEMO) {
         item->hit_points *= 2;
     }
 

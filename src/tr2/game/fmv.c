@@ -17,6 +17,7 @@
 #include <string.h>
 
 static bool m_Muted = false;
+static bool m_IsFMVPlaying = false;
 
 static void *M_AllocateSurface(int32_t width, int32_t height, void *user_data);
 static void M_DeallocateSurface(void *surface, void *user_data);
@@ -92,7 +93,7 @@ static void M_Play(const char *const file_name)
         return;
     }
 
-    g_IsFMVPlaying = true;
+    m_IsFMVPlaying = true;
     GFX_2D_RENDERER *const renderer_2d = GFX_2D_Renderer_Create();
 
     // Populate the palette with a palette corresponding to
@@ -146,7 +147,7 @@ static void M_Play(const char *const file_name)
     Video_Close(video);
 
     GFX_2D_Renderer_Destroy(renderer_2d);
-    g_IsFMVPlaying = false;
+    m_IsFMVPlaying = false;
 }
 
 void FMV_Play(const char *const file_name)
@@ -165,5 +166,5 @@ void FMV_Play(const char *const file_name)
 
 bool FMV_IsPlaying(void)
 {
-    return g_IsFMVPlaying;
+    return m_IsFMVPlaying;
 }

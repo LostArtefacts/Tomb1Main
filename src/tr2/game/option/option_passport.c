@@ -15,6 +15,7 @@ typedef enum {
 } PASSPORT_MODE;
 
 static TEXTSTRING *m_LevelText = NULL;
+static PASSPORT_MODE m_PassportMode;
 
 void Option_Passport_Control(INV_ITEM *const item)
 {
@@ -37,7 +38,7 @@ void Option_Passport_Control(INV_ITEM *const item)
             break;
         }
 
-        if (g_PassportMode == PASSPORT_MODE_LOAD_GAME) {
+        if (m_PassportMode == PASSPORT_MODE_LOAD_GAME) {
             Requester_SetSize(&g_LoadGameRequester, 10, -32);
 
             const int32_t select =
@@ -46,15 +47,15 @@ void Option_Passport_Control(INV_ITEM *const item)
                 if (select > 0) {
                     g_Inv_ExtraData[1] = select - 1;
                 }
-                g_PassportMode = PASSPORT_MODE_BROWSE;
+                m_PassportMode = PASSPORT_MODE_BROWSE;
             } else if (g_InputDB.right) {
                 Requester_Shutdown(&g_LoadGameRequester);
-                g_PassportMode = PASSPORT_MODE_BROWSE;
+                m_PassportMode = PASSPORT_MODE_BROWSE;
             } else {
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             }
-        } else if (g_PassportMode == PASSPORT_MODE_BROWSE) {
+        } else if (m_PassportMode == PASSPORT_MODE_BROWSE) {
             if (g_SavedGames != 0 && g_Inv_Mode != INV_SAVE_MODE) {
                 if (g_PasswordText1 == NULL) {
                     g_PasswordText1 = Text_Create(
@@ -77,7 +78,7 @@ void Option_Passport_Control(INV_ITEM *const item)
                     &g_LoadGameRequester,
                     g_GF_GameStrings[GF_S_GAME_PASSPORT_LOAD_GAME], 0, NULL, 0);
 
-                g_PassportMode = PASSPORT_MODE_LOAD_GAME;
+                m_PassportMode = PASSPORT_MODE_LOAD_GAME;
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else {
@@ -92,10 +93,10 @@ void Option_Passport_Control(INV_ITEM *const item)
             break;
         }
 
-        if (g_PassportMode == PASSPORT_MODE_LOAD_GAME
-            || g_PassportMode == PASSPORT_MODE_SELECT_LEVEL) {
+        if (m_PassportMode == PASSPORT_MODE_LOAD_GAME
+            || m_PassportMode == PASSPORT_MODE_SELECT_LEVEL) {
             int32_t select;
-            if (g_PassportMode == PASSPORT_MODE_LOAD_GAME) {
+            if (m_PassportMode == PASSPORT_MODE_LOAD_GAME) {
                 Requester_SetSize(&g_LoadGameRequester, 10, -32);
                 select = Requester_Display(&g_LoadGameRequester, 1, 1);
             } else {
@@ -107,19 +108,19 @@ void Option_Passport_Control(INV_ITEM *const item)
                 if (select > 0) {
                     g_Inv_ExtraData[1] = select - 1;
                 }
-                g_PassportMode = PASSPORT_MODE_BROWSE;
+                m_PassportMode = PASSPORT_MODE_BROWSE;
             } else if (g_InputDB.left || g_InputDB.right) {
-                if (g_PassportMode == PASSPORT_MODE_LOAD_GAME) {
+                if (m_PassportMode == PASSPORT_MODE_LOAD_GAME) {
                     Requester_Shutdown(&g_LoadGameRequester);
                 } else {
                     Requester_Shutdown(&g_SaveGameRequester);
                 }
-                g_PassportMode = PASSPORT_MODE_BROWSE;
+                m_PassportMode = PASSPORT_MODE_BROWSE;
             } else {
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             }
-        } else if (g_PassportMode == PASSPORT_MODE_BROWSE) {
+        } else if (m_PassportMode == PASSPORT_MODE_BROWSE) {
             if (g_Inv_Mode == INV_DEATH_MODE) {
                 if (item->anim_direction == -1) {
                     g_InputDB = (INPUT_STATE) { 0, .left = 1 };
@@ -156,7 +157,7 @@ void Option_Passport_Control(INV_ITEM *const item)
                     &g_LoadGameRequester,
                     g_GF_GameStrings[GF_S_GAME_PASSPORT_SAVE_GAME], 0, NULL, 0);
 
-                g_PassportMode = PASSPORT_MODE_LOAD_GAME;
+                m_PassportMode = PASSPORT_MODE_LOAD_GAME;
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (g_GameFlow.play_any_level) {
@@ -174,7 +175,7 @@ void Option_Passport_Control(INV_ITEM *const item)
                     g_GF_GameStrings[GF_S_GAME_PASSPORT_SELECT_LEVEL], 0, NULL,
                     0);
 
-                g_PassportMode = PASSPORT_MODE_SELECT_LEVEL;
+                m_PassportMode = PASSPORT_MODE_SELECT_LEVEL;
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (g_InputDB.menu_confirm) {
@@ -291,5 +292,5 @@ void Option_Passport_Shutdown(void)
     Requester_Shutdown(&g_LoadGameRequester);
     Requester_Shutdown(&g_SaveGameRequester);
 
-    g_PassportMode = PASSPORT_MODE_BROWSE;
+    m_PassportMode = PASSPORT_MODE_BROWSE;
 }

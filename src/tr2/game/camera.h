@@ -28,6 +28,3 @@ void Camera_Update(void);
 void Camera_LoadCutsceneFrame(void);
 void Camera_UpdateCutscene(void);
 void Camera_RefreshFromTrigger(const TRIGGER *trigger);
-
-// TODO: eliminate
-void Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *fd);

@@ -55,6 +55,5 @@ void Option_Compass_Draw(INV_ITEM *const item)
 
 void Option_Compass_Shutdown(void)
 {
-    Requester_Shutdown(&g_StatsRequester);
     M_Shutdown();
 }

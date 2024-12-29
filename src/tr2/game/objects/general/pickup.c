@@ -22,6 +22,20 @@
 #define LF_PICKUP_FLARE_UW 20
 #define LF_PICKUP_UW 18
 
+int16_t g_PickupBounds[12] = {
+    -WALL_L / 4,      +WALL_L / 4,      -100, +100, -WALL_L / 4, +WALL_L / 4,
+    -10 * PHD_DEGREE, +10 * PHD_DEGREE, +0,   +0,   +0,          +0,
+};
+
+static XYZ_32 m_PickupPosition = { .x = 0, .y = 0, .z = -100 };
+static XYZ_32 m_PickupPositionUW = { .x = 0, .y = -200, .z = -350 };
+
+static int16_t m_PickupBoundsUW[12] = {
+    -WALL_L / 2,      +WALL_L / 2,      -WALL_L / 2,      +WALL_L / 2,
+    -WALL_L / 2,      +WALL_L / 2,      -45 * PHD_DEGREE, +45 * PHD_DEGREE,
+    -45 * PHD_DEGREE, +45 * PHD_DEGREE, -45 * PHD_DEGREE, +45 * PHD_DEGREE,
+};
+
 static void M_DoPickup(int16_t item_num);
 static void M_DoFlarePickup(int16_t item_num);
 
@@ -105,7 +119,7 @@ static void M_DoAboveWater(const int16_t item_num, ITEM *const lara_item)
             lara_item->goal_anim_state = LS_STOP;
             g_Lara.gun_status = LGS_HANDS_BUSY;
         } else {
-            Item_AlignPosition(&g_PickupPosition, item, lara_item);
+            Item_AlignPosition(&m_PickupPosition, item, lara_item);
             lara_item->goal_anim_state = LS_PICKUP;
             do {
                 Lara_Animate(lara_item);
@@ -129,7 +143,7 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
     item->rot.y = lara_item->rot.y;
     item->rot.z = 0;
 
-    if (!Item_TestPosition(g_PickupBoundsUW, item, lara_item)) {
+    if (!Item_TestPosition(m_PickupBoundsUW, item, lara_item)) {
         goto cleanup;
     }
 
@@ -156,7 +170,7 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
     if (g_Input.action && lara_item->current_anim_state == LS_TREAD
         && g_Lara.gun_status == LGS_ARMLESS
         && (g_Lara.gun_type != LGT_FLARE || item->object_id != O_FLARE_ITEM)) {
-        if (!Lara_MovePosition(&g_PickupPositionUW, item, lara_item)) {
+        if (!Lara_MovePosition(&m_PickupPositionUW, item, lara_item)) {
             goto cleanup;
         }
 

@@ -20,6 +20,21 @@ typedef enum {
     MOVABLE_BLOCK_STATE_PULL = 3,
 } MOVABLE_BLOCK_STATE;
 
+static int16_t m_MovableBlockBounds[12] = {
+    -300,
+    +300,
+    +0,
+    +0,
+    -WALL_L / 2 - LARA_RADIUS - 80,
+    -WALL_L / 2,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+    -30 * PHD_DEGREE,
+    +30 * PHD_DEGREE,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+};
+
 int32_t MovableBlock_TestDestination(
     const ITEM *const item, const int32_t block_height)
 {
@@ -244,7 +259,7 @@ void MovableBlock_Collision(
                 break;
             }
 
-            if (!Item_TestPosition(g_MovableBlockBounds, item, lara_item)) {
+            if (!Item_TestPosition(m_MovableBlockBounds, item, lara_item)) {
                 return;
             }
 
@@ -288,7 +303,7 @@ void MovableBlock_Collision(
         lara_item->current_anim_state == LS_PP_READY
         && lara_item->frame_num
             == g_Anims[LA_PUSHABLE_GRAB].frame_base + LF_PPREADY) {
-        if (!Item_TestPosition(g_MovableBlockBounds, item, lara_item)) {
+        if (!Item_TestPosition(m_MovableBlockBounds, item, lara_item)) {
             return;
         }
 

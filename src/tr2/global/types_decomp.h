@@ -284,11 +284,6 @@ typedef struct __unaligned {
     int16_t enemy_facing;
 } AI_INFO;
 
-typedef struct __unaligned {
-    int16_t timer;
-    int16_t sprite;
-} PICKUP_INFO;
-
 typedef enum {
     PM_SPINE    = 1,
     PM_FRONT    = 2,

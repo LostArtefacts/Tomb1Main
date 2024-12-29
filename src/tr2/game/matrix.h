@@ -21,7 +21,6 @@ typedef struct {
 } MATRIX;
 
 extern MATRIX *g_MatrixPtr;
-extern MATRIX *g_IMMatrixPtr;
 extern MATRIX g_W2VMatrix;
 
 void Matrix_ResetStack(void);

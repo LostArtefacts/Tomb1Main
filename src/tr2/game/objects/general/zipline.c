@@ -18,6 +18,17 @@ typedef enum {
     ZIPLINE_STATE_HANG = 2,
 } ZIPLINE_STATE;
 
+static XYZ_32 m_ZiplineHandlePosition = {
+    .x = 0,
+    .y = 0,
+    .z = WALL_L / 2 - 141,
+};
+static int16_t m_ZiplineHandleBounds[12] = {
+    -WALL_L / 4,      +WALL_L / 4,      -100, +100,
+    +WALL_L / 4,      +WALL_L / 2,      +0,   +0,
+    -25 * PHD_DEGREE, +25 * PHD_DEGREE, +0,   +0,
+};
+
 void Zipline_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
@@ -31,11 +42,11 @@ void Zipline_Collision(
         return;
     }
 
-    if (!Item_TestPosition(g_ZiplineHandleBounds, item, lara_item)) {
+    if (!Item_TestPosition(m_ZiplineHandleBounds, item, lara_item)) {
         return;
     }
 
-    Item_AlignPosition(&g_ZiplineHandlePosition, item, lara_item);
+    Item_AlignPosition(&m_ZiplineHandlePosition, item, lara_item);
     g_Lara.gun_status = LGS_HANDS_BUSY;
 
     lara_item->goal_anim_state = LS_ZIPLINE;

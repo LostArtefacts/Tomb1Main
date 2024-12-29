@@ -78,8 +78,6 @@ static bool M_LoadLevel(M_PRIV *const p)
     M_PrepareStartInfo(p);
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
-
-    g_IsTitleLoaded = false;
     if (!Level_Initialise(p->level_num, GFL_DEMO)) {
         return false;
     }

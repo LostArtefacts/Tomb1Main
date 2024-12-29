@@ -11,6 +11,27 @@
 #include "game/sound.h"
 #include "global/vars.h"
 
+static XYZ_32 m_KeyholePosition = {
+    .x = 0,
+    .y = 0,
+    .z = WALL_L / 2 - LARA_RADIUS - 50,
+};
+
+static int16_t m_KeyholeBounds[12] = {
+    -200,
+    +200,
+    +0,
+    +0,
+    +WALL_L / 2 - 200,
+    +WALL_L / 2,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+    -30 * PHD_DEGREE,
+    +30 * PHD_DEGREE,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+};
+
 static void M_Consume(
     ITEM *lara_item, ITEM *keyhole_item, GAME_OBJECT_ID key_object_id);
 static void M_Refuse(const ITEM *lara_item);
@@ -32,7 +53,7 @@ static void M_Consume(
     const GAME_OBJECT_ID key_object_id)
 {
     Inv_RemoveItem(key_object_id);
-    Item_AlignPosition(&g_KeyholePosition, keyhole_item, lara_item);
+    Item_AlignPosition(&m_KeyholePosition, keyhole_item, lara_item);
     lara_item->goal_anim_state = LS_USE_KEY;
     do {
         Lara_Animate(lara_item);
@@ -62,7 +83,7 @@ void Keyhole_Collision(
         return;
     }
 
-    if (!Item_TestPosition(g_KeyholeBounds, &g_Items[item_num], lara_item)) {
+    if (!Item_TestPosition(m_KeyholeBounds, &g_Items[item_num], lara_item)) {
         return;
     }
 

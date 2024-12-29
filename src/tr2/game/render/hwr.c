@@ -56,7 +56,7 @@ static bool M_VertexBufferFull(void);
 
 static void M_DrawPrimitive(
     RENDERER *renderer, GFX_3D_PRIM_TYPE primitive_type,
-    const GFX_3D_VERTEX *vertices, DWORD vtx_count, bool is_no_clip);
+    const GFX_3D_VERTEX *vertices, int32_t vtx_count, bool is_no_clip);
 static void M_DrawPolyTextured(RENDERER *renderer, int32_t vtx_count);
 static void M_DrawPolyFlat(
     RENDERER *renderer, int32_t vtx_count, int32_t red, int32_t green,
@@ -269,7 +269,7 @@ static bool M_VertexBufferFull(void)
 
 static void M_DrawPrimitive(
     RENDERER *renderer, GFX_3D_PRIM_TYPE primitive_type,
-    const GFX_3D_VERTEX *const vertices, DWORD vtx_count, bool is_no_clip)
+    const GFX_3D_VERTEX *const vertices, int32_t vtx_count, bool is_no_clip)
 {
     M_PRIV *const priv = renderer->priv;
     GFX_3D_Renderer_RenderPrimFan(priv->renderer_3d, vertices, vtx_count);
@@ -1616,7 +1616,6 @@ static void M_DrawPolyList(RENDERER *const renderer)
 
         // triangle fan (color + semitransparent)
         case POLY_HWR_TRANS: {
-            DWORD alpha_state;
             GFX_3D_Renderer_SetBlendingMode(
                 priv->renderer_3d, GFX_BLEND_MODE_NORMAL);
             M_SelectTexture(renderer, -1);

@@ -6,9 +6,27 @@
 #include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/objects/common.h"
+#include "game/objects/general/pickup.h"
 #include "game/output.h"
 #include "game/sound.h"
 #include "global/vars.h"
+
+static XYZ_32 m_DetonatorPosition = { .x = 0, .y = 0, .z = 0 };
+
+static int16_t m_GongBounds[12] = {
+    -WALL_L / 2,
+    +WALL_L,
+    -100,
+    +100,
+    -WALL_L / 2 - 300,
+    -WALL_L / 2 + 100,
+    -30 * PHD_DEGREE,
+    +30 * PHD_DEGREE,
+    +0,
+    +0,
+    +0,
+    +0,
+};
 
 static void M_CreateGongBonger(ITEM *lara_item);
 
@@ -100,7 +118,7 @@ void Detonator_Collision(
             goto normal_collision;
         }
     } else {
-        if (!Item_TestPosition(g_GongBounds, item, lara_item)) {
+        if (!Item_TestPosition(m_GongBounds, item, lara_item)) {
             goto normal_collision;
         } else {
             item->rot = old_rot;
@@ -116,7 +134,7 @@ void Detonator_Collision(
     }
 
     Inv_RemoveItem(O_KEY_OPTION_2);
-    Item_AlignPosition(&g_DetonatorPosition, item, lara_item);
+    Item_AlignPosition(&m_DetonatorPosition, item, lara_item);
     lara_item->anim_num = g_Objects[O_LARA_EXTRA].anim_idx;
     lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
     lara_item->current_anim_state = LA_EXTRA_BREATH;

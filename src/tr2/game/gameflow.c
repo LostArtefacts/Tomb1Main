@@ -28,6 +28,13 @@
 
 #define GF_CURRENT_VERSION 3
 
+static int16_t m_LevelOffsets[200] = {};
+static int16_t *m_SequenceBuf = NULL;
+static int16_t *m_ScriptTable[MAX_LEVELS] = {};
+static int16_t *m_FrontendSequence = NULL;
+static int8_t m_SecretInvItems[GF_ADD_INV_NUMBER_OF] = {};
+static int8_t m_Add2InvItems[GF_ADD_INV_NUMBER_OF];
+
 static void M_ReadStringTable(
     VFILE *file, int32_t count, char ***table, char **buffer);
 
@@ -42,7 +49,7 @@ static void M_ReadStringTable(
     VFILE *const file, const int32_t count, char ***const table,
     char **const buffer)
 {
-    VFile_Read(file, g_GF_LevelOffsets, sizeof(int16_t) * count);
+    VFile_Read(file, m_LevelOffsets, sizeof(int16_t) * count);
 
     const int16_t buf_size = VFile_ReadS16(file);
     *buffer = Memory_Alloc(buf_size);
@@ -56,7 +63,7 @@ static void M_ReadStringTable(
 
     *table = Memory_Alloc(sizeof(char *) * count);
     for (int32_t i = 0; i < count; i++) {
-        const int32_t offset = g_GF_LevelOffsets[i];
+        const int32_t offset = m_LevelOffsets[i];
         (*table)[i] = &(*buffer)[offset];
     }
 }
@@ -128,16 +135,16 @@ static void M_ModifyInventory_GunOrAmmo(
 
     if (Inv_RequestItem(gun_item)) {
         if (type == 1) {
-            ammo_info->ammo += ammo_qty * g_GF_SecretInvItems[ammo_adder];
-            for (int32_t i = 0; i < g_GF_SecretInvItems[ammo_adder]; i++) {
+            ammo_info->ammo += ammo_qty * m_SecretInvItems[ammo_adder];
+            for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
                 Overlay_AddDisplayPickup(ammo_item);
             }
         } else if (type == 0) {
-            ammo_info->ammo += ammo_qty * g_GF_Add2InvItems[ammo_adder];
+            ammo_info->ammo += ammo_qty * m_Add2InvItems[ammo_adder];
         }
     } else if (
-        (type == 0 && g_GF_Add2InvItems[gun_adder])
-        || (type == 1 && g_GF_SecretInvItems[gun_adder])) {
+        (type == 0 && m_Add2InvItems[gun_adder])
+        || (type == 1 && m_SecretInvItems[gun_adder])) {
 
         // clang-format off
         // TODO: consider moving this to Inv_AddItem
@@ -156,21 +163,21 @@ static void M_ModifyInventory_GunOrAmmo(
         Inv_AddItem(gun_item);
 
         if (type == 1) {
-            ammo_info->ammo += ammo_qty * g_GF_SecretInvItems[ammo_adder];
+            ammo_info->ammo += ammo_qty * m_SecretInvItems[ammo_adder];
             Overlay_AddDisplayPickup(gun_item);
-            for (int32_t i = 0; i < g_GF_SecretInvItems[ammo_adder]; i++) {
+            for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
                 Overlay_AddDisplayPickup(ammo_item);
             }
         } else if (type == 0) {
-            ammo_info->ammo += ammo_qty * g_GF_Add2InvItems[ammo_adder];
+            ammo_info->ammo += ammo_qty * m_Add2InvItems[ammo_adder];
         }
     } else if (type == 1) {
-        for (int32_t i = 0; i < g_GF_SecretInvItems[ammo_adder]; i++) {
+        for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
             Inv_AddItem(ammo_item);
             Overlay_AddDisplayPickup(ammo_item);
         }
     } else if (type == 0) {
-        for (int32_t i = 0; i < g_GF_Add2InvItems[ammo_adder]; i++) {
+        for (int32_t i = 0; i < m_Add2InvItems[ammo_adder]; i++) {
             Inv_AddItem(ammo_item);
         }
     }
@@ -182,9 +189,9 @@ static void M_ModifyInventory_Item(
     const GF_ADD_INV item_adder = M_ModifyInventory_GetItemAdder(object_id);
     int32_t qty = 0;
     if (type == 1) {
-        qty = g_GF_SecretInvItems[item_adder];
+        qty = m_SecretInvItems[item_adder];
     } else if (type == 0) {
-        qty = g_GF_Add2InvItems[item_adder];
+        qty = m_Add2InvItems[item_adder];
     }
 
     for (int32_t i = 0; i < qty; i++) {
@@ -199,7 +206,6 @@ static void M_ModifyInventory_Item(
 bool GF_LoadFromFile(const char *const file_name)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    DWORD bytes_read;
 
     const char *full_path = File_GetFullPath(file_name);
     VFILE *const file = VFile_CreateFromPath(full_path);
@@ -208,12 +214,13 @@ bool GF_LoadFromFile(const char *const file_name)
         return false;
     }
 
-    g_GF_ScriptVersion = VFile_ReadS32(file);
-    if (g_GF_ScriptVersion != GF_CURRENT_VERSION) {
+    const int32_t script_version = VFile_ReadS32(file);
+    if (script_version != GF_CURRENT_VERSION) {
         return false;
     }
 
-    VFile_Read(file, g_GF_Description, 256);
+    char description[256];
+    VFile_Read(file, description, 256);
 
     if (VFile_ReadS16(file) != sizeof(GAME_FLOW)) {
         return false;
@@ -277,17 +284,16 @@ bool GF_LoadFromFile(const char *const file_name)
         &g_GF_CutsceneFileNamesBuf);
 
     VFile_Read(
-        file, &g_GF_LevelOffsets,
-        sizeof(int16_t) * (g_GameFlow.num_levels + 1));
+        file, &m_LevelOffsets, sizeof(int16_t) * (g_GameFlow.num_levels + 1));
     {
         const int16_t size = VFile_ReadS16(file);
-        g_GF_SequenceBuf = Memory_Alloc(size);
-        VFile_Read(file, g_GF_SequenceBuf, size);
+        m_SequenceBuf = Memory_Alloc(size);
+        VFile_Read(file, m_SequenceBuf, size);
     }
 
-    g_GF_FrontendSequence = g_GF_SequenceBuf;
+    m_FrontendSequence = m_SequenceBuf;
     for (int32_t i = 0; i < g_GameFlow.num_levels; i++) {
-        g_GF_ScriptTable[i] = g_GF_SequenceBuf + (g_GF_LevelOffsets[i + 1] / 2);
+        m_ScriptTable[i] = m_SequenceBuf + (m_LevelOffsets[i + 1] / 2);
     }
 
     VFile_Read(file, g_GF_ValidDemos, sizeof(int16_t) * g_GameFlow.num_demos);
@@ -332,7 +338,7 @@ bool GF_LoadFromFile(const char *const file_name)
     return true;
 }
 
-int32_t GF_LoadScriptFile(const char *const fname)
+bool GF_LoadScriptFile(const char *const fname)
 {
     g_GF_SunsetEnabled = false;
 
@@ -352,15 +358,15 @@ int32_t GF_LoadScriptFile(const char *const fname)
     return true;
 }
 
-int32_t GF_DoFrontendSequence(void)
+bool GF_DoFrontendSequence(void)
 {
     GF_N_LoadStrings(-1);
     const GAME_FLOW_DIR dir =
-        GF_InterpretSequence(g_GF_FrontendSequence, GFL_NORMAL, 1);
+        GF_InterpretSequence(m_FrontendSequence, GFL_NORMAL);
     return dir == GFD_EXIT_GAME;
 }
 
-int32_t GF_DoLevelSequence(
+GAME_FLOW_DIR GF_DoLevelSequence(
     const int32_t start_level, const GAMEFLOW_LEVEL_TYPE type)
 {
     GF_N_LoadStrings(start_level);
@@ -368,12 +374,11 @@ int32_t GF_DoLevelSequence(
     int32_t current_level = start_level;
     while (true) {
         if (current_level > g_GameFlow.num_levels - 1) {
-            g_IsTitleLoaded = false;
             return GFD_EXIT_TO_TITLE;
         }
 
-        const int16_t *const ptr = g_GF_ScriptTable[current_level];
-        const GAME_FLOW_DIR dir = GF_InterpretSequence(ptr, type, 0);
+        const int16_t *const ptr = m_ScriptTable[current_level];
+        const GAME_FLOW_DIR dir = GF_InterpretSequence(ptr, type);
         current_level++;
 
         if (g_GameFlow.single_level >= 0) {
@@ -385,20 +390,18 @@ int32_t GF_DoLevelSequence(
     }
 }
 
-int32_t GF_InterpretSequence(
-    const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type, const int32_t seq_type)
+GAME_FLOW_DIR GF_InterpretSequence(const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type)
 {
     g_GF_NoFloor = 0;
     g_GF_DeadlyWater = false;
     g_GF_SunsetEnabled = false;
     g_GF_LaraStartAnim = 0;
-    g_GF_Kill2Complete = false;
     g_GF_RemoveAmmo = false;
     g_GF_RemoveWeapons = false;
 
     for (int32_t i = 0; i < GF_ADD_INV_NUMBER_OF; i++) {
-        g_GF_SecretInvItems[i] = 0;
-        g_GF_Add2InvItems[i] = 0;
+        m_SecretInvItems[i] = 0;
+        m_Add2InvItems[i] = 0;
     }
 
     g_GF_MusicTracks[0] = 2;
@@ -567,9 +570,9 @@ int32_t GF_InterpretSequence(
         case GFE_ADD_TO_INV:
             if (type != GFL_STORY && type != GFL_MID_STORY) {
                 if (ptr[1] < 1000) {
-                    g_GF_SecretInvItems[ptr[1]]++;
+                    m_SecretInvItems[ptr[1]]++;
                 } else if (type != GFL_SAVED) {
-                    g_GF_Add2InvItems[ptr[1] - 1000]++;
+                    m_Add2InvItems[ptr[1] - 1000]++;
                 }
             }
             ptr += 2;
@@ -590,9 +593,6 @@ int32_t GF_InterpretSequence(
             break;
 
         case GFE_KILL_TO_COMPLETE:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
-                g_GF_Kill2Complete = true;
-            }
             ptr++;
             break;
 
@@ -619,7 +619,7 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
 {
     START_INFO *const start = &g_SaveGame.start[level];
 
-    if (!start->has_pistols && g_GF_Add2InvItems[GF_ADD_INV_PISTOLS]) {
+    if (!start->has_pistols && m_Add2InvItems[GF_ADD_INV_PISTOLS]) {
         start->has_pistols = 1;
         Inv_AddItem(O_PISTOL_ITEM);
     }
@@ -647,9 +647,9 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
 
     for (int32_t i = 0; i < GF_ADD_INV_NUMBER_OF; i++) {
         if (type == 1) {
-            g_GF_SecretInvItems[i] = 0;
+            m_SecretInvItems[i] = 0;
         } else if (type == 0) {
-            g_GF_Add2InvItems[i] = 0;
+            m_Add2InvItems[i] = 0;
         }
     }
 }

@@ -8,6 +8,7 @@
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
+static int32_t m_SlotsUsed = 0;
 void LOT_InitialiseArray(void)
 {
     g_BaddieSlots =
@@ -20,7 +21,7 @@ void LOT_InitialiseArray(void)
             GameBuf_Alloc(g_BoxCount * sizeof(BOX_NODE), GBUF_CREATURE_LOT);
     }
 
-    g_SlotsUsed = 0;
+    m_SlotsUsed = 0;
 }
 
 void LOT_DisableBaddieAI(const int16_t item_num)
@@ -38,7 +39,7 @@ void LOT_DisableBaddieAI(const int16_t item_num)
 
     if (creature != NULL) {
         creature->item_num = NO_ITEM;
-        g_SlotsUsed--;
+        m_SlotsUsed--;
     }
 }
 
@@ -52,7 +53,7 @@ bool LOT_EnableBaddieAI(const int16_t item_num, const bool always)
         return true;
     }
 
-    if (g_SlotsUsed < NUM_SLOTS) {
+    if (m_SlotsUsed < NUM_SLOTS) {
         for (int32_t slot = 0; slot < NUM_SLOTS; slot++) {
             if (g_BaddieSlots[slot].item_num == NO_ITEM) {
                 LOT_InitialiseSlot(item_num, slot);
@@ -168,7 +169,7 @@ void LOT_InitialiseSlot(const int16_t item_num, const int32_t slot)
         LOT_CreateZone(item);
     }
 
-    g_SlotsUsed++;
+    m_SlotsUsed++;
 }
 
 void LOT_CreateZone(ITEM *const item)

@@ -158,12 +158,10 @@ static void M_Construct(const INVENTORY_MODE mode)
     if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
         && !g_GameFlow.load_save_disabled && g_GameFlow.gym_enabled) {
         g_Inv_OptionCurrent = 3; // TODO: don't hardcode me
-        g_SoundOptionLine = 0;
     } else {
         g_Inv_OptionCurrent = 0;
-        g_GymInvOpenEnabled = 0;
-        g_SoundOptionLine = 0;
     }
+    g_SoundOptionLine = 0;
 }
 
 static void M_End(INV_RING *const ring)

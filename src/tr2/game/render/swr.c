@@ -102,7 +102,10 @@ typedef struct {
 } XBUF_XGUVP;
 #pragma pack(pop)
 
-static VERTEX_INFO m_VBuffer[32] = { 0 };
+static VERTEX_INFO m_VBuffer[32] = {};
+static void *m_XBuffer = NULL;
+static int32_t m_XGenY1 = 0;
+static int32_t m_XGenY2 = 0;
 
 static void __fastcall M_FlatA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
@@ -214,7 +217,7 @@ static void __fastcall M_FlatA(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_X *xbuf = (const XBUF_X *)g_XBuffer + y1;
+    const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -241,7 +244,7 @@ static void __fastcall M_TransA(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_X *xbuf = (const XBUF_X *)g_XBuffer + y1;
+    const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
     const DEPTHQ_ENTRY *qt = g_DepthQTable + depth;
 
@@ -276,7 +279,7 @@ static void __fastcall M_GourA(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_XG *xbuf = (const XBUF_XG *)g_XBuffer + y1;
+    const XBUF_XG *xbuf = (const XBUF_XG *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
     const GOURAUD_ENTRY *gt = g_GouraudTable + color_idx;
 
@@ -315,7 +318,7 @@ static void __fastcall M_GTMapA(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)g_XBuffer + y1;
+    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -361,7 +364,7 @@ static void __fastcall M_WGTMapA(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)g_XBuffer + y1;
+    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -409,7 +412,7 @@ static void M_GTMapPersp32FP(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)g_XBuffer + y1;
+    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -540,7 +543,7 @@ static void M_WGTMapPersp32FP(
     }
 
     const int32_t stride = target_surface->desc.pitch;
-    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)g_XBuffer + y1;
+    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
     PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -685,7 +688,7 @@ static void M_OccludeX(
     }
 
     const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_X *xbuf = (const XBUF_X *)g_XBuffer + y1;
+    const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -709,7 +712,7 @@ static void M_OccludeXG(
     }
 
     const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XG *xbuf = (const XBUF_XG *)g_XBuffer + y1;
+    const XBUF_XG *xbuf = (const XBUF_XG *)m_XBuffer + y1;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -733,7 +736,7 @@ static void M_OccludeXGUV(
     }
 
     const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)g_XBuffer + y1;
+    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -757,7 +760,7 @@ static void M_OccludeXGUVP(
     }
 
     const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)g_XBuffer + y1;
+    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
 
     while (y_size > 0) {
@@ -793,7 +796,7 @@ static bool M_XGenX(const int16_t *obj_ptr)
             const int32_t x_size = x2 - x1;
             int32_t y_size = y2 - y1;
 
-            XBUF_X *x_ptr = (XBUF_X *)g_XBuffer + y1;
+            XBUF_X *x_ptr = (XBUF_X *)m_XBuffer + y1;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             int32_t x = x1 * PHD_ONE + (PHD_ONE - 1);
 
@@ -807,7 +810,7 @@ static bool M_XGenX(const int16_t *obj_ptr)
             const int32_t x_size = x1 - x2;
             int32_t y_size = y1 - y2;
 
-            XBUF_X *x_ptr = (XBUF_X *)g_XBuffer + y2;
+            XBUF_X *x_ptr = (XBUF_X *)m_XBuffer + y2;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             int32_t x = x2 * PHD_ONE + 1;
 
@@ -823,8 +826,8 @@ static bool M_XGenX(const int16_t *obj_ptr)
         return false;
     }
 
-    g_XGenY1 = y_min;
-    g_XGenY2 = y_max;
+    m_XGenY1 = y_min;
+    m_XGenY2 = y_max;
     return true;
 }
 
@@ -852,7 +855,7 @@ static bool M_XGenXG(const int16_t *obj_ptr)
             const int32_t x_size = x2 - x1;
             int32_t y_size = y2 - y1;
 
-            XBUF_XG *xg_ptr = (XBUF_XG *)g_XBuffer + y1;
+            XBUF_XG *xg_ptr = (XBUF_XG *)m_XBuffer + y1;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             int32_t x = x1 * PHD_ONE + (PHD_ONE - 1);
@@ -871,7 +874,7 @@ static bool M_XGenXG(const int16_t *obj_ptr)
             const int32_t x_size = x1 - x2;
             int32_t y_size = y1 - y2;
 
-            XBUF_XG *xg_ptr = (XBUF_XG *)g_XBuffer + y2;
+            XBUF_XG *xg_ptr = (XBUF_XG *)m_XBuffer + y2;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             int32_t x = x2 * PHD_ONE + 1;
@@ -891,8 +894,8 @@ static bool M_XGenXG(const int16_t *obj_ptr)
         return false;
     }
 
-    g_XGenY1 = y_min;
-    g_XGenY2 = y_max;
+    m_XGenY1 = y_min;
+    m_XGenY2 = y_max;
     return true;
 }
 
@@ -926,7 +929,7 @@ static bool M_XGenXGUV(const int16_t *obj_ptr)
             const int32_t x_size = x2 - x1;
             int32_t y_size = y2 - y1;
 
-            XBUF_XGUV *xguv_ptr = (XBUF_XGUV *)g_XBuffer + y1;
+            XBUF_XGUV *xguv_ptr = (XBUF_XGUV *)m_XBuffer + y1;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             const int32_t u_add = PHD_HALF * u_size / y_size;
@@ -955,7 +958,7 @@ static bool M_XGenXGUV(const int16_t *obj_ptr)
             const int32_t x_size = x1 - x2;
             int32_t y_size = y1 - y2;
 
-            XBUF_XGUV *xguv_ptr = (XBUF_XGUV *)g_XBuffer + y2;
+            XBUF_XGUV *xguv_ptr = (XBUF_XGUV *)m_XBuffer + y2;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             const int32_t u_add = PHD_HALF * u_size / y_size;
@@ -983,8 +986,8 @@ static bool M_XGenXGUV(const int16_t *obj_ptr)
         return false;
     }
 
-    g_XGenY1 = y_min;
-    g_XGenY2 = y_max;
+    m_XGenY1 = y_min;
+    m_XGenY2 = y_max;
     return true;
 }
 
@@ -1025,7 +1028,7 @@ static bool M_XGenXGUVPerspFP(const int16_t *obj_ptr)
             const int32_t x_size = x2 - x1;
             int32_t y_size = y2 - y1;
 
-            XBUF_XGUVP *xguv_ptr = (XBUF_XGUVP *)g_XBuffer + y1;
+            XBUF_XGUVP *xguv_ptr = (XBUF_XGUVP *)m_XBuffer + y1;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             const float u_add = u_size / (float)y_size;
@@ -1059,7 +1062,7 @@ static bool M_XGenXGUVPerspFP(const int16_t *obj_ptr)
             const int32_t x_size = x1 - x2;
             int32_t y_size = y1 - y2;
 
-            XBUF_XGUVP *xguv_ptr = (XBUF_XGUVP *)g_XBuffer + y2;
+            XBUF_XGUVP *xguv_ptr = (XBUF_XGUVP *)m_XBuffer + y2;
             const int32_t x_add = PHD_ONE * x_size / y_size;
             const int32_t g_add = PHD_HALF * g_size / y_size;
             const float u_add = u_size / (float)y_size;
@@ -1091,8 +1094,8 @@ static bool M_XGenXGUVPerspFP(const int16_t *obj_ptr)
         return false;
     }
 
-    g_XGenY1 = y_min;
-    g_XGenY2 = y_max;
+    m_XGenY1 = y_min;
+    m_XGenY2 = y_max;
     return true;
 }
 
@@ -1101,8 +1104,8 @@ static void M_DrawPolyFlat(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenX(obj_ptr + 1)) {
-        M_OccludeX(alpha_surface, g_XGenY1, g_XGenY2);
-        M_FlatA(target_surface, g_XGenY1, g_XGenY2, *obj_ptr);
+        M_OccludeX(alpha_surface, m_XGenY1, m_XGenY2);
+        M_FlatA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1111,8 +1114,8 @@ static void M_DrawPolyTrans(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenX(obj_ptr + 1)) {
-        M_OccludeX(alpha_surface, g_XGenY1, g_XGenY2);
-        M_TransA(target_surface, g_XGenY1, g_XGenY2, *obj_ptr);
+        M_OccludeX(alpha_surface, m_XGenY1, m_XGenY2);
+        M_TransA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1121,8 +1124,8 @@ static void M_DrawPolyGouraud(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXG(obj_ptr + 1)) {
-        M_OccludeXG(alpha_surface, g_XGenY1, g_XGenY2);
-        M_GourA(target_surface, g_XGenY1, g_XGenY2, *obj_ptr);
+        M_OccludeXG(alpha_surface, m_XGenY1, m_XGenY2);
+        M_GourA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1131,9 +1134,9 @@ static void M_DrawPolyGTMap(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUV(obj_ptr + 1)) {
-        M_OccludeXGUV(alpha_surface, g_XGenY1, g_XGenY2);
+        M_OccludeXGUV(alpha_surface, m_XGenY1, m_XGenY2);
         M_GTMapA(
-            target_surface, g_XGenY1, g_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1142,9 +1145,9 @@ static void M_DrawPolyWGTMap(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUV(obj_ptr + 1)) {
-        M_OccludeXGUV(alpha_surface, g_XGenY1, g_XGenY2);
+        M_OccludeXGUV(alpha_surface, m_XGenY1, m_XGenY2);
         M_WGTMapA(
-            target_surface, g_XGenY1, g_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1153,9 +1156,9 @@ static void M_DrawPolyGTMapPersp(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
-        M_OccludeXGUVP(alpha_surface, g_XGenY1, g_XGenY2);
+        M_OccludeXGUVP(alpha_surface, m_XGenY1, m_XGenY2);
         M_GTMapPersp32FP(
-            target_surface, g_XGenY1, g_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1164,9 +1167,9 @@ static void M_DrawPolyWGTMapPersp(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
-        M_OccludeXGUVP(alpha_surface, g_XGenY1, g_XGenY2);
+        M_OccludeXGUVP(alpha_surface, m_XGenY1, m_XGenY2);
         M_WGTMapPersp32FP(
-            target_surface, g_XGenY1, g_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1362,7 +1365,7 @@ static void M_Open(RENDERER *const renderer)
         return;
     }
 
-    g_XBuffer = Memory_Realloc(g_XBuffer, sizeof(XBUF_XGUVP) * g_PhdWinHeight);
+    m_XBuffer = Memory_Realloc(m_XBuffer, sizeof(XBUF_XGUVP) * g_PhdWinHeight);
 
     {
         GFX_2D_Surface_Free(priv->surface);
@@ -1401,7 +1404,7 @@ static void M_Close(RENDERER *const renderer)
         return;
     }
 
-    Memory_FreePointer(&g_XBuffer);
+    Memory_FreePointer(&m_XBuffer);
 
     if (priv->surface != NULL) {
         GFX_2D_Surface_Free(priv->surface);

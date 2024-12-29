@@ -34,7 +34,11 @@
     SPECIAL_READ_WRITE(U16, uint16_t);                                         \
     SPECIAL_READ_WRITE(U32, uint32_t);
 
+static int32_t m_BufPos = 0;
+static char *m_BufPtr = NULL;
 static char *m_BufCopy = NULL;
+static uint32_t m_ReqFlags1[MAX_REQUESTER_ITEMS];
+static uint32_t m_ReqFlags2[MAX_REQUESTER_ITEMS];
 
 static void M_Read(void *ptr, size_t size);
 #undef SPECIAL_READ_WRITE
@@ -82,8 +86,8 @@ SPECIAL_READ_WRITES;
 
 static void M_Skip(const size_t size)
 {
-    g_SavegameBufPos += size;
-    g_SavegameBufPtr += size;
+    m_BufPos += size;
+    m_BufPtr += size;
 }
 
 static void M_ReadItems(void)
@@ -833,26 +837,26 @@ void ExtractSaveGameInfo(void)
 
 void ResetSG(void)
 {
-    g_SavegameBufPos = 0;
-    g_SavegameBufPtr = g_SaveGame.buffer;
+    m_BufPos = 0;
+    m_BufPtr = g_SaveGame.buffer;
 }
 
 void WriteSG(const void *const pointer, const size_t size)
 {
-    g_SavegameBufPos += size;
-    if (g_SavegameBufPos >= MAX_SG_BUFFER_SIZE) {
+    m_BufPos += size;
+    if (m_BufPos >= MAX_SG_BUFFER_SIZE) {
         Shell_ExitSystem("FATAL: Savegame is too big to fit in buffer");
     }
 
-    memcpy(g_SavegameBufPtr, pointer, size);
-    g_SavegameBufPtr += size;
+    memcpy(m_BufPtr, pointer, size);
+    m_BufPtr += size;
 }
 
 void ReadSG(void *const pointer, const size_t size)
 {
-    g_SavegameBufPos += size;
-    memcpy(pointer, g_SavegameBufPtr, size);
-    g_SavegameBufPtr += size;
+    m_BufPos += size;
+    memcpy(pointer, m_BufPtr, size);
+    m_BufPtr += size;
 }
 
 void GetSavedGamesList(REQUEST_INFO *const req)
@@ -861,12 +865,8 @@ void GetSavedGamesList(REQUEST_INFO *const req)
     if (req->selected >= req->visible_count) {
         req->line_offset = req->selected - req->visible_count + 1;
     }
-    memcpy(
-        g_RequesterFlags1, g_SaveGameReqFlags1,
-        sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
-    memcpy(
-        g_RequesterFlags2, g_SaveGameReqFlags2,
-        sizeof(uint32_t) * MAX_REQUESTER_ITEMS);
+    memcpy(g_RequesterFlags1, m_ReqFlags1, sizeof(m_ReqFlags1));
+    memcpy(g_RequesterFlags2, m_ReqFlags2, sizeof(m_ReqFlags2));
 }
 
 bool S_FrontEndCheck(void)
@@ -906,8 +906,8 @@ bool S_FrontEndCheck(void)
         }
     }
 
-    memcpy(g_SaveGameReqFlags1, g_RequesterFlags1, sizeof(g_SaveGameReqFlags1));
-    memcpy(g_SaveGameReqFlags2, g_RequesterFlags2, sizeof(g_SaveGameReqFlags2));
+    memcpy(m_ReqFlags1, g_RequesterFlags1, sizeof(m_ReqFlags1));
+    memcpy(m_ReqFlags2, g_RequesterFlags2, sizeof(m_ReqFlags2));
     g_SaveCounter++;
     return true;
 }
@@ -935,8 +935,8 @@ int32_t S_SaveGame(
         &g_LoadGameRequester, slot_num, file_name, REQ_ALIGN_LEFT,
         save_num_text, REQ_ALIGN_RIGHT);
 
-    g_SaveGameReqFlags1[slot_num] = g_RequesterFlags1[slot_num];
-    g_SaveGameReqFlags2[slot_num] = g_RequesterFlags2[slot_num];
+    m_ReqFlags1[slot_num] = g_RequesterFlags1[slot_num];
+    m_ReqFlags2[slot_num] = g_RequesterFlags2[slot_num];
     g_SavedLevels[slot_num] = 1;
     g_SaveCounter++;
     g_SavedGames++;

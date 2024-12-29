@@ -12,6 +12,32 @@ typedef enum {
     SWITCH_STATE_LINK = 2,
 } SWITCH_STATE;
 
+static XYZ_32 g_SmallSwitchPosition = { .x = 0, .y = 0, .z = 362 };
+static XYZ_32 g_PushSwitchPosition = { .x = 0, .y = 0, .z = 292 };
+static XYZ_32 m_AirlockPosition = { .x = 0, .y = 0, .z = 212 };
+static XYZ_32 m_SwitchUWPosition = { .x = 0, .y = 0, .z = 108 };
+
+static int16_t m_SwitchBounds[12] = {
+    -220,
+    +220,
+    +0,
+    +0,
+    +WALL_L / 2 - 220,
+    +WALL_L / 2,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+    -30 * PHD_DEGREE,
+    +30 * PHD_DEGREE,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+};
+
+static int16_t m_SwitchBoundsUW[12] = {
+    -WALL_L + WALL_L, -WALL_L,          +WALL_L,          -WALL_L,
+    +WALL_L / 2,      -80 * PHD_DEGREE, +80 * PHD_DEGREE, -80 * PHD_DEGREE,
+    +80 * PHD_DEGREE, -80 * PHD_DEGREE, +80 * PHD_DEGREE,
+};
+
 static void M_AlignLara(ITEM *lara_item, ITEM *switch_item);
 static void M_SwitchOn(ITEM *switch_item, ITEM *lara_item);
 static void M_SwitchOff(ITEM *switch_item, ITEM *lara_item);
@@ -23,7 +49,7 @@ static void M_AlignLara(ITEM *const lara_item, ITEM *const switch_item)
         if (switch_item->current_anim_state == SWITCH_STATE_ON) {
             return;
         }
-        Item_AlignPosition(&g_AirlockPosition, switch_item, lara_item);
+        Item_AlignPosition(&m_AirlockPosition, switch_item, lara_item);
         break;
 
     case O_SWITCH_TYPE_SMALL:
@@ -101,7 +127,7 @@ void Switch_Collision(
     if (!g_Input.action || item->status != IS_INACTIVE
         || g_Lara.gun_status != LGS_ARMLESS || lara_item->status
         || lara_item->current_anim_state != LS_STOP
-        || !Item_TestPosition(g_SwitchBounds, &g_Items[item_num], lara_item)) {
+        || !Item_TestPosition(m_SwitchBounds, &g_Items[item_num], lara_item)) {
         return;
     }
 
@@ -138,7 +164,7 @@ void Switch_CollisionUW(
         return;
     }
 
-    if (!Item_TestPosition(g_SwitchBoundsUW, item, lara_item)) {
+    if (!Item_TestPosition(m_SwitchBoundsUW, item, lara_item)) {
         return;
     }
 
@@ -147,7 +173,7 @@ void Switch_CollisionUW(
         return;
     }
 
-    if (!Lara_MovePosition(&g_SwitchUWPosition, item, lara_item)) {
+    if (!Lara_MovePosition(&m_SwitchUWPosition, item, lara_item)) {
         return;
     }
 

@@ -149,12 +149,10 @@ static void M_SyncFromWindow(void)
 
 static void M_HandleFocusGained(void)
 {
-    g_IsGameWindowActive = true;
 }
 
 static void M_HandleFocusLost(void)
 {
-    g_IsGameWindowActive = false;
 }
 
 static void M_HandleWindowShown(void)
@@ -242,8 +240,6 @@ static void M_ConfigureOpenGL(void)
 
 static bool M_CreateGameWindow(void)
 {
-    g_IsGameWindowActive = true;
-
     int32_t result = SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO);
     if (result < 0) {
         Shell_ExitSystemFmt(

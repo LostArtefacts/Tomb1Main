@@ -9,6 +9,9 @@
 #include <libtrx/debug.h>
 #include <libtrx/utils.h>
 
+static int32_t m_LOSRooms[200] = {};
+static int32_t m_LOSNumRooms = 0;
+
 int32_t LOS_CheckX(const GAME_VECTOR *const start, GAME_VECTOR *const target)
 {
     const int32_t dx = target->x - start->x;
@@ -22,8 +25,8 @@ int32_t LOS_CheckX(const GAME_VECTOR *const start, GAME_VECTOR *const target)
     int16_t room_num = start->room_num;
     int16_t last_room_num = start->room_num;
 
-    g_LOSRooms[0] = room_num;
-    g_LOSNumRooms = 1;
+    m_LOSRooms[0] = room_num;
+    m_LOSNumRooms = 1;
 
     if (dx < 0) {
         int32_t x = start->x & (~(WALL_L - 1));
@@ -46,7 +49,7 @@ int32_t LOS_CheckX(const GAME_VECTOR *const start, GAME_VECTOR *const target)
 
             if (room_num != last_room_num) {
                 last_room_num = room_num;
-                g_LOSRooms[g_LOSNumRooms++] = room_num;
+                m_LOSRooms[m_LOSNumRooms++] = room_num;
             }
 
             {
@@ -88,7 +91,7 @@ int32_t LOS_CheckX(const GAME_VECTOR *const start, GAME_VECTOR *const target)
 
             if (room_num != last_room_num) {
                 last_room_num = room_num;
-                g_LOSRooms[g_LOSNumRooms++] = room_num;
+                m_LOSRooms[m_LOSNumRooms++] = room_num;
             }
 
             {
@@ -128,8 +131,8 @@ int32_t LOS_CheckZ(const GAME_VECTOR *const start, GAME_VECTOR *const target)
     int16_t room_num = start->room_num;
     int16_t last_room_num = start->room_num;
 
-    g_LOSRooms[0] = room_num;
-    g_LOSNumRooms = 1;
+    m_LOSRooms[0] = room_num;
+    m_LOSNumRooms = 1;
 
     if (dz < 0) {
         int32_t z = start->z & (~(WALL_L - 1));
@@ -152,7 +155,7 @@ int32_t LOS_CheckZ(const GAME_VECTOR *const start, GAME_VECTOR *const target)
 
             if (room_num != last_room_num) {
                 last_room_num = room_num;
-                g_LOSRooms[g_LOSNumRooms++] = room_num;
+                m_LOSRooms[m_LOSNumRooms++] = room_num;
             }
 
             {
@@ -194,7 +197,7 @@ int32_t LOS_CheckZ(const GAME_VECTOR *const start, GAME_VECTOR *const target)
 
             if (room_num != last_room_num) {
                 last_room_num = room_num;
-                g_LOSRooms[g_LOSNumRooms++] = room_num;
+                m_LOSRooms[m_LOSNumRooms++] = room_num;
             }
 
             {
@@ -293,8 +296,8 @@ int32_t LOS_CheckSmashable(
     const int32_t dy = target->y - start->y;
     const int32_t dz = target->z - start->z;
 
-    for (int32_t i = 0; i < g_LOSNumRooms; i++) {
-        for (int16_t item_num = g_Rooms[g_LOSRooms[i]].item_num;
+    for (int32_t i = 0; i < m_LOSNumRooms; i++) {
+        for (int16_t item_num = g_Rooms[m_LOSRooms[i]].item_num;
              item_num != NO_ITEM; item_num = g_Items[item_num].next_item) {
             const ITEM *const item = &g_Items[item_num];
             if (item->status == IS_DEACTIVATED) {

@@ -10,9 +10,11 @@
 
 #define LF_USEPUZZLE 80
 
-static XYZ_32 m_PuzzleHolePosition = { .x = 0,
-                                       .y = 0,
-                                       .z = WALL_L / 2 - LARA_RAD - 85 };
+static XYZ_32 m_PuzzleHolePosition = {
+    .x = 0,
+    .y = 0,
+    .z = WALL_L / 2 - LARA_RAD - 85,
+};
 
 static const OBJECT_BOUNDS m_PuzzleHoleBounds = {
     .shift = {

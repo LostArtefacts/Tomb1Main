@@ -309,8 +309,8 @@ void M_ResetHair(ITEM *const item)
 void M_AssaultStart(ITEM *const item)
 {
     g_SaveGame.statistics.timer = 0;
-    g_IsAssaultTimerActive = 1;
-    g_IsAssaultTimerDisplay = 1;
+    g_IsAssaultTimerActive = true;
+    g_IsAssaultTimerDisplay = true;
     g_FlipEffect = -1;
     Stats_StartTimer();
 }

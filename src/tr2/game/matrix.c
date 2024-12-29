@@ -11,11 +11,13 @@
 #include <stdint.h>
 
 MATRIX *g_MatrixPtr = NULL;
-MATRIX *g_IMMatrixPtr = NULL;
 MATRIX g_W2VMatrix;
 
 static MATRIX m_MatrixStack[40] = {};
 static MATRIX m_IMMatrixStack[256] = {};
+static MATRIX *m_IMMatrixPtr = NULL;
+static int32_t m_IMRate;
+static int32_t m_IMFrac;
 
 void Matrix_ResetStack(void)
 {
@@ -382,20 +384,20 @@ void Matrix_TranslateSet(const int32_t x, const int32_t y, const int32_t z)
 
 void Matrix_InitInterpolate(int32_t frac, int32_t rate)
 {
-    g_IMRate = rate;
-    g_IMFrac = frac;
-    g_IMMatrixPtr = m_IMMatrixStack;
-    *g_IMMatrixPtr = *g_MatrixPtr;
+    m_IMRate = rate;
+    m_IMFrac = frac;
+    m_IMMatrixPtr = m_IMMatrixStack;
+    *m_IMMatrixPtr = *g_MatrixPtr;
 }
 
 void Matrix_Interpolate(void)
 {
-    const int32_t frac = g_IMFrac;
-    const int32_t rate = g_IMRate;
-    const MATRIX *iptr = g_IMMatrixPtr;
+    const int32_t frac = m_IMFrac;
+    const int32_t rate = m_IMRate;
+    const MATRIX *iptr = m_IMMatrixPtr;
     MATRIX *mptr = g_MatrixPtr;
 
-    if (g_IMRate == 2) {
+    if (m_IMRate == 2) {
         mptr->_00 += (iptr->_00 - mptr->_00) / 2;
         mptr->_01 += (iptr->_01 - mptr->_01) / 2;
         mptr->_02 += (iptr->_02 - mptr->_02) / 2;
@@ -426,12 +428,12 @@ void Matrix_Interpolate(void)
 
 void Matrix_InterpolateArm(void)
 {
-    const int32_t frac = g_IMFrac;
-    const int32_t rate = g_IMRate;
-    const MATRIX *iptr = g_IMMatrixPtr;
+    const int32_t frac = m_IMFrac;
+    const int32_t rate = m_IMRate;
+    const MATRIX *iptr = m_IMMatrixPtr;
     MATRIX *mptr = g_MatrixPtr;
 
-    if (g_IMRate == 2) {
+    if (m_IMRate == 2) {
         mptr->_00 = mptr[-2]._00;
         mptr->_01 = mptr[-2]._01;
         mptr->_02 = mptr[-2]._02;
@@ -463,21 +465,21 @@ void Matrix_InterpolateArm(void)
 void Matrix_Push_I(void)
 {
     Matrix_Push();
-    g_IMMatrixPtr[1] = g_IMMatrixPtr[0];
-    g_IMMatrixPtr++;
+    m_IMMatrixPtr[1] = m_IMMatrixPtr[0];
+    m_IMMatrixPtr++;
 }
 
 void Matrix_Pop_I(void)
 {
     g_MatrixPtr--;
-    g_IMMatrixPtr--;
+    m_IMMatrixPtr--;
 }
 
 void Matrix_RotX_I(int16_t ang)
 {
     Matrix_RotX(ang);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotX(ang);
     g_MatrixPtr = old_matrix;
 }
@@ -486,7 +488,7 @@ void Matrix_RotY_I(int16_t ang)
 {
     Matrix_RotY(ang);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotY(ang);
     g_MatrixPtr = old_matrix;
 }
@@ -495,7 +497,7 @@ void Matrix_RotZ_I(int16_t ang)
 {
     Matrix_RotZ(ang);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotZ(ang);
     g_MatrixPtr = old_matrix;
 }
@@ -504,7 +506,7 @@ void Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z)
 {
     Matrix_RotYXZ(y, x, z);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotYXZ(y, x, z);
     g_MatrixPtr = old_matrix;
 }
@@ -514,7 +516,7 @@ void Matrix_RotYXZsuperpack_I(
 {
     Matrix_RotYXZsuperpack(pprot1, index);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotYXZsuperpack(pprot2, index);
     g_MatrixPtr = old_matrix;
 }
@@ -523,7 +525,7 @@ void Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z)
 {
     Matrix_TranslateRel(x, y, z);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_TranslateRel(x, y, z);
     g_MatrixPtr = old_matrix;
 }
@@ -533,7 +535,7 @@ void Matrix_TranslateRel_ID(
 {
     Matrix_TranslateRel(x, y, z);
     MATRIX *old_matrix = g_MatrixPtr;
-    g_MatrixPtr = g_IMMatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
     Matrix_TranslateRel(x2, y2, z2);
     g_MatrixPtr = old_matrix;
 }

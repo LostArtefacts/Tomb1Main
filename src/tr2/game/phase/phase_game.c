@@ -39,7 +39,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (p->level_type != GFL_SAVED) {
         ModifyStartInfo(p->level_num);
     }
-    g_IsTitleLoaded = false;
     if (p->level_type != GFL_SAVED) {
         InitialiseLevelFlags();
     }

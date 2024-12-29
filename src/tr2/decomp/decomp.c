@@ -139,7 +139,6 @@ void CutscenePlayer1_Initialise(const int16_t item_num)
     g_Camera.pos.pos.z = item->pos.z;
     g_Camera.target_angle = 0;
     g_Camera.pos.room_num = item->room_num;
-    g_OriginalRoom = g_Camera.pos.room_num;
 
     item->rot.y = 0;
     item->dynamic_light = 0;
@@ -168,7 +167,6 @@ int32_t Level_Initialise(
     if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
         g_CurrentLevel = level_num;
     }
-    g_IsDemoLevelType = level_type == GFL_DEMO;
     InitialiseGameFlags();
     g_Lara.item_num = NO_ITEM;
 
@@ -216,8 +214,8 @@ int32_t Level_Initialise(
             Music_Play(g_GF_MusicTracks[0], MPM_LOOPED);
         }
     }
-    g_IsAssaultTimerActive = 0;
-    g_IsAssaultTimerDisplay = 0;
+    g_IsAssaultTimerActive = false;
+    g_IsAssaultTimerDisplay = false;
     g_Camera.underwater = 0;
     return true;
 }
@@ -416,7 +414,6 @@ void InitialiseGameFlags(void)
     }
 
     g_SunsetTimer = 0;
-    g_AmmoTextInfo = NULL;
     g_LevelComplete = false;
     g_FlipEffect = -1;
     g_DetonateAllMines = false;

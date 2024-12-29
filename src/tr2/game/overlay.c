@@ -51,6 +51,9 @@ static DISPLAY_PICKUP m_Pickups[MAX_PICKUPS] = { 0 };
 static int32_t m_OldHitPoints = -1;
 static bool m_FlashState = false;
 static int32_t m_FlashCounter = 0;
+static int32_t m_DisplayModeInfoTimer = 0;
+static TEXTSTRING *m_DisplayModeTextInfo = NULL;
+static TEXTSTRING *m_AmmoTextInfo = NULL;
 
 static float M_Ease(int32_t cur_frame, int32_t max_frames);
 static BOUNDS_16 M_GetBounds(const OBJECT *obj, const FRAME_INFO *frame);
@@ -242,11 +245,11 @@ void Overlay_DrawAirBar(void)
 
 void Overlay_HideGameInfo(void)
 {
-    Text_Remove(g_AmmoTextInfo);
-    g_AmmoTextInfo = NULL;
+    Text_Remove(m_AmmoTextInfo);
+    m_AmmoTextInfo = NULL;
 
-    Text_Remove(g_DisplayModeTextInfo);
-    g_DisplayModeTextInfo = NULL;
+    Text_Remove(m_DisplayModeTextInfo);
+    m_DisplayModeTextInfo = NULL;
 }
 
 void Overlay_MakeAmmoString(char *const string)
@@ -279,9 +282,9 @@ void Overlay_DrawAmmoInfo(void)
 {
     if (g_Lara.gun_status != LGS_READY || g_OverlayStatus <= 0
         || g_SaveGame.bonus_flag) {
-        if (g_AmmoTextInfo != NULL) {
-            Text_Remove(g_AmmoTextInfo);
-            g_AmmoTextInfo = NULL;
+        if (m_AmmoTextInfo != NULL) {
+            Text_Remove(m_AmmoTextInfo);
+            m_AmmoTextInfo = NULL;
         }
         return;
     }
@@ -317,11 +320,11 @@ void Overlay_DrawAmmoInfo(void)
     }
 
     Overlay_MakeAmmoString(buffer);
-    if (g_AmmoTextInfo != NULL) {
-        Text_ChangeText(g_AmmoTextInfo, buffer);
+    if (m_AmmoTextInfo != NULL) {
+        Text_ChangeText(m_AmmoTextInfo, buffer);
     } else {
-        g_AmmoTextInfo = Text_Create(AMMO_X, AMMO_Y, buffer);
-        Text_AlignRight(g_AmmoTextInfo, true);
+        m_AmmoTextInfo = Text_Create(AMMO_X, AMMO_Y, buffer);
+        Text_AlignRight(m_AmmoTextInfo, true);
     }
 }
 
@@ -523,30 +526,30 @@ void Overlay_AddDisplayPickup(const int16_t object_id)
 void Overlay_DisplayModeInfo(const char *const string)
 {
     if (string == NULL) {
-        Text_Remove(g_DisplayModeTextInfo);
-        g_DisplayModeTextInfo = NULL;
+        Text_Remove(m_DisplayModeTextInfo);
+        m_DisplayModeTextInfo = NULL;
         return;
     }
 
-    if (g_DisplayModeTextInfo != NULL) {
-        Text_ChangeText(g_DisplayModeTextInfo, string);
+    if (m_DisplayModeTextInfo != NULL) {
+        Text_ChangeText(m_DisplayModeTextInfo, string);
     } else {
-        g_DisplayModeTextInfo = Text_Create(MODE_INFO_X, MODE_INFO_Y, string);
-        Text_AlignRight(g_DisplayModeTextInfo, 1);
-        Text_AlignBottom(g_DisplayModeTextInfo, 1);
+        m_DisplayModeTextInfo = Text_Create(MODE_INFO_X, MODE_INFO_Y, string);
+        Text_AlignRight(m_DisplayModeTextInfo, 1);
+        Text_AlignBottom(m_DisplayModeTextInfo, 1);
     }
-    g_DisplayModeInfoTimer = 2.5 * FRAMES_PER_SECOND;
+    m_DisplayModeInfoTimer = 2.5 * FRAMES_PER_SECOND;
 }
 
 void Overlay_DrawModeInfo(void)
 {
-    if (g_DisplayModeTextInfo == NULL) {
+    if (m_DisplayModeTextInfo == NULL) {
         return;
     }
 
-    g_DisplayModeInfoTimer--;
-    if (g_DisplayModeInfoTimer == 0) {
-        Text_Remove(g_DisplayModeTextInfo);
-        g_DisplayModeTextInfo = NULL;
+    m_DisplayModeInfoTimer--;
+    if (m_DisplayModeInfoTimer <= 0) {
+        Text_Remove(m_DisplayModeTextInfo);
+        m_DisplayModeTextInfo = NULL;
     }
 }

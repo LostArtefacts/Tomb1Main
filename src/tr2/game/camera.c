@@ -929,11 +929,6 @@ void Camera_UpdateCutscene(void)
         campos.x, campos.y, campos.z, camtar.x, camtar.y, camtar.z, roll);
 }
 
-void Camera_Legacy_RefreshFromTrigger(int16_t type, const int16_t *fd)
-{
-    ASSERT_FAIL();
-}
-
 void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
 {
     int16_t target_ok = 2;

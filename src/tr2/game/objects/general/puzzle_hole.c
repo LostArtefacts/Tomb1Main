@@ -13,6 +13,27 @@
 
 #define LF_USE_PUZZLE 80
 
+static XYZ_32 m_PuzzleHolePosition = {
+    .x = 0,
+    .y = 0,
+    .z = WALL_L / 2 - LARA_RADIUS - 85,
+};
+
+static int16_t m_PuzzleHoleBounds[12] = {
+    -200,
+    +200,
+    +0,
+    +0,
+    +WALL_L / 2 - 200,
+    +WALL_L / 2,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+    -30 * PHD_DEGREE,
+    +30 * PHD_DEGREE,
+    -10 * PHD_DEGREE,
+    +10 * PHD_DEGREE,
+};
+
 static void M_Refuse(const ITEM *lara_item);
 static void M_Consume(
     ITEM *lara_item, ITEM *puzzle_hole_item, GAME_OBJECT_ID puzzle_object_id);
@@ -33,7 +54,7 @@ static void M_Consume(
     const GAME_OBJECT_ID puzzle_object_id)
 {
     Inv_RemoveItem(puzzle_object_id);
-    Item_AlignPosition(&g_PuzzleHolePosition, puzzle_hole_item, lara_item);
+    Item_AlignPosition(&m_PuzzleHolePosition, puzzle_hole_item, lara_item);
     lara_item->goal_anim_state = LS_USE_PUZZLE;
     do {
         Lara_Animate(lara_item);
@@ -68,7 +89,7 @@ void PuzzleHole_Collision(
 
     if (lara_item->current_anim_state != LS_STOP) {
         if (lara_item->current_anim_state != LS_USE_PUZZLE
-            || !Item_TestPosition(g_PuzzleHoleBounds, item, lara_item)
+            || !Item_TestPosition(m_PuzzleHoleBounds, item, lara_item)
             || lara_item->frame_num
                 != g_Anims[LA_USE_PUZZLE].frame_base + LF_USE_PUZZLE) {
             return;
@@ -83,7 +104,7 @@ void PuzzleHole_Collision(
         return;
     }
 
-    if (!Item_TestPosition(g_PuzzleHoleBounds, item, lara_item)) {
+    if (!Item_TestPosition(m_PuzzleHoleBounds, item, lara_item)) {
         return;
     }
 

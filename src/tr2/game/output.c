@@ -16,6 +16,12 @@
 #include <libtrx/log.h>
 
 static int32_t m_TickComp = 0;
+static int32_t m_RoomLightShades[4] = {};
+static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
+static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
+static float m_WibbleTable[32];
+static int16_t m_ShadesTable[32];
+static int32_t m_RandomTable[32];
 
 static int32_t M_CalcFogShade(int32_t depth);
 
@@ -74,10 +80,10 @@ static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
 
         double xs = vbuf->xs;
         double ys = vbuf->ys;
-        xs += g_WibbleTable
+        xs += m_WibbleTable
             [(((g_WibbleOffset + (int)ys) % WIBBLE_SIZE) + WIBBLE_SIZE)
              % WIBBLE_SIZE];
-        ys += g_WibbleTable
+        ys += m_WibbleTable
             [(((g_WibbleOffset + (int)xs) % WIBBLE_SIZE) + WIBBLE_SIZE)
              % WIBBLE_SIZE];
 
@@ -363,9 +369,9 @@ const int16_t *Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip)
 
         int16_t shade = obj_ptr[5];
         if (g_IsWaterEffect) {
-            shade += g_ShadesTable
+            shade += m_ShadesTable
                 [((uint8_t)g_WibbleOffset
-                  + (uint8_t)g_RandomTable[(vtx_count - i) % WIBBLE_SIZE])
+                  + (uint8_t)m_RandomTable[(vtx_count - i) % WIBBLE_SIZE])
                  % WIBBLE_SIZE];
         }
 
@@ -420,9 +426,6 @@ const int16_t *Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip)
 
 void Output_RotateLight(int16_t pitch, int16_t yaw)
 {
-    g_LsYaw = yaw;
-    g_LsPitch = pitch;
-
     int32_t xcos = Math_Cos(pitch);
     int32_t xsin = Math_Sin(pitch);
     int32_t wcos = Math_Cos(yaw);
@@ -840,11 +843,11 @@ void Output_CalculateWibbleTable(void)
 {
     for (int32_t i = 0; i < WIBBLE_SIZE; i++) {
         const int32_t sine = Math_Sin(i * PHD_360 / WIBBLE_SIZE);
-        g_WibbleTable[i] = (sine * MAX_WIBBLE) >> W2V_SHIFT;
-        g_ShadesTable[i] = (sine * MAX_SHADE) >> W2V_SHIFT;
-        g_RandomTable[i] = (Random_GetDraw() >> 5) - 0x01FF;
+        m_WibbleTable[i] = (sine * MAX_WIBBLE) >> W2V_SHIFT;
+        m_ShadesTable[i] = (sine * MAX_SHADE) >> W2V_SHIFT;
+        m_RandomTable[i] = (Random_GetDraw() >> 5) - 0x01FF;
         for (int32_t j = 0; j < WIBBLE_SIZE; j++) {
-            g_RoomLightTables[i].table[j] = (j - (WIBBLE_SIZE / 2)) * i
+            m_RoomLightTables[i].table[j] = (j - (WIBBLE_SIZE / 2)) * i
                 * MAX_ROOM_LIGHT_UNIT / (WIBBLE_SIZE - 1);
         }
     }
@@ -925,7 +928,7 @@ void Output_CalculateLight(
     XYZ_32 brightest_pos = { 0 };
 
     if (r->light_mode != 0) {
-        const int32_t light_shade = g_RoomLightShades[r->light_mode];
+        const int32_t light_shade = m_RoomLightShades[r->light_mode];
         for (int32_t i = 0; i < r->num_lights; i++) {
             const LIGHT *const light = &r->lights[i];
             const int32_t dx = x - light->pos.x;
@@ -968,7 +971,7 @@ void Output_CalculateLight(
 
     int32_t adder = brightest_shade;
     for (int32_t i = 0; i < g_DynamicLightCount; i++) {
-        const LIGHT *const light = &g_DynamicLights[i];
+        const LIGHT *const light = &m_DynamicLights[i];
         const int32_t dx = x - light->pos.x;
         const int32_t dy = y - light->pos.y;
         const int32_t dz = z - light->pos.z;
@@ -1025,12 +1028,12 @@ void Output_CalculateStaticMeshLight(
 {
     int32_t adder = shade_1;
     if (room->light_mode != 0) {
-        adder += (shade_2 - shade_1) * g_RoomLightShades[room->light_mode]
+        adder += (shade_2 - shade_1) * m_RoomLightShades[room->light_mode]
             / (WIBBLE_SIZE - 1);
     }
 
     for (int32_t i = 0; i < g_DynamicLightCount; i++) {
-        const LIGHT *const light = &g_DynamicLights[i];
+        const LIGHT *const light = &m_DynamicLights[i];
         const int32_t dx = x - light->pos.x;
         const int32_t dy = y - light->pos.y;
         const int32_t dz = z - light->pos.z;
@@ -1088,7 +1091,7 @@ void Output_LightRoom(ROOM *const room)
 {
     if (room->light_mode != 0) {
         const ROOM_LIGHT_TABLE *const light_table =
-            &g_RoomLightTables[g_RoomLightShades[room->light_mode]];
+            &m_RoomLightTables[m_RoomLightShades[room->light_mode]];
         int32_t vtx_count = *room->data;
         ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
         for (int32_t i = 0; i < vtx_count; i++) {
@@ -1111,7 +1114,7 @@ void Output_LightRoom(ROOM *const room)
     const int32_t z_max = (room->size.z - 1) * WALL_L;
 
     for (int32_t i = 0; i < g_DynamicLightCount; i++) {
-        const LIGHT *const light = &g_DynamicLights[i];
+        const LIGHT *const light = &m_DynamicLights[i];
         const int32_t x = light->pos.x - room->pos.x;
         const int32_t y = light->pos.y;
         const int32_t z = light->pos.z - room->pos.z;
@@ -1154,7 +1157,6 @@ void Output_LightRoom(ROOM *const room)
 
 void Output_SetupBelowWater(const bool is_underwater)
 {
-    g_IsWet = is_underwater;
     Render_SetWet(is_underwater);
     g_IsWaterEffect = true;
     g_IsWibbleEffect = !is_underwater;
@@ -1171,15 +1173,15 @@ void Output_SetupAboveWater(const bool is_underwater)
 void Output_AnimateTextures(const int32_t ticks)
 {
     g_WibbleOffset = (g_WibbleOffset + (ticks / TICKS_PER_FRAME)) % WIBBLE_SIZE;
-    g_RoomLightShades[1] = Random_GetDraw() % WIBBLE_SIZE;
-    g_RoomLightShades[2] = (WIBBLE_SIZE - 1)
+    m_RoomLightShades[1] = Random_GetDraw() % WIBBLE_SIZE;
+    m_RoomLightShades[2] = (WIBBLE_SIZE - 1)
             * (Math_Sin((g_WibbleOffset * PHD_360) / WIBBLE_SIZE) + 0x4000)
         >> 15;
 
     if (g_GF_SunsetEnabled) {
         g_SunsetTimer += ticks;
         CLAMPG(g_SunsetTimer, SUNSET_TIMEOUT);
-        g_RoomLightShades[3] =
+        m_RoomLightShades[3] =
             g_SunsetTimer * (WIBBLE_SIZE - 1) / SUNSET_TIMEOUT;
     }
 
@@ -1193,7 +1195,7 @@ void Output_AddDynamicLight(
     const int32_t idx =
         g_DynamicLightCount < MAX_DYNAMIC_LIGHTS ? g_DynamicLightCount++ : 0;
 
-    LIGHT *const light = &g_DynamicLights[idx];
+    LIGHT *const light = &m_DynamicLights[idx];
     light->pos.x = x;
     light->pos.y = y;
     light->pos.z = z;

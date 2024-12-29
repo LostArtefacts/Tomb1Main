@@ -12,13 +12,11 @@ int32_t __stdcall WinMain(
     int32_t nShowCmd)
 {
     Log_Init(File_GetFullPath("TR2X.log"));
-    g_CmdLine = lpCmdLine;
-    g_AppResultCode = 0;
     g_IsGameToExit = false;
     Shell_Setup();
     Shell_Main();
     Shell_Shutdown();
 
 cleanup:
-    return g_AppResultCode;
+    return 0;
 }

@@ -9,6 +9,21 @@
 
 #include <libtrx/utils.h>
 
+static int32_t m_Outside;
+static int32_t m_OutsideRight;
+static int32_t m_OutsideLeft;
+static int32_t m_OutsideTop;
+static int32_t m_OutsideBottom;
+
+static int32_t m_BoundStart;
+static int32_t m_BoundEnd;
+static int32_t m_BoundRooms[MAX_BOUND_ROOMS] = {};
+
+static int32_t m_BoxLines[12][2] = {
+    { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 }, { 4, 5 }, { 5, 6 },
+    { 6, 7 }, { 7, 4 }, { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 },
+};
+
 void Room_MarkToBeDrawn(const int16_t room_num)
 {
     for (int32_t i = 0; i < g_RoomsToDrawCount; i++) {
@@ -24,8 +39,8 @@ void Room_MarkToBeDrawn(const int16_t room_num)
 
 void Room_GetBounds(void)
 {
-    while (g_BoundStart != g_BoundEnd) {
-        const int16_t room_num = g_BoundRooms[g_BoundStart++ % MAX_BOUND_ROOMS];
+    while (m_BoundStart != m_BoundEnd) {
+        const int16_t room_num = m_BoundRooms[m_BoundStart++ % MAX_BOUND_ROOMS];
         ROOM *const r = &g_Rooms[room_num];
         r->bound_active &= ~2;
         g_MidSort = (r->bound_active >> 8) + 1;
@@ -47,22 +62,22 @@ void Room_GetBounds(void)
             Room_MarkToBeDrawn(room_num);
             r->bound_active |= 1;
             if (r->flags & RF_OUTSIDE) {
-                g_Outside = RF_OUTSIDE;
+                m_Outside = RF_OUTSIDE;
             }
         }
 
         if (!(r->flags & RF_INSIDE) || (r->flags & RF_OUTSIDE)) {
-            if (r->bound_left < g_OutsideLeft) {
-                g_OutsideLeft = r->bound_left;
+            if (r->bound_left < m_OutsideLeft) {
+                m_OutsideLeft = r->bound_left;
             }
-            if (r->bound_right > g_OutsideRight) {
-                g_OutsideRight = r->bound_right;
+            if (r->bound_right > m_OutsideRight) {
+                m_OutsideRight = r->bound_right;
             }
-            if (r->bound_top < g_OutsideTop) {
-                g_OutsideTop = r->bound_top;
+            if (r->bound_top < m_OutsideTop) {
+                m_OutsideTop = r->bound_top;
             }
-            if (r->bound_bottom > g_OutsideBottom) {
-                g_OutsideBottom = r->bound_bottom;
+            if (r->bound_bottom > m_OutsideBottom) {
+                m_OutsideBottom = r->bound_bottom;
             }
         }
 
@@ -225,7 +240,7 @@ void Room_SetBounds(
             r->test_bottom = bottom;
         }
     } else {
-        g_BoundRooms[g_BoundEnd++ % MAX_BOUND_ROOMS] = room_num;
+        m_BoundRooms[m_BoundEnd++ % MAX_BOUND_ROOMS] = room_num;
         r->bound_active |= 2;
         r->bound_active += (int16_t)(g_MidSort << 8);
         r->test_left = left;
@@ -301,8 +316,8 @@ void Room_Clip(const ROOM *const r)
     int32_t max_x = -0x10000000;
     int32_t max_y = -0x10000000;
     for (int32_t i = 0; i < 12; i++) {
-        const int32_t p1 = g_BoxLines[i][0];
-        const int32_t p2 = g_BoxLines[i][1];
+        const int32_t p1 = m_BoxLines[i][0];
+        const int32_t p2 = m_BoxLines[i][1];
 
         if (clip[p1] == clip[p2]) {
             continue;
@@ -374,10 +389,10 @@ void Room_DrawSingleRoomGeometry(const int16_t room_num)
     g_PhdWinBottom = r->bound_bottom;
 
     Output_LightRoom(r);
-    if (g_Outside > 0 && !(r->flags & RF_INSIDE)) {
+    if (m_Outside > 0 && !(r->flags & RF_INSIDE)) {
         Output_InsertRoom(r->data, true);
     } else {
-        if (g_Outside >= 0) {
+        if (m_Outside >= 0) {
             Room_Clip(r);
         }
         Output_InsertRoom(r->data, false);
@@ -469,34 +484,34 @@ void Room_DrawAllRooms(const int16_t current_room)
     g_PhdWinRight = r->test_right;
     g_PhdWinBottom = r->test_bottom;
 
-    g_BoundRooms[0] = current_room;
-    g_BoundStart = 0;
-    g_BoundEnd = 1;
+    m_BoundRooms[0] = current_room;
+    m_BoundStart = 0;
+    m_BoundEnd = 1;
 
     g_RoomsToDrawCount = 0;
-    g_Outside = r->flags & RF_OUTSIDE;
+    m_Outside = r->flags & RF_OUTSIDE;
 
-    if (g_Outside) {
-        g_OutsideTop = 0;
-        g_OutsideLeft = 0;
-        g_OutsideRight = g_PhdWinMaxX;
-        g_OutsideBottom = g_PhdWinMaxY;
+    if (m_Outside) {
+        m_OutsideTop = 0;
+        m_OutsideLeft = 0;
+        m_OutsideRight = g_PhdWinMaxX;
+        m_OutsideBottom = g_PhdWinMaxY;
     } else {
-        g_OutsideLeft = g_PhdWinMaxX;
-        g_OutsideTop = g_PhdWinMaxY;
-        g_OutsideBottom = 0;
-        g_OutsideRight = 0;
+        m_OutsideLeft = g_PhdWinMaxX;
+        m_OutsideTop = g_PhdWinMaxY;
+        m_OutsideBottom = 0;
+        m_OutsideRight = 0;
     }
 
     g_CameraUnderwater = r->flags & RF_UNDERWATER;
     Room_GetBounds();
 
     g_MidSort = 0;
-    if (g_Outside) {
-        g_PhdWinLeft = g_OutsideLeft;
-        g_PhdWinRight = g_OutsideRight;
-        g_PhdWinBottom = g_OutsideBottom;
-        g_PhdWinTop = g_OutsideTop;
+    if (m_Outside) {
+        g_PhdWinLeft = m_OutsideLeft;
+        g_PhdWinRight = m_OutsideRight;
+        g_PhdWinBottom = m_OutsideBottom;
+        g_PhdWinTop = m_OutsideTop;
         if (g_Objects[O_SKYBOX].loaded) {
             Output_SetupAboveWater(g_CameraUnderwater);
             Matrix_Push();
@@ -509,7 +524,7 @@ void Room_DrawAllRooms(const int16_t current_room)
             Output_InsertSkybox(g_Meshes[g_Objects[O_SKYBOX].mesh_idx]);
             Matrix_Pop();
         } else {
-            g_Outside = -1;
+            m_Outside = -1;
         }
     }
 

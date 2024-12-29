@@ -26,6 +26,8 @@
 #define CLIMB_HANG 900
 #define CLIMB_SHIFT 70
 
+static int16_t m_LaraOldSlideAngle = 1;
+
 static void M_TakeHit(
     ITEM *const lara_item, const int32_t dx, const int32_t dz);
 
@@ -751,7 +753,7 @@ int32_t Lara_TestSlide(ITEM *item, COLL_INFO *coll)
 
     if (angle_dif >= -PHD_90 && angle_dif <= PHD_90) {
         if (item->current_anim_state == LS_SLIDE
-            && g_LaraOldSlideAngle == angle) {
+            && m_LaraOldSlideAngle == angle) {
             return 1;
         }
         item->goal_anim_state = LS_SLIDE;
@@ -761,7 +763,7 @@ int32_t Lara_TestSlide(ITEM *item, COLL_INFO *coll)
         item->rot.y = angle;
     } else {
         if (item->current_anim_state == LS_SLIDE_BACK
-            && g_LaraOldSlideAngle == angle) {
+            && m_LaraOldSlideAngle == angle) {
             return 1;
         }
         item->goal_anim_state = LS_SLIDE_BACK;
@@ -772,7 +774,7 @@ int32_t Lara_TestSlide(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.move_angle = angle;
-    g_LaraOldSlideAngle = angle;
+    m_LaraOldSlideAngle = angle;
     return 1;
 }
 

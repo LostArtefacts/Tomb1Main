@@ -22,6 +22,8 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
+static int16_t *m_FloorData = NULL;
+
 static void M_LoadFromFile(const char *file_name, int32_t level_num);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadMeshBase(VFILE *file);
@@ -189,9 +191,9 @@ static void M_LoadRooms(VFILE *const file)
     // TODO: store this temporarily in a m_LevelInfo property similar to TR1 and
     // release after parsing.
     const int32_t floor_data_size = VFile_ReadS32(file);
-    g_Legacy_FloorData =
+    m_FloorData =
         GameBuf_Alloc(sizeof(int16_t) * floor_data_size, GBUF_FLOOR_DATA);
-    VFile_Read(file, g_Legacy_FloorData, sizeof(int16_t) * floor_data_size);
+    VFile_Read(file, m_FloorData, sizeof(int16_t) * floor_data_size);
 
 finish:
     Benchmark_End(benchmark, NULL);
@@ -502,10 +504,6 @@ static void M_LoadDepthQ(VFILE *const file)
         g_DepthQTable[i].index[0] = 0;
     }
 
-    for (int32_t i = 0; i < 256; i++) {
-        g_DepthQIndex[i] = g_DepthQTable[24].index[i];
-    }
-
     for (int32_t i = 0; i < 32; i++) {
         for (int32_t j = 0; j < 256; j++) {
             g_GouraudTable[j].index[i] = g_DepthQTable[i].index[j];
@@ -651,7 +649,6 @@ static void M_LoadCinematic(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     g_NumCineFrames = VFile_ReadS16(file);
     if (g_NumCineFrames <= 0) {
-        g_CineLoaded = false;
         goto finish;
     }
 
@@ -668,7 +665,6 @@ static void M_LoadCinematic(VFILE *const file)
         frame->fov = VFile_ReadS16(file);
         frame->roll = VFile_ReadS16(file);
     }
-    g_CineLoaded = true;
 
 finish:
     Benchmark_End(benchmark, NULL);
@@ -704,15 +700,15 @@ static void M_LoadSamples(VFILE *const file)
     Audio_Sample_UnloadAll();
 
     VFile_Read(file, g_SampleLUT, sizeof(int16_t) * SFX_NUMBER_OF);
-    g_NumSampleInfos = VFile_ReadS32(file);
-    LOG_DEBUG("sample infos: %d", g_NumSampleInfos);
-    if (!g_NumSampleInfos) {
+    const int32_t num_sample_infos = VFile_ReadS32(file);
+    LOG_DEBUG("sample infos: %d", num_sample_infos);
+    if (num_sample_infos == 0) {
         goto finish;
     }
 
     g_SampleInfos = GameBuf_Alloc(
-        sizeof(SAMPLE_INFO) * g_NumSampleInfos, GBUF_SAMPLE_INFOS);
-    for (int32_t i = 0; i < g_NumSampleInfos; i++) {
+        sizeof(SAMPLE_INFO) * num_sample_infos, GBUF_SAMPLE_INFOS);
+    for (int32_t i = 0; i < num_sample_infos; i++) {
         SAMPLE_INFO *const sample_info = &g_SampleInfos[i];
         sample_info->number = VFile_ReadS16(file);
         sample_info->volume = VFile_ReadS16(file);
@@ -808,13 +804,9 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
             level_num, full_path, file_name);
     }
 
-    g_LevelFilePalettesOffset = VFile_GetPos(file);
     M_LoadPalettes(file);
-
-    g_LevelFileTexPagesOffset = VFile_GetPos(file);
     M_LoadTexturePages(file);
     VFile_Skip(file, 4);
-
     M_LoadRooms(file);
 
     M_LoadMeshBase(file);
@@ -862,7 +854,7 @@ static void M_CompleteSetup(void)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // Expand raw floor data into sectors
-    Room_ParseFloorData(g_Legacy_FloorData);
+    Room_ParseFloorData(m_FloorData);
     // TODO: store raw FD temporarily, release here and eliminate g_FloorData
 
     Inject_AllInjections();

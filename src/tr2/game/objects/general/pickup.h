@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+extern int16_t g_PickupBounds[];
+
 void Pickup_Setup(OBJECT *obj);
 
 void Pickup_Draw(const ITEM *item);
