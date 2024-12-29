@@ -9,3 +9,4 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *ring, int32_t num_frames);
 GAME_FLOW_DIR InvRing_Close(INV_RING *ring);
 
 void InvRing_ClearSelection(void);
+void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID object_id);

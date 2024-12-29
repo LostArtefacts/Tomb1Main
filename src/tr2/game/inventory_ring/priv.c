@@ -1,4 +1,4 @@
-#include "game/inventory_ring/ring.h"
+#include "game/inventory_ring/priv.h"
 
 #include "game/inventory.h"
 #include "game/inventory_ring/vars.h"

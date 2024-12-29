@@ -10,7 +10,6 @@
 #include "game/gun/gun.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
-#include "game/inventory_ring/ring.h"
 #include "game/music.h"
 #include "game/objects/vars.h"
 #include "game/overlay.h"

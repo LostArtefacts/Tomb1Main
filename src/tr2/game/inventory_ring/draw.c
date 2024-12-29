@@ -3,7 +3,7 @@
 #include "decomp/savegame.h"
 #include "game/console/common.h"
 #include "game/input.h"
-#include "game/inventory_ring/ring.h"
+#include "game/inventory_ring/priv.h"
 #include "game/matrix.h"
 #include "game/option/option.h"
 #include "game/output.h"

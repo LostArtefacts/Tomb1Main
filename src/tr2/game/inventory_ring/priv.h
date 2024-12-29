@@ -3,7 +3,6 @@
 #include "game/inventory_ring/types.h"
 #include "global/types.h"
 
-void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID object_id);
 void InvRing_InitRing(
     INV_RING *ring, RING_TYPE type, INV_ITEM **list, int16_t qty,
     int16_t current);
