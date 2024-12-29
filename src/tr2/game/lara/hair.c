@@ -201,7 +201,7 @@ static void M_CalculateSpheres_I(
     Matrix_Interpolate();
 }
 
-void __cdecl Lara_Hair_Initialise(void)
+void Lara_Hair_Initialise(void)
 {
     const int32_t *const bone_base =
         &g_AnimBones[g_Objects[O_LARA_HAIR].bone_idx];
