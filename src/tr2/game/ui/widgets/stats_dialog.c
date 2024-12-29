@@ -30,6 +30,7 @@ typedef struct {
     int32_t visible_row_offset;
     int32_t row_count;
     M_ROW *rows;
+    int32_t listener;
 } UI_STATS_DIALOG;
 
 static M_ROW *M_AddRow(
@@ -38,6 +39,7 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *self);
 static void M_DoLayout(UI_STATS_DIALOG *self);
+static void M_HandleCanvasResize(const EVENT *event, void *data);
 
 static int32_t M_GetWidth(const UI_STATS_DIALOG *self);
 static int32_t M_GetHeight(const UI_STATS_DIALOG *self);
@@ -214,6 +216,12 @@ static void M_DoLayout(UI_STATS_DIALOG *const self)
         (UI_GetCanvasHeight() - M_GetHeight(self)) - 50);
 }
 
+static void M_HandleCanvasResize(const EVENT *event, void *data)
+{
+    UI_STATS_DIALOG *const self = (UI_STATS_DIALOG *)data;
+    M_DoLayout(self);
+}
+
 static int32_t M_GetWidth(const UI_STATS_DIALOG *const self)
 {
     return self->window->get_width(self->window);
@@ -274,6 +282,7 @@ static void M_Free(UI_STATS_DIALOG *const self)
     }
     self->outer_stack->free(self->outer_stack);
     self->window->free(self->window);
+    UI_Events_Unsubscribe(self->listener);
     Memory_Free(self);
 }
 
@@ -295,6 +304,9 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
         ROW_HEIGHT * self->visible_row_count);
 
     self->window = UI_Window_Create(self->outer_stack, 8, 8, 8, 8);
+
+    self->listener =
+        UI_Events_Subscribe("canvas_resize", NULL, M_HandleCanvasResize, self);
 
     switch (mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:

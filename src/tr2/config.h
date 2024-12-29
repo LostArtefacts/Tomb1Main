@@ -23,6 +23,7 @@ typedef struct {
     } visuals;
 
     struct {
+        double text_scale;
         double bar_scale;
     } ui;
 
