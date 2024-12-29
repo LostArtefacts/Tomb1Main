@@ -175,9 +175,11 @@ static void M_End(INV_RING *const ring)
             Option_Shutdown(inv_item);
         }
     }
+    if (ring->mode == INV_TITLE_MODE) {
+        Music_Stop();
+    }
     Memory_Free(ring);
     Output_UnloadBackground();
-    Music_Stop();
 }
 
 static void M_RingIsOpen(INV_RING *const ring)
