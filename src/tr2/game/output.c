@@ -9,6 +9,7 @@
 #include "game/random.h"
 #include "game/render/common.h"
 #include "game/render/priv.h"
+#include "game/scaler.h"
 #include "game/shell.h"
 #include "game/viewport.h"
 #include "global/vars.h"
@@ -48,23 +49,27 @@ static void M_InsertBar(
     const COLOR_NAME bar_color_highlight)
 {
     const int32_t z_offset = 8;
-    Render_InsertFlatRect(
-        l, t, l + w, t + h, g_PhdNearZ + z_offset * 5,
-        g_NamedColors[COLOR_WHITE].palette_index);
-    Render_InsertFlatRect(
-        l + 1, t + 1, l + w, t + h, g_PhdNearZ + z_offset * 4,
-        g_NamedColors[COLOR_GRAY].palette_index);
-    Render_InsertFlatRect(
-        l + 1, t + 1, l + w - 1, t + h - 1, g_PhdNearZ + z_offset * 3,
-        g_NamedColors[COLOR_BLACK].palette_index);
 
-    Render_InsertFlatRect(
-        l + 2, t + 2, l + (w - 2) * percent / 100, t + h - 2,
-        g_PhdNearZ + z_offset * 2, g_NamedColors[bar_color_main].palette_index);
-    Render_InsertFlatRect(
-        l + 2, t + 3, l + (w - 2) * percent / 100, t + 4,
-        g_PhdNearZ + z_offset * 1,
-        g_NamedColors[bar_color_highlight].palette_index);
+    struct {
+        int32_t x1, y1, x2, y2;
+        COLOR_NAME color;
+    } rects[] = {
+        { l, t, l + w, t + h, COLOR_WHITE },
+        { l + 1, t + 1, l + w, t + h, COLOR_GRAY },
+        { l + 1, t + 1, l + w - 1, t + h - 1, COLOR_BLACK },
+        { l + 2, t + 2, l + (w - 2) * percent / 100, t + h - 2,
+          bar_color_main },
+        { l + 2, t + 3, l + (w - 2) * percent / 100, t + 4,
+          bar_color_highlight },
+    };
+
+    for (int32_t i = 0; i < 5; i++) {
+        Render_InsertFlatRect(
+            Scaler_Calc(rects[i].x1), Scaler_Calc(rects[i].y1),
+            Scaler_Calc(rects[i].x2), Scaler_Calc(rects[i].y2),
+            g_PhdNearZ + z_offset * (5 - i),
+            g_NamedColors[rects[i].color].palette_index);
+    }
 }
 
 static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
@@ -751,8 +756,8 @@ void Output_DrawHealthBar(const int32_t percent)
 void Output_DrawAirBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
-    M_InsertBar(
-        g_PhdWinWidth - 112, 6, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
+    const int32_t w = Scaler_CalcInverse(g_PhdWinWidth);
+    M_InsertBar(w - 112, 6, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
 }
 
 int16_t Output_FindColor(

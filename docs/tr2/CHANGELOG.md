@@ -10,6 +10,7 @@
 - added an option to control how music is played while underwater (#1937)
 - added an optional demo number argument to the `/demo` command
 - changed demo to be interrupted only by esc or action keys
+- fixed health bar and air bar scaling (#2149)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation (#1587)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
