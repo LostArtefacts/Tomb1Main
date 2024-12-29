@@ -5,6 +5,7 @@
 #include "game/camera.h"
 #include "game/fader.h"
 #include "game/game.h"
+#include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
@@ -148,6 +149,8 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     Text_Flash(p->text, true, 20);
     Text_CentreV(p->text, true);
     Text_CentreH(p->text, true);
+
+    g_OldInputDB = g_Input;
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
