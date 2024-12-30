@@ -249,7 +249,7 @@ int32_t Gun_FireWeapon(
         }
     }
 
-    g_SaveGame.statistics.shots++;
+    g_SaveGame.current_stats.ammo_used++;
 
     GAME_VECTOR start;
     start.pos.x = view.pos.x;
@@ -277,7 +277,7 @@ int32_t Gun_FireWeapon(
             return -1;
         }
     } else {
-        g_SaveGame.statistics.hits++;
+        g_SaveGame.current_stats.ammo_hits++;
         GAME_VECTOR hit_pos;
         hit_pos.pos.x =
             view.pos.x + ((best_dist * g_MatrixPtr->_20) >> W2V_SHIFT);
@@ -315,7 +315,7 @@ void Gun_HitTarget(
 {
     if (item->hit_points > 0 && item->hit_points <= damage
         && item->object_id != O_DRAGON_FRONT) {
-        g_SaveGame.statistics.kills++;
+        g_SaveGame.current_stats.kills++;
     }
     Item_TakeDamage(item, damage, true);
 

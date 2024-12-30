@@ -466,13 +466,7 @@ GAME_FLOW_DIR GF_InterpretSequence(const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type)
         case GFE_LEVEL_COMPLETE:
             if (type != GFL_STORY && type != GFL_MID_STORY) {
                 START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
-                start->statistics.timer = g_SaveGame.statistics.timer;
-                start->statistics.shots = g_SaveGame.statistics.shots;
-                start->statistics.hits = g_SaveGame.statistics.hits;
-                start->statistics.distance = g_SaveGame.statistics.distance;
-                start->statistics.kills = g_SaveGame.statistics.kills;
-                start->statistics.secrets = g_SaveGame.statistics.secrets;
-                start->statistics.medipacks = g_SaveGame.statistics.medipacks;
+                start->stats = g_SaveGame.current_stats;
 
                 PHASE *const stats_phase =
                     Phase_Stats_Create((PHASE_STATS_ARGS) {
@@ -542,13 +536,7 @@ GAME_FLOW_DIR GF_InterpretSequence(const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type)
 
         case GFE_GAME_COMPLETE:
             START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
-            start->statistics.timer = g_SaveGame.statistics.timer;
-            start->statistics.shots = g_SaveGame.statistics.shots;
-            start->statistics.hits = g_SaveGame.statistics.hits;
-            start->statistics.distance = g_SaveGame.statistics.distance;
-            start->statistics.kills = g_SaveGame.statistics.kills;
-            start->statistics.secrets = g_SaveGame.statistics.secrets;
-            start->statistics.medipacks = g_SaveGame.statistics.medipacks;
+            start->stats = g_SaveGame.current_stats;
             dir = DisplayCredits();
             ptr++;
             break;

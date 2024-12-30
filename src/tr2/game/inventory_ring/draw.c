@@ -30,7 +30,7 @@ static void M_DrawItem(
     int32_t seconds;
     if (inv_item->object_id == O_COMPASS_OPTION) {
         const int32_t total_seconds =
-            g_SaveGame.statistics.timer / FRAMES_PER_SECOND;
+            g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
         hours = (total_seconds % 43200) * PHD_DEGREE * -360 / 43200;
         minutes = (total_seconds % 3600) * PHD_DEGREE * -360 / 3600;
         seconds = (total_seconds % 60) * PHD_DEGREE * -360 / 60;

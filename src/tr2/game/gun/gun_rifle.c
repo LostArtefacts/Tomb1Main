@@ -188,7 +188,7 @@ void Gun_Rifle_FireHarpoon(void)
         && (g_Lara.harpoon_ammo.ammo % HARPOON_RECOIL) == 0) {
         g_Lara.harpoon_ammo.ammo += HARPOON_RECOIL;
     }
-    g_SaveGame.statistics.shots++;
+    g_SaveGame.current_stats.ammo_used++;
 }
 
 void Gun_Rifle_FireGrenade(void)
@@ -227,7 +227,7 @@ void Gun_Rifle_FireGrenade(void)
     if (!g_SaveGame.bonus_flag) {
         g_Lara.grenade_ammo.ammo--;
     }
-    g_SaveGame.statistics.shots++;
+    g_SaveGame.current_stats.ammo_used++;
 }
 
 void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)

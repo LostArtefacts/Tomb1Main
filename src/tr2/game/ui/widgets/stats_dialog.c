@@ -76,7 +76,7 @@ static M_ROW *M_AddRow(
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
-    const STATISTICS_INFO stats = g_SaveGame.statistics;
+    const LEVEL_STATS stats = g_SaveGame.current_stats;
     char buf[32];
 
     // time
@@ -89,7 +89,7 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
         char *ptr = buf;
         int32_t num_secrets = 0;
         for (int32_t i = 0; i < 3; i++) {
-            if (stats.secrets & (1 << i)) {
+            if (stats.secrets_bitmap & (1 << i)) {
                 sprintf(ptr, "\\{secret %d}", i + 1);
                 num_secrets++;
             } else {
@@ -109,11 +109,11 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
     M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_KILLS], buf);
 
     // ammo used
-    sprintf(buf, "%d", stats.shots);
+    sprintf(buf, "%d", stats.ammo_used);
     M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_AMMO_USED], buf);
 
     // ammo hits
-    sprintf(buf, "%d", stats.hits);
+    sprintf(buf, "%d", stats.ammo_hits);
     M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_HITS], buf);
 
     // medipacks

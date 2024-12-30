@@ -131,7 +131,7 @@ void Grenade_Control(int16_t item_num)
             }
 
             Gun_HitTarget(target_item, NULL, 30);
-            g_SaveGame.statistics.hits++;
+            g_SaveGame.current_stats.ammo_hits++;
 
             if (target_item->hit_points <= 0) {
                 if (target_item->object_id != O_DRAGON_FRONT

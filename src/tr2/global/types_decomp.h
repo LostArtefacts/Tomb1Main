@@ -211,15 +211,25 @@ typedef struct __unaligned {
     BOUNDS_16 collision_bounds;
 } STATIC_INFO;
 
-typedef struct __unaligned {
+typedef struct STATS_COMMON {
     uint32_t timer;
-    uint32_t shots;
-    uint32_t hits;
+    uint32_t ammo_used;
+    uint32_t ammo_hits;
     uint32_t distance;
     uint16_t kills;
-    uint8_t secrets;
     uint8_t medipacks;
-} STATISTICS_INFO;
+} STATS_COMMON;
+
+typedef struct {
+    struct STATS_COMMON;
+    int32_t found_secrets;
+    int32_t total_secrets;
+} FINAL_STATS;
+
+typedef struct {
+    struct STATS_COMMON;
+    uint8_t secrets_bitmap;
+} LEVEL_STATS;
 
 typedef struct __unaligned {
     uint16_t pistol_ammo;
@@ -245,12 +255,12 @@ typedef struct __unaligned {
     uint16_t has_harpoon: 1; // 0x80 128
     uint16_t pad : 8;
     uint16_t reserved2;
-    STATISTICS_INFO statistics;
+    LEVEL_STATS stats;
 } START_INFO;
 
 typedef struct __unaligned {
     START_INFO start[24];
-    STATISTICS_INFO statistics;
+    LEVEL_STATS current_stats;
     int16_t current_level;
     bool bonus_flag;
     uint8_t num_pickup[2];

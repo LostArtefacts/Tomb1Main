@@ -592,7 +592,8 @@ typedef struct __unaligned {
     uint32_t hits;
     uint32_t distance;
     uint16_t kills;
-    uint8_t secrets;
+    uint16_ secrets_count;
+    uint8_t secrets_flags;
     uint8_t medipacks;
 } STATISTICS_INFO;
 

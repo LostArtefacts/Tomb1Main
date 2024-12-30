@@ -555,13 +555,13 @@ void InitialiseStartInfo(void)
     for (int32_t i = 0; i < MAX_LEVELS; i++) {
         ModifyStartInfo(i);
         g_SaveGame.start[i].available = 0;
-        g_SaveGame.start[i].statistics.timer = 0;
-        g_SaveGame.start[i].statistics.shots = 0;
-        g_SaveGame.start[i].statistics.hits = 0;
-        g_SaveGame.start[i].statistics.distance = 0;
-        g_SaveGame.start[i].statistics.kills = 0;
-        g_SaveGame.start[i].statistics.secrets = 0;
-        g_SaveGame.start[i].statistics.medipacks = 0;
+        g_SaveGame.start[i].stats.timer = 0;
+        g_SaveGame.start[i].stats.ammo_used = 0;
+        g_SaveGame.start[i].stats.ammo_hits = 0;
+        g_SaveGame.start[i].stats.distance = 0;
+        g_SaveGame.start[i].stats.kills = 0;
+        g_SaveGame.start[i].stats.medipacks = 0;
+        g_SaveGame.start[i].stats.secrets_bitmap = 0;
     }
 
     g_SaveGame.start[LV_GYM].available = 1;

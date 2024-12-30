@@ -666,7 +666,7 @@ void Lara_Control(const int16_t item_num)
         break;
     }
 
-    g_SaveGame.statistics.distance += Math_Sqrt(
+    g_SaveGame.current_stats.distance += Math_Sqrt(
         SQUARE(item->pos.z - g_Lara.last_pos.z)
         + SQUARE(item->pos.y - g_Lara.last_pos.y)
         + SQUARE(item->pos.x - g_Lara.last_pos.x));
@@ -865,7 +865,7 @@ void Lara_UseItem(const GAME_OBJECT_ID object_id)
             CLAMPG(item->hit_points, LARA_MAX_HITPOINTS);
             Inv_RemoveItem(O_SMALL_MEDIPACK_ITEM);
             Sound_Effect(SFX_MENU_MEDI, NULL, SPM_ALWAYS);
-            g_SaveGame.statistics.medipacks++;
+            g_SaveGame.current_stats.medipacks++;
         }
         break;
 
@@ -875,7 +875,7 @@ void Lara_UseItem(const GAME_OBJECT_ID object_id)
             item->hit_points = LARA_MAX_HITPOINTS;
             Inv_RemoveItem(O_LARGE_MEDIPACK_ITEM);
             Sound_Effect(SFX_MENU_MEDI, NULL, SPM_ALWAYS);
-            g_SaveGame.statistics.medipacks += 2;
+            g_SaveGame.current_stats.medipacks += 2;
         }
         break;
 

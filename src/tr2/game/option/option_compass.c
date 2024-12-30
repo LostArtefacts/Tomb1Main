@@ -30,7 +30,7 @@ static void M_Shutdown(void)
 void Option_Compass_Control(INV_ITEM *const item)
 {
     char buffer[32];
-    const int32_t sec = g_SaveGame.statistics.timer / FRAMES_PER_SECOND;
+    const int32_t sec = g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
     sprintf(buffer, "%02d:%02d:%02d", sec / 3600, sec / 60 % 60, sec % 60);
 
     if (m_Dialog == NULL) {

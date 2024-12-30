@@ -97,7 +97,7 @@ void HarpoonBolt_Control(const int16_t item_num)
                     item->pos.x, item->pos.y, item->pos.z, 0, 0, item->room_num,
                     5);
                 Gun_HitTarget(target_item, NULL, g_Weapons[LGT_HARPOON].damage);
-                g_SaveGame.statistics.hits++;
+                g_SaveGame.current_stats.ammo_hits++;
             }
             Item_Kill(item_num);
             return;

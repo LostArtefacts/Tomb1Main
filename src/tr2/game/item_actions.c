@@ -308,7 +308,7 @@ void M_ResetHair(ITEM *const item)
 
 void M_AssaultStart(ITEM *const item)
 {
-    g_SaveGame.statistics.timer = 0;
+    g_SaveGame.current_stats.timer = 0;
     g_IsAssaultTimerActive = true;
     g_IsAssaultTimerDisplay = true;
     g_FlipEffect = -1;
@@ -332,25 +332,25 @@ void M_AssaultReset(ITEM *const item)
 void M_AssaultFinished(ITEM *const item)
 {
     if (g_IsAssaultTimerActive) {
-        AddAssaultTime(g_SaveGame.statistics.timer);
+        AddAssaultTime(g_SaveGame.current_stats.timer);
 
         if ((int32_t)g_AssaultBestTime < 0) {
-            if (g_SaveGame.statistics.timer < 100 * FRAMES_PER_SECOND) {
+            if (g_SaveGame.current_stats.timer < 100 * FRAMES_PER_SECOND) {
                 // "Gosh! That was my best time yet!"
                 Music_Legacy_Play(MX_GYM_HINT_15, false);
-                g_AssaultBestTime = g_SaveGame.statistics.timer;
+                g_AssaultBestTime = g_SaveGame.current_stats.timer;
             } else {
                 // "Congratulations! You did it! But perhaps I could've been
                 // faster."
                 Music_Legacy_Play(MX_GYM_HINT_17, false);
                 g_AssaultBestTime = 100 * FRAMES_PER_SECOND;
             }
-        } else if (g_SaveGame.statistics.timer < g_AssaultBestTime) {
+        } else if (g_SaveGame.current_stats.timer < g_AssaultBestTime) {
             // "Gosh! That was my best time yet!"
             Music_Legacy_Play(MX_GYM_HINT_15, false);
-            g_AssaultBestTime = g_SaveGame.statistics.timer;
+            g_AssaultBestTime = g_SaveGame.current_stats.timer;
         } else if (
-            g_SaveGame.statistics.timer
+            g_SaveGame.current_stats.timer
             < g_AssaultBestTime + 5 * FRAMES_PER_SECOND) {
             // "Almost. Perhaps another try and I might beat it."
             Music_Legacy_Play(MX_GYM_HINT_16, false);

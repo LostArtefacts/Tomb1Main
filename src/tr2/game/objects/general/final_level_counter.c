@@ -94,13 +94,13 @@ void FinalLevelCounter_Setup(void)
 
 void FinalLevelCounter_Control(const int16_t item_num)
 {
-    if (g_SaveGame.statistics.kills == g_FinalLevelCount
+    if (g_SaveGame.current_stats.kills == g_FinalLevelCount
         && !g_FinalBossActive) {
         M_ActivateLastBoss();
         return;
     }
 
-    if (g_SaveGame.statistics.kills > g_FinalLevelCount) {
+    if (g_SaveGame.current_stats.kills > g_FinalLevelCount) {
         g_FinalBossActive++;
         if (g_FinalBossActive == CUTSCENE_DELAY) {
             M_PrepareCutscene(item_num);

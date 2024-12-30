@@ -54,9 +54,9 @@ static void M_DoPickup(const int16_t item_num)
 
     if ((item->object_id == O_SECRET_1 || item->object_id == O_SECRET_2
          || item->object_id == O_SECRET_3)
-        && (g_SaveGame.statistics.secrets & 1)
-                + ((g_SaveGame.statistics.secrets >> 1) & 1)
-                + ((g_SaveGame.statistics.secrets >> 2) & 1)
+        && (g_SaveGame.current_stats.secrets_bitmap & 1)
+                + ((g_SaveGame.current_stats.secrets_bitmap >> 1) & 1)
+                + ((g_SaveGame.current_stats.secrets_bitmap >> 2) & 1)
             >= 3) {
         GF_ModifyInventory(g_CurrentLevel, 1);
     }

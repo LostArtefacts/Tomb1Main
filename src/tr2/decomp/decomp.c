@@ -422,13 +422,13 @@ void InitialiseGameFlags(void)
 
 void InitialiseLevelFlags(void)
 {
-    g_SaveGame.statistics.secrets = 0;
-    g_SaveGame.statistics.timer = 0;
-    g_SaveGame.statistics.kills = 0;
-    g_SaveGame.statistics.distance = 0;
-    g_SaveGame.statistics.hits = 0;
-    g_SaveGame.statistics.shots = 0;
-    g_SaveGame.statistics.medipacks = 0;
+    g_SaveGame.current_stats.timer = 0;
+    g_SaveGame.current_stats.kills = 0;
+    g_SaveGame.current_stats.distance = 0;
+    g_SaveGame.current_stats.ammo_hits = 0;
+    g_SaveGame.current_stats.ammo_used = 0;
+    g_SaveGame.current_stats.medipacks = 0;
+    g_SaveGame.current_stats.secrets_bitmap = 0;
 }
 
 void GetCarriedItems(void)
