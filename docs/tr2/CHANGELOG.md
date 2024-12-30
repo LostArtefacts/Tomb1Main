@@ -19,6 +19,7 @@
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation (#1587)
 - fixed bubbles spawning from flares if Lara is in shallow water (#1590)
 - fixed flare sound effects not always playing when Lara is in shallow water (#1590)
+- fixed looking forward too far causing an upside down camera frame (#1594)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 - fixed some enemies not looking at Lara (#2080, regression from 0.6)
 - fixed the camera getting stuck at the start of Home Sweet Home (#2129, regression from 0.7)
