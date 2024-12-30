@@ -12,11 +12,12 @@
 - changed demo to be interrupted only by esc or action keys
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation (#1587)
+- fixed bubbles spawning from flares if Lara is in shallow water (#1590)
+- fixed flare sound effects not always playing when Lara is in shallow water (#1590)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 - fixed some enemies not looking at Lara (#2080, regression from 0.6)
 - fixed the camera getting stuck at the start of Home Sweet Home (#2129, regression from 0.7)
-- fixed bubbles spawning from flares if Lara is in shallow water (#1590)
-- fixed flare sound effects not always playing when Lara is in shallow water (#1590)
+- fixed assault course timer not paused in the inventory (#2153, regression from 0.6)
 - improved the animation of Lara's braid (#2094)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17

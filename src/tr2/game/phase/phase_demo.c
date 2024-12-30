@@ -43,6 +43,7 @@ static void M_PrepareGame(void);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
+static void M_Resume(PHASE *const phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
 static void M_Draw(PHASE *phase);
 
@@ -170,6 +171,11 @@ static void M_End(PHASE *const phase)
     M_RestoreConfig(p);
 }
 
+static void M_Resume(PHASE *const phase)
+{
+    Stats_StartTimer();
+}
+
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
@@ -210,6 +216,7 @@ PHASE *Phase_Demo_Create(const int32_t level_num)
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;
+    phase->resume = M_Resume;
     phase->control = M_Control;
     phase->draw = M_Draw;
     return phase;

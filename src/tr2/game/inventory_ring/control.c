@@ -460,7 +460,9 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     g_PhdWinBottom = g_PhdWinMaxY;
     g_Inv_Chosen = NO_OBJECT;
 
-    Stats_StartTimer();
+    if (g_CurrentLevel != LV_GYM) {
+        Stats_StartTimer();
+    }
 
     if (mode == INV_TITLE_MODE) {
         Output_LoadBackgroundFromFile("data/title.pcx");
