@@ -72,13 +72,13 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
     while (true) {
         control = M_Control(phase, nframes);
 
-        M_Draw(phase);
         if (control.action == PHASE_ACTION_END) {
             break;
         } else if (control.action == PHASE_ACTION_NO_WAIT) {
             nframes = 0;
             continue;
         } else {
+            M_Draw(phase);
             nframes = M_Wait(phase);
         }
     }
