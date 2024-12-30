@@ -475,43 +475,6 @@ bool Shell_IsFullscreen(void)
     return (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
 }
 
-void Shell_GoFullscreen(void)
-{
-    g_Config.window.is_fullscreen = true;
-    g_Config.window.is_maximized = false;
-    M_SyncToWindow();
-    M_RefreshRendererViewport();
-    if (g_Config.loaded) {
-        Config_Write();
-    }
-}
-
-void Shell_GoMaximized(void)
-{
-    g_Config.window.is_fullscreen = false;
-    g_Config.window.is_maximized = true;
-    M_SyncToWindow();
-    M_RefreshRendererViewport();
-    if (g_Config.loaded) {
-        Config_Write();
-    }
-}
-
-void Shell_GoWindowed(int32_t x, int32_t y, int32_t width, int32_t height)
-{
-    g_Config.window.is_fullscreen = false;
-    g_Config.window.is_maximized = false;
-    g_Config.window.x = x;
-    g_Config.window.y = y;
-    g_Config.window.width = width;
-    g_Config.window.height = height;
-    M_SyncToWindow();
-    M_RefreshRendererViewport();
-    if (g_Config.loaded) {
-        Config_Write();
-    }
-}
-
 // TODO: try to call this function in a single place after introducing phases.
 void Shell_ProcessEvents(void)
 {
