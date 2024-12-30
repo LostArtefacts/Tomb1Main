@@ -537,6 +537,7 @@ GAME_FLOW_DIR GF_InterpretSequence(const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type)
         case GFE_GAME_COMPLETE:
             START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
             start->stats = g_SaveGame.current_stats;
+            g_SaveGame.bonus_flag = true;
             dir = DisplayCredits();
             ptr++;
             break;
