@@ -139,6 +139,8 @@ void S_Shell_HandleWindowResize(void)
     M_SetWindowPos(x, y, false);
     M_SetWindowSize(width, height, false);
 
+    UI_Events_Fire(&(EVENT) { .name = "canvas_resize" });
+
     // save the updated config, but ensure it was loaded first
     if (g_Config.loaded) {
         Config_Write();

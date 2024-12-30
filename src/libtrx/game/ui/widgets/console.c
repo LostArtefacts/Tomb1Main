@@ -41,6 +41,7 @@ typedef struct {
 
 static void M_MoveHistoryUp(UI_CONSOLE *self);
 static void M_MoveHistoryDown(UI_CONSOLE *self);
+static void M_DoLayout(UI_CONSOLE *self);
 static void M_HandlePromptCancel(const EVENT *event, void *data);
 static void M_HandlePromptConfirm(const EVENT *event, void *data);
 static void M_HandleCanvasResize(const EVENT *event, void *data);
@@ -77,6 +78,12 @@ static void M_MoveHistoryDown(UI_CONSOLE *const self)
     }
 }
 
+static void M_DoLayout(UI_CONSOLE *const self)
+{
+    UI_Stack_SetSize(self->container, M_GetWidth(self), M_GetHeight(self));
+    M_SetPosition(self, WINDOW_MARGIN, WINDOW_MARGIN);
+}
+
 static void M_HandlePromptCancel(const EVENT *const event, void *const data)
 {
     Console_Close();
@@ -96,8 +103,7 @@ static void M_HandlePromptConfirm(const EVENT *const event, void *const data)
 static void M_HandleCanvasResize(const EVENT *event, void *data)
 {
     UI_CONSOLE *const self = (UI_CONSOLE *)data;
-    UI_Stack_SetSize(self->container, M_GetWidth(self), M_GetHeight(self));
-    M_SetPosition(self, WINDOW_MARGIN, WINDOW_MARGIN);
+    M_DoLayout(self);
 }
 
 static void M_HandleKeyDown(const EVENT *const event, void *const user_data)
@@ -221,6 +227,7 @@ UI_WIDGET *UI_Console_Create(void)
     self->listeners[i++] =
         UI_Events_Subscribe("key_down", NULL, M_HandleKeyDown, self);
 
+    M_DoLayout(self);
     return (UI_WIDGET *)self;
 }
 
@@ -263,7 +270,7 @@ void UI_Console_HandleLog(UI_WIDGET *const widget, const char *const text)
     UI_Label_ChangeText(self->logs[0].label, wrapped);
     Memory_FreePointer(&wrapped);
 
-    UI_Stack_DoLayout(self->container);
+    M_DoLayout(self);
     M_UpdateLogCount(self);
 }
 
@@ -287,7 +294,7 @@ void UI_Console_ScrollLogs(UI_WIDGET *const widget)
 
     if (need_layout) {
         M_UpdateLogCount(self);
-        UI_Stack_DoLayout(self->container);
+        M_DoLayout(self);
     }
 }
 
