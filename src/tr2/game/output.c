@@ -48,27 +48,33 @@ static void M_InsertBar(
     const int32_t percent, const COLOR_NAME bar_color_main,
     const COLOR_NAME bar_color_highlight)
 {
-    const int32_t z_offset = 8;
-
     struct {
         int32_t x1, y1, x2, y2;
         COLOR_NAME color;
     } rects[] = {
-        { l, t, l + w, t + h, COLOR_WHITE },
-        { l + 1, t + 1, l + w, t + h, COLOR_GRAY },
-        { l + 1, t + 1, l + w - 1, t + h - 1, COLOR_BLACK },
-        { l + 2, t + 2, l + (w - 2) * percent / 100, t + h - 2,
-          bar_color_main },
-        { l + 2, t + 3, l + (w - 2) * percent / 100, t + 4,
-          bar_color_highlight },
+        { 0, 0, w, h, COLOR_WHITE },
+        { 1, 1, w, h, COLOR_GRAY },
+        { 1, 1, w - 1, h - 1, COLOR_BLACK },
+        { 2, 2, (w - 2) * percent / 100, h - 2, bar_color_main },
+        { 2, 3, (w - 2) * percent / 100, 4, bar_color_highlight },
     };
+
+    const int32_t z_offset = 8;
+    const int32_t x_offset = l < 0
+        ? g_PhdWinWidth + Scaler_Calc(l, SCALER_TARGET_GENERIC)
+            - Scaler_Calc(w - 1, SCALER_TARGET_BAR)
+        : Scaler_Calc(l, SCALER_TARGET_GENERIC);
+    const int32_t y_offset = t < 0
+        ? g_PhdWinHeight + Scaler_Calc(t, SCALER_TARGET_GENERIC)
+            - Scaler_Calc(h - 1, SCALER_TARGET_BAR)
+        : Scaler_Calc(t, SCALER_TARGET_GENERIC);
 
     for (int32_t i = 0; i < 5; i++) {
         Render_InsertFlatRect(
-            Scaler_Calc(rects[i].x1, SCALER_TARGET_BAR),
-            Scaler_Calc(rects[i].y1, SCALER_TARGET_BAR),
-            Scaler_Calc(rects[i].x2, SCALER_TARGET_BAR),
-            Scaler_Calc(rects[i].y2, SCALER_TARGET_BAR),
+            x_offset + Scaler_Calc(rects[i].x1, SCALER_TARGET_BAR),
+            y_offset + Scaler_Calc(rects[i].y1, SCALER_TARGET_BAR),
+            x_offset + Scaler_Calc(rects[i].x2, SCALER_TARGET_BAR),
+            y_offset + Scaler_Calc(rects[i].y2, SCALER_TARGET_BAR),
             g_PhdNearZ + z_offset * (5 - i),
             g_NamedColors[rects[i].color].palette_index);
     }
@@ -752,14 +758,13 @@ void Output_DrawScreenFBox(
 void Output_DrawHealthBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
-    M_InsertBar(6, 6, 105, 9, percent, COLOR_RED, COLOR_ORANGE);
+    M_InsertBar(8, 8, 105, 9, percent, COLOR_RED, COLOR_ORANGE);
 }
 
 void Output_DrawAirBar(const int32_t percent)
 {
     g_IsShadeEffect = false;
-    const int32_t w = Scaler_CalcInverse(g_PhdWinWidth, SCALER_TARGET_BAR);
-    M_InsertBar(w - 112, 6, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
+    M_InsertBar(-8, 8, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
 }
 
 int16_t Output_FindColor(

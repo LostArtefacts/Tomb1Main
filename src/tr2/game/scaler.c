@@ -18,19 +18,21 @@ static int32_t M_DoCalc(
     return MIN(scale_x, scale_y);
 }
 
-int32_t Scaler_Calc(const int32_t unit, const SCALER_TARGET target)
+double Scaler_GetScale(const SCALER_TARGET target)
 {
-    double scale = 1.0;
     switch (target) {
     case SCALER_TARGET_BAR:
-        scale = g_Config.ui.bar_scale;
-        break;
+        return g_Config.ui.bar_scale;
     case SCALER_TARGET_TEXT:
-        scale = g_Config.ui.text_scale;
-        break;
+        return g_Config.ui.text_scale;
+    default:
+        return 1.0;
     }
+}
 
-    return M_DoCalc(unit, 640, 480, scale);
+int32_t Scaler_Calc(const int32_t unit, const SCALER_TARGET target)
+{
+    return M_DoCalc(unit, 640, 480, Scaler_GetScale(target));
 }
 
 int32_t Scaler_CalcInverse(const int32_t unit, const SCALER_TARGET target)

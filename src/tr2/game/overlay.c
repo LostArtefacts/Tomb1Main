@@ -9,6 +9,8 @@
 #include "game/music.h"
 #include "game/objects/common.h"
 #include "game/output.h"
+#include "game/scaler.h"
+#include "game/text.h"
 #include "game/viewport.h"
 #include "global/vars.h"
 
@@ -26,7 +28,6 @@
 
 #define FLASH_FRAMES 5
 #define AMMO_X (-10)
-#define AMMO_Y 35
 #define MODE_INFO_X (-16)
 #define MODE_INFO_Y (-16)
 
@@ -53,6 +54,7 @@ static bool m_FlashState = false;
 static int32_t m_FlashCounter = 0;
 static int32_t m_DisplayModeInfoTimer = 0;
 static TEXTSTRING *m_DisplayModeTextInfo = NULL;
+static int32_t m_AmmoTextY = 0;
 static TEXTSTRING *m_AmmoTextInfo = NULL;
 
 static float M_Ease(int32_t cur_frame, int32_t max_frames);
@@ -136,14 +138,15 @@ void Overlay_DrawAssaultTimer(void)
 
 void Overlay_DrawGameInfo(const bool pickup_state)
 {
-    Overlay_DrawAmmoInfo();
-    Overlay_DrawModeInfo();
+    m_AmmoTextY = ABS(AMMO_X) + TEXT_HEIGHT;
     if (g_OverlayStatus > 0) {
         Overlay_DrawHealthBar();
         Overlay_DrawAirBar();
         Overlay_DrawPickups(pickup_state);
         Overlay_DrawAssaultTimer();
     }
+    Overlay_DrawAmmoInfo();
+    Overlay_DrawModeInfo();
     Console_Draw();
     Text_Draw();
 }
@@ -240,6 +243,9 @@ void Overlay_DrawAirBar(void)
         Output_DrawAirBar(m_FlashState ? percent : 0);
     } else {
         Output_DrawAirBar(percent);
+        m_AmmoTextY += 10 * Scaler_GetScale(SCALER_TARGET_BAR)
+            / Scaler_GetScale(SCALER_TARGET_TEXT);
+        m_AmmoTextY += 3;
     }
 }
 
@@ -321,9 +327,10 @@ void Overlay_DrawAmmoInfo(void)
 
     Overlay_MakeAmmoString(buffer);
     if (m_AmmoTextInfo != NULL) {
+        Text_SetPos(m_AmmoTextInfo, AMMO_X, m_AmmoTextY);
         Text_ChangeText(m_AmmoTextInfo, buffer);
     } else {
-        m_AmmoTextInfo = Text_Create(AMMO_X, AMMO_Y, buffer);
+        m_AmmoTextInfo = Text_Create(AMMO_X, m_AmmoTextY, buffer);
         Text_AlignRight(m_AmmoTextInfo, true);
     }
 }
