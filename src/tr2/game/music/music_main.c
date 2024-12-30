@@ -131,11 +131,6 @@ void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 
     M_StopActiveStream();
 
-    if (g_Config.audio.music_volume == 0) {
-        LOG_DEBUG("Not playing track %d because the game is silent", track_id);
-        goto finish;
-    }
-
     if (m_Backend == NULL) {
         LOG_DEBUG(
             "Not playing track %d because no backend is available", track_id);

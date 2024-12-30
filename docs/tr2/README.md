@@ -116,6 +116,7 @@ game with new enhancements and features.
 - fixed sound settings resuming the music
 - fixed wrong default music volume (being very loud on some setups)
 - fixed flare sound effects not always playing when Lara is in shallow water
+- fixed music not playing if triggered while the game is muted, but the volume is then increased
 
 #### Mods
 - added developer console (accessible with `/`, see [COMMANDS.md](COMMANDS.md) for details)

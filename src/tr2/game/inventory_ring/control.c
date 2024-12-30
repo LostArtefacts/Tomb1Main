@@ -533,7 +533,7 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
     } else if (demo_needed) {
         return GFD_START_DEMO | 0xFF;
     } else if (g_Inv_Chosen == NO_OBJECT) {
-        if (mode != INV_TITLE_MODE && g_Config.audio.music_volume != 0) {
+        if (mode != INV_TITLE_MODE) {
             Music_Unpause();
         }
     } else {
@@ -546,7 +546,7 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
 
         switch (g_Inv_Chosen) {
         case O_PASSPORT_OPTION:
-            if (g_Inv_ExtraData[0] == 1 && g_Config.audio.music_volume != 0) {
+            if (g_Inv_ExtraData[0] == 1) {
                 Music_Unpause();
             }
 
