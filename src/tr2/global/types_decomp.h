@@ -481,18 +481,17 @@ typedef struct __unaligned {
     int16_t single_level;
     uint16_t reserved2[16];
 
-    uint16_t demo_version:              1; // 0x0001
-    uint16_t title_disabled:            1; // 0x0002
-    uint16_t cheat_mode_check_disabled: 1; // 0x0004
-    uint16_t no_input_timeout:          1; // 0x0008
-    uint16_t load_save_disabled:        1; // 0x0010
-    uint16_t screen_sizing_disabled:    1; // 0x0020
-    uint16_t lockout_option_ring:       1; // 0x0040
-    uint16_t dozy_cheat_enabled:        1; // 0x0080
-    uint16_t cyphered_strings:          1; // 0x0100
-    uint16_t gym_enabled:               1; // 0x0200
-    uint16_t play_any_level:            1; // 0x0400
-    uint16_t cheat_enable:              1; // 0x0800
+    uint16_t demo_version:              1;
+    uint16_t title_disabled:            1;
+    uint16_t cheat_mode_check_disabled: 1;
+    uint16_t load_save_disabled:        1;
+    uint16_t screen_sizing_disabled:    1;
+    uint16_t lockout_option_ring:       1;
+    uint16_t dozy_cheat_enabled:        1;
+    uint16_t cyphered_strings:          1;
+    uint16_t gym_enabled:               1;
+    uint16_t play_any_level:            1;
+    uint16_t cheat_enable:              1;
 
     uint16_t reserved3[3];
     uint8_t cypher_code;

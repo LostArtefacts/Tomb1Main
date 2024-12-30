@@ -53,7 +53,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
 
     g_OverlayStatus = 1;
     Camera_Initialise();
-    g_NoInputCounter = 0;
     Stats_StartTimer();
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };

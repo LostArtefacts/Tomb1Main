@@ -75,7 +75,6 @@ bool g_IsWibbleEffect;
 bool g_IsWaterEffect;
 bool g_IsShadeEffect;
 int32_t g_IsChunkyCamera;
-int32_t g_NoInputCounter;
 int32_t g_FlipTimer;
 bool g_IsDemoLoaded;
 bool g_IsAssaultTimerDisplay;

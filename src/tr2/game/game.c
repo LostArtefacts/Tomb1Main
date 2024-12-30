@@ -53,15 +53,6 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
             g_Input = (INPUT_STATE) { 0 };
             return g_GameFlow.on_demo_end;
         }
-    } else if (g_GameFlow.no_input_timeout) {
-        if (g_InputDB.any) {
-            g_NoInputCounter = 0;
-        } else {
-            g_NoInputCounter++;
-            if (g_NoInputCounter > g_GameFlow.no_input_time) {
-                return GFD_START_DEMO | 0xFF;
-            }
-        }
     }
 
     if (g_Lara.death_timer > DEATH_WAIT

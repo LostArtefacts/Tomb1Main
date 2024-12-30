@@ -120,7 +120,6 @@ static void M_PrepareGame(void)
     g_Inv_DemoMode = true;
     g_OverlayStatus = 1;
     Camera_Initialise();
-    g_NoInputCounter = 0;
     Stats_StartTimer();
 }
 

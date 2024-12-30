@@ -365,8 +365,6 @@ void Shell_Main(void)
     }
 
     int16_t gf_option = g_GameFlow.first_option;
-    g_NoInputCounter = 0;
-
     bool is_loop_continued = true;
     while (is_loop_continued) {
         const int16_t gf_dir = gf_option & 0xFF00;

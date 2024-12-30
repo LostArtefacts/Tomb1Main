@@ -248,7 +248,6 @@ bool GF_LoadFromFile(const char *const file_name)
     g_GameFlow.demo_version              = flags & 0x0001 ? 1 : 0;
     g_GameFlow.title_disabled            = flags & 0x0002 ? 1 : 0;
     g_GameFlow.cheat_mode_check_disabled = flags & 0x0004 ? 1 : 0;
-    g_GameFlow.no_input_timeout          = flags & 0x0008 ? 1 : 0;
     g_GameFlow.load_save_disabled        = flags & 0x0010 ? 1 : 0;
     g_GameFlow.screen_sizing_disabled    = flags & 0x0020 ? 1 : 0;
     g_GameFlow.lockout_option_ring       = flags & 0x0040 ? 1 : 0;

@@ -62,8 +62,6 @@ int16_t TitleSequence(void)
 {
     GF_N_LoadStrings(-1);
 
-    g_NoInputCounter = 0;
-
     if (!Level_Initialise(0, GFL_TITLE)) {
         return GFD_EXIT_GAME;
     }

@@ -35,6 +35,7 @@ static TEXTSTRING *m_UpArrow2 = NULL;
 static TEXTSTRING *m_DownArrow1 = NULL;
 static TEXTSTRING *m_DownArrow2 = NULL;
 static TEXTSTRING *m_VersionText = NULL;
+static int32_t m_NoInputCounter = 0;
 
 static void M_RemoveItemsText(void);
 static void M_RemoveAllText(void);
@@ -481,7 +482,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     ring->mode = mode;
     ring->pass_open = false;
     ring->demo_needed = false;
-    g_NoInputCounter = 0;
+    m_NoInputCounter = 0;
 
     switch (mode) {
     case INV_TITLE_MODE:
@@ -636,15 +637,11 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
         if (!Demo_GetInput()) {
             return g_GameFlow.on_demo_end;
         }
-    } else if (g_InputDB.any) {
-        g_NoInputCounter = 0;
-    }
-
-    if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
-        g_NoInputCounter = 0;
-    } else if (g_GameFlow.num_demos || g_GameFlow.no_input_timeout) {
-        g_NoInputCounter++;
-        if (g_NoInputCounter > g_GameFlow.no_input_time) {
+    } else if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
+        m_NoInputCounter = 0;
+    } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
+        m_NoInputCounter++;
+        if (m_NoInputCounter > g_GameFlow.no_input_time) {
             ring->demo_needed = true;
         }
     }
