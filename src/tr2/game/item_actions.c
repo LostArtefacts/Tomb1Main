@@ -84,6 +84,12 @@ static M_FUNC m_Actions[] = {
 
 void M_Bubbles(ITEM *const item)
 {
+    // XXX: until we get RoboLara, it makes sense for her to breathe underwater
+    if (g_Lara.water_status == LWS_CHEAT
+        && !(g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER)) {
+        return;
+    }
+
     const int32_t count = (Random_GetDraw() * 3) / 0x8000;
     if (count == 0) {
         return;
