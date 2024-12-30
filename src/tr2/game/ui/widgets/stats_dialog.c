@@ -16,7 +16,20 @@
 #define VISIBLE_ROWS 7
 #define ROW_HEIGHT 18
 
+typedef enum {
+    M_ROW_GENERIC,
+    M_ROW_TIMER,
+    M_ROW_LEVEL_SECRETS,
+    M_ROW_ALL_SECRETS,
+    M_ROW_KILLS,
+    M_ROW_AMMO_USED,
+    M_ROW_AMMO_HITS,
+    M_ROW_MEDIPACKS,
+    M_ROW_DISTANCE_TRAVELED,
+} M_ROW_ROLE;
+
 typedef struct {
+    M_ROW_ROLE role;
     UI_WIDGET *stack;
     UI_WIDGET *left_label;
     UI_WIDGET *right_label;
@@ -24,6 +37,7 @@ typedef struct {
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
+    UI_STATS_DIALOG_MODE mode;
     UI_WIDGET *window;
     UI_WIDGET *outer_stack;
     int32_t visible_row_count;
@@ -33,10 +47,14 @@ typedef struct {
 } UI_STATS_DIALOG;
 
 static M_ROW *M_AddRow(
-    UI_STATS_DIALOG *self, const char *left_text, const char *right_text);
+    UI_STATS_DIALOG *self, M_ROW_ROLE role, const char *left_text,
+    const char *right_text);
+static M_ROW *M_AddRowFromRole(
+    UI_STATS_DIALOG *self, M_ROW_ROLE role, const STATS_COMMON *stats);
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *self);
+static void M_UpdateTimerRow(UI_STATS_DIALOG *self);
 static void M_DoLayout(UI_STATS_DIALOG *self);
 
 static int32_t M_GetWidth(const UI_STATS_DIALOG *self);
@@ -47,13 +65,14 @@ static void M_Draw(UI_STATS_DIALOG *self);
 static void M_Free(UI_STATS_DIALOG *self);
 
 static M_ROW *M_AddRow(
-    UI_STATS_DIALOG *const self, const char *const left_text,
-    const char *const right_text)
+    UI_STATS_DIALOG *const self, const M_ROW_ROLE role,
+    const char *const left_text, const char *const right_text)
 {
     self->row_count++;
     self->rows = Memory_Realloc(self->rows, sizeof(M_ROW) * self->row_count);
     M_ROW *const row = &self->rows[self->row_count - 1];
 
+    row->role = role;
     row->stack =
         UI_Stack_Create(UI_STACK_LAYOUT_HORIZONTAL, 290, UI_STACK_AUTO_SIZE);
     UI_Stack_SetHAlign(row->stack, UI_STACK_H_ALIGN_DISTRIBUTE);
@@ -74,22 +93,26 @@ static M_ROW *M_AddRow(
     return row;
 }
 
-static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
+static M_ROW *M_AddRowFromRole(
+    UI_STATS_DIALOG *const self, const M_ROW_ROLE role,
+    const STATS_COMMON *const stats)
 {
-    const LEVEL_STATS stats = g_SaveGame.current_stats;
     char buf[32];
 
-    // time
-    const int32_t sec = stats.timer / FRAMES_PER_SECOND;
-    sprintf(buf, "%02d:%02d:%02d", (sec / 60) / 60, (sec / 60) % 60, sec % 60);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_TIME_TAKEN], buf);
+    switch (role) {
+    case M_ROW_TIMER: {
+        const int32_t sec = stats->timer / FRAMES_PER_SECOND;
+        sprintf(
+            buf, "%02d:%02d:%02d", (sec / 60) / 60, (sec / 60) % 60, sec % 60);
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_TIME_TAKEN], buf);
+    }
 
-    // secrets
-    if (g_GF_NumSecrets != 0) {
+    case M_ROW_LEVEL_SECRETS: {
         char *ptr = buf;
         int32_t num_secrets = 0;
         for (int32_t i = 0; i < 3; i++) {
-            if (stats.secrets_bitmap & (1 << i)) {
+            if (((LEVEL_STATS *)stats)->secrets_bitmap & (1 << i)) {
                 sprintf(ptr, "\\{secret %d}", i + 1);
                 num_secrets++;
             } else {
@@ -101,89 +124,91 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
         if (num_secrets == 0) {
             sprintf(buf, g_GF_GameStrings[GF_S_GAME_MISC_NONE]);
         }
-        M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
     }
 
-    // kills
-    sprintf(buf, "%d", stats.kills);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_KILLS], buf);
+    case M_ROW_ALL_SECRETS:
+        sprintf(
+            buf, "%d %s %d", ((FINAL_STATS *)stats)->found_secrets,
+            g_GF_GameStrings[GF_S_GAME_MISC_OF],
+            ((FINAL_STATS *)stats)->total_secrets);
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
 
-    // ammo used
-    sprintf(buf, "%d", stats.ammo_used);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_AMMO_USED], buf);
+    case M_ROW_KILLS:
+        sprintf(buf, "%d", stats->kills);
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_KILLS], buf);
 
-    // ammo hits
-    sprintf(buf, "%d", stats.ammo_hits);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_HITS], buf);
+    case M_ROW_AMMO_USED:
+        sprintf(buf, "%d", stats->ammo_used);
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_AMMO_USED], buf);
 
-    // medipacks
-    if ((stats.medipacks & 1) != 0) {
-        sprintf(buf, "%d.5", stats.medipacks >> 1);
-    } else {
-        sprintf(buf, "%d.0", stats.medipacks >> 1);
+    case M_ROW_AMMO_HITS:
+        sprintf(buf, "%d", stats->ammo_hits);
+        return M_AddRow(self, role, g_GF_GameStrings[GF_S_GAME_MISC_HITS], buf);
+
+    case M_ROW_MEDIPACKS:
+        if ((stats->medipacks & 1) != 0) {
+            sprintf(buf, "%d.5", stats->medipacks >> 1);
+        } else {
+            sprintf(buf, "%d.0", stats->medipacks >> 1);
+        }
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_HEALTH_PACKS_USED],
+            buf);
+
+    case M_ROW_DISTANCE_TRAVELED:
+        const int32_t distance = stats->distance / 445;
+        if (distance < 1000) {
+            sprintf(buf, "%dm", distance);
+        } else {
+            sprintf(buf, "%d.%02dkm", distance / 1000, distance % 100);
+        }
+        return M_AddRow(
+            self, role, g_GF_GameStrings[GF_S_GAME_MISC_DISTANCE_TRAVELLED],
+            buf);
+
+    default:
+        return NULL;
     }
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_HEALTH_PACKS_USED], buf);
+}
 
-    // distance traveled
-    const int32_t distance = stats.distance / 445;
-    if (distance < 1000) {
-        sprintf(buf, "%dm", distance);
-    } else {
-        sprintf(buf, "%d.%02dkm", distance / 1000, distance % 100);
+static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
+{
+    const STATS_COMMON *stats = (STATS_COMMON *)&g_SaveGame.current_stats;
+    M_AddRowFromRole(self, M_ROW_TIMER, stats);
+    if (g_GF_NumSecrets != 0) {
+        M_AddRowFromRole(self, M_ROW_LEVEL_SECRETS, stats);
     }
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_DISTANCE_TRAVELLED], buf);
+    M_AddRowFromRole(self, M_ROW_KILLS, stats);
+    M_AddRowFromRole(self, M_ROW_AMMO_USED, stats);
+    M_AddRowFromRole(self, M_ROW_AMMO_HITS, stats);
+    M_AddRowFromRole(self, M_ROW_MEDIPACKS, stats);
+    M_AddRowFromRole(self, M_ROW_DISTANCE_TRAVELED, stats);
 }
 
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
 {
-    const FINAL_STATS stats = Stats_ComputeFinalStats();
-    char buf[32];
-
-    // time
-    const int32_t sec = stats.timer / FRAMES_PER_SECOND;
-    sprintf(buf, "%02d:%02d:%02d", (sec / 60) / 60, (sec / 60) % 60, sec % 60);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_TIME_TAKEN], buf);
-
-    // secrets
-    sprintf(
-        buf, "%d %s %d", stats.found_secrets,
-        g_GF_GameStrings[GF_S_GAME_MISC_OF], stats.total_secrets);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
-
-    // kills
-    sprintf(buf, "%d", stats.kills);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_KILLS], buf);
-
-    // ammo used
-    sprintf(buf, "%d", stats.ammo_used);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_AMMO_USED], buf);
-
-    // ammo hits
-    sprintf(buf, "%d", stats.ammo_hits);
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_HITS], buf);
-
-    // medipacks
-    if ((stats.medipacks & 1) != 0) {
-        sprintf(buf, "%d.5", stats.medipacks >> 1);
-    } else {
-        sprintf(buf, "%d.0", stats.medipacks >> 1);
-    }
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_HEALTH_PACKS_USED], buf);
-
-    // distance traveled
-    const int32_t distance = stats.distance / 445;
-    if (distance < 1000) {
-        sprintf(buf, "%dm", distance);
-    } else {
-        sprintf(buf, "%d.%02dkm", distance / 1000, distance % 100);
-    }
-    M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_DISTANCE_TRAVELLED], buf);
+    const FINAL_STATS final_stats = Stats_ComputeFinalStats();
+    const STATS_COMMON *stats = (STATS_COMMON *)&final_stats;
+    M_AddRowFromRole(self, M_ROW_TIMER, stats);
+    M_AddRowFromRole(self, M_ROW_ALL_SECRETS, stats);
+    M_AddRowFromRole(self, M_ROW_KILLS, stats);
+    M_AddRowFromRole(self, M_ROW_AMMO_USED, stats);
+    M_AddRowFromRole(self, M_ROW_AMMO_HITS, stats);
+    M_AddRowFromRole(self, M_ROW_MEDIPACKS, stats);
+    M_AddRowFromRole(self, M_ROW_DISTANCE_TRAVELED, stats);
 }
 
 static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
 {
     if (!g_Assault.best_time[0]) {
-        M_AddRow(self, g_GF_GameStrings[GF_S_GAME_MISC_NO_TIMES_SET], NULL);
+        M_AddRow(
+            self, M_ROW_GENERIC, g_GF_GameStrings[GF_S_GAME_MISC_NO_TIMES_SET],
+            NULL);
         return;
     }
 
@@ -203,7 +228,26 @@ static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
                     / (FRAMES_PER_SECOND / 10));
         }
 
-        M_AddRow(self, left_buf, right_buf);
+        M_AddRow(self, M_ROW_GENERIC, left_buf, right_buf);
+    }
+}
+
+static void M_UpdateTimerRow(UI_STATS_DIALOG *const self)
+{
+    if (self->mode != UI_STATS_DIALOG_MODE_LEVEL) {
+        return;
+    }
+
+    for (int32_t i = 0; i < self->row_count; i++) {
+        if (self->rows[i].role != M_ROW_TIMER) {
+            continue;
+        }
+        char buf[32];
+        const int32_t sec = g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
+        sprintf(
+            buf, "%02d:%02d:%02d", (sec / 60) / 60, (sec / 60) % 60, sec % 60);
+        UI_Label_ChangeText(self->rows[i].right_label, buf);
+        return;
     }
 }
 
@@ -235,6 +279,8 @@ static void M_Control(UI_STATS_DIALOG *const self)
     if (self->window->control != NULL) {
         self->window->control(self->window);
     }
+
+    M_UpdateTimerRow(self);
 
     if (g_InputDB.menu_down) {
         if (self->visible_row_offset + self->visible_row_count
@@ -289,6 +335,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
         .free = (UI_WIDGET_FREE)M_Free,
     };
 
+    self->mode = mode;
     self->visible_row_count = VISIBLE_ROWS;
     self->outer_stack = UI_Stack_Create(
         UI_STACK_LAYOUT_VERTICAL, UI_STACK_AUTO_SIZE,
