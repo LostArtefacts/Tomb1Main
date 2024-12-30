@@ -25,7 +25,9 @@
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 
-GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
+static GAME_FLOW_DIR M_Control(bool demo_mode);
+
+static GAME_FLOW_DIR M_Control(const bool demo_mode)
 {
     if (!g_GameFlow.cheat_mode_check_disabled) {
         Lara_Cheat_CheckKeys();
@@ -116,15 +118,29 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
     Sound_EndScene();
     ItemAction_RunActive();
 
-    g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
-    Overlay_Animate(num_frames);
-    Output_AnimateTextures(g_Camera.num_frames);
-
     g_HealthBarTimer--;
     if (g_CurrentLevel || g_IsAssaultTimerActive) {
         Stats_UpdateTimer();
     }
+
     return (GAME_FLOW_DIR)-1;
+}
+
+GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
+{
+    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
+    for (int32_t i = 0; i < num_frames; i++) {
+        dir = M_Control(demo_mode);
+        if (dir != (GAME_FLOW_DIR)-1) {
+            break;
+        }
+    }
+
+    g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
+    Overlay_Animate(num_frames);
+    Output_AnimateTextures(g_Camera.num_frames);
+
+    return dir;
 }
 
 void Game_Draw(void)
