@@ -11,6 +11,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#define MAX_PHASES 10
+static int32_t m_PhaseStackSize = 0;
+static PHASE *m_PhaseStack[MAX_PHASES] = {};
+
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t nframes);
 static void M_Draw(PHASE *phase);
 static int32_t M_Wait(PHASE *phase);
@@ -51,30 +55,38 @@ static int32_t M_Wait(PHASE *const phase)
 
 GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
 {
-    PHASE_CONTROL control;
+    GAME_FLOW_DIR result = (GAME_FLOW_DIR)-1;
+
+    PHASE *const prev_phase =
+        m_PhaseStackSize > 0 ? m_PhaseStack[m_PhaseStackSize - 1] : NULL;
+    if (prev_phase != NULL && prev_phase->suspend != NULL) {
+        prev_phase->suspend(phase);
+    }
+    m_PhaseStack[m_PhaseStackSize++] = phase;
 
     if (phase->start != NULL) {
-        control = phase->start(phase);
-        if (control.action == PHASE_ACTION_END) {
-            if (phase->end != NULL) {
-                phase->end(phase);
-            }
-            return control.dir;
-        } else if (g_IsGameToExit) {
-            if (phase->end != NULL) {
-                phase->end(phase);
-            }
-            return GFD_EXIT_GAME;
+        const PHASE_CONTROL control = phase->start(phase);
+        if (g_IsGameToExit) {
+            result = GFD_EXIT_GAME;
+            goto finish;
+        } else if (control.action == PHASE_ACTION_END) {
+            result = control.dir;
+            goto finish;
         }
     }
 
     int32_t nframes = Clock_WaitTick();
     while (true) {
-        control = M_Control(phase, nframes);
+        const PHASE_CONTROL control = M_Control(phase, nframes);
 
         M_Draw(phase);
         if (control.action == PHASE_ACTION_END) {
-            break;
+            if (g_IsGameToExit) {
+                result = GFD_EXIT_GAME;
+            } else {
+                result = control.dir;
+            }
+            goto finish;
         } else if (control.action == PHASE_ACTION_NO_WAIT) {
             nframes = 0;
             continue;
@@ -83,13 +95,14 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
         }
     }
 
+finish:
     if (phase->end != NULL) {
         phase->end(phase);
     }
-
-    if (g_IsGameToExit) {
-        return GFD_EXIT_GAME;
+    if (prev_phase != NULL && prev_phase->resume != NULL) {
+        prev_phase->resume(phase);
     }
+    m_PhaseStackSize--;
 
-    return control.dir;
+    return result;
 }
