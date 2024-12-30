@@ -33,9 +33,9 @@ static int16_t m_SwitchBounds[12] = {
 };
 
 static int16_t m_SwitchBoundsUW[12] = {
-    -WALL_L + WALL_L, -WALL_L,          +WALL_L,          -WALL_L,
-    +WALL_L / 2,      -80 * PHD_DEGREE, +80 * PHD_DEGREE, -80 * PHD_DEGREE,
-    +80 * PHD_DEGREE, -80 * PHD_DEGREE, +80 * PHD_DEGREE,
+    -WALL_L,          +WALL_L,          -WALL_L,          +WALL_L,
+    -WALL_L,          +WALL_L / 2,      -80 * PHD_DEGREE, +80 * PHD_DEGREE,
+    -80 * PHD_DEGREE, +80 * PHD_DEGREE, -80 * PHD_DEGREE, +80 * PHD_DEGREE,
 };
 
 static void M_AlignLara(ITEM *lara_item, ITEM *switch_item);
