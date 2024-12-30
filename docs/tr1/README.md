@@ -381,7 +381,6 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added ability to look around while running
 - added ability to forward and backward jump while looking
 - added ability to look up and down while hanging
-- added ability to sidestep like in TR3
 - added ability to jump-twist and somersault like in TR2+
 - added ability to cancel ledge-swinging animation like in TR2+
 - added ability to jump at any point while running like in TR2+
@@ -403,7 +402,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added options to quiet or mute music while underwater
 - added a photo mode feature
 - added optional automatic key/puzzle inventory item pre-selection
-- added the ability for falling pushblocks to kill Lara outright if one lands directly on her
+- added ability for falling pushblocks to kill Lara outright if one lands directly on her
 - changed weapon pickup behavior when unarmed to set any weapon as the default weapon, not just pistols
 - fixed keys and items not working when drawing guns immediately after using them
 - fixed counting the secret in The Great Pyramid
@@ -470,14 +469,15 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added a cheat to explode Lara like in TR2 and TR3
 
 #### Input
+- added ability to sidestep like in TR3
 - added ability to hold forward/back to move through menus more quickly
 - added ability to move camera around with W,A,S,D
+- added ability to unbind unessential keys
+- added ability to reset control schemes to default
 - added additional custom control schemes
-- added the ability to unbind unessential keys
-- added the ability to reset control schemes to default
 - added customizable controller support
 - added an inverted look camera option
-- added the ability to move the look camera while targeting an enemy in combat
+- added ability to move the look camera while targeting an enemy in combat
 - fixed freeze when holding the Action key during end of level
 - fixed inability to switch Control keys when shimmying
 - fixed setting user keys being very difficult

@@ -22,7 +22,11 @@
       "ID": "controls",
       "Image": "Graphics/graphic1.jpg",
       "Properties": [
-
+        {
+          "Field": "enable_tr3_sidesteps",
+          "DataType": "Bool",
+          "DefaultValue": true
+        }
       ]
     },
     {

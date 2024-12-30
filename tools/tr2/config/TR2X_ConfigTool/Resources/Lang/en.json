@@ -14,6 +14,10 @@
     }
   },
   "Properties": {
+    "enable_tr3_sidesteps": {
+      "Title": "Enhanced sidesteps",
+      "Description": "Enables TR3+ style sidesteps, e.g. shift+directional arrows. Dedicated sidestep buttons will still work."
+    },
     "enable_3d_pickups": {
       "Title": "3D pickups",
       "Description": "Enables 3D models to be rendered in place of the sprites for pickup items."

@@ -140,6 +140,19 @@ void Input_Update(void)
         g_Input.turbo_cheat = 0;
     }
 
+    if (g_Config.gameplay.enable_tr3_sidesteps) {
+        if (g_Input.slow && !g_Input.forward && !g_Input.back
+            && !g_Input.step_left && !g_Input.step_right) {
+            if (g_Input.left) {
+                g_Input.left = 0;
+                g_Input.step_left = 1;
+            } else if (g_Input.right) {
+                g_Input.right = 0;
+                g_Input.step_right = 1;
+            }
+        }
+    }
+
     g_InputDB = M_GetDebounced(g_Input);
 
     if (Input_IsInListenMode()) {

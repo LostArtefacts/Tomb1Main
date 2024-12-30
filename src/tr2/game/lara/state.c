@@ -903,10 +903,12 @@ void Lara_State_SurfSwim(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (g_Input.left) {
-        item->rot.y -= LARA_SLOW_TURN;
-    } else if (g_Input.right) {
-        item->rot.y += LARA_SLOW_TURN;
+    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+        if (g_Input.left) {
+            item->rot.y -= LARA_SLOW_TURN;
+        } else if (g_Input.right) {
+            item->rot.y += LARA_SLOW_TURN;
+        }
     }
     if (!g_Input.forward || g_Input.jump) {
         item->goal_anim_state = LS_SURF_TREAD;
@@ -923,10 +925,12 @@ void Lara_State_SurfBack(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (g_Input.left) {
-        item->rot.y -= LARA_SURF_TURN;
-    } else if (g_Input.right) {
-        item->rot.y += LARA_SURF_TURN;
+    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+        if (g_Input.left) {
+            item->rot.y -= LARA_SURF_TURN;
+        } else if (g_Input.right) {
+            item->rot.y += LARA_SURF_TURN;
+        }
     }
     if (!g_Input.back) {
         item->goal_anim_state = LS_SURF_TREAD;
@@ -943,13 +947,15 @@ void Lara_State_SurfLeft(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (g_Input.left) {
-        item->rot.y -= LARA_SURF_TURN;
-    } else if (g_Input.right) {
-        item->rot.y += LARA_SURF_TURN;
-    }
-    if (!g_Input.step_left) {
-        item->goal_anim_state = LS_SURF_TREAD;
+    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+        if (g_Input.left) {
+            item->rot.y -= LARA_SURF_TURN;
+        } else if (g_Input.right) {
+            item->rot.y += LARA_SURF_TURN;
+        }
+        if (!g_Input.step_left) {
+            item->goal_anim_state = LS_SURF_TREAD;
+        }
     }
     item->fall_speed += 8;
     CLAMPG(item->fall_speed, LARA_MAX_SURF_SPEED);
@@ -963,13 +969,15 @@ void Lara_State_SurfRight(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (g_Input.left) {
-        item->rot.y -= LARA_SURF_TURN;
-    } else if (g_Input.right) {
-        item->rot.y += LARA_SURF_TURN;
-    }
-    if (!g_Input.step_right) {
-        item->goal_anim_state = LS_SURF_TREAD;
+    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+        if (g_Input.left) {
+            item->rot.y -= LARA_SURF_TURN;
+        } else if (g_Input.right) {
+            item->rot.y += LARA_SURF_TURN;
+        }
+        if (!g_Input.step_right) {
+            item->goal_anim_state = LS_SURF_TREAD;
+        }
     }
     item->fall_speed += 8;
     CLAMPG(item->fall_speed, LARA_MAX_SURF_SPEED);

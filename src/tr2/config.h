@@ -47,6 +47,7 @@ typedef struct {
         bool enable_cheats;
         bool enable_console;
         bool enable_fmv;
+        bool enable_tr3_sidesteps;
         bool enable_auto_item_selection;
         int32_t turbo_speed;
     } gameplay;

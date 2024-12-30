@@ -72,9 +72,10 @@ game with new enhancements and features.
 - added a cheat to explode Lara like in TR2 and TR3
 
 #### Input
+- added ability to sidestep like in TR3
+- added ability to hold forward/back to move through menus more quickly
 - added additional custom control schemes
 - added customizable controller support
-- added ability to hold forward/back to move through menus more quickly
 - fixed setting user keys being very difficult
 - fixed skipping FMVs triggering inventory
 - fixed skipping credits working too fast
@@ -87,9 +88,9 @@ game with new enhancements and features.
 - added support for HD FMVs
 - added wireframe mode
 - added an option for 1-2-3-4× pixel upscaling
-- added the ability to use the window border option at all times
-- added the ability to toggle between the software/hardware renderer at runtime
-- added fade effects to the hardware renderer, and the ability to turn them off
+- added ability to use the window border option at all times
+- added ability to toggle between the software/hardware renderer at runtime
+- added optional fade effects to the hardware renderer
 - added text information when changing rendering options at runtime
 - changed the hardware renderer to always use 16-bit textures
 - changed the software renderer to use the picture's palette for the background pictures

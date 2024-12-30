@@ -2,6 +2,7 @@
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
 - added the ability to turn FMVs off (#2110)
 - added an option to use PS1 contrast levels, available under F8 (#1646)
+- added an option to use TR3+ side steps (#2111)
 - added an option to allow disabling the developer console (#2063)
 - added an optional fix for the QWOP glitch (#2122)
 - added an optional fix for the step glitch, where Lara can be pushed into walls (#2124)
