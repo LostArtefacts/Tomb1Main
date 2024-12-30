@@ -58,7 +58,7 @@ static bool M_LoadInventory(JSON_OBJECT *inv_obj);
 static bool M_LoadFlipmaps(JSON_OBJECT *flipmap_obj);
 static bool M_LoadCameras(JSON_ARRAY *cameras_arr);
 static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version);
-static bool M_LoadFx(JSON_ARRAY *fx_arr);
+static bool M_LoadEffects(JSON_ARRAY *fx_arr);
 static bool M_LoadArm(JSON_OBJECT *arm_obj, LARA_ARM *arm);
 static bool M_LoadAmmo(JSON_OBJECT *ammo_obj, AMMO_INFO *ammo);
 static bool M_LoadLOT(JSON_OBJECT *lot_obj, LOT_INFO *lot);
@@ -72,7 +72,7 @@ static JSON_OBJECT *M_DumpInventory(void);
 static JSON_OBJECT *M_DumpFlipmaps(void);
 static JSON_ARRAY *M_DumpCameras(void);
 static JSON_ARRAY *M_DumpItems(void);
-static JSON_ARRAY *M_DumpFx(void);
+static JSON_ARRAY *M_DumpEffects(void);
 static JSON_OBJECT *M_DumpArm(LARA_ARM *arm);
 static JSON_OBJECT *M_DumpAmmo(AMMO_INFO *ammo);
 static JSON_OBJECT *M_DumpLOT(LOT_INFO *lot);
@@ -567,8 +567,7 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
             if (header_version >= VERSION_3
                 && item->object_id == O_FLAME_EMITTER
                 && g_Config.enable_enhanced_saves) {
-                int32_t effect_num =
-                    JSON_ObjectGetInt(item_obj, "effect_num", -1);
+                int32_t effect_num = JSON_ObjectGetInt(item_obj, "fx_num", -1);
                 if (effect_num != -1) {
                     item->data = (void *)(intptr_t)(effect_num + 1);
                 }
@@ -624,7 +623,7 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
     return true;
 }
 
-static bool M_LoadFx(JSON_ARRAY *fx_arr)
+static bool M_LoadEffects(JSON_ARRAY *fx_arr)
 {
     if (!g_Config.enable_enhanced_saves) {
         return true;
@@ -1092,7 +1091,7 @@ static JSON_ARRAY *M_DumpItems(void)
             if (item->object_id == O_FLAME_EMITTER && item->data) {
                 int32_t effect_num = (int32_t)(intptr_t)item->data - 1;
                 effect_num = fx_order.id_map[effect_num];
-                JSON_ObjectAppendInt(item_obj, "effect_num", effect_num);
+                JSON_ObjectAppendInt(item_obj, "fx_num", effect_num);
             }
 
             if (item->object_id == O_BACON_LARA && item->data) {
@@ -1128,7 +1127,7 @@ static JSON_ARRAY *M_DumpItems(void)
     return items_arr;
 }
 
-static JSON_ARRAY *M_DumpFx(void)
+static JSON_ARRAY *M_DumpEffects(void)
 {
     JSON_ARRAY *fx_arr = JSON_ArrayNew();
 
@@ -1385,7 +1384,7 @@ bool Savegame_BSON_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     }
 
     if (header.version >= VERSION_3) {
-        if (!M_LoadFx(JSON_ObjectGetArray(root_obj, "effect"))) {
+        if (!M_LoadEffects(JSON_ObjectGetArray(root_obj, "fx"))) {
             goto cleanup;
         }
     }
@@ -1467,7 +1466,7 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     JSON_ObjectAppendObject(root_obj, "flipmap", M_DumpFlipmaps());
     JSON_ObjectAppendArray(root_obj, "cameras", M_DumpCameras());
     JSON_ObjectAppendArray(root_obj, "items", M_DumpItems());
-    JSON_ObjectAppendArray(root_obj, "effect", M_DumpFx());
+    JSON_ObjectAppendArray(root_obj, "fx", M_DumpEffects());
     JSON_ObjectAppendObject(root_obj, "lara", M_DumpLara(&g_Lara));
     JSON_ObjectAppendObject(root_obj, "music", M_DumpCurrentMusic());
     JSON_ObjectAppendArray(
