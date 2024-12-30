@@ -480,8 +480,8 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     INV_RING *const ring = Memory_Alloc(sizeof(INV_RING));
     ring->mode = mode;
-    ring->pass_open = false;
-    ring->demo_needed = false;
+    ring->is_pass_open = false;
+    ring->is_demo_needed = false;
     m_NoInputCounter = 0;
 
     switch (mode) {
@@ -512,7 +512,6 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
         break;
     }
 
-    Sound_Effect(SFX_MENU_SPININ, 0, SPM_ALWAYS);
     g_Inv_Mode = mode;
     return ring;
 }
@@ -520,7 +519,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
 {
     const INVENTORY_MODE mode = ring->mode;
-    const bool demo_needed = ring->demo_needed;
+    const bool is_demo_needed = ring->is_demo_needed;
     M_End(ring);
 
     // enable buffering
@@ -530,7 +529,7 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
         return GFD_EXIT_GAME;
     } else if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
         return GFD_OVERRIDE;
-    } else if (demo_needed) {
+    } else if (is_demo_needed) {
         return GFD_START_DEMO | 0xFF;
     } else if (g_Inv_Chosen == NO_OBJECT) {
         if (mode != INV_TITLE_MODE && g_Config.audio.music_volume != 0) {
@@ -624,6 +623,11 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
         return GFD_OVERRIDE;
     }
 
+    if (!ring->has_spun_out) {
+        Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
+        ring->has_spun_out = true;
+    }
+
     InvRing_CalcAdders(ring, 24);
     Shell_ProcessEvents();
     Input_Update();
@@ -642,7 +646,7 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
     } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
         m_NoInputCounter++;
         if (m_NoInputCounter > g_GameFlow.no_input_time) {
-            ring->demo_needed = true;
+            ring->is_demo_needed = true;
         }
     }
 
@@ -652,7 +656,7 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
 
     if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
          || ring->mode == INV_DEATH_MODE)
-        && !ring->pass_open) {
+        && !ring->is_pass_open) {
         g_Input = (INPUT_STATE) { 0 };
         g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
     }
@@ -683,7 +687,7 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
                 break;
             }
 
-            if (ring->demo_needed
+            if (ring->is_demo_needed
                 || ((g_InputDB.option || g_InputDB.menu_back)
                     && ring->mode != INV_TITLE_MODE)) {
                 Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
@@ -705,8 +709,8 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
             if (g_InputDB.menu_confirm) {
                 if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
                      || ring->mode == INV_DEATH_MODE)
-                    && !ring->pass_open) {
-                    ring->pass_open = true;
+                    && !ring->is_pass_open) {
+                    ring->is_pass_open = true;
                 }
 
                 g_SoundOptionLine = 0;

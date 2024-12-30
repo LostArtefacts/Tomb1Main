@@ -105,6 +105,7 @@ typedef struct {
     XYZ_32 light;
     INV_RING_MOTION motion;
 
-    bool demo_needed;
-    bool pass_open;
+    bool is_demo_needed;
+    bool is_pass_open;
+    bool has_spun_out;
 } INV_RING;
