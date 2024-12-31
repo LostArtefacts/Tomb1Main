@@ -101,39 +101,49 @@ void Overlay_DrawAssaultTimer(void)
         buffer, "%d:%02d.%d", total_sec / 60, total_sec % 60,
         frame * 10 / FRAMES_PER_SECOND);
 
-    const int32_t scale_h = PHD_ONE;
-    const int32_t scale_v = PHD_ONE;
+    const int32_t scale_h = Scaler_Calc(PHD_ONE, SCALER_TARGET_ASSAULT_DIGITS);
+    const int32_t scale_v = Scaler_Calc(PHD_ONE, SCALER_TARGET_ASSAULT_DIGITS);
 
-    const int32_t dot_offset = -6;
-    const int32_t dot_width = 14;
-    const int32_t colon_offset = -6;
-    const int32_t colon_width = 14;
-    const int32_t digit_offset = 0;
-    const int32_t digit_width = 20;
+    typedef enum {
+        ASSAULT_GLYPH_DECIMAL_POINT,
+        ASSAULT_GLYPH_COLON,
+        ASSAULT_GLYPH_DIGIT,
+    } ASSAULT_GLYPH_TYPE;
 
-    const int32_t y = 36;
-    int32_t x = (g_PhdWinMaxX / 2) - 50;
+    struct {
+        int32_t offset;
+        int32_t width;
+    } glyph_info[] = {
+        [ASSAULT_GLYPH_DECIMAL_POINT] = { .offset = -6, .width = 14 },
+        [ASSAULT_GLYPH_COLON] = { .offset = -6, .width = 14 },
+        [ASSAULT_GLYPH_DIGIT] = { .offset = 0, .width = 20 },
+    };
+
+    const int32_t y = Scaler_Calc(36, SCALER_TARGET_ASSAULT_DIGITS);
+    int32_t x =
+        g_PhdWinWidth / 2 - Scaler_Calc(50, SCALER_TARGET_ASSAULT_DIGITS);
 
     for (char *c = buffer; *c != '\0'; c++) {
+        ASSAULT_GLYPH_TYPE glyph_type;
+        int32_t mesh_num;
         if (*c == ':') {
-            x += colon_offset;
-            Output_DrawScreenSprite2D(
-                x, y, 0, scale_h, scale_v,
-                g_Objects[O_ASSAULT_DIGITS].mesh_idx + 10, 0x1000, 0);
-            x += colon_width;
+            glyph_type = ASSAULT_GLYPH_COLON;
+            mesh_num = 10;
         } else if (*c == '.') {
-            x += dot_offset;
-            Output_DrawScreenSprite2D(
-                x, y, 0, scale_h, scale_v,
-                g_Objects[O_ASSAULT_DIGITS].mesh_idx + 11, 0x1000, 0);
-            x += dot_width;
+            glyph_type = ASSAULT_GLYPH_DECIMAL_POINT;
+            mesh_num = 11;
         } else {
-            x += digit_offset;
-            Output_DrawScreenSprite2D(
-                x, y, 0, scale_h, scale_v,
-                *c + g_Objects[O_ASSAULT_DIGITS].mesh_idx - '0', 0x1000, 0);
-            x += digit_width;
+            glyph_type = ASSAULT_GLYPH_DIGIT;
+            mesh_num = *c - '0';
         }
+
+        x += Scaler_Calc(
+            glyph_info[glyph_type].offset, SCALER_TARGET_ASSAULT_DIGITS);
+        Output_DrawScreenSprite2D(
+            x, y, 0, scale_h, scale_v,
+            g_Objects[O_ASSAULT_DIGITS].mesh_idx + mesh_num, 0x1000, 0);
+        x += Scaler_Calc(
+            glyph_info[glyph_type].width, SCALER_TARGET_ASSAULT_DIGITS);
     }
 }
 

@@ -9,13 +9,14 @@
 static int32_t M_DoCalc(
     int32_t unit, int32_t base_width, int32_t base_height, double factor)
 {
-    int32_t scale_x = g_PhdWinWidth > base_width
-        ? ((double)g_PhdWinWidth * unit * factor) / base_width
-        : unit * factor;
-    int32_t scale_y = g_PhdWinHeight > base_height
-        ? ((double)g_PhdWinHeight * unit * factor) / base_height
-        : unit * factor;
-    return MIN(scale_x, scale_y);
+    const int32_t sign = unit < 0 ? -1 : 1;
+    const int32_t scale_x = g_PhdWinWidth > base_width
+        ? ((double)g_PhdWinWidth * ABS(unit) * factor) / base_width
+        : ABS(unit) * factor;
+    const int32_t scale_y = g_PhdWinHeight > base_height
+        ? ((double)g_PhdWinHeight * ABS(unit) * factor) / base_height
+        : ABS(unit) * factor;
+    return MIN(scale_x, scale_y) * sign;
 }
 
 double Scaler_GetScale(const SCALER_TARGET target)
@@ -24,6 +25,8 @@ double Scaler_GetScale(const SCALER_TARGET target)
     case SCALER_TARGET_BAR:
         return g_Config.ui.bar_scale;
     case SCALER_TARGET_TEXT:
+        return g_Config.ui.text_scale;
+    case SCALER_TARGET_ASSAULT_DIGITS:
         return g_Config.ui.text_scale;
     default:
         return 1.0;
