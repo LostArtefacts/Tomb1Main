@@ -65,6 +65,7 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
     m_PhaseStack[m_PhaseStackSize++] = phase;
 
     if (phase->start != NULL) {
+        Clock_SyncTick();
         const PHASE_CONTROL control = phase->start(phase);
         if (g_IsGameToExit) {
             result = GFD_EXIT_GAME;
@@ -100,6 +101,7 @@ finish:
         phase->end(phase);
     }
     if (prev_phase != NULL && prev_phase->resume != NULL) {
+        Clock_SyncTick();
         prev_phase->resume(phase);
     }
     m_PhaseStackSize--;
