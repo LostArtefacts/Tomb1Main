@@ -18,6 +18,7 @@
 #include <string.h>
 
 #define MAX_TEXTSTRINGS 10
+#define USE_REAL_CLOCK 0
 
 static int32_t m_CachedItemCount = 0;
 static SECTOR **m_CachedSectorArray = NULL;
@@ -28,10 +29,12 @@ static uint32_t m_SecretRoom = 0;
 static bool m_KillableItems[MAX_ITEMS] = { 0 };
 static bool m_IfKillable[O_NUMBER_OF] = { 0 };
 
+#if USE_REAL_CLOCK
 static struct {
     double start_counter;
     int32_t start_timer;
 } m_StatsTimer = { 0 };
+#endif
 
 static void M_TraverseFloor(void);
 static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector);
@@ -229,6 +232,7 @@ bool Stats_CheckAllSecretsCollected(GAMEFLOW_LEVEL_TYPE level_type)
     return total_stats.player_secret_count >= total_stats.total_secret_count;
 }
 
+#if USE_REAL_CLOCK
 void Stats_StartTimer(void)
 {
     m_StatsTimer.start_counter = Clock_GetHighPrecisionCounter();
@@ -243,3 +247,13 @@ void Stats_UpdateTimer(void)
     g_GameInfo.current[g_CurrentLevel].stats.timer =
         m_StatsTimer.start_timer + elapsed;
 }
+#else
+void Stats_StartTimer(void)
+{
+}
+
+void Stats_UpdateTimer(void)
+{
+    g_GameInfo.current[g_CurrentLevel].stats.timer++;
+}
+#endif

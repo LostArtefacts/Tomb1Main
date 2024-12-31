@@ -14,6 +14,7 @@
 - added an option to set the bar scaling (no UI for it yet) (#1636)
 - added an option to set the text scaling (no UI for it yet) (#1636)
 - changed demo to be interrupted only by esc or action keys
+- changed the turbo cheat to also affect ingame timer (#2167)
 - fixed health bar and air bar scaling (#2149)
 - fixed text being stretched on non-4:3 aspect ratios (#2012)
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs (#1989)

@@ -3,6 +3,9 @@
 #include "game/clock.h"
 #include "global/vars.h"
 
+#define USE_REAL_CLOCK 0
+
+#if USE_REAL_CLOCK
 static double m_StartCounter = 0.0;
 static int32_t m_StartTimer = 0;
 
@@ -18,6 +21,16 @@ void Stats_UpdateTimer(void)
         (Clock_GetHighPrecisionCounter() - m_StartCounter) * LOGIC_FPS / 1000.0;
     g_SaveGame.current_stats.timer = m_StartTimer + elapsed;
 }
+#else
+void Stats_StartTimer(void)
+{
+}
+
+void Stats_UpdateTimer(void)
+{
+    g_SaveGame.current_stats.timer++;
+}
+#endif
 
 FINAL_STATS Stats_ComputeFinalStats(void)
 {
