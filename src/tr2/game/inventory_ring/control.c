@@ -30,6 +30,7 @@
 
 #define TITLE_RING_OBJECTS 3
 #define OPTION_RING_OBJECTS 3
+#define INV_FRAMES 2
 
 static TEXTSTRING *m_UpArrow1 = NULL;
 static TEXTSTRING *m_UpArrow2 = NULL;
@@ -42,6 +43,7 @@ static void M_RemoveItemsText(void);
 static void M_RemoveAllText(void);
 static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
+static GAME_FLOW_DIR M_Control(INV_RING *ring);
 static void M_End(INV_RING *ring);
 
 static void M_Construct(INVENTORY_MODE mode);
@@ -164,6 +166,415 @@ static void M_Construct(const INVENTORY_MODE mode)
         g_Inv_OptionCurrent = 0;
     }
     g_SoundOptionLine = 0;
+}
+
+static GAME_FLOW_DIR M_Control(INV_RING *const ring)
+{
+    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
+        return GFD_OVERRIDE;
+    }
+
+    if (!ring->has_spun_out) {
+        Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
+        ring->has_spun_out = true;
+    }
+
+    InvRing_CalcAdders(ring, 24);
+    Shell_ProcessEvents();
+    Input_Update();
+    Shell_ProcessInput();
+    Game_ProcessInput();
+
+    if (g_Inv_DemoMode) {
+        if (g_InputDB.any) {
+            return g_GameFlow.on_demo_interrupt;
+        }
+        if (!Demo_GetInput()) {
+            return g_GameFlow.on_demo_end;
+        }
+    } else if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
+        m_NoInputCounter = 0;
+    } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
+        m_NoInputCounter++;
+        if (m_NoInputCounter > g_GameFlow.no_input_time) {
+            ring->is_demo_needed = true;
+        }
+    }
+
+    if (g_IsGameToExit) {
+        return GFD_EXIT_GAME;
+    }
+
+    if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
+         || ring->mode == INV_DEATH_MODE)
+        && !ring->is_pass_open) {
+        g_Input = (INPUT_STATE) { 0 };
+        g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
+    }
+
+    for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+        if (g_Inv_IsOptionsDelay) {
+            if (g_Inv_OptionsDelayCounter) {
+                g_Inv_OptionsDelayCounter--;
+            } else {
+                g_Inv_IsOptionsDelay = 0;
+            }
+        }
+        InvRing_DoMotions(ring);
+    }
+
+    if (!ring->rotating) {
+        switch (ring->motion.status) {
+        case RNG_OPEN:
+            if (g_Input.right && ring->number_of_objects > 1) {
+                InvRing_RotateLeft(ring);
+                Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
+                break;
+            }
+
+            if (g_Input.left && ring->number_of_objects > 1) {
+                InvRing_RotateRight(ring);
+                Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
+                break;
+            }
+
+            if (ring->is_demo_needed
+                || ((g_InputDB.option || g_InputDB.menu_back)
+                    && ring->mode != INV_TITLE_MODE)) {
+                Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
+                g_Inv_Chosen = NO_OBJECT;
+                if (ring->type != RT_MAIN) {
+                    g_Inv_OptionCurrent = ring->current_object;
+                } else {
+                    g_Inv_MainCurrent = ring->current_object;
+                }
+                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
+                InvRing_MotionRadius(ring, 0);
+                InvRing_MotionCameraPos(ring, -1536);
+                InvRing_MotionRotation(
+                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+            }
+
+            if (g_InputDB.menu_confirm) {
+                if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
+                     || ring->mode == INV_DEATH_MODE)
+                    && !ring->is_pass_open) {
+                    ring->is_pass_open = true;
+                }
+
+                g_SoundOptionLine = 0;
+                INV_ITEM *inv_item;
+                if (ring->type == RT_MAIN) {
+                    g_Inv_MainCurrent = ring->current_object;
+                    inv_item = g_Inv_MainList[ring->current_object];
+                } else if (ring->type == RT_OPTION) {
+                    g_Inv_OptionCurrent = ring->current_object;
+                    inv_item = g_Inv_OptionList[ring->current_object];
+                } else {
+                    g_Inv_KeysCurrent = ring->current_object;
+                    inv_item = g_Inv_KeysList[ring->current_object];
+                }
+
+                inv_item->goal_frame = inv_item->open_frame;
+                inv_item->anim_direction = 1;
+                InvRing_MotionSetup(ring, RNG_SELECTING, RNG_SELECTED, 16);
+                InvRing_MotionRotation(
+                    ring, 0, -16384 - ring->angle_adder * ring->current_object);
+                InvRing_MotionItemSelect(ring, inv_item);
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+
+                switch (inv_item->object_id) {
+                case O_COMPASS_OPTION:
+                    Sound_Effect(SFX_MENU_STOPWATCH, 0, SPM_ALWAYS);
+                    break;
+
+                case O_PHOTO_OPTION:
+                    Sound_Effect(SFX_MENU_LARA_HOME, 0, SPM_ALWAYS);
+                    break;
+
+                case O_PISTOL_OPTION:
+                case O_SHOTGUN_OPTION:
+                case O_MAGNUM_OPTION:
+                case O_UZI_OPTION:
+                case O_HARPOON_OPTION:
+                case O_M16_OPTION:
+                case O_GRENADE_OPTION:
+                    Sound_Effect(SFX_MENU_GUNS, 0, SPM_ALWAYS);
+                    break;
+
+                default:
+                    Sound_Effect(SFX_MENU_SPININ, 0, SPM_ALWAYS);
+                    break;
+                }
+            }
+
+            if (g_InputDB.forward && ring->mode != INV_TITLE_MODE
+                && ring->mode != INV_KEYS_MODE) {
+                if (ring->type == RT_OPTION) {
+                    if (g_Inv_MainObjectsCount > 0) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING, RNG_OPTION2MAIN, 24);
+                        InvRing_MotionRadius(ring, 0);
+                        InvRing_MotionRotation(
+                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                        InvRing_MotionCameraPitch(ring, 0x2000);
+                        ring->motion.misc = 0x2000;
+                    }
+                    g_InputDB = (INPUT_STATE) { 0 };
+                } else if (ring->type == RT_MAIN) {
+                    if (g_Inv_KeyObjectsCount > 0) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING, RNG_MAIN2KEYS, 24);
+                        InvRing_MotionRadius(ring, 0);
+                        InvRing_MotionRotation(
+                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                        InvRing_MotionCameraPitch(ring, 0x2000);
+                        ring->motion.misc = 0x2000;
+                    }
+                    g_Input = (INPUT_STATE) { 0 };
+                    g_InputDB = (INPUT_STATE) { 0 };
+                }
+            } else if (
+                g_InputDB.back && ring->mode != INV_TITLE_MODE
+                && ring->mode != INV_KEYS_MODE) {
+                if (ring->type == RT_KEYS) {
+                    if (g_Inv_MainObjectsCount > 0) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING, RNG_KEYS2MAIN, 24);
+                        InvRing_MotionRadius(ring, 0);
+                        InvRing_MotionRotation(
+                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                        InvRing_MotionCameraPitch(ring, -0x2000);
+                        ring->motion.misc = -0x2000;
+                    }
+                    g_Input = (INPUT_STATE) { 0 };
+                    g_InputDB = (INPUT_STATE) { 0 };
+                } else if (ring->type == RT_MAIN) {
+                    if (g_Inv_OptionObjectsCount > 0
+                        && !g_GameFlow.lockout_option_ring) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING, RNG_MAIN2OPTION, 24);
+                        InvRing_MotionRadius(ring, 0);
+                        InvRing_MotionRotation(
+                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                        InvRing_MotionCameraPitch(ring, -0x2000);
+                        ring->motion.misc = -0x2000;
+                    }
+                    g_InputDB = (INPUT_STATE) { 0 };
+                }
+            }
+            break;
+
+        case RNG_MAIN2OPTION:
+            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
+            InvRing_MotionRadius(ring, 688);
+            ring->camera_pitch = -(int16_t)(ring->motion.misc);
+            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
+            ring->motion.camera_pitch_target = 0;
+            ring->list = g_Inv_OptionList;
+            ring->type = RT_OPTION;
+            g_Inv_MainCurrent = ring->current_object;
+            g_Inv_MainObjectsCount = ring->number_of_objects;
+            ring->number_of_objects = g_Inv_OptionObjectsCount;
+            ring->current_object = g_Inv_OptionCurrent;
+            InvRing_CalcAdders(ring, 24);
+            InvRing_MotionRotation(
+                ring, PHD_180,
+                -16384 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+            break;
+
+        case RNG_MAIN2KEYS:
+            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
+            InvRing_MotionRadius(ring, 688);
+            ring->motion.camera_pitch_target = 0;
+            ring->camera_pitch = -(int16_t)(ring->motion.misc);
+            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
+            g_Inv_MainCurrent = ring->current_object;
+            g_Inv_MainObjectsCount = ring->number_of_objects;
+            ring->list = g_Inv_KeysList;
+            ring->type = RT_KEYS;
+            ring->number_of_objects = g_Inv_KeyObjectsCount;
+            ring->current_object = g_Inv_KeysCurrent;
+            InvRing_CalcAdders(ring, 24);
+            InvRing_MotionRotation(
+                ring, PHD_180,
+                -16384 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+            break;
+
+        case RNG_KEYS2MAIN:
+            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
+            InvRing_MotionRadius(ring, 688);
+            ring->camera_pitch = -(int16_t)(ring->motion.misc);
+            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
+            ring->motion.camera_pitch_target = 0;
+            ring->list = g_Inv_MainList;
+            ring->type = RT_MAIN;
+            g_Inv_KeysCurrent = ring->current_object;
+            ring->number_of_objects = g_Inv_MainObjectsCount;
+            ring->current_object = g_Inv_MainCurrent;
+            InvRing_CalcAdders(ring, 24);
+            InvRing_MotionRotation(
+                ring, PHD_180,
+                -16384 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+            break;
+
+        case RNG_OPTION2MAIN:
+            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
+            InvRing_MotionRadius(ring, 688);
+            ring->camera_pitch = -(int16_t)(ring->motion.misc);
+            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
+            g_Inv_OptionCurrent = ring->current_object;
+            g_Inv_OptionObjectsCount = ring->number_of_objects;
+            ring->motion.camera_pitch_target = 0;
+            ring->list = g_Inv_MainList;
+            ring->type = RT_MAIN;
+            ring->number_of_objects = g_Inv_MainObjectsCount;
+            ring->current_object = g_Inv_MainCurrent;
+            InvRing_CalcAdders(ring, 24);
+            InvRing_MotionRotation(
+                ring, PHD_180,
+                -16384 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+            break;
+
+        case RNG_SELECTED: {
+            INV_ITEM *inv_item = ring->list[ring->current_object];
+            if (inv_item->object_id == O_PASSPORT_CLOSED) {
+                inv_item->object_id = O_PASSPORT_OPTION;
+            }
+
+            bool busy = false;
+            for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+                busy = false;
+                if (inv_item->y_rot == inv_item->y_rot_sel) {
+                    busy = M_AnimateInventoryItem(inv_item);
+                }
+            }
+
+            if (!busy && !g_Inv_IsOptionsDelay) {
+                Option_Control(inv_item);
+
+                if (g_InputDB.menu_back) {
+                    inv_item->sprite_list = NULL;
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
+                    g_Input = (INPUT_STATE) { 0 };
+                    g_InputDB = (INPUT_STATE) { 0 };
+                    if (ring->mode == INV_LOAD_MODE
+                        || ring->mode == INV_SAVE_MODE) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
+                        g_Input = (INPUT_STATE) { 0 };
+                        g_InputDB = (INPUT_STATE) { 0 };
+                    }
+                }
+
+                if (g_InputDB.menu_confirm) {
+                    inv_item->sprite_list = NULL;
+                    g_Inv_Chosen = inv_item->object_id;
+                    if (ring->type != RT_MAIN) {
+                        g_Inv_OptionCurrent = ring->current_object;
+                    } else {
+                        g_Inv_MainCurrent = ring->current_object;
+                    }
+                    if (ring->mode == INV_TITLE_MODE
+                        && (inv_item->object_id == O_DETAIL_OPTION
+                            || inv_item->object_id == O_SOUND_OPTION
+                            || inv_item->object_id == O_CONTROL_OPTION
+                            || inv_item->object_id == O_GAMMA_OPTION)) {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
+                    } else {
+                        InvRing_MotionSetup(
+                            ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
+                    }
+                    g_Input = (INPUT_STATE) { 0 };
+                    g_InputDB = (INPUT_STATE) { 0 };
+                }
+            }
+            break;
+        }
+
+        case RNG_DESELECT:
+            Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
+            InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, 16);
+            InvRing_MotionRotation(
+                ring, 0, -16384 - ring->angle_adder * ring->current_object);
+            g_Input = (INPUT_STATE) { 0 };
+            g_InputDB = (INPUT_STATE) { 0 };
+            break;
+
+        case RNG_CLOSING_ITEM: {
+            INV_ITEM *inv_item = ring->list[ring->current_object];
+            for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+                if (!M_AnimateInventoryItem(inv_item)) {
+                    if (inv_item->object_id == O_PASSPORT_OPTION) {
+                        inv_item->object_id = O_PASSPORT_CLOSED;
+                        inv_item->current_frame = 0;
+                    }
+
+                    ring->motion.count = 16;
+                    ring->motion.status = ring->motion.status_target;
+                    InvRing_MotionItemDeselect(ring, inv_item);
+                    break;
+                }
+            }
+            break;
+        }
+
+        case RNG_EXITING_INVENTORY:
+            if (!ring->motion.count) {
+                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
+                InvRing_MotionRadius(ring, 0);
+                InvRing_MotionCameraPos(ring, -1536);
+                InvRing_MotionRotation(
+                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    if (ring->motion.status == RNG_OPEN || ring->motion.status == RNG_SELECTING
+        || ring->motion.status == RNG_SELECTED
+        || ring->motion.status == RNG_DESELECTING
+        || ring->motion.status == RNG_DESELECT
+        || ring->motion.status == RNG_CLOSING_ITEM) {
+        if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
+            INV_ITEM *const inv_item = ring->list[ring->current_object];
+            M_RingNotActive(inv_item);
+        }
+        M_RingIsOpen(ring);
+    } else {
+        M_RingIsNotOpen(ring);
+    }
+
+    if (ring->motion.status == RNG_OPENING || ring->motion.status == RNG_CLOSING
+        || ring->motion.status == RNG_MAIN2OPTION
+        || ring->motion.status == RNG_OPTION2MAIN
+        || ring->motion.status == RNG_EXITING_INVENTORY
+        || ring->motion.status == RNG_DONE || ring->rotating) {
+        M_RingActive();
+    }
+
+    if (g_CurrentLevel != LV_GYM) {
+        Stats_UpdateTimer();
+    }
+
+    for (int32_t i = 0; i < ring->number_of_objects; i++) {
+        M_UpdateInventoryItem(ring, ring->list[i], 2);
+    }
+
+    Sound_EndScene();
+    return (GAME_FLOW_DIR)-1;
 }
 
 static void M_End(INV_RING *const ring)
@@ -623,414 +1034,18 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
 
 GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
 {
-    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        return GFD_OVERRIDE;
-    }
-
-    if (!ring->has_spun_out) {
-        Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
-        ring->has_spun_out = true;
-    }
-
-    InvRing_CalcAdders(ring, 24);
-    Shell_ProcessEvents();
-    Input_Update();
-    Shell_ProcessInput();
-    Game_ProcessInput();
-
-    if (g_Inv_DemoMode) {
-        if (g_InputDB.any) {
-            return g_GameFlow.on_demo_interrupt;
-        }
-        if (!Demo_GetInput()) {
-            return g_GameFlow.on_demo_end;
-        }
-    } else if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
-        m_NoInputCounter = 0;
-    } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
-        m_NoInputCounter++;
-        if (m_NoInputCounter > g_GameFlow.no_input_time) {
-            ring->is_demo_needed = true;
-        }
-    }
-
-    if (g_IsGameToExit) {
-        return GFD_EXIT_GAME;
-    }
-
-    if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
-         || ring->mode == INV_DEATH_MODE)
-        && !ring->is_pass_open) {
-        g_Input = (INPUT_STATE) { 0 };
-        g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
-    }
-
-    for (int32_t frame = 0; frame < num_frames; frame++) {
-        if (g_Inv_IsOptionsDelay) {
-            if (g_Inv_OptionsDelayCounter) {
-                g_Inv_OptionsDelayCounter--;
-            } else {
-                g_Inv_IsOptionsDelay = 0;
-            }
-        }
-        InvRing_DoMotions(ring);
-    }
-
-    if (!ring->rotating) {
-        switch (ring->motion.status) {
-        case RNG_OPEN:
-            if (g_Input.right && ring->number_of_objects > 1) {
-                InvRing_RotateLeft(ring);
-                Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
-                break;
-            }
-
-            if (g_Input.left && ring->number_of_objects > 1) {
-                InvRing_RotateRight(ring);
-                Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
-                break;
-            }
-
-            if (ring->is_demo_needed
-                || ((g_InputDB.option || g_InputDB.menu_back)
-                    && ring->mode != INV_TITLE_MODE)) {
-                Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
-                g_Inv_Chosen = NO_OBJECT;
-                if (ring->type != RT_MAIN) {
-                    g_Inv_OptionCurrent = ring->current_object;
-                } else {
-                    g_Inv_MainCurrent = ring->current_object;
-                }
-                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
-                InvRing_MotionRadius(ring, 0);
-                InvRing_MotionCameraPos(ring, -1536);
-                InvRing_MotionRotation(
-                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-                g_Input = (INPUT_STATE) { 0 };
-                g_InputDB = (INPUT_STATE) { 0 };
-            }
-
-            if (g_InputDB.menu_confirm) {
-                if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
-                     || ring->mode == INV_DEATH_MODE)
-                    && !ring->is_pass_open) {
-                    ring->is_pass_open = true;
-                }
-
-                g_SoundOptionLine = 0;
-                INV_ITEM *inv_item;
-                if (ring->type == RT_MAIN) {
-                    g_Inv_MainCurrent = ring->current_object;
-                    inv_item = g_Inv_MainList[ring->current_object];
-                } else if (ring->type == RT_OPTION) {
-                    g_Inv_OptionCurrent = ring->current_object;
-                    inv_item = g_Inv_OptionList[ring->current_object];
-                } else {
-                    g_Inv_KeysCurrent = ring->current_object;
-                    inv_item = g_Inv_KeysList[ring->current_object];
-                }
-
-                inv_item->goal_frame = inv_item->open_frame;
-                inv_item->anim_direction = 1;
-                InvRing_MotionSetup(ring, RNG_SELECTING, RNG_SELECTED, 16);
-                InvRing_MotionRotation(
-                    ring, 0, -16384 - ring->angle_adder * ring->current_object);
-                InvRing_MotionItemSelect(ring, inv_item);
-                g_Input = (INPUT_STATE) { 0 };
-                g_InputDB = (INPUT_STATE) { 0 };
-
-                switch (inv_item->object_id) {
-                case O_COMPASS_OPTION:
-                    Sound_Effect(SFX_MENU_STOPWATCH, 0, SPM_ALWAYS);
-                    break;
-
-                case O_PHOTO_OPTION:
-                    Sound_Effect(SFX_MENU_LARA_HOME, 0, SPM_ALWAYS);
-                    break;
-
-                case O_PISTOL_OPTION:
-                case O_SHOTGUN_OPTION:
-                case O_MAGNUM_OPTION:
-                case O_UZI_OPTION:
-                case O_HARPOON_OPTION:
-                case O_M16_OPTION:
-                case O_GRENADE_OPTION:
-                    Sound_Effect(SFX_MENU_GUNS, 0, SPM_ALWAYS);
-                    break;
-
-                default:
-                    Sound_Effect(SFX_MENU_SPININ, 0, SPM_ALWAYS);
-                    break;
-                }
-            }
-
-            if (g_InputDB.forward && ring->mode != INV_TITLE_MODE
-                && ring->mode != INV_KEYS_MODE) {
-                if (ring->type == RT_OPTION) {
-                    if (g_Inv_MainObjectsCount > 0) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING, RNG_OPTION2MAIN, 24);
-                        InvRing_MotionRadius(ring, 0);
-                        InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-                        InvRing_MotionCameraPitch(ring, 0x2000);
-                        ring->motion.misc = 0x2000;
-                    }
-                    g_InputDB = (INPUT_STATE) { 0 };
-                } else if (ring->type == RT_MAIN) {
-                    if (g_Inv_KeyObjectsCount > 0) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING, RNG_MAIN2KEYS, 24);
-                        InvRing_MotionRadius(ring, 0);
-                        InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-                        InvRing_MotionCameraPitch(ring, 0x2000);
-                        ring->motion.misc = 0x2000;
-                    }
-                    g_Input = (INPUT_STATE) { 0 };
-                    g_InputDB = (INPUT_STATE) { 0 };
-                }
-            } else if (
-                g_InputDB.back && ring->mode != INV_TITLE_MODE
-                && ring->mode != INV_KEYS_MODE) {
-                if (ring->type == RT_KEYS) {
-                    if (g_Inv_MainObjectsCount > 0) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING, RNG_KEYS2MAIN, 24);
-                        InvRing_MotionRadius(ring, 0);
-                        InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-                        InvRing_MotionCameraPitch(ring, -0x2000);
-                        ring->motion.misc = -0x2000;
-                    }
-                    g_Input = (INPUT_STATE) { 0 };
-                    g_InputDB = (INPUT_STATE) { 0 };
-                } else if (ring->type == RT_MAIN) {
-                    if (g_Inv_OptionObjectsCount > 0
-                        && !g_GameFlow.lockout_option_ring) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING, RNG_MAIN2OPTION, 24);
-                        InvRing_MotionRadius(ring, 0);
-                        InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-                        InvRing_MotionCameraPitch(ring, -0x2000);
-                        ring->motion.misc = -0x2000;
-                    }
-                    g_InputDB = (INPUT_STATE) { 0 };
-                }
-            }
-            break;
-
-        case RNG_MAIN2OPTION:
-            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
-            ring->camera_pitch = -(int16_t)(ring->motion.misc);
-            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_OptionList;
-            ring->type = RT_OPTION;
-            g_Inv_MainCurrent = ring->current_object;
-            g_Inv_MainObjectsCount = ring->number_of_objects;
-            ring->number_of_objects = g_Inv_OptionObjectsCount;
-            ring->current_object = g_Inv_OptionCurrent;
-            InvRing_CalcAdders(ring, 24);
-            InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
-            break;
-
-        case RNG_MAIN2KEYS:
-            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
-            ring->motion.camera_pitch_target = 0;
-            ring->camera_pitch = -(int16_t)(ring->motion.misc);
-            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            g_Inv_MainCurrent = ring->current_object;
-            g_Inv_MainObjectsCount = ring->number_of_objects;
-            ring->list = g_Inv_KeysList;
-            ring->type = RT_KEYS;
-            ring->number_of_objects = g_Inv_KeyObjectsCount;
-            ring->current_object = g_Inv_KeysCurrent;
-            InvRing_CalcAdders(ring, 24);
-            InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
-            break;
-
-        case RNG_KEYS2MAIN:
-            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
-            ring->camera_pitch = -(int16_t)(ring->motion.misc);
-            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_MainList;
-            ring->type = RT_MAIN;
-            g_Inv_KeysCurrent = ring->current_object;
-            ring->number_of_objects = g_Inv_MainObjectsCount;
-            ring->current_object = g_Inv_MainCurrent;
-            InvRing_CalcAdders(ring, 24);
-            InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
-            break;
-
-        case RNG_OPTION2MAIN:
-            InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
-            ring->camera_pitch = -(int16_t)(ring->motion.misc);
-            ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            g_Inv_OptionCurrent = ring->current_object;
-            g_Inv_OptionObjectsCount = ring->number_of_objects;
-            ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_MainList;
-            ring->type = RT_MAIN;
-            ring->number_of_objects = g_Inv_MainObjectsCount;
-            ring->current_object = g_Inv_MainCurrent;
-            InvRing_CalcAdders(ring, 24);
-            InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
-            break;
-
-        case RNG_SELECTED: {
-            INV_ITEM *inv_item = ring->list[ring->current_object];
-            if (inv_item->object_id == O_PASSPORT_CLOSED) {
-                inv_item->object_id = O_PASSPORT_OPTION;
-            }
-
-            bool busy = false;
-            for (int32_t frame = 0; frame < num_frames; frame++) {
-                busy = false;
-                if (inv_item->y_rot == inv_item->y_rot_sel) {
-                    busy = M_AnimateInventoryItem(inv_item);
-                }
-            }
-
-            if (!busy && !g_Inv_IsOptionsDelay) {
-                Option_Control(inv_item);
-
-                if (g_InputDB.menu_back) {
-                    inv_item->sprite_list = NULL;
-                    InvRing_MotionSetup(
-                        ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
-                    g_Input = (INPUT_STATE) { 0 };
-                    g_InputDB = (INPUT_STATE) { 0 };
-                    if (ring->mode == INV_LOAD_MODE
-                        || ring->mode == INV_SAVE_MODE) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
-                        g_Input = (INPUT_STATE) { 0 };
-                        g_InputDB = (INPUT_STATE) { 0 };
-                    }
-                }
-
-                if (g_InputDB.menu_confirm) {
-                    inv_item->sprite_list = NULL;
-                    g_Inv_Chosen = inv_item->object_id;
-                    if (ring->type != RT_MAIN) {
-                        g_Inv_OptionCurrent = ring->current_object;
-                    } else {
-                        g_Inv_MainCurrent = ring->current_object;
-                    }
-                    if (ring->mode == INV_TITLE_MODE
-                        && (inv_item->object_id == O_DETAIL_OPTION
-                            || inv_item->object_id == O_SOUND_OPTION
-                            || inv_item->object_id == O_CONTROL_OPTION
-                            || inv_item->object_id == O_GAMMA_OPTION)) {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
-                    } else {
-                        InvRing_MotionSetup(
-                            ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
-                    }
-                    g_Input = (INPUT_STATE) { 0 };
-                    g_InputDB = (INPUT_STATE) { 0 };
-                }
-            }
-            break;
-        }
-
-        case RNG_DESELECT:
-            Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
-            InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, 16);
-            InvRing_MotionRotation(
-                ring, 0, -16384 - ring->angle_adder * ring->current_object);
-            g_Input = (INPUT_STATE) { 0 };
-            g_InputDB = (INPUT_STATE) { 0 };
-            break;
-
-        case RNG_CLOSING_ITEM: {
-            INV_ITEM *inv_item = ring->list[ring->current_object];
-            for (int32_t frame = 0; frame < num_frames; frame++) {
-                if (!M_AnimateInventoryItem(inv_item)) {
-                    if (inv_item->object_id == O_PASSPORT_OPTION) {
-                        inv_item->object_id = O_PASSPORT_CLOSED;
-                        inv_item->current_frame = 0;
-                    }
-
-                    ring->motion.count = 16;
-                    ring->motion.status = ring->motion.status_target;
-                    InvRing_MotionItemDeselect(ring, inv_item);
-                    break;
-                }
-            }
-            break;
-        }
-
-        case RNG_EXITING_INVENTORY:
-            if (!ring->motion.count) {
-                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
-                InvRing_MotionRadius(ring, 0);
-                InvRing_MotionCameraPos(ring, -1536);
-                InvRing_MotionRotation(
-                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
-            }
-            break;
-
-        default:
+    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
+    for (int32_t i = 0; i < num_frames; i++) {
+        dir = M_Control(ring);
+        if (dir != (GAME_FLOW_DIR)-1) {
             break;
         }
     }
 
-    if (ring->motion.status == RNG_OPEN || ring->motion.status == RNG_SELECTING
-        || ring->motion.status == RNG_SELECTED
-        || ring->motion.status == RNG_DESELECTING
-        || ring->motion.status == RNG_DESELECT
-        || ring->motion.status == RNG_CLOSING_ITEM) {
-        if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
-            INV_ITEM *const inv_item = ring->list[ring->current_object];
-            M_RingNotActive(inv_item);
-        }
-        M_RingIsOpen(ring);
-    } else {
-        M_RingIsNotOpen(ring);
-    }
-
-    if (ring->motion.status == RNG_OPENING || ring->motion.status == RNG_CLOSING
-        || ring->motion.status == RNG_MAIN2OPTION
-        || ring->motion.status == RNG_OPTION2MAIN
-        || ring->motion.status == RNG_EXITING_INVENTORY
-        || ring->motion.status == RNG_DONE || ring->rotating) {
-        M_RingActive();
-    }
-
-    if (g_CurrentLevel != LV_GYM) {
-        Stats_UpdateTimer();
-    }
-
-    for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        M_UpdateInventoryItem(ring, ring->list[i], num_frames);
-    }
-
-    Sound_EndScene();
-    Output_AnimateTextures(num_frames);
-    Overlay_Animate(num_frames / 2);
-    g_Camera.num_frames = num_frames;
-    return (GAME_FLOW_DIR)-1;
+    g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
+    Overlay_Animate(num_frames);
+    Output_AnimateTextures(g_Camera.num_frames);
+    return dir;
 }
 
 void InvRing_ClearSelection(void)

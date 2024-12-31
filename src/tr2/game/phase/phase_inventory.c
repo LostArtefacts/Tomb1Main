@@ -87,7 +87,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_RUN: {
-        const GAME_FLOW_DIR dir = InvRing_Control(p->ring, num_frames * 2);
+        const GAME_FLOW_DIR dir = InvRing_Control(p->ring, num_frames);
         if (dir != (GAME_FLOW_DIR)-1 || p->ring->motion.status == RNG_DONE) {
             p->dir = dir;
             M_FadeOut(p);

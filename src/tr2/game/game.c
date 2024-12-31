@@ -119,7 +119,7 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
     ItemAction_RunActive();
 
     g_HealthBarTimer--;
-    if (g_CurrentLevel || g_IsAssaultTimerActive) {
+    if (g_CurrentLevel != LV_GYM || g_IsAssaultTimerActive) {
         Stats_UpdateTimer();
     }
 
