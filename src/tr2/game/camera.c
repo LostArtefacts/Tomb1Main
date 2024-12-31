@@ -10,6 +10,7 @@
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/viewport.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -85,7 +86,7 @@ void Camera_Initialise(void)
 {
     g_Camera.last = NO_CAMERA;
     Camera_ResetPosition();
-    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
     Camera_Update();
 }
 
@@ -871,7 +872,7 @@ void Camera_LoadCutsceneFrame(void)
     g_Camera.pos.y = g_CinePos.pos.y + cy;
     g_Camera.pos.z = g_CinePos.pos.z + ((cz * c - cx * s) >> W2V_SHIFT);
 
-    Output_AlterFOV(fov);
+    Viewport_AlterFOV(fov);
     Matrix_LookAt(
         g_Camera.pos.x, g_Camera.pos.y, g_Camera.pos.z, g_Camera.target.x,
         g_Camera.target.y, g_Camera.target.z, roll);
@@ -924,7 +925,7 @@ void Camera_UpdateCutscene(void)
     if (room_num != NO_ROOM_NEG) {
         g_Camera.pos.room_num = room_num;
     }
-    Output_AlterFOV(fov);
+    Viewport_AlterFOV(fov);
     Matrix_LookAt(
         campos.x, campos.y, campos.z, camtar.x, camtar.y, camtar.z, roll);
 }

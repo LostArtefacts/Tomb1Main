@@ -20,6 +20,8 @@ typedef struct {
         bool enable_3d_pickups;
         bool enable_fade_effects;
         bool fix_item_rots;
+        int32_t fov;
+        bool use_pcx_fov;
     } visuals;
 
     struct {

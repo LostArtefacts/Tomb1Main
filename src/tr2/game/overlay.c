@@ -381,6 +381,9 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 
     const VIEWPORT old_vp = *Viewport_Get();
 
+    Viewport_AlterFOV(80 * PHD_DEGREE);
+    VIEWPORT new_vp = *Viewport_Get();
+
     BOUNDS_16 bounds = frame->bounds;
     if (frame->bounds.min_x == frame->bounds.max_x
         && frame->bounds.min_y == frame->bounds.max_y) {
@@ -389,12 +392,12 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     }
 
     const int32_t scale = 1280;
-    const int32_t padding_right = MIN(old_vp.width, old_vp.height) / 10;
+    const int32_t padding_right = MIN(new_vp.width, new_vp.height) / 10;
     const int32_t padding_bottom = padding_right;
 
     // Try to fit in a quarter of the screen
-    const int32_t available_width = old_vp.width * 0.4 - padding_right;
-    const int32_t available_height = old_vp.height / 2 - padding_bottom;
+    const int32_t available_width = new_vp.width * 0.4 - padding_right;
+    const int32_t available_height = new_vp.height / 2 - padding_bottom;
 
     // maintain aspect ratio
     const int32_t cell_width = available_width / MAX_PICKUP_COLUMNS;
@@ -403,15 +406,14 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 
     const int32_t vp_width = cell_width;
     const int32_t vp_height = cell_height;
-    const int32_t vp_src_x = old_vp.width + offscreen_offset;
-    const int32_t vp_dst_x = old_vp.width - (cell_width / 2 + padding_right)
+    const int32_t vp_src_x = new_vp.width + offscreen_offset;
+    const int32_t vp_dst_x = new_vp.width - (cell_width / 2 + padding_right)
         - pickup->grid_x * cell_width;
-    const int32_t vp_src_y = old_vp.height - (cell_height / 2 + padding_bottom);
+    const int32_t vp_src_y = new_vp.height - (cell_height / 2 + padding_bottom);
     const int32_t vp_dst_y = vp_src_y - pickup->grid_y * cell_height;
     const int32_t vp_x = vp_src_x + (vp_dst_x - vp_src_x) * ease;
     const int32_t vp_y = vp_src_y + (vp_dst_y - vp_src_y) * ease;
 
-    VIEWPORT new_vp = old_vp;
     new_vp.game_vars.win_center_x = vp_x;
     new_vp.game_vars.win_center_y = vp_y;
     Viewport_Restore(&new_vp);

@@ -12,10 +12,10 @@
 #include "game/math.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
-#include "game/output.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "game/spawn.h"
+#include "game/viewport.h"
 #include "global/utils.h"
 #include "global/vars.h"
 
@@ -155,7 +155,7 @@ bool Lara_Cheat_EnterFlyMode(void)
 
     M_ReinitialiseGunMeshes();
     g_Camera.type = CAM_CHASE;
-    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
 
     Console_Log(GS(OSD_FLY_MODE_ON));
     return true;
@@ -422,7 +422,7 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
     g_Lara.mesh_effects = 0;
 
     g_Camera.type = CAM_CHASE;
-    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
 
     Camera_ResetPosition();
     return true;

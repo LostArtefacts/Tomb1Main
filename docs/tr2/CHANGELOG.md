@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.7.1...develop) - ××××-××-××
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
+- added the ability to set user-defined FOV (no UI for it yet) (#2177)
 - added the ability to turn FMVs off (#2110)
 - added an option to use PS1 contrast levels, available under F8 (#1646)
 - added an option to use TR3+ side steps (#2111)

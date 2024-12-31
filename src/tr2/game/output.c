@@ -11,7 +11,6 @@
 #include "game/render/priv.h"
 #include "game/scaler.h"
 #include "game/shell.h"
-#include "game/viewport.h"
 #include "global/vars.h"
 
 #include <libtrx/log.h>
@@ -452,11 +451,6 @@ void Output_RotateLight(int16_t pitch, int16_t yaw)
     g_LsVectorView.x = (m->_00 * x + m->_01 * y + m->_02 * z) >> W2V_SHIFT;
     g_LsVectorView.y = (m->_10 * x + m->_11 * y + m->_12 * z) >> W2V_SHIFT;
     g_LsVectorView.z = (m->_20 * x + m->_21 * y + m->_22 * z) >> W2V_SHIFT;
-}
-
-void Output_AlterFOV(int16_t fov)
-{
-    Viewport_AlterFOV(fov);
 }
 
 const int16_t *Output_InsertRoomSprite(

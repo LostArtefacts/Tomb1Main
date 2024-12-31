@@ -147,6 +147,7 @@ void Config_Sanitize(void)
     CLAMP(g_Config.rendering.nearest_adjustment, 0, 256);
     CLAMP(g_Config.rendering.linear_adjustment, 0, 256);
 
+    CLAMP(g_Config.visuals.fov, 30, 150);
     CLAMP(g_Config.ui.bar_scale, 0.5, 2.0);
     CLAMP(g_Config.ui.text_scale, 0.5, 2.0);
 }

@@ -24,7 +24,6 @@ const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr);
 const int16_t *Output_CalcRoomVertices(
     const int16_t *obj_ptr, int32_t far_clip);
 void Output_RotateLight(int16_t pitch, int16_t yaw);
-void Output_AlterFOV(int16_t fov);
 
 const int16_t *Output_InsertRoomSprite(
     const int16_t *obj_ptr, int32_t vtx_count);

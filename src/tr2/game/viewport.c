@@ -49,8 +49,11 @@ static void M_ApplyGameVars(const VIEWPORT *vp);
 
 static void M_AlterFov(VIEWPORT *const vp)
 {
-    const int32_t view_angle = vp->view_angle;
-    const int32_t fov_width = vp->game_vars.win_height * 320 / 240;
+    const int32_t view_angle = vp->view_angle <= 0
+        ? g_Config.visuals.fov * PHD_DEGREE
+        : vp->view_angle;
+    const int32_t fov_width = vp->game_vars.win_height * 320
+        / (g_Config.visuals.use_pcx_fov ? 200 : 240);
     vp->game_vars.persp =
         fov_width / 2 * Math_Cos(view_angle / 2) / Math_Sin(view_angle / 2);
 
@@ -151,8 +154,9 @@ void Viewport_Reset(void)
 
     vp->near_z = VIEW_NEAR;
     vp->far_z = VIEW_FAR;
-    // Do not mess with the FOV upon plain reset requests.
-    // vp->view_angle = GAME_FOV * PHD_DEGREE;
+
+    // We do not update vp->view_angle on purpose, as it's managed by the game
+    // rather than the window manager. (Think cutscenes, special cameras, etc.)
 
     switch (g_Config.rendering.render_mode) {
     case RM_SOFTWARE:
@@ -188,22 +192,15 @@ void Viewport_Restore(const VIEWPORT *ref_vp)
     M_ApplyGameVars(&m_Viewport);
 }
 
+int16_t Viewport_GetFOV(void)
+{
+    return m_Viewport.view_angle;
+}
+
 void Viewport_AlterFOV(const int16_t view_angle)
 {
     m_Viewport.view_angle = view_angle;
-
     M_PullGameVars(&m_Viewport);
     M_AlterFov(&m_Viewport);
     M_ApplyGameVars(&m_Viewport);
-}
-
-int16_t Viewport_GetFOV(void)
-{
-    return m_Viewport.view_angle == -1 ? Viewport_GetUserFOV()
-                                       : m_Viewport.view_angle;
-}
-
-int16_t Viewport_GetUserFOV(void)
-{
-    return GAME_FOV * PHD_DEGREE;
 }

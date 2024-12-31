@@ -108,4 +108,5 @@ typedef struct {
     bool is_demo_needed;
     bool is_pass_open;
     bool has_spun_out;
+    int32_t old_fov;
 } INV_RING;

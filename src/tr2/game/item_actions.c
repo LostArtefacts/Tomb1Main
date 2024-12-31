@@ -4,12 +4,12 @@
 #include "game/collide.h"
 #include "game/lara/hair.h"
 #include "game/music.h"
-#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "game/spawn.h"
 #include "game/stats.h"
+#include "game/viewport.h"
 #include "global/vars.h"
 
 #include <libtrx/utils.h>
@@ -143,7 +143,7 @@ void M_LaraNormal(ITEM *const item)
     item->anim_num = LA_STAND_STILL;
     item->frame_num = g_Anims[item->anim_num].frame_base;
     g_Camera.type = CAM_CHASE;
-    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
 }
 
 void M_Boiler(ITEM *const item)

@@ -376,7 +376,6 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - improved support for windowed mode
 
 #### Gameplay
-- added ability to set user-defined FOV
 - added ability to select weapons / using items with numeric keys
 - added ability to look around while running
 - added ability to forward and backward jump while looking
@@ -501,6 +500,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added unobtainable pickups, kills, and secrets stats support in the gameflow
 
 #### Visuals
+- added ability to set user-defined FOV
 - added optional shotgun flash sprites
 - added optional rendering of pickups on the ground as 3D meshes
 - added optional rendering of pickups in the UI as 3D meshes

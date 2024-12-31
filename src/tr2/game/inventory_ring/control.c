@@ -19,6 +19,7 @@
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
+#include "game/viewport.h"
 #include "global/vars.h"
 
 #include <libtrx/game/objects/names.h>
@@ -177,6 +178,7 @@ static void M_End(INV_RING *const ring)
     if (ring->mode == INV_TITLE_MODE) {
         Music_Stop();
     }
+    Viewport_AlterFOV(ring->old_fov);
     Memory_Free(ring);
     Output_UnloadBackground();
 }
@@ -459,29 +461,13 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     g_PhdWinBottom = g_PhdWinMaxY;
     g_Inv_Chosen = NO_OBJECT;
 
-    if (g_CurrentLevel != LV_GYM) {
-        Stats_StartTimer();
-    }
-
-    if (mode == INV_TITLE_MODE) {
-        Output_LoadBackgroundFromFile("data/title.pcx");
-    } else {
-        Output_LoadBackgroundFromObject();
-    }
-    Overlay_HideGameInfo();
-    Output_AlterFOV(80 * PHD_DEGREE);
-
-    Sound_StopAllSamples();
-    if (mode != INV_TITLE_MODE) {
-        Music_Pause();
-    }
-
     M_Construct(mode);
 
     INV_RING *const ring = Memory_Alloc(sizeof(INV_RING));
     ring->mode = mode;
     ring->is_pass_open = false;
     ring->is_demo_needed = false;
+    ring->old_fov = Viewport_GetFOV();
     m_NoInputCounter = 0;
 
     switch (mode) {
@@ -513,6 +499,24 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     }
 
     g_Inv_Mode = mode;
+
+    if (g_CurrentLevel != LV_GYM) {
+        Stats_StartTimer();
+    }
+
+    if (mode == INV_TITLE_MODE) {
+        Output_LoadBackgroundFromFile("data/title.pcx");
+    } else {
+        Output_LoadBackgroundFromObject();
+    }
+    Overlay_HideGameInfo();
+
+    Sound_StopAllSamples();
+    if (mode != INV_TITLE_MODE) {
+        Music_Pause();
+    }
+    Viewport_AlterFOV(80 * PHD_DEGREE);
+
     return ring;
 }
 

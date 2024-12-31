@@ -7,9 +7,9 @@
 #include "game/lara/look.h"
 #include "game/lara/misc.h"
 #include "game/music.h"
-#include "game/output.h"
 #include "game/room.h"
 #include "game/sound.h"
+#include "game/viewport.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -704,7 +704,7 @@ void Lara_State_Extra_Breath(ITEM *item, COLL_INFO *coll)
     if (g_Camera.type != CAM_HEAVY) {
         g_Camera.type = CAM_CHASE;
     }
-    Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
 }
 
 void Lara_State_Extra_YetiKill(ITEM *item, COLL_INFO *coll)
@@ -803,7 +803,7 @@ void Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll)
         Inv_AddItem(O_PUZZLE_ITEM_1);
     } else if (item->frame_num == g_Anims[item->anim_num].frame_end) {
         g_Camera.type = CAM_CHASE;
-        Output_AlterFOV(GAME_FOV * PHD_DEGREE);
+        Viewport_AlterFOV(-1);
     }
 }
 

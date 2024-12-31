@@ -268,30 +268,33 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
 {
     const CONFIG *const old = &g_Config;
     const CONFIG *const new = &g_SavedConfig;
-    if (old->window.is_fullscreen != new->window.is_fullscreen
-        || old->window.is_maximized != new->window.is_maximized
-        || old->window.x != new->window.x || old->window.y != new->window.y
-        || old->window.width != new->window.width
-        || old->window.height != new->window.height
-        || old->rendering.scaler != new->rendering.scaler
-        || old->rendering.sizer != new->rendering.sizer
-        || old->rendering.aspect_mode != new->rendering.aspect_mode) {
+
+#define CHANGED(subject) (old->subject != new->subject)
+
+    if (CHANGED(window.is_fullscreen) || CHANGED(window.is_maximized)
+        || CHANGED(window.x) || CHANGED(window.y) || CHANGED(window.width)
+        || CHANGED(window.height) || CHANGED(rendering.scaler)
+        || CHANGED(rendering.sizer) || CHANGED(rendering.aspect_mode)) {
         LOG_DEBUG("Change in settings detected");
         M_SyncToWindow();
         M_RefreshRendererViewport();
     }
 
-    if (old->rendering.render_mode != new->rendering.render_mode) {
+    if (CHANGED(rendering.render_mode)) {
         Render_Reset(RENDER_RESET_ALL);
     } else if (
-        old->rendering.enable_zbuffer != new->rendering.enable_zbuffer
-        || old->rendering.enable_perspective_filter
-            != new->rendering.enable_perspective_filter
-        || old->rendering.enable_wireframe != new->rendering.enable_wireframe
-        || old->rendering.texture_filter != new->rendering.texture_filter
-        || old->rendering.lighting_contrast
-            != new->rendering.lighting_contrast) {
+        CHANGED(rendering.enable_zbuffer)
+        || CHANGED(rendering.enable_perspective_filter)
+        || CHANGED(rendering.enable_wireframe)
+        || CHANGED(rendering.texture_filter)
+        || CHANGED(rendering.lighting_contrast)) {
         Render_Reset(RENDER_RESET_PARAMS);
+    }
+
+    if (CHANGED(visuals.fov) || CHANGED(visuals.use_pcx_fov)) {
+        if (Viewport_GetFOV() == -1) {
+            Viewport_AlterFOV(-1);
+        }
     }
 }
 
@@ -334,7 +337,7 @@ void Shell_Main(void)
     Output_CalculateWibbleTable();
 
     Shell_Start();
-    Viewport_AlterFOV(GAME_FOV * PHD_DEGREE);
+    Viewport_AlterFOV(-1);
     Viewport_Reset();
 
     if (!GF_LoadScriptFile("data\\tombPC.dat")) {
