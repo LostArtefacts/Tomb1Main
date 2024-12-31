@@ -743,6 +743,13 @@ static void M_RingNotActive(const INV_ITEM *const inv_item)
     default:
         break;
     }
+
+    if (inv_item->object_id == O_SMALL_MEDIPACK_OPTION
+        || inv_item->object_id == O_LARGE_MEDIPACK_OPTION) {
+        Text_Hide(m_UpArrow1, true);
+    } else {
+        Text_Hide(m_UpArrow1, false);
+    }
 }
 
 static void M_RingActive(void)

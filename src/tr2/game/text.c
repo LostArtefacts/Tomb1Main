@@ -53,6 +53,10 @@ void Text_DrawText(TEXTSTRING *const text)
     }
     text->flags.drawn = 1;
 
+    if (text->flags.hide || text->glyphs == NULL) {
+        return;
+    }
+
     int32_t box_w = 0;
     int32_t box_h = 0;
     const int32_t scale_h = M_Scale(text->scale.h);

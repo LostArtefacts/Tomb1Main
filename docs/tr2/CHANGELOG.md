@@ -24,6 +24,7 @@
 - fixed looking forward too far causing an upside down camera frame (#1594)
 - fixed music not playing if triggered while the game is muted, but the volume is then increased (#2170)
 - fixed game FOV being interpreted as horizontal (#2002)
+- fixed the inventory up arrow at times overlapping the health bar (#2180)
 - fixed software renderer not applying underwater tint (#2066, regression from 0.7)
 - fixed some enemies not looking at Lara (#2080, regression from 0.6)
 - fixed the camera getting stuck at the start of Home Sweet Home (#2129, regression from 0.7)

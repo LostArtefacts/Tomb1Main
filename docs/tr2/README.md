@@ -106,6 +106,7 @@ game with new enhancements and features.
 - fixed distant rooms sometimes not appearing, causing the skybox to be visible when it shouldn't
 - fixed rendering problems on certain Intel GPUs
 - fixed bubbles spawning from flares if Lara is in shallow water
+- fixed the inventory up arrow at times overlapping the health bar
 - improved FMV mode behavior - stopped switching screen resolutions
 - improved vertex movement when looking through water portals
 - improved support for non-4:3 aspect ratios
