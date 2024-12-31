@@ -49,13 +49,10 @@ static void M_ApplyGameVars(const VIEWPORT *vp);
 
 static void M_AlterFov(VIEWPORT *const vp)
 {
-    if (vp->view_angle == 0) {
-        return;
-    }
-
-    const int16_t view_angle = vp->view_angle;
-    vp->game_vars.persp = vp->game_vars.win_width / 2 * Math_Cos(view_angle / 2)
-        / Math_Sin(view_angle / 2);
+    const int32_t view_angle = vp->view_angle;
+    const int32_t fov_width = vp->game_vars.win_height * 320 / 240;
+    vp->game_vars.persp =
+        fov_width / 2 * Math_Cos(view_angle / 2) / Math_Sin(view_angle / 2);
 
     vp->game_vars.flt_persp = vp->game_vars.persp;
     vp->game_vars.flt_rhw_o_persp = g_RhwFactor / vp->game_vars.flt_persp;
