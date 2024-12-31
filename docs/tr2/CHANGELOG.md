@@ -31,6 +31,7 @@
 - fixed assault course timer not paused in the inventory (#2153, regression from 0.6)
 - fixed Lara spawning air bubbles above water surfaces during the fly cheat (#2115, regression from 0.3)
 - fixed demos playing too eagerly (#2068, regression from 0.3)
+- fixed Lara sometimes being unable to use switches (#2184, regression from 0.6)
 - improved the animation of Lara's braid (#2094)
 
 ## [0.7.1](https://github.com/LostArtefacts/TRX/compare/tr2-0.7...tr2-0.7.1) - 2024-12-17

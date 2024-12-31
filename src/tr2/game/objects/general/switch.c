@@ -125,7 +125,7 @@ void Switch_Collision(
 {
     ITEM *const item = &g_Items[item_num];
     if (!g_Input.action || item->status != IS_INACTIVE
-        || g_Lara.gun_status != LGS_ARMLESS || lara_item->status
+        || g_Lara.gun_status != LGS_ARMLESS || lara_item->gravity
         || lara_item->current_anim_state != LS_STOP
         || !Item_TestPosition(m_SwitchBounds, &g_Items[item_num], lara_item)) {
         return;
