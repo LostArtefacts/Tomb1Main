@@ -1,4 +1,5 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...develop) - ××××-××-××
+- added Linux builds and toolchain (#1598)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)

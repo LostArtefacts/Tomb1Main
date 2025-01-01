@@ -7,7 +7,7 @@ TR2X is finished with the decompilation and is now able to run without the
 original game .exe. The focus is now to clean up the code base and enrich the
 game with new enhancements and features.
 
-## Windows
+## Windows / Linux
 
 ### Installing (manual)
 
@@ -125,6 +125,7 @@ game with new enhancements and features.
 - added ability to disable FMVs
 
 #### Miscellaneous
+- added Linux builds
 - added .jpeg/.png screenshots
 - added ability to skip FMVs with both the Action key
 - added ability to skip end credits with the Action and Escape keys

@@ -22,6 +22,7 @@ build_opts = [
   '-Wno-unused',
   '-Wno-address-of-packed-member',
   '-DMESON_BUILD',
+  '-fms-extensions',
   '-fno-omit-frame-pointer',
   '-ffile-prefix-map=@0@/='.format(relative_dir),
 ] + trx.get_variable('defines')
