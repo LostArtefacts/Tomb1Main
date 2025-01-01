@@ -46,9 +46,6 @@ static void M_AlignLara(ITEM *const lara_item, ITEM *const switch_item)
 {
     switch (switch_item->object_id) {
     case O_SWITCH_TYPE_AIRLOCK:
-        if (switch_item->current_anim_state == SWITCH_STATE_ON) {
-            return;
-        }
         Item_AlignPosition(&m_AirlockPosition, switch_item, lara_item);
         break;
 
@@ -65,16 +62,16 @@ static void M_AlignLara(ITEM *const lara_item, ITEM *const switch_item)
 static void M_SwitchOn(ITEM *const switch_item, ITEM *const lara_item)
 {
     switch (switch_item->object_id) {
-    default:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_WALL_SWITCH_DOWN;
-        break;
-
     case O_SWITCH_TYPE_SMALL:
         lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_SWITCH_SMALL_DOWN;
         break;
 
     case O_SWITCH_TYPE_BUTTON:
         lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_BUTTON_PUSH;
+        break;
+
+    default:
+        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_WALL_SWITCH_DOWN;
         break;
     }
 
@@ -123,15 +120,20 @@ void Switch_Setup(OBJECT *const obj, const bool underwater)
 void Switch_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (!g_Input.action || item->status != IS_INACTIVE
         || g_Lara.gun_status != LGS_ARMLESS || lara_item->gravity
         || lara_item->current_anim_state != LS_STOP
-        || !Item_TestPosition(m_SwitchBounds, &g_Items[item_num], lara_item)) {
+        || !Item_TestPosition(m_SwitchBounds, item, lara_item)) {
         return;
     }
 
     lara_item->rot.y = item->rot.y;
+
+    if (item->object_id == O_SWITCH_TYPE_AIRLOCK
+        && item->current_anim_state == SWITCH_STATE_ON) {
+        return;
+    }
 
     M_AlignLara(lara_item, item);
 
