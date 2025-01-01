@@ -516,12 +516,11 @@ static void M_LoadDepthQ(VFILE *const file)
 static void M_LoadPalettes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    VFile_Read(file, g_GamePalette8, sizeof(RGB_888) * 256);
 
+    VFile_Read(file, g_GamePalette8, sizeof(RGB_888) * 256);
     g_GamePalette8[0].red = 0;
     g_GamePalette8[0].green = 0;
     g_GamePalette8[0].blue = 0;
-
     for (int32_t i = 1; i < 256; i++) {
         RGB_888 *col = &g_GamePalette8[i];
         col->red = (col->red << 2) | (col->red >> 4);
@@ -529,7 +528,15 @@ static void M_LoadPalettes(VFILE *const file)
         col->blue = (col->blue << 2) | (col->blue >> 4);
     }
 
-    VFile_Read(file, g_GamePalette16, sizeof(PALETTEENTRY) * 256);
+    struct {
+        uint8_t r, g, b, flags;
+    } palette_16[256];
+    VFile_Read(file, palette_16, 4 * 256);
+    for (int32_t i = 0; i < 256; i++) {
+        g_GamePalette16[i].r = palette_16[i].r;
+        g_GamePalette16[i].g = palette_16[i].g;
+        g_GamePalette16[i].b = palette_16[i].b;
+    }
 
     for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
         g_NamedColors[i].palette_index = Output_FindColor(

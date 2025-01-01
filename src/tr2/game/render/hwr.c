@@ -598,12 +598,11 @@ static const int16_t *M_InsertObjectG3_Sorted(
             continue;
         }
 
-        const PALETTEENTRY *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
         M_InsertPolyFlat(
-            num_points, zv, color->peRed, color->peGreen, color->peBlue,
-            POLY_HWR_GOURAUD);
+            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
     }
 
     return obj_ptr;
@@ -679,12 +678,11 @@ static const int16_t *M_InsertObjectG4_Sorted(
             continue;
         }
 
-        const PALETTEENTRY *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
         M_InsertPolyFlat(
-            num_points, zv, color->peRed, color->peGreen, color->peBlue,
-            POLY_HWR_GOURAUD);
+            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
     }
 
     return obj_ptr;
@@ -1191,9 +1189,8 @@ static const int16_t *M_InsertObjectG3_ZBuffered(
             continue;
         }
 
-        const PALETTEENTRY *const color = &g_GamePalette16[color_idx >> 8];
-        M_DrawPolyFlat(
-            renderer, num_points, color->peRed, color->peGreen, color->peBlue);
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
     }
 
     return obj_ptr;
@@ -1270,9 +1267,8 @@ static const int16_t *M_InsertObjectG4_ZBuffered(
             continue;
         }
 
-        const PALETTEENTRY *const color = &g_GamePalette16[color_idx >> 8];
-        M_DrawPolyFlat(
-            renderer, num_points, color->peRed, color->peGreen, color->peBlue);
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
     }
 
     return obj_ptr;

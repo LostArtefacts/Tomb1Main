@@ -88,7 +88,7 @@ uint8_t g_IsGameToExit;
 int32_t g_CurrentLevel;
 int32_t g_LevelComplete;
 RGB_888 g_GamePalette8[256];
-PALETTEENTRY g_GamePalette16[256];
+RGB_888 g_GamePalette16[256];
 bool g_SoundIsActive;
 SAVEGAME_INFO g_SaveGame;
 LARA_INFO g_Lara;

@@ -86,7 +86,7 @@ extern uint8_t g_IsGameToExit;
 extern int32_t g_CurrentLevel;
 extern int32_t g_LevelComplete;
 extern RGB_888 g_GamePalette8[256];
-extern PALETTEENTRY g_GamePalette16[256];
+extern RGB_888 g_GamePalette16[256];
 extern bool g_SoundIsActive;
 extern SAVEGAME_INFO g_SaveGame;
 extern LARA_INFO g_Lara;
