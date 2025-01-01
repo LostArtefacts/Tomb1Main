@@ -41,3 +41,5 @@
       .target = &parent.target_,                                               \
       .default_value = &(int32_t) { default_value_ },                          \
       .param = ENUM_MAP_NAME(enum_map) },
+
+extern const CONFIG_OPTION g_ConfigOptionMap[];

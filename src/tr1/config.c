@@ -18,8 +18,6 @@
 // TODO: eliminate me
 extern const CONFIG_OPTION g_ConfigOptionMap[];
 
-static const char *m_ConfigPath = "cfg/TR1X.json5";
-
 static void M_LoadKeyboardLayout(JSON_OBJECT *parent_obj, INPUT_LAYOUT layout);
 static void M_LoadControllerLayout(
     JSON_OBJECT *parent_obj, INPUT_LAYOUT layout);
@@ -162,11 +160,6 @@ static void M_DumpControllerLayout(
     }
 }
 
-const char *Config_GetPath(const CONFIG_FILE_TYPE file_type)
-{
-    return file_type == CFT_ENFORCED ? Shell_GetGameflowPath() : m_ConfigPath;
-}
-
 void Config_LoadFromJSON(JSON_OBJECT *root_obj)
 {
     ConfigFile_LoadOptions(root_obj, g_ConfigOptionMap);
@@ -233,9 +226,4 @@ void Config_ApplyChanges(void)
     }
 
     Output_ApplyRenderSettings();
-}
-
-const CONFIG_OPTION *Config_GetOptionMap(void)
-{
-    return g_ConfigOptionMap;
 }

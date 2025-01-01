@@ -456,6 +456,11 @@ void Shell_Shutdown(void)
     Config_Shutdown();
 }
 
+const char *Shell_GetConfigPath(void)
+{
+    return "cfg/TR2X.json5";
+}
+
 const char *Shell_GetGameflowPath(void)
 {
     return m_CurrentGameflowPath;
