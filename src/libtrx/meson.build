@@ -58,6 +58,7 @@ endif
 sources = [
   'benchmark.c',
   'config/common.c',
+  'config/priv.c',
   'config/file.c',
   'config/map.c',
   'config/vars.c',

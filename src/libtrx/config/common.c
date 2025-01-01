@@ -2,6 +2,7 @@
 
 #include "config/file.h"
 #include "config/map.h"
+#include "config/priv.h"
 #include "debug.h"
 #include "game/shell.h"
 

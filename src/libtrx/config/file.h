@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../enum_map.h"
-#include "../json.h"
-#include "./option.h"
+#include "config/option.h"
+#include "enum_map.h"
+#include "json.h"
 
 #include <stdbool.h>
 #include <stdint.h>

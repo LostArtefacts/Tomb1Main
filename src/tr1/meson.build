@@ -89,7 +89,6 @@ endif
 
 sources = [
   init,
-  'config.c',
   'game/anim.c',
   'game/box.c',
   'game/camera/common.c',

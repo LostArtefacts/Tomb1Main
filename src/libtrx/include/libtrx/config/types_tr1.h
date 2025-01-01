@@ -7,6 +7,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define CONFIG_MIN_BRIGHTNESS 0.1f
+#define CONFIG_MAX_BRIGHTNESS 2.0f
+#define CONFIG_MIN_TEXT_SCALE 0.5
+#define CONFIG_MAX_TEXT_SCALE 2.0
+#define CONFIG_MIN_BAR_SCALE 0.5
+#define CONFIG_MAX_BAR_SCALE 1.5
+
 typedef enum {
     BSM_DEFAULT,
     BSM_FLASHING_OR_DEFAULT,

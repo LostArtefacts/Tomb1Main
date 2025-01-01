@@ -11,14 +11,6 @@
 #define PHD_45 (PHD_ONE / 8) // = 8192 = 0x2000
 #define PHD_135 (PHD_45 * 3) // = 24576 = 0x6000
 
-#define MIN_TEXT_SCALE 0.5
-#define MAX_TEXT_SCALE 2.0
-#define MIN_BAR_SCALE 0.5
-#define MAX_BAR_SCALE 1.5
-
-#define MIN_BRIGHTNESS 0.1f
-#define MAX_BRIGHTNESS 2.0f
-
 #define MAX_MATRICES 40
 #define MAX_NESTED_MATRICES 32
 #define MAX_REQLINES 18

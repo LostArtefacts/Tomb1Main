@@ -282,16 +282,16 @@ static void M_UpdateArrows(
         m_HideArrowRight = g_Config.rendering.enable_vsync;
         break;
     case OPTION_BRIGHTNESS:
-        m_HideArrowLeft = g_Config.brightness <= MIN_BRIGHTNESS;
-        m_HideArrowRight = g_Config.brightness >= MAX_BRIGHTNESS;
+        m_HideArrowLeft = g_Config.brightness <= CONFIG_MIN_BRIGHTNESS;
+        m_HideArrowRight = g_Config.brightness >= CONFIG_MAX_BRIGHTNESS;
         break;
     case OPTION_UI_TEXT_SCALE:
-        m_HideArrowLeft = g_Config.ui.text_scale <= MIN_TEXT_SCALE;
-        m_HideArrowRight = g_Config.ui.text_scale >= MAX_TEXT_SCALE;
+        m_HideArrowLeft = g_Config.ui.text_scale <= CONFIG_MIN_TEXT_SCALE;
+        m_HideArrowRight = g_Config.ui.text_scale >= CONFIG_MAX_TEXT_SCALE;
         break;
     case OPTION_UI_BAR_SCALE:
-        m_HideArrowLeft = g_Config.ui.bar_scale <= MIN_BAR_SCALE;
-        m_HideArrowRight = g_Config.ui.bar_scale >= MAX_BAR_SCALE;
+        m_HideArrowLeft = g_Config.ui.bar_scale <= CONFIG_MIN_BAR_SCALE;
+        m_HideArrowRight = g_Config.ui.bar_scale >= CONFIG_MAX_BAR_SCALE;
         break;
     case OPTION_RENDER_MODE:
         local_right_arrow_offset = RIGHT_ARROW_OFFSET_MAX;
@@ -526,20 +526,26 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
 
         case OPTION_BRIGHTNESS:
             g_Config.brightness += 0.1f;
-            CLAMP(g_Config.brightness, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+            CLAMP(
+                g_Config.brightness, CONFIG_MIN_BRIGHTNESS,
+                CONFIG_MAX_BRIGHTNESS);
             reset = OPTION_BRIGHTNESS;
             break;
 
         case OPTION_UI_TEXT_SCALE:
             g_Config.ui.text_scale += 0.1;
-            CLAMP(g_Config.ui.text_scale, MIN_TEXT_SCALE, MAX_TEXT_SCALE);
+            CLAMP(
+                g_Config.ui.text_scale, CONFIG_MIN_TEXT_SCALE,
+                CONFIG_MAX_TEXT_SCALE);
             M_Reinitialize(OPTION_UI_TEXT_SCALE);
             reset = OPTION_UI_TEXT_SCALE;
             break;
 
         case OPTION_UI_BAR_SCALE:
             g_Config.ui.bar_scale += 0.1;
-            CLAMP(g_Config.ui.bar_scale, MIN_BAR_SCALE, MAX_BAR_SCALE);
+            CLAMP(
+                g_Config.ui.bar_scale, CONFIG_MIN_BAR_SCALE,
+                CONFIG_MAX_BAR_SCALE);
             reset = OPTION_UI_BAR_SCALE;
             break;
 
@@ -619,20 +625,26 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
 
         case OPTION_BRIGHTNESS:
             g_Config.brightness -= 0.1f;
-            CLAMP(g_Config.brightness, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+            CLAMP(
+                g_Config.brightness, CONFIG_MIN_BRIGHTNESS,
+                CONFIG_MAX_BRIGHTNESS);
             reset = OPTION_BRIGHTNESS;
             break;
 
         case OPTION_UI_TEXT_SCALE:
             g_Config.ui.text_scale -= 0.1;
-            CLAMP(g_Config.ui.text_scale, MIN_TEXT_SCALE, MAX_TEXT_SCALE);
+            CLAMP(
+                g_Config.ui.text_scale, CONFIG_MIN_TEXT_SCALE,
+                CONFIG_MAX_TEXT_SCALE);
             M_Reinitialize(OPTION_UI_TEXT_SCALE);
             reset = OPTION_UI_TEXT_SCALE;
             break;
 
         case OPTION_UI_BAR_SCALE:
             g_Config.ui.bar_scale -= 0.1;
-            CLAMP(g_Config.ui.bar_scale, MIN_BAR_SCALE, MAX_BAR_SCALE);
+            CLAMP(
+                g_Config.ui.bar_scale, CONFIG_MIN_BAR_SCALE,
+                CONFIG_MAX_BAR_SCALE);
             reset = OPTION_UI_BAR_SCALE;
             break;
 

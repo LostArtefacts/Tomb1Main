@@ -1,22 +1,14 @@
-#include "config.h"
-
+#include "config/common.h"
+#include "config/file.h"
+#include "config/priv.h"
+#include "config/vars.h"
 #include "game/clock.h"
 #include "game/input.h"
-#include "game/music.h"
-#include "game/output.h"
-#include "game/requester.h"
-#include "game/savegame.h"
-#include "game/shell.h"
-#include "game/sound.h"
-#include "global/vars.h"
-
-#include <libtrx/config/file.h>
-#include <libtrx/log.h>
+#include "game/lara/const.h"
+#include "log.h"
+#include "utils.h"
 
 #include <stdio.h>
-
-// TODO: eliminate me
-extern const CONFIG_OPTION g_ConfigOptionMap[];
 
 static void M_LoadKeyboardLayout(JSON_OBJECT *parent_obj, INPUT_LAYOUT layout);
 static void M_LoadControllerLayout(
@@ -162,7 +154,7 @@ static void M_DumpControllerLayout(
 
 void Config_LoadFromJSON(JSON_OBJECT *root_obj)
 {
-    ConfigFile_LoadOptions(root_obj, g_ConfigOptionMap);
+    ConfigFile_LoadOptions(root_obj, Config_GetOptionMap());
 
     for (INPUT_LAYOUT layout = INPUT_LAYOUT_CUSTOM_1;
          layout < INPUT_LAYOUT_NUMBER_OF; layout++) {
@@ -177,7 +169,7 @@ void Config_LoadFromJSON(JSON_OBJECT *root_obj)
 
 void Config_DumpToJSON(JSON_OBJECT *root_obj)
 {
-    ConfigFile_DumpOptions(root_obj, g_ConfigOptionMap);
+    ConfigFile_DumpOptions(root_obj, Config_GetOptionMap());
 
     for (INPUT_LAYOUT layout = INPUT_LAYOUT_CUSTOM_1;
          layout < INPUT_LAYOUT_NUMBER_OF; layout++) {
@@ -199,9 +191,9 @@ void Config_Sanitize(void)
     CLAMP(g_Config.sound_volume, 0, 10);
     CLAMP(g_Config.input.layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
     CLAMP(g_Config.input.cntlr_layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
-    CLAMP(g_Config.brightness, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
-    CLAMP(g_Config.ui.text_scale, MIN_TEXT_SCALE, MAX_TEXT_SCALE);
-    CLAMP(g_Config.ui.bar_scale, MIN_BAR_SCALE, MAX_BAR_SCALE);
+    CLAMP(g_Config.brightness, CONFIG_MIN_BRIGHTNESS, CONFIG_MAX_BRIGHTNESS);
+    CLAMP(g_Config.ui.text_scale, CONFIG_MIN_TEXT_SCALE, CONFIG_MAX_TEXT_SCALE);
+    CLAMP(g_Config.ui.bar_scale, CONFIG_MIN_BAR_SCALE, CONFIG_MAX_BAR_SCALE);
     CLAMP(
         g_Config.gameplay.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);

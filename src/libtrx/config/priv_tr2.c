@@ -1,20 +1,14 @@
-#include "config.h"
-
+#include "config/common.h"
+#include "config/file.h"
+#include "config/priv.h"
+#include "config/vars.h"
+#include "debug.h"
 #include "game/clock.h"
 #include "game/input.h"
-#include "game/music.h"
-#include "game/shell.h"
-#include "game/sound.h"
-
-#include <libtrx/config/file.h>
-#include <libtrx/debug.h>
-#include <libtrx/log.h>
-#include <libtrx/utils.h>
+#include "log.h"
+#include "utils.h"
 
 #include <stdio.h>
-
-// TODO: eliminate me
-extern const CONFIG_OPTION g_ConfigOptionMap[];
 
 static void M_LoadInputConfig(JSON_OBJECT *root_obj);
 static void M_LoadInputLayout(
@@ -106,7 +100,7 @@ static void M_DumpInputLayout(
 
 void Config_LoadFromJSON(JSON_OBJECT *root_obj)
 {
-    ConfigFile_LoadOptions(root_obj, g_ConfigOptionMap);
+    ConfigFile_LoadOptions(root_obj, Config_GetOptionMap());
     M_LoadInputConfig(root_obj);
     g_Config.loaded = true;
     g_SavedConfig = g_Config;
@@ -114,7 +108,7 @@ void Config_LoadFromJSON(JSON_OBJECT *root_obj)
 
 void Config_DumpToJSON(JSON_OBJECT *root_obj)
 {
-    ConfigFile_DumpOptions(root_obj, g_ConfigOptionMap);
+    ConfigFile_DumpOptions(root_obj, Config_GetOptionMap());
     M_DumpInputConfig(root_obj);
 }
 

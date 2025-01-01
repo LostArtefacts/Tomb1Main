@@ -32,10 +32,10 @@ static void M_ToggleBilinearFiltering(void)
     g_Config.rendering.texture_filter =
         g_Config.rendering.texture_filter == GFX_TF_BILINEAR ? GFX_TF_NN
                                                              : GFX_TF_BILINEAR;
+    Config_Write();
     Overlay_DisplayModeInfo(
         g_Config.rendering.texture_filter == GFX_TF_BILINEAR ? "Bilinear On"
                                                              : "Bilinear Off");
-    Config_Write();
 }
 
 static void M_TogglePerspectiveCorrection(void)
@@ -45,11 +45,11 @@ static void M_TogglePerspectiveCorrection(void)
     g_PerspectiveDistance = g_Config.rendering.enable_perspective_filter
         ? SW_DETAIL_HIGH
         : SW_DETAIL_MEDIUM;
+    Config_Write();
     Overlay_DisplayModeInfo(
         g_Config.rendering.enable_perspective_filter
             ? "Perspective Correction On"
             : "Perspective Correction Off");
-    Config_Write();
 }
 
 static void M_ToggleZBuffer(void)
@@ -57,15 +57,16 @@ static void M_ToggleZBuffer(void)
     if (g_Input.slow) {
         g_Config.rendering.enable_wireframe =
             !g_Config.rendering.enable_wireframe;
+        Config_Write();
         Overlay_DisplayModeInfo(
             g_Config.rendering.enable_wireframe ? "Wireframe On"
                                                 : "Wireframe Off");
     } else {
         g_Config.rendering.enable_zbuffer = !g_Config.rendering.enable_zbuffer;
+        Config_Write();
         Overlay_DisplayModeInfo(
             g_Config.rendering.enable_zbuffer ? "Z-Buffer On" : "Z-Buffer Off");
     }
-    Config_Write();
 }
 
 static void M_CycleLightingContrast(void)
@@ -76,12 +77,12 @@ static void M_CycleLightingContrast(void)
     value += LIGHTING_CONTRAST_NUMBER_OF;
     value %= LIGHTING_CONTRAST_NUMBER_OF;
     g_Config.rendering.lighting_contrast = value;
+    Config_Write();
     char tmp[100];
     sprintf(
         tmp, "Lighting Contrast: %s",
         ENUM_MAP_TO_STRING(LIGHTING_CONTRAST, value));
     Overlay_DisplayModeInfo(tmp);
-    Config_Write();
 }
 
 static void M_ToggleFullscreen(void)
@@ -95,10 +96,10 @@ static void M_ToggleRenderingMode(void)
     g_Config.rendering.render_mode =
         g_Config.rendering.render_mode == RM_HARDWARE ? RM_SOFTWARE
                                                       : RM_HARDWARE;
+    Config_Write();
     Overlay_DisplayModeInfo(
         g_Config.rendering.render_mode == RM_HARDWARE ? "Hardware Rendering"
                                                       : "Software Rendering");
-    Config_Write();
 }
 
 static void M_DecreaseResolutionOrBPP(void)
@@ -108,11 +109,10 @@ static void M_DecreaseResolutionOrBPP(void)
     }
 
     g_Config.rendering.scaler--;
-    Config_Sanitize();
+    Config_Write();
     char mode_string[64] = { 0 };
     sprintf(mode_string, "Scaler: %d", g_Config.rendering.scaler);
     Overlay_DisplayModeInfo(mode_string);
-    Config_Write();
 }
 
 static void M_IncreaseResolutionOrBPP(void)
@@ -122,11 +122,10 @@ static void M_IncreaseResolutionOrBPP(void)
     }
 
     g_Config.rendering.scaler++;
-    Config_Sanitize();
+    Config_Write();
     char mode_string[64] = { 0 };
     sprintf(mode_string, "Scaler: %d", g_Config.rendering.scaler);
     Overlay_DisplayModeInfo(mode_string);
-    Config_Write();
 }
 
 static void M_DecreaseInternalScreenSize(void)
