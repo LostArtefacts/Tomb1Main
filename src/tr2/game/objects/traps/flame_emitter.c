@@ -26,7 +26,7 @@ void FlameEmitter_Control(const int16_t item_num)
             effect->object_id = O_FLAME;
             effect->counter = 0;
         }
-        item->data = (void *)(effect_num + 1);
+        item->data = (void *)(intptr_t)(effect_num + 1);
     }
 }
 

@@ -132,7 +132,7 @@ void Flare_DrawInAir(const ITEM *const item)
     if (clip != 0) {
         Output_CalculateObjectLighting(item, &frames[0]->bounds);
         Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_ITEM].mesh_idx], clip);
-        if ((int32_t)item->data & 0x8000) {
+        if (((int32_t)(intptr_t)item->data) & 0x8000) {
             Matrix_TranslateRel(-6, 6, 80);
             Matrix_RotX(-90 * PHD_DEGREE);
             Matrix_RotY((int16_t)(2 * Random_GetDraw()));
@@ -197,9 +197,9 @@ void Flare_Create(const bool thrown)
     }
 
     if (Flare_DoLight(&item->pos, g_Lara.flare_age)) {
-        item->data = (void *)(g_Lara.flare_age | 0x8000);
+        item->data = (void *)(intptr_t)(g_Lara.flare_age | 0x8000);
     } else {
-        item->data = (void *)(g_Lara.flare_age & ~0x8000);
+        item->data = (void *)(intptr_t)(g_Lara.flare_age & ~0x8000);
     }
 
     Item_AddActive(item_num);
@@ -433,7 +433,7 @@ void Flare_Control(const int16_t item_num)
         Item_NewRoom(item_num, room_num);
     }
 
-    int32_t flare_age = (int32_t)item->data & 0x7FFF;
+    int32_t flare_age = ((int32_t)(intptr_t)item->data) & 0x7FFF;
     if (flare_age < MAX_FLARE_AGE) {
         flare_age++;
     } else if (item->fall_speed == 0 && item->speed == 0) {
@@ -446,5 +446,5 @@ void Flare_Control(const int16_t item_num)
         M_DoBurnEffects(item->pos, item->pos, item->room_num);
     }
 
-    item->data = (void *)flare_age;
+    item->data = (void *)(intptr_t)flare_age;
 }
