@@ -161,10 +161,9 @@ void Effect_Draw(const int16_t effect_num)
 
     if (effect->object_id == O_GLOW) {
         Output_DrawSprite(
-            (effect->rot.y << 16) | (unsigned __int16)effect->rot.x,
-            effect->pos.x, effect->pos.y, effect->pos.z,
-            Object_GetObject(O_GLOW)->mesh_idx, effect->shade,
-            effect->frame_num);
+            (effect->rot.y << 16) | (uint16_t)effect->rot.x, effect->pos.x,
+            effect->pos.y, effect->pos.z, Object_GetObject(O_GLOW)->mesh_idx,
+            effect->shade, effect->frame_num);
         return;
     }
 

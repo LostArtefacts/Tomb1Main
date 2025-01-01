@@ -739,8 +739,7 @@ static void M_LoadSamples(VFILE *const file)
     Memory_FreePointer(&full_path);
 
     if (fp == NULL) {
-        Shell_ExitSystemFmt(
-            "Could not open %s file: 0x%x", file_name, GetLastError());
+        Shell_ExitSystemFmt("Could not open %s file", file_name);
         goto finish;
     }
 

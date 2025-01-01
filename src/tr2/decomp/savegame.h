@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <stddef.h>
+
 void InitialiseStartInfo(void);
 void ModifyStartInfo(int32_t level_num);
 void CreateStartInfo(int32_t level_num);
