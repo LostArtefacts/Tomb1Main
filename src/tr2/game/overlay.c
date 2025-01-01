@@ -93,7 +93,7 @@ void Overlay_DrawAssaultTimer(void)
         return;
     }
 
-    static char buffer[8];
+    char buffer[32];
     const int32_t total_sec =
         g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
     const int32_t frame = g_SaveGame.current_stats.timer % FRAMES_PER_SECOND;
