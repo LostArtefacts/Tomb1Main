@@ -33,7 +33,7 @@ typedef enum {
     TAM_ALWAYS        = 2,
 } TEXEL_ADJUST_MODE;
 
-typedef struct __unaligned {
+typedef struct {
     union {
         uint8_t red;
         uint8_t r;
@@ -48,7 +48,7 @@ typedef struct __unaligned {
     };
 } RGB_888;
 
-typedef struct __unaligned {
+typedef struct {
     union {
         uint8_t red;
         uint8_t r;
@@ -67,27 +67,27 @@ typedef struct __unaligned {
     };
 } RGBA_8888;
 
-typedef struct __unaligned {
+typedef struct {
     uint8_t index[256];
 } DEPTHQ_ENTRY;
 
-typedef struct __unaligned {
+typedef struct {
     uint8_t index[32];
 } GOURAUD_ENTRY;
 
-typedef struct __unaligned {
+typedef struct {
     XYZ_32 pos;
     XYZ_16 rot;
 } PHD_3DPOS;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t x;
     int32_t y;
     int32_t z;
     int32_t r;
 } SPHERE;
 
-typedef struct __unaligned {
+typedef struct {
     float xv;
     float yv;
     float zv;
@@ -100,12 +100,12 @@ typedef struct __unaligned {
     int16_t v;
 } PHD_VBUF;
 
-typedef struct __unaligned {
+typedef struct {
     uint16_t u;
     uint16_t v;
 } PHD_UV;
 
-typedef struct __unaligned {
+typedef struct {
     uint16_t tex_page;
     uint16_t offset;
     uint16_t width;
@@ -137,7 +137,7 @@ typedef enum {
     SPRF_ITEM      = 0x80000000,
 } SPRITE_FLAG;
 
-typedef struct __unaligned {
+typedef struct {
     float xv;
     float yv;
     float zv;
@@ -149,7 +149,7 @@ typedef struct __unaligned {
     float g;
 } POINT_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     uint16_t no_selector : 1;
     uint16_t ready : 1; // not present in the OG
     uint16_t pad : 14;
@@ -188,13 +188,13 @@ typedef struct __unaligned {
     uint32_t render_height;
 } REQUEST_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     uint32_t best_time[10];
     uint32_t best_finish[10];
     uint32_t finish_count;
 } ASSAULT_STATS;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t _0;
     int32_t _1;
 } SORT_ITEM;
@@ -204,7 +204,7 @@ typedef enum {
     DRAW_COLOR_KEY = 1,
 } DRAW_TYPE;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t mesh_idx;
     uint16_t flags;
     BOUNDS_16 draw_bounds;
@@ -231,7 +231,7 @@ typedef struct {
     uint8_t secrets_bitmap;
 } LEVEL_STATS;
 
-typedef struct __unaligned {
+typedef struct {
     uint16_t pistol_ammo;
     uint16_t magnum_ammo;
     uint16_t uzi_ammo;
@@ -258,7 +258,7 @@ typedef struct __unaligned {
     LEVEL_STATS stats;
 } START_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     START_INFO start[24];
     LEVEL_STATS current_stats;
     int16_t current_level;
@@ -270,7 +270,7 @@ typedef struct __unaligned {
     char buffer[6272]; // MAX_SG_BUFFER_SIZE
 } SAVEGAME_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t lock_angles[4];
     int16_t left_angles[4];
     int16_t right_angles[4];
@@ -284,7 +284,7 @@ typedef struct __unaligned {
     int16_t sample_num;
 } WEAPON_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t zone_num;
     int16_t enemy_zone_num;
     int32_t distance;
@@ -337,7 +337,7 @@ typedef enum {
     TARGET_SECONDARY = 2,
 } TARGET_TYPE;
 
-typedef struct __unaligned {
+typedef struct {
     XYZ_32 pos;
     int32_t mesh_num;
 } BITE;
@@ -350,7 +350,7 @@ typedef enum {
     RF_INSIDE      = 0x40,
 } ROOM_FLAG;
 
-typedef struct __unaligned {
+typedef struct {
     SECTOR *sector;
     SECTOR old_sector;
     int16_t block;
@@ -365,7 +365,7 @@ typedef enum {
     CAM_HEAVY     = 5,
 } CAMERA_TYPE;
 
-typedef struct __unaligned {
+typedef struct {
     union {
         XYZ_32 pos;
         struct {
@@ -378,9 +378,9 @@ typedef struct __unaligned {
     int16_t box_num;
 } GAME_VECTOR;
 
-typedef struct __unaligned {
+typedef struct {
     union {
-        struct __unaligned {
+        struct {
             int32_t x;
             int32_t y;
             int32_t z;
@@ -391,7 +391,7 @@ typedef struct __unaligned {
     int16_t flags;
 } OBJECT_VECTOR;
 
-typedef struct __unaligned {
+typedef struct {
     uint8_t left;
     uint8_t right;
     uint8_t top;
@@ -462,7 +462,7 @@ typedef enum {
     GFD_OVERRIDE         = 0x0A00,
 } GAME_FLOW_DIR;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t first_option;
     int32_t title_replace;
     int32_t on_death_demo_mode;
@@ -501,7 +501,7 @@ typedef struct __unaligned {
     uint16_t reserved4[2];
 } GAME_FLOW;
 
-typedef struct __unaligned {
+typedef struct {
     GAME_VECTOR pos;
     GAME_VECTOR target;
     CAMERA_TYPE type;
@@ -548,7 +548,7 @@ typedef enum {
     FBBOX_ROT   = 9,
 } FRAME_BBOX_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     union {
         int32_t flags;
         struct {
@@ -571,7 +571,7 @@ typedef enum {
     BF_ROT_Z       = 16,
 } BONE_FLAGS;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t tx;
     int16_t ty;
     int16_t tz;
@@ -582,7 +582,7 @@ typedef struct __unaligned {
     int16_t roll;
 } CINE_FRAME;
 
-typedef struct __unaligned {
+typedef struct {
     uint16_t key[14]; // INPUT_ROLE_NUMBER_OF
 } CONTROL_LAYOUT;
 
@@ -602,7 +602,7 @@ typedef enum {
     HT_BIG_SLOPE   = 2,
 } HEIGHT_TYPE;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t number;
     int16_t volume;
     int16_t randomness;
@@ -610,7 +610,7 @@ typedef struct __unaligned {
 } SAMPLE_INFO;
 
 /*
-typedef struct __unaligned {
+typedef struct {
     int32_t volume;
     int32_t pan;
     int32_t sample_num;
@@ -639,7 +639,7 @@ typedef enum {
     ACE_WATER = 2,
 } ANIM_COMMAND_ENVIRONMENT;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t boat_turn;
     int32_t left_fallspeed;
     int32_t right_fallspeed;
@@ -649,7 +649,7 @@ typedef struct __unaligned {
     int32_t pitch;
 } BOAT_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     int16_t track_mesh;
     int32_t skidoo_turn;
     int32_t left_fallspeed;
@@ -659,26 +659,26 @@ typedef struct __unaligned {
     int32_t pitch;
 } SKIDOO_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     struct {
         XYZ_16 min;
         XYZ_16 max;
     } shift, rot;
 } OBJECT_BOUNDS;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t xv;
     int32_t yv;
     int32_t zv;
 } PORTAL_VBUF;
 
-typedef struct __unaligned {
+typedef struct {
     BOUNDS_16 bounds;
     XYZ_16 offset;
     int16_t mesh_rots[];
 } FRAME_INFO;
 
-typedef struct __unaligned {
+typedef struct {
     int32_t table[32]; // WIBBLE_SIZE
 } ROOM_LIGHT_TABLE;
 
