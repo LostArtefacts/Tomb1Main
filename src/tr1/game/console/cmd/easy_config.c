@@ -1,7 +1,6 @@
 #include "game/console/cmd/easy_config.h"
 
-#include "config.h"
-
+#include <libtrx/config.h>
 #include <libtrx/game/console/cmd/config.h>
 #include <libtrx/strings.h>
 

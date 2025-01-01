@@ -1,6 +1,5 @@
 #include "game/level.h"
 
-#include "config.h"
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
@@ -26,6 +25,7 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/level.h>

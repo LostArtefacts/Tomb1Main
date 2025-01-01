@@ -1,6 +1,5 @@
 #include "game/option/option_compass.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
@@ -8,6 +7,8 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stdint.h>

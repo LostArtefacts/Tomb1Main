@@ -1,7 +1,8 @@
 #include "game/objects/general/bridge_flat.h"
 
-#include "config.h"
 #include "game/objects/general/bridge_common.h"
+
+#include <libtrx/config.h>
 
 static void M_Initialise(int16_t item_num);
 static int16_t M_GetFloorHeight(

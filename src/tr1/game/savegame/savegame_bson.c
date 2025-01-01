@@ -1,6 +1,5 @@
 #include "game/savegame/savegame_bson.h"
 
-#include "config.h"
 #include "game/carrier.h"
 #include "game/effects.h"
 #include "game/gameflow.h"
@@ -15,6 +14,7 @@
 #include "global/vars.h"
 
 #include <libtrx/bson.h>
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>

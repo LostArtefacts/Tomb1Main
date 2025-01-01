@@ -1,6 +1,5 @@
 #include "decomp/decomp.h"
 
-#include "config.h"
 #include "decomp/savegame.h"
 #include "decomp/stats.h"
 #include "game/clock.h"
@@ -33,6 +32,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>

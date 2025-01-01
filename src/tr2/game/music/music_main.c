@@ -1,6 +1,5 @@
 #include "game/music.h"
 
-#include "config.h"
 #include "game/music/music_backend.h"
 #include "game/music/music_backend_cdaudio.h"
 #include "game/music/music_backend_files.h"
@@ -8,6 +7,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/log.h>
 

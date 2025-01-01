@@ -1,12 +1,12 @@
 #include "game/objects/general/bridge_common.h"
 
-#include "config.h"
 #include "game/items.h"
 #include "game/objects/general/cog.h"
 #include "game/objects/general/door.h"
 #include "game/room.h"
 #include "global/const.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 bool Bridge_IsSameSector(int32_t x, int32_t z, const ITEM *item)

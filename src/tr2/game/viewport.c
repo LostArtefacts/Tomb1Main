@@ -1,12 +1,13 @@
 #include "game/viewport.h"
 
-#include "config.h"
 #include "game/math.h"
 #include "game/output.h"
 #include "game/render/common.h"
 #include "game/shell/common.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #define MAP_GAME_VARS()                                                        \
     MAP_GAME_VAR(win_max_x, g_PhdWinMaxX);                                     \

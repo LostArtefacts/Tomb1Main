@@ -1,6 +1,5 @@
 #include "game/lara/col.h"
 
-#include "config.h"
 #include "game/collide.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -12,6 +11,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 void Lara_CollideStop(ITEM *const item, const COLL_INFO *const coll)

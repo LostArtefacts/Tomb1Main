@@ -1,6 +1,5 @@
 #include "game/items.h"
 
-#include "config.h"
 #include "game/anim.h"
 #include "game/carrier.h"
 #include "game/effects.h"
@@ -16,6 +15,7 @@
 #include "math/math.h"
 #include "math/matrix.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <stddef.h>

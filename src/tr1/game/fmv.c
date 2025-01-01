@@ -1,6 +1,5 @@
 #include "game/fmv.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/screen.h"
@@ -10,6 +9,7 @@
 #include "specific/s_output.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/engine/video.h>

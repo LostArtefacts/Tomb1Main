@@ -1,8 +1,8 @@
 #include "game/scaler.h"
 
-#include "config.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 

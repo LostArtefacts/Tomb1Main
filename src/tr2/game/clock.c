@@ -1,9 +1,9 @@
 #include "game/clock.h"
 
-#include "config.h"
 #include "game/console/common.h"
 #include "game/game_string.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 static int32_t m_TurboSpeed = 0;

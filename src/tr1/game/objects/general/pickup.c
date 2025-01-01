@@ -1,6 +1,5 @@
 #include "game/objects/general/pickup.h"
 
-#include "config.h"
 #include "game/effects.h"
 #include "game/gun.h"
 #include "game/input.h"
@@ -13,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/lara/common.h>
 #include <libtrx/game/objects/vars.h>
 

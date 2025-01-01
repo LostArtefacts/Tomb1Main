@@ -1,6 +1,5 @@
 #include "game/objects/creatures/natla.h"
 
-#include "config.h"
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/items.h"
@@ -13,6 +12,8 @@
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
+
+#include <libtrx/config.h>
 
 #define NATLA_SHOT_DAMAGE 100
 #define NATLA_NEAR_DEATH 200

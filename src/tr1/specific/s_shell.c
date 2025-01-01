@@ -1,6 +1,5 @@
 #include "specific/s_shell.h"
 
-#include "config.h"
 #include "game/console/common.h"
 #include "game/fmv.h"
 #include "game/input.h"
@@ -10,6 +9,7 @@
 #include "game/shell.h"
 #include "game/sound.h"
 
+#include <libtrx/config.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/gfx/common.h>

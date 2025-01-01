@@ -1,6 +1,5 @@
 #include "game/overlay.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "game/clock.h"
 #include "game/console/common.h"
@@ -14,6 +13,7 @@
 #include "game/viewport.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <stdio.h>

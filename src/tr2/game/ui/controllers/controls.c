@@ -1,10 +1,10 @@
 #include "game/ui/controllers/controls.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/ui/events.h>
 #include <libtrx/utils.h>

@@ -1,6 +1,5 @@
 #include "game/objects/general/save_crystal.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -8,6 +7,8 @@
 #include "game/objects/common.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 static const OBJECT_BOUNDS m_SaveCrystal_Bounds = {
     .shift = {

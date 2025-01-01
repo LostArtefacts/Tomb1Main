@@ -1,6 +1,5 @@
 #include "game/lara/state.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"
@@ -12,6 +11,8 @@
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stdint.h>

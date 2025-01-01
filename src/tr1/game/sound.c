@@ -1,6 +1,5 @@
 #include "game/sound.h"
 
-#include "config.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -8,6 +7,7 @@
 #include "global/vars.h"
 #include "math/math.h"
 
+#include <libtrx/config.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/utils.h>
 

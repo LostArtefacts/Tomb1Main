@@ -1,9 +1,9 @@
 #include "game/clock.h"
 
-#include "config.h"
 #include "game/console/common.h"
 #include "game/game_string.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 int32_t Clock_GetTurboSpeed(void)

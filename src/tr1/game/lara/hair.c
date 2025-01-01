@@ -1,6 +1,5 @@
 #include "game/lara/hair.h"
 
-#include "config.h"
 #include "game/items.h"
 #include "game/output.h"
 #include "game/room.h"
@@ -10,6 +9,7 @@
 #include "math/math.h"
 #include "math/matrix.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <stdbool.h>

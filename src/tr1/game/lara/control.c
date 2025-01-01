@@ -1,6 +1,5 @@
 #include "game/lara/control.h"
 
-#include "config.h"
 #include "game/box.h"
 #include "game/collide.h"
 #include "game/gun.h"
@@ -17,6 +16,8 @@
 #include "global/const.h"
 #include "global/vars.h"
 #include "math/math.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stddef.h>

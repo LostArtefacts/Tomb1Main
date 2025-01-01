@@ -1,12 +1,13 @@
 #include "game/objects/general/switch.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 static const OBJECT_BOUNDS m_Switch_Bounds = {
     .shift = {

@@ -1,6 +1,5 @@
 #include "game/gameflow.h"
 
-#include "config.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
@@ -17,6 +16,7 @@
 #include "game/savegame.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>

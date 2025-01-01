@@ -1,6 +1,5 @@
 #include "game/phase/phase_stats.h"
 
-#include "config.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
@@ -17,6 +16,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 
 #include <stdbool.h>

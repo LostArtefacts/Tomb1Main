@@ -1,6 +1,5 @@
 #include "game/gameflow.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "decomp/stats.h"
@@ -19,6 +18,7 @@
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/config.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/memory.h>

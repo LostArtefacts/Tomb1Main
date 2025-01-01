@@ -1,5 +1,4 @@
-#include "config.h"
-
+#include <libtrx/config.h>
 #include <libtrx/game/ui/common.h>
 
 #include <SDL2/SDL.h>

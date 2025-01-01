@@ -1,6 +1,5 @@
 #include "game/shell.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/fmv.h"
@@ -22,6 +21,7 @@
 #include "global/vars.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/config.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/gamebuf.h>

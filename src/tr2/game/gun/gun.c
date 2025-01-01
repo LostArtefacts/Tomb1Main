@@ -1,6 +1,5 @@
 #include "game/gun/gun.h"
 
-#include "config.h"
 #include "decomp/flares.h"
 #include "game/gun/gun_misc.h"
 #include "game/gun/gun_pistols.h"
@@ -11,6 +10,7 @@
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 
 void Gun_Control(void)

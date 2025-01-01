@@ -1,4 +1,3 @@
-#include "config.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/music.h"
@@ -7,6 +6,7 @@
 #include "game/text.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <stdio.h>

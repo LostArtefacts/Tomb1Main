@@ -1,6 +1,5 @@
 #include "game/lara/state.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/lara/control.h"
@@ -13,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 static bool m_JumpPermitted = true;

@@ -1,6 +1,5 @@
 #include "game/screen.h"
 
-#include "config.h"
 #include "game/output.h"
 #include "game/shell.h"
 #include "game/viewport.h"
@@ -8,6 +7,7 @@
 #include "global/types.h"
 #include "math/matrix.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <math.h>

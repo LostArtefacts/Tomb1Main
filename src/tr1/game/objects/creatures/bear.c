@@ -1,6 +1,5 @@
 #include "game/objects/creatures/bear.h"
 
-#include "config.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/common.h"
@@ -11,6 +10,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define BEAR_CHARGE_DAMAGE 3

@@ -1,6 +1,5 @@
 #include "game/camera.h"
 
-#include "config.h"
 #include "game/items.h"
 #include "game/los.h"
 #include "game/math.h"
@@ -14,6 +13,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/utils.h>
 

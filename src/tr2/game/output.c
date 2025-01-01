@@ -1,6 +1,5 @@
 #include "game/output.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/inventory_ring.h"
 #include "game/math.h"
@@ -13,6 +12,7 @@
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 

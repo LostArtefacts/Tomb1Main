@@ -1,6 +1,5 @@
 #include "game/inventory/inventory_ring.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
 #include "game/inventory/inventory_vars.h"
@@ -13,6 +12,7 @@
 #include "global/vars.h"
 #include "math/math_misc.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/objects/names.h>
 
 #include <stdbool.h>

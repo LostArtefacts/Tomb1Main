@@ -1,6 +1,5 @@
 #include "game/inventory_ring/control.h"
 
-#include "config.h"
 #include "decomp/savegame.h"
 #include "game/clock.h"
 #include "game/demo.h"
@@ -22,6 +21,7 @@
 #include "game/viewport.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/game/objects/vars.h>
 #include <libtrx/memory.h>

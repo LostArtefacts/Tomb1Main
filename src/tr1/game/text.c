@@ -1,10 +1,11 @@
 #include "game/text.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/output.h"
 #include "game/screen.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #define TEXT_BOX_OFFSET 2
 

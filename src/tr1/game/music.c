@@ -1,10 +1,10 @@
 #include "game/music.h"
 
-#include "config.h"
 #include "game/gameflow.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/log.h>

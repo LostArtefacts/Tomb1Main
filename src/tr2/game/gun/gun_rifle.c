@@ -1,6 +1,5 @@
 #include "game/gun/gun_rifle.h"
 
-#include "config.h"
 #include "game/gun/gun.h"
 #include "game/gun/gun_misc.h"
 #include "game/input.h"
@@ -13,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 static bool m_M16Firing = false;

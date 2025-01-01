@@ -1,6 +1,5 @@
 #include "game/phase/phase_demo.h"
 
-#include "config.h"
 #include "game/camera.h"
 #include "game/effects.h"
 #include "game/game.h"
@@ -27,6 +26,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>

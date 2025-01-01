@@ -1,6 +1,5 @@
 #include "game/phase/phase_cutscene.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "game/camera.h"
 #include "game/console/common.h"
@@ -18,6 +17,7 @@
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>

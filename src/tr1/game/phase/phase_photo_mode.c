@@ -1,6 +1,5 @@
 #include "game/phase/phase_photo_mode.h"
 
-#include "config.h"
 #include "game/camera.h"
 #include "game/game.h"
 #include "game/input.h"
@@ -11,6 +10,7 @@
 #include "game/sound.h"
 #include "game/ui/widgets/photo_mode.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/console/common.h>
 #include <libtrx/game/game_string.h>

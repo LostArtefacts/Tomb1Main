@@ -1,6 +1,5 @@
 #include "game/shell/common.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/clock.h"
@@ -22,6 +21,7 @@
 #include "game/viewport.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/shell.h>

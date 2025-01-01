@@ -1,10 +1,10 @@
 #include "game/fader.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/shell.h"
 #include "global/const.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define TRANSPARENT 0

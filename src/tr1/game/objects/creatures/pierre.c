@@ -1,6 +1,5 @@
 #include "game/objects/creatures/pierre.h"
 
-#include "config.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/los.h"
@@ -10,6 +9,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define PIERRE_POSE_CHANCE 0x60 // = 96

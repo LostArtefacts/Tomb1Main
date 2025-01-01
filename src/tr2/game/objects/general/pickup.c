@@ -1,6 +1,5 @@
 #include "game/objects/general/pickup.h"
 
-#include "config.h"
 #include "decomp/flares.h"
 #include "game/gameflow.h"
 #include "game/gun/gun.h"
@@ -16,6 +15,8 @@
 #include "game/overlay.h"
 #include "game/room.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #define LF_PICKUP_ERASE 42
 #define LF_PICKUP_FLARE 58

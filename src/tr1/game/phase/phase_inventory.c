@@ -1,6 +1,5 @@
 #include "game/phase/phase_inventory.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/game.h"
@@ -28,6 +27,8 @@
 #include "global/types.h"
 #include "global/vars.h"
 #include "math/matrix.h"
+
+#include <libtrx/config.h>
 
 #include <math.h>
 #include <stdbool.h>

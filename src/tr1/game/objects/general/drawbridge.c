@@ -1,9 +1,10 @@
 #include "game/objects/general/drawbridge.h"
 
-#include "config.h"
 #include "game/items.h"
 #include "game/objects/general/door.h"
 #include "game/room.h"
+
+#include <libtrx/config.h>
 
 typedef enum {
     DRAWBRIDGE_STATE_CLOSED = DOOR_STATE_CLOSED,

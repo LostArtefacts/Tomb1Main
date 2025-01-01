@@ -1,8 +1,8 @@
-#include "config.h"
 #include "game/option/option.h"
 #include "game/ui/widgets/controls_dialog.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/ui/events.h>
 
 static UI_WIDGET *m_Dialog;

@@ -1,12 +1,13 @@
 #include "game/option/option_sound.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/sound.h"
 #include "game/text.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stdio.h>

@@ -1,6 +1,5 @@
 #include "game/gun/gun_rifle.h"
 
-#include "config.h"
 #include "game/anim.h"
 #include "game/gun.h"
 #include "game/gun/gun_misc.h"
@@ -9,6 +8,8 @@
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stddef.h>

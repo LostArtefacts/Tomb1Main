@@ -1,6 +1,5 @@
 #include "game/objects/creatures/trex.h"
 
-#include "config.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/common.h"
@@ -10,6 +9,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define EXTRA_ANIM_TREX_DEATH 1

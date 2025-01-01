@@ -1,6 +1,5 @@
 #include "game/interpolation.h"
 
-#include "config.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
@@ -9,6 +8,7 @@
 #include "global/vars.h"
 #include "math/math_misc.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #include <stdint.h>

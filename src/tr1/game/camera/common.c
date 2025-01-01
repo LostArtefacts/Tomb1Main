@@ -1,6 +1,5 @@
 #include "game/camera/common.h"
 
-#include "config.h"
 #include "game/camera/photo_mode.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -14,6 +13,7 @@
 #include "math/math.h"
 #include "math/matrix.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 
 // Camera speed option ranges from 1-10, so index 0 is unused.

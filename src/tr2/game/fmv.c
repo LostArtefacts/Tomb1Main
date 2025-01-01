@@ -1,6 +1,5 @@
 #include "game/fmv.h"
 
-#include "config.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/render/common.h"
@@ -8,6 +7,7 @@
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/engine/video.h>
 #include <libtrx/filesystem.h>

@@ -1,6 +1,5 @@
 #include "game/game.h"
 
-#include "config.h"
 #include "game/camera.h"
 #include "game/clock.h"
 #include "game/gameflow.h"
@@ -17,6 +16,7 @@
 #include "game/stats.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
 

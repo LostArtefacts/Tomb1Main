@@ -1,6 +1,5 @@
 #include "game/objects/creatures/crocodile.h"
 
-#include "config.h"
 #include "game/carrier.h"
 #include "game/creature.h"
 #include "game/items.h"
@@ -11,6 +10,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define CROCODILE_BITE_DAMAGE 100

@@ -1,6 +1,5 @@
 #include "specific/s_output.h"
 
-#include "config.h"
 #include "game/output.h"
 #include "game/screen.h"
 #include "game/shell.h"
@@ -8,6 +7,7 @@
 #include "global/vars.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/log.h>

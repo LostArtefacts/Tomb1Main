@@ -1,10 +1,10 @@
 #include "game/inject.h"
 
-#include "config.h"
 #include "game/room.h"
 #include "global/utils.h"
 
 #include <libtrx/benchmark.h>
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>

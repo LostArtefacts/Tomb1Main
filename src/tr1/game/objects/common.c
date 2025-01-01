@@ -1,6 +1,5 @@
 #include "game/objects/common.h"
 
-#include "config.h"
 #include "game/collide.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -13,6 +12,7 @@
 #include "global/vars.h"
 #include "math/matrix.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/utils.h>
 

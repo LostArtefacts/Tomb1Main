@@ -1,8 +1,8 @@
 #include "game/render/priv.h"
 
-#include "config.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 bool g_DiscardTransparent = false;

@@ -1,6 +1,5 @@
 #include "decomp/flares.h"
 
-#include "config.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -14,6 +13,7 @@
 #include "game/spawn.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/utils.h>
 
 #define FLARE_INTENSITY 12

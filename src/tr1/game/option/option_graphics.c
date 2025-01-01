@@ -1,6 +1,5 @@
 #include "game/option/option_graphics.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/input.h"
 #include "game/output.h"
@@ -8,6 +7,7 @@
 #include "game/text.h"
 #include "global/const.h"
 
+#include <libtrx/config.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/utils.h>
 

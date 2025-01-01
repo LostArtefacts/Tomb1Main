@@ -1,6 +1,5 @@
 #include "game/savegame.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/inventory.h"
@@ -21,6 +20,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/memory.h>

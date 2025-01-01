@@ -1,6 +1,5 @@
 #include "game/option/option_passport.h"
 
-#include "config.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
@@ -13,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/memory.h>
 
 #include <stdbool.h>

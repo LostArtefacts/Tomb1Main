@@ -1,12 +1,13 @@
 #include "game/gun/gun_pistols.h"
 
-#include "config.h"
 #include "game/anim.h"
 #include "game/gun.h"
 #include "game/gun/gun_misc.h"
 #include "game/input.h"
 #include "game/sound.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stddef.h>
 #include <stdint.h>

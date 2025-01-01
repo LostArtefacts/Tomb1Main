@@ -1,6 +1,5 @@
 #include "game/lara/col.h"
 
-#include "config.h"
 #include "game/collide.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -10,6 +9,8 @@
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stddef.h>
 #include <stdint.h>

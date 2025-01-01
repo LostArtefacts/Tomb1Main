@@ -1,10 +1,10 @@
-#include "config.h"
 #include "game/inventory/inventory_ring.h"
 #include "game/inventory/inventory_vars.h"
 #include "game/phase/phase.h"
 #include "game/phase/phase_inventory.h"
 #include "global/types.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/objects/vars.h>
 #include <libtrx/memory.h>
 

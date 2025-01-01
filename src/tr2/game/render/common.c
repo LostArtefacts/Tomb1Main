@@ -1,6 +1,5 @@
 #include "game/render/common.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "game/render/hwr.h"
 #include "game/render/priv.h"
@@ -9,6 +8,7 @@
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/gfx/fade/fade_renderer.h>
 #include <libtrx/log.h>

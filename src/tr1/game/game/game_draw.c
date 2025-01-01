@@ -1,6 +1,5 @@
 #include "game/game.h"
 
-#include "config.h"
 #include "game/camera.h"
 #include "game/interpolation.h"
 #include "game/lara/draw.h"
@@ -11,6 +10,8 @@
 #include "game/viewport.h"
 #include "global/types.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 #include <stdbool.h>
 #include <stdint.h>

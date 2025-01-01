@@ -1,6 +1,5 @@
 #include "game/render/hwr.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "game/output.h"
 #include "game/render/priv.h"
@@ -8,6 +7,7 @@
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/gfx/3d/3d_renderer.h>
 #include <libtrx/memory.h>

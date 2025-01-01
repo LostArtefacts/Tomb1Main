@@ -1,6 +1,5 @@
 #include "game/output.h"
 
-#include "config.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/overlay.h"
@@ -16,6 +15,7 @@
 #include "specific/s_output.h"
 #include "specific/s_shell.h"
 
+#include <libtrx/config.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/console/common.h>

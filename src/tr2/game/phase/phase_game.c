@@ -1,6 +1,5 @@
 #include "game/phase/phase_game.h"
 
-#include "config.h"
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/camera.h"
@@ -14,6 +13,7 @@
 #include "game/stats.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/memory.h>
 
 typedef struct {

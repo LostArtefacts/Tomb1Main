@@ -1,6 +1,5 @@
 #include "game/objects/setup.h"
 
-#include "config.h"
 #include "game/lara/common.h"
 #include "game/lara/hair.h"
 #include "game/objects/common.h"
@@ -85,6 +84,8 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
+
+#include <libtrx/config.h>
 
 static void M_SetupCreatures(void);
 static void M_SetupTraps(void);
