@@ -195,7 +195,7 @@ typedef struct {
 } ASSAULT_STATS;
 
 typedef struct {
-    int32_t _0;
+    void *_0;
     int32_t _1;
 } SORT_ITEM;
 

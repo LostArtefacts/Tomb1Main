@@ -1588,7 +1588,7 @@ static const int16_t *M_InsertObjectG3(
 
         const float zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
-        g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+        g_Sort3DPtr->_0 = g_Info3DPtr;
         g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
         g_Sort3DPtr++;
 
@@ -1711,7 +1711,7 @@ static const int16_t *M_InsertObjectG4(
 
         const float zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
-        g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+        g_Sort3DPtr->_0 = g_Info3DPtr;
         g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
         g_Sort3DPtr++;
 
@@ -1764,7 +1764,7 @@ static const int16_t *M_InsertObjectGT3(
             if (clip_or == 0) {
                 const float zv = Render_CalculatePolyZ(
                     sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
-                g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+                g_Sort3DPtr->_0 = g_Info3DPtr;
                 g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
                 g_Sort3DPtr++;
 
@@ -1907,7 +1907,7 @@ static const int16_t *M_InsertObjectGT3(
 
         const float zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
-        g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+        g_Sort3DPtr->_0 = g_Info3DPtr;
         g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
         g_Sort3DPtr++;
 
@@ -1986,7 +1986,7 @@ static const int16_t *M_InsertObjectGT4(
             if (clip_or == 0) {
                 const float zv = Render_CalculatePolyZ(
                     sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
-                g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+                g_Sort3DPtr->_0 = g_Info3DPtr;
                 g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
                 g_Sort3DPtr++;
 
@@ -2163,7 +2163,7 @@ static const int16_t *M_InsertObjectGT4(
 
         const float zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
-        g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+        g_Sort3DPtr->_0 = g_Info3DPtr;
         g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
         g_Sort3DPtr++;
 
@@ -2210,7 +2210,7 @@ static void M_InsertLine(
     const int32_t x2, const int32_t y2, const int32_t z,
     const uint8_t color_idx)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -2228,7 +2228,7 @@ static void M_InsertFlatRect(
     RENDERER *const renderer, const int32_t x1, const int32_t y1,
     const int32_t x2, const int32_t y2, int32_t z, uint8_t color_idx)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -2287,7 +2287,7 @@ static void M_InsertTransOctagon(
     }
     poly_z /= vtx_count;
 
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(poly_z);
     g_Sort3DPtr++;
 
@@ -2305,7 +2305,7 @@ static void M_InsertTransQuad(
     RENDERER *const renderer, const int32_t x, const int32_t y,
     const int32_t width, int32_t height, const int32_t z)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(g_PhdNearZ + 8 * z);
     g_Sort3DPtr++;
 
@@ -2329,7 +2329,7 @@ static void M_InsertSprite(
     const int32_t y0, const int32_t x1, const int32_t y1,
     const int32_t sprite_idx, const int16_t shade)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 

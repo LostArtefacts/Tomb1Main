@@ -312,7 +312,7 @@ static void M_InsertPolyTextured(
     const int32_t vtx_count, const float z, const int16_t poly_type,
     const int16_t tex_page)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -342,7 +342,7 @@ static void M_InsertPolyFlat(
     const int32_t vtx_count, const float z, const int32_t red,
     const int32_t green, const int32_t blue, const int16_t poly_type)
 {
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -393,7 +393,7 @@ static void M_InsertGT3_Sorted(
         }
 
         if (clip_or == 0) {
-            g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+            g_Sort3DPtr->_0 = g_Info3DPtr;
             g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
             g_Sort3DPtr++;
 
@@ -485,7 +485,7 @@ static void M_InsertGT4_Sorted(
         }
 
         if (clip_or == 0) {
-            g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+            g_Sort3DPtr->_0 = g_Info3DPtr;
             g_Sort3DPtr->_1 = MAKE_ZSORT(zv);
             g_Sort3DPtr++;
 
@@ -764,7 +764,7 @@ static void M_InsertFlatRect_Sorted(
     CLAMPG(x2, g_PhdWinWidth);
     CLAMPG(y2, g_PhdWinHeight);
 
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -805,7 +805,7 @@ static void M_InsertLine_Sorted(
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
 
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
@@ -914,7 +914,7 @@ static void M_InsertTransQuad_Sorted(
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
 
-    g_Sort3DPtr->_0 = (int32_t)g_Info3DPtr;
+    g_Sort3DPtr->_0 = g_Info3DPtr;
     g_Sort3DPtr->_1 = MAKE_ZSORT(z);
     g_Sort3DPtr++;
 
