@@ -404,12 +404,12 @@ static const int16_t m_AtanAngleTable[0x802] = {
     // clang-format on
 };
 
-int32_t __fastcall Math_Cos(int32_t angle)
+int32_t Math_Cos(int32_t angle)
 {
     return Math_Sin(angle + PHD_90);
 }
 
-int32_t __fastcall Math_Sin(int32_t angle)
+int32_t Math_Sin(int32_t angle)
 {
     uint16_t sector = (uint16_t)angle & (PHD_180 - 1);
     if (sector > PHD_90) {
@@ -422,7 +422,7 @@ int32_t __fastcall Math_Sin(int32_t angle)
     return result;
 }
 
-int32_t __fastcall Math_Atan(int32_t x, int32_t y)
+int32_t Math_Atan(int32_t x, int32_t y)
 {
     if (x == 0 && y == 0) {
         return 0;
@@ -449,7 +449,7 @@ int32_t __fastcall Math_Atan(int32_t x, int32_t y)
     return ABS(m_AtanBaseTable[base] + m_AtanAngleTable[0x800 * y / x]);
 }
 
-uint32_t __fastcall Math_Sqrt(uint32_t n)
+uint32_t Math_Sqrt(uint32_t n)
 {
     uint32_t result = 0;
     uint32_t base = 0x40000000;

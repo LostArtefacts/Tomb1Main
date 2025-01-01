@@ -107,16 +107,16 @@ static void *m_XBuffer = NULL;
 static int32_t m_XGenY1 = 0;
 static int32_t m_XGenY2 = 0;
 
-static void __fastcall M_FlatA(
+static void M_FlatA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
-static void __fastcall M_TransA(
+static void M_TransA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t depth);
-static void __fastcall M_GourA(
+static void M_GourA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
-static void __fastcall M_GTMapA(
+static void M_GTMapA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
     const uint8_t *tex_page);
-static void __fastcall M_WGTMapA(
+static void M_WGTMapA(
     GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
     const uint8_t *tex_page);
 static void M_GTMapPersp32FP(
@@ -207,7 +207,7 @@ static void (*m_PolyDrawRoutines[])(
     // clang-format on
 };
 
-static void __fastcall M_FlatA(
+static void M_FlatA(
     GFX_2D_SURFACE *const target_surface, int32_t y1, int32_t y2,
     const uint8_t color_idx)
 {
@@ -234,7 +234,7 @@ static void __fastcall M_FlatA(
     }
 }
 
-static void __fastcall M_TransA(
+static void M_TransA(
     GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
     const uint8_t depth)
 {
@@ -269,7 +269,7 @@ static void __fastcall M_TransA(
     }
 }
 
-static void __fastcall M_GourA(
+static void M_GourA(
     GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
     const uint8_t color_idx)
 {
@@ -308,7 +308,7 @@ static void __fastcall M_GourA(
     }
 }
 
-static void __fastcall M_GTMapA(
+static void M_GTMapA(
     GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
     const uint8_t *const tex_page)
 {
@@ -354,7 +354,7 @@ static void __fastcall M_GTMapA(
     }
 }
 
-static void __fastcall M_WGTMapA(
+static void M_WGTMapA(
     GFX_2D_SURFACE *target_surface, const int32_t y1, const int32_t y2,
     const uint8_t *tex_page)
 {
