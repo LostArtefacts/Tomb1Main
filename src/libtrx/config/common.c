@@ -1,8 +1,8 @@
 #include "config/common.h"
 
 #include "config/file.h"
-#include "config/map.h"
 #include "config/priv.h"
+#include "config/vars.h"
 #include "debug.h"
 #include "game/shell.h"
 
@@ -82,9 +82,4 @@ void Config_UnsubscribeChanges(const int32_t listener_id)
 {
     ASSERT(m_EventManager != NULL);
     return EventManager_Unsubscribe(m_EventManager, listener_id);
-}
-
-const CONFIG_OPTION *Config_GetOptionMap(void)
-{
-    return g_ConfigOptionMap;
 }

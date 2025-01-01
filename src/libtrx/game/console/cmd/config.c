@@ -1,8 +1,8 @@
 #include "game/console/cmd/config.h"
 
-#include "config/common.h"
-#include "config/map.h"
+#include "config.h"
 #include "debug.h"
+#include "enum_map.h"
 #include "game/game_string.h"
 #include "memory.h"
 #include "strings.h"
