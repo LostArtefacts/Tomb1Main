@@ -124,7 +124,7 @@ static M_ROW *M_AddRowFromRole(
         }
         *ptr++ = '\0';
         if (num_secrets == 0) {
-            sprintf(buf, g_GF_GameStrings[GF_S_GAME_MISC_NONE]);
+            strcpy(buf, g_GF_GameStrings[GF_S_GAME_MISC_NONE]);
         }
         return M_AddRow(
             self, role, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
