@@ -44,6 +44,41 @@ static const char m_TR1XGameflowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
 
 static const char *m_CurrentGameflowPath;
 
+static void M_LoadConfig(void);
+static void M_HandleConfigChange(const EVENT *event, void *data);
+
+static void M_HandleConfigChange(const EVENT *const event, void *const data)
+{
+    const CONFIG *const old = &g_Config;
+    const CONFIG *const new = &g_SavedConfig;
+
+#define CHANGED(subject) (old->subject != new->subject)
+
+    if (CHANGED(sound_volume)) {
+        Sound_SetMasterVolume(g_Config.sound_volume);
+    }
+    if (CHANGED(music_volume)) {
+        Music_SetVolume(g_Config.music_volume);
+    }
+
+    if (CHANGED(maximum_save_slots) && Savegame_IsInitialised()) {
+        Savegame_Shutdown();
+        Savegame_Init();
+        Savegame_ScanSavedGames();
+    }
+
+    Output_ApplyRenderSettings();
+}
+
+static void M_LoadConfig(void)
+{
+    Config_Read();
+    Config_SubscribeChanges(M_HandleConfigChange, NULL);
+
+    Sound_SetMasterVolume(g_Config.sound_volume);
+    Music_SetVolume(g_Config.music_volume);
+}
+
 void Shell_Init(const char *gameflow_path)
 {
     Text_Init();
@@ -54,7 +89,7 @@ void Shell_Init(const char *gameflow_path)
     Music_Init();
     Input_Init();
 
-    Config_Read();
+    M_LoadConfig();
 
     S_Shell_CreateWindow();
     S_Shell_Init();

@@ -41,7 +41,7 @@ bool Config_Read(void)
     const bool result = ConfigFile_Read(&args);
     if (result) {
         Config_Sanitize();
-        Config_ApplyChanges();
+        g_SavedConfig = g_Config;
     }
     return result;
 }
@@ -58,13 +58,13 @@ bool Config_Write(void)
     if (updated) {
         if (m_EventManager != NULL) {
             const EVENT event = {
-                .name = "write",
+                .name = "change",
                 .sender = NULL,
                 .data = NULL,
             };
             EventManager_Fire(m_EventManager, &event);
         }
-        Config_ApplyChanges();
+        g_SavedConfig = g_Config;
     }
     return updated;
 }
@@ -74,7 +74,7 @@ int32_t Config_SubscribeChanges(
 {
     ASSERT(m_EventManager != NULL);
     return EventManager_Subscribe(
-        m_EventManager, "write", NULL, listener, user_data);
+        m_EventManager, "change", NULL, listener, user_data);
 }
 
 void Config_UnsubscribeChanges(const int32_t listener_id)

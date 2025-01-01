@@ -39,7 +39,6 @@ static Uint64 m_UpdateDebounce = 0;
 static const char *m_CurrentGameflowPath = "cfg/TR2X_gameflow.json5";
 
 static void M_SyncToWindow(void);
-static void M_SanitizePosition(void);
 static void M_SyncFromWindow(void);
 static void M_RefreshRendererViewport(void);
 static void M_HandleFocusGained(void);
@@ -53,7 +52,12 @@ static void M_HandleWindowResized(int32_t width, int32_t height);
 static void M_HandleKeyDown(const SDL_Event *event);
 static void M_HandleKeyUp(const SDL_Event *event);
 static void M_HandleQuit(void);
+static void M_ConfigureOpenGL(void);
 static bool M_CreateGameWindow(void);
+
+static void M_LoadConfig(void);
+static void M_HandleConfigChange(const EVENT *event, void *data);
+static void M_DisplayLegal(void);
 
 static struct {
     bool is_fullscreen;
@@ -102,12 +106,6 @@ static void M_SyncToWindow(void)
     }
 }
 
-static void M_RefreshRendererViewport(void)
-{
-    Viewport_Reset();
-    UI_Events_Fire(&(EVENT) { .name = "canvas_resize" });
-}
-
 static void M_SyncFromWindow(void)
 {
     if (SDL_GetTicks() - m_UpdateDebounce < 1000) {
@@ -146,6 +144,12 @@ static void M_SyncFromWindow(void)
     }
 
     M_RefreshRendererViewport();
+}
+
+static void M_RefreshRendererViewport(void)
+{
+    Viewport_Reset();
+    UI_Events_Fire(&(EVENT) { .name = "canvas_resize" });
 }
 
 static void M_HandleFocusGained(void)
@@ -264,12 +268,28 @@ static bool M_CreateGameWindow(void)
     return true;
 }
 
+static void M_LoadConfig(void)
+{
+    Config_Read();
+    Config_SubscribeChanges(M_HandleConfigChange, NULL);
+
+    Sound_SetMasterVolume(g_Config.audio.sound_volume);
+    Music_SetVolume(g_Config.audio.music_volume);
+}
+
 static void M_HandleConfigChange(const EVENT *const event, void *const data)
 {
     const CONFIG *const old = &g_Config;
     const CONFIG *const new = &g_SavedConfig;
 
 #define CHANGED(subject) (old->subject != new->subject)
+
+    if (CHANGED(audio.sound_volume)) {
+        Sound_SetMasterVolume(g_Config.audio.sound_volume);
+    }
+    if (CHANGED(audio.music_volume)) {
+        Music_SetVolume(g_Config.audio.music_volume);
+    }
 
     if (CHANGED(window.is_fullscreen) || CHANGED(window.is_maximized)
         || CHANGED(window.x) || CHANGED(window.y) || CHANGED(window.width)
@@ -325,8 +345,7 @@ void Shell_Main(void)
     Sound_Init();
     Music_Init();
 
-    Config_Read();
-    Config_SubscribeChanges(M_HandleConfigChange, NULL);
+    M_LoadConfig();
 
     if (!M_CreateGameWindow()) {
         Shell_ExitSystem("Failed to create game window");

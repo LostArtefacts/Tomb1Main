@@ -1,5 +1,6 @@
 #include "game/sound.h"
 
+#include "config.h"
 #include "game/math.h"
 #include "game/random.h"
 #include "global/const.h"
@@ -139,7 +140,7 @@ void Sound_Init(void)
         return;
     }
 
-    Sound_SetMasterVolume(10);
+    Sound_SetMasterVolume(g_Config.audio.sound_volume);
     M_ClearAllSlots();
     g_SoundIsActive = true;
 }

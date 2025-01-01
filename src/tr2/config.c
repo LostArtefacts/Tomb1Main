@@ -144,11 +144,3 @@ void Config_Sanitize(void)
     CLAMP(g_Config.ui.bar_scale, 0.5, 2.0);
     CLAMP(g_Config.ui.text_scale, 0.5, 2.0);
 }
-
-void Config_ApplyChanges(void)
-{
-    Sound_SetMasterVolume(g_Config.audio.sound_volume);
-    Music_SetVolume(g_Config.audio.music_volume);
-
-    g_SavedConfig = g_Config;
-}

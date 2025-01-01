@@ -213,17 +213,3 @@ void Config_Sanitize(void)
         g_Config.rendering.fps = 30;
     }
 }
-
-void Config_ApplyChanges(void)
-{
-    Music_SetVolume(g_Config.music_volume);
-    Sound_SetMasterVolume(g_Config.sound_volume);
-
-    if (Savegame_IsInitialised()) {
-        Savegame_Shutdown();
-        Savegame_Init();
-        Savegame_ScanSavedGames();
-    }
-
-    Output_ApplyRenderSettings();
-}
