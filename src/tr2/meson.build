@@ -1,8 +1,11 @@
-project('TR2X', ['c'],
+project(
+  'TR2X',
+  ['c'],
   default_options: [
     'c_std=c2x',
     'warning_level=2',
   ],
+  meson_version: '>=1.3.0',
 )
 
 staticdeps = get_option('staticdeps')
@@ -38,21 +41,21 @@ git = find_program('git', required: true)
 init = custom_target(
   'fake_init',
   output: ['init.c'],
-  command: [python3, meson.source_root() + '/../../tools/tr2/generate_init', '-o', meson.current_build_dir() / '@OUTPUT0@'],
+  command: [python3, meson.project_source_root() + '/../../tools/tr2/generate_init', '-o', meson.current_build_dir() / '@OUTPUT0@'],
   build_always_stale: true,
 )
 
 version_rc = custom_target(
   'fake_version',
   output: ['version.rc'],
-  command: [python3, meson.source_root() + '/../../tools/tr2/generate_rcfile', '-o', '@OUTPUT0@'],
+  command: [python3, meson.project_source_root() + '/../../tools/tr2/generate_rcfile', '-o', '@OUTPUT0@'],
   build_always_stale: true,
 )
 
 icon_rc = custom_target(
   'fake_icon',
   output: ['icon.rc'],
-  command: [python3, meson.source_root() + '/../../tools/tr2/generate_rcfile', '-o', '@OUTPUT0@'],
+  command: [python3, meson.project_source_root() + '/../../tools/tr2/generate_rcfile', '-o', '@OUTPUT0@'],
 )
 
 link_args = []
@@ -301,5 +304,5 @@ executable(
   name_prefix: '',
   link_args: link_args,
   dependencies: dependencies,
-  gui_app: true,
+  win_subsystem: 'windows',
 )

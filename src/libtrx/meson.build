@@ -5,6 +5,7 @@ project(
     'c_std=c11',
     'warning_level=2',
   ],
+  meson_version: '>=1.3.0',
 )
 
 staticdeps = get_option('staticdeps')
