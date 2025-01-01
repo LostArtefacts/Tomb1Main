@@ -1,6 +1,5 @@
 #include "config.h"
 
-#include "config_map.h"
 #include "game/clock.h"
 #include "game/input.h"
 #include "game/music.h"
@@ -10,11 +9,12 @@
 #include <libtrx/config/file.h>
 #include <libtrx/debug.h>
 #include <libtrx/log.h>
+#include <libtrx/utils.h>
 
 #include <stdio.h>
 
-CONFIG g_Config = { 0 };
-CONFIG g_SavedConfig = { 0 };
+// TODO: eliminate me
+extern const CONFIG_OPTION g_ConfigOptionMap[];
 
 static const char *m_ConfigPath = "cfg/TR2X.json5";
 

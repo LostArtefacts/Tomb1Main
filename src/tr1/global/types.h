@@ -541,42 +541,6 @@ typedef enum {
     MC_NUMBER_OF,
 } MENU_COLOR;
 
-typedef enum {
-    BSM_DEFAULT,
-    BSM_FLASHING_OR_DEFAULT,
-    BSM_FLASHING_ONLY,
-    BSM_ALWAYS,
-    BSM_NEVER,
-    BSM_PS1,
-    BSM_BOSS_ONLY,
-} BAR_SHOW_MODE;
-
-typedef enum {
-    BL_TOP_LEFT,
-    BL_TOP_CENTER,
-    BL_TOP_RIGHT,
-    BL_BOTTOM_LEFT,
-    BL_BOTTOM_CENTER,
-    BL_BOTTOM_RIGHT,
-    BL_CUSTOM,
-} BAR_LOCATION;
-
-typedef struct {
-    BAR_TYPE type;
-    int32_t value;
-    int32_t max_value;
-    bool show;
-    BAR_SHOW_MODE show_mode;
-    bool blink;
-    int32_t timer;
-    int32_t color;
-    BAR_LOCATION location;
-    int16_t custom_x;
-    int16_t custom_y;
-    int16_t custom_width;
-    int16_t custom_height;
-} BAR_INFO;
-
 typedef struct {
     bool loaded;
     int16_t nmeshes;
@@ -853,39 +817,3 @@ typedef struct {
     RGB_888 *palette;
     int32_t palette_size;
 } LEVEL_INFO;
-
-typedef enum {
-    TB_UNSPECIFIED = -1,
-    TB_OFF = 0,
-    TB_ON = 1,
-} TRISTATE_BOOL;
-
-typedef enum {
-    UI_STYLE_PS1,
-    UI_STYLE_PC,
-} UI_STYLE;
-
-typedef enum {
-    BC_GOLD,
-    BC_BLUE,
-    BC_GREY,
-    BC_RED,
-    BC_SILVER,
-    BC_GREEN,
-    BC_GOLD2,
-    BC_BLUE2,
-    BC_PINK,
-    BC_PURPLE,
-} BAR_COLOR;
-
-typedef enum {
-    TLM_FULL,
-    TLM_SEMI,
-    TLM_NONE,
-} TARGET_LOCK_MODE;
-
-typedef enum {
-    MUSIC_LOAD_NEVER,
-    MUSIC_LOAD_NON_AMBIENT,
-    MUSIC_LOAD_ALWAYS,
-} MUSIC_LOAD_CONDITION;

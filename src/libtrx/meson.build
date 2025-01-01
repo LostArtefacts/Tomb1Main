@@ -59,6 +59,8 @@ sources = [
   'benchmark.c',
   'config/common.c',
   'config/file.c',
+  'config/map.c',
+  'config/vars.c',
   'engine/audio.c',
   'engine/audio_sample.c',
   'engine/audio_stream.c',

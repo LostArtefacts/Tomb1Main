@@ -4,6 +4,8 @@
 #include "game/console/common.h"
 #include "game/game_string.h"
 
+#include <libtrx/utils.h>
+
 int32_t Clock_GetTurboSpeed(void)
 {
     return g_Config.gameplay.turbo_speed;

@@ -1,5 +1,6 @@
 #include "game/ui/widgets/photo_mode.h"
 
+#include "config.h"
 #include "game/input.h"
 #include "game/text.h"
 

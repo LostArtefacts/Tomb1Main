@@ -1,5 +1,6 @@
 #include "game/option/option_controls.h"
 
+#include "config.h"
 #include "game/clock.h"
 #include "game/game_string.h"
 #include "game/overlay.h"

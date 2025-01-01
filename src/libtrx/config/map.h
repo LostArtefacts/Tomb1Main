@@ -1,6 +1,7 @@
-#include "../enum_map.h"
-#include "../utils.h"
-#include "./option.h"
+#include "config/option.h"
+#include "config/vars.h"
+#include "enum_map.h"
+#include "utils.h"
 
 #include <stdbool.h>
 #include <stddef.h>

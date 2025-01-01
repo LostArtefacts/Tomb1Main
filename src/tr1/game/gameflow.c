@@ -52,7 +52,6 @@ GAMEFLOW g_GameFlow = { 0 };
 
 static int32_t M_StringToEnumType(
     const char *const str, const STRING_TO_ENUM_TYPE *map);
-static TRISTATE_BOOL M_ReadTristateBool(JSON_OBJECT *obj, const char *key);
 static bool M_LoadScriptMeta(JSON_OBJECT *obj);
 static bool M_LoadScriptGameStrings(JSON_OBJECT *obj);
 static bool M_IsLegacySequence(const char *type_str);
@@ -117,17 +116,6 @@ static int32_t M_StringToEnumType(
         map++;
     }
     return map->val;
-}
-
-static TRISTATE_BOOL M_ReadTristateBool(JSON_OBJECT *obj, const char *key)
-{
-    JSON_VALUE *value = JSON_ObjectGetValue(obj, key);
-    if (JSON_ValueIsTrue(value)) {
-        return TB_ON;
-    } else if (JSON_ValueIsFalse(value)) {
-        return TB_OFF;
-    }
-    return TB_UNSPECIFIED;
 }
 
 static bool M_LoadScriptMeta(JSON_OBJECT *obj)

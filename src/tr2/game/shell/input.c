@@ -12,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/enum_map.h>
 #include <libtrx/screenshot.h>
 #include <libtrx/utils.h>
 

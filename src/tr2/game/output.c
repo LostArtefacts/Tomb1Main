@@ -14,6 +14,7 @@
 #include "global/vars.h"
 
 #include <libtrx/log.h>
+#include <libtrx/utils.h>
 
 static int32_t m_TickComp = 0;
 static int32_t m_RoomLightShades[4] = {};

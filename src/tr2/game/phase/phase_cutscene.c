@@ -20,6 +20,7 @@
 
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
+#include <libtrx/utils.h>
 
 typedef struct {
     int32_t level_num;

@@ -74,7 +74,6 @@ endif
 sources = [
   init,
   'config.c',
-  'config_map.c',
   'decomp/decomp.c',
   'decomp/flares.c',
   'decomp/savegame.c',

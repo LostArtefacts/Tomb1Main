@@ -1,5 +1,6 @@
 #include "global/types.h"
 
+#include <libtrx/config/types.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/input.h>

@@ -15,24 +15,6 @@
 #pragma pack(push, 1)
 
 // clang-format off
-typedef enum {
-    RM_UNKNOWN  = 0,
-    RM_SOFTWARE = 1,
-    RM_HARDWARE = 2,
-} RENDER_MODE;
-
-typedef enum {
-    AM_4_3  = 0,
-    AM_16_9 = 1,
-    AM_ANY  = 2,
-} ASPECT_MODE;
-
-typedef enum {
-    TAM_DISABLED      = 0,
-    TAM_BILINEAR_ONLY = 1,
-    TAM_ALWAYS        = 2,
-} TEXEL_ADJUST_MODE;
-
 typedef struct {
     union {
         uint8_t red;
