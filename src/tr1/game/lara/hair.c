@@ -57,15 +57,14 @@ void Lara_Hair_Initialise(void)
     m_FirstHair = true;
     Lara_Hair_SetLaraType(O_LARA);
 
-    int32_t *bone = &g_AnimBones[g_Objects[O_HAIR].bone_idx];
+    const OBJECT *const object = Object_GetObject(O_HAIR);
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
 
     m_Hair[0].rot.y = 0;
     m_Hair[0].rot.x = -PHD_90;
 
-    for (int i = 1; i < HAIR_SEGMENTS + 1; i++, bone += 4) {
-        m_Hair[i].pos.x = *(bone + 1);
-        m_Hair[i].pos.y = *(bone + 2);
-        m_Hair[i].pos.z = *(bone + 3);
+    for (int32_t i = 1; i < HAIR_SEGMENTS + 1; i++, bone++) {
+        m_Hair[i].pos = bone->pos;
         m_Hair[i].rot.x = -PHD_90;
         m_Hair[i].rot.y = 0;
         m_Hair[i].rot.z = 0;
@@ -88,7 +87,6 @@ void Lara_Hair_Control(void)
 
     bool in_cutscene;
     OBJECT *object;
-    int32_t *bone;
     int32_t distance;
     ANIM_FRAME *frame;
     const OBJECT_MESH *mesh;
@@ -145,7 +143,7 @@ void Lara_Hair_Control(void)
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
     Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
 
-    bone = &g_AnimBones[object->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     if (frac) {
         Matrix_InitInterpolate(frac, rate);
         int32_t *packed_rotation1 = frmptr[0]->mesh_rots;
@@ -169,7 +167,8 @@ void Lara_Hair_Control(void)
 
         // torso
         Matrix_TranslateRel_I(
-            *(bone + 1 + 24), *(bone + 2 + 24), *(bone + 3 + 24));
+            bone[LM_TORSO - 1].pos.x, bone[LM_TORSO - 1].pos.y,
+            bone[LM_TORSO - 1].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_TORSO], packed_rotation2[LM_TORSO]);
         Matrix_RotYXZ_I(
@@ -188,7 +187,8 @@ void Lara_Hair_Control(void)
         // right arm
         Matrix_Push_I();
         Matrix_TranslateRel_I(
-            *(bone + 1 + 28), *(bone + 2 + 28), *(bone + 3 + 28));
+            bone[LM_UARM_R - 1].pos.x, bone[LM_UARM_R - 1].pos.y,
+            bone[LM_UARM_R - 1].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_R], packed_rotation2[LM_UARM_R]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
@@ -203,7 +203,8 @@ void Lara_Hair_Control(void)
         // left arm
         Matrix_Push_I();
         Matrix_TranslateRel_I(
-            *(bone + 1 + 40), *(bone + 2 + 40), *(bone + 3 + 40));
+            bone[LM_UARM_L - 1].pos.x, bone[LM_UARM_L - 1].pos.y,
+            bone[LM_UARM_L - 1].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_L], packed_rotation2[LM_UARM_L]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
@@ -217,7 +218,8 @@ void Lara_Hair_Control(void)
 
         // head
         Matrix_TranslateRel_I(
-            *(bone + 1 + 52), *(bone + 2 + 52), *(bone + 3 + 52));
+            bone[LM_HEAD - 1].pos.x, bone[LM_HEAD - 1].pos.y,
+            bone[LM_HEAD - 1].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_HEAD], packed_rotation2[LM_HEAD]);
         Matrix_RotYXZ_I(
@@ -253,7 +255,8 @@ void Lara_Hair_Control(void)
 
         // torso
         Matrix_TranslateRel(
-            *(bone + 1 + 24), *(bone + 2 + 24), *(bone + 3 + 24));
+            bone[LM_TORSO - 1].pos.x, bone[LM_TORSO - 1].pos.y,
+            bone[LM_TORSO - 1].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_TORSO]);
         Matrix_RotYXZ(
             g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
@@ -270,7 +273,8 @@ void Lara_Hair_Control(void)
         // right arm
         Matrix_Push();
         Matrix_TranslateRel(
-            *(bone + 1 + 28), *(bone + 2 + 28), *(bone + 3 + 28));
+            bone[LM_UARM_R - 1].pos.x, bone[LM_UARM_R - 1].pos.y,
+            bone[LM_UARM_R - 1].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_R]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
         Matrix_TranslateRel(mesh->center.x, mesh->center.y, mesh->center.z);
@@ -283,7 +287,8 @@ void Lara_Hair_Control(void)
         // left arm
         Matrix_Push();
         Matrix_TranslateRel(
-            *(bone + 1 + 40), *(bone + 2 + 40), *(bone + 3 + 40));
+            bone[LM_UARM_L - 1].pos.x, bone[LM_UARM_L - 1].pos.y,
+            bone[LM_UARM_L - 1].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_L]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
         Matrix_TranslateRel(mesh->center.x, mesh->center.y, mesh->center.z);
@@ -295,7 +300,8 @@ void Lara_Hair_Control(void)
 
         // head
         Matrix_TranslateRel(
-            *(bone + 1 + 52), *(bone + 2 + 52), *(bone + 3 + 52));
+            bone[LM_HEAD - 1].pos.x, bone[LM_HEAD - 1].pos.y,
+            bone[LM_HEAD - 1].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HEAD]);
         Matrix_RotYXZ(
             g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
@@ -317,19 +323,19 @@ void Lara_Hair_Control(void)
     pos.z = g_MatrixPtr->_23 >> W2V_SHIFT;
     Matrix_Pop();
 
-    bone = &g_AnimBones[g_Objects[O_HAIR].bone_idx];
+    bone = (ANIM_BONE *)&g_AnimBones[Object_GetObject(O_HAIR)->bone_idx];
 
     m_Hair[0].pos = pos;
 
     if (m_FirstHair) {
         m_FirstHair = false;
 
-        for (i = 0; i < HAIR_SEGMENTS; i++, bone += 4) {
+        for (i = 0; i < HAIR_SEGMENTS; i++, bone++) {
             Matrix_PushUnit();
             Matrix_TranslateSet(
                 m_Hair[i].pos.x, m_Hair[i].pos.y, m_Hair[i].pos.z);
             Matrix_RotYXZ(m_Hair[i].rot.y, m_Hair[i].rot.x, 0);
-            Matrix_TranslateRel(*(bone + 1), *(bone + 2), *(bone + 3));
+            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
 
             m_Hair[i + 1].pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;
             m_Hair[i + 1].pos.y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -352,7 +358,7 @@ void Lara_Hair_Control(void)
             water_level = Room_GetWaterHeight(x, y, z, room_num);
         }
 
-        for (i = 1; i < HAIR_SEGMENTS + 1; i++, bone += 4) {
+        for (i = 1; i < HAIR_SEGMENTS + 1; i++, bone++) {
             m_HVel[0] = m_Hair[i].pos;
 
             sector = Room_GetSector(
@@ -424,9 +430,11 @@ void Lara_Hair_Control(void)
             Matrix_RotYXZ(m_Hair[i - 1].rot.y, m_Hair[i - 1].rot.x, 0);
 
             if (i == HAIR_SEGMENTS) {
-                Matrix_TranslateRel(*(bone - 3), *(bone - 2), *(bone - 1));
+                const ANIM_BONE *const last_bone = bone - 1;
+                Matrix_TranslateRel(
+                    last_bone->pos.x, last_bone->pos.y, last_bone->pos.z);
             } else {
-                Matrix_TranslateRel(*(bone + 1), *(bone + 2), *(bone + 3));
+                Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             }
 
             m_Hair[i].pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;

@@ -398,28 +398,27 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         -(frame->bounds.min.x + frame->bounds.max.x) / 2,
         -(frame->bounds.min.y + frame->bounds.max.y) / 2,
         -(frame->bounds.min.z + frame->bounds.max.z) / 2);
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     int32_t *packed_rotation = frame->mesh_rots;
     Matrix_RotYXZpack(*packed_rotation++);
 
     Object_DrawMesh(obj->mesh_idx, 0, false);
 
     for (int i = 1; i < obj->nmeshes; i++) {
-        int32_t bone_extra_flags = *bone;
-        if (bone_extra_flags & BF_MATRIX_POP) {
+        if (bone->matrix_pop) {
             Matrix_Pop();
         }
 
-        if (bone_extra_flags & BF_MATRIX_PUSH) {
+        if (bone->matrix_push) {
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
         Matrix_RotYXZpack(*packed_rotation++);
 
         Object_DrawMesh(obj->mesh_idx + i, 0, false);
 
-        bone += 4;
+        bone++;
     }
     Matrix_Pop();
 

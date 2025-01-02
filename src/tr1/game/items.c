@@ -867,7 +867,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
     int32_t *packed_rotation = frame->mesh_rots;
     Matrix_RotYXZpack(*packed_rotation++);
 
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
 #if 0
     // XXX: present in OG, removed by GLrage on the grounds that it sometimes
     // crashes.
@@ -899,29 +899,26 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
     }
 
     for (int i = 1; i < obj->nmeshes; i++) {
-        int32_t bone_extra_flags = *bone++;
-        if (bone_extra_flags & BF_MATRIX_POP) {
+        if (bone->matrix_pop) {
             Matrix_Pop();
         }
-        if (bone_extra_flags & BF_MATRIX_PUSH) {
+        if (bone->matrix_push) {
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone[0], bone[1], bone[2]);
+        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
         Matrix_RotYXZpack(*packed_rotation++);
 
 #if 0
     if (extra_rotation) {
-        if (bone_extra_flags & (BF_ROT_X | BF_ROT_Y | BF_ROT_Z)) {
-            if (bone_extra_flags & BF_ROT_Y) {
-                Matrix_RotY(*extra_rotation++);
-            }
-            if (bone_extra_flags & BF_ROT_X) {
-                Matrix_RotX(*extra_rotation++);
-            }
-            if (bone_extra_flags & BF_ROT_Z) {
-                Matrix_RotZ(*extra_rotation++);
-            }
+        if (bone->rot_y) {
+            Matrix_RotY(*extra_rotation++);
+        }
+        if (bone->rot_x) {
+            Matrix_RotX(*extra_rotation++);
+        }
+        if (bone->rot_z) {
+            Matrix_RotZ(*extra_rotation++);
         }
     }
 #endif
@@ -950,7 +947,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
             item->mesh_bits -= bit;
         }
 
-        bone += 3;
+        bone++;
     }
 
     Matrix_Pop();

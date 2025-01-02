@@ -98,7 +98,7 @@ void Lara_Draw(ITEM *item)
 
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    int32_t *bone = &g_AnimBones[object->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     int32_t *packed_rotation = frame->mesh_rots;
 
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
@@ -107,15 +107,15 @@ void Lara_Draw(ITEM *item)
 
     Matrix_Push();
 
-    Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+    Matrix_TranslateRel(bone[0].pos.x, bone[0].pos.y, bone[0].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_THIGH_L]);
     M_DrawMesh(LM_THIGH_L, clip, false);
 
-    Matrix_TranslateRel(bone[5], bone[6], bone[7]);
+    Matrix_TranslateRel(bone[1].pos.x, bone[1].pos.y, bone[1].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_CALF_L]);
     M_DrawMesh(LM_CALF_L, clip, false);
 
-    Matrix_TranslateRel(bone[9], bone[10], bone[11]);
+    Matrix_TranslateRel(bone[2].pos.x, bone[2].pos.y, bone[2].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_FOOT_L]);
     M_DrawMesh(LM_FOOT_L, clip, false);
 
@@ -123,21 +123,21 @@ void Lara_Draw(ITEM *item)
 
     Matrix_Push();
 
-    Matrix_TranslateRel(bone[13], bone[14], bone[15]);
+    Matrix_TranslateRel(bone[3].pos.x, bone[3].pos.y, bone[3].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_THIGH_R]);
     M_DrawMesh(LM_THIGH_R, clip, false);
 
-    Matrix_TranslateRel(bone[17], bone[18], bone[19]);
+    Matrix_TranslateRel(bone[4].pos.x, bone[4].pos.y, bone[4].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_CALF_R]);
     M_DrawMesh(LM_CALF_R, clip, false);
 
-    Matrix_TranslateRel(bone[21], bone[22], bone[23]);
+    Matrix_TranslateRel(bone[5].pos.x, bone[5].pos.y, bone[5].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_FOOT_R]);
     M_DrawMesh(LM_FOOT_R, clip, false);
 
     Matrix_Pop();
 
-    Matrix_TranslateRel(bone[25], bone[26], bone[27]);
+    Matrix_TranslateRel(bone[6].pos.x, bone[6].pos.y, bone[6].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_TORSO]);
     Matrix_RotYXZ(
         g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
@@ -146,7 +146,7 @@ void Lara_Draw(ITEM *item)
 
     Matrix_Push();
 
-    Matrix_TranslateRel(bone[53], bone[54], bone[55]);
+    Matrix_TranslateRel(bone[13].pos.x, bone[13].pos.y, bone[13].pos.z);
     Matrix_RotYXZpack(packed_rotation[LM_HEAD]);
     Matrix_RotYXZ(
         g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
@@ -168,15 +168,15 @@ void Lara_Draw(ITEM *item)
     case LGT_UNARMED:
         Matrix_Push();
 
-        Matrix_TranslateRel(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, false);
 
@@ -184,15 +184,15 @@ void Lara_Draw(ITEM *item)
 
         Matrix_Push();
 
-        Matrix_TranslateRel(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, false);
 
@@ -204,7 +204,7 @@ void Lara_Draw(ITEM *item)
     case LGT_UZIS:
         Matrix_Push();
 
-        Matrix_TranslateRel(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
 
         g_MatrixPtr->_00 = g_MatrixPtr[-2]._00;
         g_MatrixPtr->_01 = g_MatrixPtr[-2]._01;
@@ -225,11 +225,11 @@ void Lara_Draw(ITEM *item)
         Matrix_RotYXZpack(packed_rotation[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, false);
 
@@ -241,7 +241,7 @@ void Lara_Draw(ITEM *item)
 
         Matrix_Push();
 
-        Matrix_TranslateRel(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
 
         g_MatrixPtr->_00 = g_MatrixPtr[-2]._00;
         g_MatrixPtr->_01 = g_MatrixPtr[-2]._01;
@@ -262,11 +262,11 @@ void Lara_Draw(ITEM *item)
         Matrix_RotYXZpack(packed_rotation[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, false);
 
@@ -286,15 +286,15 @@ void Lara_Draw(ITEM *item)
 
         packed_rotation =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
-        Matrix_TranslateRel(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, false);
 
@@ -308,15 +308,15 @@ void Lara_Draw(ITEM *item)
 
         packed_rotation =
             g_Lara.left_arm.frame_base[g_Lara.left_arm.frame_num].mesh_rots;
-        Matrix_TranslateRel(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack(packed_rotation[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, false);
 
@@ -370,7 +370,7 @@ void Lara_Draw_I(
 
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    int32_t *bone = &g_AnimBones[object->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     int32_t *packed_rotation1 = frame1->mesh_rots;
     int32_t *packed_rotation2 = frame2->mesh_rots;
 
@@ -385,17 +385,17 @@ void Lara_Draw_I(
 
     Matrix_Push_I();
 
-    Matrix_TranslateRel_I(bone[1], bone[2], bone[3]);
+    Matrix_TranslateRel_I(bone[0].pos.x, bone[0].pos.y, bone[0].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_THIGH_L], packed_rotation2[LM_THIGH_L]);
     M_DrawMesh(LM_THIGH_L, clip, true);
 
-    Matrix_TranslateRel_I(bone[5], bone[6], bone[7]);
+    Matrix_TranslateRel_I(bone[1].pos.x, bone[1].pos.y, bone[1].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_CALF_L], packed_rotation2[LM_CALF_L]);
     M_DrawMesh(LM_CALF_L, clip, true);
 
-    Matrix_TranslateRel_I(bone[9], bone[10], bone[11]);
+    Matrix_TranslateRel_I(bone[2].pos.x, bone[2].pos.y, bone[2].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_FOOT_L], packed_rotation2[LM_FOOT_L]);
     M_DrawMesh(LM_FOOT_L, clip, true);
@@ -404,24 +404,24 @@ void Lara_Draw_I(
 
     Matrix_Push_I();
 
-    Matrix_TranslateRel_I(bone[13], bone[14], bone[15]);
+    Matrix_TranslateRel_I(bone[3].pos.x, bone[3].pos.y, bone[3].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_THIGH_R], packed_rotation2[LM_THIGH_R]);
     M_DrawMesh(LM_THIGH_R, clip, true);
 
-    Matrix_TranslateRel_I(bone[17], bone[18], bone[19]);
+    Matrix_TranslateRel_I(bone[4].pos.x, bone[4].pos.y, bone[4].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_CALF_R], packed_rotation2[LM_CALF_R]);
     M_DrawMesh(LM_CALF_R, clip, true);
 
-    Matrix_TranslateRel_I(bone[21], bone[22], bone[23]);
+    Matrix_TranslateRel_I(bone[5].pos.x, bone[5].pos.y, bone[5].pos.z);
     Matrix_RotYXZpack_I(
         packed_rotation1[LM_FOOT_R], packed_rotation2[LM_FOOT_R]);
     M_DrawMesh(LM_FOOT_R, clip, true);
 
     Matrix_Pop_I();
 
-    Matrix_TranslateRel_I(bone[25], bone[26], bone[27]);
+    Matrix_TranslateRel_I(bone[6].pos.x, bone[6].pos.y, bone[6].pos.z);
     Matrix_RotYXZpack_I(packed_rotation1[LM_TORSO], packed_rotation2[LM_TORSO]);
     Matrix_RotYXZ_I(
         g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
@@ -430,7 +430,7 @@ void Lara_Draw_I(
 
     Matrix_Push_I();
 
-    Matrix_TranslateRel_I(bone[53], bone[54], bone[55]);
+    Matrix_TranslateRel_I(bone[13].pos.x, bone[13].pos.y, bone[13].pos.z);
     Matrix_RotYXZpack_I(packed_rotation1[LM_HEAD], packed_rotation2[LM_HEAD]);
     Matrix_RotYXZ_I(
         g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
@@ -452,17 +452,17 @@ void Lara_Draw_I(
     case LGT_UNARMED:
         Matrix_Push_I();
 
-        Matrix_TranslateRel_I(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_R], packed_rotation2[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, true);
 
-        Matrix_TranslateRel_I(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel_I(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_LARM_R], packed_rotation2[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, true);
 
-        Matrix_TranslateRel_I(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel_I(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_HAND_R], packed_rotation2[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, true);
@@ -471,17 +471,17 @@ void Lara_Draw_I(
 
         Matrix_Push_I();
 
-        Matrix_TranslateRel_I(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_L], packed_rotation2[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, true);
 
-        Matrix_TranslateRel_I(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel_I(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_LARM_L], packed_rotation2[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, true);
 
-        Matrix_TranslateRel_I(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel_I(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_HAND_L], packed_rotation2[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, true);
@@ -494,7 +494,7 @@ void Lara_Draw_I(
     case LGT_UZIS:
         Matrix_Push_I();
 
-        Matrix_TranslateRel_I(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_InterpolateArm();
 
         packed_rotation1 =
@@ -506,11 +506,11 @@ void Lara_Draw_I(
         Matrix_RotYXZpack(packed_rotation1[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack(packed_rotation1[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, false);
 
-        Matrix_TranslateRel(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack(packed_rotation1[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, false);
 
@@ -522,7 +522,7 @@ void Lara_Draw_I(
 
         Matrix_Push_I();
 
-        Matrix_TranslateRel_I(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         Matrix_InterpolateArm();
 
         packed_rotation1 =
@@ -534,11 +534,11 @@ void Lara_Draw_I(
         Matrix_RotYXZpack(packed_rotation1[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack(packed_rotation1[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, false);
 
-        Matrix_TranslateRel(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack(packed_rotation1[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, false);
 
@@ -560,17 +560,17 @@ void Lara_Draw_I(
         packed_rotation1 =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
         packed_rotation2 = packed_rotation1;
-        Matrix_TranslateRel_I(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_R], packed_rotation2[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, true);
 
-        Matrix_TranslateRel_I(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel_I(bone[8].pos.x, bone[8].pos.y, bone[8].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_LARM_R], packed_rotation2[LM_LARM_R]);
         M_DrawMesh(LM_LARM_R, clip, true);
 
-        Matrix_TranslateRel_I(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel_I(bone[9].pos.x, bone[9].pos.y, bone[9].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_HAND_R], packed_rotation2[LM_HAND_R]);
         M_DrawMesh(LM_HAND_R, clip, true);
@@ -586,17 +586,17 @@ void Lara_Draw_I(
         packed_rotation1 =
             g_Lara.left_arm.frame_base[g_Lara.left_arm.frame_num].mesh_rots;
         packed_rotation2 = packed_rotation1;
-        Matrix_TranslateRel_I(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_UARM_L], packed_rotation2[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, true);
 
-        Matrix_TranslateRel_I(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel_I(bone[11].pos.x, bone[11].pos.y, bone[11].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_LARM_L], packed_rotation2[LM_LARM_L]);
         M_DrawMesh(LM_LARM_L, clip, true);
 
-        Matrix_TranslateRel_I(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel_I(bone[12].pos.x, bone[12].pos.y, bone[12].pos.z);
         Matrix_RotYXZpack_I(
             packed_rotation1[LM_HAND_L], packed_rotation2[LM_HAND_L]);
         M_DrawMesh(LM_HAND_L, clip, true);
