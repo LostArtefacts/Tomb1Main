@@ -33,3 +33,12 @@ jobs:
     with:
       target: 'debug'
     secrets: inherit
+
+  package_tr2_mac:
+      name: Build TR2
+      if: vars.MACOS_ENABLE == 'true'
+      uses: ./.github/workflows/job_build_tr2_macos.yml
+      with:
+        target: 'debug'
+        let_mac_fail: true
+      secrets: inherit

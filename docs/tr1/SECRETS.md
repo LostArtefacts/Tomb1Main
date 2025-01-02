@@ -75,6 +75,7 @@ MacOS builds require a paid Apple Developer account.
     5. Serialize the key in base-64 without spaces - run:
 
        > base64 TR1X.pem|tr -d '\n'
+       > base64 -i BUILD_CERTIFICATE.p12 | pbcopy (macos)
 
        The result is to be put as the value of the `MACOS_CERTIFICATE` secret.
 

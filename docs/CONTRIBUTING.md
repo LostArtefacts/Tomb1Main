@@ -50,6 +50,28 @@ Subsequent builds:
 
     Run WSL and continue with the instructions from the `Compiling on Ubuntu` section.
 
+### Compiling on MacOS
+
+MacPorts:
+https://github.com/macports/macports-base/releases
+
+
+
+- **With Docker**:
+
+    Make sure to install Docker and [just](https://github.com/casey/just).
+    To see the list of all possible build targets, run `just -l`. To build the
+    images, use the `just *-build-*` commands relevant to the game and platform
+    you want to build for. The binaries should appear in the `build/`
+    directory.
+
+- **Without Docker**:
+
+    This scenario is not officially supported, but you can see how it's done by
+    examining the files in the `tools/*/docker/` directory for the external
+    dependencies and `meson.build` for the local files, then tailoring your
+    system to match the process.
+
 
 ### Supported compilers
 

@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...develop) - ××××-××-××
 - added Linux builds and toolchain (#1598)
+- added macOS builds (for both Apple Silicon and Intel) (#2226)
 - added pause dialog (#1638)
 - added a photo mode feature (#2277)
 - added fade-out effect to the demos

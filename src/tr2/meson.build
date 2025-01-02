@@ -36,6 +36,11 @@ build_opts = [
 
 add_project_arguments(build_opts, language: 'c')
 
+# Always dynamically link on macOS
+if host_machine.system() == 'darwin'
+  staticdeps = false
+endif
+
 null_dep = dependency('', required: false)
 dep_trx = trx.get_variable('dep_trx')
 dep_sdl2 = dependency('SDL2', static: staticdeps)
@@ -301,4 +306,14 @@ executable(
   link_args: link_args,
   dependencies: dependencies,
   win_subsystem: 'windows',
+  install: true,
 )
+
+if host_machine.system() == 'darwin'
+  install_subdir('../../data/tr2/ship/cfg', install_dir : 'Contents/Resources')
+  install_subdir('../../data/tr2/ship/data', install_dir : 'Contents/Resources')
+  install_subdir('../../data/tr2/ship/shaders', install_dir : 'Contents/Resources')
+  install_data('../../data/tr2/mac/icon.icns', install_dir : 'Contents/Resources')
+  install_data('../../data/tr2/mac/Info.plist', install_dir : 'Contents')
+  meson.add_install_script('../../tools/shared/mac/bundle_dylibs', '-a', 'TR2X')
+endif

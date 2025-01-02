@@ -130,6 +130,7 @@ game with new enhancements and features.
 
 #### Miscellaneous
 - added Linux builds
+- added macOS builds
 - added .jpeg/.png screenshots
 - added ability to skip FMVs with both the Action key
 - added ability to skip end credits with the Action and Escape keys

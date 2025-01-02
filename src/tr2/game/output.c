@@ -838,8 +838,8 @@ int32_t Output_GetObjectBounds(const BOUNDS_16 *const bounds)
         return 0;
     }
 
-    constexpr int32_t vtx_count = 8;
-    const XYZ_32 vtx[vtx_count] = {
+    const int32_t vtx_count = 8;
+    const XYZ_32 vtx[] = {
         { .x = bounds->min.x, .y = bounds->min.y, .z = bounds->min.z },
         { .x = bounds->max.x, .y = bounds->min.y, .z = bounds->min.z },
         { .x = bounds->max.x, .y = bounds->max.y, .z = bounds->min.z },

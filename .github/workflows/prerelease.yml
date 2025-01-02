@@ -36,6 +36,17 @@ jobs:
       target: 'debug'
     secrets: inherit
 
+  package_tr2_mac:
+    name: Build TR2
+    if: |
+      vars.PRERELEASE_ENABLE == 'true' &&
+      vars.MACOS_ENABLE == 'true'
+    uses: ./.github/workflows/job_build_tr2_macos.yml
+    with:
+      target: 'debug'
+      let_mac_fail: true
+    secrets: inherit
+
   publish_prerelease:
     if: vars.PRERELEASE_ENABLE == 'true'
     name: Create a prerelease
@@ -43,6 +54,7 @@ jobs:
       - package_tr1_multiplatform
       - package_tr1_mac
       - package_tr2_multiplatform
+      - package_tr2_mac
     with:
       draft: false
       prerelease: true

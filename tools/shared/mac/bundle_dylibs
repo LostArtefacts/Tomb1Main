@@ -2,28 +2,19 @@
 import argparse
 import re
 import shutil
+from collections.abc import Iterable
 from pathlib import Path
 from subprocess import check_output, run
 
-# Configuration
-APP_NAME = "TR1X"
-APP_BUNDLE_PATH = Path(f"/tmp/{APP_NAME}.app")
-APP_BINARY_PATH = APP_BUNDLE_PATH / f"Contents/MacOS/{APP_NAME}"
-FRAMEWORKS_PATH = APP_BUNDLE_PATH / "Contents/Frameworks"
 IGNORE_LIB_PREFIXES = ("/usr/lib/", "/System/", "@executable_path")
-
-
-# Other global state
-LIBRARY_PATHS: set[Path] = set()
+RPATH_PATTERN = re.compile(r"@rpath/(.*)")
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description=(
-            f"Copies shared libraries into the macOS app bundle "
-            "for {APP_NAME}."
-        )
+        description="Copies shared libraries into the macOS app bundle."
     )
+    parser.add_argument("-a", "--app-name")
     parser.add_argument(
         "--copy-only",
         action="store_true",
@@ -41,32 +32,33 @@ def should_ignore_lib(lib_path: str) -> bool:
     return any(lib_path.startswith(prefix) for prefix in IGNORE_LIB_PREFIXES)
 
 
-def gather_libs(binary_path: Path) -> None:
+def gather_libs(
+    binary_path: Path, visited_paths: set[Path] | None = None
+) -> Iterable[Path]:
+    if visited_paths is None:
+        visited_paths = set()
+    visited_paths.add(binary_path)
+
     parent_path = binary_path.parent
     output = check_output(["otool", "-L", str(binary_path)], text=True)
     libs = [line.split()[0] for line in output.split("\n")[1:] if line]
 
-    rpath_pattern = re.compile(r"@rpath/(.*)")
-
     for lib in libs:
-        match = rpath_pattern.match(lib)
+        match = RPATH_PATTERN.match(lib)
         lib_path = parent_path / (match.group(1) if match else lib)
 
-        if (
-            should_ignore_lib(str(lib_path))
-            or lib_path in LIBRARY_PATHS
-            or lib_path == binary_path
-        ):
+        if should_ignore_lib(str(lib_path)) or lib_path == binary_path:
             continue
 
-        LIBRARY_PATHS.add(lib_path)
-        gather_libs(lib_path)
+        yield lib_path
+        if lib_path not in visited_paths:
+            yield from gather_libs(lib_path, visited_paths=visited_paths)
 
 
-def copy_libs() -> None:
-    FRAMEWORKS_PATH.mkdir(parents=True, exist_ok=True)
-    for lib_path in LIBRARY_PATHS:
-        target_path = FRAMEWORKS_PATH / lib_path.name
+def copy_libs(frameworks_path: Path, library_paths: set[Path]) -> None:
+    frameworks_path.mkdir(parents=True, exist_ok=True)
+    for lib_path in library_paths:
+        target_path = frameworks_path / lib_path.name
         if not target_path.exists():
             print(f"Copying {lib_path} to {target_path}")
             shutil.copy2(lib_path, target_path)
@@ -93,17 +85,21 @@ def update_links(binary_path: Path) -> None:
 def main() -> None:
     args = parse_args()
 
+    app_bundle_path = Path(f"/tmp/{args.app_name}.app")
+    app_binary_path = app_bundle_path / f"Contents/MacOS/{args.app_name}"
+    frameworks_path = app_bundle_path / "Contents/Frameworks"
+
     if args.copy_only or not args.links_only:
-        gather_libs(APP_BINARY_PATH)
-        copy_libs()
+        library_paths = set(gather_libs(app_binary_path))
+        copy_libs(frameworks_path, library_paths)
 
     if args.links_only or not args.copy_only:
-        for lib_path in FRAMEWORKS_PATH.glob("*"):
+        for lib_path in frameworks_path.glob("*"):
             update_links(lib_path)
 
-        update_links(APP_BINARY_PATH)
+        update_links(app_binary_path)
 
-    print(f"Libraries for {APP_NAME} copied and updated.")
+    print(f"Libraries for {args.app_name} copied and updated.")
 
 
 if __name__ == "__main__":

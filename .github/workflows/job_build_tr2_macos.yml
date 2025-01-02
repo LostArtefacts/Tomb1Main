@@ -1,4 +1,4 @@
-name: Build TR1X and the installer (macOS)
+name: Build TR2X and the installer (macOS)
 
 on:
   workflow_call:
@@ -14,12 +14,6 @@ on:
         default: false
 
 env:
-  FFMPEG_INSTALL_FINAL: /opt/local
-  FFMPEG_INSTALL_TMP_UNIVERSAL: /tmp/install_universal
-  FFMPEG_INSTALL_TMP_ARM64: /tmp/install_arm64
-  FFMPEG_INSTALL_TMP_X86_64: /tmp/install_x86_64
-  CACHE_TMP_DIR: /tmp/opt_local/
-  CACHE_DST_DIR: /opt/local/
   C_INCLUDE_PATH: /opt/local/include/uthash/:/opt/local/include/
 
 jobs:
@@ -34,9 +28,6 @@ jobs:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         run: |
-          echo ${{ secrets.MACOS_KEYCHAIN_PWD }}
-          echo ${{ secrets.MACOS_CERTIFICATE }}
-          echo ${{ secrets.MACOS_CERTIFICATE_PWD }}
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           echo -n "$MACOS_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
@@ -84,34 +75,34 @@ jobs:
       - name: Build arm64 and create app bundle
         run: |
           BUILD_DIR=build-arm64
-          BUILD_OPTIONS="src/tr1 --prefix=/tmp/TR1X.app --bindir=Contents/MacOS --buildtype ${{ inputs.target }}"
+          BUILD_OPTIONS="src/tr2 --prefix=/tmp/TR2X.app --bindir=Contents/MacOS --buildtype ${{ inputs.target }}"
           meson setup $BUILD_DIR $BUILD_OPTIONS
           meson install -C $BUILD_DIR
 
       - name: Build x86-64
         run: |
           BUILD_DIR=build-x86-64
-          BUILD_OPTIONS="src/tr1 --prefix=/tmp/TR1X.app --bindir=Contents/MacOS --cross-file tools/shared/mac/x86-64_cross_file.txt --buildtype ${{ inputs.target }}"
+          BUILD_OPTIONS="src/tr2 --prefix=/tmp/TR2X.app --bindir=Contents/MacOS --cross-file tools/shared/mac/x86-64_cross_file.txt --buildtype ${{ inputs.target }}"
           meson setup $BUILD_DIR $BUILD_OPTIONS
           meson compile -C $BUILD_DIR
 
       - name: Fuse universal executable
         run: |
-          BUNDLE_EXEC_DIR=/tmp/TR1X.app/Contents/MacOS
+          BUNDLE_EXEC_DIR=/tmp/TR2X.app/Contents/MacOS
 
           # Fuse executable and move it into the app bundle.
-          lipo -create build-x86-64/TR1X $BUNDLE_EXEC_DIR/TR1X -output $BUNDLE_EXEC_DIR/TR1X_universal
-          mv $BUNDLE_EXEC_DIR/TR1X_universal $BUNDLE_EXEC_DIR/TR1X
+          lipo -create build-x86-64/TR2X $BUNDLE_EXEC_DIR/TR2X -output $BUNDLE_EXEC_DIR/TR2X_universal
+          mv $BUNDLE_EXEC_DIR/TR2X_universal $BUNDLE_EXEC_DIR/TR2X
 
           # Update dynamic library links in the fused executable.
-          ./tools/shared/mac/bundle_dylibs -a TR1X --links-only
+          ./tools/shared/mac/bundle_dylibs -a TR2X --links-only
 
       - name: Sign app bundle
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           IDENTITY=$(security find-identity -v -p codesigning $KEYCHAIN_PATH | awk -F'"' '{print $2}')
-          xattr -cr /tmp/TR1X.app
-          /usr/bin/codesign --force --deep --options runtime -s "${IDENTITY}" --keychain $KEYCHAIN_PATH -v /tmp/TR1X.app
+          xattr -cr /tmp/TR2X.app
+          /usr/bin/codesign --force --deep --options runtime -s "${IDENTITY}" --keychain $KEYCHAIN_PATH -v /tmp/TR2X.app
 
       - name: Create, sign and notarize disk image
         env:
@@ -121,12 +112,12 @@ jobs:
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           IDENTITY=$(security find-identity -v -p codesigning $KEYCHAIN_PATH | awk -F'"' '{print $2}')
-          tools/shared/mac/create_installer -a TR1X -i data/tr1/mac/icon.icns
-          xattr -cr TR1X-Installer.dmg
-          /usr/bin/codesign --force --options runtime -s "${IDENTITY}" --keychain $KEYCHAIN_PATH -v TR1X-Installer.dmg
-          xcrun notarytool submit --wait --apple-id "$MACOS_APPLEID" --password "$MACOS_APP_PWD" --team-id "$MACOS_TEAMID" TR1X-Installer.dmg
-          xcrun stapler staple -v TR1X-Installer.dmg
-          mv TR1X-Installer.dmg "TR1X-$(tools/get_version 1)-Installer.dmg"
+          tools/shared/mac/create_installer -a TR2X -i data/tr2/mac/icon.icns
+          xattr -cr TR2X-Installer.dmg
+          /usr/bin/codesign --force --options runtime -s "${IDENTITY}" --keychain $KEYCHAIN_PATH -v TR2X-Installer.dmg
+          xcrun notarytool submit --wait --apple-id "$MACOS_APPLEID" --password "$MACOS_APP_PWD" --team-id "$MACOS_TEAMID" TR2X-Installer.dmg
+          xcrun stapler staple -v TR2X-Installer.dmg
+          mv TR2X-Installer.dmg "TR2X-$(tools/get_version 1)-Installer.dmg"
 
       - id: vars
         name: Prepare variables
@@ -135,7 +126,7 @@ jobs:
       - name: Upload signed+notarized installer image
         uses: actions/upload-artifact@v4
         with:
-          name: TR1X-${{ steps.vars.outputs.version }}-mac
+          name: TR2X-${{ steps.vars.outputs.version }}-mac
           path: |
             *.dmg
           compression-level: 0 # .dmg is already compressed.
