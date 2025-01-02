@@ -568,7 +568,7 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
     if (inv_item->object_id == O_MAP_OPTION) {
         const int16_t extra_rotation[1] = { Option_Compass_GetNeedleAngle() };
         int32_t *const bone = &g_AnimBones[obj->bone_idx];
-        bone[0] |= BEB_ROT_Y;
+        bone[0] |= BF_ROT_Y;
         Object_DrawInterpolatedObject(
             obj, inv_item->drawn_meshes, extra_rotation, frame1, frame2, frac,
             rate);

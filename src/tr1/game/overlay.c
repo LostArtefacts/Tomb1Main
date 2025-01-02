@@ -406,11 +406,11 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
 
     for (int i = 1; i < obj->nmeshes; i++) {
         int32_t bone_extra_flags = *bone;
-        if (bone_extra_flags & BEB_POP) {
+        if (bone_extra_flags & BF_MATRIX_POP) {
             Matrix_Pop();
         }
 
-        if (bone_extra_flags & BEB_PUSH) {
+        if (bone_extra_flags & BF_MATRIX_PUSH) {
             Matrix_Push();
         }
 

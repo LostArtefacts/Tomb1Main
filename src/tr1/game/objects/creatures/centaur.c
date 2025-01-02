@@ -55,7 +55,7 @@ void Centaur_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx + 40] |= BEB_ROT_X | BEB_ROT_Y;
+    g_AnimBones[obj->bone_idx + 40] |= BF_ROT_X | BF_ROT_Y;
 }
 
 void Centaur_Control(int16_t item_num)

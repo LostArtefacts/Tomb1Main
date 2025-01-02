@@ -530,14 +530,6 @@ typedef enum {
     FBBOX_ROT   = 9,
 } FRAME_BBOX_INFO;
 
-typedef enum {
-    BF_MATRIX_POP  = 1,
-    BF_MATRIX_PUSH = 2,
-    BF_ROT_X       = 4,
-    BF_ROT_Y       = 8,
-    BF_ROT_Z       = 16,
-} BONE_FLAGS;
-
 typedef struct {
     int16_t tx;
     int16_t ty;

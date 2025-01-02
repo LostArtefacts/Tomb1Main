@@ -31,7 +31,7 @@ void Mummy_Setup(OBJECT *obj)
     obj->save_flags = 1;
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
-    g_AnimBones[obj->bone_idx + 8] |= BEB_ROT_Y;
+    g_AnimBones[obj->bone_idx + 8] |= BF_ROT_Y;
 }
 
 void Mummy_Initialise(int16_t item_num)

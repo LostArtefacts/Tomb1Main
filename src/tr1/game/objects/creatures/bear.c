@@ -69,7 +69,7 @@ void Bear_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx + 52] |= BEB_ROT_Y;
+    g_AnimBones[obj->bone_idx + 52] |= BF_ROT_Y;
 }
 
 void Bear_Control(int16_t item_num)

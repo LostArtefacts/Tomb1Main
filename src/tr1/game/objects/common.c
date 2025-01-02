@@ -210,11 +210,11 @@ void Object_DrawPickupItem(ITEM *item)
 
         for (int i = 1; i < object->nmeshes; i++) {
             int32_t bone_extra_flags = *bone;
-            if (bone_extra_flags & BEB_POP) {
+            if (bone_extra_flags & BF_MATRIX_POP) {
                 Matrix_Pop();
             }
 
-            if (bone_extra_flags & BEB_PUSH) {
+            if (bone_extra_flags & BF_MATRIX_PUSH) {
                 Matrix_Push();
             }
 
@@ -264,24 +264,24 @@ void Object_DrawInterpolatedObject(
 
         for (int i = 1; i < object->nmeshes; i++) {
             int32_t bone_flags = *bone;
-            if (bone_flags & BEB_POP) {
+            if (bone_flags & BF_MATRIX_POP) {
                 Matrix_Pop();
             }
 
-            if (bone_flags & BEB_PUSH) {
+            if (bone_flags & BF_MATRIX_PUSH) {
                 Matrix_Push();
             }
 
             Matrix_TranslateRel(bone[1], bone[2], bone[3]);
             Matrix_RotYXZpack(*packed_rotation++);
 
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_Y) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_Y) != 0) {
                 Matrix_RotY(*extra_rotation++);
             }
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_X) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_X) != 0) {
                 Matrix_RotX(*extra_rotation++);
             }
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_Z) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_Z) != 0) {
                 Matrix_RotZ(*extra_rotation++);
             }
 
@@ -308,24 +308,24 @@ void Object_DrawInterpolatedObject(
 
         for (int i = 1; i < object->nmeshes; i++) {
             int32_t bone_flags = *bone;
-            if (bone_flags & BEB_POP) {
+            if (bone_flags & BF_MATRIX_POP) {
                 Matrix_Pop_I();
             }
 
-            if (bone_flags & BEB_PUSH) {
+            if (bone_flags & BF_MATRIX_PUSH) {
                 Matrix_Push_I();
             }
 
             Matrix_TranslateRel_I(bone[1], bone[2], bone[3]);
             Matrix_RotYXZpack_I(*packed_rotation1++, *packed_rotation2++);
 
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_Y) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_Y) != 0) {
                 Matrix_RotY_I(*extra_rotation++);
             }
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_X) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_X) != 0) {
                 Matrix_RotX_I(*extra_rotation++);
             }
-            if (extra_rotation != NULL && (bone_flags & BEB_ROT_Z) != 0) {
+            if (extra_rotation != NULL && (bone_flags & BF_ROT_Z) != 0) {
                 Matrix_RotZ_I(*extra_rotation++);
             }
 
