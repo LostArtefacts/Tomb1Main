@@ -5,6 +5,7 @@
 #include "game/overlay.h"
 #include "game/phase/phase.h"
 #include "game/random.h"
+#include "game/shell.h"
 #include "game/viewport.h"
 #include "global/const.h"
 #include "global/types.h"
@@ -13,7 +14,6 @@
 #include "math/math_misc.h"
 #include "math/matrix.h"
 #include "specific/s_output.h"
-#include "specific/s_shell.h"
 
 #include <libtrx/config.h>
 #include <libtrx/engine/image.h>
@@ -627,7 +627,7 @@ void Output_EndScene(void)
     S_Output_EnableDepthTest();
     S_Output_RenderEnd();
     S_Output_FlipScreen();
-    S_Shell_SpinMessageLoop();
+    Shell_ProcessEvents();
     g_FPSCounter++;
 }
 

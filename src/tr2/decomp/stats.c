@@ -1,17 +1,5 @@
 #include "decomp/stats.h"
 
-#include "decomp/decomp.h"
-#include "decomp/savegame.h"
-#include "game/console/common.h"
-#include "game/fader.h"
-#include "game/input.h"
-#include "game/music.h"
-#include "game/output.h"
-#include "game/overlay.h"
-#include "game/requester.h"
-#include "game/shell.h"
-#include "game/text.h"
-#include "global/types.h"
 #include "global/vars.h"
 
 #include <libtrx/log.h>

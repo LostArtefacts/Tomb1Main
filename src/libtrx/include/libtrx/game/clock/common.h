@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define LOGIC_FPS 30
-
 void Clock_Init(void);
 
 void Clock_SyncTick(void);

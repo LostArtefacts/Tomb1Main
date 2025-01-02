@@ -4,7 +4,6 @@
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/effects.h"
-#include "game/fader.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
@@ -18,6 +17,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/fader.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>

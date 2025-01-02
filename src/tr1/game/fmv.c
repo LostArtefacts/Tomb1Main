@@ -119,7 +119,7 @@ static bool M_Play(const char *const file_path)
         Video_SetSurfacePixelFormat(video, AV_PIX_FMT_BGRA);
         GFX_Context_SetDisplaySize(Screen_GetResWidth(), Screen_GetResHeight());
         Video_PumpEvents(video);
-        S_Shell_SpinMessageLoop();
+        Shell_ProcessEvents();
 
         Input_Update();
 

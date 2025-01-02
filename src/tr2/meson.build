@@ -87,7 +87,6 @@ sources = [
   'game/creature.c',
   'game/demo.c',
   'game/effects.c',
-  'game/fader.c',
   'game/fmv.c',
   'game/game.c',
   'game/game_string.c',

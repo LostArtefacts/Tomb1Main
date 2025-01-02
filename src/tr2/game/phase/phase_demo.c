@@ -2,7 +2,6 @@
 
 #include "decomp/decomp.h"
 #include "game/camera.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
@@ -19,6 +18,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/fader.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 

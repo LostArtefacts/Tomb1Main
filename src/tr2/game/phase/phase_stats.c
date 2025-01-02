@@ -1,7 +1,6 @@
 #include "game/phase/phase_stats.h"
 
 #include "game/console/common.h"
-#include "game/fader.h"
 #include "game/input.h"
 #include "game/music.h"
 #include "game/output.h"
@@ -10,6 +9,7 @@
 #include "game/ui/widgets/stats_dialog.h"
 #include "global/vars.h"
 
+#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
 typedef enum {

@@ -3,7 +3,6 @@
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/camera.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/music.h"
 #include "game/output.h"
@@ -14,6 +13,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
 typedef struct {

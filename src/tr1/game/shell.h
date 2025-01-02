@@ -5,5 +5,4 @@
 #include <stdbool.h>
 
 void Shell_Init(const char *gameflow_path);
-void Shell_ProcessInput(void);
 void Shell_Main(void);

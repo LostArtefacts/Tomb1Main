@@ -1,11 +1,10 @@
 #include "game/fader.h"
 
+#include "config.h"
+#include "game/clock/const.h"
 #include "game/input.h"
 #include "game/shell.h"
-#include "global/const.h"
-
-#include <libtrx/config.h>
-#include <libtrx/utils.h>
+#include "utils.h"
 
 #define TRANSPARENT 0
 #define OPAQUE 255
@@ -45,7 +44,7 @@ void Fader_InitTransparentToBlack(FADER *const fader, const int32_t duration)
             .initial = TRANSPARENT,
             .target = OPAQUE,
             .duration = duration,
-            .debuff = FRAMES_PER_SECOND / 6,
+            .debuff = LOGIC_FPS / 6,
         });
 }
 
@@ -57,7 +56,7 @@ void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
             .initial = fader->current.value,
             .target = OPAQUE,
             .duration = duration,
-            .debuff = FRAMES_PER_SECOND / 6,
+            .debuff = LOGIC_FPS / 6,
         });
 }
 
@@ -95,7 +94,7 @@ bool Fader_Control(FADER *const fader)
 
     Input_Update();
     Shell_ProcessInput();
-    Shell_ProcessEvents();
+
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         // cancel the fade immediately
         fader->is_active = false;

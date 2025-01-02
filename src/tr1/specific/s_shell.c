@@ -156,7 +156,7 @@ void S_Shell_Init(void)
     SDL_ShowWindow(m_Window);
 }
 
-void S_Shell_SpinMessageLoop(void)
+void Shell_ProcessEvents(void)
 {
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {

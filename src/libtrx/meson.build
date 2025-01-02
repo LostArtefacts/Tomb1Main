@@ -94,6 +94,7 @@ sources = [
   'game/console/cmd/teleport.c',
   'game/console/common.c',
   'game/console/history.c',
+  'game/fader.c',
   'game/game_string.c',
   'game/gamebuf.c',
   'game/input/backends/controller.c',

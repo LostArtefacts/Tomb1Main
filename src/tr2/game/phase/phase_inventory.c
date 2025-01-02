@@ -1,7 +1,6 @@
 #include "game/phase/phase_inventory.h"
 
 #include "game/console/common.h"
-#include "game/fader.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
@@ -9,6 +8,7 @@
 #include "game/phase/priv.h"
 #include "global/vars.h"
 
+#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
 typedef enum {
