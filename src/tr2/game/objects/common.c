@@ -22,7 +22,7 @@ void Object_DrawDummyItem(const ITEM *const item)
 
 void Object_DrawAnimatingItem(const ITEM *item)
 {
-    FRAME_INFO *frames[2];
+    ANIM_FRAME *frames[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frames, &rate);
     const OBJECT *const obj = Object_GetObject(item->object_id);
@@ -193,7 +193,7 @@ void Object_Collision_Trap(
 }
 
 BOUNDS_16 Object_GetBoundingBox(
-    const OBJECT *const obj, const FRAME_INFO *const frame,
+    const OBJECT *const obj, const ANIM_FRAME *const frame,
     const uint32_t mesh_bits)
 {
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];

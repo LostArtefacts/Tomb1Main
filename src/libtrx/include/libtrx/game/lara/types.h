@@ -10,7 +10,7 @@
 
 #if TR_VERSION == 1
 typedef struct __PACKING {
-    FRAME_INFO *frame_base;
+    ANIM_FRAME *frame_base;
     int16_t frame_num;
     int16_t lock;
     XYZ_16 rot;

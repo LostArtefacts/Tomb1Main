@@ -665,7 +665,7 @@ int32_t Item_IsTriggerActive(ITEM *const item)
     return ok;
 }
 
-int32_t Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate)
+int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 {
     const ANIM *const anim = &g_Anims[item->anim_num];
     const int32_t cur_frame_num = item->frame_num - anim->frame_base;
@@ -686,8 +686,8 @@ int32_t Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate)
         }
     }
 
-    frmptr[0] = (FRAME_INFO *)(anim->frame_ptr + first_key_frame_num);
-    frmptr[1] = (FRAME_INFO *)(anim->frame_ptr + second_key_frame_num);
+    frmptr[0] = (ANIM_FRAME *)(anim->frame_ptr + first_key_frame_num);
+    frmptr[1] = (ANIM_FRAME *)(anim->frame_ptr + second_key_frame_num);
     *rate = denominator;
     return numerator;
 }
@@ -695,7 +695,7 @@ int32_t Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate)
 BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *const item)
 {
     int32_t rate;
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     const int32_t frac = Item_GetFrames(item, frmptr, &rate);
     if (!frac) {
         return &frmptr[0]->bounds;
@@ -714,9 +714,9 @@ BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *const item)
     return result;
 }
 
-FRAME_INFO *Item_GetBestFrame(const ITEM *const item)
+ANIM_FRAME *Item_GetBestFrame(const ITEM *const item)
 {
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     int32_t rate;
     const int32_t frac = Item_GetFrames(item, frmptr, &rate);
     return frmptr[(frac > rate / 2) ? 1 : 0];
@@ -764,7 +764,7 @@ int32_t Item_Explode(
     Output_CalculateLight(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
 
-    const FRAME_INFO *const best_frame = Item_GetBestFrame(item);
+    const ANIM_FRAME *const best_frame = Item_GetBestFrame(item);
 
     Matrix_PushUnit();
     g_MatrixPtr->_03 = 0;

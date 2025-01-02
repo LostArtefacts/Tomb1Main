@@ -111,7 +111,7 @@ static void M_SpawnPickupAid(const ITEM *const item)
     const GAME_OBJECT_ID obj_id =
         Object_GetCognate(item->object_id, g_ItemToInvObjectMap);
     const OBJECT *const object = Object_GetObject(obj_id);
-    const FRAME_INFO *const frame = object->frame_base;
+    const ANIM_FRAME *const frame = object->frame_base;
 
     const GAME_VECTOR pos = {
         .x = item->pos.x + 20 * (Random_GetDraw() - 0x4000) / 0x4000,

@@ -324,7 +324,7 @@ static void M_LoadAnimFrames(VFILE *const file)
     LOG_INFO("anim frame data size: %d", anim_frame_data_size);
     g_AnimFrames =
         GameBuf_Alloc(sizeof(int16_t) * anim_frame_data_size, GBUF_ANIM_FRAMES);
-    // TODO: make me FRAME_INFO
+    // TODO: make me ANIM_FRAME
     int16_t *ptr = (int16_t *)&g_AnimFrames[0];
     VFile_Read(file, ptr, sizeof(int16_t) * anim_frame_data_size);
     Benchmark_End(benchmark, NULL);

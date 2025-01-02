@@ -43,11 +43,11 @@ typedef struct __PACKING {
 #else
     int16_t mesh_rots[];
 #endif
-} FRAME_INFO;
+} ANIM_FRAME;
 
 typedef struct __PACKING {
 #if TR_VERSION == 1
-    FRAME_INFO *frame_ptr;
+    ANIM_FRAME *frame_ptr;
     uint32_t frame_ofs;
 #elif TR_VERSION == 2
     int16_t *frame_ptr;

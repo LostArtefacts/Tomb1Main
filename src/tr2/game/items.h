@@ -27,9 +27,9 @@ void Item_Animate(ITEM *item);
 int32_t Item_GetAnimChange(ITEM *item, const ANIM *anim);
 void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 int32_t Item_IsTriggerActive(ITEM *item);
-int32_t Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate);
+int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate);
 BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *item);
-FRAME_INFO *Item_GetBestFrame(const ITEM *item);
+ANIM_FRAME *Item_GetBestFrame(const ITEM *item);
 bool Item_IsNearItem(const ITEM *item, const XYZ_32 *pos, int32_t distance);
 
 bool Item_IsSmashable(const ITEM *item);

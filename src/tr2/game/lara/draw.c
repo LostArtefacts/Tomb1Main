@@ -31,7 +31,7 @@ static void M_DrawBodyPart(
 
 void Lara_Draw(const ITEM *const item)
 {
-    FRAME_INFO *frame;
+    ANIM_FRAME *frame;
     MATRIX saved_matrix;
 
     const int32_t top = g_PhdWinTop;
@@ -44,7 +44,7 @@ void Lara_Draw(const ITEM *const item)
     g_PhdWinBottom = g_PhdWinMaxY;
     g_PhdWinRight = g_PhdWinMaxX;
 
-    FRAME_INFO *frames[2];
+    ANIM_FRAME *frames[2];
     if (g_Lara.hit_direction < 0) {
         int32_t rate;
         const int32_t frac = Item_GetFrames(item, frames, &rate);
@@ -67,7 +67,7 @@ void Lara_Draw(const ITEM *const item)
         default:        anim = LA_HIT_FRONT; break;
         }
         // clang-format on
-        frame = (FRAME_INFO *)(g_Anims[anim].frame_ptr
+        frame = (ANIM_FRAME *)(g_Anims[anim].frame_ptr
                                + g_Lara.hit_frame
                                    * (g_Anims[anim].interpolation >> 8));
     }
@@ -314,8 +314,8 @@ finish:
 }
 
 void Lara_Draw_I(
-    const ITEM *const item, const FRAME_INFO *const frame1,
-    const FRAME_INFO *const frame2, const int32_t frac, const int32_t rate)
+    const ITEM *const item, const ANIM_FRAME *const frame1,
+    const ANIM_FRAME *const frame2, const int32_t frac, const int32_t rate)
 {
     const OBJECT *const object = &g_Objects[item->object_id];
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);

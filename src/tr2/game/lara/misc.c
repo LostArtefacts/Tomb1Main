@@ -841,7 +841,7 @@ int32_t Lara_CheckForLetGo(ITEM *item, COLL_INFO *coll)
 
 void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
 {
-    FRAME_INFO *frmptr[2] = { NULL, NULL };
+    ANIM_FRAME *frmptr[2] = { NULL, NULL };
     if (g_Lara.hit_direction < 0) {
         int32_t rate;
         int32_t frac = Item_GetFrames(g_LaraItem, frmptr, &rate);
@@ -852,7 +852,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
         }
     }
 
-    const FRAME_INFO *frame_ptr = NULL;
+    const ANIM_FRAME *frame_ptr = NULL;
     const OBJECT *obj = &g_Objects[g_LaraItem->object_id];
     if (g_Lara.hit_direction >= 0) {
         LARA_ANIMATION anim_num;
@@ -872,7 +872,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
         }
         const ANIM *anim = &g_Anims[anim_num];
         int32_t interpolation = anim->interpolation;
-        frame_ptr = (const FRAME_INFO *)(anim->frame_ptr
+        frame_ptr = (const ANIM_FRAME *)(anim->frame_ptr
                                          + (int32_t)(g_Lara.hit_frame
                                                      * (interpolation >> 8)));
     } else {
@@ -945,7 +945,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
 }
 
 void Lara_GetJointAbsPosition_I(
-    ITEM *item, XYZ_32 *vec, FRAME_INFO *frame1, FRAME_INFO *frame2,
+    ITEM *item, XYZ_32 *vec, ANIM_FRAME *frame1, ANIM_FRAME *frame2,
     int32_t frac, int32_t rate)
 {
     const OBJECT *obj = &g_Objects[item->object_id];

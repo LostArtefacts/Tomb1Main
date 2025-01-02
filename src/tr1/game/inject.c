@@ -567,7 +567,7 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     for (int32_t i = 0; i < inj_info->anim_frame_count; i++) {
         level_info->anim_frame_offsets[level_info->anim_frame_count + i] =
             VFile_GetPos(fp) - frame_data_start;
-        FRAME_INFO *const frame =
+        ANIM_FRAME *const frame =
             &g_AnimFrames[level_info->anim_frame_count + i];
         frame->bounds.min.x = VFile_ReadS16(fp);
         frame->bounds.max.x = VFile_ReadS16(fp);
@@ -1687,7 +1687,7 @@ static void M_FrameEdits(const INJECTION *const injection)
         }
 
         const ANIM *const anim = &g_Anims[obj->anim_idx + anim_idx];
-        FRAME_INFO *const frame = anim->frame_ptr;
+        ANIM_FRAME *const frame = anim->frame_ptr;
         frame->mesh_rots[0] = packed_rot;
     }
 

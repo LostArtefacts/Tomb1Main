@@ -6,5 +6,5 @@
 
 void Lara_Draw(ITEM *item);
 void Lara_Draw_I(
-    ITEM *item, FRAME_INFO *frame1, FRAME_INFO *frame2, int32_t frac,
+    ITEM *item, ANIM_FRAME *frame1, ANIM_FRAME *frame2, int32_t frac,
     int32_t rate);

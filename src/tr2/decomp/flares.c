@@ -123,7 +123,7 @@ void Flare_DoInHand(const int32_t flare_age)
 void Flare_DrawInAir(const ITEM *const item)
 {
     int32_t rate;
-    FRAME_INFO *frames[2];
+    ANIM_FRAME *frames[2];
     Item_GetFrames(item, frames, &rate);
     Matrix_Push();
     Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);

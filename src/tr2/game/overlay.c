@@ -58,7 +58,7 @@ static int32_t m_AmmoTextY = 0;
 static TEXTSTRING *m_AmmoTextInfo = NULL;
 
 static float M_Ease(int32_t cur_frame, int32_t max_frames);
-static BOUNDS_16 M_GetBounds(const OBJECT *obj, const FRAME_INFO *frame);
+static BOUNDS_16 M_GetBounds(const OBJECT *obj, const ANIM_FRAME *frame);
 static void M_DrawPickup3D(const DISPLAY_PICKUP *pickup);
 static void M_DrawPickupSprite(const DISPLAY_PICKUP *pickup);
 
@@ -356,8 +356,8 @@ void Overlay_InitialisePickUpDisplay(void)
 static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 {
     const OBJECT *const obj = pickup->inv_object;
-    const FRAME_INFO *const frame =
-        (FRAME_INFO *)g_Anims[obj->anim_idx].frame_ptr;
+    const ANIM_FRAME *const frame =
+        (ANIM_FRAME *)g_Anims[obj->anim_idx].frame_ptr;
 
     float ease = 1.0f;
     switch (pickup->phase) {

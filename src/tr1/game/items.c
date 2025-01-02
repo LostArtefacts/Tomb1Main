@@ -750,9 +750,9 @@ bool Item_IsTriggerActive(ITEM *item)
     return ok;
 }
 
-FRAME_INFO *Item_GetBestFrame(const ITEM *item)
+ANIM_FRAME *Item_GetBestFrame(const ITEM *item)
 {
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
     if (frac <= rate / 2) {
@@ -765,7 +765,7 @@ FRAME_INFO *Item_GetBestFrame(const ITEM *item)
 const BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *item)
 {
     int32_t rate;
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
 
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
     if (!frac) {
@@ -785,7 +785,7 @@ const BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *item)
     return result;
 }
 
-int32_t Item_GetFrames(const ITEM *item, FRAME_INFO *frmptr[], int32_t *rate)
+int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 {
     const ANIM *anim = &g_Anims[item->anim_num];
 
@@ -858,7 +858,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
     ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_GetObject(item->object_id);
 
-    const FRAME_INFO *const frame = Item_GetBestFrame(item);
+    const ANIM_FRAME *const frame = Item_GetBestFrame(item);
 
     Matrix_PushUnit();
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);

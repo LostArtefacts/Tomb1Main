@@ -9,7 +9,7 @@
 // TODO: this duplicates Object_DrawAnimatingItem almost entirely
 void XianWarrior_Draw(const ITEM *item)
 {
-    FRAME_INFO *frames[2];
+    ANIM_FRAME *frames[2];
     int32_t rate;
     const int32_t frac = Item_GetFrames(item, frames, &rate);
     const OBJECT *const obj = Object_GetObject(item->object_id);

@@ -104,7 +104,7 @@ static void M_DrawItem(
         }
     }
 
-    FRAME_INFO *frame_ptr = (FRAME_INFO *)&obj->frame_base
+    ANIM_FRAME *frame_ptr = (ANIM_FRAME *)&obj->frame_base
                                 [inv_item->current_frame
                                  * (g_Anims[obj->anim_idx].interpolation >> 8)];
 

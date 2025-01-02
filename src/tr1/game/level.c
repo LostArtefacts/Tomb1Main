@@ -417,7 +417,7 @@ static void M_LoadAnimFrames(VFILE *file)
                + m_InjectionInfo->anim_frame_mesh_rot_count),
         GBUF_ANIM_FRAMES);
     g_AnimFrames = GameBuf_Alloc(
-        sizeof(FRAME_INFO)
+        sizeof(ANIM_FRAME)
             * (m_LevelInfo.anim_frame_count
                + m_InjectionInfo->anim_frame_count),
         GBUF_ANIM_FRAMES);
@@ -430,7 +430,7 @@ static void M_LoadAnimFrames(VFILE *file)
     for (int32_t i = 0; i < m_LevelInfo.anim_frame_count; i++) {
         m_LevelInfo.anim_frame_offsets[i] =
             (raw_data_ptr - raw_data) * sizeof(int16_t);
-        FRAME_INFO *const frame = &g_AnimFrames[i];
+        ANIM_FRAME *const frame = &g_AnimFrames[i];
         frame->bounds.min.x = *raw_data_ptr++;
         frame->bounds.max.x = *raw_data_ptr++;
         frame->bounds.min.y = *raw_data_ptr++;

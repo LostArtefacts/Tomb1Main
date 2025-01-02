@@ -971,7 +971,7 @@ void Skidoo_Draw(const ITEM *const item)
 
     // TODO: merge common code parts down below with Object_DrawAnimatingItem.
 
-    FRAME_INFO *frames[2];
+    ANIM_FRAME *frames[2];
     int32_t rate;
     const int32_t frac = Item_GetFrames(item, frames, &rate);
 

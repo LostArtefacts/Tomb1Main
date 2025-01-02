@@ -165,7 +165,7 @@ void LightningEmitter_Collision(
 
 void LightningEmitter_Draw(ITEM *item)
 {
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     int32_t rate;
     Item_GetFrames(item, frmptr, &rate);
 

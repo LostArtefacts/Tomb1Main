@@ -229,13 +229,13 @@ void Pickup_Draw(const ITEM *const item)
     // Get the first frame of the first animation, and its bounding box.
     int16_t offset;
     BOUNDS_16 bounds;
-    const FRAME_INFO *frame = NULL;
+    const ANIM_FRAME *frame = NULL;
 
     // Some items, such as the Prayer Wheel in Barkhang Monastery, do not have
     // animations, and for such items we need to calculate this information
     // manually.
     if (obj->anim_idx != -1) {
-        frame = (const FRAME_INFO *)obj->frame_base;
+        frame = (const ANIM_FRAME *)obj->frame_base;
         bounds = frame->bounds;
         const int16_t y_off = frame->offset.y - bounds.max_y;
         bounds.max_y -= bounds.max_y;

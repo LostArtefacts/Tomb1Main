@@ -97,7 +97,7 @@ void Object_DrawPickupItem(ITEM *item)
 
     OBJECT *object = &g_Objects[item_num_option];
 
-    const FRAME_INFO *frame = g_Anims[item->anim_num].frame_ptr;
+    const ANIM_FRAME *frame = g_Anims[item->anim_num].frame_ptr;
 
     // Restore the old frame number in case we need to get the sprite again.
     item->frame_num = old_frame_num;
@@ -237,7 +237,7 @@ void Object_DrawPickupItem(ITEM *item)
 
 void Object_DrawInterpolatedObject(
     const OBJECT *const object, uint32_t meshes, const int16_t *extra_rotation,
-    const FRAME_INFO *const frame1, const FRAME_INFO *const frame2,
+    const ANIM_FRAME *const frame1, const ANIM_FRAME *const frame2,
     const int32_t frac, const int32_t rate)
 {
     ASSERT(frame1 != NULL);
@@ -343,7 +343,7 @@ void Object_DrawInterpolatedObject(
 
 void Object_DrawAnimatingItem(ITEM *item)
 {
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
     OBJECT *object = &g_Objects[item->object_id];

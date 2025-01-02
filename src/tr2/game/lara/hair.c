@@ -23,12 +23,12 @@ static XYZ_32 m_HairVelocity[HAIR_SEGMENTS + 1];
 static HAIR_SEGMENT m_HairSegments[HAIR_SEGMENTS + 1];
 static int32_t m_HairWind;
 
-static void M_CalculateSpheres(const FRAME_INFO *frame);
+static void M_CalculateSpheres(const ANIM_FRAME *frame);
 static void M_CalculateSpheres_I(
-    const FRAME_INFO *frame_1, const FRAME_INFO *frame_2, int32_t frac,
+    const ANIM_FRAME *frame_1, const ANIM_FRAME *frame_2, int32_t frac,
     int32_t rate);
 
-static void M_CalculateSpheres(const FRAME_INFO *const frame)
+static void M_CalculateSpheres(const ANIM_FRAME *const frame)
 {
     const int16_t *mesh_rots = frame->mesh_rots;
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
@@ -108,7 +108,7 @@ static void M_CalculateSpheres(const FRAME_INFO *const frame)
 }
 
 static void M_CalculateSpheres_I(
-    const FRAME_INFO *const frame_1, const FRAME_INFO *const frame_2,
+    const ANIM_FRAME *const frame_1, const ANIM_FRAME *const frame_2,
     const int32_t frac, const int32_t rate)
 {
     const int16_t *mesh_rots_1 = frame_1->mesh_rots;
@@ -224,12 +224,12 @@ void Lara_Hair_Initialise(void)
 
 void Lara_Hair_Control(const bool in_cutscene)
 {
-    const FRAME_INFO *frame_1;
-    const FRAME_INFO *frame_2;
+    const ANIM_FRAME *frame_1;
+    const ANIM_FRAME *frame_2;
     int32_t frac;
     int32_t rate;
     if (g_Lara.hit_direction < 0) {
-        FRAME_INFO *frmptr[2];
+        ANIM_FRAME *frmptr[2];
         frac = Item_GetFrames(g_LaraItem, frmptr, &rate);
         frame_1 = frmptr[0];
         frame_2 = frmptr[1];
@@ -253,7 +253,7 @@ void Lara_Hair_Control(const bool in_cutscene)
         const int16_t *const frame_ptr = g_Anims[lara_anim].frame_ptr;
         const int32_t interpolation = g_Anims[lara_anim].interpolation;
         frame_1 =
-            (FRAME_INFO *)&frame_ptr[g_Lara.hit_frame * (interpolation >> 8)];
+            (ANIM_FRAME *)&frame_ptr[g_Lara.hit_frame * (interpolation >> 8)];
         frac = 0;
     }
 

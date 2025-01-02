@@ -92,7 +92,7 @@ void Grenade_Control(int16_t item_num)
             continue;
         }
 
-        const FRAME_INFO *const frame = Item_GetBestFrame(target_item);
+        const ANIM_FRAME *const frame = Item_GetBestFrame(target_item);
         const BOUNDS_16 *const bounds = &frame->bounds;
 
         const int32_t cdy = item->pos.y - target_item->pos.y;

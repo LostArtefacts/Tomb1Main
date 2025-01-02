@@ -194,7 +194,7 @@ void Creature_Mood(ITEM *item, AI_INFO *info, bool violent)
             lot->target.z = g_LaraItem->pos.z;
             lot->required_box = g_LaraItem->box_num;
             if (lot->fly && g_Lara.water_status == LWS_ABOVE_WATER) {
-                const FRAME_INFO *const frame = Item_GetBestFrame(g_LaraItem);
+                const ANIM_FRAME *const frame = Item_GetBestFrame(g_LaraItem);
                 lot->target.y += frame->bounds.min.y;
             }
         }

@@ -66,8 +66,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen);
 static void Inv_SelectMeshes(INVENTORY_ITEM *inv_item);
 static bool Inv_AnimateItem(INVENTORY_ITEM *inv_item);
 static int32_t InvItem_GetFrames(
-    const INVENTORY_ITEM *inv_item, FRAME_INFO **out_frame1,
-    FRAME_INFO **out_frame2, int32_t *out_rate);
+    const INVENTORY_ITEM *inv_item, ANIM_FRAME **out_frame1,
+    ANIM_FRAME **out_frame2, int32_t *out_rate);
 static void Inv_DrawItem(INVENTORY_ITEM *inv_item, int32_t frames);
 static bool Inv_CheckDemoTimer(const IMOTION_INFO *motion);
 
@@ -412,8 +412,8 @@ static bool Inv_AnimateItem(INVENTORY_ITEM *inv_item)
 }
 
 static int32_t InvItem_GetFrames(
-    const INVENTORY_ITEM *inv_item, FRAME_INFO **out_frame1,
-    FRAME_INFO **out_frame2, int32_t *out_rate)
+    const INVENTORY_ITEM *inv_item, ANIM_FRAME **out_frame1,
+    ANIM_FRAME **out_frame2, int32_t *out_rate)
 {
     const RING_INFO *const ring = &m_Ring;
     const IMOTION_INFO *const motion = &m_Motion;
@@ -562,8 +562,8 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
     }
 
     int32_t rate;
-    FRAME_INFO *frame1;
-    FRAME_INFO *frame2;
+    ANIM_FRAME *frame1;
+    ANIM_FRAME *frame2;
     const int32_t frac = InvItem_GetFrames(inv_item, &frame1, &frame2, &rate);
     if (inv_item->object_id == O_MAP_OPTION) {
         const int16_t extra_rotation[1] = { Option_Compass_GetNeedleAngle() };

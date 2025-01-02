@@ -90,10 +90,10 @@ void Lara_Hair_Control(void)
     OBJECT *object;
     int32_t *bone;
     int32_t distance;
-    FRAME_INFO *frame;
+    ANIM_FRAME *frame;
     const OBJECT_MESH *mesh;
     int16_t room_num;
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frmptr[2];
     XYZ_32 pos;
     const SECTOR *sector;
     int32_t i;

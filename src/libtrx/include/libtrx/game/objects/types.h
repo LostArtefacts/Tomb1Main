@@ -40,7 +40,7 @@ typedef struct __PACKING {
     int16_t nmeshes;
     int16_t mesh_idx;
     int32_t bone_idx;
-    FRAME_INFO *frame_base;
+    ANIM_FRAME *frame_base;
     void (*initialise)(int16_t item_num);
     void (*control)(int16_t item_num);
     int16_t (*floor_height_func)(
@@ -69,7 +69,7 @@ typedef struct __PACKING {
     int16_t mesh_count;
     int16_t mesh_idx;
     int32_t bone_idx;
-    int16_t *frame_base; // TODO: make me FRAME_INFO
+    int16_t *frame_base; // TODO: make me ANIM_FRAME
 
     void (*initialise)(int16_t item_num);
     void (*control)(int16_t item_num);

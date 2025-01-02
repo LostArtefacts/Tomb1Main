@@ -25,8 +25,8 @@ static void M_DrawMesh(
 void Lara_Draw(ITEM *item)
 {
     OBJECT *object;
-    FRAME_INFO *frame;
-    FRAME_INFO *frmptr[2];
+    ANIM_FRAME *frame;
+    ANIM_FRAME *frmptr[2];
     MATRIX saved_matrix;
 
     int32_t top = g_PhdTop;
@@ -340,7 +340,7 @@ end:
 }
 
 void Lara_Draw_I(
-    ITEM *item, FRAME_INFO *frame1, FRAME_INFO *frame2, int32_t frac,
+    ITEM *item, ANIM_FRAME *frame1, ANIM_FRAME *frame2, int32_t frac,
     int32_t rate)
 {
     MATRIX saved_matrix;

@@ -42,7 +42,7 @@ void SkidooArmed_Push(
     int32_t rx = (cy * dx - sy * dz) >> W2V_SHIFT;
     int32_t rz = (sy * dx + cy * dz) >> W2V_SHIFT;
 
-    const FRAME_INFO *const best_frame = Item_GetBestFrame(item);
+    const ANIM_FRAME *const best_frame = Item_GetBestFrame(item);
     BOUNDS_16 bounds = {
         .min_x = best_frame->bounds.min_x - radius,
         .max_x = best_frame->bounds.max_x + radius,
