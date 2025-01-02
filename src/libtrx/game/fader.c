@@ -5,6 +5,7 @@
 #include "utils.h"
 
 #define TRANSPARENT 0
+#define HALF_OPAQUE 127
 #define OPAQUE 255
 
 void Fader_Init(FADER *const fader, const FADER_ARGS args)
@@ -20,6 +21,18 @@ void Fader_Init(FADER *const fader, const FADER_ARGS args)
         fader->current.frame = args.duration + args.debuff;
         fader->current.value = args.target;
     }
+}
+
+void Fader_InitEmpty(FADER *const fader)
+{
+    Fader_Init(
+        fader,
+        (FADER_ARGS) {
+            .initial = TRANSPARENT,
+            .target = TRANSPARENT,
+            .duration = 0,
+            .debuff = 0,
+        });
 }
 
 void Fader_InitBlackToTransparent(FADER *const fader, const int32_t duration)
@@ -46,6 +59,19 @@ void Fader_InitTransparentToBlack(FADER *const fader, const int32_t duration)
         });
 }
 
+void Fader_InitTransparentToSemiBlack(
+    FADER *const fader, const int32_t duration)
+{
+    Fader_Init(
+        fader,
+        (FADER_ARGS) {
+            .initial = TRANSPARENT,
+            .target = HALF_OPAQUE,
+            .duration = duration,
+            .debuff = LOGIC_FPS / 6,
+        });
+}
+
 void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
 {
     Fader_Init(
@@ -56,6 +82,25 @@ void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
             .duration = duration,
             .debuff = LOGIC_FPS / 6,
         });
+}
+
+void Fader_InitAnyToSemiBlack(FADER *const fader, const int32_t duration)
+{
+    Fader_Init(
+        fader,
+        (FADER_ARGS) {
+            .initial = fader->current.value,
+            .target = HALF_OPAQUE,
+            .duration = duration,
+            .debuff = LOGIC_FPS / 6,
+        });
+}
+
+void Fader_Finish(FADER *const fader)
+{
+    fader->is_active = false;
+    fader->current.frame = fader->args.duration + fader->args.debuff;
+    fader->current.value = fader->args.target;
 }
 
 int32_t Fader_GetCurrentValue(const FADER *const fader)

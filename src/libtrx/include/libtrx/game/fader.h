@@ -23,9 +23,13 @@ typedef struct {
 } FADER;
 
 void Fader_Init(FADER *fader, FADER_ARGS args);
+void Fader_InitEmpty(FADER *fader);
 void Fader_InitBlackToTransparent(FADER *fader, int32_t frames);
 void Fader_InitTransparentToBlack(FADER *fader, int32_t frames);
+void Fader_InitTransparentToSemiBlack(FADER *fader, int32_t frames);
 void Fader_InitAnyToBlack(FADER *fader, int32_t frames);
+void Fader_InitAnyToSemiBlack(FADER *fader, int32_t frames);
 bool Fader_IsActive(const FADER *fader);
+void Fader_Finish(FADER *fader);
 bool Fader_Control(FADER *fader);
 int32_t Fader_GetCurrentValue(const FADER *fader);
