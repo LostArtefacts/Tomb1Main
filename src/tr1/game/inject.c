@@ -589,7 +589,10 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
         ANIM *anim = &g_Anims[level_info->anim_count + i];
 
         anim->frame_ofs = VFile_ReadU32(fp);
-        anim->interpolation = VFile_ReadS16(fp);
+        const int16_t interpolation = VFile_ReadS16(fp);
+        ASSERT(interpolation <= 0xFF);
+        anim->interpolation = interpolation & 0xFF;
+        anim->frame_size = 0;
         anim->current_anim_state = VFile_ReadS16(fp);
         anim->velocity = VFile_ReadS32(fp);
         anim->acceleration = VFile_ReadS32(fp);

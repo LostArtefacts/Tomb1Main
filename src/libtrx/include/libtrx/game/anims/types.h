@@ -52,7 +52,8 @@ typedef struct __PACKING {
 #elif TR_VERSION == 2
     int16_t *frame_ptr;
 #endif
-    int16_t interpolation;
+    uint8_t interpolation;
+    uint8_t frame_size;
     int16_t current_anim_state;
     int32_t velocity;
     int32_t acceleration;

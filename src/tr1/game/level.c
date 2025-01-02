@@ -302,7 +302,10 @@ static void M_LoadAnims(VFILE *file)
         ANIM *anim = g_Anims + i;
 
         anim->frame_ofs = VFile_ReadU32(file);
-        anim->interpolation = VFile_ReadS16(file);
+        const int16_t interpolation = VFile_ReadS16(file);
+        ASSERT(interpolation <= 0xFF);
+        anim->interpolation = interpolation & 0xFF;
+        anim->frame_size = 0;
         anim->current_anim_state = VFile_ReadS16(file);
         anim->velocity = VFile_ReadS32(file);
         anim->acceleration = VFile_ReadS32(file);

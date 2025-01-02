@@ -245,7 +245,8 @@ static int32_t M_LoadAnims(VFILE *const file, int32_t **frame_pointers)
             (*frame_pointers)[i] = frame_idx;
         }
         anim->frame_ptr = NULL; // filled later by the animation frame loader
-        anim->interpolation = VFile_ReadS16(file);
+        anim->interpolation = VFile_ReadU8(file);
+        anim->frame_size = VFile_ReadU8(file);
         anim->current_anim_state = VFile_ReadS16(file);
         anim->velocity = VFile_ReadS32(file);
         anim->acceleration = VFile_ReadS32(file);
