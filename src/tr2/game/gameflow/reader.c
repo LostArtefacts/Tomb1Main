@@ -29,9 +29,8 @@ static void M_LoadGlobalInjections(
     gf->injections.data_paths =
         Memory_Alloc(sizeof(char *) * injections->length);
     for (size_t i = 0; i < injections->length; i++) {
-        JSON_VALUE *const value = JSON_ArrayGetValue(injections, i);
-        const JSON_STRING *const str = JSON_ValueAsString(value);
-        gf->injections.data_paths[i] = Memory_DupStr(str->string);
+        const char *const str = JSON_ArrayGetString(injections, i, NULL);
+        gf->injections.data_paths[i] = Memory_DupStr(str);
     }
 }
 
@@ -71,10 +70,8 @@ static void M_LoadLevelInjections(
     }
 
     for (size_t i = 0; i < injections->length; i++) {
-        JSON_VALUE *const value = JSON_ArrayGetValue(injections, i);
-        const JSON_STRING *const str = JSON_ValueAsString(value);
-        level->injections.data_paths[base_index + i] =
-            Memory_DupStr(str->string);
+        const char *const str = JSON_ArrayGetString(injections, i, NULL);
+        level->injections.data_paths[base_index + i] = Memory_DupStr(str);
     }
 }
 
@@ -96,16 +93,10 @@ static bool M_LoadStringTable(
     JSON_OBJECT *const root_obj, const char *const key,
     GAMEFLOW_NEW_STRING_ENTRY **dest)
 {
-    JSON_VALUE *const strings_value = JSON_ObjectGetValue(root_obj, key);
-    if (strings_value == NULL) {
+    const JSON_OBJECT *const strings_obj = JSON_ObjectGetObject(root_obj, key);
+    if (strings_obj == NULL) {
         // key is missing - rely on default strings
         return true;
-    }
-
-    JSON_OBJECT *const strings_obj = JSON_ValueAsObject(strings_value);
-    if (strings_obj == NULL) {
-        LOG_ERROR("'%s' must be a dictionary", key);
-        return false;
     }
 
     *dest = Memory_Alloc(
@@ -115,13 +106,14 @@ static bool M_LoadStringTable(
     JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
     for (size_t i = 0; i < strings_obj->length;
          i++, strings_elem = strings_elem->next) {
-        JSON_STRING *const value = JSON_ValueAsString(strings_elem->value);
+        const char *const key = strings_elem->name->string;
+        const char *const value = JSON_ObjectGetString(strings_obj, key, NULL);
         if (value == NULL) {
             LOG_ERROR("invalid string key %s", strings_elem->name->string);
             return NULL;
         }
-        cur->key = Memory_DupStr(strings_elem->name->string);
-        cur->value = Memory_DupStr(value->string);
+        cur->key = Memory_DupStr(key);
+        cur->value = Memory_DupStr(value);
         cur++;
     }
 

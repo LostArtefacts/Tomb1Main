@@ -79,42 +79,51 @@ typedef struct {
     size_t row_no;
 } JSON_VALUE_EX;
 
-// numbers
-JSON_NUMBER *JSON_NumberNewInt(int number);
-JSON_NUMBER *JSON_NumberNewInt64(int64_t number);
-JSON_NUMBER *JSON_NumberNewDouble(double number);
-void JSON_NumberFree(JSON_NUMBER *num);
+// values
+JSON_VALUE *JSON_ValueFromBool(int b);
+JSON_VALUE *JSON_ValueFromInt(int number);
+JSON_VALUE *JSON_ValueFromInt64(int64_t number);
+JSON_VALUE *JSON_ValueFromDouble(double number);
+JSON_VALUE *JSON_ValueFromString(const char *string);
+JSON_VALUE *JSON_ValueFromArray(JSON_ARRAY *arr);
+JSON_VALUE *JSON_ValueFromObject(JSON_OBJECT *obj);
+void JSON_ValueFree(JSON_VALUE *value);
 
-// strings
-JSON_STRING *JSON_StringNew(const char *string);
-void JSON_StringFree(JSON_STRING *str);
+bool JSON_ValueIsNull(const JSON_VALUE *value);
+bool JSON_ValueIsTrue(const JSON_VALUE *value);
+bool JSON_ValueIsFalse(const JSON_VALUE *value);
+int JSON_ValueGetBool(const JSON_VALUE *value, int d);
+int JSON_ValueGetInt(const JSON_VALUE *value, int d);
+int64_t JSON_ValueGetInt64(const JSON_VALUE *value, int64_t d);
+double JSON_ValueGetDouble(const JSON_VALUE *value, double d);
+const char *JSON_ValueGetString(const JSON_VALUE *value, const char *d);
+JSON_ARRAY *JSON_ValueAsArray(JSON_VALUE *value);
+JSON_OBJECT *JSON_ValueAsObject(JSON_VALUE *value);
 
 // arrays
 JSON_ARRAY *JSON_ArrayNew(void);
 void JSON_ArrayFree(JSON_ARRAY *arr);
-void JSON_ArrayElementFree(JSON_ARRAY_ELEMENT *element);
 
 void JSON_ArrayAppend(JSON_ARRAY *arr, JSON_VALUE *value);
-void JSON_ArrayApendBool(JSON_ARRAY *arr, int b);
+void JSON_ArrayAppendBool(JSON_ARRAY *arr, int b);
 void JSON_ArrayAppendInt(JSON_ARRAY *arr, int number);
 void JSON_ArrayAppendDouble(JSON_ARRAY *arr, double number);
 void JSON_ArrayAppendString(JSON_ARRAY *arr, const char *string);
 void JSON_ArrayAppendArray(JSON_ARRAY *arr, JSON_ARRAY *arr2);
 void JSON_ArrayAppendObject(JSON_ARRAY *arr, JSON_OBJECT *obj);
 
-JSON_VALUE *JSON_ArrayGetValue(JSON_ARRAY *arr, const size_t idx);
-int JSON_ArrayGetBool(JSON_ARRAY *arr, const size_t idx, int d);
-int JSON_ArrayGetInt(JSON_ARRAY *arr, const size_t idx, int d);
-double JSON_ArrayGetDouble(JSON_ARRAY *arr, const size_t idx, double d);
+JSON_VALUE *JSON_ArrayGetValue(JSON_ARRAY *arr, size_t idx);
+int JSON_ArrayGetBool(const JSON_ARRAY *arr, size_t idx, int d);
+int JSON_ArrayGetInt(const JSON_ARRAY *arr, size_t idx, int d);
+double JSON_ArrayGetDouble(const JSON_ARRAY *arr, size_t idx, double d);
 const char *JSON_ArrayGetString(
-    JSON_ARRAY *arr, const size_t idx, const char *d);
-JSON_ARRAY *JSON_ArrayGetArray(JSON_ARRAY *arr, const size_t idx);
-JSON_OBJECT *JSON_ArrayGetObject(JSON_ARRAY *arr, const size_t idx);
+    const JSON_ARRAY *arr, size_t idx, const char *d);
+JSON_ARRAY *JSON_ArrayGetArray(JSON_ARRAY *arr, size_t idx);
+JSON_OBJECT *JSON_ArrayGetObject(JSON_ARRAY *arr, size_t idx);
 
 // objects
 JSON_OBJECT *JSON_ObjectNew(void);
 void JSON_ObjectFree(JSON_OBJECT *obj);
-void JSON_ObjectElementFree(JSON_OBJECT_ELEMENT *element);
 
 void JSON_ObjectAppend(JSON_OBJECT *obj, const char *key, JSON_VALUE *value);
 void JSON_ObjectAppendBool(JSON_OBJECT *obj, const char *key, int b);
@@ -132,31 +141,14 @@ void JSON_ObjectEvictKey(JSON_OBJECT *obj, const char *key);
 void JSON_ObjectMerge(JSON_OBJECT *root, const JSON_OBJECT *obj);
 
 JSON_VALUE *JSON_ObjectGetValue(JSON_OBJECT *obj, const char *key);
-int JSON_ObjectGetBool(JSON_OBJECT *obj, const char *key, int d);
-int JSON_ObjectGetInt(JSON_OBJECT *obj, const char *key, int d);
-int64_t JSON_ObjectGetInt64(JSON_OBJECT *obj, const char *key, int64_t d);
-double JSON_ObjectGetDouble(JSON_OBJECT *obj, const char *key, double d);
+int JSON_ObjectGetBool(const JSON_OBJECT *obj, const char *key, int d);
+int JSON_ObjectGetInt(const JSON_OBJECT *obj, const char *key, int d);
+int64_t JSON_ObjectGetInt64(const JSON_OBJECT *obj, const char *key, int64_t d);
+double JSON_ObjectGetDouble(const JSON_OBJECT *obj, const char *key, double d);
 const char *JSON_ObjectGetString(
-    JSON_OBJECT *obj, const char *key, const char *d);
+    const JSON_OBJECT *obj, const char *key, const char *d);
 JSON_ARRAY *JSON_ObjectGetArray(JSON_OBJECT *obj, const char *key);
 JSON_OBJECT *JSON_ObjectGetObject(JSON_OBJECT *obj, const char *key);
-
-// values
-JSON_STRING *JSON_ValueAsString(JSON_VALUE *value);
-JSON_NUMBER *JSON_ValueAsNumber(JSON_VALUE *value);
-JSON_OBJECT *JSON_ValueAsObject(JSON_VALUE *value);
-JSON_ARRAY *JSON_ValueAsArray(JSON_VALUE *value);
-int JSON_ValueIsTrue(const JSON_VALUE *value);
-int JSON_ValueIsFalse(const JSON_VALUE *value);
-int JSON_ValueIsNull(const JSON_VALUE *value);
-
-JSON_VALUE *JSON_ValueFromBool(int b);
-JSON_VALUE *JSON_ValueFromNumber(JSON_NUMBER *num);
-JSON_VALUE *JSON_ValueFromString(JSON_STRING *str);
-JSON_VALUE *JSON_ValueFromArray(JSON_ARRAY *arr);
-JSON_VALUE *JSON_ValueFromObject(JSON_OBJECT *obj);
-
-void JSON_ValueFree(JSON_VALUE *value);
 
 typedef enum {
     JSON_PARSE_ERROR_NONE = 0,

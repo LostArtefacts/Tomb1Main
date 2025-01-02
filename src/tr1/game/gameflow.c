@@ -197,9 +197,8 @@ static bool M_LoadScriptMeta(JSON_OBJECT *obj)
         g_GameFlow.injections.data_paths =
             Memory_Alloc(sizeof(char *) * tmp_arr->length);
         for (size_t i = 0; i < tmp_arr->length; i++) {
-            JSON_VALUE *value = JSON_ArrayGetValue(tmp_arr, i);
-            JSON_STRING *str = JSON_ValueAsString(value);
-            g_GameFlow.injections.data_paths[i] = Memory_DupStr(str->string);
+            const char *const str = JSON_ArrayGetString(tmp_arr, i, NULL);
+            g_GameFlow.injections.data_paths[i] = Memory_DupStr(str);
         }
     } else {
         g_GameFlow.injections.length = 0;
@@ -226,13 +225,13 @@ static bool M_LoadScriptGameStrings(JSON_OBJECT *obj)
     JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
     while (strings_elem) {
         const char *const key = strings_elem->name->string;
-        JSON_STRING *value = JSON_ValueAsString(strings_elem->value);
+        const char *const value = JSON_ObjectGetString(strings_obj, key, NULL);
         if (!GameString_IsKnown(key)) {
             LOG_ERROR("invalid game string key: %s", key);
-        } else if (!value || value->string == NULL) {
+        } else if (value == NULL) {
             LOG_ERROR("invalid game string value: %s", key);
         } else {
-            GameString_Define(key, value->string);
+            GameString_Define(key, value);
         }
         strings_elem = strings_elem->next;
     }
@@ -768,10 +767,9 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             }
 
             for (size_t i = 0; i < tmp_arr->length; i++) {
-                JSON_VALUE *value = JSON_ArrayGetValue(tmp_arr, i);
-                JSON_STRING *str = JSON_ValueAsString(value);
+                const char *const str = JSON_ArrayGetString(tmp_arr, i, NULL);
                 cur->injections.data_paths[inj_base_index + i] =
-                    Memory_DupStr(str->string);
+                    Memory_DupStr(str);
             }
         } else if (tmp_i) {
             cur->injections.length = g_GameFlow.injections.length;
