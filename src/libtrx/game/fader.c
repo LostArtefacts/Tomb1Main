@@ -2,8 +2,6 @@
 
 #include "config.h"
 #include "game/clock/const.h"
-#include "game/input.h"
-#include "game/shell.h"
 #include "utils.h"
 
 #define TRANSPARENT 0
@@ -91,17 +89,6 @@ bool Fader_Control(FADER *const fader)
     fader->current.frame++;
     fader->is_active =
         fader->current.frame <= fader->args.duration + fader->args.debuff;
-
-    Input_Update();
-    Shell_ProcessInput();
-
-    if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-        // cancel the fade immediately
-        fader->is_active = false;
-        fader->current.frame = fader->args.duration + fader->args.debuff;
-        fader->current.value = fader->args.target;
-        return false;
-    }
 
     return Fader_IsActive(fader);
 }
