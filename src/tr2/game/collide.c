@@ -524,29 +524,27 @@ int32_t Collide_GetSpheres(
     spheres[0].r = mesh[3];
     Matrix_Pop();
 
-    const int32_t *bone = &g_AnimBones[object->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     const int16_t *extra_rotation = (int16_t *)item->data;
-    for (int32_t i = 1; i < object->mesh_count; i++, bone += 4) {
-        const uint32_t bone_flags = bone[0];
-        if (bone_flags & BF_MATRIX_POP) {
+    for (int32_t i = 1; i < object->mesh_count; i++, bone++) {
+        if (bone->matrix_pop) {
             Matrix_Pop();
         }
-        if (bone_flags & BF_MATRIX_PUSH) {
+        if (bone->matrix_push) {
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
         Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
-        if (extra_rotation != NULL
-            && bone_flags & (BF_ROT_X | BF_ROT_Y | BF_ROT_Z)) {
-            if (bone_flags & BF_ROT_Y) {
+        if (extra_rotation != NULL) {
+            if (bone->rot_y) {
                 Matrix_RotY(*extra_rotation++);
             }
-            if (bone_flags & BF_ROT_X) {
+            if (bone->rot_x) {
                 Matrix_RotX(*extra_rotation++);
             }
-            if (bone_flags & BF_ROT_Z) {
+            if (bone->rot_z) {
                 Matrix_RotZ(*extra_rotation++);
             }
         }
@@ -581,32 +579,29 @@ void Collide_GetJointAbsPosition(
     Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
     const int16_t *extra_rotation = item->data;
-    const int32_t *bone = &g_AnimBones[object->bone_idx];
-    for (int32_t i = 0; i < joint; i++) {
-        const uint32_t bone_flags = bone[0];
-        if (bone_flags & BF_MATRIX_POP) {
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    for (int32_t i = 0; i < joint; i++, bone++) {
+        if (bone->matrix_pop) {
             Matrix_Pop();
         }
-        if (bone_flags & BF_MATRIX_PUSH) {
+        if (bone->matrix_push) {
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
         Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
-        if (extra_rotation != NULL
-            && (bone_flags & (BF_ROT_X | BF_ROT_Y | BF_ROT_Z))) {
-            if (bone_flags & BF_ROT_Y) {
+        if (extra_rotation != NULL) {
+            if (bone->rot_y) {
                 Matrix_RotY(*extra_rotation++);
             }
-            if (bone_flags & BF_ROT_X) {
+            if (bone->rot_x) {
                 Matrix_RotX(*extra_rotation++);
             }
-            if (bone_flags & BF_ROT_Z) {
+            if (bone->rot_z) {
                 Matrix_RotZ(*extra_rotation++);
             }
         }
-        bone += 4;
     }
 
     Matrix_TranslateRel(out_vec->x, out_vec->y, out_vec->z);

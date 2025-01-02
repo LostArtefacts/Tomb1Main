@@ -257,7 +257,7 @@ void Pickup_Draw(const ITEM *const item)
     if (clip) {
         int32_t bit = 1;
         int16_t **meshpp = &g_Meshes[obj->mesh_idx];
-        int32_t *bone = &g_AnimBones[obj->bone_idx];
+        const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
 
         const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
         if (mesh_rots != NULL) {
@@ -269,16 +269,15 @@ void Pickup_Draw(const ITEM *const item)
         }
 
         for (int i = 1; i < obj->mesh_count; i++) {
-            int32_t bone_extra_flags = *bone;
-            if (bone_extra_flags & BF_MATRIX_POP) {
+            if (bone->matrix_pop) {
                 Matrix_Pop();
             }
 
-            if (bone_extra_flags & BF_MATRIX_PUSH) {
+            if (bone->matrix_push) {
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             if (mesh_rots != NULL) {
                 Matrix_RotYXZsuperpack(&mesh_rots, 0);
             }
@@ -290,7 +289,7 @@ void Pickup_Draw(const ITEM *const item)
                 Output_InsertPolygons(*meshpp, clip);
             }
 
-            bone += 4;
+            bone++;
             meshpp++;
         }
     }

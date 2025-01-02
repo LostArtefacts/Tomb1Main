@@ -987,7 +987,7 @@ void Skidoo_Draw(const ITEM *const item)
 
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     if (frac) {
         const int16_t *mesh_rots_1 = frames[0]->mesh_rots;
         const int16_t *mesh_rots_2 = frames[1]->mesh_rots;
@@ -1000,17 +1000,16 @@ void Skidoo_Draw(const ITEM *const item)
 
         Output_InsertPolygons_I(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
-            const int32_t bone_flags = bone[0];
-            if (bone_flags & BF_MATRIX_POP) {
+            if (bone->matrix_pop) {
                 Matrix_Pop_I();
             }
-            if (bone_flags & BF_MATRIX_PUSH) {
+            if (bone->matrix_push) {
                 Matrix_Push_I();
             }
 
-            Matrix_TranslateRel_I(bone[1], bone[2], bone[3]);
+            Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
             Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
-            bone += 4;
+            bone++;
 
             Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
         }
@@ -1022,17 +1021,16 @@ void Skidoo_Draw(const ITEM *const item)
 
         Output_InsertPolygons(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
-            const int32_t bone_flags = bone[0];
-            if (bone_flags & BF_MATRIX_POP) {
+            if (bone->matrix_pop) {
                 Matrix_Pop();
             }
-            if (bone_flags & BF_MATRIX_PUSH) {
+            if (bone->matrix_push) {
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             Matrix_RotYXZsuperpack(&mesh_rots, 0);
-            bone += 4;
+            bone++;
 
             Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
         }

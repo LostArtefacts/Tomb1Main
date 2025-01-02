@@ -886,13 +886,15 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
 
     const int16_t *rot = frame_ptr->mesh_rots;
-    const int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
 
     Matrix_TranslateRel(
         frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
     Matrix_RotYXZsuperpack(&rot, 0);
 
-    Matrix_TranslateRel(bone[25], bone[26], bone[27]);
+    Matrix_TranslateRel(
+        bone[LM_TORSO - 1].pos.x, bone[LM_TORSO - 1].pos.y,
+        bone[LM_TORSO - 1].pos.z);
     Matrix_RotYXZsuperpack(&rot, 6);
     Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
 
@@ -903,7 +905,9 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     }
 
     if (g_Lara.gun_type == LGT_FLARE) {
-        Matrix_TranslateRel(bone[41], bone[42], bone[43]);
+        Matrix_TranslateRel(
+            bone[LM_UARM_L - 1].pos.x, bone[LM_UARM_L - 1].pos.y,
+            bone[LM_UARM_L - 1].pos.z);
         if (g_Lara.flare_control_left) {
             const LARA_ARM *arm = &g_Lara.left_arm;
             const ANIM *anim = &g_Anims[arm->anim_num];
@@ -915,23 +919,33 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
         }
         Matrix_RotYXZsuperpack(&rot, 11);
 
-        Matrix_TranslateRel(bone[45], bone[46], bone[47]);
+        Matrix_TranslateRel(
+            bone[LM_LARM_L - 1].pos.x, bone[LM_LARM_L - 1].pos.y,
+            bone[LM_LARM_L - 1].pos.z);
         Matrix_RotYXZsuperpack(&rot, 0);
 
-        Matrix_TranslateRel(bone[49], bone[50], bone[51]);
+        Matrix_TranslateRel(
+            bone[LM_HAND_L - 1].pos.x, bone[LM_HAND_L - 1].pos.y,
+            bone[LM_HAND_L - 1].pos.z);
         Matrix_RotYXZsuperpack(&rot, 0);
     } else if (gun_type != LGT_UNARMED) {
-        Matrix_TranslateRel(bone[29], bone[30], bone[31]);
+        Matrix_TranslateRel(
+            bone[LM_UARM_R - 1].pos.x, bone[LM_UARM_R - 1].pos.y,
+            bone[LM_UARM_R - 1].pos.z);
 
         const LARA_ARM *arm = &g_Lara.right_arm;
         const ANIM *anim = &g_Anims[arm->anim_num];
         rot = &arm->frame_base[arm->frame_num * anim->frame_size + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&rot, 8);
 
-        Matrix_TranslateRel(bone[33], bone[34], bone[35]);
+        Matrix_TranslateRel(
+            bone[LM_LARM_R - 1].pos.x, bone[LM_LARM_R - 1].pos.y,
+            bone[LM_LARM_R - 1].pos.z);
         Matrix_RotYXZsuperpack(&rot, 0);
 
-        Matrix_TranslateRel(bone[37], bone[38], bone[39]);
+        Matrix_TranslateRel(
+            bone[LM_HAND_L - 1].pos.x, bone[LM_HAND_L - 1].pos.y,
+            bone[LM_HAND_L - 1].pos.z);
         Matrix_RotYXZsuperpack(&rot, 0);
     }
 

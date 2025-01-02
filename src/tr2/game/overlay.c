@@ -435,24 +435,22 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
         -(bounds.min_z + bounds.max_z) / 2);
 
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *mesh_rots = frame->mesh_rots;
     Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
     Output_InsertPolygons(mesh_ptrs[0], 0);
-    for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
-        int32_t bone_extra_flags = *bone;
-        if (bone_extra_flags & BF_MATRIX_POP) {
+    for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++, bone++) {
+        if (bone->matrix_pop) {
             Matrix_Pop();
         }
 
-        if (bone_extra_flags & BF_MATRIX_PUSH) {
+        if (bone->matrix_push) {
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
         Matrix_RotYXZsuperpack(&mesh_rots, 0);
-        bone += 4;
 
         Output_InsertPolygons(mesh_ptrs[mesh_idx], 0);
     }

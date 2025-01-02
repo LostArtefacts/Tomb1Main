@@ -115,7 +115,7 @@ static void M_DrawItem(
         return;
     }
 
-    const int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     Matrix_TranslateRel(
         frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
     const int16_t *rot = frame_ptr->mesh_rots;
@@ -123,17 +123,15 @@ static void M_DrawItem(
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx > 0) {
-            const int32_t bone_flags = bone[0];
-            if (bone_flags & BF_MATRIX_POP) {
+            if (bone->matrix_pop) {
                 Matrix_Pop();
             }
-            if (bone_flags & BF_MATRIX_PUSH) {
+            if (bone->matrix_push) {
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             Matrix_RotYXZsuperpack(&rot, 0);
-            bone += 4;
 
             if (inv_item->object_id == O_COMPASS_OPTION) {
                 if (mesh_idx == 6) {
@@ -151,6 +149,8 @@ static void M_DrawItem(
                     Matrix_RotZ(hours);
                 }
             }
+
+            bone++;
         }
 
         if (inv_item->meshes_drawn & (1 << mesh_idx)) {

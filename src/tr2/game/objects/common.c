@@ -44,7 +44,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
     int16_t *const *mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    const int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *extra_rotation = item->data;
     const int16_t *mesh_rots[2] = {
         frames[0]->mesh_rots,
@@ -61,28 +61,27 @@ void Object_DrawAnimatingItem(const ITEM *item)
                     frames[1]->offset.y, frames[1]->offset.z);
                 Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
             } else {
-                const int32_t bone_flags = bone[0];
-                if (bone_flags & BF_MATRIX_POP) {
+                if (bone->matrix_pop) {
                     Matrix_Pop_I();
                 }
-                if (bone_flags & BF_MATRIX_PUSH) {
+                if (bone->matrix_push) {
                     Matrix_Push_I();
                 }
 
-                Matrix_TranslateRel_I(bone[1], bone[2], bone[3]);
+                Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
                 Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
                 if (extra_rotation != NULL) {
-                    if (bone_flags & BF_ROT_Y) {
+                    if (bone->rot_y) {
                         Matrix_RotY_I(*extra_rotation++);
                     }
-                    if (bone_flags & BF_ROT_X) {
+                    if (bone->rot_x) {
                         Matrix_RotX_I(*extra_rotation++);
                     }
-                    if (bone_flags & BF_ROT_Z) {
+                    if (bone->rot_z) {
                         Matrix_RotZ_I(*extra_rotation++);
                     }
                 }
-                bone += 4;
+                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
@@ -97,28 +96,27 @@ void Object_DrawAnimatingItem(const ITEM *item)
                     frames[0]->offset.z);
                 Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
             } else {
-                const int32_t bone_flags = bone[0];
-                if (bone_flags & BF_MATRIX_POP) {
+                if (bone->matrix_pop) {
                     Matrix_Pop();
                 }
-                if (bone_flags & BF_MATRIX_PUSH) {
+                if (bone->matrix_push) {
                     Matrix_Push();
                 }
 
-                Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+                Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
                 Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
                 if (extra_rotation != NULL) {
-                    if (bone_flags & BF_ROT_Y) {
+                    if (bone->rot_y) {
                         Matrix_RotY(*extra_rotation++);
                     }
-                    if (bone_flags & BF_ROT_X) {
+                    if (bone->rot_x) {
                         Matrix_RotX(*extra_rotation++);
                     }
-                    if (bone_flags & BF_ROT_Z) {
+                    if (bone->rot_z) {
                         Matrix_RotZ(*extra_rotation++);
                     }
                 }
-                bone += 4;
+                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
@@ -197,7 +195,7 @@ BOUNDS_16 Object_GetBoundingBox(
     const uint32_t mesh_bits)
 {
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    int32_t *bone = &g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
 
     Matrix_PushUnit();
@@ -219,20 +217,19 @@ BOUNDS_16 Object_GetBoundingBox(
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx != 0) {
-            int32_t bone_extra_flags = *bone;
-            if (bone_extra_flags & BF_MATRIX_POP) {
+            if (bone->matrix_pop) {
                 Matrix_Pop();
             }
 
-            if (bone_extra_flags & BF_MATRIX_PUSH) {
+            if (bone->matrix_push) {
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone[1], bone[2], bone[3]);
+            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             if (mesh_rots != NULL) {
                 Matrix_RotYXZsuperpack(&mesh_rots, 0);
             }
-            bone += 4;
+            bone++;
         }
 
         if (!(mesh_bits & (1 << mesh_idx))) {
