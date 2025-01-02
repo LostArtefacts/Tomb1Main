@@ -683,7 +683,7 @@ static int M_GetObjectSize_Pretty(
                 return 1;
             }
 
-            *size += 3; /* seperate each name/value pair with " : ". */
+            *size += 2; /* seperate each name/value pair with ": ". */
 
             if (M_GetValueSize_Pretty(
                     element->value, depth + 1, indent_size, newline_size,
@@ -824,8 +824,7 @@ static char *M_WriteObject_Pretty(
                 return NULL;
             }
 
-            /* " : "s seperate each name/value pair. */
-            *data++ = ' ';
+            /* ": "s seperate each name/value pair. */
             *data++ = ':';
             *data++ = ' ';
 
