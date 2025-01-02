@@ -24,7 +24,7 @@ void Game_DrawScene(bool draw_overlay)
     if (g_Objects[O_LARA].loaded) {
         Room_DrawAllRooms(g_Camera.interp.room_num, g_Camera.target.room_num);
 
-        if (g_Config.rendering.enable_reflections) {
+        if (g_Config.visuals.enable_reflections) {
             Output_FillEnvironmentMap();
         }
 

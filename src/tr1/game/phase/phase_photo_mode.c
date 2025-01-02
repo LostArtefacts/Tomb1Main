@@ -52,7 +52,7 @@ static void M_Start(const PHASE_PHOTO_MODE_ARGS *const args)
         Console_Log(
             GS(OSD_PHOTO_MODE_LAUNCHED),
             Input_GetKeyName(
-                INPUT_BACKEND_KEYBOARD, g_Config.input.layout,
+                INPUT_BACKEND_KEYBOARD, g_Config.input.keyboard_layout,
                 INPUT_ROLE_TOGGLE_UI));
     }
 }
@@ -73,7 +73,7 @@ static void M_End(void)
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
     if (m_Status == PS_ACTIVE) {
-        Screenshot_Make(g_Config.screenshot_format);
+        Screenshot_Make(g_Config.rendering.screenshot_format);
         Sound_Effect(SFX_MENU_CHOOSE, NULL, SPM_ALWAYS);
         m_Status = PS_COOLDOWN;
     } else if (m_Status == PS_COOLDOWN) {

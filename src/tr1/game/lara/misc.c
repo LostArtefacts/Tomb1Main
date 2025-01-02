@@ -76,7 +76,7 @@ void Lara_HangTest(ITEM *item, COLL_INFO *coll)
         item->current_anim_state = LS_JUMP_UP;
         Item_SwitchToAnim(item, LA_STOP_HANG, LF_STOPHANG);
         bounds = Item_GetBoundsAccurate(item);
-        if (g_Config.enable_swing_cancel && item->hit_points > 0) {
+        if (g_Config.gameplay.enable_swing_cancel && item->hit_points > 0) {
             item->pos.y += bounds->max.y;
         } else {
             item->pos.y += coll->front_floor - bounds->min.y + 2;
@@ -586,7 +586,7 @@ void Lara_SurfaceCollision(ITEM *item, COLL_INFO *coll)
     coll->facing = g_Lara.move_angle;
 
     int32_t obj_height = SURF_HEIGHT;
-    if (g_Config.enable_wading) {
+    if (g_Config.gameplay.enable_wading) {
         obj_height += 100;
     }
     Collide_GetCollisionInfo(
@@ -620,7 +620,7 @@ void Lara_SurfaceCollision(ITEM *item, COLL_INFO *coll)
         return;
     }
 
-    if (g_Config.enable_wading) {
+    if (g_Config.gameplay.enable_wading) {
         Lara_TestWaterStepOut(item, coll);
     } else {
         Lara_TestWaterClimbOut(item, coll);
@@ -830,7 +830,7 @@ void Lara_SwimCollision(ITEM *item, COLL_INFO *coll)
     coll->facing = g_Lara.move_angle;
 
     int32_t height;
-    if (g_Config.enable_wading) {
+    if (g_Config.gameplay.enable_wading) {
         height = (LARA_HEIGHT * Math_Sin(item->rot.x)) >> W2V_SHIFT;
         if (height < 0) {
             height = -height;
@@ -888,7 +888,7 @@ void Lara_SwimCollision(ITEM *item, COLL_INFO *coll)
         item->rot.x += UW_WALLDEFLECT;
     }
 
-    if (g_Config.enable_wading && g_Lara.water_status != LWS_CHEAT) {
+    if (g_Config.gameplay.enable_wading && g_Lara.water_status != LWS_CHEAT) {
         Lara_TestWaterDepth(item, coll);
     }
 }

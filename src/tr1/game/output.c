@@ -736,7 +736,7 @@ void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
     M_DrawFlatFace4s(mesh->flat_face4s, mesh->num_flat_face4s);
     M_DrawFlatFace3s(mesh->flat_face3s, mesh->num_flat_face3s);
 
-    if (mesh->enable_reflections && g_Config.rendering.enable_reflections) {
+    if (mesh->enable_reflections && g_Config.visuals.enable_reflections) {
         if (!M_CalcVerticeEnvMap(mesh)) {
             return;
         }
@@ -811,7 +811,7 @@ void Output_DrawShadow(
     }
 
     SHADOW_INFO shadow = { 0 };
-    shadow.vertex_count = g_Config.enable_round_shadow ? 32 : 8;
+    shadow.vertex_count = g_Config.visuals.enable_round_shadow ? 32 : 8;
 
     int32_t x0 = bounds->min.x;
     int32_t x1 = bounds->max.x;
@@ -846,8 +846,8 @@ void Output_DrawShadow(
             clip_or |= m_VBuf[i].clip;
         }
         PHD_VBUF *vn1 = &m_VBuf[0];
-        PHD_VBUF *vn2 = &m_VBuf[g_Config.enable_round_shadow ? 4 : 1];
-        PHD_VBUF *vn3 = &m_VBuf[g_Config.enable_round_shadow ? 8 : 2];
+        PHD_VBUF *vn2 = &m_VBuf[g_Config.visuals.enable_round_shadow ? 4 : 1];
+        PHD_VBUF *vn3 = &m_VBuf[g_Config.visuals.enable_round_shadow ? 8 : 2];
 
         int32_t c1 = (vn3->xs - vn2->xs) * (vn1->ys - vn2->ys);
         int32_t c2 = (vn1->xs - vn2->xs) * (vn3->ys - vn2->ys);
@@ -1171,7 +1171,7 @@ void Output_SetupAboveWater(bool underwater)
 
 void Output_AnimateFades(void)
 {
-    if (!g_Config.enable_fade_effects) {
+    if (!g_Config.visuals.enable_fade_effects) {
         return;
     }
 
@@ -1298,7 +1298,7 @@ void Output_FadeResetToBlack(void)
 
 void Output_FadeToBlack(bool allow_immediate)
 {
-    if (g_Config.enable_fade_effects) {
+    if (g_Config.visuals.enable_fade_effects) {
         m_OverlayDstAlpha = 255;
     } else if (allow_immediate) {
         m_OverlayCurAlpha = 255;
@@ -1307,7 +1307,7 @@ void Output_FadeToBlack(bool allow_immediate)
 
 void Output_FadeToSemiBlack(bool allow_immediate)
 {
-    if (g_Config.enable_fade_effects) {
+    if (g_Config.visuals.enable_fade_effects) {
         m_BackdropDstAlpha = 128;
         m_OverlayDstAlpha = 0;
     } else if (allow_immediate) {
@@ -1318,7 +1318,7 @@ void Output_FadeToSemiBlack(bool allow_immediate)
 
 void Output_FadeToTransparent(bool allow_immediate)
 {
-    if (g_Config.enable_fade_effects) {
+    if (g_Config.visuals.enable_fade_effects) {
         m_BackdropDstAlpha = 0;
         m_OverlayDstAlpha = 0;
     } else if (allow_immediate) {
@@ -1329,7 +1329,7 @@ void Output_FadeToTransparent(bool allow_immediate)
 
 bool Output_FadeIsAnimating(void)
 {
-    if (!g_Config.enable_fade_effects) {
+    if (!g_Config.visuals.enable_fade_effects) {
         return false;
     }
     return m_OverlayCurAlpha != m_OverlayDstAlpha
@@ -1344,7 +1344,7 @@ void Output_ApplyFOV(void)
     // But for cinematics, the FOV value chosen by devs needs to stay
     // unchanged, otherwise the game renders the low camera in the Lost Valley
     // cutscene wrong.
-    if (g_Config.fov_vertical) {
+    if (g_Config.visuals.fov_vertical) {
         double aspect_ratio =
             Screen_GetResWidth() / (double)Screen_GetResHeight();
         double fov_rad_h = fov * M_PI / (180 * PHD_DEGREE);

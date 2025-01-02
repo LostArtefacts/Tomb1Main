@@ -256,7 +256,7 @@
       "Title": "Uso rápido de teclas numéricas",
       "Description": "Permite cambiar rápidamente de armas y usar botiquines.\n- 1: Pistolas\n- 2: Escopeta\n- 3: Magnums\n- 4: Uzis\n- 8: Botiquín pequeño\n- 9: Botiquín grande"
     },
-    "enabled_inverted_look": {
+    "enable_inverted_look": {
       "Title": "Vista invertida",
       "Description": "Invierte los controles del eje Y cuando Lara mira."
     },
@@ -432,7 +432,7 @@
       "Title": "Habilitar cristales de guardado",
       "Description": "Limita el guardado a los cristales de guardado al comienzo de los niveles. Los niveles tienen cristales de guardado limitados de un solo uso, al igual que en la versión de PS1. Cambiar esta opción requerirá reiniciar el nivel."
     },
-    "walk_to_items": {
+    "enable_walk_to_items": {
       "Title": "Interacciones animadas",
       "Description": "Hace que Lara camine hacia los objetos recogibles y los interruptores cuando están cerca en lugar de teletransportarse hacia ellos."
     },

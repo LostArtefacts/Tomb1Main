@@ -179,7 +179,7 @@ void Lara_HandleAboveWater(ITEM *item, COLL_INFO *coll)
     coll->enable_spaz = 1;
     coll->enable_baddie_push = 1;
 
-    if (g_Config.enable_enhanced_look && item->hit_points > 0) {
+    if (g_Config.gameplay.enable_enhanced_look && item->hit_points > 0) {
         if (g_Input.look) {
             Lara_LookLeftRight();
         } else {
@@ -314,7 +314,7 @@ void Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll)
     coll->enable_spaz = 0;
     coll->enable_baddie_push = 0;
 
-    if (g_Config.enable_enhanced_look && item->hit_points > 0) {
+    if (g_Config.gameplay.enable_enhanced_look && item->hit_points > 0) {
         if (g_Input.look) {
             Lara_LookLeftRight();
         } else {
@@ -333,7 +333,7 @@ void Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll)
         item->rot.z -= 2 * LARA_LEAN_UNDO;
     }
 
-    if (g_Config.enable_tr2_swimming) {
+    if (g_Config.gameplay.enable_tr2_swimming) {
         CLAMP(item->rot.x, -85 * PHD_DEGREE, 85 * PHD_DEGREE);
         CLAMP(item->rot.z, -LARA_LEAN_MAX_UW, LARA_LEAN_MAX_UW);
 

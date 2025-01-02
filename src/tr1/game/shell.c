@@ -54,14 +54,14 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
 
 #define CHANGED(subject) (old->subject != new->subject)
 
-    if (CHANGED(sound_volume)) {
-        Sound_SetMasterVolume(g_Config.sound_volume);
+    if (CHANGED(audio.sound_volume)) {
+        Sound_SetMasterVolume(g_Config.audio.sound_volume);
     }
-    if (CHANGED(music_volume)) {
-        Music_SetVolume(g_Config.music_volume);
+    if (CHANGED(audio.music_volume)) {
+        Music_SetVolume(g_Config.audio.music_volume);
     }
 
-    if (CHANGED(maximum_save_slots) && Savegame_IsInitialised()) {
+    if (CHANGED(gameplay.maximum_save_slots) && Savegame_IsInitialised()) {
         Savegame_Shutdown();
         Savegame_Init();
         Savegame_ScanSavedGames();
@@ -75,8 +75,8 @@ static void M_LoadConfig(void)
     Config_Read();
     Config_SubscribeChanges(M_HandleConfigChange, NULL);
 
-    Sound_SetMasterVolume(g_Config.sound_volume);
-    Music_SetVolume(g_Config.music_volume);
+    Sound_SetMasterVolume(g_Config.audio.sound_volume);
+    Music_SetVolume(g_Config.audio.music_volume);
 }
 
 void Shell_Init(const char *gameflow_path)
@@ -266,7 +266,7 @@ void Shell_Main(void)
 void Shell_ProcessInput(void)
 {
     if (g_InputDB.screenshot) {
-        Screenshot_Make(g_Config.screenshot_format);
+        Screenshot_Make(g_Config.rendering.screenshot_format);
     }
 
     if (g_InputDB.toggle_bilinear_filter) {

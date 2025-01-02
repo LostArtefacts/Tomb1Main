@@ -32,7 +32,7 @@
 
 void Game_ProcessInput(void)
 {
-    if (g_Config.enable_numeric_keys) {
+    if (g_Config.input.enable_numeric_keys) {
         if (g_InputDB.equip_pistols && Inv_RequestItem(O_PISTOL_ITEM)) {
             g_Lara.request_gun_type = LGT_PISTOLS;
         } else if (g_InputDB.equip_shotgun && Inv_RequestItem(O_SHOTGUN_ITEM)) {
@@ -50,7 +50,7 @@ void Game_ProcessInput(void)
         Lara_UseItem(O_BIGMEDI_OPTION);
     }
 
-    if (g_Config.enable_buffering && Phase_Get() == PHASE_GAME) {
+    if (g_Config.input.enable_buffering && Phase_Get() == PHASE_GAME) {
         if (g_Input.toggle_bilinear_filter) {
             FRAME_BUFFER(toggle_bilinear_filter);
         } else if (g_Input.toggle_perspective_filter) {
@@ -164,7 +164,7 @@ bool Game_Start(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
     g_GameInfo.current[g_CurrentLevel].stats.max_secret_count =
         Stats_GetSecrets();
 
-    g_GameInfo.ask_for_save = g_Config.enable_save_crystals
+    g_GameInfo.ask_for_save = g_Config.gameplay.enable_save_crystals
         && (level_type == GFL_NORMAL || level_type == GFL_BONUS)
         && g_CurrentLevel != g_GameFlow.first_level_num
         && g_CurrentLevel != g_GameFlow.gym_level_num;

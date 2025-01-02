@@ -172,7 +172,7 @@ const OBJECT_BOUNDS *Pickup_Bounds(void)
 {
     if (g_Lara.water_status == LWS_UNDERWATER) {
         return &m_PickUpBoundsUW;
-    } else if (g_Config.walk_to_items) {
+    } else if (g_Config.gameplay.enable_walk_to_items) {
         return &m_PickUpBoundsControlled;
     } else {
         return &m_PickUpBounds;
@@ -181,7 +181,7 @@ const OBJECT_BOUNDS *Pickup_Bounds(void)
 
 void Pickup_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    if (g_Config.walk_to_items) {
+    if (g_Config.gameplay.enable_walk_to_items) {
         Pickup_CollisionControlled(item_num, lara_item, coll);
         return;
     }

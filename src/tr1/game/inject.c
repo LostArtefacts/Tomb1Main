@@ -209,35 +209,35 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
         injection->relevant = true;
         break;
     case INJ_BRAID:
-        injection->relevant = g_Config.enable_braid;
+        injection->relevant = g_Config.visuals.enable_braid;
         break;
     case INJ_UZI_SFX:
-        injection->relevant = g_Config.enable_ps_uzi_sfx;
+        injection->relevant = g_Config.audio.enable_ps_uzi_sfx;
         break;
     case INJ_FLOOR_DATA:
-        injection->relevant = g_Config.fix_floor_data_issues;
+        injection->relevant = g_Config.gameplay.fix_floor_data_issues;
         break;
     case INJ_TEXTURE_FIX:
-        injection->relevant = g_Config.fix_texture_issues;
+        injection->relevant = g_Config.visuals.fix_texture_issues;
         break;
     case INJ_LARA_JUMPS:
         injection->relevant = false; // Merged with INJ_LARA_ANIMS in 4.6
         break;
     case INJ_ITEM_POSITION:
-        injection->relevant = g_Config.fix_item_rots;
+        injection->relevant = g_Config.visuals.fix_item_rots;
         break;
     case INJ_PS1_ENEMY:
-        injection->relevant = g_Config.restore_ps1_enemies;
+        injection->relevant = g_Config.gameplay.restore_ps1_enemies;
         break;
     case INJ_DISABLE_ANIM_SPRITE:
-        injection->relevant = !g_Config.fix_animated_sprites;
+        injection->relevant = !g_Config.visuals.fix_animated_sprites;
         break;
     case INJ_SKYBOX:
-        injection->relevant = g_Config.enable_skybox;
+        injection->relevant = g_Config.visuals.enable_skybox;
         break;
     case INJ_PS1_CRYSTAL:
-        injection->relevant =
-            g_Config.enable_save_crystals && g_Config.enable_ps1_crystals;
+        injection->relevant = g_Config.gameplay.enable_save_crystals
+            && g_Config.visuals.enable_ps1_crystals;
         break;
     default:
         LOG_WARNING("%s is of unknown type %d", filename, injection->type);

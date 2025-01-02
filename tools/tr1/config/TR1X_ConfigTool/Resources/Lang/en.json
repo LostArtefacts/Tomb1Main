@@ -113,7 +113,7 @@
       "Title": "Numeric key quick item use",
       "Description": "Enables quick weapon draws and medipack usage.\n- 1: Draw pistols\n- 2: Draw shotgun\n- 3: Draw magnums\n- 4: Draw Uzis\n- 8: Use small medipack\n- 9: Use large medipack"
     },
-    "enabled_inverted_look": {
+    "enable_inverted_look": {
       "Title": "Inverted look",
       "Description": "Inverts the Y axis controls when Lara looks."
     },
@@ -205,7 +205,7 @@
       "Title": "Enable save crystals",
       "Description": "Limits saving to the beginning of levels save crystals. Levels have limited, single use save crystals like the PS1 version. Changing this option will require restarting the level."
     },
-    "walk_to_items": {
+    "enable_walk_to_items": {
       "Title": "Animated interactions",
       "Description": "Makes Lara walk to pickups and switches when nearby instead of teleporting to them."
     },

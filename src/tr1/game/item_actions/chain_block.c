@@ -9,7 +9,7 @@
 
 void ItemAction_ChainBlock(ITEM *item)
 {
-    if (g_Config.fix_tihocan_secret_sound) {
+    if (g_Config.audio.fix_tihocan_secret_sound) {
         if (g_FlipTimer == 0) {
             Sound_Effect(SFX_CHAINBLOCK_FX, NULL, SPM_NORMAL);
             g_FlipTimer = 1;

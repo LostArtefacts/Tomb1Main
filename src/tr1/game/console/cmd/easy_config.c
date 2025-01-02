@@ -10,8 +10,8 @@ typedef struct {
 } COMMAND_TO_OPTION_MAP;
 
 static COMMAND_TO_OPTION_MAP m_CommandToOptionMap[] = {
-    { "braid", &g_Config.enable_braid },
-    { "cheats", &g_Config.enable_cheats },
+    { "braid", &g_Config.visuals.enable_braid },
+    { "cheats", &g_Config.gameplay.enable_cheats },
     { "vsync", &g_Config.rendering.enable_vsync },
     { "wireframe", &g_Config.rendering.enable_wireframe },
     { "fps", &g_Config.rendering.fps },

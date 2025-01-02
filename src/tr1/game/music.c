@@ -92,11 +92,11 @@ bool Music_Play(MUSIC_TRACK_ID track)
         return false;
     }
 
-    if (g_Config.fix_secrets_killing_music && track == MX_SECRET) {
+    if (g_Config.audio.fix_secrets_killing_music && track == MX_SECRET) {
         return Sound_Effect(SFX_SECRET, NULL, SPM_ALWAYS);
     }
 
-    if (g_Config.fix_speeches_killing_music && track >= MX_BALDY_SPEECH
+    if (g_Config.audio.fix_speeches_killing_music && track >= MX_BALDY_SPEECH
         && track <= MX_SKATEKID_SPEECH) {
         return Sound_Effect(
             SFX_BALDY_SPEECH + track - MX_BALDY_SPEECH, NULL, SPM_ALWAYS);

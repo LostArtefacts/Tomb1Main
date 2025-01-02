@@ -39,6 +39,7 @@ typedef struct {
     struct {
         int32_t keyboard_layout;
         int32_t controller_layout;
+        bool enable_tr3_sidesteps;
     } input;
 
     struct {
@@ -74,7 +75,6 @@ typedef struct {
         bool enable_cheats;
         bool enable_console;
         bool enable_fmv;
-        bool enable_tr3_sidesteps;
         bool enable_auto_item_selection;
         int32_t turbo_speed;
     } gameplay;

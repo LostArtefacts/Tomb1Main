@@ -971,7 +971,7 @@ static void M_CompleteSetup(int32_t level_num)
 
 static void M_MarkWaterEdgeVertices(void)
 {
-    if (!g_Config.fix_texture_issues) {
+    if (!g_Config.visuals.fix_texture_issues) {
         return;
     }
 
@@ -1072,7 +1072,7 @@ void Level_Load(int level_num)
         * WALL_L);
 
     Output_SetSkyboxEnabled(
-        g_Config.enable_skybox && g_Objects[O_SKYBOX].loaded);
+        g_Config.visuals.enable_skybox && g_Objects[O_SKYBOX].loaded);
 
     Benchmark_End(benchmark, NULL);
 }
@@ -1138,11 +1138,11 @@ bool Level_Initialise(int32_t level_num)
     Overlay_BarSetHealthTimer(100);
 
     Music_Stop();
-    Music_SetVolume(g_Config.music_volume);
+    Music_SetVolume(g_Config.audio.music_volume);
     Sound_ResetEffects();
 
     const bool disable_music = level_num == g_GameFlow.title_level_num
-        && !g_Config.enable_music_in_menu;
+        && !g_Config.audio.enable_music_in_menu;
     if (g_GameFlow.levels[level_num].music && !disable_music) {
         Music_PlayLooped(g_GameFlow.levels[level_num].music);
     }

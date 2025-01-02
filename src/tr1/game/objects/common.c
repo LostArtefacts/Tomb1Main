@@ -83,7 +83,7 @@ void Object_DrawSpriteItem(ITEM *item)
 
 void Object_DrawPickupItem(ITEM *item)
 {
-    if (!g_Config.enable_3d_pickups) {
+    if (!g_Config.visuals.enable_3d_pickups) {
         Object_DrawSpriteItem(item);
         return;
     }

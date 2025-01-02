@@ -43,7 +43,7 @@ void Collide_GetCollisionInfo(
     coll->mid_ceiling = ceiling;
     coll->mid_type = g_HeightType;
 
-    if (!g_Config.fix_bridge_collision
+    if (!g_Config.gameplay.fix_bridge_collision
         || !Room_IsOnWalkable(sector, x, ytop, z, room_height)) {
         const int16_t tilt = Room_GetTiltType(sector, x, g_LaraItem->pos.y, z);
         coll->tilt_z = tilt >> 8;
@@ -125,7 +125,7 @@ void Collide_GetCollisionInfo(
     coll->front_ceiling = ceiling;
     coll->front_type = g_HeightType;
 
-    if (!g_Config.fix_bridge_collision
+    if (!g_Config.gameplay.fix_bridge_collision
         || !Room_IsOnWalkable(sector, x, ytop, z, room_height)) {
         if (coll->slopes_are_walls && coll->front_type == HT_BIG_SLOPE
             && coll->front_floor < 0) {
@@ -160,7 +160,7 @@ void Collide_GetCollisionInfo(
     coll->left_ceiling = ceiling;
     coll->left_type = g_HeightType;
 
-    if (!g_Config.fix_bridge_collision
+    if (!g_Config.gameplay.fix_bridge_collision
         || !Room_IsOnWalkable(sector, x, ytop, z, room_height)) {
         if (coll->slopes_are_walls && coll->left_type == HT_BIG_SLOPE
             && coll->left_floor < 0) {
@@ -195,7 +195,7 @@ void Collide_GetCollisionInfo(
     coll->right_ceiling = ceiling;
     coll->right_type = g_HeightType;
 
-    if (!g_Config.fix_bridge_collision
+    if (!g_Config.gameplay.fix_bridge_collision
         || !Room_IsOnWalkable(sector, x, ytop, z, room_height)) {
         if (coll->slopes_are_walls && coll->right_type == HT_BIG_SLOPE
             && coll->right_floor < 0) {

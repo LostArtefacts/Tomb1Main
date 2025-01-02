@@ -213,7 +213,7 @@ static void Inv_Destroy(void)
     Inv_Ring_RemoveAllText();
     m_InvChosen = NO_OBJECT;
 
-    if (g_Config.fix_item_duplication_glitch) {
+    if (g_Config.gameplay.fix_item_duplication_glitch) {
         Inv_ClearSelection();
     }
 
@@ -580,7 +580,7 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
 
 static bool Inv_CheckDemoTimer(const IMOTION_INFO *const motion)
 {
-    if (!g_Config.enable_demo || !g_GameFlow.has_demo) {
+    if (!g_Config.gameplay.enable_demo || !g_GameFlow.has_demo) {
         return false;
     }
 
@@ -598,7 +598,7 @@ static bool Inv_CheckDemoTimer(const IMOTION_INFO *const motion)
 static void M_Start(const PHASE_INVENTORY_ARGS *const args)
 {
     Interpolation_Remember();
-    if (g_Config.enable_timer_in_inventory) {
+    if (g_Config.gameplay.enable_timer_in_inventory) {
         Stats_StartTimer();
     }
 
@@ -615,7 +615,8 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     m_StartDemo = false;
     Inv_Construct();
 
-    if (!g_Config.enable_music_in_inventory && g_InvMode != INV_TITLE_MODE) {
+    if (!g_Config.audio.enable_music_in_inventory
+        && g_InvMode != INV_TITLE_MODE) {
         Music_Pause();
         Sound_PauseAll();
     } else {
@@ -1116,7 +1117,7 @@ static PHASE_CONTROL M_ControlFrame(void)
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
     Interpolation_Remember();
-    if (g_Config.enable_timer_in_inventory) {
+    if (g_Config.gameplay.enable_timer_in_inventory) {
         Stats_UpdateTimer();
     }
     for (int32_t i = 0; i < nframes; i++) {
@@ -1137,7 +1138,7 @@ static void M_End(void)
     }
 
     Inv_Destroy();
-    if (g_Config.enable_buffering) {
+    if (g_Config.input.enable_buffering) {
         g_OldInputDB = (INPUT_STATE) { 0 };
     }
     if (g_InvMode == INV_TITLE_MODE) {

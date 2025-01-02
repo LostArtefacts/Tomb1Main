@@ -57,7 +57,7 @@ void Bear_Setup(OBJECT *obj)
     obj->collision = Creature_Collision;
     obj->shadow_size = UNIT_SHADOW / 2;
     obj->hit_points = BEAR_HITPOINTS;
-    if (g_Config.fix_bear_ai) {
+    if (g_Config.gameplay.fix_bear_ai) {
         obj->pivot_length = 0;
     } else {
         obj->pivot_length = 500;
@@ -195,8 +195,8 @@ void Bear_Control(int16_t item_num)
             } else if (
                 info.bite
                 && info.distance
-                    < (g_Config.fix_bear_ai ? BEAR_FIX_PAT_RANGE
-                                            : BEAR_PAT_RANGE)) {
+                    < (g_Config.gameplay.fix_bear_ai ? BEAR_FIX_PAT_RANGE
+                                                     : BEAR_PAT_RANGE)) {
                 item->goal_anim_state = BEAR_STATE_ATTACK_2;
             } else {
                 item->goal_anim_state = BEAR_STATE_WALK;

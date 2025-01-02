@@ -206,7 +206,7 @@ static void M_DeterminePages(void)
         if (g_CurrentLevel == g_GameFlow.gym_level_num
             || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
-        } else if (g_Config.enable_save_crystals) {
+        } else if (g_Config.gameplay.enable_save_crystals) {
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_RESTART;
         }
         break;
@@ -240,7 +240,7 @@ static void M_DeterminePages(void)
             || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
-        } else if (g_Config.enable_save_crystals) {
+        } else if (g_Config.gameplay.enable_save_crystals) {
             m_PassportStatus.mode = PASSPORT_MODE_RESTART;
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_RESTART;
             m_PassportStatus.page_available[PAGE_3] = true;
@@ -525,7 +525,7 @@ static void M_NewGame(void)
 
     if (m_PassportStatus.mode == PASSPORT_MODE_BROWSE) {
         if (g_InputDB.menu_confirm
-            && (g_Config.enable_game_modes
+            && (g_Config.gameplay.enable_game_modes
                 || g_Config.profile.new_game_plus_unlock)) {
             M_InitNewGameRequester();
             g_Input = (INPUT_STATE) { 0 };

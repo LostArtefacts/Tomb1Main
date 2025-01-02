@@ -60,10 +60,9 @@ static void M_SetWindowPos(int32_t x, int32_t y, bool update)
     }
 
     // only save window position if it's in windowed state.
-    if (!g_Config.rendering.enable_fullscreen
-        && !g_Config.rendering.enable_maximized) {
-        g_Config.rendering.window_x = x;
-        g_Config.rendering.window_y = y;
+    if (!g_Config.window.is_fullscreen && !g_Config.window.is_maximized) {
+        g_Config.window.x = x;
+        g_Config.window.y = y;
     }
 
     if (update) {
@@ -78,10 +77,9 @@ static void M_SetWindowSize(int32_t width, int32_t height, bool update)
     }
 
     // only save window size if it's in windowed state.
-    if (!g_Config.rendering.enable_fullscreen
-        && !g_Config.rendering.enable_maximized) {
-        g_Config.rendering.window_width = width;
-        g_Config.rendering.window_height = height;
+    if (!g_Config.window.is_fullscreen && !g_Config.window.is_maximized) {
+        g_Config.window.width = width;
+        g_Config.window.height = height;
     }
 
     Output_SetWindowSize(width, height);
@@ -93,7 +91,7 @@ static void M_SetWindowSize(int32_t width, int32_t height, bool update)
 
 static void M_SetWindowMaximized(bool is_enabled, bool update)
 {
-    g_Config.rendering.enable_maximized = is_enabled;
+    g_Config.window.is_maximized = is_enabled;
 
     if (update && is_enabled) {
         SDL_MaximizeWindow(m_Window);
@@ -102,7 +100,7 @@ static void M_SetWindowMaximized(bool is_enabled, bool update)
 
 static void M_SetFullscreen(bool is_enabled, bool update)
 {
-    g_Config.rendering.enable_fullscreen = is_enabled;
+    g_Config.window.is_fullscreen = is_enabled;
 
     if (update) {
         SDL_SetWindowFullscreen(
@@ -113,7 +111,7 @@ static void M_SetFullscreen(bool is_enabled, bool update)
 
 void S_Shell_ToggleFullscreen(void)
 {
-    M_SetFullscreen(!g_Config.rendering.enable_fullscreen, true);
+    M_SetFullscreen(!g_Config.window.is_fullscreen, true);
 
     // save the updated config, but ensure it was loaded first
     if (g_Config.loaded) {
@@ -151,13 +149,10 @@ void S_Shell_Init(void)
 {
     M_SeedRandom();
 
-    M_SetFullscreen(g_Config.rendering.enable_fullscreen, true);
-    M_SetWindowPos(
-        g_Config.rendering.window_x, g_Config.rendering.window_y, true);
-    M_SetWindowSize(
-        g_Config.rendering.window_width, g_Config.rendering.window_height,
-        true);
-    M_SetWindowMaximized(g_Config.rendering.enable_maximized, true);
+    M_SetFullscreen(g_Config.window.is_fullscreen, true);
+    M_SetWindowPos(g_Config.window.x, g_Config.window.y, true);
+    M_SetWindowSize(g_Config.window.width, g_Config.window.height, true);
+    M_SetWindowMaximized(g_Config.window.is_maximized, true);
     SDL_ShowWindow(m_Window);
 }
 
@@ -175,7 +170,7 @@ void S_Shell_SpinMessageLoop(void)
             case SDL_WINDOWEVENT_FOCUS_GAINED:
                 FMV_Unmute();
                 Music_Unmute();
-                Sound_SetMasterVolume(g_Config.sound_volume);
+                Sound_SetMasterVolume(g_Config.audio.sound_volume);
                 break;
 
             case SDL_WINDOWEVENT_FOCUS_LOST:
@@ -196,10 +191,10 @@ void S_Shell_SpinMessageLoop(void)
             // but by the time Input_Update gets ran, we may already have lost
             // some keypresses if the player types really fast, so we need to
             // react sooner.
-            if (!FMV_IsPlaying() && g_Config.enable_console
+            if (!FMV_IsPlaying() && g_Config.gameplay.enable_console
                 && !Console_IsOpened()
                 && Input_IsPressed(
-                    INPUT_BACKEND_KEYBOARD, g_Config.input.layout,
+                    INPUT_BACKEND_KEYBOARD, g_Config.input.keyboard_layout,
                     INPUT_ROLE_ENTER_CONSOLE)) {
                 Console_Open();
             } else {
@@ -212,7 +207,7 @@ void S_Shell_SpinMessageLoop(void)
             // NOTE: needs special handling on Windows -
             // SDL_SCANCODE_PRINTSCREEN is not sufficient to react to this.
             if (event.key.keysym.sym == SDLK_PRINTSCREEN) {
-                Screenshot_Make(g_Config.screenshot_format);
+                Screenshot_Make(g_Config.rendering.screenshot_format);
             }
             break;
 

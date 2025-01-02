@@ -52,7 +52,8 @@ static int16_t M_GetFloorHeight(
         return height;
     } else if (y > item->pos.y) {
         return height;
-    } else if (g_Config.fix_bridge_collision && item->pos.y >= height) {
+    } else if (
+        g_Config.gameplay.fix_bridge_collision && item->pos.y >= height) {
         return height;
     }
     return item->pos.y;
@@ -68,7 +69,8 @@ static int16_t M_GetCeilingHeight(
         return height;
     } else if (y <= item->pos.y) {
         return height;
-    } else if (g_Config.fix_bridge_collision && item->pos.y <= height) {
+    } else if (
+        g_Config.gameplay.fix_bridge_collision && item->pos.y <= height) {
         return height;
     }
     return item->pos.y + STEP_L;

@@ -19,7 +19,8 @@ static int16_t M_GetFloorHeight(
     const ITEM *item, const int32_t x, const int32_t y, const int32_t z,
     const int16_t height)
 {
-    if (g_Config.fix_bridge_collision && !Bridge_IsSameSector(x, z, item)) {
+    if (g_Config.gameplay.fix_bridge_collision
+        && !Bridge_IsSameSector(x, z, item)) {
         return height;
     }
 
@@ -27,7 +28,7 @@ static int16_t M_GetFloorHeight(
         return height;
     }
 
-    if (g_Config.fix_bridge_collision && item->pos.y >= height) {
+    if (g_Config.gameplay.fix_bridge_collision && item->pos.y >= height) {
         return height;
     }
 
@@ -38,7 +39,8 @@ static int16_t M_GetCeilingHeight(
     const ITEM *item, const int32_t x, const int32_t y, const int32_t z,
     const int16_t height)
 {
-    if (g_Config.fix_bridge_collision && !Bridge_IsSameSector(x, z, item)) {
+    if (g_Config.gameplay.fix_bridge_collision
+        && !Bridge_IsSameSector(x, z, item)) {
         return height;
     }
 
@@ -46,7 +48,7 @@ static int16_t M_GetCeilingHeight(
         return height;
     }
 
-    if (g_Config.fix_bridge_collision && item->pos.y <= height) {
+    if (g_Config.gameplay.fix_bridge_collision && item->pos.y <= height) {
         return height;
     }
 

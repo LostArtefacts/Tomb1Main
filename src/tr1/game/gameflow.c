@@ -1003,7 +1003,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
     while (seq->type != GFS_END) {
         LOG_INFO("seq %d %d", seq->type, seq->data);
 
-        if (!g_Config.enable_cine
+        if (!g_Config.gameplay.enable_cine
             && g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
             bool skip;
             switch (seq->type) {
@@ -1098,7 +1098,8 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
         }
 
         case GFS_TOTAL_STATS:
-            if (g_Config.enable_total_stats && level_type != GFL_SAVED) {
+            if (g_Config.gameplay.enable_total_stats
+                && level_type != GFL_SAVED) {
                 const GAMEFLOW_DISPLAY_PICTURE_DATA *data = seq->data;
                 PHASE_STATS_ARGS *const args =
                     Memory_Alloc(sizeof(PHASE_STATS_ARGS));
@@ -1117,7 +1118,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
         case GFS_LOADING_SCREEN:
         case GFS_DISPLAY_PICTURE:
             if (seq->type == GFS_LOADING_SCREEN
-                && !g_Config.enable_loading_screens) {
+                && !g_Config.gameplay.enable_loading_screens) {
                 break;
             }
 
@@ -1125,7 +1126,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
                 break;
             }
 
-            if (g_CurrentLevel == -1 && !g_Config.enable_eidos_logo) {
+            if (g_CurrentLevel == -1 && !g_Config.gameplay.enable_eidos_logo) {
                 break;
             }
 

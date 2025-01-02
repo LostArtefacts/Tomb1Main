@@ -127,14 +127,15 @@ void Inv_Ring_Init(
 
 bool Inv_Ring_CanExamine(void)
 {
-    return g_Config.enable_item_examining && m_ExamineItemText != NULL
+    return g_Config.gameplay.enable_item_examining && m_ExamineItemText != NULL
         && !m_ExamineItemText->flags.hide;
 }
 
 void Inv_Ring_InitExamineOverlay(void)
 {
     if ((g_InvMode != INV_GAME_MODE && g_InvMode != INV_KEYS_MODE)
-        || !g_Config.enable_item_examining || m_ExamineItemText != NULL) {
+        || !g_Config.gameplay.enable_item_examining
+        || m_ExamineItemText != NULL) {
         return;
     }
 
@@ -372,13 +373,13 @@ void Inv_Ring_Active(INVENTORY_ITEM *inv_item)
 
     if (inv_item->object_id == O_MEDI_OPTION
         || inv_item->object_id == O_BIGMEDI_OPTION) {
-        if (g_Config.healthbar_location == BL_TOP_LEFT) {
+        if (g_Config.ui.healthbar_location == BL_TOP_LEFT) {
             Text_Hide(m_InvUpArrow1, true);
-        } else if (g_Config.healthbar_location == BL_TOP_RIGHT) {
+        } else if (g_Config.ui.healthbar_location == BL_TOP_RIGHT) {
             Text_Hide(m_InvUpArrow2, true);
-        } else if (g_Config.healthbar_location == BL_BOTTOM_LEFT) {
+        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_LEFT) {
             Text_Hide(m_InvDownArrow1, true);
-        } else if (g_Config.healthbar_location == BL_BOTTOM_RIGHT) {
+        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_RIGHT) {
             Text_Hide(m_InvDownArrow2, true);
         }
         g_GameInfo.inv_showing_medpack = true;

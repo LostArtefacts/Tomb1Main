@@ -95,7 +95,7 @@ static void M_SetupCreatures(void)
 {
     g_Objects[O_LARA].initialise = Lara_InitialiseLoad;
     g_Objects[O_LARA].draw_routine = Object_DrawDummyItem;
-    g_Objects[O_LARA].hit_points = g_Config.start_lara_hitpoints;
+    g_Objects[O_LARA].hit_points = g_Config.gameplay.start_lara_hitpoints;
     g_Objects[O_LARA].shadow_size = (UNIT_SHADOW * 10) / 16;
     g_Objects[O_LARA].save_position = 1;
     g_Objects[O_LARA].save_hitpoints = 1;
@@ -283,7 +283,7 @@ void Object_SetupAllObjects(void)
 
     Lara_Hair_Initialise();
 
-    if (g_Config.disable_medpacks) {
+    if (g_Config.gameplay.disable_medpacks) {
         g_Objects[O_MEDI_ITEM].initialise = NULL;
         g_Objects[O_MEDI_ITEM].collision = NULL;
         g_Objects[O_MEDI_ITEM].control = NULL;
@@ -299,7 +299,7 @@ void Object_SetupAllObjects(void)
         g_Objects[O_BIGMEDI_ITEM].ceiling_height_func = NULL;
     }
 
-    if (g_Config.disable_magnums) {
+    if (g_Config.gameplay.disable_magnums) {
         g_Objects[O_MAGNUM_ITEM].initialise = NULL;
         g_Objects[O_MAGNUM_ITEM].collision = NULL;
         g_Objects[O_MAGNUM_ITEM].control = NULL;
@@ -315,7 +315,7 @@ void Object_SetupAllObjects(void)
         g_Objects[O_MAG_AMMO_ITEM].ceiling_height_func = NULL;
     }
 
-    if (g_Config.disable_uzis) {
+    if (g_Config.gameplay.disable_uzis) {
         g_Objects[O_UZI_ITEM].initialise = NULL;
         g_Objects[O_UZI_ITEM].collision = NULL;
         g_Objects[O_UZI_ITEM].control = NULL;
@@ -331,7 +331,7 @@ void Object_SetupAllObjects(void)
         g_Objects[O_UZI_AMMO_ITEM].ceiling_height_func = NULL;
     }
 
-    if (g_Config.disable_shotgun) {
+    if (g_Config.gameplay.disable_shotgun) {
         g_Objects[O_SHOTGUN_ITEM].initialise = NULL;
         g_Objects[O_SHOTGUN_ITEM].collision = NULL;
         g_Objects[O_SHOTGUN_ITEM].control = NULL;

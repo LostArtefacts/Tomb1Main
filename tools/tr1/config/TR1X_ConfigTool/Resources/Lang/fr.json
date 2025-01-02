@@ -124,7 +124,7 @@
       "Title": "Touches rapide numériques",
       "Description": "Active les touches rapides numériques en haut du clavier, en raccourci d'équipement d'armes ou d'utilisation de soins.\n- 1: Pistolets\n- 2: Fusil à pompe\n- 3: Magnums\n- 4: Uzis\n- 8: Utiliser une petite trousse de soin\n- 9: Utiliser une grande trousse de soin"
     },
-    "enabled_inverted_look": {
+    "enable_inverted_look": {
       "Title": "Inversion verticale du mode regarder",
       "Description": "Inverse le contrôle de l'axe vertical quand Lara regarde autour d'elle."
     },
@@ -216,7 +216,7 @@
       "Title": "Activer le mode de sauvegarde par cristaux",
       "Description": "Active le système de sauvegarde de la version PlayStation par cristaux.  La sauvegarde se limite à chaque début de niveau et à chaque rencontre d’un cristal de sauvegarde à usage unique dans les niveaux. Changer cette option nécessitera de redémarrer le niveau."
     },
-    "walk_to_items": {
+    "enable_walk_to_items": {
       "Title": "Interactions animées - Placement automatique",
       "Description": "Fait marcher Lara vers les collectibles et les interrupteurs à proximité, au lieu de se téléporter vers eux."
     },

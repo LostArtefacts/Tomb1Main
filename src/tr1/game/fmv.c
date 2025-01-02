@@ -111,7 +111,9 @@ static bool M_Play(const char *const file_path)
     while (video->is_playing) {
         Video_SetVolume(
             video,
-            m_Muted ? 0 : g_Config.sound_volume / (float)Sound_GetMaxVolume());
+            m_Muted
+                ? 0
+                : g_Config.audio.sound_volume / (float)Sound_GetMaxVolume());
         Video_SetSurfaceSize(
             video, Screen_GetResWidth(), Screen_GetResHeight());
         Video_SetSurfacePixelFormat(video, AV_PIX_FMT_BGRA);
@@ -154,7 +156,7 @@ bool FMV_Play(const char *path)
     Music_Stop();
     Sound_StopAllSamples();
 
-    if (!g_Config.enable_fmv) {
+    if (!g_Config.gameplay.enable_fmv) {
         return true;
     }
 

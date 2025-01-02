@@ -199,7 +199,7 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
 {
-    if (g_Config.fix_qwop_glitch) {
+    if (g_Config.gameplay.fix_qwop_glitch) {
         item->gravity = 0;
         item->fall_speed = 0;
     }
@@ -279,7 +279,7 @@ void Lara_Col_Stop(ITEM *item, COLL_INFO *coll)
         return;
     }
 
-    if (g_Config.fix_descending_glitch && Lara_Fallen(item, coll)) {
+    if (g_Config.gameplay.fix_descending_glitch && Lara_Fallen(item, coll)) {
         return;
     }
 
@@ -325,7 +325,7 @@ void Lara_Col_ForwardJump(ITEM *item, COLL_INFO *coll)
         item->fall_speed = 0;
         item->speed = 0;
 
-        if (!g_Config.fix_wall_jump_glitch) {
+        if (!g_Config.gameplay.fix_wall_jump_glitch) {
             Lara_Animate(item);
         }
     }
@@ -543,7 +543,7 @@ void Lara_Col_Back(ITEM *item, COLL_INFO *coll)
         Item_SwitchToAnim(item, LA_STOP, 0);
     }
 
-    if (g_Config.fix_descending_glitch && Lara_Fallen(item, coll)) {
+    if (g_Config.gameplay.fix_descending_glitch && Lara_Fallen(item, coll)) {
         return;
     }
 
@@ -597,7 +597,7 @@ void Lara_Col_StepRight(ITEM *item, COLL_INFO *coll)
         Item_SwitchToAnim(item, LA_STOP, 0);
     }
 
-    if (g_Config.fix_descending_glitch && Lara_Fallen(item, coll)) {
+    if (g_Config.gameplay.fix_descending_glitch && Lara_Fallen(item, coll)) {
         return;
     }
 
@@ -632,7 +632,7 @@ void Lara_Col_StepLeft(ITEM *item, COLL_INFO *coll)
         Item_SwitchToAnim(item, LA_STOP, 0);
     }
 
-    if (g_Config.fix_descending_glitch && Lara_Fallen(item, coll)) {
+    if (g_Config.gameplay.fix_descending_glitch && Lara_Fallen(item, coll)) {
         return;
     }
 
@@ -674,7 +674,7 @@ void Lara_Col_UpJump(ITEM *item, COLL_INFO *coll)
     coll->bad_neg = -STEPUP_HEIGHT;
     coll->bad_ceiling = BAD_JUMP_CEILING;
     coll->facing = g_Lara.move_angle;
-    if (g_Config.enable_lean_jumping && item->speed < 0) {
+    if (g_Config.gameplay.enable_lean_jumping && item->speed < 0) {
         coll->facing += PHD_180;
     }
 
@@ -687,7 +687,7 @@ void Lara_Col_UpJump(ITEM *item, COLL_INFO *coll)
 
     Lara_SlideEdgeJump(item, coll);
 
-    if (g_Config.enable_lean_jumping) {
+    if (g_Config.gameplay.enable_lean_jumping) {
         if (coll->coll_type != COLL_NONE) {
             item->speed = item->speed > 0 ? 2 : -2;
         } else if (item->fall_speed < -70) {
@@ -943,7 +943,7 @@ void Lara_Col_SurfSwim(ITEM *item, COLL_INFO *coll)
     coll->bad_neg = -STEPUP_HEIGHT;
     g_Lara.move_angle = item->rot.y;
     Lara_SurfaceCollision(item, coll);
-    if (g_Config.enable_wading) {
+    if (g_Config.gameplay.enable_wading) {
         Lara_TestWaterClimbOut(item, coll);
     }
 }

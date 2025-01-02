@@ -282,8 +282,8 @@ static void M_UpdateArrows(
         m_HideArrowRight = g_Config.rendering.enable_vsync;
         break;
     case OPTION_BRIGHTNESS:
-        m_HideArrowLeft = g_Config.brightness <= CONFIG_MIN_BRIGHTNESS;
-        m_HideArrowRight = g_Config.brightness >= CONFIG_MAX_BRIGHTNESS;
+        m_HideArrowLeft = g_Config.visuals.brightness <= CONFIG_MIN_BRIGHTNESS;
+        m_HideArrowRight = g_Config.visuals.brightness >= CONFIG_MAX_BRIGHTNESS;
         break;
     case OPTION_UI_TEXT_SCALE:
         m_HideArrowLeft = g_Config.ui.text_scale <= CONFIG_MIN_TEXT_SCALE;
@@ -312,8 +312,8 @@ static void M_UpdateArrows(
         m_HideArrowRight = g_Config.rendering.pretty_pixels;
         break;
     case OPTION_REFLECTIONS:
-        m_HideArrowLeft = !g_Config.rendering.enable_reflections;
-        m_HideArrowRight = g_Config.rendering.enable_reflections;
+        m_HideArrowLeft = !g_Config.visuals.enable_reflections;
+        m_HideArrowRight = g_Config.visuals.enable_reflections;
         break;
 
     case OPTION_NUMBER_OF:
@@ -414,7 +414,7 @@ static void M_ChangeTextOption(
     }
 
     case OPTION_BRIGHTNESS:
-        sprintf(buf, GS(DETAIL_FLOAT_FMT), g_Config.brightness);
+        sprintf(buf, GS(DETAIL_FLOAT_FMT), g_Config.visuals.brightness);
         Text_ChangeText(value_text, buf);
         break;
 
@@ -461,7 +461,7 @@ static void M_ChangeTextOption(
     }
 
     case OPTION_REFLECTIONS: {
-        bool is_enabled = g_Config.rendering.enable_reflections;
+        bool is_enabled = g_Config.visuals.enable_reflections;
         Text_ChangeText(value_text, is_enabled ? GS(MISC_ON) : GS(MISC_OFF));
         break;
     }
@@ -525,9 +525,9 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
             break;
 
         case OPTION_BRIGHTNESS:
-            g_Config.brightness += 0.1f;
+            g_Config.visuals.brightness += 0.1f;
             CLAMP(
-                g_Config.brightness, CONFIG_MIN_BRIGHTNESS,
+                g_Config.visuals.brightness, CONFIG_MIN_BRIGHTNESS,
                 CONFIG_MAX_BRIGHTNESS);
             reset = OPTION_BRIGHTNESS;
             break;
@@ -560,8 +560,8 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
 
         case OPTION_RESOLUTION:
             if (Screen_SetNextRes()) {
-                g_Config.resolution_width = Screen_GetResWidth();
-                g_Config.resolution_height = Screen_GetResHeight();
+                g_Config.rendering.resolution_width = Screen_GetResWidth();
+                g_Config.rendering.resolution_height = Screen_GetResHeight();
                 M_Reinitialize(OPTION_RESOLUTION);
                 reset = OPTION_RESOLUTION;
             }
@@ -582,8 +582,8 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
             break;
 
         case OPTION_REFLECTIONS:
-            if (!g_Config.rendering.enable_reflections) {
-                g_Config.rendering.enable_reflections = true;
+            if (!g_Config.visuals.enable_reflections) {
+                g_Config.visuals.enable_reflections = true;
                 reset = OPTION_REFLECTIONS;
             }
             break;
@@ -624,9 +624,9 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
             break;
 
         case OPTION_BRIGHTNESS:
-            g_Config.brightness -= 0.1f;
+            g_Config.visuals.brightness -= 0.1f;
             CLAMP(
-                g_Config.brightness, CONFIG_MIN_BRIGHTNESS,
+                g_Config.visuals.brightness, CONFIG_MIN_BRIGHTNESS,
                 CONFIG_MAX_BRIGHTNESS);
             reset = OPTION_BRIGHTNESS;
             break;
@@ -660,8 +660,8 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
         case OPTION_RESOLUTION:
             if (Screen_SetPrevRes()) {
                 reset = OPTION_RESOLUTION;
-                g_Config.resolution_width = Screen_GetResWidth();
-                g_Config.resolution_height = Screen_GetResHeight();
+                g_Config.rendering.resolution_width = Screen_GetResWidth();
+                g_Config.rendering.resolution_height = Screen_GetResHeight();
                 M_Reinitialize(OPTION_RESOLUTION);
             }
             break;
@@ -681,8 +681,8 @@ void Option_Graphics_Control(INVENTORY_ITEM *inv_item)
             break;
 
         case OPTION_REFLECTIONS:
-            if (g_Config.rendering.enable_reflections) {
-                g_Config.rendering.enable_reflections = false;
+            if (g_Config.visuals.enable_reflections) {
+                g_Config.visuals.enable_reflections = false;
                 reset = OPTION_REFLECTIONS;
             }
             break;

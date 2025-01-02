@@ -67,8 +67,8 @@ static void M_CreateTexts(int32_t level_num)
     // kills
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                       : GS(STATS_KILLS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
+                                                : GS(STATS_KILLS_BASIC_FMT),
         stats->kill_count, stats->max_kill_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
@@ -79,8 +79,8 @@ static void M_CreateTexts(int32_t level_num)
     // pickups
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
-                                       : GS(STATS_PICKUPS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
+                                                : GS(STATS_PICKUPS_BASIC_FMT),
         stats->pickup_count, stats->max_pickup_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
@@ -105,7 +105,8 @@ static void M_CreateTexts(int32_t level_num)
     y += row_height;
 
     // deaths
-    if (g_Config.enable_deaths_counter && g_GameInfo.death_counter_supported) {
+    if (g_Config.gameplay.enable_deaths_counter
+        && g_GameInfo.death_counter_supported) {
         sprintf(buf, GS(STATS_DEATHS_FMT), stats->death_count);
         *cur_txt = Text_Create(0, y, buf);
         Text_CentreH(*cur_txt, 1);
@@ -155,8 +156,8 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
     // kills
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                       : GS(STATS_KILLS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
+                                                : GS(STATS_KILLS_BASIC_FMT),
         stats.player_kill_count, stats.total_kill_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
@@ -167,8 +168,8 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
     // pickups
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
-                                       : GS(STATS_PICKUPS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
+                                                : GS(STATS_PICKUPS_BASIC_FMT),
         stats.player_pickup_count, stats.total_pickup_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
@@ -187,7 +188,8 @@ static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
     y += row_height;
 
     // deaths
-    if (g_Config.enable_deaths_counter && g_GameInfo.death_counter_supported) {
+    if (g_Config.gameplay.enable_deaths_counter
+        && g_GameInfo.death_counter_supported) {
         sprintf(buf, GS(STATS_DEATHS_FMT), stats.death_count);
         *cur_txt = Text_Create(0, y, buf);
         Text_CentreH(*cur_txt, 1);

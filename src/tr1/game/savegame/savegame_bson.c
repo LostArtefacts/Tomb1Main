@@ -223,7 +223,8 @@ static bool M_LoadResumeInfo(JSON_ARRAY *resume_arr, RESUME_INFO *resume_info)
         }
         RESUME_INFO *resume = &resume_info[i];
         resume->lara_hitpoints = JSON_ObjectGetInt(
-            resume_obj, "lara_hitpoints", g_Config.start_lara_hitpoints);
+            resume_obj, "lara_hitpoints",
+            g_Config.gameplay.start_lara_hitpoints);
         resume->pistol_ammo = JSON_ObjectGetInt(resume_obj, "pistol_ammo", 0);
         resume->magnum_ammo = JSON_ObjectGetInt(resume_obj, "magnum_ammo", 0);
         resume->uzi_ammo = JSON_ObjectGetInt(resume_obj, "uzi_ammo", 0);
@@ -296,7 +297,8 @@ static bool M_LoadDiscontinuedStartInfo(
         }
         RESUME_INFO *start = &game_info->current[i];
         start->lara_hitpoints = JSON_ObjectGetInt(
-            start_obj, "lara_hitpoints", g_Config.start_lara_hitpoints);
+            start_obj, "lara_hitpoints",
+            g_Config.gameplay.start_lara_hitpoints);
         start->pistol_ammo = JSON_ObjectGetInt(start_obj, "pistol_ammo", 0);
         start->magnum_ammo = JSON_ObjectGetInt(start_obj, "magnum_ammo", 0);
         start->uzi_ammo = JSON_ObjectGetInt(start_obj, "uzi_ammo", 0);
@@ -566,7 +568,7 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
 
             if (header_version >= VERSION_3
                 && item->object_id == O_FLAME_EMITTER
-                && g_Config.enable_enhanced_saves) {
+                && g_Config.gameplay.enable_enhanced_saves) {
                 int32_t effect_num = JSON_ObjectGetInt(item_obj, "fx_num", -1);
                 if (effect_num != -1) {
                     item->data = (void *)(intptr_t)(effect_num + 1);
@@ -625,7 +627,7 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
 
 static bool M_LoadEffects(JSON_ARRAY *fx_arr)
 {
-    if (!g_Config.enable_enhanced_saves) {
+    if (!g_Config.gameplay.enable_enhanced_saves) {
         return true;
     }
 
@@ -770,7 +772,7 @@ static bool M_LoadLara(
     lara->spaz_effect_count = JSON_ObjectGetInt(
         lara_obj, "spaz_effect_count", lara->spaz_effect_count);
     int spaz_effect = JSON_ObjectGetInt(lara_obj, "spaz_effect", 0);
-    lara->spaz_effect = spaz_effect && g_Config.enable_enhanced_saves
+    lara->spaz_effect = spaz_effect && g_Config.gameplay.enable_enhanced_saves
         ? Effect_Get(spaz_effect)
         : NULL;
 
@@ -870,7 +872,7 @@ static bool M_LoadLara(
 
 static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
 {
-    if (g_Config.music_load_condition == MUSIC_LOAD_NEVER) {
+    if (g_Config.audio.music_load_condition == MUSIC_LOAD_NEVER) {
         return true;
     }
 
@@ -885,7 +887,7 @@ static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
         const bool is_ambient =
             JSON_ObjectGetBool(music_obj, "is_ambient", false);
         if (is_ambient) {
-            if (g_Config.music_load_condition == MUSIC_LOAD_NON_AMBIENT) {
+            if (g_Config.audio.music_load_condition == MUSIC_LOAD_NON_AMBIENT) {
                 return true;
             }
             Music_PlayLooped(current_track);
@@ -904,7 +906,7 @@ static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
 
 static bool M_LoadMusicTrackFlags(JSON_ARRAY *music_track_arr)
 {
-    if (!g_Config.load_music_triggers) {
+    if (!g_Config.audio.load_music_triggers) {
         return true;
     }
 

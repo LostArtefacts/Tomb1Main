@@ -48,7 +48,7 @@ HAIR_SEGMENT *Lara_Hair_GetSegment(int32_t n)
 
 bool Lara_Hair_IsActive(void)
 {
-    return g_Config.enable_braid && g_Objects[O_HAIR].loaded
+    return g_Config.visuals.enable_braid && g_Objects[O_HAIR].loaded
         && g_Objects[m_LaraType].loaded;
 }
 

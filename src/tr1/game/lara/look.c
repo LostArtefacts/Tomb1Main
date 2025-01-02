@@ -35,7 +35,7 @@ static void M_LeftRightBase(int16_t max_head_rot, int16_t head_turn)
 static void M_UpDownBase(
     int16_t min_head_tilt, int16_t max_head_tilt, int16_t head_turn)
 {
-    if (g_Config.enabled_inverted_look) {
+    if (g_Config.gameplay.enable_inverted_look) {
         uint16_t temp_forward = g_Input.forward;
         g_Input.forward = g_Input.back;
         g_Input.back = temp_forward;

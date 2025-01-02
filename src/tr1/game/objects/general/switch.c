@@ -47,7 +47,7 @@ static const OBJECT_BOUNDS *M_BoundsUW(void);
 
 static const OBJECT_BOUNDS *M_Bounds(void)
 {
-    if (g_Config.walk_to_items) {
+    if (g_Config.gameplay.enable_walk_to_items) {
         return &m_Switch_BoundsControlled;
     }
     return &m_Switch_Bounds;
@@ -89,7 +89,7 @@ void Switch_Control(int16_t item_num)
 
 void Switch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    if (g_Config.walk_to_items) {
+    if (g_Config.gameplay.enable_walk_to_items) {
         Switch_CollisionControlled(item_num, lara_item, coll);
         return;
     }

@@ -31,7 +31,7 @@ static const OBJECT_BOUNDS *M_Bounds(void)
 void SaveCrystal_Setup(OBJECT *obj)
 {
     obj->initialise = SaveCrystal_Initialise;
-    if (g_Config.enable_save_crystals) {
+    if (g_Config.gameplay.enable_save_crystals) {
         obj->control = SaveCrystal_Control;
         obj->collision = SaveCrystal_Collision;
         obj->save_flags = 1;
@@ -42,7 +42,7 @@ void SaveCrystal_Setup(OBJECT *obj)
 
 void SaveCrystal_Initialise(int16_t item_num)
 {
-    if (g_Config.enable_save_crystals) {
+    if (g_Config.gameplay.enable_save_crystals) {
         Item_AddActive(item_num);
     } else {
         g_Items[item_num].status = IS_INVISIBLE;

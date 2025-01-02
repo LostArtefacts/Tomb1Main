@@ -64,28 +64,34 @@ static void M_LoadControllerLayout(
 
 static void M_LoadLegacyOptions(JSON_OBJECT *const parent_obj)
 {
+#define READ_FALLBACK_BOOL(target, key)                                        \
+    target = JSON_ObjectGetBool(parent_obj, key, target)
+#define READ_FALLBACK_INT(target, key)                                         \
+    target = JSON_ObjectGetInt(parent_obj, key, target)
+
     // 0.10..4.0.3: enable_enemy_healthbar
     {
         const JSON_VALUE *const value =
             JSON_ObjectGetValue(parent_obj, "enable_enemy_healthbar");
         if (JSON_ValueIsTrue(value)) {
-            g_Config.enemy_healthbar_show_mode = BSM_ALWAYS;
+            g_Config.ui.enemy_healthbar_show_mode = BSM_ALWAYS;
         } else if (JSON_ValueIsFalse(value)) {
-            g_Config.enemy_healthbar_show_mode = BSM_NEVER;
+            g_Config.ui.enemy_healthbar_show_mode = BSM_NEVER;
         }
     }
 
     // ..4.1.2: healthbar_show_mode, airbar_show_mode, enemy_healthbar_show_mode
     {
-        g_Config.healthbar_show_mode = ConfigFile_ReadEnum(
-            parent_obj, "healthbar_showing_mode", g_Config.healthbar_show_mode,
+        g_Config.ui.healthbar_show_mode = ConfigFile_ReadEnum(
+            parent_obj, "healthbar_showing_mode",
+            g_Config.ui.healthbar_show_mode, ENUM_MAP_NAME(BAR_SHOW_MODE));
+        g_Config.ui.airbar_show_mode = ConfigFile_ReadEnum(
+            parent_obj, "airbar_showing_mode", g_Config.ui.airbar_show_mode,
             ENUM_MAP_NAME(BAR_SHOW_MODE));
-        g_Config.airbar_show_mode = ConfigFile_ReadEnum(
-            parent_obj, "airbar_showing_mode", g_Config.airbar_show_mode,
-            ENUM_MAP_NAME(BAR_SHOW_MODE));
-        g_Config.enemy_healthbar_show_mode = ConfigFile_ReadEnum(
+        g_Config.ui.enemy_healthbar_show_mode = ConfigFile_ReadEnum(
             parent_obj, "enemy_healthbar_showing_mode",
-            g_Config.enemy_healthbar_show_mode, ENUM_MAP_NAME(BAR_SHOW_MODE));
+            g_Config.ui.enemy_healthbar_show_mode,
+            ENUM_MAP_NAME(BAR_SHOW_MODE));
     }
 
     // 2.16..4.5.1 load_current_music
@@ -93,11 +99,24 @@ static void M_LoadLegacyOptions(JSON_OBJECT *const parent_obj)
         const JSON_VALUE *const value =
             JSON_ObjectGetValue(parent_obj, "load_current_music");
         if (JSON_ValueIsTrue(value)) {
-            g_Config.music_load_condition = MUSIC_LOAD_NON_AMBIENT;
+            g_Config.audio.music_load_condition = MUSIC_LOAD_NON_AMBIENT;
         } else if (JSON_ValueIsFalse(value)) {
-            g_Config.music_load_condition = MUSIC_LOAD_NEVER;
+            g_Config.audio.music_load_condition = MUSIC_LOAD_NEVER;
         }
     }
+
+    // ..4.7
+    READ_FALLBACK_BOOL(g_Config.window.is_fullscreen, "enable_fullscreen");
+    READ_FALLBACK_BOOL(g_Config.window.is_maximized, "enable_maximized");
+    READ_FALLBACK_BOOL(g_Config.gameplay.enable_walk_to_items, "walk_to_items");
+    READ_FALLBACK_BOOL(
+        g_Config.gameplay.enable_inverted_look, "enabled_inverted_look");
+    READ_FALLBACK_INT(g_Config.window.x, "window_x");
+    READ_FALLBACK_INT(g_Config.window.y, "window_y");
+    READ_FALLBACK_INT(g_Config.window.width, "window_width");
+    READ_FALLBACK_INT(g_Config.window.height, "window_height");
+    READ_FALLBACK_INT(g_Config.input.keyboard_layout, "layout");
+    READ_FALLBACK_INT(g_Config.input.controller_layout, "cntlr_layout");
 }
 
 static void M_DumpKeyboardLayout(
@@ -184,20 +203,22 @@ void Config_DumpToJSON(JSON_OBJECT *root_obj)
 
 void Config_Sanitize(void)
 {
-    CLAMP(g_Config.start_lara_hitpoints, 1, LARA_MAX_HITPOINTS);
-    CLAMP(g_Config.fov_value, 30, 150);
-    CLAMP(g_Config.camera_speed, 1, 10);
-    CLAMP(g_Config.music_volume, 0, 10);
-    CLAMP(g_Config.sound_volume, 0, 10);
-    CLAMP(g_Config.input.layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
-    CLAMP(g_Config.input.cntlr_layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
-    CLAMP(g_Config.brightness, CONFIG_MIN_BRIGHTNESS, CONFIG_MAX_BRIGHTNESS);
+    CLAMP(g_Config.gameplay.start_lara_hitpoints, 1, LARA_MAX_HITPOINTS);
+    CLAMP(g_Config.visuals.fov_value, 30, 150);
+    CLAMP(g_Config.gameplay.camera_speed, 1, 10);
+    CLAMP(g_Config.audio.music_volume, 0, 10);
+    CLAMP(g_Config.audio.sound_volume, 0, 10);
+    CLAMP(g_Config.input.keyboard_layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
+    CLAMP(g_Config.input.controller_layout, 0, INPUT_LAYOUT_NUMBER_OF - 1);
+    CLAMP(
+        g_Config.visuals.brightness, CONFIG_MIN_BRIGHTNESS,
+        CONFIG_MAX_BRIGHTNESS);
     CLAMP(g_Config.ui.text_scale, CONFIG_MIN_TEXT_SCALE, CONFIG_MAX_TEXT_SCALE);
     CLAMP(g_Config.ui.bar_scale, CONFIG_MIN_BAR_SCALE, CONFIG_MAX_BAR_SCALE);
     CLAMP(
         g_Config.gameplay.turbo_speed, CLOCK_TURBO_SPEED_MIN,
         CLOCK_TURBO_SPEED_MAX);
-    CLAMPL(g_Config.maximum_save_slots, 0);
+    CLAMPL(g_Config.gameplay.maximum_save_slots, 0);
     CLAMPL(g_Config.rendering.anisotropy_filter, 1.0);
     CLAMP(g_Config.rendering.wireframe_width, 1.0, 100.0);
 

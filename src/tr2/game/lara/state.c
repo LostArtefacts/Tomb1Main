@@ -903,7 +903,7 @@ void Lara_State_SurfSwim(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+    if (!g_Config.input.enable_tr3_sidesteps || !g_Input.slow) {
         if (g_Input.left) {
             item->rot.y -= LARA_SLOW_TURN;
         } else if (g_Input.right) {
@@ -925,7 +925,7 @@ void Lara_State_SurfBack(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+    if (!g_Config.input.enable_tr3_sidesteps || !g_Input.slow) {
         if (g_Input.left) {
             item->rot.y -= LARA_SURF_TURN;
         } else if (g_Input.right) {
@@ -947,7 +947,7 @@ void Lara_State_SurfLeft(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+    if (!g_Config.input.enable_tr3_sidesteps || !g_Input.slow) {
         if (g_Input.left) {
             item->rot.y -= LARA_SURF_TURN;
         } else if (g_Input.right) {
@@ -969,7 +969,7 @@ void Lara_State_SurfRight(ITEM *item, COLL_INFO *coll)
     }
 
     g_Lara.dive_count = 0;
-    if (!g_Config.gameplay.enable_tr3_sidesteps || !g_Input.slow) {
+    if (!g_Config.input.enable_tr3_sidesteps || !g_Input.slow) {
         if (g_Input.left) {
             item->rot.y -= LARA_SURF_TURN;
         } else if (g_Input.right) {

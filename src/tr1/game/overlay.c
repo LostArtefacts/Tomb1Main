@@ -146,12 +146,12 @@ static void M_BarSetupHealth(void)
     m_HealthBar.type = BT_LARA_HEALTH;
     m_HealthBar.value = 0;
     m_HealthBar.max_value = LARA_MAX_HITPOINTS;
-    m_HealthBar.show_mode = g_Config.healthbar_show_mode;
+    m_HealthBar.show_mode = g_Config.ui.healthbar_show_mode;
     m_HealthBar.show = false;
     m_HealthBar.blink = false;
     m_HealthBar.timer = 40;
-    m_HealthBar.color = g_Config.healthbar_color;
-    m_HealthBar.location = g_Config.healthbar_location;
+    m_HealthBar.color = g_Config.ui.healthbar_color;
+    m_HealthBar.location = g_Config.ui.healthbar_location;
 }
 
 static void M_BarSetupAir(void)
@@ -159,12 +159,12 @@ static void M_BarSetupAir(void)
     m_AirBar.type = BT_LARA_MAX_AIR;
     m_AirBar.value = LARA_MAX_AIR;
     m_AirBar.max_value = LARA_MAX_AIR;
-    m_AirBar.show_mode = g_Config.airbar_show_mode;
+    m_AirBar.show_mode = g_Config.ui.airbar_show_mode;
     m_AirBar.show = false;
     m_AirBar.blink = false;
     m_AirBar.timer = 0;
-    m_AirBar.color = g_Config.airbar_color;
-    m_AirBar.location = g_Config.airbar_location;
+    m_AirBar.color = g_Config.ui.airbar_color;
+    m_AirBar.location = g_Config.ui.airbar_location;
 }
 
 static void M_BarSetupEnemy(void)
@@ -172,12 +172,12 @@ static void M_BarSetupEnemy(void)
     m_EnemyBar.type = BT_ENEMY_HEALTH;
     m_EnemyBar.value = 0;
     m_EnemyBar.max_value = 0;
-    m_EnemyBar.show_mode = g_Config.enemy_healthbar_show_mode;
+    m_EnemyBar.show_mode = g_Config.ui.enemy_healthbar_show_mode;
     m_EnemyBar.show = false;
     m_EnemyBar.blink = false;
     m_EnemyBar.timer = 0;
-    m_EnemyBar.color = g_Config.enemy_healthbar_color;
-    m_EnemyBar.location = g_Config.enemy_healthbar_location;
+    m_EnemyBar.color = g_Config.ui.enemy_healthbar_color;
+    m_EnemyBar.location = g_Config.ui.enemy_healthbar_location;
 }
 
 static int32_t M_BarGetPercent(BAR_INFO *bar_info)
@@ -297,7 +297,7 @@ void Overlay_BarDraw(BAR_INFO *bar_info, RENDER_SCALE_REF scale_ref)
         sw = Screen_GetRenderScale(width, scale_ref);
         sh = Screen_GetRenderScale(height, scale_ref);
 
-        if (g_Config.enable_smooth_bars) {
+        if (g_Config.ui.enable_smooth_bars) {
             for (int i = 0; i < COLOR_STEPS - 1; i++) {
                 RGBA_8888 c1 = m_ColorBarMap[bar_info->color][i];
                 RGBA_8888 c2 = m_ColorBarMap[bar_info->color][i + 1];
@@ -506,7 +506,7 @@ static void M_DrawPickupsSprites(void)
 
 static void M_DrawPickups(void)
 {
-    if (g_Config.enable_3d_pickups) {
+    if (g_Config.visuals.enable_3d_pickups) {
         M_DrawPickups3D();
     } else {
         M_DrawPickupsSprites();
@@ -840,7 +840,7 @@ void Overlay_AddPickup(const GAME_OBJECT_ID object_id)
             m_Pickups[i].grid_y = grid_y;
             m_Pickups[i].rot_y = 0;
             m_Pickups[i].phase =
-                g_Config.enable_3d_pickups ? DPP_EASE_IN : DPP_DISPLAY;
+                g_Config.visuals.enable_3d_pickups ? DPP_EASE_IN : DPP_DISPLAY;
             return;
         }
     }

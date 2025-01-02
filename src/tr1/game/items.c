@@ -491,7 +491,7 @@ bool Item_MovePosition(
         }
     }
 
-    if (item == g_LaraItem && g_Config.walk_to_items
+    if (item == g_LaraItem && g_Config.gameplay.enable_walk_to_items
         && !g_Lara.interact_target.is_moving) {
         if (g_Lara.water_status != LWS_UNDERWATER) {
             const int16_t step_to_anim_num[4] = {

@@ -137,7 +137,7 @@ void Gun_Pistols_Control(const LARA_GUN_TYPE weapon_type)
 
     Gun_GetNewTarget(winfo);
 
-    if (g_InputDB.change_target && g_Config.enable_target_change) {
+    if (g_InputDB.change_target && g_Config.gameplay.enable_target_change) {
         Gun_ChangeTarget(winfo);
     }
 

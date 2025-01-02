@@ -288,7 +288,7 @@ void Alligator_Control(int16_t item_num)
     case ALLIGATOR_STATE_SWIM:
         if (info.bite && item->touch_bits) {
             item->goal_anim_state = ALLIGATOR_STATE_ATTACK;
-            if (g_Config.fix_alligator_ai) {
+            if (g_Config.gameplay.fix_alligator_ai) {
                 item->required_anim_state = ALLIGATOR_STATE_SWIM;
             }
         }
@@ -296,7 +296,7 @@ void Alligator_Control(int16_t item_num)
 
     case ALLIGATOR_STATE_ATTACK:
         if (item->frame_num
-            == (g_Config.fix_alligator_ai
+            == (g_Config.gameplay.fix_alligator_ai
                     ? ALLIGATOR_BITE_AF
                     : g_Anims[item->anim_num].frame_base)) {
             item->required_anim_state = ALLIGATOR_STATE_EMPTY;
@@ -308,7 +308,7 @@ void Alligator_Control(int16_t item_num)
                 Lara_TakeDamage(ALLIGATOR_BITE_DAMAGE, true);
                 item->required_anim_state = ALLIGATOR_STATE_SWIM;
             }
-            if (g_Config.fix_alligator_ai) {
+            if (g_Config.gameplay.fix_alligator_ai) {
                 item->goal_anim_state = ALLIGATOR_STATE_SWIM;
             }
         } else {

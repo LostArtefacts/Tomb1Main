@@ -117,9 +117,10 @@ void Input_Update(void)
 {
     g_Input.any = 0;
 
-    M_UpdateFromBackend(&g_Input, &g_Input_Keyboard, g_Config.input.layout);
     M_UpdateFromBackend(
-        &g_Input, &g_Input_Controller, g_Config.input.cntlr_layout);
+        &g_Input, &g_Input_Keyboard, g_Config.input.keyboard_layout);
+    M_UpdateFromBackend(
+        &g_Input, &g_Input_Controller, g_Config.input.controller_layout);
 
     g_Input.camera_reset |= g_Input.look;
     g_Input.menu_up |= g_Input.forward;
@@ -134,14 +135,14 @@ void Input_Update(void)
         g_Input.right = 0;
     }
 
-    if (!g_Config.enable_cheats) {
+    if (!g_Config.gameplay.enable_cheats) {
         g_Input.item_cheat = 0;
         g_Input.fly_cheat = 0;
         g_Input.level_skip_cheat = 0;
         g_Input.turbo_cheat = 0;
     }
 
-    if (g_Config.enable_tr3_sidesteps) {
+    if (g_Config.input.enable_tr3_sidesteps) {
         if (g_Input.slow && !g_Input.forward && !g_Input.back
             && !g_Input.step_left && !g_Input.step_right) {
             if (g_Input.left) {
@@ -154,7 +155,8 @@ void Input_Update(void)
         }
     }
 
-    if (!g_Config.enable_target_change || g_Lara.gun_status != LGS_READY) {
+    if (!g_Config.gameplay.enable_target_change
+        || g_Lara.gun_status != LGS_READY) {
         g_Input.change_target = 0;
     }
 

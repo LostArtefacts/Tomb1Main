@@ -28,25 +28,29 @@ int32_t Bridge_GetOffset(
     // the low end of tilted bridges have a lower height.
     int32_t offset = 0;
     if (item->rot.y == 0) {
-        if (g_Config.fix_bridge_collision && x <= item->pos.x - WALL_L / 2) {
+        if (g_Config.gameplay.fix_bridge_collision
+            && x <= item->pos.x - WALL_L / 2) {
             offset = WALL_L - 1;
         } else {
             offset = (WALL_L - x) & (WALL_L - 1);
         }
     } else if (item->rot.y == -PHD_180) {
-        if (g_Config.fix_bridge_collision && x >= item->pos.x + WALL_L / 2) {
+        if (g_Config.gameplay.fix_bridge_collision
+            && x >= item->pos.x + WALL_L / 2) {
             offset = 0;
         } else {
             offset = x & (WALL_L - 1);
         }
     } else if (item->rot.y == PHD_90) {
-        if (g_Config.fix_bridge_collision && z >= item->pos.z + WALL_L / 2) {
+        if (g_Config.gameplay.fix_bridge_collision
+            && z >= item->pos.z + WALL_L / 2) {
             offset = WALL_L - 1;
         } else {
             offset = z & (WALL_L - 1);
         }
     } else {
-        if (g_Config.fix_bridge_collision && z <= item->pos.z - WALL_L / 2) {
+        if (g_Config.gameplay.fix_bridge_collision
+            && z <= item->pos.z - WALL_L / 2) {
             offset = 0;
         } else {
             offset = (WALL_L - z) & (WALL_L - 1);
@@ -57,7 +61,8 @@ int32_t Bridge_GetOffset(
         // Lara was at the high end of the tilt2 slope which is higher than a
         // step. This fix sets the offset to the max value (1023) when Lara's at
         // the bottom of the slope.
-        if (g_Config.fix_bridge_collision && offset == 0 && y < item->pos.y) {
+        if (g_Config.gameplay.fix_bridge_collision && offset == 0
+            && y < item->pos.y) {
             offset = (WALL_L - 1 - z) & (WALL_L - 1);
         }
     }

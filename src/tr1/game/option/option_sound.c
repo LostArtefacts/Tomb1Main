@@ -38,16 +38,16 @@ static void M_InitText(void)
     m_Text[TEXT_TITLE_BORDER] = Text_Create(0, -32, " ");
     m_Text[TEXT_TITLE] = Text_Create(0, -30, GS(SOUND_SET_VOLUMES));
 
-    if (g_Config.music_volume > 10) {
-        g_Config.music_volume = 10;
+    if (g_Config.audio.music_volume > 10) {
+        g_Config.audio.music_volume = 10;
     }
-    sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
+    sprintf(buf, "\\{icon music} %2d", g_Config.audio.music_volume);
     m_Text[TEXT_MUSIC_VOLUME] = Text_Create(0, 0, buf);
 
-    if (g_Config.sound_volume > 10) {
-        g_Config.sound_volume = 10;
+    if (g_Config.audio.sound_volume > 10) {
+        g_Config.audio.sound_volume = 10;
     }
-    sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
+    sprintf(buf, "\\{icon sound} %2d", g_Config.audio.sound_volume);
     m_Text[TEXT_SOUND_VOLUME] = Text_Create(0, 25, buf);
 
     Text_AddBackground(m_Text[g_OptionSelected], 128, 0, 0, 0, TS_REQUESTED);
@@ -95,31 +95,32 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
 
     switch (g_OptionSelected) {
     case TEXT_MUSIC_VOLUME:
-        if (g_Input.menu_left && g_Config.music_volume > Music_GetMinVolume()) {
-            g_Config.music_volume--;
+        if (g_Input.menu_left
+            && g_Config.audio.music_volume > Music_GetMinVolume()) {
+            g_Config.audio.music_volume--;
             Config_Write();
             g_IDelay = true;
             g_IDCount = 5;
-            Music_SetVolume(g_Config.music_volume);
+            Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
+            sprintf(buf, "\\{icon music} %2d", g_Config.audio.music_volume);
             Text_ChangeText(m_Text[TEXT_MUSIC_VOLUME], buf);
         } else if (
             g_Input.menu_right
-            && g_Config.music_volume < Music_GetMaxVolume()) {
-            g_Config.music_volume++;
+            && g_Config.audio.music_volume < Music_GetMaxVolume()) {
+            g_Config.audio.music_volume++;
             Config_Write();
             g_IDelay = true;
             g_IDCount = 5;
-            Music_SetVolume(g_Config.music_volume);
+            Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "\\{icon music} %2d", g_Config.music_volume);
+            sprintf(buf, "\\{icon music} %2d", g_Config.audio.music_volume);
             Text_ChangeText(m_Text[TEXT_MUSIC_VOLUME], buf);
         }
 
-        if (g_Config.music_volume == Music_GetMinVolume()) {
+        if (g_Config.audio.music_volume == Music_GetMinVolume()) {
             Text_Hide(m_Text[TEXT_LEFT_ARROW], true);
-        } else if (g_Config.music_volume == Music_GetMaxVolume()) {
+        } else if (g_Config.audio.music_volume == Music_GetMaxVolume()) {
             Text_Hide(m_Text[TEXT_RIGHT_ARROW], true);
         } else {
             Text_Hide(m_Text[TEXT_LEFT_ARROW], false);
@@ -129,31 +130,32 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
         break;
 
     case TEXT_SOUND_VOLUME:
-        if (g_Input.menu_left && g_Config.sound_volume > Sound_GetMinVolume()) {
-            g_Config.sound_volume--;
+        if (g_Input.menu_left
+            && g_Config.audio.sound_volume > Sound_GetMinVolume()) {
+            g_Config.audio.sound_volume--;
             Config_Write();
             g_IDelay = true;
             g_IDCount = 5;
-            Sound_SetMasterVolume(g_Config.sound_volume);
+            Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
+            sprintf(buf, "\\{icon sound} %2d", g_Config.audio.sound_volume);
             Text_ChangeText(m_Text[TEXT_SOUND_VOLUME], buf);
         } else if (
             g_Input.menu_right
-            && g_Config.sound_volume < Sound_GetMaxVolume()) {
-            g_Config.sound_volume++;
+            && g_Config.audio.sound_volume < Sound_GetMaxVolume()) {
+            g_Config.audio.sound_volume++;
             Config_Write();
             g_IDelay = true;
             g_IDCount = 5;
-            Sound_SetMasterVolume(g_Config.sound_volume);
+            Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
-            sprintf(buf, "\\{icon sound} %2d", g_Config.sound_volume);
+            sprintf(buf, "\\{icon sound} %2d", g_Config.audio.sound_volume);
             Text_ChangeText(m_Text[TEXT_SOUND_VOLUME], buf);
         }
 
-        if (g_Config.sound_volume == Sound_GetMinVolume()) {
+        if (g_Config.audio.sound_volume == Sound_GetMinVolume()) {
             Text_Hide(m_Text[TEXT_LEFT_ARROW], true);
-        } else if (g_Config.sound_volume == Sound_GetMaxVolume()) {
+        } else if (g_Config.audio.sound_volume == Sound_GetMaxVolume()) {
             Text_Hide(m_Text[TEXT_RIGHT_ARROW], true);
         } else {
             Text_Hide(m_Text[TEXT_LEFT_ARROW], false);

@@ -332,7 +332,7 @@ bool Sound_Effect(
     }
 
     int32_t pitch = 100;
-    if (g_Config.enable_pitched_sounds
+    if (g_Config.audio.enable_pitched_sounds
         && (s->flags & SAMPLE_FLAG_PITCH_WIBBLE)) {
         pitch += ((Random_GetDraw() * SOUND_MAX_PITCH_CHANGE) / 0x4000)
             - SOUND_MAX_PITCH_CHANGE;

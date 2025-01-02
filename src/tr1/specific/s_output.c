@@ -348,7 +348,7 @@ static int32_t M_VisibleZClip(
 static int32_t M_ZedClipper(
     int32_t vertex_count, POINT_INFO *pts, GFX_3D_VERTEX *vertices)
 {
-    const float multiplier = g_Config.brightness / 16.0f;
+    const float multiplier = g_Config.visuals.brightness / 16.0f;
     const float near_z = Output_GetNearZ();
     const float persp_o_near_z = (double)g_PhdPersp / near_z;
 
@@ -520,7 +520,7 @@ void S_Output_DrawSprite(
     int vertex_count = 4;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
 
-    float multiplier = g_Config.brightness / 16.0f;
+    float multiplier = g_Config.visuals.brightness / 16.0f;
 
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
     float vshade = (8192.0f - shade) * multiplier;
@@ -893,7 +893,7 @@ void S_Output_DrawFlatTriangle(
         return;
     }
 
-    float multiplier = g_Config.brightness / (16.0f * 255.0f);
+    float multiplier = g_Config.visuals.brightness / (16.0f * 255.0f);
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
         vertices[i].y = src_vbuf[i]->ys;
@@ -959,7 +959,7 @@ void S_Output_DrawEnvMapTriangle(
     int vertex_count = 3;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
 
-    const float multiplier = g_Config.brightness / 16.0f;
+    const float multiplier = g_Config.visuals.brightness / 16.0f;
 
     const PHD_VBUF *const src_vbuf[3] = { vn1, vn2, vn3 };
     const PHD_UV *const src_uv[3] = { uv1, uv2, uv3 };
@@ -1061,7 +1061,7 @@ void S_Output_DrawEnvMapQuad(
         return;
     }
 
-    float multiplier = g_Config.brightness / 16.0f;
+    float multiplier = g_Config.visuals.brightness / 16.0f;
 
     const PHD_VBUF *const src_vbuf[4] = { vn2, vn1, vn3, vn4 };
     const PHD_UV *const src_uv[4] = { uv2, uv1, uv3, uv4 };
@@ -1099,7 +1099,7 @@ void S_Output_DrawTexturedTriangle(
     PHD_VBUF *src_vbuf[3];
     PHD_UV *src_uv[3];
 
-    float multiplier = g_Config.brightness / 16.0f;
+    float multiplier = g_Config.visuals.brightness / 16.0f;
 
     src_vbuf[0] = vn1;
     src_vbuf[1] = vn2;
@@ -1209,7 +1209,7 @@ void S_Output_DrawTexturedQuad(
         return;
     }
 
-    float multiplier = g_Config.brightness / 16.0f;
+    float multiplier = g_Config.visuals.brightness / 16.0f;
 
     src_vbuf[0] = vn2;
     src_vbuf[1] = vn1;

@@ -92,13 +92,14 @@ void Lara_Control(void)
 
     switch (g_Lara.water_status) {
     case LWS_ABOVE_WATER: {
-        if (g_Config.enable_wading
+        if (g_Config.gameplay.enable_wading
             && (water_height_diff == NO_HEIGHT
                 || water_height_diff < LARA_WADE_DEPTH)) {
             break;
         }
 
-        if (g_Config.enable_wading && water_depth <= LARA_SWIM_DEPTH - STEP_L) {
+        if (g_Config.gameplay.enable_wading
+            && water_depth <= LARA_SWIM_DEPTH - STEP_L) {
             if (water_height_diff > LARA_WADE_DEPTH) {
                 g_Lara.water_status = LWS_WADE;
                 if (!item->gravity) {
@@ -184,7 +185,8 @@ void Lara_Control(void)
             break;
         }
 
-        if (g_Config.enable_wading && water_height_diff > LARA_WADE_DEPTH) {
+        if (g_Config.gameplay.enable_wading
+            && water_height_diff > LARA_WADE_DEPTH) {
             g_Lara.water_status = LWS_WADE;
             Item_SwitchToAnim(item, LA_STAND_IDLE, 0);
             item->current_anim_state = LS_STOP;
@@ -588,10 +590,10 @@ void Lara_Initialise(int32_t level_num)
 
     g_LaraItem->collidable = 0;
     g_LaraItem->data = &g_Lara;
-    if (g_Config.disable_healing_between_levels) {
+    if (g_Config.gameplay.disable_healing_between_levels) {
         g_LaraItem->hit_points = resume->lara_hitpoints;
     } else {
-        g_LaraItem->hit_points = g_Config.start_lara_hitpoints;
+        g_LaraItem->hit_points = g_Config.gameplay.start_lara_hitpoints;
     }
 
     m_DeathCameraTarget = NO_ITEM;
@@ -741,7 +743,8 @@ void Lara_InitialiseInventory(int32_t level_num)
 
 void Lara_RevertToPistolsIfNeeded(void)
 {
-    if (!g_Config.revert_to_pistols || !Inv_RequestItem(O_PISTOL_ITEM)) {
+    if (!g_Config.gameplay.revert_to_pistols
+        || !Inv_RequestItem(O_PISTOL_ITEM)) {
         return;
     }
 
@@ -837,8 +840,8 @@ void Lara_AlignPosition(ITEM *item, XYZ_32 *vec)
 
 bool Lara_MovePosition(ITEM *item, XYZ_32 *vec)
 {
-    int32_t velocity =
-        g_Config.walk_to_items && g_Lara.water_status != LWS_UNDERWATER
+    int32_t velocity = g_Config.gameplay.enable_walk_to_items
+            && g_Lara.water_status != LWS_UNDERWATER
         ? LARA_MOVE_ANIM_VELOCITY
         : LARA_MOVE_SPEED;
 

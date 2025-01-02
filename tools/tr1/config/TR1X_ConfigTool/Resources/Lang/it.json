@@ -124,7 +124,7 @@
       "Title": "Tasti numerici per uso rapido degli oggetti",
       "Description": "Abilita i tasti numerici di scelta rapida per equipaggiare armi o usare kit medici.\n- 1: Equipaggia pistole\n- 2: Equipaggia fucile a pompa\n- 3: Equipaggia magnum\n- 4: Equipaggia Uzi\n- 8: Usa kit medico piccolo\n- 9: Usa kit medico grande"
     },
-    "enabled_inverted_look": {
+    "enable_inverted_look": {
       "Title": "Visuale invertita",
       "Description": "Inverte i controlli dell'asse Y quando Lara si guarda intorno."
     },
@@ -216,7 +216,7 @@
       "Title": "Abilita i cristalli di salvataggio",
       "Description": "Permette di salvare all'inizio di ogni livello o utilizzando i cristalli. I livelli hanno un numero limitato di cristalli di salvataggio che possono essere utilizzati una sola volta, come nella versione PS1.\nLa modifica di questa opzione richiederà il riavvio del livello."
     },
-    "walk_to_items": {
+    "enable_walk_to_items": {
       "Title": "Interazioni animate",
       "Description": "Fa in modo che Lara si avvicini agli oggetti, alle leve e agli interruttori quando questi sono nelle vicinanze, invece di teletrasportarsi."
     },

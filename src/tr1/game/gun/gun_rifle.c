@@ -123,7 +123,7 @@ void Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
 
     Gun_GetNewTarget(winfo);
 
-    if (g_InputDB.change_target && g_Config.enable_target_change) {
+    if (g_InputDB.change_target && g_Config.gameplay.enable_target_change) {
         Gun_ChangeTarget(winfo);
     }
 
@@ -170,7 +170,7 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
                 ani = LF_SG_AIM_START;
             }
         }
-    } else if (g_Config.fix_shotgun_targeting && g_Lara.target) {
+    } else if (g_Config.gameplay.fix_shotgun_targeting && g_Lara.target) {
         if (Anim_TestAbsFrameEqual(ani, LF_SG_RECOIL_START)) {
             ani = LF_SG_UNAIM_START;
             ani++;
@@ -212,7 +212,7 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
         } else if (Anim_TestAbsFrameRange(
                        ani, LF_SG_RECOILING, LF_SG_RECOIL_END)) {
             ani++;
-            if (g_Config.fix_shotgun_targeting) {
+            if (g_Config.gameplay.fix_shotgun_targeting) {
                 if (Anim_TestAbsFrameEqual(ani, LF_SG_RECOIL_SFX)) {
                     Sound_Effect(SFX_LARA_RELOAD, &g_LaraItem->pos, SPM_NORMAL);
                 } else if (Anim_TestAbsFrameEqual(ani, LF_SG_UNDRAW_START)) {
@@ -263,7 +263,7 @@ void Gun_Rifle_Fire(const LARA_GUN_TYPE weapon_type)
         return;
     }
 
-    if (g_Config.enable_shotgun_flash) {
+    if (g_Config.visuals.enable_shotgun_flash) {
         g_Lara.right_arm.flash_gun = g_Weapons[weapon_type].flash_time;
     }
     Sound_Effect(

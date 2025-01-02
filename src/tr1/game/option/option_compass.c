@@ -55,8 +55,8 @@ static void M_InitText(void)
     // kills
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                       : GS(STATS_KILLS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
+                                                : GS(STATS_KILLS_BASIC_FMT),
         stats->kill_count, stats->max_kill_count);
     m_Text[TEXT_KILLS] = Text_Create(0, y, buf);
     y += row_height;
@@ -64,8 +64,8 @@ static void M_InitText(void)
     // pickups
     sprintf(
         buf,
-        g_Config.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
-                                       : GS(STATS_PICKUPS_BASIC_FMT),
+        g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
+                                                : GS(STATS_PICKUPS_BASIC_FMT),
         stats->pickup_count, stats->max_pickup_count);
     m_Text[TEXT_PICKUPS] = Text_Create(0, y, buf);
     y += row_height;
@@ -86,7 +86,8 @@ static void M_InitText(void)
     y += row_height;
 
     // deaths
-    if (g_Config.enable_deaths_counter && g_GameInfo.death_counter_supported) {
+    if (g_Config.gameplay.enable_deaths_counter
+        && g_GameInfo.death_counter_supported) {
         sprintf(buf, GS(STATS_DEATHS_FMT), stats->death_count);
         m_Text[TEXT_DEATHS] = Text_Create(0, y, buf);
         y += row_height;
@@ -118,7 +119,7 @@ static void M_ShutdownText(void)
 
 void Option_Compass_Control(INVENTORY_ITEM *inv_item)
 {
-    if (g_Config.enable_compass_stats) {
+    if (g_Config.gameplay.enable_compass_stats) {
         char buf[100];
         char time_buf[100];
 

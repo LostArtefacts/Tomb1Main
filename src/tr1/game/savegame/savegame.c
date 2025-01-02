@@ -175,7 +175,7 @@ static void M_LoadPostprocess(void)
 
 void Savegame_Init(void)
 {
-    m_SaveSlots = g_Config.maximum_save_slots;
+    m_SaveSlots = g_Config.gameplay.maximum_save_slots;
     m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
 }
 
@@ -238,10 +238,10 @@ void Savegame_ApplyLogicToCurrentInfo(int level_num)
 {
     RESUME_INFO *current = &g_GameInfo.current[level_num];
 
-    if (!g_Config.disable_healing_between_levels
+    if (!g_Config.gameplay.disable_healing_between_levels
         || level_num == g_GameFlow.gym_level_num
         || level_num == g_GameFlow.first_level_num) {
-        current->lara_hitpoints = g_Config.start_lara_hitpoints;
+        current->lara_hitpoints = g_Config.gameplay.start_lara_hitpoints;
     }
 
     if (level_num == g_GameFlow.gym_level_num) {

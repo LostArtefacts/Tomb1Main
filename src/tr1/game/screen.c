@@ -76,12 +76,13 @@ void Screen_Init(void)
     res->height = Shell_GetCurrentDisplayHeight();
 
     // select matching resolution from config
-    if (g_Config.resolution_width > 0 && g_Config.resolution_height > 0) {
+    if (g_Config.rendering.resolution_width > 0
+        && g_Config.rendering.resolution_height > 0) {
         res = &m_Resolutions[0];
         m_ResolutionIdx = -1;
         while (res->width != -1) {
-            if (g_Config.resolution_width == res->width
-                && g_Config.resolution_height == res->height) {
+            if (g_Config.rendering.resolution_width == res->width
+                && g_Config.rendering.resolution_height == res->height) {
                 m_ResolutionIdx = res - m_Resolutions;
             }
             res++;
@@ -91,8 +92,8 @@ void Screen_Init(void)
         // resolution with the user choice
         if (m_ResolutionIdx == -1) {
             res = &m_Resolutions[0];
-            res->width = g_Config.resolution_width;
-            res->height = g_Config.resolution_height;
+            res->width = g_Config.rendering.resolution_width;
+            res->height = g_Config.rendering.resolution_height;
             m_ResolutionIdx = 0;
         }
     } else {

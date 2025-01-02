@@ -64,7 +64,8 @@ void TRex_Setup(OBJECT *obj)
 
 void TRex_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    if (g_Config.disable_trex_collision && g_Items[item_num].hit_points <= 0) {
+    if (g_Config.gameplay.disable_trex_collision
+        && g_Items[item_num].hit_points <= 0) {
         return;
     }
 

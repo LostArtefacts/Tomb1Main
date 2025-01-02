@@ -240,7 +240,7 @@ static void M_AdjustMusicVolume(const bool underwater)
     double multiplier = 1.0;
 
     if (underwater) {
-        switch (g_Config.underwater_music_mode) {
+        switch (g_Config.audio.underwater_music_mode) {
         case UMM_FULL:
             multiplier = 1.0;
             break;
@@ -262,7 +262,7 @@ static void M_AdjustMusicVolume(const bool underwater)
         }
     }
 
-    Music_SetVolume(g_Config.music_volume * multiplier);
+    Music_SetVolume(g_Config.audio.music_volume * multiplier);
 }
 
 static void M_EnsureEnvironment(void)
@@ -858,7 +858,7 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
 void Camera_MoveManual(void)
 {
     const int16_t camera_delta = (const int)PHD_90 / (const int)LOGIC_FPS
-        * (double)m_ManualCameraMultiplier[g_Config.camera_speed];
+        * (double)m_ManualCameraMultiplier[g_Config.gameplay.camera_speed];
 
     if (g_Input.camera_left) {
         M_OffsetAdditionalAngle(camera_delta);

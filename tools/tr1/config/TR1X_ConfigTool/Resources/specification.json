@@ -136,7 +136,7 @@
           "DefaultValue": true
         },
         {
-          "Field": "enabled_inverted_look",
+          "Field": "enable_inverted_look",
           "DataType": "Bool",
           "DefaultValue": false
         },
@@ -273,7 +273,7 @@
           "DefaultValue": false
         },
         {
-          "Field": "walk_to_items",
+          "Field": "enable_walk_to_items",
           "DataType": "Bool",
           "DefaultValue": false
         },

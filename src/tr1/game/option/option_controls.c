@@ -200,7 +200,7 @@ static void M_InitMenu(void)
     }
     m_ControlMenu.vis_options = visible_lines;
 
-    const TEXT_COLUMN_PLACEMENT *cols = g_Config.enable_cheats
+    const TEXT_COLUMN_PLACEMENT *cols = g_Config.gameplay.enable_cheats
         ? CtrlTextPlacementCheats
         : CtrlTextPlacementNormal;
 
@@ -225,7 +225,7 @@ static void M_InitText(INPUT_BACKEND backend, INPUT_LAYOUT layout)
     Text_CentreH(m_Text[TEXT_TITLE_BORDER], true);
     Text_CentreV(m_Text[TEXT_TITLE_BORDER], true);
 
-    const TEXT_COLUMN_PLACEMENT *cols = g_Config.enable_cheats
+    const TEXT_COLUMN_PLACEMENT *cols = g_Config.gameplay.enable_cheats
         ? CtrlTextPlacementCheats
         : CtrlTextPlacementNormal;
 
@@ -463,7 +463,7 @@ static void M_ShutdownText(void)
 
 static void M_FlashConflicts(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 {
-    const TEXT_COLUMN_PLACEMENT *cols = g_Config.enable_cheats
+    const TEXT_COLUMN_PLACEMENT *cols = g_Config.gameplay.enable_cheats
         ? CtrlTextPlacementCheats
         : CtrlTextPlacementNormal;
 
@@ -482,19 +482,19 @@ static INPUT_LAYOUT M_ChangeLayout(INPUT_BACKEND backend)
 {
     INPUT_LAYOUT layout = INPUT_LAYOUT_DEFAULT;
     if (backend == INPUT_BACKEND_KEYBOARD) {
-        g_Config.input.layout += g_InputDB.menu_left ? -1 : 0;
-        g_Config.input.layout += g_InputDB.menu_right ? 1 : 0;
-        g_Config.input.layout += INPUT_LAYOUT_NUMBER_OF;
-        g_Config.input.layout %= INPUT_LAYOUT_NUMBER_OF;
-        layout = g_Config.input.layout;
+        g_Config.input.keyboard_layout += g_InputDB.menu_left ? -1 : 0;
+        g_Config.input.keyboard_layout += g_InputDB.menu_right ? 1 : 0;
+        g_Config.input.keyboard_layout += INPUT_LAYOUT_NUMBER_OF;
+        g_Config.input.keyboard_layout %= INPUT_LAYOUT_NUMBER_OF;
+        layout = g_Config.input.keyboard_layout;
     }
 
     if (backend == INPUT_BACKEND_CONTROLLER) {
-        g_Config.input.cntlr_layout += g_InputDB.menu_left ? -1 : 0;
-        g_Config.input.cntlr_layout += g_InputDB.menu_right ? 1 : 0;
-        g_Config.input.cntlr_layout += INPUT_LAYOUT_NUMBER_OF;
-        g_Config.input.cntlr_layout %= INPUT_LAYOUT_NUMBER_OF;
-        layout = g_Config.input.cntlr_layout;
+        g_Config.input.controller_layout += g_InputDB.menu_left ? -1 : 0;
+        g_Config.input.controller_layout += g_InputDB.menu_right ? 1 : 0;
+        g_Config.input.controller_layout += INPUT_LAYOUT_NUMBER_OF;
+        g_Config.input.controller_layout %= INPUT_LAYOUT_NUMBER_OF;
+        layout = g_Config.input.controller_layout;
     }
 
     M_UpdateText(backend, layout);
@@ -625,9 +625,9 @@ CONTROL_MODE Option_Controls_Control(
 {
     INPUT_LAYOUT layout = INPUT_LAYOUT_DEFAULT;
     if (backend == INPUT_BACKEND_KEYBOARD) {
-        layout = g_Config.input.layout;
+        layout = g_Config.input.keyboard_layout;
     } else {
-        layout = g_Config.input.cntlr_layout;
+        layout = g_Config.input.controller_layout;
     }
 
     if (!m_Text[TEXT_TITLE]) {
@@ -635,7 +635,7 @@ CONTROL_MODE Option_Controls_Control(
         M_InitText(backend, layout);
     }
 
-    const TEXT_COLUMN_PLACEMENT *cols = g_Config.enable_cheats
+    const TEXT_COLUMN_PLACEMENT *cols = g_Config.gameplay.enable_cheats
         ? CtrlTextPlacementCheats
         : CtrlTextPlacementNormal;
 
