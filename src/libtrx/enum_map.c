@@ -20,33 +20,56 @@ typedef struct {
 static M_ENTRY *m_Map = NULL;
 static M_INVERSE_ENTRY *m_InverseMap = NULL;
 
+static void M_Define(
+    const char *enum_name, int32_t enum_value, const char *str_value);
+static void M_DefineInverse(
+    const char *enum_name, int32_t enum_value, const char *str_value);
+
+static void M_Define(
+    const char *const enum_name, const int32_t enum_value,
+    const char *const str_value)
+{
+    const size_t key_len = strlen(enum_name) + strlen(str_value) + 2;
+    char *const key = Memory_Alloc(key_len);
+    snprintf(key, key_len, "%s|%s", enum_name, str_value);
+
+    M_ENTRY *const entry = Memory_Alloc(sizeof(M_ENTRY));
+    entry->key = key;
+    entry->value = enum_value;
+    HASH_ADD_KEYPTR(hh, m_Map, entry->key, strlen(entry->key), entry);
+}
+
+static void M_DefineInverse(
+    const char *const enum_name, const int32_t enum_value,
+    const char *const str_value)
+{
+    const size_t key_len =
+        snprintf(NULL, 0, "%s|%d", enum_name, enum_value) + 1;
+    char *const key = Memory_Alloc(key_len);
+    snprintf(key, key_len, "%s|%d", enum_name, enum_value);
+
+    M_INVERSE_ENTRY *entry;
+    HASH_FIND_STR(m_InverseMap, key, entry);
+    if (entry != NULL) {
+        // The inverse lookup is already defined - do not override it.
+        // (This means that the first call to ENUM_MAP_DEFINE for a given enum
+        // value also determines what serializing it back to string will pick
+        // in the event there are multiple aliases).
+        return;
+    }
+
+    entry = Memory_Alloc(sizeof(M_INVERSE_ENTRY));
+    entry->key = key;
+    entry->str_value = Memory_DupStr(str_value);
+    HASH_ADD_KEYPTR(hh, m_InverseMap, entry->key, strlen(entry->key), entry);
+}
+
 void EnumMap_Define(
     const char *const enum_name, const int32_t enum_value,
     const char *const str_value)
 {
-    {
-        const size_t key_len = strlen(enum_name) + strlen(str_value) + 2;
-        char *const key = Memory_Alloc(key_len);
-        snprintf(key, key_len, "%s|%s", enum_name, str_value);
-
-        M_ENTRY *const entry = Memory_Alloc(sizeof(M_ENTRY));
-        entry->key = key;
-        entry->value = enum_value;
-        HASH_ADD_KEYPTR(hh, m_Map, entry->key, strlen(entry->key), entry);
-    }
-
-    {
-        const size_t key_len =
-            snprintf(NULL, 0, "%s|%d", enum_name, enum_value) + 1;
-        char *const key = Memory_Alloc(key_len);
-        snprintf(key, key_len, "%s|%d", enum_name, enum_value);
-
-        M_INVERSE_ENTRY *const entry = Memory_Alloc(sizeof(M_INVERSE_ENTRY));
-        entry->key = key;
-        entry->str_value = Memory_DupStr(str_value);
-        HASH_ADD_KEYPTR(
-            hh, m_InverseMap, entry->key, strlen(entry->key), entry);
-    }
+    M_Define(enum_name, enum_value, str_value);
+    M_DefineInverse(enum_name, enum_value, str_value);
 }
 
 int32_t EnumMap_Get(
