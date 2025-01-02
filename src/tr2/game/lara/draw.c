@@ -9,12 +9,13 @@
 #include "global/vars.h"
 
 static void M_DrawBodyPart(
-    LARA_MESH mesh, const BONE *bone, const int16_t **mesh_rots_1,
+    LARA_MESH mesh, const ANIM_BONE *bone, const int16_t **mesh_rots_1,
     const int16_t **mesh_rots_2, int32_t clip);
 
 static void M_DrawBodyPart(
-    const LARA_MESH mesh, const BONE *const bone, const int16_t **mesh_rots_1,
-    const int16_t **mesh_rots_2, const int32_t clip)
+    const LARA_MESH mesh, const ANIM_BONE *const bone,
+    const int16_t **mesh_rots_1, const int16_t **mesh_rots_2,
+    const int32_t clip)
 {
     if (mesh_rots_2 != NULL) {
         Matrix_TranslateRel_I(
@@ -91,7 +92,7 @@ void Lara_Draw(const ITEM *const item)
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    const BONE *const bone = (BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     const int16_t *mesh_rots = frame->mesh_rots;
     const int16_t *mesh_rots_c;
 
@@ -143,8 +144,8 @@ void Lara_Draw(const ITEM *const item)
 
     if (g_Lara.back_gun) {
         Matrix_Push();
-        const BONE *const bone_c =
-            (BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
+        const ANIM_BONE *const bone_c =
+            (ANIM_BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
         Matrix_TranslateRel(
             bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
         mesh_rots_c = g_Objects[g_Lara.back_gun].frame_base + FBBOX_ROT;
@@ -340,7 +341,7 @@ void Lara_Draw_I(
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    const BONE *const bone = (BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     const int16_t *mesh_rots_1 = frame1->mesh_rots;
     const int16_t *mesh_rots_2 = frame2->mesh_rots;
     const int16_t *mesh_rots_1_c;
@@ -399,8 +400,8 @@ void Lara_Draw_I(
 
     if (g_Lara.back_gun) {
         Matrix_Push_I();
-        const BONE *const bone_c =
-            (BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
+        const ANIM_BONE *const bone_c =
+            (ANIM_BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
         Matrix_TranslateRel_I(
             bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
         mesh_rots_1_c = g_Objects[g_Lara.back_gun].frame_base + FBBOX_ROT;

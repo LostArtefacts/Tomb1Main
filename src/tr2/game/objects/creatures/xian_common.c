@@ -40,7 +40,7 @@ void XianWarrior_Draw(const ITEM *item)
         jade_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_KNIGHT_STATUE].mesh_idx];
     }
 
-    const BONE *bone = (BONE *)&g_AnimBones[obj->bone_idx];
+    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *extra_rotation = item->data;
     const int16_t *mesh_rots[2] = {
         frames[0]->mesh_rots,

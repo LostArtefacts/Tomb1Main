@@ -31,7 +31,7 @@ typedef struct {
         // clang-format on
     };
     XYZ_32 pos;
-} BONE;
+} ANIM_BONE;
 #endif
 
 typedef struct __PACKING {
