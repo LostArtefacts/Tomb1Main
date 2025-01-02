@@ -190,16 +190,6 @@ typedef enum {
 } HEIGHT_TYPE;
 
 typedef enum {
-    AC_NULL = 0,
-    AC_MOVE_ORIGIN = 1,
-    AC_JUMP_VELOCITY = 2,
-    AC_ATTACK_READY = 3,
-    AC_DEACTIVATE = 4,
-    AC_SOUND_FX = 5,
-    AC_EFFECT = 6,
-} ANIM_COMMAND;
-
-typedef enum {
     BEB_POP = 1 << 0,
     BEB_PUSH = 1 << 1,
     BEB_ROT_X = 1 << 2,

@@ -20,11 +20,6 @@
 
 #include <stddef.h>
 
-#define SFX_MODE_BITS(C) (C & 0xC000)
-#define SFX_ID_BITS(C) (C & 0x3FFF)
-#define SFX_LAND 0x4000
-#define SFX_WATER 0x8000
-
 #define ITEM_ADJUST_ROT(source, target, rot)                                   \
     do {                                                                       \
         if ((int16_t)(target - source) > rot) {                                \
@@ -711,22 +706,23 @@ bool Item_GetAnimChange(ITEM *item, ANIM *anim)
     return false;
 }
 
-void Item_PlayAnimSFX(ITEM *item, int16_t *command, uint16_t flags)
+void Item_PlayAnimSFX(
+    ITEM *const item, const int16_t *const command, const uint16_t flags)
 {
     if (item->frame_num != command[0]) {
         return;
     }
 
-    uint16_t mode = SFX_MODE_BITS(command[1]);
-    if (mode) {
-        int16_t height = Item_GetWaterHeight(item);
-        if ((mode == SFX_WATER && (height >= 0 || height == NO_HEIGHT))
-            || (mode == SFX_LAND && height < 0 && height != NO_HEIGHT)) {
+    const ANIM_COMMAND_ENVIRONMENT mode = ANIM_CMD_ENVIRONMENT_BITS(command[1]);
+    if (mode != ACE_ALL) {
+        const int16_t height = Item_GetWaterHeight(item);
+        if ((mode == ACE_WATER && (height >= 0 || height == NO_HEIGHT))
+            || (mode == ACE_LAND && height < 0 && height != NO_HEIGHT)) {
             return;
         }
     }
 
-    Sound_Effect(SFX_ID_BITS(command[1]), &item->pos, flags);
+    Sound_Effect(ANIM_CMD_PARAM_BITS(command[1]), &item->pos, flags);
 }
 
 bool Item_IsTriggerActive(ITEM *item)

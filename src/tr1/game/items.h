@@ -43,7 +43,7 @@ void Item_SwitchToObjAnim(
     ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id);
 void Item_Animate(ITEM *item);
 bool Item_GetAnimChange(ITEM *item, ANIM *anim);
-void Item_PlayAnimSFX(ITEM *item, int16_t *command, uint16_t flags);
+void Item_PlayAnimSFX(ITEM *item, const int16_t *command, uint16_t flags);
 
 bool Item_IsTriggerActive(ITEM *item);
 

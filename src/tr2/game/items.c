@@ -541,9 +541,10 @@ void Item_Animate(ITEM *const item)
 
             case AC_SOUND_FX: {
                 const int32_t frame = cmd_ptr[0];
-                const SOUND_EFFECT_ID sound_id = cmd_ptr[1] & 0x3FFF;
+                const SOUND_EFFECT_ID sound_id =
+                    ANIM_CMD_PARAM_BITS(cmd_ptr[1]);
                 const ANIM_COMMAND_ENVIRONMENT type =
-                    (cmd_ptr[1] & 0xC000) >> 14;
+                    ANIM_CMD_ENVIRONMENT_BITS(cmd_ptr[1]);
                 cmd_ptr += 2;
 
                 if (item->frame_num != frame) {
