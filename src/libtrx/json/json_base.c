@@ -48,9 +48,29 @@ static JSON_NUMBER *M_NumberNewInt64(const int64_t number)
 
 static JSON_NUMBER *M_NumberNewDouble(const double number)
 {
-    const size_t size = snprintf(NULL, 0, "%f", number) + 1;
+    const size_t size = snprintf(NULL, 0, "%f", number) + 3;
     char *const buf = Memory_Alloc(size);
     sprintf(buf, "%f", number);
+
+    // Remove trailing zeros, keeping at least one digit after the decimal point
+    char *const dot = strchr(buf, '.');
+    if (dot == NULL) {
+        strcat(buf, ".0");
+    } else {
+        char *end = buf + strlen(buf) - 1;
+        while (end > dot && *end == '0') {
+            end--;
+        }
+        if (*end == '.') {
+            // All fractional digits removed => append a single 0 to get "1.0".
+            end[1] = '0';
+            end[2] = '\0';
+        } else {
+            // Terminate string after the last non-zero digit to get "1.123".
+            end[1] = '\0';
+        }
+    }
+
     JSON_NUMBER *const elem = Memory_Alloc(sizeof(JSON_NUMBER));
     elem->number = buf;
     elem->number_size = strlen(buf);
