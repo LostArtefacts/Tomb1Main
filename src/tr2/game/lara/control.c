@@ -192,6 +192,15 @@ static void (*m_CollisionRoutines[])(ITEM *item, COLL_INFO *coll) = {
     // clang-format on
 };
 
+static SECTOR *M_GetCurrentSector(const ITEM *lara_item);
+
+static SECTOR *M_GetCurrentSector(const ITEM *const lara_item)
+{
+    int16_t room_num = lara_item->room_num;
+    return Room_GetSector(
+        lara_item->pos.x, MAX_HEIGHT, lara_item->pos.z, &room_num);
+}
+
 void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 {
     coll->old.x = item->pos.x;
@@ -252,6 +261,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 
     Lara_Animate(item);
 
+    const SECTOR *const sector = M_GetCurrentSector(item);
     if (!g_Lara.extra_anim && g_Lara.water_status != LWS_CHEAT) {
         Lara_BaddieCollision(item, coll);
         if (g_Lara.skidoo == NO_ITEM) {
@@ -261,7 +271,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, -LARA_HEIGHT / 2);
     Gun_Control();
-    Room_TestTriggers(item);
+    Room_TestSectorTrigger(item, sector);
 }
 
 void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
@@ -310,6 +320,8 @@ void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
     item->pos.z +=
         (item->fall_speed * Math_Cos(g_Lara.move_angle)) >> (W2V_SHIFT + 2);
 
+    const SECTOR *const sector = M_GetCurrentSector(item);
+
     Lara_BaddieCollision(item, coll);
 
     if (g_Lara.skidoo == NO_ITEM) {
@@ -318,7 +330,7 @@ void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, 100);
     Gun_Control();
-    Room_TestTriggers(item);
+    Room_TestSectorTrigger(item, sector);
 }
 
 void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
@@ -387,6 +399,8 @@ void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
          * ((item->fall_speed * Math_Cos(item->rot.y)) >> (W2V_SHIFT + 2)))
         >> W2V_SHIFT;
 
+    const SECTOR *const sector = M_GetCurrentSector(item);
+
     if (g_Lara.water_status != LWS_CHEAT && !g_Lara.extra_anim) {
         Lara_BaddieCollision(item, coll);
     }
@@ -406,7 +420,7 @@ void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
 
     Item_UpdateRoom(item, 0);
     Gun_Control();
-    Room_TestTriggers(item);
+    Room_TestSectorTrigger(item, sector);
 }
 
 void Lara_Control(const int16_t item_num)
