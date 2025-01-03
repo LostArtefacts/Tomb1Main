@@ -9,9 +9,9 @@
 // - Set .end = true to end the current phase.
 //
 // To continue executing current game sequence, .command.action member should
-// be set to GF_CONTINUE_SEQUENCE. To break out of the current sequence and
-// switch to a different game flow action, .command.action should be set to
-// the action to run.
+// be set to GF_NOOP. To break out of the current sequence and switch to a
+// different game flow action, .command.action should be set to the action to
+// run.
 //
 // It does not make sense to return both .end = false and .command.
 typedef struct {

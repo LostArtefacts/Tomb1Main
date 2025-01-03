@@ -25,9 +25,9 @@
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 
-static GAME_FLOW_DIR M_Control(bool demo_mode);
+static GAME_FLOW_COMMAND M_Control(bool demo_mode);
 
-static GAME_FLOW_DIR M_Control(const bool demo_mode)
+static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
 {
     if (!g_GameFlow.cheat_mode_check_disabled) {
         Lara_Cheat_CheckKeys();
@@ -35,12 +35,15 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
 
     if (g_LevelComplete) {
         if (g_GameFlow.demo_version && g_GameFlow.single_level) {
-            return GFD_EXIT_TO_TITLE;
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_CurrentLevel == LV_GYM) {
-            return GFD_EXIT_TO_TITLE;
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        return GFD_LEVEL_COMPLETE | g_CurrentLevel;
+        return (GAME_FLOW_COMMAND) {
+            .action = GF_LEVEL_COMPLETE,
+            .param = g_CurrentLevel,
+        };
     }
 
     Input_Update();
@@ -49,11 +52,11 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
 
     if (demo_mode) {
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            return g_GameFlow.on_demo_interrupt;
+            return GF_TranslateScriptCommand(g_GameFlow.on_demo_interrupt);
         }
         if (!Demo_GetInput()) {
             g_Input = (INPUT_STATE) { 0 };
-            return g_GameFlow.on_demo_end;
+            return GF_TranslateScriptCommand(g_GameFlow.on_demo_end);
         }
     }
 
@@ -61,19 +64,19 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
         || (g_Lara.death_timer > DEATH_WAIT_INPUT && g_Input.any)
         || g_OverlayStatus == 2) {
         if (demo_mode) {
-            return g_GameFlow.on_death_demo_mode;
+            return GF_TranslateScriptCommand(g_GameFlow.on_death_demo_mode);
         }
         if (g_CurrentLevel == LV_GYM) {
-            return GFD_EXIT_TO_TITLE;
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_GameFlow.on_death_in_game) {
-            return g_GameFlow.on_death_in_game;
+            return GF_TranslateScriptCommand(g_GameFlow.on_death_in_game);
         }
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;
-            const GAME_FLOW_DIR dir = GF_ShowInventory(INV_DEATH_MODE);
-            if (dir != (GAME_FLOW_DIR)-1) {
-                return dir;
+            const GAME_FLOW_COMMAND gf_cmd = GF_ShowInventory(INV_DEATH_MODE);
+            if (gf_cmd.action != GF_NOOP) {
+                return gf_cmd;
             }
         } else {
             g_OverlayStatus = 2;
@@ -92,17 +95,17 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
                 g_OverlayStatus = g_Input.save ? -2 : 0;
             }
         } else {
-            GAME_FLOW_DIR dir;
+            GAME_FLOW_COMMAND gf_cmd;
             if (g_OverlayStatus == -1) {
-                dir = GF_ShowInventory(INV_LOAD_MODE);
+                gf_cmd = GF_ShowInventory(INV_LOAD_MODE);
             } else if (g_OverlayStatus == -2) {
-                dir = GF_ShowInventory(INV_SAVE_MODE);
+                gf_cmd = GF_ShowInventory(INV_SAVE_MODE);
             } else {
-                dir = GF_ShowInventory(INV_GAME_MODE);
+                gf_cmd = GF_ShowInventory(INV_GAME_MODE);
             }
             g_OverlayStatus = 1;
-            if (dir != (GAME_FLOW_DIR)-1) {
-                return dir;
+            if (gf_cmd.action != GF_NOOP) {
+                return gf_cmd;
             }
         }
     }
@@ -123,15 +126,15 @@ static GAME_FLOW_DIR M_Control(const bool demo_mode)
         Stats_UpdateTimer();
     }
 
-    return (GAME_FLOW_DIR)-1;
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
-GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
+GAME_FLOW_COMMAND Game_Control(const int32_t num_frames, const bool demo_mode)
 {
-    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
     for (int32_t i = 0; i < num_frames; i++) {
-        dir = M_Control(demo_mode);
-        if (dir != (GAME_FLOW_DIR)-1) {
+        gf_cmd = M_Control(demo_mode);
+        if (gf_cmd.action != GF_NOOP) {
             break;
         }
     }
@@ -140,7 +143,7 @@ GAME_FLOW_DIR Game_Control(const int32_t num_frames, const bool demo_mode)
     Overlay_Animate(num_frames);
     Output_AnimateTextures(g_Camera.num_frames);
 
-    return dir;
+    return gf_cmd;
 }
 
 void Game_Draw(void)

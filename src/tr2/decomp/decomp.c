@@ -58,12 +58,12 @@ typedef enum {
     LA_VEHICLE_HIT_BACK = 14,
 } LARA_ANIM_VEHICLE;
 
-int16_t TitleSequence(void)
+GAME_FLOW_COMMAND TitleSequence(void)
 {
     GF_N_LoadStrings(-1);
 
     if (!Level_Initialise(0, GFL_TITLE)) {
-        return GFD_EXIT_GAME;
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 
     if (g_GameFlow.title_track) {
@@ -266,9 +266,9 @@ int32_t Misc_Move3DPosTo3DPos(
     // clang-format on
 }
 
-int32_t LevelCompleteSequence(void)
+GAME_FLOW_COMMAND LevelCompleteSequence(void)
 {
-    return GFD_EXIT_TO_TITLE;
+    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
 void S_Wait(int32_t frames, const bool input_check)
@@ -311,11 +311,11 @@ void S_Wait(int32_t frames, const bool input_check)
     }
 }
 
-GAME_FLOW_DIR DisplayCredits(void)
+GAME_FLOW_COMMAND DisplayCredits(void)
 {
     S_UnloadLevelFile();
     if (!Level_Initialise(0, GFL_TITLE)) {
-        return GFD_EXIT_TO_TITLE;
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
 
     Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
@@ -330,11 +330,11 @@ GAME_FLOW_DIR DisplayCredits(void)
             .fade_in_time = FRAMES_PER_SECOND / 2,
             .fade_out_time = FRAMES_PER_SECOND / 2,
         });
-        const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
         Phase_Picture_Destroy(phase);
 
-        if (dir != (GAME_FLOW_DIR)-1) {
-            return dir;
+        if (gf_cmd.action != GF_NOOP) {
+            return gf_cmd;
         }
     }
 
@@ -344,15 +344,15 @@ GAME_FLOW_DIR DisplayCredits(void)
             .fade_in_time = FRAMES_PER_SECOND / 2,
             .fade_out_time = FRAMES_PER_SECOND / 2,
         });
-        const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
 
         Phase_Stats_Destroy(phase);
-        if (dir != (GAME_FLOW_DIR)-1) {
-            return dir;
+        if (gf_cmd.action != GF_NOOP) {
+            return gf_cmd;
         }
     }
 
-    return GFD_EXIT_TO_TITLE;
+    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
 void IncreaseScreenSize(void)

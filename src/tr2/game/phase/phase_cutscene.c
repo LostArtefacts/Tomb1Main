@@ -54,7 +54,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (!Level_Initialise(p->level_num, GFL_CUTSCENE)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_TO_TITLE,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
 
@@ -68,7 +68,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (!Music_PlaySynced(g_CineTrackID)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_TO_TITLE,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
 
@@ -98,7 +98,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_GAME,
+            .gf_cmd = { .action = GF_EXIT_GAME },
         };
     } else {
         M_FixAudioDrift();
@@ -108,7 +108,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
-                .dir = (GAME_FLOW_DIR)-1,
+                .gf_cmd = { .action = GF_NOOP },
             };
         }
         Shell_ProcessInput();
@@ -124,7 +124,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         if (g_CineFrameIdx >= g_NumCineFrames) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
-                .dir = (GAME_FLOW_DIR)-1,
+                .gf_cmd = { .action = GF_NOOP },
             };
         }
 

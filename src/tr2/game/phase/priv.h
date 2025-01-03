@@ -10,7 +10,7 @@ typedef enum {
 
 typedef struct {
     PHASE_ACTION action;
-    GAME_FLOW_DIR dir;
+    GAME_FLOW_COMMAND gf_cmd;
 } PHASE_CONTROL;
 
 typedef PHASE_CONTROL (*PHASE_START_FUNC)(PHASE *phase);

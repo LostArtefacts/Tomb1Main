@@ -78,7 +78,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             || !Fader_Control(&p->fader)) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
-                .dir = (GAME_FLOW_DIR)-1,
+                .gf_cmd = { .action = GF_NOOP },
             };
         }
     }

@@ -9,7 +9,7 @@
 // they'll need to be properly modularized. The same applies to all files
 // within the decomp/ directory which are scheduled for extensive refactoring.
 
-int16_t TitleSequence(void);
+GAME_FLOW_COMMAND TitleSequence(void);
 void Game_SetCutsceneTrack(int32_t track);
 void CutscenePlayer_Control(int16_t item_num);
 void Lara_Control_Cutscene(int16_t item_num);
@@ -19,9 +19,9 @@ int32_t Level_Initialise(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 int32_t Misc_Move3DPosTo3DPos(
     PHD_3DPOS *src_pos, const PHD_3DPOS *dst_pos, int32_t velocity,
     int16_t ang_add);
-int32_t LevelCompleteSequence(void);
+GAME_FLOW_COMMAND LevelCompleteSequence(void);
 void S_Wait(int32_t frames, bool input_check);
-GAME_FLOW_DIR DisplayCredits(void);
+GAME_FLOW_COMMAND DisplayCredits(void);
 void S_InitialisePolyList(bool clear_back_buffer);
 void DecreaseScreenSize(void);
 void IncreaseScreenSize(void);

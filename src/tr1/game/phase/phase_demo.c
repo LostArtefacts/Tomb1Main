@@ -373,7 +373,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     ASSERT_FAIL();
     return (PHASE_CONTROL) {
         .end = true,
-        .command = { .action = GF_CONTINUE_SEQUENCE },
+        .command = { .action = GF_NOOP },
     };
 }
 

@@ -386,72 +386,66 @@ void Shell_Main(void)
         return;
     }
 
-    int16_t gf_option = g_GameFlow.first_option;
+    GAME_FLOW_COMMAND gf_cmd =
+        GF_TranslateScriptCommand(g_GameFlow.first_option);
     bool is_loop_continued = true;
     while (is_loop_continued) {
-        const int16_t gf_dir = gf_option & 0xFF00;
-        const int16_t gf_param = gf_option & 0x00FF;
-
-        switch (gf_dir) {
-        case GFD_OVERRIDE:
-            gf_option = g_GF_OverrideDir;
-            g_GF_OverrideDir = -1;
-            break;
-
-        case GFD_START_GAME:
+        switch (gf_cmd.action) {
+        case GF_START_GAME:
+        case GF_SELECT_GAME:
             if (g_GameFlow.single_level >= 0) {
-                gf_option =
+                gf_cmd =
                     GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
             } else {
-                if (gf_param > g_GameFlow.num_levels) {
+                if (gf_cmd.param > g_GameFlow.num_levels) {
                     Shell_ExitSystemFmt(
                         "GameMain: STARTGAME with invalid level number (%d)",
-                        gf_param);
+                        gf_cmd.param);
                     return;
                 }
-                gf_option = GF_DoLevelSequence(gf_param, GFL_NORMAL);
+                gf_cmd = GF_DoLevelSequence(gf_cmd.param, GFL_NORMAL);
             }
             break;
 
-        case GFD_START_SAVED_GAME:
-            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), gf_param);
+        case GF_START_SAVED_GAME:
+            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), gf_cmd.param);
             if (g_SaveGame.current_level > g_GameFlow.num_levels) {
                 Shell_ExitSystemFmt(
                     "GameMain: STARTSAVEDGAME with invalid level number (%d)",
                     g_SaveGame.current_level);
                 return;
             }
-            gf_option = GF_DoLevelSequence(g_SaveGame.current_level, GFL_SAVED);
+            gf_cmd = GF_DoLevelSequence(g_SaveGame.current_level, GFL_SAVED);
             break;
 
-        case GFD_START_CINE:
-            PHASE *const cutscene_phase = Phase_Cutscene_Create(gf_param);
-            gf_option = PhaseExecutor_Run(cutscene_phase);
+        case GF_START_CINE:
+            PHASE *const cutscene_phase = Phase_Cutscene_Create(gf_cmd.param);
+            gf_cmd = PhaseExecutor_Run(cutscene_phase);
             Phase_Cutscene_Destroy(cutscene_phase);
             break;
 
-        case GFD_START_DEMO:
-            const int32_t level_num = Demo_ChooseLevel((int8_t)gf_param);
-            gf_option = level_num >= 0 ? GF_DoLevelSequence(level_num, GFL_DEMO)
-                                       : GFD_EXIT_TO_TITLE;
+        case GF_START_DEMO:
+            const int32_t level_num = Demo_ChooseLevel((int8_t)gf_cmd.param);
+            gf_cmd = level_num >= 0
+                ? GF_DoLevelSequence(level_num, GFL_DEMO)
+                : (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
-        case GFD_LEVEL_COMPLETE:
-            gf_option = LevelCompleteSequence();
+        case GF_LEVEL_COMPLETE:
+            gf_cmd = LevelCompleteSequence();
             break;
 
-        case GFD_EXIT_TO_TITLE:
-        case GFD_EXIT_TO_OPTION:
+        case GF_EXIT_TO_TITLE:
             if (g_GameFlow.title_disabled) {
-                if (g_GameFlow.title_replace < 0
-                    || g_GameFlow.title_replace == GFD_EXIT_TO_TITLE) {
+                gf_cmd = GF_TranslateScriptCommand(g_GameFlow.title_replace);
+                if (gf_cmd.action == GF_NOOP
+                    || gf_cmd.action == GF_EXIT_TO_TITLE) {
                     Shell_ExitSystem(
                         "GameMain Failed: Title disabled & no replacement");
                     return;
                 }
-                gf_option = g_GameFlow.title_replace;
             } else {
-                gf_option = TitleSequence();
+                gf_cmd = TitleSequence();
             }
             break;
 

@@ -21,17 +21,17 @@ static int32_t M_Wait(PHASE *phase);
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
 {
-    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        const GAME_FLOW_DIR dir = g_GF_OverrideDir;
-        g_GF_OverrideDir = -1;
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
+    if (g_GF_OverrideCommand.action != GF_NOOP) {
+        const GAME_FLOW_COMMAND gf_cmd = g_GF_OverrideCommand;
+        g_GF_OverrideCommand = (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
     if (phase != NULL && phase->control != NULL) {
         return phase->control(phase, nframes);
     }
     return (PHASE_CONTROL) {
         .action = PHASE_ACTION_END,
-        .dir = (GAME_FLOW_DIR)-1,
+        .gf_cmd = { .action = GF_NOOP },
     };
 }
 
@@ -53,9 +53,9 @@ static int32_t M_Wait(PHASE *const phase)
     }
 }
 
-GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
+GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
 {
-    GAME_FLOW_DIR result = (GAME_FLOW_DIR)-1;
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
 
     PHASE *const prev_phase =
         m_PhaseStackSize > 0 ? m_PhaseStack[m_PhaseStackSize - 1] : NULL;
@@ -68,10 +68,10 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
         Clock_SyncTick();
         const PHASE_CONTROL control = phase->start(phase);
         if (g_IsGameToExit) {
-            result = GFD_EXIT_GAME;
+            gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             goto finish;
         } else if (control.action == PHASE_ACTION_END) {
-            result = control.dir;
+            gf_cmd = control.gf_cmd;
             goto finish;
         }
     }
@@ -82,9 +82,9 @@ GAME_FLOW_DIR PhaseExecutor_Run(PHASE *const phase)
 
         if (control.action == PHASE_ACTION_END) {
             if (g_IsGameToExit) {
-                result = GFD_EXIT_GAME;
+                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             } else {
-                result = control.dir;
+                gf_cmd = control.gf_cmd;
             }
             goto finish;
         } else if (control.action == PHASE_ACTION_NO_WAIT) {
@@ -106,5 +106,5 @@ finish:
     }
     m_PhaseStackSize--;
 
-    return result;
+    return gf_cmd;
 }

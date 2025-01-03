@@ -47,7 +47,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         g_CurrentLevel = 0;
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_GAME,
+            .gf_cmd = { .action = GF_EXIT_GAME },
         };
     }
 
@@ -76,19 +76,22 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
 
-    GAME_FLOW_DIR dir;
+    GAME_FLOW_COMMAND gf_cmd;
     if (g_IsGameToExit && !p->exiting) {
         p->exiting = true;
         Fader_InitAnyToBlack(&p->exit_fader, FRAMES_PER_SECOND / 3);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
-        dir = GFD_EXIT_GAME;
+        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     } else {
         Fader_Control(&p->exit_fader);
-        dir = Game_Control(num_frames, false);
+        gf_cmd = Game_Control(num_frames, false);
     }
 
-    if (dir != (GAME_FLOW_DIR)-1) {
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
+    if (gf_cmd.action != GF_NOOP) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = gf_cmd,
+        };
     }
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }

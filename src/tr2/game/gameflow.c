@@ -21,6 +21,7 @@
 #include <libtrx/config.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
+#include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
 
@@ -360,12 +361,12 @@ bool GF_LoadScriptFile(const char *const fname)
 bool GF_DoFrontendSequence(void)
 {
     GF_N_LoadStrings(-1);
-    const GAME_FLOW_DIR dir =
+    const GAME_FLOW_COMMAND gf_cmd =
         GF_InterpretSequence(m_FrontendSequence, GFL_NORMAL);
-    return dir == GFD_EXIT_GAME;
+    return gf_cmd.action == GF_EXIT_GAME;
 }
 
-GAME_FLOW_DIR GF_DoLevelSequence(
+GAME_FLOW_COMMAND GF_DoLevelSequence(
     const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
 {
     GF_N_LoadStrings(start_level);
@@ -373,23 +374,23 @@ GAME_FLOW_DIR GF_DoLevelSequence(
     int32_t current_level = start_level;
     while (true) {
         if (current_level > g_GameFlow.num_levels - 1) {
-            return GFD_EXIT_TO_TITLE;
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
 
         const int16_t *const ptr = m_ScriptTable[current_level];
-        const GAME_FLOW_DIR dir = GF_InterpretSequence(ptr, type);
+        const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(ptr, type);
         current_level++;
 
         if (g_GameFlow.single_level >= 0) {
-            return dir;
+            return gf_cmd;
         }
-        if ((dir & ~0xFF) != GFD_LEVEL_COMPLETE) {
-            return dir;
+        if (gf_cmd.action != GF_LEVEL_COMPLETE) {
+            return gf_cmd;
         }
     }
 }
 
-GAME_FLOW_DIR GF_InterpretSequence(
+GAME_FLOW_COMMAND GF_InterpretSequence(
     const int16_t *ptr, GAME_FLOW_LEVEL_TYPE type)
 {
     g_GF_NoFloor = 0;
@@ -409,7 +410,7 @@ GAME_FLOW_DIR GF_InterpretSequence(
     g_GF_NumSecrets = 3;
 
     int32_t ntracks = 0;
-    GAME_FLOW_DIR dir = GFD_EXIT_TO_TITLE;
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
 
     while (*ptr != GFE_END_SEQ) {
         switch (*ptr) {
@@ -426,7 +427,7 @@ GAME_FLOW_DIR GF_InterpretSequence(
             if (type != GFL_SAVED) {
                 FMV_Play(g_GF_FMVFilenames[ptr[1]]);
                 if (g_IsGameToExit) {
-                    return GFD_EXIT_GAME;
+                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 }
             }
             ptr += 2;
@@ -434,17 +435,17 @@ GAME_FLOW_DIR GF_InterpretSequence(
 
         case GFE_START_LEVEL:
             if (ptr[1] > g_GameFlow.num_levels) {
-                dir = GFD_EXIT_TO_TITLE;
+                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else if (type != GFL_STORY) {
                 if (type == GFL_MID_STORY) {
-                    return GFD_EXIT_TO_TITLE;
+                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
                 }
-                dir = GF_StartGame(ptr[1], type);
+                gf_cmd = GF_StartGame(ptr[1], type);
                 if (type == GFL_SAVED) {
                     type = GFL_NORMAL;
                 }
-                if ((dir & ~0xFF) != GFD_LEVEL_COMPLETE) {
-                    return dir;
+                if (gf_cmd.action != GF_LEVEL_COMPLETE) {
+                    return gf_cmd;
                 }
             }
             ptr += 2;
@@ -454,10 +455,10 @@ GAME_FLOW_DIR GF_InterpretSequence(
             if (type != GFL_SAVED) {
                 const int16_t level = g_CurrentLevel;
                 PHASE *const cutscene_phase = Phase_Cutscene_Create(ptr[1]);
-                dir = PhaseExecutor_Run(cutscene_phase);
+                gf_cmd = PhaseExecutor_Run(cutscene_phase);
                 Phase_Cutscene_Destroy(cutscene_phase);
-                if (dir != (GAME_FLOW_DIR)-1) {
-                    return dir;
+                if (gf_cmd.action != GF_NOOP) {
+                    return gf_cmd;
                 }
             }
             ptr += 2;
@@ -474,17 +475,20 @@ GAME_FLOW_DIR GF_InterpretSequence(
                         .fade_in_time = 0,
                         .fade_out_time = 0,
                     });
-                dir = PhaseExecutor_Run(stats_phase);
+                gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);
 
                 CreateStartInfo(g_CurrentLevel + 1);
                 g_SaveGame.current_level = g_CurrentLevel + 1;
                 start->available = 0;
 
-                if (dir != (GAME_FLOW_DIR)-1) {
-                    return dir;
+                if (gf_cmd.action != GF_NOOP) {
+                    return gf_cmd;
                 }
-                dir = GFD_START_GAME | (g_CurrentLevel + 1);
+                gf_cmd = (GAME_FLOW_COMMAND) {
+                    .action = GF_START_GAME,
+                    .param = g_CurrentLevel + 1,
+                };
             }
             ptr++;
             break;
@@ -538,7 +542,7 @@ GAME_FLOW_DIR GF_InterpretSequence(
             START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
             start->stats = g_SaveGame.current_stats;
             g_SaveGame.bonus_flag = true;
-            dir = DisplayCredits();
+            gf_cmd = DisplayCredits();
             ptr++;
             break;
 
@@ -594,14 +598,14 @@ GAME_FLOW_DIR GF_InterpretSequence(
             break;
 
         default:
-            return GFD_EXIT_GAME;
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
         }
     }
 
     if (type == GFL_STORY || type == GFL_MID_STORY) {
-        return 0;
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
-    return dir;
+    return gf_cmd;
 }
 
 void GF_ModifyInventory(const int32_t level, const int32_t type)
@@ -643,35 +647,35 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
     }
 }
 
-GAME_FLOW_DIR GF_StartDemo(const int32_t level_num)
+GAME_FLOW_COMMAND GF_StartDemo(const int32_t level_num)
 {
     if (level_num < 0) {
-        return GFD_EXIT_TO_TITLE;
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     PHASE *const demo_phase = Phase_Demo_Create(level_num);
-    const GAME_FLOW_DIR dir = PhaseExecutor_Run(demo_phase);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
     Phase_Demo_Destroy(demo_phase);
-    return dir;
+    return gf_cmd;
 }
 
-GAME_FLOW_DIR GF_StartGame(
+GAME_FLOW_COMMAND GF_StartGame(
     const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     PHASE *const phase = Phase_Game_Create(level_num, level_type);
-    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Game_Destroy(phase);
-    return dir;
+    return gf_cmd;
 }
 
-GAME_FLOW_DIR GF_ShowInventory(const INVENTORY_MODE mode)
+GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
 {
     PHASE *const phase = Phase_Inventory_Create(mode);
-    const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Game_Destroy(phase);
-    return dir;
+    return gf_cmd;
 }
 
-GAME_FLOW_DIR GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
+GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
 {
     if (g_Config.gameplay.enable_auto_item_selection) {
         const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
@@ -679,4 +683,31 @@ GAME_FLOW_DIR GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
         InvRing_SetRequestedObjectID(object_id);
     }
     return GF_ShowInventory(INV_KEYS_MODE);
+}
+
+GAME_FLOW_COMMAND GF_TranslateScriptCommand(const uint16_t dir)
+{
+    GAME_FLOW_ACTION action = GF_NOOP;
+
+    // clang-format off
+    switch (dir & 0xFF00) {
+    case 0x0000: action = GF_START_GAME; break;
+    case 0x0100: action = GF_START_SAVED_GAME; break;
+    case 0x0200: action = GF_START_CINE; break;
+    case 0x0300: action = GF_START_FMV; break;
+    case 0x0400: action = GF_START_DEMO; break;
+    case 0x0500: action = GF_EXIT_TO_TITLE; break;
+    case 0x0600: action = GF_LEVEL_COMPLETE; break;
+    case 0x0700: action = GF_EXIT_GAME; break;
+    case 0x0800: action = GF_EXIT_TO_TITLE; break;
+    default:
+        LOG_ERROR("Unknown gameflow dir: %x", dir);
+        break;
+    }
+    // clang-format on
+
+    return (GAME_FLOW_COMMAND) {
+        .action = action,
+        .param = (int8_t)(dir & 0xFF),
+    };
 }

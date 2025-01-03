@@ -1040,14 +1040,14 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             }
             Phase_Set(PHASE_GAME, NULL);
             command = Phase_Run();
-            if (command.action != GF_CONTINUE_SEQUENCE) {
+            if (command.action != GF_NOOP) {
                 return command;
             }
             break;
 
         case GFS_STOP_GAME:
             command = Game_Stop();
-            if (command.action != GF_CONTINUE_SEQUENCE
+            if (command.action != GF_NOOP
                 && command.action != GF_LEVEL_COMPLETE) {
                 return command;
             }
@@ -1072,7 +1072,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_LOOP_CINE:
             if (level_type != GFL_SAVED) {
                 command = Phase_Run();
-                if (command.action != GF_CONTINUE_SEQUENCE
+                if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
                 }
@@ -1091,7 +1091,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             args->level_num = (int32_t)(intptr_t)seq->data;
             Phase_Set(PHASE_STATS, args);
             command = Phase_Run();
-            if (command.action != GF_CONTINUE_SEQUENCE) {
+            if (command.action != GF_NOOP) {
                 return command;
             }
             break;
@@ -1109,7 +1109,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                     level_type == GFL_BONUS ? GFL_BONUS : GFL_NORMAL;
                 Phase_Set(PHASE_STATS, args);
                 command = Phase_Run();
-                if (command.action != GF_CONTINUE_SEQUENCE) {
+                if (command.action != GF_NOOP) {
                     return command;
                 }
             }
@@ -1137,7 +1137,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             args->display_time = data->display_time;
             Phase_Set(PHASE_PICTURE, args);
             command = Phase_Run();
-            if (command.action != GF_CONTINUE_SEQUENCE) {
+            if (command.action != GF_NOOP) {
                 return command;
             }
             break;
@@ -1291,7 +1291,7 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
 
         case GFS_LOOP_CINE:
             command = Phase_Run();
-            if (command.action != GF_CONTINUE_SEQUENCE
+            if (command.action != GF_NOOP
                 && command.action != GF_LEVEL_COMPLETE) {
                 return command;
             }

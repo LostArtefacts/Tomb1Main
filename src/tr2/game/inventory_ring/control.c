@@ -4,6 +4,7 @@
 #include "game/clock.h"
 #include "game/demo.h"
 #include "game/game.h"
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/inventory_ring/draw.h"
@@ -43,7 +44,7 @@ static void M_RemoveItemsText(void);
 static void M_RemoveAllText(void);
 static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
-static GAME_FLOW_DIR M_Control(INV_RING *ring);
+static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
 static void M_End(INV_RING *ring);
 
 static void M_Construct(INVENTORY_MODE mode);
@@ -168,10 +169,10 @@ static void M_Construct(const INVENTORY_MODE mode)
     g_SoundOptionLine = 0;
 }
 
-static GAME_FLOW_DIR M_Control(INV_RING *const ring)
+static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 {
-    if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        return GFD_OVERRIDE;
+    if (g_GF_OverrideCommand.action != GF_NOOP) {
+        return g_GF_OverrideCommand;
     }
 
     if (!ring->has_spun_out) {
@@ -187,10 +188,10 @@ static GAME_FLOW_DIR M_Control(INV_RING *const ring)
 
     if (g_Inv_DemoMode) {
         if (g_InputDB.any) {
-            return g_GameFlow.on_demo_interrupt;
+            return GF_TranslateScriptCommand(g_GameFlow.on_demo_interrupt);
         }
         if (!Demo_GetInput()) {
-            return g_GameFlow.on_demo_end;
+            return GF_TranslateScriptCommand(g_GameFlow.on_demo_end);
         }
     } else if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
         m_NoInputCounter = 0;
@@ -202,7 +203,7 @@ static GAME_FLOW_DIR M_Control(INV_RING *const ring)
     }
 
     if (g_IsGameToExit) {
-        return GFD_EXIT_GAME;
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 
     if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
@@ -574,7 +575,7 @@ static GAME_FLOW_DIR M_Control(INV_RING *const ring)
     }
 
     Sound_EndScene();
-    return (GAME_FLOW_DIR)-1;
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
 static void M_End(INV_RING *const ring)
@@ -938,7 +939,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     return ring;
 }
 
-GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
+GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
 {
     const INVENTORY_MODE mode = ring->mode;
     const bool is_demo_needed = ring->is_demo_needed;
@@ -948,11 +949,11 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
     g_OldInputDB = (INPUT_STATE) { 0 };
 
     if (g_IsGameToExit) {
-        return GFD_EXIT_GAME;
-    } else if (g_GF_OverrideDir != (GAME_FLOW_DIR)-1) {
-        return GFD_OVERRIDE;
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+    } else if (g_GF_OverrideCommand.action != GF_NOOP) {
+        return g_GF_OverrideCommand;
     } else if (is_demo_needed) {
-        return GFD_START_DEMO | 0xFF;
+        return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
     } else if (g_Inv_Chosen == NO_OBJECT) {
         if (mode != INV_TITLE_MODE) {
             Music_Unpause();
@@ -976,23 +977,35 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
                 Inv_RemoveAllItems();
                 S_LoadGame(
                     &g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
-                return GFD_START_SAVED_GAME | g_Inv_ExtraData[1];
+                return (GAME_FLOW_COMMAND) {
+                    .action = GF_START_SAVED_GAME,
+                    .param = g_Inv_ExtraData[1],
+                };
             } else if (g_Inv_ExtraData[0] == 1) {
                 // second passport page:
                 if (mode == INV_TITLE_MODE) {
                     // title mode - new game or select level.
                     if (g_GameFlow.play_any_level) {
-                        return g_Inv_ExtraData[1] + 1;
+                        return (GAME_FLOW_COMMAND) {
+                            .action = GF_START_GAME,
+                            .param = g_Inv_ExtraData[1] + 1,
+                        };
                     } else {
                         InitialiseStartInfo();
-                        return GFD_START_GAME | LV_FIRST;
+                        return (GAME_FLOW_COMMAND) {
+                            .action = GF_START_GAME,
+                            .param = LV_FIRST,
+                        };
                     }
                 } else {
                     // game mode - save game (or start the game if in Lara's
                     // Home)
                     if (g_CurrentLevel == LV_GYM) {
                         InitialiseStartInfo();
-                        return GFD_START_GAME | LV_FIRST;
+                        return (GAME_FLOW_COMMAND) {
+                            .action = GF_START_GAME,
+                            .param = LV_FIRST,
+                        };
                     } else {
                         CreateSaveGameInfo();
                         const int16_t slot_num = g_Inv_ExtraData[1];
@@ -1004,17 +1017,20 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
                 // third passport page:
                 if (mode == INV_TITLE_MODE) {
                     // title mode - exit the game
-                    return GFD_EXIT_GAME;
+                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 } else {
                     // game mode - exit to title
-                    return GFD_EXIT_TO_TITLE;
+                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
                 }
             }
             break;
 
         case O_PHOTO_OPTION:
             if (g_GameFlow.gym_enabled) {
-                return GFD_START_GAME | LV_GYM;
+                return (GAME_FLOW_COMMAND) {
+                    .action = GF_START_GAME,
+                    .param = LV_GYM,
+                };
             }
             break;
 
@@ -1036,15 +1052,16 @@ GAME_FLOW_DIR InvRing_Close(INV_RING *const ring)
         }
     }
 
-    return (GAME_FLOW_DIR)-1;
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
-GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
+GAME_FLOW_COMMAND InvRing_Control(
+    INV_RING *const ring, const int32_t num_frames)
 {
-    GAME_FLOW_DIR dir = (GAME_FLOW_DIR)-1;
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
     for (int32_t i = 0; i < num_frames; i++) {
-        dir = M_Control(ring);
-        if (dir != (GAME_FLOW_DIR)-1) {
+        gf_cmd = M_Control(ring);
+        if (gf_cmd.action != GF_NOOP) {
             break;
         }
     }
@@ -1052,7 +1069,7 @@ GAME_FLOW_DIR InvRing_Control(INV_RING *const ring, const int32_t num_frames)
     g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
     Overlay_Animate(num_frames);
     Output_AnimateTextures(g_Camera.num_frames);
-    return dir;
+    return gf_cmd;
 }
 
 void InvRing_ClearSelection(void)

@@ -357,7 +357,7 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
     if (g_InvMode == INV_TITLE_MODE) {
         return (PHASE_CONTROL) {
             .end = true,
-            .command = { .action = GF_CONTINUE_SEQUENCE },
+            .command = { .action = GF_NOOP },
         };
     } else {
         Music_Unpause();

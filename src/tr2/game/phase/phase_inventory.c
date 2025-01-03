@@ -23,7 +23,7 @@ typedef struct {
     INVENTORY_MODE mode;
     INV_RING *ring;
     FADER fader;
-    GAME_FLOW_DIR dir;
+    GAME_FLOW_COMMAND gf_cmd;
 } M_PRIV;
 
 static void M_FadeOut(M_PRIV *p);
@@ -55,7 +55,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (p->ring == NULL) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_TO_TITLE,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
     return (PHASE_CONTROL) {};
@@ -65,8 +65,8 @@ static void M_End(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
 
-    // g_GF_OverrideDir from PhaseExecutor_Run caused the loop to end early,
-    // bypassing STATE_EXIT. Need to clean up manually.
+    // g_GF_OverrideCommand from PhaseExecutor_Run caused the loop to end
+    // early, bypassing STATE_EXIT. Need to clean up manually.
     if (p->ring != NULL) {
         InvRing_Close(p->ring);
         p->ring = NULL;
@@ -87,9 +87,9 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_RUN: {
-        const GAME_FLOW_DIR dir = InvRing_Control(p->ring, num_frames);
-        if (dir != (GAME_FLOW_DIR)-1 || p->ring->motion.status == RNG_DONE) {
-            p->dir = dir;
+        const GAME_FLOW_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
+        if (gf_cmd.action != GF_NOOP || p->ring->motion.status == RNG_DONE) {
+            p->gf_cmd = gf_cmd;
             M_FadeOut(p);
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
@@ -106,12 +106,12 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_EXIT:
-        GAME_FLOW_DIR dir = InvRing_Close(p->ring);
-        if (dir == (GAME_FLOW_DIR)-1) {
-            dir = p->dir;
+        GAME_FLOW_COMMAND gf_cmd = InvRing_Close(p->ring);
+        if (gf_cmd.action == GF_NOOP) {
+            gf_cmd = p->gf_cmd;
         }
         p->ring = NULL;
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .dir = dir };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
 
     return (PHASE_CONTROL) {};
@@ -142,7 +142,7 @@ PHASE *Phase_Inventory_Create(const INVENTORY_MODE mode)
     M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));
     p->mode = mode;
     p->state = mode == INV_TITLE_MODE ? STATE_FADE_IN : STATE_RUN;
-    p->dir = GFD_EXIT_TO_TITLE;
+    p->gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;

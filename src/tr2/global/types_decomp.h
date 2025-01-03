@@ -430,20 +430,6 @@ typedef enum {
     TRAP_FINISHED = 3,
 } TRAP_ANIM;
 
-typedef enum {
-    GFD_START_GAME       = 0x0000,
-    GFD_START_SAVED_GAME = 0x0100,
-    GFD_START_CINE       = 0x0200,
-    GFD_START_FMV        = 0x0300,
-    GFD_START_DEMO       = 0x0400,
-    GFD_EXIT_TO_TITLE    = 0x0500,
-    GFD_LEVEL_COMPLETE   = 0x0600,
-    GFD_EXIT_GAME        = 0x0700,
-    GFD_EXIT_TO_OPTION   = 0x0800,
-    GFD_TITLE_DESELECT   = 0x0900,
-    GFD_OVERRIDE         = 0x0A00,
-} GAME_FLOW_DIR;
-
 typedef struct {
     int32_t first_option;
     int32_t title_replace;

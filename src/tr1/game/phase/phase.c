@@ -34,10 +34,10 @@ static void M_SetUnconditionally(const PHASE phase, const void *args);
 
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
-    if (g_GameInfo.override_gf_command.action != GF_CONTINUE_SEQUENCE) {
+    if (g_GameInfo.override_gf_command.action != GF_NOOP) {
         const GAME_FLOW_COMMAND override = g_GameInfo.override_gf_command;
         g_GameInfo.override_gf_command =
-            (GAME_FLOW_COMMAND) { .action = GF_CONTINUE_SEQUENCE };
+            (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         return (PHASE_CONTROL) { .end = true, .command = override };
     }
 

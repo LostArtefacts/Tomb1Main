@@ -68,7 +68,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         if (g_InputDB.any || !Output_FadeIsAnimating()) {
             Output_FadeResetToBlack();
             return (PHASE_CONTROL) {
-                .end = true, .command = { .action = GF_CONTINUE_SEQUENCE }
+                .end = true,
+                .command = { .action = GF_NOOP },
             };
         }
         break;

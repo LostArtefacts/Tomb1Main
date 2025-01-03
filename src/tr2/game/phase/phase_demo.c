@@ -129,7 +129,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (p->level_num < 0) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_TO_TITLE,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
 
@@ -137,7 +137,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (!M_LoadLevel(p)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_TO_TITLE,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
     M_PrepareGame();
@@ -182,16 +182,16 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .dir = GFD_EXIT_GAME,
+            .gf_cmd = { .action = GF_EXIT_GAME },
         };
     } else {
         Fader_Control(&p->exit_fader);
 
-        const GAME_FLOW_DIR dir = Game_Control(num_frames, true);
-        if (dir != (GAME_FLOW_DIR)-1) {
+        const GAME_FLOW_COMMAND gf_cmd = Game_Control(num_frames, true);
+        if (gf_cmd.action != GF_NOOP) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
-                .dir = dir,
+                .gf_cmd = gf_cmd,
             };
         }
     }

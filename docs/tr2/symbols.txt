@@ -1109,7 +1109,6 @@ typedef enum {
     GFD_EXIT_GAME        = 0x0700,
     GFD_EXIT_TO_OPTION   = 0x0800,
     GFD_TITLE_DESELECT   = 0x0900,
-    GFD_OVERRIDE         = 0x0A00,
 } GAME_FLOW_DIR;
 
 typedef struct __unaligned {

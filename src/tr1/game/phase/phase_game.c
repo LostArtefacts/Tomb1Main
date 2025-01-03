@@ -58,7 +58,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         if (g_LevelComplete) {
             return (PHASE_CONTROL) {
                 .end = true,
-                .command = { .action = GF_CONTINUE_SEQUENCE },
+                .command = { .action = GF_NOOP },
             };
         }
 

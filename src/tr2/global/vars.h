@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 
 extern const char *g_TR2XVersion;
-extern GAME_FLOW_DIR g_GF_OverrideDir;
+extern GAME_FLOW_COMMAND g_GF_OverrideCommand;
 
 extern int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW];
 extern int16_t g_RoomsToDrawCount;

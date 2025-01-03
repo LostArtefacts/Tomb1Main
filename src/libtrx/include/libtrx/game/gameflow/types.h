@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 typedef enum {
-    GF_CONTINUE_SEQUENCE,
+    GF_NOOP = -1,
     GF_START_GAME,
     GF_START_CINE,
     GF_START_FMV,
@@ -12,10 +12,14 @@ typedef enum {
     GF_LEVEL_COMPLETE,
     GF_EXIT_GAME,
     GF_START_SAVED_GAME,
+#if TR_VERSION == 1
     GF_RESTART_GAME,
+#endif
     GF_SELECT_GAME,
+#if TR_VERSION == 1
     GF_START_GYM,
     GF_STORY_SO_FAR,
+#endif
 } GAME_FLOW_ACTION;
 
 typedef enum {
