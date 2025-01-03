@@ -63,6 +63,7 @@ typedef struct __PACKING {
     int16_t facing;
     int16_t quadrant;
     int16_t coll_type;
+    int16_t *trigger; // TODO: linked to g_TriggerIndex, so to be eliminated
     int8_t x_tilt;
     int8_t z_tilt;
     int8_t hit_by_baddie;

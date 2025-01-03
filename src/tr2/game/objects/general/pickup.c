@@ -37,13 +37,13 @@ static int16_t m_PickupBoundsUW[12] = {
     -45 * PHD_DEGREE, +45 * PHD_DEGREE, -45 * PHD_DEGREE, +45 * PHD_DEGREE,
 };
 
-static void M_DoPickup(int16_t item_num, const ITEM *lara_item);
+static void M_DoPickup(int16_t item_num);
 static void M_DoFlarePickup(int16_t item_num);
 
 static void M_DoAboveWater(int16_t item, ITEM *lara_item);
 static void M_DoUnderwater(int16_t item, ITEM *lara_item);
 
-static void M_DoPickup(const int16_t item_num, const ITEM *const lara_item)
+static void M_DoPickup(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
     if (item->object_id == O_FLARE_ITEM) {
@@ -64,7 +64,6 @@ static void M_DoPickup(const int16_t item_num, const ITEM *const lara_item)
 
     item->status = IS_INVISIBLE;
     Item_RemoveDrawn(item_num);
-    Room_TestTriggers(lara_item);
 }
 
 static void M_DoFlarePickup(const int16_t item_num)
@@ -94,7 +93,7 @@ static void M_DoAboveWater(const int16_t item_num, ITEM *const lara_item)
     if (lara_item->current_anim_state == LS_PICKUP) {
         if (lara_item->frame_num
             == g_Anims[LA_PICKUP].frame_base + LF_PICKUP_ERASE) {
-            M_DoPickup(item_num, lara_item);
+            M_DoPickup(item_num);
         }
         goto cleanup;
     }
@@ -152,7 +151,7 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
     if (lara_item->current_anim_state == LS_PICKUP) {
         if (lara_item->frame_num
             == g_Anims[LA_UNDERWATER_PICKUP].frame_base + LF_PICKUP_UW) {
-            M_DoPickup(item_num, lara_item);
+            M_DoPickup(item_num);
         }
         goto cleanup;
     }

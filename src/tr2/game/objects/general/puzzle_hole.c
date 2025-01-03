@@ -8,7 +8,6 @@
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
-#include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
@@ -97,7 +96,6 @@ void PuzzleHole_Collision(
         }
 
         M_MarkDone(item);
-        Room_TestTriggers(lara_item);
         return;
     }
 

@@ -4,7 +4,6 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
-#include "game/room.h"
 #include "global/vars.h"
 
 typedef enum {
@@ -153,7 +152,6 @@ void Switch_Collision(
     item->status = IS_ACTIVE;
     Item_AddActive(item_num);
     Item_Animate(item);
-    Room_TestTriggers(lara_item);
 }
 
 void Switch_CollisionUW(
@@ -197,7 +195,6 @@ void Switch_CollisionUW(
     item->status = IS_ACTIVE;
     Item_AddActive(item_num);
     Item_Animate(item);
-    Room_TestTriggers(lara_item);
 }
 
 void Switch_Control(const int16_t item_num)

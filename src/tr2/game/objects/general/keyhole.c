@@ -8,7 +8,6 @@
 #include "game/lara/control.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
-#include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
@@ -74,19 +73,11 @@ void Keyhole_Setup(OBJECT *const obj)
 void Keyhole_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = Item_Get(item_num);
-
     if (lara_item->current_anim_state != LS_STOP) {
-        if (lara_item->current_anim_state != LS_USE_KEY
-            || !Item_TestPosition(m_KeyholeBounds, item, lara_item)
-            || lara_item->frame_num != g_Anims[LA_USE_KEY].frame_end) {
-            return;
-        }
-
-        Room_TestTriggers(lara_item);
         return;
     }
 
+    ITEM *const item = &g_Items[item_num];
     if ((g_Inv_Chosen == NO_OBJECT && !g_Input.action)
         || g_Lara.gun_status != LGS_ARMLESS || lara_item->gravity) {
         return;
