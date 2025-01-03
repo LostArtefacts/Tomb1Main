@@ -201,7 +201,6 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
     coll->old_anim_num = item->anim_num;
     coll->old_frame_num = item->frame_num;
     coll->radius = LARA_RADIUS;
-    coll->trigger = NULL;
 
     coll->slopes_are_walls = 0;
     coll->slopes_are_pits = 0;
@@ -273,7 +272,6 @@ void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
     coll->old.y = item->pos.y;
     coll->old.z = item->pos.z;
     coll->radius = LARA_RADIUS;
-    coll->trigger = NULL;
 
     coll->bad_pos = NO_BAD_POS;
     coll->bad_neg = -STEP_L / 2;
@@ -329,7 +327,6 @@ void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
     coll->old.y = item->pos.y;
     coll->old.z = item->pos.z;
     coll->radius = LARA_RADIUS_UW;
-    coll->trigger = NULL;
 
     coll->bad_pos = NO_BAD_POS;
     coll->bad_neg = -LARA_HEIGHT_UW;
