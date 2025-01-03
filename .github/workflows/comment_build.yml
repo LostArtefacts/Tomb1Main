@@ -138,11 +138,12 @@ jobs:
             }
 
             // Construct the comment body
-            let body = allArtifacts.reduce((acc, item) => {
-              if (item.name === "assets") return acc;
-              acc += `\n* [${item.name}.zip](https://nightly.link/${context.repo.owner}/${context.repo.repo}/actions/artifacts/${item.id}.zip)`;
-              return acc;
-            }, 'Download the built assets for this pull request:\n');
+            let body = 'Download the built assets for this pull request:\n' +
+              allArtifacts
+                .filter(item => item.name !== "assets")
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(item => `* [${item.name}.zip](https://nightly.link/${context.repo.owner}/${context.repo.repo}/actions/artifacts/${item.id}.zip)`)
+                .join('\n');
 
             // Upsert the comment on the PR
             try {
