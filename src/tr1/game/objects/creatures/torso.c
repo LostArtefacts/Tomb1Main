@@ -67,7 +67,9 @@ void Torso_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx + 4] |= BF_ROT_Y;
+
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[1].rot_y = 1;
 }
 
 void Torso_Control(int16_t item_num)

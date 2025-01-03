@@ -46,7 +46,9 @@ void Baldy_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
+
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[0].rot_y = 1;
 }
 
 void Baldy_Initialise(int16_t item_num)

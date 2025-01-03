@@ -82,8 +82,10 @@ void Mutant_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 8] |= BF_ROT_Y;
+
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[0].rot_y = 1;
+    bone[2].rot_y = 1;
 }
 
 void Mutant_Setup2(OBJECT *obj)

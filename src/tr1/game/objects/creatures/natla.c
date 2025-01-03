@@ -61,7 +61,10 @@ void Natla_Setup(OBJECT *obj)
     obj->save_hitpoints = 1;
     obj->save_anim = 1;
     obj->save_flags = 1;
-    g_AnimBones[obj->bone_idx + 8] |= BF_ROT_Z | BF_ROT_X;
+
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[2].rot_x = 1;
+    bone[2].rot_z = 1;
 }
 
 void Natla_Control(int16_t item_num)
