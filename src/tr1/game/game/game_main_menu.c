@@ -4,7 +4,7 @@
 
 #include <libtrx/memory.h>
 
-GAMEFLOW_COMMAND Game_MainMenu(void)
+GAME_FLOW_COMMAND Game_MainMenu(void)
 {
     PHASE_INVENTORY_ARGS *const args =
         Memory_Alloc(sizeof(PHASE_INVENTORY_ARGS));

@@ -35,20 +35,20 @@ typedef struct {
 typedef struct {
     char *path;
     double display_time;
-} GAMEFLOW_DISPLAY_PICTURE_DATA;
+} GAME_FLOW_DISPLAY_PICTURE_DATA;
 
 typedef struct {
     GAME_OBJECT_ID object1_id;
     GAME_OBJECT_ID object2_id;
     int32_t mesh_num;
-} GAMEFLOW_MESH_SWAP_DATA;
+} GAME_FLOW_MESH_SWAP_DATA;
 
 typedef struct {
     GAME_OBJECT_ID object_id;
     int quantity;
-} GAMEFLOW_GIVE_ITEM_DATA;
+} GAME_FLOW_GIVE_ITEM_DATA;
 
-GAMEFLOW g_GameFlow = { 0 };
+GAME_FLOW g_GameFlow = { 0 };
 
 static int32_t M_StringToEnumType(
     const char *const str, const STRING_TO_ENUM_TYPE *map);
@@ -57,14 +57,14 @@ static bool M_LoadScriptGameStrings(JSON_OBJECT *obj);
 static bool M_IsLegacySequence(const char *type_str);
 static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj);
-static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *dest);
+static void M_StringTableShutdown(GAME_FLOW_STRING_ENTRY *dest);
 static bool M_LoadObjectNames(
-    JSON_OBJECT *root_obj, const char *key, GAMEFLOW_STRING_ENTRY **dest);
+    JSON_OBJECT *root_obj, const char *key, GAME_FLOW_STRING_ENTRY **dest);
 static void M_ScanLevelText(
-    const GAMEFLOW_STRING_ENTRY *entry,
+    const GAME_FLOW_STRING_ENTRY *entry,
     void (*callback)(GAME_OBJECT_ID object_id, const char *text));
 
-static const STRING_TO_ENUM_TYPE m_GameflowLevelTypeEnumMap[] = {
+static const STRING_TO_ENUM_TYPE m_GameFlowLevelTypeEnumMap[] = {
     { "title", GFL_TITLE },
     { "normal", GFL_NORMAL },
     { "cutscene", GFL_CUTSCENE },
@@ -76,7 +76,7 @@ static const STRING_TO_ENUM_TYPE m_GameflowLevelTypeEnumMap[] = {
     { NULL, -1 },
 };
 
-static const STRING_TO_ENUM_TYPE m_GameflowSeqTypeEnumMap[] = {
+static const STRING_TO_ENUM_TYPE m_GameFlowSeqTypeEnumMap[] = {
     { "start_game", GFS_START_GAME },
     { "stop_game", GFS_STOP_GAME },
     { "loop_game", GFS_LOOP_GAME },
@@ -256,9 +256,9 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
     JSON_ARRAY_ELEMENT *jseq_elem = jseq_arr->start;
 
     g_GameFlow.levels[level_num].sequence =
-        Memory_Alloc(sizeof(GAMEFLOW_SEQUENCE) * (jseq_arr->length + 1));
+        Memory_Alloc(sizeof(GAME_FLOW_SEQUENCE) * (jseq_arr->length + 1));
 
-    GAMEFLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
+    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
     int32_t i = 0;
     while (jseq_elem) {
         JSON_OBJECT *jseq_obj = JSON_ValueAsObject(jseq_elem->value);
@@ -274,7 +274,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             return false;
         }
 
-        seq->type = M_StringToEnumType(type_str, m_GameflowSeqTypeEnumMap);
+        seq->type = M_StringToEnumType(type_str, m_GameFlowSeqTypeEnumMap);
 
         switch (seq->type) {
         case GFS_START_GAME:
@@ -300,8 +300,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
 
         case GFS_LOADING_SCREEN:
         case GFS_DISPLAY_PICTURE: {
-            GAMEFLOW_DISPLAY_PICTURE_DATA *data =
-                Memory_Alloc(sizeof(GAMEFLOW_DISPLAY_PICTURE_DATA));
+            GAME_FLOW_DISPLAY_PICTURE_DATA *data =
+                Memory_Alloc(sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA));
 
             const char *tmp_s = JSON_ObjectGetString(
                 jseq_obj, "picture_path", JSON_INVALID_STRING);
@@ -340,8 +340,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
         }
 
         case GFS_TOTAL_STATS: {
-            GAMEFLOW_DISPLAY_PICTURE_DATA *data =
-                Memory_Alloc(sizeof(GAMEFLOW_DISPLAY_PICTURE_DATA));
+            GAME_FLOW_DISPLAY_PICTURE_DATA *data =
+                Memory_Alloc(sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA));
 
             const char *tmp_s = JSON_ObjectGetString(
                 jseq_obj, "picture_path", JSON_INVALID_STRING);
@@ -397,8 +397,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             break;
 
         case GFS_GIVE_ITEM: {
-            GAMEFLOW_GIVE_ITEM_DATA *give_item_data =
-                Memory_Alloc(sizeof(GAMEFLOW_GIVE_ITEM_DATA));
+            GAME_FLOW_GIVE_ITEM_DATA *give_item_data =
+                Memory_Alloc(sizeof(GAME_FLOW_GIVE_ITEM_DATA));
 
             give_item_data->object_id =
                 JSON_ObjectGetInt(jseq_obj, "object_id", JSON_INVALID_NUMBER);
@@ -430,8 +430,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
         }
 
         case GFS_MESH_SWAP: {
-            GAMEFLOW_MESH_SWAP_DATA *swap_data =
-                Memory_Alloc(sizeof(GAMEFLOW_MESH_SWAP_DATA));
+            GAME_FLOW_MESH_SWAP_DATA *swap_data =
+                Memory_Alloc(sizeof(GAME_FLOW_MESH_SWAP_DATA));
 
             swap_data->object1_id =
                 JSON_ObjectGetInt(jseq_obj, "object1_id", JSON_INVALID_NUMBER);
@@ -508,12 +508,12 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
     return true;
 }
 
-static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *const dest)
+static void M_StringTableShutdown(GAME_FLOW_STRING_ENTRY *const dest)
 {
     if (dest == NULL) {
         return;
     }
-    GAMEFLOW_STRING_ENTRY *cur = dest;
+    GAME_FLOW_STRING_ENTRY *cur = dest;
     while (cur->key != NULL) {
         Memory_FreePointer(&cur->key);
         Memory_FreePointer(&cur->value);
@@ -524,7 +524,7 @@ static void M_StringTableShutdown(GAMEFLOW_STRING_ENTRY *const dest)
 
 static bool M_LoadObjectNames(
     JSON_OBJECT *const root_obj, const char *const key,
-    GAMEFLOW_STRING_ENTRY **dest)
+    GAME_FLOW_STRING_ENTRY **dest)
 {
     JSON_OBJECT *strings_obj = JSON_ObjectGetObject(root_obj, key);
     if (strings_obj == NULL) {
@@ -560,9 +560,9 @@ static bool M_LoadObjectNames(
         }
     }
 
-    *dest = Memory_Alloc(sizeof(GAMEFLOW_STRING_ENTRY) * (count + 1));
+    *dest = Memory_Alloc(sizeof(GAME_FLOW_STRING_ENTRY) * (count + 1));
 
-    GAMEFLOW_STRING_ENTRY *cur = *dest;
+    GAME_FLOW_STRING_ENTRY *cur = *dest;
     for (int32_t i = 0; legacy_string_defs[i].json_key != NULL; i++) {
         const char *value = JSON_ObjectGetString(
             strings_obj, legacy_string_defs[i].json_key, JSON_INVALID_STRING);
@@ -577,7 +577,7 @@ static bool M_LoadObjectNames(
 }
 
 static void M_ScanLevelText(
-    const GAMEFLOW_STRING_ENTRY *entry,
+    const GAME_FLOW_STRING_ENTRY *entry,
     void (*callback)(GAME_OBJECT_ID object_id, const char *text))
 {
     while (entry != NULL && entry->key != NULL) {
@@ -600,7 +600,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
 
     int32_t level_count = jlvl_arr->length;
 
-    g_GameFlow.levels = Memory_Alloc(sizeof(GAMEFLOW_LEVEL) * level_count);
+    g_GameFlow.levels = Memory_Alloc(sizeof(GAME_FLOW_LEVEL) * level_count);
     g_GameInfo.current = Memory_Alloc(sizeof(RESUME_INFO) * level_count);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
@@ -613,7 +613,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
     g_GameFlow.title_level_num = -1;
     g_GameFlow.level_count = jlvl_arr->length;
 
-    GAMEFLOW_LEVEL *cur = &g_GameFlow.levels[0];
+    GAME_FLOW_LEVEL *cur = &g_GameFlow.levels[0];
     while (jlvl_elem) {
         JSON_OBJECT *jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
         if (!jlvl_obj) {
@@ -652,7 +652,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             return false;
         }
 
-        cur->level_type = M_StringToEnumType(tmp_s, m_GameflowLevelTypeEnumMap);
+        cur->level_type = M_StringToEnumType(tmp_s, m_GameFlowLevelTypeEnumMap);
 
         switch (cur->level_type) {
         case GFL_TITLE:
@@ -802,10 +802,10 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
         } else if (tmp_arr) {
             cur->item_drops.count = (signed)tmp_arr->length;
             cur->item_drops.data = Memory_Alloc(
-                sizeof(GAMEFLOW_DROP_ITEM_DATA) * (signed)tmp_arr->length);
+                sizeof(GAME_FLOW_DROP_ITEM_DATA) * (signed)tmp_arr->length);
 
             for (int i = 0; i < cur->item_drops.count; i++) {
-                GAMEFLOW_DROP_ITEM_DATA *data = &cur->item_drops.data[i];
+                GAME_FLOW_DROP_ITEM_DATA *data = &cur->item_drops.data[i];
                 JSON_OBJECT *jlvl_data = JSON_ArrayGetObject(tmp_arr, i);
 
                 data->enemy_num = JSON_ObjectGetInt(
@@ -937,14 +937,14 @@ void GameFlow_Shutdown(void)
                 Memory_FreePointer(&g_GameFlow.levels[i].item_drops.data);
             }
 
-            GAMEFLOW_SEQUENCE *seq = g_GameFlow.levels[i].sequence;
+            GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[i].sequence;
             if (seq) {
                 while (seq->type != GFS_END) {
                     switch (seq->type) {
                     case GFS_LOADING_SCREEN:
                     case GFS_DISPLAY_PICTURE:
                     case GFS_TOTAL_STATS: {
-                        GAMEFLOW_DISPLAY_PICTURE_DATA *data = seq->data;
+                        GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
                         Memory_FreePointer(&data->path);
                         Memory_FreePointer(&data);
                         break;
@@ -987,8 +987,8 @@ void GameFlow_Shutdown(void)
     }
 }
 
-GAMEFLOW_COMMAND
-GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
+GAME_FLOW_COMMAND
+GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 {
     LOG_INFO("level_num=%d level_type=%d", level_num, level_type);
 
@@ -997,8 +997,8 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
     g_GameInfo.remove_ammo = false;
     g_GameInfo.remove_medipacks = false;
 
-    GAMEFLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
-    GAMEFLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
+    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
+    GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
 
     while (seq->type != GFS_END) {
         LOG_INFO("seq %d %d", seq->type, seq->data);
@@ -1029,7 +1029,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
         case GFS_START_GAME:
             if (!Game_Start((int32_t)(intptr_t)seq->data, level_type)) {
                 g_CurrentLevel = -1;
-                return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             break;
 
@@ -1100,7 +1100,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
         case GFS_TOTAL_STATS:
             if (g_Config.gameplay.enable_total_stats
                 && level_type != GFL_SAVED) {
-                const GAMEFLOW_DISPLAY_PICTURE_DATA *data = seq->data;
+                const GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
                 PHASE_STATS_ARGS *const args =
                     Memory_Alloc(sizeof(PHASE_STATS_ARGS));
                 args->level_num = level_num;
@@ -1130,7 +1130,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
                 break;
             }
 
-            GAMEFLOW_DISPLAY_PICTURE_DATA *data = seq->data;
+            GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
             PHASE_PICTURE_ARGS *const args =
                 Memory_Alloc(sizeof(PHASE_PICTURE_ARGS));
             args->path = data->path;
@@ -1143,22 +1143,22 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_EXIT_TO_TITLE:
-            return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
         case GFS_EXIT_TO_LEVEL: {
             int32_t next_level = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1);
             if (g_GameFlow.levels[next_level].level_type == GFL_BONUS
                 && !g_GameInfo.bonus_level_unlock) {
-                return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
-            return (GAMEFLOW_COMMAND) {
+            return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
                 .param = next_level,
             };
         }
 
         case GFS_EXIT_TO_CINE:
-            return (GAMEFLOW_COMMAND) {
+            return (GAME_FLOW_COMMAND) {
                 .action = GF_START_CINE,
                 .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
             };
@@ -1184,8 +1184,8 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
 
         case GFS_GIVE_ITEM:
             if (level_type != GFL_SAVED) {
-                const GAMEFLOW_GIVE_ITEM_DATA *give_item_data =
-                    (const GAMEFLOW_GIVE_ITEM_DATA *)seq->data;
+                const GAME_FLOW_GIVE_ITEM_DATA *give_item_data =
+                    (const GAME_FLOW_GIVE_ITEM_DATA *)seq->data;
                 Inv_AddItemNTimes(
                     give_item_data->object_id, give_item_data->quantity);
             }
@@ -1218,7 +1218,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_MESH_SWAP: {
-            const GAMEFLOW_MESH_SWAP_DATA *const swap_data = seq->data;
+            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = seq->data;
             Object_SwapMesh(
                 swap_data->object1_id, swap_data->object2_id,
                 swap_data->mesh_num);
@@ -1230,7 +1230,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
             if (!BaconLara_InitialiseAnchor(anchor_room)) {
                 LOG_ERROR(
                     "Could not anchor Bacon Lara to room %d", anchor_room);
-                return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             break;
         }
@@ -1248,13 +1248,13 @@ GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type)
     return command;
 }
 
-GAMEFLOW_COMMAND
+GAME_FLOW_COMMAND
 GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
 {
     LOG_INFO("%d", level_num);
 
-    GAMEFLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
-    GAMEFLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
+    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
+    GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
 
     while (seq->type != GFS_END) {
         LOG_INFO("seq %d %d", seq->type, seq->data);
@@ -1277,7 +1277,7 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
 
         case GFS_START_GAME:
             if (level_num == savegame_level) {
-                return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             break;
 
@@ -1303,18 +1303,18 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
 
         case GFS_EXIT_TO_TITLE:
             Music_Stop();
-            return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
         case GFS_EXIT_TO_LEVEL:
             Music_Stop();
-            return (GAMEFLOW_COMMAND) {
+            return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
                 .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
             };
 
         case GFS_EXIT_TO_CINE:
             Music_Stop();
-            return (GAMEFLOW_COMMAND) {
+            return (GAME_FLOW_COMMAND) {
                 .action = GF_START_CINE,
                 .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
             };
@@ -1339,7 +1339,7 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
             break;
 
         case GFS_MESH_SWAP: {
-            const GAMEFLOW_MESH_SWAP_DATA *const swap_data = seq->data;
+            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = seq->data;
             Object_SwapMesh(
                 swap_data->object1_id, swap_data->object2_id,
                 swap_data->mesh_num);
@@ -1356,12 +1356,12 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
     return command;
 }
 
-int32_t Gameflow_GetLevelCount(void)
+int32_t GameFlow_GetLevelCount(void)
 {
     return g_GameFlow.level_count;
 }
 
-int32_t Gameflow_GetDemoCount(void)
+int32_t GameFlow_GetDemoCount(void)
 {
     int32_t demo_count = 0;
     for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
@@ -1373,22 +1373,22 @@ int32_t Gameflow_GetDemoCount(void)
     return demo_count;
 }
 
-const char *Gameflow_GetLevelFileName(int32_t level_num)
+const char *GameFlow_GetLevelFileName(int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_file;
 }
 
-const char *Gameflow_GetLevelTitle(int32_t level_num)
+const char *GameFlow_GetLevelTitle(int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_title;
 }
 
-int32_t Gameflow_GetGymLevelNumber(void)
+int32_t GameFlow_GetGymLevelNumber(void)
 {
     return g_GameFlow.gym_level_num;
 }
 
-void Gameflow_OverrideCommand(const GAMEFLOW_COMMAND command)
+void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
 {
     g_GameInfo.override_gf_command = command;
 }
@@ -1471,15 +1471,15 @@ void GameFlow_LoadStrings(int32_t level_num)
 
     if (level_num >= 0) {
         ASSERT(level_num < g_GameFlow.level_count);
-        const GAMEFLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
+        const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
         M_ScanLevelText(level->object_strings, Object_SetName);
         M_ScanLevelText(level->examine_strings, Object_SetDescription);
     }
 }
 
-GAMEFLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
+GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
 {
-    GAMEFLOW_COMMAND command = {
+    GAME_FLOW_COMMAND command = {
         .action = GF_START_GAME,
         .param = g_GameFlow.first_level_num,
     };
@@ -1495,5 +1495,5 @@ GAMEFLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
         }
     }
 
-    return (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }

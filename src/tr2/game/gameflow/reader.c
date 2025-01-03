@@ -8,16 +8,16 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAMEFLOW_NEW *gf);
+static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
 static void M_LoadLevelInjections(
-    JSON_OBJECT *obj, const GAMEFLOW_NEW *gf, GAMEFLOW_NEW_LEVEL *level);
-static void M_StringTableShutdown(GAMEFLOW_NEW_STRING_ENTRY *dest);
+    JSON_OBJECT *obj, const GAME_FLOW_NEW *gf, GAME_FLOW_NEW_LEVEL *level);
+static void M_StringTableShutdown(GAME_FLOW_NEW_STRING_ENTRY *dest);
 static bool M_LoadStringTable(
-    JSON_OBJECT *root_obj, const char *key, GAMEFLOW_NEW_STRING_ENTRY **dest);
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAMEFLOW_NEW *gf);
+    JSON_OBJECT *root_obj, const char *key, GAME_FLOW_NEW_STRING_ENTRY **dest);
+static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
 
 static void M_LoadGlobalInjections(
-    JSON_OBJECT *const obj, GAMEFLOW_NEW *const gf)
+    JSON_OBJECT *const obj, GAME_FLOW_NEW *const gf)
 {
     gf->injections.count = 0;
     JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
@@ -35,8 +35,8 @@ static void M_LoadGlobalInjections(
 }
 
 static void M_LoadLevelInjections(
-    JSON_OBJECT *const obj, const GAMEFLOW_NEW *const gf,
-    GAMEFLOW_NEW_LEVEL *const level)
+    JSON_OBJECT *const obj, const GAME_FLOW_NEW *const gf,
+    GAME_FLOW_NEW_LEVEL *const level)
 {
     const bool inherit = JSON_ObjectGetBool(obj, "inherit_injections", true);
     JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
@@ -75,12 +75,12 @@ static void M_LoadLevelInjections(
     }
 }
 
-static void M_StringTableShutdown(GAMEFLOW_NEW_STRING_ENTRY *const dest)
+static void M_StringTableShutdown(GAME_FLOW_NEW_STRING_ENTRY *const dest)
 {
     if (dest == NULL) {
         return;
     }
-    GAMEFLOW_NEW_STRING_ENTRY *cur = dest;
+    GAME_FLOW_NEW_STRING_ENTRY *cur = dest;
     while (cur->key != NULL) {
         Memory_FreePointer(&cur->key);
         Memory_FreePointer(&cur->value);
@@ -91,7 +91,7 @@ static void M_StringTableShutdown(GAMEFLOW_NEW_STRING_ENTRY *const dest)
 
 static bool M_LoadStringTable(
     JSON_OBJECT *const root_obj, const char *const key,
-    GAMEFLOW_NEW_STRING_ENTRY **dest)
+    GAME_FLOW_NEW_STRING_ENTRY **dest)
 {
     const JSON_OBJECT *const strings_obj = JSON_ObjectGetObject(root_obj, key);
     if (strings_obj == NULL) {
@@ -100,9 +100,9 @@ static bool M_LoadStringTable(
     }
 
     *dest = Memory_Alloc(
-        sizeof(GAMEFLOW_NEW_STRING_ENTRY) * (strings_obj->length + 1));
+        sizeof(GAME_FLOW_NEW_STRING_ENTRY) * (strings_obj->length + 1));
 
-    GAMEFLOW_NEW_STRING_ENTRY *cur = *dest;
+    GAME_FLOW_NEW_STRING_ENTRY *cur = *dest;
     JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
     for (size_t i = 0; i < strings_obj->length;
          i++, strings_elem = strings_elem->next) {
@@ -122,7 +122,7 @@ static bool M_LoadStringTable(
     return true;
 }
 
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAMEFLOW_NEW *const gf)
+static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *const gf)
 {
     bool result = true;
 
@@ -144,11 +144,11 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAMEFLOW_NEW *const gf)
     }
 
     gf->level_count = level_count;
-    gf->levels = Memory_Alloc(sizeof(GAMEFLOW_NEW_LEVEL) * level_count);
+    gf->levels = Memory_Alloc(sizeof(GAME_FLOW_NEW_LEVEL) * level_count);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
-        GAMEFLOW_NEW_LEVEL *const level = &gf->levels[i];
+        GAME_FLOW_NEW_LEVEL *const level = &gf->levels[i];
 
         JSON_OBJECT *const jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
         if (jlvl_obj == NULL) {
@@ -196,7 +196,7 @@ bool GF_N_Load(const char *const path)
         goto end;
     }
 
-    GAMEFLOW_NEW *const gf = &g_GameflowNew;
+    GAME_FLOW_NEW *const gf = &g_GameFlowNew;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadGlobalInjections(root_obj, gf);
     result &=
@@ -220,7 +220,7 @@ end:
 
 void GF_N_Shutdown(void)
 {
-    GAMEFLOW_NEW *const gf = &g_GameflowNew;
+    GAME_FLOW_NEW *const gf = &g_GameFlowNew;
 
     for (int32_t i = 0; i < gf->injections.count; i++) {
         Memory_FreePointer(&gf->injections.data_paths[i]);

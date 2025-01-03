@@ -16,6 +16,6 @@ int32_t Shell_GetCurrentDisplayHeight(void);
 void Shell_GetWindowSize(int32_t *out_width, int32_t *out_height);
 
 extern const char *Shell_GetConfigPath(void);
-extern const char *Shell_GetGameflowPath(void);
+extern const char *Shell_GetGameFlowPath(void);
 extern void Shell_ProcessInput(void);
 extern void Shell_ProcessEvents(void);

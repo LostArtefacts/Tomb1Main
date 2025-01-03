@@ -16,7 +16,7 @@ typedef enum {
     GF_SELECT_GAME,
     GF_START_GYM,
     GF_STORY_SO_FAR,
-} GAMEFLOW_ACTION;
+} GAME_FLOW_ACTION;
 
 typedef enum {
 #if TR_VERSION == 2
@@ -40,9 +40,9 @@ typedef enum {
     GFL_QUIET = 6,
     GFL_MID_STORY = 7,
 #endif
-} GAMEFLOW_LEVEL_TYPE;
+} GAME_FLOW_LEVEL_TYPE;
 
-typedef struct GAMEFLOW_COMMAND {
-    GAMEFLOW_ACTION action;
+typedef struct GAME_FLOW_COMMAND {
+    GAME_FLOW_ACTION action;
     int32_t param;
-} GAMEFLOW_COMMAND;
+} GAME_FLOW_COMMAND;

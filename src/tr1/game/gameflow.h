@@ -8,28 +8,28 @@
 typedef struct {
     const char *key;
     const char *value;
-} GAMEFLOW_STRING_ENTRY;
+} GAME_FLOW_STRING_ENTRY;
 
 typedef struct {
-    GAMEFLOW_SEQUENCE_TYPE type;
+    GAME_FLOW_SEQUENCE_TYPE type;
     void *data;
-} GAMEFLOW_SEQUENCE;
+} GAME_FLOW_SEQUENCE;
 
 typedef struct {
     int32_t enemy_num;
     int32_t count;
     int16_t *object_ids;
-} GAMEFLOW_DROP_ITEM_DATA;
+} GAME_FLOW_DROP_ITEM_DATA;
 
 typedef struct {
-    GAMEFLOW_LEVEL_TYPE level_type;
+    GAME_FLOW_LEVEL_TYPE level_type;
     int16_t music;
     char *level_title;
     char *level_file;
-    GAMEFLOW_STRING_ENTRY *object_strings;
-    GAMEFLOW_STRING_ENTRY *examine_strings;
+    GAME_FLOW_STRING_ENTRY *object_strings;
+    GAME_FLOW_STRING_ENTRY *examine_strings;
     int8_t demo;
-    GAMEFLOW_SEQUENCE *sequence;
+    GAME_FLOW_SEQUENCE *sequence;
     struct {
         bool override;
         RGB_F value;
@@ -53,10 +53,10 @@ typedef struct {
     } injections;
     struct {
         int count;
-        GAMEFLOW_DROP_ITEM_DATA *data;
+        GAME_FLOW_DROP_ITEM_DATA *data;
     } item_drops;
     GAME_OBJECT_ID lara_type;
-} GAMEFLOW_LEVEL;
+} GAME_FLOW_LEVEL;
 
 typedef struct {
     char *main_menu_background_path;
@@ -69,7 +69,7 @@ typedef struct {
     char *savegame_fmt_bson;
     int8_t has_demo;
     double demo_delay;
-    GAMEFLOW_LEVEL *levels;
+    GAME_FLOW_LEVEL *levels;
     RGB_F water_color;
     float draw_distance_fade;
     float draw_distance_max;
@@ -80,15 +80,15 @@ typedef struct {
     bool enable_tr2_item_drops;
     bool convert_dropped_guns;
     bool enable_killer_pushblocks;
-} GAMEFLOW;
+} GAME_FLOW;
 
-extern GAMEFLOW g_GameFlow;
+extern GAME_FLOW g_GameFlow;
 
-GAMEFLOW_COMMAND
-GameFlow_InterpretSequence(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
-GAMEFLOW_COMMAND
+GAME_FLOW_COMMAND
+GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
+GAME_FLOW_COMMAND
 GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level);
-GAMEFLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num);
+GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num);
 
 bool GameFlow_LoadFromFile(const char *file_name);
 void GameFlow_Shutdown(void);

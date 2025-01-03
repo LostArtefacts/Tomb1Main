@@ -121,7 +121,7 @@ static void M_IncludeKillableItem(int16_t item_num)
 }
 
 void Stats_ComputeTotal(
-    GAMEFLOW_LEVEL_TYPE level_type, TOTAL_STATS *total_stats)
+    GAME_FLOW_LEVEL_TYPE level_type, TOTAL_STATS *total_stats)
 {
     memset(total_stats, 0, sizeof(TOTAL_STATS));
 
@@ -225,7 +225,7 @@ int32_t Stats_GetSecrets(void)
     return m_LevelSecrets;
 }
 
-bool Stats_CheckAllSecretsCollected(GAMEFLOW_LEVEL_TYPE level_type)
+bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type)
 {
     TOTAL_STATS total_stats = { 0 };
     Stats_ComputeTotal(level_type, &total_stats);

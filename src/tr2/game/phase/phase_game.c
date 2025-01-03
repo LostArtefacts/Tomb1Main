@@ -20,7 +20,7 @@ typedef struct {
     bool exiting;
     FADER exit_fader;
     int32_t level_num;
-    GAMEFLOW_LEVEL_TYPE level_type;
+    GAME_FLOW_LEVEL_TYPE level_type;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -101,7 +101,7 @@ static void M_Draw(PHASE *const phase)
 }
 
 PHASE *Phase_Game_Create(
-    const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     PHASE *const phase = Memory_Alloc(sizeof(PHASE));
     M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));

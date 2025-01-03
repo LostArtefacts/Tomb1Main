@@ -36,7 +36,7 @@ static STATE m_State = STATE_DISPLAY;
 static TEXTSTRING *m_Texts[MAX_TEXTSTRINGS] = { 0 };
 
 static void M_CreateTexts(int32_t level_num);
-static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type);
+static void M_CreateTextsTotal(GAME_FLOW_LEVEL_TYPE level_type);
 static void M_Start(const PHASE_STATS_ARGS *arg);
 static void M_End(void);
 static PHASE_CONTROL M_Control(int32_t nframes);
@@ -135,7 +135,7 @@ static void M_CreateTexts(int32_t level_num)
     y += row_height;
 }
 
-static void M_CreateTextsTotal(GAMEFLOW_LEVEL_TYPE level_type)
+static void M_CreateTextsTotal(GAME_FLOW_LEVEL_TYPE level_type)
 {
     TOTAL_STATS stats;
     Stats_ComputeTotal(level_type, &stats);

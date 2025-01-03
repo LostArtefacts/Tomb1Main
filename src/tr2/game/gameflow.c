@@ -366,7 +366,7 @@ bool GF_DoFrontendSequence(void)
 }
 
 GAME_FLOW_DIR GF_DoLevelSequence(
-    const int32_t start_level, const GAMEFLOW_LEVEL_TYPE type)
+    const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
 {
     GF_N_LoadStrings(start_level);
 
@@ -389,7 +389,8 @@ GAME_FLOW_DIR GF_DoLevelSequence(
     }
 }
 
-GAME_FLOW_DIR GF_InterpretSequence(const int16_t *ptr, GAMEFLOW_LEVEL_TYPE type)
+GAME_FLOW_DIR GF_InterpretSequence(
+    const int16_t *ptr, GAME_FLOW_LEVEL_TYPE type)
 {
     g_GF_NoFloor = 0;
     g_GF_DeadlyWater = false;
@@ -654,7 +655,7 @@ GAME_FLOW_DIR GF_StartDemo(const int32_t level_num)
 }
 
 GAME_FLOW_DIR GF_StartGame(
-    const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     PHASE *const phase = Phase_Game_Create(level_num, level_type);
     const GAME_FLOW_DIR dir = PhaseExecutor_Run(phase);

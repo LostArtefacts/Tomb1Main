@@ -896,7 +896,7 @@ void Lara_InitialiseLoad(const int16_t item_num)
     g_LaraItem = &g_Items[item_num];
 }
 
-void Lara_Initialise(const GAMEFLOW_LEVEL_TYPE type)
+void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
 {
     ITEM *const item = g_LaraItem;
 

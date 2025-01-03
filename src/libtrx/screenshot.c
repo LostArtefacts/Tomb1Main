@@ -61,7 +61,7 @@ static char *M_GetScreenshotTitle(void)
         return Memory_DupStr("Intro");
     }
 
-    const char *const level_title = Gameflow_GetLevelTitle(level_num);
+    const char *const level_title = GameFlow_GetLevelTitle(level_num);
     if (level_title != NULL && strlen(level_title) > 0) {
         char *clean_level_title = M_CleanScreenshotTitle(level_title);
         if (clean_level_title != NULL && strlen(clean_level_title) > 0) {

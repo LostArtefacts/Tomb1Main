@@ -27,7 +27,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         return CR_FAILURE;
     }
 
-    Gameflow_OverrideCommand((GAMEFLOW_COMMAND) {
+    GameFlow_OverrideCommand((GAME_FLOW_COMMAND) {
         .action = GF_START_SAVED_GAME,
         .param = slot_idx,
     });

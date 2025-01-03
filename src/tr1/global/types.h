@@ -302,7 +302,7 @@ typedef enum {
     GFS_REMOVE_MEDIPACKS,
     GFS_SETUP_BACON_LARA,
     GFS_LEGACY,
-} GAMEFLOW_SEQUENCE_TYPE;
+} GAME_FLOW_SEQUENCE_TYPE;
 
 typedef enum {
     BT_LARA_HEALTH = 0,
@@ -495,8 +495,8 @@ typedef struct {
     PASSPORT_MODE passport_selection;
     int32_t select_level_num;
     bool death_counter_supported;
-    GAMEFLOW_LEVEL_TYPE current_level_type;
-    GAMEFLOW_COMMAND override_gf_command;
+    GAME_FLOW_LEVEL_TYPE current_level_type;
+    GAME_FLOW_COMMAND override_gf_command;
     bool remove_guns;
     bool remove_scions;
     bool remove_ammo;

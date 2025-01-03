@@ -28,7 +28,7 @@ static ITEM *M_GetCarrier(int16_t item_num);
 static CARRIED_ITEM *M_GetFirstDropItem(const ITEM *carrier);
 static void M_AnimateDrop(CARRIED_ITEM *item);
 static void M_InitialiseDataDrops(void);
-static void M_InitialiseGameflowDrops(int32_t level_num);
+static void M_InitialiseGameFlowDrops(int32_t level_num);
 
 static const GAME_OBJECT_PAIR m_LegacyMap[] = {
     { O_PIERRE, O_SCION_ITEM_2 }, { O_COWBOY, O_MAGNUM_ITEM },
@@ -169,12 +169,12 @@ static void M_InitialiseDataDrops(void)
     Vector_Free(pickups);
 }
 
-static void M_InitialiseGameflowDrops(const int32_t level_num)
+static void M_InitialiseGameFlowDrops(const int32_t level_num)
 {
     int32_t total_item_count = g_LevelItemCount;
-    const GAMEFLOW_LEVEL level = g_GameFlow.levels[level_num];
+    const GAME_FLOW_LEVEL level = g_GameFlow.levels[level_num];
     for (int32_t i = 0; i < level.item_drops.count; i++) {
-        const GAMEFLOW_DROP_ITEM_DATA *const data = &level.item_drops.data[i];
+        const GAME_FLOW_DROP_ITEM_DATA *const data = &level.item_drops.data[i];
 
         ITEM *const item = M_GetCarrier(data->enemy_num);
         if (!item) {
@@ -234,7 +234,7 @@ void Carrier_InitialiseLevel(const int32_t level_num)
     if (g_GameFlow.enable_tr2_item_drops) {
         M_InitialiseDataDrops();
     } else {
-        M_InitialiseGameflowDrops(level_num);
+        M_InitialiseGameFlowDrops(level_num);
     }
 }
 

@@ -151,7 +151,7 @@ void Game_Draw(void)
     Output_DrawPolyList();
 }
 
-GAMEFLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
+GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
 {
     return g_GameInfo.current_level.type;
 }

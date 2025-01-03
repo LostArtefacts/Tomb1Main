@@ -10,7 +10,7 @@
 #include <libtrx/game/objects/names.h>
 #include <libtrx/log.h>
 
-GAMEFLOW_NEW g_GameflowNew;
+GAME_FLOW_NEW g_GameFlowNew;
 GAME_INFO g_GameInfo;
 
 static void M_LoadObjectString(const char *key, const char *value);
@@ -40,9 +40,9 @@ static void M_LoadGameString(const char *const key, const char *const value)
 
 static void M_LoadObjectStrings(const int32_t level_num)
 {
-    const GAMEFLOW_NEW *const gf = &g_GameflowNew;
+    const GAME_FLOW_NEW *const gf = &g_GameFlowNew;
 
-    const GAMEFLOW_NEW_STRING_ENTRY *entry = gf->object_strings;
+    const GAME_FLOW_NEW_STRING_ENTRY *entry = gf->object_strings;
     while (entry != NULL && entry->key != NULL) {
         M_LoadObjectString(entry->key, entry->value);
         entry++;
@@ -50,7 +50,7 @@ static void M_LoadObjectStrings(const int32_t level_num)
 
     if (level_num >= 0) {
         ASSERT(level_num < gf->level_count);
-        const GAMEFLOW_NEW_LEVEL *const level = &gf->levels[level_num];
+        const GAME_FLOW_NEW_LEVEL *const level = &gf->levels[level_num];
         entry = level->object_strings;
         while (entry != NULL && entry->key != NULL) {
             M_LoadObjectString(entry->key, entry->value);
@@ -61,9 +61,9 @@ static void M_LoadObjectStrings(const int32_t level_num)
 
 static void M_LoadGameStrings(const int32_t level_num)
 {
-    const GAMEFLOW_NEW *const gf = &g_GameflowNew;
+    const GAME_FLOW_NEW *const gf = &g_GameFlowNew;
 
-    const GAMEFLOW_NEW_STRING_ENTRY *entry = gf->game_strings;
+    const GAME_FLOW_NEW_STRING_ENTRY *entry = gf->game_strings;
     while (entry != NULL && entry->key != NULL) {
         M_LoadGameString(entry->key, entry->value);
         entry++;
@@ -71,7 +71,7 @@ static void M_LoadGameStrings(const int32_t level_num)
 
     if (level_num >= 0) {
         ASSERT(level_num < gf->level_count);
-        const GAMEFLOW_NEW_LEVEL *const level = &gf->levels[level_num];
+        const GAME_FLOW_NEW_LEVEL *const level = &gf->levels[level_num];
         entry = level->game_strings;
         while (entry != NULL && entry->key != NULL) {
             M_LoadGameString(entry->key, entry->value);
@@ -216,32 +216,32 @@ void GF_N_LoadStrings(const int32_t level_num)
     }
 }
 
-int32_t Gameflow_GetLevelCount(void)
+int32_t GameFlow_GetLevelCount(void)
 {
-    return g_GameflowNew.level_count;
+    return g_GameFlowNew.level_count;
 }
 
-int32_t Gameflow_GetDemoCount(void)
+int32_t GameFlow_GetDemoCount(void)
 {
     return g_GameFlow.num_demos;
 }
 
-const char *Gameflow_GetLevelFileName(int32_t level_num)
+const char *GameFlow_GetLevelFileName(int32_t level_num)
 {
     return g_GF_LevelFileNames[level_num];
 }
 
-const char *Gameflow_GetLevelTitle(int32_t level_num)
+const char *GameFlow_GetLevelTitle(int32_t level_num)
 {
     return g_GF_LevelNames[level_num];
 }
 
-int32_t Gameflow_GetGymLevelNumber(void)
+int32_t GameFlow_GetGymLevelNumber(void)
 {
     return g_GameFlow.gym_enabled ? LV_GYM : -1;
 }
 
-void Gameflow_OverrideCommand(const GAMEFLOW_COMMAND command)
+void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
 {
     switch (command.action) {
     case GF_START_GAME:

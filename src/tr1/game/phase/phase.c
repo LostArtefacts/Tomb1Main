@@ -35,9 +35,9 @@ static void M_SetUnconditionally(const PHASE phase, const void *args);
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
     if (g_GameInfo.override_gf_command.action != GF_CONTINUE_SEQUENCE) {
-        const GAMEFLOW_COMMAND override = g_GameInfo.override_gf_command;
+        const GAME_FLOW_COMMAND override = g_GameInfo.override_gf_command;
         g_GameInfo.override_gf_command =
-            (GAMEFLOW_COMMAND) { .action = GF_CONTINUE_SEQUENCE };
+            (GAME_FLOW_COMMAND) { .action = GF_CONTINUE_SEQUENCE };
         return (PHASE_CONTROL) { .end = true, .command = override };
     }
 
@@ -138,7 +138,7 @@ static int32_t M_Wait(void)
     }
 }
 
-GAMEFLOW_COMMAND Phase_Run(void)
+GAME_FLOW_COMMAND Phase_Run(void)
 {
     int32_t nframes = Clock_WaitTick();
     PHASE_CONTROL control = { .end = false };

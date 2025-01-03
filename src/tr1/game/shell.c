@@ -38,11 +38,11 @@
 #define LEVEL_TITLE_SIZE 25
 #define TIMESTAMP_SIZE 20
 
-static const char m_TR1XGameflowPath[] = "cfg/TR1X_gameflow.json5";
-static const char m_TR1XGameflowGoldPath[] = "cfg/TR1X_gameflow_ub.json5";
-static const char m_TR1XGameflowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
+static const char m_TR1XGameFlowPath[] = "cfg/TR1X_gameflow.json5";
+static const char m_TR1XGameFlowGoldPath[] = "cfg/TR1X_gameflow_ub.json5";
+static const char m_TR1XGameFlowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
 
-static const char *m_CurrentGameflowPath;
+static const char *m_CurrentGameFlowPath;
 
 static void M_LoadConfig(void);
 static void M_HandleConfigChange(const EVENT *event, void *data);
@@ -133,24 +133,24 @@ const char *Shell_GetConfigPath(void)
     return "cfg/TR1X.json5";
 }
 
-const char *Shell_GetGameflowPath(void)
+const char *Shell_GetGameFlowPath(void)
 {
-    return m_CurrentGameflowPath;
+    return m_CurrentGameFlowPath;
 }
 
 void Shell_Main(void)
 {
-    m_CurrentGameflowPath = m_TR1XGameflowPath;
+    m_CurrentGameFlowPath = m_TR1XGameFlowPath;
 
     char **args = NULL;
     int arg_count = 0;
     S_Shell_GetCommandLine(&arg_count, &args);
     for (int i = 0; i < arg_count; i++) {
         if (!strcmp(args[i], "-gold")) {
-            m_CurrentGameflowPath = m_TR1XGameflowGoldPath;
+            m_CurrentGameFlowPath = m_TR1XGameFlowGoldPath;
         }
         if (!strcmp(args[i], "-demo_pc")) {
-            m_CurrentGameflowPath = m_TR1XGameflowDemoPath;
+            m_CurrentGameFlowPath = m_TR1XGameFlowDemoPath;
         }
     }
     for (int i = 0; i < arg_count; i++) {
@@ -162,9 +162,9 @@ void Shell_Main(void)
     EnumMap_Init();
     Config_Init();
 
-    Shell_Init(m_CurrentGameflowPath);
+    Shell_Init(m_CurrentGameFlowPath);
 
-    GAMEFLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
+    GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
     bool intro_played = false;
 
     g_GameInfo.current_save_slot = -1;
@@ -174,7 +174,7 @@ void Shell_Main(void)
 
         switch (command.action) {
         case GF_START_GAME: {
-            GAMEFLOW_LEVEL_TYPE level_type = GFL_NORMAL;
+            GAME_FLOW_LEVEL_TYPE level_type = GFL_NORMAL;
             if (g_GameFlow.levels[command.param].level_type == GFL_BONUS) {
                 level_type = GFL_BONUS;
             }
@@ -186,7 +186,7 @@ void Shell_Main(void)
             int16_t level_num = Savegame_GetLevelNumber(command.param);
             if (level_num < 0) {
                 LOG_ERROR("Corrupt save file!");
-                command = (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 g_GameInfo.current_save_slot = command.param;
                 command = GameFlow_InterpretSequence(level_num, GFL_SAVED);
@@ -222,7 +222,7 @@ void Shell_Main(void)
         }
 
         case GF_LEVEL_COMPLETE:
-            command = (GAMEFLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
         case GF_EXIT_TO_TITLE:
@@ -235,7 +235,7 @@ void Shell_Main(void)
 
             Savegame_InitCurrentInfo();
             if (!Level_Initialise(g_GameFlow.title_level_num)) {
-                command = (GAMEFLOW_COMMAND) { .action = GF_EXIT_GAME };
+                command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 break;
             }
             g_GameInfo.current_level_type = GFL_TITLE;

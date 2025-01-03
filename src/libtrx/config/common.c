@@ -18,7 +18,7 @@ static const char *M_GetPath(CONFIG_FILE_TYPE file_type);
 static const char *M_GetPath(const CONFIG_FILE_TYPE file_type)
 {
     return file_type == CFT_DEFAULT ? Shell_GetConfigPath()
-                                    : Shell_GetGameflowPath();
+                                    : Shell_GetGameFlowPath();
 }
 
 void Config_Init(void)

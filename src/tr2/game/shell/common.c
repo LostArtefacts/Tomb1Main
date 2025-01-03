@@ -36,7 +36,7 @@
 #define GAMEBUF_MEM_CAP 0x780000
 
 static Uint64 m_UpdateDebounce = 0;
-static const char *m_CurrentGameflowPath = "cfg/TR2X_gameflow.json5";
+static const char *m_CurrentGameFlowPath = "cfg/TR2X_gameflow.json5";
 
 static void M_SyncToWindow(void);
 static void M_SyncFromWindow(void);
@@ -364,7 +364,7 @@ void Shell_Main(void)
         return;
     }
 
-    if (!GF_N_Load(m_CurrentGameflowPath)) {
+    if (!GF_N_Load(m_CurrentGameFlowPath)) {
         Shell_ExitSystem("GameMain: could not load new script file");
         return;
     }
@@ -480,9 +480,9 @@ const char *Shell_GetConfigPath(void)
     return "cfg/TR2X.json5";
 }
 
-const char *Shell_GetGameflowPath(void)
+const char *Shell_GetGameFlowPath(void)
 {
-    return m_CurrentGameflowPath;
+    return m_CurrentGameFlowPath;
 }
 
 void Shell_Start(void)

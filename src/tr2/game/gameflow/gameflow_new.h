@@ -9,7 +9,7 @@ typedef struct {
 
 typedef struct {
     struct {
-        GAMEFLOW_LEVEL_TYPE type;
+        GAME_FLOW_LEVEL_TYPE type;
         int32_t num;
     } current_level;
 } GAME_INFO;
@@ -17,23 +17,23 @@ typedef struct {
 typedef struct {
     const char *key;
     const char *value;
-} GAMEFLOW_NEW_STRING_ENTRY;
+} GAME_FLOW_NEW_STRING_ENTRY;
 
 typedef struct {
-    GAMEFLOW_NEW_STRING_ENTRY *object_strings;
-    GAMEFLOW_NEW_STRING_ENTRY *game_strings;
+    GAME_FLOW_NEW_STRING_ENTRY *object_strings;
+    GAME_FLOW_NEW_STRING_ENTRY *game_strings;
     INJECTION_DATA injections;
-} GAMEFLOW_NEW_LEVEL;
+} GAME_FLOW_NEW_LEVEL;
 
 typedef struct {
     int32_t level_count;
-    GAMEFLOW_NEW_LEVEL *levels;
-    GAMEFLOW_NEW_STRING_ENTRY *object_strings;
-    GAMEFLOW_NEW_STRING_ENTRY *game_strings;
+    GAME_FLOW_NEW_LEVEL *levels;
+    GAME_FLOW_NEW_STRING_ENTRY *object_strings;
+    GAME_FLOW_NEW_STRING_ENTRY *game_strings;
     INJECTION_DATA injections;
-} GAMEFLOW_NEW;
+} GAME_FLOW_NEW;
 
-extern GAMEFLOW_NEW g_GameflowNew;
+extern GAME_FLOW_NEW g_GameFlowNew;
 extern GAME_INFO g_GameInfo;
 
 void GF_N_LoadStrings(int32_t level_num);

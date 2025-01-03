@@ -715,7 +715,7 @@ typedef enum {
     GFL_STORY     = 5,
     GFL_QUIET     = 6,
     GFL_MID_STORY = 7,
-} GAMEFLOW_LEVEL_TYPE;
+} GAME_FLOW_LEVEL_TYPE;
 
 typedef struct __unaligned {
     int16_t timer;
@@ -3289,8 +3289,8 @@ typedef enum {
 # game/gameflow.c
 0x0041FA60  0x01E9  int32_t __cdecl GF_LoadScriptFile(const char *fname);
 0x0041FC50  0x001F  int32_t __cdecl GF_DoFrontendSequence(void);
-0x0041FC70  0x0066  int32_t __cdecl GF_DoLevelSequence(int32_t level, GAMEFLOW_LEVEL_TYPE type);
-0x0041FCE0  0x047C  int32_t __cdecl GF_InterpretSequence(int16_t *ptr, GAMEFLOW_LEVEL_TYPE type, int32_t seq_type);
+0x0041FC70  0x0066  int32_t __cdecl GF_DoLevelSequence(int32_t level, GAME_FLOW_LEVEL_TYPE type);
+0x0041FCE0  0x047C  int32_t __cdecl GF_InterpretSequence(int16_t *ptr, GAME_FLOW_LEVEL_TYPE type, int32_t seq_type);
 0x004201C0  0x0CD3  void __cdecl GF_ModifyInventory(int32_t level, int32_t type);
 
 # game/hair.c
@@ -4019,7 +4019,7 @@ typedef enum {
 0x0044B150  0x0026  LPCTSTR __cdecl GetFullPath(LPCTSTR file_name);
 0x0044B180  0x00E0  BOOL __cdecl SelectDrive(void);
 0x0044B260  0x024A  bool __cdecl Level_Load(const char *file_name, int32_t level_num);
-0x0044B4B0  0x0018  BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
+0x0044B4B0  0x0018  BOOL __cdecl S_LoadLevelFile(LPCTSTR file_name, int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 0x0044B4D0  0x002A  void __cdecl S_UnloadLevelFile(void);
 0x0044B500  0x0014  void __cdecl S_AdjustTexelCoordinates(void);
 0x0044B520  0x00C4  BOOL __cdecl S_ReloadLevelGraphics(BOOL reload_palettes, BOOL reload_tex_pages);
@@ -4038,7 +4038,7 @@ typedef enum {
 0x0044C3F0  0x0057  void __cdecl S_Wait(int32_t timeout, BOOL input_check);
 0x0044C450  0x000E  bool __cdecl S_PlayFMV(const char *file_name);
 0x0044C460  0x0013  bool __cdecl S_IntroFMV(const char *file_name1, const char *file_name2);
-0x0044C480  0x0144  int16_t __cdecl Game_Start(int32_t level_num, GAMEFLOW_LEVEL_TYPE level_type);
+0x0044C480  0x0144  int16_t __cdecl Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 0x0044C5D0  0x009A  int32_t __cdecl Game_Loop(bool demo_mode);
 0x0044C670  0x0006  int32_t __cdecl LevelCompleteSequence(void);
 0x0044C680  0x01C2  int32_t __cdecl LevelStats(int32_t level_num);
@@ -4107,7 +4107,7 @@ typedef enum {
 0x00450B00  0x00E4  void __cdecl S_InitialisePolyList(BOOL clear_back_buffer);
 0x00450BF0  0x0036  DWORD __cdecl S_DumpScreen(void);
 0x00450C30  0x000B  void __cdecl S_ClearScreen(void);
-0x00450C40  0x0037  void __cdecl S_InitialiseScreen(GAMEFLOW_LEVEL_TYPE level_type);
+0x00450C40  0x0037  void __cdecl S_InitialiseScreen(GAME_FLOW_LEVEL_TYPE level_type);
 0x00450C80  0x0089  void __cdecl S_OutputPolyList(void);
 0x00450CC0  0x0270  int32_t __cdecl Output_GetObjectBounds(const BOUNDS_16 *bounds);
 0x00450F30  0x0046  void __cdecl S_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);

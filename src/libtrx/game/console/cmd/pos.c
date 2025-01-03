@@ -28,7 +28,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     Console_Log(
         GS(OSD_POS_GET),
         Game_GetCurrentLevelNum(),
-        Gameflow_GetLevelTitle(Game_GetCurrentLevelNum()),
+        GameFlow_GetLevelTitle(Game_GetCurrentLevelNum()),
         lara_item->room_num,
         lara_item->pos.x / (float)WALL_L,
         lara_item->pos.y / (float)WALL_L,

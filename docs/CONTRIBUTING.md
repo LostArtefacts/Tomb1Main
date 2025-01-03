@@ -153,7 +153,7 @@ from the relevant parties.
 We maintain a changelog for each project in the `CHANGELOG.md` files, recording
 any changes except internal modifications or refactors. New features and
 original bug fixes should also be documented in the `README.md`. If a change
-affects gameflow behavior, be sure to update the `GAMEFLOW.md` accordingly.
+affects game flow behavior, be sure to update the `GAMEFLOW.md` accordingly.
 Likewise, changes to the console commands should update `COMMANDS.md`.
 
 

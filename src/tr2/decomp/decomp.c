@@ -157,7 +157,7 @@ void CutscenePlayerGen_Initialise(const int16_t item_num)
 }
 
 int32_t Level_Initialise(
-    const int32_t level_num, const GAMEFLOW_LEVEL_TYPE level_type)
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     g_GameInfo.current_level.num = level_num;
     g_GameInfo.current_level.type = level_type;
@@ -375,7 +375,7 @@ void DecreaseScreenSize(void)
 
 bool S_LoadLevelFile(
     const char *const file_name, const int32_t level_num,
-    const GAMEFLOW_LEVEL_TYPE level_type)
+    const GAME_FLOW_LEVEL_TYPE level_type)
 {
     S_UnloadLevelFile();
     return Level_Load(file_name, level_num);

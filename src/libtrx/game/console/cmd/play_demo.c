@@ -11,8 +11,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     int32_t demo_to_load = -1;
     if (String_ParseInteger(ctx->args, &demo_to_load)) {
         demo_to_load--;
-        if (demo_to_load >= 0 && demo_to_load < Gameflow_GetDemoCount()) {
-            Gameflow_OverrideCommand((GAMEFLOW_COMMAND) {
+        if (demo_to_load >= 0 && demo_to_load < GameFlow_GetDemoCount()) {
+            GameFlow_OverrideCommand((GAME_FLOW_COMMAND) {
                 .action = GF_START_DEMO,
                 .param = demo_to_load,
             });
@@ -22,8 +22,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
             return CR_FAILURE;
         }
     } else if (String_IsEmpty(ctx->args)) {
-        Gameflow_OverrideCommand(
-            (GAMEFLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 });
+        GameFlow_OverrideCommand(
+            (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 });
         return CR_SUCCESS;
     } else {
         return CR_BAD_INVOCATION;

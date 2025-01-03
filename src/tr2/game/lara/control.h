@@ -17,7 +17,7 @@ void Lara_UseItem(GAME_OBJECT_ID object_id);
 
 void Lara_InitialiseLoad(int16_t item_num);
 
-void Lara_Initialise(GAMEFLOW_LEVEL_TYPE type);
+void Lara_Initialise(GAME_FLOW_LEVEL_TYPE type);
 
 void Lara_InitialiseInventory(int32_t level_num);
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -162,7 +162,7 @@ public class MainWindowViewModel : BaseLanguageViewModel
     {
         try
         {
-            _configuration.Read(filePath, TRXConstants.Instance.GameflowName);
+            _configuration.Read(filePath, TRXConstants.Instance.GameFlowName);
             SelectedFile = filePath;
             IsEditorDirty = false;
             IsEditorDefault = _configuration.IsDataDefault();

@@ -1,5 +1,5 @@
-# Gameflow specification
-The gameflow in TR1X is fully configurable and contributes to removing several
+# Game flow specification
+The game flow in TR1X is fully configurable and contributes to removing several
 original hard-coded aspects of the game. This document describes each element
 available to edit.
 

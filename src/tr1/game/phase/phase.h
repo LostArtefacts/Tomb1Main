@@ -16,7 +16,7 @@
 // It does not make sense to return both .end = false and .command.
 typedef struct {
     bool end;
-    GAMEFLOW_COMMAND command;
+    GAME_FLOW_COMMAND command;
 } PHASE_CONTROL;
 
 typedef enum {
@@ -54,4 +54,4 @@ PHASE Phase_Get(void);
 // routine.
 void Phase_Set(PHASE phase, const void *args);
 
-GAMEFLOW_COMMAND Phase_Run(void);
+GAME_FLOW_COMMAND Phase_Run(void);

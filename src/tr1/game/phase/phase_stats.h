@@ -10,7 +10,7 @@ typedef struct {
     int32_t level_num;
     const char *background_path;
     bool total;
-    GAMEFLOW_LEVEL_TYPE level_type;
+    GAME_FLOW_LEVEL_TYPE level_type;
 } PHASE_STATS_ARGS;
 
 extern PHASER g_StatsPhaser;
