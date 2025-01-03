@@ -28,7 +28,6 @@ static int16_t M_GetCeilingTiltHeight(
 
 static void M_TriggerMusicTrack(int16_t track, const TRIGGER *trigger);
 static bool M_TestLava(const ITEM *item);
-static void M_TestSectorTrigger(const ITEM *item, const SECTOR *sector);
 
 static int16_t M_GetFloorTiltHeight(
     const SECTOR *sector, const int32_t x, const int32_t z)
@@ -151,8 +150,7 @@ static bool M_TestLava(const ITEM *const item)
     return sector->is_death_sector;
 }
 
-static void M_TestSectorTrigger(
-    const ITEM *const item, const SECTOR *const sector)
+void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
 {
     const bool is_heavy = item->object_id != O_LARA;
     if (!is_heavy) {
@@ -716,7 +714,7 @@ void Room_TestTriggers(const ITEM *const item)
     const SECTOR *sector =
         Room_GetSector(item->pos.x, MAX_HEIGHT, item->pos.z, &room_num);
 
-    M_TestSectorTrigger(item, sector);
+    Room_TestSectorTrigger(item, sector);
 }
 
 int32_t Room_GetCeiling(
