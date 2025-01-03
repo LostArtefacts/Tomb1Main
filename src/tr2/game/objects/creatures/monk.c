@@ -74,7 +74,8 @@ void Monk1_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[6].rot_y = 1;
 }
 
 void Monk2_Setup(void)
@@ -97,7 +98,8 @@ void Monk2_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[6].rot_y = 1;
 }
 
 void Monk_Control(const int16_t item_num)

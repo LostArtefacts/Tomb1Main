@@ -91,8 +91,9 @@ void Yeti_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 6 * 4] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 14 * 4] |= BF_ROT_Y;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[6].rot_y = 1;
+    bone[14].rot_y = 1;
 }
 
 void Yeti_Control(const int16_t item_num)

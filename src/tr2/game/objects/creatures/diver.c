@@ -98,8 +98,9 @@ void Diver_Setup(void)
     obj->save_anim = 1;
     obj->water_creature = 1;
 
-    g_AnimBones[obj->bone_idx + 10 * 4] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 14 * 4] |= BF_ROT_Z;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[10].rot_y = 1;
+    bone[14].rot_z = 1;
 }
 
 void Diver_Control(int16_t item_num)

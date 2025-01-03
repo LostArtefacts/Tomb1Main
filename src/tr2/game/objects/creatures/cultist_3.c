@@ -277,15 +277,12 @@ void Cultist3_Control(const int16_t item_num)
 
     Creature_Tilt(item, tilt);
 
-    TOGGLE_BIT(g_AnimBones[g_Objects[O_CULT_3].bone_idx], BF_ROT_Y, body != 0);
-    TOGGLE_BIT(
-        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 2 * 4], BF_ROT_Y, left != 0);
-    TOGGLE_BIT(
-        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 6 * 4], BF_ROT_Y,
-        right != 0);
-    TOGGLE_BIT(
-        g_AnimBones[g_Objects[O_CULT_3].bone_idx + 10 * 4], BF_ROT_Y,
-        head != 0);
+    const OBJECT *const object = Object_GetObject(item->object_id);
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    bone[0].rot_y = body != 0;
+    bone[2].rot_y = left != 0;
+    bone[6].rot_y = right != 0;
+    bone[10].rot_y = head != 0;
 
     if (body != 0) {
         Creature_Head(item, body);

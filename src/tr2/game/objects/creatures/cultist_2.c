@@ -68,8 +68,9 @@ void Cultist2_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx] |= BF_ROT_Y;
-    g_AnimBones[obj->bone_idx + 8 * 4] |= BF_ROT_Y;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[0].rot_y = 1;
+    bone[8].rot_y = 1;
 }
 
 void Cultist2_Control(const int16_t item_num)

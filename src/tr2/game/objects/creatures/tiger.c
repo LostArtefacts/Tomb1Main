@@ -68,7 +68,8 @@ void Tiger_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    g_AnimBones[obj->bone_idx + 21 * 4] |= BF_ROT_Y;
+    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
+    bone[21].rot_y = 1;
 }
 
 void Tiger_Control(const int16_t item_num)
