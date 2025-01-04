@@ -431,8 +431,3 @@ void Object_DrawMesh(
         Output_DrawObjectMesh(mesh, clip);
     }
 }
-
-ANIM_BONE *Object_GetBone(const OBJECT *const object, const int32_t bone_idx)
-{
-    return (ANIM_BONE *)&g_AnimBones[object->bone_idx + bone_idx * 4];
-}

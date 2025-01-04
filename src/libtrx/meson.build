@@ -70,6 +70,7 @@ sources = [
   'enum_map.c',
   'event_manager.c',
   'filesystem.c',
+  'game/anims/common.c',
   'game/clock/common.c',
   'game/clock/timer.c',
   'game/clock/turbo.c',

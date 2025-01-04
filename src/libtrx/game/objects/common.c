@@ -1,5 +1,6 @@
 #include "game/objects/common.h"
 
+#include "game/anims.h"
 #include "game/gamebuf.h"
 
 static OBJECT_MESH **m_MeshPointers = NULL;
@@ -95,4 +96,9 @@ void Object_SwapMesh(
     m_MeshPointers[obj1->mesh_idx + mesh_num] =
         m_MeshPointers[obj2->mesh_idx + mesh_num];
     m_MeshPointers[obj2->mesh_idx + mesh_num] = temp;
+}
+
+ANIM_BONE *Object_GetBone(const OBJECT *const object, const int32_t bone_idx)
+{
+    return Anim_GetBone(object->bone_idx + bone_idx);
 }

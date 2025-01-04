@@ -19,6 +19,7 @@
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
@@ -310,11 +311,10 @@ static void M_LoadAnimCommands(VFILE *const file)
 static void M_LoadAnimBones(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_anim_bones = VFile_ReadS32(file);
+    const int32_t num_anim_bones = VFile_ReadS32(file) / ANIM_BONE_SIZE;
     LOG_INFO("anim bones: %d", num_anim_bones);
-    g_AnimBones =
-        GameBuf_Alloc(sizeof(int32_t) * num_anim_bones, GBUF_ANIM_BONES);
-    VFile_Read(file, g_AnimBones, sizeof(int32_t) * num_anim_bones);
+    Anim_InitialiseBones(num_anim_bones);
+    Level_ReadAnimBones(0, num_anim_bones, file);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -341,7 +341,7 @@ static void M_LoadObjects(VFILE *const file)
         OBJECT *const object = &g_Objects[object_id];
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
-        object->bone_idx = VFile_ReadS32(file);
+        object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
         const int32_t frame_idx = VFile_ReadS32(file);
         object->frame_base = ((int16_t *)g_AnimFrames) + frame_idx / 2;
         object->anim_idx = VFile_ReadS16(file);

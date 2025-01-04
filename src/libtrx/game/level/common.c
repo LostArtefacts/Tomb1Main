@@ -1,6 +1,7 @@
 #include "game/level/common.h"
 
 #include "debug.h"
+#include "game/anims.h"
 #include "game/gamebuf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
@@ -211,4 +212,16 @@ void Level_ReadObjectMeshes(
     LOG_INFO("%d unique meshes constructed", unique_indices->count);
 
     Vector_Free(unique_indices);
+}
+
+void Level_ReadAnimBones(
+    const int32_t base_idx, const int32_t num_bones, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_bones; i++) {
+        ANIM_BONE *const bone = Anim_GetBone(base_idx + i);
+        bone->flags = VFile_ReadS32(file);
+        bone->pos.x = VFile_ReadS32(file);
+        bone->pos.y = VFile_ReadS32(file);
+        bone->pos.z = VFile_ReadS32(file);
+    }
 }

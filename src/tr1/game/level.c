@@ -375,17 +375,14 @@ static void M_LoadAnimCommands(VFILE *file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadAnimBones(VFILE *file)
+static void M_LoadAnimBones(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_bone_count = VFile_ReadS32(file);
+    m_LevelInfo.anim_bone_count = VFile_ReadS32(file) / ANIM_BONE_SIZE;
     LOG_INFO("%d anim bones", m_LevelInfo.anim_bone_count);
-    g_AnimBones = GameBuf_Alloc(
-        sizeof(int32_t)
-            * (m_LevelInfo.anim_bone_count + m_InjectionInfo->anim_bone_count),
-        GBUF_ANIM_BONES);
-    VFile_Read(
-        file, g_AnimBones, sizeof(int32_t) * m_LevelInfo.anim_bone_count);
+    Anim_InitialiseBones(
+        m_LevelInfo.anim_bone_count + m_InjectionInfo->anim_bone_count);
+    Level_ReadAnimBones(0, m_LevelInfo.anim_bone_count, file);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -478,7 +475,7 @@ static void M_LoadObjects(VFILE *file)
 
         object->nmeshes = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
-        object->bone_idx = VFile_ReadS32(file);
+        object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
 
         const int32_t frame_offset = VFile_ReadS32(file);
         object->anim_idx = VFile_ReadS16(file);

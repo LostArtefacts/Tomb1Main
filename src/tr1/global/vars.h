@@ -63,7 +63,6 @@ extern ANIM_CHANGE *g_AnimChanges;
 extern ANIM_RANGE *g_AnimRanges;
 extern TEXTURE_RANGE *g_AnimTextureRanges;
 extern int16_t *g_AnimCommands;
-extern int32_t *g_AnimBones;
 extern ANIM_FRAME *g_AnimFrames;
 extern int32_t *g_AnimFrameMeshRots;
 extern int16_t g_NumCineFrames;

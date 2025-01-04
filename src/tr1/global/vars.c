@@ -55,7 +55,6 @@ ANIM_CHANGE *g_AnimChanges = NULL;
 ANIM_RANGE *g_AnimRanges = NULL;
 TEXTURE_RANGE *g_AnimTextureRanges = NULL;
 int16_t *g_AnimCommands = NULL;
-int32_t *g_AnimBones = NULL;
 ANIM_FRAME *g_AnimFrames = NULL;
 int32_t *g_AnimFrameMeshRots = NULL;
 int16_t g_NumCineFrames = 0;

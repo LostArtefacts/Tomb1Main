@@ -260,7 +260,7 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
     info->anim_change_count = VFile_ReadS32(fp);
     info->anim_range_count = VFile_ReadS32(fp);
     info->anim_cmd_count = VFile_ReadS32(fp);
-    info->anim_bone_count = VFile_ReadS32(fp);
+    info->anim_bone_count = VFile_ReadS32(fp) / ANIM_BONE_SIZE;
     info->anim_frame_data_count = VFile_ReadS32(fp);
     info->anim_count = VFile_ReadS32(fp);
     info->object_count = VFile_ReadS32(fp);
@@ -351,7 +351,7 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
         VFile_Skip(fp, info->anim_change_count * 6);
         VFile_Skip(fp, info->anim_range_count * 8);
         VFile_Skip(fp, info->anim_cmd_count * 2);
-        VFile_Skip(fp, info->anim_bone_count * 4);
+        VFile_Skip(fp, info->anim_bone_count * 4 * ANIM_BONE_SIZE);
 
         info->anim_frame_count = 0;
         info->anim_frame_mesh_rot_count = 0;
@@ -554,9 +554,8 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     VFile_Read(
         fp, g_AnimCommands + level_info->anim_command_count,
         sizeof(int16_t) * inj_info->anim_cmd_count);
-    VFile_Read(
-        fp, g_AnimBones + level_info->anim_bone_count,
-        sizeof(int32_t) * inj_info->anim_bone_count);
+    Level_ReadAnimBones(
+        level_info->anim_bone_count, inj_info->anim_bone_count, fp);
     const size_t frame_data_start = VFile_GetPos(fp);
     VFile_Skip(fp, inj_info->anim_frame_data_count * sizeof(int16_t));
     const size_t frame_data_end = VFile_GetPos(fp);
@@ -717,7 +716,7 @@ static void M_ObjectData(
 
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
-        const int32_t bone_idx = VFile_ReadS32(fp);
+        const int32_t bone_idx = VFile_ReadS32(fp) / ANIM_BONE_SIZE;
 
         // When mesh data has been omitted from the injection, this indicates
         // that we wish to retain what's already defined so to avoid duplicate
