@@ -1,17 +1,16 @@
 #include "game/phase/executor.h"
 
 #include "game/clock.h"
+#include "game/game.h"
+#include "game/gameflow.h"
 #include "game/output.h"
-#include "game/phase/priv.h"
-#include "global/types.h"
-#include "global/vars.h"
-
-#include <libtrx/memory.h>
+#include "memory.h"
 
 #include <stdbool.h>
 #include <stddef.h>
 
 #define MAX_PHASES 10
+
 static int32_t m_PhaseStackSize = 0;
 static PHASE *m_PhaseStack[MAX_PHASES] = {};
 
@@ -21,9 +20,10 @@ static int32_t M_Wait(PHASE *phase);
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
 {
-    if (g_GF_OverrideCommand.action != GF_NOOP) {
-        const GAME_FLOW_COMMAND gf_cmd = g_GF_OverrideCommand;
-        g_GF_OverrideCommand = (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    const GAME_FLOW_COMMAND gf_override_cmd = GameFlow_GetOverrideCommand();
+    if (gf_override_cmd.action != GF_NOOP) {
+        const GAME_FLOW_COMMAND gf_cmd = gf_override_cmd;
+        GameFlow_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_NOOP });
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
     if (phase != NULL && phase->control != NULL) {
@@ -41,7 +41,7 @@ static void M_Draw(PHASE *const phase)
     if (phase != NULL && phase->draw != NULL) {
         phase->draw(phase);
     }
-    Output_EndScene(false);
+    Output_EndScene();
 }
 
 static int32_t M_Wait(PHASE *const phase)
@@ -67,7 +67,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
     if (phase->start != NULL) {
         Clock_SyncTick();
         const PHASE_CONTROL control = phase->start(phase);
-        if (g_IsGameToExit) {
+        if (Game_IsExiting()) {
             gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             goto finish;
         } else if (control.action == PHASE_ACTION_END) {
@@ -81,7 +81,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
         const PHASE_CONTROL control = M_Control(phase, nframes);
 
         if (control.action == PHASE_ACTION_END) {
-            if (g_IsGameToExit) {
+            if (Game_IsExiting()) {
                 gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             } else {
                 gf_cmd = control.gf_cmd;

@@ -250,7 +250,6 @@ sources = [
   'game/option/option_sound.c',
   'game/output.c',
   'game/overlay.c',
-  'game/phase/executor.c',
   'game/phase/phase_cutscene.c',
   'game/phase/phase_demo.c',
   'game/phase/phase_game.c',

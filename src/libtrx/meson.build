@@ -108,6 +108,7 @@ sources = [
   'game/objects/common.c',
   'game/objects/names.c',
   'game/objects/vars.c',
+  'game/phase/executor.c',
   'game/rooms/common.c',
   'game/shell/common.c',
   'game/text.c',

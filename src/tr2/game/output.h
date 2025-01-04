@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/output.h>
+
 #include <stdint.h>
 
 typedef struct {
@@ -85,9 +87,6 @@ void Output_DrawAirBar(int32_t percent);
 void Output_LoadBackgroundFromFile(const char *file_name);
 void Output_LoadBackgroundFromObject(void);
 void Output_UnloadBackground(void);
-
-void Output_BeginScene(void);
-int32_t Output_EndScene(bool sync_ticks);
 
 int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
 void Output_DoAnimateTextures(int32_t ticks);

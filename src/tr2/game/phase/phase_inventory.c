@@ -5,7 +5,6 @@
 #include "game/inventory_ring.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase/priv.h"
 #include "global/vars.h"
 
 #include <libtrx/game/fader.h>

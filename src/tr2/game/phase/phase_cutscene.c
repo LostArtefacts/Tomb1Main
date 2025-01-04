@@ -9,7 +9,6 @@
 #include "game/lara/hair.h"
 #include "game/music.h"
 #include "game/output.h"
-#include "game/phase/priv.h"
 #include "game/room.h"
 #include "game/room_draw.h"
 #include "game/shell.h"

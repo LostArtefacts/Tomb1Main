@@ -639,12 +639,10 @@ void Output_BeginScene(void)
     Render_BeginScene();
 }
 
-int32_t Output_EndScene(const bool sync_ticks)
+void Output_EndScene(void)
 {
-    const int32_t passed = sync_ticks ? Clock_WaitTick() : 0;
     Render_EndScene();
     Shell_ProcessEvents();
-    return passed;
 }
 
 void Output_LoadBackgroundFromFile(const char *const file_name)

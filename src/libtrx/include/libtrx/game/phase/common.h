@@ -1,6 +1,6 @@
 #pragma once
 
-#include "global/types.h"
+#include "../gameflow/types.h"
 
 typedef enum {
     PHASE_ACTION_CONTINUE,
@@ -12,6 +12,8 @@ typedef struct {
     PHASE_ACTION action;
     GAME_FLOW_COMMAND gf_cmd;
 } PHASE_CONTROL;
+
+typedef struct PHASE PHASE;
 
 typedef PHASE_CONTROL (*PHASE_START_FUNC)(PHASE *phase);
 typedef void (*PHASE_END_FUNC)(PHASE *phase);

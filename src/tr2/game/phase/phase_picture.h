@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/phase/common.h"
+#include <libtrx/game/phase.h>
 
 #include <stdint.h>
 

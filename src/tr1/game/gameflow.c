@@ -1393,6 +1393,11 @@ void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
     g_GameInfo.override_gf_command = command;
 }
 
+GAME_FLOW_COMMAND GameFlow_GetOverrideCommand(void)
+{
+    return g_GameInfo.override_gf_command;
+}
+
 void GameFlow_LoadStrings(int32_t level_num)
 {
     Object_ResetNames();

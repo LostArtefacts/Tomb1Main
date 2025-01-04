@@ -7,7 +7,6 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase/priv.h"
 #include "game/sound.h"
 #include "game/stats.h"
 #include "global/vars.h"

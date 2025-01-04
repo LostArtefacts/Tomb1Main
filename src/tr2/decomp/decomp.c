@@ -271,46 +271,6 @@ GAME_FLOW_COMMAND LevelCompleteSequence(void)
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
-void S_Wait(int32_t frames, const bool input_check)
-{
-    if (input_check) {
-        while (frames > 0) {
-            Shell_ProcessEvents();
-            Input_Update();
-            Shell_ProcessInput();
-
-            if (!g_Input.any) {
-                break;
-            }
-            frames -= Clock_WaitTick() * TICKS_PER_FRAME;
-
-            if (g_IsGameToExit) {
-                break;
-            }
-        }
-    }
-
-    while (frames > 0) {
-        Shell_ProcessEvents();
-        Input_Update();
-        Shell_ProcessInput();
-        if (input_check && (g_InputDB.menu_back || g_InputDB.menu_confirm)) {
-            break;
-        }
-
-        Output_BeginScene();
-        Output_DrawBackground();
-        Console_Draw();
-        Text_Draw();
-        Output_DrawPolyList();
-        frames -= Output_EndScene(true) * TICKS_PER_FRAME;
-
-        if (g_IsGameToExit) {
-            break;
-        }
-    }
-}
-
 GAME_FLOW_COMMAND DisplayCredits(void)
 {
     S_UnloadLevelFile();

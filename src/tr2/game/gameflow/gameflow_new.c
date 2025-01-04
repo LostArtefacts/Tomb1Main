@@ -245,3 +245,8 @@ void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
 {
     g_GF_OverrideCommand = command;
 }
+
+GAME_FLOW_COMMAND GameFlow_GetOverrideCommand(void)
+{
+    return g_GF_OverrideCommand;
+}

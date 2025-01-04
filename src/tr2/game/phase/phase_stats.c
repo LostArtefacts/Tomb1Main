@@ -4,7 +4,6 @@
 #include "game/input.h"
 #include "game/music.h"
 #include "game/output.h"
-#include "game/phase/priv.h"
 #include "game/stats.h"
 #include "game/ui/widgets/stats_dialog.h"
 #include "global/vars.h"

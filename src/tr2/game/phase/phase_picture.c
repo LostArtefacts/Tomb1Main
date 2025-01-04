@@ -3,7 +3,6 @@
 #include "game/console/common.h"
 #include "game/input.h"
 #include "game/output.h"
-#include "game/phase/priv.h"
 #include "global/vars.h"
 
 #include <libtrx/game/fader.h>
