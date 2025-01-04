@@ -58,12 +58,12 @@ void Lara_Hair_Initialise(void)
     Lara_Hair_SetLaraType(O_LARA);
 
     const OBJECT *const object = Object_GetObject(O_HAIR);
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
 
     m_Hair[0].rot.y = 0;
     m_Hair[0].rot.x = -PHD_90;
 
-    for (int32_t i = 1; i < HAIR_SEGMENTS + 1; i++, bone++) {
+    for (int32_t i = 1; i < HAIR_SEGMENTS + 1; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
         m_Hair[i].pos = bone->pos;
         m_Hair[i].rot.x = -PHD_90;
         m_Hair[i].rot.y = 0;
@@ -143,7 +143,7 @@ void Lara_Hair_Control(void)
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
     Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *bone = Object_GetBone(object, 0);
     if (frac) {
         Matrix_InitInterpolate(frac, rate);
         int32_t *packed_rotation1 = frmptr[0]->mesh_rots;
@@ -323,19 +323,21 @@ void Lara_Hair_Control(void)
     pos.z = g_MatrixPtr->_23 >> W2V_SHIFT;
     Matrix_Pop();
 
-    bone = (ANIM_BONE *)&g_AnimBones[Object_GetObject(O_HAIR)->bone_idx];
+    const OBJECT *const hair_object = Object_GetObject(O_HAIR);
 
     m_Hair[0].pos = pos;
 
     if (m_FirstHair) {
         m_FirstHair = false;
 
-        for (i = 0; i < HAIR_SEGMENTS; i++, bone++) {
+        for (i = 0; i < HAIR_SEGMENTS; i++) {
+            const ANIM_BONE *const hair_bone = Object_GetBone(hair_object, i);
             Matrix_PushUnit();
             Matrix_TranslateSet(
                 m_Hair[i].pos.x, m_Hair[i].pos.y, m_Hair[i].pos.z);
             Matrix_RotYXZ(m_Hair[i].rot.y, m_Hair[i].rot.x, 0);
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel(
+                hair_bone->pos.x, hair_bone->pos.y, hair_bone->pos.z);
 
             m_Hair[i + 1].pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;
             m_Hair[i + 1].pos.y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -358,7 +360,9 @@ void Lara_Hair_Control(void)
             water_level = Room_GetWaterHeight(x, y, z, room_num);
         }
 
-        for (i = 1; i < HAIR_SEGMENTS + 1; i++, bone++) {
+        for (i = 1; i < HAIR_SEGMENTS + 1; i++) {
+            const ANIM_BONE *const hair_bone =
+                Object_GetBone(hair_object, i - 1);
             m_HVel[0] = m_Hair[i].pos;
 
             sector = Room_GetSector(
@@ -430,11 +434,12 @@ void Lara_Hair_Control(void)
             Matrix_RotYXZ(m_Hair[i - 1].rot.y, m_Hair[i - 1].rot.x, 0);
 
             if (i == HAIR_SEGMENTS) {
-                const ANIM_BONE *const last_bone = bone - 1;
+                const ANIM_BONE *const last_bone = hair_bone - 1;
                 Matrix_TranslateRel(
                     last_bone->pos.x, last_bone->pos.y, last_bone->pos.z);
             } else {
-                Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+                Matrix_TranslateRel(
+                    hair_bone->pos.x, hair_bone->pos.y, hair_bone->pos.z);
             }
 
             m_Hair[i].pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;

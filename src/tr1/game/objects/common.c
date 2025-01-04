@@ -197,7 +197,6 @@ void Object_DrawPickupItem(ITEM *item)
         // of the code in DrawAnimatingItem starting with the line that
         // matches the following line.
         int32_t bit = 1;
-        const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
 
         Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
 
@@ -209,6 +208,7 @@ void Object_DrawPickupItem(ITEM *item)
         }
 
         for (int i = 1; i < object->nmeshes; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -226,8 +226,6 @@ void Object_DrawPickupItem(ITEM *item)
             if (item->mesh_bits & bit) {
                 Object_DrawMesh(object->mesh_idx + i, clip, false);
             }
-
-            bone++;
         }
     }
 
@@ -247,7 +245,6 @@ void Object_DrawInterpolatedObject(
 
     Matrix_Push();
     int32_t mesh_num = 1;
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
 
     ASSERT(rate != 0);
     if (!frac) {
@@ -262,6 +259,7 @@ void Object_DrawInterpolatedObject(
         }
 
         for (int i = 1; i < object->nmeshes; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -289,8 +287,6 @@ void Object_DrawInterpolatedObject(
             if (meshes & mesh_num) {
                 Object_DrawMesh(object->mesh_idx + i, clip, false);
             }
-
-            bone++;
         }
     } else {
         ASSERT(frame2 != NULL);
@@ -307,6 +303,7 @@ void Object_DrawInterpolatedObject(
         }
 
         for (int i = 1; i < object->nmeshes; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop_I();
             }
@@ -334,8 +331,6 @@ void Object_DrawInterpolatedObject(
             if (meshes & mesh_num) {
                 Object_DrawMesh(object->mesh_idx + i, clip, true);
             }
-
-            bone++;
         }
     }
 

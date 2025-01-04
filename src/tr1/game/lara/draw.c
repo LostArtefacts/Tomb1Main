@@ -98,7 +98,7 @@ void Lara_Draw(ITEM *item)
 
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = Object_GetBone(object, 0);
     int32_t *packed_rotation = frame->mesh_rots;
 
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
@@ -370,7 +370,7 @@ void Lara_Draw_I(
 
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = Object_GetBone(object, 0);
     int32_t *packed_rotation1 = frame1->mesh_rots;
     int32_t *packed_rotation2 = frame2->mesh_rots;
 

@@ -527,9 +527,9 @@ int32_t Collide_GetSpheres(ITEM *item, SPHERE *ptr, int32_t world_space)
     ptr++;
     Matrix_Pop();
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     const int16_t *extra_rotation = (int16_t *)item->data;
     for (int32_t i = 1; i < object->nmeshes; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }
@@ -562,7 +562,6 @@ int32_t Collide_GetSpheres(ITEM *item, SPHERE *ptr, int32_t world_space)
         Matrix_Pop();
 
         ptr++;
-        bone++;
     }
 
     Matrix_Pop();
@@ -618,10 +617,9 @@ void Collide_GetJointAbsPosition(ITEM *item, XYZ_32 *vec, int32_t joint)
     int32_t *packed_rotation = frame->mesh_rots;
     Matrix_RotYXZpack(*packed_rotation++);
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
-
     int16_t *extra_rotation = (int16_t *)item->data;
     for (int i = 0; i < joint; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(object, i);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }
@@ -641,8 +639,6 @@ void Collide_GetJointAbsPosition(ITEM *item, XYZ_32 *vec, int32_t joint)
         if (bone->rot_z) {
             Matrix_RotZ(*extra_rotation++);
         }
-
-        bone++;
     }
 
     Matrix_TranslateRel(vec->x, vec->y, vec->z);
