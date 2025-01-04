@@ -47,7 +47,7 @@ void Baldy_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 0)->rot_y = 1;
+    Object_GetBone(obj, 0)->rot_y = true;
 }
 
 void Baldy_Initialise(int16_t item_num)

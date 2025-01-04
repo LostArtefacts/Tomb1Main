@@ -82,7 +82,7 @@ void Croc_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 7)->rot_y = 1;
+    Object_GetBone(obj, 7)->rot_y = true;
 }
 
 void Croc_Control(int16_t item_num)
@@ -221,7 +221,7 @@ void Alligator_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 7)->rot_y = 1;
+    Object_GetBone(obj, 7)->rot_y = true;
 }
 
 void Alligator_Control(int16_t item_num)

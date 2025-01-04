@@ -147,7 +147,7 @@ void Dragon_SetupFront(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    Object_GetBone(obj, 10)->rot_z = 1;
+    Object_GetBone(obj, 10)->rot_z = true;
 }
 
 void Dragon_SetupBack(void)

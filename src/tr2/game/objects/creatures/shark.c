@@ -71,7 +71,7 @@ void Shark_Setup(void)
     obj->save_anim = 1;
     obj->water_creature = 1;
 
-    Object_GetBone(obj, 9)->rot_y = 1;
+    Object_GetBone(obj, 9)->rot_y = true;
 }
 
 void Shark_Control(const int16_t item_num)

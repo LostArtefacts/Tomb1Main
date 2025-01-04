@@ -58,7 +58,7 @@ void SkateKid_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 0)->rot_y = 1;
+    Object_GetBone(obj, 0)->rot_y = true;
 
     if (!g_Objects[O_SKATEBOARD].loaded) {
         LOG_WARNING(

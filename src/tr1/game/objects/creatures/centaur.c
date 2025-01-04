@@ -56,8 +56,8 @@ void Centaur_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 10)->rot_x = 1;
-    Object_GetBone(obj, 10)->rot_y = 1;
+    Object_GetBone(obj, 10)->rot_x = true;
+    Object_GetBone(obj, 10)->rot_y = true;
 }
 
 void Centaur_Control(int16_t item_num)

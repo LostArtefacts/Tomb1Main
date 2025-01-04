@@ -68,7 +68,7 @@ void Tiger_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    Object_GetBone(obj, 21)->rot_y = 1;
+    Object_GetBone(obj, 21)->rot_y = true;
 }
 
 void Tiger_Control(const int16_t item_num)

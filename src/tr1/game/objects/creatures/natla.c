@@ -62,8 +62,8 @@ void Natla_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 2)->rot_x = 1;
-    Object_GetBone(obj, 2)->rot_z = 1;
+    Object_GetBone(obj, 2)->rot_x = true;
+    Object_GetBone(obj, 2)->rot_z = true;
 }
 
 void Natla_Control(int16_t item_num)

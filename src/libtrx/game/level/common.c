@@ -219,7 +219,12 @@ void Level_ReadAnimBones(
 {
     for (int32_t i = 0; i < num_bones; i++) {
         ANIM_BONE *const bone = Anim_GetBone(base_idx + i);
-        bone->flags = VFile_ReadS32(file);
+        const int32_t flags = VFile_ReadS32(file);
+        bone->matrix_pop = (flags & 1) != 0;
+        bone->matrix_push = (flags & 2) != 0;
+        bone->rot_x = false;
+        bone->rot_y = false;
+        bone->rot_z = false;
         bone->pos.x = VFile_ReadS32(file);
         bone->pos.y = VFile_ReadS32(file);
         bone->pos.z = VFile_ReadS32(file);

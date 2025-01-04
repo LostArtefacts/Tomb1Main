@@ -16,19 +16,11 @@ typedef struct __PACKING {
 } ANIM_RANGE;
 
 typedef struct {
-    union {
-        int32_t flags;
-        // clang-format off
-        struct {
-            uint32_t matrix_pop:  1;
-            uint32_t matrix_push: 1;
-            uint32_t rot_x:       1;
-            uint32_t rot_y:       1;
-            uint32_t rot_z:       1;
-            uint32_t pad:         11;
-        };
-        // clang-format on
-    };
+    bool matrix_pop;
+    bool matrix_push;
+    bool rot_x;
+    bool rot_y;
+    bool rot_z;
     XYZ_32 pos;
 } ANIM_BONE;
 

@@ -70,8 +70,8 @@ void Bandit1_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    Object_GetBone(obj, 6)->rot_y = 1;
-    Object_GetBone(obj, 8)->rot_y = 1;
+    Object_GetBone(obj, 6)->rot_y = true;
+    Object_GetBone(obj, 8)->rot_y = true;
 }
 
 void Bandit1_Control(const int16_t item_num)

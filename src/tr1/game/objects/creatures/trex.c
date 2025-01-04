@@ -59,8 +59,8 @@ void TRex_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 10)->rot_y = 1;
-    Object_GetBone(obj, 11)->rot_y = 1;
+    Object_GetBone(obj, 10)->rot_y = true;
+    Object_GetBone(obj, 11)->rot_y = true;
 }
 
 void TRex_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)

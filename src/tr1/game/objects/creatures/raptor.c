@@ -59,7 +59,7 @@ void Raptor_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    Object_GetBone(obj, 21)->rot_y = 1;
+    Object_GetBone(obj, 21)->rot_y = true;
 }
 
 void Raptor_Control(int16_t item_num)
