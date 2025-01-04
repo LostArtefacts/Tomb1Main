@@ -2,22 +2,9 @@
 
 #include "global/types.h"
 
-#include <stdint.h>
+#include <libtrx/game/phase/control.h>
 
-// Status returned upon every logical frame by the control routine.
-// - Set .end = false to keep the phase loop spinning.
-// - Set .end = true to end the current phase.
-//
-// To continue executing current game sequence, .command.action member should
-// be set to GF_NOOP. To break out of the current sequence and switch to a
-// different game flow action, .command.action should be set to the action to
-// run.
-//
-// It does not make sense to return both .end = false and .command.
-typedef struct {
-    bool end;
-    GAME_FLOW_COMMAND command;
-} PHASE_CONTROL;
+#include <stdint.h>
 
 typedef enum {
     PHASE_NULL,

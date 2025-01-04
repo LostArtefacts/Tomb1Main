@@ -68,14 +68,14 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         if (g_InputDB.any || !Output_FadeIsAnimating()) {
             Output_FadeResetToBlack();
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_NOOP },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_NOOP },
             };
         }
         break;
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)

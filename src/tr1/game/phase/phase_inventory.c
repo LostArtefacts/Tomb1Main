@@ -229,8 +229,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
     if (m_StartLevel != -1) {
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = {
                 .action = GF_SELECT_GAME,
                 .param = m_StartLevel,
             },
@@ -239,8 +239,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
     if (m_StartDemo) {
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = { .action = GF_START_DEMO, .param = -1 },
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_START_DEMO, .param = -1 },
         };
     }
 
@@ -249,8 +249,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
         switch (g_GameInfo.passport_selection) {
         case PASSPORT_MODE_LOAD_GAME:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_START_SAVED_GAME,
                     .param = g_GameInfo.current_save_slot,
                 },
@@ -258,8 +258,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
         case PASSPORT_MODE_SELECT_LEVEL:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_SELECT_GAME,
                     .param = g_GameInfo.select_level_num,
                 },
@@ -267,8 +267,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
         case PASSPORT_MODE_STORY_SO_FAR:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_STORY_SO_FAR,
                     .param = g_GameInfo.current_save_slot,
                 },
@@ -277,8 +277,8 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
         case PASSPORT_MODE_NEW_GAME:
             Savegame_InitCurrentInfo();
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_START_GAME,
                     .param = g_GameFlow.first_level_num,
                 },
@@ -289,12 +289,12 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
             Music_Unpause();
             Sound_UnpauseAll();
             Phase_Set(PHASE_GAME, NULL);
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 
         case PASSPORT_MODE_RESTART:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_RESTART_GAME,
                     .param = g_CurrentLevel,
                 },
@@ -302,30 +302,30 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
         case PASSPORT_MODE_EXIT_TITLE:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_EXIT_TO_TITLE },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
 
         case PASSPORT_MODE_EXIT_GAME:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_EXIT_GAME },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_GAME },
             };
 
         case PASSPORT_MODE_BROWSE:
         case PASSPORT_MODE_UNAVAILABLE:
         default:
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_EXIT_TO_TITLE },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
         }
 
     case O_PHOTO_OPTION:
         g_GameInfo.current_save_slot = -1;
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = {
                 .action = GF_START_GYM,
                 .param = g_GameFlow.gym_level_num,
             },
@@ -356,14 +356,14 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
 
     if (g_InvMode == INV_TITLE_MODE) {
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = { .action = GF_NOOP },
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_NOOP },
         };
     } else {
         Music_Unpause();
         Sound_UnpauseAll();
         Phase_Set(PHASE_GAME, NULL);
-        return (PHASE_CONTROL) { .end = false };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
     }
 }
 
@@ -671,7 +671,7 @@ static PHASE_CONTROL M_ControlFrame(void)
 
     if (motion->status == RNG_OPENING) {
         if (g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
         Clock_ResetTimer(&m_DemoTimer);
@@ -688,7 +688,7 @@ static PHASE_CONTROL M_ControlFrame(void)
         }
 
         if (Output_FadeIsAnimating()) {
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
         return Inv_Close(m_InvChosen);
@@ -719,7 +719,7 @@ static PHASE_CONTROL M_ControlFrame(void)
             || (ring->type == RT_OPTION && g_InvMainObjects));
 
     if (ring->rotating) {
-        return (PHASE_CONTROL) { .end = false };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
     }
 
     if ((g_InvMode == INV_SAVE_MODE || g_InvMode == INV_SAVE_CRYSTAL_MODE
@@ -1110,7 +1110,7 @@ static PHASE_CONTROL M_ControlFrame(void)
         Inv_Ring_RemoveAllText();
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static PHASE_CONTROL M_Control(int32_t nframes)
@@ -1121,12 +1121,12 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     }
     for (int32_t i = 0; i < nframes; i++) {
         const PHASE_CONTROL result = M_ControlFrame();
-        if (result.end) {
+        if (result.action == PHASE_ACTION_END) {
             return result;
         }
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_End(void)

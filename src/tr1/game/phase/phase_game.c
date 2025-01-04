@@ -57,8 +57,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         Lara_Cheat_Control();
         if (g_LevelComplete) {
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_NOOP },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_NOOP },
             };
         }
 
@@ -73,7 +73,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             if (g_OverlayFlag == 2) {
                 g_OverlayFlag = 1;
                 Inv_Display(INV_DEATH_MODE);
-                return (PHASE_CONTROL) { .end = false };
+                return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
             } else {
                 g_OverlayFlag = 2;
             }
@@ -102,20 +102,20 @@ static PHASE_CONTROL M_Control(int32_t nframes)
                 }
 
                 g_OverlayFlag = 1;
-                return (PHASE_CONTROL) { .end = false };
+                return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
             }
         }
 
         if (!g_Lara.death_timer && g_InputDB.pause) {
             Phase_Set(PHASE_PAUSE, NULL);
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         } else if (g_InputDB.toggle_photo_mode) {
             PHASE_PHOTO_MODE_ARGS *const args =
                 Memory_Alloc(sizeof(PHASE_PHOTO_MODE_ARGS));
             args->phase_to_return_to = PHASE_GAME;
             args->phase_arg = NULL;
             Phase_Set(PHASE_PHOTO_MODE, args);
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         } else {
             Item_Control();
             Effect_Control();
@@ -136,7 +136,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         g_GameInfo.ask_for_save = false;
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)

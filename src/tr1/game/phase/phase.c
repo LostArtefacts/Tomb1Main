@@ -38,13 +38,16 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         const GAME_FLOW_COMMAND override = g_GameInfo.override_gf_command;
         g_GameInfo.override_gf_command =
             (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-        return (PHASE_CONTROL) { .end = true, .command = override };
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = override,
+        };
     }
 
     if (m_Phaser && m_Phaser->control) {
         return m_Phaser->control(nframes);
     }
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)
@@ -141,7 +144,7 @@ static int32_t M_Wait(void)
 GAME_FLOW_COMMAND Phase_Run(void)
 {
     int32_t nframes = Clock_WaitTick();
-    PHASE_CONTROL control = { .end = false };
+    PHASE_CONTROL control = { .action = PHASE_ACTION_CONTINUE };
 
     m_Running = true;
     LOG_DEBUG("phase start, phase=%d", m_Phase);
@@ -156,7 +159,7 @@ GAME_FLOW_COMMAND Phase_Run(void)
             M_SetUnconditionally(m_PhaseToSet, m_PhaseToSetArgs);
             m_PhaseToSet = PHASE_NULL;
             m_PhaseToSetArgs = NULL;
-            if (control.end) {
+            if (control.action == PHASE_ACTION_END) {
                 M_Draw();
                 break;
             }
@@ -165,7 +168,7 @@ GAME_FLOW_COMMAND Phase_Run(void)
             continue;
         }
 
-        if (control.end) {
+        if (control.action == PHASE_ACTION_END) {
             M_Draw();
             break;
         }
@@ -185,7 +188,7 @@ GAME_FLOW_COMMAND Phase_Run(void)
     Phase_Set(PHASE_NULL, NULL);
 
     LOG_DEBUG(
-        "phase end, action=%d, param=%d", control.command.action,
-        control.command.param);
-    return control.command;
+        "phase end, action=%d, param=%d", control.gf_cmd.action,
+        control.gf_cmd.param);
+    return control.gf_cmd;
 }

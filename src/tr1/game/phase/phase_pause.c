@@ -176,8 +176,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             GS(PAUSE_ARE_YOU_SURE), GS(PAUSE_YES), GS(PAUSE_NO), 1);
         if (choice == 1) {
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = { .action = GF_EXIT_TO_TITLE },
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
         } else if (choice == 2) {
             Music_Unpause();
@@ -188,7 +188,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     }
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)

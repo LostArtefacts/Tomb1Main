@@ -123,8 +123,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         if (g_CineFrame >= g_NumCineFrames - 1) {
             g_LevelComplete = true;
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_LEVEL_COMPLETE,
                     .param = g_CurrentLevel,
                 },
@@ -138,8 +138,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             g_LevelComplete = true;
             return (PHASE_CONTROL) {
-                .end = true,
-                .command = {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
                     .action = GF_LEVEL_COMPLETE,
                     .param = g_CurrentLevel,
                 },
@@ -174,11 +174,11 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             }
 
             m_PauseCutscene = true;
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)

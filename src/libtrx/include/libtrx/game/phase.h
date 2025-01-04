@@ -1,4 +1,5 @@
 #pragma once
 
-#include "./phase/common.h"
+#include "./phase/control.h"
 #include "./phase/executor.h"
+#include "./phase/types.h"

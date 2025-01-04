@@ -326,7 +326,7 @@ static PHASE_CONTROL M_Run(int32_t nframes)
             args->phase_to_return_to = PHASE_DEMO;
             args->phase_arg = demo_args;
             Phase_Set(PHASE_PHOTO_MODE, args);
-            return (PHASE_CONTROL) { .end = false };
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             m_State = STATE_FADE_OUT;
             goto end;
@@ -334,7 +334,7 @@ static PHASE_CONTROL M_Run(int32_t nframes)
     }
 
 end:
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static PHASE_CONTROL M_FadeOut(void)
@@ -347,11 +347,11 @@ static PHASE_CONTROL M_FadeOut(void)
         || !Output_FadeIsAnimating()) {
         Output_FadeResetToBlack();
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = { .action = GF_EXIT_TO_TITLE },
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static PHASE_CONTROL M_Control(int32_t nframes)
@@ -359,8 +359,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     switch (m_State) {
     case STATE_INVALID:
         return (PHASE_CONTROL) {
-            .end = true,
-            .command = { .action = GF_EXIT_TO_TITLE },
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
 
     case STATE_RUN:
@@ -372,8 +372,8 @@ static PHASE_CONTROL M_Control(int32_t nframes)
 
     ASSERT_FAIL();
     return (PHASE_CONTROL) {
-        .end = true,
-        .command = { .action = GF_NOOP },
+        .action = PHASE_ACTION_END,
+        .gf_cmd = { .action = GF_NOOP },
     };
 }
 

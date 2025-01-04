@@ -89,7 +89,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
 
     if (g_InputDB.toggle_photo_mode || g_InputDB.option) {
         Phase_Set(m_Args.phase_to_return_to, m_Args.phase_arg);
-        return (PHASE_CONTROL) { .end = false };
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
     } else if (g_InputDB.action) {
         m_Status = PS_ACTIVE;
     } else {
@@ -97,7 +97,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         Camera_Update();
     }
 
-    return (PHASE_CONTROL) { .end = false };
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)
