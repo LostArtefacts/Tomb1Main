@@ -1,10 +1,6 @@
 #pragma once
 
-#include "game/phase/phase.h"
+#include <libtrx/game/phase/types.h>
 
-typedef struct {
-    PHASE_ENUM phase_to_return_to;
-    void *phase_arg;
-} PHASE_PHOTO_MODE_ARGS;
-
-extern PHASER g_PhotoModePhaser;
+PHASE *Phase_PhotoMode_Create(void);
+void Phase_PhotoMode_Destroy(PHASE *phase);

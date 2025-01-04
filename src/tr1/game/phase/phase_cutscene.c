@@ -13,7 +13,6 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/phase.h"
-#include "game/phase/phase_photo_mode.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -160,16 +159,23 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             cutscene_args->level_num = g_CurrentLevel;
 
             if (g_InputDB.toggle_photo_mode) {
-                PHASE_PHOTO_MODE_ARGS *const args =
-                    Memory_Alloc(sizeof(PHASE_PHOTO_MODE_ARGS));
-                args->phase_to_return_to = PHASE_CUTSCENE;
-                args->phase_arg = cutscene_args;
-                Phase_Set(PHASE_PHOTO_MODE, args);
+                Game_SetIsPlaying(false);
+                PHASE *const subphase = Phase_PhotoMode_Create();
+                const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+                Phase_PhotoMode_Destroy(subphase);
+                Game_SetIsPlaying(true);
+                if (gf_cmd.action != GF_NOOP) {
+                    return (PHASE_CONTROL) {
+                        .action = PHASE_ACTION_END,
+                        .gf_cmd = gf_cmd,
+                    };
+                }
+                return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
             } else if (g_InputDB.pause) {
                 Game_SetIsPlaying(false);
-                PHASE *const phase_pause = Phase_Pause_Create();
-                const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase_pause);
-                Phase_Pause_Destroy(phase_pause);
+                PHASE *const subphase = Phase_Pause_Create();
+                const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+                Phase_Pause_Destroy(subphase);
                 Game_SetIsPlaying(true);
                 if (gf_cmd.action != GF_NOOP) {
                     return (PHASE_CONTROL) {

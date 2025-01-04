@@ -14,7 +14,6 @@
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/phase.h"
-#include "game/phase/phase_photo_mode.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
@@ -121,12 +120,18 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             }
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (g_InputDB.toggle_photo_mode) {
-            PHASE_PHOTO_MODE_ARGS *const args =
-                Memory_Alloc(sizeof(PHASE_PHOTO_MODE_ARGS));
-            args->phase_to_return_to = PHASE_GAME;
-            args->phase_arg = NULL;
-            Phase_Set(PHASE_PHOTO_MODE, args);
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            Game_SetIsPlaying(false);
+            PHASE *const subphase = Phase_PhotoMode_Create();
+            const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+            Phase_PhotoMode_Destroy(subphase);
+            Game_SetIsPlaying(true);
+            if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = gf_cmd,
+                };
+            }
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else {
             Item_Control();
             Effect_Control();

@@ -15,8 +15,7 @@
 #include "game/level.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase/phase.h"
-#include "game/phase/phase_photo_mode.h"
+#include "game/phase.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -317,16 +316,18 @@ static PHASE_CONTROL M_Run(int32_t nframes)
         Input_Update();
         Shell_ProcessInput();
         if (g_InputDB.toggle_photo_mode) {
-            PHASE_DEMO_ARGS *const demo_args =
-                Memory_Alloc(sizeof(PHASE_DEMO_ARGS));
-            demo_args->resume_existing = true;
-
-            PHASE_PHOTO_MODE_ARGS *const args =
-                Memory_Alloc(sizeof(PHASE_PHOTO_MODE_ARGS));
-            args->phase_to_return_to = PHASE_DEMO;
-            args->phase_arg = demo_args;
-            Phase_Set(PHASE_PHOTO_MODE, args);
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            Game_SetIsPlaying(false);
+            PHASE *const subphase = Phase_PhotoMode_Create();
+            const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+            Phase_PhotoMode_Destroy(subphase);
+            Game_SetIsPlaying(true);
+            if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = gf_cmd,
+                };
+            }
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             m_State = STATE_FADE_OUT;
             goto end;
