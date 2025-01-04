@@ -1,6 +1,5 @@
 #include "game/items.h"
 
-#include "game/anim.h"
 #include "game/carrier.h"
 #include "game/effects.h"
 #include "game/interpolation.h"

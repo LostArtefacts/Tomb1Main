@@ -1,6 +1,5 @@
 #include "game/gun/gun_rifle.h"
 
-#include "game/anim.h"
 #include "game/gun.h"
 #include "game/gun/gun_misc.h"
 #include "game/input.h"

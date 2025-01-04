@@ -13,3 +13,14 @@ ANIM_BONE *Anim_GetBone(const int32_t bone_idx)
 {
     return &m_Bones[bone_idx];
 }
+
+bool Anim_TestAbsFrameEqual(const int16_t abs_frame, const int16_t frame)
+{
+    return abs_frame == frame;
+}
+
+bool Anim_TestAbsFrameRange(
+    const int16_t abs_frame, const int16_t start, const int16_t end)
+{
+    return abs_frame >= start && abs_frame <= end;
+}
