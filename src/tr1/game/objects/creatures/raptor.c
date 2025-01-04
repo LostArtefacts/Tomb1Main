@@ -59,8 +59,7 @@ void Raptor_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[21].rot_y = 1;
+    Object_GetBone(obj, 21)->rot_y = 1;
 }
 
 void Raptor_Control(int16_t item_num)

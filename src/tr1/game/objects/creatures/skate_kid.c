@@ -58,8 +58,7 @@ void SkateKid_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[0].rot_y = 1;
+    Object_GetBone(obj, 0)->rot_y = 1;
 
     if (!g_Objects[O_SKATEBOARD].loaded) {
         LOG_WARNING(

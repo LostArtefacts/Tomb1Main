@@ -76,8 +76,7 @@ void Rat_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[1].rot_y = 1;
+    Object_GetBone(obj, 1)->rot_y = 1;
 }
 
 void Rat_Control(int16_t item_num)
@@ -188,8 +187,7 @@ void Vole_Setup(OBJECT *obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[1].rot_y = 1;
+    Object_GetBone(obj, 1)->rot_y = 1;
 }
 
 void Vole_Control(int16_t item_num)

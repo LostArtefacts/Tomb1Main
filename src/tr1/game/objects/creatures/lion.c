@@ -58,8 +58,7 @@ static void M_SetupBase(OBJECT *const obj)
     obj->save_anim = 1;
     obj->save_flags = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[19].rot_y = 1;
+    Object_GetBone(obj, 19)->rot_y = 1;
 }
 
 void Lion_SetupLion(OBJECT *obj)
