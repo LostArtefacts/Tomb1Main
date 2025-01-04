@@ -91,7 +91,7 @@ void Lara_Draw(const ITEM *const item)
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    const ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = Object_GetBone(object, 0);
     const int16_t *mesh_rots = frame->mesh_rots;
     const int16_t *mesh_rots_c;
 
@@ -143,7 +143,7 @@ void Lara_Draw(const ITEM *const item)
     if (g_Lara.back_gun) {
         Matrix_Push();
         const ANIM_BONE *const bone_c =
-            (ANIM_BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
+            Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
         Matrix_TranslateRel(
             bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
         mesh_rots_c = g_Objects[g_Lara.back_gun].frame_base + FBBOX_ROT;
@@ -338,7 +338,7 @@ void Lara_Draw_I(
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    const ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
+    const ANIM_BONE *const bone = Object_GetBone(object, 0);
     const int16_t *mesh_rots_1 = frame1->mesh_rots;
     const int16_t *mesh_rots_2 = frame2->mesh_rots;
     const int16_t *mesh_rots_1_c;
@@ -397,7 +397,7 @@ void Lara_Draw_I(
     if (g_Lara.back_gun) {
         Matrix_Push_I();
         const ANIM_BONE *const bone_c =
-            (ANIM_BONE *)&g_AnimBones[g_Objects[g_Lara.back_gun].bone_idx];
+            Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
         Matrix_TranslateRel_I(
             bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
         mesh_rots_1_c = g_Objects[g_Lara.back_gun].frame_base + FBBOX_ROT;

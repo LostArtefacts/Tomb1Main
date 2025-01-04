@@ -257,7 +257,6 @@ void Pickup_Draw(const ITEM *const item)
     if (clip) {
         int32_t bit = 1;
         int16_t **meshpp = &g_Meshes[obj->mesh_idx];
-        const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
 
         const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
         if (mesh_rots != NULL) {
@@ -269,6 +268,7 @@ void Pickup_Draw(const ITEM *const item)
         }
 
         for (int i = 1; i < obj->mesh_count; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -289,7 +289,6 @@ void Pickup_Draw(const ITEM *const item)
                 Output_InsertPolygons(*meshpp, clip);
             }
 
-            bone++;
             meshpp++;
         }
     }

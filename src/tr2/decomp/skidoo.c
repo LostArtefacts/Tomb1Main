@@ -987,7 +987,6 @@ void Skidoo_Draw(const ITEM *const item)
 
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     if (frac) {
         const int16_t *mesh_rots_1 = frames[0]->mesh_rots;
         const int16_t *mesh_rots_2 = frames[1]->mesh_rots;
@@ -1000,6 +999,7 @@ void Skidoo_Draw(const ITEM *const item)
 
         Output_InsertPolygons_I(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop_I();
             }
@@ -1009,7 +1009,6 @@ void Skidoo_Draw(const ITEM *const item)
 
             Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
             Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
-            bone++;
 
             Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
         }
@@ -1021,6 +1020,7 @@ void Skidoo_Draw(const ITEM *const item)
 
         Output_InsertPolygons(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -1030,7 +1030,6 @@ void Skidoo_Draw(const ITEM *const item)
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             Matrix_RotYXZsuperpack(&mesh_rots, 0);
-            bone++;
 
             Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
         }

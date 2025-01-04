@@ -524,9 +524,9 @@ int32_t Collide_GetSpheres(
     spheres[0].r = mesh[3];
     Matrix_Pop();
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
     const int16_t *extra_rotation = (int16_t *)item->data;
-    for (int32_t i = 1; i < object->mesh_count; i++, bone++) {
+    for (int32_t i = 1; i < object->mesh_count; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }
@@ -579,8 +579,8 @@ void Collide_GetJointAbsPosition(
     Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
     const int16_t *extra_rotation = item->data;
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
-    for (int32_t i = 0; i < joint; i++, bone++) {
+    for (int32_t i = 0; i < joint; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(object, i);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }

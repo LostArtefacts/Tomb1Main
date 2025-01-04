@@ -40,7 +40,6 @@ void XianWarrior_Draw(const ITEM *item)
         jade_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_KNIGHT_STATUE].mesh_idx];
     }
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *extra_rotation = item->data;
     const int16_t *mesh_rots[2] = {
         frames[0]->mesh_rots,
@@ -57,6 +56,7 @@ void XianWarrior_Draw(const ITEM *item)
                     frames[1]->offset.y, frames[1]->offset.z);
                 Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
             } else {
+                const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
                     Matrix_Pop_I();
                 }
@@ -77,7 +77,6 @@ void XianWarrior_Draw(const ITEM *item)
                         Matrix_RotZ_I(*extra_rotation++);
                     }
                 }
-                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
@@ -94,6 +93,7 @@ void XianWarrior_Draw(const ITEM *item)
                     frames[0]->offset.z);
                 Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
             } else {
+                const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
                     Matrix_Pop();
                 }
@@ -114,7 +114,6 @@ void XianWarrior_Draw(const ITEM *item)
                         Matrix_RotZ(*extra_rotation++);
                     }
                 }
-                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {

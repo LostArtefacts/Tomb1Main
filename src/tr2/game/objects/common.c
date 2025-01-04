@@ -44,7 +44,6 @@ void Object_DrawAnimatingItem(const ITEM *item)
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
     int16_t *const *mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *extra_rotation = item->data;
     const int16_t *mesh_rots[2] = {
         frames[0]->mesh_rots,
@@ -61,6 +60,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                     frames[1]->offset.y, frames[1]->offset.z);
                 Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
             } else {
+                const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
                     Matrix_Pop_I();
                 }
@@ -81,7 +81,6 @@ void Object_DrawAnimatingItem(const ITEM *item)
                         Matrix_RotZ_I(*extra_rotation++);
                     }
                 }
-                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
@@ -96,6 +95,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                     frames[0]->offset.z);
                 Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
             } else {
+                const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
                     Matrix_Pop();
                 }
@@ -116,7 +116,6 @@ void Object_DrawAnimatingItem(const ITEM *item)
                         Matrix_RotZ(*extra_rotation++);
                     }
                 }
-                bone++;
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
@@ -195,7 +194,6 @@ BOUNDS_16 Object_GetBoundingBox(
     const uint32_t mesh_bits)
 {
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
 
     Matrix_PushUnit();
@@ -217,6 +215,7 @@ BOUNDS_16 Object_GetBoundingBox(
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx != 0) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -229,7 +228,6 @@ BOUNDS_16 Object_GetBoundingBox(
             if (mesh_rots != NULL) {
                 Matrix_RotYXZsuperpack(&mesh_rots, 0);
             }
-            bone++;
         }
 
         if (!(mesh_bits & (1 << mesh_idx))) {

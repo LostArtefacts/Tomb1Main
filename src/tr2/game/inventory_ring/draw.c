@@ -115,7 +115,6 @@ static void M_DrawItem(
         return;
     }
 
-    const ANIM_BONE *bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
     Matrix_TranslateRel(
         frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
     const int16_t *rot = frame_ptr->mesh_rots;
@@ -123,6 +122,7 @@ static void M_DrawItem(
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx > 0) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -149,8 +149,6 @@ static void M_DrawItem(
                     Matrix_RotZ(hours);
                 }
             }
-
-            bone++;
         }
 
         if (inv_item->meshes_drawn & (1 << mesh_idx)) {
