@@ -287,6 +287,7 @@ GAME_FLOW_COMMAND DisplayCredits(void)
         PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
             .file_name = file_name,
             .display_time = 15 * FRAMES_PER_SECOND,
+            .display_time_includes_fades = true,
             .fade_in_time = FRAMES_PER_SECOND / 2,
             .fade_out_time = FRAMES_PER_SECOND / 2,
         });

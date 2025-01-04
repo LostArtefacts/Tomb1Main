@@ -9,7 +9,6 @@
 #include "game/phase/phase_inventory.h"
 #include "game/phase/phase_pause.h"
 #include "game/phase/phase_photo_mode.h"
-#include "game/phase/phase_picture.h"
 #include "game/phase/phase_stats.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -20,17 +19,17 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-static PHASE m_Phase = PHASE_NULL;
+static PHASE_ENUM m_Phase = PHASE_NULL;
 static PHASER *m_Phaser = NULL;
 
 static bool m_Running = false;
-static PHASE m_PhaseToSet = PHASE_NULL;
+static PHASE_ENUM m_PhaseToSet = PHASE_NULL;
 static const void *m_PhaseToSetArgs = NULL;
 
 static PHASE_CONTROL M_Control(int32_t nframes);
 static void M_Draw(void);
 static int32_t M_Wait(void);
-static void M_SetUnconditionally(const PHASE phase, const void *args);
+static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args);
 
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
@@ -59,7 +58,7 @@ static void M_Draw(void)
     Output_EndScene();
 }
 
-static void M_SetUnconditionally(const PHASE phase, const void *args)
+static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args)
 {
     if (m_Phaser && m_Phaser->end) {
         m_Phaser->end();
@@ -87,10 +86,6 @@ static void M_SetUnconditionally(const PHASE phase, const void *args)
         m_Phaser = &g_PausePhaser;
         break;
 
-    case PHASE_PICTURE:
-        m_Phaser = &g_PicturePhaser;
-        break;
-
     case PHASE_STATS:
         m_Phaser = &g_StatsPhaser;
         break;
@@ -115,12 +110,12 @@ static void M_SetUnconditionally(const PHASE phase, const void *args)
     Clock_WaitTick();
 }
 
-PHASE Phase_Get(void)
+PHASE_ENUM Phase_Get(void)
 {
     return m_Phase;
 }
 
-void Phase_Set(const PHASE phase, const void *const args)
+void Phase_Set(const PHASE_ENUM phase, const void *const args)
 {
     // changing the phase in the middle of rendering is asking for trouble,
     // so instead we schedule to run the change on the next iteration

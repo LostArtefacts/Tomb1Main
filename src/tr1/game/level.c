@@ -1119,10 +1119,11 @@ bool Level_Initialise(int32_t level_num)
     Pierre_Reset();
 
     Lara_InitialiseLoad(NO_ITEM);
-    Output_LoadBackdropImage(
-        level_num == g_GameFlow.title_level_num
-            ? g_GameFlow.main_menu_background_path
-            : NULL);
+    if (level_num == g_GameFlow.title_level_num) {
+        Output_LoadBackgroundFromFile(g_GameFlow.main_menu_background_path);
+    } else {
+        Output_UnloadBackground();
+    }
 
     Level_Load(level_num);
     GameFlow_LoadStrings(level_num);

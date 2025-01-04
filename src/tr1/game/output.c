@@ -16,6 +16,7 @@
 #include "specific/s_output.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/console/common.h>
@@ -79,8 +80,6 @@ static char *m_BackdropImagePath = NULL;
 static const char *m_ImageExtensions[] = {
     ".png", ".jpg", ".jpeg", ".pcx", NULL,
 };
-
-static void M_DrawBlackOverlay(uint8_t alpha);
 
 static void M_DrawFlatFace3s(const FACE3 *faces, int32_t count);
 static void M_DrawFlatFace4s(const FACE4 *faces, int32_t count);
@@ -575,7 +574,7 @@ void Output_ApplyRenderSettings(void)
 {
     S_Output_ApplyRenderSettings();
     if (m_BackdropImagePath) {
-        Output_LoadBackdropImage(m_BackdropImagePath);
+        Output_LoadBackgroundFromFile(m_BackdropImagePath);
     }
 }
 
@@ -592,7 +591,7 @@ RGBA_8888 Output_RGB2RGBA(const RGB_888 color)
 
 void Output_DrawBlack(void)
 {
-    M_DrawBlackOverlay(255);
+    Output_DrawBlackRectangle(255);
 }
 
 void Output_FlushTranslucentObjects(void)
@@ -1102,16 +1101,11 @@ void Output_DrawUISprite(
     }
 }
 
-void Output_LoadBackdropImage(const char *filename)
+void Output_LoadBackgroundFromFile(const char *const file_name)
 {
-    if (!filename) {
-        S_Output_DownloadBackdropSurface(NULL);
-        Memory_FreePointer(&m_BackdropImagePath);
-        return;
-    }
-
+    ASSERT(file_name != NULL);
     const char *old_path = m_BackdropImagePath;
-    m_BackdropImagePath = File_GuessExtension(filename, m_ImageExtensions);
+    m_BackdropImagePath = File_GuessExtension(file_name, m_ImageExtensions);
     Memory_FreePointer(&old_path);
 
     IMAGE *img = Image_CreateFromFileInto(
@@ -1121,6 +1115,12 @@ void Output_LoadBackdropImage(const char *filename)
         S_Output_DownloadBackdropSurface(img);
         Image_Free(img);
     }
+}
+
+void Output_UnloadBackground(void)
+{
+    S_Output_DownloadBackdropSurface(NULL);
+    Memory_FreePointer(&m_BackdropImagePath);
 }
 
 void Output_DrawLightningSegment(
@@ -1256,28 +1256,39 @@ void Output_RotateLight(int16_t pitch, int16_t yaw)
         >> W2V_SHIFT;
 }
 
-static void M_DrawBlackOverlay(uint8_t alpha)
+void Output_DrawBlackRectangle(int32_t opacity)
 {
     int32_t sx = 0;
     int32_t sy = 0;
     int32_t sw = Viewport_GetWidth();
     int32_t sh = Viewport_GetHeight();
 
-    RGBA_8888 background = { 0, 0, 0, alpha };
+    RGBA_8888 background = { 0, 0, 0, opacity };
     S_Output_DisableDepthTest();
     S_Output_ClearDepthBuffer();
     Output_DrawScreenFlatQuad(sx, sy, sw, sh, background);
     S_Output_EnableDepthTest();
 }
 
+void Output_DrawBackground(void)
+{
+    S_Output_DrawBackdropSurface();
+}
+
+void Output_DrawPolyList(void)
+{
+    // force flush the vertex stream
+    S_Output_ClearDepthBuffer();
+}
+
 void Output_DrawBackdropScreen(void)
 {
-    M_DrawBlackOverlay(m_BackdropCurAlpha);
+    Output_DrawBlackRectangle(m_BackdropCurAlpha);
 }
 
 void Output_DrawOverlayScreen(void)
 {
-    M_DrawBlackOverlay(m_OverlayCurAlpha);
+    Output_DrawBlackRectangle(m_OverlayCurAlpha);
 }
 
 void Output_FadeReset(void)

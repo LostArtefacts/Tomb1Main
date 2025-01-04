@@ -1,16 +1,16 @@
 #include "game/phase/phase_picture.h"
 
 #include "game/console/common.h"
+#include "game/fader.h"
+#include "game/game.h"
 #include "game/input.h"
 #include "game/output.h"
-#include "global/vars.h"
-
-#include <libtrx/game/fader.h>
-#include <libtrx/memory.h>
+#include "game/text.h"
+#include "memory.h"
 
 typedef enum {
     STATE_FADE_IN,
-    STATE_WAIT,
+    STATE_DISPLAY,
     STATE_FADE_OUT,
 } M_STATE;
 
@@ -51,22 +51,24 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
 
-    p->frames += num_frames;
+    if (p->args.display_time_includes_fades || p->state == STATE_DISPLAY) {
+        p->frames += num_frames;
+    }
 
     switch (p->state) {
     case STATE_FADE_IN:
         Input_Update();
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back || g_IsGameToExit) {
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()) {
             M_FadeOut(p);
         } else if (!Fader_Control(&p->fader)) {
-            p->state = STATE_WAIT;
+            p->state = STATE_DISPLAY;
         }
         break;
 
-    case STATE_WAIT:
+    case STATE_DISPLAY:
         Input_Update();
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back || g_IsGameToExit
-            || p->frames >= p->args.display_time - p->args.fade_out_time) {
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()
+            || p->frames >= p->args.display_time) {
             M_FadeOut(p);
         }
         break;

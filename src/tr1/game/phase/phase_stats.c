@@ -243,9 +243,9 @@ static void M_Start(const PHASE_STATS_ARGS *const args)
 {
     if (args != NULL && args->total) {
         ASSERT(args->level_type >= GFL_NORMAL);
-        Output_LoadBackdropImage(args->background_path);
+        Output_LoadBackgroundFromFile(args->background_path);
     } else {
-        Output_LoadBackdropImage(NULL);
+        Output_UnloadBackground();
     }
 
     if (g_CurrentLevel == g_GameFlow.gym_level_num) {

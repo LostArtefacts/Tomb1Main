@@ -12,11 +12,10 @@ typedef enum {
     PHASE_DEMO,
     PHASE_CUTSCENE,
     PHASE_PAUSE,
-    PHASE_PICTURE,
     PHASE_STATS,
     PHASE_INVENTORY,
     PHASE_PHOTO_MODE,
-} PHASE;
+} PHASE_ENUM;
 
 typedef void (*PHASER_START)(const void *args);
 typedef void (*PHASER_END)(void);
@@ -32,13 +31,13 @@ typedef struct {
     PHASER_WAIT wait;
 } PHASER;
 
-PHASE Phase_Get(void);
+PHASE_ENUM Phase_Get(void);
 
 // Sets the next phase to run.
 // args are passed to the subsequent PHASER->start callback.
 // Note that they must be allocated on the heap and will be
 // immediately freed by the phaser module upon completing the start
 // routine.
-void Phase_Set(PHASE phase, const void *args);
+void Phase_Set(PHASE_ENUM phase, const void *args);
 
 GAME_FLOW_COMMAND Phase_Run(void);

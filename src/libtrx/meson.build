@@ -2,7 +2,7 @@ project(
   'libtrx',
   'c',
   default_options: [
-    'c_std=c11',
+    'c_std=c2x',
     'warning_level=2',
   ],
   meson_version: '>=1.3.0',
@@ -109,6 +109,7 @@ sources = [
   'game/objects/names.c',
   'game/objects/vars.c',
   'game/phase/executor.c',
+  'game/phase/phase_picture.c',
   'game/rooms/common.c',
   'game/shell/common.c',
   'game/text.c',

@@ -2,7 +2,8 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
+#include <libtrx/game/output.h>
+
 #include <stdint.h>
 
 bool Output_Init(void);
@@ -97,8 +98,6 @@ void Output_DrawSpriteRel(
     int32_t x, int32_t y, int32_t z, int16_t sprnum, int16_t shade);
 void Output_DrawUISprite(
     int32_t x, int32_t y, int32_t scale, int16_t sprnum, int16_t shade);
-
-void Output_LoadBackdropImage(const char *filename);
 
 void Output_SetupBelowWater(bool underwater);
 void Output_SetupAboveWater(bool underwater);

@@ -65,10 +65,6 @@ bool Output_MakeScreenshot(const char *path);
 
 void Output_InsertBackPolygon(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 
-void Output_DrawBlackRectangle(int32_t opacity);
-void Output_DrawBackground(void);
-void Output_DrawPolyList(void);
-
 void Output_DrawScreenLine(
     int32_t x, int32_t y, int32_t z, int32_t x_len, int32_t y_len,
     uint8_t color_idx, const void *gour, uint16_t flags);
@@ -84,9 +80,7 @@ void Output_DrawScreenFBox(
 void Output_DrawHealthBar(int32_t percent);
 void Output_DrawAirBar(int32_t percent);
 
-void Output_LoadBackgroundFromFile(const char *file_name);
 void Output_LoadBackgroundFromObject(void);
-void Output_UnloadBackground(void);
 
 int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
 void Output_DoAnimateTextures(int32_t ticks);

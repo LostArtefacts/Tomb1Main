@@ -30,7 +30,7 @@ int32_t Random_GetDraw(void)
     // Allow draw RNG to advance only during initial game setup (for such things
     // as caustic initialisation) and normal game play. RNG should remain static
     // when the game output is paused e.g. inventory, pause screen etc.
-    PHASE phase = Phase_Get();
+    PHASE_ENUM phase = Phase_Get();
     if (phase == PHASE_NULL || phase == PHASE_GAME) {
         m_RandDraw = 0x41C64E6D * m_RandDraw + 0x3039;
     }

@@ -8,9 +8,9 @@
 #include "game/lara/common.h"
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
+#include "game/output.h"
 #include "game/phase/phase.h"
 #include "game/phase/phase_cutscene.h"
-#include "game/phase/phase_picture.h"
 #include "game/phase/phase_stats.h"
 #include "game/room.h"
 #include "game/savegame.h"
@@ -21,6 +21,7 @@
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
+#include <libtrx/game/phase.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -1130,13 +1131,19 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 break;
             }
 
+            // TODO: do not call me here once everything moves to libtrx faders
+            Output_FadeReset();
+
             GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
-            PHASE_PICTURE_ARGS *const args =
-                Memory_Alloc(sizeof(PHASE_PICTURE_ARGS));
-            args->path = data->path;
-            args->display_time = data->display_time;
-            Phase_Set(PHASE_PICTURE, args);
-            command = Phase_Run();
+            PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
+                .file_name = data->path,
+                .display_time = data->display_time * LOGIC_FPS,
+                .display_time_includes_fades = false,
+                .fade_in_time = LOGIC_FPS,
+                .fade_out_time = LOGIC_FPS,
+            });
+            command = PhaseExecutor_Run(phase);
+            Phase_Picture_Destroy(phase);
             if (command.action != GF_NOOP) {
                 return command;
             }
