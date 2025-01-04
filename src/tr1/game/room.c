@@ -33,7 +33,6 @@ static int16_t M_GetFloorTiltHeight(
 static int16_t M_GetCeilingTiltHeight(
     const SECTOR *sector, const int32_t x, const int32_t z);
 static SECTOR *M_GetSkySector(const SECTOR *sector, int32_t x, int32_t z);
-static void M_TestSectorTrigger(const ITEM *item, const SECTOR *sector);
 static bool M_TestLava(const ITEM *const item);
 
 static void M_TriggerMusicTrack(int16_t track, const TRIGGER *const trigger)
@@ -641,7 +640,7 @@ void Room_TestTriggers(const ITEM *const item)
     const SECTOR *sector =
         Room_GetSector(item->pos.x, MAX_HEIGHT, item->pos.z, &room_num);
 
-    M_TestSectorTrigger(item, sector);
+    Room_TestSectorTrigger(item, sector);
     if (item->object_id != O_TORSO) {
         return;
     }
@@ -656,7 +655,7 @@ void Room_TestTriggers(const ITEM *const item)
             sector = Room_GetSector(
                 item->pos.x + dx * WALL_L, MAX_HEIGHT,
                 item->pos.z + dz * WALL_L, &room_num);
-            M_TestSectorTrigger(item, sector);
+            Room_TestSectorTrigger(item, sector);
         }
     }
 }
@@ -676,8 +675,7 @@ static bool M_TestLava(const ITEM *const item)
     return sector->is_death_sector;
 }
 
-static void M_TestSectorTrigger(
-    const ITEM *const item, const SECTOR *const sector)
+void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
 {
     const bool is_heavy = item->object_id != O_LARA;
     if (!is_heavy && sector->is_death_sector && M_TestLava(item)) {
