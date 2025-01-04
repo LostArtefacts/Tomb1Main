@@ -37,10 +37,6 @@ void Item_ShiftCol(ITEM *item, COLL_INFO *coll);
 void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 
-bool Item_TestAnimEqual(ITEM *item, int16_t anim_idx);
-void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame);
-void Item_SwitchToObjAnim(
-    ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id);
 void Item_Animate(ITEM *item);
 bool Item_GetAnimChange(ITEM *item, ANIM *anim);
 void Item_PlayAnimSFX(ITEM *item, const int16_t *command, uint16_t flags);
@@ -52,5 +48,3 @@ const BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *item);
 int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate);
 
 void Item_TakeDamage(ITEM *item, int16_t damage, bool hit_status);
-bool Item_TestFrameEqual(ITEM *item, int16_t frame);
-bool Item_TestFrameRange(ITEM *item, int16_t start, int16_t end);

@@ -457,6 +457,35 @@ void Item_AlignPosition(
     dst_item->pos.z = new_pos.z;
 }
 
+void Item_SwitchToObjAnim(
+    ITEM *const item, const int16_t anim_idx, const int16_t frame,
+    const GAME_OBJECT_ID object_id)
+{
+    const OBJECT *const object = Object_GetObject(object_id);
+    item->anim_num = object->anim_idx + anim_idx;
+
+    const ANIM *const anim = &g_Anims[item->anim_num];
+    if (frame < 0) {
+        item->frame_num = anim->frame_end + frame + 1;
+    } else {
+        item->frame_num = anim->frame_base + frame;
+    }
+}
+
+bool Item_TestFrameEqual(const ITEM *const item, const int16_t frame)
+{
+    return Anim_TestAbsFrameEqual(
+        item->frame_num, g_Anims[item->anim_num].frame_base + frame);
+}
+
+bool Item_TestFrameRange(
+    const ITEM *const item, const int16_t start, const int16_t end)
+{
+    return Anim_TestAbsFrameRange(
+        item->frame_num, g_Anims[item->anim_num].frame_base + start,
+        g_Anims[item->anim_num].frame_base + end);
+}
+
 void Item_Animate(ITEM *const item)
 {
     item->hit_status = 0;

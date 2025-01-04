@@ -554,18 +554,9 @@ void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z)
     item->pos.z += (c * z - s * x) >> W2V_SHIFT;
 }
 
-bool Item_TestAnimEqual(ITEM *item, int16_t anim_idx)
-{
-    return item->anim_num == g_Objects[item->object_id].anim_idx + anim_idx;
-}
-
-void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame)
-{
-    Item_SwitchToObjAnim(item, anim_idx, frame, item->object_id);
-}
-
 void Item_SwitchToObjAnim(
-    ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id)
+    ITEM *const item, const int16_t anim_idx, const int16_t frame,
+    const GAME_OBJECT_ID object_id)
 {
     item->anim_num = g_Objects[object_id].anim_idx + anim_idx;
     if (frame < 0) {
@@ -831,13 +822,14 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
     return final * 10;
 }
 
-bool Item_TestFrameEqual(ITEM *item, int16_t frame)
+bool Item_TestFrameEqual(const ITEM *const item, const int16_t frame)
 {
     return Anim_TestAbsFrameEqual(
         item->frame_num, g_Anims[item->anim_num].frame_base + frame);
 }
 
-bool Item_TestFrameRange(ITEM *item, int16_t start, int16_t end)
+bool Item_TestFrameRange(
+    const ITEM *const item, const int16_t start, const int16_t end)
 {
     return Anim_TestAbsFrameRange(
         item->frame_num, g_Anims[item->anim_num].frame_base + start,

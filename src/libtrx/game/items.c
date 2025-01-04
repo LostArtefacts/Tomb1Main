@@ -1,6 +1,7 @@
 #include "game/items.h"
 
 #include "game/const.h"
+#include "game/objects/common.h"
 #include "utils.h"
 
 #include <stddef.h>
@@ -32,4 +33,16 @@ ITEM *Item_Find(const GAME_OBJECT_ID object_id)
     }
 
     return NULL;
+}
+
+bool Item_TestAnimEqual(const ITEM *const item, const int16_t anim_idx)
+{
+    const OBJECT *const object = Object_GetObject(item->object_id);
+    return item->anim_num == object->anim_idx + anim_idx;
+}
+
+void Item_SwitchToAnim(
+    ITEM *const item, const int16_t anim_idx, const int16_t frame)
+{
+    Item_SwitchToObjAnim(item, anim_idx, frame, item->object_id);
 }
