@@ -63,9 +63,8 @@ void TRex_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[10].rot_y = 1;
-    bone[11].rot_y = 1;
+    Object_GetBone(obj, 10)->rot_y = 1;
+    Object_GetBone(obj, 11)->rot_y = 1;
 }
 
 void TRex_Control(const int16_t item_num)

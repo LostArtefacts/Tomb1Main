@@ -147,8 +147,7 @@ void Dragon_SetupFront(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[10].rot_z = 1;
+    Object_GetBone(obj, 10)->rot_z = 1;
 }
 
 void Dragon_SetupBack(void)

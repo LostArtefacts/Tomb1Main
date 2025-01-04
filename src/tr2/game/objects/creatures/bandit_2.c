@@ -70,9 +70,8 @@ void Bandit2_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[6].rot_y = 1;
-    bone[8].rot_y = 1;
+    Object_GetBone(obj, 6)->rot_y = 1;
+    Object_GetBone(obj, 8)->rot_y = 1;
 }
 
 void Bandit2B_Setup(void)
@@ -101,9 +100,8 @@ void Bandit2B_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[6].rot_y = 1;
-    bone[8].rot_y = 1;
+    Object_GetBone(obj, 6)->rot_y = 1;
+    Object_GetBone(obj, 8)->rot_y = 1;
 }
 
 void Bandit2_Control(const int16_t item_num)

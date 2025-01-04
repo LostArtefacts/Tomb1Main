@@ -62,8 +62,7 @@ void Barracuda_Setup(void)
     obj->save_anim = 1;
     obj->water_creature = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[6].rot_y = 1;
+    Object_GetBone(obj, 6)->rot_y = 1;
 }
 
 void Barracuda_Control(const int16_t item_num)

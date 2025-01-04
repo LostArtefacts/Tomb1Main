@@ -86,9 +86,8 @@ void Worker3_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[0].rot_y = 1;
-    bone[4].rot_y = 1;
+    Object_GetBone(obj, 0)->rot_y = 1;
+    Object_GetBone(obj, 4)->rot_y = 1;
 }
 
 void Worker4_Setup(void)
@@ -112,9 +111,8 @@ void Worker4_Setup(void)
     obj->save_flags = 1;
     obj->save_anim = 1;
 
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[obj->bone_idx];
-    bone[0].rot_y = 1;
-    bone[4].rot_y = 1;
+    Object_GetBone(obj, 0)->rot_y = 1;
+    Object_GetBone(obj, 4)->rot_y = 1;
 }
 
 void Worker3_Control(const int16_t item_num)

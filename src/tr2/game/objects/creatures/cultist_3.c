@@ -278,11 +278,10 @@ void Cultist3_Control(const int16_t item_num)
     Creature_Tilt(item, tilt);
 
     const OBJECT *const object = Object_GetObject(item->object_id);
-    ANIM_BONE *const bone = (ANIM_BONE *)&g_AnimBones[object->bone_idx];
-    bone[0].rot_y = body != 0;
-    bone[2].rot_y = left != 0;
-    bone[6].rot_y = right != 0;
-    bone[10].rot_y = head != 0;
+    Object_GetBone(object, 0)->rot_y = body != 0;
+    Object_GetBone(object, 2)->rot_y = left != 0;
+    Object_GetBone(object, 6)->rot_y = right != 0;
+    Object_GetBone(object, 10)->rot_y = head != 0;
 
     if (body != 0) {
         Creature_Head(item, body);
