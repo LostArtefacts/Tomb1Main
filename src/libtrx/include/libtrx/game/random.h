@@ -2,7 +2,9 @@
 
 #include <stdint.h>
 
-extern void Random_SeedControl(int32_t seed);
-extern void Random_SeedDraw(int32_t seed);
-extern int32_t Random_GetControl(void);
-extern int32_t Random_GetDraw(void);
+void Random_Seed(void);
+void Random_SeedControl(int32_t seed);
+void Random_SeedDraw(int32_t seed);
+
+int32_t Random_GetControl(void);
+int32_t Random_GetDraw(void);

@@ -249,7 +249,6 @@ sources = [
   'game/phase/phase_pause.c',
   'game/phase/phase_photo_mode.c',
   'game/phase/phase_stats.c',
-  'game/random.c',
   'game/requester.c',
   'game/room.c',
   'game/room_draw.c',

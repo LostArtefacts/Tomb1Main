@@ -119,6 +119,7 @@ static void M_Start(const PHASE_PAUSE_ARGS *const args)
 
     g_OldInputDB = g_Input;
 
+    Random_FreezeDraw(true);
     Overlay_HideGameInfo();
     Output_SetupAboveWater(false);
 
@@ -133,6 +134,7 @@ static void M_Start(const PHASE_PAUSE_ARGS *const args)
 
 static void M_End(void)
 {
+    Random_FreezeDraw(false);
     Output_FadeToTransparent(true);
 
     M_RemoveText();

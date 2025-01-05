@@ -110,6 +110,7 @@ sources = [
   'game/objects/vars.c',
   'game/phase/executor.c',
   'game/phase/phase_picture.c',
+  'game/random.c',
   'game/rooms/common.c',
   'game/shell/common.c',
   'game/text.c',
