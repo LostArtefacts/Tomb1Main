@@ -199,8 +199,7 @@ void Dragon_Collision(
     if (g_Input.action && item->object_id == O_DRAGON_BACK
         && (Item_TestAnimEqual(item, DRAGON_ANIM_DEAD)
             || (Item_TestAnimEqual(item, DRAGON_ANIM_RESURRECT)
-                && item->frame_num - g_Anims[item->anim_num].frame_base
-                    <= DRAGON_ALMOST_LIVE))
+                && Item_TestFrameRange(item, 0, DRAGON_ALMOST_LIVE)))
         && !lara_item->gravity && shift <= DRAGON_MID
         && shift > DRAGON_CLOSE - 350 && side_shift > -350 && side_shift < 350
         && angle > PHD_90 - 30 * PHD_DEGREE

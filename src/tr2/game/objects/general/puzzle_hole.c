@@ -90,8 +90,7 @@ void PuzzleHole_Collision(
     if (lara_item->current_anim_state != LS_STOP) {
         if (lara_item->current_anim_state != LS_USE_PUZZLE
             || !Item_TestPosition(m_PuzzleHoleBounds, item, lara_item)
-            || lara_item->frame_num
-                != g_Anims[LA_USE_PUZZLE].frame_base + LF_USE_PUZZLE) {
+            || !Item_TestFrameEqual(lara_item, LF_USE_PUZZLE)) {
             return;
         }
 

@@ -301,9 +301,8 @@ void MovableBlock_Collision(
             }
         }
     } else if (
-        lara_item->current_anim_state == LS_PP_READY
-        && lara_item->frame_num
-            == g_Anims[LA_PUSHABLE_GRAB].frame_base + LF_PPREADY) {
+        Item_TestAnimEqual(lara_item, LA_PUSHABLE_GRAB)
+        && Item_TestFrameEqual(lara_item, LF_PPREADY)) {
         if (!Item_TestPosition(m_MovableBlockBounds, item, lara_item)) {
             return;
         }

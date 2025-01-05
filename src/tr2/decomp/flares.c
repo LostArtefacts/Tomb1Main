@@ -280,8 +280,8 @@ void Flare_Undraw(void)
         if (Item_TestAnimEqual(g_LaraItem, LA_FLARE_THROW)) {
             g_Lara.flare_control_left = 0;
 
-            if (frame_num_2
-                >= g_Anims[LA_FLARE_THROW].frame_base + LF_FL_THROW_FT - 1) {
+            if (Item_TestFrameRange(
+                    g_LaraItem, LF_FL_THROW_FT - 1, LF_FL_THROW_END)) {
                 g_Lara.gun_type = g_Lara.last_gun_type;
                 g_Lara.request_gun_type = g_Lara.last_gun_type;
                 g_Lara.gun_status = LGS_ARMLESS;

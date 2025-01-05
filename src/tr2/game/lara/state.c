@@ -16,6 +16,22 @@
 #include <libtrx/utils.h>
 
 #define LF_ROLL 2
+#define LF_JUMP_READY 4
+#define LF_FLARE_PICKUP_END 89
+#define LF_UW_FLARE_PICKUP_END 35
+#define LF_SHARK_DEATH_END 56
+#define LF_SHARK_DEATH_TIMER_DELAY 25
+#define LF_TREX_DEATH_TIMER_DELAY 45
+#define LF_YETI_DEATH_TIMER_DELAY 70
+#define LF_DRAGON_DAGGER_PULLED 1
+#define LF_DRAGON_DAGGER_STORED 180
+#define LF_DRAGON_DAGGER_ANIM_END 239
+#define LF_START_HOUSE_BEGIN 1
+#define LF_START_HOUSE_DAGGER_STORED 401
+#define LF_START_HOUSE_END 427
+#define LF_SHOWER_START 1
+#define LF_SHOWER_SHOTGUN_PICKUP 316
+#define LF_SHOWER_END 349
 
 static bool m_JumpPermitted = true;
 
@@ -101,7 +117,9 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
 
     if (Item_TestAnimEqual(item, LA_RUN_START)) {
         m_JumpPermitted = false;
-    } else if (!Item_TestAnimEqual(item, LA_RUN) || item->frame_num == 4) {
+    } else if (
+        !Item_TestAnimEqual(item, LA_RUN)
+        || Item_TestFrameEqual(item, LF_JUMP_READY)) {
         m_JumpPermitted = true;
     }
 
@@ -588,7 +606,10 @@ void Lara_State_Pickup(ITEM *item, COLL_INFO *coll)
 void Lara_State_PickupFlare(ITEM *item, COLL_INFO *coll)
 {
     Lara_State_Pickup(item, coll);
-    if (item->frame_num == g_Anims[item->anim_num].frame_end - 1) {
+    const int16_t frame_num = Item_TestAnimEqual(item, LA_FLARE_PICKUP)
+        ? LF_FLARE_PICKUP_END
+        : LF_UW_FLARE_PICKUP_END;
+    if (Item_TestFrameEqual(item, frame_num)) {
         g_Lara.gun_status = LGS_ARMLESS;
     }
 }
@@ -711,7 +732,7 @@ void Lara_State_Extra_YetiKill(ITEM *item, COLL_INFO *coll)
     g_Camera.target_angle = CAM_YETI_KILL_ANGLE;
     g_Camera.target_distance = CAM_YETI_KILL_DISTANCE;
     g_Lara.hit_direction = -1;
-    if (item->frame_num < g_Anims[item->anim_num].frame_end - 30) {
+    if (Item_TestFrameRange(item, 0, LF_YETI_DEATH_TIMER_DELAY)) {
         g_Lara.death_timer = 1;
     }
 }
@@ -722,15 +743,15 @@ void Lara_State_Extra_SharkKill(ITEM *item, COLL_INFO *coll)
     g_Camera.target_distance = CAM_SHARK_KILL_DISTANCE;
     g_Lara.hit_direction = -1;
 
-    if (item->frame_num == g_Anims[item->anim_num].frame_end) {
-        int32_t water_height = Room_GetWaterHeight(
+    if (Item_TestFrameEqual(item, LF_SHARK_DEATH_END)) {
+        const int32_t water_height = Room_GetWaterHeight(
             item->pos.x, item->pos.y, item->pos.z, item->room_num);
         if (water_height != NO_HEIGHT && water_height < item->pos.y - 100) {
             item->pos.y -= 5;
         }
     }
 
-    if (item->frame_num < g_Anims[item->anim_num].frame_end - 30) {
+    if (Item_TestFrameRange(item, 0, LF_SHARK_DEATH_TIMER_DELAY)) {
         g_Lara.death_timer = 1;
     }
 }
@@ -754,24 +775,20 @@ void Lara_State_Extra_DinoKill(ITEM *item, COLL_INFO *coll)
     g_Camera.target_angle = CAM_TREX_KILL_ANGLE;
     g_Camera.target_elevation = CAM_TREX_KILL_ELEVATION;
     g_Lara.hit_direction = -1;
-    if (item->frame_num < g_Anims[item->anim_num].frame_end - 30) {
+    if (Item_TestFrameRange(item, 0, LF_TREX_DEATH_TIMER_DELAY)) {
         g_Lara.death_timer = 1;
     }
 }
 
 void Lara_State_Extra_PullDagger(ITEM *item, COLL_INFO *coll)
 {
-    int32_t frame_num_rel =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_num_rel == 1) {
+    if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_PULLED)) {
         Music_PlaySynced(MX_DAGGER_PULL);
-    } else if (frame_num_rel == 180) {
+    } else if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_STORED)) {
         g_Lara.mesh_ptrs[LM_HAND_R] =
             g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
         Inv_AddItem(O_PUZZLE_ITEM_2);
-    }
-
-    if (item->frame_num == g_Anims[item->anim_num].frame_end) {
+    } else if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_ANIM_END)) {
         item->rot.y += PHD_90;
 
         const ITEM *const dragon_bones = Item_Find(O_DRAGON_BONES_2);
@@ -788,19 +805,17 @@ void Lara_State_Extra_StartAnim(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll)
 {
-    int32_t frame_num_rel =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_num_rel == 1) {
+    if (Item_TestFrameEqual(item, LF_START_HOUSE_BEGIN)) {
         Music_PlaySynced(MX_REVEAL_2);
         g_Lara.mesh_ptrs[LM_HAND_R] =
             g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx + LM_HAND_R];
         g_Lara.mesh_ptrs[LM_HIPS] = g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx];
-    } else if (frame_num_rel == 401) {
+    } else if (Item_TestFrameEqual(item, LF_START_HOUSE_DAGGER_STORED)) {
         g_Lara.mesh_ptrs[LM_HAND_R] =
             g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
         g_Lara.mesh_ptrs[LM_HIPS] = g_Meshes[g_Objects[O_LARA].mesh_idx];
         Inv_AddItem(O_PUZZLE_ITEM_1);
-    } else if (item->frame_num == g_Anims[item->anim_num].frame_end) {
+    } else if (Item_TestFrameEqual(item, LF_START_HOUSE_END)) {
         g_Camera.type = CAM_CHASE;
         Viewport_AlterFOV(-1);
     }
@@ -810,9 +825,7 @@ void Lara_State_Extra_FinalAnim(ITEM *item, COLL_INFO *coll)
 {
     item->hit_points = 1000;
 
-    int32_t frame_num_rel =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_num_rel == 1) {
+    if (Item_TestFrameEqual(item, LF_SHOWER_START)) {
         g_Lara.back_gun = 0;
         g_Lara.mesh_ptrs[LM_HAND_R] =
             g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
@@ -821,10 +834,10 @@ void Lara_State_Extra_FinalAnim(ITEM *item, COLL_INFO *coll)
         g_Lara.mesh_ptrs[LM_HIPS] =
             g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx + LM_HIPS];
         Music_PlaySynced(MX_CUTSCENE_BATH);
-    } else if (frame_num_rel == 316) {
+    } else if (Item_TestFrameEqual(item, LF_SHOWER_SHOTGUN_PICKUP)) {
         g_Lara.mesh_ptrs[LM_HAND_R] =
             g_Meshes[g_Objects[O_LARA_SHOTGUN].mesh_idx + LM_HAND_R];
-    } else if (item->frame_num == g_Anims[item->anim_num].frame_end - 1) {
+    } else if (Item_TestFrameEqual(item, LF_SHOWER_END)) {
         g_LevelComplete = true;
     }
 }

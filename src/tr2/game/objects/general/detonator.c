@@ -11,6 +11,10 @@
 #include "game/sound.h"
 #include "global/vars.h"
 
+#define EXPLOSION_START_FRAME 76
+#define EXPLOSION_END_FRAME 99
+#define EXPLOSION_ACTION_FRAME 80
+
 static XYZ_32 m_DetonatorPosition = { .x = 0, .y = 0, .z = 0 };
 
 static int16_t m_GongBounds[12] = {
@@ -73,13 +77,11 @@ void Detonator_Control(const int16_t item_num)
     ITEM *const item = Item_Get(item_num);
     Item_Animate(item);
 
-    const int32_t frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_num > 75 && frame_num < 100) {
+    if (Item_TestFrameRange(item, EXPLOSION_START_FRAME, EXPLOSION_END_FRAME)) {
         Output_AddDynamicLight(item->pos.x, item->pos.y, item->pos.z, 13, 11);
     }
 
-    if (frame_num == 80) {
+    if (Item_TestFrameEqual(item, EXPLOSION_ACTION_FRAME)) {
         g_Camera.bounce = -150;
         Sound_Effect(SFX_EXPLOSION_1, NULL, SPM_ALWAYS);
     }

@@ -27,6 +27,8 @@
 #define BOAT_GET_ON_J_ANIM 6
 #define BOAT_GET_ON_START 1
 
+#define LF_BOAT_EXIT_END 24
+
 #define BOAT_RADIUS 500
 #define BOAT_SIDE 300
 #define BOAT_FRONT 750
@@ -779,7 +781,7 @@ void Boat_Control(const int16_t item_num)
 
     if ((lara->current_anim_state == BOAT_STATE_JUMP_R
          || lara->current_anim_state == BOAT_STATE_JUMP_L)
-        && lara->frame_num == g_Anims[lara->anim_num].frame_end) {
+        && Item_TestFrameEqual(lara, LF_BOAT_EXIT_END)) {
         if (lara->current_anim_state == BOAT_STATE_JUMP_L) {
             lara->rot.y -= PHD_90;
         } else {

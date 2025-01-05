@@ -19,6 +19,7 @@
 #define BIRD_GUARDIAN_ATTACK_1_RANGE SQUARE(WALL_L) // = 1048576
 #define BIRD_GUARDIAN_ATTACK_2_RANGE SQUARE(WALL_L * 2) // = 4194304
 #define BIRD_GUARDIAN_PUNCH_DAMAGE   200
+#define BIRD_GUARDIAN_DEATH_FRAME    158
 // clang-format on
 
 typedef enum {
@@ -192,7 +193,7 @@ void BirdGuardian_Control(const int16_t item_num)
             item->current_anim_state = BIRD_GUARDIAN_STATE_DEATH;
         }
 
-        if (item->frame_num == g_Anims[item->anim_num].frame_end) {
+        if (Item_TestFrameEqual(item, BIRD_GUARDIAN_DEATH_FRAME)) {
             g_LevelComplete = true;
         }
     }

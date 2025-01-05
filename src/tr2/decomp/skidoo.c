@@ -46,6 +46,9 @@
 #define SKIDOO_MOMENTUM_TURN (PHD_DEGREE * 3) // = 546
 #define SKIDOO_MAX_MOMENTUM_TURN (PHD_DEGREE * 150) // = 27300
 
+#define LF_SKIDOO_EXIT_END 59
+#define LF_SKIDOO_LET_GO_END 17
+
 typedef enum {
     SKIDOO_GET_ON_NONE = 0,
     SKIDOO_GET_ON_LEFT = 1,
@@ -704,7 +707,7 @@ int32_t Skidoo_CheckGetOff(void)
 
     if ((g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_R
          || g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_L)
-        && g_LaraItem->frame_num == g_Anims[g_LaraItem->anim_num].frame_end) {
+        && Item_TestFrameEqual(g_LaraItem, LF_SKIDOO_EXIT_END)) {
         if (g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_L) {
             g_LaraItem->rot.y += PHD_90;
         } else {
@@ -726,8 +729,7 @@ int32_t Skidoo_CheckGetOff(void)
 
     if (g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_LET_GO
         && (skidoo->pos.y == skidoo->floor
-            || g_LaraItem->frame_num
-                == g_Anims[g_LaraItem->anim_num].frame_end)) {
+            || Item_TestFrameEqual(g_LaraItem, LF_SKIDOO_LET_GO_END))) {
         Item_SwitchToAnim(g_LaraItem, LA_FREEFALL, 0);
         g_LaraItem->current_anim_state = LARA_STATE_SKIDOO_GET_OFF_R;
         if (skidoo->pos.y == skidoo->floor) {

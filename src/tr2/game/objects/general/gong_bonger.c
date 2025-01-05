@@ -5,6 +5,9 @@
 #include "game/room.h"
 #include "global/vars.h"
 
+#define GONG_BONGER_STRIKE_FRAME 41
+#define GONG_BONGER_END_FRAME 79
+
 static void M_ActivateHeavyTriggers(int16_t item_num);
 
 static void M_ActivateHeavyTriggers(const int16_t item_num)
@@ -27,12 +30,12 @@ void GongBonger_Control(const int16_t item_num)
     ITEM *const item = Item_Get(item_num);
 
     Item_Animate(item);
-    if (item->frame_num - g_Anims[item->anim_num].frame_base == 41) {
+    if (Item_TestFrameEqual(item, GONG_BONGER_STRIKE_FRAME)) {
         Music_Play(MX_REVEAL_1, MPM_ALWAYS);
         g_Camera.bounce -= 50;
     }
 
-    if (item->frame_num == g_Anims[item->anim_num].frame_end) {
+    if (Item_TestFrameEqual(item, GONG_BONGER_END_FRAME)) {
         M_ActivateHeavyTriggers(item_num);
     }
 }

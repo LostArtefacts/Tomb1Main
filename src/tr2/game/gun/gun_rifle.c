@@ -15,6 +15,10 @@
 #include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
+#define GUN_RIFLE_EQUIP_ANIM 1
+#define GUN_RIFLE_DRAW_FRAME 10
+#define GUN_RIFLE_UNDRAW_FRAME 21
+
 static bool m_M16Firing = false;
 static bool m_HarpoonFired = false;
 
@@ -242,7 +246,7 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
         if (weapon_type == LGT_GRENADE) {
             Item_SwitchToObjAnim(item, 0, 0, O_LARA_GRENADE);
         } else {
-            Item_SwitchToAnim(item, GUN_RIFLE_EQUIP_FRAME, 0);
+            Item_SwitchToAnim(item, GUN_RIFLE_EQUIP_ANIM, 0);
         }
         item->goal_anim_state = LA_G_DRAW;
         item->current_anim_state = LA_G_DRAW;
@@ -256,7 +260,7 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
     if (item->current_anim_state == LA_G_AIM
         || item->current_anim_state == LA_G_UAIM) {
         Gun_Rifle_Ready(weapon_type);
-    } else if (item->frame_num - g_Anims[item->anim_num].frame_base == 10) {
+    } else if (Item_TestFrameEqual(item, GUN_RIFLE_DRAW_FRAME)) {
         Gun_Rifle_DrawMeshes(weapon_type);
     } else if (g_Lara.water_status == LWS_UNDERWATER) {
         item->goal_anim_state = LA_G_UAIM;
@@ -293,7 +297,7 @@ void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
         g_Lara.right_arm.lock = 0;
     } else if (
         item->current_anim_state == LA_G_UNDRAW
-        && item->frame_num - g_Anims[item->anim_num].frame_base == 21) {
+        && Item_TestFrameEqual(item, GUN_RIFLE_UNDRAW_FRAME)) {
         Gun_Rifle_UndrawMeshes(weapon_type);
     }
 
@@ -344,7 +348,7 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
         break;
 
     case LA_G_RECOIL:
-        if (item->frame_num - g_Anims[item->anim_num].frame_base == 0) {
+        if (Item_TestFrameEqual(item, 0)) {
             item->goal_anim_state = LA_G_UNAIM;
             if (g_Lara.water_status != LWS_UNDERWATER && !running
                 && !m_HarpoonFired) {
@@ -396,7 +400,7 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
         break;
 
     case LA_G_URECOIL:
-        if (item->frame_num - g_Anims[item->anim_num].frame_base == 0) {
+        if (Item_TestFrameEqual(item, 0)) {
             item->goal_anim_state = LA_G_UUNAIM;
             if ((g_Lara.water_status == LWS_UNDERWATER || running)
                 && !m_HarpoonFired) {

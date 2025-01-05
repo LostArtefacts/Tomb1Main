@@ -14,6 +14,39 @@
 #include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
+#define LF_WALK_STEP_L_START 0
+#define LF_WALK_STEP_L_NEAR_END 5
+#define LF_WALK_STEP_L_END 6
+#define LF_WALK_STEP_R_START 7
+#define LF_WALK_STEP_R_MID 22
+#define LF_WALK_STEP_R_NEAR_END 23
+#define LF_WALK_STEP_R_END 25
+#define LF_WALK_STEP_L_2_START 26
+#define LF_WALK_STEP_L_2_END 35
+
+#define LF_RUN_L_START 0
+#define LF_RUN_L_HEEL_GROUND 3
+#define LF_RUN_L_END 9
+#define LF_RUN_R_START 10
+#define LF_RUN_R_FOOT_GROUND 14
+#define LF_RUN_R_END 21
+
+#define LF_BACK_R_START 964
+#define LF_BACK_R_END 993
+
+#define LF_WADE_L_START 0
+#define LF_WADE_L_END 9
+#define LF_WADE_R_START 10
+#define LF_WADE_R_END 21
+
+#define LF_WADE_STEP_L_START 3
+#define LF_WADE_STEP_L_END 14
+
+#define LF_HANG 21
+#define LF_CLIMB_L_SHIFT_START 28
+#define LF_CLIMB_L_SHIFT_END 29
+#define LF_CLIMB_R_SHIFT 57
+
 void Lara_CollideStop(ITEM *const item, const COLL_INFO *const coll)
 {
     switch (coll->old_anim_state) {
@@ -223,12 +256,17 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
     }
 
     if (Lara_DeflectEdge(item, coll)) {
-        if (item->frame_num >= 29 && item->frame_num <= 47) {
-            Item_SwitchToAnim(item, LA_WALK_STOP_LEFT, 0);
-        } else if (
-            (item->frame_num >= 22 && item->frame_num <= 28)
-            || (item->frame_num >= 48 && item->frame_num <= 57)) {
+        if (Item_TestAnimEqual(item, LA_WALK_FORWARD)
+            && Item_TestFrameRange(
+                item, LF_WALK_STEP_R_START, LF_WALK_STEP_R_END)) {
             Item_SwitchToAnim(item, LA_WALK_STOP_RIGHT, 0);
+        } else if (
+            Item_TestAnimEqual(item, LA_WALK_FORWARD)
+            && (Item_TestFrameRange(
+                    item, LF_WALK_STEP_L_START, LF_WALK_STEP_L_END)
+                || Item_TestFrameRange(
+                    item, LF_WALK_STEP_L_2_START, LF_WALK_STEP_L_2_END))) {
+            Item_SwitchToAnim(item, LA_WALK_STOP_LEFT, 0);
         } else {
             Lara_CollideStop(item, coll);
         }
@@ -239,7 +277,9 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
     }
 
     if (coll->side_mid.floor > STEP_L / 2) {
-        if (item->frame_num >= 28 && item->frame_num <= 45) {
+        if (Item_TestAnimEqual(item, LA_WALK_FORWARD)
+            && Item_TestFrameRange(
+                item, LF_WALK_STEP_L_END, LF_WALK_STEP_R_NEAR_END)) {
             Item_SwitchToAnim(item, LA_WALK_DOWN_LEFT, 0);
         } else {
             Item_SwitchToAnim(item, LA_WALK_DOWN_RIGHT, 0);
@@ -248,7 +288,9 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 
     if (coll->side_mid.floor >= -STEPUP_HEIGHT
         && coll->side_mid.floor < -STEP_L / 2) {
-        if (item->frame_num >= 27 && item->frame_num <= 44) {
+        if (Item_TestAnimEqual(item, LA_WALK_FORWARD)
+            && Item_TestFrameRange(
+                item, LF_WALK_STEP_L_NEAR_END, LF_WALK_STEP_R_MID)) {
             Item_SwitchToAnim(item, LA_WALK_UP_STEP_LEFT, 0);
         } else {
             Item_SwitchToAnim(item, LA_WALK_UP_STEP_RIGHT, 0);
@@ -282,14 +324,14 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
 
     if (Lara_DeflectEdge(item, coll)) {
         item->rot.z = 0;
-        if (!Item_TestAnimEqual(item, LA_RUN_START)
+        if (Item_TestAnimEqual(item, LA_RUN)
             && Lara_TestWall(item, STEP_L, 0, -STEP_L * 5 / 2)) {
             item->current_anim_state = LS_SPLAT;
-            if (item->frame_num >= 0 && item->frame_num <= 9) {
+            if (Item_TestFrameRange(item, LF_RUN_L_START, LF_RUN_L_END)) {
                 Item_SwitchToAnim(item, LA_WALL_SMASH_LEFT, 0);
                 return;
             }
-            if (item->frame_num >= 10 && item->frame_num <= 21) {
+            if (Item_TestFrameRange(item, LF_RUN_R_START, LF_RUN_R_END)) {
                 Item_SwitchToAnim(item, LA_WALL_SMASH_RIGHT, 0);
                 return;
             }
@@ -308,7 +350,8 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
                 || coll->side_front.floor >= -STEP_L / 2)) {
             coll->side_mid.floor = 0;
         } else {
-            if (item->frame_num >= 3 && item->frame_num <= 14) {
+            if (Item_TestFrameRange(
+                    item, LF_RUN_L_HEEL_GROUND, LF_RUN_R_FOOT_GROUND)) {
                 Item_SwitchToAnim(item, LA_RUN_UP_STEP_LEFT, 0);
             } else {
                 Item_SwitchToAnim(item, LA_RUN_UP_STEP_RIGHT, 0);
@@ -501,7 +544,7 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
             || coll->hit_static) {
             if (g_Lara.climb_status
                 && Item_TestAnimEqual(item, LA_REACH_TO_HANG)
-                && item->frame_num == g_Anims[item->anim_num].frame_base + 21
+                && Item_TestFrameEqual(item, LF_HANG)
                 && coll->side_mid.ceiling <= -256) {
                 item->goal_anim_state = LS_HANG;
                 item->current_anim_state = LS_HANG;
@@ -515,7 +558,7 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
     } else if (
         g_Input.back && g_Lara.climb_status
         && Item_TestAnimEqual(item, LA_REACH_TO_HANG)
-        && item->frame_num == g_Anims[item->anim_num].frame_base + 21) {
+        && Item_TestFrameEqual(item, LF_HANG)) {
         item->goal_anim_state = LS_HANG;
         item->current_anim_state = LS_HANG;
         Item_SwitchToAnim(item, LA_LADDER_DOWN_HANGING, 0);
@@ -629,7 +672,7 @@ void Lara_Col_Back(ITEM *item, COLL_INFO *coll)
 
     if (coll->side_mid.floor > STEP_L / 2
         && coll->side_mid.floor < STEPUP_HEIGHT) {
-        if (item->frame_num >= 964 && item->frame_num <= 993) {
+        if (Item_TestFrameRange(item, LF_BACK_R_START, LF_BACK_R_END)) {
             Item_SwitchToAnim(item, LA_WALK_DOWN_BACK_RIGHT, 0);
         } else {
             Item_SwitchToAnim(item, LA_WALK_DOWN_BACK_LEFT, 0);
@@ -903,13 +946,15 @@ void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
     if (Lara_DeflectEdge(item, coll)) {
         item->rot.z = 0;
         if (coll->side_front.type != COLL_NONE
-            && coll->side_front.floor < -STEP_L * 5 / 2) {
+            && coll->side_front.floor < -STEP_L * 5 / 2
+            && coll->old_anim_state == LS_WADE
+            && Item_TestAnimEqual(item, LA_WADE)) {
             item->current_anim_state = LS_SPLAT;
-            if (item->frame_num >= 0 && item->frame_num <= 9) {
+            if (Item_TestFrameRange(item, LF_WADE_L_START, LF_WADE_L_END)) {
                 Item_SwitchToAnim(item, LA_WALL_SMASH_LEFT, 0);
                 return;
             }
-            if (item->frame_num >= 10 && item->frame_num <= 21) {
+            if (Item_TestFrameRange(item, LF_WADE_R_START, LF_WADE_R_END)) {
                 Item_SwitchToAnim(item, LA_WALL_SMASH_RIGHT, 0);
                 return;
             }
@@ -923,7 +968,8 @@ void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
 
     if (coll->side_mid.floor >= -STEPUP_HEIGHT
         && coll->side_mid.floor < -STEP_L / 2) {
-        if (item->frame_num >= 3 && item->frame_num <= 14) {
+        if (Item_TestFrameRange(
+                item, LF_WADE_STEP_L_START, LF_WADE_STEP_L_END)) {
             Item_SwitchToAnim(item, LA_RUN_UP_STEP_LEFT, 0);
         } else {
             Item_SwitchToAnim(item, LA_RUN_UP_STEP_RIGHT, 0);
@@ -1108,12 +1154,12 @@ void Lara_Col_Climbing(ITEM *item, COLL_INFO *coll)
     }
 
     int32_t yshift;
-    int32_t frame_rel = item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_rel == 0) {
+    if (Item_TestFrameEqual(item, 0)) {
         yshift = 0;
-    } else if (frame_rel == 28 || frame_rel == 29) {
+    } else if (Item_TestFrameRange(
+                   item, LF_CLIMB_L_SHIFT_START, LF_CLIMB_L_SHIFT_END)) {
         yshift = -STEP_L;
-    } else if (frame_rel == 57) {
+    } else if (Item_TestFrameEqual(item, LF_CLIMB_R_SHIFT)) {
         yshift = -STEP_L * 2;
     } else {
         return;
@@ -1165,12 +1211,12 @@ void Lara_Col_ClimbDown(ITEM *item, COLL_INFO *coll)
     }
 
     int32_t yshift;
-    int32_t frame_rel = item->frame_num - g_Anims[item->anim_num].frame_base;
-    if (frame_rel == 0) {
+    if (Item_TestFrameEqual(item, 0)) {
         yshift = 0;
-    } else if (frame_rel >= 28 && frame_rel <= 29) {
+    } else if (Item_TestFrameRange(
+                   item, LF_CLIMB_L_SHIFT_START, LF_CLIMB_L_SHIFT_END)) {
         yshift = STEP_L;
-    } else if (frame_rel == 57) {
+    } else if (Item_TestFrameEqual(item, LF_CLIMB_R_SHIFT)) {
         yshift = STEP_L * 2;
     } else {
         return;

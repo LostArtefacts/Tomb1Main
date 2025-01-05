@@ -91,16 +91,14 @@ static void M_DoAboveWater(const int16_t item_num, ITEM *const lara_item)
     }
 
     if (lara_item->current_anim_state == LS_PICKUP) {
-        if (lara_item->frame_num
-            == g_Anims[LA_PICKUP].frame_base + LF_PICKUP_ERASE) {
+        if (Item_TestFrameEqual(lara_item, LF_PICKUP_ERASE)) {
             M_DoPickup(item_num);
         }
         goto cleanup;
     }
 
     if (lara_item->current_anim_state == LS_FLARE_PICKUP) {
-        if (lara_item->frame_num
-                == g_Anims[LA_FLARE_PICKUP].frame_base + LF_PICKUP_FLARE
+        if (Item_TestFrameEqual(lara_item, LF_PICKUP_FLARE)
             && item->object_id == O_FLARE_ITEM
             && g_Lara.gun_type != LGT_FLARE) {
             M_DoFlarePickup(item_num);
@@ -149,17 +147,14 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
     }
 
     if (lara_item->current_anim_state == LS_PICKUP) {
-        if (lara_item->frame_num
-            == g_Anims[LA_UNDERWATER_PICKUP].frame_base + LF_PICKUP_UW) {
+        if (Item_TestFrameEqual(lara_item, LF_PICKUP_UW)) {
             M_DoPickup(item_num);
         }
         goto cleanup;
     }
 
     if (lara_item->current_anim_state == LS_FLARE_PICKUP) {
-        if (lara_item->frame_num
-                == g_Anims[LA_UNDERWATER_FLARE_PICKUP].frame_base
-                    + LF_PICKUP_FLARE_UW
+        if (Item_TestFrameEqual(lara_item, LF_PICKUP_FLARE_UW)
             && item->object_id == O_FLARE_ITEM
             && g_Lara.gun_type != LGT_FLARE) {
             M_DoFlarePickup(item_num);

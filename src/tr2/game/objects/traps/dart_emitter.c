@@ -68,7 +68,7 @@ void DartEmitter_Control(const int16_t item_num)
     }
 
     if (item->current_anim_state == DART_EMITTER_STATE_FIRE
-        && item->frame_num == g_Anims[item->anim_num].frame_base) {
+        && Item_TestFrameEqual(item, 0)) {
         M_CreateDart(item);
     }
 
