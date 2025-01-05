@@ -50,7 +50,5 @@ extern INVENTORY_ITEM g_InvItemSound;
 extern INVENTORY_ITEM g_InvItemControls;
 extern INVENTORY_ITEM g_InvItemLarasHome;
 
-extern TEXTSTRING *g_InvItemText[];
-extern TEXTSTRING *g_InvRingText;
 extern CLOCK_TIMER g_InvRing_MotionTimer;
 extern CAMERA_INFO g_InvRing_OldCamera;

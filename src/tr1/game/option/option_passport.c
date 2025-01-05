@@ -3,7 +3,7 @@
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
-#include "game/inventory_ring/vars.h"
+#include "game/inventory_ring.h"
 #include "game/requester.h"
 #include "game/savegame.h"
 #include "game/screen.h"
@@ -628,10 +628,7 @@ void Option_Passport_Control(INVENTORY_ITEM *inv_item)
 {
     if (!m_IsTextInit) {
         M_InitRequesters();
-        Text_Remove(g_InvItemText[IT_NAME]);
-        g_InvItemText[IT_NAME] = NULL;
-        Text_Remove(g_InvRingText);
-        g_InvRingText = NULL;
+        InvRing_RemoveAllText();
         M_InitText();
         m_IsTextInit = true;
         M_DeterminePages();

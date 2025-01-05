@@ -4,7 +4,7 @@
 #include "game/input.h"
 #include "game/interpolation.h"
 #include "game/inventory_ring.h"
-#include "game/inventory_ring/control.h"
+#include "game/inventory_ring/priv.h"
 #include "game/objects/common.h"
 #include "game/option.h"
 #include "game/option/option_compass.h"
@@ -17,9 +17,6 @@
 #include "math/matrix.h"
 
 #include <libtrx/config.h>
-
-CAMERA_INFO g_InvRing_OldCamera;
-CLOCK_TIMER g_InvRing_MotionTimer = { 0 };
 
 static int32_t M_GetFrames(
     const RING_INFO *ring, const IMOTION_INFO *motion,

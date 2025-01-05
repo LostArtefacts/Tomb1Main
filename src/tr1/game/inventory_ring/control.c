@@ -1,27 +1,40 @@
 #include "game/inventory_ring/control.h"
 
+#include "game/console/common.h"
+#include "game/game.h"
 #include "game/game_string.h"
+#include "game/gameflow.h"
+#include "game/input.h"
 #include "game/inventory.h"
 #include "game/inventory_ring/priv.h"
 #include "game/inventory_ring/vars.h"
+#include "game/lara/common.h"
+#include "game/music.h"
+#include "game/option.h"
+#include "game/option/option_compass.h"
 #include "game/option/option_examine.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/text.h"
-#include "global/const.h"
-#include "global/types.h"
+#include "game/phase/phase.h"
+#include "game/savegame.h"
+#include "game/shell.h"
+#include "game/sound.h"
+#include "game/viewport.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/objects/names.h>
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-
-TEXTSTRING *g_InvItemText[IT_NUMBER_OF] = { NULL };
-TEXTSTRING *g_InvRingText = NULL;
+typedef enum {
+    PSPINE = 1,
+    PFRONT = 2,
+    PINFRONT = 4,
+    PPAGE2 = 8,
+    PBACK = 16,
+    PINBACK = 32,
+    PPAGE1 = 64
+} PASS_PAGE;
 
 static TEXTSTRING *m_InvDownArrow1 = NULL;
 static TEXTSTRING *m_InvDownArrow2 = NULL;
@@ -29,9 +42,20 @@ static TEXTSTRING *m_InvUpArrow1 = NULL;
 static TEXTSTRING *m_InvUpArrow2 = NULL;
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
+static TEXTSTRING *m_VersionText = NULL;
+static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
+static TEXTSTRING *m_HeadingText;
+static CLOCK_TIMER m_DemoTimer = { 0 };
+static bool m_PassportModeReady;
+static int32_t m_StartLevel;
+static bool m_StartDemo;
+static GAME_OBJECT_ID m_InvChosen;
+static bool m_PlayedSpinin;
 
 static TEXTSTRING *M_InitExamineText(
     int32_t x_pos, const char *role_str, const char *input_str);
+static PHASE_CONTROL M_Control(RING_INFO *ring, IMOTION_INFO *motion);
+static bool M_CheckDemoTimer(const IMOTION_INFO *motion);
 
 static TEXTSTRING *M_InitExamineText(
     const int32_t x_pos, const char *const role_str,
@@ -46,6 +70,467 @@ static TEXTSTRING *M_InitExamineText(
     Text_Hide(text, true);
 
     return text;
+}
+
+// TODO: make this return a GAME_FLOW_COMMAND
+static PHASE_CONTROL M_Control(
+    RING_INFO *const ring, IMOTION_INFO *const motion)
+{
+    if (motion->status == RNG_OPENING) {
+        if (g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+        }
+
+        Clock_ResetTimer(&m_DemoTimer);
+        if (!m_PlayedSpinin) {
+            Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
+            m_PlayedSpinin = true;
+        }
+    }
+
+    if (motion->status == RNG_DONE) {
+        // finish fading
+        if (g_InvMode == INV_TITLE_MODE) {
+            Output_FadeToBlack(true);
+        }
+
+        if (Output_FadeIsAnimating()) {
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+        }
+
+        return InvRing_Close(m_InvChosen);
+    }
+
+    InvRing_CalcAdders(ring, ROTATE_DURATION);
+
+    Input_Update();
+    // Do the demo inactivity check prior to postprocessing of the inputs.
+    if (M_CheckDemoTimer(motion)) {
+        m_StartDemo = true;
+    }
+    Shell_ProcessInput();
+    Game_ProcessInput();
+
+    m_StartLevel = g_LevelComplete ? g_GameInfo.select_level_num : -1;
+
+    if (g_IDelay) {
+        if (g_IDCount) {
+            g_IDCount--;
+        } else {
+            g_IDelay = false;
+        }
+    }
+
+    g_GameInfo.inv_ring_above = g_InvMode == INV_GAME_MODE
+        && ((ring->type == RT_MAIN && g_InvKeysObjects)
+            || (ring->type == RT_OPTION && g_InvMainObjects));
+
+    if (ring->rotating) {
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+    }
+
+    if ((g_InvMode == INV_SAVE_MODE || g_InvMode == INV_SAVE_CRYSTAL_MODE
+         || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
+        && !m_PassportModeReady) {
+        g_Input = (INPUT_STATE) { 0 };
+        g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
+    }
+
+    if (!(g_InvMode == INV_TITLE_MODE || Output_FadeIsAnimating()
+          || motion->status == RNG_OPENING)) {
+        for (int i = 0; i < ring->number_of_objects; i++) {
+            INVENTORY_ITEM *inv_item = ring->list[i];
+            if (inv_item->object_id == O_MAP_OPTION) {
+                Option_Compass_UpdateNeedle(inv_item);
+            }
+        }
+    }
+
+    switch (motion->status) {
+    case RNG_OPEN:
+        if (g_Input.menu_right && ring->number_of_objects > 1) {
+            InvRing_RotateLeft(ring);
+            Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
+            break;
+        }
+
+        if (g_Input.menu_left && ring->number_of_objects > 1) {
+            InvRing_RotateRight(ring);
+            Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
+            break;
+        }
+
+        if (m_StartLevel != -1 || m_StartDemo
+            || (g_InputDB.menu_back && g_InvMode != INV_TITLE_MODE)) {
+            Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
+            m_InvChosen = NO_OBJECT;
+
+            if (ring->type == RT_MAIN) {
+                g_InvMainCurrent = ring->current_object;
+            } else {
+                g_InvOptionCurrent = ring->current_object;
+            }
+
+            if (g_InvMode != INV_TITLE_MODE) {
+                Output_FadeToTransparent(false);
+            }
+
+            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionRadius(ring, 0);
+            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionRotation(
+                ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
+            g_Input = (INPUT_STATE) { 0 };
+            g_InputDB = (INPUT_STATE) { 0 };
+        }
+
+        const bool examine = g_InputDB.look && InvRing_CanExamine();
+        if (g_InputDB.menu_confirm || examine) {
+            if ((g_InvMode == INV_SAVE_MODE
+                 || g_InvMode == INV_SAVE_CRYSTAL_MODE
+                 || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
+                && !m_PassportModeReady) {
+                m_PassportModeReady = true;
+            }
+
+            g_OptionSelected = 0;
+
+            INVENTORY_ITEM *inv_item;
+            if (ring->type == RT_MAIN) {
+                g_InvMainCurrent = ring->current_object;
+                inv_item = g_InvMainList[ring->current_object];
+            } else if (ring->type == RT_OPTION) {
+                g_InvOptionCurrent = ring->current_object;
+                inv_item = g_InvOptionList[ring->current_object];
+            } else {
+                g_InvKeysCurrent = ring->current_object;
+                inv_item = g_InvKeysList[ring->current_object];
+            }
+
+            inv_item->goal_frame = inv_item->open_frame;
+            inv_item->anim_direction = 1;
+            inv_item->action = examine ? ACTION_EXAMINE : ACTION_USE;
+
+            InvRing_MotionSetup(
+                ring, RNG_SELECTING, RNG_SELECTED, SELECTING_FRAMES);
+            InvRing_MotionRotation(
+                ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
+            InvRing_MotionItemSelect(ring, inv_item);
+            g_Input = (INPUT_STATE) { 0 };
+            g_InputDB = (INPUT_STATE) { 0 };
+
+            switch (inv_item->object_id) {
+            case O_MAP_OPTION:
+                Sound_Effect(SFX_MENU_COMPASS, NULL, SPM_ALWAYS);
+                break;
+
+            case O_PHOTO_OPTION:
+                Sound_Effect(SFX_MENU_CHOOSE, NULL, SPM_ALWAYS);
+                break;
+
+            case O_CONTROL_OPTION:
+                Sound_Effect(SFX_MENU_GAMEBOY, NULL, SPM_ALWAYS);
+                break;
+
+            case O_PISTOL_OPTION:
+            case O_SHOTGUN_OPTION:
+            case O_MAGNUM_OPTION:
+            case O_UZI_OPTION:
+                Sound_Effect(SFX_MENU_GUNS, NULL, SPM_ALWAYS);
+                break;
+
+            default:
+                Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
+                break;
+            }
+        }
+
+        if (g_InputDB.menu_up && g_InvMode != INV_TITLE_MODE
+            && g_InvMode != INV_KEYS_MODE) {
+            if (ring->type == RT_MAIN) {
+                if (g_InvKeysObjects) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING, RNG_MAIN2KEYS,
+                        RINGSWITCH_FRAMES / 2);
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
+                        ring, CLOSE_ROTATION,
+                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                    InvRing_MotionCameraPitch(ring, 0x2000);
+                    motion->misc = 0x2000;
+                }
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+            } else if (ring->type == RT_OPTION) {
+                if (g_InvMainObjects) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING, RNG_OPTION2MAIN,
+                        RINGSWITCH_FRAMES / 2);
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
+                        ring, CLOSE_ROTATION,
+                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                    InvRing_MotionCameraPitch(ring, 0x2000);
+                    motion->misc = 0x2000;
+                }
+                g_InputDB = (INPUT_STATE) { 0 };
+            }
+        } else if (
+            g_InputDB.menu_down && g_InvMode != INV_TITLE_MODE
+            && g_InvMode != INV_KEYS_MODE) {
+            if (ring->type == RT_KEYS) {
+                if (g_InvMainObjects) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING, RNG_KEYS2MAIN,
+                        RINGSWITCH_FRAMES / 2);
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
+                        ring, CLOSE_ROTATION,
+                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                    InvRing_MotionCameraPitch(ring, -0x2000);
+                    motion->misc = -0x2000;
+                }
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+            } else if (ring->type == RT_MAIN) {
+                if (g_InvOptionObjects) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING, RNG_MAIN2OPTION,
+                        RINGSWITCH_FRAMES / 2);
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
+                        ring, CLOSE_ROTATION,
+                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                    InvRing_MotionCameraPitch(ring, -0x2000);
+                    motion->misc = -0x2000;
+                }
+                g_InputDB = (INPUT_STATE) { 0 };
+            }
+        }
+        break;
+
+    case RNG_MAIN2OPTION:
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
+        ring->camera_pitch = -motion->misc;
+        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
+        motion->camera_pitch_target = 0;
+        g_InvMainCurrent = ring->current_object;
+        ring->list = g_InvOptionList;
+        ring->type = RT_OPTION;
+        ring->number_of_objects = g_InvOptionObjects;
+        ring->current_object = g_InvOptionCurrent;
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
+            ring, OPEN_ROTATION,
+            -PHD_90 - ring->angle_adder * ring->current_object);
+        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        break;
+
+    case RNG_MAIN2KEYS:
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
+        ring->camera_pitch = -motion->misc;
+        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
+        motion->camera_pitch_target = 0;
+        g_InvMainCurrent = ring->current_object;
+        g_InvMainObjects = ring->number_of_objects;
+        ring->list = g_InvKeysList;
+        ring->type = RT_KEYS;
+        ring->number_of_objects = g_InvKeysObjects;
+        ring->current_object = g_InvKeysCurrent;
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
+            ring, OPEN_ROTATION,
+            -PHD_90 - ring->angle_adder * ring->current_object);
+        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        break;
+
+    case RNG_KEYS2MAIN:
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
+        ring->camera_pitch = -motion->misc;
+        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
+        motion->camera_pitch_target = 0;
+        g_InvKeysCurrent = ring->current_object;
+        ring->list = g_InvMainList;
+        ring->type = RT_MAIN;
+        ring->number_of_objects = g_InvMainObjects;
+        ring->current_object = g_InvMainCurrent;
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
+            ring, OPEN_ROTATION,
+            -PHD_90 - ring->angle_adder * ring->current_object);
+        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        break;
+
+    case RNG_OPTION2MAIN:
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
+        ring->camera_pitch = -motion->misc;
+        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
+        motion->camera_pitch_target = 0;
+        g_InvOptionObjects = ring->number_of_objects;
+        g_InvOptionCurrent = ring->current_object;
+        ring->list = g_InvMainList;
+        ring->type = RT_MAIN;
+        ring->number_of_objects = g_InvMainObjects;
+        ring->current_object = g_InvMainCurrent;
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
+            ring, OPEN_ROTATION,
+            -PHD_90 - ring->angle_adder * ring->current_object);
+        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        break;
+
+    case RNG_SELECTED: {
+        INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+        if (inv_item->object_id == O_PASSPORT_CLOSED) {
+            inv_item->object_id = O_PASSPORT_OPTION;
+        }
+
+        bool busy = false;
+        if (inv_item->y_rot == inv_item->y_rot_sel) {
+            busy = InvRing_AnimateItem(inv_item);
+        }
+
+        if (!busy && !g_IDelay) {
+            Option_Control(inv_item);
+
+            if (g_InputDB.menu_back) {
+                inv_item->sprlist = NULL;
+                InvRing_MotionSetup(ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+
+                if (g_InvMode == INV_LOAD_MODE || g_InvMode == INV_SAVE_MODE
+                    || g_InvMode == INV_SAVE_CRYSTAL_MODE) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
+                    g_Input = (INPUT_STATE) { 0 };
+                    g_InputDB = (INPUT_STATE) { 0 };
+                }
+            }
+
+            if (g_InputDB.menu_confirm) {
+                inv_item->sprlist = NULL;
+                m_InvChosen = inv_item->object_id;
+                if (ring->type == RT_MAIN) {
+                    g_InvMainCurrent = ring->current_object;
+                } else {
+                    g_InvOptionCurrent = ring->current_object;
+                }
+
+                if (g_InvMode == INV_TITLE_MODE
+                    && ((inv_item->object_id == O_DETAIL_OPTION)
+                        || inv_item->object_id == O_SOUND_OPTION
+                        || inv_item->object_id == O_CONTROL_OPTION
+                        || inv_item->object_id == O_GAMMA_OPTION)) {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
+                } else {
+                    InvRing_MotionSetup(
+                        ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
+                }
+                g_Input = (INPUT_STATE) { 0 };
+                g_InputDB = (INPUT_STATE) { 0 };
+            }
+        }
+        break;
+    }
+
+    case RNG_DESELECT:
+        Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
+        InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, SELECTING_FRAMES);
+        InvRing_MotionRotation(
+            ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
+        g_Input = (INPUT_STATE) { 0 };
+        g_InputDB = (INPUT_STATE) { 0 };
+        break;
+
+    case RNG_CLOSING_ITEM: {
+        INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+        if (!InvRing_AnimateItem(inv_item)) {
+            if (inv_item->object_id == O_PASSPORT_OPTION) {
+                inv_item->object_id = O_PASSPORT_CLOSED;
+                inv_item->current_frame = 0;
+            }
+            motion->count = SELECTING_FRAMES;
+            motion->status = motion->status_target;
+            InvRing_MotionItemDeselect(ring, inv_item);
+            break;
+        }
+        break;
+    }
+
+    case RNG_EXITING_INVENTORY:
+        if (g_InvMode == INV_TITLE_MODE) {
+        } else if (
+            m_InvChosen == O_PASSPORT_OPTION
+            && ((g_InvMode == INV_LOAD_MODE && g_SavedGamesCount) /* f6 menu */
+                || g_InvMode == INV_DEATH_MODE /* Lara died */
+                || (g_InvMode == INV_GAME_MODE /* esc menu */
+                    && g_GameInfo.passport_selection
+                        != PASSPORT_MODE_SAVE_GAME /* but not save page */
+                    )
+                || g_CurrentLevel == g_GameFlow.gym_level_num /* Gym */
+                || g_GameInfo.passport_selection == PASSPORT_MODE_RESTART)) {
+            Output_FadeToBlack(false);
+        } else {
+            Output_FadeToTransparent(false);
+        }
+
+        if (!motion->count) {
+            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionRadius(ring, 0);
+            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionRotation(
+                ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
+        }
+        break;
+    }
+
+    if (motion->status == RNG_OPEN || motion->status == RNG_SELECTING
+        || motion->status == RNG_SELECTED || motion->status == RNG_DESELECTING
+        || motion->status == RNG_DESELECT
+        || motion->status == RNG_CLOSING_ITEM) {
+        if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
+            INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+            InvRing_Active(inv_item);
+        }
+        InvRing_InitHeader(ring);
+        InvRing_InitExamineOverlay();
+    } else {
+        InvRing_RemoveHeader();
+        InvRing_RemoveExamineOverlay();
+    }
+
+    if (!motion->status || motion->status == RNG_CLOSING
+        || motion->status == RNG_MAIN2OPTION
+        || motion->status == RNG_OPTION2MAIN
+        || motion->status == RNG_EXITING_INVENTORY || motion->status == RNG_DONE
+        || ring->rotating) {
+        InvRing_RemoveAllText();
+    }
+
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+}
+
+static bool M_CheckDemoTimer(const IMOTION_INFO *const motion)
+{
+    if (!g_Config.gameplay.enable_demo || !g_GameFlow.has_demo) {
+        return false;
+    }
+
+    if (g_InvMode != INV_TITLE_MODE || g_Input.any || g_InputDB.any
+        || Console_IsOpened()) {
+        Clock_ResetTimer(&m_DemoTimer);
+        return false;
+    }
+
+    return motion->status == RNG_OPEN
+        && Clock_CheckElapsedMilliseconds(
+               &m_DemoTimer, g_GameFlow.demo_delay * 1000.0);
 }
 
 bool InvRing_CanExamine(void)
@@ -86,26 +571,26 @@ void InvRing_InitHeader(RING_INFO *ring)
         return;
     }
 
-    if (!g_InvRingText) {
+    if (!m_HeadingText) {
         switch (ring->type) {
         case RT_MAIN:
-            g_InvRingText = Text_Create(0, 26, GS(HEADING_INVENTORY));
+            m_HeadingText = Text_Create(0, 26, GS(HEADING_INVENTORY));
             break;
 
         case RT_OPTION:
             if (g_InvMode == INV_DEATH_MODE) {
-                g_InvRingText = Text_Create(0, 26, GS(HEADING_GAME_OVER));
+                m_HeadingText = Text_Create(0, 26, GS(HEADING_GAME_OVER));
             } else {
-                g_InvRingText = Text_Create(0, 26, GS(HEADING_OPTION));
+                m_HeadingText = Text_Create(0, 26, GS(HEADING_OPTION));
             }
             break;
 
         case RT_KEYS:
-            g_InvRingText = Text_Create(0, 26, GS(HEADING_ITEMS));
+            m_HeadingText = Text_Create(0, 26, GS(HEADING_ITEMS));
             break;
         }
 
-        Text_CentreH(g_InvRingText, 1);
+        Text_CentreH(m_HeadingText, 1);
     }
 
     if (g_InvMode != INV_GAME_MODE) {
@@ -134,23 +619,24 @@ void InvRing_InitHeader(RING_INFO *ring)
 
 void InvRing_RemoveHeader(void)
 {
-    if (!g_InvRingText) {
-        return;
+    if (m_HeadingText != NULL) {
+        Text_Remove(m_HeadingText);
+        m_HeadingText = NULL;
     }
-
-    Text_Remove(g_InvRingText);
-    g_InvRingText = NULL;
-
-    if (m_InvUpArrow1) {
+    if (m_InvUpArrow1 != NULL) {
         Text_Remove(m_InvUpArrow1);
-        Text_Remove(m_InvUpArrow2);
         m_InvUpArrow1 = NULL;
+    }
+    if (m_InvUpArrow2 != NULL) {
+        Text_Remove(m_InvUpArrow2);
         m_InvUpArrow2 = NULL;
     }
-    if (m_InvDownArrow1) {
+    if (m_InvDownArrow1 != NULL) {
         Text_Remove(m_InvDownArrow1);
-        Text_Remove(m_InvDownArrow2);
         m_InvDownArrow1 = NULL;
+    }
+    if (m_InvDownArrow2 != NULL) {
+        Text_Remove(m_InvDownArrow2);
         m_InvDownArrow2 = NULL;
     }
 }
@@ -160,21 +646,21 @@ void InvRing_RemoveAllText(void)
     InvRing_RemoveHeader();
     InvRing_RemoveExamineOverlay();
     for (int i = 0; i < IT_NUMBER_OF; i++) {
-        if (g_InvItemText[i]) {
-            Text_Remove(g_InvItemText[i]);
-            g_InvItemText[i] = NULL;
+        if (m_ItemText[i]) {
+            Text_Remove(m_ItemText[i]);
+            m_ItemText[i] = NULL;
         }
     }
 }
 
 void InvRing_Active(INVENTORY_ITEM *inv_item)
 {
-    if (g_InvItemText[IT_NAME] == NULL
+    if (m_ItemText[IT_NAME] == NULL
         && inv_item->object_id != O_PASSPORT_OPTION) {
-        g_InvItemText[IT_NAME] =
+        m_ItemText[IT_NAME] =
             Text_Create(0, -16, Object_GetName(inv_item->object_id));
-        Text_AlignBottom(g_InvItemText[IT_NAME], 1);
-        Text_CentreH(g_InvItemText[IT_NAME], 1);
+        Text_AlignBottom(m_ItemText[IT_NAME], 1);
+        Text_CentreH(m_ItemText[IT_NAME], 1);
     }
 
     char temp_text[128];
@@ -184,85 +670,85 @@ void InvRing_Active(INVENTORY_ITEM *inv_item)
 
     switch (inv_item->object_id) {
     case O_SHOTGUN_OPTION:
-        if (!g_InvItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
             sprintf(
                 temp_text, "%5d A", g_Lara.shotgun.ammo / SHOTGUN_AMMO_CLIP);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_MAGNUM_OPTION:
-        if (!g_InvItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
             sprintf(temp_text, "%5d B", g_Lara.magnums.ammo);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_UZI_OPTION:
-        if (!g_InvItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
             sprintf(temp_text, "%5d C", g_Lara.uzis.ammo);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_SG_AMMO_OPTION:
-        if (!g_InvItemText[IT_QTY]) {
+        if (!m_ItemText[IT_QTY]) {
             sprintf(temp_text, "%d", qty * NUM_SG_SHELLS);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_MAG_AMMO_OPTION:
-        if (!g_InvItemText[IT_QTY]) {
+        if (!m_ItemText[IT_QTY]) {
             sprintf(temp_text, "%d", Inv_RequestItem(O_MAG_AMMO_OPTION) * 2);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_UZI_AMMO_OPTION:
-        if (!g_InvItemText[IT_QTY]) {
+        if (!m_ItemText[IT_QTY]) {
             sprintf(temp_text, "%d", Inv_RequestItem(O_UZI_AMMO_OPTION) * 2);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_MEDI_OPTION:
         Overlay_BarSetHealthTimer(40);
-        if (!g_InvItemText[IT_QTY] && qty > 1) {
+        if (!m_ItemText[IT_QTY] && qty > 1) {
             sprintf(temp_text, "%d", qty);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
     case O_BIGMEDI_OPTION:
         Overlay_BarSetHealthTimer(40);
-        if (!g_InvItemText[IT_QTY] && qty > 1) {
+        if (!m_ItemText[IT_QTY] && qty > 1) {
             sprintf(temp_text, "%d", qty);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
         break;
 
@@ -278,12 +764,12 @@ void InvRing_Active(INVENTORY_ITEM *inv_item)
     case O_PUZZLE_OPTION_3:
     case O_PUZZLE_OPTION_4:
     case O_SCION_OPTION:
-        if (!g_InvItemText[IT_QTY] && qty > 1) {
+        if (!m_ItemText[IT_QTY] && qty > 1) {
             sprintf(temp_text, "%d", qty);
             Overlay_MakeAmmoString(temp_text);
-            g_InvItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(g_InvItemText[IT_QTY], 1);
-            Text_CentreH(g_InvItemText[IT_QTY], 1);
+            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
+            Text_AlignBottom(m_ItemText[IT_QTY], 1);
+            Text_CentreH(m_ItemText[IT_QTY], 1);
         }
 
         show_examine_option = !Option_Examine_IsActive()
@@ -318,4 +804,267 @@ void InvRing_Active(INVENTORY_ITEM *inv_item)
         Text_Hide(m_ExamineItemText, !show_examine_option);
         Text_Hide(m_UseItemText, !show_examine_option);
     }
+}
+
+void InvRing_Construct(void)
+{
+    g_PhdLeft = Viewport_GetMinX();
+    g_PhdTop = Viewport_GetMinY();
+    g_PhdBottom = Viewport_GetMaxY();
+    g_PhdRight = Viewport_GetMaxX();
+
+    m_PlayedSpinin = false;
+    g_InvRing_OldCamera = g_Camera;
+    m_PassportModeReady = false;
+    m_StartLevel = -1;
+    m_StartDemo = false;
+
+    m_InvChosen = NO_OBJECT;
+    if (g_InvMode == INV_TITLE_MODE) {
+        g_InvOptionObjects = TITLE_RING_OBJECTS;
+        m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
+        Text_AlignRight(m_VersionText, 1);
+        Text_AlignBottom(m_VersionText, 1);
+        Text_SetScale(
+            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
+    } else {
+        g_InvOptionObjects = OPTION_RING_OBJECTS;
+        Text_Remove(m_VersionText);
+        m_VersionText = NULL;
+    }
+
+    for (int i = 0; i < g_InvMainObjects; i++) {
+        InvRing_ResetItem(g_InvMainList[i]);
+    }
+
+    for (int i = 0; i < g_InvOptionObjects; i++) {
+        InvRing_ResetItem(g_InvOptionList[i]);
+    }
+
+    g_InvMainCurrent = 0;
+    g_InvOptionCurrent = 0;
+    g_OptionSelected = 0;
+
+    if (g_GameFlow.gym_level_num == -1) {
+        Inv_RemoveItem(O_PHOTO_OPTION);
+    }
+
+    // reset the delta timer before starting the spinout animation
+    Clock_ResetTimer(&g_InvRing_MotionTimer);
+}
+
+void InvRing_Destroy(void)
+{
+    InvRing_RemoveAllText();
+    m_InvChosen = NO_OBJECT;
+
+    if (g_Config.gameplay.fix_item_duplication_glitch) {
+        Inv_ClearSelection();
+    }
+
+    if (m_VersionText) {
+        Text_Remove(m_VersionText);
+        m_VersionText = NULL;
+    }
+}
+
+PHASE_CONTROL InvRing_Close(GAME_OBJECT_ID inv_chosen)
+{
+    InvRing_Destroy();
+
+    if (m_StartLevel != -1) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = {
+                .action = GF_SELECT_GAME,
+                .param = m_StartLevel,
+            },
+        };
+    }
+
+    if (m_StartDemo) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_START_DEMO, .param = -1 },
+        };
+    }
+
+    switch (inv_chosen) {
+    case O_PASSPORT_OPTION:
+        switch (g_GameInfo.passport_selection) {
+        case PASSPORT_MODE_LOAD_GAME:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
+                    .action = GF_START_SAVED_GAME,
+                    .param = g_GameInfo.current_save_slot,
+                },
+            };
+
+        case PASSPORT_MODE_SELECT_LEVEL:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
+                    .action = GF_SELECT_GAME,
+                    .param = g_GameInfo.select_level_num,
+                },
+            };
+
+        case PASSPORT_MODE_STORY_SO_FAR:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
+                    .action = GF_STORY_SO_FAR,
+                    .param = g_GameInfo.current_save_slot,
+                },
+            };
+
+        case PASSPORT_MODE_NEW_GAME:
+            Savegame_InitCurrentInfo();
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
+                    .action = GF_START_GAME,
+                    .param = g_GameFlow.first_level_num,
+                },
+            };
+
+        case PASSPORT_MODE_SAVE_GAME:
+            Savegame_Save(g_GameInfo.current_save_slot);
+            Music_Unpause();
+            Sound_UnpauseAll();
+            Phase_Set(PHASE_GAME, NULL);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+
+        case PASSPORT_MODE_RESTART:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = {
+                    .action = GF_RESTART_GAME,
+                    .param = g_CurrentLevel,
+                },
+            };
+
+        case PASSPORT_MODE_EXIT_TITLE:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
+            };
+
+        case PASSPORT_MODE_EXIT_GAME:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_GAME },
+            };
+
+        case PASSPORT_MODE_BROWSE:
+        case PASSPORT_MODE_UNAVAILABLE:
+        default:
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
+            };
+        }
+
+    case O_PHOTO_OPTION:
+        g_GameInfo.current_save_slot = -1;
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = {
+                .action = GF_START_GYM,
+                .param = g_GameFlow.gym_level_num,
+            },
+        };
+
+    case O_PISTOL_OPTION:
+    case O_SHOTGUN_OPTION:
+    case O_MAGNUM_OPTION:
+    case O_UZI_OPTION:
+    case O_MEDI_OPTION:
+    case O_BIGMEDI_OPTION:
+    case O_KEY_OPTION_1:
+    case O_KEY_OPTION_2:
+    case O_KEY_OPTION_3:
+    case O_KEY_OPTION_4:
+    case O_PUZZLE_OPTION_1:
+    case O_PUZZLE_OPTION_2:
+    case O_PUZZLE_OPTION_3:
+    case O_PUZZLE_OPTION_4:
+    case O_LEADBAR_OPTION:
+    case O_SCION_OPTION:
+        Lara_UseItem(inv_chosen);
+        break;
+
+    default:
+        break;
+    }
+
+    if (g_InvMode == INV_TITLE_MODE) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_NOOP },
+        };
+    } else {
+        Music_Unpause();
+        Sound_UnpauseAll();
+        Phase_Set(PHASE_GAME, NULL);
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+    }
+}
+
+void InvRing_SelectMeshes(INVENTORY_ITEM *inv_item)
+{
+    if (inv_item->object_id == O_PASSPORT_OPTION) {
+        if (inv_item->current_frame <= 14) {
+            inv_item->drawn_meshes = PASS_MESH | PINFRONT | PPAGE1;
+        } else if (inv_item->current_frame < 19) {
+            inv_item->drawn_meshes = PASS_MESH | PINFRONT | PPAGE1 | PPAGE2;
+        } else if (inv_item->current_frame == 19) {
+            inv_item->drawn_meshes = PASS_MESH | PPAGE1 | PPAGE2;
+        } else if (inv_item->current_frame < 24) {
+            inv_item->drawn_meshes = PASS_MESH | PPAGE1 | PPAGE2 | PINBACK;
+        } else if (inv_item->current_frame < 29) {
+            inv_item->drawn_meshes = PASS_MESH | PPAGE2 | PINBACK;
+        } else if (inv_item->current_frame == 29) {
+            inv_item->drawn_meshes = PASS_MESH;
+        }
+    } else if (inv_item->object_id == O_MAP_OPTION) {
+        if (inv_item->current_frame && inv_item->current_frame < 18) {
+            inv_item->drawn_meshes = -1;
+        } else {
+            inv_item->drawn_meshes = inv_item->which_meshes;
+        }
+    } else {
+        inv_item->drawn_meshes = -1;
+    }
+}
+
+bool InvRing_AnimateItem(INVENTORY_ITEM *inv_item)
+{
+    if (inv_item->current_frame == inv_item->goal_frame) {
+        InvRing_SelectMeshes(inv_item);
+        return false;
+    }
+
+    inv_item->current_frame += inv_item->anim_direction;
+    if (inv_item->current_frame >= inv_item->frames_total) {
+        inv_item->current_frame = 0;
+    } else if (inv_item->current_frame < 0) {
+        inv_item->current_frame = inv_item->frames_total - 1;
+    }
+    InvRing_SelectMeshes(inv_item);
+    return true;
+}
+
+PHASE_CONTROL InvRing_Control(
+    RING_INFO *const ring, IMOTION_INFO *const motion, const int32_t num_frames)
+{
+    for (int32_t i = 0; i < num_frames; i++) {
+        const PHASE_CONTROL result = M_Control(ring, motion);
+        if (result.action == PHASE_ACTION_END) {
+            return result;
+        }
+    }
+
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }

@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+CLOCK_TIMER g_InvRing_MotionTimer = {};
+CAMERA_INFO g_InvRing_OldCamera = {};
+
 int16_t g_InvKeysCurrent;
 int16_t g_InvKeysObjects;
 int16_t g_InvKeysQtys[24] = {
