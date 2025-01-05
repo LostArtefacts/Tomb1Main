@@ -16,6 +16,7 @@ typedef struct {
 typedef struct {
     FADER_ARGS args;
     bool is_active;
+    bool has_fired;
     struct {
         int32_t frame;
         int32_t value;

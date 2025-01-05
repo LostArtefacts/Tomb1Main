@@ -4,6 +4,7 @@
 #include "game/clock/const.h"
 #include "utils.h"
 
+#define ANY (-1)
 #define TRANSPARENT 0
 #define HALF_OPAQUE 127
 #define OPAQUE 255
@@ -11,8 +12,18 @@
 void Fader_Init(FADER *const fader, const FADER_ARGS args)
 {
     fader->args = args;
-    fader->current.value = args.initial;
-    fader->current.frame = 0;
+
+    if (args.initial == ANY) {
+        if (fader->is_active && fader->has_fired) {
+            fader->args.initial = fader->current.value;
+        } else {
+            fader->args.initial = 0;
+            fader->current.frame = 0;
+        }
+    } else {
+        fader->current.value = args.initial;
+        fader->current.frame = 0;
+    }
 
     if (g_Config.visuals.enable_fade_effects && args.duration > 0) {
         fader->is_active = true;
@@ -77,7 +88,7 @@ void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
     Fader_Init(
         fader,
         (FADER_ARGS) {
-            .initial = fader->current.value,
+            .initial = ANY,
             .target = OPAQUE,
             .duration = duration,
             .debuff = LOGIC_FPS / 6,
@@ -89,7 +100,7 @@ void Fader_InitAnyToSemiBlack(FADER *const fader, const int32_t duration)
     Fader_Init(
         fader,
         (FADER_ARGS) {
-            .initial = fader->current.value,
+            .initial = ANY,
             .target = HALF_OPAQUE,
             .duration = duration,
             .debuff = LOGIC_FPS / 6,
@@ -124,6 +135,7 @@ bool Fader_Control(FADER *const fader)
     if (!fader->is_active) {
         return false;
     }
+    fader->has_fired = true;
 
     fader->current.value = fader->args.initial
         + (fader->args.target - fader->args.initial)
