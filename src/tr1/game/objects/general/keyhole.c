@@ -1,7 +1,7 @@
 #include "game/objects/general/keyhole.h"
 
+#include "game/gameflow.h"
 #include "game/input.h"
-#include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/sound.h"
@@ -55,7 +55,7 @@ static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         return;
     }
 
-    Inv_DisplayKeys(item->object_id);
+    GF_ShowInventoryKeys(item->object_id);
 }
 
 static const OBJECT_BOUNDS *M_Bounds(void)

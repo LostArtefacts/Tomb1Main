@@ -90,6 +90,11 @@ GAME_FLOW_COMMAND
 GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level);
 GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num);
 
+// TODO: make GAME_FLOW_COMMAND
+bool GF_ShowInventory(INV_MODE inv_mode);
+// TODO: make GAME_FLOW_COMMAND
+bool GF_ShowInventoryKeys(GAME_OBJECT_ID receptacle_type_id);
+
 bool GameFlow_LoadFromFile(const char *file_name);
 void GameFlow_Shutdown(void);
 

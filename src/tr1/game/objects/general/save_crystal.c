@@ -1,7 +1,7 @@
 #include "game/objects/general/save_crystal.h"
 
+#include "game/gameflow.h"
 #include "game/input.h"
-#include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
@@ -79,5 +79,5 @@ void SaveCrystal_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
     }
 
     item->data = (void *)(intptr_t)(g_SaveCounter | 0x10000);
-    Inv_Display(INV_SAVE_CRYSTAL_MODE);
+    GF_ShowInventory(INV_SAVE_CRYSTAL_MODE);
 }

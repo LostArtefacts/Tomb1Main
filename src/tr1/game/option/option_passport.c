@@ -3,7 +3,7 @@
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
-#include "game/inventory/inventory_vars.h"
+#include "game/inventory_ring/vars.h"
 #include "game/requester.h"
 #include "game/savegame.h"
 #include "game/screen.h"

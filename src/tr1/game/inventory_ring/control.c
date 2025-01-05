@@ -1,8 +1,8 @@
-#include "game/inventory/inventory_ring.h"
+#include "game/inventory_ring/control.h"
 
 #include "game/game_string.h"
 #include "game/inventory.h"
-#include "game/inventory/inventory_vars.h"
+#include "game/inventory_ring/vars.h"
 #include "game/option/option_examine.h"
 #include "game/output.h"
 #include "game/overlay.h"

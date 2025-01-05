@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/input.h"
-#include "global/types.h"
+#include "game/inventory_ring/types.h"
 
 #include <stdbool.h>
 

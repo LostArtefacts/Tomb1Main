@@ -1,9 +1,8 @@
 #pragma once
 
-#include "global/types.h"
+#include "game/inventory_ring/types.h"
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <libtrx/game/text.h>
 
 extern int16_t g_InvKeysCurrent;
 extern int16_t g_InvKeysObjects;

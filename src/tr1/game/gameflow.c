@@ -4,13 +4,15 @@
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
-#include "game/inventory/inventory_vars.h"
+#include "game/inventory_ring.h"
 #include "game/lara/common.h"
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
+#include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/phase/phase.h"
 #include "game/phase/phase_cutscene.h"
+#include "game/phase/phase_inventory.h"
 #include "game/phase/phase_stats.h"
 #include "game/room.h"
 #include "game/savegame.h"
@@ -1512,4 +1514,29 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
     }
 
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+}
+
+// TODO: make GAME_FLOW_COMMAND
+bool GF_ShowInventory(const INV_MODE inv_mode)
+{
+    if (inv_mode == INV_KEYS_MODE && !g_InvKeysObjects) {
+        return false;
+    }
+    PHASE_INVENTORY_ARGS *const args =
+        Memory_Alloc(sizeof(PHASE_INVENTORY_ARGS));
+    args->mode = inv_mode;
+    Phase_Set(PHASE_INVENTORY, args);
+    return true;
+}
+
+// TODO: make GAME_FLOW_COMMAND
+bool GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
+{
+    if (g_Config.gameplay.enable_auto_item_selection) {
+        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
+            receptacle_type_id, g_KeyItemToReceptacleMap);
+        InvRing_SetRequestedObjectID(object_id);
+    }
+
+    return GF_ShowInventory(INV_KEYS_MODE);
 }

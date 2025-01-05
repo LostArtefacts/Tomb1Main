@@ -1,8 +1,10 @@
 #pragma once
 
-#include "global/types.h"
+#include "game/inventory_ring/types.h"
 
-#include <stdint.h>
+#include <libtrx/game/objects/types.h>
+
+void InvRing_SetRequestedObjectID(GAME_OBJECT_ID object_id);
 
 void InvRing_Init(
     RING_INFO *ring, int16_t type, INVENTORY_ITEM **list, int16_t qty,
@@ -17,7 +19,6 @@ void InvRing_ResetItem(INVENTORY_ITEM *inv_item);
 bool InvRing_CanExamine(void);
 void InvRing_InitExamineOverlay(void);
 void InvRing_RemoveExamineOverlay(void);
-void InvRing_SetRequestedObjectID(GAME_OBJECT_ID object_id);
 
 void InvRing_GetView(RING_INFO *ring, XYZ_32 *view_pos, XYZ_16 *view_rot);
 void InvRing_Light(RING_INFO *ring);

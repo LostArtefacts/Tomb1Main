@@ -1,5 +1,6 @@
 #include "game/objects/traps/midas_touch.h"
 
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -109,5 +110,5 @@ void MidasTouch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         return;
     }
 
-    Inv_DisplayKeys(item->object_id);
+    GF_ShowInventoryKeys(item->object_id);
 }

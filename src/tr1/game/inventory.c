@@ -1,6 +1,7 @@
-#include "game/gun.h"
 #include "game/inventory.h"
-#include "game/inventory/inventory_vars.h"
+
+#include "game/gun.h"
+#include "game/inventory_ring/vars.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"

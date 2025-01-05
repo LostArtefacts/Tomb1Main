@@ -3,9 +3,9 @@
 #include "game/camera.h"
 #include "game/effects.h"
 #include "game/game.h"
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/interpolation.h"
-#include "game/inventory.h"
 #include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
@@ -72,7 +72,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
             || g_OverlayFlag == 2) {
             if (g_OverlayFlag == 2) {
                 g_OverlayFlag = 1;
-                Inv_Display(INV_DEATH_MODE);
+                GF_ShowInventory(INV_DEATH_MODE);
                 return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
             } else {
                 g_OverlayFlag = 2;
@@ -94,11 +94,11 @@ static PHASE_CONTROL M_Control(int32_t nframes)
                 }
             } else {
                 if (g_OverlayFlag == -1) {
-                    Inv_Display(INV_LOAD_MODE);
+                    GF_ShowInventory(INV_LOAD_MODE);
                 } else if (g_OverlayFlag == -2) {
-                    Inv_Display(INV_SAVE_MODE);
+                    GF_ShowInventory(INV_SAVE_MODE);
                 } else {
-                    Inv_Display(INV_GAME_MODE);
+                    GF_ShowInventory(INV_GAME_MODE);
                 }
 
                 g_OverlayFlag = 1;
@@ -148,7 +148,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     }
 
     if (g_GameInfo.ask_for_save) {
-        Inv_Display(INV_SAVE_CRYSTAL_MODE);
+        GF_ShowInventory(INV_SAVE_CRYSTAL_MODE);
         g_GameInfo.ask_for_save = false;
     }
 

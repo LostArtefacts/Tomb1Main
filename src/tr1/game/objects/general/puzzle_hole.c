@@ -1,5 +1,6 @@
 #include "game/objects/general/puzzle_hole.h"
 
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -117,5 +118,5 @@ void PuzzleHole_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         return;
     }
 
-    Inv_DisplayKeys(item->object_id);
+    GF_ShowInventoryKeys(item->object_id);
 }
