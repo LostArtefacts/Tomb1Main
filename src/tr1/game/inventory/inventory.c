@@ -25,7 +25,7 @@ bool Inv_DisplayKeys(const GAME_OBJECT_ID receptacle_type_id)
     if (g_Config.gameplay.enable_auto_item_selection) {
         const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
             receptacle_type_id, g_KeyItemToReceptacleMap);
-        Inv_Ring_SetRequestedObjectID(object_id);
+        InvRing_SetRequestedObjectID(object_id);
     }
 
     return Inv_Display(INV_KEYS_MODE);

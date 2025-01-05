@@ -59,17 +59,17 @@ static CLOCK_TIMER m_StatsTimer = { 0 };
 RING_INFO m_Ring;
 IMOTION_INFO m_Motion;
 
-static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion);
-static void Inv_Construct(void);
-static void Inv_Destroy(void);
-static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen);
-static void Inv_SelectMeshes(INVENTORY_ITEM *inv_item);
-static bool Inv_AnimateItem(INVENTORY_ITEM *inv_item);
+static void InvRing_Draw(RING_INFO *ring, IMOTION_INFO *motion);
+static void InvRing_Construct(void);
+static void InvRing_Destroy(void);
+static PHASE_CONTROL InvRing_Close(GAME_OBJECT_ID inv_chosen);
+static void InvRing_SelectMeshes(INVENTORY_ITEM *inv_item);
+static bool InvRing_AnimateItem(INVENTORY_ITEM *inv_item);
 static int32_t InvItem_GetFrames(
     const INVENTORY_ITEM *inv_item, ANIM_FRAME **out_frame1,
     ANIM_FRAME **out_frame2, int32_t *out_rate);
-static void Inv_DrawItem(INVENTORY_ITEM *inv_item, int32_t frames);
-static bool Inv_CheckDemoTimer(const IMOTION_INFO *motion);
+static void InvRing_DrawItem(INVENTORY_ITEM *inv_item, int32_t frames);
+static bool InvRing_CheckDemoTimer(const IMOTION_INFO *motion);
 
 static void M_Start(const PHASE_INVENTORY_ARGS *args);
 static void M_End(void);
@@ -77,7 +77,7 @@ static PHASE_CONTROL M_ControlFrame(void);
 static PHASE_CONTROL M_Control(int32_t nframes);
 static void M_Draw(void);
 
-static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
+static void InvRing_Draw(RING_INFO *ring, IMOTION_INFO *motion)
 {
     const int32_t frames = Clock_GetFrameAdvance()
         * round(Clock_GetElapsedDrawFrames(&m_MotionTimer));
@@ -108,9 +108,9 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
 
     XYZ_32 view_pos;
     XYZ_16 view_rot;
-    Inv_Ring_GetView(ring, &view_pos, &view_rot);
+    InvRing_GetView(ring, &view_pos, &view_rot);
     Matrix_GenerateW2V(&view_pos, &view_rot);
-    Inv_Ring_Light(ring);
+    InvRing_Light(ring);
 
     Matrix_Push();
     Matrix_TranslateAbs(
@@ -127,7 +127,7 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
             Matrix_RotYXZ(angle, 0, 0);
             Matrix_TranslateRel(ring->radius, 0, 0);
             Matrix_RotYXZ(PHD_90, inv_item->pt_xrot, 0);
-            Inv_DrawItem(inv_item, frames);
+            InvRing_DrawItem(inv_item, frames);
             angle += ring->angle_adder;
             Matrix_Pop();
         }
@@ -162,12 +162,12 @@ static void Inv_Draw(RING_INFO *ring, IMOTION_INFO *motion)
          || (g_InvMode != INV_TITLE_MODE || !Output_FadeIsAnimating()))
         && motion->status != RNG_DONE) {
         for (int i = 0; i < frames; i++) {
-            Inv_Ring_DoMotions(ring);
+            InvRing_DoMotions(ring);
         }
     }
 }
 
-static void Inv_Construct(void)
+static void InvRing_Construct(void)
 {
     g_PhdLeft = Viewport_GetMinX();
     g_PhdTop = Viewport_GetMinY();
@@ -189,11 +189,11 @@ static void Inv_Construct(void)
     }
 
     for (int i = 0; i < g_InvMainObjects; i++) {
-        Inv_Ring_ResetItem(g_InvMainList[i]);
+        InvRing_ResetItem(g_InvMainList[i]);
     }
 
     for (int i = 0; i < g_InvOptionObjects; i++) {
-        Inv_Ring_ResetItem(g_InvOptionList[i]);
+        InvRing_ResetItem(g_InvOptionList[i]);
     }
 
     g_InvMainCurrent = 0;
@@ -208,9 +208,9 @@ static void Inv_Construct(void)
     Clock_ResetTimer(&m_MotionTimer);
 }
 
-static void Inv_Destroy(void)
+static void InvRing_Destroy(void)
 {
-    Inv_Ring_RemoveAllText();
+    InvRing_RemoveAllText();
     m_InvChosen = NO_OBJECT;
 
     if (g_Config.gameplay.fix_item_duplication_glitch) {
@@ -223,9 +223,9 @@ static void Inv_Destroy(void)
     }
 }
 
-static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
+static PHASE_CONTROL InvRing_Close(GAME_OBJECT_ID inv_chosen)
 {
-    Inv_Destroy();
+    InvRing_Destroy();
 
     if (m_StartLevel != -1) {
         return (PHASE_CONTROL) {
@@ -367,7 +367,7 @@ static PHASE_CONTROL Inv_Close(GAME_OBJECT_ID inv_chosen)
     }
 }
 
-static void Inv_SelectMeshes(INVENTORY_ITEM *inv_item)
+static void InvRing_SelectMeshes(INVENTORY_ITEM *inv_item)
 {
     if (inv_item->object_id == O_PASSPORT_OPTION) {
         if (inv_item->current_frame <= 14) {
@@ -394,10 +394,10 @@ static void Inv_SelectMeshes(INVENTORY_ITEM *inv_item)
     }
 }
 
-static bool Inv_AnimateItem(INVENTORY_ITEM *inv_item)
+static bool InvRing_AnimateItem(INVENTORY_ITEM *inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
-        Inv_SelectMeshes(inv_item);
+        InvRing_SelectMeshes(inv_item);
         return false;
     }
 
@@ -407,7 +407,7 @@ static bool Inv_AnimateItem(INVENTORY_ITEM *inv_item)
     } else if (inv_item->current_frame < 0) {
         inv_item->current_frame = inv_item->frames_total - 1;
     }
-    Inv_SelectMeshes(inv_item);
+    InvRing_SelectMeshes(inv_item);
     return true;
 }
 
@@ -422,7 +422,7 @@ static int32_t InvItem_GetFrames(
     if (inv_item != cur_inv_item
         || (motion->status != RNG_SELECTED
             && motion->status != RNG_CLOSING_ITEM)) {
-        // only apply to animations, eg. the states where Inv_AnimateItem is
+        // only apply to animations, eg. the states where InvRing_AnimateItem is
         // being actively called
         goto fallback;
     }
@@ -454,7 +454,8 @@ fallback:
     return 0;
 }
 
-static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
+static void InvRing_DrawItem(
+    INVENTORY_ITEM *const inv_item, const int32_t frames)
 {
     const RING_INFO *ring = &m_Ring;
     const IMOTION_INFO *motion = &m_Motion;
@@ -577,7 +578,7 @@ static void Inv_DrawItem(INVENTORY_ITEM *const inv_item, const int32_t frames)
     }
 }
 
-static bool Inv_CheckDemoTimer(const IMOTION_INFO *const motion)
+static bool InvRing_CheckDemoTimer(const IMOTION_INFO *const motion)
 {
     if (!g_Config.gameplay.enable_demo || !g_GameFlow.has_demo) {
         return false;
@@ -612,7 +613,7 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     m_PassportModeReady = false;
     m_StartLevel = -1;
     m_StartDemo = false;
-    Inv_Construct();
+    InvRing_Construct();
 
     if (!g_Config.audio.enable_music_in_inventory
         && g_InvMode != INV_TITLE_MODE) {
@@ -629,24 +630,24 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     case INV_SAVE_CRYSTAL_MODE:
     case INV_LOAD_MODE:
     case INV_TITLE_MODE:
-        Inv_Ring_Init(
+        InvRing_Init(
             ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
             g_InvOptionCurrent, motion);
         break;
 
     case INV_KEYS_MODE:
-        Inv_Ring_Init(
+        InvRing_Init(
             ring, RT_KEYS, g_InvKeysList, g_InvKeysObjects, g_InvMainCurrent,
             motion);
         break;
 
     default:
         if (g_InvMainObjects) {
-            Inv_Ring_Init(
+            InvRing_Init(
                 ring, RT_MAIN, g_InvMainList, g_InvMainObjects,
                 g_InvMainCurrent, motion);
         } else {
-            Inv_Ring_Init(
+            InvRing_Init(
                 ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
                 g_InvOptionCurrent, motion);
         }
@@ -691,14 +692,14 @@ static PHASE_CONTROL M_ControlFrame(void)
             return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
-        return Inv_Close(m_InvChosen);
+        return InvRing_Close(m_InvChosen);
     }
 
-    Inv_Ring_CalcAdders(ring, ROTATE_DURATION);
+    InvRing_CalcAdders(ring, ROTATE_DURATION);
 
     Input_Update();
     // Do the demo inactivity check prior to postprocessing of the inputs.
-    if (Inv_CheckDemoTimer(motion)) {
+    if (InvRing_CheckDemoTimer(motion)) {
         m_StartDemo = true;
     }
     Shell_ProcessInput();
@@ -742,13 +743,13 @@ static PHASE_CONTROL M_ControlFrame(void)
     switch (motion->status) {
     case RNG_OPEN:
         if (g_Input.menu_right && ring->number_of_objects > 1) {
-            Inv_Ring_RotateLeft(ring);
+            InvRing_RotateLeft(ring);
             Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
             break;
         }
 
         if (g_Input.menu_left && ring->number_of_objects > 1) {
-            Inv_Ring_RotateRight(ring);
+            InvRing_RotateRight(ring);
             Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
             break;
         }
@@ -768,16 +769,16 @@ static PHASE_CONTROL M_ControlFrame(void)
                 Output_FadeToTransparent(false);
             }
 
-            Inv_Ring_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
-            Inv_Ring_MotionRadius(ring, 0);
-            Inv_Ring_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
-            Inv_Ring_MotionRotation(
+            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionRadius(ring, 0);
+            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
         }
 
-        const bool examine = g_InputDB.look && Inv_Ring_CanExamine();
+        const bool examine = g_InputDB.look && InvRing_CanExamine();
         if (g_InputDB.menu_confirm || examine) {
             if ((g_InvMode == INV_SAVE_MODE
                  || g_InvMode == INV_SAVE_CRYSTAL_MODE
@@ -804,11 +805,11 @@ static PHASE_CONTROL M_ControlFrame(void)
             inv_item->anim_direction = 1;
             inv_item->action = examine ? ACTION_EXAMINE : ACTION_USE;
 
-            Inv_Ring_MotionSetup(
+            InvRing_MotionSetup(
                 ring, RNG_SELECTING, RNG_SELECTED, SELECTING_FRAMES);
-            Inv_Ring_MotionRotation(
+            InvRing_MotionRotation(
                 ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
-            Inv_Ring_MotionItemSelect(ring, inv_item);
+            InvRing_MotionItemSelect(ring, inv_item);
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
 
@@ -842,28 +843,28 @@ static PHASE_CONTROL M_ControlFrame(void)
             && g_InvMode != INV_KEYS_MODE) {
             if (ring->type == RT_MAIN) {
                 if (g_InvKeysObjects) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_MAIN2KEYS,
                         RINGSWITCH_FRAMES / 2);
-                    Inv_Ring_MotionRadius(ring, 0);
-                    Inv_Ring_MotionRotation(
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
                         ring->ringpos.rot.y - CLOSE_ROTATION);
-                    Inv_Ring_MotionCameraPitch(ring, 0x2000);
+                    InvRing_MotionCameraPitch(ring, 0x2000);
                     motion->misc = 0x2000;
                 }
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (ring->type == RT_OPTION) {
                 if (g_InvMainObjects) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_OPTION2MAIN,
                         RINGSWITCH_FRAMES / 2);
-                    Inv_Ring_MotionRadius(ring, 0);
-                    Inv_Ring_MotionRotation(
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
                         ring->ringpos.rot.y - CLOSE_ROTATION);
-                    Inv_Ring_MotionCameraPitch(ring, 0x2000);
+                    InvRing_MotionCameraPitch(ring, 0x2000);
                     motion->misc = 0x2000;
                 }
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -873,28 +874,28 @@ static PHASE_CONTROL M_ControlFrame(void)
             && g_InvMode != INV_KEYS_MODE) {
             if (ring->type == RT_KEYS) {
                 if (g_InvMainObjects) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_KEYS2MAIN,
                         RINGSWITCH_FRAMES / 2);
-                    Inv_Ring_MotionRadius(ring, 0);
-                    Inv_Ring_MotionRotation(
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
                         ring->ringpos.rot.y - CLOSE_ROTATION);
-                    Inv_Ring_MotionCameraPitch(ring, -0x2000);
+                    InvRing_MotionCameraPitch(ring, -0x2000);
                     motion->misc = -0x2000;
                 }
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (ring->type == RT_MAIN) {
                 if (g_InvOptionObjects) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_MAIN2OPTION,
                         RINGSWITCH_FRAMES / 2);
-                    Inv_Ring_MotionRadius(ring, 0);
-                    Inv_Ring_MotionRotation(
+                    InvRing_MotionRadius(ring, 0);
+                    InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
                         ring->ringpos.rot.y - CLOSE_ROTATION);
-                    Inv_Ring_MotionCameraPitch(ring, -0x2000);
+                    InvRing_MotionCameraPitch(ring, -0x2000);
                     motion->misc = -0x2000;
                 }
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -903,9 +904,8 @@ static PHASE_CONTROL M_ControlFrame(void)
         break;
 
     case RNG_MAIN2OPTION:
-        Inv_Ring_MotionSetup(
-            ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        Inv_Ring_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
         ring->camera_pitch = -motion->misc;
         motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
         motion->camera_pitch_target = 0;
@@ -914,17 +914,16 @@ static PHASE_CONTROL M_ControlFrame(void)
         ring->type = RT_OPTION;
         ring->number_of_objects = g_InvOptionObjects;
         ring->current_object = g_InvOptionCurrent;
-        Inv_Ring_CalcAdders(ring, ROTATE_DURATION);
-        Inv_Ring_MotionRotation(
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
         ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_MAIN2KEYS:
-        Inv_Ring_MotionSetup(
-            ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        Inv_Ring_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
         ring->camera_pitch = -motion->misc;
         motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
         motion->camera_pitch_target = 0;
@@ -934,17 +933,16 @@ static PHASE_CONTROL M_ControlFrame(void)
         ring->type = RT_KEYS;
         ring->number_of_objects = g_InvKeysObjects;
         ring->current_object = g_InvKeysCurrent;
-        Inv_Ring_CalcAdders(ring, ROTATE_DURATION);
-        Inv_Ring_MotionRotation(
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
         ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_KEYS2MAIN:
-        Inv_Ring_MotionSetup(
-            ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        Inv_Ring_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
         ring->camera_pitch = -motion->misc;
         motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
         motion->camera_pitch_target = 0;
@@ -953,17 +951,16 @@ static PHASE_CONTROL M_ControlFrame(void)
         ring->type = RT_MAIN;
         ring->number_of_objects = g_InvMainObjects;
         ring->current_object = g_InvMainCurrent;
-        Inv_Ring_CalcAdders(ring, ROTATE_DURATION);
-        Inv_Ring_MotionRotation(
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
         ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_OPTION2MAIN:
-        Inv_Ring_MotionSetup(
-            ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        Inv_Ring_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
+        InvRing_MotionRadius(ring, RING_RADIUS);
         ring->camera_pitch = -motion->misc;
         motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
         motion->camera_pitch_target = 0;
@@ -973,8 +970,8 @@ static PHASE_CONTROL M_ControlFrame(void)
         ring->type = RT_MAIN;
         ring->number_of_objects = g_InvMainObjects;
         ring->current_object = g_InvMainCurrent;
-        Inv_Ring_CalcAdders(ring, ROTATE_DURATION);
-        Inv_Ring_MotionRotation(
+        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
         ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
@@ -988,7 +985,7 @@ static PHASE_CONTROL M_ControlFrame(void)
 
         bool busy = false;
         if (inv_item->y_rot == inv_item->y_rot_sel) {
-            busy = Inv_AnimateItem(inv_item);
+            busy = InvRing_AnimateItem(inv_item);
         }
 
         if (!busy && !g_IDelay) {
@@ -996,13 +993,13 @@ static PHASE_CONTROL M_ControlFrame(void)
 
             if (g_InputDB.menu_back) {
                 inv_item->sprlist = NULL;
-                Inv_Ring_MotionSetup(ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
+                InvRing_MotionSetup(ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
 
                 if (g_InvMode == INV_LOAD_MODE || g_InvMode == INV_SAVE_MODE
                     || g_InvMode == INV_SAVE_CRYSTAL_MODE) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
                     g_Input = (INPUT_STATE) { 0 };
                     g_InputDB = (INPUT_STATE) { 0 };
@@ -1023,10 +1020,10 @@ static PHASE_CONTROL M_ControlFrame(void)
                         || inv_item->object_id == O_SOUND_OPTION
                         || inv_item->object_id == O_CONTROL_OPTION
                         || inv_item->object_id == O_GAMMA_OPTION)) {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
                 } else {
-                    Inv_Ring_MotionSetup(
+                    InvRing_MotionSetup(
                         ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
                 }
                 g_Input = (INPUT_STATE) { 0 };
@@ -1038,8 +1035,8 @@ static PHASE_CONTROL M_ControlFrame(void)
 
     case RNG_DESELECT:
         Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
-        Inv_Ring_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, SELECTING_FRAMES);
-        Inv_Ring_MotionRotation(
+        InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, SELECTING_FRAMES);
+        InvRing_MotionRotation(
             ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
         g_Input = (INPUT_STATE) { 0 };
         g_InputDB = (INPUT_STATE) { 0 };
@@ -1047,14 +1044,14 @@ static PHASE_CONTROL M_ControlFrame(void)
 
     case RNG_CLOSING_ITEM: {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-        if (!Inv_AnimateItem(inv_item)) {
+        if (!InvRing_AnimateItem(inv_item)) {
             if (inv_item->object_id == O_PASSPORT_OPTION) {
                 inv_item->object_id = O_PASSPORT_CLOSED;
                 inv_item->current_frame = 0;
             }
             motion->count = SELECTING_FRAMES;
             motion->status = motion->status_target;
-            Inv_Ring_MotionItemDeselect(ring, inv_item);
+            InvRing_MotionItemDeselect(ring, inv_item);
             break;
         }
         break;
@@ -1078,10 +1075,10 @@ static PHASE_CONTROL M_ControlFrame(void)
         }
 
         if (!motion->count) {
-            Inv_Ring_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
-            Inv_Ring_MotionRadius(ring, 0);
-            Inv_Ring_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
-            Inv_Ring_MotionRotation(
+            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionRadius(ring, 0);
+            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
         }
         break;
@@ -1093,13 +1090,13 @@ static PHASE_CONTROL M_ControlFrame(void)
         || motion->status == RNG_CLOSING_ITEM) {
         if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
             INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-            Inv_Ring_Active(inv_item);
+            InvRing_Active(inv_item);
         }
-        Inv_Ring_InitHeader(ring);
-        Inv_Ring_InitExamineOverlay();
+        InvRing_InitHeader(ring);
+        InvRing_InitExamineOverlay();
     } else {
-        Inv_Ring_RemoveHeader();
-        Inv_Ring_RemoveExamineOverlay();
+        InvRing_RemoveHeader();
+        InvRing_RemoveExamineOverlay();
     }
 
     if (!motion->status || motion->status == RNG_CLOSING
@@ -1107,7 +1104,7 @@ static PHASE_CONTROL M_ControlFrame(void)
         || motion->status == RNG_OPTION2MAIN
         || motion->status == RNG_EXITING_INVENTORY || motion->status == RNG_DONE
         || ring->rotating) {
-        Inv_Ring_RemoveAllText();
+        InvRing_RemoveAllText();
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
@@ -1136,7 +1133,7 @@ static void M_End(void)
         Option_Shutdown(inv_item);
     }
 
-    Inv_Destroy();
+    InvRing_Destroy();
     if (g_Config.input.enable_buffering) {
         g_OldInputDB = (INPUT_STATE) { 0 };
     }
@@ -1150,7 +1147,7 @@ static void M_Draw(void)
 {
     RING_INFO *ring = &m_Ring;
     IMOTION_INFO *motion = &m_Motion;
-    Inv_Draw(ring, motion);
+    InvRing_Draw(ring, motion);
     Output_AnimateFades();
     Text_Draw();
 }
