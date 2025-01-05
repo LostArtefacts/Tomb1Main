@@ -1,7 +1,9 @@
 #pragma once
 
 #include "game/inventory_ring/types.h"
+#include "global/types.h"
 
+#include <libtrx/game/clock.h>
 #include <libtrx/game/text.h>
 
 extern int16_t g_InvKeysCurrent;
@@ -50,3 +52,5 @@ extern INVENTORY_ITEM g_InvItemLarasHome;
 
 extern TEXTSTRING *g_InvItemText[];
 extern TEXTSTRING *g_InvRingText;
+extern CLOCK_TIMER g_InvRing_MotionTimer;
+extern CAMERA_INFO g_InvRing_OldCamera;
