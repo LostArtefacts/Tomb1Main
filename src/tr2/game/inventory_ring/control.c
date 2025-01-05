@@ -69,8 +69,6 @@ static void M_RemoveAllText(void)
 {
     M_RemoveItemsText();
 
-    Text_Remove(g_Inv_TagText);
-    g_Inv_TagText = NULL;
     Text_Remove(g_Inv_RingText);
     g_Inv_RingText = NULL;
     Text_Remove(m_UpArrow1);
@@ -655,8 +653,6 @@ static void M_RingIsOpen(INV_RING *const ring)
 
 static void M_RingIsNotOpen(INV_RING *const ring)
 {
-    Text_Remove(g_Inv_TagText);
-    g_Inv_TagText = NULL;
     Text_Remove(g_Inv_RingText);
     g_Inv_RingText = NULL;
     Text_Remove(m_UpArrow1);

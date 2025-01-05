@@ -17,7 +17,6 @@ int32_t g_Inv_OptionsDelayCounter;
 int32_t g_Inv_ExtraData[8];
 int32_t g_Inv_NFrames = 2;
 TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF] = {};
-TEXTSTRING *g_Inv_TagText = NULL;
 
 INV_ITEM *g_Inv_OptionList[] = {
     // clang-format off

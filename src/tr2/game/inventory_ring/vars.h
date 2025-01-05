@@ -25,7 +25,6 @@ extern int32_t g_Inv_ExtraData[8];
 extern INV_ITEM *g_Inv_MainList[];
 extern INV_ITEM *g_Inv_KeysList[];
 extern TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF];
-extern TEXTSTRING *g_Inv_TagText;
 
 extern INV_ITEM g_Inv_Item_Stopwatch;
 extern INV_ITEM g_Inv_Item_Pistols;
