@@ -131,9 +131,7 @@ void Worker3_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         if (item->current_anim_state != WORKER_3_STATE_DEATH) {
-            item->anim_num =
-                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToObjAnim(item, WORKER_3_ANIM_DEATH, 0, O_WORKER_3);
             item->current_anim_state = WORKER_3_STATE_DEATH;
         }
     } else {
@@ -315,30 +313,22 @@ void Worker3_Control(const int16_t item_num)
     } else {
         switch (Creature_Vault(item_num, angle, 2, WORKER_3_VAULT_SHIFT)) {
         case -4:
-            item->anim_num =
-                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_FALL_3;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToObjAnim(item, WORKER_3_ANIM_FALL_3, 0, O_WORKER_3);
             item->current_anim_state = WORKER_3_STATE_FALL_3;
             break;
 
         case 2:
-            item->anim_num =
-                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_1;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToObjAnim(item, WORKER_3_ANIM_CLIMB_1, 0, O_WORKER_3);
             item->current_anim_state = WORKER_3_STATE_CLIMB_1;
             break;
 
         case 3:
-            item->anim_num =
-                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_2;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToObjAnim(item, WORKER_3_ANIM_CLIMB_2, 0, O_WORKER_3);
             item->current_anim_state = WORKER_3_STATE_CLIMB_2;
             break;
 
         case 4:
-            item->anim_num =
-                g_Objects[O_WORKER_3].anim_idx + WORKER_3_ANIM_CLIMB_3;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToObjAnim(item, WORKER_3_ANIM_CLIMB_3, 0, O_WORKER_3);
             item->current_anim_state = WORKER_3_STATE_CLIMB_3;
             break;
 

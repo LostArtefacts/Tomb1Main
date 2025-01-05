@@ -131,8 +131,7 @@ void RollingBall_Control(const int16_t item_num)
         }
         item->goal_anim_state = TRAP_SET;
         item->current_anim_state = TRAP_SET;
-        item->anim_num = g_Objects[item->object_id].anim_idx;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, 0, 0);
         item->goal_anim_state = g_Anims[item->anim_num].current_anim_state;
         item->current_anim_state = item->goal_anim_state;
         item->required_anim_state = TRAP_SET;
@@ -186,8 +185,7 @@ void RollingBall_Collision(
             lara_item->rot.y = item->rot.y;
             lara_item->rot.z = 0;
 
-            lara_item->anim_num = LA_BOULDER_DEATH;
-            lara_item->frame_num = g_Anims[LA_BOULDER_DEATH].frame_base;
+            Item_SwitchToAnim(lara_item, LA_BOULDER_DEATH, 0);
             lara_item->current_anim_state = LA_REACH_TO_FREEFALL;
             lara_item->goal_anim_state = LA_REACH_TO_FREEFALL;
 

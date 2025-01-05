@@ -120,9 +120,7 @@ void Bandit2_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         if (item->current_anim_state != BANDIT_2_STATE_DEATH) {
-            item->anim_num =
-                g_Objects[O_BANDIT_2].anim_idx + BANDIT_2_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, BANDIT_2_ANIM_DEATH, 0);
             item->current_anim_state = BANDIT_2_STATE_DEATH;
         }
     } else {

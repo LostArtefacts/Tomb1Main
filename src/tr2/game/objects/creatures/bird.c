@@ -90,13 +90,11 @@ void Bird_Initialise(const int16_t item_num)
     Creature_Initialise(item_num);
     ITEM *const item = &g_Items[item_num];
     if (item->object_id == O_CROW) {
-        item->anim_num = g_Objects[O_CROW].anim_idx + CROW_START_ANIM;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, CROW_START_ANIM, 0);
         item->goal_anim_state = BIRD_STATE_EAT;
         item->current_anim_state = BIRD_STATE_EAT;
     } else {
-        item->anim_num = g_Objects[O_EAGLE].anim_idx + BIRD_START_ANIM;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, BIRD_START_ANIM, 0);
         item->goal_anim_state = BIRD_STATE_STOP;
         item->current_anim_state = BIRD_STATE_STOP;
     }
@@ -127,12 +125,9 @@ void Bird_Control(const int16_t item_num)
             break;
 
         default:
-            if (item->object_id == O_CROW) {
-                item->anim_num = g_Objects[O_CROW].anim_idx + CROW_DIE_ANIM;
-            } else {
-                item->anim_num = g_Objects[O_EAGLE].anim_idx + BIRD_DIE_ANIM;
-            }
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            const int16_t anim_idx =
+                item->object_id == O_CROW ? CROW_DIE_ANIM : BIRD_DIE_ANIM;
+            Item_SwitchToAnim(item, anim_idx, 0);
             item->current_anim_state = BIRD_STATE_FALL;
             item->gravity = 1;
             item->speed = 0;

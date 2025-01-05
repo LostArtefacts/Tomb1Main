@@ -483,8 +483,7 @@ void Lara_Control(const int16_t item_num)
                     item->fall_speed *= 2;
                 } else {
                     item->rot.x = -45 * PHD_DEGREE;
-                    item->anim_num = LA_FREEFALL_TO_UNDERWATER;
-                    item->frame_num = g_Anims[item->anim_num].frame_base;
+                    Item_SwitchToAnim(item, LA_FREEFALL_TO_UNDERWATER, 0);
                     item->current_anim_state = LS_DIVE;
                     item->goal_anim_state = LS_SWIM;
                     item->fall_speed = item->fall_speed * 3 / 2;
@@ -504,8 +503,7 @@ void Lara_Control(const int16_t item_num)
 
             if (water_depth == NO_HEIGHT || ABS(water_height_diff) >= STEP_L) {
                 g_Lara.water_status = LWS_ABOVE_WATER;
-                item->anim_num = LA_FALL_START;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_FALL_START, 0);
                 item->goal_anim_state = LS_FORWARD_JUMP;
                 item->current_anim_state = LS_FORWARD_JUMP;
                 item->gravity = 1;
@@ -519,8 +517,7 @@ void Lara_Control(const int16_t item_num)
                 g_Lara.head_x_rot = 0;
             } else {
                 g_Lara.water_status = LWS_SURFACE;
-                item->anim_num = LA_UNDERWATER_TO_ONWATER;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_UNDERWATER_TO_ONWATER, 0);
                 item->goal_anim_state = LS_SURF_TREAD;
                 item->current_anim_state = LS_SURF_TREAD;
                 item->fall_speed = 0;
@@ -544,16 +541,14 @@ void Lara_Control(const int16_t item_num)
 
             if (water_height_diff <= LARA_WADE_DEPTH) {
                 g_Lara.water_status = LWS_ABOVE_WATER;
-                item->anim_num = LA_FALL_START;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_FALL_START, 0);
                 item->goal_anim_state = LS_FORWARD_JUMP;
                 item->current_anim_state = LS_FORWARD_JUMP;
                 item->gravity = 1;
                 item->speed = item->fall_speed / 4;
             } else {
                 g_Lara.water_status = LWS_WADE;
-                item->anim_num = LA_STAND_IDLE;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_STAND_IDLE, 0);
                 item->current_anim_state = LS_STOP;
                 item->goal_anim_state = LS_WADE;
                 Item_Animate(item);
@@ -579,29 +574,30 @@ void Lara_Control(const int16_t item_num)
                 g_Lara.water_status = LWS_SURFACE;
                 item->pos.y += 1 - water_height_diff;
 
+                LARA_ANIMATION anim_idx;
                 switch (item->current_anim_state) {
                 case LS_BACK:
                     item->goal_anim_state = LS_SURF_BACK;
-                    item->anim_num = LA_ONWATER_IDLE_TO_SWIM_BACK;
+                    anim_idx = LA_ONWATER_IDLE_TO_SWIM_BACK;
                     break;
 
                 case LS_STEP_RIGHT:
                     item->goal_anim_state = LS_SURF_RIGHT;
-                    item->anim_num = LA_ONWATER_SWIM_RIGHT;
+                    anim_idx = LA_ONWATER_SWIM_RIGHT;
                     break;
 
                 case LS_STEP_LEFT:
                     item->goal_anim_state = LS_SURF_LEFT;
-                    item->anim_num = LA_ONWATER_SWIM_LEFT;
+                    anim_idx = LA_ONWATER_SWIM_LEFT;
                     break;
 
                 default:
                     item->goal_anim_state = LS_SURF_SWIM;
-                    item->anim_num = LA_ONWATER_SWIM_FORWARD;
+                    anim_idx = LA_ONWATER_SWIM_FORWARD;
                     break;
                 }
                 item->current_anim_state = item->goal_anim_state;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, anim_idx, 0);
 
                 item->rot.z = 0;
                 item->rot.x = 0;
@@ -957,8 +953,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
     if (type == GFL_NORMAL && g_GF_LaraStartAnim) {
         g_Lara.water_status = LWS_ABOVE_WATER;
         g_Lara.gun_status = LGS_HANDS_BUSY;
-        item->anim_num = g_Objects[O_LARA_EXTRA].anim_idx;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToObjAnim(item, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
         item->current_anim_state = LA_EXTRA_BREATH;
         item->goal_anim_state = g_GF_LaraStartAnim;
         Lara_Animate(item);
@@ -972,14 +967,12 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
         item->fall_speed = 0;
         item->goal_anim_state = LS_TREAD;
         item->current_anim_state = LS_TREAD;
-        item->anim_num = LA_UNDERWATER_IDLE;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_UNDERWATER_IDLE, 0);
     } else {
         g_Lara.water_status = LWS_ABOVE_WATER;
         item->goal_anim_state = LS_STOP;
         item->current_anim_state = LS_STOP;
-        item->anim_num = LA_STAND_STILL;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_STAND_STILL, 0);
     }
 
     if (type == GFL_CUTSCENE) {
@@ -1168,14 +1161,12 @@ void Lara_GetOffVehicle(void)
 {
     if (g_Lara.skidoo != NO_ITEM) {
         ITEM *const vehicle = &g_Items[g_Lara.skidoo];
-        vehicle->anim_num = g_Objects[vehicle->object_id].anim_idx;
-        vehicle->frame_num = g_Anims[vehicle->anim_num].frame_base;
+        Item_SwitchToAnim(vehicle, 0, 0);
         g_Lara.skidoo = NO_ITEM;
 
         g_LaraItem->current_anim_state = LS_STOP;
         g_LaraItem->goal_anim_state = LS_STOP;
-        g_LaraItem->anim_num = LA_STAND_STILL;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
 
         g_LaraItem->rot.x = 0;
         g_LaraItem->rot.z = 0;

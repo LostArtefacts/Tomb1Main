@@ -172,8 +172,7 @@ void Tiger_Control(const int16_t item_num)
             break;
         }
     } else if (item->current_anim_state != TIGER_STATE_DEATH) {
-        item->anim_num = g_Objects[O_TIGER].anim_idx + TIGER_ANIM_DEATH;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, TIGER_ANIM_DEATH, 0);
         item->current_anim_state = TIGER_STATE_DEATH;
     }
 

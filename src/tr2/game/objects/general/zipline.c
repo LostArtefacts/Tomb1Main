@@ -79,8 +79,7 @@ void Zipline_Control(const int16_t item_num)
         item->status = IS_INACTIVE;
         item->goal_anim_state = ZIPLINE_STATE_GRAB;
         item->current_anim_state = ZIPLINE_STATE_GRAB;
-        item->anim_num = g_Objects[item->object_id].anim_idx;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, 0, 0);
         Item_RemoveActive(item_num);
         return;
     }

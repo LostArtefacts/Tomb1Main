@@ -92,8 +92,7 @@ static void M_PushLaraAway(
 
 static void M_PullDagger(ITEM *const lara_item, ITEM *const dragon_back_item)
 {
-    lara_item->anim_num = Object_GetObject(O_LARA_EXTRA)->anim_idx;
-    lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+    Item_SwitchToObjAnim(lara_item, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
     lara_item->current_anim_state = LA_EXTRA_BREATH;
     lara_item->goal_anim_state = LA_EXTRA_PULL_DAGGER;
     lara_item->pos.x = dragon_back_item->pos.x;
@@ -269,10 +268,7 @@ void Dragon_Control(const int16_t item_num)
 
     if (dragon_front_item->hit_points <= 0) {
         if (dragon_front_item->current_anim_state != DRAGON_STATE_DEATH) {
-            dragon_front_item->anim_num =
-                g_Objects[O_DRAGON_FRONT].anim_idx + DRAGON_ANIM_DIE;
-            dragon_front_item->frame_num =
-                g_Anims[dragon_front_item->anim_num].frame_base;
+            Item_SwitchToAnim(dragon_front_item, DRAGON_ANIM_DIE, 0);
             dragon_front_item->goal_anim_state = DRAGON_STATE_DEATH;
             dragon_front_item->current_anim_state = DRAGON_STATE_DEATH;
             creature->flags = 0;
@@ -454,12 +450,11 @@ void Dragon_Control(const int16_t item_num)
     Creature_Animate(dragon_front_item_num, angle, 0);
     dragon_back_item->current_anim_state =
         dragon_front_item->current_anim_state;
-    dragon_back_item->anim_num = dragon_front_item->anim_num
-        + g_Objects[O_DRAGON_BACK].anim_idx
-        - g_Objects[O_DRAGON_FRONT].anim_idx;
-    dragon_back_item->frame_num = dragon_front_item->frame_num
-        + g_Anims[dragon_back_item->anim_num].frame_base
+    const int16_t anim_num =
+        dragon_front_item->anim_num - g_Objects[O_DRAGON_FRONT].anim_idx;
+    const int16_t frame_num = dragon_front_item->frame_num
         - g_Anims[dragon_front_item->anim_num].frame_base;
+    Item_SwitchToAnim(dragon_back_item, anim_num, frame_num);
     dragon_back_item->pos.x = dragon_front_item->pos.x;
     dragon_back_item->pos.y = dragon_front_item->pos.y;
     dragon_back_item->pos.z = dragon_front_item->pos.z;

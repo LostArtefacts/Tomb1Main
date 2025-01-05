@@ -35,8 +35,7 @@ void Lara_CollideStop(ITEM *const item, const COLL_INFO *const coll)
         break;
 
     default:
-        item->anim_num = LA_STAND_STILL;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_STAND_STILL, 0);
         break;
     }
 }
@@ -49,8 +48,7 @@ bool Lara_Fallen(ITEM *const item, const COLL_INFO *const coll)
     }
     item->current_anim_state = LS_FORWARD_JUMP;
     item->goal_anim_state = LS_FORWARD_JUMP;
-    item->anim_num = LA_FALL_START;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, LA_FALL_START, 0);
     item->gravity = 1;
     item->fall_speed = 0;
     return true;
@@ -114,14 +112,11 @@ bool Lara_TestWaterClimbOut(ITEM *const item, const COLL_INFO *const coll)
     }
 
     if (lara_hdif < -STEP_L / 2) {
-        item->anim_num = LA_ONWATER_TO_STAND_HIGH;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_ONWATER_TO_STAND_HIGH, 0);
     } else if (lara_hdif < STEP_L / 2) {
-        item->anim_num = LA_ONWATER_TO_STAND_MEDIUM;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_ONWATER_TO_STAND_MEDIUM, 0);
     } else {
-        item->anim_num = LA_ONWATER_TO_WADE_LOW;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_ONWATER_TO_WADE_LOW, 0);
     }
 
     item->current_anim_state = LS_WATER_OUT;
@@ -147,8 +142,7 @@ bool Lara_TestWaterStepOut(ITEM *const item, const COLL_INFO *const coll)
     if (coll->side_mid.floor < -STEP_L / 2) {
         item->current_anim_state = LS_WATER_OUT;
         item->goal_anim_state = LS_STOP;
-        item->anim_num = LA_ONWATER_TO_WADE;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_ONWATER_TO_WADE, 0);
     } else if (item->goal_anim_state == LS_SURF_LEFT) {
         item->goal_anim_state = LS_STEP_LEFT;
     } else if (item->goal_anim_state == LS_SURF_RIGHT) {
@@ -156,8 +150,7 @@ bool Lara_TestWaterStepOut(ITEM *const item, const COLL_INFO *const coll)
     } else {
         item->current_anim_state = LS_WADE;
         item->goal_anim_state = LS_WADE;
-        item->anim_num = LA_WADE;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_WADE, 0);
     }
 
     item->pos.y += coll->side_front.floor + LARA_HEIGHT_SURF - 5;
@@ -198,8 +191,7 @@ void Lara_SurfaceCollision(ITEM *const item, COLL_INFO *const coll)
     if (water_height - item->pos.y <= -100) {
         item->current_anim_state = LS_DIVE;
         item->goal_anim_state = LS_SWIM;
-        item->anim_num = LA_ONWATER_DIVE;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_ONWATER_DIVE, 0);
         item->rot.x = -45 * PHD_DEGREE;
         item->fall_speed = 80;
         g_Lara.water_status = LWS_UNDERWATER;
@@ -232,13 +224,11 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 
     if (Lara_DeflectEdge(item, coll)) {
         if (item->frame_num >= 29 && item->frame_num <= 47) {
-            item->anim_num = LA_WALK_STOP_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_STOP_LEFT, 0);
         } else if (
             (item->frame_num >= 22 && item->frame_num <= 28)
             || (item->frame_num >= 48 && item->frame_num <= 57)) {
-            item->anim_num = LA_WALK_STOP_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_STOP_RIGHT, 0);
         } else {
             Lara_CollideStop(item, coll);
         }
@@ -250,22 +240,18 @@ void Lara_Col_Walk(ITEM *item, COLL_INFO *coll)
 
     if (coll->side_mid.floor > STEP_L / 2) {
         if (item->frame_num >= 28 && item->frame_num <= 45) {
-            item->anim_num = LA_WALK_DOWN_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_DOWN_LEFT, 0);
         } else {
-            item->anim_num = LA_WALK_DOWN_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_DOWN_RIGHT, 0);
         }
     }
 
     if (coll->side_mid.floor >= -STEPUP_HEIGHT
         && coll->side_mid.floor < -STEP_L / 2) {
         if (item->frame_num >= 27 && item->frame_num <= 44) {
-            item->anim_num = LA_WALK_UP_STEP_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_UP_STEP_LEFT, 0);
         } else {
-            item->anim_num = LA_WALK_UP_STEP_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_UP_STEP_RIGHT, 0);
         }
     }
 
@@ -300,13 +286,11 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
             && Lara_TestWall(item, STEP_L, 0, -STEP_L * 5 / 2)) {
             item->current_anim_state = LS_SPLAT;
             if (item->frame_num >= 0 && item->frame_num <= 9) {
-                item->anim_num = LA_WALL_SMASH_LEFT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_WALL_SMASH_LEFT, 0);
                 return;
             }
             if (item->frame_num >= 10 && item->frame_num <= 21) {
-                item->anim_num = LA_WALL_SMASH_RIGHT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_WALL_SMASH_RIGHT, 0);
                 return;
             }
         }
@@ -325,11 +309,9 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
             coll->side_mid.floor = 0;
         } else {
             if (item->frame_num >= 3 && item->frame_num <= 14) {
-                item->anim_num = LA_RUN_UP_STEP_LEFT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_RUN_UP_STEP_LEFT, 0);
             } else {
-                item->anim_num = LA_RUN_UP_STEP_RIGHT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_RUN_UP_STEP_RIGHT, 0);
             }
         }
     }
@@ -421,8 +403,7 @@ void Lara_Col_FastBack(ITEM *item, COLL_INFO *coll)
         }
         item->pos.y += coll->side_mid.floor;
     } else {
-        item->anim_num = LA_FALL_BACK;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_FALL_BACK, 0);
         item->current_anim_state = LS_FALL_BACK;
         item->goal_anim_state = LS_FALL_BACK;
         item->gravity = 1;
@@ -448,8 +429,7 @@ void Lara_Col_TurnRight(ITEM *item, COLL_INFO *coll)
             item->pos.y += coll->side_mid.floor;
         }
     } else {
-        item->anim_num = LA_FALL_START;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_FALL_START, 0);
         item->current_anim_state = LS_FORWARD_JUMP;
         item->goal_anim_state = LS_FORWARD_JUMP;
         item->gravity = 1;
@@ -497,8 +477,7 @@ void Lara_Col_FastFall(ITEM *item, COLL_INFO *coll)
     } else {
         item->goal_anim_state = LS_STOP;
         item->current_anim_state = LS_STOP;
-        item->anim_num = LA_FREEFALL_LAND;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_FREEFALL_LAND, 0);
     }
 
     Sound_StopEffect(SFX_LARA_FALL);
@@ -526,8 +505,7 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
                 && coll->side_mid.ceiling <= -256) {
                 item->goal_anim_state = LS_HANG;
                 item->current_anim_state = LS_HANG;
-                item->anim_num = LA_LADDER_UP_HANGING;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_LADDER_UP_HANGING, 0);
             }
         } else if (g_Input.slow) {
             item->goal_anim_state = LS_GYMNAST;
@@ -540,8 +518,7 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
         && item->frame_num == g_Anims[item->anim_num].frame_base + 21) {
         item->goal_anim_state = LS_HANG;
         item->current_anim_state = LS_HANG;
-        item->anim_num = LA_LADDER_DOWN_HANGING;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_LADDER_DOWN_HANGING, 0);
     }
 }
 
@@ -606,8 +583,7 @@ void Lara_Col_Compress(ITEM *item, COLL_INFO *coll)
     Lara_GetCollisionInfo(item, coll);
 
     if (coll->side_mid.ceiling > -100) {
-        item->anim_num = LA_STAND_STILL;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_STAND_STILL, 0);
         item->goal_anim_state = LS_STOP;
         item->current_anim_state = LS_STOP;
         item->gravity = 0;
@@ -654,11 +630,9 @@ void Lara_Col_Back(ITEM *item, COLL_INFO *coll)
     if (coll->side_mid.floor > STEP_L / 2
         && coll->side_mid.floor < STEPUP_HEIGHT) {
         if (item->frame_num >= 964 && item->frame_num <= 993) {
-            item->anim_num = LA_WALK_DOWN_BACK_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_DOWN_BACK_RIGHT, 0);
         } else {
-            item->anim_num = LA_WALK_DOWN_BACK_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_WALK_DOWN_BACK_LEFT, 0);
         }
     }
 
@@ -859,8 +833,7 @@ void Lara_Col_Roll2(ITEM *item, COLL_INFO *coll)
     }
 
     if (coll->side_mid.floor > 200) {
-        item->anim_num = LA_FALL_BACK;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_FALL_BACK, 0);
         item->current_anim_state = LS_FALL_BACK;
         item->goal_anim_state = LS_FALL_BACK;
         item->gravity = 1;
@@ -933,13 +906,11 @@ void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
             && coll->side_front.floor < -STEP_L * 5 / 2) {
             item->current_anim_state = LS_SPLAT;
             if (item->frame_num >= 0 && item->frame_num <= 9) {
-                item->anim_num = LA_WALL_SMASH_LEFT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_WALL_SMASH_LEFT, 0);
                 return;
             }
             if (item->frame_num >= 10 && item->frame_num <= 21) {
-                item->anim_num = LA_WALL_SMASH_RIGHT;
-                item->frame_num = g_Anims[item->anim_num].frame_base;
+                Item_SwitchToAnim(item, LA_WALL_SMASH_RIGHT, 0);
                 return;
             }
         }
@@ -953,11 +924,9 @@ void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
     if (coll->side_mid.floor >= -STEPUP_HEIGHT
         && coll->side_mid.floor < -STEP_L / 2) {
         if (item->frame_num >= 3 && item->frame_num <= 14) {
-            item->anim_num = LA_RUN_UP_STEP_LEFT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_RUN_UP_STEP_LEFT, 0);
         } else {
-            item->anim_num = LA_RUN_UP_STEP_RIGHT;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_RUN_UP_STEP_RIGHT, 0);
         }
     }
 
@@ -1248,8 +1217,7 @@ void Lara_Col_ClimbDown(ITEM *item, COLL_INFO *coll)
     }
 
     if (result_r == -1 || result_l == -1) {
-        item->anim_num = LA_LADDER_IDLE;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_LADDER_IDLE, 0);
         item->current_anim_state = LS_CLIMB_STANCE;
         item->goal_anim_state = LS_HANG;
         Lara_Animate(item);

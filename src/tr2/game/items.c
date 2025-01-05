@@ -124,8 +124,7 @@ void Item_Kill(const int16_t item_num)
 void Item_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    item->anim_num = g_Objects[item->object_id].anim_idx;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, 0, 0);
     item->goal_anim_state = g_Anims[item->anim_num].current_anim_state;
     item->current_anim_state = item->goal_anim_state;
     item->required_anim_state = 0;

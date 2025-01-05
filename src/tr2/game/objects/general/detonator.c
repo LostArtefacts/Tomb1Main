@@ -135,8 +135,7 @@ void Detonator_Collision(
 
     Inv_RemoveItem(O_KEY_OPTION_2);
     Item_AlignPosition(&m_DetonatorPosition, item, lara_item);
-    lara_item->anim_num = g_Objects[O_LARA_EXTRA].anim_idx;
-    lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+    Item_SwitchToObjAnim(lara_item, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
     lara_item->current_anim_state = LA_EXTRA_BREATH;
     if (item->object_id == O_DETONATOR_2) {
         lara_item->goal_anim_state = LA_EXTRA_PLUNGER;

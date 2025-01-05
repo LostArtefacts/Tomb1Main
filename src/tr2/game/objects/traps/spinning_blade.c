@@ -34,8 +34,7 @@ void M_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_GetObject(item->object_id);
-    item->anim_num = obj->anim_idx + SPINNING_BLADE_ANIM_STOP;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, SPINNING_BLADE_ANIM_STOP, 0);
     item->current_anim_state = SPINNING_BLADE_STATE_STOP;
 }
 

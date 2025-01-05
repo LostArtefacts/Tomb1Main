@@ -46,8 +46,7 @@ void SphereOfDoom_Collision(
         item->pos.z + (((radius + 50) * Math_Cos(angle)) >> W2V_SHIFT);
     lara_item->rot.x = 0;
     lara_item->rot.z = 0;
-    lara_item->anim_num = LA_FALL_START;
-    lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+    Item_SwitchToAnim(lara_item, LA_FALL_START, 0);
     lara_item->current_anim_state = LS_FORWARD_JUMP;
     lara_item->goal_anim_state = LS_FORWARD_JUMP;
 }

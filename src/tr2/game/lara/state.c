@@ -15,6 +15,8 @@
 #include <libtrx/config.h>
 #include <libtrx/utils.h>
 
+#define LF_ROLL 2
+
 static bool m_JumpPermitted = true;
 
 void Lara_SwimTurn(ITEM *const item)
@@ -79,10 +81,9 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Input.roll) {
-        item->anim_num = LA_ROLL_START;
         item->current_anim_state = LS_ROLL;
         item->goal_anim_state = LS_STOP;
-        item->frame_num = g_Anims[item->anim_num].frame_base + 2;
+        Item_SwitchToAnim(item, LA_ROLL_START, LF_ROLL);
         return;
     }
 
@@ -127,10 +128,9 @@ void Lara_State_Stop(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Input.roll && g_Lara.water_status != LWS_WADE) {
-        item->anim_num = LA_ROLL_START;
         item->current_anim_state = LS_ROLL;
         item->goal_anim_state = LS_STOP;
-        item->frame_num = g_Anims[item->anim_num].frame_base + 2;
+        Item_SwitchToAnim(item, LA_ROLL_START, LF_ROLL);
         return;
     }
 
@@ -695,8 +695,7 @@ void Lara_State_Zipline(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Extra_Breath(ITEM *item, COLL_INFO *coll)
 {
-    item->anim_num = LA_STAND_IDLE;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, LA_STAND_IDLE, 0);
     item->goal_anim_state = LS_STOP;
     item->current_anim_state = LS_STOP;
     g_Lara.extra_anim = 0;
@@ -1018,8 +1017,7 @@ void Lara_State_SurfTread(ITEM *item, COLL_INFO *coll)
     if (g_Input.jump) {
         g_Lara.dive_count++;
         if (g_Lara.dive_count == 10) {
-            item->anim_num = LA_ONWATER_DIVE;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, LA_ONWATER_DIVE, 0);
             item->goal_anim_state = LS_SWIM;
             item->current_anim_state = LS_DIVE;
             item->rot.x = -45 * PHD_DEGREE;
@@ -1040,8 +1038,7 @@ void Lara_State_Swim(ITEM *item, COLL_INFO *coll)
 
     if (g_Input.roll) {
         item->current_anim_state = LS_WATER_ROLL;
-        item->anim_num = LA_UNDERWATER_ROLL_START;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_UNDERWATER_ROLL_START, 0);
         return;
     }
 
@@ -1067,8 +1064,7 @@ void Lara_State_Glide(ITEM *item, COLL_INFO *coll)
 
     if (g_Input.roll) {
         item->current_anim_state = LS_WATER_ROLL;
-        item->anim_num = LA_UNDERWATER_ROLL_START;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_UNDERWATER_ROLL_START, 0);
         return;
     }
 
@@ -1092,8 +1088,7 @@ void Lara_State_Tread(ITEM *item, COLL_INFO *coll)
 
     if (g_Input.roll) {
         item->current_anim_state = LS_WATER_ROLL;
-        item->anim_num = LA_UNDERWATER_ROLL_START;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, LA_UNDERWATER_ROLL_START, 0);
         return;
     }
 

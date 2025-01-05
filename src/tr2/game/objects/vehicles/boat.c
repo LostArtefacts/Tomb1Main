@@ -160,20 +160,23 @@ void Boat_Collision(
 
     g_Lara.skidoo = item_num;
 
+    int16_t boat_anim_idx;
     switch (get_on) {
     case 1:
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_GET_ON_RW_ANIM;
+        boat_anim_idx = BOAT_GET_ON_RW_ANIM;
         break;
     case 2:
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_GET_ON_LW_ANIM;
+        boat_anim_idx = BOAT_GET_ON_LW_ANIM;
         break;
     case 3:
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_GET_ON_J_ANIM;
+        boat_anim_idx = BOAT_GET_ON_J_ANIM;
         break;
     default:
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_GET_ON_START;
+        boat_anim_idx = BOAT_GET_ON_START;
         break;
     }
+
+    Item_SwitchToObjAnim(lara, boat_anim_idx, 0, O_LARA_BOAT);
 
     g_Lara.water_status = LWS_ABOVE_WATER;
     g_Lara.hit_direction = -1;
@@ -191,7 +194,6 @@ void Boat_Collision(
     lara->fall_speed = 0;
     lara->goal_anim_state = 0;
     lara->current_anim_state = 0;
-    lara->frame_num = g_Anims[lara->anim_num].frame_base;
 
     if (lara->room_num != boat->room_num) {
         Item_NewRoom(g_Lara.item_num, boat->room_num);
@@ -563,8 +565,7 @@ void Boat_Animation(const ITEM *const boat, const int32_t collide)
         if (lara->current_anim_state == BOAT_STATE_DEATH) {
             return;
         }
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_DEATH_ANIM;
-        lara->frame_num = g_Anims[lara->anim_num].frame_base;
+        Item_SwitchToObjAnim(lara, BOAT_DEATH_ANIM, 0, O_LARA_BOAT);
         lara->goal_anim_state = BOAT_STATE_DEATH;
         lara->current_anim_state = BOAT_STATE_DEATH;
         return;
@@ -574,8 +575,7 @@ void Boat_Animation(const ITEM *const boat, const int32_t collide)
         if (lara->current_anim_state == BOAT_STATE_FALL) {
             return;
         }
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + BOAT_FALL_ANIM;
-        lara->frame_num = g_Anims[lara->anim_num].frame_base;
+        Item_SwitchToObjAnim(lara, BOAT_FALL_ANIM, 0, O_LARA_BOAT);
         lara->goal_anim_state = BOAT_STATE_FALL;
         lara->current_anim_state = BOAT_STATE_FALL;
         return;
@@ -585,8 +585,7 @@ void Boat_Animation(const ITEM *const boat, const int32_t collide)
         if (lara->current_anim_state == BOAT_STATE_HIT) {
             return;
         }
-        lara->anim_num = g_Objects[O_LARA_BOAT].anim_idx + collide;
-        lara->frame_num = g_Anims[lara->anim_num].frame_base;
+        Item_SwitchToObjAnim(lara, collide, 0, O_LARA_BOAT);
         lara->goal_anim_state = BOAT_STATE_HIT;
         lara->current_anim_state = BOAT_STATE_HIT;
         return;
@@ -734,10 +733,11 @@ void Boat_Control(const int16_t item_num)
         Item_Animate(lara);
 
         if (lara->hit_points > 0) {
-            boat->anim_num = g_Objects[O_BOAT].anim_idx
-                + (lara->anim_num - g_Objects[O_LARA_BOAT].anim_idx);
-            boat->frame_num = g_Anims[boat->anim_num].frame_base
-                + lara->frame_num - g_Anims[lara->anim_num].frame_base;
+            const int16_t lara_anim_num =
+                lara->anim_num - g_Objects[O_LARA_BOAT].anim_idx;
+            const int16_t lara_frame_num =
+                lara->frame_num - g_Anims[g_LaraItem->anim_num].frame_base;
+            Item_SwitchToAnim(boat, lara_anim_num, lara_frame_num);
         }
 
         g_Camera.target_elevation = -20 * PHD_DEGREE;
@@ -786,8 +786,7 @@ void Boat_Control(const int16_t item_num)
             lara->rot.y += PHD_90;
         }
 
-        lara->anim_num = LA_JUMP_FORWARD;
-        lara->frame_num = g_Anims[lara->anim_num].frame_base;
+        Item_SwitchToAnim(lara, LA_JUMP_FORWARD, 0);
         lara->goal_anim_state = LS_FORWARD_JUMP;
         lara->current_anim_state = LS_FORWARD_JUMP;
         lara->gravity = 1;
@@ -815,7 +814,6 @@ void Boat_Control(const int16_t item_num)
         }
 
         lara->pos.y = pos.y;
-        boat->anim_num = g_Objects[O_BOAT].anim_idx;
-        boat->frame_num = g_Anims[boat->anim_num].frame_base;
+        Item_SwitchToAnim(boat, 0, 0);
     }
 }

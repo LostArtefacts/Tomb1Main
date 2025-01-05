@@ -222,8 +222,7 @@ void Dog_Control(const int16_t item_num)
             break;
         }
     } else if (item->current_anim_state != DOG_STATE_DEATH) {
-        item->anim_num = g_Objects[O_DOG].anim_idx + DOG_ANIM_DEATH;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, DOG_ANIM_DEATH, 0);
         item->current_anim_state = DOG_STATE_DEATH;
     }
 

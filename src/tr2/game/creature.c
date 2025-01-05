@@ -803,12 +803,10 @@ void Creature_Kill(
     ITEM *const item, const int32_t kill_anim, const int32_t kill_state,
     const int32_t lara_kill_state)
 {
-    item->anim_num = g_Objects[item->object_id].anim_idx + kill_anim;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, kill_anim, 0);
     item->current_anim_state = kill_state;
 
-    g_LaraItem->anim_num = g_Objects[O_LARA_EXTRA].anim_idx;
-    g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+    Item_SwitchToObjAnim(g_LaraItem, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
     g_LaraItem->current_anim_state = LA_EXTRA_BREATH;
     g_LaraItem->goal_anim_state = lara_kill_state;
     g_LaraItem->pos = item->pos;

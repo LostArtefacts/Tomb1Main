@@ -34,8 +34,7 @@ void KillerStatue_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_GetObject(item->object_id);
-    item->anim_num = obj->anim_idx + KILLER_STATUE_ANIM_SET;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, KILLER_STATUE_ANIM_SET, 0);
     item->current_anim_state = KILLER_STATUE_STATE_STOP;
 }
 

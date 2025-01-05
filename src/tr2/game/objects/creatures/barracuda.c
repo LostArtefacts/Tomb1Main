@@ -144,9 +144,7 @@ void Barracuda_Control(const int16_t item_num)
         Creature_Underwater(item, STEP_L);
     } else {
         if (item->current_anim_state != BARRACUDA_ANIM_DEATH) {
-            item->anim_num =
-                g_Objects[O_BARRACUDA].anim_idx + BARRACUDA_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, BARRACUDA_ANIM_DEATH, 0);
             item->current_anim_state = BARRACUDA_STATE_DEATH;
         }
         Creature_Float(item_num);

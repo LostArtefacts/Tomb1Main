@@ -80,8 +80,7 @@ void Spider_Leap(const int16_t item_num, const int16_t angle)
     if (item->room_num != old_room_num) {
         Item_NewRoom(item_num, old_room_num);
     }
-    item->anim_num = g_Objects[O_SPIDER].anim_idx + SPIDER_ANIM_LEAP;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, SPIDER_ANIM_LEAP, 0);
     item->current_anim_state = SPIDER_STATE_ATTACK_2;
     Creature_Animate(item_num, angle, 0);
 }

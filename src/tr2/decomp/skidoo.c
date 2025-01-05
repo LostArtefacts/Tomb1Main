@@ -223,15 +223,11 @@ void Skidoo_Collision(
         g_Lara.gun_type = LGT_UNARMED;
         g_Lara.request_gun_type = LGT_UNARMED;
     }
-    if (get_on == SKIDOO_GET_ON_LEFT) {
-        lara_item->anim_num =
-            g_Objects[O_LARA_SKIDOO].anim_idx + LA_SKIDOO_GET_ON_L;
-    } else if (get_on == SKIDOO_GET_ON_RIGHT) {
-        lara_item->anim_num =
-            g_Objects[O_LARA_SKIDOO].anim_idx + LA_SKIDOO_GET_ON_R;
-    }
+
+    const LARA_ANIM_SKIDOO anim_idx =
+        get_on == SKIDOO_GET_ON_LEFT ? LA_SKIDOO_GET_ON_L : LA_SKIDOO_GET_ON_R;
+    Item_SwitchToObjAnim(lara_item, anim_idx, 0, O_LARA_SKIDOO);
     lara_item->current_anim_state = LARA_STATE_SKIDOO_GET_ON;
-    lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
     g_Lara.gun_status = LGS_ARMLESS;
     g_Lara.hit_direction = -1;
 
@@ -584,9 +580,7 @@ void Skidoo_Animation(
 
     if (skidoo->pos.y != skidoo->floor && skidoo->fall_speed > 0
         && g_LaraItem->current_anim_state != LARA_STATE_SKIDOO_FALL && !dead) {
-        g_LaraItem->anim_num =
-            g_Objects[O_LARA_SKIDOO].anim_idx + LA_SKIDOO_FALL;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToObjAnim(g_LaraItem, LA_SKIDOO_FALL, 0, O_LARA_SKIDOO);
         g_LaraItem->goal_anim_state = LARA_STATE_SKIDOO_FALL;
         g_LaraItem->current_anim_state = LARA_STATE_SKIDOO_FALL;
         return;
@@ -600,8 +594,7 @@ void Skidoo_Animation(
             } else {
                 Sound_Effect(SFX_CLATTER_1, &skidoo->pos, SPM_NORMAL);
             }
-            g_LaraItem->anim_num = g_Objects[O_LARA_SKIDOO].anim_idx + collide;
-            g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+            Item_SwitchToObjAnim(g_LaraItem, collide, 0, O_LARA_SKIDOO);
             g_LaraItem->goal_anim_state = LARA_STATE_SKIDOO_HIT;
             g_LaraItem->current_anim_state = LARA_STATE_SKIDOO_HIT;
         }
@@ -717,8 +710,7 @@ int32_t Skidoo_CheckGetOff(void)
         } else {
             g_LaraItem->rot.y -= PHD_90;
         }
-        g_LaraItem->anim_num = LA_STAND_STILL;
-        g_LaraItem->frame_num = g_Anims[LA_STAND_STILL].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
         g_LaraItem->goal_anim_state = LS_STOP;
         g_LaraItem->current_anim_state = LS_STOP;
         g_LaraItem->pos.x -=
@@ -736,8 +728,7 @@ int32_t Skidoo_CheckGetOff(void)
         && (skidoo->pos.y == skidoo->floor
             || g_LaraItem->frame_num
                 == g_Anims[g_LaraItem->anim_num].frame_end)) {
-        g_LaraItem->anim_num = LA_FREEFALL;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_FREEFALL, 0);
         g_LaraItem->current_anim_state = LARA_STATE_SKIDOO_GET_OFF_R;
         if (skidoo->pos.y == skidoo->floor) {
             g_LaraItem->goal_anim_state = LARA_STATE_SKIDOO_STILL;
@@ -923,14 +914,14 @@ int32_t Skidoo_Control(void)
     }
 
     if (dead) {
-        skidoo->anim_num = g_Objects[O_SKIDOO_FAST].anim_idx + LA_SKIDOO_DEAD;
-        skidoo->frame_num = g_Anims[skidoo->anim_num].frame_base;
+        Item_SwitchToObjAnim(skidoo, LA_SKIDOO_DEAD, 0, O_SKIDOO_FAST);
     } else {
-        skidoo->anim_num = g_Objects[O_SKIDOO_FAST].anim_idx
-            + g_LaraItem->anim_num - g_Objects[O_LARA_SKIDOO].anim_idx;
-        skidoo->frame_num = g_LaraItem->frame_num
-            + g_Anims[skidoo->anim_num].frame_base
-            - g_Anims[g_LaraItem->anim_num].frame_base;
+        const int16_t lara_anim_num =
+            g_LaraItem->anim_num - g_Objects[O_LARA_SKIDOO].anim_idx;
+        const int16_t lara_frame_num =
+            g_LaraItem->frame_num - g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToObjAnim(
+            skidoo, lara_anim_num, lara_frame_num, O_SKIDOO_FAST);
     }
 
     if (skidoo->speed != 0 && skidoo->floor == skidoo->pos.y) {

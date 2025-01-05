@@ -279,8 +279,7 @@ void Yeti_Control(const int16_t item_num)
             break;
         }
     } else if (item->current_anim_state != YETI_STATE_DEATH) {
-        item->anim_num = g_Objects[O_YETI].anim_idx + YETI_ANIM_DEATH;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
+        Item_SwitchToAnim(item, YETI_ANIM_DEATH, 0);
         item->current_anim_state = YETI_STATE_DEATH;
     }
 
@@ -297,26 +296,22 @@ void Yeti_Control(const int16_t item_num)
     } else {
         switch (Creature_Vault(item_num, angle, 2, YETI_VAULT_SHIFT)) {
         case -4:
-            item->anim_num = g_Objects[O_YETI].anim_idx + YETI_ANIM_FALL;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, YETI_ANIM_FALL, 0);
             item->current_anim_state = YETI_STATE_FALL;
             break;
 
         case 2:
-            item->anim_num = g_Objects[O_YETI].anim_idx + YETI_ANIM_CLIMB_1;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, YETI_ANIM_CLIMB_1, 0);
             item->current_anim_state = YETI_STATE_CLIMB_1;
             break;
 
         case 3:
-            item->anim_num = g_Objects[O_YETI].anim_idx + YETI_ANIM_CLIMB_2;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, YETI_ANIM_CLIMB_2, 0);
             item->current_anim_state = YETI_STATE_CLIMB_2;
             break;
 
         case 4:
-            item->anim_num = g_Objects[O_YETI].anim_idx + YETI_ANIM_CLIMB_3;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, YETI_ANIM_CLIMB_3, 0);
             item->current_anim_state = YETI_STATE_CLIMB_3;
             break;
 

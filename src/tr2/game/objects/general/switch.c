@@ -63,15 +63,15 @@ static void M_SwitchOn(ITEM *const switch_item, ITEM *const lara_item)
 {
     switch (switch_item->object_id) {
     case O_SWITCH_TYPE_SMALL:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_SWITCH_SMALL_DOWN;
+        Item_SwitchToAnim(lara_item, LA_SWITCH_SMALL_DOWN, 0);
         break;
 
     case O_SWITCH_TYPE_BUTTON:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_BUTTON_PUSH;
+        Item_SwitchToAnim(lara_item, LA_BUTTON_PUSH, 0);
         break;
 
     default:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_WALL_SWITCH_DOWN;
+        Item_SwitchToAnim(lara_item, LA_WALL_SWITCH_DOWN, 0);
         break;
     }
 
@@ -85,8 +85,7 @@ static void M_SwitchOff(ITEM *const switch_item, ITEM *const lara_item)
 
     switch (switch_item->object_id) {
     case O_SWITCH_TYPE_AIRLOCK:
-        lara_item->anim_num = g_Objects[O_LARA_EXTRA].anim_idx;
-        lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+        Item_SwitchToObjAnim(lara_item, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
         lara_item->current_anim_state = LA_EXTRA_BREATH;
         lara_item->goal_anim_state = LA_EXTRA_AIRLOCK;
         Item_Animate(lara_item);
@@ -94,15 +93,15 @@ static void M_SwitchOff(ITEM *const switch_item, ITEM *const lara_item)
         break;
 
     case O_SWITCH_TYPE_SMALL:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_SWITCH_SMALL_UP;
+        Item_SwitchToAnim(lara_item, LA_SWITCH_SMALL_UP, 0);
         break;
 
     case O_SWITCH_TYPE_BUTTON:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_BUTTON_PUSH;
+        Item_SwitchToAnim(lara_item, LA_BUTTON_PUSH, 0);
         break;
 
     default:
-        lara_item->anim_num = g_Objects[O_LARA].anim_idx + LA_WALL_SWITCH_UP;
+        Item_SwitchToAnim(lara_item, LA_WALL_SWITCH_UP, 0);
         break;
     }
 
@@ -145,7 +144,6 @@ void Switch_Collision(
 
     if (!g_Lara.extra_anim) {
         lara_item->goal_anim_state = LS_STOP;
-        lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
     }
     g_Lara.gun_status = LGS_HANDS_BUSY;
 

@@ -125,10 +125,8 @@ void BigSpider_Control(const int16_t item_num)
             break;
         }
     } else if (item->current_anim_state != BIG_SPIDER_STATE_DEATH) {
-        item->anim_num =
-            g_Objects[O_BIG_SPIDER].anim_idx + BIG_SPIDER_ANIM_DEATH;
+        Item_SwitchToAnim(item, BIG_SPIDER_ANIM_DEATH, 0);
         item->current_anim_state = BIG_SPIDER_STATE_DEATH;
-        item->frame_num = g_Anims[item->anim_num].frame_base;
     }
 
     Creature_Animate(item_num, angle, tilt);

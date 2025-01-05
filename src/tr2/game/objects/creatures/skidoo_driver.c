@@ -69,9 +69,7 @@ static void M_ControlDead(ITEM *const driver_item, ITEM *const skidoo_item)
         driver_item->pos.z = skidoo_item->pos.z;
         driver_item->rot.y = skidoo_item->rot.y;
         driver_item->room_num = skidoo_item->room_num;
-        driver_item->anim_num =
-            g_Objects[O_SKIDOO_DRIVER].anim_idx + SKIDOO_DRIVER_ANIM_DEATH;
-        driver_item->frame_num = g_Anims[driver_item->anim_num].frame_base;
+        Item_SwitchToAnim(driver_item, SKIDOO_DRIVER_ANIM_DEATH, 0);
         driver_item->current_anim_state = SKIDOO_DRIVER_STATE_DEATH;
 
         if (g_Lara.target == skidoo_item) {
@@ -257,11 +255,10 @@ void SkidooDriver_Control(const int16_t driver_item_num)
         if (room_num != driver_item->room_num) {
             Item_NewRoom(driver_item_num, room_num);
         }
-        driver_item->anim_num = skidoo_item->anim_num
-            + g_Objects[O_SKIDOO_DRIVER].anim_idx
-            - g_Objects[O_SKIDOO_ARMED].anim_idx;
-        driver_item->frame_num = skidoo_item->frame_num
-            + g_Anims[driver_item->anim_num].frame_base
-            - g_Anims[skidoo_item->anim_num].frame_base;
+        const int16_t anim_num =
+            skidoo_item->anim_num - g_Objects[O_SKIDOO_ARMED].anim_idx;
+        const int16_t frame_num =
+            skidoo_item->frame_num - g_Anims[skidoo_item->anim_num].frame_base;
+        Item_SwitchToAnim(driver_item, anim_num, frame_num);
     }
 }

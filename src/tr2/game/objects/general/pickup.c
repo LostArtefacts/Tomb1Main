@@ -177,8 +177,7 @@ static void M_DoUnderwater(const int16_t item_num, ITEM *const lara_item)
 
         if (item->object_id == O_FLARE_ITEM) {
             lara_item->fall_speed = 0;
-            lara_item->anim_num = LA_UNDERWATER_FLARE_PICKUP;
-            lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+            Item_SwitchToAnim(lara_item, LA_UNDERWATER_FLARE_PICKUP, 0);
             lara_item->goal_anim_state = LS_TREAD;
             lara_item->current_anim_state = LS_FLARE_PICKUP;
         } else {

@@ -85,9 +85,7 @@ static void M_Initialise(int16_t item_num);
 static void M_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    item->anim_num =
-        g_Objects[O_XIAN_SPEARMAN].anim_idx + XIAN_SPEARMAN_ANIM_START;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, XIAN_SPEARMAN_ANIM_START, 0);
     item->goal_anim_state = XIAN_SPEARMAN_STATE_START;
     item->current_anim_state = XIAN_SPEARMAN_STATE_START;
     item->status = IS_INACTIVE;

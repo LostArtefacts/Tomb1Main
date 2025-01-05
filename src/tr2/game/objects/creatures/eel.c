@@ -72,8 +72,7 @@ void Eel_Control(const int16_t item_num)
             pos += EEL_MOVE;
         }
         if (item->current_anim_state != EEL_STATE_DEATH) {
-            item->anim_num = g_Objects[O_EEL].anim_idx + EEL_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, EEL_ANIM_DEATH, 0);
             item->current_anim_state = EEL_STATE_DEATH;
         }
     } else {

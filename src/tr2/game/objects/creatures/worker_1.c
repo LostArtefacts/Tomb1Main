@@ -85,9 +85,7 @@ void Worker1_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         if (item->current_anim_state != WORKER_1_STATE_DEATH) {
-            item->anim_num =
-                g_Objects[O_WORKER_1].anim_idx + WORKER_1_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, WORKER_1_ANIM_DEATH, 0);
             item->current_anim_state = WORKER_1_STATE_DEATH;
         }
     } else {

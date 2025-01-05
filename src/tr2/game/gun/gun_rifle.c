@@ -240,11 +240,10 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
         item = &g_Items[g_Lara.weapon_item];
         item->object_id = Gun_GetWeaponAnim(weapon_type);
         if (weapon_type == LGT_GRENADE) {
-            item->anim_num = g_Objects[O_LARA_GRENADE].anim_idx;
+            Item_SwitchToObjAnim(item, 0, 0, O_LARA_GRENADE);
         } else {
-            item->anim_num = g_Objects[item->object_id].anim_idx + 1;
+            Item_SwitchToAnim(item, GUN_RIFLE_EQUIP_FRAME, 0);
         }
-        item->frame_num = g_Anims[item->anim_num].frame_base;
         item->goal_anim_state = LA_G_DRAW;
         item->current_anim_state = LA_G_DRAW;
         item->status = IS_ACTIVE;

@@ -130,9 +130,7 @@ bool Lara_Cheat_EnterFlyMode(void)
         g_LaraItem->pos.y -= STEP_L;
         g_LaraItem->current_anim_state = LS_SWIM;
         g_LaraItem->goal_anim_state = LS_SWIM;
-        g_LaraItem->anim_num =
-            g_Objects[O_LARA].anim_idx + LA_UNDERWATER_SWIM_FORWARD_DRIFT;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_UNDERWATER_SWIM_FORWARD_DRIFT, 0);
         g_LaraItem->gravity = 0;
         g_LaraItem->rot.x = 30 * PHD_DEGREE;
         g_LaraItem->fall_speed = 30;
@@ -177,8 +175,7 @@ bool Lara_Cheat_ExitFlyMode(void)
         g_Lara.water_status = LWS_UNDERWATER;
     } else {
         g_Lara.water_status = LWS_ABOVE_WATER;
-        g_LaraItem->anim_num = g_Objects[O_LARA].anim_idx + LA_STAND_STILL;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
         g_LaraItem->rot.x = 0;
         g_LaraItem->rot.z = 0;
         g_Lara.head_x_rot = 0;
@@ -391,15 +388,12 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
             g_Lara.water_status = LWS_UNDERWATER;
             g_LaraItem->current_anim_state = LS_SWIM;
             g_LaraItem->goal_anim_state = LS_SWIM;
-            g_LaraItem->anim_num =
-                g_Objects[O_LARA].anim_idx + LA_UNDERWATER_SWIM_FORWARD_DRIFT;
-            g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+            Item_SwitchToAnim(g_LaraItem, LA_UNDERWATER_SWIM_FORWARD_DRIFT, 0);
         } else {
             g_Lara.water_status = LWS_ABOVE_WATER;
             g_LaraItem->current_anim_state = LS_STOP;
             g_LaraItem->goal_anim_state = LS_STOP;
-            g_LaraItem->anim_num = g_Objects[O_LARA].anim_idx + LA_STAND_STILL;
-            g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+            Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
             g_LaraItem->rot.x = 0;
             g_LaraItem->rot.z = 0;
             g_Lara.head_x_rot = 0;

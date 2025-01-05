@@ -115,9 +115,8 @@ void Monk_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         if (item->current_anim_state != MONK_STATE_DEATH) {
-            item->anim_num = g_Objects[item->object_id].anim_idx
-                + Random_GetControl() / 0x4000 + MONK_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(
+                item, Random_GetControl() / 0x4000 + MONK_ANIM_DEATH, 0);
             item->current_anim_state = MONK_STATE_DEATH;
         }
     } else {

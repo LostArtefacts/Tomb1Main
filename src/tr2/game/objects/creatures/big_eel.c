@@ -73,8 +73,7 @@ void BigEel_Control(const int16_t item_num)
             pos += BIG_EEL_MOVE;
         }
         if (item->current_anim_state != BIG_EEL_STATE_DEATH) {
-            item->anim_num = g_Objects[O_BIG_EEL].anim_idx + BIG_EEL_ANIM_DEATH;
-            item->frame_num = g_Anims[item->anim_num].frame_base;
+            Item_SwitchToAnim(item, BIG_EEL_ANIM_DEATH, 0);
             item->current_anim_state = BIG_EEL_STATE_DEATH;
         }
     } else {

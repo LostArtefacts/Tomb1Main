@@ -36,8 +36,7 @@ void Springboard_Control(const int16_t item_num)
         lara_item->fall_speed = -240;
         lara_item->gravity = 1;
 
-        lara_item->anim_num = LA_FALL_START;
-        lara_item->frame_num = g_Anims[lara_item->anim_num].frame_base;
+        Item_SwitchToAnim(lara_item, LA_FALL_START, 0);
         lara_item->current_anim_state = LS_FORWARD_JUMP;
         lara_item->goal_anim_state = LS_FORWARD_JUMP;
         item->goal_anim_state = SPRINGBOARD_STATE_ON;

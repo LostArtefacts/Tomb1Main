@@ -140,8 +140,7 @@ void M_LaraNormal(ITEM *const item)
 {
     item->current_anim_state = LS_STOP;
     item->goal_anim_state = LS_STOP;
-    item->anim_num = LA_STAND_STILL;
-    item->frame_num = g_Anims[item->anim_num].frame_base;
+    Item_SwitchToAnim(item, LA_STAND_STILL, 0);
     g_Camera.type = CAM_CHASE;
     Viewport_AlterFOV(-1);
 }

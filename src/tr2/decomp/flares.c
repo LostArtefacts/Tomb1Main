@@ -272,10 +272,9 @@ void Flare_Undraw(void)
 
     if (g_LaraItem->goal_anim_state == LS_STOP && g_Lara.skidoo == NO_ITEM) {
         if (Item_TestAnimEqual(g_LaraItem, LA_STAND_IDLE)) {
-            frame_num_2 = g_Anims[LA_FLARE_THROW].frame_base + frame_num_1;
-            g_LaraItem->anim_num = LA_FLARE_THROW;
-            g_Lara.flare_frame = frame_num_2;
-            g_LaraItem->frame_num = frame_num_2;
+            Item_SwitchToAnim(g_LaraItem, LA_FLARE_THROW, frame_num_1);
+            g_Lara.flare_frame = g_LaraItem->frame_num;
+            frame_num_2 = g_LaraItem->frame_num;
         }
 
         if (Item_TestAnimEqual(g_LaraItem, LA_FLARE_THROW)) {
@@ -290,9 +289,8 @@ void Flare_Undraw(void)
                 g_Lara.target = NULL;
                 g_Lara.right_arm.lock = 0;
                 g_Lara.left_arm.lock = 0;
-                g_LaraItem->anim_num = LA_STAND_STILL;
-                g_Lara.flare_frame = g_Anims[g_LaraItem->anim_num].frame_base;
-                g_LaraItem->frame_num = g_Lara.flare_frame;
+                Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
+                g_Lara.flare_frame = g_LaraItem->frame_num;
                 g_LaraItem->current_anim_state = LS_STOP;
                 g_LaraItem->goal_anim_state = LS_STOP;
                 return;
@@ -301,8 +299,7 @@ void Flare_Undraw(void)
         }
     } else if (
         g_LaraItem->current_anim_state == LS_STOP && g_Lara.skidoo == -1) {
-        g_LaraItem->anim_num = LA_STAND_STILL;
-        g_LaraItem->frame_num = g_Anims[g_LaraItem->anim_num].frame_base;
+        Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
     }
 
     if (frame_num_1 == LF_FL_HOLD) {
