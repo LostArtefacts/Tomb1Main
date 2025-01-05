@@ -1,3 +1,5 @@
+#include "game/screen.h"
+
 #include <libtrx/config.h>
 #include <libtrx/game/ui/common.h>
 
@@ -5,12 +7,12 @@
 
 int32_t UI_GetCanvasWidth(void)
 {
-    return 640 / g_Config.ui.text_scale;
+    return Screen_GetResWidthDownscaled(RSR_TEXT);
 }
 
 int32_t UI_GetCanvasHeight(void)
 {
-    return 480 / g_Config.ui.text_scale;
+    return Screen_GetResHeightDownscaled(RSR_TEXT);
 }
 
 UI_INPUT UI_TranslateInput(uint32_t system_keycode)

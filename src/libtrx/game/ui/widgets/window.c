@@ -104,6 +104,7 @@ static void M_Draw(UI_WINDOW *const self)
     if (self->vtable.is_hidden) {
         return;
     }
+    Text_DrawText(self->frame);
     if (self->root->draw != NULL) {
         self->root->draw(self->root);
     }
@@ -111,7 +112,6 @@ static void M_Draw(UI_WINDOW *const self)
         self->title_label->draw(self->title_label);
         Text_DrawText(self->title_frame);
     }
-    Text_DrawText(self->frame);
 }
 
 static void M_Free(UI_WINDOW *const self)

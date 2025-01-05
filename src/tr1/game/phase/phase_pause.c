@@ -7,21 +7,18 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/requester.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/text.h"
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/game/ui/widgets/requester.h>
 #include <libtrx/memory.h>
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
-#define PAUSE_MAX_ITEMS 5
-#define PAUSE_NUM_ITEM_TEXTS 2
 
 typedef enum {
     STATE_DEFAULT,
@@ -31,16 +28,15 @@ typedef enum {
 
 typedef struct {
     STATE state;
-    bool is_text_ready;
+    bool is_ready;
     TEXTSTRING *mode_text;
-    REQUEST_INFO requester;
+    UI_WIDGET *ui;
 } M_PRIV;
 
 static void M_RemoveText(M_PRIV *p);
 static void M_UpdateText(M_PRIV *p);
 static int32_t M_DisplayRequester(
-    M_PRIV *p, const char *header, const char *option1, const char *option2,
-    int16_t requested);
+    M_PRIV *p, const char *header, const char *option1, const char *option2);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
@@ -64,35 +60,28 @@ static void M_UpdateText(M_PRIV *const p)
 
 static int32_t M_DisplayRequester(
     M_PRIV *const p, const char *header, const char *option1,
-    const char *option2, int16_t requested)
+    const char *option2)
 {
-    if (!p->is_text_ready) {
-        Requester_ClearTextstrings(&p->requester);
-        Requester_SetSize(&p->requester, 2, -48);
-        p->requester.requested = requested;
-        Requester_SetHeading(&p->requester, header);
-        Requester_AddItem(&p->requester, false, "%s", option1);
-        Requester_AddItem(&p->requester, false, "%s", option2);
-        p->is_text_ready = true;
-        g_InputDB = (INPUT_STATE) { 0 };
-        g_Input = (INPUT_STATE) { 0 };
+    if (!p->is_ready) {
+        if (p->ui == NULL) {
+            p->ui = UI_Requester_Create((UI_REQUESTER_SETTINGS) {
+                .is_selectable = true,
+                .width = 160,
+                .visible_rows = 2,
+            });
+        }
+        UI_Requester_ClearRows(p->ui);
+        UI_Requester_SetTitle(p->ui, header);
+        UI_Requester_AddRowC(p->ui, option1, NULL);
+        UI_Requester_AddRowC(p->ui, option2, NULL);
+        p->is_ready = true;
     }
 
-    // Don't allow menu_back because it clears the requester text.
-    // The player must use the pause requester options to quit or continue.
-    if (g_InputDB.menu_back) {
-        g_InputDB = (INPUT_STATE) { 0 };
-        g_Input = (INPUT_STATE) { 0 };
+    const int32_t choice = UI_Requester_GetSelectedRow(p->ui);
+    if (choice >= 0) {
+        p->is_ready = false;
     }
-
-    int select = Requester_Display(&p->requester);
-    if (select > 0) {
-        p->is_text_ready = false;
-    } else {
-        g_InputDB = (INPUT_STATE) { 0 };
-        g_Input = (INPUT_STATE) { 0 };
-    }
-    return select;
+    return choice;
 }
 
 static PHASE_CONTROL M_Start(PHASE *const phase)
@@ -106,22 +95,8 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     Sound_PauseAll();
     Output_FadeToSemiBlack(true);
 
-    p->is_text_ready = false;
+    p->is_ready = false;
     p->mode_text = NULL;
-    p->requester.items_used = 0;
-    p->requester.max_items = PAUSE_NUM_ITEM_TEXTS;
-    p->requester.requested = 0;
-    p->requester.vis_lines = 0;
-    p->requester.line_offset = 0;
-    p->requester.line_old_offset = 0;
-    p->requester.pix_width = 160;
-    p->requester.line_height = TEXT_HEIGHT + 7;
-    p->requester.is_blockable = false;
-    p->requester.x = 0;
-    p->requester.y = 0;
-    p->requester.heading_text = NULL;
-    p->requester.items = NULL;
-    Requester_Init(&p->requester, PAUSE_NUM_ITEM_TEXTS);
     p->state = STATE_DEFAULT;
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
@@ -131,7 +106,9 @@ static void M_End(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Output_FadeToTransparent(true);
     M_RemoveText(p);
-    Requester_Shutdown(&p->requester);
+    if (p->ui != NULL) {
+        p->ui->free(p->ui);
+    }
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
@@ -141,7 +118,10 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
 
     Input_Update();
     Shell_ProcessInput();
-    Game_ProcessInput();
+
+    if (p->ui != NULL) {
+        p->ui->control(p->ui);
+    }
 
     switch (p->state) {
     case STATE_DEFAULT:
@@ -158,30 +138,30 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
         break;
 
     case STATE_ASK: {
-        int32_t choice = M_DisplayRequester(
-            p, GS(PAUSE_EXIT_TO_TITLE), GS(PAUSE_CONTINUE), GS(PAUSE_QUIT), 1);
-        if (choice == 1) {
+        const int32_t choice = M_DisplayRequester(
+            p, GS(PAUSE_EXIT_TO_TITLE), GS(PAUSE_CONTINUE), GS(PAUSE_QUIT));
+        if (choice == 0) {
             Music_Unpause();
             Sound_UnpauseAll();
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },
             };
-        } else if (choice == 2) {
+        } else if (choice == 1) {
             p->state = STATE_CONFIRM;
         }
         break;
     }
 
     case STATE_CONFIRM: {
-        int32_t choice = M_DisplayRequester(
-            p, GS(PAUSE_ARE_YOU_SURE), GS(PAUSE_YES), GS(PAUSE_NO), 1);
-        if (choice == 1) {
+        const int32_t choice = M_DisplayRequester(
+            p, GS(PAUSE_ARE_YOU_SURE), GS(PAUSE_YES), GS(PAUSE_NO));
+        if (choice == 0) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
-        } else if (choice == 2) {
+        } else if (choice == 1) {
             Music_Unpause();
             Sound_UnpauseAll();
             return (PHASE_CONTROL) {
@@ -198,10 +178,14 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
 
 static void M_Draw(PHASE *const phase)
 {
+    M_PRIV *const p = phase->priv;
     Interpolation_Disable();
     Game_DrawScene(false);
     Interpolation_Enable();
     Output_AnimateFades();
+    if (p->ui != NULL) {
+        p->ui->draw(p->ui);
+    }
     Text_Draw();
 }
 
