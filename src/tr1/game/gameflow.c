@@ -1087,11 +1087,14 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_LEVEL_STATS: {
-            PHASE_STATS_ARGS *const args =
-                Memory_Alloc(sizeof(PHASE_STATS_ARGS));
-            args->level_num = (int32_t)(intptr_t)seq->data;
-            Phase_Set(PHASE_STATS, args);
-            command = Phase_Run();
+            PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                .background_path = NULL,
+                .level_num = (int32_t)(intptr_t)seq->data,
+                .level_type = GFL_NORMAL,
+                .show_final_stats = false,
+            });
+            command = PhaseExecutor_Run(phase);
+            Phase_Stats_Destroy(phase);
             if (command.action != GF_NOOP) {
                 return command;
             }
@@ -1102,14 +1105,15 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             if (g_Config.gameplay.enable_total_stats
                 && level_type != GFL_SAVED) {
                 const GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
-                PHASE_STATS_ARGS *const args =
-                    Memory_Alloc(sizeof(PHASE_STATS_ARGS));
-                args->level_num = level_num;
-                args->background_path = data->path, args->total = true,
-                args->level_type =
-                    level_type == GFL_BONUS ? GFL_BONUS : GFL_NORMAL;
-                Phase_Set(PHASE_STATS, args);
-                command = Phase_Run();
+                PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                    .background_path = data->path,
+                    .level_num = level_num,
+                    .level_type =
+                        level_type == GFL_BONUS ? GFL_BONUS : GFL_NORMAL,
+                    .show_final_stats = true,
+                });
+                command = PhaseExecutor_Run(phase);
+                Phase_Stats_Destroy(phase);
                 if (command.action != GF_NOOP) {
                     return command;
                 }

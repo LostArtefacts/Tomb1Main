@@ -8,20 +8,13 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase/phase.h"
 #include "game/shell.h"
 #include "game/stats.h"
-#include "game/text.h"
-#include "global/const.h"
-#include "global/types.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
-
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
+#include <libtrx/memory.h>
 
 #define MAX_TEXTSTRINGS 10
 
@@ -31,18 +24,21 @@ typedef enum {
     STATE_FADE_OUT,
 } STATE;
 
-static bool m_Total = false;
-static STATE m_State = STATE_DISPLAY;
-static TEXTSTRING *m_Texts[MAX_TEXTSTRINGS] = { 0 };
+typedef struct {
+    PHASE_STATS_ARGS args;
+    STATE state;
+    TEXTSTRING *texts[MAX_TEXTSTRINGS];
+} M_PRIV;
 
-static void M_CreateTexts(int32_t level_num);
-static void M_CreateTextsTotal(GAME_FLOW_LEVEL_TYPE level_type);
-static void M_Start(const PHASE_STATS_ARGS *arg);
-static void M_End(void);
-static PHASE_CONTROL M_Control(int32_t nframes);
-static void M_Draw(void);
+static void M_CreateTexts(M_PRIV *p, int32_t level_num);
+static void M_CreateTextsTotal(M_PRIV *p, GAME_FLOW_LEVEL_TYPE level_type);
 
-static void M_CreateTexts(int32_t level_num)
+static PHASE_CONTROL M_Start(PHASE *phase);
+static void M_End(PHASE *phase);
+static PHASE_CONTROL M_Control(PHASE *phase, int32_t num_frames);
+static void M_Draw(PHASE *phase);
+
+static void M_CreateTexts(M_PRIV *const p, const int32_t level_num)
 {
     char buf[100];
     char time_str[100];
@@ -54,7 +50,7 @@ static void M_CreateTexts(int32_t level_num)
     int y = -50;
     const int row_height = 30;
 
-    TEXTSTRING **cur_txt = &m_Texts[0];
+    TEXTSTRING **cur_txt = &p->texts[0];
 
     // heading
     sprintf(buf, "%s", g_GameFlow.levels[level_num].level_title);
@@ -135,14 +131,15 @@ static void M_CreateTexts(int32_t level_num)
     y += row_height;
 }
 
-static void M_CreateTextsTotal(GAME_FLOW_LEVEL_TYPE level_type)
+static void M_CreateTextsTotal(
+    M_PRIV *const p, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     TOTAL_STATS stats;
     Stats_ComputeTotal(level_type, &stats);
 
     char buf[100];
     char time_str[100];
-    TEXTSTRING **cur_txt = &m_Texts[0];
+    TEXTSTRING **cur_txt = &p->texts[0];
 
     int top_y = 55;
     int y = 55;
@@ -239,66 +236,70 @@ static void M_CreateTextsTotal(GAME_FLOW_LEVEL_TYPE level_type)
     cur_txt++;
 }
 
-static void M_Start(const PHASE_STATS_ARGS *const args)
+static PHASE_CONTROL M_Start(PHASE *const phase)
 {
-    if (args != NULL && args->total) {
-        ASSERT(args->level_type >= GFL_NORMAL);
-        Output_LoadBackgroundFromFile(args->background_path);
+    M_PRIV *const p = phase->priv;
+
+    if (p->args.background_path != NULL) {
+        Output_LoadBackgroundFromFile(p->args.background_path);
     } else {
         Output_UnloadBackground();
     }
 
     if (g_CurrentLevel == g_GameFlow.gym_level_num) {
         Output_FadeToBlack(false);
-        m_State = STATE_FADE_OUT;
-        return;
-    }
-
-    m_State = STATE_FADE_IN;
-    m_Total = args != NULL && args->total;
-
-    if (args != NULL && args->total) {
-        M_CreateTextsTotal(args->level_type);
-        Output_FadeReset();
-        Output_FadeResetToBlack();
-        Output_FadeToTransparent(true);
+        p->state = STATE_FADE_OUT;
     } else {
-        M_CreateTexts(
-            args != NULL && args->level_num != -1 ? args->level_num
-                                                  : g_CurrentLevel);
-        Output_FadeToSemiBlack(true);
+        p->state = STATE_FADE_IN;
+
+        if (p->args.show_final_stats) {
+            ASSERT(p->args.level_type >= GFL_NORMAL);
+            M_CreateTextsTotal(p, p->args.level_type);
+            Output_FadeReset();
+            Output_FadeResetToBlack();
+            Output_FadeToTransparent(true);
+        } else {
+            M_CreateTexts(
+                p,
+                p->args.level_num != -1 ? p->args.level_num : g_CurrentLevel);
+            Output_FadeToSemiBlack(true);
+        }
     }
+
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static void M_End(void)
+static void M_End(PHASE *const phase)
 {
+    M_PRIV *const p = phase->priv;
     Music_Stop();
 
-    for (int i = 0; i < MAX_TEXTSTRINGS; i++) {
-        TEXTSTRING **cur_txt = &m_Texts[i];
-        if (*cur_txt) {
-            Text_Remove(*cur_txt);
+    for (int32_t i = 0; i < MAX_TEXTSTRINGS; i++) {
+        TEXTSTRING *cur_txt = p->texts[i];
+        if (cur_txt != NULL) {
+            Text_Remove(cur_txt);
         }
     }
 }
 
-static PHASE_CONTROL M_Control(int32_t nframes)
+static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 {
+    M_PRIV *const p = phase->priv;
     Input_Update();
     Shell_ProcessInput();
 
-    switch (m_State) {
+    switch (p->state) {
     case STATE_FADE_IN:
         if (!Output_FadeIsAnimating()) {
-            m_State = STATE_DISPLAY;
+            p->state = STATE_DISPLAY;
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            m_State = STATE_FADE_OUT;
+            p->state = STATE_FADE_OUT;
         }
         break;
 
     case STATE_DISPLAY:
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            m_State = STATE_FADE_OUT;
+            p->state = STATE_FADE_OUT;
         }
         break;
 
@@ -318,9 +319,10 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static void M_Draw(void)
+static void M_Draw(PHASE *const phase)
 {
-    if (!m_Total) {
+    M_PRIV *const p = phase->priv;
+    if (!p->args.show_final_stats) {
         Interpolation_Disable();
         Game_DrawScene(false);
         Interpolation_Enable();
@@ -329,10 +331,23 @@ static void M_Draw(void)
     Text_Draw();
 }
 
-PHASER g_StatsPhaser = {
-    .start = (PHASER_START)M_Start,
-    .end = M_End,
-    .control = M_Control,
-    .draw = M_Draw,
-    .wait = NULL,
-};
+PHASE *Phase_Stats_Create(const PHASE_STATS_ARGS args)
+{
+    PHASE *const phase = Memory_Alloc(sizeof(PHASE));
+    M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));
+    p->args = args;
+    p->state = STATE_FADE_IN;
+    phase->priv = p;
+    phase->start = M_Start;
+    phase->end = M_End;
+    phase->control = M_Control;
+    phase->draw = M_Draw;
+    return phase;
+}
+
+void Phase_Stats_Destroy(PHASE *const phase)
+{
+    M_PRIV *const p = phase->priv;
+    Memory_Free(p);
+    Memory_Free(phase);
+}

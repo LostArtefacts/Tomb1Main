@@ -1,16 +1,13 @@
 #pragma once
 
-#include "game/phase/phase.h"
-#include "global/types.h"
-
-#include <stdbool.h>
-#include <stdint.h>
+#include <libtrx/game/phase/types.h>
 
 typedef struct {
-    int32_t level_num;
     const char *background_path;
-    bool total;
+    bool show_final_stats;
+    int32_t level_num;
     GAME_FLOW_LEVEL_TYPE level_type;
 } PHASE_STATS_ARGS;
 
-extern PHASER g_StatsPhaser;
+PHASE *Phase_Stats_Create(PHASE_STATS_ARGS args);
+void Phase_Stats_Destroy(PHASE *phase);

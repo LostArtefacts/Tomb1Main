@@ -11,7 +11,6 @@ typedef enum {
     PHASE_GAME,
     PHASE_DEMO,
     PHASE_CUTSCENE,
-    PHASE_STATS,
     PHASE_INVENTORY,
 } PHASE_ENUM;
 
