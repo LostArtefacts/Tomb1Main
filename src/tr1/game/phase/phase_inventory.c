@@ -7,6 +7,7 @@
 #include "game/interpolation.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
+#include "game/inventory_ring/priv.h"
 #include "game/lara/common.h"
 #include "game/music.h"
 #include "game/option.h"
@@ -352,24 +353,24 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     case INV_SAVE_CRYSTAL_MODE:
     case INV_LOAD_MODE:
     case INV_TITLE_MODE:
-        InvRing_Init(
+        InvRing_InitRing(
             ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
             g_InvOptionCurrent, motion);
         break;
 
     case INV_KEYS_MODE:
-        InvRing_Init(
+        InvRing_InitRing(
             ring, RT_KEYS, g_InvKeysList, g_InvKeysObjects, g_InvMainCurrent,
             motion);
         break;
 
     default:
         if (g_InvMainObjects) {
-            InvRing_Init(
+            InvRing_InitRing(
                 ring, RT_MAIN, g_InvMainList, g_InvMainObjects,
                 g_InvMainCurrent, motion);
         } else {
-            InvRing_Init(
+            InvRing_InitRing(
                 ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
                 g_InvOptionCurrent, motion);
         }
