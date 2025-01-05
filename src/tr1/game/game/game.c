@@ -50,7 +50,7 @@ void Game_ProcessInput(void)
         Lara_UseItem(O_BIGMEDI_OPTION);
     }
 
-    if (g_Config.input.enable_buffering && Phase_Get() == PHASE_GAME) {
+    if (g_Config.input.enable_buffering && Game_IsPlaying()) {
         if (g_Input.toggle_bilinear_filter) {
             FRAME_BUFFER(toggle_bilinear_filter);
         } else if (g_Input.toggle_perspective_filter) {

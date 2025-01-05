@@ -13,6 +13,7 @@
 #include "game/output.h"
 #include "game/phase/phase.h"
 #include "game/phase/phase_demo.h"
+#include "game/random.h"
 #include "game/savegame.h"
 #include "game/screen.h"
 #include "game/sound.h"
@@ -84,15 +85,17 @@ void Shell_Init(const char *gameflow_path)
     Text_Init();
     UI_Init();
 
+    Input_Init();
     Clock_Init();
     Sound_Init();
     Music_Init();
-    Input_Init();
 
     M_LoadConfig();
 
     S_Shell_CreateWindow();
     S_Shell_Init();
+
+    Random_Seed();
 
     if (!Output_Init()) {
         Shell_ExitSystem("Could not initialise video system");

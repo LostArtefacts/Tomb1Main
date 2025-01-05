@@ -13,6 +13,7 @@
 #include "game/lara/hair.h"
 #include "game/output.h"
 #include "game/overlay.h"
+#include "game/phase.h"
 #include "game/phase/phase_photo_mode.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -38,13 +39,13 @@ static void M_Start(const void *const args)
 {
     Interpolation_Remember();
     Stats_StartTimer();
-    if (Phase_Get() != PHASE_PAUSE) {
-        Output_FadeReset();
-    }
+    Output_FadeReset();
+    Game_SetIsPlaying(true);
 }
 
 static void M_End(void)
 {
+    Game_SetIsPlaying(false);
 }
 
 static PHASE_CONTROL M_Control(int32_t nframes)
@@ -107,8 +108,18 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         }
 
         if (!g_Lara.death_timer && g_InputDB.pause) {
-            Phase_Set(PHASE_PAUSE, NULL);
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            Game_SetIsPlaying(false);
+            PHASE *const phase_pause = Phase_Pause_Create();
+            const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase_pause);
+            Phase_Pause_Destroy(phase_pause);
+            Game_SetIsPlaying(true);
+            if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = gf_cmd,
+                };
+            }
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (g_InputDB.toggle_photo_mode) {
             PHASE_PHOTO_MODE_ARGS *const args =
                 Memory_Alloc(sizeof(PHASE_PHOTO_MODE_ARGS));

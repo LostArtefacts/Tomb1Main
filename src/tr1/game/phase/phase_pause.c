@@ -29,64 +29,51 @@ typedef enum {
     STATE_CONFIRM,
 } STATE;
 
-static STATE m_PauseState = STATE_DEFAULT;
-static bool m_IsTextReady = false;
-static PHASE_PAUSE_ARGS m_Args;
-static TEXTSTRING *m_PausedText = NULL;
+typedef struct {
+    STATE state;
+    bool is_text_ready;
+    TEXTSTRING *mode_text;
+    REQUEST_INFO requester;
+} M_PRIV;
 
-static REQUEST_INFO m_PauseRequester = {
-    .items_used = 0,
-    .max_items = PAUSE_NUM_ITEM_TEXTS,
-    .requested = 0,
-    .vis_lines = 0,
-    .line_offset = 0,
-    .line_old_offset = 0,
-    .pix_width = 160,
-    .line_height = TEXT_HEIGHT + 7,
-    .is_blockable = false,
-    .x = 0,
-    .y = 0,
-    .heading_text = NULL,
-    .items = NULL,
-};
-
-static void M_RemoveText(void);
-static void M_UpdateText(void);
+static void M_RemoveText(M_PRIV *p);
+static void M_UpdateText(M_PRIV *p);
 static int32_t M_DisplayRequester(
-    const char *header, const char *option1, const char *option2,
+    M_PRIV *p, const char *header, const char *option1, const char *option2,
     int16_t requested);
-static void M_Start(const PHASE_PAUSE_ARGS *args);
-static void M_End(void);
-static PHASE_CONTROL M_Control(int32_t nframes);
-static void M_Draw(void);
 
-static void M_RemoveText(void)
+static PHASE_CONTROL M_Start(PHASE *phase);
+static void M_End(PHASE *phase);
+static PHASE_CONTROL M_Control(PHASE *phase, int32_t nframes);
+static void M_Draw(PHASE *phase);
+
+static void M_RemoveText(M_PRIV *const p)
 {
-    Text_Remove(m_PausedText);
-    m_PausedText = NULL;
+    Text_Remove(p->mode_text);
+    p->mode_text = NULL;
 }
 
-static void M_UpdateText(void)
+static void M_UpdateText(M_PRIV *const p)
 {
-    if (m_PausedText == NULL) {
-        m_PausedText = Text_Create(0, -24, GS(PAUSE_PAUSED));
-        Text_CentreH(m_PausedText, 1);
-        Text_AlignBottom(m_PausedText, 1);
+    if (p->mode_text == NULL) {
+        p->mode_text = Text_Create(0, -24, GS(PAUSE_PAUSED));
+        Text_CentreH(p->mode_text, true);
+        Text_AlignBottom(p->mode_text, true);
     }
 }
 
 static int32_t M_DisplayRequester(
-    const char *header, const char *option1, const char *option2,
-    int16_t requested)
+    M_PRIV *const p, const char *header, const char *option1,
+    const char *option2, int16_t requested)
 {
-    if (!m_IsTextReady) {
-        Requester_ClearTextstrings(&m_PauseRequester);
-        Requester_SetSize(&m_PauseRequester, 2, -48);
-        m_PauseRequester.requested = requested;
-        Requester_SetHeading(&m_PauseRequester, header);
-        Requester_AddItem(&m_PauseRequester, false, "%s", option1);
-        Requester_AddItem(&m_PauseRequester, false, "%s", option2);
-        m_IsTextReady = true;
+    if (!p->is_text_ready) {
+        Requester_ClearTextstrings(&p->requester);
+        Requester_SetSize(&p->requester, 2, -48);
+        p->requester.requested = requested;
+        Requester_SetHeading(&p->requester, header);
+        Requester_AddItem(&p->requester, false, "%s", option1);
+        Requester_AddItem(&p->requester, false, "%s", option2);
+        p->is_text_ready = true;
         g_InputDB = (INPUT_STATE) { 0 };
         g_Input = (INPUT_STATE) { 0 };
     }
@@ -98,9 +85,9 @@ static int32_t M_DisplayRequester(
         g_Input = (INPUT_STATE) { 0 };
     }
 
-    int select = Requester_Display(&m_PauseRequester);
+    int select = Requester_Display(&p->requester);
     if (select > 0) {
-        m_IsTextReady = false;
+        p->is_text_ready = false;
     } else {
         g_InputDB = (INPUT_STATE) { 0 };
         g_Input = (INPUT_STATE) { 0 };
@@ -108,74 +95,87 @@ static int32_t M_DisplayRequester(
     return select;
 }
 
-static void M_Start(const PHASE_PAUSE_ARGS *const args)
+static PHASE_CONTROL M_Start(PHASE *const phase)
 {
-    if (args != NULL) {
-        m_Args = *args;
-    } else {
-        m_Args.phase_to_return_to = PHASE_GAME;
-        m_Args.phase_arg = NULL;
-    }
+    M_PRIV *const p = phase->priv;
 
     g_OldInputDB = g_Input;
-
-    Random_FreezeDraw(true);
     Overlay_HideGameInfo();
     Output_SetupAboveWater(false);
-
     Music_Pause();
     Sound_PauseAll();
-
     Output_FadeToSemiBlack(true);
 
-    Requester_Init(&m_PauseRequester, PAUSE_NUM_ITEM_TEXTS);
-    m_PauseState = STATE_DEFAULT;
+    p->is_text_ready = false;
+    p->mode_text = NULL;
+    p->requester.items_used = 0;
+    p->requester.max_items = PAUSE_NUM_ITEM_TEXTS;
+    p->requester.requested = 0;
+    p->requester.vis_lines = 0;
+    p->requester.line_offset = 0;
+    p->requester.line_old_offset = 0;
+    p->requester.pix_width = 160;
+    p->requester.line_height = TEXT_HEIGHT + 7;
+    p->requester.is_blockable = false;
+    p->requester.x = 0;
+    p->requester.y = 0;
+    p->requester.heading_text = NULL;
+    p->requester.items = NULL;
+    Requester_Init(&p->requester, PAUSE_NUM_ITEM_TEXTS);
+    p->state = STATE_DEFAULT;
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static void M_End(void)
+static void M_End(PHASE *const phase)
 {
-    Random_FreezeDraw(false);
+    M_PRIV *const p = phase->priv;
     Output_FadeToTransparent(true);
-
-    M_RemoveText();
-    Requester_Shutdown(&m_PauseRequester);
+    M_RemoveText(p);
+    Requester_Shutdown(&p->requester);
 }
 
-static PHASE_CONTROL M_Control(int32_t nframes)
+static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
 {
-    M_UpdateText();
+    M_PRIV *const p = phase->priv;
+    M_UpdateText(p);
 
     Input_Update();
     Shell_ProcessInput();
     Game_ProcessInput();
 
-    switch (m_PauseState) {
+    switch (p->state) {
     case STATE_DEFAULT:
         if (g_InputDB.pause) {
             Music_Unpause();
             Sound_UnpauseAll();
-            Phase_Set(m_Args.phase_to_return_to, m_Args.phase_arg);
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_NOOP },
+            };
         } else if (g_InputDB.option) {
-            m_PauseState = STATE_ASK;
+            p->state = STATE_ASK;
         }
         break;
 
     case STATE_ASK: {
         int32_t choice = M_DisplayRequester(
-            GS(PAUSE_EXIT_TO_TITLE), GS(PAUSE_CONTINUE), GS(PAUSE_QUIT), 1);
+            p, GS(PAUSE_EXIT_TO_TITLE), GS(PAUSE_CONTINUE), GS(PAUSE_QUIT), 1);
         if (choice == 1) {
             Music_Unpause();
             Sound_UnpauseAll();
-            Phase_Set(m_Args.phase_to_return_to, m_Args.phase_arg);
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_NOOP },
+            };
         } else if (choice == 2) {
-            m_PauseState = STATE_CONFIRM;
+            p->state = STATE_CONFIRM;
         }
         break;
     }
 
     case STATE_CONFIRM: {
         int32_t choice = M_DisplayRequester(
-            GS(PAUSE_ARE_YOU_SURE), GS(PAUSE_YES), GS(PAUSE_NO), 1);
+            p, GS(PAUSE_ARE_YOU_SURE), GS(PAUSE_YES), GS(PAUSE_NO), 1);
         if (choice == 1) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
@@ -184,7 +184,10 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         } else if (choice == 2) {
             Music_Unpause();
             Sound_UnpauseAll();
-            Phase_Set(m_Args.phase_to_return_to, m_Args.phase_arg);
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = { .action = GF_NOOP },
+            };
         }
         break;
     }
@@ -193,7 +196,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static void M_Draw(void)
+static void M_Draw(PHASE *const phase)
 {
     Interpolation_Disable();
     Game_DrawScene(false);
@@ -202,10 +205,19 @@ static void M_Draw(void)
     Text_Draw();
 }
 
-PHASER g_PausePhaser = {
-    .start = (PHASER_START)M_Start,
-    .end = M_End,
-    .control = M_Control,
-    .draw = M_Draw,
-    .wait = NULL,
-};
+PHASE *Phase_Pause_Create(void)
+{
+    PHASE *const phase = Memory_Alloc(sizeof(PHASE));
+    phase->priv = Memory_Alloc(sizeof(M_PRIV));
+    phase->start = M_Start;
+    phase->end = M_End;
+    phase->control = M_Control;
+    phase->draw = M_Draw;
+    return phase;
+}
+
+void Phase_Pause_Destroy(PHASE *phase)
+{
+    Memory_Free(phase->priv);
+    Memory_Free(phase);
+}

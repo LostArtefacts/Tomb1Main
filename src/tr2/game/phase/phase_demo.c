@@ -42,6 +42,7 @@ static void M_PrepareGame(void);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
+static void M_Suspend(PHASE *const phase);
 static void M_Resume(PHASE *const phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
 static void M_Draw(PHASE *phase);
@@ -148,6 +149,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     Text_CentreH(p->text, true);
 
     g_OldInputDB = g_Input;
+    Game_SetIsPlaying(true);
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
@@ -158,6 +160,7 @@ static void M_End(PHASE *const phase)
 
     Text_Remove(p->text);
 
+    Game_SetIsPlaying(false);
     Overlay_HideGameInfo();
     Sound_StopAllSamples();
     Music_Stop();
@@ -167,8 +170,14 @@ static void M_End(PHASE *const phase)
     M_RestoreConfig(p);
 }
 
+static void M_Suspend(PHASE *const phase)
+{
+    Game_SetIsPlaying(false);
+}
+
 static void M_Resume(PHASE *const phase)
 {
+    Game_SetIsPlaying(true);
     Stats_StartTimer();
 }
 
@@ -212,6 +221,7 @@ PHASE *Phase_Demo_Create(const int32_t level_num)
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;
+    phase->suspend = M_Suspend;
     phase->resume = M_Resume;
     phase->control = M_Control;
     phase->draw = M_Draw;

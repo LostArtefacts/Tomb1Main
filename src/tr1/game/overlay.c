@@ -2,6 +2,7 @@
 
 #include "game/clock.h"
 #include "game/creature.h"
+#include "game/game.h"
 #include "game/gameflow.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -775,8 +776,7 @@ void Overlay_DrawFPSInfo(void)
         bool inv_health_showable = Phase_Get() == PHASE_INVENTORY
             && g_GameInfo.inv_showing_medpack
             && m_HealthBar.location == BL_TOP_LEFT;
-        bool game_bar_showable =
-            (Phase_Get() == PHASE_GAME || Phase_Get() == PHASE_DEMO)
+        bool game_bar_showable = (Game_IsPlaying())
             && (m_HealthBar.location == BL_TOP_LEFT
                 || m_AirBar.location == BL_TOP_LEFT
                 || m_EnemyBar.location == BL_TOP_LEFT);

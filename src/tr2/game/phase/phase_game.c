@@ -53,12 +53,14 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     g_OverlayStatus = 1;
     Camera_Initialise();
     Stats_StartTimer();
+    Game_SetIsPlaying(true);
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_End(PHASE *const phase)
 {
+    Game_SetIsPlaying(false);
     M_PRIV *const p = phase->priv;
     Overlay_HideGameInfo();
     Sound_StopAllSamples();
@@ -66,8 +68,14 @@ static void M_End(PHASE *const phase)
     Music_SetVolume(g_Config.audio.music_volume);
 }
 
+static void M_Suspend(PHASE *const phase)
+{
+    Game_SetIsPlaying(false);
+}
+
 static void M_Resume(PHASE *const phase)
 {
+    Game_SetIsPlaying(true);
     Stats_StartTimer();
 }
 

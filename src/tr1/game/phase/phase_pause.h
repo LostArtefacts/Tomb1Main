@@ -1,10 +1,6 @@
 #pragma once
 
-#include "game/phase/phase.h"
+#include <libtrx/game/phase/types.h>
 
-typedef struct {
-    PHASE_ENUM phase_to_return_to;
-    void *phase_arg;
-} PHASE_PAUSE_ARGS;
-
-extern PHASER g_PausePhaser;
+PHASE *Phase_Pause_Create(void);
+void Phase_Pause_Destroy(PHASE *phase);

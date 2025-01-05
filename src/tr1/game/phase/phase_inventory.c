@@ -596,7 +596,6 @@ static bool Inv_CheckDemoTimer(const IMOTION_INFO *const motion)
 
 static void M_Start(const PHASE_INVENTORY_ARGS *const args)
 {
-    Random_FreezeDraw(true);
     Interpolation_Remember();
     if (g_Config.gameplay.enable_timer_in_inventory) {
         Stats_StartTimer();
@@ -1132,7 +1131,6 @@ static PHASE_CONTROL M_Control(int32_t nframes)
 
 static void M_End(void)
 {
-    Random_FreezeDraw(false);
     INVENTORY_ITEM *const inv_item = m_Ring.list[m_Ring.current_object];
     if (inv_item != NULL) {
         Option_Shutdown(inv_item);

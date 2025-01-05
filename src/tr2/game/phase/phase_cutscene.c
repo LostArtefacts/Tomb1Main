@@ -4,6 +4,7 @@
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/effects.h"
+#include "game/game.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
@@ -13,6 +14,7 @@
 #include "game/room_draw.h"
 #include "game/shell.h"
 #include "game/sound.h"
+#include "game/stats.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
@@ -32,6 +34,8 @@ static void M_FixAudioDrift(void);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
+static void M_Suspend(PHASE *phase);
+static void M_Resume(PHASE *phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
 static void M_Draw(PHASE *phase);
 
@@ -72,12 +76,14 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     }
 
     Music_SetVolume(10);
+    Game_SetIsPlaying(true);
     g_CineFrameIdx = 0;
     return (PHASE_CONTROL) {};
 }
 
 static void M_End(PHASE *const phase)
 {
+    Game_SetIsPlaying(false);
     M_PRIV *const p = phase->priv;
     Music_SetVolume(g_Config.audio.music_volume);
     Music_Stop();
@@ -85,6 +91,17 @@ static void M_End(PHASE *const phase)
     Sound_StopAllSamples();
 
     g_LevelComplete = true;
+}
+
+static void M_Suspend(PHASE *const phase)
+{
+    Game_SetIsPlaying(false);
+}
+
+static void M_Resume(PHASE *const phase)
+{
+    Game_SetIsPlaying(true);
+    Stats_StartTimer();
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
@@ -154,6 +171,8 @@ PHASE *Phase_Cutscene_Create(const int32_t level_num)
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;
+    phase->suspend = M_Suspend;
+    phase->resume = M_Resume;
     phase->control = M_Control;
     phase->draw = M_Draw;
     return phase;

@@ -2,8 +2,7 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <libtrx/game/game.h>
 
 bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 GAME_FLOW_COMMAND Game_Stop(void);

@@ -7,7 +7,6 @@
 #include "game/phase/phase_demo.h"
 #include "game/phase/phase_game.h"
 #include "game/phase/phase_inventory.h"
-#include "game/phase/phase_pause.h"
 #include "game/phase/phase_photo_mode.h"
 #include "game/phase/phase_stats.h"
 #include "global/types.h"
@@ -80,10 +79,6 @@ static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args)
 
     case PHASE_CUTSCENE:
         m_Phaser = &g_CutscenePhaser;
-        break;
-
-    case PHASE_PAUSE:
-        m_Phaser = &g_PausePhaser;
         break;
 
     case PHASE_STATS:

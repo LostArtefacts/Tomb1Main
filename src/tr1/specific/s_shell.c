@@ -5,7 +5,6 @@
 #include "game/input.h"
 #include "game/music.h"
 #include "game/output.h"
-#include "game/random.h"
 #include "game/shell.h"
 #include "game/sound.h"
 
@@ -39,19 +38,10 @@ static int m_ArgCount = 0;
 static char **m_ArgStrings = NULL;
 static SDL_Window *m_Window = NULL;
 
-static void M_SeedRandom(void);
 static void M_SetWindowPos(int32_t x, int32_t y, bool update);
 static void M_SetWindowSize(int32_t width, int32_t height, bool update);
 static void M_SetWindowMaximized(bool is_enabled, bool update);
 static void M_SetFullscreen(bool is_enabled, bool update);
-
-static void M_SeedRandom(void)
-{
-    time_t lt = time(0);
-    struct tm *tptr = localtime(&lt);
-    Random_SeedControl(tptr->tm_sec + 57 * tptr->tm_min + 3543 * tptr->tm_hour);
-    Random_SeedDraw(tptr->tm_sec + 43 * tptr->tm_min + 3477 * tptr->tm_hour);
-}
 
 static void M_SetWindowPos(int32_t x, int32_t y, bool update)
 {
@@ -147,8 +137,6 @@ void S_Shell_HandleWindowResize(void)
 
 void S_Shell_Init(void)
 {
-    M_SeedRandom();
-
     M_SetFullscreen(g_Config.window.is_fullscreen, true);
     M_SetWindowPos(g_Config.window.x, g_Config.window.y, true);
     M_SetWindowSize(g_Config.window.width, g_Config.window.height, true);
