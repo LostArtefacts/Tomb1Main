@@ -433,7 +433,7 @@ void Lara_HangTest(ITEM *item, COLL_INFO *coll)
             return;
         }
 
-        if (item->anim_num == LA_REACH_TO_HANG
+        if (Item_TestAnimEqual(item, LA_REACH_TO_HANG)
             && item->frame_num == g_Anims[item->anim_num].frame_base + 21
             && Lara_TestClimbStance(item, coll)) {
             item->goal_anim_state = LS_CLIMB_STANCE;

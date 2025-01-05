@@ -98,9 +98,9 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
         CLAMPG(item->rot.z, +LARA_LEAN_MAX);
     }
 
-    if (item->anim_num == LA_RUN_START) {
+    if (Item_TestAnimEqual(item, LA_RUN_START)) {
         m_JumpPermitted = false;
-    } else if (item->anim_num != LA_RUN || item->frame_num == 4) {
+    } else if (!Item_TestAnimEqual(item, LA_RUN) || item->frame_num == 4) {
         m_JumpPermitted = true;
     }
 

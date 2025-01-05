@@ -197,13 +197,11 @@ void Dragon_Collision(
 
     const int32_t shift = (cy * dx - sy * dz) >> W2V_SHIFT;
     const int32_t angle = lara_item->rot.y - item->rot.y;
-    const int32_t anim =
-        item->anim_num - Object_GetObject(O_DRAGON_BACK)->anim_idx;
-    if ((anim == DRAGON_ANIM_DEAD
-         || (anim == DRAGON_ANIM_RESURRECT
-             && item->frame_num - g_Anims[item->anim_num].frame_base
-                 <= DRAGON_ALMOST_LIVE))
-        && g_Input.action && item->object_id == O_DRAGON_BACK
+    if (g_Input.action && item->object_id == O_DRAGON_BACK
+        && (Item_TestAnimEqual(item, DRAGON_ANIM_DEAD)
+            || (Item_TestAnimEqual(item, DRAGON_ANIM_RESURRECT)
+                && item->frame_num - g_Anims[item->anim_num].frame_base
+                    <= DRAGON_ALMOST_LIVE))
         && !lara_item->gravity && shift <= DRAGON_MID
         && shift > DRAGON_CLOSE - 350 && side_shift > -350 && side_shift < 350
         && angle > PHD_90 - 30 * PHD_DEGREE

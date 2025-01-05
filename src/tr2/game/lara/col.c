@@ -296,7 +296,7 @@ void Lara_Col_Run(ITEM *item, COLL_INFO *coll)
 
     if (Lara_DeflectEdge(item, coll)) {
         item->rot.z = 0;
-        if (item->anim_num != LA_RUN_START
+        if (!Item_TestAnimEqual(item, LA_RUN_START)
             && Lara_TestWall(item, STEP_L, 0, -STEP_L * 5 / 2)) {
             item->current_anim_state = LS_SPLAT;
             if (item->frame_num >= 0 && item->frame_num <= 9) {
@@ -520,7 +520,8 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
             || coll->side_left.floor - coll->side_left.ceiling < 0
             || coll->side_right.floor - coll->side_right.ceiling < 0
             || coll->hit_static) {
-            if (g_Lara.climb_status && item->anim_num == LA_REACH_TO_HANG
+            if (g_Lara.climb_status
+                && Item_TestAnimEqual(item, LA_REACH_TO_HANG)
                 && item->frame_num == g_Anims[item->anim_num].frame_base + 21
                 && coll->side_mid.ceiling <= -256) {
                 item->goal_anim_state = LS_HANG;
@@ -535,7 +536,7 @@ void Lara_Col_Hang(ITEM *item, COLL_INFO *coll)
         }
     } else if (
         g_Input.back && g_Lara.climb_status
-        && item->anim_num == LA_REACH_TO_HANG
+        && Item_TestAnimEqual(item, LA_REACH_TO_HANG)
         && item->frame_num == g_Anims[item->anim_num].frame_base + 21) {
         item->goal_anim_state = LS_HANG;
         item->current_anim_state = LS_HANG;
@@ -1031,7 +1032,8 @@ void Lara_Col_ClimbRight(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_ClimbStance(ITEM *item, COLL_INFO *coll)
 {
-    if (Lara_CheckForLetGo(item, coll) || item->anim_num != LA_LADDER_IDLE) {
+    if (Lara_CheckForLetGo(item, coll)
+        || !Item_TestAnimEqual(item, LA_LADDER_IDLE)) {
         return;
     }
 
@@ -1131,7 +1133,8 @@ void Lara_Col_ClimbStance(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_Climbing(ITEM *item, COLL_INFO *coll)
 {
-    if (Lara_CheckForLetGo(item, coll) || item->anim_num != LA_LADDER_UP) {
+    if (Lara_CheckForLetGo(item, coll)
+        || !Item_TestAnimEqual(item, LA_LADDER_UP)) {
         return;
     }
 
@@ -1187,7 +1190,8 @@ void Lara_Col_Climbing(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_ClimbDown(ITEM *item, COLL_INFO *coll)
 {
-    if (Lara_CheckForLetGo(item, coll) || item->anim_num != LA_LADDER_DOWN) {
+    if (Lara_CheckForLetGo(item, coll)
+        || !Item_TestAnimEqual(item, LA_LADDER_DOWN)) {
         return;
     }
 
