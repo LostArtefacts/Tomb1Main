@@ -72,53 +72,15 @@ static void M_DrawItem(
 {
     if (ring->motion.status == RNG_DONE) {
         Output_SetLightAdder(LOW_LIGHT);
-    } else if (inv_item == ring->list[ring->current_object]) {
-        if (ring->rotating) {
-            Output_SetLightAdder(LOW_LIGHT);
-            for (int j = 0; j < num_frames; j++) {
-                if (inv_item->y_rot < 0) {
-                    inv_item->y_rot += 512;
-                } else if (inv_item->y_rot > 0) {
-                    inv_item->y_rot -= 512;
-                }
-            }
-        } else if (
-            ring->motion.status == RNG_SELECTED
-            || ring->motion.status == RNG_DESELECTING
-            || ring->motion.status == RNG_SELECTING
-            || ring->motion.status == RNG_DESELECT
-            || ring->motion.status == RNG_CLOSING_ITEM) {
-            Output_SetLightAdder(HIGH_LIGHT);
-            for (int j = 0; j < num_frames; j++) {
-                if (inv_item->y_rot != inv_item->y_rot_sel) {
-                    if (inv_item->y_rot_sel - inv_item->y_rot > 0
-                        && inv_item->y_rot_sel - inv_item->y_rot < 0x8000) {
-                        inv_item->y_rot += 1024;
-                    } else {
-                        inv_item->y_rot -= 1024;
-                    }
-                    inv_item->y_rot &= 0xFC00u;
-                }
-            }
-        } else if (
-            ring->number_of_objects == 1
-            || (!g_Input.menu_left && !g_Input.menu_right)
-            || !g_Input.menu_left) {
-            Output_SetLightAdder(HIGH_LIGHT);
-            for (int j = 0; j < num_frames; j++) {
-                inv_item->y_rot += 256;
-            }
-        }
-    } else {
+    } else if (inv_item != ring->list[ring->current_object]) {
         Output_SetLightAdder(LOW_LIGHT);
-        for (int j = 0; j < num_frames; j++) {
-            if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 256;
-            } else if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 256;
-            }
-        }
+    } else if (ring->rotating) {
+        Output_SetLightAdder(LOW_LIGHT);
+    } else {
+        Output_SetLightAdder(HIGH_LIGHT);
     }
+
+    InvRing_UpdateInventoryItem(ring, inv_item, num_frames);
 
     Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
     Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);

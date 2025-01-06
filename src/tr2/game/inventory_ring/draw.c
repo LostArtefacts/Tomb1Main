@@ -18,13 +18,13 @@ static void M_DrawItem(
     const INV_RING *const ring, const INVENTORY_ITEM *const inv_item)
 {
     if (ring->motion.status == RNG_DONE) {
-        g_LsAdder = LOW_LIGHT;
+        Output_SetLightAdder(LOW_LIGHT);
     } else if (inv_item != ring->list[ring->current_object]) {
-        g_LsAdder = LOW_LIGHT;
+        Output_SetLightAdder(LOW_LIGHT);
     } else if (ring->rotating) {
-        g_LsAdder = LOW_LIGHT;
+        Output_SetLightAdder(LOW_LIGHT);
     } else {
-        g_LsAdder = HIGH_LIGHT;
+        Output_SetLightAdder(HIGH_LIGHT);
     }
 
     int32_t minutes;

@@ -4,12 +4,6 @@
 
 #include <libtrx/game/inventory_ring/vars.h>
 
-typedef enum {
-    IT_NAME = 0,
-    IT_QTY = 1,
-    IT_NUMBER_OF = 2,
-} INV_TEXT;
-
 extern INVENTORY_MODE g_Inv_Mode;
 extern int16_t g_Inv_Chosen;
 extern int32_t g_Inv_ExtraData[8];

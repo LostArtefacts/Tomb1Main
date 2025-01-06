@@ -33,33 +33,8 @@
 #define OPTION_RING_OBJECTS 3
 #define INV_FRAMES 2
 
-typedef enum {
-    // clang-format off
-    PASS_MESH_SPINE    = 1 << 0,
-    PASS_MESH_FRONT    = 1 << 1,
-    PASS_MESH_IN_FRONT = 1 << 2,
-    PASS_MESH_PAGE_2   = 1 << 3,
-    PASS_MESH_BACK     = 1 << 4,
-    PASS_MESH_IN_BACK  = 1 << 5,
-    PASS_MESH_PAGE_1   = 1 << 6,
-    PASS_MESH_COMMON   = PASS_MESH_SPINE | PASS_MESH_BACK | PASS_MESH_FRONT,
-    // clang-format on
-} PASS_MESH;
-
-static TEXTSTRING *m_UpArrow1 = NULL;
-static TEXTSTRING *m_UpArrow2 = NULL;
-static TEXTSTRING *m_DownArrow1 = NULL;
-static TEXTSTRING *m_DownArrow2 = NULL;
-static TEXTSTRING *m_VersionText = NULL;
-static TEXTSTRING *m_HeadingText = NULL;
-static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
 static int32_t m_NoInputCounter = 0;
 
-static void M_RemoveItemsText(void);
-static void M_RemoveVersionText(void);
-static void M_InitHeader(INV_RING *ring);
-static void M_RemoveHeader(void);
-static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
 
 static void M_RingIsOpen(INV_RING *ring);
@@ -67,140 +42,30 @@ static void M_RingIsNotOpen(INV_RING *ring);
 static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
 static void M_RingActive(void);
 
-static void M_SelectMeshes(INVENTORY_ITEM *inv_item);
-static void M_UpdateInventoryItem(
-    const INV_RING *ring, INVENTORY_ITEM *inv_item, int32_t num_frames);
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
 static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
 
-static void M_RemoveItemsText(void)
-{
-    for (int32_t i = 0; i < IT_NUMBER_OF; i++) {
-        Text_Remove(m_ItemText[i]);
-        m_ItemText[i] = NULL;
-    }
-}
-
-static void M_RemoveVersionText(void)
-{
-    Text_Remove(m_VersionText);
-    m_VersionText = NULL;
-}
-
-static void M_InitHeader(INV_RING *const ring)
-{
-    if (ring->mode == INV_TITLE_MODE) {
-        return;
-    }
-
-    if (m_HeadingText == NULL) {
-        switch (ring->type) {
-        case RT_MAIN:
-            m_HeadingText = Text_Create(
-                0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
-            break;
-
-        case RT_OPTION:
-            if (ring->mode == INV_DEATH_MODE) {
-                m_HeadingText = Text_Create(
-                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
-            } else {
-                m_HeadingText = Text_Create(
-                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
-            }
-            break;
-
-        case RT_KEYS:
-            m_HeadingText =
-                Text_Create(0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
-            break;
-        }
-
-        Text_CentreH(m_HeadingText, true);
-    }
-
-    if (ring->mode != INV_GAME_MODE) {
-        return;
-    }
-
-    if (m_UpArrow1 == NULL
-        && (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN
-                && g_InvRing_Source[RT_KEYS].count > 0))) {
-        m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
-        m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
-        Text_AlignRight(m_UpArrow2, true);
-    }
-
-    if (m_DownArrow1 == NULL
-        && ((
-            (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
-            || ring->type == RT_KEYS))) {
-        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow1, true);
-        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow2, true);
-        Text_AlignRight(m_DownArrow2, true);
-    }
-}
-
-static void M_RemoveHeader(void)
-{
-    Text_Remove(m_HeadingText);
-    m_HeadingText = NULL;
-    Text_Remove(m_UpArrow1);
-    m_UpArrow1 = NULL;
-    Text_Remove(m_UpArrow2);
-    m_UpArrow2 = NULL;
-    Text_Remove(m_DownArrow1);
-    m_DownArrow1 = NULL;
-    Text_Remove(m_DownArrow2);
-    m_DownArrow2 = NULL;
-}
-
-static void M_ShowItemQuantity(const char *const fmt, const int32_t qty)
-{
-    if (m_ItemText[IT_QTY] == NULL) {
-        char string[64];
-        sprintf(string, fmt, qty);
-        Overlay_MakeAmmoString(string);
-        m_ItemText[IT_QTY] = Text_Create(64, -56, string);
-        Text_AlignBottom(m_ItemText[IT_QTY], true);
-        Text_CentreH(m_ItemText[IT_QTY], true);
-    }
-}
-
 static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
 {
     if (!g_SaveGame.bonus_flag) {
-        M_ShowItemQuantity(fmt, qty);
+        InvRing_ShowItemQuantity(fmt, qty);
     }
 }
 
 static void M_RingIsOpen(INV_RING *const ring)
 {
-    M_InitHeader(ring);
+    InvRing_ShowHeader(ring);
 }
 
 static void M_RingIsNotOpen(INV_RING *const ring)
 {
-    M_RemoveHeader();
+    InvRing_RemoveHeader();
 }
 
 static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
 {
-    if (m_ItemText[IT_NAME] == NULL) {
-        if (inv_item->object_id != O_PASSPORT_OPTION) {
-            m_ItemText[IT_NAME] =
-                Text_Create(0, -16, Object_GetName(inv_item->object_id));
-        }
-
-        if (m_ItemText[IT_NAME]) {
-            Text_AlignBottom(m_ItemText[IT_NAME], true);
-            Text_CentreH(m_ItemText[IT_NAME], true);
-        }
-    }
+    InvRing_ShowItemName(inv_item);
 
     const int32_t qty = Inv_RequestItem(inv_item->object_id);
     switch (inv_item->object_id) {
@@ -230,19 +95,19 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_UZI_AMMO_OPTION:
     case O_HARPOON_AMMO_OPTION:
     case O_M16_AMMO_OPTION:
-        M_ShowItemQuantity("%d", 2 * qty);
+        InvRing_ShowItemQuantity("%d", 2 * qty);
         break;
 
     case O_GRENADE_AMMO_OPTION:
     case O_FLARES_OPTION:
-        M_ShowItemQuantity("%d", qty);
+        InvRing_ShowItemQuantity("%d", qty);
         break;
 
     case O_SMALL_MEDIPACK_OPTION:
     case O_LARGE_MEDIPACK_OPTION:
         g_HealthBarTimer = 40;
         Overlay_DrawHealthBar();
-        M_ShowItemQuantity("%d", qty);
+        InvRing_ShowItemQuantity("%d", qty);
         break;
 
     case O_PUZZLE_OPTION_1:
@@ -256,7 +121,7 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_PICKUP_OPTION_1:
     case O_PICKUP_OPTION_2:
         if (qty > 1) {
-            M_ShowItemQuantity("%d", qty);
+            InvRing_ShowItemQuantity("%d", qty);
         }
         break;
 
@@ -264,106 +129,21 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
         break;
     }
 
-    if (inv_item->object_id == O_SMALL_MEDIPACK_OPTION
-        || inv_item->object_id == O_LARGE_MEDIPACK_OPTION) {
-        Text_Hide(m_UpArrow1, true);
-    } else {
-        Text_Hide(m_UpArrow1, false);
-    }
+    InvRing_HideArrow(
+        INV_RING_ARROW_TL,
+        inv_item->object_id == O_SMALL_MEDIPACK_OPTION
+            || inv_item->object_id == O_LARGE_MEDIPACK_OPTION);
 }
 
 static void M_RingActive(void)
 {
-    M_RemoveItemsText();
-}
-
-static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
-{
-    switch (inv_item->object_id) {
-    case O_PASSPORT_OPTION:
-        inv_item->meshes_drawn = PASS_MESH_COMMON;
-        if (inv_item->current_frame < 4) {
-            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT;
-        } else if (inv_item->current_frame <= 16) {
-            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1;
-        } else if (inv_item->current_frame < 19) {
-            inv_item->meshes_drawn |=
-                PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame == 19) {
-            inv_item->meshes_drawn |= PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame < 24) {
-            inv_item->meshes_drawn |=
-                PASS_MESH_IN_BACK | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame < 29) {
-            inv_item->meshes_drawn |= PASS_MESH_IN_BACK | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame == 29) {
-        }
-        break;
-
-    case O_COMPASS_OPTION:
-        if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
-            inv_item->meshes_drawn = inv_item->meshes_sel;
-        } else {
-            inv_item->meshes_drawn = -1;
-        }
-        break;
-
-    default:
-        inv_item->meshes_drawn = -1;
-        break;
-    }
-}
-
-static void M_UpdateInventoryItem(
-    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
-    const int32_t num_frames)
-{
-    if (ring->motion.status == RNG_DONE
-        || inv_item != ring->list[ring->current_object]) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 256;
-            } else if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 256;
-            }
-        }
-    } else if (ring->rotating) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 512;
-            } else if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 512;
-            }
-        }
-    } else if (
-        ring->motion.status == RNG_SELECTED
-        || ring->motion.status == RNG_DESELECTING
-        || ring->motion.status == RNG_SELECTING
-        || ring->motion.status == RNG_DESELECT
-        || ring->motion.status == RNG_CLOSING_ITEM) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
-            if (delta != 0) {
-                if (delta > 0 && delta < PHD_180) {
-                    inv_item->y_rot += 1024;
-                } else {
-                    inv_item->y_rot -= 1024;
-                }
-                inv_item->y_rot &= ~(1024 - 1);
-            }
-        }
-    } else if (
-        ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            inv_item->y_rot += 256;
-        }
-    }
+    InvRing_RemoveItemTexts();
 }
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
-        M_SelectMeshes(inv_item);
+        InvRing_SelectMeshes(inv_item);
         return false;
     }
 
@@ -379,7 +159,7 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
         }
     }
 
-    M_SelectMeshes(inv_item);
+    InvRing_SelectMeshes(inv_item);
     return true;
 }
 
@@ -795,7 +575,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        M_UpdateInventoryItem(ring, ring->list[i], 2);
+        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_FRAMES);
     }
 
     Sound_EndScene();
@@ -804,8 +584,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
 void InvRing_RemoveAllText(void)
 {
-    M_RemoveHeader();
-    M_RemoveItemsText();
+    InvRing_RemoveHeader();
+    InvRing_RemoveItemTexts();
 }
 
 INV_RING *InvRing_Open(const INVENTORY_MODE mode)
@@ -828,14 +608,10 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
         if (g_GameFlow.gym_enabled) {
             g_InvRing_Source[RT_OPTION].count++;
         }
-        m_VersionText = Text_Create(-20, -18, g_TR2XVersion);
-        Text_AlignRight(m_VersionText, 1);
-        Text_AlignBottom(m_VersionText, 1);
-        Text_SetScale(
-            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
+        InvRing_ShowVersionText();
     } else {
         g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
-        M_RemoveVersionText();
+        InvRing_RemoveVersionText();
     }
 
     for (int32_t i = 0; i < 8; i++) {
@@ -927,7 +703,7 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
     GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
 
     InvRing_RemoveAllText();
-    M_RemoveVersionText();
+    InvRing_RemoveVersionText();
 
     if (ring->list != NULL) {
         INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
@@ -1078,4 +854,9 @@ GAME_FLOW_COMMAND InvRing_Control(
     Overlay_Animate(num_frames);
     Output_AnimateTextures(g_Camera.num_frames);
     return gf_cmd;
+}
+
+bool InvRing_IsOptionLockedOut(void)
+{
+    return g_GameFlow.lockout_option_ring;
 }

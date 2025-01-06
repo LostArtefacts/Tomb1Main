@@ -4,6 +4,7 @@
 #include "global/types.h"
 
 #include <libtrx/config/types.h>
+#include <libtrx/game/overlay.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -36,5 +37,3 @@ void Overlay_DrawGameInfo(void);
 void Overlay_DrawFPSInfo(void);
 
 void Overlay_AddPickup(GAME_OBJECT_ID object_id);
-
-void Overlay_MakeAmmoString(char *string);

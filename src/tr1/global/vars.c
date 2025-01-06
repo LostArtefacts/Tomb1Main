@@ -70,5 +70,5 @@ int16_t g_RoomsToDrawCount = 0;
 INVENTORY_MODE g_InvMode;
 
 #ifndef MESON_BUILD
-const char *g_TR1XVersion = "TR1X (non-Docker build)";
+const char *g_TRXVersion = "TR1X (non-Docker build)";
 #endif

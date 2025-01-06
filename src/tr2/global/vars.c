@@ -5,7 +5,7 @@
 #include <libtrx/game/sound/ids.h>
 
 #ifndef MESON_BUILD
-const char *g_TR2XVersion = "TR2X (non-Docker build)";
+const char *g_TRXVersion = "TR2X (non-Docker build)";
 #endif
 
 GAME_FLOW_COMMAND g_GF_OverrideCommand = { .action = GF_NOOP };

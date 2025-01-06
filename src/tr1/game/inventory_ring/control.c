@@ -27,34 +27,10 @@
 #include <libtrx/game/objects/names.h>
 #include <libtrx/memory.h>
 
-typedef enum {
-    IT_NAME = 0,
-    IT_QTY = 1,
-    IT_NUMBER_OF = 2,
-} INV_TEXT;
+#define INV_FRAMES 2
 
-typedef enum {
-    // clang-format off
-    PASS_MESH_SPINE    = 1 << 0,
-    PASS_MESH_FRONT    = 1 << 1,
-    PASS_MESH_IN_FRONT = 1 << 2,
-    PASS_MESH_PAGE_2   = 1 << 3,
-    PASS_MESH_BACK     = 1 << 4,
-    PASS_MESH_IN_BACK  = 1 << 5,
-    PASS_MESH_PAGE_1   = 1 << 6,
-    PASS_MESH_COMMON   = PASS_MESH_SPINE | PASS_MESH_BACK | PASS_MESH_FRONT,
-    // clang-format on
-} PASS_MESH;
-
-static TEXTSTRING *m_UpArrow1 = NULL;
-static TEXTSTRING *m_UpArrow2 = NULL;
-static TEXTSTRING *m_DownArrow1 = NULL;
-static TEXTSTRING *m_DownArrow2 = NULL;
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
-static TEXTSTRING *m_VersionText = NULL;
-static TEXTSTRING *m_HeadingText = NULL;
-static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
 static CLOCK_TIMER m_DemoTimer = { 0 };
 static int32_t m_StartLevel;
 static GAME_OBJECT_ID m_InvChosen;
@@ -63,11 +39,6 @@ static TEXTSTRING *M_InitExamineText(
     int32_t x_pos, const char *role_str, const char *input_str);
 static void M_InitExamineOverlay(INV_RING *ring);
 static void M_RemoveExamineOverlay(void);
-static void M_RemoveItemsText(void);
-static void M_RemoveVersionText(void);
-static void M_InitHeader(INV_RING *ring);
-static void M_RemoveHeader(void);
-static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
 
 static void M_RingIsOpen(INV_RING *ring);
@@ -89,7 +60,6 @@ static TEXTSTRING *M_InitExamineText(
     Text_AlignBottom(text, true);
     Text_CentreH(text, true);
     Text_Hide(text, true);
-
     return text;
 }
 
@@ -119,125 +89,28 @@ static void M_RemoveExamineOverlay(void)
     m_UseItemText = NULL;
 }
 
-static void M_RemoveItemsText(void)
-{
-    for (int32_t i = 0; i < IT_NUMBER_OF; i++) {
-        Text_Remove(m_ItemText[i]);
-        m_ItemText[i] = NULL;
-    }
-}
-
-static void M_RemoveVersionText(void)
-{
-    Text_Remove(m_VersionText);
-    m_VersionText = NULL;
-}
-
-static void M_InitHeader(INV_RING *const ring)
-{
-    if (ring->mode == INV_TITLE_MODE) {
-        return;
-    }
-
-    if (m_HeadingText == NULL) {
-        switch (ring->type) {
-        case RT_MAIN:
-            m_HeadingText = Text_Create(0, 26, GS(HEADING_INVENTORY));
-            break;
-
-        case RT_OPTION:
-            if (ring->mode == INV_DEATH_MODE) {
-                m_HeadingText = Text_Create(0, 26, GS(HEADING_GAME_OVER));
-            } else {
-                m_HeadingText = Text_Create(0, 26, GS(HEADING_OPTION));
-            }
-            break;
-
-        case RT_KEYS:
-            m_HeadingText = Text_Create(0, 26, GS(HEADING_ITEMS));
-            break;
-        }
-
-        Text_CentreH(m_HeadingText, true);
-    }
-
-    if (ring->mode != INV_GAME_MODE) {
-        return;
-    }
-
-    if (m_UpArrow1 == NULL
-        && (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN
-                && g_InvRing_Source[RT_KEYS].count > 0))) {
-        m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
-        m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
-        Text_AlignRight(m_UpArrow2, true);
-    }
-
-    if (m_DownArrow1 == NULL
-        && (ring->type == RT_MAIN || ring->type == RT_KEYS)) {
-        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow1, true);
-        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow2, true);
-        Text_AlignRight(m_DownArrow2, true);
-    }
-}
-
-static void M_RemoveHeader(void)
-{
-    Text_Remove(m_HeadingText);
-    m_HeadingText = NULL;
-    Text_Remove(m_UpArrow1);
-    m_UpArrow1 = NULL;
-    Text_Remove(m_UpArrow2);
-    m_UpArrow2 = NULL;
-    Text_Remove(m_DownArrow1);
-    m_DownArrow1 = NULL;
-    Text_Remove(m_DownArrow2);
-    m_DownArrow2 = NULL;
-}
-
-static void M_ShowItemQuantity(const char *const fmt, const int32_t qty)
-{
-    if (m_ItemText[IT_QTY] == NULL) {
-        char string[64];
-        sprintf(string, fmt, qty);
-        Overlay_MakeAmmoString(string);
-        m_ItemText[IT_QTY] = Text_Create(64, -56, string);
-        Text_AlignBottom(m_ItemText[IT_QTY], true);
-        Text_CentreH(m_ItemText[IT_QTY], true);
-    }
-}
-
 static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
 {
     if (!(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
-        M_ShowItemQuantity(fmt, qty);
+        InvRing_ShowItemQuantity(fmt, qty);
     }
 }
 
 static void M_RingIsOpen(INV_RING *const ring)
 {
-    M_InitHeader(ring);
+    InvRing_ShowHeader(ring);
     M_InitExamineOverlay(ring);
 }
 
 static void M_RingIsNotOpen(INV_RING *const ring)
 {
-    M_RemoveHeader();
+    InvRing_RemoveHeader();
     M_RemoveExamineOverlay();
 }
 
 static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
 {
-    if (m_ItemText[IT_NAME] == NULL
-        && inv_item->object_id != O_PASSPORT_OPTION) {
-        m_ItemText[IT_NAME] =
-            Text_Create(0, -16, Object_GetName(inv_item->object_id));
-        Text_AlignBottom(m_ItemText[IT_NAME], 1);
-        Text_CentreH(m_ItemText[IT_NAME], 1);
-    }
+    InvRing_ShowItemName(inv_item);
 
     const int32_t qty = Inv_RequestItem(inv_item->object_id);
     bool show_examine_option = false;
@@ -256,19 +129,19 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
         break;
 
     case O_SG_AMMO_OPTION:
-        M_ShowItemQuantity("%d", qty * NUM_SG_SHELLS);
+        InvRing_ShowItemQuantity("%d", qty * NUM_SG_SHELLS);
         break;
 
     case O_MAG_AMMO_OPTION:
     case O_UZI_AMMO_OPTION:
-        M_ShowItemQuantity("%d", qty * 2);
+        InvRing_ShowItemQuantity("%d", qty * 2);
         break;
 
     case O_MEDI_OPTION:
     case O_BIGMEDI_OPTION:
         Overlay_BarSetHealthTimer(40);
         if (qty > 1) {
-            M_ShowItemQuantity("%d", qty);
+            InvRing_ShowItemQuantity("%d", qty);
         }
         break;
 
@@ -285,7 +158,7 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_PUZZLE_OPTION_4:
     case O_SCION_OPTION:
         if (qty > 1) {
-            M_ShowItemQuantity("%d", qty);
+            InvRing_ShowItemQuantity("%d", qty);
         }
 
         show_examine_option = !Option_Examine_IsActive()
@@ -299,20 +172,20 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     if (inv_item->object_id == O_MEDI_OPTION
         || inv_item->object_id == O_BIGMEDI_OPTION) {
         if (g_Config.ui.healthbar_location == BL_TOP_LEFT) {
-            Text_Hide(m_UpArrow1, true);
+            InvRing_HideArrow(INV_RING_ARROW_TL, true);
         } else if (g_Config.ui.healthbar_location == BL_TOP_RIGHT) {
-            Text_Hide(m_UpArrow2, true);
+            InvRing_HideArrow(INV_RING_ARROW_TR, true);
         } else if (g_Config.ui.healthbar_location == BL_BOTTOM_LEFT) {
-            Text_Hide(m_DownArrow1, true);
+            InvRing_HideArrow(INV_RING_ARROW_BL, true);
         } else if (g_Config.ui.healthbar_location == BL_BOTTOM_RIGHT) {
-            Text_Hide(m_DownArrow2, true);
+            InvRing_HideArrow(INV_RING_ARROW_BR, true);
         }
         g_GameInfo.inv_showing_medpack = true;
     } else {
-        Text_Hide(m_UpArrow1, false);
-        Text_Hide(m_UpArrow2, false);
-        Text_Hide(m_DownArrow1, false);
-        Text_Hide(m_DownArrow2, false);
+        InvRing_HideArrow(INV_RING_ARROW_TL, false);
+        InvRing_HideArrow(INV_RING_ARROW_TR, false);
+        InvRing_HideArrow(INV_RING_ARROW_BL, false);
+        InvRing_HideArrow(INV_RING_ARROW_BR, false);
         g_GameInfo.inv_showing_medpack = false;
     }
 
@@ -327,45 +200,10 @@ static void M_RingActive(INV_RING *const ring)
     InvRing_RemoveAllText();
 }
 
-static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
-{
-    switch (inv_item->object_id) {
-    case O_PASSPORT_OPTION:
-        inv_item->meshes_drawn = PASS_MESH_COMMON;
-        if (inv_item->current_frame <= 14) {
-            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1;
-        } else if (inv_item->current_frame < 19) {
-            inv_item->meshes_drawn |=
-                PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame == 19) {
-            inv_item->meshes_drawn |= PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
-        } else if (inv_item->current_frame < 24) {
-            inv_item->meshes_drawn |=
-                PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2 | PASS_MESH_IN_BACK;
-        } else if (inv_item->current_frame < 29) {
-            inv_item->meshes_drawn |= PASS_MESH_PAGE_2 | PASS_MESH_IN_BACK;
-        } else if (inv_item->current_frame == 29) {
-        }
-        break;
-
-    case O_COMPASS_OPTION:
-        if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
-            inv_item->meshes_drawn = inv_item->meshes_sel;
-        } else {
-            inv_item->meshes_drawn = -1;
-        }
-        break;
-
-    default:
-        inv_item->meshes_drawn = -1;
-        break;
-    }
-}
-
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
-        M_SelectMeshes(inv_item);
+        InvRing_SelectMeshes(inv_item);
         return false;
     }
 
@@ -376,7 +214,7 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item)
         inv_item->current_frame = inv_item->frames_total - 1;
     }
 
-    M_SelectMeshes(inv_item);
+    InvRing_SelectMeshes(inv_item);
     return true;
 }
 
@@ -850,8 +688,8 @@ bool InvRing_CanExamine(void)
 
 void InvRing_RemoveAllText(void)
 {
-    M_RemoveHeader();
-    M_RemoveItemsText();
+    InvRing_RemoveHeader();
+    InvRing_RemoveItemTexts();
     M_RemoveExamineOverlay();
 }
 
@@ -868,14 +706,10 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     if (mode == INV_TITLE_MODE) {
         g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
-        m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
-        Text_AlignRight(m_VersionText, 1);
-        Text_AlignBottom(m_VersionText, 1);
-        Text_SetScale(
-            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
+        InvRing_ShowVersionText();
     } else {
         g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
-        M_RemoveVersionText();
+        InvRing_RemoveVersionText();
     }
 
     g_InvRing_Source[RT_MAIN].current = 0;
@@ -954,7 +788,7 @@ PHASE_CONTROL InvRing_Close(INV_RING *const ring)
     PHASE_CONTROL result = { .action = PHASE_ACTION_NO_WAIT };
 
     InvRing_RemoveAllText();
-    M_RemoveVersionText();
+    InvRing_RemoveVersionText();
 
     if (ring->list != NULL) {
         INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
@@ -1144,4 +978,9 @@ PHASE_CONTROL InvRing_Control(INV_RING *const ring, const int32_t num_frames)
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+}
+
+bool InvRing_IsOptionLockedOut(void)
+{
+    return false;
 }
