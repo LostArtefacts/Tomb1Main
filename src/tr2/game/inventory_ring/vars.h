@@ -2,7 +2,7 @@
 
 #include "global/types.h"
 
-#include <libtrx/game/inventory_ring/types.h>
+#include <libtrx/game/inventory_ring/vars.h>
 
 extern INVENTORY_MODE g_Inv_Mode;
 extern int16_t g_Inv_Chosen;
@@ -12,8 +12,6 @@ extern bool g_Inv_IsOptionsDelay;
 extern TEXTSTRING *g_InvRing_Text;
 extern TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF];
 extern int32_t g_Inv_OptionsDelayCounter;
-
-extern INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF];
 
 extern INVENTORY_ITEM g_InvRing_Item_Stopwatch;
 extern INVENTORY_ITEM g_InvRing_Item_Pistols;

@@ -953,7 +953,7 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
             Music_Unpause();
         }
         if (g_Config.gameplay.fix_item_duplication_glitch) {
-            InvRing_ClearSelection();
+            Inv_ClearSelection();
         }
 
         switch (g_Inv_Chosen) {
@@ -1060,10 +1060,4 @@ GAME_FLOW_COMMAND InvRing_Control(
     Overlay_Animate(num_frames);
     Output_AnimateTextures(g_Camera.num_frames);
     return gf_cmd;
-}
-
-void InvRing_ClearSelection(void)
-{
-    g_InvRing_Source[RT_MAIN].current = 0;
-    g_InvRing_Source[RT_KEYS].current = 0;
 }
