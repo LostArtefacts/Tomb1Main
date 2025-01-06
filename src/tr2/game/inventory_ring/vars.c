@@ -18,7 +18,7 @@ int32_t g_Inv_ExtraData[8];
 int32_t g_Inv_NFrames = 2;
 TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF] = {};
 
-INV_ITEM *g_Inv_OptionList[] = {
+INVENTORY_ITEM *g_Inv_OptionList[] = {
     // clang-format off
     &g_Inv_Item_Passport,
     &g_Inv_Item_Controls,
@@ -27,7 +27,7 @@ INV_ITEM *g_Inv_OptionList[] = {
     // clang-format on
 };
 
-INV_ITEM *g_Inv_MainList[23] = {
+INVENTORY_ITEM *g_Inv_MainList[23] = {
     // clang-format off
     &g_Inv_Item_Stopwatch,
     &g_Inv_Item_Flare,
@@ -44,7 +44,7 @@ INV_ITEM *g_Inv_MainList[23] = {
     // clang-format on
 };
 
-INV_ITEM *g_Inv_KeysList[23] = {
+INVENTORY_ITEM *g_Inv_KeysList[23] = {
     // clang-format off
     &g_Inv_Item_Puzzle1,
     &g_Inv_Item_Puzzle2,
@@ -60,8 +60,7 @@ INV_ITEM *g_Inv_KeysList[23] = {
     // clang-format on
 };
 
-INV_ITEM g_Inv_Item_Stopwatch = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Stopwatch = {
     .object_id = O_COMPASS_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -85,11 +84,9 @@ INV_ITEM g_Inv_Item_Stopwatch = {
     .meshes_drawn = -1,
     .inv_pos = 0,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Pistols = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Pistols = {
     .object_id = O_PISTOL_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -113,11 +110,9 @@ INV_ITEM g_Inv_Item_Pistols = {
     .meshes_drawn = -1,
     .inv_pos = 1,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Flare = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Flare = {
     .object_id = O_FLARES_OPTION,
     .frames_total = 31,
     .current_frame = 0,
@@ -141,11 +136,9 @@ INV_ITEM g_Inv_Item_Flare = {
     .meshes_drawn = -1,
     .inv_pos = 8,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Shotgun = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Shotgun = {
     .object_id = O_SHOTGUN_OPTION,
     .frames_total = 13,
     .current_frame = 0,
@@ -169,11 +162,9 @@ INV_ITEM g_Inv_Item_Shotgun = {
     .meshes_drawn = -1,
     .inv_pos = 2,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Magnums = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Magnums = {
     .object_id = O_MAGNUM_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -197,11 +188,9 @@ INV_ITEM g_Inv_Item_Magnums = {
     .meshes_drawn = -1,
     .inv_pos = 3,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Uzis = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Uzis = {
     .object_id = O_UZI_OPTION,
     .frames_total = 13,
     .current_frame = 0,
@@ -225,11 +214,9 @@ INV_ITEM g_Inv_Item_Uzis = {
     .meshes_drawn = -1,
     .inv_pos = 4,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Harpoon = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Harpoon = {
     .object_id = O_HARPOON_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -253,11 +240,9 @@ INV_ITEM g_Inv_Item_Harpoon = {
     .meshes_drawn = -1,
     .inv_pos = 7,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_M16 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_M16 = {
     .object_id = O_M16_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -281,11 +266,9 @@ INV_ITEM g_Inv_Item_M16 = {
     .meshes_drawn = -1,
     .inv_pos = 5,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Grenade = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Grenade = {
     .object_id = O_GRENADE_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -309,11 +292,9 @@ INV_ITEM g_Inv_Item_Grenade = {
     .meshes_drawn = -1,
     .inv_pos = 6,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_PistolAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_PistolAmmo = {
     .object_id = O_PISTOL_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -337,11 +318,9 @@ INV_ITEM g_Inv_Item_PistolAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 1,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_ShotgunAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_ShotgunAmmo = {
     .object_id = O_SHOTGUN_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -365,11 +344,9 @@ INV_ITEM g_Inv_Item_ShotgunAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 2,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_MagnumAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_MagnumAmmo = {
     .object_id = O_MAGNUM_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -393,11 +370,9 @@ INV_ITEM g_Inv_Item_MagnumAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 3,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_UziAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_UziAmmo = {
     .object_id = O_UZI_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -421,11 +396,9 @@ INV_ITEM g_Inv_Item_UziAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 4,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_HarpoonAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_HarpoonAmmo = {
     .object_id = O_HARPOON_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -449,11 +422,9 @@ INV_ITEM g_Inv_Item_HarpoonAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 7,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_M16Ammo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_M16Ammo = {
     .object_id = O_M16_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -477,11 +448,9 @@ INV_ITEM g_Inv_Item_M16Ammo = {
     .meshes_drawn = -1,
     .inv_pos = 5,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_GrenadeAmmo = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_GrenadeAmmo = {
     .object_id = O_GRENADE_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -505,11 +474,9 @@ INV_ITEM g_Inv_Item_GrenadeAmmo = {
     .meshes_drawn = -1,
     .inv_pos = 6,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_SmallMedi = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_SmallMedi = {
     .object_id = O_SMALL_MEDIPACK_OPTION,
     .frames_total = 26,
     .current_frame = 0,
@@ -533,11 +500,9 @@ INV_ITEM g_Inv_Item_SmallMedi = {
     .meshes_drawn = -1,
     .inv_pos = 11,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_LargeMedi = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_LargeMedi = {
     .object_id = O_LARGE_MEDIPACK_OPTION,
     .frames_total = 20,
     .current_frame = 0,
@@ -561,11 +526,9 @@ INV_ITEM g_Inv_Item_LargeMedi = {
     .meshes_drawn = -1,
     .inv_pos = 10,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Pickup1 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Pickup1 = {
     .object_id = O_PICKUP_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -589,11 +552,9 @@ INV_ITEM g_Inv_Item_Pickup1 = {
     .meshes_drawn = -1,
     .inv_pos = 111,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Pickup2 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Pickup2 = {
     .object_id = O_PICKUP_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -617,11 +578,9 @@ INV_ITEM g_Inv_Item_Pickup2 = {
     .meshes_drawn = -1,
     .inv_pos = 110,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Puzzle1 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Puzzle1 = {
     .object_id = O_PUZZLE_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -645,11 +604,9 @@ INV_ITEM g_Inv_Item_Puzzle1 = {
     .meshes_drawn = -1,
     .inv_pos = 108,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Puzzle2 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Puzzle2 = {
     .object_id = O_PUZZLE_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -673,11 +630,9 @@ INV_ITEM g_Inv_Item_Puzzle2 = {
     .meshes_drawn = -1,
     .inv_pos = 107,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Puzzle3 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Puzzle3 = {
     .object_id = O_PUZZLE_OPTION_3,
     .frames_total = 1,
     .current_frame = 0,
@@ -701,11 +656,9 @@ INV_ITEM g_Inv_Item_Puzzle3 = {
     .meshes_drawn = -1,
     .inv_pos = 106,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Puzzle4 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Puzzle4 = {
     .object_id = O_PUZZLE_OPTION_4,
     .frames_total = 1,
     .current_frame = 0,
@@ -729,11 +682,9 @@ INV_ITEM g_Inv_Item_Puzzle4 = {
     .meshes_drawn = -1,
     .inv_pos = 105,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Key1 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Key1 = {
     .object_id = O_KEY_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -757,11 +708,9 @@ INV_ITEM g_Inv_Item_Key1 = {
     .meshes_drawn = -1,
     .inv_pos = 101,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Key2 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Key2 = {
     .object_id = O_KEY_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -785,11 +734,9 @@ INV_ITEM g_Inv_Item_Key2 = {
     .meshes_drawn = -1,
     .inv_pos = 102,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Key3 = {
-    .string = NULL,
+INVENTORY_ITEM g_Inv_Item_Key3 = {
     .object_id = O_KEY_OPTION_3,
     .frames_total = 1,
     .current_frame = 0,
@@ -813,12 +760,10 @@ INV_ITEM g_Inv_Item_Key3 = {
     .meshes_drawn = -1,
     .inv_pos = 103,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Key4 = {
-    .string = NULL,
-    .object_id = 200,
+INVENTORY_ITEM g_Inv_Item_Key4 = {
+    .object_id = O_KEY_OPTION_4,
     .frames_total = 1,
     .current_frame = 0,
     .goal_frame = 0,
@@ -841,12 +786,10 @@ INV_ITEM g_Inv_Item_Key4 = {
     .meshes_drawn = -1,
     .inv_pos = 104,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Passport = {
-    .string = NULL,
-    .object_id = 133,
+INVENTORY_ITEM g_Inv_Item_Passport = {
+    .object_id = O_PASSPORT_CLOSED,
     .frames_total = 30,
     .current_frame = 0,
     .goal_frame = 0,
@@ -869,12 +812,10 @@ INV_ITEM g_Inv_Item_Passport = {
     .meshes_drawn = 19,
     .inv_pos = 0,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Graphics = {
-    .string = NULL,
-    .object_id = 153,
+INVENTORY_ITEM g_Inv_Item_Graphics = {
+    .object_id = O_DETAIL_OPTION,
     .frames_total = 1,
     .current_frame = 0,
     .goal_frame = 0,
@@ -897,12 +838,10 @@ INV_ITEM g_Inv_Item_Graphics = {
     .meshes_drawn = -1,
     .inv_pos = 1,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Sound = {
-    .string = NULL,
-    .object_id = 154,
+INVENTORY_ITEM g_Inv_Item_Sound = {
+    .object_id = O_SOUND_OPTION,
     .frames_total = 1,
     .current_frame = 0,
     .goal_frame = 0,
@@ -925,12 +864,10 @@ INV_ITEM g_Inv_Item_Sound = {
     .meshes_drawn = -1,
     .inv_pos = 2,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Controls = {
-    .string = NULL,
-    .object_id = 155,
+INVENTORY_ITEM g_Inv_Item_Controls = {
+    .object_id = O_CONTROL_OPTION,
     .frames_total = 1,
     .current_frame = 0,
     .goal_frame = 0,
@@ -953,12 +890,10 @@ INV_ITEM g_Inv_Item_Controls = {
     .meshes_drawn = -1,
     .inv_pos = 3,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };
 
-INV_ITEM g_Inv_Item_Photo = {
-    .string = NULL,
-    .object_id = 122,
+INVENTORY_ITEM g_Inv_Item_Photo = {
+    .object_id = O_PHOTO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
     .goal_frame = 0,
@@ -981,5 +916,4 @@ INV_ITEM g_Inv_Item_Photo = {
     .meshes_drawn = -1,
     .inv_pos = 5,
     .sprite_list = NULL,
-    .reserved = { 0, 0, 0, 0 },
 };

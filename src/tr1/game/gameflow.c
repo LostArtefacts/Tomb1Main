@@ -1517,7 +1517,7 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
 }
 
 // TODO: make GAME_FLOW_COMMAND
-bool GF_ShowInventory(const INV_MODE inv_mode)
+bool GF_ShowInventory(const INVENTORY_MODE inv_mode)
 {
     if (inv_mode == INV_KEYS_MODE && !g_InvKeysObjects) {
         return false;

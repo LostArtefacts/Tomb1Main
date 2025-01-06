@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/inventory_ring/types.h"
 #include "global/const.h"
 #include "global/types.h"
 
@@ -77,4 +78,4 @@ extern int16_t g_RoomsToDrawCount;
 
 extern REQUEST_INFO g_SavegameRequester;
 
-extern int16_t g_InvMode;
+extern INVENTORY_MODE g_InvMode;

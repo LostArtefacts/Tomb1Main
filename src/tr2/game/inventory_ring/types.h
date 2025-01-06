@@ -3,6 +3,15 @@
 #include "global/types.h"
 
 typedef enum {
+    INV_GAME_MODE = 0,
+    INV_TITLE_MODE = 1,
+    INV_KEYS_MODE = 2,
+    INV_SAVE_MODE = 3,
+    INV_LOAD_MODE = 4,
+    INV_DEATH_MODE = 5,
+} INVENTORY_MODE;
+
+typedef enum {
     RT_MAIN = 0,
     RT_OPTION = 1,
     RT_KEYS = 2,
@@ -30,13 +39,11 @@ typedef struct {
     XYZ_16 pos;
     int32_t param1;
     int32_t param2;
-    void *grdptr;
     int16_t sprite_num;
 } INVENTORY_SPRITE;
 
 typedef struct {
-    char *string;
-    int16_t object_id;
+    GAME_OBJECT_ID object_id;
     int16_t frames_total;
     int16_t current_frame;
     int16_t goal_frame;
@@ -59,13 +66,12 @@ typedef struct {
     uint32_t meshes_drawn;
     int16_t inv_pos;
     INVENTORY_SPRITE **sprite_list;
-    int32_t reserved[4];
-} INV_ITEM;
+} INVENTORY_ITEM;
 
 typedef struct {
     int16_t count;
-    int16_t status;
-    int16_t status_target;
+    RING_STATUS status;
+    RING_STATUS status_target;
     int16_t radius_target;
     int16_t radius_rate;
     int16_t camera_y_target;
@@ -87,7 +93,7 @@ typedef struct {
 
 typedef struct {
     INVENTORY_MODE mode;
-    INV_ITEM **list;
+    INVENTORY_ITEM **list;
     int16_t type;
     int16_t radius;
     int16_t camera_pitch;

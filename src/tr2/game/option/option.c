@@ -3,7 +3,7 @@
 #include "game/input.h"
 #include "global/vars.h"
 
-void Option_Control(INV_ITEM *const item)
+void Option_Control(INVENTORY_ITEM *const item)
 {
     switch (item->object_id) {
     case O_PASSPORT_OPTION:
@@ -64,7 +64,7 @@ void Option_Control(INV_ITEM *const item)
     }
 }
 
-void Option_Draw(INV_ITEM *const item)
+void Option_Draw(INVENTORY_ITEM *const item)
 {
     switch (item->object_id) {
     case O_PASSPORT_OPTION:
@@ -89,7 +89,7 @@ void Option_Draw(INV_ITEM *const item)
     }
 }
 
-void Option_Shutdown(INV_ITEM *const item)
+void Option_Shutdown(INVENTORY_ITEM *const item)
 {
     switch (item->object_id) {
     case O_PASSPORT_OPTION:
@@ -99,17 +99,16 @@ void Option_Shutdown(INV_ITEM *const item)
     case O_DETAIL_OPTION:
         Option_Detail_Shutdown();
         break;
-
     case O_SOUND_OPTION:
         Option_Sound_Shutdown();
         break;
-
     case O_CONTROL_OPTION:
         Option_Controls_Shutdown();
         break;
-
     case O_COMPASS_OPTION:
         Option_Compass_Shutdown();
+        break;
+    default:
         break;
     }
 }

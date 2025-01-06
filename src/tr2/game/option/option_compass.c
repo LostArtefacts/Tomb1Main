@@ -27,7 +27,7 @@ static void M_Shutdown(void)
     }
 }
 
-void Option_Compass_Control(INV_ITEM *const item)
+void Option_Compass_Control(INVENTORY_ITEM *const item)
 {
     char buffer[32];
     const int32_t sec = g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
@@ -46,7 +46,7 @@ void Option_Compass_Control(INV_ITEM *const item)
     Sound_Effect(SFX_MENU_STOPWATCH, 0, SPM_ALWAYS);
 }
 
-void Option_Compass_Draw(INV_ITEM *const item)
+void Option_Compass_Draw(INVENTORY_ITEM *const item)
 {
     if (m_Dialog != NULL) {
         m_Dialog->draw(m_Dialog);

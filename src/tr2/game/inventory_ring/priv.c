@@ -42,7 +42,7 @@ void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID object_id)
 }
 
 void InvRing_InitRing(
-    INV_RING *const ring, const RING_TYPE type, INV_ITEM **const list,
+    INV_RING *const ring, const RING_TYPE type, INVENTORY_ITEM **const list,
     const int16_t qty, const int16_t current)
 {
     ring->type = type;
@@ -74,7 +74,7 @@ void InvRing_InitRing(
     ring->camera.rot.y = 0;
     ring->camera.rot.z = 0;
 
-    InvRing_MotionInit(ring, RING_OPEN_FRAMES, RNG_OPENING, RNG_OPEN);
+    InvRing_MotionInit(ring, RNG_OPENING, RNG_OPEN, RING_OPEN_FRAMES);
     InvRing_MotionRadius(ring, RING_RADIUS);
     InvRing_MotionCameraPos(ring, RING_CAMERA_HEIGHT);
     InvRing_MotionRotation(
@@ -133,7 +133,7 @@ void InvRing_DoMotions(INV_RING *const ring)
         ring->ring_pos.rot.y += motion->rotate_rate;
         ring->camera_pitch += motion->camera_pitch_rate;
 
-        INV_ITEM *const inv_item = ring->list[ring->current_object];
+        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
         inv_item->x_rot_pt += motion->item_pt_x_rot_rate;
         inv_item->x_rot += motion->item_x_rot_rate;
         inv_item->y_trans += motion->item_y_trans_rate;
@@ -216,8 +216,8 @@ void InvRing_RotateRight(INV_RING *const ring)
 }
 
 void InvRing_MotionInit(
-    INV_RING *const ring, const int16_t frames, const RING_STATUS status,
-    const RING_STATUS status_target)
+    INV_RING *const ring, const RING_STATUS status,
+    const RING_STATUS status_target, const int16_t frames)
 {
     INV_RING_MOTION *const motion = &ring->motion;
     motion->count = frames;
@@ -286,7 +286,7 @@ void InvRing_MotionCameraPitch(INV_RING *const ring, const int16_t target)
 }
 
 void InvRing_MotionItemSelect(
-    INV_RING *const ring, const INV_ITEM *const inv_item)
+    INV_RING *const ring, const INVENTORY_ITEM *const inv_item)
 {
     INV_RING_MOTION *const motion = &ring->motion;
     motion->item_pt_x_rot_target = inv_item->x_rot_pt_sel;
@@ -301,7 +301,7 @@ void InvRing_MotionItemSelect(
 }
 
 void InvRing_MotionItemDeselect(
-    INV_RING *const ring, const INV_ITEM *const inv_item)
+    INV_RING *const ring, const INVENTORY_ITEM *const inv_item)
 {
     INV_RING_MOTION *const motion = &ring->motion;
     motion->item_pt_x_rot_target = 0;

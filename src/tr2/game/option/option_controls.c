@@ -68,7 +68,7 @@ void Option_Controls_Shutdown(void)
     M_Shutdown();
 }
 
-void Option_Controls_Control(INV_ITEM *const item)
+void Option_Controls_Control(INVENTORY_ITEM *const item)
 {
     if (m_Dialog == NULL) {
         M_Init();
@@ -83,7 +83,7 @@ void Option_Controls_Control(INV_ITEM *const item)
     }
 }
 
-void Option_Controls_Draw(INV_ITEM *const item)
+void Option_Controls_Draw(INVENTORY_ITEM *const item)
 {
     if (m_Dialog != NULL) {
         m_Dialog->draw(m_Dialog);

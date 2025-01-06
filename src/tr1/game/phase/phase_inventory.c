@@ -14,8 +14,7 @@
 
 #include <libtrx/config.h>
 
-RING_INFO m_Ring;
-IMOTION_INFO m_Motion;
+INV_RING m_Ring;
 
 static void M_Start(const PHASE_INVENTORY_ARGS *args);
 static void M_End(void);
@@ -30,11 +29,8 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
         Stats_StartTimer();
     }
 
-    RING_INFO *ring = &m_Ring;
-    IMOTION_INFO *motion = &m_Motion;
-
-    memset(motion, 0, sizeof(IMOTION_INFO));
-    memset(ring, 0, sizeof(RING_INFO));
+    INV_RING *ring = &m_Ring;
+    memset(ring, 0, sizeof(INV_RING));
 
     g_InvMode = args->mode;
 
@@ -57,24 +53,23 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     case INV_TITLE_MODE:
         InvRing_InitRing(
             ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
-            g_InvOptionCurrent, motion);
+            g_InvOptionCurrent);
         break;
 
     case INV_KEYS_MODE:
         InvRing_InitRing(
-            ring, RT_KEYS, g_InvKeysList, g_InvKeysObjects, g_InvMainCurrent,
-            motion);
+            ring, RT_KEYS, g_InvKeysList, g_InvKeysObjects, g_InvMainCurrent);
         break;
 
     default:
         if (g_InvMainObjects) {
             InvRing_InitRing(
                 ring, RT_MAIN, g_InvMainList, g_InvMainObjects,
-                g_InvMainCurrent, motion);
+                g_InvMainCurrent);
         } else {
             InvRing_InitRing(
                 ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
-                g_InvOptionCurrent, motion);
+                g_InvOptionCurrent);
         }
         break;
     }
@@ -93,7 +88,7 @@ static PHASE_CONTROL M_Control(int32_t num_frames)
     if (g_Config.gameplay.enable_timer_in_inventory) {
         Stats_UpdateTimer();
     }
-    return InvRing_Control(&m_Ring, &m_Motion, num_frames);
+    return InvRing_Control(&m_Ring, num_frames);
 }
 
 static void M_End(void)
@@ -115,9 +110,7 @@ static void M_End(void)
 
 static void M_Draw(void)
 {
-    RING_INFO *ring = &m_Ring;
-    IMOTION_INFO *motion = &m_Motion;
-    InvRing_Draw(ring, motion);
+    InvRing_Draw(&m_Ring);
     Output_AnimateFades();
     Text_Draw();
 }

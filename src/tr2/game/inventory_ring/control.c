@@ -50,12 +50,12 @@ static void M_End(INV_RING *ring);
 static void M_Construct(INVENTORY_MODE mode);
 static void M_RingIsOpen(INV_RING *ring);
 static void M_RingIsNotOpen(INV_RING *ring);
-static void M_RingNotActive(const INV_ITEM *inv_item);
+static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
 static void M_RingActive(void);
-static void M_SelectMeshes(INV_ITEM *inv_item);
+static void M_SelectMeshes(INVENTORY_ITEM *inv_item);
 static void M_UpdateInventoryItem(
-    const INV_RING *ring, INV_ITEM *inv_item, int32_t num_frames);
-static bool M_AnimateInventoryItem(INV_ITEM *inv_item);
+    const INV_RING *ring, INVENTORY_ITEM *inv_item, int32_t num_frames);
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
 static void M_RemoveItemsText(void)
 {
@@ -126,7 +126,7 @@ static void M_Construct(const INVENTORY_MODE mode)
     }
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        INV_ITEM *const inv_item = g_Inv_MainList[i];
+        INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
         inv_item->meshes_drawn = inv_item->meshes_sel;
         inv_item->current_frame = 0;
         inv_item->goal_frame = 0;
@@ -142,7 +142,7 @@ static void M_Construct(const INVENTORY_MODE mode)
     }
 
     for (int32_t i = 0; i < g_Inv_OptionObjectsCount; i++) {
-        INV_ITEM *const inv_item = g_Inv_OptionList[i];
+        INVENTORY_ITEM *const inv_item = g_Inv_OptionList[i];
         inv_item->current_frame = 0;
         inv_item->goal_frame = 0;
         inv_item->anim_count = 0;
@@ -264,7 +264,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 }
 
                 g_SoundOptionLine = 0;
-                INV_ITEM *inv_item;
+                INVENTORY_ITEM *inv_item;
                 if (ring->type == RT_MAIN) {
                     g_Inv_MainCurrent = ring->current_object;
                     inv_item = g_Inv_MainList[ring->current_object];
@@ -443,7 +443,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             break;
 
         case RNG_SELECTED: {
-            INV_ITEM *inv_item = ring->list[ring->current_object];
+            INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
             if (inv_item->object_id == O_PASSPORT_CLOSED) {
                 inv_item->object_id = O_PASSPORT_OPTION;
             }
@@ -510,7 +510,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             break;
 
         case RNG_CLOSING_ITEM: {
-            INV_ITEM *inv_item = ring->list[ring->current_object];
+            INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
             for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
                 if (!M_AnimateInventoryItem(inv_item)) {
                     if (inv_item->object_id == O_PASSPORT_OPTION) {
@@ -548,7 +548,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_DESELECT
         || ring->motion.status == RNG_CLOSING_ITEM) {
         if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
-            INV_ITEM *const inv_item = ring->list[ring->current_object];
+            INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
             M_RingNotActive(inv_item);
         }
         M_RingIsOpen(ring);
@@ -580,7 +580,7 @@ static void M_End(INV_RING *const ring)
 {
     M_RemoveAllText();
     if (ring->list != NULL) {
-        INV_ITEM *const inv_item = ring->list[ring->current_object];
+        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item != NULL) {
             Option_Shutdown(inv_item);
         }
@@ -665,7 +665,7 @@ static void M_RingIsNotOpen(INV_RING *const ring)
     m_DownArrow2 = NULL;
 }
 
-static void M_RingNotActive(const INV_ITEM *const inv_item)
+static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
 {
     if (g_Inv_ItemText[0] == NULL) {
         if (inv_item->object_id != O_PASSPORT_OPTION) {
@@ -754,7 +754,7 @@ static void M_RingActive(void)
     M_RemoveItemsText();
 }
 
-static void M_SelectMeshes(INV_ITEM *const inv_item)
+static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
 {
     switch (inv_item->object_id) {
     case O_PASSPORT_OPTION:
@@ -792,7 +792,7 @@ static void M_SelectMeshes(INV_ITEM *const inv_item)
 }
 
 static void M_UpdateInventoryItem(
-    const INV_RING *const ring, INV_ITEM *const inv_item,
+    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
     const int32_t num_frames)
 {
     if (ring->motion.status == RNG_DONE
@@ -837,7 +837,7 @@ static void M_UpdateInventoryItem(
     }
 }
 
-static bool M_AnimateInventoryItem(INV_ITEM *const inv_item)
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
         M_SelectMeshes(inv_item);

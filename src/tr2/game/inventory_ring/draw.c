@@ -11,10 +11,10 @@
 #include "game/overlay.h"
 #include "global/vars.h"
 
-static void M_DrawItem(const INV_RING *ring, const INV_ITEM *inv_item);
+static void M_DrawItem(const INV_RING *ring, const INVENTORY_ITEM *inv_item);
 
 static void M_DrawItem(
-    const INV_RING *const ring, const INV_ITEM *const inv_item)
+    const INV_RING *const ring, const INVENTORY_ITEM *const inv_item)
 {
     if (ring->motion.status == RNG_DONE) {
         g_LsAdder = LOW_LIGHT;
@@ -80,21 +80,21 @@ static void M_DrawItem(
                     Output_DrawScreenLine(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
                         sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
+                        NULL, 0);
                     break;
 
                 case SHAPE_BOX:
                     Output_DrawScreenBox(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
                         sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
+                        NULL, 0);
                     break;
 
                 case SHAPE_FBOX:
                     Output_DrawScreenFBox(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
                         sprite->param1, sprite->param2, sprite->sprite_num,
-                        sprite->grdptr, 0);
+                        NULL, 0);
                     break;
 
                 default:
@@ -177,7 +177,7 @@ void InvRing_Draw(INV_RING *const ring)
 
     int32_t angle = 0;
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        INV_ITEM *const inv_item = ring->list[i];
+        INVENTORY_ITEM *const inv_item = ring->list[i];
         Matrix_Push();
         Matrix_RotYXZ(angle, 0, 0);
         Matrix_TranslateRel(ring->radius, 0, 0);
@@ -194,7 +194,7 @@ void InvRing_Draw(INV_RING *const ring)
             || ring->motion.status == RNG_DESELECTING
             || ring->motion.status == RNG_DESELECT
             || ring->motion.status == RNG_CLOSING_ITEM)) {
-        const INV_ITEM *const inv_item = ring->list[ring->current_object];
+        const INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item != NULL) {
             switch (inv_item->object_id) {
             case O_SMALL_MEDIPACK_OPTION:
@@ -212,7 +212,7 @@ void InvRing_Draw(INV_RING *const ring)
     Output_DrawPolyList();
 
     if (ring->motion.status == RNG_SELECTED) {
-        INV_ITEM *const inv_item = ring->list[ring->current_object];
+        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
         if (inv_item->object_id == O_PASSPORT_CLOSED) {
             inv_item->object_id = O_PASSPORT_OPTION;
         }

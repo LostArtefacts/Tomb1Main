@@ -8,7 +8,7 @@
 static int16_t m_MainQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
 static int16_t m_KeysQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
 
-void Inv_InsertItem(INV_ITEM *const inv_item)
+void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
 {
     int32_t n;
 
@@ -48,7 +48,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        const INV_ITEM *const inv_item = g_Inv_MainList[i];
+        const INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
         if (inv_item->object_id == inv_object_id) {
             const int32_t qty = object_id == O_FLARES_ITEM ? FLARE_AMMO_QTY : 1;
             m_MainQtys[i] += qty;
@@ -57,7 +57,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     }
 
     for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
-        const INV_ITEM *const inv_item = g_Inv_KeysList[i];
+        const INVENTORY_ITEM *const inv_item = g_Inv_KeysList[i];
         if (inv_item->object_id == inv_object_id) {
             m_KeysQtys[i]++;
             return true;

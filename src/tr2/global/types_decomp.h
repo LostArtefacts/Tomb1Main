@@ -408,15 +408,6 @@ typedef struct {
 } NAMED_COLOR;
 
 typedef enum {
-    INV_GAME_MODE  = 0,
-    INV_TITLE_MODE = 1,
-    INV_KEYS_MODE  = 2,
-    INV_SAVE_MODE  = 3,
-    INV_LOAD_MODE  = 4,
-    INV_DEATH_MODE = 5,
-} INVENTORY_MODE;
-
-typedef enum {
     GAMEMODE_NOT_IN_GAME,
     GAMEMODE_IN_GAME,
     GAMEMODE_IN_DEMO,

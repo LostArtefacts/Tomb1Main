@@ -67,7 +67,7 @@ OBJECT_VECTOR *g_SoundEffectsTable = NULL;
 int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW] = { -1 };
 int16_t g_RoomsToDrawCount = 0;
 
-int16_t g_InvMode = INV_TITLE_MODE;
+INVENTORY_MODE g_InvMode;
 
 #ifndef MESON_BUILD
 const char *g_TR1XVersion = "TR1X (non-Docker build)";

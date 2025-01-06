@@ -17,7 +17,7 @@ typedef enum {
 static TEXTSTRING *m_LevelText = NULL;
 static PASSPORT_MODE m_PassportMode;
 
-void Option_Passport_Control(INV_ITEM *const item)
+void Option_Passport_Control(INVENTORY_ITEM *const item)
 {
     Text_Remove(g_Inv_ItemText[IT_NAME]);
     g_Inv_ItemText[IT_NAME] = NULL;
@@ -266,7 +266,7 @@ void Option_Passport_Control(INV_ITEM *const item)
     }
 }
 
-void Option_Passport_Draw(INV_ITEM *const item)
+void Option_Passport_Draw(INVENTORY_ITEM *const item)
 {
 }
 

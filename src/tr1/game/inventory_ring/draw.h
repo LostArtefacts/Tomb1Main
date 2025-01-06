@@ -2,4 +2,4 @@
 
 #include "game/inventory_ring/types.h"
 
-void InvRing_Draw(RING_INFO *ring, IMOTION_INFO *motion);
+void InvRing_Draw(INV_RING *ring);

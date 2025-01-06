@@ -46,16 +46,13 @@ static TEXTSTRING *m_VersionText = NULL;
 static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
 static TEXTSTRING *m_HeadingText;
 static CLOCK_TIMER m_DemoTimer = { 0 };
-static bool m_PassportModeReady;
 static int32_t m_StartLevel;
-static bool m_StartDemo;
 static GAME_OBJECT_ID m_InvChosen;
-static bool m_PlayedSpinin;
 
 static TEXTSTRING *M_InitExamineText(
     int32_t x_pos, const char *role_str, const char *input_str);
-static PHASE_CONTROL M_Control(RING_INFO *ring, IMOTION_INFO *motion);
-static bool M_CheckDemoTimer(const IMOTION_INFO *motion);
+static PHASE_CONTROL M_Control(INV_RING *ring);
+static bool M_CheckDemoTimer(const INV_RING *ring);
 
 static TEXTSTRING *M_InitExamineText(
     const int32_t x_pos, const char *const role_str,
@@ -73,22 +70,21 @@ static TEXTSTRING *M_InitExamineText(
 }
 
 // TODO: make this return a GAME_FLOW_COMMAND
-static PHASE_CONTROL M_Control(
-    RING_INFO *const ring, IMOTION_INFO *const motion)
+static PHASE_CONTROL M_Control(INV_RING *const ring)
 {
-    if (motion->status == RNG_OPENING) {
+    if (ring->motion.status == RNG_OPENING) {
         if (g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
             return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
         Clock_ResetTimer(&m_DemoTimer);
-        if (!m_PlayedSpinin) {
+        if (!ring->has_spun_out) {
             Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
-            m_PlayedSpinin = true;
+            ring->has_spun_out = true;
         }
     }
 
-    if (motion->status == RNG_DONE) {
+    if (ring->motion.status == RNG_DONE) {
         // finish fading
         if (g_InvMode == INV_TITLE_MODE) {
             Output_FadeToBlack(true);
@@ -98,15 +94,15 @@ static PHASE_CONTROL M_Control(
             return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
-        return InvRing_Close(m_InvChosen);
+        return InvRing_Close(ring, m_InvChosen);
     }
 
     InvRing_CalcAdders(ring, ROTATE_DURATION);
 
     Input_Update();
     // Do the demo inactivity check prior to postprocessing of the inputs.
-    if (M_CheckDemoTimer(motion)) {
-        m_StartDemo = true;
+    if (M_CheckDemoTimer(ring)) {
+        ring->is_demo_needed = true;
     }
     Shell_ProcessInput();
     Game_ProcessInput();
@@ -131,13 +127,13 @@ static PHASE_CONTROL M_Control(
 
     if ((g_InvMode == INV_SAVE_MODE || g_InvMode == INV_SAVE_CRYSTAL_MODE
          || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
-        && !m_PassportModeReady) {
+        && !ring->is_pass_open) {
         g_Input = (INPUT_STATE) { 0 };
         g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
     }
 
     if (!(g_InvMode == INV_TITLE_MODE || Output_FadeIsAnimating()
-          || motion->status == RNG_OPENING)) {
+          || ring->motion.status == RNG_OPENING)) {
         for (int i = 0; i < ring->number_of_objects; i++) {
             INVENTORY_ITEM *inv_item = ring->list[i];
             if (inv_item->object_id == O_MAP_OPTION) {
@@ -146,7 +142,7 @@ static PHASE_CONTROL M_Control(
         }
     }
 
-    switch (motion->status) {
+    switch (ring->motion.status) {
     case RNG_OPEN:
         if (g_Input.menu_right && ring->number_of_objects > 1) {
             InvRing_RotateLeft(ring);
@@ -160,7 +156,7 @@ static PHASE_CONTROL M_Control(
             break;
         }
 
-        if (m_StartLevel != -1 || m_StartDemo
+        if (m_StartLevel != -1 || ring->is_demo_needed
             || (g_InputDB.menu_back && g_InvMode != INV_TITLE_MODE)) {
             Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
             m_InvChosen = NO_OBJECT;
@@ -179,7 +175,7 @@ static PHASE_CONTROL M_Control(
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
             InvRing_MotionRotation(
-                ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
+                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
         }
@@ -189,8 +185,8 @@ static PHASE_CONTROL M_Control(
             if ((g_InvMode == INV_SAVE_MODE
                  || g_InvMode == INV_SAVE_CRYSTAL_MODE
                  || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
-                && !m_PassportModeReady) {
-                m_PassportModeReady = true;
+                && !ring->is_pass_open) {
+                ring->is_pass_open = true;
             }
 
             g_OptionSelected = 0;
@@ -255,9 +251,9 @@ static PHASE_CONTROL M_Control(
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
-                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                        ring->ring_pos.rot.y - CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, 0x2000);
-                    motion->misc = 0x2000;
+                    ring->motion.misc = 0x2000;
                 }
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -269,9 +265,9 @@ static PHASE_CONTROL M_Control(
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
-                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                        ring->ring_pos.rot.y - CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, 0x2000);
-                    motion->misc = 0x2000;
+                    ring->motion.misc = 0x2000;
                 }
                 g_InputDB = (INPUT_STATE) { 0 };
             }
@@ -286,9 +282,9 @@ static PHASE_CONTROL M_Control(
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
-                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                        ring->ring_pos.rot.y - CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, -0x2000);
-                    motion->misc = -0x2000;
+                    ring->motion.misc = -0x2000;
                 }
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -300,9 +296,9 @@ static PHASE_CONTROL M_Control(
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
                         ring, CLOSE_ROTATION,
-                        ring->ringpos.rot.y - CLOSE_ROTATION);
+                        ring->ring_pos.rot.y - CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, -0x2000);
-                    motion->misc = -0x2000;
+                    ring->motion.misc = -0x2000;
                 }
                 g_InputDB = (INPUT_STATE) { 0 };
             }
@@ -312,9 +308,10 @@ static PHASE_CONTROL M_Control(
     case RNG_MAIN2OPTION:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
         InvRing_MotionRadius(ring, RING_RADIUS);
-        ring->camera_pitch = -motion->misc;
-        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
-        motion->camera_pitch_target = 0;
+        ring->camera_pitch = -ring->motion.misc;
+        ring->motion.camera_pitch_rate =
+            ring->motion.misc / (RINGSWITCH_FRAMES / 2);
+        ring->motion.camera_pitch_target = 0;
         g_InvMainCurrent = ring->current_object;
         ring->list = g_InvOptionList;
         ring->type = RT_OPTION;
@@ -324,15 +321,16 @@ static PHASE_CONTROL M_Control(
         InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_MAIN2KEYS:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
         InvRing_MotionRadius(ring, RING_RADIUS);
-        ring->camera_pitch = -motion->misc;
-        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
-        motion->camera_pitch_target = 0;
+        ring->camera_pitch = -ring->motion.misc;
+        ring->motion.camera_pitch_rate =
+            ring->motion.misc / (RINGSWITCH_FRAMES / 2);
+        ring->motion.camera_pitch_target = 0;
         g_InvMainCurrent = ring->current_object;
         g_InvMainObjects = ring->number_of_objects;
         ring->list = g_InvKeysList;
@@ -343,15 +341,16 @@ static PHASE_CONTROL M_Control(
         InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_KEYS2MAIN:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
         InvRing_MotionRadius(ring, RING_RADIUS);
-        ring->camera_pitch = -motion->misc;
-        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
-        motion->camera_pitch_target = 0;
+        ring->camera_pitch = -ring->motion.misc;
+        ring->motion.camera_pitch_rate =
+            ring->motion.misc / (RINGSWITCH_FRAMES / 2);
+        ring->motion.camera_pitch_target = 0;
         g_InvKeysCurrent = ring->current_object;
         ring->list = g_InvMainList;
         ring->type = RT_MAIN;
@@ -361,15 +360,16 @@ static PHASE_CONTROL M_Control(
         InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_OPTION2MAIN:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
         InvRing_MotionRadius(ring, RING_RADIUS);
-        ring->camera_pitch = -motion->misc;
-        motion->camera_pitch_rate = motion->misc / (RINGSWITCH_FRAMES / 2);
-        motion->camera_pitch_target = 0;
+        ring->camera_pitch = -ring->motion.misc;
+        ring->motion.camera_pitch_rate =
+            ring->motion.misc / (RINGSWITCH_FRAMES / 2);
+        ring->motion.camera_pitch_target = 0;
         g_InvOptionObjects = ring->number_of_objects;
         g_InvOptionCurrent = ring->current_object;
         ring->list = g_InvMainList;
@@ -380,7 +380,7 @@ static PHASE_CONTROL M_Control(
         InvRing_MotionRotation(
             ring, OPEN_ROTATION,
             -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ringpos.rot.y = motion->rotate_target + OPEN_ROTATION;
+        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
         break;
 
     case RNG_SELECTED: {
@@ -398,7 +398,7 @@ static PHASE_CONTROL M_Control(
             Option_Control(inv_item);
 
             if (g_InputDB.menu_back) {
-                inv_item->sprlist = NULL;
+                inv_item->sprite_list = NULL;
                 InvRing_MotionSetup(ring, RNG_CLOSING_ITEM, RNG_DESELECT, 0);
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -413,7 +413,7 @@ static PHASE_CONTROL M_Control(
             }
 
             if (g_InputDB.menu_confirm) {
-                inv_item->sprlist = NULL;
+                inv_item->sprite_list = NULL;
                 m_InvChosen = inv_item->object_id;
                 if (ring->type == RT_MAIN) {
                     g_InvMainCurrent = ring->current_object;
@@ -455,8 +455,8 @@ static PHASE_CONTROL M_Control(
                 inv_item->object_id = O_PASSPORT_CLOSED;
                 inv_item->current_frame = 0;
             }
-            motion->count = SELECTING_FRAMES;
-            motion->status = motion->status_target;
+            ring->motion.count = SELECTING_FRAMES;
+            ring->motion.status = ring->motion.status_target;
             InvRing_MotionItemDeselect(ring, inv_item);
             break;
         }
@@ -480,20 +480,24 @@ static PHASE_CONTROL M_Control(
             Output_FadeToTransparent(false);
         }
 
-        if (!motion->count) {
+        if (!ring->motion.count) {
             InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
             InvRing_MotionRotation(
-                ring, CLOSE_ROTATION, ring->ringpos.rot.y - CLOSE_ROTATION);
+                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
         }
+        break;
+
+    default:
         break;
     }
 
-    if (motion->status == RNG_OPEN || motion->status == RNG_SELECTING
-        || motion->status == RNG_SELECTED || motion->status == RNG_DESELECTING
-        || motion->status == RNG_DESELECT
-        || motion->status == RNG_CLOSING_ITEM) {
+    if (ring->motion.status == RNG_OPEN || ring->motion.status == RNG_SELECTING
+        || ring->motion.status == RNG_SELECTED
+        || ring->motion.status == RNG_DESELECTING
+        || ring->motion.status == RNG_DESELECT
+        || ring->motion.status == RNG_CLOSING_ITEM) {
         if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
             INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
             InvRing_Active(inv_item);
@@ -505,18 +509,18 @@ static PHASE_CONTROL M_Control(
         InvRing_RemoveExamineOverlay();
     }
 
-    if (!motion->status || motion->status == RNG_CLOSING
-        || motion->status == RNG_MAIN2OPTION
-        || motion->status == RNG_OPTION2MAIN
-        || motion->status == RNG_EXITING_INVENTORY || motion->status == RNG_DONE
-        || ring->rotating) {
+    if (!ring->motion.status || ring->motion.status == RNG_CLOSING
+        || ring->motion.status == RNG_MAIN2OPTION
+        || ring->motion.status == RNG_OPTION2MAIN
+        || ring->motion.status == RNG_EXITING_INVENTORY
+        || ring->motion.status == RNG_DONE || ring->rotating) {
         InvRing_RemoveAllText();
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static bool M_CheckDemoTimer(const IMOTION_INFO *const motion)
+static bool M_CheckDemoTimer(const INV_RING *const ring)
 {
     if (!g_Config.gameplay.enable_demo || !g_GameFlow.has_demo) {
         return false;
@@ -528,7 +532,7 @@ static bool M_CheckDemoTimer(const IMOTION_INFO *const motion)
         return false;
     }
 
-    return motion->status == RNG_OPEN
+    return ring->motion.status == RNG_OPEN
         && Clock_CheckElapsedMilliseconds(
                &m_DemoTimer, g_GameFlow.demo_delay * 1000.0);
 }
@@ -565,7 +569,7 @@ void InvRing_RemoveExamineOverlay(void)
     m_UseItemText = NULL;
 }
 
-void InvRing_InitHeader(RING_INFO *ring)
+void InvRing_InitHeader(INV_RING *ring)
 {
     if (g_InvMode == INV_TITLE_MODE) {
         return;
@@ -812,14 +816,11 @@ void InvRing_Construct(void)
     g_PhdTop = Viewport_GetMinY();
     g_PhdBottom = Viewport_GetMaxY();
     g_PhdRight = Viewport_GetMaxX();
-
-    m_PlayedSpinin = false;
-    g_InvRing_OldCamera = g_Camera;
-    m_PassportModeReady = false;
-    m_StartLevel = -1;
-    m_StartDemo = false;
-
     m_InvChosen = NO_OBJECT;
+
+    g_InvRing_OldCamera = g_Camera;
+    m_StartLevel = -1;
+
     if (g_InvMode == INV_TITLE_MODE) {
         g_InvOptionObjects = TITLE_RING_OBJECTS;
         m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
@@ -868,8 +869,9 @@ void InvRing_Destroy(void)
     }
 }
 
-PHASE_CONTROL InvRing_Close(GAME_OBJECT_ID inv_chosen)
+PHASE_CONTROL InvRing_Close(INV_RING *const ring, GAME_OBJECT_ID inv_chosen)
 {
+    const bool is_demo_needed = ring->is_demo_needed;
     InvRing_Destroy();
 
     if (m_StartLevel != -1) {
@@ -882,7 +884,7 @@ PHASE_CONTROL InvRing_Close(GAME_OBJECT_ID inv_chosen)
         };
     }
 
-    if (m_StartDemo) {
+    if (is_demo_needed) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = { .action = GF_START_DEMO, .param = -1 },
@@ -1016,26 +1018,26 @@ void InvRing_SelectMeshes(INVENTORY_ITEM *inv_item)
 {
     if (inv_item->object_id == O_PASSPORT_OPTION) {
         if (inv_item->current_frame <= 14) {
-            inv_item->drawn_meshes = PASS_MESH | PINFRONT | PPAGE1;
+            inv_item->meshes_drawn = PASS_MESH | PINFRONT | PPAGE1;
         } else if (inv_item->current_frame < 19) {
-            inv_item->drawn_meshes = PASS_MESH | PINFRONT | PPAGE1 | PPAGE2;
+            inv_item->meshes_drawn = PASS_MESH | PINFRONT | PPAGE1 | PPAGE2;
         } else if (inv_item->current_frame == 19) {
-            inv_item->drawn_meshes = PASS_MESH | PPAGE1 | PPAGE2;
+            inv_item->meshes_drawn = PASS_MESH | PPAGE1 | PPAGE2;
         } else if (inv_item->current_frame < 24) {
-            inv_item->drawn_meshes = PASS_MESH | PPAGE1 | PPAGE2 | PINBACK;
+            inv_item->meshes_drawn = PASS_MESH | PPAGE1 | PPAGE2 | PINBACK;
         } else if (inv_item->current_frame < 29) {
-            inv_item->drawn_meshes = PASS_MESH | PPAGE2 | PINBACK;
+            inv_item->meshes_drawn = PASS_MESH | PPAGE2 | PINBACK;
         } else if (inv_item->current_frame == 29) {
-            inv_item->drawn_meshes = PASS_MESH;
+            inv_item->meshes_drawn = PASS_MESH;
         }
     } else if (inv_item->object_id == O_MAP_OPTION) {
         if (inv_item->current_frame && inv_item->current_frame < 18) {
-            inv_item->drawn_meshes = -1;
+            inv_item->meshes_drawn = -1;
         } else {
-            inv_item->drawn_meshes = inv_item->which_meshes;
+            inv_item->meshes_drawn = inv_item->meshes_sel;
         }
     } else {
-        inv_item->drawn_meshes = -1;
+        inv_item->meshes_drawn = -1;
     }
 }
 
@@ -1056,11 +1058,10 @@ bool InvRing_AnimateItem(INVENTORY_ITEM *inv_item)
     return true;
 }
 
-PHASE_CONTROL InvRing_Control(
-    RING_INFO *const ring, IMOTION_INFO *const motion, const int32_t num_frames)
+PHASE_CONTROL InvRing_Control(INV_RING *const ring, const int32_t num_frames)
 {
     for (int32_t i = 0; i < num_frames; i++) {
-        const PHASE_CONTROL result = M_Control(ring, motion);
+        const PHASE_CONTROL result = M_Control(ring);
         if (result.action == PHASE_ACTION_END) {
             return result;
         }

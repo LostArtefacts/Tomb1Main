@@ -19,23 +19,21 @@
 #include <libtrx/config.h>
 
 static int32_t M_GetFrames(
-    const RING_INFO *ring, const IMOTION_INFO *motion,
-    const INVENTORY_ITEM *inv_item, ANIM_FRAME **out_frame1,
-    ANIM_FRAME **out_frame2, int32_t *out_rate);
+    const INV_RING *ring, const INVENTORY_ITEM *inv_item,
+    ANIM_FRAME **out_frame1, ANIM_FRAME **out_frame2, int32_t *out_rate);
 static void M_DrawItem(
-    const RING_INFO *ring, const IMOTION_INFO *motion, INVENTORY_ITEM *inv_item,
-    int32_t num_frames);
+    const INV_RING *ring, INVENTORY_ITEM *inv_item, int32_t num_frames);
 
 static int32_t M_GetFrames(
-    const RING_INFO *const ring, const IMOTION_INFO *const motion,
-    const INVENTORY_ITEM *const inv_item, ANIM_FRAME **const out_frame1,
-    ANIM_FRAME **const out_frame2, int32_t *const out_rate)
+    const INV_RING *const ring, const INVENTORY_ITEM *const inv_item,
+    ANIM_FRAME **const out_frame1, ANIM_FRAME **const out_frame2,
+    int32_t *const out_rate)
 {
     const OBJECT *const obj = Object_GetObject(inv_item->object_id);
     const INVENTORY_ITEM *const cur_inv_item = ring->list[ring->current_object];
     if (inv_item != cur_inv_item
-        || (motion->status != RNG_SELECTED
-            && motion->status != RNG_CLOSING_ITEM)) {
+        || (ring->motion.status != RNG_SELECTED
+            && ring->motion.status != RNG_CLOSING_ITEM)) {
         // only apply to animations, eg. the states where Inv_AnimateItem is
         // being actively called
         goto fallback;
@@ -69,10 +67,10 @@ fallback:
 }
 
 static void M_DrawItem(
-    const RING_INFO *const ring, const IMOTION_INFO *const motion,
-    INVENTORY_ITEM *const inv_item, const int32_t num_frames)
+    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
+    const int32_t num_frames)
 {
-    if (motion->status == RNG_DONE) {
+    if (ring->motion.status == RNG_DONE) {
         Output_SetLightAdder(LOW_LIGHT);
     } else if (inv_item == ring->list[ring->current_object]) {
         if (ring->rotating) {
@@ -85,9 +83,11 @@ static void M_DrawItem(
                 }
             }
         } else if (
-            motion->status == RNG_SELECTED || motion->status == RNG_DESELECTING
-            || motion->status == RNG_SELECTING || motion->status == RNG_DESELECT
-            || motion->status == RNG_CLOSING_ITEM) {
+            ring->motion.status == RNG_SELECTED
+            || ring->motion.status == RNG_DESELECTING
+            || ring->motion.status == RNG_SELECTING
+            || ring->motion.status == RNG_DESELECT
+            || ring->motion.status == RNG_CLOSING_ITEM) {
             Output_SetLightAdder(HIGH_LIGHT);
             for (int j = 0; j < num_frames; j++) {
                 if (inv_item->y_rot != inv_item->y_rot_sel) {
@@ -120,7 +120,7 @@ static void M_DrawItem(
         }
     }
 
-    Matrix_TranslateRel(0, inv_item->ytrans, inv_item->ztrans);
+    Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
     Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);
 
     OBJECT *const obj = Object_GetObject(inv_item->object_id);
@@ -129,48 +129,52 @@ static void M_DrawItem(
         return;
     }
 
-    if (inv_item->sprlist) {
+    if (inv_item->sprite_list) {
         int32_t zv = g_MatrixPtr->_23;
         int32_t zp = zv / g_PhdPersp;
         int32_t sx = Viewport_GetCenterX() + g_MatrixPtr->_03 / zp;
         int32_t sy = Viewport_GetCenterY() + g_MatrixPtr->_13 / zp;
 
-        INVENTORY_SPRITE **sprlist = inv_item->sprlist;
-        INVENTORY_SPRITE *spr;
-        while ((spr = *sprlist++)) {
+        INVENTORY_SPRITE **sprite_list = inv_item->sprite_list;
+        INVENTORY_SPRITE *sprite;
+        while ((sprite = *sprite_list++)) {
             if (zv < Output_GetNearZ() || zv > Output_GetFarZ()) {
                 break;
             }
 
-            while (spr->shape) {
-                switch (spr->shape) {
+            while (sprite->shape) {
+                switch (sprite->shape) {
                 case SHAPE_SPRITE:
                     Output_DrawScreenSprite(
-                        sx + spr->x, sy + spr->y, spr->z, spr->param1,
-                        spr->param2,
-                        Object_GetObject(O_ALPHABET)->mesh_idx + spr->sprnum,
+                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
+                        sprite->param1, sprite->param2,
+                        Object_GetObject(O_ALPHABET)->mesh_idx
+                            + sprite->sprite_num,
                         4096, 0);
                     break;
                 case SHAPE_LINE:
                     Output_DrawScreenLine(
-                        sx + spr->x, sy + spr->y, spr->param1, spr->param2,
-                        Output_RGB2RGBA(
-                            Output_GetPaletteColor((uint8_t)spr->sprnum)));
+                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->param1,
+                        sprite->param2,
+                        Output_RGB2RGBA(Output_GetPaletteColor(
+                            (uint8_t)sprite->sprite_num)));
                     break;
                 case SHAPE_BOX: {
                     double scale = Viewport_GetHeight() / 480.0;
                     Output_DrawScreenBox(
-                        sx + spr->x - scale, sy + spr->y - scale, spr->param1,
-                        spr->param2, Text_GetMenuColor(MC_GOLD_DARK),
+                        sx + sprite->pos.x - scale, sy + sprite->pos.y - scale,
+                        sprite->param1, sprite->param2,
+                        Text_GetMenuColor(MC_GOLD_DARK),
                         Text_GetMenuColor(MC_GOLD_LIGHT),
                         TEXT_OUTLINE_THICKNESS * scale);
                 } break;
                 case SHAPE_FBOX:
                     Output_DrawScreenFBox(
-                        sx + spr->x, sy + spr->y, spr->param1, spr->param2);
+                        sx + sprite->pos.x, sy + sprite->pos.y, sprite->param1,
+                        sprite->param2);
                     break;
                 }
-                spr++;
+                sprite++;
             }
         }
     }
@@ -178,21 +182,20 @@ static void M_DrawItem(
     int32_t rate;
     ANIM_FRAME *frame1;
     ANIM_FRAME *frame2;
-    const int32_t frac =
-        M_GetFrames(ring, motion, inv_item, &frame1, &frame2, &rate);
+    const int32_t frac = M_GetFrames(ring, inv_item, &frame1, &frame2, &rate);
     if (inv_item->object_id == O_MAP_OPTION) {
         const int16_t extra_rotation[1] = { Option_Compass_GetNeedleAngle() };
         Object_GetBone(obj, 0)->rot_y = true;
         Object_DrawInterpolatedObject(
-            obj, inv_item->drawn_meshes, extra_rotation, frame1, frame2, frac,
+            obj, inv_item->meshes_drawn, extra_rotation, frame1, frame2, frac,
             rate);
     } else {
         Object_DrawInterpolatedObject(
-            obj, inv_item->drawn_meshes, NULL, frame1, frame2, frac, rate);
+            obj, inv_item->meshes_drawn, NULL, frame1, frame2, frac, rate);
     }
 }
 
-void InvRing_Draw(RING_INFO *const ring, IMOTION_INFO *const motion)
+void InvRing_Draw(INV_RING *const ring)
 {
     const int32_t num_frames = Clock_GetFrameAdvance()
         * round(Clock_GetElapsedDrawFrames(&g_InvRing_MotionTimer));
@@ -230,20 +233,20 @@ void InvRing_Draw(RING_INFO *const ring, IMOTION_INFO *const motion)
 
     Matrix_Push();
     Matrix_TranslateAbs(
-        ring->ringpos.pos.x, ring->ringpos.pos.y, ring->ringpos.pos.z);
+        ring->ring_pos.pos.x, ring->ring_pos.pos.y, ring->ring_pos.pos.z);
     Matrix_RotYXZ(
-        ring->ringpos.rot.y, ring->ringpos.rot.x, ring->ringpos.rot.z);
+        ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
 
     if (!(g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()
-          && motion->status == RNG_OPENING)) {
+          && ring->motion.status == RNG_OPENING)) {
         PHD_ANGLE angle = 0;
         for (int i = 0; i < ring->number_of_objects; i++) {
             INVENTORY_ITEM *inv_item = ring->list[i];
             Matrix_Push();
             Matrix_RotYXZ(angle, 0, 0);
             Matrix_TranslateRel(ring->radius, 0, 0);
-            Matrix_RotYXZ(PHD_90, inv_item->pt_xrot, 0);
-            M_DrawItem(ring, motion, inv_item, num_frames);
+            Matrix_RotYXZ(PHD_90, inv_item->x_rot_pt, 0);
+            M_DrawItem(ring, inv_item, num_frames);
             angle += ring->angle_adder;
             Matrix_Pop();
         }
@@ -266,7 +269,7 @@ void InvRing_Draw(RING_INFO *const ring, IMOTION_INFO *const motion)
     Viewport_SetFOV(old_fov);
 
     Output_ClearDepthBuffer();
-    if (motion->status == RNG_SELECTED) {
+    if (ring->motion.status == RNG_SELECTED) {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
         if (inv_item->object_id == O_PASSPORT_CLOSED) {
             inv_item->object_id = O_PASSPORT_OPTION;
@@ -274,9 +277,9 @@ void InvRing_Draw(RING_INFO *const ring, IMOTION_INFO *const motion)
         Option_Draw(inv_item);
     }
 
-    if ((motion->status != RNG_OPENING
+    if ((ring->motion.status != RNG_OPENING
          || (g_InvMode != INV_TITLE_MODE || !Output_FadeIsAnimating()))
-        && motion->status != RNG_DONE) {
+        && ring->motion.status != RNG_DONE) {
         for (int i = 0; i < num_frames; i++) {
             InvRing_DoMotions(ring);
         }

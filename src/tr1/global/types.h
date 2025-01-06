@@ -194,16 +194,6 @@ typedef enum {
 } ROOM_FLAG;
 
 typedef enum {
-    INV_GAME_MODE = 0,
-    INV_TITLE_MODE = 1,
-    INV_KEYS_MODE = 2,
-    INV_SAVE_MODE = 3,
-    INV_LOAD_MODE = 4,
-    INV_DEATH_MODE = 5,
-    INV_SAVE_CRYSTAL_MODE = 6,
-} INV_MODE;
-
-typedef enum {
     IT_NAME = 0,
     IT_QTY = 1,
     IT_NUMBER_OF = 2,
