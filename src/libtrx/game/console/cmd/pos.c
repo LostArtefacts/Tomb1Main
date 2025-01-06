@@ -33,9 +33,9 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         lara_item->pos.x / (float)WALL_L,
         lara_item->pos.y / (float)WALL_L,
         lara_item->pos.z / (float)WALL_L,
-        lara_item->rot.x * 360.0f / (float)PHD_ONE,
-        lara_item->rot.y * 360.0f / (float)PHD_ONE,
-        lara_item->rot.z * 360.0f / (float)PHD_ONE);
+        lara_item->rot.x * 360.0f / (float)DEG_360,
+        lara_item->rot.y * 360.0f / (float)DEG_360,
+        lara_item->rot.z * 360.0f / (float)DEG_360);
     // clang-format on
 
     return CR_SUCCESS;

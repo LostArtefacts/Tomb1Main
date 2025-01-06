@@ -1,10 +1,9 @@
 #pragma once
 
+#include <libtrx/game/inventory_ring/control.h>
 #include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/objects/types.h>
 #include <libtrx/game/phase/types.h>
-
-void InvRing_SetRequestedObjectID(GAME_OBJECT_ID object_id);
 
 void InvRing_Construct(void);
 void InvRing_Destroy(void);

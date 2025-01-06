@@ -27,9 +27,6 @@ void Output_SetDrawDistFade(int32_t dist);
 void Output_SetDrawDistMax(int32_t dist);
 void Output_SetWaterColor(const RGB_F *color);
 
-void Output_SetLightAdder(int32_t adder);
-void Output_SetLightDivider(int32_t divider);
-
 void Output_FadeReset(void);
 void Output_FadeResetToBlack(void);
 void Output_FadeToBlack(bool allow_immediate);
@@ -103,7 +100,6 @@ void Output_SetupBelowWater(bool underwater);
 void Output_SetupAboveWater(bool underwater);
 void Output_AnimateTextures(void);
 void Output_AnimateFades(void);
-void Output_RotateLight(int16_t pitch, int16_t yaw);
 
 void Output_ApplyFOV(void);
 void Output_ApplyTint(float *r, float *g, float *b);

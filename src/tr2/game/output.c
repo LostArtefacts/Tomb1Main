@@ -1206,3 +1206,13 @@ void Output_AddDynamicLight(
     light->intensity_1 = intensity;
     light->falloff_1 = falloff;
 }
+
+void Output_SetLightAdder(const int32_t adder)
+{
+    g_LsAdder = adder;
+}
+
+void Output_SetLightDivider(const int32_t divider)
+{
+    g_LsDivider = divider;
+}

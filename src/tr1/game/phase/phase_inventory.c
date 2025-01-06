@@ -3,7 +3,6 @@
 #include "game/input.h"
 #include "game/interpolation.h"
 #include "game/inventory_ring.h"
-#include "game/inventory_ring/priv.h"
 #include "game/music.h"
 #include "game/option.h"
 #include "game/output.h"
@@ -13,6 +12,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/inventory_ring/priv.h>
 
 INV_RING m_Ring;
 

@@ -4,12 +4,13 @@
 #include "game/console/common.h"
 #include "game/input.h"
 #include "game/inventory_ring/control.h"
-#include "game/inventory_ring/priv.h"
 #include "game/matrix.h"
 #include "game/option/option.h"
 #include "game/output.h"
 #include "game/overlay.h"
 #include "global/vars.h"
+
+#include <libtrx/game/inventory_ring/priv.h>
 
 static void M_DrawItem(const INV_RING *ring, const INVENTORY_ITEM *inv_item);
 
@@ -165,7 +166,7 @@ void InvRing_Draw(INV_RING *const ring)
     ring->camera.pos.z = ring->radius + 598;
 
     PHD_3DPOS view;
-    InvRing_GetView(ring, &view);
+    InvRing_GetView(ring, &view.pos, &view.rot);
     Matrix_GenerateW2V(&view);
     InvRing_Light(ring);
 

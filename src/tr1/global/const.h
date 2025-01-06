@@ -3,13 +3,13 @@
 #include <libtrx/game/const.h>
 #include <libtrx/utils.h>
 
-#define PHD_ONE 0x10000
-#define PHD_DEGREE (PHD_ONE / 360) // = 182
-#define PHD_360 (PHD_ONE) // = 65536 = 0x10000
-#define PHD_180 (PHD_ONE / 2) // = 32768 = 0x8000
-#define PHD_90 (PHD_ONE / 4) // = 16384 = 0x4000
-#define PHD_45 (PHD_ONE / 8) // = 8192 = 0x2000
-#define PHD_135 (PHD_45 * 3) // = 24576 = 0x6000
+#define PHD_ONE DEG_360
+#define PHD_DEGREE DEG_1
+#define PHD_360 DEG_360
+#define PHD_180 DEG_180
+#define PHD_90 DEG_90
+#define PHD_45 DEG_45
+#define PHD_135 DEG_135
 
 #define MAX_MATRICES 40
 #define MAX_NESTED_MATRICES 32
@@ -87,9 +87,6 @@
 #define MAX_HEAD_TILT_SURF (40 * PHD_DEGREE) // = 7280
 #define MIN_HEAD_TILT_SURF (-40 * PHD_DEGREE) // = -7280
 #define DIVE_WAIT 10
-#define WALL_L 1024
-#define WALL_SHIFT 10
-#define STEP_L 256
 #define ROUND_TO_CLICK(V) ((V) & ~(STEP_L - 1))
 #define ROUND_TO_SECTOR(V) ((V) & ~(WALL_L - 1))
 #define STEPUP_HEIGHT ((STEP_L * 3) / 2) // = 384
@@ -159,19 +156,13 @@
 
 #define DEFAULT_RADIUS 10
 
-#define OPEN_FRAMES (64 / 2)
 #define CLOSE_FRAMES (64 / 2)
 #define RINGSWITCH_FRAMES (96 / 2)
 #define SELECTING_FRAMES (32 / 2)
-#define ROTATE_DURATION (48 / 2)
-#define OPEN_ROTATION (-0x8000) // = -32768
 #define CLOSE_ROTATION (-0x8000) // = -32768
 #define OPTION_RING_OBJECTS 4
 #define TITLE_RING_OBJECTS 5
 #define RING_RADIUS 688
-#define CAMERA_STARTHEIGHT (-0x600) // = -1536
-#define CAMERA_YOFFSET (-96)
-#define CAMERA_HEIGHT (-0x100) // = -256
 #define CAMERA_2_RING 598
 #define LOW_LIGHT 0x1400 // = 5120
 #define HIGH_LIGHT 0x1000 // = 4096

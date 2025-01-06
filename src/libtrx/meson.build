@@ -58,9 +58,9 @@ endif
 sources = [
   'benchmark.c',
   'config/common.c',
-  'config/priv.c',
   'config/file.c',
   'config/map.c',
+  'config/priv.c',
   'config/vars.c',
   'engine/audio.c',
   'engine/audio_sample.c',
@@ -104,6 +104,7 @@ sources = [
   'game/input/backends/keyboard.c',
   'game/input/common.c',
   'game/inventory.c',
+  'game/inventory_ring/priv.c',
   'game/items.c',
   'game/level/common.c',
   'game/math/trig.c',

@@ -8,7 +8,6 @@
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/inventory_ring/draw.h"
-#include "game/inventory_ring/priv.h"
 #include "game/inventory_ring/vars.h"
 #include "game/lara/control.h"
 #include "game/matrix.h"
@@ -23,6 +22,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/inventory_ring/priv.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/game/objects/vars.h>
 #include <libtrx/memory.h>
@@ -126,34 +126,10 @@ static void M_Construct(const INVENTORY_MODE mode)
     }
 
     for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
-        inv_item->meshes_drawn = inv_item->meshes_sel;
-        inv_item->current_frame = 0;
-        inv_item->goal_frame = 0;
-        inv_item->anim_count = 0;
-        inv_item->x_rot_pt = 0;
-        inv_item->x_rot = 0;
-        inv_item->y_rot = 0;
-        inv_item->y_trans = 0;
-        inv_item->z_trans = 0;
-        if (inv_item->object_id == O_PASSPORT_OPTION) {
-            inv_item->object_id = O_PASSPORT_CLOSED;
-        }
+        InvRing_InitInvItem(g_Inv_MainList[i]);
     }
-
     for (int32_t i = 0; i < g_Inv_OptionObjectsCount; i++) {
-        INVENTORY_ITEM *const inv_item = g_Inv_OptionList[i];
-        inv_item->current_frame = 0;
-        inv_item->goal_frame = 0;
-        inv_item->anim_count = 0;
-        inv_item->x_rot_pt = 0;
-        inv_item->x_rot = 0;
-        inv_item->y_rot = 0;
-        inv_item->y_trans = 0;
-        inv_item->z_trans = 0;
-        if (inv_item->object_id == O_PASSPORT_OPTION) {
-            inv_item->object_id = O_PASSPORT_CLOSED;
-        }
+        InvRing_InitInvItem(g_Inv_OptionList[i]);
     }
 
     g_Inv_MainCurrent = 0;
@@ -178,7 +154,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         ring->has_spun_out = true;
     }
 
-    InvRing_CalcAdders(ring, 24);
+    InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
     Shell_ProcessEvents();
     Input_Update();
     Shell_ProcessInput();
@@ -249,7 +225,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 }
                 InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
                 InvRing_MotionRadius(ring, 0);
-                InvRing_MotionCameraPos(ring, -1536);
+                InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
                 InvRing_MotionRotation(
                     ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
                 g_Input = (INPUT_STATE) { 0 };
@@ -280,7 +256,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 inv_item->anim_direction = 1;
                 InvRing_MotionSetup(ring, RNG_SELECTING, RNG_SELECTED, 16);
                 InvRing_MotionRotation(
-                    ring, 0, -16384 - ring->angle_adder * ring->current_object);
+                    ring, 0,
+                    -DEG_90 - ring->angle_adder * ring->current_object);
                 InvRing_MotionItemSelect(ring, inv_item);
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
@@ -369,7 +346,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
         case RNG_MAIN2OPTION:
             InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
+            InvRing_MotionRadius(ring, INV_RING_RADIUS);
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
             ring->motion.camera_pitch_target = 0;
@@ -379,16 +356,17 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             g_Inv_MainObjectsCount = ring->number_of_objects;
             ring->number_of_objects = g_Inv_OptionObjectsCount;
             ring->current_object = g_Inv_OptionCurrent;
-            InvRing_CalcAdders(ring, 24);
+            InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+                ring, INV_RING_OPEN_ROTATION,
+                -DEG_90 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y =
+                ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
             break;
 
         case RNG_MAIN2KEYS:
             InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
+            InvRing_MotionRadius(ring, INV_RING_RADIUS);
             ring->motion.camera_pitch_target = 0;
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
@@ -398,16 +376,17 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             ring->type = RT_KEYS;
             ring->number_of_objects = g_Inv_KeyObjectsCount;
             ring->current_object = g_Inv_KeysCurrent;
-            InvRing_CalcAdders(ring, 24);
+            InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+                ring, INV_RING_OPEN_ROTATION,
+                -DEG_90 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y =
+                ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
             break;
 
         case RNG_KEYS2MAIN:
             InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
+            InvRing_MotionRadius(ring, INV_RING_RADIUS);
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
             ring->motion.camera_pitch_target = 0;
@@ -416,16 +395,17 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             g_Inv_KeysCurrent = ring->current_object;
             ring->number_of_objects = g_Inv_MainObjectsCount;
             ring->current_object = g_Inv_MainCurrent;
-            InvRing_CalcAdders(ring, 24);
+            InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+                ring, INV_RING_OPEN_ROTATION,
+                -DEG_90 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y =
+                ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
             break;
 
         case RNG_OPTION2MAIN:
             InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, 24);
-            InvRing_MotionRadius(ring, 688);
+            InvRing_MotionRadius(ring, INV_RING_RADIUS);
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
             g_Inv_OptionCurrent = ring->current_object;
@@ -435,11 +415,12 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             ring->type = RT_MAIN;
             ring->number_of_objects = g_Inv_MainObjectsCount;
             ring->current_object = g_Inv_MainCurrent;
-            InvRing_CalcAdders(ring, 24);
+            InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
-                ring, PHD_180,
-                -16384 - ring->angle_adder * ring->current_object);
-            ring->ring_pos.rot.y = ring->motion.rotate_target + PHD_180;
+                ring, INV_RING_OPEN_ROTATION,
+                -DEG_90 - ring->angle_adder * ring->current_object);
+            ring->ring_pos.rot.y =
+                ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
             break;
 
         case RNG_SELECTED: {
@@ -504,7 +485,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
             InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, 16);
             InvRing_MotionRotation(
-                ring, 0, -16384 - ring->angle_adder * ring->current_object);
+                ring, 0, -DEG_90 - ring->angle_adder * ring->current_object);
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
             break;
@@ -531,7 +512,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             if (!ring->motion.count) {
                 InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
                 InvRing_MotionRadius(ring, 0);
-                InvRing_MotionCameraPos(ring, -1536);
+                InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
                 InvRing_MotionRotation(
                     ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
             }

@@ -1,22 +1,18 @@
-#define FRAMES_PER_SECOND 30
+#include <libtrx/game/const.h>
+
+#define FRAMES_PER_SECOND LOGIC_FPS
 #define TICKS_PER_FRAME 2
 
-#define PHD_ONE 0x10000
+#define PHD_ONE DEG_360
 #define PHD_HALF 0x100
-#define PHD_DEGREE (PHD_ONE / 360) // = 182
-#define PHD_360 (PHD_ONE) // = 65536 = 0x10000
-#define PHD_180 (PHD_ONE / 2) // = 32768 = 0x8000
-#define PHD_90 (PHD_ONE / 4) // = 16384 = 0x4000
-#define PHD_45 (PHD_ONE / 8) // = 8192 = 0x2000
-#define PHD_135 (PHD_45 * 3) // = 24576 = 0x6000
-
-#define CLASS_NAME "Dude:TombRaiderII:DDWndClass"
-#define WINDOW_NAME "Tomb Raider II"
+#define PHD_DEGREE DEG_1
+#define PHD_360 DEG_360
+#define PHD_180 DEG_180
+#define PHD_90 DEG_90
+#define PHD_45 DEG_45
+#define PHD_135 DEG_135
 
 #define W2V_SHIFT 14
-#define WALL_L 1024
-#define WALL_SHIFT 10
-#define STEP_L (WALL_L / 4) // = 256
 #define NO_HEIGHT (-32512)
 #define MAX_HEIGHT 32000
 #define NO_BAD_POS (-NO_HEIGHT) // = 32512
@@ -184,7 +180,6 @@
 #define FOG_END (20 * WALL_L) // = 20480
 
 #define NUM_SLOTS 5
-#define DONT_TARGET (-16384)
 #define PITCH_SHIFT 4
 #define TARGET_DIST (WALL_L * 4) // = 4096
 

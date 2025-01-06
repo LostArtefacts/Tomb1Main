@@ -6,7 +6,6 @@
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"
-#include "game/inventory_ring/priv.h"
 #include "game/inventory_ring/vars.h"
 #include "game/lara/common.h"
 #include "game/music.h"
@@ -23,6 +22,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/inventory_ring/priv.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/objects/names.h>
 
@@ -97,7 +97,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         return InvRing_Close(ring, m_InvChosen);
     }
 
-    InvRing_CalcAdders(ring, ROTATE_DURATION);
+    InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
 
     Input_Update();
     // Do the demo inactivity check prior to postprocessing of the inputs.
@@ -173,7 +173,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
             InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
-            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
             g_Input = (INPUT_STATE) { 0 };
@@ -210,7 +210,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             InvRing_MotionSetup(
                 ring, RNG_SELECTING, RNG_SELECTED, SELECTING_FRAMES);
             InvRing_MotionRotation(
-                ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
+                ring, 0, -DEG_90 - ring->angle_adder * ring->current_object);
             InvRing_MotionItemSelect(ring, inv_item);
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
@@ -307,7 +307,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
     case RNG_MAIN2OPTION:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        InvRing_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionRadius(ring, INV_RING_RADIUS);
         ring->camera_pitch = -ring->motion.misc;
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
@@ -317,16 +317,17 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->type = RT_OPTION;
         ring->number_of_objects = g_InvOptionObjects;
         ring->current_object = g_InvOptionCurrent;
-        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
-            ring, OPEN_ROTATION,
-            -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
+            ring, INV_RING_OPEN_ROTATION,
+            -DEG_90 - ring->angle_adder * ring->current_object);
+        ring->ring_pos.rot.y =
+            ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
         break;
 
     case RNG_MAIN2KEYS:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        InvRing_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionRadius(ring, INV_RING_RADIUS);
         ring->camera_pitch = -ring->motion.misc;
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
@@ -337,16 +338,17 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->type = RT_KEYS;
         ring->number_of_objects = g_InvKeysObjects;
         ring->current_object = g_InvKeysCurrent;
-        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
-            ring, OPEN_ROTATION,
-            -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
+            ring, INV_RING_OPEN_ROTATION,
+            -DEG_90 - ring->angle_adder * ring->current_object);
+        ring->ring_pos.rot.y =
+            ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
         break;
 
     case RNG_KEYS2MAIN:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        InvRing_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionRadius(ring, INV_RING_RADIUS);
         ring->camera_pitch = -ring->motion.misc;
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
@@ -356,16 +358,17 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->type = RT_MAIN;
         ring->number_of_objects = g_InvMainObjects;
         ring->current_object = g_InvMainCurrent;
-        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
-            ring, OPEN_ROTATION,
-            -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
+            ring, INV_RING_OPEN_ROTATION,
+            -DEG_90 - ring->angle_adder * ring->current_object);
+        ring->ring_pos.rot.y =
+            ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
         break;
 
     case RNG_OPTION2MAIN:
         InvRing_MotionSetup(ring, RNG_OPENING, RNG_OPEN, RINGSWITCH_FRAMES / 2);
-        InvRing_MotionRadius(ring, RING_RADIUS);
+        InvRing_MotionRadius(ring, INV_RING_RADIUS);
         ring->camera_pitch = -ring->motion.misc;
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
@@ -376,11 +379,12 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->type = RT_MAIN;
         ring->number_of_objects = g_InvMainObjects;
         ring->current_object = g_InvMainCurrent;
-        InvRing_CalcAdders(ring, ROTATE_DURATION);
+        InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
-            ring, OPEN_ROTATION,
-            -PHD_90 - ring->angle_adder * ring->current_object);
-        ring->ring_pos.rot.y = ring->motion.rotate_target + OPEN_ROTATION;
+            ring, INV_RING_OPEN_ROTATION,
+            -DEG_90 - ring->angle_adder * ring->current_object);
+        ring->ring_pos.rot.y =
+            ring->motion.rotate_target + INV_RING_OPEN_ROTATION;
         break;
 
     case RNG_SELECTED: {
@@ -443,7 +447,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
         InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, SELECTING_FRAMES);
         InvRing_MotionRotation(
-            ring, 0, -PHD_90 - ring->angle_adder * ring->current_object);
+            ring, 0, -DEG_90 - ring->angle_adder * ring->current_object);
         g_Input = (INPUT_STATE) { 0 };
         g_InputDB = (INPUT_STATE) { 0 };
         break;
@@ -483,7 +487,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         if (!ring->motion.count) {
             InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
-            InvRing_MotionCameraPos(ring, CAMERA_STARTHEIGHT);
+            InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
         }
@@ -835,11 +839,10 @@ void InvRing_Construct(void)
     }
 
     for (int i = 0; i < g_InvMainObjects; i++) {
-        InvRing_ResetItem(g_InvMainList[i]);
+        InvRing_InitInvItem(g_InvMainList[i]);
     }
-
     for (int i = 0; i < g_InvOptionObjects; i++) {
-        InvRing_ResetItem(g_InvOptionList[i]);
+        InvRing_InitInvItem(g_InvOptionList[i]);
     }
 
     g_InvMainCurrent = 0;

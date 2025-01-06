@@ -4,7 +4,6 @@
 #include "game/input.h"
 #include "game/interpolation.h"
 #include "game/inventory_ring.h"
-#include "game/inventory_ring/priv.h"
 #include "game/objects/common.h"
 #include "game/option.h"
 #include "game/option/option_compass.h"
@@ -17,6 +16,7 @@
 #include "math/matrix.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/inventory_ring/priv.h>
 
 static int32_t M_GetFrames(
     const INV_RING *ring, const INVENTORY_ITEM *inv_item,

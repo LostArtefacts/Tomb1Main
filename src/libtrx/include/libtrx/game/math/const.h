@@ -10,4 +10,5 @@
 #define DEG_90  ((DEG_360) / 4)
 #define DEG_45  ((DEG_360) / 8)
 #define DEG_1   ((DEG_360) / 360) // = 182
+#define DEG_135 ((DEG_45)  * 3)
 // clang-format on

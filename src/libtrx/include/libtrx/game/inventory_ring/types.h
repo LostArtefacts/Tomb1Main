@@ -33,9 +33,7 @@ typedef struct {
     int16_t x_rot_pt_sel;
     int16_t x_rot_pt;
     int16_t x_rot_sel;
-#if TR_VERSION == 2
     int16_t x_rot_nosel;
-#endif
     int16_t x_rot;
     int16_t y_rot_sel;
     int16_t y_rot;
