@@ -134,8 +134,10 @@ GAME_FLOW_COMMAND Phase_Run(void)
         control = M_Control(nframes);
 
         if (m_PhaseToSet != PHASE_NULL) {
-            Interpolation_SetRate(1.0);
-            M_Draw();
+            if (control.action != PHASE_ACTION_NO_WAIT) {
+                Interpolation_SetRate(1.0);
+                M_Draw();
+            }
 
             M_SetUnconditionally(m_PhaseToSet, m_PhaseToSetArgs);
             m_PhaseToSet = PHASE_NULL;
@@ -150,19 +152,20 @@ GAME_FLOW_COMMAND Phase_Run(void)
         }
 
         if (control.action == PHASE_ACTION_END) {
-            M_Draw();
             break;
         }
 
-        if (Interpolation_IsEnabled()) {
-            Interpolation_SetRate(0.5);
-            M_Draw();
-            M_Wait();
-        }
+        if (control.action != PHASE_ACTION_NO_WAIT) {
+            if (Interpolation_IsEnabled()) {
+                Interpolation_SetRate(0.5);
+                M_Draw();
+                M_Wait();
+            }
 
-        Interpolation_SetRate(1.0);
-        M_Draw();
-        nframes = M_Wait();
+            Interpolation_SetRate(1.0);
+            M_Draw();
+            nframes = M_Wait();
+        }
     }
 
     m_Running = false;

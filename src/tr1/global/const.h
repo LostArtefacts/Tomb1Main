@@ -142,8 +142,6 @@
 #define PASSPORT_FOV 65
 #define PICKUPS_FOV 65
 
-#define PASS_MESH (PFRONT | PSPINE | PBACK)
-
 #define BIFF (WALL_L >> 1)
 
 #define SLOPE_DIF 60

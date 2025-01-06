@@ -277,17 +277,6 @@ typedef struct {
 } AI_INFO;
 
 typedef enum {
-    PM_SPINE    = 1,
-    PM_FRONT    = 2,
-    PM_IN_FRONT = 4,
-    PM_PAGE_2   = 8,
-    PM_BACK     = 16,
-    PM_IN_BACK  = 32,
-    PM_PAGE_1   = 64,
-    PM_COMMON   = PM_SPINE | PM_BACK | PM_FRONT,
-} PASS_MESH;
-
-typedef enum {
     GFE_PICTURE          = 0,
     GFE_LIST_START       = 1,
     GFE_LIST_END         = 2,
@@ -733,12 +722,6 @@ typedef enum {
     GF_ADD_INV_KEY_4        = 26,
     GF_ADD_INV_NUMBER_OF    = 27,
 } GF_ADD_INV;
-
-typedef enum {
-    IT_NAME      = 0,
-    IT_QTY       = 1,
-    IT_NUMBER_OF = 2,
-} INV_TEXT;
 
 typedef enum {
     REQ_CENTER      = 0x00,

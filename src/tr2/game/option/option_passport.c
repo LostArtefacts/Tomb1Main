@@ -19,8 +19,7 @@ static PASSPORT_MODE m_PassportMode;
 
 void Option_Passport_Control(INVENTORY_ITEM *const item)
 {
-    Text_Remove(g_Inv_ItemText[IT_NAME]);
-    g_Inv_ItemText[IT_NAME] = NULL;
+    InvRing_RemoveAllText();
 
     const int32_t frame = item->goal_frame - item->open_frame;
     const int32_t page = frame % 5 == 0 ? frame / 5 : -1;
@@ -66,10 +65,6 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
 
                 Text_Remove(m_LevelText);
                 m_LevelText = NULL;
-                Text_Remove(g_InvRing_Text);
-                g_InvRing_Text = NULL;
-                Text_Remove(g_Inv_ItemText[IT_NAME]);
-                g_Inv_ItemText[IT_NAME] = NULL;
 
                 GetSavedGamesList(&g_LoadGameRequester);
                 Requester_SetHeading(
@@ -143,10 +138,6 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
             if (g_Inv_Mode != INV_TITLE_MODE && g_CurrentLevel != LV_GYM) {
                 Text_Remove(m_LevelText);
                 m_LevelText = NULL;
-                Text_Remove(g_InvRing_Text);
-                g_InvRing_Text = NULL;
-                Text_Remove(g_Inv_ItemText[IT_NAME]);
-                g_Inv_ItemText[IT_NAME] = NULL;
 
                 GetSavedGamesList(&g_LoadGameRequester);
                 Requester_SetHeading(
@@ -159,8 +150,6 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
             } else if (g_GameFlow.play_any_level) {
                 Text_Remove(m_LevelText);
                 m_LevelText = NULL;
-                Text_Remove(g_Inv_ItemText[IT_NAME]);
-                g_Inv_ItemText[IT_NAME] = NULL;
 
                 Requester_Init(&g_SaveGameRequester);
                 GetValidLevelsList(&g_SaveGameRequester);
@@ -272,12 +261,8 @@ void Option_Passport_Draw(INVENTORY_ITEM *const item)
 
 void Option_Passport_Shutdown(void)
 {
-    Text_Remove(g_Inv_ItemText[IT_NAME]);
-    g_Inv_ItemText[IT_NAME] = NULL;
     Text_Remove(m_LevelText);
     m_LevelText = NULL;
-    Text_Remove(g_InvRing_Text);
-    g_InvRing_Text = NULL;
     Text_Remove(g_PasswordText1);
     g_PasswordText1 = NULL;
 

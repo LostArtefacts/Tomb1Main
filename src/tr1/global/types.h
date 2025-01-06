@@ -194,12 +194,6 @@ typedef enum {
 } ROOM_FLAG;
 
 typedef enum {
-    IT_NAME = 0,
-    IT_QTY = 1,
-    IT_NUMBER_OF = 2,
-} INV_TEXT;
-
-typedef enum {
     IC_BLACK = 0,
     IC_GREY = 1,
     IC_WHITE = 2,

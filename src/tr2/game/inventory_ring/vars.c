@@ -7,8 +7,6 @@ int16_t g_Inv_Chosen = -1;
 int32_t g_Inv_ExtraData[8];
 bool g_Inv_DemoMode;
 bool g_Inv_IsOptionsDelay;
-TEXTSTRING *g_InvRing_Text = NULL;
-TEXTSTRING *g_Inv_ItemText[IT_NUMBER_OF] = {};
 int32_t g_Inv_OptionsDelayCounter;
 int32_t g_Inv_NFrames = 2;
 

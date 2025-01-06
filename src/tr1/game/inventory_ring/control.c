@@ -25,32 +25,56 @@
 #include <libtrx/game/inventory_ring/priv.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/objects/names.h>
+#include <libtrx/memory.h>
 
 typedef enum {
-    PSPINE = 1,
-    PFRONT = 2,
-    PINFRONT = 4,
-    PPAGE2 = 8,
-    PBACK = 16,
-    PINBACK = 32,
-    PPAGE1 = 64
-} PASS_PAGE;
+    IT_NAME = 0,
+    IT_QTY = 1,
+    IT_NUMBER_OF = 2,
+} INV_TEXT;
 
-static TEXTSTRING *m_InvDownArrow1 = NULL;
-static TEXTSTRING *m_InvDownArrow2 = NULL;
-static TEXTSTRING *m_InvUpArrow1 = NULL;
-static TEXTSTRING *m_InvUpArrow2 = NULL;
+typedef enum {
+    // clang-format off
+    PASS_MESH_SPINE    = 1 << 0,
+    PASS_MESH_FRONT    = 1 << 1,
+    PASS_MESH_IN_FRONT = 1 << 2,
+    PASS_MESH_PAGE_2   = 1 << 3,
+    PASS_MESH_BACK     = 1 << 4,
+    PASS_MESH_IN_BACK  = 1 << 5,
+    PASS_MESH_PAGE_1   = 1 << 6,
+    PASS_MESH_COMMON   = PASS_MESH_SPINE | PASS_MESH_BACK | PASS_MESH_FRONT,
+    // clang-format on
+} PASS_MESH;
+
+static TEXTSTRING *m_UpArrow1 = NULL;
+static TEXTSTRING *m_UpArrow2 = NULL;
+static TEXTSTRING *m_DownArrow1 = NULL;
+static TEXTSTRING *m_DownArrow2 = NULL;
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
 static TEXTSTRING *m_VersionText = NULL;
+static TEXTSTRING *m_HeadingText = NULL;
 static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
-static TEXTSTRING *m_HeadingText;
 static CLOCK_TIMER m_DemoTimer = { 0 };
 static int32_t m_StartLevel;
 static GAME_OBJECT_ID m_InvChosen;
 
 static TEXTSTRING *M_InitExamineText(
     int32_t x_pos, const char *role_str, const char *input_str);
+static void M_InitExamineOverlay(INV_RING *ring);
+static void M_RemoveExamineOverlay(void);
+static void M_RemoveItemsText(void);
+static void M_RemoveVersionText(void);
+static void M_InitHeader(INV_RING *ring);
+static void M_RemoveHeader(void);
+static void M_ShowItemQuantity(const char *fmt, int32_t qty);
+static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
+
+static void M_RingIsOpen(INV_RING *ring);
+static void M_RingIsNotOpen(INV_RING *ring);
+static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
+static void M_RingActive(INV_RING *ring);
+
 static PHASE_CONTROL M_Control(INV_RING *ring);
 static bool M_CheckDemoTimer(const INV_RING *ring);
 
@@ -69,11 +93,298 @@ static TEXTSTRING *M_InitExamineText(
     return text;
 }
 
+static void M_InitExamineOverlay(INV_RING *const ring)
+{
+    if ((ring->mode != INV_GAME_MODE && ring->mode != INV_KEYS_MODE)
+        || !g_Config.gameplay.enable_item_examining
+        || m_ExamineItemText != NULL) {
+        return;
+    }
+
+    m_ExamineItemText =
+        M_InitExamineText(-100, GS(ITEM_EXAMINE_ROLE), GS(KEYMAP_LOOK));
+    m_UseItemText =
+        M_InitExamineText(100, GS(ITEM_USE_ROLE), GS(KEYMAP_ACTION));
+}
+
+static void M_RemoveExamineOverlay(void)
+{
+    if (m_ExamineItemText == NULL) {
+        return;
+    }
+
+    Text_Remove(m_ExamineItemText);
+    Text_Remove(m_UseItemText);
+    m_ExamineItemText = NULL;
+    m_UseItemText = NULL;
+}
+
+static void M_RemoveItemsText(void)
+{
+    for (int32_t i = 0; i < IT_NUMBER_OF; i++) {
+        Text_Remove(m_ItemText[i]);
+        m_ItemText[i] = NULL;
+    }
+}
+
+static void M_RemoveVersionText(void)
+{
+    Text_Remove(m_VersionText);
+    m_VersionText = NULL;
+}
+
+static void M_InitHeader(INV_RING *const ring)
+{
+    if (ring->mode == INV_TITLE_MODE) {
+        return;
+    }
+
+    if (m_HeadingText == NULL) {
+        switch (ring->type) {
+        case RT_MAIN:
+            m_HeadingText = Text_Create(0, 26, GS(HEADING_INVENTORY));
+            break;
+
+        case RT_OPTION:
+            if (ring->mode == INV_DEATH_MODE) {
+                m_HeadingText = Text_Create(0, 26, GS(HEADING_GAME_OVER));
+            } else {
+                m_HeadingText = Text_Create(0, 26, GS(HEADING_OPTION));
+            }
+            break;
+
+        case RT_KEYS:
+            m_HeadingText = Text_Create(0, 26, GS(HEADING_ITEMS));
+            break;
+        }
+
+        Text_CentreH(m_HeadingText, true);
+    }
+
+    if (ring->mode != INV_GAME_MODE) {
+        return;
+    }
+
+    if (m_UpArrow1 == NULL
+        && (ring->type == RT_OPTION
+            || (ring->type == RT_MAIN
+                && g_InvRing_Source[RT_KEYS].count > 0))) {
+        m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
+        m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
+        Text_AlignRight(m_UpArrow2, true);
+    }
+
+    if (m_DownArrow1 == NULL
+        && (ring->type == RT_MAIN || ring->type == RT_KEYS)) {
+        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow1, true);
+        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow2, true);
+        Text_AlignRight(m_DownArrow2, true);
+    }
+}
+
+static void M_RemoveHeader(void)
+{
+    Text_Remove(m_HeadingText);
+    m_HeadingText = NULL;
+    Text_Remove(m_UpArrow1);
+    m_UpArrow1 = NULL;
+    Text_Remove(m_UpArrow2);
+    m_UpArrow2 = NULL;
+    Text_Remove(m_DownArrow1);
+    m_DownArrow1 = NULL;
+    Text_Remove(m_DownArrow2);
+    m_DownArrow2 = NULL;
+}
+
+static void M_ShowItemQuantity(const char *const fmt, const int32_t qty)
+{
+    if (m_ItemText[IT_QTY] == NULL) {
+        char string[64];
+        sprintf(string, fmt, qty);
+        Overlay_MakeAmmoString(string);
+        m_ItemText[IT_QTY] = Text_Create(64, -56, string);
+        Text_AlignBottom(m_ItemText[IT_QTY], true);
+        Text_CentreH(m_ItemText[IT_QTY], true);
+    }
+}
+
+static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
+{
+    if (!(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+        M_ShowItemQuantity(fmt, qty);
+    }
+}
+
+static void M_RingIsOpen(INV_RING *const ring)
+{
+    M_InitHeader(ring);
+    M_InitExamineOverlay(ring);
+}
+
+static void M_RingIsNotOpen(INV_RING *const ring)
+{
+    M_RemoveHeader();
+    M_RemoveExamineOverlay();
+}
+
+static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
+{
+    if (m_ItemText[IT_NAME] == NULL
+        && inv_item->object_id != O_PASSPORT_OPTION) {
+        m_ItemText[IT_NAME] =
+            Text_Create(0, -16, Object_GetName(inv_item->object_id));
+        Text_AlignBottom(m_ItemText[IT_NAME], 1);
+        Text_CentreH(m_ItemText[IT_NAME], 1);
+    }
+
+    const int32_t qty = Inv_RequestItem(inv_item->object_id);
+    bool show_examine_option = false;
+
+    switch (inv_item->object_id) {
+    case O_SHOTGUN_OPTION:
+        M_ShowAmmoQuantity("%5d A", g_Lara.shotgun.ammo / SHOTGUN_AMMO_CLIP);
+        break;
+
+    case O_MAGNUM_OPTION:
+        M_ShowAmmoQuantity("%5d B", g_Lara.magnums.ammo);
+        break;
+
+    case O_UZI_OPTION:
+        M_ShowAmmoQuantity("%5d C", g_Lara.uzis.ammo);
+        break;
+
+    case O_SG_AMMO_OPTION:
+        M_ShowItemQuantity("%d", qty * NUM_SG_SHELLS);
+        break;
+
+    case O_MAG_AMMO_OPTION:
+    case O_UZI_AMMO_OPTION:
+        M_ShowItemQuantity("%d", qty * 2);
+        break;
+
+    case O_MEDI_OPTION:
+    case O_BIGMEDI_OPTION:
+        Overlay_BarSetHealthTimer(40);
+        if (qty > 1) {
+            M_ShowItemQuantity("%d", qty);
+        }
+        break;
+
+    case O_KEY_OPTION_1:
+    case O_KEY_OPTION_2:
+    case O_KEY_OPTION_3:
+    case O_KEY_OPTION_4:
+    case O_LEADBAR_OPTION:
+    case O_PICKUP_OPTION_1:
+    case O_PICKUP_OPTION_2:
+    case O_PUZZLE_OPTION_1:
+    case O_PUZZLE_OPTION_2:
+    case O_PUZZLE_OPTION_3:
+    case O_PUZZLE_OPTION_4:
+    case O_SCION_OPTION:
+        if (qty > 1) {
+            M_ShowItemQuantity("%d", qty);
+        }
+
+        show_examine_option = !Option_Examine_IsActive()
+            && Option_Examine_CanExamine(inv_item->object_id);
+        break;
+
+    default:
+        break;
+    }
+
+    if (inv_item->object_id == O_MEDI_OPTION
+        || inv_item->object_id == O_BIGMEDI_OPTION) {
+        if (g_Config.ui.healthbar_location == BL_TOP_LEFT) {
+            Text_Hide(m_UpArrow1, true);
+        } else if (g_Config.ui.healthbar_location == BL_TOP_RIGHT) {
+            Text_Hide(m_UpArrow2, true);
+        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_LEFT) {
+            Text_Hide(m_DownArrow1, true);
+        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_RIGHT) {
+            Text_Hide(m_DownArrow2, true);
+        }
+        g_GameInfo.inv_showing_medpack = true;
+    } else {
+        Text_Hide(m_UpArrow1, false);
+        Text_Hide(m_UpArrow2, false);
+        Text_Hide(m_DownArrow1, false);
+        Text_Hide(m_DownArrow2, false);
+        g_GameInfo.inv_showing_medpack = false;
+    }
+
+    if (m_ExamineItemText != NULL) {
+        Text_Hide(m_ExamineItemText, !show_examine_option);
+        Text_Hide(m_UseItemText, !show_examine_option);
+    }
+}
+
+static void M_RingActive(INV_RING *const ring)
+{
+    InvRing_RemoveAllText();
+}
+
+static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
+{
+    switch (inv_item->object_id) {
+    case O_PASSPORT_OPTION:
+        inv_item->meshes_drawn = PASS_MESH_COMMON;
+        if (inv_item->current_frame <= 14) {
+            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1;
+        } else if (inv_item->current_frame < 19) {
+            inv_item->meshes_drawn |=
+                PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame == 19) {
+            inv_item->meshes_drawn |= PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame < 24) {
+            inv_item->meshes_drawn |=
+                PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2 | PASS_MESH_IN_BACK;
+        } else if (inv_item->current_frame < 29) {
+            inv_item->meshes_drawn |= PASS_MESH_PAGE_2 | PASS_MESH_IN_BACK;
+        } else if (inv_item->current_frame == 29) {
+        }
+        break;
+
+    case O_MAP_OPTION:
+        if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
+            inv_item->meshes_drawn = inv_item->meshes_sel;
+        } else {
+            inv_item->meshes_drawn = -1;
+        }
+        break;
+
+    default:
+        inv_item->meshes_drawn = -1;
+        break;
+    }
+}
+
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item)
+{
+    if (inv_item->current_frame == inv_item->goal_frame) {
+        M_SelectMeshes(inv_item);
+        return false;
+    }
+
+    inv_item->current_frame += inv_item->anim_direction;
+    if (inv_item->current_frame >= inv_item->frames_total) {
+        inv_item->current_frame = 0;
+    } else if (inv_item->current_frame < 0) {
+        inv_item->current_frame = inv_item->frames_total - 1;
+    }
+
+    M_SelectMeshes(inv_item);
+    return true;
+}
+
 // TODO: make this return a GAME_FLOW_COMMAND
 static PHASE_CONTROL M_Control(INV_RING *const ring)
 {
     if (ring->motion.status == RNG_OPENING) {
-        if (g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
+        if (ring->mode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
             return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
@@ -86,7 +397,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
     if (ring->motion.status == RNG_DONE) {
         // finish fading
-        if (g_InvMode == INV_TITLE_MODE) {
+        if (ring->mode == INV_TITLE_MODE) {
             Output_FadeToBlack(true);
         }
 
@@ -94,7 +405,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
         }
 
-        return InvRing_Close(ring, m_InvChosen);
+        return (PHASE_CONTROL) { .action = PHASE_ACTION_END };
     }
 
     InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
@@ -117,7 +428,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         }
     }
 
-    g_GameInfo.inv_ring_above = g_InvMode == INV_GAME_MODE
+    g_GameInfo.inv_ring_above = ring->mode == INV_GAME_MODE
         && ((ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count != 0)
             || (ring->type == RT_OPTION && g_InvRing_Source[RT_MAIN].count));
 
@@ -125,14 +436,14 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
     }
 
-    if ((g_InvMode == INV_SAVE_MODE || g_InvMode == INV_SAVE_CRYSTAL_MODE
-         || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
+    if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_SAVE_CRYSTAL_MODE
+         || ring->mode == INV_LOAD_MODE || ring->mode == INV_DEATH_MODE)
         && !ring->is_pass_open) {
         g_Input = (INPUT_STATE) { 0 };
         g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
     }
 
-    if (!(g_InvMode == INV_TITLE_MODE || Output_FadeIsAnimating()
+    if (!(ring->mode == INV_TITLE_MODE || Output_FadeIsAnimating()
           || ring->motion.status == RNG_OPENING)) {
         for (int i = 0; i < ring->number_of_objects; i++) {
             INVENTORY_ITEM *inv_item = ring->list[i];
@@ -157,7 +468,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         }
 
         if (m_StartLevel != -1 || ring->is_demo_needed
-            || (g_InputDB.menu_back && g_InvMode != INV_TITLE_MODE)) {
+            || (g_InputDB.menu_back && ring->mode != INV_TITLE_MODE)) {
             Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
             m_InvChosen = NO_OBJECT;
 
@@ -167,7 +478,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 g_InvRing_Source[RT_OPTION].current = ring->current_object;
             }
 
-            if (g_InvMode != INV_TITLE_MODE) {
+            if (ring->mode != INV_TITLE_MODE) {
                 Output_FadeToTransparent(false);
             }
 
@@ -182,9 +493,9 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
         const bool examine = g_InputDB.look && InvRing_CanExamine();
         if (g_InputDB.menu_confirm || examine) {
-            if ((g_InvMode == INV_SAVE_MODE
-                 || g_InvMode == INV_SAVE_CRYSTAL_MODE
-                 || g_InvMode == INV_LOAD_MODE || g_InvMode == INV_DEATH_MODE)
+            if ((ring->mode == INV_SAVE_MODE
+                 || ring->mode == INV_SAVE_CRYSTAL_MODE
+                 || ring->mode == INV_LOAD_MODE || ring->mode == INV_DEATH_MODE)
                 && !ring->is_pass_open) {
                 ring->is_pass_open = true;
             }
@@ -233,8 +544,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             }
         }
 
-        if (g_InputDB.menu_up && g_InvMode != INV_TITLE_MODE
-            && g_InvMode != INV_KEYS_MODE) {
+        if (g_InputDB.menu_up && ring->mode != INV_TITLE_MODE
+            && ring->mode != INV_KEYS_MODE) {
             if (ring->type == RT_MAIN) {
                 if (g_InvRing_Source[RT_KEYS].count != 0) {
                     InvRing_MotionSetup(
@@ -264,8 +575,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 g_InputDB = (INPUT_STATE) { 0 };
             }
         } else if (
-            g_InputDB.menu_down && g_InvMode != INV_TITLE_MODE
-            && g_InvMode != INV_KEYS_MODE) {
+            g_InputDB.menu_down && ring->mode != INV_TITLE_MODE
+            && ring->mode != INV_KEYS_MODE) {
             if (ring->type == RT_KEYS) {
                 if (g_InvRing_Source[RT_MAIN].count) {
                     InvRing_MotionSetup(
@@ -387,7 +698,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
         bool busy = false;
         if (inv_item->y_rot == inv_item->y_rot_sel) {
-            busy = InvRing_AnimateItem(inv_item);
+            busy = M_AnimateInventoryItem(inv_item);
         }
 
         if (!busy && !g_IDelay) {
@@ -399,8 +710,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
 
-                if (g_InvMode == INV_LOAD_MODE || g_InvMode == INV_SAVE_MODE
-                    || g_InvMode == INV_SAVE_CRYSTAL_MODE) {
+                if (ring->mode == INV_LOAD_MODE || ring->mode == INV_SAVE_MODE
+                    || ring->mode == INV_SAVE_CRYSTAL_MODE) {
                     InvRing_MotionSetup(
                         ring, RNG_CLOSING_ITEM, RNG_EXITING_INVENTORY, 0);
                     g_Input = (INPUT_STATE) { 0 };
@@ -417,7 +728,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                     g_InvRing_Source[RT_OPTION].current = ring->current_object;
                 }
 
-                if (g_InvMode == INV_TITLE_MODE
+                if (ring->mode == INV_TITLE_MODE
                     && ((inv_item->object_id == O_DETAIL_OPTION)
                         || inv_item->object_id == O_SOUND_OPTION
                         || inv_item->object_id == O_CONTROL_OPTION
@@ -446,7 +757,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
     case RNG_CLOSING_ITEM: {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-        if (!InvRing_AnimateItem(inv_item)) {
+        if (!M_AnimateInventoryItem(inv_item)) {
             if (inv_item->object_id == O_PASSPORT_OPTION) {
                 inv_item->object_id = O_PASSPORT_CLOSED;
                 inv_item->current_frame = 0;
@@ -460,12 +771,12 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
     }
 
     case RNG_EXITING_INVENTORY:
-        if (g_InvMode == INV_TITLE_MODE) {
+        if (ring->mode == INV_TITLE_MODE) {
         } else if (
             m_InvChosen == O_PASSPORT_OPTION
-            && ((g_InvMode == INV_LOAD_MODE && g_SavedGamesCount) /* f6 menu */
-                || g_InvMode == INV_DEATH_MODE /* Lara died */
-                || (g_InvMode == INV_GAME_MODE /* esc menu */
+            && ((ring->mode == INV_LOAD_MODE && g_SavedGamesCount) /* f6 menu */
+                || ring->mode == INV_DEATH_MODE /* Lara died */
+                || (ring->mode == INV_GAME_MODE /* esc menu */
                     && g_GameInfo.passport_selection
                         != PASSPORT_MODE_SAVE_GAME /* but not save page */
                     )
@@ -496,13 +807,11 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_CLOSING_ITEM) {
         if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
             INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-            InvRing_Active(inv_item);
+            M_RingNotActive(inv_item);
         }
-        InvRing_InitHeader(ring);
-        InvRing_InitExamineOverlay();
+        M_RingIsOpen(ring);
     } else {
-        InvRing_RemoveHeader();
-        InvRing_RemoveExamineOverlay();
+        M_RingIsNotOpen(ring);
     }
 
     if (!ring->motion.status || ring->motion.status == RNG_CLOSING
@@ -510,7 +819,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_OPTION2MAIN
         || ring->motion.status == RNG_EXITING_INVENTORY
         || ring->motion.status == RNG_DONE || ring->rotating) {
-        InvRing_RemoveAllText();
+        M_RingActive(ring);
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
@@ -522,7 +831,7 @@ static bool M_CheckDemoTimer(const INV_RING *const ring)
         return false;
     }
 
-    if (g_InvMode != INV_TITLE_MODE || g_Input.any || g_InputDB.any
+    if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any
         || Console_IsOpened()) {
         Clock_ResetTimer(&m_DemoTimer);
         return false;
@@ -539,275 +848,14 @@ bool InvRing_CanExamine(void)
         && !m_ExamineItemText->flags.hide;
 }
 
-void InvRing_InitExamineOverlay(void)
-{
-    if ((g_InvMode != INV_GAME_MODE && g_InvMode != INV_KEYS_MODE)
-        || !g_Config.gameplay.enable_item_examining
-        || m_ExamineItemText != NULL) {
-        return;
-    }
-
-    m_ExamineItemText =
-        M_InitExamineText(-100, GS(ITEM_EXAMINE_ROLE), GS(KEYMAP_LOOK));
-    m_UseItemText =
-        M_InitExamineText(100, GS(ITEM_USE_ROLE), GS(KEYMAP_ACTION));
-}
-
-void InvRing_RemoveExamineOverlay(void)
-{
-    if (m_ExamineItemText == NULL) {
-        return;
-    }
-
-    Text_Remove(m_ExamineItemText);
-    Text_Remove(m_UseItemText);
-    m_ExamineItemText = NULL;
-    m_UseItemText = NULL;
-}
-
-void InvRing_InitHeader(INV_RING *ring)
-{
-    if (g_InvMode == INV_TITLE_MODE) {
-        return;
-    }
-
-    if (!m_HeadingText) {
-        switch (ring->type) {
-        case RT_MAIN:
-            m_HeadingText = Text_Create(0, 26, GS(HEADING_INVENTORY));
-            break;
-
-        case RT_OPTION:
-            if (g_InvMode == INV_DEATH_MODE) {
-                m_HeadingText = Text_Create(0, 26, GS(HEADING_GAME_OVER));
-            } else {
-                m_HeadingText = Text_Create(0, 26, GS(HEADING_OPTION));
-            }
-            break;
-
-        case RT_KEYS:
-            m_HeadingText = Text_Create(0, 26, GS(HEADING_ITEMS));
-            break;
-        }
-
-        Text_CentreH(m_HeadingText, 1);
-    }
-
-    if (g_InvMode != INV_GAME_MODE) {
-        return;
-    }
-
-    if (!m_InvUpArrow1) {
-        if (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN
-                && g_InvRing_Source[RT_KEYS].count != 0)) {
-            m_InvUpArrow1 = Text_Create(20, 28, "\\{arrow up}");
-            m_InvUpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
-            Text_AlignRight(m_InvUpArrow2, 1);
-        }
-    }
-
-    if (!m_InvDownArrow1) {
-        if (ring->type == RT_MAIN || ring->type == RT_KEYS) {
-            m_InvDownArrow1 = Text_Create(20, -15, "\\{arrow down}");
-            m_InvDownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
-            Text_AlignBottom(m_InvDownArrow1, 1);
-            Text_AlignBottom(m_InvDownArrow2, 1);
-            Text_AlignRight(m_InvDownArrow2, 1);
-        }
-    }
-}
-
-void InvRing_RemoveHeader(void)
-{
-    if (m_HeadingText != NULL) {
-        Text_Remove(m_HeadingText);
-        m_HeadingText = NULL;
-    }
-    if (m_InvUpArrow1 != NULL) {
-        Text_Remove(m_InvUpArrow1);
-        m_InvUpArrow1 = NULL;
-    }
-    if (m_InvUpArrow2 != NULL) {
-        Text_Remove(m_InvUpArrow2);
-        m_InvUpArrow2 = NULL;
-    }
-    if (m_InvDownArrow1 != NULL) {
-        Text_Remove(m_InvDownArrow1);
-        m_InvDownArrow1 = NULL;
-    }
-    if (m_InvDownArrow2 != NULL) {
-        Text_Remove(m_InvDownArrow2);
-        m_InvDownArrow2 = NULL;
-    }
-}
-
 void InvRing_RemoveAllText(void)
 {
-    InvRing_RemoveHeader();
-    InvRing_RemoveExamineOverlay();
-    for (int i = 0; i < IT_NUMBER_OF; i++) {
-        if (m_ItemText[i]) {
-            Text_Remove(m_ItemText[i]);
-            m_ItemText[i] = NULL;
-        }
-    }
+    M_RemoveHeader();
+    M_RemoveItemsText();
+    M_RemoveExamineOverlay();
 }
 
-void InvRing_Active(INVENTORY_ITEM *inv_item)
-{
-    if (m_ItemText[IT_NAME] == NULL
-        && inv_item->object_id != O_PASSPORT_OPTION) {
-        m_ItemText[IT_NAME] =
-            Text_Create(0, -16, Object_GetName(inv_item->object_id));
-        Text_AlignBottom(m_ItemText[IT_NAME], 1);
-        Text_CentreH(m_ItemText[IT_NAME], 1);
-    }
-
-    char temp_text[128];
-    int32_t qty = Inv_RequestItem(inv_item->object_id);
-
-    bool show_examine_option = false;
-
-    switch (inv_item->object_id) {
-    case O_SHOTGUN_OPTION:
-        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
-            sprintf(
-                temp_text, "%5d A", g_Lara.shotgun.ammo / SHOTGUN_AMMO_CLIP);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_MAGNUM_OPTION:
-        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
-            sprintf(temp_text, "%5d B", g_Lara.magnums.ammo);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_UZI_OPTION:
-        if (!m_ItemText[IT_QTY] && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
-            sprintf(temp_text, "%5d C", g_Lara.uzis.ammo);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_SG_AMMO_OPTION:
-        if (!m_ItemText[IT_QTY]) {
-            sprintf(temp_text, "%d", qty * NUM_SG_SHELLS);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_MAG_AMMO_OPTION:
-        if (!m_ItemText[IT_QTY]) {
-            sprintf(temp_text, "%d", Inv_RequestItem(O_MAG_AMMO_OPTION) * 2);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_UZI_AMMO_OPTION:
-        if (!m_ItemText[IT_QTY]) {
-            sprintf(temp_text, "%d", Inv_RequestItem(O_UZI_AMMO_OPTION) * 2);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_MEDI_OPTION:
-        Overlay_BarSetHealthTimer(40);
-        if (!m_ItemText[IT_QTY] && qty > 1) {
-            sprintf(temp_text, "%d", qty);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_BIGMEDI_OPTION:
-        Overlay_BarSetHealthTimer(40);
-        if (!m_ItemText[IT_QTY] && qty > 1) {
-            sprintf(temp_text, "%d", qty);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-        break;
-
-    case O_KEY_OPTION_1:
-    case O_KEY_OPTION_2:
-    case O_KEY_OPTION_3:
-    case O_KEY_OPTION_4:
-    case O_LEADBAR_OPTION:
-    case O_PICKUP_OPTION_1:
-    case O_PICKUP_OPTION_2:
-    case O_PUZZLE_OPTION_1:
-    case O_PUZZLE_OPTION_2:
-    case O_PUZZLE_OPTION_3:
-    case O_PUZZLE_OPTION_4:
-    case O_SCION_OPTION:
-        if (!m_ItemText[IT_QTY] && qty > 1) {
-            sprintf(temp_text, "%d", qty);
-            Overlay_MakeAmmoString(temp_text);
-            m_ItemText[IT_QTY] = Text_Create(64, -56, temp_text);
-            Text_AlignBottom(m_ItemText[IT_QTY], 1);
-            Text_CentreH(m_ItemText[IT_QTY], 1);
-        }
-
-        show_examine_option = !Option_Examine_IsActive()
-            && Option_Examine_CanExamine(inv_item->object_id);
-        break;
-
-    default:
-        break;
-    }
-
-    if (inv_item->object_id == O_MEDI_OPTION
-        || inv_item->object_id == O_BIGMEDI_OPTION) {
-        if (g_Config.ui.healthbar_location == BL_TOP_LEFT) {
-            Text_Hide(m_InvUpArrow1, true);
-        } else if (g_Config.ui.healthbar_location == BL_TOP_RIGHT) {
-            Text_Hide(m_InvUpArrow2, true);
-        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_LEFT) {
-            Text_Hide(m_InvDownArrow1, true);
-        } else if (g_Config.ui.healthbar_location == BL_BOTTOM_RIGHT) {
-            Text_Hide(m_InvDownArrow2, true);
-        }
-        g_GameInfo.inv_showing_medpack = true;
-    } else {
-        Text_Hide(m_InvUpArrow1, false);
-        Text_Hide(m_InvUpArrow2, false);
-        Text_Hide(m_InvDownArrow1, false);
-        Text_Hide(m_InvDownArrow2, false);
-        g_GameInfo.inv_showing_medpack = false;
-    }
-
-    if (m_ExamineItemText != NULL) {
-        Text_Hide(m_ExamineItemText, !show_examine_option);
-        Text_Hide(m_UseItemText, !show_examine_option);
-    }
-}
-
-void InvRing_Construct(void)
+INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 {
     g_PhdLeft = Viewport_GetMinX();
     g_PhdTop = Viewport_GetMinY();
@@ -818,7 +866,7 @@ void InvRing_Construct(void)
     g_InvRing_OldCamera = g_Camera;
     m_StartLevel = -1;
 
-    if (g_InvMode == INV_TITLE_MODE) {
+    if (mode == INV_TITLE_MODE) {
         g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
         m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
         Text_AlignRight(m_VersionText, 1);
@@ -827,8 +875,7 @@ void InvRing_Construct(void)
             m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
     } else {
         g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
-        Text_Remove(m_VersionText);
-        m_VersionText = NULL;
+        M_RemoveVersionText();
     }
 
     g_InvRing_Source[RT_MAIN].current = 0;
@@ -846,133 +893,203 @@ void InvRing_Construct(void)
         Inv_RemoveItem(O_PHOTO_OPTION);
     }
 
+    if (!g_Config.audio.enable_music_in_inventory && mode != INV_TITLE_MODE) {
+        Music_Pause();
+        Sound_PauseAll();
+    } else {
+        Sound_ResetAmbient();
+        Sound_UpdateEffects();
+    }
+
+    INV_RING *const ring = Memory_Alloc(sizeof(INV_RING));
+    ring->mode = mode;
+
+    switch (mode) {
+    case INV_DEATH_MODE:
+    case INV_SAVE_MODE:
+    case INV_SAVE_CRYSTAL_MODE:
+    case INV_LOAD_MODE:
+    case INV_TITLE_MODE:
+        InvRing_InitRing(
+            ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+            g_InvRing_Source[RT_OPTION].count,
+            g_InvRing_Source[RT_OPTION].current);
+        break;
+
+    case INV_KEYS_MODE:
+        InvRing_InitRing(
+            ring, RT_KEYS, g_InvRing_Source[RT_KEYS].items,
+            g_InvRing_Source[RT_KEYS].count, g_InvRing_Source[RT_MAIN].current);
+        break;
+
+    default:
+        if (g_InvRing_Source[RT_MAIN].count != 0) {
+            InvRing_InitRing(
+                ring, RT_MAIN, g_InvRing_Source[RT_MAIN].items,
+                g_InvRing_Source[RT_MAIN].count,
+                g_InvRing_Source[RT_MAIN].current);
+        } else {
+            InvRing_InitRing(
+                ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+                g_InvRing_Source[RT_OPTION].count,
+                g_InvRing_Source[RT_OPTION].current);
+        }
+        break;
+    }
+
     // reset the delta timer before starting the spinout animation
     Clock_ResetTimer(&g_InvRing_MotionTimer);
+
+    if (mode == INV_TITLE_MODE) {
+        Output_LoadBackgroundFromFile(g_GameFlow.main_menu_background_path);
+    } else {
+        Output_UnloadBackground();
+    }
+
+    return ring;
 }
 
-void InvRing_Destroy(void)
+PHASE_CONTROL InvRing_Close(INV_RING *const ring)
 {
+    PHASE_CONTROL result = { .action = PHASE_ACTION_NO_WAIT };
+
     InvRing_RemoveAllText();
-    m_InvChosen = NO_OBJECT;
+    M_RemoveVersionText();
+
+    if (ring->list != NULL) {
+        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+        if (inv_item != NULL) {
+            Option_Shutdown(inv_item);
+        }
+    }
+    if (ring->mode == INV_TITLE_MODE) {
+        Music_Stop();
+        Sound_StopAllSamples();
+    }
+    Output_UnloadBackground();
 
     if (g_Config.gameplay.fix_item_duplication_glitch) {
         Inv_ClearSelection();
     }
-
-    if (m_VersionText) {
-        Text_Remove(m_VersionText);
-        m_VersionText = NULL;
+    if (g_Config.input.enable_buffering) {
+        g_OldInputDB = (INPUT_STATE) { 0 };
     }
-}
-
-PHASE_CONTROL InvRing_Close(INV_RING *const ring, GAME_OBJECT_ID inv_chosen)
-{
-    const bool is_demo_needed = ring->is_demo_needed;
-    InvRing_Destroy();
 
     if (m_StartLevel != -1) {
-        return (PHASE_CONTROL) {
+        result = (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = {
                 .action = GF_SELECT_GAME,
                 .param = m_StartLevel,
             },
         };
+        goto finish;
     }
 
-    if (is_demo_needed) {
-        return (PHASE_CONTROL) {
+    if (ring->is_demo_needed) {
+        result = (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = { .action = GF_START_DEMO, .param = -1 },
         };
+        goto finish;
     }
 
-    switch (inv_chosen) {
+    switch (m_InvChosen) {
     case O_PASSPORT_OPTION:
         switch (g_GameInfo.passport_selection) {
         case PASSPORT_MODE_LOAD_GAME:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = {
                     .action = GF_START_SAVED_GAME,
                     .param = g_GameInfo.current_save_slot,
                 },
             };
+            goto finish;
 
         case PASSPORT_MODE_SELECT_LEVEL:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = {
                     .action = GF_SELECT_GAME,
                     .param = g_GameInfo.select_level_num,
                 },
             };
+            goto finish;
 
         case PASSPORT_MODE_STORY_SO_FAR:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = {
                     .action = GF_STORY_SO_FAR,
                     .param = g_GameInfo.current_save_slot,
                 },
             };
+            goto finish;
 
         case PASSPORT_MODE_NEW_GAME:
             Savegame_InitCurrentInfo();
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = {
                     .action = GF_START_GAME,
                     .param = g_GameFlow.first_level_num,
                 },
             };
+            goto finish;
 
         case PASSPORT_MODE_SAVE_GAME:
             Savegame_Save(g_GameInfo.current_save_slot);
             Music_Unpause();
             Sound_UnpauseAll();
             Phase_Set(PHASE_GAME, NULL);
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            result = (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+            goto finish;
 
         case PASSPORT_MODE_RESTART:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = {
                     .action = GF_RESTART_GAME,
                     .param = g_CurrentLevel,
                 },
             };
+            goto finish;
 
         case PASSPORT_MODE_EXIT_TITLE:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
+            goto finish;
 
         case PASSPORT_MODE_EXIT_GAME:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_EXIT_GAME },
             };
+            goto finish;
 
         case PASSPORT_MODE_BROWSE:
         case PASSPORT_MODE_UNAVAILABLE:
         default:
-            return (PHASE_CONTROL) {
+            result = (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
+            goto finish;
         }
 
     case O_PHOTO_OPTION:
         g_GameInfo.current_save_slot = -1;
-        return (PHASE_CONTROL) {
+        result = (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = {
                 .action = GF_START_GYM,
                 .param = g_GameFlow.gym_level_num,
             },
         };
+        goto finish;
 
     case O_PISTOL_OPTION:
     case O_SHOTGUN_OPTION:
@@ -990,68 +1107,31 @@ PHASE_CONTROL InvRing_Close(INV_RING *const ring, GAME_OBJECT_ID inv_chosen)
     case O_PUZZLE_OPTION_4:
     case O_LEADBAR_OPTION:
     case O_SCION_OPTION:
-        Lara_UseItem(inv_chosen);
+        Lara_UseItem(m_InvChosen);
         break;
 
     default:
         break;
     }
 
-    if (g_InvMode == INV_TITLE_MODE) {
-        return (PHASE_CONTROL) {
+    if (ring->mode == INV_TITLE_MODE) {
+        result = (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = { .action = GF_NOOP },
         };
+        goto finish;
     } else {
         Music_Unpause();
         Sound_UnpauseAll();
         Phase_Set(PHASE_GAME, NULL);
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-    }
-}
-
-void InvRing_SelectMeshes(INVENTORY_ITEM *inv_item)
-{
-    if (inv_item->object_id == O_PASSPORT_OPTION) {
-        if (inv_item->current_frame <= 14) {
-            inv_item->meshes_drawn = PASS_MESH | PINFRONT | PPAGE1;
-        } else if (inv_item->current_frame < 19) {
-            inv_item->meshes_drawn = PASS_MESH | PINFRONT | PPAGE1 | PPAGE2;
-        } else if (inv_item->current_frame == 19) {
-            inv_item->meshes_drawn = PASS_MESH | PPAGE1 | PPAGE2;
-        } else if (inv_item->current_frame < 24) {
-            inv_item->meshes_drawn = PASS_MESH | PPAGE1 | PPAGE2 | PINBACK;
-        } else if (inv_item->current_frame < 29) {
-            inv_item->meshes_drawn = PASS_MESH | PPAGE2 | PINBACK;
-        } else if (inv_item->current_frame == 29) {
-            inv_item->meshes_drawn = PASS_MESH;
-        }
-    } else if (inv_item->object_id == O_MAP_OPTION) {
-        if (inv_item->current_frame && inv_item->current_frame < 18) {
-            inv_item->meshes_drawn = -1;
-        } else {
-            inv_item->meshes_drawn = inv_item->meshes_sel;
-        }
-    } else {
-        inv_item->meshes_drawn = -1;
-    }
-}
-
-bool InvRing_AnimateItem(INVENTORY_ITEM *inv_item)
-{
-    if (inv_item->current_frame == inv_item->goal_frame) {
-        InvRing_SelectMeshes(inv_item);
-        return false;
+        result = (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+        goto finish;
     }
 
-    inv_item->current_frame += inv_item->anim_direction;
-    if (inv_item->current_frame >= inv_item->frames_total) {
-        inv_item->current_frame = 0;
-    } else if (inv_item->current_frame < 0) {
-        inv_item->current_frame = inv_item->frames_total - 1;
-    }
-    InvRing_SelectMeshes(inv_item);
-    return true;
+finish:
+    m_InvChosen = NO_OBJECT;
+    Memory_Free(ring);
+    return result;
 }
 
 PHASE_CONTROL InvRing_Control(INV_RING *const ring, const int32_t num_frames)

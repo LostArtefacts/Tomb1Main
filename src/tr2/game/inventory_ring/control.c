@@ -33,44 +33,122 @@
 #define OPTION_RING_OBJECTS 3
 #define INV_FRAMES 2
 
+typedef enum {
+    // clang-format off
+    PASS_MESH_SPINE    = 1 << 0,
+    PASS_MESH_FRONT    = 1 << 1,
+    PASS_MESH_IN_FRONT = 1 << 2,
+    PASS_MESH_PAGE_2   = 1 << 3,
+    PASS_MESH_BACK     = 1 << 4,
+    PASS_MESH_IN_BACK  = 1 << 5,
+    PASS_MESH_PAGE_1   = 1 << 6,
+    PASS_MESH_COMMON   = PASS_MESH_SPINE | PASS_MESH_BACK | PASS_MESH_FRONT,
+    // clang-format on
+} PASS_MESH;
+
 static TEXTSTRING *m_UpArrow1 = NULL;
 static TEXTSTRING *m_UpArrow2 = NULL;
 static TEXTSTRING *m_DownArrow1 = NULL;
 static TEXTSTRING *m_DownArrow2 = NULL;
 static TEXTSTRING *m_VersionText = NULL;
+static TEXTSTRING *m_HeadingText = NULL;
+static TEXTSTRING *m_ItemText[IT_NUMBER_OF] = {};
 static int32_t m_NoInputCounter = 0;
 
 static void M_RemoveItemsText(void);
-static void M_RemoveAllText(void);
+static void M_RemoveVersionText(void);
+static void M_InitHeader(INV_RING *ring);
+static void M_RemoveHeader(void);
 static void M_ShowItemQuantity(const char *fmt, int32_t qty);
 static void M_ShowAmmoQuantity(const char *fmt, int32_t qty);
-static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
-static void M_End(INV_RING *ring);
 
-static void M_Construct(INVENTORY_MODE mode);
 static void M_RingIsOpen(INV_RING *ring);
 static void M_RingIsNotOpen(INV_RING *ring);
 static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
 static void M_RingActive(void);
+
 static void M_SelectMeshes(INVENTORY_ITEM *inv_item);
 static void M_UpdateInventoryItem(
     const INV_RING *ring, INVENTORY_ITEM *inv_item, int32_t num_frames);
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
+static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
+
 static void M_RemoveItemsText(void)
 {
-    for (int32_t i = 0; i < 2; i++) {
-        Text_Remove(g_Inv_ItemText[i]);
-        g_Inv_ItemText[i] = NULL;
+    for (int32_t i = 0; i < IT_NUMBER_OF; i++) {
+        Text_Remove(m_ItemText[i]);
+        m_ItemText[i] = NULL;
     }
 }
 
-static void M_RemoveAllText(void)
+static void M_RemoveVersionText(void)
 {
-    M_RemoveItemsText();
+    Text_Remove(m_VersionText);
+    m_VersionText = NULL;
+}
 
-    Text_Remove(g_InvRing_Text);
-    g_InvRing_Text = NULL;
+static void M_InitHeader(INV_RING *const ring)
+{
+    if (ring->mode == INV_TITLE_MODE) {
+        return;
+    }
+
+    if (m_HeadingText == NULL) {
+        switch (ring->type) {
+        case RT_MAIN:
+            m_HeadingText = Text_Create(
+                0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
+            break;
+
+        case RT_OPTION:
+            if (ring->mode == INV_DEATH_MODE) {
+                m_HeadingText = Text_Create(
+                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
+            } else {
+                m_HeadingText = Text_Create(
+                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
+            }
+            break;
+
+        case RT_KEYS:
+            m_HeadingText =
+                Text_Create(0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
+            break;
+        }
+
+        Text_CentreH(m_HeadingText, true);
+    }
+
+    if (ring->mode == INV_KEYS_MODE || ring->mode == INV_DEATH_MODE) {
+        return;
+    }
+
+    if (m_UpArrow1 == NULL
+        && (ring->type == RT_OPTION
+            || (ring->type == RT_MAIN
+                && g_InvRing_Source[RT_KEYS].count > 0))) {
+        m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
+        m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
+        Text_AlignRight(m_UpArrow2, true);
+    }
+
+    if (m_DownArrow1 == NULL
+        && ((
+            (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
+            || ring->type == RT_KEYS))) {
+        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow1, true);
+        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
+        Text_AlignBottom(m_DownArrow2, true);
+        Text_AlignRight(m_DownArrow2, true);
+    }
+}
+
+static void M_RemoveHeader(void)
+{
+    Text_Remove(m_HeadingText);
+    m_HeadingText = NULL;
     Text_Remove(m_UpArrow1);
     m_UpArrow1 = NULL;
     Text_Remove(m_UpArrow2);
@@ -79,20 +157,17 @@ static void M_RemoveAllText(void)
     m_DownArrow1 = NULL;
     Text_Remove(m_DownArrow2);
     m_DownArrow2 = NULL;
-
-    Text_Remove(m_VersionText);
-    m_VersionText = NULL;
 }
 
 static void M_ShowItemQuantity(const char *const fmt, const int32_t qty)
 {
-    if (g_Inv_ItemText[1] == NULL && !g_SaveGame.bonus_flag) {
+    if (m_ItemText[IT_QTY] == NULL) {
         char string[64];
         sprintf(string, fmt, qty);
         Overlay_MakeAmmoString(string);
-        g_Inv_ItemText[1] = Text_Create(64, -56, string);
-        Text_AlignBottom(g_Inv_ItemText[1], true);
-        Text_CentreH(g_Inv_ItemText[1], true);
+        m_ItemText[IT_QTY] = Text_Create(64, -56, string);
+        Text_AlignBottom(m_ItemText[IT_QTY], true);
+        Text_CentreH(m_ItemText[IT_QTY], true);
     }
 }
 
@@ -103,48 +178,209 @@ static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
     }
 }
 
-static void M_Construct(const INVENTORY_MODE mode)
+static void M_RingIsOpen(INV_RING *const ring)
 {
-    if (mode == INV_TITLE_MODE) {
-        g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
-        if (g_GameFlow.gym_enabled) {
-            g_InvRing_Source[RT_OPTION].count++;
+    M_InitHeader(ring);
+}
+
+static void M_RingIsNotOpen(INV_RING *const ring)
+{
+    M_RemoveHeader();
+}
+
+static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
+{
+    if (m_ItemText[IT_NAME] == NULL) {
+        if (inv_item->object_id != O_PASSPORT_OPTION) {
+            m_ItemText[IT_NAME] =
+                Text_Create(0, -16, Object_GetName(inv_item->object_id));
         }
-        m_VersionText = Text_Create(-20, -18, g_TR2XVersion);
-        Text_AlignRight(m_VersionText, 1);
-        Text_AlignBottom(m_VersionText, 1);
-        Text_SetScale(
-            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
+
+        if (m_ItemText[IT_NAME]) {
+            Text_AlignBottom(m_ItemText[IT_NAME], true);
+            Text_CentreH(m_ItemText[IT_NAME], true);
+        }
+    }
+
+    const int32_t qty = Inv_RequestItem(inv_item->object_id);
+    switch (inv_item->object_id) {
+    case O_SHOTGUN_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.shotgun_ammo.ammo / SHOTGUN_AMMO_CLIP);
+        break;
+    case O_MAGNUM_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.magnum_ammo.ammo);
+        break;
+    case O_UZI_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.uzi_ammo.ammo);
+        break;
+    case O_HARPOON_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.harpoon_ammo.ammo);
+        break;
+    case O_M16_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.m16_ammo.ammo);
+        break;
+    case O_GRENADE_OPTION:
+        M_ShowAmmoQuantity("%5d", g_Lara.grenade_ammo.ammo);
+        break;
+    case O_SHOTGUN_AMMO_OPTION:
+        M_ShowAmmoQuantity("%d", SHOTGUN_SHELL_COUNT * qty);
+        break;
+
+    case O_MAGNUM_AMMO_OPTION:
+    case O_UZI_AMMO_OPTION:
+    case O_HARPOON_AMMO_OPTION:
+    case O_M16_AMMO_OPTION:
+        M_ShowItemQuantity("%d", 2 * qty);
+        break;
+
+    case O_GRENADE_AMMO_OPTION:
+    case O_FLARES_OPTION:
+        M_ShowItemQuantity("%d", qty);
+        break;
+
+    case O_SMALL_MEDIPACK_OPTION:
+    case O_LARGE_MEDIPACK_OPTION:
+        g_HealthBarTimer = 40;
+        Overlay_DrawHealthBar();
+        M_ShowItemQuantity("%d", qty);
+        break;
+
+    case O_PUZZLE_OPTION_1:
+    case O_PUZZLE_OPTION_2:
+    case O_PUZZLE_OPTION_3:
+    case O_PUZZLE_OPTION_4:
+    case O_KEY_OPTION_1:
+    case O_KEY_OPTION_2:
+    case O_KEY_OPTION_3:
+    case O_KEY_OPTION_4:
+    case O_PICKUP_OPTION_1:
+    case O_PICKUP_OPTION_2:
+        if (qty > 1) {
+            M_ShowItemQuantity("%d", qty);
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    if (inv_item->object_id == O_SMALL_MEDIPACK_OPTION
+        || inv_item->object_id == O_LARGE_MEDIPACK_OPTION) {
+        Text_Hide(m_UpArrow1, true);
     } else {
-        g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
-        Text_Remove(m_VersionText);
-        m_VersionText = NULL;
+        Text_Hide(m_UpArrow1, false);
     }
+}
 
-    for (int32_t i = 0; i < 8; i++) {
-        g_Inv_ExtraData[i] = 0;
-    }
+static void M_RingActive(void)
+{
+    M_RemoveItemsText();
+}
 
-    g_InvRing_Source[RT_MAIN].current = 0;
-    for (int32_t i = 0; i < g_InvRing_Source[RT_MAIN].count; i++) {
-        InvRing_InitInvItem(g_InvRing_Source[RT_MAIN].items[i]);
-    }
-    for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
-        InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
-    }
+static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
+{
+    switch (inv_item->object_id) {
+    case O_PASSPORT_OPTION:
+        inv_item->meshes_drawn = PASS_MESH_COMMON;
+        if (inv_item->current_frame < 4) {
+            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT;
+        } else if (inv_item->current_frame <= 16) {
+            inv_item->meshes_drawn |= PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1;
+        } else if (inv_item->current_frame < 19) {
+            inv_item->meshes_drawn |=
+                PASS_MESH_IN_FRONT | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame == 19) {
+            inv_item->meshes_drawn |= PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame < 24) {
+            inv_item->meshes_drawn |=
+                PASS_MESH_IN_BACK | PASS_MESH_PAGE_1 | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame < 29) {
+            inv_item->meshes_drawn |= PASS_MESH_IN_BACK | PASS_MESH_PAGE_2;
+        } else if (inv_item->current_frame == 29) {
+        }
+        break;
 
-    g_InvRing_Source[RT_OPTION].current = 0;
-    if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
-        && !g_GameFlow.load_save_disabled && g_GameFlow.gym_enabled) {
-        for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
-            if (g_InvRing_Source[RT_OPTION].items[i]->object_id
-                == O_PHOTO_OPTION) {
-                g_InvRing_Source[RT_OPTION].current = i;
+    case O_COMPASS_OPTION:
+        if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
+            inv_item->meshes_drawn = inv_item->meshes_sel;
+        } else {
+            inv_item->meshes_drawn = -1;
+        }
+        break;
+
+    default:
+        inv_item->meshes_drawn = -1;
+        break;
+    }
+}
+
+static void M_UpdateInventoryItem(
+    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
+    const int32_t num_frames)
+{
+    if (ring->motion.status == RNG_DONE
+        || inv_item != ring->list[ring->current_object]) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            if (inv_item->y_rot < 0) {
+                inv_item->y_rot += 256;
+            } else if (inv_item->y_rot > 0) {
+                inv_item->y_rot -= 256;
             }
         }
+    } else if (ring->rotating) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            if (inv_item->y_rot > 0) {
+                inv_item->y_rot -= 512;
+            } else if (inv_item->y_rot < 0) {
+                inv_item->y_rot += 512;
+            }
+        }
+    } else if (
+        ring->motion.status == RNG_SELECTED
+        || ring->motion.status == RNG_DESELECTING
+        || ring->motion.status == RNG_SELECTING
+        || ring->motion.status == RNG_DESELECT
+        || ring->motion.status == RNG_CLOSING_ITEM) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
+            if (delta != 0) {
+                if (delta > 0 && delta < PHD_180) {
+                    inv_item->y_rot += 1024;
+                } else {
+                    inv_item->y_rot -= 1024;
+                }
+                inv_item->y_rot &= ~(1024 - 1);
+            }
+        }
+    } else if (
+        ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            inv_item->y_rot += 256;
+        }
+    }
+}
+
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
+{
+    if (inv_item->current_frame == inv_item->goal_frame) {
+        M_SelectMeshes(inv_item);
+        return false;
     }
 
-    g_SoundOptionLine = 0;
+    if (inv_item->anim_count > 0) {
+        inv_item->anim_count--;
+    } else {
+        inv_item->anim_count = inv_item->anim_speed;
+        inv_item->current_frame += inv_item->anim_direction;
+        if (inv_item->current_frame >= inv_item->frames_total) {
+            inv_item->current_frame = 0;
+        } else if (inv_item->current_frame < 0) {
+            inv_item->current_frame = inv_item->frames_total - 1;
+        }
+    }
+
+    M_SelectMeshes(inv_item);
+    return true;
 }
 
 static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
@@ -566,288 +802,10 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
-static void M_End(INV_RING *const ring)
+void InvRing_RemoveAllText(void)
 {
-    M_RemoveAllText();
-    if (ring->list != NULL) {
-        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
-        if (inv_item != NULL) {
-            Option_Shutdown(inv_item);
-        }
-    }
-    if (ring->mode == INV_TITLE_MODE) {
-        Music_Stop();
-    }
-    Viewport_AlterFOV(ring->old_fov);
-    Memory_Free(ring);
-    Output_UnloadBackground();
-}
-
-static void M_RingIsOpen(INV_RING *const ring)
-{
-    if (ring->mode == INV_TITLE_MODE) {
-        return;
-    }
-
-    if (g_InvRing_Text == NULL) {
-        switch (ring->type) {
-        case RT_MAIN:
-            g_InvRing_Text = Text_Create(
-                0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
-            break;
-
-        case RT_OPTION:
-            if (ring->mode == INV_DEATH_MODE) {
-                g_InvRing_Text = Text_Create(
-                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
-            } else {
-                g_InvRing_Text = Text_Create(
-                    0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
-            }
-            Text_CentreH(g_InvRing_Text, true);
-            break;
-
-        case RT_KEYS:
-            g_InvRing_Text =
-                Text_Create(0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
-            break;
-        }
-
-        Text_CentreH(g_InvRing_Text, true);
-    }
-
-    if (ring->mode == INV_KEYS_MODE || ring->mode == INV_DEATH_MODE) {
-        return;
-    }
-
-    if (m_UpArrow1 == NULL) {
-        if (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count > 0)) {
-            m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
-            m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
-            Text_AlignRight(m_UpArrow2, true);
-        }
-    }
-
-    if (m_DownArrow1 == NULL
-        && ((
-            (ring->type == RT_MAIN && !g_GameFlow.lockout_option_ring)
-            || ring->type == RT_KEYS))) {
-        m_DownArrow1 = Text_Create(20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow1, true);
-        m_DownArrow2 = Text_Create(-20, -15, "\\{arrow down}");
-        Text_AlignBottom(m_DownArrow2, true);
-        Text_AlignRight(m_DownArrow2, true);
-    }
-}
-
-static void M_RingIsNotOpen(INV_RING *const ring)
-{
-    Text_Remove(g_InvRing_Text);
-    g_InvRing_Text = NULL;
-    Text_Remove(m_UpArrow1);
-    m_UpArrow1 = NULL;
-    Text_Remove(m_UpArrow2);
-    m_UpArrow2 = NULL;
-    Text_Remove(m_DownArrow1);
-    m_DownArrow1 = NULL;
-    Text_Remove(m_DownArrow2);
-    m_DownArrow2 = NULL;
-}
-
-static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
-{
-    if (g_Inv_ItemText[0] == NULL) {
-        if (inv_item->object_id != O_PASSPORT_OPTION) {
-            g_Inv_ItemText[0] =
-                Text_Create(0, -16, Object_GetName(inv_item->object_id));
-        }
-
-        if (g_Inv_ItemText[0]) {
-            Text_AlignBottom(g_Inv_ItemText[0], true);
-            Text_CentreH(g_Inv_ItemText[0], true);
-        }
-    }
-
-    const int32_t qty = Inv_RequestItem(inv_item->object_id);
-    switch (inv_item->object_id) {
-    case O_SHOTGUN_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.shotgun_ammo.ammo / SHOTGUN_AMMO_CLIP);
-        break;
-    case O_MAGNUM_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.magnum_ammo.ammo);
-        break;
-    case O_UZI_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.uzi_ammo.ammo);
-        break;
-    case O_HARPOON_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.harpoon_ammo.ammo);
-        break;
-    case O_M16_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.m16_ammo.ammo);
-        break;
-    case O_GRENADE_OPTION:
-        M_ShowAmmoQuantity("%5d", g_Lara.grenade_ammo.ammo);
-        break;
-    case O_SHOTGUN_AMMO_OPTION:
-        M_ShowAmmoQuantity("%d", SHOTGUN_SHELL_COUNT * qty);
-        break;
-
-    case O_MAGNUM_AMMO_OPTION:
-    case O_UZI_AMMO_OPTION:
-    case O_HARPOON_AMMO_OPTION:
-    case O_M16_AMMO_OPTION:
-        M_ShowAmmoQuantity("%d", 2 * qty);
-        break;
-
-    case O_GRENADE_AMMO_OPTION:
-    case O_FLARES_OPTION:
-        M_ShowAmmoQuantity("%d", qty);
-        break;
-
-    case O_SMALL_MEDIPACK_OPTION:
-    case O_LARGE_MEDIPACK_OPTION:
-        g_HealthBarTimer = 40;
-        Overlay_DrawHealthBar();
-        M_ShowItemQuantity("%d", qty);
-        break;
-
-    case O_PUZZLE_OPTION_1:
-    case O_PUZZLE_OPTION_2:
-    case O_PUZZLE_OPTION_3:
-    case O_PUZZLE_OPTION_4:
-    case O_KEY_OPTION_1:
-    case O_KEY_OPTION_2:
-    case O_KEY_OPTION_3:
-    case O_KEY_OPTION_4:
-    case O_PICKUP_OPTION_1:
-    case O_PICKUP_OPTION_2:
-        if (qty > 1) {
-            M_ShowItemQuantity("%d", qty);
-        }
-        break;
-
-    default:
-        break;
-    }
-
-    if (inv_item->object_id == O_SMALL_MEDIPACK_OPTION
-        || inv_item->object_id == O_LARGE_MEDIPACK_OPTION) {
-        Text_Hide(m_UpArrow1, true);
-    } else {
-        Text_Hide(m_UpArrow1, false);
-    }
-}
-
-static void M_RingActive(void)
-{
+    M_RemoveHeader();
     M_RemoveItemsText();
-}
-
-static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
-{
-    switch (inv_item->object_id) {
-    case O_PASSPORT_OPTION:
-        if (inv_item->current_frame < 4) {
-            inv_item->meshes_drawn = PM_COMMON | PM_IN_FRONT;
-        } else if (inv_item->current_frame <= 16) {
-            inv_item->meshes_drawn = PM_COMMON | PM_IN_FRONT | PM_PAGE_1;
-        } else if (inv_item->current_frame < 19) {
-            inv_item->meshes_drawn =
-                PM_COMMON | PM_IN_FRONT | PM_PAGE_1 | PM_PAGE_2;
-        } else if (inv_item->current_frame == 19) {
-            inv_item->meshes_drawn = PM_COMMON | PM_PAGE_1 | PM_PAGE_2;
-        } else if (inv_item->current_frame < 24) {
-            inv_item->meshes_drawn =
-                PM_COMMON | PM_IN_BACK | PM_PAGE_1 | PM_PAGE_2;
-        } else if (inv_item->current_frame < 29) {
-            inv_item->meshes_drawn = PM_COMMON | PM_IN_BACK | PM_PAGE_2;
-        } else if (inv_item->current_frame == 29) {
-            inv_item->meshes_drawn = PM_COMMON;
-        }
-        break;
-
-    case O_COMPASS_OPTION:
-        if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
-            inv_item->meshes_drawn = inv_item->meshes_sel;
-        } else {
-            inv_item->meshes_drawn = -1;
-        }
-        break;
-
-    default:
-        inv_item->meshes_drawn = -1;
-        break;
-    }
-}
-
-static void M_UpdateInventoryItem(
-    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
-    const int32_t num_frames)
-{
-    if (ring->motion.status == RNG_DONE
-        || inv_item != ring->list[ring->current_object]) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 256;
-            } else if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 256;
-            }
-        }
-    } else if (ring->rotating) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            if (inv_item->y_rot > 0) {
-                inv_item->y_rot -= 512;
-            } else if (inv_item->y_rot < 0) {
-                inv_item->y_rot += 512;
-            }
-        }
-    } else if (
-        ring->motion.status == RNG_SELECTED
-        || ring->motion.status == RNG_DESELECTING
-        || ring->motion.status == RNG_SELECTING
-        || ring->motion.status == RNG_DESELECT
-        || ring->motion.status == RNG_CLOSING_ITEM) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            const int32_t delta = inv_item->y_rot_sel - inv_item->y_rot;
-            if (delta != 0) {
-                if (delta > 0 && delta < PHD_180) {
-                    inv_item->y_rot += 1024;
-                } else {
-                    inv_item->y_rot -= 1024;
-                }
-                inv_item->y_rot &= ~(1024 - 1);
-            }
-        }
-    } else if (
-        ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
-        for (int32_t i = 0; i < num_frames; i++) {
-            inv_item->y_rot += 256;
-        }
-    }
-}
-
-static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
-{
-    if (inv_item->current_frame == inv_item->goal_frame) {
-        M_SelectMeshes(inv_item);
-        return false;
-    }
-
-    if (inv_item->anim_count > 0) {
-        inv_item->anim_count--;
-    } else {
-        inv_item->anim_count = inv_item->anim_speed;
-        inv_item->current_frame += inv_item->anim_direction;
-        if (inv_item->current_frame >= inv_item->frames_total) {
-            inv_item->current_frame = 0;
-        } else if (inv_item->current_frame < 0) {
-            inv_item->current_frame = inv_item->frames_total - 1;
-        }
-    }
-
-    M_SelectMeshes(inv_item);
-    return true;
 }
 
 INV_RING *InvRing_Open(const INVENTORY_MODE mode)
@@ -858,7 +816,6 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     }
 
     Clock_SyncTick();
-    Output_SetupAboveWater(false);
 
     g_PhdWinRight = g_PhdWinMaxX;
     g_PhdWinLeft = 0;
@@ -866,12 +823,48 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     g_PhdWinBottom = g_PhdWinMaxY;
     g_Inv_Chosen = NO_OBJECT;
 
-    M_Construct(mode);
+    if (mode == INV_TITLE_MODE) {
+        g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
+        if (g_GameFlow.gym_enabled) {
+            g_InvRing_Source[RT_OPTION].count++;
+        }
+        m_VersionText = Text_Create(-20, -18, g_TR2XVersion);
+        Text_AlignRight(m_VersionText, 1);
+        Text_AlignBottom(m_VersionText, 1);
+        Text_SetScale(
+            m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
+    } else {
+        g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
+        M_RemoveVersionText();
+    }
+
+    for (int32_t i = 0; i < 8; i++) {
+        g_Inv_ExtraData[i] = 0;
+    }
+
+    g_InvRing_Source[RT_MAIN].current = 0;
+    for (int32_t i = 0; i < g_InvRing_Source[RT_MAIN].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_MAIN].items[i]);
+    }
+    for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
+    }
+
+    g_InvRing_Source[RT_OPTION].current = 0;
+    if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
+        && !g_GameFlow.load_save_disabled && g_GameFlow.gym_enabled) {
+        for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+            if (g_InvRing_Source[RT_OPTION].items[i]->object_id
+                == O_PHOTO_OPTION) {
+                g_InvRing_Source[RT_OPTION].current = i;
+            }
+        }
+    }
+
+    g_SoundOptionLine = 0;
 
     INV_RING *const ring = Memory_Alloc(sizeof(INV_RING));
     ring->mode = mode;
-    ring->is_pass_open = false;
-    ring->is_demo_needed = false;
     ring->old_fov = Viewport_GetFOV();
     m_NoInputCounter = 0;
 
@@ -931,25 +924,41 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
 GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
 {
-    const INVENTORY_MODE mode = ring->mode;
-    const bool is_demo_needed = ring->is_demo_needed;
-    M_End(ring);
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+
+    InvRing_RemoveAllText();
+    M_RemoveVersionText();
+
+    if (ring->list != NULL) {
+        INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+        if (inv_item != NULL) {
+            Option_Shutdown(inv_item);
+        }
+    }
+    if (ring->mode == INV_TITLE_MODE) {
+        Music_Stop();
+    }
+    Viewport_AlterFOV(ring->old_fov);
+    Output_UnloadBackground();
 
     // enable buffering
     g_OldInputDB = (INPUT_STATE) { 0 };
 
     if (g_IsGameToExit) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        goto finish;
     } else if (g_GF_OverrideCommand.action != GF_NOOP) {
-        return g_GF_OverrideCommand;
-    } else if (is_demo_needed) {
-        return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
+        gf_cmd = g_GF_OverrideCommand;
+        goto finish;
+    } else if (ring->is_demo_needed) {
+        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
+        goto finish;
     } else if (g_Inv_Chosen == NO_OBJECT) {
-        if (mode != INV_TITLE_MODE) {
+        if (ring->mode != INV_TITLE_MODE) {
             Music_Unpause();
         }
     } else {
-        if (mode != INV_TITLE_MODE) {
+        if (ring->mode != INV_TITLE_MODE) {
             Music_Unpause();
         }
         if (g_Config.gameplay.fix_item_duplication_glitch) {
@@ -967,35 +976,39 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
                 Inv_RemoveAllItems();
                 S_LoadGame(
                     &g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
-                return (GAME_FLOW_COMMAND) {
+                gf_cmd = (GAME_FLOW_COMMAND) {
                     .action = GF_START_SAVED_GAME,
                     .param = g_Inv_ExtraData[1],
                 };
+                goto finish;
             } else if (g_Inv_ExtraData[0] == 1) {
                 // second passport page:
-                if (mode == INV_TITLE_MODE) {
+                if (ring->mode == INV_TITLE_MODE) {
                     // title mode - new game or select level.
                     if (g_GameFlow.play_any_level) {
-                        return (GAME_FLOW_COMMAND) {
+                        gf_cmd = (GAME_FLOW_COMMAND) {
                             .action = GF_START_GAME,
                             .param = g_Inv_ExtraData[1] + 1,
                         };
+                        goto finish;
                     } else {
                         InitialiseStartInfo();
-                        return (GAME_FLOW_COMMAND) {
+                        gf_cmd = (GAME_FLOW_COMMAND) {
                             .action = GF_START_GAME,
                             .param = LV_FIRST,
                         };
+                        goto finish;
                     }
                 } else {
                     // game mode - save game (or start the game if in Lara's
                     // Home)
                     if (g_CurrentLevel == LV_GYM) {
                         InitialiseStartInfo();
-                        return (GAME_FLOW_COMMAND) {
+                        gf_cmd = (GAME_FLOW_COMMAND) {
                             .action = GF_START_GAME,
                             .param = LV_FIRST,
                         };
+                        goto finish;
                     } else {
                         CreateSaveGameInfo();
                         const int16_t slot_num = g_Inv_ExtraData[1];
@@ -1005,22 +1018,25 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
                 }
             } else {
                 // third passport page:
-                if (mode == INV_TITLE_MODE) {
+                if (ring->mode == INV_TITLE_MODE) {
                     // title mode - exit the game
-                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                    gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                    goto finish;
                 } else {
                     // game mode - exit to title
-                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                    gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                    goto finish;
                 }
             }
             break;
 
         case O_PHOTO_OPTION:
             if (g_GameFlow.gym_enabled) {
-                return (GAME_FLOW_COMMAND) {
+                gf_cmd = (GAME_FLOW_COMMAND) {
                     .action = GF_START_GAME,
                     .param = LV_GYM,
                 };
+                goto finish;
             }
             break;
 
@@ -1042,7 +1058,9 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
         }
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+finish:
+    Memory_Free(ring);
+    return gf_cmd;
 }
 
 GAME_FLOW_COMMAND InvRing_Control(

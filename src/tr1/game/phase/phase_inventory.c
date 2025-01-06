@@ -14,7 +14,7 @@
 #include <libtrx/config.h>
 #include <libtrx/game/inventory_ring/priv.h>
 
-INV_RING m_Ring;
+static INV_RING *m_Ring;
 
 static void M_Start(const PHASE_INVENTORY_ARGS *args);
 static void M_End(void);
@@ -29,54 +29,8 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
         Stats_StartTimer();
     }
 
-    INV_RING *ring = &m_Ring;
-    memset(ring, 0, sizeof(INV_RING));
-
+    m_Ring = InvRing_Open(args->mode);
     g_InvMode = args->mode;
-
-    InvRing_Construct();
-
-    if (!g_Config.audio.enable_music_in_inventory
-        && g_InvMode != INV_TITLE_MODE) {
-        Music_Pause();
-        Sound_PauseAll();
-    } else {
-        Sound_ResetAmbient();
-        Sound_UpdateEffects();
-    }
-
-    switch (g_InvMode) {
-    case INV_DEATH_MODE:
-    case INV_SAVE_MODE:
-    case INV_SAVE_CRYSTAL_MODE:
-    case INV_LOAD_MODE:
-    case INV_TITLE_MODE:
-        InvRing_InitRing(
-            ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
-            g_InvRing_Source[RT_OPTION].count,
-            g_InvRing_Source[RT_OPTION].current);
-        break;
-
-    case INV_KEYS_MODE:
-        InvRing_InitRing(
-            ring, RT_KEYS, g_InvRing_Source[RT_KEYS].items,
-            g_InvRing_Source[RT_KEYS].count, g_InvRing_Source[RT_MAIN].current);
-        break;
-
-    default:
-        if (g_InvRing_Source[RT_MAIN].count != 0) {
-            InvRing_InitRing(
-                ring, RT_MAIN, g_InvRing_Source[RT_MAIN].items,
-                g_InvRing_Source[RT_MAIN].count,
-                g_InvRing_Source[RT_MAIN].current);
-        } else {
-            InvRing_InitRing(
-                ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
-                g_InvRing_Source[RT_OPTION].count,
-                g_InvRing_Source[RT_OPTION].current);
-        }
-        break;
-    }
 
     if (g_InvMode == INV_TITLE_MODE) {
         Output_FadeResetToBlack();
@@ -92,29 +46,32 @@ static PHASE_CONTROL M_Control(int32_t num_frames)
     if (g_Config.gameplay.enable_timer_in_inventory) {
         Stats_UpdateTimer();
     }
-    return InvRing_Control(&m_Ring, num_frames);
+    if (m_Ring != NULL) {
+        PHASE_CONTROL result = InvRing_Control(m_Ring, num_frames);
+        if (result.action == PHASE_ACTION_END) {
+            INV_RING *const old_ring = m_Ring;
+            m_Ring = NULL;
+            result = InvRing_Close(old_ring);
+        }
+        return result;
+    }
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_END };
 }
 
 static void M_End(void)
 {
-    INVENTORY_ITEM *const inv_item = m_Ring.list[m_Ring.current_object];
-    if (inv_item != NULL) {
-        Option_Shutdown(inv_item);
-    }
-
-    InvRing_Destroy();
-    if (g_Config.input.enable_buffering) {
-        g_OldInputDB = (INPUT_STATE) { 0 };
-    }
-    if (g_InvMode == INV_TITLE_MODE) {
-        Music_Stop();
-        Sound_StopAllSamples();
+    if (m_Ring != NULL) {
+        INV_RING *const old_ring = m_Ring;
+        m_Ring = NULL;
+        InvRing_Close(old_ring);
     }
 }
 
 static void M_Draw(void)
 {
-    InvRing_Draw(&m_Ring);
+    if (m_Ring != NULL) {
+        InvRing_Draw(m_Ring);
+    }
     Output_AnimateFades();
     Text_Draw();
 }

@@ -165,6 +165,8 @@ void InvRing_Draw(INV_RING *const ring)
 {
     ring->camera.pos.z = ring->radius + 598;
 
+    Output_SetupAboveWater(false);
+
     PHD_3DPOS view;
     InvRing_GetView(ring, &view.pos, &view.rot);
     Matrix_GenerateW2V(&view);
