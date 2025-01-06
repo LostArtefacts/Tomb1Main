@@ -3,7 +3,7 @@
 #include "math.h"
 
 #if TR_VERSION == 1
-typedef struct __PACKING {
+typedef struct {
     int32_t mid_floor;
     int32_t mid_ceiling;
     int32_t mid_type;
@@ -40,13 +40,13 @@ typedef struct __PACKING {
 } COLL_INFO;
 
 #elif TR_VERSION == 2
-typedef struct __PACKING {
+typedef struct {
     int32_t floor;
     int32_t ceiling;
     int32_t type;
 } COLL_SIDE;
 
-typedef struct __PACKING {
+typedef struct {
     COLL_SIDE side_mid;
     COLL_SIDE side_front;
     COLL_SIDE side_left;

@@ -5,20 +5,20 @@
 
 #include <stdbool.h>
 
-typedef struct __PACKING TRIGGER_CMD {
+typedef struct TRIGGER_CMD {
     TRIGGER_OBJECT type;
     void *parameter;
     struct TRIGGER_CMD *next_cmd;
 } TRIGGER_CMD;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t camera_num;
     uint8_t timer;
     uint8_t glide;
     bool one_shot;
 } TRIGGER_CAMERA_DATA;
 
-typedef struct __PACKING {
+typedef struct {
     TRIGGER_TYPE type;
     int8_t timer;
     int16_t mask;
@@ -27,18 +27,18 @@ typedef struct __PACKING {
     TRIGGER_CMD *command;
 } TRIGGER;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t room_num;
     XYZ_16 normal;
     XYZ_16 vertex[4];
 } PORTAL;
 
-typedef struct __PACKING {
+typedef struct {
     uint16_t count;
     PORTAL portal[];
 } PORTALS;
 
-typedef struct __PACKING {
+typedef struct {
     uint16_t idx;
     int16_t box;
     bool is_death_sector;
@@ -46,18 +46,18 @@ typedef struct __PACKING {
     LADDER_DIRECTION ladder;
 #endif
     TRIGGER *trigger;
-    struct __PACKING {
+    struct {
         uint8_t pit;
         uint8_t sky;
         int16_t wall;
     } portal_room;
-    struct __PACKING {
+    struct {
         int16_t height;
         int16_t tilt;
     } floor, ceiling;
 } SECTOR;
 
-typedef struct __PACKING {
+typedef struct {
     XYZ_32 pos;
 #if TR_VERSION == 1
     int16_t intensity;
@@ -71,18 +71,18 @@ typedef struct __PACKING {
 } LIGHT;
 
 #if TR_VERSION == 1
-typedef struct __PACKING {
+typedef struct {
     XYZ_16 pos;
     uint16_t flags;
     uint16_t shade;
 } ROOM_VERTEX;
 
-typedef struct __PACKING {
+typedef struct {
     uint16_t texture;
     uint16_t vertex;
 } ROOM_SPRITE;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t num_vertices;
     int16_t num_face4s;
     int16_t num_face3s;
@@ -93,7 +93,7 @@ typedef struct __PACKING {
     ROOM_SPRITE *sprites;
 } ROOM_MESH;
 #elif TR_VERSION == 2
-typedef struct __PACKING {
+typedef struct {
     XYZ_16 pos;
     int16_t light_base;
     uint8_t light_table_value;
@@ -102,9 +102,9 @@ typedef struct __PACKING {
 } ROOM_VERTEX;
 #endif
 
-typedef struct __PACKING {
+typedef struct {
     XYZ_32 pos;
-    struct __PACKING {
+    struct {
         int16_t y;
     } rot;
 #if TR_VERSION == 1
@@ -116,7 +116,7 @@ typedef struct __PACKING {
     int16_t static_num;
 } STATIC_MESH;
 
-typedef struct __PACKING {
+typedef struct {
 #if TR_VERSION == 1
     ROOM_MESH mesh;
 #elif TR_VERSION == 2
@@ -129,7 +129,7 @@ typedef struct __PACKING {
     XYZ_32 pos;
     int32_t min_floor;
     int32_t max_ceiling;
-    struct __PACKING {
+    struct {
         int16_t z;
         int16_t x;
     } size;

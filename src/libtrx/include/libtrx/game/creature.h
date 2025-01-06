@@ -13,7 +13,7 @@ typedef enum {
     MOOD_STALK = 3,
 } MOOD_TYPE;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t head_rotation;
     int16_t neck_rotation;
     int16_t maximum_turn;

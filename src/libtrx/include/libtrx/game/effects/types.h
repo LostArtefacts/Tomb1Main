@@ -4,7 +4,7 @@
 #include "../objects/ids.h"
 #include "../types.h"
 
-typedef struct __PACKING {
+typedef struct {
     XYZ_32 pos;
     XYZ_16 rot;
     int16_t room_num;
@@ -25,8 +25,8 @@ typedef struct __PACKING {
     int16_t shade;
 
 #if TR_VERSION == 1
-    struct __PACKING {
-        struct __PACKING {
+    struct {
+        struct {
             XYZ_32 pos;
             XYZ_16 rot;
         } result, prev;

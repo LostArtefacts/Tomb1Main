@@ -11,7 +11,7 @@
 
 #include <libtrx/game/gamebuf.h>
 
-typedef struct __PACKING {
+typedef struct {
     DOORPOS_DATA d1;
     DOORPOS_DATA d1flip;
     DOORPOS_DATA d2;

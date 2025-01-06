@@ -2,7 +2,7 @@
 
 #include "global/types.h"
 
-typedef struct __PACKING {
+typedef struct {
     int32_t start_height;
     int32_t wait_time;
 } LIFT_INFO;

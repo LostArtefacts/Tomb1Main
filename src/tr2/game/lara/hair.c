@@ -12,7 +12,7 @@
 
 #define HAIR_SEGMENTS 6
 
-typedef struct __PACKING {
+typedef struct {
     XYZ_32 pos;
     XYZ_16 rot;
 } HAIR_SEGMENT;

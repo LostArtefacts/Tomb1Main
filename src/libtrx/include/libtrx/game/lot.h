@@ -2,14 +2,14 @@
 
 #include "math.h"
 
-typedef struct __PACKING {
+typedef struct {
     int16_t exit_box;
     uint16_t search_num;
     int16_t next_expansion;
     int16_t box_num;
 } BOX_NODE;
 
-typedef struct __PACKING {
+typedef struct {
     BOX_NODE *node;
     int16_t head;
     int16_t tail;

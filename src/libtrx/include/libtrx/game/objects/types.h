@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-typedef struct __PACKING {
+typedef struct {
     void *priv;
     XYZ_16 center;
     int32_t radius;
@@ -29,14 +29,14 @@ typedef struct __PACKING {
 } OBJECT_MESH;
 
 #if TR_VERSION == 1
-typedef struct __PACKING {
-    struct __PACKING {
+typedef struct {
+    struct {
         XYZ_16 min;
         XYZ_16 max;
     } shift, rot;
 } OBJECT_BOUNDS;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t nmeshes;
     int16_t mesh_idx;
     int32_t bone_idx;
@@ -65,7 +65,7 @@ typedef struct __PACKING {
 } OBJECT;
 
 #elif TR_VERSION == 2
-typedef struct __PACKING {
+typedef struct {
     int16_t mesh_count;
     int16_t mesh_idx;
     int32_t bone_idx;
@@ -89,7 +89,7 @@ typedef struct __PACKING {
     union {
         uint16_t flags;
         // clang-format off
-        struct __PACKING {
+        struct {
             uint16_t loaded:           1; // 0x01 1
             uint16_t intelligent:      1; // 0x02 2
             uint16_t save_position:    1; // 0x04 4

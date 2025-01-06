@@ -5,7 +5,7 @@
 #include "./enum.h"
 
 #if TR_VERSION == 1
-typedef struct __PACKING CARRIED_ITEM {
+typedef struct CARRIED_ITEM {
     GAME_OBJECT_ID object_id;
     int16_t spawn_num;
     XYZ_32 pos;
@@ -17,7 +17,7 @@ typedef struct __PACKING CARRIED_ITEM {
 } CARRIED_ITEM;
 #endif
 
-typedef struct __PACKING {
+typedef struct {
     int32_t floor;
     uint32_t touch_bits;
     uint32_t mesh_bits;
@@ -72,8 +72,8 @@ typedef struct __PACKING {
 #endif
 
 #if TR_VERSION == 1
-    struct __PACKING {
-        struct __PACKING {
+    struct {
+        struct {
             XYZ_32 pos;
             XYZ_16 rot;
         } result, prev;

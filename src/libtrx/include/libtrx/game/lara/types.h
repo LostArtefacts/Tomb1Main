@@ -9,27 +9,27 @@
 #include "enum.h"
 
 #if TR_VERSION == 1
-typedef struct __PACKING {
+typedef struct {
     ANIM_FRAME *frame_base;
     int16_t frame_num;
     int16_t lock;
     XYZ_16 rot;
     uint16_t flash_gun;
 
-    struct __PACKING {
-        struct __PACKING {
+    struct {
+        struct {
             XYZ_16 rot;
         } result, prev;
     } interp;
 } LARA_ARM;
 
-typedef struct __PACKING {
+typedef struct {
     int32_t ammo;
     int32_t hit;
     int32_t miss;
 } AMMO_INFO;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t item_num;
     int16_t gun_status;
     LARA_GUN_TYPE gun_type;
@@ -63,14 +63,14 @@ typedef struct __PACKING {
     AMMO_INFO uzis;
     AMMO_INFO shotgun;
     LOT_INFO lot;
-    struct __PACKING {
+    struct {
         int32_t item_num;
         int32_t move_count;
         bool is_moving;
     } interact_target;
 
-    struct __PACKING {
-        struct __PACKING {
+    struct {
+        struct {
             XYZ_16 head_rot;
             XYZ_16 torso_rot;
         } result, prev;
@@ -78,16 +78,16 @@ typedef struct __PACKING {
 } LARA_INFO;
 
 #elif TR_VERSION == 2
-typedef struct __PACKING {
+typedef struct {
     int32_t ammo;
 } AMMO_INFO;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t *frame_base;
     int16_t frame_num;
     int16_t anim_num;
     int16_t lock;
-    struct __PACKING {
+    struct {
         int16_t y;
         int16_t x;
         int16_t z;
@@ -95,7 +95,7 @@ typedef struct __PACKING {
     int16_t flash_gun;
 } LARA_ARM;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t item_num;
     int16_t gun_status;
     int16_t gun_type;

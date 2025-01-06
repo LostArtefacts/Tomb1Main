@@ -2,13 +2,13 @@
 
 #include "../math.h"
 
-typedef struct __PACKING {
+typedef struct {
     int16_t goal_anim_state;
     int16_t num_ranges;
     int16_t range_idx;
 } ANIM_CHANGE;
 
-typedef struct __PACKING {
+typedef struct {
     int16_t start_frame;
     int16_t end_frame;
     int16_t link_anim_num;
@@ -24,7 +24,7 @@ typedef struct {
     XYZ_32 pos;
 } ANIM_BONE;
 
-typedef struct __PACKING {
+typedef struct {
     BOUNDS_16 bounds;
     XYZ_16 offset;
 #if TR_VERSION == 1
@@ -35,7 +35,7 @@ typedef struct __PACKING {
 #endif
 } ANIM_FRAME;
 
-typedef struct __PACKING {
+typedef struct {
 #if TR_VERSION == 1
     ANIM_FRAME *frame_ptr;
     uint32_t frame_ofs;
