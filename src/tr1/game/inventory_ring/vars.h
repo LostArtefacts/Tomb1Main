@@ -1,9 +1,9 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
 #include "global/types.h"
 
 #include <libtrx/game/clock.h>
+#include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/text.h>
 
 extern int16_t g_InvKeysCurrent;

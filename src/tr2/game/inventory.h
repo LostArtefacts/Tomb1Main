@@ -1,8 +1,7 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
-
 #include <libtrx/game/inventory.h>
+#include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/objects/types.h>
 
 void Inv_InsertItem(INVENTORY_ITEM *inv_item);

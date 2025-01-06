@@ -1,7 +1,6 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
-
+#include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/phase.h>
 
 PHASE *Phase_Inventory_Create(INVENTORY_MODE mode);

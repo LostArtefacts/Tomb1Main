@@ -1,7 +1,8 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
 #include "global/types.h"
+
+#include <libtrx/game/inventory_ring/types.h>
 
 void InvRing_InitRing(
     INV_RING *ring, RING_TYPE type, INVENTORY_ITEM **list, int16_t qty,

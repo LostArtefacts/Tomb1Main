@@ -1,42 +1,10 @@
 #pragma once
 
-#include <libtrx/game/math.h>
-#include <libtrx/game/objects/types.h>
+#include "../math.h"
+#include "../objects/types.h"
+#include "./enum.h"
 
 #include <stdint.h>
-
-typedef enum {
-    INV_GAME_MODE = 0,
-    INV_TITLE_MODE = 1,
-    INV_KEYS_MODE = 2,
-    INV_SAVE_MODE = 3,
-    INV_LOAD_MODE = 4,
-    INV_DEATH_MODE = 5,
-    INV_SAVE_CRYSTAL_MODE = 6,
-} INVENTORY_MODE;
-
-typedef enum {
-    RT_MAIN = 0,
-    RT_OPTION = 1,
-    RT_KEYS = 2,
-} RING_TYPE;
-
-typedef enum {
-    RNG_OPENING = 0,
-    RNG_OPEN = 1,
-    RNG_CLOSING = 2,
-    RNG_MAIN2OPTION = 3,
-    RNG_MAIN2KEYS = 4,
-    RNG_KEYS2MAIN = 5,
-    RNG_OPTION2MAIN = 6,
-    RNG_SELECTING = 7,
-    RNG_SELECTED = 8,
-    RNG_DESELECTING = 9,
-    RNG_DESELECT = 10,
-    RNG_CLOSING_ITEM = 11,
-    RNG_EXITING_INVENTORY = 12,
-    RNG_DONE = 13,
-} RING_STATUS;
 
 typedef struct {
     int16_t shape;
@@ -58,9 +26,16 @@ typedef struct {
     int16_t goal_frame;
     int16_t open_frame;
     int16_t anim_direction;
+#if TR_VERSION == 2
+    int16_t anim_speed;
+    int16_t anim_count;
+#endif
     int16_t x_rot_pt_sel;
     int16_t x_rot_pt;
     int16_t x_rot_sel;
+#if TR_VERSION == 2
+    int16_t x_rot_nosel;
+#endif
     int16_t x_rot;
     int16_t y_rot_sel;
     int16_t y_rot;
@@ -72,7 +47,9 @@ typedef struct {
     uint32_t meshes_drawn;
     int16_t inv_pos;
     INVENTORY_SPRITE **sprite_list;
+#if TR_VERSION == 1
     INVENTORY_ITEM_ACTION action;
+#endif
 } INVENTORY_ITEM;
 
 typedef struct {
@@ -127,4 +104,7 @@ typedef struct {
     bool is_demo_needed;
     bool is_pass_open;
     bool has_spun_out;
+#if TR_VERSION == 2
+    int32_t old_fov;
+#endif
 } INV_RING;

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
-
+#include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/objects/types.h>
 #include <libtrx/game/phase/types.h>
 

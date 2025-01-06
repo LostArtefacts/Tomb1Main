@@ -1,7 +1,8 @@
 #pragma once
 
-#include "game/inventory_ring/types.h"
 #include "game/phase/phase.h"
+
+#include <libtrx/game/inventory_ring/types.h>
 
 typedef struct {
     INVENTORY_MODE mode;
