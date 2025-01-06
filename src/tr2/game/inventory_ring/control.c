@@ -120,7 +120,7 @@ static void M_InitHeader(INV_RING *const ring)
         Text_CentreH(m_HeadingText, true);
     }
 
-    if (ring->mode == INV_KEYS_MODE || ring->mode == INV_DEATH_MODE) {
+    if (ring->mode != INV_GAME_MODE) {
         return;
     }
 

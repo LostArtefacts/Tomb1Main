@@ -1,5 +1,6 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...develop) - ××××-××-××
 - added Linux builds and toolchain (#1598)
+- fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 
