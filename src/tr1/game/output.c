@@ -1177,7 +1177,7 @@ void Output_AnimateFades(void)
     double delta = 5.0 * Clock_GetFrameAdvance()
         * Clock_GetElapsedDrawFrames(&m_FadeTimer);
     // make title screen fades faster
-    if (Phase_Get() == PHASE_INVENTORY && g_InvMode == INV_TITLE_MODE) {
+    if (g_GameInfo.inv_ring_shown && g_InvMode == INV_TITLE_MODE) {
         delta *= 2.0;
     }
 

@@ -1,85 +1,78 @@
 #include "game/phase/phase_inventory.h"
 
-#include "game/input.h"
-#include "game/interpolation.h"
 #include "game/inventory_ring.h"
-#include "game/music.h"
-#include "game/option.h"
 #include "game/output.h"
-#include "game/shell.h"
-#include "game/sound.h"
-#include "game/stats.h"
-#include "global/vars.h"
 
-#include <libtrx/config.h>
-#include <libtrx/game/inventory_ring/priv.h>
+#include <libtrx/debug.h>
+#include <libtrx/memory.h>
 
-static INV_RING *m_Ring;
+typedef struct {
+    INVENTORY_MODE mode;
+    INV_RING *ring;
+} M_PRIV;
 
-static void M_Start(const PHASE_INVENTORY_ARGS *args);
-static void M_End(void);
-static PHASE_CONTROL M_ControlFrame(void);
-static PHASE_CONTROL M_Control(int32_t nframes);
-static void M_Draw(void);
+static PHASE_CONTROL M_Start(PHASE *phase);
+static void M_End(PHASE *phase);
+static PHASE_CONTROL M_Control(PHASE *phase, int32_t num_frames);
+static void M_Draw(PHASE *phase);
 
-static void M_Start(const PHASE_INVENTORY_ARGS *const args)
+static PHASE_CONTROL M_Start(PHASE *const phase)
 {
-    Interpolation_Remember();
-    if (g_Config.gameplay.enable_timer_in_inventory) {
-        Stats_StartTimer();
+    M_PRIV *const p = phase->priv;
+    p->ring = InvRing_Open(p->mode);
+    if (p->ring == NULL) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_NOOP },
+        };
     }
-
-    m_Ring = InvRing_Open(args->mode);
-    g_InvMode = args->mode;
-
-    if (g_InvMode == INV_TITLE_MODE) {
-        Output_FadeResetToBlack();
-        Output_FadeToTransparent(true);
-    } else {
-        Output_FadeToSemiBlack(true);
-    }
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static PHASE_CONTROL M_Control(int32_t num_frames)
+static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 {
-    Interpolation_Remember();
-    if (g_Config.gameplay.enable_timer_in_inventory) {
-        Stats_UpdateTimer();
-    }
-    if (m_Ring != NULL) {
-        PHASE_CONTROL result = InvRing_Control(m_Ring, num_frames);
-        if (result.action == PHASE_ACTION_END) {
-            INV_RING *const old_ring = m_Ring;
-            m_Ring = NULL;
-            result = InvRing_Close(old_ring);
-        }
-        return result;
-    }
-    return (PHASE_CONTROL) { .action = PHASE_ACTION_END };
+    M_PRIV *const p = phase->priv;
+    ASSERT(p->ring != NULL);
+    const GAME_FLOW_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
+    return (PHASE_CONTROL) {
+        .action = p->ring->motion.status == RNG_DONE ? PHASE_ACTION_END
+                                                     : PHASE_ACTION_CONTINUE,
+        .gf_cmd = gf_cmd,
+    };
 }
 
-static void M_End(void)
+static void M_End(PHASE *const phase)
 {
-    if (m_Ring != NULL) {
-        INV_RING *const old_ring = m_Ring;
-        m_Ring = NULL;
-        InvRing_Close(old_ring);
-    }
+    M_PRIV *const p = phase->priv;
+    ASSERT(p->ring != NULL);
+    InvRing_Close(p->ring);
+    p->ring = NULL;
 }
 
-static void M_Draw(void)
+static void M_Draw(PHASE *const phase)
 {
-    if (m_Ring != NULL) {
-        InvRing_Draw(m_Ring);
-    }
+    M_PRIV *const p = phase->priv;
+    ASSERT(p->ring != NULL);
+    InvRing_Draw(p->ring);
     Output_AnimateFades();
     Text_Draw();
 }
 
-PHASER g_InventoryPhaser = {
-    .start = (PHASER_START)M_Start,
-    .end = M_End,
-    .control = M_Control,
-    .draw = M_Draw,
-    .wait = NULL,
-};
+PHASE *Phase_Inventory_Create(const INVENTORY_MODE mode)
+{
+    PHASE *const phase = Memory_Alloc(sizeof(PHASE));
+    M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));
+    p->mode = mode;
+    phase->priv = p;
+    phase->start = M_Start;
+    phase->end = M_End;
+    phase->control = M_Control;
+    phase->draw = M_Draw;
+    return phase;
+}
+
+void Phase_Inventory_Destroy(PHASE *const phase)
+{
+    Memory_Free(phase->priv);
+    Memory_Free(phase);
+}

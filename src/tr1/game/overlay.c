@@ -242,7 +242,7 @@ static void M_BarGetLocation(
     if (Phase_Get() == PHASE_DEMO && bar_info->location == BL_BOTTOM_CENTER) {
         *y -= M_GetBarToTextScale() * (TEXT_HEIGHT + bar_spacing);
     } else if (
-        Phase_Get() == PHASE_INVENTORY
+        g_GameInfo.inv_ring_shown
         && g_CurrentLevel == g_GameFlow.title_level_num
         && (bar_info->location == BL_TOP_CENTER
             || bar_info->location == BL_BOTTOM_CENTER)) {
@@ -772,10 +772,11 @@ void Overlay_DrawFPSInfo(void)
             g_FPSCounter = 0;
         }
 
-        bool inv_health_showable = Phase_Get() == PHASE_INVENTORY
+        bool inv_health_showable = g_GameInfo.inv_ring_shown
             && g_GameInfo.inv_showing_medpack
             && m_HealthBar.location == BL_TOP_LEFT;
         bool game_bar_showable = (Game_IsPlaying())
+            && !g_GameInfo.inv_ring_shown
             && (m_HealthBar.location == BL_TOP_LEFT
                 || m_AirBar.location == BL_TOP_LEFT
                 || m_EnemyBar.location == BL_TOP_LEFT);
@@ -784,8 +785,7 @@ void Overlay_DrawFPSInfo(void)
             x = (x * scale_fps_to_bar) + text_offset_x;
             y = text_height
                 + scale_fps_to_bar * (y + m_BarOffsetY[BL_TOP_LEFT]);
-        } else if (
-            Phase_Get() == PHASE_INVENTORY && g_GameInfo.inv_ring_above) {
+        } else if (g_GameInfo.inv_ring_shown && g_GameInfo.inv_ring_above) {
             y += (text_height * 2) + text_inv_offset_y;
         } else {
             y += text_height;

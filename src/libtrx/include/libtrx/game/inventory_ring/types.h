@@ -26,10 +26,8 @@ typedef struct {
     int16_t goal_frame;
     int16_t open_frame;
     int16_t anim_direction;
-#if TR_VERSION == 2
     int16_t anim_speed;
     int16_t anim_count;
-#endif
     int16_t x_rot_pt_sel;
     int16_t x_rot_pt;
     int16_t x_rot_sel;

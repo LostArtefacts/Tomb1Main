@@ -243,7 +243,7 @@ void Shell_Main(void)
             }
             g_GameInfo.current_level_type = GFL_TITLE;
 
-            command = Game_MainMenu();
+            command = GF_ShowInventory(INV_TITLE_MODE);
             break;
 
         case GF_EXIT_GAME:

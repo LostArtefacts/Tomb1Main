@@ -671,7 +671,7 @@ GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
 {
     PHASE *const phase = Phase_Inventory_Create(mode);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Game_Destroy(phase);
+    Phase_Inventory_Destroy(phase);
     return gf_cmd;
 }
 

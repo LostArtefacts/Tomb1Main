@@ -3,8 +3,8 @@
 #include "game/clock.h"
 #include "game/game.h"
 #include "game/gameflow.h"
+#include "game/interpolation.h"
 #include "game/output.h"
-#include "memory.h"
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -91,8 +91,16 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
             nframes = 0;
             continue;
         } else {
+            nframes = 0;
+            if (Interpolation_IsEnabled()) {
+                Interpolation_SetRate(0.5);
+                M_Draw(phase);
+                M_Wait(phase);
+            }
+
+            Interpolation_SetRate(1.0);
             M_Draw(phase);
-            nframes = M_Wait(phase);
+            nframes += M_Wait(phase);
         }
     }
 

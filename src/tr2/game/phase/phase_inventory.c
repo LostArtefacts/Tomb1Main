@@ -54,10 +54,10 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     if (p->ring == NULL) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
+            .gf_cmd = { .action = GF_NOOP },
         };
     }
-    return (PHASE_CONTROL) {};
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_End(PHASE *const phase)

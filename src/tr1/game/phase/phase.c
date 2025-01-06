@@ -79,10 +79,6 @@ static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args)
     case PHASE_CUTSCENE:
         m_Phaser = &g_CutscenePhaser;
         break;
-
-    case PHASE_INVENTORY:
-        m_Phaser = &g_InventoryPhaser;
-        break;
     }
 
     if (m_Phaser && m_Phaser->start != NULL) {

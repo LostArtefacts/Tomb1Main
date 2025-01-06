@@ -103,6 +103,7 @@ sources = [
   'game/input/backends/internal.c',
   'game/input/backends/keyboard.c',
   'game/input/common.c',
+  'game/interpolation.c',
   'game/inventory.c',
   'game/inventory_ring/priv.c',
   'game/items.c',

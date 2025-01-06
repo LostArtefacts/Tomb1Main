@@ -70,17 +70,12 @@ static void M_DrawItem(
     const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
     const int32_t num_frames)
 {
-    if (ring->motion.status == RNG_DONE) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else if (inv_item != ring->list[ring->current_object]) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else if (ring->rotating) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else {
+    if (ring->motion.status != RNG_FADING_OUT && ring->motion.status != RNG_DONE
+        && inv_item == ring->list[ring->current_object] && !ring->rotating) {
         Output_SetLightAdder(HIGH_LIGHT);
+    } else {
+        Output_SetLightAdder(LOW_LIGHT);
     }
-
-    InvRing_UpdateInventoryItem(ring, inv_item, num_frames);
 
     Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
     Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);

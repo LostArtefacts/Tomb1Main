@@ -462,6 +462,7 @@ typedef struct {
     bool remove_scions;
     bool remove_ammo;
     bool remove_medipacks;
+    bool inv_ring_shown;
     bool inv_showing_medpack;
     bool inv_ring_above;
     bool ask_for_save;

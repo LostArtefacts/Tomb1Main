@@ -1516,22 +1516,15 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
-// TODO: make GAME_FLOW_COMMAND
-bool GF_ShowInventory(const INVENTORY_MODE inv_mode)
+GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE inv_mode)
 {
-    // TODO: move this inside
-    if (inv_mode == INV_KEYS_MODE && !g_InvRing_Source[RT_KEYS].count) {
-        return false;
-    }
-    PHASE_INVENTORY_ARGS *const args =
-        Memory_Alloc(sizeof(PHASE_INVENTORY_ARGS));
-    args->mode = inv_mode;
-    Phase_Set(PHASE_INVENTORY, args);
-    return true;
+    PHASE *const phase = Phase_Inventory_Create(inv_mode);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Inventory_Destroy(phase);
+    return gf_cmd;
 }
 
-// TODO: make GAME_FLOW_COMMAND
-bool GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
+GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
 {
     if (g_Config.gameplay.enable_auto_item_selection) {
         const GAME_OBJECT_ID object_id = Object_GetCognateInverse(

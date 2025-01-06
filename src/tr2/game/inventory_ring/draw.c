@@ -17,14 +17,11 @@ static void M_DrawItem(const INV_RING *ring, const INVENTORY_ITEM *inv_item);
 static void M_DrawItem(
     const INV_RING *const ring, const INVENTORY_ITEM *const inv_item)
 {
-    if (ring->motion.status == RNG_DONE) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else if (inv_item != ring->list[ring->current_object]) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else if (ring->rotating) {
-        Output_SetLightAdder(LOW_LIGHT);
-    } else {
+    if (ring->motion.status != RNG_FADING_OUT && ring->motion.status != RNG_DONE
+        && inv_item == ring->list[ring->current_object] && !ring->rotating) {
         Output_SetLightAdder(HIGH_LIGHT);
+    } else {
+        Output_SetLightAdder(LOW_LIGHT);
     }
 
     int32_t minutes;

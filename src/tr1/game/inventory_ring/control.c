@@ -5,6 +5,7 @@
 #include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
+#include "game/interpolation.h"
 #include "game/inventory.h"
 #include "game/inventory_ring/vars.h"
 #include "game/lara/common.h"
@@ -14,17 +15,15 @@
 #include "game/option/option_examine.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase/phase.h"
 #include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
+#include "game/stats.h"
 #include "game/viewport.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
 #include <libtrx/game/inventory_ring/priv.h>
-#include <libtrx/game/math.h>
-#include <libtrx/game/objects/names.h>
 #include <libtrx/memory.h>
 
 #define INV_FRAMES 2
@@ -46,7 +45,10 @@ static void M_RingIsNotOpen(INV_RING *ring);
 static void M_RingNotActive(const INVENTORY_ITEM *inv_item);
 static void M_RingActive(INV_RING *ring);
 
-static PHASE_CONTROL M_Control(INV_RING *ring);
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
+
+static GAME_FLOW_COMMAND M_Finish(INV_RING *ring);
+static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
 static bool M_CheckDemoTimer(const INV_RING *ring);
 
 static TEXTSTRING *M_InitExamineText(
@@ -200,30 +202,132 @@ static void M_RingActive(INV_RING *const ring)
     InvRing_RemoveAllText();
 }
 
-static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item)
+static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
 {
     if (inv_item->current_frame == inv_item->goal_frame) {
         InvRing_SelectMeshes(inv_item);
         return false;
     }
 
-    inv_item->current_frame += inv_item->anim_direction;
-    if (inv_item->current_frame >= inv_item->frames_total) {
-        inv_item->current_frame = 0;
-    } else if (inv_item->current_frame < 0) {
-        inv_item->current_frame = inv_item->frames_total - 1;
+    if (inv_item->anim_count > 0) {
+        inv_item->anim_count--;
+    } else {
+        inv_item->anim_count = inv_item->anim_speed;
+        inv_item->current_frame += inv_item->anim_direction;
+        if (inv_item->current_frame >= inv_item->frames_total) {
+            inv_item->current_frame = 0;
+        } else if (inv_item->current_frame < 0) {
+            inv_item->current_frame = inv_item->frames_total - 1;
+        }
     }
 
     InvRing_SelectMeshes(inv_item);
     return true;
 }
 
-// TODO: make this return a GAME_FLOW_COMMAND
-static PHASE_CONTROL M_Control(INV_RING *const ring)
+static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
+{
+    if (m_StartLevel != -1) {
+        return (GAME_FLOW_COMMAND) {
+            .action = GF_SELECT_GAME,
+            .param = m_StartLevel,
+        };
+    }
+
+    if (ring->is_demo_needed) {
+        return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
+    }
+
+    switch (m_InvChosen) {
+    case O_PASSPORT_OPTION:
+        switch (g_GameInfo.passport_selection) {
+        case PASSPORT_MODE_LOAD_GAME:
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_START_SAVED_GAME,
+                .param = g_GameInfo.current_save_slot,
+            };
+
+        case PASSPORT_MODE_SELECT_LEVEL:
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_SELECT_GAME,
+                .param = g_GameInfo.select_level_num,
+            };
+
+        case PASSPORT_MODE_STORY_SO_FAR:
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_STORY_SO_FAR,
+                .param = g_GameInfo.current_save_slot,
+            };
+
+        case PASSPORT_MODE_NEW_GAME:
+            Savegame_InitCurrentInfo();
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_START_GAME,
+                .param = g_GameFlow.first_level_num,
+            };
+
+        case PASSPORT_MODE_SAVE_GAME:
+            Savegame_Save(g_GameInfo.current_save_slot);
+            Music_Unpause();
+            Sound_UnpauseAll();
+            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+
+        case PASSPORT_MODE_RESTART:
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_RESTART_GAME,
+                .param = g_CurrentLevel,
+            };
+
+        case PASSPORT_MODE_EXIT_TITLE:
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+
+        case PASSPORT_MODE_EXIT_GAME:
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+
+        case PASSPORT_MODE_BROWSE:
+        case PASSPORT_MODE_UNAVAILABLE:
+        default:
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+
+    case O_PHOTO_OPTION:
+        g_GameInfo.current_save_slot = -1;
+        return (GAME_FLOW_COMMAND) {
+            .action = GF_START_GYM,
+            .param = g_GameFlow.gym_level_num,
+        };
+
+    case O_PISTOL_OPTION:
+    case O_SHOTGUN_OPTION:
+    case O_MAGNUM_OPTION:
+    case O_UZI_OPTION:
+    case O_MEDI_OPTION:
+    case O_BIGMEDI_OPTION:
+    case O_KEY_OPTION_1:
+    case O_KEY_OPTION_2:
+    case O_KEY_OPTION_3:
+    case O_KEY_OPTION_4:
+    case O_PUZZLE_OPTION_1:
+    case O_PUZZLE_OPTION_2:
+    case O_PUZZLE_OPTION_3:
+    case O_PUZZLE_OPTION_4:
+    case O_LEADBAR_OPTION:
+    case O_SCION_OPTION:
+        Lara_UseItem(m_InvChosen);
+        break;
+
+    default:
+        break;
+    }
+
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+}
+
+static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 {
     if (ring->motion.status == RNG_OPENING) {
         if (ring->mode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         }
 
         Clock_ResetTimer(&m_DemoTimer);
@@ -233,17 +337,21 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         }
     }
 
-    if (ring->motion.status == RNG_DONE) {
+    if (ring->motion.status == RNG_FADING_OUT) {
         // finish fading
         if (ring->mode == INV_TITLE_MODE) {
             Output_FadeToBlack(true);
         }
 
         if (Output_FadeIsAnimating()) {
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         }
 
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_END };
+        ring->motion.status = RNG_DONE;
+    }
+
+    if (ring->motion.status == RNG_DONE) {
+        return M_Finish(ring);
     }
 
     InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
@@ -271,7 +379,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             || (ring->type == RT_OPTION && g_InvRing_Source[RT_MAIN].count));
 
     if (ring->rotating) {
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
 
     if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_SAVE_CRYSTAL_MODE
@@ -320,7 +428,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 Output_FadeToTransparent(false);
             }
 
-            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionSetup(
+                ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
@@ -535,8 +644,11 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         }
 
         bool busy = false;
-        if (inv_item->y_rot == inv_item->y_rot_sel) {
-            busy = M_AnimateInventoryItem(inv_item);
+        for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+            busy = false;
+            if (inv_item->y_rot == inv_item->y_rot_sel) {
+                busy = M_AnimateInventoryItem(inv_item);
+            }
         }
 
         if (!busy && !g_IDelay) {
@@ -595,15 +707,17 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
     case RNG_CLOSING_ITEM: {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-        if (!M_AnimateInventoryItem(inv_item)) {
-            if (inv_item->object_id == O_PASSPORT_OPTION) {
-                inv_item->object_id = O_PASSPORT_CLOSED;
-                inv_item->current_frame = 0;
+        for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+            if (!M_AnimateInventoryItem(inv_item)) {
+                if (inv_item->object_id == O_PASSPORT_OPTION) {
+                    inv_item->object_id = O_PASSPORT_CLOSED;
+                    inv_item->current_frame = 0;
+                }
+                ring->motion.count = SELECTING_FRAMES;
+                ring->motion.status = ring->motion.status_target;
+                InvRing_MotionItemDeselect(ring, inv_item);
+                break;
             }
-            ring->motion.count = SELECTING_FRAMES;
-            ring->motion.status = ring->motion.status_target;
-            InvRing_MotionItemDeselect(ring, inv_item);
-            break;
         }
         break;
     }
@@ -626,7 +740,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         }
 
         if (!ring->motion.count) {
-            InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+            InvRing_MotionSetup(
+                ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
@@ -656,11 +771,21 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_MAIN2OPTION
         || ring->motion.status == RNG_OPTION2MAIN
         || ring->motion.status == RNG_EXITING_INVENTORY
+        || ring->motion.status == RNG_FADING_OUT
         || ring->motion.status == RNG_DONE || ring->rotating) {
         M_RingActive(ring);
     }
 
-    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+    if (g_Config.gameplay.enable_timer_in_inventory) {
+        Stats_UpdateTimer();
+    }
+
+    for (int32_t i = 0; i < ring->number_of_objects; i++) {
+        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_FRAMES);
+    }
+
+    Interpolation_Remember();
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
 static bool M_CheckDemoTimer(const INV_RING *const ring)
@@ -695,6 +820,11 @@ void InvRing_RemoveAllText(void)
 
 INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 {
+    if (mode == INV_KEYS_MODE && g_InvRing_Source[RT_KEYS].count == 0) {
+        m_InvChosen = NO_OBJECT;
+        return NULL;
+    }
+
     g_PhdLeft = Viewport_GetMinX();
     g_PhdTop = Viewport_GetMinY();
     g_PhdBottom = Viewport_GetMaxY();
@@ -774,18 +904,28 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     // reset the delta timer before starting the spinout animation
     Clock_ResetTimer(&g_InvRing_MotionTimer);
 
-    if (mode == INV_TITLE_MODE) {
-        Output_LoadBackgroundFromFile(g_GameFlow.main_menu_background_path);
-    } else {
-        Output_UnloadBackground();
+    g_InvMode = mode;
+    Interpolation_Remember();
+    if (g_Config.gameplay.enable_timer_in_inventory) {
+        Stats_StartTimer();
     }
 
+    if (mode == INV_TITLE_MODE) {
+        Output_LoadBackgroundFromFile(g_GameFlow.main_menu_background_path);
+        Output_FadeResetToBlack();
+        Output_FadeToTransparent(true);
+    } else {
+        Output_UnloadBackground();
+        Output_FadeToSemiBlack(true);
+    }
+
+    g_GameInfo.inv_ring_shown = true;
     return ring;
 }
 
-PHASE_CONTROL InvRing_Close(INV_RING *const ring)
+void InvRing_Close(INV_RING *const ring)
 {
-    PHASE_CONTROL result = { .action = PHASE_ACTION_NO_WAIT };
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
 
     InvRing_RemoveAllText();
     InvRing_RemoveVersionText();
@@ -809,175 +949,28 @@ PHASE_CONTROL InvRing_Close(INV_RING *const ring)
         g_OldInputDB = (INPUT_STATE) { 0 };
     }
 
-    if (m_StartLevel != -1) {
-        result = (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = {
-                .action = GF_SELECT_GAME,
-                .param = m_StartLevel,
-            },
-        };
-        goto finish;
-    }
-
-    if (ring->is_demo_needed) {
-        result = (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_START_DEMO, .param = -1 },
-        };
-        goto finish;
-    }
-
-    switch (m_InvChosen) {
-    case O_PASSPORT_OPTION:
-        switch (g_GameInfo.passport_selection) {
-        case PASSPORT_MODE_LOAD_GAME:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = {
-                    .action = GF_START_SAVED_GAME,
-                    .param = g_GameInfo.current_save_slot,
-                },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_SELECT_LEVEL:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = {
-                    .action = GF_SELECT_GAME,
-                    .param = g_GameInfo.select_level_num,
-                },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_STORY_SO_FAR:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = {
-                    .action = GF_STORY_SO_FAR,
-                    .param = g_GameInfo.current_save_slot,
-                },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_NEW_GAME:
-            Savegame_InitCurrentInfo();
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = {
-                    .action = GF_START_GAME,
-                    .param = g_GameFlow.first_level_num,
-                },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_SAVE_GAME:
-            Savegame_Save(g_GameInfo.current_save_slot);
-            Music_Unpause();
-            Sound_UnpauseAll();
-            Phase_Set(PHASE_GAME, NULL);
-            result = (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
-            goto finish;
-
-        case PASSPORT_MODE_RESTART:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = {
-                    .action = GF_RESTART_GAME,
-                    .param = g_CurrentLevel,
-                },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_EXIT_TITLE:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_EXIT_GAME:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_EXIT_GAME },
-            };
-            goto finish;
-
-        case PASSPORT_MODE_BROWSE:
-        case PASSPORT_MODE_UNAVAILABLE:
-        default:
-            result = (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_EXIT_TO_TITLE },
-            };
-            goto finish;
-        }
-
-    case O_PHOTO_OPTION:
-        g_GameInfo.current_save_slot = -1;
-        result = (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = {
-                .action = GF_START_GYM,
-                .param = g_GameFlow.gym_level_num,
-            },
-        };
-        goto finish;
-
-    case O_PISTOL_OPTION:
-    case O_SHOTGUN_OPTION:
-    case O_MAGNUM_OPTION:
-    case O_UZI_OPTION:
-    case O_MEDI_OPTION:
-    case O_BIGMEDI_OPTION:
-    case O_KEY_OPTION_1:
-    case O_KEY_OPTION_2:
-    case O_KEY_OPTION_3:
-    case O_KEY_OPTION_4:
-    case O_PUZZLE_OPTION_1:
-    case O_PUZZLE_OPTION_2:
-    case O_PUZZLE_OPTION_3:
-    case O_PUZZLE_OPTION_4:
-    case O_LEADBAR_OPTION:
-    case O_SCION_OPTION:
-        Lara_UseItem(m_InvChosen);
-        break;
-
-    default:
-        break;
-    }
-
-    if (ring->mode == INV_TITLE_MODE) {
-        result = (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_NOOP },
-        };
-        goto finish;
-    } else {
+    if (ring->mode != INV_TITLE_MODE) {
         Music_Unpause();
         Sound_UnpauseAll();
-        Phase_Set(PHASE_GAME, NULL);
-        result = (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
-        goto finish;
     }
 
-finish:
+    g_GameInfo.inv_ring_shown = false;
     m_InvChosen = NO_OBJECT;
     Memory_Free(ring);
-    return result;
 }
 
-PHASE_CONTROL InvRing_Control(INV_RING *const ring, const int32_t num_frames)
+GAME_FLOW_COMMAND InvRing_Control(
+    INV_RING *const ring, const int32_t num_frames)
 {
+    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
     for (int32_t i = 0; i < num_frames; i++) {
-        const PHASE_CONTROL result = M_Control(ring);
-        if (result.action == PHASE_ACTION_END) {
-            return result;
+        gf_cmd = M_Control(ring);
+        if (gf_cmd.action != GF_NOOP) {
+            break;
         }
     }
 
-    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+    return gf_cmd;
 }
 
 bool InvRing_IsOptionLockedOut(void)
