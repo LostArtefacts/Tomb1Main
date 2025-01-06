@@ -69,8 +69,8 @@ static void M_RemoveAllText(void)
 {
     M_RemoveItemsText();
 
-    Text_Remove(g_Inv_RingText);
-    g_Inv_RingText = NULL;
+    Text_Remove(g_InvRing_Text);
+    g_InvRing_Text = NULL;
     Text_Remove(m_UpArrow1);
     m_UpArrow1 = NULL;
     Text_Remove(m_UpArrow2);
@@ -599,31 +599,31 @@ static void M_RingIsOpen(INV_RING *const ring)
         return;
     }
 
-    if (g_Inv_RingText == NULL) {
+    if (g_InvRing_Text == NULL) {
         switch (ring->type) {
         case RT_MAIN:
-            g_Inv_RingText = Text_Create(
+            g_InvRing_Text = Text_Create(
                 0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_INVENTORY]);
             break;
 
         case RT_OPTION:
             if (ring->mode == INV_DEATH_MODE) {
-                g_Inv_RingText = Text_Create(
+                g_InvRing_Text = Text_Create(
                     0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_GAME_OVER]);
             } else {
-                g_Inv_RingText = Text_Create(
+                g_InvRing_Text = Text_Create(
                     0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_OPTION]);
             }
-            Text_CentreH(g_Inv_RingText, true);
+            Text_CentreH(g_InvRing_Text, true);
             break;
 
         case RT_KEYS:
-            g_Inv_RingText =
+            g_InvRing_Text =
                 Text_Create(0, 26, g_GF_GameStrings[GF_S_GAME_HEADING_ITEMS]);
             break;
         }
 
-        Text_CentreH(g_Inv_RingText, true);
+        Text_CentreH(g_InvRing_Text, true);
     }
 
     if (ring->mode == INV_KEYS_MODE || ring->mode == INV_DEATH_MODE) {
@@ -653,8 +653,8 @@ static void M_RingIsOpen(INV_RING *const ring)
 
 static void M_RingIsNotOpen(INV_RING *const ring)
 {
-    Text_Remove(g_Inv_RingText);
-    g_Inv_RingText = NULL;
+    Text_Remove(g_InvRing_Text);
+    g_InvRing_Text = NULL;
     Text_Remove(m_UpArrow1);
     m_UpArrow1 = NULL;
     Text_Remove(m_UpArrow2);

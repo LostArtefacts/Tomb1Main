@@ -13,7 +13,7 @@ extern uint16_t g_Inv_MainCurrent;
 extern uint16_t g_Inv_KeyObjectsCount;
 extern uint16_t g_Inv_KeysCurrent;
 extern uint16_t g_Inv_OptionCurrent;
-extern TEXTSTRING *g_Inv_RingText;
+extern TEXTSTRING *g_InvRing_Text;
 extern TEXTSTRING *g_Inv_UpArrow1;
 extern TEXTSTRING *g_Inv_UpArrow2;
 extern TEXTSTRING *g_Inv_DownArrow1;

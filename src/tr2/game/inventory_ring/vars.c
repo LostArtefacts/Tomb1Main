@@ -10,7 +10,7 @@ uint16_t g_Inv_MainCurrent;
 uint16_t g_Inv_KeyObjectsCount;
 uint16_t g_Inv_KeysCurrent;
 uint16_t g_Inv_OptionCurrent;
-TEXTSTRING *g_Inv_RingText = NULL;
+TEXTSTRING *g_InvRing_Text = NULL;
 bool g_Inv_DemoMode;
 bool g_Inv_IsOptionsDelay;
 int32_t g_Inv_OptionsDelayCounter;
