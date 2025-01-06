@@ -5,78 +5,33 @@
 #include "game/objects/vars.h"
 #include "global/vars.h"
 
-static int16_t m_MainQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
-static int16_t m_KeysQtys[23] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
-
-void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
-{
-    int32_t n;
-
-    if (inv_item->inv_pos < 100) {
-        for (n = 0; n < g_Inv_MainObjectsCount; n++) {
-            if (g_Inv_MainList[n]->inv_pos > inv_item->inv_pos) {
-                break;
-            }
-        }
-
-        for (int32_t i = g_Inv_MainObjectsCount; i > n - 1; i--) {
-            g_Inv_MainList[i + 1] = g_Inv_MainList[i];
-            m_MainQtys[i + 1] = m_MainQtys[i];
-        }
-        g_Inv_MainList[n] = inv_item;
-        m_MainQtys[n] = 1;
-        g_Inv_MainObjectsCount++;
-    } else {
-        for (n = 0; n < g_Inv_KeyObjectsCount; n++) {
-            if (g_Inv_KeysList[n]->inv_pos > inv_item->inv_pos) {
-                break;
-            }
-        }
-
-        for (int32_t i = g_Inv_KeyObjectsCount; i > n - 1; i--) {
-            g_Inv_KeysList[i + 1] = g_Inv_KeysList[i];
-            m_KeysQtys[i + 1] = m_KeysQtys[i];
-        }
-        g_Inv_KeysList[n] = inv_item;
-        m_KeysQtys[n] = 1;
-        g_Inv_KeyObjectsCount++;
-    }
-}
-
 bool Inv_AddItem(const GAME_OBJECT_ID object_id)
 {
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-
-    for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        const INVENTORY_ITEM *const inv_item = g_Inv_MainList[i];
-        if (inv_item->object_id == inv_object_id) {
-            const int32_t qty = object_id == O_FLARES_ITEM ? FLARE_AMMO_QTY : 1;
-            m_MainQtys[i] += qty;
-            return true;
-        }
-    }
-
-    for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
-        const INVENTORY_ITEM *const inv_item = g_Inv_KeysList[i];
-        if (inv_item->object_id == inv_object_id) {
-            m_KeysQtys[i]++;
-            return true;
-        }
-    }
-
     if (!g_Objects[inv_object_id == NO_OBJECT ? object_id : inv_object_id]
              .loaded) {
         return false;
     }
+
+    for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
+        INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
+        for (int32_t i = 0; i < source->count; i++) {
+            if (source->items[i]->object_id == inv_object_id) {
+                source->qtys[i]++;
+                return true;
+            }
+        }
+    }
+
     switch (object_id) {
     case O_COMPASS_OPTION:
     case O_COMPASS_ITEM:
-        Inv_InsertItem(&g_Inv_Item_Stopwatch);
+        Inv_InsertItem(&g_InvRing_Item_Stopwatch);
         return true;
 
     case O_PISTOL_ITEM:
     case O_PISTOL_OPTION:
-        Inv_InsertItem(&g_Inv_Item_Pistols);
+        Inv_InsertItem(&g_InvRing_Item_Pistols);
         if (g_Lara.last_gun_type) {
             return true;
         }
@@ -90,7 +45,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.shotgun_ammo.ammo += SHOTGUN_AMMO_QTY;
         }
         g_Lara.shotgun_ammo.ammo += SHOTGUN_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_Shotgun);
+        Inv_InsertItem(&g_InvRing_Item_Shotgun);
         if (g_Lara.last_gun_type == LGT_UNARMED) {
             g_Lara.last_gun_type = LGT_SHOTGUN;
         }
@@ -107,7 +62,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.magnum_ammo.ammo += MAGNUM_AMMO_QTY;
         }
         g_Lara.magnum_ammo.ammo += MAGNUM_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_Magnums);
+        Inv_InsertItem(&g_InvRing_Item_Magnums);
         Item_GlobalReplace(O_MAGNUM_ITEM, O_MAGNUM_AMMO_ITEM);
         return false;
 
@@ -118,7 +73,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.uzi_ammo.ammo += UZI_AMMO_QTY;
         }
         g_Lara.uzi_ammo.ammo += UZI_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_Uzis);
+        Inv_InsertItem(&g_InvRing_Item_Uzis);
         Item_GlobalReplace(O_UZI_ITEM, O_UZI_AMMO_ITEM);
         return false;
 
@@ -129,7 +84,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.harpoon_ammo.ammo += HARPOON_AMMO_QTY;
         }
         g_Lara.harpoon_ammo.ammo += HARPOON_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_Harpoon);
+        Inv_InsertItem(&g_InvRing_Item_Harpoon);
         Item_GlobalReplace(O_HARPOON_ITEM, O_HARPOON_AMMO_ITEM);
         return false;
 
@@ -140,7 +95,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.m16_ammo.ammo += M16_AMMO_QTY;
         }
         g_Lara.m16_ammo.ammo += M16_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_M16);
+        Inv_InsertItem(&g_InvRing_Item_M16);
         Item_GlobalReplace(O_M16_ITEM, O_M16_AMMO_ITEM);
         return false;
 
@@ -151,7 +106,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
             g_Lara.grenade_ammo.ammo += GRENADE_AMMO_QTY;
         }
         g_Lara.grenade_ammo.ammo += GRENADE_AMMO_QTY;
-        Inv_InsertItem(&g_Inv_Item_Grenade);
+        Inv_InsertItem(&g_InvRing_Item_Grenade);
         Item_GlobalReplace(O_GRENADE_ITEM, O_GRENADE_AMMO_ITEM);
         return false;
 
@@ -160,7 +115,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_SHOTGUN_ITEM)) {
             g_Lara.shotgun_ammo.ammo += 12;
         } else {
-            Inv_InsertItem(&g_Inv_Item_ShotgunAmmo);
+            Inv_InsertItem(&g_InvRing_Item_ShotgunAmmo);
         }
         return false;
 
@@ -169,7 +124,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_MAGNUM_ITEM)) {
             g_Lara.magnum_ammo.ammo += 40;
         } else {
-            Inv_InsertItem(&g_Inv_Item_MagnumAmmo);
+            Inv_InsertItem(&g_InvRing_Item_MagnumAmmo);
         }
         return false;
 
@@ -178,7 +133,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_UZI_ITEM)) {
             g_Lara.uzi_ammo.ammo += 80;
         } else {
-            Inv_InsertItem(&g_Inv_Item_UziAmmo);
+            Inv_InsertItem(&g_InvRing_Item_UziAmmo);
         }
         return false;
 
@@ -187,7 +142,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_HARPOON_ITEM)) {
             g_Lara.harpoon_ammo.ammo += 3;
         } else {
-            Inv_InsertItem(&g_Inv_Item_HarpoonAmmo);
+            Inv_InsertItem(&g_InvRing_Item_HarpoonAmmo);
         }
         return false;
 
@@ -196,7 +151,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_M16_ITEM)) {
             g_Lara.m16_ammo.ammo += 40;
         } else {
-            Inv_InsertItem(&g_Inv_Item_M16Ammo);
+            Inv_InsertItem(&g_InvRing_Item_M16Ammo);
         }
         return false;
 
@@ -205,18 +160,18 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         if (Inv_RequestItem(O_GRENADE_ITEM)) {
             g_Lara.grenade_ammo.ammo += 2;
         } else {
-            Inv_InsertItem(&g_Inv_Item_GrenadeAmmo);
+            Inv_InsertItem(&g_InvRing_Item_GrenadeAmmo);
         }
         return false;
 
     case O_SMALL_MEDIPACK_ITEM:
     case O_SMALL_MEDIPACK_OPTION:
-        Inv_InsertItem(&g_Inv_Item_SmallMedi);
+        Inv_InsertItem(&g_InvRing_Item_SmallMedi);
         return true;
 
     case O_LARGE_MEDIPACK_ITEM:
     case O_LARGE_MEDIPACK_OPTION:
-        Inv_InsertItem(&g_Inv_Item_LargeMedi);
+        Inv_InsertItem(&g_InvRing_Item_LargeMedi);
         return true;
 
     case O_FLARES_ITEM:
@@ -227,27 +182,27 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         return true;
 
     case O_FLARE_ITEM:
-        Inv_InsertItem(&g_Inv_Item_Flare);
+        Inv_InsertItem(&g_InvRing_Item_Flare);
         return true;
 
     case O_PUZZLE_ITEM_1:
     case O_PUZZLE_OPTION_1:
-        Inv_InsertItem(&g_Inv_Item_Puzzle1);
+        Inv_InsertItem(&g_InvRing_Item_Puzzle1);
         return true;
 
     case O_PUZZLE_ITEM_2:
     case O_PUZZLE_OPTION_2:
-        Inv_InsertItem(&g_Inv_Item_Puzzle2);
+        Inv_InsertItem(&g_InvRing_Item_Puzzle2);
         return true;
 
     case O_PUZZLE_ITEM_3:
     case O_PUZZLE_OPTION_3:
-        Inv_InsertItem(&g_Inv_Item_Puzzle3);
+        Inv_InsertItem(&g_InvRing_Item_Puzzle3);
         return true;
 
     case O_PUZZLE_ITEM_4:
     case O_PUZZLE_OPTION_4:
-        Inv_InsertItem(&g_Inv_Item_Puzzle4);
+        Inv_InsertItem(&g_InvRing_Item_Puzzle4);
         return true;
 
     case O_SECRET_1:
@@ -264,32 +219,32 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
 
     case O_KEY_ITEM_1:
     case O_KEY_OPTION_1:
-        Inv_InsertItem(&g_Inv_Item_Key1);
+        Inv_InsertItem(&g_InvRing_Item_Key1);
         return true;
 
     case O_KEY_ITEM_2:
     case O_KEY_OPTION_2:
-        Inv_InsertItem(&g_Inv_Item_Key2);
+        Inv_InsertItem(&g_InvRing_Item_Key2);
         return true;
 
     case O_KEY_ITEM_3:
     case O_KEY_OPTION_3:
-        Inv_InsertItem(&g_Inv_Item_Key3);
+        Inv_InsertItem(&g_InvRing_Item_Key3);
         return true;
 
     case O_KEY_ITEM_4:
     case O_KEY_OPTION_4:
-        Inv_InsertItem(&g_Inv_Item_Key4);
+        Inv_InsertItem(&g_InvRing_Item_Key4);
         return true;
 
     case O_PICKUP_ITEM_1:
     case O_PICKUP_OPTION_1:
-        Inv_InsertItem(&g_Inv_Item_Pickup1);
+        Inv_InsertItem(&g_InvRing_Item_Pickup1);
         return true;
 
     case O_PICKUP_ITEM_2:
     case O_PICKUP_OPTION_2:
-        Inv_InsertItem(&g_Inv_Item_Pickup2);
+        Inv_InsertItem(&g_InvRing_Item_Pickup2);
         return true;
 
     default:
@@ -297,65 +252,67 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     }
 }
 
+void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
+{
+    INV_RING_SOURCE *const source =
+        &g_InvRing_Source[inv_item->inv_pos < 100 ? RT_MAIN : RT_KEYS];
+
+    int32_t n;
+    for (n = 0; n < source->count; n++) {
+        if (source->items[n]->inv_pos > inv_item->inv_pos) {
+            break;
+        }
+    }
+
+    for (int32_t i = source->count; i > n - 1; i--) {
+        source->items[i + 1] = source->items[i];
+        source->qtys[i + 1] = source->qtys[i];
+    }
+    source->items[n] = inv_item;
+    source->qtys[n] = 1;
+    source->count++;
+}
+
 int32_t Inv_RequestItem(const GAME_OBJECT_ID object_id)
 {
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-
-    for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        if (g_Inv_MainList[i]->object_id == inv_object_id) {
-            return m_MainQtys[i];
+    for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
+        INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
+        for (int32_t i = 0; i < source->count; i++) {
+            if (source->items[i]->object_id == inv_object_id) {
+                return source->qtys[i];
+            }
         }
     }
-
-    for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
-        if (g_Inv_KeysList[i]->object_id == inv_object_id) {
-            return m_KeysQtys[i];
-        }
-    }
-
     return 0;
 }
 
 void Inv_RemoveAllItems(void)
 {
-    g_Inv_MainObjectsCount = 0;
-    g_Inv_KeyObjectsCount = 0;
+    g_InvRing_Source[RT_MAIN].count = 0;
+    g_InvRing_Source[RT_KEYS].count = 0;
     InvRing_ClearSelection();
 }
 
-int32_t Inv_RemoveItem(const GAME_OBJECT_ID object_id)
+bool Inv_RemoveItem(const GAME_OBJECT_ID object_id)
 {
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-
-    for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        if (g_Inv_MainList[i]->object_id == inv_object_id) {
-            m_MainQtys[i]--;
-            if (m_MainQtys[i] > 0) {
+    for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
+        INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
+        for (int32_t i = 0; i < source->count; i++) {
+            if (source->items[i]->object_id == inv_object_id) {
+                source->qtys[i]--;
+                if (source->qtys[i] == 0) {
+                    source->count--;
+                    for (int32_t j = i; j < source->count; j++) {
+                        source->items[j] = source->items[j + 1];
+                        source->qtys[j] = source->qtys[j + 1];
+                    }
+                }
                 return true;
-            }
-            g_Inv_MainObjectsCount--;
-            for (int32_t j = i; j < g_Inv_MainObjectsCount; j++) {
-                g_Inv_MainList[j] = g_Inv_MainList[j + 1];
-                m_MainQtys[j] = m_MainQtys[j + 1];
             }
         }
     }
-
-    for (int32_t i = 0; i < g_Inv_KeyObjectsCount; i++) {
-        if (g_Inv_KeysList[i]->object_id == inv_object_id) {
-            m_KeysQtys[i]--;
-            if (m_KeysQtys[i] > 0) {
-                return true;
-            }
-            g_Inv_KeyObjectsCount--;
-            for (int32_t j = i; j < g_Inv_KeyObjectsCount; j++) {
-                g_Inv_KeysList[j] = g_Inv_KeysList[j + 1];
-                m_KeysQtys[j] = m_KeysQtys[j + 1];
-            }
-            return true;
-        }
-    }
-
     return false;
 }
 

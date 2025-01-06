@@ -8,77 +8,84 @@
 CLOCK_TIMER g_InvRing_MotionTimer = {};
 CAMERA_INFO g_InvRing_OldCamera = {};
 
-int16_t g_InvKeysCurrent;
-int16_t g_InvKeysObjects;
-int16_t g_InvKeysQtys[24] = {
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {
+    [RT_KEYS] = {
+        .current = 0,
+        .count = 0,
+        .qtys = {
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        },
+        .items = {
+            &g_InvRing_Item_LeadBar,
+            &g_InvRing_Item_Puzzle1,
+            &g_InvRing_Item_Puzzle2,
+            &g_InvRing_Item_Puzzle3,
+            &g_InvRing_Item_Puzzle4,
+            &g_InvRing_Item_Key1,
+            &g_InvRing_Item_Key2,
+            &g_InvRing_Item_Key3,
+            &g_InvRing_Item_Key4,
+            &g_InvRing_Item_Pickup1,
+            &g_InvRing_Item_Pickup2,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+        },
+    },
+    [RT_MAIN] = {
+        .current = 0,
+        .count = 1,
+        .qtys = {
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        },
+        .items = {
+            &g_InvRing_Item_Compass,
+            &g_InvRing_Item_Pistols,
+            &g_InvRing_Item_Shotgun,
+            &g_InvRing_Item_Magnum,
+            &g_InvRing_Item_Uzi,
+            &g_InvRing_Item_Grenade,
+            &g_InvRing_Item_BigMedi,
+            &g_InvRing_Item_Medi,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+        },
+    },
+    [RT_OPTION] = {
+        .current = 0,
+        .count = 5,
+        .qtys = {
+            1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        },
+        .items = {
+    &g_InvRing_Item_Game,    &g_InvRing_Item_Controls,  &g_InvRing_Item_Sound,
+    &g_InvRing_Item_Details, &g_InvRing_Item_LarasHome,
+        },
+    },
 };
 
-INVENTORY_ITEM *g_InvKeysList[23] = {
-    &g_InvItemLeadBar,
-    &g_InvItemPuzzle1,
-    &g_InvItemPuzzle2,
-    &g_InvItemPuzzle3,
-    &g_InvItemPuzzle4,
-    &g_InvItemKey1,
-    &g_InvItemKey2,
-    &g_InvItemKey3,
-    &g_InvItemKey4,
-    &g_InvItemPickup1,
-    &g_InvItemPickup2,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-};
-
-int16_t g_InvMainCurrent;
-int16_t g_InvMainObjects = 1;
-int16_t g_InvMainQtys[24] = {
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-INVENTORY_ITEM *g_InvMainList[23] = {
-    &g_InvItemCompass,
-    &g_InvItemPistols,
-    &g_InvItemShotgun,
-    &g_InvItemMagnum,
-    &g_InvItemUzi,
-    &g_InvItemGrenade,
-    &g_InvItemBigMedi,
-    &g_InvItemMedi,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-};
-
-int16_t g_InvOptionCurrent;
-int16_t g_InvOptionObjects = 5;
-INVENTORY_ITEM *g_InvOptionList[] = {
-    &g_InvItemGame,    &g_InvItemControls,  &g_InvItemSound,
-    &g_InvItemDetails, &g_InvItemLarasHome,
-};
-
-INVENTORY_ITEM g_InvItemCompass = {
+INVENTORY_ITEM g_InvRing_Item_Compass = {
     .object_id = O_MAP_OPTION,
     .frames_total = 25,
     .current_frame = 0,
@@ -102,7 +109,7 @@ INVENTORY_ITEM g_InvItemCompass = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemMedi = {
+INVENTORY_ITEM g_InvRing_Item_Medi = {
     .object_id = O_MEDI_OPTION,
     .frames_total = 26,
     .current_frame = 0,
@@ -126,7 +133,7 @@ INVENTORY_ITEM g_InvItemMedi = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemBigMedi = {
+INVENTORY_ITEM g_InvRing_Item_BigMedi = {
     .object_id = O_BIGMEDI_OPTION,
     .frames_total = 20,
     .current_frame = 0,
@@ -150,7 +157,7 @@ INVENTORY_ITEM g_InvItemBigMedi = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemLeadBar = {
+INVENTORY_ITEM g_InvRing_Item_LeadBar = {
     .object_id = O_LEADBAR_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -174,7 +181,7 @@ INVENTORY_ITEM g_InvItemLeadBar = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPickup1 = {
+INVENTORY_ITEM g_InvRing_Item_Pickup1 = {
     .object_id = O_PICKUP_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -198,7 +205,7 @@ INVENTORY_ITEM g_InvItemPickup1 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPickup2 = {
+INVENTORY_ITEM g_InvRing_Item_Pickup2 = {
     .object_id = O_PICKUP_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -222,7 +229,7 @@ INVENTORY_ITEM g_InvItemPickup2 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemScion = {
+INVENTORY_ITEM g_InvRing_Item_Scion = {
     .object_id = O_SCION_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -246,7 +253,7 @@ INVENTORY_ITEM g_InvItemScion = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPuzzle1 = {
+INVENTORY_ITEM g_InvRing_Item_Puzzle1 = {
     .object_id = O_PUZZLE_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -270,7 +277,7 @@ INVENTORY_ITEM g_InvItemPuzzle1 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPuzzle2 = {
+INVENTORY_ITEM g_InvRing_Item_Puzzle2 = {
     .object_id = O_PUZZLE_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -294,7 +301,7 @@ INVENTORY_ITEM g_InvItemPuzzle2 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPuzzle3 = {
+INVENTORY_ITEM g_InvRing_Item_Puzzle3 = {
     .object_id = O_PUZZLE_OPTION_3,
     .frames_total = 1,
     .current_frame = 0,
@@ -318,7 +325,7 @@ INVENTORY_ITEM g_InvItemPuzzle3 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPuzzle4 = {
+INVENTORY_ITEM g_InvRing_Item_Puzzle4 = {
     .object_id = O_PUZZLE_OPTION_4,
     .frames_total = 1,
     .current_frame = 0,
@@ -342,7 +349,7 @@ INVENTORY_ITEM g_InvItemPuzzle4 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemKey1 = {
+INVENTORY_ITEM g_InvRing_Item_Key1 = {
     .object_id = O_KEY_OPTION_1,
     .frames_total = 1,
     .current_frame = 0,
@@ -366,7 +373,7 @@ INVENTORY_ITEM g_InvItemKey1 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemKey2 = {
+INVENTORY_ITEM g_InvRing_Item_Key2 = {
     .object_id = O_KEY_OPTION_2,
     .frames_total = 1,
     .current_frame = 0,
@@ -390,7 +397,7 @@ INVENTORY_ITEM g_InvItemKey2 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemKey3 = {
+INVENTORY_ITEM g_InvRing_Item_Key3 = {
     .object_id = O_KEY_OPTION_3,
     .frames_total = 1,
     .current_frame = 0,
@@ -414,7 +421,7 @@ INVENTORY_ITEM g_InvItemKey3 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemKey4 = {
+INVENTORY_ITEM g_InvRing_Item_Key4 = {
     .object_id = O_KEY_OPTION_4,
     .frames_total = 1,
     .current_frame = 0,
@@ -438,7 +445,7 @@ INVENTORY_ITEM g_InvItemKey4 = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPistols = {
+INVENTORY_ITEM g_InvRing_Item_Pistols = {
     .object_id = O_PISTOL_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -462,7 +469,7 @@ INVENTORY_ITEM g_InvItemPistols = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemShotgun = {
+INVENTORY_ITEM g_InvRing_Item_Shotgun = {
     .object_id = O_SHOTGUN_OPTION,
     .frames_total = 13,
     .current_frame = 0,
@@ -486,7 +493,7 @@ INVENTORY_ITEM g_InvItemShotgun = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemMagnum = {
+INVENTORY_ITEM g_InvRing_Item_Magnum = {
     .object_id = O_MAGNUM_OPTION,
     .frames_total = 12,
     .current_frame = 0,
@@ -510,7 +517,7 @@ INVENTORY_ITEM g_InvItemMagnum = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemUzi = {
+INVENTORY_ITEM g_InvRing_Item_Uzi = {
     .object_id = O_UZI_OPTION,
     .frames_total = 13,
     .current_frame = 0,
@@ -534,7 +541,7 @@ INVENTORY_ITEM g_InvItemUzi = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemGrenade = {
+INVENTORY_ITEM g_InvRing_Item_Grenade = {
     .object_id = O_EXPLOSIVE_OPTION,
     .frames_total = 15,
     .current_frame = 0,
@@ -558,7 +565,7 @@ INVENTORY_ITEM g_InvItemGrenade = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemPistolAmmo = {
+INVENTORY_ITEM g_InvRing_Item_PistolAmmo = {
     .object_id = O_PISTOL_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -582,7 +589,7 @@ INVENTORY_ITEM g_InvItemPistolAmmo = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemShotgunAmmo = {
+INVENTORY_ITEM g_InvRing_Item_ShotgunAmmo = {
     .object_id = O_SG_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -606,7 +613,7 @@ INVENTORY_ITEM g_InvItemShotgunAmmo = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemMagnumAmmo = {
+INVENTORY_ITEM g_InvRing_Item_MagnumAmmo = {
     .object_id = O_MAG_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -630,7 +637,7 @@ INVENTORY_ITEM g_InvItemMagnumAmmo = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemUziAmmo = {
+INVENTORY_ITEM g_InvRing_Item_UziAmmo = {
     .object_id = O_UZI_AMMO_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -654,7 +661,7 @@ INVENTORY_ITEM g_InvItemUziAmmo = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemGame = {
+INVENTORY_ITEM g_InvRing_Item_Game = {
     .object_id = O_PASSPORT_CLOSED,
     .frames_total = 30,
     .current_frame = 0,
@@ -678,7 +685,7 @@ INVENTORY_ITEM g_InvItemGame = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemDetails = {
+INVENTORY_ITEM g_InvRing_Item_Details = {
     .object_id = O_DETAIL_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -702,7 +709,7 @@ INVENTORY_ITEM g_InvItemDetails = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemSound = {
+INVENTORY_ITEM g_InvRing_Item_Sound = {
     .object_id = O_SOUND_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -726,7 +733,7 @@ INVENTORY_ITEM g_InvItemSound = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemControls = {
+INVENTORY_ITEM g_InvRing_Item_Controls = {
     .object_id = O_CONTROL_OPTION,
     .frames_total = 1,
     .current_frame = 0,
@@ -750,7 +757,7 @@ INVENTORY_ITEM g_InvItemControls = {
     .sprite_list = NULL,
 };
 
-INVENTORY_ITEM g_InvItemLarasHome = {
+INVENTORY_ITEM g_InvRing_Item_LarasHome = {
     .object_id = O_PHOTO_OPTION,
     .frames_total = 1,
     .current_frame = 0,

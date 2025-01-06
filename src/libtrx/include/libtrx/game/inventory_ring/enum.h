@@ -16,6 +16,7 @@ typedef enum {
     RT_MAIN = 0,
     RT_OPTION = 1,
     RT_KEYS = 2,
+    RT_NUMBER_OF,
 } RING_TYPE;
 
 typedef enum {

@@ -118,8 +118,8 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
     }
 
     g_GameInfo.inv_ring_above = g_InvMode == INV_GAME_MODE
-        && ((ring->type == RT_MAIN && g_InvKeysObjects)
-            || (ring->type == RT_OPTION && g_InvMainObjects));
+        && ((ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count != 0)
+            || (ring->type == RT_OPTION && g_InvRing_Source[RT_MAIN].count));
 
     if (ring->rotating) {
         return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
@@ -162,9 +162,9 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             m_InvChosen = NO_OBJECT;
 
             if (ring->type == RT_MAIN) {
-                g_InvMainCurrent = ring->current_object;
+                g_InvRing_Source[RT_MAIN].current = ring->current_object;
             } else {
-                g_InvOptionCurrent = ring->current_object;
+                g_InvRing_Source[RT_OPTION].current = ring->current_object;
             }
 
             if (g_InvMode != INV_TITLE_MODE) {
@@ -191,17 +191,9 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
 
             g_OptionSelected = 0;
 
-            INVENTORY_ITEM *inv_item;
-            if (ring->type == RT_MAIN) {
-                g_InvMainCurrent = ring->current_object;
-                inv_item = g_InvMainList[ring->current_object];
-            } else if (ring->type == RT_OPTION) {
-                g_InvOptionCurrent = ring->current_object;
-                inv_item = g_InvOptionList[ring->current_object];
-            } else {
-                g_InvKeysCurrent = ring->current_object;
-                inv_item = g_InvKeysList[ring->current_object];
-            }
+            g_InvRing_Source[ring->type].current = ring->current_object;
+            INVENTORY_ITEM *const inv_item =
+                g_InvRing_Source[ring->type].items[ring->current_object];
 
             inv_item->goal_frame = inv_item->open_frame;
             inv_item->anim_direction = 1;
@@ -244,7 +236,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         if (g_InputDB.menu_up && g_InvMode != INV_TITLE_MODE
             && g_InvMode != INV_KEYS_MODE) {
             if (ring->type == RT_MAIN) {
-                if (g_InvKeysObjects) {
+                if (g_InvRing_Source[RT_KEYS].count != 0) {
                     InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_MAIN2KEYS,
                         RINGSWITCH_FRAMES / 2);
@@ -258,7 +250,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (ring->type == RT_OPTION) {
-                if (g_InvMainObjects) {
+                if (g_InvRing_Source[RT_MAIN].count) {
                     InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_OPTION2MAIN,
                         RINGSWITCH_FRAMES / 2);
@@ -275,7 +267,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             g_InputDB.menu_down && g_InvMode != INV_TITLE_MODE
             && g_InvMode != INV_KEYS_MODE) {
             if (ring->type == RT_KEYS) {
-                if (g_InvMainObjects) {
+                if (g_InvRing_Source[RT_MAIN].count) {
                     InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_KEYS2MAIN,
                         RINGSWITCH_FRAMES / 2);
@@ -289,7 +281,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             } else if (ring->type == RT_MAIN) {
-                if (g_InvOptionObjects) {
+                if (g_InvRing_Source[RT_OPTION].count != 0) {
                     InvRing_MotionSetup(
                         ring, RNG_CLOSING, RNG_MAIN2OPTION,
                         RINGSWITCH_FRAMES / 2);
@@ -312,11 +304,11 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
         ring->motion.camera_pitch_target = 0;
-        g_InvMainCurrent = ring->current_object;
-        ring->list = g_InvOptionList;
+        g_InvRing_Source[RT_MAIN].current = ring->current_object;
         ring->type = RT_OPTION;
-        ring->number_of_objects = g_InvOptionObjects;
-        ring->current_object = g_InvOptionCurrent;
+        ring->list = g_InvRing_Source[RT_OPTION].items;
+        ring->number_of_objects = g_InvRing_Source[RT_OPTION].count;
+        ring->current_object = g_InvRing_Source[RT_OPTION].current;
         InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
             ring, INV_RING_OPEN_ROTATION,
@@ -332,12 +324,12 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
         ring->motion.camera_pitch_target = 0;
-        g_InvMainCurrent = ring->current_object;
-        g_InvMainObjects = ring->number_of_objects;
-        ring->list = g_InvKeysList;
+        g_InvRing_Source[RT_MAIN].current = ring->current_object;
+        g_InvRing_Source[RT_MAIN].count = ring->number_of_objects;
         ring->type = RT_KEYS;
-        ring->number_of_objects = g_InvKeysObjects;
-        ring->current_object = g_InvKeysCurrent;
+        ring->list = g_InvRing_Source[RT_KEYS].items;
+        ring->number_of_objects = g_InvRing_Source[RT_KEYS].count;
+        ring->current_object = g_InvRing_Source[RT_KEYS].current;
         InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
             ring, INV_RING_OPEN_ROTATION,
@@ -353,11 +345,11 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
         ring->motion.camera_pitch_target = 0;
-        g_InvKeysCurrent = ring->current_object;
-        ring->list = g_InvMainList;
+        g_InvRing_Source[RT_KEYS].current = ring->current_object;
         ring->type = RT_MAIN;
-        ring->number_of_objects = g_InvMainObjects;
-        ring->current_object = g_InvMainCurrent;
+        ring->list = g_InvRing_Source[RT_MAIN].items;
+        ring->number_of_objects = g_InvRing_Source[RT_MAIN].count;
+        ring->current_object = g_InvRing_Source[RT_MAIN].current;
         InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
             ring, INV_RING_OPEN_ROTATION,
@@ -373,12 +365,12 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
         ring->motion.camera_pitch_rate =
             ring->motion.misc / (RINGSWITCH_FRAMES / 2);
         ring->motion.camera_pitch_target = 0;
-        g_InvOptionObjects = ring->number_of_objects;
-        g_InvOptionCurrent = ring->current_object;
-        ring->list = g_InvMainList;
+        g_InvRing_Source[RT_OPTION].count = ring->number_of_objects;
+        g_InvRing_Source[RT_OPTION].current = ring->current_object;
         ring->type = RT_MAIN;
-        ring->number_of_objects = g_InvMainObjects;
-        ring->current_object = g_InvMainCurrent;
+        ring->list = g_InvRing_Source[RT_MAIN].items;
+        ring->number_of_objects = g_InvRing_Source[RT_MAIN].count;
+        ring->current_object = g_InvRing_Source[RT_MAIN].current;
         InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
         InvRing_MotionRotation(
             ring, INV_RING_OPEN_ROTATION,
@@ -420,9 +412,9 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
                 inv_item->sprite_list = NULL;
                 m_InvChosen = inv_item->object_id;
                 if (ring->type == RT_MAIN) {
-                    g_InvMainCurrent = ring->current_object;
+                    g_InvRing_Source[RT_MAIN].current = ring->current_object;
                 } else {
-                    g_InvOptionCurrent = ring->current_object;
+                    g_InvRing_Source[RT_OPTION].current = ring->current_object;
                 }
 
                 if (g_InvMode == INV_TITLE_MODE
@@ -607,7 +599,8 @@ void InvRing_InitHeader(INV_RING *ring)
 
     if (!m_InvUpArrow1) {
         if (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN && g_InvKeysObjects)) {
+            || (ring->type == RT_MAIN
+                && g_InvRing_Source[RT_KEYS].count != 0)) {
             m_InvUpArrow1 = Text_Create(20, 28, "\\{arrow up}");
             m_InvUpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
             Text_AlignRight(m_InvUpArrow2, 1);
@@ -826,27 +819,27 @@ void InvRing_Construct(void)
     m_StartLevel = -1;
 
     if (g_InvMode == INV_TITLE_MODE) {
-        g_InvOptionObjects = TITLE_RING_OBJECTS;
+        g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
         m_VersionText = Text_Create(-20, -18, g_TR1XVersion);
         Text_AlignRight(m_VersionText, 1);
         Text_AlignBottom(m_VersionText, 1);
         Text_SetScale(
             m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
     } else {
-        g_InvOptionObjects = OPTION_RING_OBJECTS;
+        g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
         Text_Remove(m_VersionText);
         m_VersionText = NULL;
     }
 
-    for (int i = 0; i < g_InvMainObjects; i++) {
-        InvRing_InitInvItem(g_InvMainList[i]);
+    g_InvRing_Source[RT_MAIN].current = 0;
+    for (int32_t i = 0; i < g_InvRing_Source[RT_MAIN].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_MAIN].items[i]);
     }
-    for (int i = 0; i < g_InvOptionObjects; i++) {
-        InvRing_InitInvItem(g_InvOptionList[i]);
+    g_InvRing_Source[RT_OPTION].current = 0;
+    for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
     }
 
-    g_InvMainCurrent = 0;
-    g_InvOptionCurrent = 0;
     g_OptionSelected = 0;
 
     if (g_GameFlow.gym_level_num == -1) {

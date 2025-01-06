@@ -52,24 +52,28 @@ static void M_Start(const PHASE_INVENTORY_ARGS *const args)
     case INV_LOAD_MODE:
     case INV_TITLE_MODE:
         InvRing_InitRing(
-            ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
-            g_InvOptionCurrent);
+            ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+            g_InvRing_Source[RT_OPTION].count,
+            g_InvRing_Source[RT_OPTION].current);
         break;
 
     case INV_KEYS_MODE:
         InvRing_InitRing(
-            ring, RT_KEYS, g_InvKeysList, g_InvKeysObjects, g_InvMainCurrent);
+            ring, RT_KEYS, g_InvRing_Source[RT_KEYS].items,
+            g_InvRing_Source[RT_KEYS].count, g_InvRing_Source[RT_MAIN].current);
         break;
 
     default:
-        if (g_InvMainObjects) {
+        if (g_InvRing_Source[RT_MAIN].count != 0) {
             InvRing_InitRing(
-                ring, RT_MAIN, g_InvMainList, g_InvMainObjects,
-                g_InvMainCurrent);
+                ring, RT_MAIN, g_InvRing_Source[RT_MAIN].items,
+                g_InvRing_Source[RT_MAIN].count,
+                g_InvRing_Source[RT_MAIN].current);
         } else {
             InvRing_InitRing(
-                ring, RT_OPTION, g_InvOptionList, g_InvOptionObjects,
-                g_InvOptionCurrent);
+                ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+                g_InvRing_Source[RT_OPTION].count,
+                g_InvRing_Source[RT_OPTION].current);
         }
         break;
     }

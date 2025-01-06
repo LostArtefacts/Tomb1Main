@@ -6,49 +6,37 @@
 #include <libtrx/game/inventory_ring/types.h>
 #include <libtrx/game/text.h>
 
-extern int16_t g_InvKeysCurrent;
-extern int16_t g_InvKeysObjects;
-extern int16_t g_InvKeysQtys[];
-extern INVENTORY_ITEM *g_InvKeysList[];
+extern INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF];
 
-extern int16_t g_InvMainCurrent;
-extern int16_t g_InvMainObjects;
-extern int16_t g_InvMainQtys[];
-extern INVENTORY_ITEM *g_InvMainList[];
-
-extern int16_t g_InvOptionCurrent;
-extern int16_t g_InvOptionObjects;
-extern INVENTORY_ITEM *g_InvOptionList[];
-
-extern INVENTORY_ITEM g_InvItemCompass;
-extern INVENTORY_ITEM g_InvItemMedi;
-extern INVENTORY_ITEM g_InvItemBigMedi;
-extern INVENTORY_ITEM g_InvItemLeadBar;
-extern INVENTORY_ITEM g_InvItemPickup1;
-extern INVENTORY_ITEM g_InvItemPickup2;
-extern INVENTORY_ITEM g_InvItemScion;
-extern INVENTORY_ITEM g_InvItemPuzzle1;
-extern INVENTORY_ITEM g_InvItemPuzzle2;
-extern INVENTORY_ITEM g_InvItemPuzzle3;
-extern INVENTORY_ITEM g_InvItemPuzzle4;
-extern INVENTORY_ITEM g_InvItemKey1;
-extern INVENTORY_ITEM g_InvItemKey2;
-extern INVENTORY_ITEM g_InvItemKey3;
-extern INVENTORY_ITEM g_InvItemKey4;
-extern INVENTORY_ITEM g_InvItemPistols;
-extern INVENTORY_ITEM g_InvItemShotgun;
-extern INVENTORY_ITEM g_InvItemMagnum;
-extern INVENTORY_ITEM g_InvItemUzi;
-extern INVENTORY_ITEM g_InvItemGrenade;
-extern INVENTORY_ITEM g_InvItemPistolAmmo;
-extern INVENTORY_ITEM g_InvItemShotgunAmmo;
-extern INVENTORY_ITEM g_InvItemMagnumAmmo;
-extern INVENTORY_ITEM g_InvItemUziAmmo;
-extern INVENTORY_ITEM g_InvItemGame;
-extern INVENTORY_ITEM g_InvItemDetails;
-extern INVENTORY_ITEM g_InvItemSound;
-extern INVENTORY_ITEM g_InvItemControls;
-extern INVENTORY_ITEM g_InvItemLarasHome;
+extern INVENTORY_ITEM g_InvRing_Item_Compass;
+extern INVENTORY_ITEM g_InvRing_Item_Medi;
+extern INVENTORY_ITEM g_InvRing_Item_BigMedi;
+extern INVENTORY_ITEM g_InvRing_Item_LeadBar;
+extern INVENTORY_ITEM g_InvRing_Item_Pickup1;
+extern INVENTORY_ITEM g_InvRing_Item_Pickup2;
+extern INVENTORY_ITEM g_InvRing_Item_Scion;
+extern INVENTORY_ITEM g_InvRing_Item_Puzzle1;
+extern INVENTORY_ITEM g_InvRing_Item_Puzzle2;
+extern INVENTORY_ITEM g_InvRing_Item_Puzzle3;
+extern INVENTORY_ITEM g_InvRing_Item_Puzzle4;
+extern INVENTORY_ITEM g_InvRing_Item_Key1;
+extern INVENTORY_ITEM g_InvRing_Item_Key2;
+extern INVENTORY_ITEM g_InvRing_Item_Key3;
+extern INVENTORY_ITEM g_InvRing_Item_Key4;
+extern INVENTORY_ITEM g_InvRing_Item_Pistols;
+extern INVENTORY_ITEM g_InvRing_Item_Shotgun;
+extern INVENTORY_ITEM g_InvRing_Item_Magnum;
+extern INVENTORY_ITEM g_InvRing_Item_Uzi;
+extern INVENTORY_ITEM g_InvRing_Item_Grenade;
+extern INVENTORY_ITEM g_InvRing_Item_PistolAmmo;
+extern INVENTORY_ITEM g_InvRing_Item_ShotgunAmmo;
+extern INVENTORY_ITEM g_InvRing_Item_MagnumAmmo;
+extern INVENTORY_ITEM g_InvRing_Item_UziAmmo;
+extern INVENTORY_ITEM g_InvRing_Item_Game;
+extern INVENTORY_ITEM g_InvRing_Item_Details;
+extern INVENTORY_ITEM g_InvRing_Item_Sound;
+extern INVENTORY_ITEM g_InvRing_Item_Controls;
+extern INVENTORY_ITEM g_InvRing_Item_LarasHome;
 
 extern CLOCK_TIMER g_InvRing_MotionTimer;
 extern CAMERA_INFO g_InvRing_OldCamera;

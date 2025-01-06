@@ -106,9 +106,9 @@ static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
 static void M_Construct(const INVENTORY_MODE mode)
 {
     if (mode == INV_TITLE_MODE) {
-        g_Inv_OptionObjectsCount = TITLE_RING_OBJECTS;
+        g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
         if (g_GameFlow.gym_enabled) {
-            g_Inv_OptionObjectsCount++;
+            g_InvRing_Source[RT_OPTION].count++;
         }
         m_VersionText = Text_Create(-20, -18, g_TR2XVersion);
         Text_AlignRight(m_VersionText, 1);
@@ -116,7 +116,7 @@ static void M_Construct(const INVENTORY_MODE mode)
         Text_SetScale(
             m_VersionText, TEXT_BASE_SCALE * 0.5, TEXT_BASE_SCALE * 0.5);
     } else {
-        g_Inv_OptionObjectsCount = OPTION_RING_OBJECTS;
+        g_InvRing_Source[RT_OPTION].count = OPTION_RING_OBJECTS;
         Text_Remove(m_VersionText);
         m_VersionText = NULL;
     }
@@ -125,21 +125,25 @@ static void M_Construct(const INVENTORY_MODE mode)
         g_Inv_ExtraData[i] = 0;
     }
 
-    for (int32_t i = 0; i < g_Inv_MainObjectsCount; i++) {
-        InvRing_InitInvItem(g_Inv_MainList[i]);
+    g_InvRing_Source[RT_MAIN].current = 0;
+    for (int32_t i = 0; i < g_InvRing_Source[RT_MAIN].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_MAIN].items[i]);
     }
-    for (int32_t i = 0; i < g_Inv_OptionObjectsCount; i++) {
-        InvRing_InitInvItem(g_Inv_OptionList[i]);
+    for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+        InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
     }
 
-    g_Inv_MainCurrent = 0;
-
+    g_InvRing_Source[RT_OPTION].current = 0;
     if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
         && !g_GameFlow.load_save_disabled && g_GameFlow.gym_enabled) {
-        g_Inv_OptionCurrent = 3; // TODO: don't hardcode me
-    } else {
-        g_Inv_OptionCurrent = 0;
+        for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+            if (g_InvRing_Source[RT_OPTION].items[i]->object_id
+                == O_PHOTO_OPTION) {
+                g_InvRing_Source[RT_OPTION].current = i;
+            }
+        }
     }
+
     g_SoundOptionLine = 0;
 }
 
@@ -192,7 +196,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             if (g_Inv_OptionsDelayCounter) {
                 g_Inv_OptionsDelayCounter--;
             } else {
-                g_Inv_IsOptionsDelay = 0;
+                g_Inv_IsOptionsDelay = false;
             }
         }
         InvRing_DoMotions(ring);
@@ -219,9 +223,9 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
                 g_Inv_Chosen = NO_OBJECT;
                 if (ring->type != RT_MAIN) {
-                    g_Inv_OptionCurrent = ring->current_object;
+                    g_InvRing_Source[RT_OPTION].current = ring->current_object;
                 } else {
-                    g_Inv_MainCurrent = ring->current_object;
+                    g_InvRing_Source[RT_MAIN].current = ring->current_object;
                 }
                 InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
                 InvRing_MotionRadius(ring, 0);
@@ -242,14 +246,17 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_SoundOptionLine = 0;
                 INVENTORY_ITEM *inv_item;
                 if (ring->type == RT_MAIN) {
-                    g_Inv_MainCurrent = ring->current_object;
-                    inv_item = g_Inv_MainList[ring->current_object];
+                    g_InvRing_Source[RT_MAIN].current = ring->current_object;
+                    inv_item =
+                        g_InvRing_Source[RT_MAIN].items[ring->current_object];
                 } else if (ring->type == RT_OPTION) {
-                    g_Inv_OptionCurrent = ring->current_object;
-                    inv_item = g_Inv_OptionList[ring->current_object];
+                    g_InvRing_Source[RT_OPTION].current = ring->current_object;
+                    inv_item =
+                        g_InvRing_Source[RT_OPTION].items[ring->current_object];
                 } else {
-                    g_Inv_KeysCurrent = ring->current_object;
-                    inv_item = g_Inv_KeysList[ring->current_object];
+                    g_InvRing_Source[RT_KEYS].current = ring->current_object;
+                    inv_item =
+                        g_InvRing_Source[RT_KEYS].items[ring->current_object];
                 }
 
                 inv_item->goal_frame = inv_item->open_frame;
@@ -290,7 +297,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             if (g_InputDB.forward && ring->mode != INV_TITLE_MODE
                 && ring->mode != INV_KEYS_MODE) {
                 if (ring->type == RT_OPTION) {
-                    if (g_Inv_MainObjectsCount > 0) {
+                    if (g_InvRing_Source[RT_MAIN].count > 0) {
                         InvRing_MotionSetup(
                             ring, RNG_CLOSING, RNG_OPTION2MAIN, 24);
                         InvRing_MotionRadius(ring, 0);
@@ -301,7 +308,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                     }
                     g_InputDB = (INPUT_STATE) { 0 };
                 } else if (ring->type == RT_MAIN) {
-                    if (g_Inv_KeyObjectsCount > 0) {
+                    if (g_InvRing_Source[RT_KEYS].count > 0) {
                         InvRing_MotionSetup(
                             ring, RNG_CLOSING, RNG_MAIN2KEYS, 24);
                         InvRing_MotionRadius(ring, 0);
@@ -317,7 +324,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_InputDB.back && ring->mode != INV_TITLE_MODE
                 && ring->mode != INV_KEYS_MODE) {
                 if (ring->type == RT_KEYS) {
-                    if (g_Inv_MainObjectsCount > 0) {
+                    if (g_InvRing_Source[RT_MAIN].count > 0) {
                         InvRing_MotionSetup(
                             ring, RNG_CLOSING, RNG_KEYS2MAIN, 24);
                         InvRing_MotionRadius(ring, 0);
@@ -329,7 +336,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                     g_Input = (INPUT_STATE) { 0 };
                     g_InputDB = (INPUT_STATE) { 0 };
                 } else if (ring->type == RT_MAIN) {
-                    if (g_Inv_OptionObjectsCount > 0
+                    if (g_InvRing_Source[RT_OPTION].count > 0
                         && !g_GameFlow.lockout_option_ring) {
                         InvRing_MotionSetup(
                             ring, RNG_CLOSING, RNG_MAIN2OPTION, 24);
@@ -350,12 +357,12 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
             ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_OptionList;
+            ring->list = g_InvRing_Source[RT_OPTION].items;
             ring->type = RT_OPTION;
-            g_Inv_MainCurrent = ring->current_object;
-            g_Inv_MainObjectsCount = ring->number_of_objects;
-            ring->number_of_objects = g_Inv_OptionObjectsCount;
-            ring->current_object = g_Inv_OptionCurrent;
+            g_InvRing_Source[RT_MAIN].current = ring->current_object;
+            g_InvRing_Source[RT_MAIN].count = ring->number_of_objects;
+            ring->number_of_objects = g_InvRing_Source[RT_OPTION].count;
+            ring->current_object = g_InvRing_Source[RT_OPTION].current;
             InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
                 ring, INV_RING_OPEN_ROTATION,
@@ -370,12 +377,12 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             ring->motion.camera_pitch_target = 0;
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            g_Inv_MainCurrent = ring->current_object;
-            g_Inv_MainObjectsCount = ring->number_of_objects;
-            ring->list = g_Inv_KeysList;
+            g_InvRing_Source[RT_MAIN].current = ring->current_object;
+            g_InvRing_Source[RT_MAIN].count = ring->number_of_objects;
+            ring->list = g_InvRing_Source[RT_KEYS].items;
             ring->type = RT_KEYS;
-            ring->number_of_objects = g_Inv_KeyObjectsCount;
-            ring->current_object = g_Inv_KeysCurrent;
+            ring->number_of_objects = g_InvRing_Source[RT_KEYS].count;
+            ring->current_object = g_InvRing_Source[RT_KEYS].current;
             InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
                 ring, INV_RING_OPEN_ROTATION,
@@ -390,11 +397,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
             ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_MainList;
+            ring->list = g_InvRing_Source[RT_MAIN].items;
             ring->type = RT_MAIN;
-            g_Inv_KeysCurrent = ring->current_object;
-            ring->number_of_objects = g_Inv_MainObjectsCount;
-            ring->current_object = g_Inv_MainCurrent;
+            g_InvRing_Source[RT_KEYS].current = ring->current_object;
+            ring->number_of_objects = g_InvRing_Source[RT_MAIN].count;
+            ring->current_object = g_InvRing_Source[RT_MAIN].current;
             InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
                 ring, INV_RING_OPEN_ROTATION,
@@ -408,13 +415,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             InvRing_MotionRadius(ring, INV_RING_RADIUS);
             ring->camera_pitch = -(int16_t)(ring->motion.misc);
             ring->motion.camera_pitch_rate = ring->motion.misc / 24;
-            g_Inv_OptionCurrent = ring->current_object;
-            g_Inv_OptionObjectsCount = ring->number_of_objects;
+            g_InvRing_Source[RT_OPTION].current = ring->current_object;
+            g_InvRing_Source[RT_OPTION].count = ring->number_of_objects;
             ring->motion.camera_pitch_target = 0;
-            ring->list = g_Inv_MainList;
+            ring->list = g_InvRing_Source[RT_MAIN].items;
             ring->type = RT_MAIN;
-            ring->number_of_objects = g_Inv_MainObjectsCount;
-            ring->current_object = g_Inv_MainCurrent;
+            ring->number_of_objects = g_InvRing_Source[RT_MAIN].count;
+            ring->current_object = g_InvRing_Source[RT_MAIN].current;
             InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
             InvRing_MotionRotation(
                 ring, INV_RING_OPEN_ROTATION,
@@ -459,9 +466,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                     inv_item->sprite_list = NULL;
                     g_Inv_Chosen = inv_item->object_id;
                     if (ring->type != RT_MAIN) {
-                        g_Inv_OptionCurrent = ring->current_object;
+                        g_InvRing_Source[RT_OPTION].current =
+                            ring->current_object;
                     } else {
-                        g_Inv_MainCurrent = ring->current_object;
+                        g_InvRing_Source[RT_MAIN].current =
+                            ring->current_object;
                     }
                     if (ring->mode == INV_TITLE_MODE
                         && (inv_item->object_id == O_DETAIL_OPTION
@@ -509,7 +518,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         }
 
         case RNG_EXITING_INVENTORY:
-            if (!ring->motion.count) {
+            if (ring->motion.count == 0) {
                 InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, 32);
                 InvRing_MotionRadius(ring, 0);
                 InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
@@ -613,7 +622,7 @@ static void M_RingIsOpen(INV_RING *const ring)
 
     if (m_UpArrow1 == NULL) {
         if (ring->type == RT_OPTION
-            || (ring->type == RT_MAIN && g_Inv_KeyObjectsCount > 0)) {
+            || (ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count > 0)) {
             m_UpArrow1 = Text_Create(20, 28, "\\{arrow up}");
             m_UpArrow2 = Text_Create(-20, 28, "\\{arrow up}");
             Text_AlignRight(m_UpArrow2, true);
@@ -843,7 +852,7 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
 
 INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 {
-    if (mode == INV_KEYS_MODE && g_Inv_KeyObjectsCount == 0) {
+    if (mode == INV_KEYS_MODE && g_InvRing_Source[RT_KEYS].count == 0) {
         g_Inv_Chosen = NO_OBJECT;
         return NULL;
     }
@@ -872,24 +881,28 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     case INV_LOAD_MODE:
     case INV_DEATH_MODE:
         InvRing_InitRing(
-            ring, 1, g_Inv_OptionList, g_Inv_OptionObjectsCount,
-            g_Inv_OptionCurrent);
+            ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+            g_InvRing_Source[RT_OPTION].count,
+            g_InvRing_Source[RT_OPTION].current);
         break;
 
     case INV_KEYS_MODE:
         InvRing_InitRing(
-            ring, 2, g_Inv_KeysList, g_Inv_KeyObjectsCount, g_Inv_MainCurrent);
+            ring, RT_KEYS, g_InvRing_Source[RT_KEYS].items,
+            g_InvRing_Source[RT_KEYS].count, g_InvRing_Source[RT_MAIN].current);
         break;
 
     default:
-        if (g_Inv_MainObjectsCount) {
+        if (g_InvRing_Source[RT_MAIN].count > 0) {
             InvRing_InitRing(
-                ring, 0, g_Inv_MainList, g_Inv_MainObjectsCount,
-                g_Inv_MainCurrent);
+                ring, RT_MAIN, g_InvRing_Source[RT_MAIN].items,
+                g_InvRing_Source[RT_MAIN].count,
+                g_InvRing_Source[RT_MAIN].current);
         } else {
             InvRing_InitRing(
-                ring, 1, g_Inv_OptionList, g_Inv_OptionObjectsCount,
-                g_Inv_OptionCurrent);
+                ring, RT_OPTION, g_InvRing_Source[RT_OPTION].items,
+                g_InvRing_Source[RT_OPTION].count,
+                g_InvRing_Source[RT_OPTION].current);
         }
         break;
     }
@@ -1051,6 +1064,6 @@ GAME_FLOW_COMMAND InvRing_Control(
 
 void InvRing_ClearSelection(void)
 {
-    g_Inv_MainCurrent = 0;
-    g_Inv_KeysCurrent = 0;
+    g_InvRing_Source[RT_MAIN].current = 0;
+    g_InvRing_Source[RT_KEYS].current = 0;
 }

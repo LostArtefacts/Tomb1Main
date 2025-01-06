@@ -114,7 +114,7 @@ void PuzzleHole_Collision(
 
     if (g_Inv_Chosen == NO_OBJECT) {
         GF_ShowInventoryKeys(item->object_id);
-        if (g_Inv_Chosen == NO_OBJECT && g_Inv_KeyObjectsCount > 0) {
+        if (g_Inv_Chosen == NO_OBJECT && g_InvRing_Source[RT_KEYS].count > 0) {
             return;
         }
     }

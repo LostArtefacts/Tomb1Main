@@ -1519,7 +1519,8 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
 // TODO: make GAME_FLOW_COMMAND
 bool GF_ShowInventory(const INVENTORY_MODE inv_mode)
 {
-    if (inv_mode == INV_KEYS_MODE && !g_InvKeysObjects) {
+    // TODO: move this inside
+    if (inv_mode == INV_KEYS_MODE && !g_InvRing_Source[RT_KEYS].count) {
         return false;
     }
     PHASE_INVENTORY_ARGS *const args =

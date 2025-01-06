@@ -74,6 +74,13 @@ typedef struct {
 } INV_RING_MOTION;
 
 typedef struct {
+    int16_t current;
+    int16_t count;
+    int16_t qtys[24];
+    INVENTORY_ITEM *items[24];
+} INV_RING_SOURCE;
+
+typedef struct {
     INVENTORY_MODE mode;
     INVENTORY_ITEM **list;
     int16_t type;
