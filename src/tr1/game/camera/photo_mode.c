@@ -6,9 +6,8 @@
 #include "game/room.h"
 #include "game/viewport.h"
 #include "global/vars.h"
-#include "math/math.h"
-#include "math/math_misc.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define MIN_PHOTO_FOV 10

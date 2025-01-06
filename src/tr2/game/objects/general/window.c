@@ -3,12 +3,12 @@
 #include "game/box.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 void Window_1_Setup(void)

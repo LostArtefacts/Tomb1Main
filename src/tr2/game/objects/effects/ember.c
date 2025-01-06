@@ -3,9 +3,10 @@
 #include "game/effects.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
-#include "game/math.h"
 #include "game/room.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void Ember_Control(const int16_t effect_num)
 {

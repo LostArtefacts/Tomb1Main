@@ -6,7 +6,6 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/look.h"
-#include "game/math.h"
 #include "game/matrix.h"
 #include "game/objects/common.h"
 #include "game/objects/traps/gondola.h"
@@ -18,6 +17,7 @@
 #include "global/vars.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define BOAT_FALL_ANIM 15

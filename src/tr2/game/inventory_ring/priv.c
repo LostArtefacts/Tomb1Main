@@ -2,9 +2,10 @@
 
 #include "game/inventory.h"
 #include "game/inventory_ring/vars.h"
-#include "game/math_misc.h"
 #include "game/output.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 #define RING_OPEN_FRAMES 32
 #define RING_OPEN_ROTATION PHD_180

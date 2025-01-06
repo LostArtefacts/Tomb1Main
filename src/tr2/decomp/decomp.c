@@ -16,7 +16,6 @@
 #include "game/lara/draw.h"
 #include "game/level.h"
 #include "game/lot.h"
-#include "game/math.h"
 #include "game/music.h"
 #include "game/objects/vars.h"
 #include "game/output.h"
@@ -37,6 +36,7 @@
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>

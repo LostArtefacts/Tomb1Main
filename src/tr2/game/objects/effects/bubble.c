@@ -1,9 +1,10 @@
 #include "game/objects/effects/bubble.h"
 
 #include "game/effects.h"
-#include "game/math.h"
 #include "game/room.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void Bubble_Setup(void)
 {

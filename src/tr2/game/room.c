@@ -5,7 +5,6 @@
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/lot.h"
-#include "game/math.h"
 #include "game/music.h"
 #include "game/objects/general/keyhole.h"
 #include "game/objects/general/pickup.h"
@@ -17,6 +16,7 @@
 
 #include <libtrx/debug.h>
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 int32_t g_FlipEffect = -1;

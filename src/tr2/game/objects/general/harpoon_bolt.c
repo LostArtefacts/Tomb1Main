@@ -2,11 +2,12 @@
 
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
-#include "game/math.h"
 #include "game/objects/general/window.h"
 #include "game/room.h"
 #include "game/spawn.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void HarpoonBolt_Setup(void)
 {

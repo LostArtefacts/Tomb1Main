@@ -1,11 +1,10 @@
 #include "game/matrix.h"
 
-#include "game/math.h"
-#include "game/math_misc.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #include <stdint.h>

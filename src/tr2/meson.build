@@ -119,8 +119,6 @@ sources = [
   'game/level.c',
   'game/los.c',
   'game/lot.c',
-  'game/math.c',
-  'game/math_misc.c',
   'game/matrix.c',
   'game/music/music_backend_cdaudio.c',
   'game/music/music_backend_files.c',

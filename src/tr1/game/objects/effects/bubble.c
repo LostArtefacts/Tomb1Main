@@ -4,7 +4,8 @@
 #include "game/room.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
+
+#include <libtrx/game/math.h>
 
 void Bubble_Setup(OBJECT *obj)
 {

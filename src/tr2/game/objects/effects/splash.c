@@ -1,9 +1,10 @@
 #include "game/objects/effects/splash.h"
 
 #include "game/effects.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void Spawn_Splash_Setup(void)
 {

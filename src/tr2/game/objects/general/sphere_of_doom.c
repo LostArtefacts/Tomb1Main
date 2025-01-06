@@ -1,13 +1,13 @@
 #include "game/objects/general/sphere_of_doom.h"
 
 #include "game/items.h"
-#include "game/math.h"
 #include "game/matrix.h"
 #include "game/output.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define SPHERE_OF_DOOM_RADIUS (STEP_L * 5 / 2) // = 640

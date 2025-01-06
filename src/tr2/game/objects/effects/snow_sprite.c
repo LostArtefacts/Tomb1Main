@@ -1,8 +1,9 @@
 #include "game/objects/effects/snow_sprite.h"
 
 #include "game/effects.h"
-#include "game/math.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void SnowSprite_Control(const int16_t effect_num)
 {

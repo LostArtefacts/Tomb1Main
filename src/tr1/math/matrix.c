@@ -1,8 +1,8 @@
 #include "math/matrix.h"
 
 #include "global/vars.h"
-#include "math/math.h"
-#include "math/math_misc.h"
+
+#include <libtrx/game/math.h>
 
 #include <stddef.h>
 

@@ -3,10 +3,11 @@
 #include "game/gun/gun.h"
 #include "game/gun/gun_misc.h"
 #include "game/input.h"
-#include "game/math.h"
 #include "game/output.h"
 #include "game/sound.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 static bool m_UziRight = false;
 static bool m_UziLeft = false;

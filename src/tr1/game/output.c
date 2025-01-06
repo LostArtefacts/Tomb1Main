@@ -10,8 +10,6 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/math.h"
-#include "math/math_misc.h"
 #include "math/matrix.h"
 #include "specific/s_output.h"
 
@@ -21,6 +19,7 @@
 #include <libtrx/filesystem.h>
 #include <libtrx/game/console/common.h>
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>

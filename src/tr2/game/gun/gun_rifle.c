@@ -5,7 +5,6 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
-#include "game/math.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/sound.h"
@@ -13,6 +12,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 static bool m_M16Firing = false;

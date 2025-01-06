@@ -3,11 +3,12 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/math.h"
 #include "game/objects/traps/rolling_ball.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 #define ZIPLINE_MAX_SPEED 100
 #define ZIPLINE_ACCELERATION 5

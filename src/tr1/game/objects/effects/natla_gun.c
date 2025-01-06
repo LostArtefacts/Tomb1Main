@@ -3,7 +3,8 @@
 #include "game/effects.h"
 #include "game/room.h"
 #include "global/vars.h"
-#include "math/math.h"
+
+#include <libtrx/game/math.h>
 
 void NatlaGun_Setup(OBJECT *obj)
 {

@@ -10,11 +10,10 @@
 #include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
-#include "math/math_misc.h"
 #include "math/matrix.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #include <stdbool.h>

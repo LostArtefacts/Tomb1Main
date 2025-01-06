@@ -5,13 +5,13 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
-#include "game/math.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 void Lara_CollideStop(ITEM *const item, const COLL_INFO *const coll)

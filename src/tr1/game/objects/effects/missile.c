@@ -8,8 +8,8 @@
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define SHARD_DAMAGE 30

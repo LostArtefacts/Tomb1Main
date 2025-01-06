@@ -3,13 +3,13 @@
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
 
 #include <libtrx/game/lara/common.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 // clang-format off

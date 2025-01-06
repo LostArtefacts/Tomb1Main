@@ -5,10 +5,10 @@
 #include "game/shell.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
 #include <libtrx/config.h>
 #include <libtrx/engine/audio.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #include <math.h>

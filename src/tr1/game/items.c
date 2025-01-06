@@ -12,10 +12,10 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/math.h"
 #include "math/matrix.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #include <stddef.h>

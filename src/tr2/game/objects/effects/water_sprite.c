@@ -1,8 +1,9 @@
 #include "game/objects/effects/water_sprite.h"
 
 #include "game/effects.h"
-#include "game/math.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void WaterSprite_Control(const int16_t effect_num)
 {

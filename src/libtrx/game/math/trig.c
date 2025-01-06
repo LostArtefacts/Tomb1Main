@@ -1,6 +1,4 @@
-#include "math/math.h"
-
-#include "global/const.h"
+#include "game/math.h"
 
 static const int16_t m_SinTable[0x402] = {
     0x0000, 0x0019, 0x0032, 0x004B, 0x0065, 0x007E, 0x0097, 0x00B0, 0x00C9,
@@ -356,17 +354,17 @@ static const int16_t m_AtanAngleTable[0x802] = {
 
 int32_t Math_Cos(int32_t angle)
 {
-    return Math_Sin(angle + PHD_90);
+    return Math_Sin(angle + DEG_90);
 }
 
 int32_t Math_Sin(int32_t angle)
 {
-    uint16_t sector = (uint16_t)angle & (PHD_180 - 1);
-    if (sector > PHD_90) {
-        sector = PHD_180 - sector;
+    uint16_t sector = (uint16_t)angle & (DEG_180 - 1);
+    if (sector > DEG_90) {
+        sector = DEG_180 - sector;
     }
     int16_t result = m_SinTable[sector >> 4];
-    if ((uint16_t)angle >= PHD_180) {
+    if ((uint16_t)angle >= DEG_180) {
         result = -result;
     }
     return result;
@@ -400,29 +398,6 @@ int32_t Math_Atan(int32_t x, int32_t y)
     if (result < 0) {
         result = -result;
     }
-
-    return result;
-}
-
-uint32_t Math_Sqrt(uint32_t n)
-{
-    uint32_t result = 0;
-    uint32_t base = 0x40000000;
-    do {
-        do {
-            uint32_t based_result = base + result;
-            result >>= 1;
-            if (based_result > n) {
-                break;
-            }
-            n -= based_result;
-            result |= base;
-
-            base >>= 2;
-        } while (base);
-
-        base >>= 2;
-    } while (base);
 
     return result;
 }

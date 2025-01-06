@@ -6,9 +6,9 @@
 #include "game/room.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math_misc.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #include <stdint.h>

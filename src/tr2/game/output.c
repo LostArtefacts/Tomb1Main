@@ -2,8 +2,6 @@
 
 #include "game/clock.h"
 #include "game/inventory_ring.h"
-#include "game/math.h"
-#include "game/math_misc.h"
 #include "game/matrix.h"
 #include "game/random.h"
 #include "game/render/common.h"
@@ -13,6 +11,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 

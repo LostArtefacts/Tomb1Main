@@ -2,12 +2,13 @@
 
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "game/spawn.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 #define SPIKE_WALL_DAMAGE 20
 #define SPIKE_WALL_SPEED 1

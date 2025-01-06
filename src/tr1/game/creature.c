@@ -14,8 +14,8 @@
 #include "game/room.h"
 #include "game/spawn.h"
 #include "global/vars.h"
-#include "math/math.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/log.h>
 
 #include <stddef.h>

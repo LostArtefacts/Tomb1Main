@@ -267,8 +267,6 @@ sources = [
   'game/viewport.c',
   'global/enum_map.c',
   'global/vars.c',
-  'math/math.c',
-  'math/math_misc.c',
   'math/matrix.c',
   'specific/s_output.c',
   'specific/s_shell.c',

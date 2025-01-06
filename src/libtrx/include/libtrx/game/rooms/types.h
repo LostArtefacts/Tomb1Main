@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../math.h"
+#include "../types.h"
 #include "./enum.h"
 
 #include <stdbool.h>

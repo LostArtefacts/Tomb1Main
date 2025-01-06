@@ -2,9 +2,9 @@
 
 #include "game/effects.h"
 #include "game/items.h"
-#include "game/math.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define DISAPPEAR_RANGE STEP_L

@@ -12,7 +12,6 @@
 #include "game/lara/look.h"
 #include "game/lara/misc.h"
 #include "game/lara/state.h"
-#include "game/math.h"
 #include "game/music.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -20,6 +19,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 static int32_t m_OpenDoorsCheatCooldown = 0;

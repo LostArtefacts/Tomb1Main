@@ -4,11 +4,12 @@
 #include "game/effects.h"
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
-#include "game/math.h"
 #include "game/objects/general/window.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 #define M_BLAST_RADIUS (WALL_L / 2) // = 512
 #define M_SPEED 200

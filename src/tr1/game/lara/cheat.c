@@ -17,8 +17,8 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/math_misc.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 #include <libtrx/vector.h>
 

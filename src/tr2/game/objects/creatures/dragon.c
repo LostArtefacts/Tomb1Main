@@ -6,7 +6,6 @@
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
 #include "game/lot.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/random.h"
@@ -16,6 +15,7 @@
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
+#include <libtrx/game/math.h>
 
 // clang-format off
 #define DRAGON_CLOSE        900

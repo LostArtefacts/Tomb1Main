@@ -3,7 +3,6 @@
 #include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/random.h"
 #include "game/room.h"
@@ -12,6 +11,7 @@
 #include "global/vars.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define ROLLING_BALL_DAMAGE_AIR 100

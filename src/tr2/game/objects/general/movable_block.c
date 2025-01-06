@@ -5,12 +5,13 @@
 #include "game/item_actions.h"
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/room.h"
 #include "game/sound.h"
 #include "global/utils.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 #define LF_PPREADY 19
 

@@ -6,7 +6,8 @@
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
+
+#include <libtrx/game/math.h>
 
 void BodyPart_Setup(OBJECT *obj)
 {

@@ -2,7 +2,8 @@
 
 #include "game/effects.h"
 #include "game/objects/common.h"
-#include "math/math.h"
+
+#include <libtrx/game/math.h>
 
 void Splash_Setup(OBJECT *obj)
 {

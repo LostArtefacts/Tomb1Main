@@ -3,9 +3,9 @@
 #include "game/screen.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 
 static int32_t m_MinX = 0;
 static int32_t m_MinY = 0;

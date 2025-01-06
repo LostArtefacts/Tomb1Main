@@ -8,9 +8,9 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/math_misc.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/log.h>
 #include <libtrx/vector.h>
 

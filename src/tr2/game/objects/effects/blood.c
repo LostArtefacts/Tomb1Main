@@ -1,9 +1,10 @@
 #include "game/objects/effects/blood.h"
 
 #include "game/effects.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "global/vars.h"
+
+#include <libtrx/game/math.h>
 
 void Blood_Control(const int16_t effect_num)
 {

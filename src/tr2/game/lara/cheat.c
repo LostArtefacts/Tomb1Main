@@ -9,7 +9,6 @@
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/math.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
 #include "game/room.h"
@@ -19,6 +18,7 @@
 #include "global/utils.h"
 #include "global/vars.h"
 
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 #include <libtrx/vector.h>
 

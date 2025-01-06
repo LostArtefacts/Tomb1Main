@@ -6,9 +6,9 @@
 #include "game/objects/common.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
 #define MUMMY_HITPOINTS 18

@@ -21,9 +21,9 @@
 #include "game/spawn.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 

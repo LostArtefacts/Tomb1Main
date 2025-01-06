@@ -10,9 +10,9 @@
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/math.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/math.h>
 
 #include <stdbool.h>
 #include <stdint.h>
