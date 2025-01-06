@@ -86,7 +86,7 @@ INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {
 };
 
 INVENTORY_ITEM g_InvRing_Item_Compass = {
-    .object_id = O_MAP_OPTION,
+    .object_id = O_COMPASS_OPTION,
     .frames_total = 25,
     .current_frame = 0,
     .goal_frame = 0,

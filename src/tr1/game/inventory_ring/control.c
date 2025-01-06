@@ -348,7 +348,7 @@ static void M_SelectMeshes(INVENTORY_ITEM *const inv_item)
         }
         break;
 
-    case O_MAP_OPTION:
+    case O_COMPASS_OPTION:
         if (inv_item->current_frame == 0 || inv_item->current_frame >= 18) {
             inv_item->meshes_drawn = inv_item->meshes_sel;
         } else {
@@ -447,7 +447,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
           || ring->motion.status == RNG_OPENING)) {
         for (int i = 0; i < ring->number_of_objects; i++) {
             INVENTORY_ITEM *inv_item = ring->list[i];
-            if (inv_item->object_id == O_MAP_OPTION) {
+            if (inv_item->object_id == O_COMPASS_OPTION) {
                 Option_Compass_UpdateNeedle(inv_item);
             }
         }
@@ -519,7 +519,7 @@ static PHASE_CONTROL M_Control(INV_RING *const ring)
             g_InputDB = (INPUT_STATE) { 0 };
 
             switch (inv_item->object_id) {
-            case O_MAP_OPTION:
+            case O_COMPASS_OPTION:
                 Sound_Effect(SFX_MENU_COMPASS, NULL, SPM_ALWAYS);
                 break;
 

@@ -202,7 +202,7 @@ const GAME_OBJECT_ID g_InvObjects[] = {
     O_CONTROL_OPTION,
     O_GAMMA_OPTION,
     O_PASSPORT_OPTION,
-    O_MAP_OPTION,
+    O_COMPASS_OPTION,
     O_PHOTO_OPTION,
     NO_OBJECT,
     // clang-format on

@@ -183,7 +183,7 @@ static void M_DrawItem(
     ANIM_FRAME *frame1;
     ANIM_FRAME *frame2;
     const int32_t frac = M_GetFrames(ring, inv_item, &frame1, &frame2, &rate);
-    if (inv_item->object_id == O_MAP_OPTION) {
+    if (inv_item->object_id == O_COMPASS_OPTION) {
         const int16_t extra_rotation[1] = { Option_Compass_GetNeedleAngle() };
         Object_GetBone(obj, 0)->rot_y = true;
         Object_DrawInterpolatedObject(

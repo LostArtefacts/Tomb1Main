@@ -20,7 +20,7 @@ void Option_Shutdown(INVENTORY_ITEM *inv_item)
         Option_Passport_Shutdown();
         break;
 
-    case O_MAP_OPTION:
+    case O_COMPASS_OPTION:
         Option_Compass_Shutdown();
         break;
 
@@ -67,7 +67,7 @@ void Option_Control(INVENTORY_ITEM *inv_item)
         Option_Passport_Control(inv_item);
         break;
 
-    case O_MAP_OPTION:
+    case O_COMPASS_OPTION:
         Option_Compass_Control(inv_item);
         break;
 

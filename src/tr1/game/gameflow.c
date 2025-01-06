@@ -1469,7 +1469,7 @@ void GameFlow_LoadStrings(int32_t level_num)
         { O_SCION_ITEM_3,       GS(INV_ITEM_SCION) },
         { O_SCION_ITEM_4,       GS(INV_ITEM_SCION) },
         { O_SCION_OPTION,       GS(INV_ITEM_SCION) },
-        { O_MAP_OPTION,         GS(INV_ITEM_COMPASS) },
+        { O_COMPASS_OPTION,     GS(INV_ITEM_COMPASS) },
         { O_PASSPORT_OPTION,    GS(INV_ITEM_GAME) },
         { O_PASSPORT_CLOSED,    GS(INV_ITEM_GAME) },
         { O_DETAIL_OPTION,      GS(INV_ITEM_DETAILS) },
