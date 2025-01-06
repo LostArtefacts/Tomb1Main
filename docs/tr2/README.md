@@ -55,6 +55,7 @@ game with new enhancements and features.
 - fixed Lara prioritising throwing a spent flare while mid-air, so to avoid missing ledge grabs
 - fixed Lara at times not being able to jump immediately after going from her walking to running animation
 - fixed looking forward too far causing an upside down camera frame
+- fixed Lara never stepping backwards off a step using her right foot
 - fixed the following floor data issues:
     - **Opera House**: fixed the trigger under item 203 to trigger it rather than item 204
     - **Wreck of the Maria Doria**: fixed room 98 not having water

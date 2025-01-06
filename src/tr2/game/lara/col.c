@@ -31,8 +31,8 @@
 #define LF_RUN_R_FOOT_GROUND 14
 #define LF_RUN_R_END 21
 
-#define LF_BACK_R_START 964
-#define LF_BACK_R_END 993
+#define LF_BACK_R_START 26
+#define LF_BACK_R_END 55
 
 #define LF_WADE_L_START 0
 #define LF_WADE_L_END 9
