@@ -27,6 +27,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
 
@@ -44,10 +45,12 @@ static CONFIG m_OldConfig;
 static RESUME_INFO m_OldResumeInfo;
 static TEXTSTRING *m_DemoModeText = NULL;
 static STATE m_State = STATE_RUN;
+static FADER m_Fader;
 
 static int32_t m_DemoLevel = -1;
 static uint32_t *m_DemoPtr = NULL;
 
+static void M_FadeOut(void);
 static bool M_ProcessInput(void);
 static int32_t M_ChooseLevel(int32_t demo_num);
 static void M_PrepareConfig(void);
@@ -57,10 +60,16 @@ static void M_RestoreResumeInfo(void);
 
 static void M_Start(const PHASE_DEMO_ARGS *args);
 static void M_End(void);
-static PHASE_CONTROL M_Run(int32_t nframes);
-static PHASE_CONTROL M_FadeOut(void);
+static PHASE_CONTROL M_ControlRun(int32_t nframes);
+static PHASE_CONTROL M_ControlFadeOut(void);
 static PHASE_CONTROL M_Control(int32_t nframes);
 static void M_Draw(void);
+
+static void M_FadeOut(void)
+{
+    m_State = STATE_FADE_OUT;
+    Fader_Init(&m_Fader, FADER_TRANSPARENT, FADER_BLACK, 0.5);
+}
 
 static bool M_ProcessInput(void)
 {
@@ -231,6 +240,7 @@ static void M_Start(const PHASE_DEMO_ARGS *const args)
     M_PrepareConfig();
     M_PrepareResumeInfo();
 
+    Fader_Init(&m_Fader, FADER_TRANSPARENT, FADER_TRANSPARENT, 0.0);
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
 
@@ -282,7 +292,7 @@ static void M_End(void)
     Text_Remove(m_DemoModeText);
 }
 
-static PHASE_CONTROL M_Run(int32_t nframes)
+static PHASE_CONTROL M_ControlRun(int32_t nframes)
 {
     Interpolation_Remember();
     CLAMPG(nframes, MAX_FRAMES);
@@ -290,12 +300,12 @@ static PHASE_CONTROL M_Run(int32_t nframes)
     for (int32_t i = 0; i < nframes; i++) {
         Lara_Cheat_Control();
         if (g_LevelComplete) {
-            m_State = STATE_FADE_OUT;
+            M_FadeOut();
             goto end;
         }
 
         if (!M_ProcessInput()) {
-            m_State = STATE_FADE_OUT;
+            M_FadeOut();
             goto end;
         }
         Game_ProcessInput();
@@ -329,7 +339,7 @@ static PHASE_CONTROL M_Run(int32_t nframes)
             }
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            m_State = STATE_FADE_OUT;
+            M_FadeOut();
             goto end;
         }
     }
@@ -338,15 +348,14 @@ end:
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static PHASE_CONTROL M_FadeOut(void)
+static PHASE_CONTROL M_ControlFadeOut(void)
 {
     Text_Flash(m_DemoModeText, 0, 0);
     Input_Update();
     Shell_ProcessInput();
-    Output_FadeToBlack(true);
+
     if (g_InputDB.menu_confirm || g_InputDB.menu_back
-        || !Output_FadeIsAnimating()) {
-        Output_FadeResetToBlack();
+        || !Fader_IsActive(&m_Fader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = { .action = GF_EXIT_TO_TITLE },
@@ -365,10 +374,10 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         };
 
     case STATE_RUN:
-        return M_Run(nframes);
+        return M_ControlRun(nframes);
 
     case STATE_FADE_OUT:
-        return M_FadeOut();
+        return M_ControlFadeOut();
     }
 
     ASSERT_FAIL();
@@ -389,8 +398,8 @@ static void M_Draw(void)
     }
 
     Output_AnimateTextures();
-    Output_AnimateFades();
     Text_Draw();
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&m_Fader));
 }
 
 PHASER g_DemoPhaser = {

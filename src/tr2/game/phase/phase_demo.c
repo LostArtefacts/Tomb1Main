@@ -141,6 +141,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         };
     }
     M_PrepareGame();
+    Fader_Init(&p->exit_fader, FADER_TRANSPARENT, FADER_TRANSPARENT, 0.0);
 
     p->text =
         Text_Create(0, g_PhdWinHeight - 16, g_GF_PCStrings[GF_S_PC_DEMO_MODE]);
