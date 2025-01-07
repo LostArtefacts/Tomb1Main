@@ -554,21 +554,6 @@ void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z)
     item->pos.z += (c * z - s * x) >> W2V_SHIFT;
 }
 
-void Item_SwitchToObjAnim(
-    ITEM *const item, const int16_t anim_idx, const int16_t frame,
-    const GAME_OBJECT_ID object_id)
-{
-    const OBJECT *const object = Object_GetObject(object_id);
-    item->anim_num = object->anim_idx + anim_idx;
-
-    const ANIM *const anim = Item_GetAnim(item);
-    if (frame < 0) {
-        item->frame_num = anim->frame_end + frame + 1;
-    } else {
-        item->frame_num = anim->frame_base + frame;
-    }
-}
-
 void Item_Animate(ITEM *item)
 {
     item->touch_bits = 0;
@@ -821,20 +806,6 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 
     *rate = 10;
     return final * 10;
-}
-
-bool Item_TestFrameEqual(const ITEM *const item, const int16_t frame)
-{
-    return Anim_TestAbsFrameEqual(
-        item->frame_num, Item_GetAnim(item)->frame_base + frame);
-}
-
-bool Item_TestFrameRange(
-    const ITEM *const item, const int16_t start, const int16_t end)
-{
-    const ANIM *const anim = Item_GetAnim(item);
-    return Anim_TestAbsFrameRange(
-        item->frame_num, anim->frame_base + start, anim->frame_base + end);
 }
 
 ITEM *Item_Get(const int16_t item_num)

@@ -21,7 +21,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage);
 ANIM *Item_GetAnim(const ITEM *item);
 bool Item_TestAnimEqual(const ITEM *item, int16_t anim_idx);
 void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame);
-extern void Item_SwitchToObjAnim(
+void Item_SwitchToObjAnim(
     ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id);
-extern bool Item_TestFrameEqual(const ITEM *item, int16_t frame);
-extern bool Item_TestFrameRange(const ITEM *item, int16_t start, int16_t end);
+bool Item_TestFrameEqual(const ITEM *item, int16_t frame);
+bool Item_TestFrameRange(const ITEM *item, int16_t start, int16_t end);
