@@ -2,8 +2,13 @@
 
 #include "game/gamebuf.h"
 
-ANIM *g_Anims = NULL;
+static ANIM *m_Anims = NULL;
 static ANIM_BONE *m_Bones = NULL;
+
+void Anim_InitialiseAnims(const int32_t num_anims)
+{
+    m_Anims = GameBuf_Alloc(sizeof(ANIM) * num_anims, GBUF_ANIMS);
+}
 
 void Anim_InitialiseBones(const int32_t num_bones)
 {
@@ -12,7 +17,7 @@ void Anim_InitialiseBones(const int32_t num_bones)
 
 ANIM *Anim_GetAnim(const int32_t anim_idx)
 {
-    return &g_Anims[anim_idx];
+    return &m_Anims[anim_idx];
 }
 
 ANIM_BONE *Anim_GetBone(const int32_t bone_idx)

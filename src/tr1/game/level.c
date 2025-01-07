@@ -295,29 +295,8 @@ static void M_LoadAnims(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.anim_count = VFile_ReadS32(file);
     LOG_INFO("%d anims", m_LevelInfo.anim_count);
-    g_Anims = GameBuf_Alloc(
-        sizeof(ANIM) * (m_LevelInfo.anim_count + m_InjectionInfo->anim_count),
-        GBUF_ANIMS);
-    for (int32_t i = 0; i < m_LevelInfo.anim_count; i++) {
-        ANIM *const anim = Anim_GetAnim(i);
-
-        anim->frame_ofs = VFile_ReadU32(file);
-        const int16_t interpolation = VFile_ReadS16(file);
-        ASSERT(interpolation <= 0xFF);
-        anim->interpolation = interpolation & 0xFF;
-        anim->frame_size = 0;
-        anim->current_anim_state = VFile_ReadS16(file);
-        anim->velocity = VFile_ReadS32(file);
-        anim->acceleration = VFile_ReadS32(file);
-        anim->frame_base = VFile_ReadS16(file);
-        anim->frame_end = VFile_ReadS16(file);
-        anim->jump_anim_num = VFile_ReadS16(file);
-        anim->jump_frame_num = VFile_ReadS16(file);
-        anim->num_changes = VFile_ReadS16(file);
-        anim->change_idx = VFile_ReadS16(file);
-        anim->num_commands = VFile_ReadS16(file);
-        anim->command_idx = VFile_ReadS16(file);
-    }
+    Anim_InitialiseAnims(m_LevelInfo.anim_count + m_InjectionInfo->anim_count);
+    Level_ReadAnims(0, m_LevelInfo.anim_count, file, NULL);
     Benchmark_End(benchmark, NULL);
 }
 

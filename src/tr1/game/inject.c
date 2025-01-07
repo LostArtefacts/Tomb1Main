@@ -584,25 +584,9 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     }
     ASSERT(VFile_GetPos(fp) == frame_data_end);
 
+    Level_ReadAnims(level_info->anim_count, inj_info->anim_count, fp, NULL);
     for (int32_t i = 0; i < inj_info->anim_count; i++) {
         ANIM *const anim = Anim_GetAnim(level_info->anim_count + i);
-
-        anim->frame_ofs = VFile_ReadU32(fp);
-        const int16_t interpolation = VFile_ReadS16(fp);
-        ASSERT(interpolation <= 0xFF);
-        anim->interpolation = interpolation & 0xFF;
-        anim->frame_size = 0;
-        anim->current_anim_state = VFile_ReadS16(fp);
-        anim->velocity = VFile_ReadS32(fp);
-        anim->acceleration = VFile_ReadS32(fp);
-        anim->frame_base = VFile_ReadS16(fp);
-        anim->frame_end = VFile_ReadS16(fp);
-        anim->jump_anim_num = VFile_ReadS16(fp);
-        anim->jump_frame_num = VFile_ReadS16(fp);
-        anim->num_changes = VFile_ReadS16(fp);
-        anim->change_idx = VFile_ReadS16(fp);
-        anim->num_commands = VFile_ReadS16(fp);
-        anim->command_idx = VFile_ReadS16(fp);
 
         // Re-align to the level.
         anim->jump_anim_num += level_info->anim_count;

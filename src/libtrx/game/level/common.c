@@ -214,6 +214,41 @@ void Level_ReadObjectMeshes(
     Vector_Free(unique_indices);
 }
 
+void Level_ReadAnims(
+    const int32_t base_idx, const int32_t num_anims, VFILE *const file,
+    int32_t **frame_pointers)
+{
+    for (int32_t i = 0; i < num_anims; i++) {
+        ANIM *const anim = Anim_GetAnim(base_idx + i);
+#if TR_VERSION == 1
+        anim->frame_ofs = VFile_ReadU32(file);
+        const int16_t interpolation = VFile_ReadS16(file);
+        ASSERT(interpolation <= 0xFF);
+        anim->interpolation = interpolation & 0xFF;
+        anim->frame_size = 0;
+#else
+        const int32_t frame_idx = VFile_ReadS32(file);
+        if (frame_pointers != NULL) {
+            (*frame_pointers)[i] = frame_idx;
+        }
+        anim->frame_ptr = NULL; // filled later by the animation frame loader
+        anim->interpolation = VFile_ReadU8(file);
+        anim->frame_size = VFile_ReadU8(file);
+#endif
+        anim->current_anim_state = VFile_ReadS16(file);
+        anim->velocity = VFile_ReadS32(file);
+        anim->acceleration = VFile_ReadS32(file);
+        anim->frame_base = VFile_ReadS16(file);
+        anim->frame_end = VFile_ReadS16(file);
+        anim->jump_anim_num = VFile_ReadS16(file);
+        anim->jump_frame_num = VFile_ReadS16(file);
+        anim->num_changes = VFile_ReadS16(file);
+        anim->change_idx = VFile_ReadS16(file);
+        anim->num_commands = VFile_ReadS16(file);
+        anim->command_idx = VFile_ReadS16(file);
+    }
+}
+
 void Level_ReadAnimBones(
     const int32_t base_idx, const int32_t num_bones, VFILE *const file)
 {
