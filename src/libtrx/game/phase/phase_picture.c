@@ -5,6 +5,7 @@
 #include "game/game.h"
 #include "game/input.h"
 #include "game/output.h"
+#include "game/shell.h"
 #include "game/text.h"
 #include "memory.h"
 
@@ -52,9 +53,11 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
 
+    Input_Update();
+    Shell_ProcessInput();
+
     switch (p->state) {
     case STATE_FADE_IN:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()) {
             M_FadeOut(p);
         } else if (!Fader_IsActive(&p->fader)) {
@@ -64,7 +67,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_DISPLAY:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()
             || ClockTimer_CheckElapsed(
                 &p->timer,
@@ -77,7 +79,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_FADE_OUT:
-        Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back
             || !Fader_IsActive(&p->fader)) {
             return (PHASE_CONTROL) {
