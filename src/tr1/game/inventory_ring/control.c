@@ -351,7 +351,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (ring->motion.status == RNG_DONE) {
-        return M_Finish(ring);
+        const GAME_FLOW_COMMAND gf_cmd = M_Finish(ring);
+        // Returning to game – resume music
+        if (gf_cmd.action == GF_NOOP) {
+            Music_Unpause();
+            Sound_UnpauseAll();
+        }
+        return gf_cmd;
     }
 
     InvRing_CalcAdders(ring, INV_RING_ROTATE_DURATION);
@@ -947,11 +953,6 @@ void InvRing_Close(INV_RING *const ring)
     }
     if (g_Config.input.enable_buffering) {
         g_OldInputDB = (INPUT_STATE) { 0 };
-    }
-
-    if (ring->mode != INV_TITLE_MODE) {
-        Music_Unpause();
-        Sound_UnpauseAll();
     }
 
     g_GameInfo.inv_ring_shown = false;
