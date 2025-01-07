@@ -35,6 +35,11 @@ ITEM *Item_Find(const GAME_OBJECT_ID object_id)
     return NULL;
 }
 
+ANIM *Item_GetAnim(const ITEM *const item)
+{
+    return Anim_GetAnim(item->anim_num);
+}
+
 bool Item_TestAnimEqual(const ITEM *const item, const int16_t anim_idx)
 {
     const OBJECT *const object = Object_GetObject(item->object_id);

@@ -99,7 +99,6 @@ GAME_FLOW g_GameFlow;
 int32_t g_SoundEffectCount;
 OBJECT g_Objects[265] = { 0 };
 int16_t **g_Meshes = NULL;
-ANIM *g_Anims = NULL;
 int32_t g_RoomCount;
 ROOM *g_Rooms = NULL;
 int32_t g_FlipStatus;

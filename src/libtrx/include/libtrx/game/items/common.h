@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../anims.h"
 #include "./types.h"
 
 #include <stdbool.h>
@@ -17,6 +18,7 @@ void Item_TakeDamage(ITEM *item, int16_t damage, bool hit_status);
 // * Zero - don't deal any damage, disable body part explosions.
 int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage);
 
+ANIM *Item_GetAnim(const ITEM *item);
 bool Item_TestAnimEqual(const ITEM *item, int16_t anim_idx);
 void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame);
 extern void Item_SwitchToObjAnim(

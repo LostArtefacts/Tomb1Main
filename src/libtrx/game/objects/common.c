@@ -98,6 +98,11 @@ void Object_SwapMesh(
     m_MeshPointers[obj2->mesh_idx + mesh_num] = temp;
 }
 
+ANIM *Object_GetAnim(const OBJECT *const object, const int32_t anim_idx)
+{
+    return Anim_GetAnim(object->anim_idx + anim_idx);
+}
+
 ANIM_BONE *Object_GetBone(const OBJECT *const object, const int32_t bone_idx)
 {
     return Anim_GetBone(object->bone_idx + bone_idx);

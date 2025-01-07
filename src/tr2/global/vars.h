@@ -96,7 +96,6 @@ extern GAME_FLOW g_GameFlow;
 extern int32_t g_SoundEffectCount;
 extern OBJECT g_Objects[265];
 extern int16_t **g_Meshes;
-extern ANIM *g_Anims;
 extern int32_t g_RoomCount;
 extern ROOM *g_Rooms;
 extern int32_t g_FlipStatus;
