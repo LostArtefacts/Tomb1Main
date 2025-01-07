@@ -33,7 +33,7 @@ void Fader_Init(
             .initial = initial,
             .target = target,
             .duration = duration,
-            .debuff = target == FADER_BLACK ? 5.0 / (double)LOGIC_FPS : 0,
+            .debuff = target == FADER_BLACK ? 3.0 / (double)LOGIC_FPS : 0,
         });
 }
 
