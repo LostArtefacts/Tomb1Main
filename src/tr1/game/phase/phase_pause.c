@@ -13,6 +13,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/game/fader.h>
 #include <libtrx/game/ui/widgets/requester.h>
 #include <libtrx/memory.h>
 
@@ -32,6 +33,7 @@ typedef struct {
     bool is_ui_ready;
     UI_WIDGET *ui;
     TEXTSTRING *mode_text;
+    FADER back_fader;
 } M_PRIV;
 
 static void M_FadeIn(M_PRIV *p);
@@ -50,12 +52,12 @@ static void M_Draw(PHASE *phase);
 
 static void M_FadeIn(M_PRIV *const p)
 {
-    Output_FadeToSemiBlack(true);
+    Fader_Init(&p->back_fader, FADER_TRANSPARENT, FADER_SEMI_BLACK, 0.5);
 }
 
 static void M_FadeOut(M_PRIV *const p)
 {
-    Output_FadeToTransparent(true);
+    Fader_Init(&p->back_fader, FADER_ANY, FADER_TRANSPARENT, 0.3);
     p->state = STATE_FADE_OUT;
 }
 
@@ -193,7 +195,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
         break;
 
     case STATE_FADE_OUT:
-        if (!Output_FadeIsAnimating()) {
+        if (!Fader_IsActive(&p->back_fader)) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },
@@ -211,6 +213,7 @@ static void M_Draw(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Interpolation_Disable();
     Game_DrawScene(false);
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->back_fader));
     Interpolation_Enable();
     Output_AnimateFades();
     if (p->ui != NULL) {
