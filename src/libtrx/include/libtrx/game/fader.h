@@ -1,7 +1,14 @@
 #pragma once
 
+#include "clock/timer.h"
+
 #include <stdbool.h>
 #include <stdint.h>
+
+#define FADER_ANY (-1)
+#define FADER_TRANSPARENT 0
+#define FADER_SEMI_BLACK 127
+#define FADER_BLACK 255
 
 typedef struct {
     int32_t initial;
@@ -15,22 +22,15 @@ typedef struct {
 
 typedef struct {
     FADER_ARGS args;
-    bool is_active;
-    bool has_fired;
-    struct {
-        int32_t frame;
-        int32_t value;
-    } current;
+    CLOCK_TIMER timer;
 } FADER;
 
 void Fader_Init(FADER *fader, FADER_ARGS args);
-void Fader_InitEmpty(FADER *fader);
 void Fader_InitBlackToTransparent(FADER *fader, int32_t frames);
 void Fader_InitTransparentToBlack(FADER *fader, int32_t frames);
 void Fader_InitTransparentToSemiBlack(FADER *fader, int32_t frames);
 void Fader_InitAnyToBlack(FADER *fader, int32_t frames);
 void Fader_InitAnyToSemiBlack(FADER *fader, int32_t frames);
 bool Fader_IsActive(const FADER *fader);
-void Fader_Finish(FADER *fader);
 bool Fader_Control(FADER *fader);
 int32_t Fader_GetCurrentValue(const FADER *fader);
