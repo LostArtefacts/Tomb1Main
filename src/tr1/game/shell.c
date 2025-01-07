@@ -86,11 +86,12 @@ void Shell_Init(const char *gameflow_path)
     UI_Init();
 
     Input_Init();
-    Clock_Init();
     Sound_Init();
     Music_Init();
 
     M_LoadConfig();
+
+    Clock_Init();
 
     S_Shell_CreateWindow();
     S_Shell_Init();

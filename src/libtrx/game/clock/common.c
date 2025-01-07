@@ -11,10 +11,17 @@ static Uint64 m_InitCounter = 0;
 static Uint64 m_Frequency = 0;
 static double m_Accumulator = 0.0;
 
+static struct {
+    double real_time_at_last_change;
+    double sim_time_at_last_change;
+    double sim_speed;
+} m_Priv;
+
 void Clock_Init(void)
 {
     m_Frequency = SDL_GetPerformanceFrequency();
     m_InitCounter = SDL_GetPerformanceCounter();
+    Clock_SetSimSpeed(Clock_GetSpeedMultiplier());
 }
 
 size_t Clock_GetDateTime(char *const buffer, const size_t size)
@@ -113,4 +120,21 @@ int32_t Clock_WaitTick(void)
     m_LastCounter = SDL_GetPerformanceCounter();
 
     return frames;
+}
+
+double Clock_GetSimTime(void)
+{
+    const double real_now = Clock_GetHighPrecisionCounter();
+    const double real_delta = real_now - m_Priv.real_time_at_last_change;
+    return m_Priv.sim_time_at_last_change + real_delta * m_Priv.sim_speed;
+}
+
+void Clock_SetSimSpeed(const double new_speed)
+{
+    // First, figure out how much sim time has passed so far
+    const double prev_sim_time = Clock_GetSimTime();
+    // Then re-anchor the reference point
+    m_Priv.real_time_at_last_change = Clock_GetHighPrecisionCounter();
+    m_Priv.sim_time_at_last_change = prev_sim_time;
+    m_Priv.sim_speed = new_speed;
 }

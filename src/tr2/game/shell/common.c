@@ -342,11 +342,12 @@ void Shell_Main(void)
     Console_Init();
 
     Input_Init();
-    Clock_Init();
     Sound_Init();
     Music_Init();
 
     M_LoadConfig();
+
+    Clock_Init();
 
     if (!M_CreateGameWindow()) {
         Shell_ExitSystem("Failed to create game window");
