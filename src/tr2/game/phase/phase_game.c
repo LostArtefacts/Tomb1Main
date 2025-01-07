@@ -86,8 +86,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     GAME_FLOW_COMMAND gf_cmd;
     if (g_IsGameToExit && !p->exiting) {
         p->exiting = true;
-        Fader_Init(
-            &p->exit_fader, FADER_ANY, FADER_BLACK, FRAMES_PER_SECOND / 3);
+        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     } else {

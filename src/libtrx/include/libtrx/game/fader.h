@@ -15,9 +15,9 @@ typedef struct {
     int32_t target;
 
     // This value controls how much to keep the last frame after the animation
-    // is done.
-    int32_t debuff;
-    int32_t duration;
+    // is done (1.0 = one second).
+    double debuff;
+    double duration;
 } FADER_ARGS;
 
 typedef struct {
@@ -26,7 +26,6 @@ typedef struct {
 } FADER;
 
 void Fader_InitEx(FADER *fader, FADER_ARGS args);
-void Fader_Init(
-    FADER *fader, int32_t initial, int32_t target, int32_t duration);
+void Fader_Init(FADER *fader, int32_t initial, int32_t target, double duration);
 bool Fader_IsActive(const FADER *fader);
 int32_t Fader_GetCurrentValue(const FADER *fader);

@@ -36,7 +36,7 @@ static void M_FadeOut(M_PRIV *const p)
 {
     if (p->ring->mode == INV_TITLE_MODE) {
         p->state = STATE_FADE_OUT;
-        Fader_Init(&p->fader, FADER_ANY, FADER_BLACK, FRAMES_PER_SECOND / 3);
+        Fader_Init(&p->fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
     } else {
         p->state = STATE_EXIT;
     }
@@ -47,7 +47,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Fader_Init(
         &p->fader, FADER_BLACK, FADER_TRANSPARENT,
-        p->mode == INV_TITLE_MODE ? FRAMES_PER_SECOND / 3 : 0);
+        p->mode == INV_TITLE_MODE ? 1.0 / 3.0 : 0);
     p->ring = InvRing_Open(p->mode);
     if (p->ring == NULL) {
         return (PHASE_CONTROL) {

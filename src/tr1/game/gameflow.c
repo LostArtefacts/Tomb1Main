@@ -1143,10 +1143,10 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
-                .display_time = data->display_time * LOGIC_FPS,
+                .display_time = data->display_time,
+                .fade_in_time = 1.0,
+                .fade_out_time = 1.0,
                 .display_time_includes_fades = false,
-                .fade_in_time = LOGIC_FPS,
-                .fade_out_time = LOGIC_FPS,
             });
             command = PhaseExecutor_Run(phase);
             Phase_Picture_Destroy(phase);

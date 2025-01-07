@@ -286,10 +286,10 @@ GAME_FLOW_COMMAND DisplayCredits(void)
 
         PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
             .file_name = file_name,
-            .display_time = 15 * FRAMES_PER_SECOND,
+            .display_time = 15.0,
+            .fade_in_time = 0.5,
+            .fade_out_time = 0.5,
             .display_time_includes_fades = true,
-            .fade_in_time = FRAMES_PER_SECOND / 2,
-            .fade_out_time = FRAMES_PER_SECOND / 2,
         });
         const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
         Phase_Picture_Destroy(phase);
@@ -302,8 +302,8 @@ GAME_FLOW_COMMAND DisplayCredits(void)
     {
         PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
             .show_final_stats = true,
-            .fade_in_time = FRAMES_PER_SECOND / 2,
-            .fade_out_time = FRAMES_PER_SECOND / 2,
+            .fade_in_time = 0.5,
+            .fade_out_time = 0.5,
         });
         const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
 

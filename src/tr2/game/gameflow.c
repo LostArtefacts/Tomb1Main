@@ -472,8 +472,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 PHASE *const stats_phase =
                     Phase_Stats_Create((PHASE_STATS_ARGS) {
                         .show_final_stats = false,
-                        .fade_in_time = 0,
-                        .fade_out_time = 0,
+                        .fade_in_time = 0.0,
+                        .fade_out_time = 0.0,
                     });
                 gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);

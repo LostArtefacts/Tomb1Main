@@ -17,7 +17,7 @@ typedef enum {
 typedef struct {
     M_STATE state;
     FADER fader;
-    int32_t frames;
+    CLOCK_TIMER timer;
     PHASE_PICTURE_ARGS args;
 } M_PRIV;
 
@@ -25,7 +25,7 @@ static void M_FadeOut(M_PRIV *p);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
-static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
+static PHASE_CONTROL M_Control(PHASE *phase, int32_t num_frames);
 static void M_Draw(PHASE *phase);
 
 static void M_FadeOut(M_PRIV *const p)
@@ -39,6 +39,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Output_LoadBackgroundFromFile(p->args.file_name);
     Fader_Init(&p->fader, FADER_BLACK, FADER_TRANSPARENT, p->args.fade_in_time);
+    ClockTimer_Sync(&p->timer);
     return (PHASE_CONTROL) {};
 }
 
@@ -51,10 +52,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
 
-    if (p->args.display_time_includes_fades || p->state == STATE_DISPLAY) {
-        p->frames += num_frames;
-    }
-
     switch (p->state) {
     case STATE_FADE_IN:
         Input_Update();
@@ -62,13 +59,19 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             M_FadeOut(p);
         } else if (!Fader_IsActive(&p->fader)) {
             p->state = STATE_DISPLAY;
+            ClockTimer_Sync(&p->timer);
         }
         break;
 
     case STATE_DISPLAY:
         Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()
-            || p->frames >= p->args.display_time) {
+            || ClockTimer_CheckElapsed(
+                &p->timer,
+                p->args.display_time
+                    - (p->args.display_time_includes_fades
+                           ? p->args.fade_in_time + p->args.fade_out_time
+                           : 0.0))) {
             M_FadeOut(p);
         }
         break;

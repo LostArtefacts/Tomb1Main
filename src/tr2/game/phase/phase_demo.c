@@ -186,8 +186,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     M_PRIV *const p = phase->priv;
     if (g_IsGameToExit && !p->exiting) {
         p->exiting = true;
-        Fader_Init(
-            &p->exit_fader, FADER_ANY, FADER_BLACK, FRAMES_PER_SECOND / 3);
+        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,

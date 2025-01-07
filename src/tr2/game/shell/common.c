@@ -322,10 +322,10 @@ static void M_DisplayLegal(void)
 {
     PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
         .file_name = "data/legal.pcx",
-        .display_time = 6 * FRAMES_PER_SECOND,
+        .display_time = 6.0,
+        .fade_in_time = 1.0,
+        .fade_out_time = 1.0 / 3.0,
         .display_time_includes_fades = true,
-        .fade_in_time = FRAMES_PER_SECOND,
-        .fade_out_time = FRAMES_PER_SECOND / 3,
     });
     PhaseExecutor_Run(phase);
     Phase_Picture_Destroy(phase);
