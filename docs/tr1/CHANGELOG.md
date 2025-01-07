@@ -3,6 +3,7 @@
 - added an optional demo number argument to the `/demo` command
 - changed demo to be interrupted only by esc or action keys
 - changed the turbo cheat to also affect ingame timer (#2167)
+- changed the pause screen to wait before yielding control during fade out effect
 - fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
 - fixed a desync in the Lost Valley demo if responsive swim cancellation was enabled (#2113, regression from 4.6)
 - fixed the game hanging when Lara is on fire and enters the fly cheat on the same frame as reaching water (#2116, regression from 0.8)

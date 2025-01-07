@@ -24,17 +24,22 @@ typedef enum {
     STATE_DEFAULT,
     STATE_ASK,
     STATE_CONFIRM,
+    STATE_FADE_OUT,
 } STATE;
 
 typedef struct {
     STATE state;
-    bool is_ready;
-    TEXTSTRING *mode_text;
+    bool is_ui_ready;
     UI_WIDGET *ui;
+    TEXTSTRING *mode_text;
 } M_PRIV;
 
+static void M_FadeIn(M_PRIV *p);
+static void M_FadeOut(M_PRIV *p);
+static void M_PauseGame(M_PRIV *p);
+static void M_ReturnToGame(M_PRIV *p);
+static void M_CreateText(M_PRIV *p);
 static void M_RemoveText(M_PRIV *p);
-static void M_UpdateText(M_PRIV *p);
 static int32_t M_DisplayRequester(
     M_PRIV *p, const char *header, const char *option1, const char *option2);
 
@@ -43,13 +48,39 @@ static void M_End(PHASE *phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t nframes);
 static void M_Draw(PHASE *phase);
 
-static void M_RemoveText(M_PRIV *const p)
+static void M_FadeIn(M_PRIV *const p)
 {
-    Text_Remove(p->mode_text);
-    p->mode_text = NULL;
+    Output_FadeToSemiBlack(true);
 }
 
-static void M_UpdateText(M_PRIV *const p)
+static void M_FadeOut(M_PRIV *const p)
+{
+    Output_FadeToTransparent(true);
+    p->state = STATE_FADE_OUT;
+}
+
+static void M_PauseGame(M_PRIV *const p)
+{
+    Music_Pause();
+    Sound_PauseAll();
+    Overlay_HideGameInfo();
+    M_CreateText(p);
+    M_FadeIn(p);
+}
+
+static void M_ReturnToGame(M_PRIV *const p)
+{
+    Music_Unpause();
+    Sound_UnpauseAll();
+    M_RemoveText(p);
+    if (p->ui != NULL) {
+        p->ui->free(p->ui);
+        p->ui = NULL;
+    }
+    M_FadeOut(p);
+}
+
+static void M_CreateText(M_PRIV *const p)
 {
     if (p->mode_text == NULL) {
         p->mode_text = Text_Create(0, -24, GS(PAUSE_PAUSED));
@@ -58,11 +89,17 @@ static void M_UpdateText(M_PRIV *const p)
     }
 }
 
+static void M_RemoveText(M_PRIV *const p)
+{
+    Text_Remove(p->mode_text);
+    p->mode_text = NULL;
+}
+
 static int32_t M_DisplayRequester(
     M_PRIV *const p, const char *header, const char *option1,
     const char *option2)
 {
-    if (!p->is_ready) {
+    if (!p->is_ui_ready) {
         if (p->ui == NULL) {
             p->ui = UI_Requester_Create((UI_REQUESTER_SETTINGS) {
                 .is_selectable = true,
@@ -74,12 +111,12 @@ static int32_t M_DisplayRequester(
         UI_Requester_SetTitle(p->ui, header);
         UI_Requester_AddRowC(p->ui, option1, NULL);
         UI_Requester_AddRowC(p->ui, option2, NULL);
-        p->is_ready = true;
+        p->is_ui_ready = true;
     }
 
     const int32_t choice = UI_Requester_GetSelectedRow(p->ui);
     if (choice >= 0) {
-        p->is_ready = false;
+        p->is_ui_ready = false;
     }
     return choice;
 }
@@ -89,14 +126,11 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PRIV *const p = phase->priv;
 
     g_OldInputDB = g_Input;
-    Overlay_HideGameInfo();
     Output_SetupAboveWater(false);
-    Music_Pause();
-    Sound_PauseAll();
-    Output_FadeToSemiBlack(true);
 
-    p->is_ready = false;
-    p->mode_text = NULL;
+    M_PauseGame(p);
+
+    p->is_ui_ready = false;
     p->state = STATE_DEFAULT;
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
@@ -104,17 +138,16 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
 static void M_End(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    Output_FadeToTransparent(true);
     M_RemoveText(p);
     if (p->ui != NULL) {
         p->ui->free(p->ui);
+        p->ui = NULL;
     }
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
 {
     M_PRIV *const p = phase->priv;
-    M_UpdateText(p);
 
     Input_Update();
     Shell_ProcessInput();
@@ -126,12 +159,8 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
     switch (p->state) {
     case STATE_DEFAULT:
         if (g_InputDB.pause) {
-            Music_Unpause();
-            Sound_UnpauseAll();
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_NOOP },
-            };
+            M_ReturnToGame(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (g_InputDB.option) {
             p->state = STATE_ASK;
         }
@@ -141,12 +170,8 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
         const int32_t choice = M_DisplayRequester(
             p, GS(PAUSE_EXIT_TO_TITLE), GS(PAUSE_CONTINUE), GS(PAUSE_QUIT));
         if (choice == 0) {
-            Music_Unpause();
-            Sound_UnpauseAll();
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_NOOP },
-            };
+            M_ReturnToGame(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (choice == 1) {
             p->state = STATE_CONFIRM;
         }
@@ -162,8 +187,13 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
                 .gf_cmd = { .action = GF_EXIT_TO_TITLE },
             };
         } else if (choice == 1) {
-            Music_Unpause();
-            Sound_UnpauseAll();
+            M_ReturnToGame(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+        }
+        break;
+
+    case STATE_FADE_OUT:
+        if (!Output_FadeIsAnimating()) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },
