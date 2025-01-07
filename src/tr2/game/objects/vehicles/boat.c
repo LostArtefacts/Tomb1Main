@@ -738,7 +738,7 @@ void Boat_Control(const int16_t item_num)
             const int16_t lara_anim_num =
                 lara->anim_num - g_Objects[O_LARA_BOAT].anim_idx;
             const int16_t lara_frame_num =
-                lara->frame_num - g_Anims[g_LaraItem->anim_num].frame_base;
+                lara->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
             Item_SwitchToAnim(boat, lara_anim_num, lara_frame_num);
         }
 

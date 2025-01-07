@@ -208,22 +208,23 @@ void Flare_Create(const bool thrown)
 
 void Flare_SetArm(const int32_t frame)
 {
-    int16_t anim_base;
-
+    int16_t anim_idx;
     if (frame < LF_FL_THROW) {
-        anim_base = g_Objects[O_LARA_FLARE].anim_idx;
+        anim_idx = 0;
     } else if (frame < LF_FL_DRAW) {
-        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 1;
+        anim_idx = 1;
     } else if (frame < LF_FL_IGNITE) {
-        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 2;
+        anim_idx = 2;
     } else if (frame < LF_FL_2_HOLD) {
-        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 3;
+        anim_idx = 3;
     } else {
-        anim_base = g_Objects[O_LARA_FLARE].anim_idx + 4;
+        anim_idx = 4;
     }
 
-    g_Lara.left_arm.anim_num = anim_base;
-    g_Lara.left_arm.frame_base = g_Anims[g_Lara.left_arm.anim_num].frame_ptr;
+    const OBJECT *const object = Object_GetObject(O_LARA_FLARE);
+    const ANIM *const anim = Object_GetAnim(object, anim_idx);
+    g_Lara.left_arm.anim_num = object->anim_idx + anim_idx;
+    g_Lara.left_arm.frame_base = anim->frame_ptr;
 }
 
 void Flare_Draw(void)

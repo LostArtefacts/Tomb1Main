@@ -512,16 +512,18 @@ void Room_DrawAllRooms(const int16_t current_room)
         g_PhdWinRight = m_OutsideRight;
         g_PhdWinBottom = m_OutsideBottom;
         g_PhdWinTop = m_OutsideTop;
-        if (g_Objects[O_SKYBOX].loaded) {
+
+        const OBJECT *const skybox = Object_GetObject(O_SKYBOX);
+        if (skybox->loaded) {
             Output_SetupAboveWater(g_CameraUnderwater);
             Matrix_Push();
             g_MatrixPtr->_03 = 0;
             g_MatrixPtr->_13 = 0;
             g_MatrixPtr->_23 = 0;
             const int16_t *frame =
-                g_Anims[g_Objects[O_SKYBOX].anim_idx].frame_ptr + FBBOX_ROT;
+                Object_GetAnim(skybox, 0)->frame_ptr + FBBOX_ROT;
             Matrix_RotYXZsuperpack(&frame, 0);
-            Output_InsertSkybox(g_Meshes[g_Objects[O_SKYBOX].mesh_idx]);
+            Output_InsertSkybox(g_Meshes[skybox->mesh_idx]);
             Matrix_Pop();
         } else {
             m_Outside = -1;

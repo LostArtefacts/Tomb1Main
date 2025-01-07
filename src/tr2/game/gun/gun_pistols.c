@@ -14,20 +14,22 @@ static bool m_UziLeft = false;
 
 void Gun_Pistols_SetArmInfo(LARA_ARM *const arm, const int32_t frame)
 {
-    const int16_t anim_idx = g_Objects[O_LARA_PISTOLS].anim_idx;
-
+    int16_t anim_idx;
     if (frame >= LF_G_AIM_START && frame <= LF_G_AIM_END) {
-        arm->anim_num = anim_idx;
+        anim_idx = 0;
     } else if (frame >= LF_G_UNDRAW_START && frame <= LF_G_UNDRAW_END) {
-        arm->anim_num = anim_idx + 1;
+        anim_idx = 1;
     } else if (frame >= LF_G_DRAW_START && frame <= LF_G_DRAW_END) {
-        arm->anim_num = anim_idx + 2;
+        anim_idx = 2;
     } else if (frame >= LF_G_RECOIL_START && frame <= LF_G_RECOIL_END) {
-        arm->anim_num = anim_idx + 3;
+        anim_idx = 3;
     }
 
+    const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
+    const ANIM *const anim = Object_GetAnim(object, anim_idx);
+    arm->anim_num = object->anim_idx + anim_idx;
     arm->frame_num = frame;
-    arm->frame_base = g_Anims[arm->anim_num].frame_ptr;
+    arm->frame_base = anim->frame_ptr;
 }
 
 void Gun_Pistols_Draw(const LARA_GUN_TYPE weapon_type)

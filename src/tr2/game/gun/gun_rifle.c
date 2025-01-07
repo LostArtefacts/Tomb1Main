@@ -267,13 +267,13 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
     }
 
     g_Lara.left_arm.anim_num = item->anim_num;
-    g_Lara.left_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.left_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
     g_Lara.right_arm.anim_num = item->anim_num;
-    g_Lara.right_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.right_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
 }
 
 void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
@@ -302,13 +302,13 @@ void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
     }
 
     g_Lara.left_arm.anim_num = item->anim_num;
-    g_Lara.left_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.left_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
     g_Lara.right_arm.anim_num = item->anim_num;
-    g_Lara.right_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.right_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
 }
 
 void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
@@ -434,11 +434,11 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
 
     Item_Animate(item);
     g_Lara.left_arm.anim_num = item->anim_num;
-    g_Lara.left_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.left_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
     g_Lara.right_arm.anim_num = item->anim_num;
-    g_Lara.right_arm.frame_base = g_Anims[item->anim_num].frame_ptr;
+    g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.right_arm.frame_num =
-        item->frame_num - g_Anims[item->anim_num].frame_base;
+        item->frame_num - Item_GetAnim(item)->frame_base;
 }

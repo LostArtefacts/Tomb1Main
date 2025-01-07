@@ -282,8 +282,9 @@ void Gun_InitialiseNewWeapon(void)
         break;
 
     default:
-        g_Lara.left_arm.frame_base = g_Anims[g_LaraItem->anim_num].frame_ptr;
-        g_Lara.right_arm.frame_base = g_Anims[g_LaraItem->anim_num].frame_ptr;
+        const ANIM *const anim = Item_GetAnim(g_LaraItem);
+        g_Lara.left_arm.frame_base = anim->frame_ptr;
+        g_Lara.right_arm.frame_base = anim->frame_ptr;
         break;
     }
 }

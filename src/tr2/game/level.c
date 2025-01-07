@@ -240,7 +240,7 @@ static int32_t M_LoadAnims(VFILE *const file, int32_t **frame_pointers)
     }
 
     for (int32_t i = 0; i < num_anims; i++) {
-        ANIM *const anim = &g_Anims[i];
+        ANIM *const anim = Anim_GetAnim(i);
         const int32_t frame_idx = VFile_ReadS32(file);
         if (frame_pointers != NULL) {
             (*frame_pointers)[i] = frame_idx;
@@ -828,7 +828,7 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     M_LoadAnimFrames(file);
 
     for (int32_t i = 0; i < num_anims; i++) {
-        ANIM *const anim = &g_Anims[i];
+        ANIM *const anim = Anim_GetAnim(i);
         // TODO: this is horrible
         anim->frame_ptr = ((int16_t *)g_AnimFrames) + frame_pointers[i] / 2;
     }

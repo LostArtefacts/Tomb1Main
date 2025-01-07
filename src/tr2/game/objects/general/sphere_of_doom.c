@@ -90,7 +90,7 @@ void SphereOfDoom_Draw(const ITEM *const item)
     mptr->_22 = (mptr->_22 * item->timer) >> 8;
 
     const ANIM_FRAME *const frame_ptr =
-        (ANIM_FRAME *)g_Anims[item->anim_num].frame_ptr;
+        (ANIM_FRAME *)Item_GetAnim(item)->frame_ptr;
     const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
     if (clip) {
         Output_CalculateObjectLighting(item, &frame_ptr->bounds);

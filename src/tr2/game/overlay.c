@@ -357,7 +357,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 {
     const OBJECT *const obj = pickup->inv_object;
     const ANIM_FRAME *const frame =
-        (ANIM_FRAME *)g_Anims[obj->anim_idx].frame_ptr;
+        (ANIM_FRAME *)Object_GetAnim(obj, 0)->frame_ptr;
 
     float ease = 1.0f;
     switch (pickup->phase) {

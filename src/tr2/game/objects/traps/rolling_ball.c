@@ -132,7 +132,7 @@ void RollingBall_Control(const int16_t item_num)
         item->goal_anim_state = TRAP_SET;
         item->current_anim_state = TRAP_SET;
         Item_SwitchToAnim(item, 0, 0);
-        item->goal_anim_state = g_Anims[item->anim_num].current_anim_state;
+        item->goal_anim_state = Item_GetAnim(item)->current_anim_state;
         item->current_anim_state = item->goal_anim_state;
         item->required_anim_state = TRAP_SET;
         Item_RemoveActive(item_num);

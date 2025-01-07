@@ -105,7 +105,7 @@ static void M_DrawItem(
 
     ANIM_FRAME *frame_ptr =
         (ANIM_FRAME *)&obj->frame_base
-            [inv_item->current_frame * g_Anims[obj->anim_idx].frame_size];
+            [inv_item->current_frame * Object_GetAnim(obj, 0)->frame_size];
 
     Matrix_Push();
     const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);

@@ -125,7 +125,7 @@ void Item_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
     Item_SwitchToAnim(item, 0, 0);
-    item->goal_anim_state = g_Anims[item->anim_num].current_anim_state;
+    item->goal_anim_state = Item_GetAnim(item)->current_anim_state;
     item->current_anim_state = item->goal_anim_state;
     item->required_anim_state = 0;
     item->rot.x = 0;
@@ -463,7 +463,7 @@ void Item_SwitchToObjAnim(
     const OBJECT *const object = Object_GetObject(object_id);
     item->anim_num = object->anim_idx + anim_idx;
 
-    const ANIM *const anim = &g_Anims[item->anim_num];
+    const ANIM *const anim = Item_GetAnim(item);
     if (frame < 0) {
         item->frame_num = anim->frame_end + frame + 1;
     } else {
@@ -474,15 +474,15 @@ void Item_SwitchToObjAnim(
 bool Item_TestFrameEqual(const ITEM *const item, const int16_t frame)
 {
     return Anim_TestAbsFrameEqual(
-        item->frame_num, g_Anims[item->anim_num].frame_base + frame);
+        item->frame_num, Item_GetAnim(item)->frame_base + frame);
 }
 
 bool Item_TestFrameRange(
     const ITEM *const item, const int16_t start, const int16_t end)
 {
     return Anim_TestAbsFrameRange(
-        item->frame_num, g_Anims[item->anim_num].frame_base + start,
-        g_Anims[item->anim_num].frame_base + end);
+        item->frame_num, Item_GetAnim(item)->frame_base + start,
+        Item_GetAnim(item)->frame_base + end);
 }
 
 void Item_Animate(ITEM *const item)
@@ -490,13 +490,13 @@ void Item_Animate(ITEM *const item)
     item->hit_status = 0;
     item->touch_bits = 0;
 
-    const ANIM *anim = &g_Anims[item->anim_num];
+    const ANIM *anim = Item_GetAnim(item);
 
     item->frame_num++;
 
     if (anim->num_changes > 0) {
         if (Item_GetAnimChange(item, anim)) {
-            anim = &g_Anims[item->anim_num];
+            anim = Item_GetAnim(item);
             item->current_anim_state = anim->current_anim_state;
 
             if (item->required_anim_state == anim->current_anim_state) {
@@ -542,7 +542,7 @@ void Item_Animate(ITEM *const item)
 
         item->anim_num = anim->jump_anim_num;
         item->frame_num = anim->jump_frame_num;
-        anim = &g_Anims[item->anim_num];
+        anim = Item_GetAnim(item);
 
         if (item->current_anim_state != anim->current_anim_state) {
             item->current_anim_state = anim->current_anim_state;
@@ -695,7 +695,7 @@ int32_t Item_IsTriggerActive(ITEM *const item)
 
 int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 {
-    const ANIM *const anim = &g_Anims[item->anim_num];
+    const ANIM *const anim = Item_GetAnim(item);
     const int32_t cur_frame_num = item->frame_num - anim->frame_base;
     const int32_t size = anim->frame_size;
     const int32_t key_frame_span = anim->interpolation;

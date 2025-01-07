@@ -921,7 +921,7 @@ int32_t Skidoo_Control(void)
         const int16_t lara_anim_num =
             g_LaraItem->anim_num - g_Objects[O_LARA_SKIDOO].anim_idx;
         const int16_t lara_frame_num =
-            g_LaraItem->frame_num - g_Anims[g_LaraItem->anim_num].frame_base;
+            g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
         Item_SwitchToObjAnim(
             skidoo, lara_anim_num, lara_frame_num, O_SKIDOO_FAST);
     }

@@ -60,16 +60,17 @@ void Lara_Draw(const ITEM *const item)
         frame = frames[0];
     } else {
         // clang-format off
-        LARA_ANIMATION anim;
+        LARA_ANIMATION anim_idx;
         switch (g_Lara.hit_direction) {
-        case DIR_EAST:  anim = LA_HIT_LEFT; break;
-        case DIR_SOUTH: anim = LA_HIT_BACK; break;
-        case DIR_WEST:  anim = LA_HIT_RIGHT; break;
-        default:        anim = LA_HIT_FRONT; break;
+        case DIR_EAST:  anim_idx = LA_HIT_LEFT; break;
+        case DIR_SOUTH: anim_idx = LA_HIT_BACK; break;
+        case DIR_WEST:  anim_idx = LA_HIT_RIGHT; break;
+        default:        anim_idx = LA_HIT_FRONT; break;
         }
         // clang-format on
-        frame = (ANIM_FRAME *)(g_Anims[anim].frame_ptr
-                               + g_Lara.hit_frame * g_Anims[anim].frame_size);
+        const ANIM *const anim = Object_GetAnim(object, anim_idx);
+        frame = (ANIM_FRAME *)(anim->frame_ptr
+                               + g_Lara.hit_frame * anim->frame_size);
     }
 
     if (g_Lara.skidoo == NO_ITEM) {
@@ -116,10 +117,10 @@ void Lara_Draw(const ITEM *const item)
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
             || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
-        mesh_rots = &g_Lara.right_arm.frame_base
-                         [g_Lara.right_arm.frame_num
-                              * g_Anims[g_Lara.right_arm.anim_num].frame_size
-                          + FBBOX_ROT];
+        const ANIM *const anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
+        mesh_rots =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num * anim->frame_size + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots, 7);
     } else {
         Matrix_RotYXZsuperpack(&mesh_rots, 0);
@@ -171,11 +172,11 @@ void Lara_Draw(const ITEM *const item)
         Matrix_Push();
         Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         if (g_Lara.flare_control_left) {
+            const ANIM *const anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
             mesh_rots =
                 &g_Lara.left_arm.frame_base
-                     [g_Anims[g_Lara.left_arm.anim_num].frame_size
-                          * (g_Lara.left_arm.frame_num
-                             - g_Anims[g_Lara.left_arm.anim_num].frame_base)
+                     [anim->frame_size
+                          * (g_Lara.left_arm.frame_num - anim->frame_base)
                       + FBBOX_ROT];
             Matrix_RotYXZsuperpack(&mesh_rots, 11);
         } else {
@@ -195,7 +196,7 @@ void Lara_Draw(const ITEM *const item)
 
     case LGT_PISTOLS:
     case LGT_MAGNUMS:
-    case LGT_UZIS:
+    case LGT_UZIS: {
         Matrix_Push();
         Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         g_MatrixPtr->_00 = item_matrix._00;
@@ -210,12 +211,11 @@ void Lara_Draw(const ITEM *const item)
         Matrix_RotYXZ(
             g_Lara.right_arm.rot.y, g_Lara.right_arm.rot.x,
             g_Lara.right_arm.rot.z);
-        mesh_rots =
-            &g_Lara.right_arm.frame_base
-                 [g_Anims[g_Lara.right_arm.anim_num].frame_size
-                      * (g_Lara.right_arm.frame_num
-                         - g_Anims[g_Lara.right_arm.anim_num].frame_base)
-                  + FBBOX_ROT];
+        const ANIM *anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
+        mesh_rots = &g_Lara.right_arm.frame_base
+                         [anim->frame_size
+                              * (g_Lara.right_arm.frame_num - anim->frame_base)
+                          + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots, 8);
         Output_InsertPolygons(g_Lara.mesh_ptrs[LM_UARM_R], clip);
 
@@ -241,10 +241,10 @@ void Lara_Draw(const ITEM *const item)
         Matrix_RotYXZ(
             g_Lara.left_arm.rot.y, g_Lara.left_arm.rot.x,
             g_Lara.left_arm.rot.z);
+        anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
         mesh_rots = &g_Lara.left_arm.frame_base
-                         [g_Anims[g_Lara.left_arm.anim_num].frame_size
-                              * (g_Lara.left_arm.frame_num
-                                 - g_Anims[g_Lara.left_arm.anim_num].frame_base)
+                         [anim->frame_size
+                              * (g_Lara.left_arm.frame_num - anim->frame_base)
                           + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots, 11);
         Output_InsertPolygons(g_Lara.mesh_ptrs[LM_UARM_L], clip);
@@ -262,17 +262,18 @@ void Lara_Draw(const ITEM *const item)
 
         Matrix_Pop();
         break;
+    }
 
     case LGT_SHOTGUN:
     case LGT_M16:
     case LGT_GRENADE:
-    case LGT_HARPOON:
+    case LGT_HARPOON: {
         Matrix_Push();
         Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
-        mesh_rots = &g_Lara.right_arm.frame_base
-                         [g_Lara.right_arm.frame_num
-                              * g_Anims[g_Lara.right_arm.anim_num].frame_size
-                          + FBBOX_ROT];
+        const ANIM *const anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
+        mesh_rots =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num * anim->frame_size + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots, 8);
         Output_InsertPolygons(g_Lara.mesh_ptrs[LM_UARM_R], clip);
 
@@ -296,6 +297,7 @@ void Lara_Draw(const ITEM *const item)
 
         Matrix_Pop();
         break;
+    }
 
     default:
         break;
@@ -368,10 +370,10 @@ void Lara_Draw_I(
         && ((g_Items[g_Lara.weapon_item].current_anim_state) == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
             || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
-        mesh_rots_2 = &g_Lara.right_arm.frame_base
-                           [g_Lara.right_arm.frame_num
-                                * g_Anims[g_Lara.right_arm.anim_num].frame_size
-                            + FBBOX_ROT];
+        const ANIM *const anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
+        mesh_rots_2 =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num * anim->frame_size + FBBOX_ROT];
         mesh_rots_1 = mesh_rots_2;
         Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 7);
     } else {
@@ -426,19 +428,14 @@ void Lara_Draw_I(
         Matrix_Push_I();
         Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
         if (g_Lara.flare_control_left) {
+            const ANIM *const anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
             mesh_rots_1 =
                 &g_Lara.left_arm.frame_base
-                     [g_Anims[g_Lara.left_arm.anim_num].frame_size
-                          * (g_Lara.left_arm.frame_num
-                             - g_Anims[g_Lara.left_arm.anim_num].frame_base)
+                     [anim->frame_size
+                          * (g_Lara.left_arm.frame_num - anim->frame_base)
                       + FBBOX_ROT];
 
-            mesh_rots_2 =
-                &g_Lara.left_arm.frame_base
-                     [g_Anims[g_Lara.left_arm.anim_num].frame_size
-                          * (g_Lara.left_arm.frame_num
-                             - g_Anims[g_Lara.left_arm.anim_num].frame_base)
-                      + FBBOX_ROT];
+            mesh_rots_2 = mesh_rots_1;
             Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 11);
         } else {
             Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
@@ -461,18 +458,18 @@ void Lara_Draw_I(
 
     case LGT_PISTOLS:
     case LGT_MAGNUMS:
-    case LGT_UZIS:
+    case LGT_UZIS: {
         Matrix_Push_I();
         Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
         Matrix_InterpolateArm();
         Matrix_RotYXZ(
             g_Lara.right_arm.rot.y, g_Lara.right_arm.rot.x,
             g_Lara.right_arm.rot.z);
+        const ANIM *anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
         mesh_rots_1 =
             &g_Lara.right_arm.frame_base
-                 [g_Anims[g_Lara.right_arm.anim_num].frame_size
-                      * (g_Lara.right_arm.frame_num
-                         - g_Anims[g_Lara.right_arm.anim_num].frame_base)
+                 [anim->frame_size
+                      * (g_Lara.right_arm.frame_num - anim->frame_base)
                   + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots_1, 8);
         Output_InsertPolygons(g_Lara.mesh_ptrs[LM_UARM_R], clip);
@@ -491,12 +488,11 @@ void Lara_Draw_I(
         Matrix_RotYXZ(
             g_Lara.left_arm.rot.y, g_Lara.left_arm.rot.x,
             g_Lara.left_arm.rot.z);
-        mesh_rots_1 =
-            &g_Lara.left_arm.frame_base
-                 [g_Anims[g_Lara.left_arm.anim_num].frame_size
-                      * (g_Lara.left_arm.frame_num
-                         - g_Anims[g_Lara.left_arm.anim_num].frame_base)
-                  + FBBOX_ROT];
+        anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
+        mesh_rots_1 = &g_Lara.left_arm.frame_base
+                           [anim->frame_size
+                                * (g_Lara.left_arm.frame_num - anim->frame_base)
+                            + FBBOX_ROT];
         Matrix_RotYXZsuperpack(&mesh_rots_1, 11);
         Output_InsertPolygons(g_Lara.mesh_ptrs[LM_UARM_L], clip);
 
@@ -512,21 +508,19 @@ void Lara_Draw_I(
         }
         Matrix_Pop();
         break;
+    }
 
     case LGT_SHOTGUN:
     case LGT_M16:
     case LGT_GRENADE:
-    case LGT_HARPOON:
+    case LGT_HARPOON: {
         Matrix_Push_I();
         Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
-        mesh_rots_1 = &g_Lara.right_arm.frame_base
-                           [g_Lara.right_arm.frame_num
-                                * g_Anims[g_Lara.right_arm.anim_num].frame_size
-                            + FBBOX_ROT];
-        mesh_rots_2 = &g_Lara.right_arm.frame_base
-                           [g_Lara.right_arm.frame_num
-                                * g_Anims[g_Lara.right_arm.anim_num].frame_size
-                            + FBBOX_ROT];
+        const ANIM *const anim = Anim_GetAnim(g_Lara.right_arm.anim_num);
+        mesh_rots_1 =
+            &g_Lara.right_arm.frame_base
+                 [g_Lara.right_arm.frame_num * anim->frame_size + FBBOX_ROT];
+        mesh_rots_2 = mesh_rots_1;
         Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 8);
         Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_UARM_R], clip);
 
@@ -549,6 +543,7 @@ void Lara_Draw_I(
         }
         Matrix_Pop();
         break;
+    }
 
     default:
         break;

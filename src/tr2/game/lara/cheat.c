@@ -100,8 +100,10 @@ static void M_ResetGunStatus(void)
     g_Lara.right_arm.lock = 0;
     g_Lara.left_arm.anim_num = g_LaraItem->anim_num;
     g_Lara.right_arm.anim_num = g_LaraItem->anim_num;
-    g_Lara.left_arm.frame_base = g_Anims[g_LaraItem->anim_num].frame_ptr;
-    g_Lara.right_arm.frame_base = g_Anims[g_LaraItem->anim_num].frame_ptr;
+
+    const ANIM *const anim = Item_GetAnim(g_LaraItem);
+    g_Lara.left_arm.frame_base = anim->frame_ptr;
+    g_Lara.right_arm.frame_base = anim->frame_ptr;
 }
 
 void Lara_Cheat_EndLevel(void)

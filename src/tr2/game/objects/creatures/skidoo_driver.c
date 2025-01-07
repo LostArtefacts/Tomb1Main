@@ -258,7 +258,7 @@ void SkidooDriver_Control(const int16_t driver_item_num)
         const int16_t anim_num =
             skidoo_item->anim_num - g_Objects[O_SKIDOO_ARMED].anim_idx;
         const int16_t frame_num =
-            skidoo_item->frame_num - g_Anims[skidoo_item->anim_num].frame_base;
+            skidoo_item->frame_num - Item_GetAnim(skidoo_item)->frame_base;
         Item_SwitchToAnim(driver_item, anim_num, frame_num);
     }
 }

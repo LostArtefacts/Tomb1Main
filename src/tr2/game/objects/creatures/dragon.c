@@ -452,7 +452,7 @@ void Dragon_Control(const int16_t item_num)
     const int16_t anim_num =
         dragon_front_item->anim_num - g_Objects[O_DRAGON_FRONT].anim_idx;
     const int16_t frame_num = dragon_front_item->frame_num
-        - g_Anims[dragon_front_item->anim_num].frame_base;
+        - Item_GetAnim(dragon_front_item)->frame_base;
     Item_SwitchToAnim(dragon_back_item, anim_num, frame_num);
     dragon_back_item->pos.x = dragon_front_item->pos.x;
     dragon_back_item->pos.y = dragon_front_item->pos.y;

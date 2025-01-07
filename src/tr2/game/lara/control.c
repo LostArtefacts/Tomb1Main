@@ -690,9 +690,9 @@ void Lara_Animate(ITEM *const item)
 {
     item->frame_num++;
 
-    const ANIM *anim = &g_Anims[item->anim_num];
+    const ANIM *anim = Item_GetAnim(item);
     if (anim->num_changes > 0 && Item_GetAnimChange(item, anim)) {
-        anim = &g_Anims[item->anim_num];
+        anim = Item_GetAnim(item);
         item->current_anim_state = anim->current_anim_state;
     }
 
@@ -738,7 +738,7 @@ void Lara_Animate(ITEM *const item)
 
         item->anim_num = anim->jump_anim_num;
         item->frame_num = anim->jump_frame_num;
-        anim = &g_Anims[item->anim_num];
+        anim = Item_GetAnim(item);
         item->current_anim_state = anim->current_anim_state;
     }
 
