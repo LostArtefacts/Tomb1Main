@@ -237,7 +237,6 @@ void Shell_Main(void)
                 intro_played = true;
             }
 
-            Savegame_InitCurrentInfo();
             if (!Level_Initialise(g_GameFlow.title_level_num)) {
                 command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 break;

@@ -172,6 +172,8 @@ void InvRing_Draw(INV_RING *const ring)
         Game_DrawScene(false);
         Interpolation_Enable();
 
+        Output_DrawBlackRectangle(Fader_GetCurrentValue(&ring->back_fader));
+
         int32_t width = Screen_GetResWidth();
         int32_t height = Screen_GetResHeight();
         Viewport_Init(0, 0, width, height);
@@ -195,7 +197,9 @@ void InvRing_Draw(INV_RING *const ring)
     Matrix_RotYXZ(
         ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
 
-    if (!(g_InvMode == INV_TITLE_MODE && Output_FadeIsAnimating()
+    if (!(g_InvMode == INV_TITLE_MODE
+          && (Fader_IsActive(&ring->top_fader)
+              || Fader_IsActive(&ring->back_fader))
           && ring->motion.status == RNG_OPENING)) {
         PHD_ANGLE angle = 0;
         for (int i = 0; i < ring->number_of_objects; i++) {
@@ -236,10 +240,15 @@ void InvRing_Draw(INV_RING *const ring)
     }
 
     if ((ring->motion.status != RNG_OPENING
-         || (g_InvMode != INV_TITLE_MODE || !Output_FadeIsAnimating()))
+         || (g_InvMode != INV_TITLE_MODE
+             || !(
+                 Fader_IsActive(&ring->top_fader)
+                 || Fader_IsActive(&ring->back_fader))))
         && ring->motion.status != RNG_DONE) {
         for (int i = 0; i < num_frames; i++) {
             InvRing_DoMotions(ring);
         }
     }
+
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&ring->top_fader));
 }

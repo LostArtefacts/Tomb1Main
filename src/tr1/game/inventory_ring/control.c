@@ -26,6 +26,11 @@
 #include <libtrx/game/inventory_ring/priv.h>
 #include <libtrx/memory.h>
 
+#define INV_RING_FADE_TIME_FAST                                                \
+    (CLOSE_FRAMES / INV_RING_FRAMES / (double)LOGIC_FPS)
+#define INV_RING_FADE_TIME_SLOW (INV_RING_FADE_TIME_FAST + 1. / 5.)
+#define INV_RING_FADE_TIME_TITLE_FINISH 0.5
+
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
 static CLOCK_TIMER m_DemoTimer = { .type = CLOCK_TIMER_SIM };
@@ -45,7 +50,7 @@ static void M_RingActive(INV_RING *ring);
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
-static GAME_FLOW_COMMAND M_Finish(INV_RING *ring);
+static GAME_FLOW_COMMAND M_Finish(INV_RING *ring, const bool apply_changes);
 static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
 static bool M_CheckDemoTimer(const INV_RING *ring);
 
@@ -223,8 +228,12 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
     return true;
 }
 
-static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
+static GAME_FLOW_COMMAND M_Finish(
+    INV_RING *const ring, const bool apply_changes)
 {
+    // Make this function not have any side effects.
+    // Consider adding new GF_ constants, but research other solutions first.
+
     if (m_StartLevel != -1) {
         return (GAME_FLOW_COMMAND) {
             .action = GF_SELECT_GAME,
@@ -258,16 +267,18 @@ static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
             };
 
         case PASSPORT_MODE_NEW_GAME:
-            Savegame_InitCurrentInfo();
+            if (apply_changes) {
+                Savegame_InitCurrentInfo();
+            }
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
                 .param = g_GameFlow.first_level_num,
             };
 
         case PASSPORT_MODE_SAVE_GAME:
-            Savegame_Save(g_GameInfo.current_save_slot);
-            Music_Unpause();
-            Sound_UnpauseAll();
+            if (apply_changes) {
+                Savegame_Save(g_GameInfo.current_save_slot);
+            }
             return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 
         case PASSPORT_MODE_RESTART:
@@ -289,7 +300,9 @@ static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
         }
 
     case O_PHOTO_OPTION:
-        g_GameInfo.current_save_slot = -1;
+        if (apply_changes) {
+            g_GameInfo.current_save_slot = -1;
+        }
         return (GAME_FLOW_COMMAND) {
             .action = GF_START_GYM,
             .param = g_GameFlow.gym_level_num,
@@ -311,7 +324,9 @@ static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
     case O_PUZZLE_OPTION_4:
     case O_LEADBAR_OPTION:
     case O_SCION_OPTION:
-        Lara_UseItem(m_InvChosen);
+        if (apply_changes) {
+            Lara_UseItem(m_InvChosen);
+        }
         break;
 
     default:
@@ -324,7 +339,9 @@ static GAME_FLOW_COMMAND M_Finish(INV_RING *const ring)
 static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 {
     if (ring->motion.status == RNG_OPENING) {
-        if (ring->mode == INV_TITLE_MODE && Output_FadeIsAnimating()) {
+        if (ring->mode == INV_TITLE_MODE
+            && (Fader_IsActive(&ring->top_fader)
+                || Fader_IsActive(&ring->back_fader))) {
             return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         }
 
@@ -336,20 +353,26 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (ring->motion.status == RNG_FADING_OUT) {
-        // finish fading
-        if (ring->mode == INV_TITLE_MODE) {
-            Output_FadeToBlack(true);
+        if (ring->mode == INV_TITLE_MODE && !Fader_IsActive(&ring->top_fader)) {
+            Fader_InitEx(
+                &ring->top_fader,
+                (FADER_ARGS) {
+                    .initial = FADER_ANY,
+                    .target = FADER_BLACK,
+                    .duration = INV_RING_FADE_TIME_TITLE_FINISH,
+                    .debuff = 1. / (double)LOGIC_FPS,
+                });
         }
 
-        if (Output_FadeIsAnimating()) {
+        if (Fader_IsActive(&ring->top_fader)
+            || Fader_IsActive(&ring->back_fader)) {
             return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         }
-
         ring->motion.status = RNG_DONE;
     }
 
     if (ring->motion.status == RNG_DONE) {
-        const GAME_FLOW_COMMAND gf_cmd = M_Finish(ring);
+        const GAME_FLOW_COMMAND gf_cmd = M_Finish(ring, true);
         // Returning to game – resume music
         if (gf_cmd.action == GF_NOOP) {
             Music_Unpause();
@@ -393,10 +416,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
     }
 
-    if (!(ring->mode == INV_TITLE_MODE || Output_FadeIsAnimating()
-          || ring->motion.status == RNG_OPENING)) {
+    if (ring->mode != INV_TITLE_MODE && !Fader_IsActive(&ring->back_fader)
+        && !Fader_IsActive(&ring->top_fader)
+        && ring->motion.status != RNG_OPENING) {
         for (int i = 0; i < ring->number_of_objects; i++) {
-            INVENTORY_ITEM *inv_item = ring->list[i];
+            INVENTORY_ITEM *const inv_item = ring->list[i];
             if (inv_item->object_id == O_COMPASS_OPTION) {
                 Option_Compass_UpdateNeedle(inv_item);
             }
@@ -428,16 +452,23 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_InvRing_Source[RT_OPTION].current = ring->current_object;
             }
 
-            if (ring->mode != INV_TITLE_MODE) {
-                Output_FadeToTransparent(false);
-            }
-
             InvRing_MotionSetup(
                 ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
+
+            if (ring->mode == INV_TITLE_MODE) {
+                Fader_Init(
+                    &ring->top_fader, FADER_ANY, FADER_BLACK,
+                    INV_RING_FADE_TIME_SLOW);
+            } else {
+                Fader_Init(
+                    &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
+                    INV_RING_FADE_TIME_FAST);
+            }
+
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
         }
@@ -727,22 +758,6 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     case RNG_EXITING_INVENTORY:
-        if (ring->mode == INV_TITLE_MODE) {
-        } else if (
-            m_InvChosen == O_PASSPORT_OPTION
-            && ((ring->mode == INV_LOAD_MODE && g_SavedGamesCount) /* f6 menu */
-                || ring->mode == INV_DEATH_MODE /* Lara died */
-                || (ring->mode == INV_GAME_MODE /* esc menu */
-                    && g_GameInfo.passport_selection
-                        != PASSPORT_MODE_SAVE_GAME /* but not save page */
-                    )
-                || g_CurrentLevel == g_GameFlow.gym_level_num /* Gym */
-                || g_GameInfo.passport_selection == PASSPORT_MODE_RESTART)) {
-            Output_FadeToBlack(false);
-        } else {
-            Output_FadeToTransparent(false);
-        }
-
         if (!ring->motion.count) {
             InvRing_MotionSetup(
                 ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
@@ -750,6 +765,24 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
+
+            if (ring->mode == INV_TITLE_MODE) {
+                // Do not fade out yet - it will be started
+                // once the ring reaches RNG_FADING_OUT.
+            } else {
+                // Start the fade-out early for the ingame ring.
+                if (M_Finish(ring, false).action != GF_NOOP) {
+                    // fade to black when exiting the game.
+                    Fader_Init(
+                        &ring->top_fader, FADER_ANY, FADER_BLACK,
+                        INV_RING_FADE_TIME_SLOW);
+                } else {
+                    // fade to transparent when returning to the game.
+                    Fader_Init(
+                        &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
+                        INV_RING_FADE_TIME_FAST);
+                }
+            }
         }
         break;
 
@@ -915,11 +948,14 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     if (mode == INV_TITLE_MODE) {
         Output_LoadBackgroundFromFile(g_GameFlow.main_menu_background_path);
-        Output_FadeResetToBlack();
-        Output_FadeToTransparent(true);
+        Fader_Init(
+            &ring->top_fader, FADER_BLACK, FADER_TRANSPARENT,
+            INV_RING_FADE_TIME_FAST);
     } else {
         Output_UnloadBackground();
-        Output_FadeToSemiBlack(true);
+        Fader_Init(
+            &ring->back_fader, FADER_TRANSPARENT, FADER_SEMI_BLACK,
+            INV_RING_FADE_TIME_FAST);
     }
 
     g_GameInfo.inv_ring_shown = true;

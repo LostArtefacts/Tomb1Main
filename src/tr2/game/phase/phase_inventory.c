@@ -7,7 +7,6 @@
 #include "game/overlay.h"
 #include "global/vars.h"
 
-#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
 typedef enum {

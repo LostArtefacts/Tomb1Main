@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../fader.h"
 #include "../math.h"
 #include "../objects/types.h"
 #include "./enum.h"
@@ -110,4 +111,7 @@ typedef struct {
 #if TR_VERSION == 2
     int32_t old_fov;
 #endif
+
+    FADER top_fader;
+    FADER back_fader;
 } INV_RING;
