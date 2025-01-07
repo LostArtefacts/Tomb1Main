@@ -154,8 +154,9 @@ static void M_DrawItem(
 
 void InvRing_Draw(INV_RING *const ring)
 {
-    const int32_t num_frames = Clock_GetFrameAdvance()
-        * round(Clock_GetElapsedDrawFrames(&g_InvRing_MotionTimer));
+    const int32_t num_frames = round(
+        ClockTimer_TakeElapsed(&g_InvRing_MotionTimer) * LOGIC_FPS
+        * INV_RING_FRAMES);
     ring->camera.pos.z = ring->radius + CAMERA_2_RING;
 
     if (g_InvMode == INV_TITLE_MODE) {

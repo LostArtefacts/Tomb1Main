@@ -6,19 +6,18 @@
 #define USE_REAL_CLOCK 0
 
 #if USE_REAL_CLOCK
-static double m_StartCounter = 0.0;
+static CLOCK_TIMER m_StartCounter = { .type = CLOCK_TYPE_REAL };
 static int32_t m_StartTimer = 0;
 
 void Stats_StartTimer(void)
 {
-    m_StartCounter = Clock_GetHighPrecisionCounter();
+    ClockTimer_Sync(&m_StartCounter);
     m_StartTimer = g_SaveGame.current_stats.timer;
 }
 
 void Stats_UpdateTimer(void)
 {
-    const double elapsed =
-        (Clock_GetHighPrecisionCounter() - m_StartCounter) * LOGIC_FPS / 1000.0;
+    const double elapsed = ClockTimer_PeekElapsed(&m_StartCounter) * LOGIC_FPS;
     g_SaveGame.current_stats.timer = m_StartTimer + elapsed;
 }
 #else

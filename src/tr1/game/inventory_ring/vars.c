@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-CLOCK_TIMER g_InvRing_MotionTimer = {};
+CLOCK_TIMER g_InvRing_MotionTimer = { .type = CLOCK_TIMER_SIM };
 CAMERA_INFO g_InvRing_OldCamera = {};
 
 INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {

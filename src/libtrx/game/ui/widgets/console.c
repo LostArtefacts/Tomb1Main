@@ -128,7 +128,7 @@ static void M_UpdateLogCount(UI_CONSOLE *const self)
 {
     self->logs_on_screen = 0;
     for (int32_t i = MAX_LOG_LINES - 1; i >= 0; i--) {
-        if (self->logs[i].expire_at) {
+        if (self->logs[i].expire_at != 0.0) {
             self->logs_on_screen = i + 1;
             break;
         }
@@ -264,7 +264,7 @@ void UI_Console_HandleLog(UI_WIDGET *const widget, const char *const text)
     }
 
     self->logs[0].expire_at =
-        Clock_GetHighPrecisionCounter() + 1000 * strlen(text) * DELAY_PER_CHAR;
+        Clock_GetRealTime() + strlen(text) * DELAY_PER_CHAR;
 
     char *wrapped = String_WordWrap(text, Text_GetMaxLineLength());
     UI_Label_ChangeText(self->logs[0].label, wrapped);
@@ -285,8 +285,8 @@ void UI_Console_ScrollLogs(UI_WIDGET *const widget)
 
     bool need_layout = false;
     while (i >= 0 && self->logs[i].expire_at
-           && Clock_GetHighPrecisionCounter() >= self->logs[i].expire_at) {
-        self->logs[i].expire_at = 0;
+           && Clock_GetRealTime() >= self->logs[i].expire_at) {
+        self->logs[i].expire_at = 0.0;
         UI_Label_ChangeText(self->logs[i].label, "");
         need_layout = true;
         i--;

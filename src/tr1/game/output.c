@@ -58,9 +58,9 @@ static RGB_888 *m_ColorPalette = NULL;
 
 static int32_t m_WibbleOffset = 0;
 static double m_WibbleOffsetDbl = 0.0;
-static CLOCK_TIMER m_WibbleTimer = { 0 };
-static CLOCK_TIMER m_AnimatedTexturesTimer = { 0 };
-static CLOCK_TIMER m_FadeTimer = { 0 };
+static CLOCK_TIMER m_WibbleTimer = { .type = CLOCK_TIMER_SIM };
+static CLOCK_TIMER m_AnimatedTexturesTimer = { .type = CLOCK_TIMER_SIM };
+static CLOCK_TIMER m_FadeTimer = { .type = CLOCK_TIMER_SIM };
 static int32_t m_WibbleTable[WIBBLE_SIZE] = { 0 };
 static int32_t m_ShadeTable[WIBBLE_SIZE] = { 0 };
 static int32_t m_RandTable[WIBBLE_SIZE] = { 0 };
@@ -1174,13 +1174,8 @@ void Output_AnimateFades(void)
         return;
     }
 
-    double delta = 5.0 * Clock_GetFrameAdvance()
-        * Clock_GetElapsedDrawFrames(&m_FadeTimer);
-    // make title screen fades faster
-    if (g_GameInfo.inv_ring_shown && g_InvMode == INV_TITLE_MODE) {
-        delta *= 2.0;
-    }
-
+    const double delta =
+        ClockTimer_TakeElapsed(&m_FadeTimer) * LOGIC_FPS * 10.0;
     if (m_OverlayCurAlpha + delta <= m_OverlayDstAlpha) {
         m_OverlayCurAlpha += delta;
     } else if (m_OverlayCurAlpha - delta >= m_OverlayDstAlpha) {
@@ -1199,11 +1194,11 @@ void Output_AnimateFades(void)
 
 void Output_AnimateTextures(void)
 {
-    m_WibbleOffsetDbl +=
-        Clock_GetFrameAdvance() * Clock_GetSpeedMultiplier() / 2.0;
+    m_WibbleOffsetDbl += ClockTimer_TakeElapsed(&m_WibbleTimer) * LOGIC_FPS;
     m_WibbleOffset = (int32_t)(m_WibbleOffsetDbl) % WIBBLE_SIZE;
 
-    if (!Clock_CheckElapsedLogicalFrames(&m_AnimatedTexturesTimer, 5)) {
+    if (!ClockTimer_CheckElapsedAndTake(
+            &m_AnimatedTexturesTimer, 5.0 / (double)LOGIC_FPS)) {
         return;
     }
 
@@ -1296,14 +1291,14 @@ void Output_FadeReset(void)
     m_OverlayCurAlpha = 0;
     m_BackdropDstAlpha = 0;
     m_OverlayDstAlpha = 0;
-    Clock_ResetTimer(&m_FadeTimer);
+    ClockTimer_Sync(&m_FadeTimer);
 }
 
 void Output_FadeResetToBlack(void)
 {
     m_OverlayCurAlpha = 255;
     m_OverlayDstAlpha = 255;
-    Clock_ResetTimer(&m_FadeTimer);
+    ClockTimer_Sync(&m_FadeTimer);
 }
 
 void Output_FadeToBlack(bool allow_immediate)

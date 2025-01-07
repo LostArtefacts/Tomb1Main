@@ -1,4 +1,8 @@
-#include "game/clock.h"
+#include "game/clock/common.h"
+
+#include "game/clock/const.h"
+#include "game/clock/timer.h"
+#include "game/clock/turbo.h"
 
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
@@ -10,12 +14,18 @@ static Uint64 m_LastCounter = 0;
 static Uint64 m_InitCounter = 0;
 static Uint64 m_Frequency = 0;
 static double m_Accumulator = 0.0;
-
 static struct {
     double real_time_at_last_change;
     double sim_time_at_last_change;
     double sim_speed;
 } m_Priv;
+
+static double M_GetHighPrecisionCounter(void);
+
+static double M_GetHighPrecisionCounter(void)
+{
+    return (SDL_GetPerformanceCounter() - m_InitCounter) / (double)m_Frequency;
+}
 
 void Clock_Init(void)
 {
@@ -38,22 +48,6 @@ size_t Clock_GetDateTime(char *const buffer, const size_t size)
 int32_t Clock_GetFrameAdvance(void)
 {
     return Clock_GetCurrentFPS() == 30 ? 2 : 1;
-}
-
-int32_t Clock_GetLogicalFrame(void)
-{
-    return Clock_GetHighPrecisionCounter() * LOGIC_FPS / 1000.0;
-}
-
-int32_t Clock_GetDrawFrame(void)
-{
-    return Clock_GetHighPrecisionCounter() * Clock_GetCurrentFPS() / 1000.0;
-}
-
-double Clock_GetHighPrecisionCounter(void)
-{
-    return (SDL_GetPerformanceCounter() - m_InitCounter) * 1000.0
-        / (double)m_Frequency;
 }
 
 void Clock_SyncTick(void)
@@ -122,9 +116,14 @@ int32_t Clock_WaitTick(void)
     return frames;
 }
 
+double Clock_GetRealTime(void)
+{
+    return M_GetHighPrecisionCounter();
+}
+
 double Clock_GetSimTime(void)
 {
-    const double real_now = Clock_GetHighPrecisionCounter();
+    const double real_now = M_GetHighPrecisionCounter();
     const double real_delta = real_now - m_Priv.real_time_at_last_change;
     return m_Priv.sim_time_at_last_change + real_delta * m_Priv.sim_speed;
 }
@@ -134,7 +133,7 @@ void Clock_SetSimSpeed(const double new_speed)
     // First, figure out how much sim time has passed so far
     const double prev_sim_time = Clock_GetSimTime();
     // Then re-anchor the reference point
-    m_Priv.real_time_at_last_change = Clock_GetHighPrecisionCounter();
+    m_Priv.real_time_at_last_change = M_GetHighPrecisionCounter();
     m_Priv.sim_time_at_last_change = prev_sim_time;
     m_Priv.sim_speed = new_speed;
 }

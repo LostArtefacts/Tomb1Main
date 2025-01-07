@@ -25,9 +25,9 @@
 
 #define COLOR_STEPS 5
 #define MAX_PICKUP_COLUMNS 4
-#define MAX_PICKUP_DURATION_DISPLAY (LOGIC_FPS * 2)
-#define MAX_PICKUP_DURATION_EASE_IN (LOGIC_FPS / 2)
-#define MAX_PICKUP_DURATION_EASE_OUT LOGIC_FPS
+#define MAX_PICKUP_DURATION_DISPLAY 2.0 // seconds
+#define MAX_PICKUP_DURATION_EASE_IN 0.5 // seconds
+#define MAX_PICKUP_DURATION_EASE_OUT 1.0 // seconds
 #define MAX_PICKUPS 16
 #define BLINK_THRESHOLD 20
 
@@ -40,7 +40,7 @@ typedef enum {
 
 typedef struct {
     GAME_OBJECT_ID object_id;
-    double duration;
+    double elapsed;
     int32_t grid_x;
     int32_t grid_y;
     int32_t rot_y;
@@ -51,9 +51,9 @@ static TEXTSTRING *m_AmmoText = NULL;
 static TEXTSTRING *m_FPSText = NULL;
 static int16_t m_BarOffsetY[6] = { 0 };
 static DISPLAY_PICKUP m_Pickups[MAX_PICKUPS] = { 0 };
-static CLOCK_TIMER m_PickupsTimer = { 0 };
-static CLOCK_TIMER m_BlinkTimer = { 0 };
-static CLOCK_TIMER m_FPSTimer = { 0 };
+static CLOCK_TIMER m_PickupsTimer = { .type = CLOCK_TIMER_SIM };
+static CLOCK_TIMER m_BlinkTimer = { .type = CLOCK_TIMER_SIM };
+static CLOCK_TIMER m_FPSTimer = { .type = CLOCK_TIMER_REAL };
 
 static RGBA_8888 m_ColorBarMap[][COLOR_STEPS] = {
     // gold
@@ -130,7 +130,7 @@ static int32_t M_BarGetPercent(BAR_INFO *bar_info);
 static void M_BarGetLocation(
     BAR_INFO *bar_info, int32_t *width, int32_t *height, int32_t *x,
     int32_t *y);
-static float M_Ease(int32_t cur_frame, int32_t max_frames);
+static float M_Ease(float cur_frame, float max_frames);
 static void M_DrawPickup3D(DISPLAY_PICKUP *pu);
 static void M_DrawPickups3D(void);
 static void M_DrawPickupsSprites(void);
@@ -200,7 +200,8 @@ static void M_BarBlink(BAR_INFO *bar_info)
         return;
     }
 
-    if (Clock_CheckElapsedLogicalFrames(&m_BlinkTimer, 10)) {
+    if (ClockTimer_CheckElapsedAndTake(
+            &m_BlinkTimer, 10.0 / (double)LOGIC_FPS)) {
         bar_info->blink = !bar_info->blink;
     }
 }
@@ -317,13 +318,13 @@ void Overlay_BarDraw(BAR_INFO *bar_info, RENDER_SCALE_REF scale_ref)
     }
 }
 
-static float M_Ease(int32_t cur_frame, int32_t max_frames)
+static float M_Ease(const float cur_frame, const float max_frames)
 {
-    float ratio = cur_frame / (float)max_frames;
+    const float ratio = cur_frame / max_frames;
     if (ratio < 0.5f) {
         return 2.0f * ratio * ratio;
     }
-    float new_ratio = ratio - 1.0f;
+    const float new_ratio = ratio - 1.0f;
     return 1.0f - 2.0f * new_ratio * new_ratio;
 }
 
@@ -356,11 +357,11 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     float ease = 1.0f;
     switch (pu->phase) {
     case DPP_EASE_IN:
-        ease = M_Ease(pu->duration, MAX_PICKUP_DURATION_EASE_IN);
+        ease = M_Ease(pu->elapsed, MAX_PICKUP_DURATION_EASE_IN);
         break;
     case DPP_EASE_OUT:
         ease = M_Ease(
-            MAX_PICKUP_DURATION_EASE_OUT - pu->duration,
+            MAX_PICKUP_DURATION_EASE_OUT - pu->elapsed,
             MAX_PICKUP_DURATION_EASE_OUT);
         break;
     case DPP_DISPLAY:
@@ -428,7 +429,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
 
 static void M_DrawPickups3D(void)
 {
-    const double ticks = Clock_GetElapsedLogicalFrames(&m_PickupsTimer);
+    const double elapsed = ClockTimer_TakeElapsed(&m_PickupsTimer);
 
     for (int i = 0; i < MAX_PICKUPS; i++) {
         DISPLAY_PICKUP *const pu = &m_Pickups[i];
@@ -438,31 +439,31 @@ static void M_DrawPickups3D(void)
             continue;
 
         case DPP_EASE_IN:
-            pu->duration += ticks;
-            if (pu->duration >= MAX_PICKUP_DURATION_EASE_IN) {
+            pu->elapsed += elapsed;
+            if (pu->elapsed >= MAX_PICKUP_DURATION_EASE_IN) {
                 pu->phase = DPP_DISPLAY;
-                pu->duration = 0;
+                pu->elapsed = 0.0;
             }
             break;
 
         case DPP_DISPLAY:
-            pu->duration += ticks;
-            if (pu->duration >= MAX_PICKUP_DURATION_DISPLAY) {
+            pu->elapsed += elapsed;
+            if (pu->elapsed >= MAX_PICKUP_DURATION_DISPLAY) {
                 pu->phase = DPP_EASE_OUT;
-                pu->duration = 0;
+                pu->elapsed = 0.0;
             }
             break;
 
         case DPP_EASE_OUT:
-            pu->duration += ticks;
-            if (pu->duration >= MAX_PICKUP_DURATION_EASE_OUT) {
+            pu->elapsed += elapsed;
+            if (pu->elapsed >= MAX_PICKUP_DURATION_EASE_OUT) {
                 pu->phase = DPP_DEAD;
-                pu->duration = 0;
+                pu->elapsed = 0.0;
             }
             break;
         }
 
-        pu->rot_y += 4 * PHD_DEGREE * ticks;
+        pu->rot_y += 4 * PHD_DEGREE * (elapsed * LOGIC_FPS);
 
         M_DrawPickup3D(pu);
     }
@@ -470,7 +471,7 @@ static void M_DrawPickups3D(void)
 
 static void M_DrawPickupsSprites(void)
 {
-    const double ticks = Clock_GetElapsedLogicalFrames(&m_PickupsTimer);
+    const double elapsed = ClockTimer_TakeElapsed(&m_PickupsTimer);
 
     const int32_t sprite_height =
         MIN(Viewport_GetWidth(), Viewport_GetHeight() * 320 / 200) / 10;
@@ -482,8 +483,8 @@ static void M_DrawPickupsSprites(void)
             continue;
         }
 
-        pu->duration += ticks;
-        if (pu->duration >= MAX_PICKUP_DURATION_DISPLAY) {
+        pu->elapsed += elapsed;
+        if (pu->elapsed >= MAX_PICKUP_DURATION_DISPLAY) {
             pu->phase = DPP_DEAD;
             continue;
         }
@@ -758,8 +759,7 @@ void Overlay_DrawFPSInfo(void)
         int16_t x = 21;
         int16_t y = 10;
 
-        const double counter = Clock_GetHighPrecisionCounter();
-        if (Clock_CheckElapsedRawMilliseconds(&m_FPSTimer, 1000)) {
+        if (ClockTimer_CheckElapsedAndTake(&m_FPSTimer, 1.0)) {
             if (m_FPSText) {
                 char fps_buf[20];
                 sprintf(fps_buf, "%d FPS", g_FPSCounter);
@@ -831,7 +831,7 @@ void Overlay_AddPickup(const GAME_OBJECT_ID object_id)
     for (int i = 0; i < MAX_PICKUPS; i++) {
         if (m_Pickups[i].phase == DPP_DEAD) {
             m_Pickups[i].object_id = object_id;
-            m_Pickups[i].duration = 0;
+            m_Pickups[i].elapsed = 0.0;
             m_Pickups[i].grid_x = grid_x;
             m_Pickups[i].grid_y = grid_y;
             m_Pickups[i].rot_y = 0;

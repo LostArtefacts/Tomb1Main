@@ -26,11 +26,9 @@
 #include <libtrx/game/inventory_ring/priv.h>
 #include <libtrx/memory.h>
 
-#define INV_FRAMES 2
-
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
-static CLOCK_TIMER m_DemoTimer = { 0 };
+static CLOCK_TIMER m_DemoTimer = { .type = CLOCK_TIMER_SIM };
 static int32_t m_StartLevel;
 static GAME_OBJECT_ID m_InvChosen;
 
@@ -330,7 +328,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
         }
 
-        Clock_ResetTimer(&m_DemoTimer);
+        ClockTimer_Sync(&m_DemoTimer);
         if (!ring->has_spun_out) {
             Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
             ring->has_spun_out = true;
@@ -650,7 +648,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         }
 
         bool busy = false;
-        for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+        for (int32_t frame = 0; frame < INV_RING_FRAMES; frame++) {
             busy = false;
             if (inv_item->y_rot == inv_item->y_rot_sel) {
                 busy = M_AnimateInventoryItem(inv_item);
@@ -713,7 +711,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     case RNG_CLOSING_ITEM: {
         INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-        for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+        for (int32_t frame = 0; frame < INV_RING_FRAMES; frame++) {
             if (!M_AnimateInventoryItem(inv_item)) {
                 if (inv_item->object_id == O_PASSPORT_OPTION) {
                     inv_item->object_id = O_PASSPORT_CLOSED;
@@ -787,7 +785,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_FRAMES);
+        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_RING_FRAMES);
     }
 
     Interpolation_Remember();
@@ -802,13 +800,12 @@ static bool M_CheckDemoTimer(const INV_RING *const ring)
 
     if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any
         || Console_IsOpened()) {
-        Clock_ResetTimer(&m_DemoTimer);
+        ClockTimer_Sync(&m_DemoTimer);
         return false;
     }
 
     return ring->motion.status == RNG_OPEN
-        && Clock_CheckElapsedMilliseconds(
-               &m_DemoTimer, g_GameFlow.demo_delay * 1000.0);
+        && ClockTimer_CheckElapsed(&m_DemoTimer, g_GameFlow.demo_delay);
 }
 
 bool InvRing_CanExamine(void)
@@ -908,7 +905,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     }
 
     // reset the delta timer before starting the spinout animation
-    Clock_ResetTimer(&g_InvRing_MotionTimer);
+    ClockTimer_Sync(&g_InvRing_MotionTimer);
 
     g_InvMode = mode;
     Interpolation_Remember();

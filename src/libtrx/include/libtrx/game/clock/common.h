@@ -11,12 +11,9 @@ int32_t Clock_WaitTick(void);
 
 size_t Clock_GetDateTime(char *buffer, size_t size);
 
-double Clock_GetHighPrecisionCounter(void);
-double Clock_GetSimTime(void);
-void Clock_SetSimSpeed(double new_speed);
-
 int32_t Clock_GetFrameAdvance(void);
-int32_t Clock_GetLogicalFrame(void);
-int32_t Clock_GetDrawFrame(void);
-
 extern int32_t Clock_GetCurrentFPS(void);
+
+void Clock_SetSimSpeed(double new_speed);
+double Clock_GetRealTime(void);
+double Clock_GetSimTime(void);

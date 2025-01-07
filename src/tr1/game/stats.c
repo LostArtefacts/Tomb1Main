@@ -31,9 +31,9 @@ static bool m_IfKillable[O_NUMBER_OF] = { 0 };
 
 #if USE_REAL_CLOCK
 static struct {
-    double start_counter;
+    CLOCK_TIMER timer;
     int32_t start_timer;
-} m_StatsTimer = { 0 };
+} m_StatsTimer = { .timer = { .type = CLOCK_TYPE_REAL } };
 #endif
 
 static void M_TraverseFloor(void);
@@ -235,15 +235,14 @@ bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type)
 #if USE_REAL_CLOCK
 void Stats_StartTimer(void)
 {
-    m_StatsTimer.start_counter = Clock_GetHighPrecisionCounter();
+    ClockTimer_Sync(&m_StatsTimer.timer);
     m_StatsTimer.start_timer = g_GameInfo.current[g_CurrentLevel].stats.timer;
 }
 
 void Stats_UpdateTimer(void)
 {
     const double elapsed =
-        (Clock_GetHighPrecisionCounter() - m_StatsTimer.start_counter)
-        * LOGIC_FPS / 1000.0;
+        ClockTimer_PeekElapsed(&m_StatsTimer.timer) * LOGIC_FPS;
     g_GameInfo.current[g_CurrentLevel].stats.timer =
         m_StatsTimer.start_timer + elapsed;
 }

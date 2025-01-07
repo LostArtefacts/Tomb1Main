@@ -7,6 +7,7 @@
 - fixed a desync in the Lost Valley demo if responsive swim cancellation was enabled (#2113, regression from 4.6)
 - fixed the game hanging when Lara is on fire and enters the fly cheat on the same frame as reaching water (#2116, regression from 0.8)
 - fixed Lara activating triggers one frame too early (#2208, regression from 4.3)
+- fixed wrong underwater caustics speed with the turbo cheat (#2231)
 - fixed 1-frame UI flicker on pause screen exit confirmation
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21

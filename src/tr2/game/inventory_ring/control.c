@@ -31,7 +31,6 @@
 
 #define TITLE_RING_OBJECTS 3
 #define OPTION_RING_OBJECTS 3
-#define INV_FRAMES 2
 
 static int32_t m_NoInputCounter = 0;
 
@@ -207,7 +206,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         g_InputDB = (INPUT_STATE) { 0, .menu_confirm = 1 };
     }
 
-    for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+    for (int32_t frame = 0; frame < INV_RING_FRAMES; frame++) {
         if (g_Inv_IsOptionsDelay) {
             if (g_Inv_OptionsDelayCounter) {
                 g_Inv_OptionsDelayCounter--;
@@ -453,7 +452,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             }
 
             bool busy = false;
-            for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+            for (int32_t frame = 0; frame < INV_RING_FRAMES; frame++) {
                 busy = false;
                 if (inv_item->y_rot == inv_item->y_rot_sel) {
                     busy = M_AnimateInventoryItem(inv_item);
@@ -517,7 +516,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
         case RNG_CLOSING_ITEM: {
             INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-            for (int32_t frame = 0; frame < INV_FRAMES; frame++) {
+            for (int32_t frame = 0; frame < INV_RING_FRAMES; frame++) {
                 if (!M_AnimateInventoryItem(inv_item)) {
                     if (inv_item->object_id == O_PASSPORT_OPTION) {
                         inv_item->object_id = O_PASSPORT_CLOSED;
@@ -575,7 +574,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_FRAMES);
+        InvRing_UpdateInventoryItem(ring, ring->list[i], INV_RING_FRAMES);
     }
 
     Sound_EndScene();

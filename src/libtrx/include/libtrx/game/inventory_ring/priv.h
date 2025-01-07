@@ -3,6 +3,7 @@
 #include "../math/types.h"
 #include "./types.h"
 
+#define INV_RING_FRAMES 2
 #define INV_RING_OPEN_ROTATION DEG_180
 #define INV_RING_ROTATE_DURATION 24
 #define INV_RING_OPEN_FRAMES 32

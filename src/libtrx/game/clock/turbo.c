@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "game/clock/common.h"
+#include "game/clock/timer.h"
 #include "game/console/common.h"
 #include "game/game_string.h"
 #include "utils.h"

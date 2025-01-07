@@ -545,17 +545,17 @@ static void M_ProgressBar(
 
 static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 {
-    const int32_t frame = Clock_GetLogicalFrame();
+    const double time = Clock_GetSimTime() * LOGIC_FPS;
 
     if (Input_IsPressed(backend, layout, INPUT_ROLE_RESET_BINDINGS)
         && m_ResetKeyMode != KM_CHANGEKEYUP) {
         if (m_ResetKeyDelay == 0) {
-            m_ResetKeyDelay = frame;
-        } else if (frame - m_ResetKeyDelay >= HOLD_DELAY_FRAMES) {
+            m_ResetKeyDelay = time;
+        } else if (time - m_ResetKeyDelay >= HOLD_DELAY_FRAMES) {
             m_ResetKeyMode = KM_CHANGE;
             if (m_ResetTimer == 0) {
-                m_ResetTimer = frame;
-            } else if (frame - m_ResetTimer >= LOGIC_FPS * BUTTON_HOLD_TIME) {
+                m_ResetTimer = time;
+            } else if (time - m_ResetTimer >= LOGIC_FPS * BUTTON_HOLD_TIME) {
                 Sound_Effect(SFX_MENU_GAMEBOY, NULL, SPM_NORMAL);
                 Input_ResetLayout(backend, layout);
                 M_UpdateText(backend, layout);
@@ -575,7 +575,7 @@ static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout)
         m_ResetKeyDelay = 0;
     }
 
-    int32_t progress = m_ResetTimer > 0 ? frame - m_ResetTimer : 0;
+    int32_t progress = m_ResetTimer > 0 ? time - m_ResetTimer : 0;
     CLAMP(progress, 0, LOGIC_FPS * BUTTON_HOLD_TIME);
     M_ProgressBar(
         m_Text[TEXT_RESET], &m_ProgressBars[M_PROGERSS_BAR_RESET_ALL],
@@ -584,17 +584,17 @@ static void M_CheckResetKeys(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 
 static void M_CheckUnbindKey(INPUT_BACKEND backend, INPUT_LAYOUT layout)
 {
-    const int32_t frame = Clock_GetLogicalFrame();
+    const int32_t time = Clock_GetSimTime() * LOGIC_FPS;
 
     if (Input_IsPressed(backend, layout, INPUT_ROLE_UNBIND_KEY)
         && m_UnbindKeyMode != KM_CHANGEKEYUP) {
         if (m_UnbindKeyDelay == 0) {
-            m_UnbindKeyDelay = frame;
-        } else if (frame - m_UnbindKeyDelay >= HOLD_DELAY_FRAMES) {
+            m_UnbindKeyDelay = time;
+        } else if (time - m_UnbindKeyDelay >= HOLD_DELAY_FRAMES) {
             m_UnbindKeyMode = KM_CHANGE;
             if (m_UnbindTimer == 0) {
-                m_UnbindTimer = frame;
-            } else if (frame - m_UnbindTimer >= LOGIC_FPS * BUTTON_HOLD_TIME) {
+                m_UnbindTimer = time;
+            } else if (time - m_UnbindTimer >= LOGIC_FPS * BUTTON_HOLD_TIME) {
                 Sound_Effect(SFX_MENU_GAMEBOY, NULL, SPM_NORMAL);
                 Input_UnassignRole(backend, layout, m_ControlMenu.cur_role);
                 M_UpdateText(backend, layout);
@@ -614,7 +614,7 @@ static void M_CheckUnbindKey(INPUT_BACKEND backend, INPUT_LAYOUT layout)
         m_UnbindKeyDelay = 0;
     }
 
-    int32_t progress = m_UnbindTimer > 0 ? frame - m_UnbindTimer : 0;
+    int32_t progress = m_UnbindTimer > 0 ? time - m_UnbindTimer : 0;
     CLAMP(progress, 0, LOGIC_FPS * BUTTON_HOLD_TIME);
     M_ProgressBar(
         m_Text[TEXT_UNBIND], &m_ProgressBars[M_PROGERSS_BAR_UNBIND], progress);
