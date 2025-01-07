@@ -28,8 +28,13 @@ typedef struct {
     PHASE_STATS_ARGS args;
     STATE state;
     TEXTSTRING *texts[MAX_TEXTSTRINGS];
+    FADER back_fader;
+    FADER top_fader;
 } M_PRIV;
 
+static bool M_IsFading(M_PRIV *p);
+static void M_FadeIn(M_PRIV *p);
+static void M_FadeOut(M_PRIV *p);
 static void M_CreateTexts(M_PRIV *p, int32_t level_num);
 static void M_CreateTextsTotal(M_PRIV *p, GAME_FLOW_LEVEL_TYPE level_type);
 
@@ -37,6 +42,26 @@ static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
 static PHASE_CONTROL M_Control(PHASE *phase, int32_t num_frames);
 static void M_Draw(PHASE *phase);
+
+static bool M_IsFading(M_PRIV *const p)
+{
+    return Fader_IsActive(&p->top_fader) || Fader_IsActive(&p->back_fader);
+}
+
+static void M_FadeIn(M_PRIV *const p)
+{
+    if (p->args.background_path != NULL) {
+        Fader_Init(&p->top_fader, FADER_BLACK, FADER_TRANSPARENT, 1.0);
+    } else {
+        Fader_Init(&p->back_fader, FADER_TRANSPARENT, FADER_SEMI_BLACK, 0.5);
+    }
+}
+
+static void M_FadeOut(M_PRIV *const p)
+{
+    Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
+    p->state = STATE_FADE_OUT;
+}
 
 static void M_CreateTexts(M_PRIV *const p, const int32_t level_num)
 {
@@ -247,22 +272,17 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     }
 
     if (g_CurrentLevel == g_GameFlow.gym_level_num) {
-        Output_FadeToBlack(false);
-        p->state = STATE_FADE_OUT;
+        M_FadeOut(p);
     } else {
-        p->state = STATE_FADE_IN;
+        M_FadeIn(p);
 
         if (p->args.show_final_stats) {
             ASSERT(p->args.level_type >= GFL_NORMAL);
             M_CreateTextsTotal(p, p->args.level_type);
-            Output_FadeReset();
-            Output_FadeResetToBlack();
-            Output_FadeToTransparent(true);
         } else {
             M_CreateTexts(
                 p,
                 p->args.level_num != -1 ? p->args.level_num : g_CurrentLevel);
-            Output_FadeToSemiBlack(true);
         }
     }
 
@@ -290,24 +310,22 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 
     switch (p->state) {
     case STATE_FADE_IN:
-        if (!Output_FadeIsAnimating()) {
+        if (!M_IsFading(p)) {
             p->state = STATE_DISPLAY;
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            p->state = STATE_FADE_OUT;
+            M_FadeOut(p);
         }
         break;
 
     case STATE_DISPLAY:
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            p->state = STATE_FADE_OUT;
+            M_FadeOut(p);
         }
         break;
 
     case STATE_FADE_OUT:
-        Output_FadeToBlack(true);
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back
-            || !Output_FadeIsAnimating()) {
-            Output_FadeResetToBlack();
+        M_FadeOut(p);
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back || !M_IsFading(p)) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },
@@ -326,9 +344,10 @@ static void M_Draw(PHASE *const phase)
         Interpolation_Disable();
         Game_DrawScene(false);
         Interpolation_Enable();
+        Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->back_fader));
     }
-    Output_AnimateFades();
     Text_Draw();
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->top_fader));
 }
 
 PHASE *Phase_Stats_Create(const PHASE_STATS_ARGS args)
