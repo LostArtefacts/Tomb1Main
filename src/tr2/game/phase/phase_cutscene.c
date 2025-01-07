@@ -110,7 +110,8 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 
     if (g_IsGameToExit && !p->exiting) {
         p->exiting = true;
-        Fader_InitAnyToBlack(&p->exit_fader, FRAMES_PER_SECOND / 3);
+        Fader_Init(
+            &p->exit_fader, FADER_ANY, FADER_BLACK, FRAMES_PER_SECOND / 3);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
@@ -118,7 +119,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         };
     } else {
         M_FixAudioDrift();
-        Fader_Control(&p->exit_fader);
 
         Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {

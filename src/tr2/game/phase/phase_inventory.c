@@ -36,7 +36,7 @@ static void M_FadeOut(M_PRIV *const p)
 {
     if (p->ring->mode == INV_TITLE_MODE) {
         p->state = STATE_FADE_OUT;
-        Fader_InitAnyToBlack(&p->fader, FRAMES_PER_SECOND / 3);
+        Fader_Init(&p->fader, FADER_ANY, FADER_BLACK, FRAMES_PER_SECOND / 3);
     } else {
         p->state = STATE_EXIT;
     }
@@ -45,11 +45,9 @@ static void M_FadeOut(M_PRIV *const p)
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    if (p->mode == INV_TITLE_MODE) {
-        Fader_InitBlackToTransparent(&p->fader, FRAMES_PER_SECOND / 3);
-    } else {
-        Fader_InitBlackToTransparent(&p->fader, 0);
-    }
+    Fader_Init(
+        &p->fader, FADER_BLACK, FADER_TRANSPARENT,
+        p->mode == INV_TITLE_MODE ? FRAMES_PER_SECOND / 3 : 0);
     p->ring = InvRing_Open(p->mode);
     if (p->ring == NULL) {
         return (PHASE_CONTROL) {
@@ -79,7 +77,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     switch (p->state) {
     case STATE_FADE_IN:
         Input_Update();
-        if (!Fader_Control(&p->fader)) {
+        if (!Fader_IsActive(&p->fader)) {
             p->state = STATE_RUN;
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
@@ -98,7 +96,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_FADE_OUT:
         Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back
-            || !Fader_Control(&p->fader)) {
+            || !Fader_IsActive(&p->fader)) {
             p->state = STATE_EXIT;
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }

@@ -31,14 +31,14 @@ static void M_Draw(PHASE *phase);
 static void M_FadeOut(M_PRIV *const p)
 {
     p->state = STATE_FADE_OUT;
-    Fader_InitAnyToBlack(&p->fader, p->args.fade_out_time);
+    Fader_Init(&p->fader, FADER_ANY, FADER_BLACK, p->args.fade_out_time);
 }
 
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Output_LoadBackgroundFromFile(p->args.file_name);
-    Fader_InitBlackToTransparent(&p->fader, p->args.fade_in_time);
+    Fader_Init(&p->fader, FADER_BLACK, FADER_TRANSPARENT, p->args.fade_in_time);
     return (PHASE_CONTROL) {};
 }
 
@@ -60,7 +60,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()) {
             M_FadeOut(p);
-        } else if (!Fader_Control(&p->fader)) {
+        } else if (!Fader_IsActive(&p->fader)) {
             p->state = STATE_DISPLAY;
         }
         break;
@@ -76,7 +76,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_FADE_OUT:
         Input_Update();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back
-            || !Fader_Control(&p->fader)) {
+            || !Fader_IsActive(&p->fader)) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },

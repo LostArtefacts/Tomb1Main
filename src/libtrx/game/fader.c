@@ -4,7 +4,7 @@
 #include "game/clock.h"
 #include "utils.h"
 
-void Fader_Init(FADER *const fader, FADER_ARGS args)
+void Fader_InitEx(FADER *const fader, FADER_ARGS args)
 {
     if (args.initial == FADER_ANY) {
         args.initial = Fader_GetCurrentValue(fader);
@@ -23,64 +23,17 @@ void Fader_Init(FADER *const fader, FADER_ARGS args)
     ClockTimer_Sync(&fader->timer);
 }
 
-void Fader_InitBlackToTransparent(FADER *const fader, const int32_t duration)
+void Fader_Init(
+    FADER *fader, const int32_t initial, const int32_t target,
+    const int32_t duration)
 {
-    Fader_Init(
+    Fader_InitEx(
         fader,
         (FADER_ARGS) {
-            .initial = FADER_BLACK,
-            .target = FADER_TRANSPARENT,
+            .initial = initial,
+            .target = target,
             .duration = duration,
-            .debuff = 0,
-        });
-}
-
-void Fader_InitTransparentToBlack(FADER *const fader, const int32_t duration)
-{
-    Fader_Init(
-        fader,
-        (FADER_ARGS) {
-            .initial = FADER_TRANSPARENT,
-            .target = FADER_BLACK,
-            .duration = duration,
-            .debuff = LOGIC_FPS / 6,
-        });
-}
-
-void Fader_InitTransparentToSemiBlack(
-    FADER *const fader, const int32_t duration)
-{
-    Fader_Init(
-        fader,
-        (FADER_ARGS) {
-            .initial = FADER_TRANSPARENT,
-            .target = FADER_SEMI_BLACK,
-            .duration = duration,
-            .debuff = LOGIC_FPS / 6,
-        });
-}
-
-void Fader_InitAnyToBlack(FADER *const fader, const int32_t duration)
-{
-    Fader_Init(
-        fader,
-        (FADER_ARGS) {
-            .initial = FADER_ANY,
-            .target = FADER_BLACK,
-            .duration = duration,
-            .debuff = LOGIC_FPS / 6,
-        });
-}
-
-void Fader_InitAnyToSemiBlack(FADER *const fader, const int32_t duration)
-{
-    Fader_Init(
-        fader,
-        (FADER_ARGS) {
-            .initial = FADER_ANY,
-            .target = FADER_SEMI_BLACK,
-            .duration = duration,
-            .debuff = LOGIC_FPS / 6,
+            .debuff = target == FADER_BLACK ? LOGIC_FPS / 6 : 0,
         });
 }
 
@@ -106,9 +59,4 @@ bool Fader_IsActive(const FADER *const fader)
         ClockTimer_PeekElapsed(&fader->timer) * LOGIC_FPS;
     const int32_t target_frames = fader->args.duration + fader->args.debuff;
     return elapsed_frames < target_frames;
-}
-
-bool Fader_Control(FADER *const fader)
-{
-    return Fader_IsActive(fader);
 }
