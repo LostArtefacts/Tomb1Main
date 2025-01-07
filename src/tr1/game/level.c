@@ -298,8 +298,8 @@ static void M_LoadAnims(VFILE *file)
     g_Anims = GameBuf_Alloc(
         sizeof(ANIM) * (m_LevelInfo.anim_count + m_InjectionInfo->anim_count),
         GBUF_ANIMS);
-    for (int i = 0; i < m_LevelInfo.anim_count; i++) {
-        ANIM *anim = g_Anims + i;
+    for (int32_t i = 0; i < m_LevelInfo.anim_count; i++) {
+        ANIM *const anim = Anim_GetAnim(i);
 
         anim->frame_ofs = VFile_ReadU32(file);
         const int16_t interpolation = VFile_ReadS16(file);
@@ -448,8 +448,8 @@ static void M_LoadAnimFrames(VFILE *file)
     }
     Memory_FreePointer(&raw_data);
 
-    for (int i = 0; i < m_LevelInfo.anim_count; i++) {
-        ANIM *anim = &g_Anims[i];
+    for (int32_t i = 0; i < m_LevelInfo.anim_count; i++) {
+        ANIM *const anim = Anim_GetAnim(i);
         bool found = false;
         for (int j = 0; j < m_LevelInfo.anim_frame_count; j++) {
             if (m_LevelInfo.anim_frame_offsets[j] == (signed)anim->frame_ofs) {

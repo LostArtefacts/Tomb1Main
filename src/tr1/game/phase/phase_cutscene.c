@@ -62,7 +62,7 @@ static void M_InitialiseHair(int32_t level_num)
     Lara_Initialise(level_num);
 
     Item_SwitchToObjAnim(g_LaraItem, 0, 0, lara_type);
-    ANIM *cut_anim = &g_Anims[g_LaraItem->anim_num];
+    const ANIM *const cut_anim = Item_GetAnim(g_LaraItem);
     g_LaraItem->current_anim_state = g_LaraItem->goal_anim_state =
         g_LaraItem->required_anim_state = cut_anim->current_anim_state;
 }

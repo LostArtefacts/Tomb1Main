@@ -585,7 +585,7 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     ASSERT(VFile_GetPos(fp) == frame_data_end);
 
     for (int32_t i = 0; i < inj_info->anim_count; i++) {
-        ANIM *anim = &g_Anims[level_info->anim_count + i];
+        ANIM *const anim = Anim_GetAnim(level_info->anim_count + i);
 
         anim->frame_ofs = VFile_ReadU32(fp);
         const int16_t interpolation = VFile_ReadS16(fp);
@@ -669,7 +669,7 @@ static void M_AnimRangeEdits(INJECTION *injection)
             continue;
         }
 
-        ANIM *anim = &g_Anims[object->anim_idx + anim_idx];
+        const ANIM *const anim = Object_GetAnim(object, anim_idx);
         for (int32_t j = 0; j < edit_count; j++) {
             const int16_t change_idx = VFile_ReadS16(fp);
             const int16_t range_idx = VFile_ReadS16(fp);
@@ -1688,7 +1688,7 @@ static void M_FrameEdits(const INJECTION *const injection)
             continue;
         }
 
-        const ANIM *const anim = &g_Anims[obj->anim_idx + anim_idx];
+        const ANIM *const anim = Object_GetAnim(obj, anim_idx);
         ANIM_FRAME *const frame = anim->frame_ptr;
         frame->mesh_rots[0] = packed_rot;
     }

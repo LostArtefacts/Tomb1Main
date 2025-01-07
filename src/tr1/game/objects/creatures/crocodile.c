@@ -300,7 +300,7 @@ void Alligator_Control(int16_t item_num)
         if (item->frame_num
             == (g_Config.gameplay.fix_alligator_ai
                     ? ALLIGATOR_BITE_AF
-                    : g_Anims[item->anim_num].frame_base)) {
+                    : Item_GetAnim(item)->frame_base)) {
             item->required_anim_state = ALLIGATOR_STATE_EMPTY;
         }
 

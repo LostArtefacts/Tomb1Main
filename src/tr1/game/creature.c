@@ -755,7 +755,7 @@ static bool M_SwitchToWater(
 
     item->object_id = info->water.id;
     Item_SwitchToAnim(item, info->water.active_anim, 0);
-    item->current_anim_state = g_Anims[item->anim_num].current_anim_state;
+    item->current_anim_state = Item_GetAnim(item)->current_anim_state;
     item->goal_anim_state = item->current_anim_state;
     item->pos.y = *wh;
 
@@ -782,7 +782,7 @@ static bool M_SwitchToLand(
 
     if (item->hit_points > 0) {
         Item_SwitchToAnim(item, info->land.active_anim, 0);
-        item->current_anim_state = g_Anims[item->anim_num].current_anim_state;
+        item->current_anim_state = Item_GetAnim(item)->current_anim_state;
         item->goal_anim_state = item->current_anim_state;
 
     } else {

@@ -391,7 +391,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     Output_SetupAboveWater(false);
 
     OBJECT *obj = &g_Objects[Inv_GetItemOption(pu->object_id)];
-    const ANIM_FRAME *const frame = g_Anims[obj->anim_idx].frame_ptr;
+    const ANIM_FRAME *const frame = Object_GetAnim(obj, 0)->frame_ptr;
 
     Matrix_Push();
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);

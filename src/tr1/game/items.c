@@ -108,7 +108,7 @@ void Item_Initialise(int16_t item_num)
     OBJECT *object = &g_Objects[item->object_id];
 
     Item_SwitchToAnim(item, 0, 0);
-    item->current_anim_state = g_Anims[item->anim_num].current_anim_state;
+    item->current_anim_state = Item_GetAnim(item)->current_anim_state;
     item->goal_anim_state = item->current_anim_state;
     item->required_anim_state = 0;
     item->rot.x = 0;
@@ -558,11 +558,14 @@ void Item_SwitchToObjAnim(
     ITEM *const item, const int16_t anim_idx, const int16_t frame,
     const GAME_OBJECT_ID object_id)
 {
-    item->anim_num = g_Objects[object_id].anim_idx + anim_idx;
+    const OBJECT *const object = Object_GetObject(object_id);
+    item->anim_num = object->anim_idx + anim_idx;
+
+    const ANIM *const anim = Item_GetAnim(item);
     if (frame < 0) {
-        item->frame_num = g_Anims[item->anim_num].frame_end + frame + 1;
+        item->frame_num = anim->frame_end + frame + 1;
     } else {
-        item->frame_num = g_Anims[item->anim_num].frame_base + frame;
+        item->frame_num = anim->frame_base + frame;
     }
 }
 
@@ -571,13 +574,13 @@ void Item_Animate(ITEM *item)
     item->touch_bits = 0;
     item->hit_status = 0;
 
-    ANIM *anim = &g_Anims[item->anim_num];
+    const ANIM *anim = Item_GetAnim(item);
 
     item->frame_num++;
 
     if (anim->num_changes > 0) {
         if (Item_GetAnimChange(item, anim)) {
-            anim = &g_Anims[item->anim_num];
+            anim = Item_GetAnim(item);
             item->current_anim_state = anim->current_anim_state;
 
             if (item->required_anim_state == item->current_anim_state) {
@@ -618,7 +621,7 @@ void Item_Animate(ITEM *item)
         item->anim_num = anim->jump_anim_num;
         item->frame_num = anim->jump_frame_num;
 
-        anim = &g_Anims[item->anim_num];
+        anim = Item_GetAnim(item);
         item->current_anim_state = anim->current_anim_state;
         item->goal_anim_state = item->current_anim_state;
         if (item->required_anim_state == item->current_anim_state) {
@@ -669,7 +672,7 @@ void Item_Animate(ITEM *item)
     item->pos.z += (Math_Cos(item->rot.y) * item->speed) >> W2V_SHIFT;
 }
 
-bool Item_GetAnimChange(ITEM *item, ANIM *anim)
+bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
 {
     if (item->current_anim_state == item->goal_anim_state) {
         return false;
@@ -681,10 +684,8 @@ bool Item_GetAnimChange(ITEM *item, ANIM *anim)
             ANIM_RANGE *range = &g_AnimRanges[change->range_idx];
             for (int j = 0; j < change->num_ranges; j++, range++) {
                 if (Item_TestFrameRange(
-                        item,
-                        range->start_frame - g_Anims[item->anim_num].frame_base,
-                        range->end_frame
-                            - g_Anims[item->anim_num].frame_base)) {
+                        item, range->start_frame - anim->frame_base,
+                        range->end_frame - anim->frame_base)) {
                     item->anim_num = range->link_anim_num;
                     item->frame_num = range->link_frame_num;
                     return true;
@@ -777,7 +778,7 @@ const BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *item)
 
 int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 {
-    const ANIM *anim = &g_Anims[item->anim_num];
+    const ANIM *const anim = Item_GetAnim(item);
 
     const int32_t cur_frame_num = item->frame_num - anim->frame_base;
     const int32_t last_frame_num = anim->frame_end - anim->frame_base;
@@ -825,15 +826,15 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 bool Item_TestFrameEqual(const ITEM *const item, const int16_t frame)
 {
     return Anim_TestAbsFrameEqual(
-        item->frame_num, g_Anims[item->anim_num].frame_base + frame);
+        item->frame_num, Item_GetAnim(item)->frame_base + frame);
 }
 
 bool Item_TestFrameRange(
     const ITEM *const item, const int16_t start, const int16_t end)
 {
+    const ANIM *const anim = Item_GetAnim(item);
     return Anim_TestAbsFrameRange(
-        item->frame_num, g_Anims[item->anim_num].frame_base + start,
-        g_Anims[item->anim_num].frame_base + end);
+        item->frame_num, anim->frame_base + start, anim->frame_base + end);
 }
 
 ITEM *Item_Get(const int16_t item_num)

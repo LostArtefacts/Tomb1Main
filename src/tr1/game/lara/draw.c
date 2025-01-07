@@ -57,16 +57,16 @@ void Lara_Draw(ITEM *item)
         switch (g_Lara.hit_direction) {
         default:
         case DIR_NORTH:
-            frame = g_Anims[object->anim_idx + LA_SPAZ_FORWARD].frame_ptr;
+            frame = Object_GetAnim(object, LA_SPAZ_FORWARD)->frame_ptr;
             break;
         case DIR_EAST:
-            frame = g_Anims[object->anim_idx + LA_SPAZ_RIGHT].frame_ptr;
+            frame = Object_GetAnim(object, LA_SPAZ_RIGHT)->frame_ptr;
             break;
         case DIR_SOUTH:
-            frame = g_Anims[object->anim_idx + LA_SPAZ_BACK].frame_ptr;
+            frame = Object_GetAnim(object, LA_SPAZ_BACK)->frame_ptr;
             break;
         case DIR_WEST:
-            frame = g_Anims[object->anim_idx + LA_SPAZ_LEFT].frame_ptr;
+            frame = Object_GetAnim(object, LA_SPAZ_LEFT)->frame_ptr;
             break;
         }
 

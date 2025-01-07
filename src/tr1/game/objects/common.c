@@ -95,9 +95,8 @@ void Object_DrawPickupItem(ITEM *item)
     // Modify item to be the anim for inv item and animation 0.
     Item_SwitchToObjAnim(item, 0, 0, item_num_option);
 
-    OBJECT *object = &g_Objects[item_num_option];
-
-    const ANIM_FRAME *frame = g_Anims[item->anim_num].frame_ptr;
+    const OBJECT *const object = Object_GetObject(item_num_option);
+    const ANIM_FRAME *frame = Item_GetAnim(item)->frame_ptr;
 
     // Restore the old frame number in case we need to get the sprite again.
     item->frame_num = old_frame_num;

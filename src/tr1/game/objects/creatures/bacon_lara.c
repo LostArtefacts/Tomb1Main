@@ -80,7 +80,7 @@ void BaconLara_Control(int16_t item_num)
         int16_t relative_anim =
             g_LaraItem->anim_num - g_Objects[g_LaraItem->object_id].anim_idx;
         int16_t relative_frame =
-            g_LaraItem->frame_num - g_Anims[g_LaraItem->anim_num].frame_base;
+            g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
         Item_SwitchToObjAnim(item, relative_anim, relative_frame, O_LARA);
         item->pos.x = x;
         item->pos.y = y;

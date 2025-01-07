@@ -109,27 +109,26 @@ void Lara_Hair_Control(void)
     object = &g_Objects[m_LaraType];
 
     if (!in_cutscene && g_Lara.hit_direction >= 0) {
-        int16_t spaz = object->anim_idx;
-
+        LARA_ANIMATION hit_anim;
         switch (g_Lara.hit_direction) {
         case DIR_NORTH:
-            spaz += LA_SPAZ_FORWARD;
+            hit_anim = LA_SPAZ_FORWARD;
             break;
 
         case DIR_SOUTH:
-            spaz += LA_SPAZ_BACK;
+            hit_anim = LA_SPAZ_BACK;
             break;
 
         case DIR_EAST:
-            spaz += LA_SPAZ_RIGHT;
+            hit_anim = LA_SPAZ_RIGHT;
             break;
 
         default:
-            spaz += LA_SPAZ_LEFT;
+            hit_anim = LA_SPAZ_LEFT;
             break;
         }
 
-        frame = g_Anims[spaz].frame_ptr;
+        frame = Object_GetAnim(object, hit_anim)->frame_ptr;
         frame += g_Lara.hit_frame;
 
         frac = 0;
