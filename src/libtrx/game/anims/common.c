@@ -4,6 +4,7 @@
 
 static ANIM *m_Anims = NULL;
 static ANIM_CHANGE *m_Changes = NULL;
+ANIM_RANGE *g_AnimRanges = NULL;
 static ANIM_BONE *m_Bones = NULL;
 
 void Anim_InitialiseAnims(const int32_t num_anims)
@@ -30,6 +31,11 @@ ANIM *Anim_GetAnim(const int32_t anim_idx)
 ANIM_CHANGE *Anim_GetChange(const int32_t change_idx)
 {
     return &m_Changes[change_idx];
+}
+
+ANIM_RANGE *Anim_GetRange(const int32_t range_idx)
+{
+    return &g_AnimRanges[range_idx];
 }
 
 ANIM_BONE *Anim_GetBone(const int32_t bone_idx)

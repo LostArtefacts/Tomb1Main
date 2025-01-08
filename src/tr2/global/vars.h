@@ -117,7 +117,6 @@ extern int16_t g_SampleLUT[];
 extern SAMPLE_INFO *g_SampleInfos;
 extern int32_t g_HeightType;
 extern int16_t *g_AnimCommands;
-extern ANIM_RANGE *g_AnimRanges;
 extern int32_t g_FlipMaps[MAX_FLIP_MAPS];
 extern bool g_CameraUnderwater;
 extern int32_t g_BoxCount;

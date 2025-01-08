@@ -50,7 +50,6 @@ uint16_t *g_Overlap = NULL;
 int16_t *g_GroundZone[2] = { NULL };
 int16_t *g_GroundZone2[2] = { NULL };
 int16_t *g_FlyZone[2] = { NULL };
-ANIM_RANGE *g_AnimRanges = NULL;
 TEXTURE_RANGE *g_AnimTextureRanges = NULL;
 int16_t *g_AnimCommands = NULL;
 ANIM_FRAME *g_AnimFrames = NULL;
