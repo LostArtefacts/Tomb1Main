@@ -617,7 +617,6 @@ void Output_BeginScene(void)
 
 void Output_EndScene(void)
 {
-    Output_DrawOverlayScreen();
     S_Output_DisableDepthTest();
     S_Output_ClearDepthBuffer();
     Overlay_DrawFPSInfo();
@@ -1168,30 +1167,6 @@ void Output_SetupAboveWater(bool underwater)
     m_IsShadeEffect = underwater;
 }
 
-void Output_AnimateFades(void)
-{
-    if (!g_Config.visuals.enable_fade_effects) {
-        return;
-    }
-
-    const double delta =
-        ClockTimer_TakeElapsed(&m_FadeTimer) * LOGIC_FPS * 10.0;
-    if (m_OverlayCurAlpha + delta <= m_OverlayDstAlpha) {
-        m_OverlayCurAlpha += delta;
-    } else if (m_OverlayCurAlpha - delta >= m_OverlayDstAlpha) {
-        m_OverlayCurAlpha -= delta;
-    } else {
-        m_OverlayCurAlpha = m_OverlayDstAlpha;
-    }
-    if (m_BackdropCurAlpha + delta <= m_BackdropDstAlpha) {
-        m_BackdropCurAlpha += delta;
-    } else if (m_BackdropCurAlpha - delta >= m_BackdropDstAlpha) {
-        m_BackdropCurAlpha -= delta;
-    } else {
-        m_BackdropCurAlpha = m_BackdropDstAlpha;
-    }
-}
-
 void Output_AnimateTextures(void)
 {
     m_WibbleOffsetDbl += ClockTimer_TakeElapsed(&m_WibbleTimer) * LOGIC_FPS;
@@ -1273,72 +1248,6 @@ void Output_DrawPolyList(void)
 {
     // force flush the vertex stream
     S_Output_ClearDepthBuffer();
-}
-
-void Output_DrawBackdropScreen(void)
-{
-    Output_DrawBlackRectangle(m_BackdropCurAlpha);
-}
-
-void Output_DrawOverlayScreen(void)
-{
-    Output_DrawBlackRectangle(m_OverlayCurAlpha);
-}
-
-void Output_FadeReset(void)
-{
-    m_BackdropCurAlpha = 0;
-    m_OverlayCurAlpha = 0;
-    m_BackdropDstAlpha = 0;
-    m_OverlayDstAlpha = 0;
-    ClockTimer_Sync(&m_FadeTimer);
-}
-
-void Output_FadeResetToBlack(void)
-{
-    m_OverlayCurAlpha = 255;
-    m_OverlayDstAlpha = 255;
-    ClockTimer_Sync(&m_FadeTimer);
-}
-
-void Output_FadeToBlack(bool allow_immediate)
-{
-    if (g_Config.visuals.enable_fade_effects) {
-        m_OverlayDstAlpha = 255;
-    } else if (allow_immediate) {
-        m_OverlayCurAlpha = 255;
-    }
-}
-
-void Output_FadeToSemiBlack(bool allow_immediate)
-{
-    if (g_Config.visuals.enable_fade_effects) {
-        m_BackdropDstAlpha = 128;
-        m_OverlayDstAlpha = 0;
-    } else if (allow_immediate) {
-        m_BackdropCurAlpha = 128;
-        m_OverlayCurAlpha = 0;
-    }
-}
-
-void Output_FadeToTransparent(bool allow_immediate)
-{
-    if (g_Config.visuals.enable_fade_effects) {
-        m_BackdropDstAlpha = 0;
-        m_OverlayDstAlpha = 0;
-    } else if (allow_immediate) {
-        m_BackdropCurAlpha = 0;
-        m_OverlayCurAlpha = 0;
-    }
-}
-
-bool Output_FadeIsAnimating(void)
-{
-    if (!g_Config.visuals.enable_fade_effects) {
-        return false;
-    }
-    return m_OverlayCurAlpha != m_OverlayDstAlpha
-        || m_BackdropCurAlpha != m_BackdropDstAlpha;
 }
 
 void Output_ApplyFOV(void)

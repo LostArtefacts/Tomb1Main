@@ -235,7 +235,6 @@ static void M_Start(const PHASE_DEMO_ARGS *const args)
     Input_Update();
 
     Interpolation_Remember();
-    Output_FadeReset();
 
     M_PrepareConfig();
     M_PrepareResumeInfo();

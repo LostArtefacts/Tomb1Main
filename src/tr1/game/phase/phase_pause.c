@@ -215,7 +215,6 @@ static void M_Draw(PHASE *const phase)
     Game_DrawScene(false);
     Fader_Draw(&p->back_fader);
     Interpolation_Enable();
-    Output_AnimateFades();
     if (p->ui != NULL) {
         p->ui->draw(p->ui);
     }

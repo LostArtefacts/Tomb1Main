@@ -38,7 +38,6 @@ static void M_Start(const void *const args)
 {
     Interpolation_Remember();
     Stats_StartTimer();
-    Output_FadeReset();
     Game_SetIsPlaying(true);
 }
 
@@ -179,7 +178,6 @@ static void M_Draw(void)
 {
     Game_DrawScene(true);
     Output_AnimateTextures();
-    Output_AnimateFades();
     Text_Draw();
 }
 

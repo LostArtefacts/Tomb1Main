@@ -54,7 +54,6 @@ static void M_Draw(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     ASSERT(p->ring != NULL);
     InvRing_Draw(p->ring);
-    Output_AnimateFades();
     Text_Draw();
 }
 

@@ -1137,9 +1137,6 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 break;
             }
 
-            // TODO: do not call me here once everything moves to libtrx faders
-            Output_FadeReset();
-
             GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
@@ -1518,9 +1515,6 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
 
 GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE inv_mode)
 {
-    // TODO: do not call me here once everything moves to libtrx faders
-    Output_FadeReset();
-
     PHASE *const phase = Phase_Inventory_Create(inv_mode);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Inventory_Destroy(phase);

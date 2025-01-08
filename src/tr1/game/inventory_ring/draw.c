@@ -160,7 +160,6 @@ void InvRing_Draw(INV_RING *const ring)
     ring->camera.pos.z = ring->radius + CAMERA_2_RING;
 
     if (g_InvMode == INV_TITLE_MODE) {
-        Output_DrawBackdropScreen();
         Interpolation_Commit();
     } else {
         Matrix_LookAt(

@@ -77,8 +77,6 @@ static void M_Start(const PHASE_CUTSCENE_ARGS *const args)
         return;
     }
 
-    Output_FadeReset();
-
     if (!Level_Initialise(args->level_num)) {
         return;
     }
@@ -198,7 +196,6 @@ static void M_Draw(void)
 {
     Game_DrawScene(true);
     Output_AnimateTextures();
-    Output_AnimateFades();
 }
 
 PHASER g_CutscenePhaser = {

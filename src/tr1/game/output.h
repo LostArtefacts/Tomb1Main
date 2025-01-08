@@ -27,15 +27,6 @@ void Output_SetDrawDistFade(int32_t dist);
 void Output_SetDrawDistMax(int32_t dist);
 void Output_SetWaterColor(const RGB_F *color);
 
-void Output_FadeReset(void);
-void Output_FadeResetToBlack(void);
-void Output_FadeToBlack(bool allow_immediate);
-void Output_FadeToSemiBlack(bool allow_immediate);
-void Output_FadeToTransparent(bool allow_immediate);
-bool Output_FadeIsAnimating(void);
-void Output_DrawBackdropScreen(void);
-void Output_DrawOverlayScreen(void);
-
 void Output_BeginScene(void);
 void Output_EndScene(void);
 
@@ -99,7 +90,6 @@ void Output_DrawUISprite(
 void Output_SetupBelowWater(bool underwater);
 void Output_SetupAboveWater(bool underwater);
 void Output_AnimateTextures(void);
-void Output_AnimateFades(void);
 
 void Output_ApplyFOV(void);
 void Output_ApplyTint(float *r, float *g, float *b);
