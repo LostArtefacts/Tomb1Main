@@ -1,8 +1,8 @@
 #pragma once
 
 typedef enum {
-    CLOCK_TIMER_REAL,
     CLOCK_TIMER_SIM,
+    CLOCK_TIMER_REAL,
 } CLOCK_TIMER_TYPE;
 
 typedef struct {
