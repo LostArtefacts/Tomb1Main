@@ -29,7 +29,7 @@
 #define INV_RING_FADE_TIME_FAST                                                \
     (CLOSE_FRAMES / INV_RING_FRAMES / (double)LOGIC_FPS)
 #define INV_RING_FADE_TIME_SLOW (INV_RING_FADE_TIME_FAST + 1. / 5.)
-#define INV_RING_FADE_TIME_TITLE_FINISH 0.5
+#define INV_RING_FADE_TIME_TITLE_FINISH 0.25
 
 static TEXTSTRING *m_ExamineItemText = NULL;
 static TEXTSTRING *m_UseItemText = NULL;
@@ -353,7 +353,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (ring->motion.status == RNG_FADING_OUT) {
-        if (ring->mode == INV_TITLE_MODE && !Fader_IsActive(&ring->top_fader)) {
+        if (!Fader_IsActive(&ring->back_fader)
+            && !Fader_IsActive(&ring->top_fader)) {
             Fader_InitEx(
                 &ring->top_fader,
                 (FADER_ARGS) {
@@ -452,22 +453,19 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_InvRing_Source[RT_OPTION].current = ring->current_object;
             }
 
-            InvRing_MotionSetup(
-                ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
-            InvRing_MotionRadius(ring, 0);
-            InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
-            InvRing_MotionRotation(
-                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
-
-            if (ring->mode == INV_TITLE_MODE) {
-                Fader_Init(
-                    &ring->top_fader, FADER_ANY, FADER_BLACK,
-                    INV_RING_FADE_TIME_SLOW);
+            if (M_Finish(ring, false).action != GF_NOOP) {
+                InvRing_MotionSetup(
+                    ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
             } else {
+                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
                 Fader_Init(
                     &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
                     INV_RING_FADE_TIME_FAST);
             }
+            InvRing_MotionRadius(ring, 0);
+            InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
+            InvRing_MotionRotation(
+                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
 
             g_Input = (INPUT_STATE) { 0 };
             g_InputDB = (INPUT_STATE) { 0 };
@@ -759,30 +757,21 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     case RNG_EXITING_INVENTORY:
         if (!ring->motion.count) {
-            InvRing_MotionSetup(
-                ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
+            if (M_Finish(ring, false).action != GF_NOOP) {
+                // Fade to black. Do it later once reaching RNG_FADING_OUT.
+                InvRing_MotionSetup(
+                    ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
+            } else {
+                // Fade to game. Do it as soon as the ring starts to close.
+                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+                Fader_Init(
+                    &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
+                    INV_RING_FADE_TIME_FAST);
+            }
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
                 ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
-
-            if (ring->mode == INV_TITLE_MODE) {
-                // Do not fade out yet - it will be started
-                // once the ring reaches RNG_FADING_OUT.
-            } else {
-                // Start the fade-out early for the ingame ring.
-                if (M_Finish(ring, false).action != GF_NOOP) {
-                    // fade to black when exiting the game.
-                    Fader_Init(
-                        &ring->top_fader, FADER_ANY, FADER_BLACK,
-                        INV_RING_FADE_TIME_SLOW);
-                } else {
-                    // fade to transparent when returning to the game.
-                    Fader_Init(
-                        &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
-                        INV_RING_FADE_TIME_FAST);
-                }
-            }
         }
         break;
 
