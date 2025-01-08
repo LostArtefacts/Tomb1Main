@@ -51,7 +51,6 @@ int16_t *g_GroundZone[2] = { NULL };
 int16_t *g_GroundZone2[2] = { NULL };
 int16_t *g_FlyZone[2] = { NULL };
 TEXTURE_RANGE *g_AnimTextureRanges = NULL;
-int16_t *g_AnimCommands = NULL;
 ANIM_FRAME *g_AnimFrames = NULL;
 int32_t *g_AnimFrameMeshRots = NULL;
 int16_t g_NumCineFrames = 0;

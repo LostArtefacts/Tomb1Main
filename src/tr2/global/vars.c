@@ -120,7 +120,6 @@ OBJECT_VECTOR *g_SoundEffects = NULL;
 int16_t g_SampleLUT[SFX_NUMBER_OF];
 SAMPLE_INFO *g_SampleInfos = NULL;
 int32_t g_HeightType;
-int16_t *g_AnimCommands = NULL;
 int32_t g_FlipMaps[MAX_FLIP_MAPS];
 bool g_CameraUnderwater;
 int32_t g_BoxCount;
