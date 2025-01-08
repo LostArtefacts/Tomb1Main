@@ -9,20 +9,31 @@
 
 #include <libtrx/game/math.h>
 
+typedef enum {
+    // clang-format off
+    LA_PISTOLS_AIM    = 0,
+    LA_PISTOLS_UNDRAW = 1,
+    LA_PISTOLS_DRAW   = 2,
+    LA_PISTOLS_RECOIL = 3,
+    // clang-format on
+} LARA_PISTOLS_ANIMATION;
+
 static bool m_UziRight = false;
 static bool m_UziLeft = false;
 
 void Gun_Pistols_SetArmInfo(LARA_ARM *const arm, const int32_t frame)
 {
     int16_t anim_idx;
-    if (frame >= LF_G_AIM_START && frame <= LF_G_AIM_END) {
-        anim_idx = 0;
-    } else if (frame >= LF_G_UNDRAW_START && frame <= LF_G_UNDRAW_END) {
-        anim_idx = 1;
-    } else if (frame >= LF_G_DRAW_START && frame <= LF_G_DRAW_END) {
-        anim_idx = 2;
-    } else if (frame >= LF_G_RECOIL_START && frame <= LF_G_RECOIL_END) {
-        anim_idx = 3;
+    if (Anim_TestAbsFrameRange(frame, LF_G_AIM_START, LF_G_AIM_END)) {
+        anim_idx = LA_PISTOLS_AIM;
+    } else if (Anim_TestAbsFrameRange(
+                   frame, LF_G_UNDRAW_START, LF_G_UNDRAW_END)) {
+        anim_idx = LA_PISTOLS_UNDRAW;
+    } else if (Anim_TestAbsFrameRange(frame, LF_G_DRAW_START, LF_G_DRAW_END)) {
+        anim_idx = LA_PISTOLS_DRAW;
+    } else if (Anim_TestAbsFrameRange(
+                   frame, LF_G_RECOIL_START, LF_G_RECOIL_END)) {
+        anim_idx = LA_PISTOLS_RECOIL;
     }
 
     const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
