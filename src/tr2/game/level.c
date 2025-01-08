@@ -261,7 +261,7 @@ static void M_LoadAnimRanges(VFILE *const file)
     g_AnimRanges =
         GameBuf_Alloc(sizeof(ANIM_RANGE) * num_anim_ranges, GBUF_ANIM_RANGES);
     for (int32_t i = 0; i < num_anim_ranges; i++) {
-        ANIM_RANGE *const range = &g_AnimRanges[i];
+        ANIM_RANGE *const range = Anim_GetRange(i);
         range->start_frame = VFile_ReadS16(file);
         range->end_frame = VFile_ReadS16(file);
         range->link_anim_num = VFile_ReadS16(file);

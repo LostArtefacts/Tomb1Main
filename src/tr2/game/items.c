@@ -616,7 +616,7 @@ int32_t Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
 
         for (int32_t j = 0; j < change->num_ranges; j++) {
             const ANIM_RANGE *const range =
-                &g_AnimRanges[change->range_idx + j];
+                Anim_GetRange(change->range_idx + j);
 
             if (item->frame_num >= range->start_frame
                 && item->frame_num <= range->end_frame) {
