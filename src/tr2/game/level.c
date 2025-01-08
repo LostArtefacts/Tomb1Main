@@ -258,15 +258,8 @@ static void M_LoadAnimRanges(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anim_ranges = VFile_ReadS32(file);
     LOG_INFO("anim ranges: %d", num_anim_ranges);
-    g_AnimRanges =
-        GameBuf_Alloc(sizeof(ANIM_RANGE) * num_anim_ranges, GBUF_ANIM_RANGES);
-    for (int32_t i = 0; i < num_anim_ranges; i++) {
-        ANIM_RANGE *const range = Anim_GetRange(i);
-        range->start_frame = VFile_ReadS16(file);
-        range->end_frame = VFile_ReadS16(file);
-        range->link_anim_num = VFile_ReadS16(file);
-        range->link_frame_num = VFile_ReadS16(file);
-    }
+    Anim_InitialiseRanges(num_anim_ranges);
+    Level_ReadAnimRanges(0, num_anim_ranges, file);
     Benchmark_End(benchmark, NULL);
 }
 

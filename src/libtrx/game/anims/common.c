@@ -4,7 +4,7 @@
 
 static ANIM *m_Anims = NULL;
 static ANIM_CHANGE *m_Changes = NULL;
-ANIM_RANGE *g_AnimRanges = NULL;
+static ANIM_RANGE *m_Ranges = NULL;
 static ANIM_BONE *m_Bones = NULL;
 
 void Anim_InitialiseAnims(const int32_t num_anims)
@@ -16,6 +16,11 @@ void Anim_InitialiseChanges(const int32_t num_changes)
 {
     m_Changes =
         GameBuf_Alloc(sizeof(ANIM_CHANGE) * num_changes, GBUF_ANIM_CHANGES);
+}
+
+void Anim_InitialiseRanges(const int32_t num_ranges)
+{
+    m_Ranges = GameBuf_Alloc(sizeof(ANIM_RANGE) * num_ranges, GBUF_ANIM_RANGES);
 }
 
 void Anim_InitialiseBones(const int32_t num_bones)
@@ -35,7 +40,7 @@ ANIM_CHANGE *Anim_GetChange(const int32_t change_idx)
 
 ANIM_RANGE *Anim_GetRange(const int32_t range_idx)
 {
-    return &g_AnimRanges[range_idx];
+    return &m_Ranges[range_idx];
 }
 
 ANIM_BONE *Anim_GetBone(const int32_t bone_idx)

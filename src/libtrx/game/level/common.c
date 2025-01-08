@@ -260,6 +260,18 @@ void Level_ReadAnimChanges(
     }
 }
 
+void Level_ReadAnimRanges(
+    const int32_t base_idx, const int32_t num_ranges, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_ranges; i++) {
+        ANIM_RANGE *const anim_range = Anim_GetRange(base_idx + i);
+        anim_range->start_frame = VFile_ReadS16(file);
+        anim_range->end_frame = VFile_ReadS16(file);
+        anim_range->link_anim_num = VFile_ReadS16(file);
+        anim_range->link_frame_num = VFile_ReadS16(file);
+    }
+}
+
 void Level_ReadAnimBones(
     const int32_t base_idx, const int32_t num_bones, VFILE *const file)
 {
