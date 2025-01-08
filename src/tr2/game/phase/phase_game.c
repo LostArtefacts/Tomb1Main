@@ -106,7 +106,7 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Game_Draw();
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->exit_fader));
+    Fader_Draw(&p->exit_fader);
 }
 
 PHASE *Phase_Game_Create(

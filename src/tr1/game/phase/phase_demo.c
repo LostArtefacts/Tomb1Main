@@ -399,7 +399,7 @@ static void M_Draw(void)
 
     Output_AnimateTextures();
     Text_Draw();
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&m_Fader));
+    Fader_Draw(&m_Fader);
 }
 
 PHASER g_DemoPhaser = {

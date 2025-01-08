@@ -125,7 +125,7 @@ static void M_Draw(PHASE *const phase)
     Text_Draw();
     Output_DrawPolyList();
 
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->fader));
+    Fader_Draw(&p->fader);
 
     Console_Draw();
     Text_Draw();

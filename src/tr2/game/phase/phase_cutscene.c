@@ -159,7 +159,7 @@ static void M_Draw(PHASE *const phase)
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->exit_fader));
+    Fader_Draw(&p->exit_fader);
 }
 
 PHASE *Phase_Cutscene_Create(const int32_t level_num)

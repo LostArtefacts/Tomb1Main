@@ -172,7 +172,7 @@ void InvRing_Draw(INV_RING *const ring)
         Game_DrawScene(false);
         Interpolation_Enable();
 
-        Output_DrawBlackRectangle(Fader_GetCurrentValue(&ring->back_fader));
+        Fader_Draw(&ring->back_fader);
 
         int32_t width = Screen_GetResWidth();
         int32_t height = Screen_GetResHeight();
@@ -250,5 +250,5 @@ void InvRing_Draw(INV_RING *const ring)
         }
     }
 
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&ring->top_fader));
+    Fader_Draw(&ring->top_fader);
 }

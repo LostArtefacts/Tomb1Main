@@ -29,3 +29,4 @@ void Fader_InitEx(FADER *fader, FADER_ARGS args);
 void Fader_Init(FADER *fader, int32_t initial, int32_t target, double duration);
 bool Fader_IsActive(const FADER *fader);
 int32_t Fader_GetCurrentValue(const FADER *fader);
+void Fader_Draw(const FADER *fader);

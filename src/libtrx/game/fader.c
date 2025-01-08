@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "game/clock.h"
+#include "game/output.h"
 #include "utils.h"
 
 void Fader_InitEx(FADER *const fader, FADER_ARGS args)
@@ -61,4 +62,9 @@ bool Fader_IsActive(const FADER *const fader)
     const double elapsed_time = ClockTimer_PeekElapsed(&fader->timer);
     const double target_time = fader->args.duration + fader->args.debuff;
     return elapsed_time < target_time;
+}
+
+void Fader_Draw(const FADER *const fader)
+{
+    Output_DrawBlackRectangle(Fader_GetCurrentValue(fader));
 }

@@ -344,10 +344,10 @@ static void M_Draw(PHASE *const phase)
         Interpolation_Disable();
         Game_DrawScene(false);
         Interpolation_Enable();
-        Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->back_fader));
+        Fader_Draw(&p->back_fader);
     }
     Text_Draw();
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->top_fader));
+    Fader_Draw(&p->top_fader);
 }
 
 PHASE *Phase_Stats_Create(const PHASE_STATS_ARGS args)

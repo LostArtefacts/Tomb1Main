@@ -213,7 +213,7 @@ static void M_Draw(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Interpolation_Disable();
     Game_DrawScene(false);
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->back_fader));
+    Fader_Draw(&p->back_fader);
     Interpolation_Enable();
     Output_AnimateFades();
     if (p->ui != NULL) {

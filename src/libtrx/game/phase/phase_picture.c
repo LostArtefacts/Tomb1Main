@@ -96,7 +96,7 @@ static void M_Draw(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Output_DrawBackground();
     Output_DrawPolyList();
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(&p->fader));
+    Fader_Draw(&p->fader);
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
