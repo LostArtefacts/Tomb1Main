@@ -81,6 +81,8 @@ static void M_UpdateFromBackend(
     s->save                        |= backend->is_pressed(layout, INPUT_ROLE_SAVE);
     s->load                        |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
 
+    s->pause                       |= backend->is_pressed(layout, INPUT_ROLE_PAUSE);
+
     s->item_cheat                  |= backend->is_pressed(layout, INPUT_ROLE_ITEM_CHEAT);
     s->fly_cheat                   |= backend->is_pressed(layout, INPUT_ROLE_FLY_CHEAT);
     s->level_skip_cheat            |= backend->is_pressed(layout, INPUT_ROLE_LEVEL_SKIP_CHEAT);
@@ -191,6 +193,7 @@ const char *Input_GetRoleName(const INPUT_ROLE role)
     case INPUT_ROLE_LEVEL_SKIP_CHEAT: return GS(KEYMAP_LEVEL_SKIP_CHEAT);
     case INPUT_ROLE_TURBO_CHEAT:      return GS(KEYMAP_TURBO_CHEAT);
     case INPUT_ROLE_ENTER_CONSOLE:    return GS(KEYMAP_ENTER_CONSOLE);
+    case INPUT_ROLE_PAUSE:            return GS(KEYMAP_PAUSE);
     default:                          return "";
     }
     // clang-format on

@@ -42,6 +42,7 @@ INPUT_ROLE_DEFINE(USE_FLARE,                   use_flare)
 INPUT_ROLE_DEFINE(USE_SMALL_MEDI,              use_small_medi)
 INPUT_ROLE_DEFINE(USE_BIG_MEDI,                use_big_medi)
 
+INPUT_ROLE_DEFINE(PAUSE,                       pause)
 INPUT_ROLE_DEFINE(SWITCH_RESOLUTION,           switch_resolution)
 INPUT_ROLE_DEFINE(SWITCH_INTERNAL_SCREEN_SIZE, switch_internal_screen_size)
 INPUT_ROLE_DEFINE(TOGGLE_BILINEAR_FILTER,      toggle_bilinear_filter)

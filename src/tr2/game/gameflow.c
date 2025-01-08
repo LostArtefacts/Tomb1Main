@@ -667,6 +667,14 @@ GAME_FLOW_COMMAND GF_StartGame(
     return gf_cmd;
 }
 
+GAME_FLOW_COMMAND GF_PauseGame(void)
+{
+    PHASE *const subphase = Phase_Pause_Create();
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+    Phase_Pause_Destroy(subphase);
+    return gf_cmd;
+}
+
 GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
 {
     PHASE *const phase = Phase_Inventory_Create(mode);

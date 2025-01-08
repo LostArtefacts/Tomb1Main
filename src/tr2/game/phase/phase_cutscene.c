@@ -5,6 +5,7 @@
 #include "game/console/common.h"
 #include "game/effects.h"
 #include "game/game.h"
+#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
@@ -120,13 +121,21 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         M_FixAudioDrift();
 
         Input_Update();
+        Shell_ProcessInput();
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,
                 .gf_cmd = { .action = GF_NOOP },
             };
+        } else if (g_InputDB.pause) {
+            const GAME_FLOW_COMMAND gf_cmd = GF_PauseGame();
+            if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = { .action = GF_NOOP },
+                };
+            }
         }
-        Shell_ProcessInput();
 
         g_DynamicLightCount = 0;
 
@@ -157,7 +166,6 @@ static void M_Draw(PHASE *const phase)
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
     Console_Draw();
-    Text_Draw();
     Output_DrawPolyList();
     Fader_Draw(&p->exit_fader);
 }

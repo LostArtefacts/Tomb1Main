@@ -1,6 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7.1...develop) - ××××-××-××
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
 - added an optional demo number argument to the `/demo` command
+- added a fade-out effect when exiting the game from the pause screen
 - changed demo to be interrupted only by esc or action keys
 - changed the turbo cheat to also affect ingame timer (#2167)
 - changed the pause screen to wait before yielding control during fade out effect

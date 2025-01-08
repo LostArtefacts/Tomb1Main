@@ -11,6 +11,8 @@ void Output_DrawBlackRectangle(int32_t opacity);
 void Output_DrawBackground(void);
 void Output_DrawPolyList(void);
 
+extern void Output_SetupBelowWater(bool is_underwater);
+extern void Output_SetupAboveWater(bool is_underwater);
 extern void Output_RotateLight(int16_t pitch, int16_t yaw);
 extern void Output_SetLightAdder(int32_t adder);
 extern void Output_SetLightDivider(int32_t divider);

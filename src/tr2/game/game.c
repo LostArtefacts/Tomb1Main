@@ -50,6 +50,10 @@ static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
     Shell_ProcessInput();
     Game_ProcessInput();
 
+    if (g_InputDB.pause) {
+        return GF_PauseGame();
+    }
+
     if (demo_mode) {
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             return GF_TranslateScriptCommand(g_GameFlow.on_demo_interrupt);

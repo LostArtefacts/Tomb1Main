@@ -244,7 +244,6 @@ sources = [
   'game/phase/phase_demo.c',
   'game/phase/phase_game.c',
   'game/phase/phase_inventory.c',
-  'game/phase/phase_pause.c',
   'game/phase/phase_photo_mode.c',
   'game/phase/phase_stats.c',
   'game/requester.c',

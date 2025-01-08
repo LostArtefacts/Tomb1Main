@@ -114,6 +114,7 @@ sources = [
   'game/objects/names.c',
   'game/objects/vars.c',
   'game/phase/executor.c',
+  'game/phase/phase_pause.c',
   'game/phase/phase_picture.c',
   'game/random.c',
   'game/rooms/common.c',

@@ -19,6 +19,7 @@ static const INPUT_ROLE m_LeftRoles[] = {
     INPUT_ROLE_STEP_R,
     INPUT_ROLE_SLOW,
     INPUT_ROLE_ENTER_CONSOLE,
+    INPUT_ROLE_PAUSE,
     (INPUT_ROLE)-1,
     // clang-format on
 };
