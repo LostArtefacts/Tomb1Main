@@ -576,7 +576,7 @@ void Item_Animate(ITEM *item)
 
     if (item->frame_num > anim->frame_end) {
         if (anim->num_commands > 0) {
-            int16_t *command = &g_AnimCommands[anim->command_idx];
+            const int16_t *command = Anim_GetCommand(anim->command_idx);
             for (int i = 0; i < anim->num_commands; i++) {
                 switch (*command++) {
                 case AC_MOVE_ORIGIN:
@@ -615,7 +615,7 @@ void Item_Animate(ITEM *item)
     }
 
     if (anim->num_commands > 0) {
-        int16_t *command = &g_AnimCommands[anim->command_idx];
+        const int16_t *command = Anim_GetCommand(anim->command_idx);
         for (int i = 0; i < anim->num_commands; i++) {
             switch (*command++) {
             case AC_MOVE_ORIGIN:

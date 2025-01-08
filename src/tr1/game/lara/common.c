@@ -360,8 +360,6 @@ void Lara_SetMesh(const LARA_MESH mesh, OBJECT_MESH *const mesh_ptr)
 
 void Lara_Animate(ITEM *item)
 {
-    int16_t *command;
-
     item->frame_num++;
     const ANIM *anim = Item_GetAnim(item);
     if (anim->num_changes > 0 && Item_GetAnimChange(item, anim)) {
@@ -371,7 +369,7 @@ void Lara_Animate(ITEM *item)
 
     if (item->frame_num > anim->frame_end) {
         if (anim->num_commands > 0) {
-            command = &g_AnimCommands[anim->command_idx];
+            const int16_t *command = Anim_GetCommand(anim->command_idx);
             for (int i = 0; i < anim->num_commands; i++) {
                 switch (*command++) {
                 case AC_MOVE_ORIGIN:
@@ -410,7 +408,7 @@ void Lara_Animate(ITEM *item)
     }
 
     if (anim->num_commands > 0) {
-        command = &g_AnimCommands[anim->command_idx];
+        const int16_t *command = Anim_GetCommand(anim->command_idx);
         for (int i = 0; i < anim->num_commands; i++) {
             switch (*command++) {
             case AC_MOVE_ORIGIN:
