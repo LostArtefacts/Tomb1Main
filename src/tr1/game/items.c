@@ -663,8 +663,8 @@ bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
         return false;
     }
 
-    ANIM_CHANGE *change = &g_AnimChanges[anim->change_idx];
-    for (int i = 0; i < anim->num_changes; i++, change++) {
+    for (int32_t i = 0; i < anim->num_changes; i++) {
+        const ANIM_CHANGE *const change = Anim_GetChange(anim->change_idx + i);
         if (change->goal_anim_state == item->goal_anim_state) {
             ANIM_RANGE *range = &g_AnimRanges[change->range_idx];
             for (int j = 0; j < change->num_ranges; j++, range++) {

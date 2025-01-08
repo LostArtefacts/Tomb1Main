@@ -537,8 +537,8 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     VFILE *const fp = injection->fp;
 
     for (int32_t i = 0; i < inj_info->anim_change_count; i++) {
-        ANIM_CHANGE *anim_change =
-            &g_AnimChanges[level_info->anim_change_count + i];
+        ANIM_CHANGE *const anim_change =
+            Anim_GetChange(level_info->anim_change_count + i);
         anim_change->goal_anim_state = VFile_ReadS16(fp);
         anim_change->num_ranges = VFile_ReadS16(fp);
         anim_change->range_idx = VFile_ReadS16(fp);
@@ -612,8 +612,10 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
 
     // Re-align to the level.
     for (int32_t i = 0; i < inj_info->anim_change_count; i++) {
-        g_AnimChanges[level_info->anim_change_count++].range_idx +=
-            level_info->anim_range_count;
+        ANIM_CHANGE *const change =
+            Anim_GetChange(level_info->anim_change_count);
+        change->range_idx += level_info->anim_range_count;
+        level_info->anim_change_count++;
     }
 
     for (int32_t i = 0; i < inj_info->anim_range_count; i++) {
@@ -666,7 +668,8 @@ static void M_AnimRangeEdits(INJECTION *injection)
                     anim_idx);
                 continue;
             }
-            ANIM_CHANGE *change = &g_AnimChanges[anim->change_idx + change_idx];
+            const ANIM_CHANGE *const change =
+                Anim_GetChange(anim->change_idx + change_idx);
 
             if (range_idx >= change->num_ranges) {
                 LOG_WARNING(

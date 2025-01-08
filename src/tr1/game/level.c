@@ -311,7 +311,7 @@ static void M_LoadAnimChanges(VFILE *file)
                + m_InjectionInfo->anim_change_count),
         GBUF_ANIM_CHANGES);
     for (int32_t i = 0; i < m_LevelInfo.anim_change_count; i++) {
-        ANIM_CHANGE *anim_change = &g_AnimChanges[i];
+        ANIM_CHANGE *const anim_change = Anim_GetChange(i);
         anim_change->goal_anim_state = VFile_ReadS16(file);
         anim_change->num_ranges = VFile_ReadS16(file);
         anim_change->range_idx = VFile_ReadS16(file);
