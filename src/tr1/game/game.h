@@ -9,7 +9,7 @@ GAME_FLOW_COMMAND Game_Stop(void);
 
 void Game_ProcessInput(void);
 
-void Game_DrawScene(bool draw_overlay);
+void Game_Draw(bool draw_overlay);
 
 GAME_FLOW_COMMAND Game_MainMenu(void);
 

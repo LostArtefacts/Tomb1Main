@@ -16,7 +16,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void Game_DrawScene(bool draw_overlay)
+void Game_Draw(bool draw_overlay)
 {
     Interpolation_Commit();
     Camera_Apply();

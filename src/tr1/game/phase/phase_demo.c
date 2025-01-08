@@ -393,7 +393,7 @@ static void M_Draw(void)
     if (m_State == STATE_FADE_OUT) {
         Interpolation_Disable();
     }
-    Game_DrawScene(true);
+    Game_Draw(true);
     if (m_State == STATE_FADE_OUT) {
         Interpolation_Enable();
     }

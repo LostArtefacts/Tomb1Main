@@ -23,7 +23,7 @@
 #define FRAME_BUFFER(key)                                                      \
     do {                                                                       \
         Output_BeginScene();                                                   \
-        Game_DrawScene(true);                                                  \
+        Game_Draw(true);                                                       \
         Input_Update();                                                        \
         Output_EndScene();                                                     \
         Clock_WaitTick();                                                      \

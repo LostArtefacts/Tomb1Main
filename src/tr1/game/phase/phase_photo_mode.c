@@ -110,7 +110,7 @@ static void M_Draw(PHASE *const phase)
 {
     const M_PRIV *const p = phase->priv;
     Interpolation_Disable();
-    Game_DrawScene(false);
+    Game_Draw(false);
     Interpolation_Enable();
     if (p->status == PS_NONE) {
         p->ui->draw(p->ui);

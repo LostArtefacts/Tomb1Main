@@ -196,7 +196,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
 
 static void M_Draw(void)
 {
-    Game_DrawScene(true);
+    Game_Draw(true);
     Output_AnimateTextures();
 }
 

@@ -168,7 +168,7 @@ void InvRing_Draw(INV_RING *const ring)
             g_InvRing_OldCamera.pos.z, g_InvRing_OldCamera.target.x,
             g_InvRing_OldCamera.target.y, g_InvRing_OldCamera.target.z, 0);
         Interpolation_Disable();
-        Game_DrawScene(false);
+        Game_Draw(false);
         Interpolation_Enable();
 
         Fader_Draw(&ring->back_fader);

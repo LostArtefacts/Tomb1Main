@@ -146,12 +146,16 @@ GAME_FLOW_COMMAND Game_Control(const int32_t num_frames, const bool demo_mode)
     return gf_cmd;
 }
 
-void Game_Draw(void)
+void Game_Draw(bool draw_overlay)
 {
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
-    Overlay_DrawGameInfo(true);
-    Output_DrawPolyList();
+    if (draw_overlay) {
+        Overlay_DrawGameInfo(true);
+        Output_DrawPolyList();
+    } else {
+        Overlay_HideGameInfo();
+    }
 }
 
 GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)

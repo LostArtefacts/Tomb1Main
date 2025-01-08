@@ -105,7 +105,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    Game_Draw();
+    Game_Draw(true);
     Fader_Draw(&p->exit_fader);
 }
 

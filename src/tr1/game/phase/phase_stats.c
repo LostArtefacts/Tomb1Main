@@ -342,7 +342,7 @@ static void M_Draw(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     if (!p->args.show_final_stats) {
         Interpolation_Disable();
-        Game_DrawScene(false);
+        Game_Draw(false);
         Interpolation_Enable();
         Fader_Draw(&p->back_fader);
     }
