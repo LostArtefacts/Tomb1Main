@@ -539,8 +539,8 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     Level_ReadAnimChanges(
         level_info->anim_change_count, inj_info->anim_change_count, fp);
     for (int32_t i = 0; i < inj_info->anim_range_count; i++) {
-        ANIM_RANGE *anim_range =
-            &g_AnimRanges[level_info->anim_range_count + i];
+        ANIM_RANGE *const anim_range =
+            Anim_GetRange(level_info->anim_range_count + i);
         anim_range->start_frame = VFile_ReadS16(fp);
         anim_range->end_frame = VFile_ReadS16(fp);
         anim_range->link_anim_num = VFile_ReadS16(fp);
@@ -614,8 +614,9 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     }
 
     for (int32_t i = 0; i < inj_info->anim_range_count; i++) {
-        g_AnimRanges[level_info->anim_range_count++].link_anim_num +=
-            level_info->anim_count;
+        ANIM_RANGE *const range = Anim_GetRange(level_info->anim_range_count);
+        range->link_anim_num += level_info->anim_count;
+        level_info->anim_range_count++;
     }
 
     Benchmark_End(benchmark, NULL);
@@ -672,7 +673,8 @@ static void M_AnimRangeEdits(INJECTION *injection)
                     range_idx, change_idx, anim_idx);
                 continue;
             }
-            ANIM_RANGE *range = &g_AnimRanges[change->range_idx + range_idx];
+            ANIM_RANGE *const range =
+                Anim_GetRange(change->range_idx + range_idx);
 
             range->start_frame = low_frame;
             range->end_frame = high_frame;

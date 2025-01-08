@@ -322,7 +322,7 @@ static void M_LoadAnimRanges(VFILE *file)
                + m_InjectionInfo->anim_range_count),
         GBUF_ANIM_RANGES);
     for (int32_t i = 0; i < m_LevelInfo.anim_range_count; i++) {
-        ANIM_RANGE *anim_range = &g_AnimRanges[i];
+        ANIM_RANGE *const anim_range = Anim_GetRange(i);
         anim_range->start_frame = VFile_ReadS16(file);
         anim_range->end_frame = VFile_ReadS16(file);
         anim_range->link_anim_num = VFile_ReadS16(file);

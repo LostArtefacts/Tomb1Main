@@ -666,8 +666,9 @@ bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
     for (int32_t i = 0; i < anim->num_changes; i++) {
         const ANIM_CHANGE *const change = Anim_GetChange(anim->change_idx + i);
         if (change->goal_anim_state == item->goal_anim_state) {
-            ANIM_RANGE *range = &g_AnimRanges[change->range_idx];
-            for (int j = 0; j < change->num_ranges; j++, range++) {
+            for (int32_t j = 0; j < change->num_ranges; j++) {
+                const ANIM_RANGE *const range =
+                    Anim_GetRange(change->range_idx + j);
                 if (Item_TestFrameRange(
                         item, range->start_frame - anim->frame_base,
                         range->end_frame - anim->frame_base)) {
