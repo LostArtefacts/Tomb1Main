@@ -22,6 +22,16 @@
 #define FLARE_OLD_AGE (MAX_FLARE_AGE - 2 * FRAMES_PER_SECOND) // = 1740
 #define FLARE_YOUNG_AGE (FRAMES_PER_SECOND) // = 30
 
+typedef enum {
+    // clang-format off
+    LA_FLARES_HOLD   = 0,
+    LA_FLARES_THROW  = 1,
+    LA_FLARES_DRAW   = 2,
+    LA_FLARES_IGNITE = 3,
+    LA_FLARES_IDLE   = 4,
+    // clang-format on
+} LARA_FLARES_ANIMATION;
+
 static bool M_CanThrowFlare(void);
 static void M_DoIgniteEffects(XYZ_32 flare_pos, int16_t room_num);
 static void M_DoBurnEffects(
@@ -210,15 +220,15 @@ void Flare_SetArm(const int32_t frame)
 {
     int16_t anim_idx;
     if (frame < LF_FL_THROW) {
-        anim_idx = 0;
+        anim_idx = LA_FLARES_HOLD;
     } else if (frame < LF_FL_DRAW) {
-        anim_idx = 1;
+        anim_idx = LA_FLARES_THROW;
     } else if (frame < LF_FL_IGNITE) {
-        anim_idx = 2;
+        anim_idx = LA_FLARES_DRAW;
     } else if (frame < LF_FL_2_HOLD) {
-        anim_idx = 3;
+        anim_idx = LA_FLARES_IGNITE;
     } else {
-        anim_idx = 4;
+        anim_idx = LA_FLARES_IDLE;
     }
 
     const OBJECT *const object = Object_GetObject(O_LARA_FLARE);
