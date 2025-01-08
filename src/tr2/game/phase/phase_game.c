@@ -119,6 +119,7 @@ PHASE *Phase_Game_Create(
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;
+    phase->suspend = M_Suspend;
     phase->resume = M_Resume;
     phase->control = M_Control;
     phase->draw = M_Draw;
