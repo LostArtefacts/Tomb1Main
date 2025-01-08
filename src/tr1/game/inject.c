@@ -536,13 +536,8 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     INJECTION_INFO *inj_info = injection->info;
     VFILE *const fp = injection->fp;
 
-    for (int32_t i = 0; i < inj_info->anim_change_count; i++) {
-        ANIM_CHANGE *const anim_change =
-            Anim_GetChange(level_info->anim_change_count + i);
-        anim_change->goal_anim_state = VFile_ReadS16(fp);
-        anim_change->num_ranges = VFile_ReadS16(fp);
-        anim_change->range_idx = VFile_ReadS16(fp);
-    }
+    Level_ReadAnimChanges(
+        level_info->anim_change_count, inj_info->anim_change_count, fp);
     for (int32_t i = 0; i < inj_info->anim_range_count; i++) {
         ANIM_RANGE *anim_range =
             &g_AnimRanges[level_info->anim_range_count + i];

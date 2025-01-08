@@ -2,9 +2,8 @@
 
 #include "./types.h"
 
-extern ANIM_CHANGE *g_AnimChanges;
-
 void Anim_InitialiseAnims(int32_t num_anims);
+void Anim_InitialiseChanges(int32_t num_changes);
 void Anim_InitialiseBones(int32_t num_bones);
 
 ANIM *Anim_GetAnim(int32_t anim_idx);

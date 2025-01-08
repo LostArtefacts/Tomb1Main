@@ -305,17 +305,9 @@ static void M_LoadAnimChanges(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.anim_change_count = VFile_ReadS32(file);
     LOG_INFO("%d anim changes", m_LevelInfo.anim_change_count);
-    g_AnimChanges = GameBuf_Alloc(
-        sizeof(ANIM_CHANGE)
-            * (m_LevelInfo.anim_change_count
-               + m_InjectionInfo->anim_change_count),
-        GBUF_ANIM_CHANGES);
-    for (int32_t i = 0; i < m_LevelInfo.anim_change_count; i++) {
-        ANIM_CHANGE *const anim_change = Anim_GetChange(i);
-        anim_change->goal_anim_state = VFile_ReadS16(file);
-        anim_change->num_ranges = VFile_ReadS16(file);
-        anim_change->range_idx = VFile_ReadS16(file);
-    }
+    Anim_InitialiseChanges(
+        m_LevelInfo.anim_change_count + m_InjectionInfo->anim_change_count);
+    Level_ReadAnimChanges(0, m_LevelInfo.anim_change_count, file);
     Benchmark_End(benchmark, NULL);
 }
 
