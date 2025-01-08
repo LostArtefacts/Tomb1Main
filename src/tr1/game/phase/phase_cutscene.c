@@ -69,6 +69,7 @@ static void M_InitialiseHair(int32_t level_num)
 
 static void M_Start(const PHASE_CUTSCENE_ARGS *const args)
 {
+    Game_SetIsPlaying(true);
     m_PauseCutscene = false;
 
     // The cutscene is already playing and it's to be resumed.
@@ -104,6 +105,7 @@ static void M_Start(const PHASE_CUTSCENE_ARGS *const args)
 
 static void M_End(void)
 {
+    Game_SetIsPlaying(false);
     if (m_PauseCutscene) {
         return;
     }

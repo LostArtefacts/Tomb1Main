@@ -235,6 +235,7 @@ static void M_Start(const PHASE_DEMO_ARGS *const args)
     Input_Update();
 
     Interpolation_Remember();
+    Game_SetIsPlaying(true);
 
     M_PrepareConfig();
     M_PrepareResumeInfo();
@@ -281,6 +282,7 @@ static void M_Start(const PHASE_DEMO_ARGS *const args)
 
 static void M_End(void)
 {
+    Game_SetIsPlaying(false);
     if (m_DemoLevel == -1) {
         return;
     }
