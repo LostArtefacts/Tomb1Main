@@ -100,6 +100,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
                 }
             } else {
                 GAME_FLOW_COMMAND gf_cmd;
+                Game_SetIsPlaying(false);
                 if (g_OverlayFlag == -1) {
                     gf_cmd = GF_ShowInventory(INV_LOAD_MODE);
                 } else if (g_OverlayFlag == -2) {
@@ -107,6 +108,7 @@ static PHASE_CONTROL M_Control(int32_t nframes)
                 } else {
                     gf_cmd = GF_ShowInventory(INV_GAME_MODE);
                 }
+                Game_SetIsPlaying(true);
                 g_OverlayFlag = 1;
                 if (gf_cmd.action != GF_NOOP) {
                     return (PHASE_CONTROL) {
