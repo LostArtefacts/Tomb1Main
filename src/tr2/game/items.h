@@ -24,7 +24,6 @@ int32_t Item_TestPosition(
 void Item_AlignPosition(
     const XYZ_32 *vec, const ITEM *src_item, ITEM *dst_item);
 void Item_Animate(ITEM *item);
-int32_t Item_GetAnimChange(ITEM *item, const ANIM *anim);
 void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 int32_t Item_IsTriggerActive(ITEM *item);
 int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate);

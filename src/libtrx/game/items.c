@@ -80,3 +80,31 @@ bool Item_TestFrameRange(
         item->frame_num, Item_GetAnim(item)->frame_base + start,
         Item_GetAnim(item)->frame_base + end);
 }
+
+bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
+{
+    if (item->current_anim_state == item->goal_anim_state) {
+        return false;
+    }
+
+    for (int32_t i = 0; i < anim->num_changes; i++) {
+        const ANIM_CHANGE *const change = Anim_GetChange(anim->change_idx + i);
+        if (change->goal_anim_state != item->goal_anim_state) {
+            continue;
+        }
+
+        for (int32_t j = 0; j < change->num_ranges; j++) {
+            const ANIM_RANGE *const range =
+                Anim_GetRange(change->range_idx + j);
+
+            if (Anim_TestAbsFrameRange(
+                    item->frame_num, range->start_frame, range->end_frame)) {
+                item->anim_num = range->link_anim_num;
+                item->frame_num = range->link_frame_num;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

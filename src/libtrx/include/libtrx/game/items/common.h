@@ -25,3 +25,4 @@ void Item_SwitchToObjAnim(
     ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id);
 bool Item_TestFrameEqual(const ITEM *item, int16_t frame);
 bool Item_TestFrameRange(const ITEM *item, int16_t start, int16_t end);
+bool Item_GetAnimChange(ITEM *item, const ANIM *anim);
