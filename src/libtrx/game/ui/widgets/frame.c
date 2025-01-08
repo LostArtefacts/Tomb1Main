@@ -45,6 +45,7 @@ static void M_SetPosition(
         y + self->margin + self->padding);
     Text_SetPos(
         self->frame, x + self->margin, y + self->margin + TEXT_HEIGHT_FIXED);
+    self->frame->pos.z = 24;
     Text_AddBackground(
         self->frame, w - self->margin * 2, h - self->margin * 2,
         (w - self->margin * 2) / 2, 0, TS_REQUESTED);
