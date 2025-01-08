@@ -121,7 +121,6 @@ int16_t g_SampleLUT[SFX_NUMBER_OF];
 SAMPLE_INFO *g_SampleInfos = NULL;
 int32_t g_HeightType;
 int16_t *g_AnimCommands = NULL;
-ANIM_CHANGE *g_AnimChanges = NULL;
 ANIM_RANGE *g_AnimRanges = NULL;
 int32_t g_FlipMaps[MAX_FLIP_MAPS];
 bool g_CameraUnderwater;

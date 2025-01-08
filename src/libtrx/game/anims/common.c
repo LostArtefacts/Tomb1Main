@@ -3,6 +3,7 @@
 #include "game/gamebuf.h"
 
 static ANIM *m_Anims = NULL;
+ANIM_CHANGE *g_AnimChanges = NULL;
 static ANIM_BONE *m_Bones = NULL;
 
 void Anim_InitialiseAnims(const int32_t num_anims)
@@ -18,6 +19,11 @@ void Anim_InitialiseBones(const int32_t num_bones)
 ANIM *Anim_GetAnim(const int32_t anim_idx)
 {
     return &m_Anims[anim_idx];
+}
+
+ANIM_CHANGE *Anim_GetChange(const int32_t change_idx)
+{
+    return &g_AnimChanges[change_idx];
 }
 
 ANIM_BONE *Anim_GetBone(const int32_t bone_idx)

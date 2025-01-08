@@ -58,7 +58,6 @@ extern uint16_t *g_Overlap;
 extern int16_t *g_GroundZone[2];
 extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
-extern ANIM_CHANGE *g_AnimChanges;
 extern ANIM_RANGE *g_AnimRanges;
 extern TEXTURE_RANGE *g_AnimTextureRanges;
 extern int16_t *g_AnimCommands;
