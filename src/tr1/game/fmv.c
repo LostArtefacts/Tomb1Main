@@ -154,7 +154,7 @@ bool FMV_IsPlaying(void)
 bool FMV_Play(const char *path)
 {
     Music_Stop();
-    Sound_StopAllSamples();
+    Sound_StopAll();
 
     if (!g_Config.gameplay.enable_fmv) {
         return true;

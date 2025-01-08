@@ -118,6 +118,7 @@ sources = [
   'game/random.c',
   'game/rooms/common.c',
   'game/shell/common.c',
+  'game/sound.c',
   'game/text.c',
   'game/ui/common.c',
   'game/ui/events.c',

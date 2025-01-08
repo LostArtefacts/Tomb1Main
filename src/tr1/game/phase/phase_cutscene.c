@@ -111,7 +111,7 @@ static void M_End(void)
     }
 
     Music_Stop();
-    Sound_StopAllSamples();
+    Sound_StopAll();
 }
 
 static PHASE_CONTROL M_Control(int32_t nframes)

@@ -966,7 +966,7 @@ void InvRing_Close(INV_RING *const ring)
     }
     if (ring->mode == INV_TITLE_MODE) {
         Music_Stop();
-        Sound_StopAllSamples();
+        Sound_StopAll();
     }
     Output_UnloadBackground();
 

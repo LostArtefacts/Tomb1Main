@@ -688,7 +688,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     }
     Overlay_HideGameInfo();
 
-    Sound_StopAllSamples();
+    Sound_StopAll();
     if (mode != INV_TITLE_MODE) {
         Music_Pause();
     }

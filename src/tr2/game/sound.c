@@ -171,32 +171,32 @@ void Sound_UpdateEffects(void)
     }
 }
 
-void Sound_Effect(
+bool Sound_Effect(
     const SOUND_EFFECT_ID sample_id, const XYZ_32 *const pos,
     const uint32_t flags)
 {
     if (!g_SoundIsActive) {
-        return;
+        return false;
     }
 
     if (flags != SPM_ALWAYS
         && ((flags & SPM_UNDERWATER)
             != (g_Rooms[g_Camera.pos.room_num].flags & RF_UNDERWATER))) {
-        return;
+        return false;
     }
 
     const int32_t sample_num = g_SampleLUT[sample_id];
     if (sample_num == -1) {
         g_SampleLUT[sample_id] = -2;
-        return;
+        return false;
     }
     if (sample_num == -2) {
-        return;
+        return false;
     }
 
     SAMPLE_INFO *const s = &g_SampleInfos[sample_num];
     if (s->randomness && (Random_GetDraw() > s->randomness)) {
-        return;
+        return false;
     }
 
     uint32_t distance = 0;
@@ -207,11 +207,11 @@ void Sound_Effect(
         const int32_t dz = pos->z - g_Camera.mic_pos.z;
         if (ABS(dx) > SOUND_RADIUS || ABS(dy) > SOUND_RADIUS
             || ABS(dz) > SOUND_RADIUS) {
-            return;
+            return false;
         }
         distance = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
         if (distance > SOUND_RADIUS_SQRD) {
-            return;
+            return false;
         } else if (distance < SOUND_MAXVOL_RADIUS_SQRD) {
             distance = 0;
         } else {
@@ -231,7 +231,7 @@ void Sound_Effect(
     volume = (volume * (0x10000 - attenuation)) / 0x10000;
 
     if (volume <= 0) {
-        return;
+        return false;
     }
 
     int32_t pitch = (flags & SPM_PITCH) != 0 ? (flags >> 8) & 0xFFFFFF
@@ -242,7 +242,7 @@ void Sound_Effect(
     }
 
     if (s->number < 0) {
-        return;
+        return false;
     }
 
     const SOUND_MODE mode = s->flags & SOUND_MODE_MASK;
@@ -260,7 +260,7 @@ void Sound_Effect(
             SOUND_SLOT *const slot = &m_SoundSlots[i];
             if (slot->sample_num == sample_num) {
                 if (Audio_Sample_IsPlaying(i)) {
-                    return;
+                    return true;
                 }
                 M_ClearSlot(slot);
             }
@@ -286,7 +286,7 @@ void Sound_Effect(
                     slot->pan = pan;
                     slot->pitch = pitch;
                 }
-                return;
+                return true;
             }
         }
         break;
@@ -315,25 +315,27 @@ void Sound_Effect(
 
     if (handle == AUDIO_NO_SOUND) {
         s->number = -1;
-    } else {
-        int32_t free_slot = -1;
-        for (int32_t i = 0; i < SOUND_MAX_SLOTS; i++) {
-            SOUND_SLOT *const slot = &m_SoundSlots[i];
-            if (slot->sample_num < 0) {
-                free_slot = i;
-                break;
-            }
-        }
+        return false;
+    }
 
-        if (free_slot != -1) {
-            SOUND_SLOT *const slot = &m_SoundSlots[free_slot];
-            slot->volume = volume;
-            slot->pan = pan;
-            slot->pitch = pitch;
-            slot->sample_num = sample_num;
-            slot->handle = handle;
+    int32_t free_slot = -1;
+    for (int32_t i = 0; i < SOUND_MAX_SLOTS; i++) {
+        SOUND_SLOT *const slot = &m_SoundSlots[i];
+        if (slot->sample_num < 0) {
+            free_slot = i;
+            break;
         }
     }
+
+    if (free_slot != -1) {
+        SOUND_SLOT *const slot = &m_SoundSlots[free_slot];
+        slot->volume = volume;
+        slot->pan = pan;
+        slot->pitch = pitch;
+        slot->sample_num = sample_num;
+        slot->handle = handle;
+    }
+    return true;
 }
 
 void Sound_StopEffect(const SOUND_EFFECT_ID sample_id)
@@ -354,7 +356,7 @@ void Sound_StopEffect(const SOUND_EFFECT_ID sample_id)
     }
 }
 
-void Sound_StopAllSamples(void)
+void Sound_StopAll(void)
 {
     Audio_Sample_CloseAll();
     M_ClearAllSlots();

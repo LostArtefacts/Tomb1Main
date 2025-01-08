@@ -477,7 +477,7 @@ void Sound_ResetEffects(void)
         M_ClearSlot(&m_SFXPlaying[i]);
     }
 
-    Sound_StopAllSamples();
+    Sound_StopAll();
 
     m_AmbientLookupIdx = 0;
 
@@ -525,17 +525,7 @@ void Sound_LoadSamples(
     Audio_Sample_LoadMany(num_samples, sample_pointers, sizes);
 }
 
-void Sound_PauseAll(void)
-{
-    Audio_Sample_PauseAll();
-}
-
-void Sound_UnpauseAll(void)
-{
-    Audio_Sample_UnpauseAll();
-}
-
-void Sound_StopAllSamples(void)
+void Sound_StopAll(void)
 {
     Audio_Sample_CloseAll();
 }

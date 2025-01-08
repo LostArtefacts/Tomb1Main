@@ -174,7 +174,7 @@ bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
 GAME_FLOW_COMMAND Game_Stop(void)
 {
-    Sound_StopAllSamples();
+    Sound_StopAll();
     Music_Stop();
     Savegame_PersistGameToCurrentInfo(g_CurrentLevel);
 

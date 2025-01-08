@@ -88,7 +88,7 @@ static void M_End(PHASE *const phase)
     Music_SetVolume(g_Config.audio.music_volume);
     Music_Stop();
     g_SoundIsActive = p->old_sound_active;
-    Sound_StopAllSamples();
+    Sound_StopAll();
 
     g_LevelComplete = true;
 }

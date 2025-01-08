@@ -195,7 +195,7 @@ int32_t Level_Initialise(
     Overlay_HideGameInfo();
     Overlay_InitialisePickUpDisplay();
     g_HealthBarTimer = 100;
-    Sound_StopAllSamples();
+    Sound_StopAll();
     if (level_type == GFL_SAVED) {
         ExtractSaveGameInfo();
     } else if (level_type == GFL_NORMAL) {

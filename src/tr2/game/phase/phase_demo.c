@@ -163,7 +163,7 @@ static void M_End(PHASE *const phase)
 
     Game_SetIsPlaying(false);
     Overlay_HideGameInfo();
-    Sound_StopAllSamples();
+    Sound_StopAll();
     Music_Stop();
     Music_SetVolume(g_Config.audio.music_volume);
     g_Inv_DemoMode = false;
