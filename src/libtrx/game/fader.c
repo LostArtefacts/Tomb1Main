@@ -20,6 +20,7 @@ void Fader_InitEx(FADER *const fader, FADER_ARGS args)
         }
     }
 
+    fader->target_drawn = false;
     fader->args = args;
     ClockTimer_Sync(&fader->timer);
 }
@@ -59,12 +60,12 @@ bool Fader_IsActive(const FADER *const fader)
     if (!g_Config.visuals.enable_fade_effects) {
         return false;
     }
-    const double elapsed_time = ClockTimer_PeekElapsed(&fader->timer);
-    const double target_time = fader->args.duration + fader->args.debuff;
-    return elapsed_time < target_time;
+    return fader->args.duration > 0.0 && !fader->target_drawn;
 }
 
-void Fader_Draw(const FADER *const fader)
+void Fader_Draw(FADER *const fader)
 {
-    Output_DrawBlackRectangle(Fader_GetCurrentValue(fader));
+    const int32_t current = Fader_GetCurrentValue(fader);
+    fader->target_drawn |= current == fader->args.target;
+    Output_DrawBlackRectangle(current);
 }
