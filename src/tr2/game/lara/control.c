@@ -698,7 +698,7 @@ void Lara_Animate(ITEM *const item)
 
     if (item->frame_num > anim->frame_end) {
         if (anim->num_commands > 0) {
-            const int16_t *cmd_ptr = &g_AnimCommands[anim->command_idx];
+            const int16_t *cmd_ptr = Anim_GetCommand(anim->command_idx);
             for (int32_t i = 0; i < anim->num_commands; i++) {
                 const int16_t cmd = *cmd_ptr++;
 
@@ -743,7 +743,7 @@ void Lara_Animate(ITEM *const item)
     }
 
     if (anim->num_commands > 0) {
-        const int16_t *cmd_ptr = &g_AnimCommands[anim->command_idx];
+        const int16_t *cmd_ptr = Anim_GetCommand(anim->command_idx);
         for (int32_t i = 0; i < anim->num_commands; i++) {
             const int16_t cmd = *cmd_ptr++;
 
