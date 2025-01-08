@@ -272,6 +272,16 @@ void Level_ReadAnimRanges(
     }
 }
 
+void Level_ReadAnimCommands(
+    const int32_t base_idx, const int32_t num_cmds, VFILE *const file)
+{
+    // TODO: structure these, although they are of variable size.
+    for (int32_t i = 0; i < num_cmds; i++) {
+        int16_t *const cmd = Anim_GetCommand(base_idx + i);
+        *cmd = VFile_ReadS16(file);
+    }
+}
+
 void Level_ReadAnimBones(
     const int32_t base_idx, const int32_t num_bones, VFILE *const file)
 {

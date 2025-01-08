@@ -540,9 +540,8 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
         level_info->anim_change_count, inj_info->anim_change_count, fp);
     Level_ReadAnimRanges(
         level_info->anim_range_count, inj_info->anim_range_count, fp);
-    VFile_Read(
-        fp, g_AnimCommands + level_info->anim_command_count,
-        sizeof(int16_t) * inj_info->anim_cmd_count);
+    Level_ReadAnimCommands(
+        level_info->anim_command_count, inj_info->anim_cmd_count, fp);
     Level_ReadAnimBones(
         level_info->anim_bone_count, inj_info->anim_bone_count, fp);
     const size_t frame_data_start = VFile_GetPos(fp);

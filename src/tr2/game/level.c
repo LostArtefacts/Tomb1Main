@@ -268,9 +268,8 @@ static void M_LoadAnimCommands(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anim_commands = VFile_ReadS32(file);
     LOG_INFO("anim commands: %d", num_anim_commands);
-    g_AnimCommands =
-        GameBuf_Alloc(sizeof(int16_t) * num_anim_commands, GBUF_ANIM_COMMANDS);
-    VFile_Read(file, g_AnimCommands, sizeof(int16_t) * num_anim_commands);
+    Anim_InitialiseCommands(num_anim_commands);
+    Level_ReadAnimCommands(0, num_anim_commands, file);
     Benchmark_End(benchmark, NULL);
 }
 

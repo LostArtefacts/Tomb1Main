@@ -327,13 +327,9 @@ static void M_LoadAnimCommands(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.anim_command_count = VFile_ReadS32(file);
     LOG_INFO("%d anim commands", m_LevelInfo.anim_command_count);
-    g_AnimCommands = GameBuf_Alloc(
-        sizeof(int16_t)
-            * (m_LevelInfo.anim_command_count
-               + m_InjectionInfo->anim_cmd_count),
-        GBUF_ANIM_COMMANDS);
-    VFile_Read(
-        file, g_AnimCommands, sizeof(int16_t) * m_LevelInfo.anim_command_count);
+    Anim_InitialiseCommands(
+        m_LevelInfo.anim_command_count + m_InjectionInfo->anim_cmd_count);
+    Level_ReadAnimCommands(0, m_LevelInfo.anim_command_count, file);
     Benchmark_End(benchmark, NULL);
 }
 
