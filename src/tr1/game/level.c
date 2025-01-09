@@ -793,7 +793,9 @@ static void M_CompleteSetup(int32_t level_num)
 
     Inject_AllInjections(&m_LevelInfo);
 
-    Anim_InitialiseFrames(
+    const int32_t frame_count = Anim_GetTotalFrameCount();
+    Anim_InitialiseFrames(frame_count);
+    Anim_LoadFrames(
         m_LevelInfo.anim_frame_data, m_LevelInfo.anim_frame_data_count);
     Memory_FreePointer(&m_LevelInfo.anim_frame_data);
 

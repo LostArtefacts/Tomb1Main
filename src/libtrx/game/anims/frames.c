@@ -65,7 +65,32 @@ static int32_t M_ParseFrame(ANIM_FRAME *const frame, const int16_t *data_ptr)
 #endif
 }
 
-void Anim_InitialiseFrames(const int16_t *data, const int32_t data_length)
+int32_t Anim_GetTotalFrameCount(void)
+{
+#if TR_VERSION > 1
+    ASSERT_FAIL();
+    return 0;
+#else
+    const int32_t anim_count = Anim_GetTotalCount();
+    int32_t total_frame_count = 0;
+    for (int32_t i = 0; i < anim_count; i++) {
+        total_frame_count += M_GetAnimFrameCount(i);
+    }
+    return total_frame_count;
+#endif
+}
+
+void Anim_InitialiseFrames(const int32_t num_frames)
+{
+#if TR_VERSION > 1
+    ASSERT_FAIL();
+#else
+    LOG_INFO("%d anim frames", num_frames);
+    m_Frames = GameBuf_Alloc(sizeof(ANIM_FRAME) * num_frames, GBUF_ANIM_FRAMES);
+#endif
+}
+
+void Anim_LoadFrames(const int16_t *data, const int32_t data_length)
 {
 #if TR_VERSION > 1
     ASSERT_FAIL();
@@ -73,20 +98,9 @@ void Anim_InitialiseFrames(const int16_t *data, const int32_t data_length)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     const int32_t anim_count = Anim_GetTotalCount();
-    int32_t total_frame_count = 0;
-    int32_t anim_frame_counts[anim_count];
-    for (int32_t i = 0; i < anim_count; i++) {
-        const int32_t frame_count = M_GetAnimFrameCount(i);
-        total_frame_count += frame_count;
-        anim_frame_counts[i] = frame_count;
-    }
-
-    LOG_INFO("%d anim frames", total_frame_count);
-    m_Frames =
-        GameBuf_Alloc(sizeof(ANIM_FRAME) * total_frame_count, GBUF_ANIM_FRAMES);
-
     OBJECT *cur_obj = NULL;
     int32_t frame_idx = 0;
+
     for (int32_t i = 0; i < anim_count; i++) {
         OBJECT *const next_obj = M_GetAnimObject(i);
         const bool obj_changed = next_obj != NULL;
@@ -99,8 +113,9 @@ void Anim_InitialiseFrames(const int16_t *data, const int32_t data_length)
         }
 
         ANIM *const anim = Anim_GetAnim(i);
+        const int32_t frame_count = M_GetAnimFrameCount(i);
         const int16_t *data_ptr = &data[anim->frame_ofs / sizeof(int16_t)];
-        for (int32_t j = 0; j < anim_frame_counts[i]; j++) {
+        for (int32_t j = 0; j < frame_count; j++) {
             ANIM_FRAME *const frame = &m_Frames[frame_idx++];
             if (j == 0) {
                 anim->frame_ptr = frame;
