@@ -27,12 +27,12 @@
 #define SAVE_CREATURE (1 << 7)
 
 #define SPECIAL_READ_WRITES                                                    \
-    SPECIAL_READ_WRITE(S8, int8_t);                                            \
-    SPECIAL_READ_WRITE(S16, int16_t);                                          \
-    SPECIAL_READ_WRITE(S32, int32_t);                                          \
-    SPECIAL_READ_WRITE(U8, uint8_t);                                           \
-    SPECIAL_READ_WRITE(U16, uint16_t);                                         \
-    SPECIAL_READ_WRITE(U32, uint32_t);
+    SPECIAL_READ_WRITE(S8, int8_t)                                             \
+    SPECIAL_READ_WRITE(S16, int16_t)                                           \
+    SPECIAL_READ_WRITE(S32, int32_t)                                           \
+    SPECIAL_READ_WRITE(U8, uint8_t)                                            \
+    SPECIAL_READ_WRITE(U16, uint16_t)                                          \
+    SPECIAL_READ_WRITE(U32, uint32_t)
 
 static int32_t m_BufPos = 0;
 static char *m_BufPtr = NULL;
@@ -43,7 +43,7 @@ static uint32_t m_ReqFlags2[MAX_REQUESTER_ITEMS];
 static void M_Read(void *ptr, size_t size);
 #undef SPECIAL_READ_WRITE
 #define SPECIAL_READ_WRITE(name, type) static type M_Read##name(void);
-SPECIAL_READ_WRITES;
+SPECIAL_READ_WRITES
 static void M_Skip(size_t size);
 static void M_ReadItems(void);
 static void M_ReadLara(LARA_INFO *lara);
@@ -54,7 +54,7 @@ static void M_ReadFlares(void);
 static void M_Write(const void *ptr, size_t size);
 #undef SPECIAL_READ_WRITE
 #define SPECIAL_READ_WRITE(name, type) static void M_Write##name(type value);
-SPECIAL_READ_WRITES;
+SPECIAL_READ_WRITES
 static void M_WriteItems(void);
 static void M_WriteLara(const LARA_INFO *lara);
 static void M_WriteLaraArm(const LARA_ARM *arm);
@@ -74,7 +74,7 @@ static void M_Read(void *ptr, const size_t size)
         ReadSG(&result, sizeof(type));                                         \
         return result;                                                         \
     }
-SPECIAL_READ_WRITES;
+SPECIAL_READ_WRITES
 
 #undef SPECIAL_READ_WRITE
 #define SPECIAL_READ_WRITE(name, type)                                         \
@@ -82,7 +82,7 @@ SPECIAL_READ_WRITES;
     {                                                                          \
         M_Write(&value, sizeof(type));                                         \
     }
-SPECIAL_READ_WRITES;
+SPECIAL_READ_WRITES
 
 static void M_Skip(const size_t size)
 {

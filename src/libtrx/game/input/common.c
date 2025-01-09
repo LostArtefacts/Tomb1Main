@@ -138,7 +138,7 @@ const char *Input_GetKeyName(
 
 void Input_ResetLayout(const INPUT_BACKEND backend, const INPUT_LAYOUT layout)
 {
-    return M_GetBackend(backend)->reset_layout(layout);
+    M_GetBackend(backend)->reset_layout(layout);
 }
 
 void Input_EnterListenMode(void)
@@ -228,7 +228,7 @@ bool Input_AssignFromJSONObject(
     if (role == (INPUT_ROLE)-1) {
         role = ENUM_MAP_GET(
             INPUT_ROLE, JSON_ObjectGetString(bind_obj, "role", ""),
-            (INPUT_ROLE)-1);
+            (int32_t)(INPUT_ROLE)-1);
     }
 
     if (role == (INPUT_ROLE)-1) {

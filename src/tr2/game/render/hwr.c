@@ -948,7 +948,7 @@ static void M_InsertTransOctagon_Sorted(
     RENDERER *const renderer, const PHD_VBUF *const vtx, const int16_t shade)
 {
     int8_t clip_or = 0x00;
-    int8_t clip_and = 0xFF;
+    uint8_t clip_and = 0xFF;
     int32_t num_vtx = 8;
 
     for (int32_t i = 0; i < num_vtx; i++) {

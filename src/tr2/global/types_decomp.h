@@ -12,9 +12,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// clang-format off
 #pragma pack(push, 1)
 
-// clang-format off
 typedef struct {
     union {
         uint8_t red;
@@ -130,45 +130,6 @@ typedef struct {
     float v;
     float g;
 } POINT_INFO;
-
-typedef struct {
-    uint16_t no_selector : 1;
-    uint16_t ready : 1; // not present in the OG
-    uint16_t pad : 14;
-    uint16_t items_count;
-    uint16_t selected;
-    uint16_t visible_count;
-    uint16_t line_offset;
-    uint16_t line_old_offset;
-    uint16_t pix_width;
-    uint16_t line_height;
-    int16_t x_pos;
-    int16_t y_pos;
-    int16_t z_pos;
-    uint16_t item_string_len;
-    char *pitem_strings1;
-    char *pitem_strings2;
-    uint32_t *pitem_flags1;
-    uint32_t *pitem_flags2;
-    uint32_t heading_flags1;
-    uint32_t heading_flags2;
-    uint32_t background_flags;
-    uint32_t moreup_flags;
-    uint32_t moredown_flags;
-    uint32_t item_flags1[24]; // MAX_REQUESTER_ITEMS
-    uint32_t item_flags2[24]; // MAX_REQUESTER_ITEMS
-    TEXTSTRING *heading_text1;
-    TEXTSTRING *heading_text2;
-    TEXTSTRING *background_text;
-    TEXTSTRING *moreup_text;
-    TEXTSTRING *moredown_text;
-    TEXTSTRING *item_texts1[24]; // MAX_REQUESTER_ITEMS
-    TEXTSTRING *item_texts2[24]; // MAX_REQUESTER_ITEMS
-    char heading_string1[32];
-    char heading_string2[32];
-    uint32_t render_width;
-    uint32_t render_height;
-} REQUEST_INFO;
 
 typedef struct {
     uint32_t best_time[10];
@@ -734,6 +695,45 @@ typedef enum {
     REQ_NO_TIME     = 0x40,
 } REQUESTER_FLAGS;
 
-// clang-format on
-
 #pragma pack(pop)
+
+typedef struct {
+    uint16_t no_selector : 1;
+    uint16_t ready : 1; // not present in the OG
+    uint16_t pad : 14;
+    uint16_t items_count;
+    uint16_t selected;
+    uint16_t visible_count;
+    uint16_t line_offset;
+    uint16_t line_old_offset;
+    uint16_t pix_width;
+    uint16_t line_height;
+    int16_t x_pos;
+    int16_t y_pos;
+    int16_t z_pos;
+    uint16_t item_string_len;
+    char *pitem_strings1;
+    char *pitem_strings2;
+    uint32_t *pitem_flags1;
+    uint32_t *pitem_flags2;
+    uint32_t heading_flags1;
+    uint32_t heading_flags2;
+    uint32_t background_flags;
+    uint32_t moreup_flags;
+    uint32_t moredown_flags;
+    uint32_t item_flags1[24]; // MAX_REQUESTER_ITEMS
+    uint32_t item_flags2[24]; // MAX_REQUESTER_ITEMS
+    TEXTSTRING *heading_text1;
+    TEXTSTRING *heading_text2;
+    TEXTSTRING *background_text;
+    TEXTSTRING *moreup_text;
+    TEXTSTRING *moredown_text;
+    TEXTSTRING *item_texts1[24]; // MAX_REQUESTER_ITEMS
+    TEXTSTRING *item_texts2[24]; // MAX_REQUESTER_ITEMS
+    char heading_string1[32];
+    char heading_string2[32];
+    uint32_t render_width;
+    uint32_t render_height;
+} REQUEST_INFO;
+
+// clang-format on

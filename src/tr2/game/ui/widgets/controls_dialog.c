@@ -53,7 +53,7 @@ static int32_t M_GetHeight(const UI_CONTROLS_DIALOG *const self)
 static void M_SetPosition(
     UI_CONTROLS_DIALOG *const self, const int32_t x, const int32_t y)
 {
-    return self->window->set_position(self->window, x, y);
+    self->window->set_position(self->window, x, y);
 }
 
 static void M_Control(UI_CONTROLS_DIALOG *const self)

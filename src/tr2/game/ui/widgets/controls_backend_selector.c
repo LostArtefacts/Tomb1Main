@@ -54,7 +54,7 @@ static int32_t M_GetHeight(const UI_CONTROLS_BACKEND_SELECTOR *const self)
 static void M_SetPosition(
     UI_CONTROLS_BACKEND_SELECTOR *const self, const int32_t x, const int32_t y)
 {
-    return self->container->set_position(self->container, x, y);
+    self->container->set_position(self->container, x, y);
 }
 
 static void M_Control(UI_CONTROLS_BACKEND_SELECTOR *const self)

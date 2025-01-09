@@ -16,8 +16,11 @@ c_compiler = meson.get_compiler('c')
 relative_dir = fs.relative_to(meson.current_source_dir(), meson.global_build_root())
 build_opts = [
   '-fmacro-prefix-map=@0@/=libtrx/'.format(relative_dir),
+  '-Wall',
+  '-Wpedantic',
   '-Wno-unused',
-  '-Wno-address-of-packed-member',
+  '-Wno-unused-parameter',
+  '-Wno-microsoft-anon-tag',
   '-DMESON_BUILD',
   '-DDWST_STATIC',
   '-DPCRE2_STATIC',

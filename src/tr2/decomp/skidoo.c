@@ -645,7 +645,6 @@ void Skidoo_Animation(
             M_IsArmed(skidoo_data) ? MX_BATTLE_THEME : MX_SKIDOO_THEME;
         if (!(g_MusicTrackFlags[music_track] & IF_ONE_SHOT)) {
             Music_Play(music_track, MPM_ALWAYS);
-            g_LaraItem = g_LaraItem;
             g_MusicTrackFlags[music_track] |= IF_ONE_SHOT;
         }
 

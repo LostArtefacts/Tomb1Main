@@ -67,7 +67,7 @@ static int32_t M_GetHeight(const UI_PAGINATOR *const self)
 
 static void M_SetPosition(UI_PAGINATOR *const self, int32_t x, int32_t y)
 {
-    return self->window->set_position(self->window, x, y);
+    self->window->set_position(self->window, x, y);
 }
 
 static bool M_SelectPage(UI_PAGINATOR *const self, const int32_t new_page)

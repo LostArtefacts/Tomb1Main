@@ -729,7 +729,7 @@ int32_t Lara_TestSlide(ITEM *item, COLL_INFO *coll)
     }
 
     if (coll->z_tilt > 2 && coll->z_tilt > ABS(coll->x_tilt)) {
-        angle = PHD_180;
+        angle = -PHD_180;
     } else if (coll->z_tilt < -2 && -coll->z_tilt > ABS(coll->x_tilt)) {
         angle = 0;
     }

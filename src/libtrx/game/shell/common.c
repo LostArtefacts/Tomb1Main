@@ -25,17 +25,22 @@ static void M_SetupHiDPI(void)
         PROCESS_PER_MONITOR_DPI_AWARE = 2
     } PROCESS_DPI_AWARENESS;
 
-    HRESULT(WINAPI * SetProcessDpiAwareness)
-    (PROCESS_DPI_AWARENESS dpiAwareness); // Windows 8.1 and later
-    void *shcore_dll = SDL_LoadObject("SHCORE.DLL");
-    if (shcore_dll) {
-        SetProcessDpiAwareness =
-            (HRESULT(WINAPI *)(PROCESS_DPI_AWARENESS))SDL_LoadFunction(
-                shcore_dll, "SetProcessDpiAwareness");
-        if (SetProcessDpiAwareness) {
-            SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-        }
+    // Windows 8.1 and later
+    void *const shcore_dll = SDL_LoadObject("SHCORE.DLL");
+    if (shcore_dll == NULL) {
+        return;
     }
+
+    #pragma GCC diagnostic ignored "-Wpedantic"
+    HRESULT(WINAPI * SetProcessDpiAwareness)
+    (PROCESS_DPI_AWARENESS) =
+        (HRESULT(WINAPI *)(PROCESS_DPI_AWARENESS))SDL_LoadFunction(
+            shcore_dll, "SetProcessDpiAwareness");
+    #pragma GCC diagnostic pop
+    if (SetProcessDpiAwareness == NULL) {
+        return;
+    }
+    SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
 #endif
 }
 

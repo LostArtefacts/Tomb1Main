@@ -22,7 +22,6 @@ static const OBJECT_BOUNDS m_KeyHoleBounds = {
 };
 
 static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
-;
 static const OBJECT_BOUNDS *M_Bounds(void);
 
 static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)

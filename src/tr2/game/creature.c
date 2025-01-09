@@ -782,7 +782,7 @@ int32_t Creature_Vault(
         }
     } else if (old_x_sector == x_sector) {
         if (old_z_sector >= z_sector) {
-            item->rot.y = PHD_180;
+            item->rot.y = -PHD_180;
             item->pos.z = (old_z_sector << WALL_SHIFT) + shift;
         } else {
             item->rot.y = 0;

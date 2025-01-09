@@ -36,7 +36,6 @@ static int16_t M_FindBestBoss(void)
         target.pos.z = item->pos.z;
         target.room_num = item->room_num;
 
-        g_LaraItem = g_LaraItem;
         if (!LOS_Check(&start, &target)) {
             const int32_t dx = (g_LaraItem->pos.x - item->pos.x) >> 6;
             const int32_t dy = (g_LaraItem->pos.y - item->pos.y) >> 6;

@@ -81,5 +81,5 @@ int32_t Config_SubscribeChanges(
 void Config_UnsubscribeChanges(const int32_t listener_id)
 {
     ASSERT(m_EventManager != NULL);
-    return EventManager_Unsubscribe(m_EventManager, listener_id);
+    EventManager_Unsubscribe(m_EventManager, listener_id);
 }

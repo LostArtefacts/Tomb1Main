@@ -39,7 +39,7 @@ static int32_t M_GetHeight(const UI_CONTROLS_LAYOUT_EDITOR *const self)
 static void M_SetPosition(
     UI_CONTROLS_LAYOUT_EDITOR *const self, const int32_t x, const int32_t y)
 {
-    return self->outer_stack->set_position(self->outer_stack, x, y);
+    self->outer_stack->set_position(self->outer_stack, x, y);
 }
 
 static void M_Control(UI_CONTROLS_LAYOUT_EDITOR *const self)

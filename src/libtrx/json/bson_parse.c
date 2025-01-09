@@ -660,8 +660,8 @@ JSON_VALUE *BSON_ParseEx(
     state.dom += sizeof(JSON_VALUE);
     M_HandleObjectValue(&state, value);
 
-    ASSERT(state.dom == allocation + state.dom_size);
-    ASSERT(state.data == allocation + state.dom_size + state.data_size);
+    ASSERT(state.dom == (char *)allocation + state.dom_size);
+    ASSERT(state.data == (char *)allocation + state.dom_size + state.data_size);
 
     return value;
 }

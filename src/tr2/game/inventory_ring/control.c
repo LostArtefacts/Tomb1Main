@@ -246,7 +246,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 InvRing_MotionRadius(ring, 0);
                 InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
                 InvRing_MotionRotation(
-                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                    ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
                 g_Input = (INPUT_STATE) { 0 };
                 g_InputDB = (INPUT_STATE) { 0 };
             }
@@ -317,7 +317,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                             ring, RNG_CLOSING, RNG_OPTION2MAIN, 24);
                         InvRing_MotionRadius(ring, 0);
                         InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                            ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
                         InvRing_MotionCameraPitch(ring, 0x2000);
                         ring->motion.misc = 0x2000;
                     }
@@ -328,7 +328,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                             ring, RNG_CLOSING, RNG_MAIN2KEYS, 24);
                         InvRing_MotionRadius(ring, 0);
                         InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                            ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
                         InvRing_MotionCameraPitch(ring, 0x2000);
                         ring->motion.misc = 0x2000;
                     }
@@ -344,7 +344,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                             ring, RNG_CLOSING, RNG_KEYS2MAIN, 24);
                         InvRing_MotionRadius(ring, 0);
                         InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                            ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
                         InvRing_MotionCameraPitch(ring, -0x2000);
                         ring->motion.misc = -0x2000;
                     }
@@ -357,7 +357,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                             ring, RNG_CLOSING, RNG_MAIN2OPTION, 24);
                         InvRing_MotionRadius(ring, 0);
                         InvRing_MotionRotation(
-                            ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                            ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
                         InvRing_MotionCameraPitch(ring, -0x2000);
                         ring->motion.misc = -0x2000;
                     }
@@ -538,7 +538,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 InvRing_MotionRadius(ring, 0);
                 InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
                 InvRing_MotionRotation(
-                    ring, PHD_180, ring->ring_pos.rot.y + PHD_180);
+                    ring, -PHD_180, ring->ring_pos.rot.y + PHD_180);
             }
             break;
 

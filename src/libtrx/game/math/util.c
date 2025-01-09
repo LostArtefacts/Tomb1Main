@@ -75,7 +75,7 @@ int16_t Math_DirectionToAngle(const DIRECTION dir)
     case DIR_WEST:
         return DEG_90;
     case DIR_SOUTH:
-        return DEG_180;
+        return -DEG_180;
     case DIR_EAST:
         return -DEG_90;
     default:

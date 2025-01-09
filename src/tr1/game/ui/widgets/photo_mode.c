@@ -52,7 +52,7 @@ static int32_t M_GetHeight(const UI_PHOTO_MODE *const self)
 
 static void M_SetPosition(UI_PHOTO_MODE *const self, int32_t x, int32_t y)
 {
-    return self->window->set_position(self->window, x, y);
+    self->window->set_position(self->window, x, y);
 }
 
 static void M_Control(UI_PHOTO_MODE *const self)

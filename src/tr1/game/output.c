@@ -244,7 +244,7 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
 static bool M_CalcObjectVertices(
     const XYZ_16 *const vertices, const int16_t count)
 {
-    int16_t total_clip = -1;
+    uint16_t total_clip = 0xFFFF;
     for (int i = 0; i < count; i++) {
         const XYZ_16 *const vertex = &vertices[i];
         // clang-format off
@@ -269,7 +269,7 @@ static bool M_CalcObjectVertices(
         m_VBuf[i].yv = yv;
         m_VBuf[i].zv = zv;
 
-        int16_t clip_flags;
+        uint16_t clip_flags;
         if (zv < Output_GetNearZ()) {
             clip_flags = 0x8000;
         } else {
@@ -439,7 +439,7 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
         vbuf->g = vertex->shade & MAX_LIGHTING;
 
         if (zv < Output_GetNearZ()) {
-            vbuf->clip = 0x8000;
+            vbuf->clip = (int16_t)0x8000;
         } else {
             int16_t clip_flags = 0;
             const int32_t depth = zv_int >> W2V_SHIFT;
