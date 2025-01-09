@@ -89,7 +89,7 @@ void Output_DrawUISprite(
 
 void Output_SetupBelowWater(bool underwater);
 void Output_SetupAboveWater(bool underwater);
-void Output_AnimateTextures(void);
+void Output_AnimateTextures(int32_t num_frames);
 
 void Output_ApplyFOV(void);
 void Output_ApplyTint(float *r, float *g, float *b);

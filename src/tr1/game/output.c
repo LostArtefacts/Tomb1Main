@@ -57,7 +57,7 @@ static int m_BackdropDstAlpha = 0;
 static RGB_888 *m_ColorPalette = NULL;
 
 static int32_t m_WibbleOffset = 0;
-static double m_WibbleOffsetDbl = 0.0;
+static int32_t m_AnimatedTexturesOffset = 0;
 static CLOCK_TIMER m_WibbleTimer = { .type = CLOCK_TIMER_SIM };
 static CLOCK_TIMER m_AnimatedTexturesTimer = { .type = CLOCK_TIMER_SIM };
 static CLOCK_TIMER m_FadeTimer = { .type = CLOCK_TIMER_SIM };
@@ -1167,41 +1167,38 @@ void Output_SetupAboveWater(bool underwater)
     m_IsShadeEffect = underwater;
 }
 
-void Output_AnimateTextures(void)
+void Output_AnimateTextures(const int32_t num_frames)
 {
-    m_WibbleOffsetDbl += ClockTimer_TakeElapsed(&m_WibbleTimer) * LOGIC_FPS;
-    m_WibbleOffset = (int32_t)(m_WibbleOffsetDbl) % WIBBLE_SIZE;
-
-    if (!ClockTimer_CheckElapsedAndTake(
-            &m_AnimatedTexturesTimer, 5.0 / (double)LOGIC_FPS)) {
-        return;
-    }
-
-    const TEXTURE_RANGE *range = g_AnimTextureRanges;
-    while (range) {
-        int32_t i = 0;
-        const PHD_TEXTURE temp = g_PhdTextureInfo[range->textures[i]];
-        for (; i < range->num_textures - 1; i++) {
-            g_PhdTextureInfo[range->textures[i]] =
-                g_PhdTextureInfo[range->textures[i + 1]];
-        }
-        g_PhdTextureInfo[range->textures[i]] = temp;
-        range = range->next_range;
-    }
-
-    for (int32_t i = 0; i < STATIC_NUMBER_OF; i++) {
-        const STATIC_INFO *const static_info = &g_StaticObjects[i];
-        if (!static_info->loaded || static_info->mesh_count >= -1) {
-            continue;
+    m_WibbleOffset = (m_WibbleOffset + num_frames) % WIBBLE_SIZE;
+    m_AnimatedTexturesOffset += num_frames;
+    while (m_AnimatedTexturesOffset > 5) {
+        const TEXTURE_RANGE *range = g_AnimTextureRanges;
+        while (range) {
+            int32_t i = 0;
+            const PHD_TEXTURE temp = g_PhdTextureInfo[range->textures[i]];
+            for (; i < range->num_textures - 1; i++) {
+                g_PhdTextureInfo[range->textures[i]] =
+                    g_PhdTextureInfo[range->textures[i + 1]];
+            }
+            g_PhdTextureInfo[range->textures[i]] = temp;
+            range = range->next_range;
         }
 
-        const int32_t num_meshes = -static_info->mesh_count;
-        const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_num];
-        for (int32_t j = 0; j < num_meshes - 1; j++) {
-            g_PhdSpriteInfo[static_info->mesh_num + j] =
-                g_PhdSpriteInfo[static_info->mesh_num + j + 1];
+        for (int32_t i = 0; i < STATIC_NUMBER_OF; i++) {
+            const STATIC_INFO *const static_info = &g_StaticObjects[i];
+            if (!static_info->loaded || static_info->mesh_count >= -1) {
+                continue;
+            }
+
+            const int32_t num_meshes = -static_info->mesh_count;
+            const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_num];
+            for (int32_t j = 0; j < num_meshes - 1; j++) {
+                g_PhdSpriteInfo[static_info->mesh_num + j] =
+                    g_PhdSpriteInfo[static_info->mesh_num + j + 1];
+            }
+            g_PhdSpriteInfo[static_info->mesh_num + num_meshes - 1] = temp;
         }
-        g_PhdSpriteInfo[static_info->mesh_num + num_meshes - 1] = temp;
+        m_AnimatedTexturesOffset -= 5;
     }
 }
 

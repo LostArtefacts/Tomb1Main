@@ -173,13 +173,13 @@ static PHASE_CONTROL M_Control(int32_t nframes)
         }
     }
 
+    Output_AnimateTextures(nframes);
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(void)
 {
     Game_Draw(true);
-    Output_AnimateTextures();
     Text_Draw();
 }
 

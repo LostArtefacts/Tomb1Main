@@ -367,6 +367,7 @@ static PHASE_CONTROL M_ControlFadeOut(void)
 
 static PHASE_CONTROL M_Control(int32_t nframes)
 {
+    Output_AnimateTextures(nframes);
     switch (m_State) {
     case STATE_INVALID:
         return (PHASE_CONTROL) {
@@ -398,7 +399,6 @@ static void M_Draw(void)
         Interpolation_Enable();
     }
 
-    Output_AnimateTextures();
     Text_Draw();
     Fader_Draw(&m_Fader);
 }
