@@ -5,6 +5,7 @@
 #include "game/input.h"
 #include "game/interpolation.h"
 #include "game/music.h"
+#include "game/output.h"
 #include "game/overlay.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -112,9 +113,12 @@ static void M_Draw(PHASE *const phase)
     Interpolation_Disable();
     Game_Draw(false);
     Interpolation_Enable();
+    Output_DrawPolyList();
+
     if (p->status == PS_NONE) {
         p->ui->draw(p->ui);
     }
+    Output_DrawPolyList();
 }
 
 PHASE *Phase_PhotoMode_Create(void)
