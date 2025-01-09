@@ -528,7 +528,7 @@ int32_t Collide_GetSpheres(ITEM *item, SPHERE *ptr, int32_t world_space)
     Matrix_Pop();
 
     const int16_t *extra_rotation = (int16_t *)item->data;
-    for (int32_t i = 1; i < object->nmeshes; i++) {
+    for (int32_t i = 1; i < object->mesh_count; i++) {
         const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
@@ -565,7 +565,7 @@ int32_t Collide_GetSpheres(ITEM *item, SPHERE *ptr, int32_t world_space)
     }
 
     Matrix_Pop();
-    return object->nmeshes;
+    return object->mesh_count;
 }
 
 int32_t Collide_TestCollision(ITEM *item, ITEM *lara_item)

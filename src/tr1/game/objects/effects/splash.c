@@ -16,7 +16,7 @@ void Splash_Control(int16_t effect_num)
     const OBJECT *const object = Object_GetObject(effect->object_id);
 
     effect->frame_num--;
-    if (effect->frame_num <= object->nmeshes) {
+    if (effect->frame_num <= object->mesh_count) {
         Effect_Kill(effect_num);
         return;
     }

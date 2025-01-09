@@ -38,7 +38,7 @@ typedef struct {
 } OBJECT_BOUNDS;
 
 typedef struct {
-    int16_t nmeshes;
+    int16_t mesh_count;
     int16_t mesh_idx;
     int32_t bone_idx;
     ANIM_FRAME *frame_base;

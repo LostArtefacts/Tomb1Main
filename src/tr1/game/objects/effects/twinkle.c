@@ -19,7 +19,7 @@ void Twinkle_Control(int16_t effect_num)
     if (effect->counter == 1) {
         effect->counter = 0;
         effect->frame_num--;
-        if (effect->frame_num <= g_Objects[effect->object_id].nmeshes) {
+        if (effect->frame_num <= g_Objects[effect->object_id].mesh_count) {
             Effect_Kill(effect_num);
         }
     }

@@ -835,7 +835,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
         item->mesh_bits -= bit;
     }
 
-    for (int i = 1; i < obj->nmeshes; i++) {
+    for (int i = 1; i < obj->mesh_count; i++) {
         const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
@@ -888,5 +888,5 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
 
     Matrix_Pop();
 
-    return !(item->mesh_bits & (0x7FFFFFFF >> (31 - obj->nmeshes)));
+    return !(item->mesh_bits & (0x7FFFFFFF >> (31 - obj->mesh_count)));
 }

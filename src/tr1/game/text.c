@@ -183,7 +183,7 @@ void Text_DrawText(TEXTSTRING *const text)
                 + Screen_GetRenderScale(glyph->combine_with.offset_x, RSR_TEXT);
             const int32_t csy = sy
                 + Screen_GetRenderScale(glyph->combine_with.offset_y, RSR_TEXT);
-            if (glyph->combine_with.mesh_idx >= ABS(obj->nmeshes)) {
+            if (glyph->combine_with.mesh_idx >= ABS(obj->mesh_count)) {
                 goto loop_end;
             }
 
@@ -192,7 +192,7 @@ void Text_DrawText(TEXTSTRING *const text)
                 obj->mesh_idx + glyph->combine_with.mesh_idx, 16 << 8, 0, 0);
         }
 
-        if (glyph->mesh_idx >= ABS(obj->nmeshes)) {
+        if (glyph->mesh_idx >= ABS(obj->mesh_count)) {
             goto loop_end;
         }
         Output_DrawScreenSprite2D(

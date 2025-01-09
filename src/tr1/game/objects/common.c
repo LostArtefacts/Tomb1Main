@@ -102,7 +102,7 @@ void Object_DrawPickupItem(ITEM *item)
     item->frame_num = old_frame_num;
 
     // Fall back to normal sprite rendering if not found.
-    if (object->nmeshes < 0) {
+    if (object->mesh_count < 0) {
         Object_DrawSpriteItem(item);
         return;
     }
@@ -206,7 +206,7 @@ void Object_DrawPickupItem(ITEM *item)
             Object_DrawMesh(object->mesh_idx, clip, false);
         }
 
-        for (int i = 1; i < object->nmeshes; i++) {
+        for (int i = 1; i < object->mesh_count; i++) {
             const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
@@ -257,7 +257,7 @@ void Object_DrawInterpolatedObject(
             Object_DrawMesh(object->mesh_idx, clip, false);
         }
 
-        for (int i = 1; i < object->nmeshes; i++) {
+        for (int i = 1; i < object->mesh_count; i++) {
             const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
@@ -301,7 +301,7 @@ void Object_DrawInterpolatedObject(
             Object_DrawMesh(object->mesh_idx, clip, true);
         }
 
-        for (int i = 1; i < object->nmeshes; i++) {
+        for (int i = 1; i < object->mesh_count; i++) {
             const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop_I();
@@ -415,7 +415,7 @@ void Object_SetMeshReflective(
 void Object_SetReflective(const GAME_OBJECT_ID object_id, const bool enabled)
 {
     const OBJECT *const object = Object_GetObject(object_id);
-    for (int32_t i = 0; i < object->nmeshes; i++) {
+    for (int32_t i = 0; i < object->mesh_count; i++) {
         Object_SetMeshReflective(object_id, i, enabled);
     }
 }

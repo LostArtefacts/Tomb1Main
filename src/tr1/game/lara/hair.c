@@ -463,7 +463,7 @@ void Lara_Hair_Draw(void)
     const OBJECT *const object = Object_GetObject(O_HAIR);
     int16_t mesh_idx = object->mesh_idx;
     if ((g_Lara.mesh_effects & (1 << LM_HEAD))
-        && object->nmeshes >= HAIR_SEGMENTS * 2) {
+        && object->mesh_count >= HAIR_SEGMENTS * 2) {
         mesh_idx += HAIR_SEGMENTS;
     }
 

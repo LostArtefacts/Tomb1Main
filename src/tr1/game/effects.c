@@ -145,7 +145,7 @@ void Effect_Draw(const int16_t effect_num)
         return;
     }
 
-    if (object->nmeshes < 0) {
+    if (object->mesh_count < 0) {
         Output_DrawSprite(
             effect->interp.result.pos.x, effect->interp.result.pos.y,
             effect->interp.result.pos.z, object->mesh_idx - effect->frame_num,
@@ -160,7 +160,7 @@ void Effect_Draw(const int16_t effect_num)
             Matrix_RotYXZ(
                 effect->interp.result.rot.y, effect->interp.result.rot.x,
                 effect->interp.result.rot.z);
-            if (object->nmeshes) {
+            if (object->mesh_count) {
                 Output_CalculateStaticLight(effect->shade);
                 Object_DrawMesh(object->mesh_idx, -1, false);
             } else {

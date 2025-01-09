@@ -12,7 +12,7 @@
 void BodyPart_Setup(OBJECT *obj)
 {
     obj->control = BodyPart_Control;
-    obj->nmeshes = 0;
+    obj->mesh_count = 0;
     obj->loaded = 1;
 }
 

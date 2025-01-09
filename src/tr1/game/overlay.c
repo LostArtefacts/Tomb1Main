@@ -405,7 +405,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
 
     Object_DrawMesh(obj->mesh_idx, 0, false);
 
-    for (int i = 1; i < obj->nmeshes; i++) {
+    for (int i = 1; i < obj->mesh_count; i++) {
         const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();

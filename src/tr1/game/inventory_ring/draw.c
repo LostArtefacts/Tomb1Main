@@ -81,7 +81,7 @@ static void M_DrawItem(
     Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);
 
     OBJECT *const obj = Object_GetObject(inv_item->object_id);
-    if (obj->nmeshes < 0) {
+    if (obj->mesh_count < 0) {
         Output_DrawSpriteRel(0, 0, 0, obj->mesh_idx, 4096);
         return;
     }
