@@ -7,7 +7,9 @@ void Anim_InitialiseChanges(int32_t num_changes);
 void Anim_InitialiseRanges(int32_t num_ranges);
 void Anim_InitialiseCommands(int32_t num_cmds);
 void Anim_InitialiseBones(int32_t num_bones);
+void Anim_InitialiseFrames(const int16_t *data, int32_t data_length);
 
+int32_t Anim_GetTotalCount(void);
 ANIM *Anim_GetAnim(int32_t anim_idx);
 ANIM_CHANGE *Anim_GetChange(int32_t change_idx);
 ANIM_RANGE *Anim_GetRange(int32_t range_idx);

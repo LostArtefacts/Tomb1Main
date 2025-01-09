@@ -347,78 +347,14 @@ static void M_LoadAnimBones(VFILE *const file)
 static void M_LoadAnimFrames(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_frame_data_count = VFile_ReadS32(file);
-    LOG_INFO("%d anim frames data", m_LevelInfo.anim_frame_data_count);
-
-    const int32_t raw_data_size = m_LevelInfo.anim_frame_data_count;
-    int16_t *raw_data = Memory_Alloc(sizeof(int16_t) * raw_data_size);
-    VFile_Read(file, raw_data, sizeof(int16_t) * raw_data_size);
-
-    m_LevelInfo.anim_frame_count = 0;
-    m_LevelInfo.anim_frame_mesh_rot_count = 0;
-    int16_t *raw_data_ptr = raw_data;
-    while (raw_data_ptr - raw_data < raw_data_size) {
-        raw_data_ptr += 9;
-        const int16_t num_meshes = *raw_data_ptr++;
-        raw_data_ptr += num_meshes * sizeof(int32_t) / sizeof(int16_t);
-        m_LevelInfo.anim_frame_count++;
-        m_LevelInfo.anim_frame_mesh_rot_count += num_meshes;
-    }
-
-    LOG_INFO("%d anim frames", m_LevelInfo.anim_frame_count);
-    LOG_INFO(
-        "%d anim frame mesh rotations", m_LevelInfo.anim_frame_mesh_rot_count);
-
-    g_AnimFrameMeshRots = GameBuf_Alloc(
-        sizeof(int32_t)
-            * (m_LevelInfo.anim_frame_mesh_rot_count
-               + m_InjectionInfo->anim_frame_mesh_rot_count),
-        GBUF_ANIM_FRAMES);
-    g_AnimFrames = GameBuf_Alloc(
-        sizeof(ANIM_FRAME)
-            * (m_LevelInfo.anim_frame_count
-               + m_InjectionInfo->anim_frame_count),
-        GBUF_ANIM_FRAMES);
-    m_LevelInfo.anim_frame_offsets = Memory_Alloc(
-        sizeof(int32_t)
-        * (m_LevelInfo.anim_frame_count + m_InjectionInfo->anim_frame_count));
-
-    raw_data_ptr = raw_data;
-    int32_t *mesh_rots = g_AnimFrameMeshRots;
-    for (int32_t i = 0; i < m_LevelInfo.anim_frame_count; i++) {
-        m_LevelInfo.anim_frame_offsets[i] =
-            (raw_data_ptr - raw_data) * sizeof(int16_t);
-        ANIM_FRAME *const frame = &g_AnimFrames[i];
-        frame->bounds.min.x = *raw_data_ptr++;
-        frame->bounds.max.x = *raw_data_ptr++;
-        frame->bounds.min.y = *raw_data_ptr++;
-        frame->bounds.max.y = *raw_data_ptr++;
-        frame->bounds.min.z = *raw_data_ptr++;
-        frame->bounds.max.z = *raw_data_ptr++;
-        frame->offset.x = *raw_data_ptr++;
-        frame->offset.y = *raw_data_ptr++;
-        frame->offset.z = *raw_data_ptr++;
-        frame->nmeshes = *raw_data_ptr++;
-        frame->mesh_rots = mesh_rots;
-        memcpy(mesh_rots, raw_data_ptr, sizeof(int32_t) * frame->nmeshes);
-        raw_data_ptr += frame->nmeshes * sizeof(int32_t) / sizeof(int16_t);
-        mesh_rots += frame->nmeshes;
-    }
-    Memory_FreePointer(&raw_data);
-
-    for (int32_t i = 0; i < m_LevelInfo.anim_count; i++) {
-        ANIM *const anim = Anim_GetAnim(i);
-        bool found = false;
-        for (int j = 0; j < m_LevelInfo.anim_frame_count; j++) {
-            if (m_LevelInfo.anim_frame_offsets[j] == (signed)anim->frame_ofs) {
-                anim->frame_ptr = &g_AnimFrames[j];
-                found = true;
-                break;
-            }
-        }
-        ASSERT(found);
-    }
-
+    const int32_t raw_data_count = VFile_ReadS32(file);
+    m_LevelInfo.anim_frame_data_count = raw_data_count;
+    LOG_INFO("%d raw anim frames", m_LevelInfo.anim_frame_data_count);
+    m_LevelInfo.anim_frame_data = Memory_Alloc(
+        sizeof(int16_t)
+        * (raw_data_count + m_InjectionInfo->anim_frame_data_count));
+    VFile_Read(
+        file, m_LevelInfo.anim_frame_data, sizeof(int16_t) * raw_data_count);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -427,7 +363,7 @@ static void M_LoadObjects(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.object_count = VFile_ReadS32(file);
     LOG_INFO("%d objects", m_LevelInfo.object_count);
-    for (int i = 0; i < m_LevelInfo.object_count; i++) {
+    for (int32_t i = 0; i < m_LevelInfo.object_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
         OBJECT *object = &g_Objects[object_id];
 
@@ -435,18 +371,9 @@ static void M_LoadObjects(VFILE *file)
         object->mesh_idx = VFile_ReadS16(file);
         object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
 
-        const int32_t frame_offset = VFile_ReadS32(file);
+        VFile_Skip(file, sizeof(int32_t)); // Frame offset implied by anim_idx
         object->anim_idx = VFile_ReadS16(file);
-
-        bool found = false;
-        for (int j = 0; j < m_LevelInfo.anim_frame_count; j++) {
-            if (m_LevelInfo.anim_frame_offsets[j] == frame_offset) {
-                object->frame_base = &g_AnimFrames[j];
-                found = true;
-                break;
-            }
-        }
-        object->loaded = found;
+        object->loaded = true;
     }
 
     Benchmark_End(benchmark, NULL);
@@ -866,6 +793,10 @@ static void M_CompleteSetup(int32_t level_num)
 
     Inject_AllInjections(&m_LevelInfo);
 
+    Anim_InitialiseFrames(
+        m_LevelInfo.anim_frame_data, m_LevelInfo.anim_frame_data_count);
+    Memory_FreePointer(&m_LevelInfo.anim_frame_data);
+
     M_MarkWaterEdgeVertices();
 
     // Must be called post-injection to allow for floor data changes.
@@ -993,7 +924,6 @@ void Level_Load(int level_num)
     // clean previous level data
     Memory_FreePointer(&m_LevelInfo.texture_palette_page_ptrs);
     Memory_FreePointer(&m_LevelInfo.texture_rgb_page_ptrs);
-    Memory_FreePointer(&m_LevelInfo.anim_frame_offsets);
     Memory_FreePointer(&m_LevelInfo.sample_offsets);
     Memory_FreePointer(&m_LevelInfo.palette);
     Memory_FreePointer(&m_InjectionInfo);

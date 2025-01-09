@@ -59,8 +59,6 @@ extern int16_t *g_GroundZone[2];
 extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
 extern TEXTURE_RANGE *g_AnimTextureRanges;
-extern ANIM_FRAME *g_AnimFrames;
-extern int32_t *g_AnimFrameMeshRots;
 extern int16_t g_NumCineFrames;
 extern int16_t g_CineFrame;
 extern CINE_CAMERA *g_CineCamera;

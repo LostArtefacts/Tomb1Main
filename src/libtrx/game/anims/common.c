@@ -2,6 +2,7 @@
 
 #include "game/gamebuf.h"
 
+static int32_t m_AnimCount = 0;
 static ANIM *m_Anims = NULL;
 static ANIM_CHANGE *m_Changes = NULL;
 static ANIM_RANGE *m_Ranges = NULL;
@@ -10,6 +11,7 @@ static ANIM_BONE *m_Bones = NULL;
 
 void Anim_InitialiseAnims(const int32_t num_anims)
 {
+    m_AnimCount = num_anims;
     m_Anims = GameBuf_Alloc(sizeof(ANIM) * num_anims, GBUF_ANIMS);
 }
 
@@ -32,6 +34,11 @@ void Anim_InitialiseCommands(int32_t num_cmds)
 void Anim_InitialiseBones(const int32_t num_bones)
 {
     m_Bones = GameBuf_Alloc(sizeof(ANIM_BONE) * num_bones, GBUF_ANIM_BONES);
+}
+
+int32_t Anim_GetTotalCount(void)
+{
+    return m_AnimCount;
 }
 
 ANIM *Anim_GetAnim(const int32_t anim_idx)

@@ -284,8 +284,8 @@ static void M_WriteLara(LARA_INFO *lara)
 static void M_WriteArm(LARA_ARM *arm)
 {
     const LEVEL_INFO *const level_info = Level_GetInfo();
-    const int32_t frame_base =
-        level_info->anim_frame_offsets[arm->frame_base - g_AnimFrames];
+    // frame_base is not required
+    const int32_t frame_base = 0;
     M_Write(&frame_base, sizeof(int32_t));
     M_Write(&arm->frame_num, sizeof(int16_t));
     M_Write(&arm->lock, sizeof(int16_t));
@@ -603,6 +603,10 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
             M_Read(&item->required_anim_state, sizeof(int16_t));
             M_Read(&item->anim_num, sizeof(int16_t));
             M_Read(&item->frame_num, sizeof(int16_t));
+
+            if (item->object_id == O_LARA && item->anim_num < obj->anim_idx) {
+                item->anim_num += obj->anim_idx;
+            }
         }
 
         if (M_ItemHasHitPoints(item)) {
