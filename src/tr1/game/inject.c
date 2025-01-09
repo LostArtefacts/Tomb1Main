@@ -487,7 +487,7 @@ static void M_TextureData(
             object->loaded = 1;
         } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
             STATIC_INFO *object = &g_StaticObjects[object_id - O_NUMBER_OF];
-            object->nmeshes = num_meshes;
+            object->mesh_count = num_meshes;
             object->mesh_num = mesh_idx + level_info->sprite_info_count;
             object->loaded = true;
         }

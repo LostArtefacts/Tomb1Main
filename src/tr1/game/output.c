@@ -1191,11 +1191,11 @@ void Output_AnimateTextures(void)
 
     for (int32_t i = 0; i < STATIC_NUMBER_OF; i++) {
         const STATIC_INFO *const static_info = &g_StaticObjects[i];
-        if (!static_info->loaded || static_info->nmeshes >= -1) {
+        if (!static_info->loaded || static_info->mesh_count >= -1) {
             continue;
         }
 
-        const int32_t num_meshes = -static_info->nmeshes;
+        const int32_t num_meshes = -static_info->mesh_count;
         const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_num];
         for (int32_t j = 0; j < num_meshes - 1; j++) {
             g_PhdSpriteInfo[static_info->mesh_num + j] =
