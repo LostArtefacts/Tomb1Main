@@ -9,7 +9,8 @@ static ANIM_FRAME *m_Frames = NULL;
 
 static int32_t M_GetAnimFrameCount(int32_t anim_idx);
 static OBJECT *M_GetAnimObject(int32_t anim_idx);
-static int32_t M_ParseFrame(ANIM_FRAME *frame, const int16_t *data_ptr);
+static int32_t M_ParseFrame(
+    ANIM_FRAME *frame, const int16_t *data_ptr, int16_t mesh_count);
 
 static int32_t M_GetAnimFrameCount(const int32_t anim_idx)
 {
@@ -37,7 +38,8 @@ static OBJECT *M_GetAnimObject(const int32_t anim_idx)
     return NULL;
 }
 
-static int32_t M_ParseFrame(ANIM_FRAME *const frame, const int16_t *data_ptr)
+static int32_t M_ParseFrame(
+    ANIM_FRAME *const frame, const int16_t *data_ptr, int16_t mesh_count)
 {
 #if TR_VERSION > 1
     ASSERT_FAIL();
@@ -54,12 +56,14 @@ static int32_t M_ParseFrame(ANIM_FRAME *const frame, const int16_t *data_ptr)
     frame->offset.x = *data_ptr++;
     frame->offset.y = *data_ptr++;
     frame->offset.z = *data_ptr++;
-    frame->nmeshes = *data_ptr++;
+    #if TR_VERSION == 1
+    mesh_count = *data_ptr++;
+    #endif
 
     frame->mesh_rots =
-        GameBuf_Alloc(sizeof(int32_t) * frame->nmeshes, GBUF_ANIM_FRAMES);
-    memcpy(frame->mesh_rots, data_ptr, frame->nmeshes * sizeof(int32_t));
-    data_ptr += frame->nmeshes * sizeof(int32_t) / sizeof(int16_t);
+        GameBuf_Alloc(sizeof(int32_t) * mesh_count, GBUF_ANIM_FRAMES);
+    memcpy(frame->mesh_rots, data_ptr, mesh_count * sizeof(int32_t));
+    data_ptr += mesh_count * sizeof(int32_t) / sizeof(int16_t);
 
     return data_ptr - frame_start;
 #endif
@@ -124,7 +128,7 @@ void Anim_LoadFrames(const int16_t *data, const int32_t data_length)
                 }
             }
 
-            data_ptr += M_ParseFrame(frame, data_ptr);
+            data_ptr += M_ParseFrame(frame, data_ptr, cur_obj->mesh_count);
         }
     }
 

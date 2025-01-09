@@ -28,7 +28,6 @@ typedef struct {
     BOUNDS_16 bounds;
     XYZ_16 offset;
 #if TR_VERSION == 1
-    int16_t nmeshes;
     int32_t *mesh_rots;
 #else
     int16_t mesh_rots[];
