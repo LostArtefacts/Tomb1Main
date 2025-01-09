@@ -46,6 +46,7 @@ void Log_Init_Extra(const char *path)
 {
     signal(SIGSEGV, M_SignalHandler);
     signal(SIGFPE, M_SignalHandler);
+    signal(SIGILL, M_SignalHandler);
 }
 
 void Log_Shutdown_Extra(void)

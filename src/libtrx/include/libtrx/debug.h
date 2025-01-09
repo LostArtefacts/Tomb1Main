@@ -6,12 +6,12 @@
     do {                                                                       \
         if (!(x)) {                                                            \
             LOG_DEBUG("Assertion failed: %s", #x);                             \
-            *(int *)0 = 0;                                                     \
+            __builtin_trap();                                                  \
         }                                                                      \
     } while (0)
 
 #define ASSERT_FAIL(x)                                                         \
     do {                                                                       \
         LOG_DEBUG("Assertion failed");                                         \
-        *(int *)0 = 0;                                                         \
+        __builtin_trap();                                                      \
     } while (0)
