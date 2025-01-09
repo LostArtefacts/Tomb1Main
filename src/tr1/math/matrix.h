@@ -20,7 +20,7 @@ void Matrix_RotX(int16_t rx);
 void Matrix_RotY(int16_t ry);
 void Matrix_RotZ(int16_t rz);
 void Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);
-void Matrix_RotYXZpack(int32_t rots);
+void Matrix_RotXYZ16(const XYZ_16 *rotation);
 void Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateSet(int32_t x, int32_t y, int32_t z);
@@ -32,7 +32,7 @@ void Matrix_RotY_I(int16_t ang);
 void Matrix_RotX_I(int16_t ang);
 void Matrix_RotZ_I(int16_t ang);
 void Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z);
-void Matrix_RotYXZpack_I(int32_t r1, int32_t r2);
+void Matrix_RotXYZ16_I(const XYZ_16 *rotation_1, const XYZ_16 *rotation_2);
 
 void Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateRel_ID(

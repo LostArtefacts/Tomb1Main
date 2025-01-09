@@ -11,6 +11,9 @@ static int32_t M_GetAnimFrameCount(int32_t anim_idx);
 static OBJECT *M_GetAnimObject(int32_t anim_idx);
 static int32_t M_ParseFrame(
     ANIM_FRAME *frame, const int16_t *data_ptr, int16_t mesh_count);
+static void M_ParseMeshRotation(XYZ_16 *rot, const int16_t **data);
+static void M_ExtractRotation(
+    XYZ_16 *rot, int16_t rot_val_1, int16_t rot_val_2);
 
 static int32_t M_GetAnimFrameCount(const int32_t anim_idx)
 {
@@ -61,12 +64,35 @@ static int32_t M_ParseFrame(
     #endif
 
     frame->mesh_rots =
-        GameBuf_Alloc(sizeof(int32_t) * mesh_count, GBUF_ANIM_FRAMES);
-    memcpy(frame->mesh_rots, data_ptr, mesh_count * sizeof(int32_t));
-    data_ptr += mesh_count * sizeof(int32_t) / sizeof(int16_t);
+        GameBuf_Alloc(sizeof(XYZ_16) * mesh_count, GBUF_ANIM_FRAMES);
+    for (int32_t i = 0; i < mesh_count; i++) {
+        XYZ_16 *const rot = &frame->mesh_rots[i];
+        M_ParseMeshRotation(rot, &data_ptr);
+    }
 
     return data_ptr - frame_start;
 #endif
+}
+
+static void M_ParseMeshRotation(XYZ_16 *const rot, const int16_t **data)
+{
+    const int16_t *data_ptr = *data;
+#if TR_VERSION == 1
+    const int16_t rot_val_1 = *data_ptr++;
+    const int16_t rot_val_2 = *data_ptr++;
+    M_ExtractRotation(rot, rot_val_2, rot_val_1);
+#else
+    ASSERT_FAIL();
+#endif
+    *data = data_ptr;
+}
+
+static void M_ExtractRotation(
+    XYZ_16 *const rot, const int16_t rot_val_1, const int16_t rot_val_2)
+{
+    rot->x = (rot_val_1 & 0x3FF0) << 2;
+    rot->y = (((rot_val_1 & 0xF) << 6) | ((rot_val_2 & 0xFC00) >> 10)) << 6;
+    rot->z = (rot_val_2 & 0x3FF) << 6;
 }
 
 int32_t Anim_GetTotalFrameCount(void)

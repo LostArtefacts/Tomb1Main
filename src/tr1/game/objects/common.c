@@ -199,8 +199,7 @@ void Object_DrawPickupItem(ITEM *item)
 
         Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
 
-        int32_t *packed_rotation = frame->mesh_rots;
-        Matrix_RotYXZpack(*packed_rotation++);
+        Matrix_RotXYZ16(&frame->mesh_rots[0]);
 
         if (item->mesh_bits & bit) {
             Object_DrawMesh(object->mesh_idx, clip, false);
@@ -217,7 +216,7 @@ void Object_DrawPickupItem(ITEM *item)
             }
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZpack(*packed_rotation++);
+            Matrix_RotXYZ16(&frame->mesh_rots[i]);
 
             // Extra rotation is ignored in this case as it's not needed.
 
@@ -250,8 +249,7 @@ void Object_DrawInterpolatedObject(
         Matrix_TranslateRel(
             frame1->offset.x, frame1->offset.y, frame1->offset.z);
 
-        int32_t *packed_rotation = frame1->mesh_rots;
-        Matrix_RotYXZpack(*packed_rotation++);
+        Matrix_RotXYZ16(&frame1->mesh_rots[0]);
 
         if (meshes & mesh_num) {
             Object_DrawMesh(object->mesh_idx, clip, false);
@@ -268,7 +266,7 @@ void Object_DrawInterpolatedObject(
             }
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZpack(*packed_rotation++);
+            Matrix_RotXYZ16(&frame1->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
                 if (bone->rot_y) {
@@ -293,9 +291,7 @@ void Object_DrawInterpolatedObject(
         Matrix_TranslateRel_ID(
             frame1->offset.x, frame1->offset.y, frame1->offset.z,
             frame2->offset.x, frame2->offset.y, frame2->offset.z);
-        int32_t *packed_rotation1 = frame1->mesh_rots;
-        int32_t *packed_rotation2 = frame2->mesh_rots;
-        Matrix_RotYXZpack_I(*packed_rotation1++, *packed_rotation2++);
+        Matrix_RotXYZ16_I(&frame1->mesh_rots[0], &frame2->mesh_rots[0]);
 
         if (meshes & mesh_num) {
             Object_DrawMesh(object->mesh_idx, clip, true);
@@ -312,7 +308,7 @@ void Object_DrawInterpolatedObject(
             }
 
             Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZpack_I(*packed_rotation1++, *packed_rotation2++);
+            Matrix_RotXYZ16_I(&frame1->mesh_rots[i], &frame2->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
                 if (bone->rot_y) {
