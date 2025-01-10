@@ -18,3 +18,8 @@ void UI_Requester_AddRowLR(
     void *user_data);
 void UI_Requester_AddRowC(
     UI_WIDGET *requester, const char *text, void *user_data);
+void *UI_Requester_GetRowUserData(UI_WIDGET *widget, int32_t idx);
+int32_t UI_Requester_GetRowCount(UI_WIDGET *widget);
+void UI_Requester_ChangeRowLR(
+    UI_WIDGET *widget, int32_t idx, const char *text_l, const char *text_r,
+    void *user_data);

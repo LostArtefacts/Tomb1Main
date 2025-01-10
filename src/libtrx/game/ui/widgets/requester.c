@@ -287,3 +287,35 @@ void UI_Requester_AddRowC(
     M_AddRow(self, text, NULL, user_data);
     M_DoLayout(self);
 }
+
+void *UI_Requester_GetRowUserData(UI_WIDGET *const widget, const int32_t idx)
+{
+    UI_REQUESTER *const self = (UI_REQUESTER *)widget;
+    if (idx >= self->row_count || idx < 0) {
+        return NULL;
+    }
+    return self->rows[idx].user_data;
+}
+
+int32_t UI_Requester_GetRowCount(UI_WIDGET *const widget)
+{
+    UI_REQUESTER *const self = (UI_REQUESTER *)widget;
+    return self->row_count;
+}
+
+void UI_Requester_ChangeRowLR(
+    UI_WIDGET *widget, int32_t idx, const char *text_l, const char *text_r,
+    void *user_data)
+{
+    UI_REQUESTER *const self = (UI_REQUESTER *)widget;
+    if (idx >= self->row_count || idx < 0) {
+        return;
+    }
+    if (text_l != NULL) {
+        UI_Label_ChangeText(self->rows[idx].left_label, text_l);
+    }
+    if (text_r != NULL) {
+        UI_Label_ChangeText(self->rows[idx].right_label, text_r);
+    }
+    self->rows[idx].user_data = user_data;
+}
