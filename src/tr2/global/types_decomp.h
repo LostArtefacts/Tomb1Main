@@ -4,6 +4,7 @@
 
 #include "const.h"
 
+#include <libtrx/game/camera/enum.h>
 #include <libtrx/game/items.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/rooms/types.h>
@@ -281,15 +282,6 @@ typedef struct {
     SECTOR old_sector;
     int16_t block;
 } DOORPOS_DATA;
-
-typedef enum {
-    CAM_CHASE     = 0,
-    CAM_FIXED     = 1,
-    CAM_LOOK      = 2,
-    CAM_COMBAT    = 3,
-    CAM_CINEMATIC = 4,
-    CAM_HEAVY     = 5,
-} CAMERA_TYPE;
 
 typedef struct {
     union {
