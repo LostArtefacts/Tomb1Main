@@ -315,8 +315,7 @@ static void M_ReadLara(LARA_INFO *const lara)
 
 static void M_ReadLaraArm(LARA_ARM *const arm)
 {
-    arm->frame_base =
-        (int16_t *)((intptr_t)g_AnimFrames + (intptr_t)M_ReadS32());
+    M_ReadS32(); // arm frame_base is not required
     arm->frame_num = M_ReadS16();
     arm->anim_num = M_ReadS16();
     arm->lock = M_ReadS16();
@@ -500,8 +499,7 @@ static void M_WriteLara(const LARA_INFO *const lara)
 
 static void M_WriteLaraArm(const LARA_ARM *const arm)
 {
-    const int32_t frame_base =
-        (intptr_t)arm->frame_base - (intptr_t)g_AnimFrames;
+    const int32_t frame_base = 0; // not required
     M_WriteS32(frame_base);
     M_WriteS16(arm->frame_num);
     M_WriteS16(arm->anim_num);
