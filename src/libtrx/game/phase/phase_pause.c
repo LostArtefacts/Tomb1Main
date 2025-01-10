@@ -19,8 +19,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define FADE_TIME 0.4
+
 typedef enum {
-    STATE_DEFAULT,
+    STATE_FADE_IN,
+    STATE_WAIT,
     STATE_ASK,
     STATE_CONFIRM,
     STATE_FADE_OUT,
@@ -53,8 +56,8 @@ static void M_Draw(PHASE *phase);
 
 static void M_FadeIn(M_PRIV *const p)
 {
-    M_CreateText(p);
-    Fader_Init(&p->back_fader, FADER_TRANSPARENT, FADER_SEMI_BLACK, 0.5);
+    p->state = STATE_FADE_IN;
+    Fader_Init(&p->back_fader, FADER_TRANSPARENT, FADER_SEMI_BLACK, FADE_TIME);
 }
 
 static void M_FadeOut(M_PRIV *const p)
@@ -65,9 +68,9 @@ static void M_FadeOut(M_PRIV *const p)
         p->ui = NULL;
     }
     if (p->action == GF_NOOP) {
-        Fader_Init(&p->back_fader, FADER_ANY, FADER_TRANSPARENT, 0.3);
+        Fader_Init(&p->back_fader, FADER_ANY, FADER_TRANSPARENT, FADE_TIME);
     } else {
-        Fader_Init(&p->back_fader, FADER_ANY, FADER_BLACK, 0.5);
+        Fader_Init(&p->back_fader, FADER_ANY, FADER_BLACK, FADE_TIME);
     }
     p->state = STATE_FADE_OUT;
 }
@@ -150,7 +153,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PauseGame(p);
 
     p->is_ui_ready = false;
-    p->state = STATE_DEFAULT;
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
@@ -180,7 +182,18 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
     }
 
     switch (p->state) {
-    case STATE_DEFAULT:
+    case STATE_FADE_IN:
+        if (g_InputDB.pause) {
+            M_ReturnToGame(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+        } else if (!Fader_IsActive(&p->back_fader)) {
+            p->state = STATE_WAIT;
+            M_CreateText(p);
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+        }
+        break;
+
+    case STATE_WAIT:
         if (g_InputDB.pause) {
             M_ReturnToGame(p);
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
@@ -197,6 +210,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         } else if (choice == 1) {
             p->state = STATE_CONFIRM;
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
         break;
     }
