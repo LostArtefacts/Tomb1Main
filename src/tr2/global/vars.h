@@ -123,7 +123,6 @@ extern int32_t g_TexturePageCount;
 extern int16_t *g_MeshBase;
 extern int32_t g_TextureInfoCount;
 extern uint8_t g_LabTextureUVFlag[MAX_TEXTURES];
-extern ANIM_FRAME *g_AnimFrames;
 extern int32_t g_NumCameras;
 extern int16_t *g_AnimTextureRanges;
 extern uint32_t *g_DemoPtr;

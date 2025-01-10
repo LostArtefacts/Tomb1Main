@@ -215,23 +215,18 @@ void Level_ReadObjectMeshes(
 }
 
 void Level_ReadAnims(
-    const int32_t base_idx, const int32_t num_anims, VFILE *const file,
-    int32_t **frame_pointers)
+    const int32_t base_idx, const int32_t num_anims, VFILE *const file)
 {
     for (int32_t i = 0; i < num_anims; i++) {
         ANIM *const anim = Anim_GetAnim(base_idx + i);
-#if TR_VERSION == 1
         anim->frame_ofs = VFile_ReadU32(file);
+        anim->frame_ptr = NULL; // filled later by the animation frame loader
+#if TR_VERSION == 1
         const int16_t interpolation = VFile_ReadS16(file);
         ASSERT(interpolation <= 0xFF);
         anim->interpolation = interpolation & 0xFF;
         anim->frame_size = 0;
 #else
-        const int32_t frame_idx = VFile_ReadS32(file);
-        if (frame_pointers != NULL) {
-            (*frame_pointers)[i] = frame_idx;
-        }
-        anim->frame_ptr = NULL; // filled later by the animation frame loader
         anim->interpolation = VFile_ReadU8(file);
         anim->frame_size = VFile_ReadU8(file);
 #endif

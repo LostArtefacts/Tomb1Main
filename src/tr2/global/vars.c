@@ -127,7 +127,6 @@ int32_t g_TexturePageCount;
 int16_t *g_MeshBase = NULL;
 int32_t g_TextureInfoCount;
 uint8_t g_LabTextureUVFlag[MAX_TEXTURES];
-ANIM_FRAME *g_AnimFrames = NULL;
 int32_t g_NumCameras;
 int16_t *g_AnimTextureRanges = NULL;
 uint32_t *g_DemoPtr = NULL;

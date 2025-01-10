@@ -229,7 +229,7 @@ void Pickup_Draw(const ITEM *const item)
     // animations, and for such items we need to calculate this information
     // manually.
     if (obj->anim_idx != -1) {
-        frame = (const ANIM_FRAME *)obj->frame_base;
+        frame = obj->frame_base;
         bounds = frame->bounds;
         const int16_t y_off = frame->offset.y - bounds.max_y;
         bounds.max_y -= bounds.max_y;

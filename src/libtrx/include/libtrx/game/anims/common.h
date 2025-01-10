@@ -8,7 +8,7 @@ void Anim_InitialiseRanges(int32_t num_ranges);
 void Anim_InitialiseCommands(int32_t num_cmds);
 void Anim_InitialiseBones(int32_t num_bones);
 
-int32_t Anim_GetTotalFrameCount(void);
+int32_t Anim_GetTotalFrameCount(int32_t frame_data_length);
 void Anim_InitialiseFrames(int32_t num_frames);
 void Anim_LoadFrames(const int16_t *data, int32_t data_length);
 

@@ -640,11 +640,10 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
 {
     const ANIM *const anim = Item_GetAnim(item);
     const int32_t cur_frame_num = item->frame_num - anim->frame_base;
-    const int32_t size = anim->frame_size;
     const int32_t key_frame_span = anim->interpolation;
     const int32_t key_frame_shift = cur_frame_num % key_frame_span;
-    const int32_t first_key_frame_num = cur_frame_num / key_frame_span * size;
-    const int32_t second_key_frame_num = first_key_frame_num + size;
+    const int32_t first_key_frame_num = cur_frame_num / key_frame_span;
+    const int32_t second_key_frame_num = first_key_frame_num + 1;
 
     const int32_t numerator = key_frame_shift;
     int32_t denominator = key_frame_span;
@@ -657,8 +656,8 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frmptr[], int32_t *rate)
         }
     }
 
-    frmptr[0] = (ANIM_FRAME *)(anim->frame_ptr + first_key_frame_num);
-    frmptr[1] = (ANIM_FRAME *)(anim->frame_ptr + second_key_frame_num);
+    frmptr[0] = &anim->frame_ptr[first_key_frame_num];
+    frmptr[1] = &anim->frame_ptr[second_key_frame_num];
     *rate = denominator;
     return numerator;
 }

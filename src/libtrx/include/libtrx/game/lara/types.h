@@ -83,7 +83,7 @@ typedef struct {
 } AMMO_INFO;
 
 typedef struct {
-    int16_t *frame_base;
+    ANIM_FRAME *frame_base;
     int16_t frame_num;
     int16_t anim_num;
     int16_t lock;

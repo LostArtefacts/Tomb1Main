@@ -24,12 +24,14 @@
 #include <libtrx/memory.h>
 
 static int16_t *m_FloorData = NULL;
+static int16_t *m_AnimFrameData = NULL;
+static int32_t m_AnimFrameDataLength = 0;
 
 static void M_LoadFromFile(const char *file_name, int32_t level_num);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadMeshBase(VFILE *file);
 static void M_LoadMeshes(VFILE *file);
-static int32_t M_LoadAnims(VFILE *file, int32_t **frame_pointers);
+static void M_LoadAnims(VFILE *file);
 static void M_LoadAnimChanges(VFILE *file);
 static void M_LoadAnimRanges(VFILE *file);
 static void M_LoadAnimCommands(VFILE *file);
@@ -229,18 +231,14 @@ static void M_LoadMeshes(VFILE *const file)
     Benchmark_End(benchmark, NULL);
 }
 
-static int32_t M_LoadAnims(VFILE *const file, int32_t **frame_pointers)
+static void M_LoadAnims(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anims = VFile_ReadS32(file);
     LOG_INFO("anims: %d", num_anims);
-    if (frame_pointers != NULL) {
-        *frame_pointers = Memory_Alloc(sizeof(int32_t) * num_anims);
-    }
     Anim_InitialiseAnims(num_anims);
-    Level_ReadAnims(0, num_anims, file, frame_pointers);
+    Level_ReadAnims(0, num_anims, file);
     Benchmark_End(benchmark, NULL);
-    return num_anims;
 }
 
 static void M_LoadAnimChanges(VFILE *const file)
@@ -286,13 +284,10 @@ static void M_LoadAnimBones(VFILE *const file)
 static void M_LoadAnimFrames(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t anim_frame_data_size = VFile_ReadS32(file);
-    LOG_INFO("anim frame data size: %d", anim_frame_data_size);
-    g_AnimFrames =
-        GameBuf_Alloc(sizeof(int16_t) * anim_frame_data_size, GBUF_ANIM_FRAMES);
-    // TODO: make me ANIM_FRAME
-    int16_t *ptr = (int16_t *)&g_AnimFrames[0];
-    VFile_Read(file, ptr, sizeof(int16_t) * anim_frame_data_size);
+    m_AnimFrameDataLength = VFile_ReadS32(file);
+    LOG_INFO("anim frame data size: %d", m_AnimFrameDataLength);
+    m_AnimFrameData = Memory_Alloc(sizeof(int16_t) * m_AnimFrameDataLength);
+    VFile_Read(file, m_AnimFrameData, sizeof(int16_t) * m_AnimFrameDataLength);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -307,8 +302,8 @@ static void M_LoadObjects(VFILE *const file)
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
         object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
-        const int32_t frame_idx = VFile_ReadS32(file);
-        object->frame_base = ((int16_t *)g_AnimFrames) + frame_idx / 2;
+        object->frame_ofs = VFile_ReadU32(file);
+        object->frame_base = NULL;
         object->anim_idx = VFile_ReadS16(file);
         object->loaded = 1;
     }
@@ -784,20 +779,12 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     M_LoadMeshBase(file);
     M_LoadMeshes(file);
 
-    int32_t *frame_pointers = NULL;
-    const int32_t num_anims = M_LoadAnims(file, &frame_pointers);
+    M_LoadAnims(file);
     M_LoadAnimChanges(file);
     M_LoadAnimRanges(file);
     M_LoadAnimCommands(file);
     M_LoadAnimBones(file);
     M_LoadAnimFrames(file);
-
-    for (int32_t i = 0; i < num_anims; i++) {
-        ANIM *const anim = Anim_GetAnim(i);
-        // TODO: this is horrible
-        anim->frame_ptr = ((int16_t *)g_AnimFrames) + frame_pointers[i] / 2;
-    }
-    Memory_FreePointer(&frame_pointers);
 
     M_LoadObjects(file);
     Object_SetupAllObjects();
@@ -831,6 +818,11 @@ static void M_CompleteSetup(void)
 
     Inject_AllInjections();
 
+    const int32_t frame_count = Anim_GetTotalFrameCount(m_AnimFrameDataLength);
+    Anim_InitialiseFrames(frame_count);
+    Anim_LoadFrames(m_AnimFrameData, m_AnimFrameDataLength);
+    Memory_FreePointer(&m_AnimFrameData);
+
     // Must be called after Setup_AllObjects using the cached item
     // count, as individual setups may increment g_LevelItemCount.
     const int32_t item_count = g_LevelItemCount;
@@ -846,6 +838,11 @@ static void M_CompleteSetup(void)
 bool Level_Load(const char *const file_name, const int32_t level_num)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
+
+    for (int32_t i = 0; i < O_NUMBER_OF; i++) {
+        OBJECT *const object = Object_GetObject(i);
+        object->loaded = false;
+    }
 
     const GAME_FLOW_NEW_LEVEL *const level = &g_GameFlowNew.levels[level_num];
     Inject_Init(level->injections.count, level->injections.data_paths);

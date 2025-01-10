@@ -356,8 +356,7 @@ void Overlay_InitialisePickUpDisplay(void)
 static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 {
     const OBJECT *const obj = pickup->inv_object;
-    const ANIM_FRAME *const frame =
-        (ANIM_FRAME *)Object_GetAnim(obj, 0)->frame_ptr;
+    const ANIM_FRAME *const frame = obj->frame_base;
 
     float ease = 1.0f;
     switch (pickup->phase) {

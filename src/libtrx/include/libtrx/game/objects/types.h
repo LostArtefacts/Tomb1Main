@@ -41,6 +41,7 @@ typedef struct {
     int16_t mesh_count;
     int16_t mesh_idx;
     int32_t bone_idx;
+    uint32_t frame_ofs;
     ANIM_FRAME *frame_base;
     void (*initialise)(int16_t item_num);
     void (*control)(int16_t item_num);
@@ -70,7 +71,8 @@ typedef struct {
     int16_t mesh_count;
     int16_t mesh_idx;
     int32_t bone_idx;
-    int16_t *frame_base; // TODO: make me ANIM_FRAME
+    uint32_t frame_ofs;
+    ANIM_FRAME *frame_base;
 
     void (*initialise)(int16_t item_num);
     void (*control)(int16_t item_num);

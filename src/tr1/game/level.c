@@ -296,7 +296,7 @@ static void M_LoadAnims(VFILE *file)
     m_LevelInfo.anim_count = VFile_ReadS32(file);
     LOG_INFO("%d anims", m_LevelInfo.anim_count);
     Anim_InitialiseAnims(m_LevelInfo.anim_count + m_InjectionInfo->anim_count);
-    Level_ReadAnims(0, m_LevelInfo.anim_count, file, NULL);
+    Level_ReadAnims(0, m_LevelInfo.anim_count, file);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -370,8 +370,8 @@ static void M_LoadObjects(VFILE *file)
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
         object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
-
-        VFile_Skip(file, sizeof(int32_t)); // Frame offset implied by anim_idx
+        object->frame_ofs = VFile_ReadU32(file);
+        object->frame_base = NULL;
         object->anim_idx = VFile_ReadS16(file);
         object->loaded = true;
     }
@@ -793,7 +793,8 @@ static void M_CompleteSetup(int32_t level_num)
 
     Inject_AllInjections(&m_LevelInfo);
 
-    const int32_t frame_count = Anim_GetTotalFrameCount();
+    const int32_t frame_count =
+        Anim_GetTotalFrameCount(m_LevelInfo.anim_frame_data_count);
     Anim_InitialiseFrames(frame_count);
     Anim_LoadFrames(
         m_LevelInfo.anim_frame_data, m_LevelInfo.anim_frame_data_count);

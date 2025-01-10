@@ -30,17 +30,13 @@ typedef struct {
 #if TR_VERSION == 1
     XYZ_16 *mesh_rots;
 #else
-    int16_t mesh_rots[];
+    int16_t *mesh_rots;
 #endif
 } ANIM_FRAME;
 
 typedef struct {
-#if TR_VERSION == 1
     ANIM_FRAME *frame_ptr;
     uint32_t frame_ofs;
-#elif TR_VERSION == 2
-    int16_t *frame_ptr;
-#endif
     uint8_t interpolation;
     uint8_t frame_size;
     int16_t current_anim_state;

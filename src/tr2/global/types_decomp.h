@@ -438,19 +438,6 @@ typedef enum {
     CF_CHASE_OBJECT  = 3,
 } CAMERA_FLAGS;
 
-typedef enum {
-    FBBOX_MIN_X = 0,
-    FBBOX_MAX_X = 1,
-    FBBOX_MIN_Y = 2,
-    FBBOX_MAX_Y = 3,
-    FBBOX_MIN_Z = 4,
-    FBBOX_MAX_Z = 5,
-    FBBOX_X     = 6,
-    FBBOX_Y     = 7,
-    FBBOX_Z     = 8,
-    FBBOX_ROT   = 9,
-} FRAME_BBOX_INFO;
-
 typedef struct {
     int16_t tx;
     int16_t ty;

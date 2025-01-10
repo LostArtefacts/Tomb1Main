@@ -52,10 +52,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
             || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
         mesh_rots =
-            &g_Lara.right_arm.frame_base
-                 [g_Lara.right_arm.frame_num
-                      * Anim_GetAnim(g_Lara.right_arm.anim_num)->frame_size
-                  + FBBOX_ROT];
+            g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
         Matrix_RotYXZsuperpack(&mesh_rots, 7);
     } else {
         Matrix_RotYXZsuperpack(&mesh_rots, 6);
@@ -146,10 +143,7 @@ static void M_CalculateSpheres_I(
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
             || g_Items[g_Lara.weapon_item].current_anim_state == 4)) {
         mesh_rots_1 =
-            &g_Lara.right_arm.frame_base
-                 [g_Lara.right_arm.frame_num
-                      * Anim_GetAnim(g_Lara.right_arm.anim_num)->frame_size
-                  + FBBOX_ROT];
+            g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
         mesh_rots_2 = mesh_rots_1;
         Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 7);
     } else {
@@ -265,9 +259,7 @@ void Lara_Hair_Control(const bool in_cutscene)
 
         const OBJECT *const object = Object_GetObject(g_LaraItem->object_id);
         const ANIM *const anim = Object_GetAnim(object, lara_anim);
-        const int16_t *const frame_ptr = anim->frame_ptr;
-        const int32_t frame_size = anim->frame_size;
-        frame_1 = (ANIM_FRAME *)&frame_ptr[g_Lara.hit_frame * frame_size];
+        frame_1 = &anim->frame_ptr[g_Lara.hit_frame];
         frac = 0;
     }
 

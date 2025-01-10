@@ -507,7 +507,7 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
         fp, level_info->anim_frame_data + level_info->anim_frame_data_count,
         inj_info->anim_frame_data_count * sizeof(int16_t));
 
-    Level_ReadAnims(level_info->anim_count, inj_info->anim_count, fp, NULL);
+    Level_ReadAnims(level_info->anim_count, inj_info->anim_count, fp);
     for (int32_t i = 0; i < inj_info->anim_count; i++) {
         ANIM *const anim = Anim_GetAnim(level_info->anim_count + i);
 
@@ -624,7 +624,8 @@ static void M_ObjectData(
             object->bone_idx = bone_idx + level_info->anim_bone_count;
         }
 
-        VFile_Skip(fp, sizeof(int32_t));
+        object->frame_ofs = VFile_ReadU32(fp);
+        object->frame_base = NULL;
         object->anim_idx = VFile_ReadS16(fp);
         if (object->anim_idx != -1) {
             object->anim_idx += level_info->anim_count;
