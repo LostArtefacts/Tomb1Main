@@ -173,7 +173,7 @@ static void M_Look(const ITEM *const item)
 
 static void M_Fixed(void)
 {
-    const OBJECT_VECTOR *const fixed = &g_Camera.fixed[g_Camera.number];
+    const OBJECT_VECTOR *const fixed = &g_Camera.fixed[g_Camera.num];
     GAME_VECTOR ideal = {
         .x = fixed->x,
         .y = fixed->y,
@@ -636,7 +636,7 @@ void Camera_ResetPosition(void)
     g_Camera.type = CAM_CHASE;
     g_Camera.flags = 0;
     g_Camera.bounce = 0;
-    g_Camera.number = NO_CAMERA;
+    g_Camera.num = NO_CAMERA;
     g_Camera.additional_angle = 0;
     g_Camera.additional_elevation = 0;
 }
@@ -770,7 +770,7 @@ void Camera_Update(void)
         }
     }
 
-    g_Camera.last = g_Camera.number;
+    g_Camera.last = g_Camera.num;
     g_Camera.fixed_camera = fixed_camera;
 
     // should we clear the manual camera
@@ -782,11 +782,14 @@ void Camera_Update(void)
         g_Camera.additional_angle = 0;
         g_Camera.additional_elevation = 0;
         break;
+
+    default:
+        break;
     }
 
     if (g_Camera.type != CAM_HEAVY || g_Camera.timer == -1) {
         g_Camera.type = CAM_CHASE;
-        g_Camera.number = NO_CAMERA;
+        g_Camera.num = NO_CAMERA;
         g_Camera.last_item = g_Camera.item;
         g_Camera.item = NULL;
         g_Camera.target_angle = g_Camera.additional_angle;
@@ -826,7 +829,7 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
             const TRIGGER_CAMERA_DATA *const cam_data =
                 (TRIGGER_CAMERA_DATA *)cmd->parameter;
             if (cam_data->camera_num == g_Camera.last) {
-                g_Camera.number = cam_data->camera_num;
+                g_Camera.num = cam_data->camera_num;
 
                 if (g_Camera.timer < 0 || g_Camera.type == CAM_LOOK
                     || g_Camera.type == CAM_COMBAT) {

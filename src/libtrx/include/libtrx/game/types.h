@@ -1,7 +1,35 @@
 #pragma once
 
+#include "./items/types.h"
+#include "./math.h"
+
 #include <stdbool.h>
 #include <stdint.h>
+
+typedef struct {
+    union {
+        struct {
+            int32_t x;
+            int32_t y;
+            int32_t z;
+        };
+        XYZ_32 pos;
+    };
+    int16_t room_num;
+} GAME_VECTOR;
+
+typedef struct {
+    union {
+        struct {
+            int32_t x;
+            int32_t y;
+            int32_t z;
+        };
+        XYZ_32 pos;
+    };
+    int16_t data;
+    int16_t flags;
+} OBJECT_VECTOR;
 
 typedef struct {
     uint16_t texture;

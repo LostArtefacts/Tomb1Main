@@ -5,6 +5,7 @@
 
 #include <libtrx/game/anims.h>
 #include <libtrx/game/camera/enum.h>
+#include <libtrx/game/camera/types.h>
 #include <libtrx/game/collision.h>
 #include <libtrx/game/creature.h>
 #include <libtrx/game/effects/types.h>
@@ -20,6 +21,7 @@
 #include <libtrx/game/sound/enum.h>
 #include <libtrx/game/sound/ids.h>
 #include <libtrx/game/text.h>
+#include <libtrx/game/types.h>
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -461,67 +463,6 @@ typedef struct {
     BOUNDS_16 p;
     BOUNDS_16 c;
 } STATIC_INFO;
-
-typedef struct {
-    union {
-        struct {
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
-        XYZ_32 pos;
-    };
-    int16_t room_num;
-} GAME_VECTOR;
-
-typedef struct {
-    union {
-        struct {
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
-        XYZ_32 pos;
-    };
-    int16_t data;
-    int16_t flags;
-} OBJECT_VECTOR;
-
-typedef struct {
-    GAME_VECTOR pos;
-    GAME_VECTOR target;
-    int32_t type;
-    int32_t shift;
-    int32_t flags;
-    int32_t fixed_camera;
-    int32_t bounce;
-    bool underwater;
-    int32_t target_distance;
-    int32_t target_square;
-    int16_t target_angle;
-    int16_t target_elevation;
-    int16_t box;
-    int16_t number;
-    int16_t last;
-    int16_t timer;
-    int16_t speed;
-    int16_t roll;
-    ITEM *item;
-    ITEM *last_item;
-    OBJECT_VECTOR *fixed;
-    // used for the manual camera control
-    int16_t additional_angle;
-    int16_t additional_elevation;
-
-    struct {
-        struct {
-            XYZ_32 target;
-            XYZ_32 pos;
-            int32_t shift;
-        } result, prev;
-        int16_t room_num;
-    } interp;
-} CAMERA_INFO;
 
 typedef struct {
     int32_t xv;

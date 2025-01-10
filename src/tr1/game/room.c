@@ -810,7 +810,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
                 break;
             }
 
-            g_Camera.number = cam_data->camera_num;
+            g_Camera.num = cam_data->camera_num;
 
             if (g_Camera.type == CAM_LOOK || g_Camera.type == CAM_COMBAT) {
                 break;
@@ -824,8 +824,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
                 break;
             }
 
-            if (g_Camera.number == g_Camera.last
-                && trigger->type != TT_SWITCH) {
+            if (g_Camera.num == g_Camera.last && trigger->type != TT_SWITCH) {
                 break;
             }
 
@@ -835,7 +834,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             }
 
             if (cam_data->one_shot) {
-                g_Camera.fixed[g_Camera.number].flags |= IF_ONE_SHOT;
+                g_Camera.fixed[g_Camera.num].flags |= IF_ONE_SHOT;
             }
 
             g_Camera.speed = cam_data->glide + 1;

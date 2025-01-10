@@ -1,6 +1,7 @@
 #include "game/text.h"
 
 #include "decomp/decomp.h"
+#include "game/clock.h"
 #include "game/output.h"
 #include "game/scaler.h"
 #include "global/vars.h"
@@ -63,7 +64,7 @@ void Text_DrawText(TEXTSTRING *const text)
     const int32_t scale_v = M_Scale(text->scale.v);
 
     if (text->flags.flash) {
-        text->flash.count -= g_Camera.num_frames;
+        text->flash.count -= Clock_GetFrameAdvance();
         if (text->flash.count <= -text->flash.rate) {
             text->flash.count = text->flash.rate;
         } else if (text->flash.count < 0) {

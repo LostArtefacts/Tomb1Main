@@ -852,9 +852,8 @@ GAME_FLOW_COMMAND InvRing_Control(
         }
     }
 
-    g_Camera.num_frames = num_frames * TICKS_PER_FRAME;
     Overlay_Animate(num_frames);
-    Output_AnimateTextures(g_Camera.num_frames);
+    Output_AnimateTextures(num_frames * TICKS_PER_FRAME);
     return gf_cmd;
 }
 

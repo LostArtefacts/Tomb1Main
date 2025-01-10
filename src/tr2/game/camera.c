@@ -108,7 +108,6 @@ void Camera_ResetPosition(void)
     g_Camera.target_distance = WALL_L * 3 / 2;
     g_Camera.item = NULL;
 
-    g_Camera.num_frames = 1;
     if (!g_Lara.extra_anim) {
         g_Camera.type = CAM_CHASE;
     }

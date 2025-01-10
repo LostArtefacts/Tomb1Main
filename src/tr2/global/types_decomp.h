@@ -5,10 +5,12 @@
 #include "const.h"
 
 #include <libtrx/game/camera/enum.h>
+#include <libtrx/game/camera/types.h>
 #include <libtrx/game/items.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/rooms/types.h>
 #include <libtrx/game/text.h>
+#include <libtrx/game/types.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -284,32 +286,6 @@ typedef struct {
 } DOORPOS_DATA;
 
 typedef struct {
-    union {
-        XYZ_32 pos;
-        struct {
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
-    };
-    int16_t room_num;
-    int16_t box_num;
-} GAME_VECTOR;
-
-typedef struct {
-    union {
-        struct {
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
-        XYZ_32 pos;
-    };
-    int16_t data;
-    int16_t flags;
-} OBJECT_VECTOR;
-
-typedef struct {
     uint8_t left;
     uint8_t right;
     uint8_t top;
@@ -395,33 +371,6 @@ typedef struct {
     uint8_t level_complete_track;
     uint16_t reserved4[2];
 } GAME_FLOW;
-
-typedef struct {
-    GAME_VECTOR pos;
-    GAME_VECTOR target;
-    CAMERA_TYPE type;
-    int32_t shift;
-    uint32_t flags;
-    int32_t fixed_camera;
-    int32_t num_frames;
-    int32_t bounce;
-    int32_t underwater;
-    int32_t target_distance;
-    int32_t target_square;
-    int16_t target_angle;
-    int16_t actual_angle;
-    int16_t target_elevation;
-    int16_t box;
-    int16_t num;
-    int16_t last;
-    int16_t timer;
-    int16_t speed;
-    ITEM *item;
-    ITEM *last_item;
-    OBJECT_VECTOR *fixed;
-    int32_t is_lara_mic; // TODO: remove this - now stored in g_Config
-    XYZ_32 mic_pos;
-} CAMERA_INFO;
 
 typedef enum {
     CF_NORMAL        = 0,

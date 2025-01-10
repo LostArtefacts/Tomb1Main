@@ -152,7 +152,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             };
         }
 
-        g_Camera.num_frames = num_frames;
         Output_AnimateTextures(num_frames);
     }
 
