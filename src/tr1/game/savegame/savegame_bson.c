@@ -346,7 +346,7 @@ static bool M_LoadDiscontinuedEndInfo(JSON_ARRAY *end_arr, GAME_INFO *game_info)
             LOG_ERROR("Malformed save: invalid resume info");
             return false;
         }
-        GAME_STATS *end = &game_info->current[i].stats;
+        LEVEL_STATS *end = &game_info->current[i].stats;
         end->timer = JSON_ObjectGetInt(end_obj, "timer", end->timer);
         end->secret_flags =
             JSON_ObjectGetInt(end_obj, "secrets", end->secret_flags);

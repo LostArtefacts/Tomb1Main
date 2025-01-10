@@ -68,7 +68,7 @@ static void M_CreateTexts(M_PRIV *const p, const int32_t level_num)
     char buf[100];
     char time_str[100];
 
-    const GAME_STATS *stats = &g_GameInfo.current[level_num].stats;
+    const LEVEL_STATS *stats = &g_GameInfo.current[level_num].stats;
 
     Overlay_HideGameInfo();
 
@@ -159,8 +159,8 @@ static void M_CreateTexts(M_PRIV *const p, const int32_t level_num)
 static void M_CreateTextsTotal(
     M_PRIV *const p, const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    TOTAL_STATS stats;
-    Stats_ComputeTotal(level_type, &stats);
+    FINAL_STATS stats;
+    Stats_ComputeFinal(level_type, &stats);
 
     char buf[100];
     char time_str[100];
@@ -180,7 +180,7 @@ static void M_CreateTextsTotal(
         buf,
         g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
                                                 : GS(STATS_KILLS_BASIC_FMT),
-        stats.player_kill_count, stats.total_kill_count);
+        stats.kill_count, stats.max_kill_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
     Text_CentreV(*cur_txt, 1);
@@ -192,7 +192,7 @@ static void M_CreateTextsTotal(
         buf,
         g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
                                                 : GS(STATS_PICKUPS_BASIC_FMT),
-        stats.player_pickup_count, stats.total_pickup_count);
+        stats.pickup_count, stats.max_pickup_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
     Text_CentreV(*cur_txt, 1);
@@ -201,8 +201,7 @@ static void M_CreateTextsTotal(
 
     // secrets
     sprintf(
-        buf, GS(STATS_SECRETS_FMT), stats.player_secret_count,
-        stats.total_secret_count);
+        buf, GS(STATS_SECRETS_FMT), stats.secret_count, stats.max_secret_count);
     *cur_txt = Text_Create(0, y, buf);
     Text_CentreH(*cur_txt, 1);
     Text_CentreV(*cur_txt, 1);

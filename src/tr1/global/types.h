@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/stats/types.h"
 #include "global/const.h"
 
 #include <libtrx/game/anims.h>
@@ -410,17 +411,6 @@ typedef struct {
 } CINE_POSITION;
 
 typedef struct {
-    uint32_t timer;
-    uint32_t death_count;
-    uint32_t kill_count;
-    uint16_t secret_flags;
-    uint8_t pickup_count;
-    uint32_t max_kill_count;
-    uint16_t max_secret_count;
-    uint8_t max_pickup_count;
-} GAME_STATS;
-
-typedef struct {
     int32_t lara_hitpoints;
     uint16_t pistol_ammo;
     uint16_t magnum_ammo;
@@ -444,7 +434,7 @@ typedef struct {
             uint16_t costume : 1;
         };
     } flags;
-    GAME_STATS stats;
+    LEVEL_STATS stats;
 } RESUME_INFO;
 
 typedef struct {

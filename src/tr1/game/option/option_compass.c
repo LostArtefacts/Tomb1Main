@@ -39,7 +39,7 @@ static void M_InitText(void)
     const int border = 4;
     const int row_height = 25;
     const int row_width = 225;
-    const GAME_STATS *stats = &g_GameInfo.current[g_CurrentLevel].stats;
+    const LEVEL_STATS *stats = &g_GameInfo.current[g_CurrentLevel].stats;
 
     int y = top_y;
     m_Text[TEXT_TITLE_BORDER] = Text_Create(0, y - border, " ");

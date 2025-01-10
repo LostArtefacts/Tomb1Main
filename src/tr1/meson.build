@@ -264,7 +264,7 @@ sources = [
   'game/shell.c',
   'game/sound.c',
   'game/spawn.c',
-  'game/stats.c',
+  'game/stats/common.c',
   'game/text.c',
   'game/ui/common.c',
   'game/ui/widgets/paginator.c',

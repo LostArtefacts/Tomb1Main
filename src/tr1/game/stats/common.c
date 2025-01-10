@@ -1,11 +1,10 @@
-#include "game/stats.h"
-
 #include "game/carrier.h"
 #include "game/clock.h"
 #include "game/gameflow.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
+#include "game/stats.h"
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
@@ -120,10 +119,10 @@ static void M_IncludeKillableItem(int16_t item_num)
     m_LevelPickups += Carrier_GetItemCount(item_num);
 }
 
-void Stats_ComputeTotal(
-    GAME_FLOW_LEVEL_TYPE level_type, TOTAL_STATS *total_stats)
+void Stats_ComputeFinal(
+    GAME_FLOW_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
 {
-    memset(total_stats, 0, sizeof(TOTAL_STATS));
+    memset(final_stats, 0, sizeof(FINAL_STATS));
 
     int16_t secret_flags = 0;
 
@@ -131,23 +130,23 @@ void Stats_ComputeTotal(
         if (g_GameFlow.levels[i].level_type != level_type) {
             continue;
         }
-        const GAME_STATS *level_stats = &g_GameInfo.current[i].stats;
+        const LEVEL_STATS *level_stats = &g_GameInfo.current[i].stats;
 
-        total_stats->player_kill_count += level_stats->kill_count;
-        total_stats->player_pickup_count += level_stats->pickup_count;
+        final_stats->kill_count += level_stats->kill_count;
+        final_stats->pickup_count += level_stats->pickup_count;
         secret_flags = level_stats->secret_flags;
         for (int j = 0; j < MAX_SECRETS; j++) {
             if (secret_flags & 1) {
-                total_stats->player_secret_count++;
+                final_stats->secret_count++;
             }
             secret_flags >>= 1;
         }
 
-        total_stats->timer += level_stats->timer;
-        total_stats->death_count += level_stats->death_count;
-        total_stats->total_kill_count += level_stats->max_kill_count;
-        total_stats->total_secret_count += level_stats->max_secret_count;
-        total_stats->total_pickup_count += level_stats->max_pickup_count;
+        final_stats->timer += level_stats->timer;
+        final_stats->death_count += level_stats->death_count;
+        final_stats->max_kill_count += level_stats->max_kill_count;
+        final_stats->max_secret_count += level_stats->max_secret_count;
+        final_stats->max_pickup_count += level_stats->max_pickup_count;
     }
 }
 
@@ -227,9 +226,9 @@ int32_t Stats_GetSecrets(void)
 
 bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type)
 {
-    TOTAL_STATS total_stats = {};
-    Stats_ComputeTotal(level_type, &total_stats);
-    return total_stats.player_secret_count >= total_stats.total_secret_count;
+    FINAL_STATS final_stats = {};
+    Stats_ComputeFinal(level_type, &final_stats);
+    return final_stats.secret_count >= final_stats.max_secret_count;
 }
 
 #if USE_REAL_CLOCK
