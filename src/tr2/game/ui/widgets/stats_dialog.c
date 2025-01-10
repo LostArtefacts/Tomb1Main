@@ -45,7 +45,7 @@ static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *self);
 static void M_UpdateTimerRow(UI_STATS_DIALOG *self);
 static void M_DoLayout(UI_STATS_DIALOG *self);
-static void M_HandleCanvasResize(const EVENT *event, void *data);
+static void M_HandleLayoutUpdate(const EVENT *event, void *data);
 
 static int32_t M_GetWidth(const UI_STATS_DIALOG *self);
 static int32_t M_GetHeight(const UI_STATS_DIALOG *self);
@@ -234,7 +234,7 @@ static void M_DoLayout(UI_STATS_DIALOG *const self)
         (UI_GetCanvasHeight() - M_GetHeight(self)) - 50);
 }
 
-static void M_HandleCanvasResize(const EVENT *event, void *data)
+static void M_HandleLayoutUpdate(const EVENT *event, void *data)
 {
     UI_STATS_DIALOG *const self = (UI_STATS_DIALOG *)data;
     M_DoLayout(self);
@@ -300,7 +300,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
     });
 
     self->listener =
-        UI_Events_Subscribe("canvas_resize", NULL, M_HandleCanvasResize, self);
+        UI_Events_Subscribe("layout_update", NULL, M_HandleLayoutUpdate, self);
 
     switch (mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:

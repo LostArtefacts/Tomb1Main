@@ -12,11 +12,10 @@
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/text.h"
+#include "game/ui/common.h"
 #include "game/ui/widgets/requester.h"
 #include "memory.h"
 
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 
 #define FADE_TIME 0.4
@@ -133,6 +132,9 @@ static int32_t M_DisplayRequester(
         UI_Requester_SetTitle(p->ui, header);
         UI_Requester_AddRowC(p->ui, option1, NULL);
         UI_Requester_AddRowC(p->ui, option2, NULL);
+        p->ui->set_position(
+            p->ui, (UI_GetCanvasWidth() - p->ui->get_width(p->ui)) / 2,
+            (UI_GetCanvasHeight() - p->ui->get_height(p->ui)) - 50);
         p->is_ui_ready = true;
     }
 

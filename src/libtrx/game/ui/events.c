@@ -2,6 +2,7 @@
 
 #include "config/common.h"
 #include "debug.h"
+#include "game/ui/common.h"
 
 #include <stddef.h>
 
@@ -18,6 +19,7 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
             .data = NULL,
         };
         EventManager_Fire(m_EventManager, &new_event);
+        UI_HandleLayoutChange();
     }
 }
 

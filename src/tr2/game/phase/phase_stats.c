@@ -18,10 +18,10 @@ typedef enum {
 } M_STATE;
 
 typedef struct {
+    PHASE_STATS_ARGS args;
     M_STATE state;
     FADER fader;
-    UI_WIDGET *dialog;
-    PHASE_STATS_ARGS args;
+    UI_WIDGET *ui;
 } M_PRIV;
 
 static void M_FadeOut(M_PRIV *p);
@@ -46,9 +46,10 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
         Output_LoadBackgroundFromObject();
     }
-    p->dialog = UI_StatsDialog_Create(
+    p->ui = UI_StatsDialog_Create(
         p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
                                  : UI_STATS_DIALOG_MODE_LEVEL);
+
     Fader_Init(&p->fader, FADER_BLACK, FADER_TRANSPARENT, p->args.fade_in_time);
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
@@ -56,7 +57,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
 static void M_End(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    p->dialog->free(p->dialog);
+    p->ui->free(p->ui);
     Output_UnloadBackground();
 }
 
@@ -93,7 +94,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         }
     }
 
-    p->dialog->control(p->dialog);
+    p->ui->control(p->ui);
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
@@ -101,7 +102,7 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Output_DrawBackground();
-    p->dialog->draw(p->dialog);
+    p->ui->draw(p->ui);
     Text_Draw();
     Output_DrawPolyList();
     Fader_Draw(&p->fader);

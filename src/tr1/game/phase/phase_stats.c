@@ -1,5 +1,6 @@
 #include "game/phase/phase_stats.h"
 
+#include "game/console/common.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/gameflow.h"
@@ -10,13 +11,12 @@
 #include "game/overlay.h"
 #include "game/shell.h"
 #include "game/stats.h"
+#include "game/ui/widgets/stats_dialog.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/memory.h>
-
-#define MAX_TEXTSTRINGS 10
 
 typedef enum {
     STATE_FADE_IN,
@@ -27,16 +27,14 @@ typedef enum {
 typedef struct {
     PHASE_STATS_ARGS args;
     STATE state;
-    TEXTSTRING *texts[MAX_TEXTSTRINGS];
     FADER back_fader;
     FADER top_fader;
+    UI_WIDGET *ui;
 } M_PRIV;
 
 static bool M_IsFading(M_PRIV *p);
 static void M_FadeIn(M_PRIV *p);
 static void M_FadeOut(M_PRIV *p);
-static void M_CreateTexts(M_PRIV *p, int32_t level_num);
-static void M_CreateTextsTotal(M_PRIV *p, GAME_FLOW_LEVEL_TYPE level_type);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
@@ -63,203 +61,6 @@ static void M_FadeOut(M_PRIV *const p)
     p->state = STATE_FADE_OUT;
 }
 
-static void M_CreateTexts(M_PRIV *const p, const int32_t level_num)
-{
-    char buf[100];
-    char time_str[100];
-
-    const LEVEL_STATS *stats = &g_GameInfo.current[level_num].stats;
-
-    Overlay_HideGameInfo();
-
-    int y = -50;
-    const int row_height = 30;
-
-    TEXTSTRING **cur_txt = &p->texts[0];
-
-    // heading
-    sprintf(buf, "%s", g_GameFlow.levels[level_num].level_title);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // kills
-    sprintf(
-        buf,
-        g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                                : GS(STATS_KILLS_BASIC_FMT),
-        stats->kill_count, stats->max_kill_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // pickups
-    sprintf(
-        buf,
-        g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
-                                                : GS(STATS_PICKUPS_BASIC_FMT),
-        stats->pickup_count, stats->max_pickup_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // secrets
-    int secret_count = 0;
-    int16_t secret_flags = stats->secret_flags;
-    for (int i = 0; i < MAX_SECRETS; i++) {
-        if (secret_flags & 1) {
-            secret_count++;
-        }
-        secret_flags >>= 1;
-    }
-    sprintf(buf, GS(STATS_SECRETS_FMT), secret_count, stats->max_secret_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // deaths
-    if (g_Config.gameplay.enable_deaths_counter
-        && g_GameInfo.death_counter_supported) {
-        sprintf(buf, GS(STATS_DEATHS_FMT), stats->death_count);
-        *cur_txt = Text_Create(0, y, buf);
-        Text_CentreH(*cur_txt, 1);
-        Text_CentreV(*cur_txt, 1);
-        cur_txt++;
-        y += row_height;
-    }
-
-    // time taken
-    int seconds = stats->timer / LOGIC_FPS;
-    int hours = seconds / 3600;
-    int minutes = (seconds / 60) % 60;
-    seconds %= 60;
-    if (hours) {
-        sprintf(
-            time_str, "%d:%d%d:%d%d", hours, minutes / 10, minutes % 10,
-            seconds / 10, seconds % 10);
-    } else {
-        sprintf(time_str, "%d:%d%d", minutes, seconds / 10, seconds % 10);
-    }
-    sprintf(buf, GS(STATS_TIME_TAKEN_FMT), time_str);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-}
-
-static void M_CreateTextsTotal(
-    M_PRIV *const p, const GAME_FLOW_LEVEL_TYPE level_type)
-{
-    FINAL_STATS stats;
-    Stats_ComputeFinal(level_type, &stats);
-
-    char buf[100];
-    char time_str[100];
-    TEXTSTRING **cur_txt = &p->texts[0];
-
-    int top_y = 55;
-    int y = 55;
-    const int row_width = 220;
-    const int row_height = 20;
-    int16_t border = 4;
-
-    // reserve space for heading
-    y += row_height + border * 2;
-
-    // kills
-    sprintf(
-        buf,
-        g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                                : GS(STATS_KILLS_BASIC_FMT),
-        stats.kill_count, stats.max_kill_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // pickups
-    sprintf(
-        buf,
-        g_Config.gameplay.enable_detailed_stats ? GS(STATS_PICKUPS_DETAIL_FMT)
-                                                : GS(STATS_PICKUPS_BASIC_FMT),
-        stats.pickup_count, stats.max_pickup_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // secrets
-    sprintf(
-        buf, GS(STATS_SECRETS_FMT), stats.secret_count, stats.max_secret_count);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // deaths
-    if (g_Config.gameplay.enable_deaths_counter
-        && g_GameInfo.death_counter_supported) {
-        sprintf(buf, GS(STATS_DEATHS_FMT), stats.death_count);
-        *cur_txt = Text_Create(0, y, buf);
-        Text_CentreH(*cur_txt, 1);
-        Text_CentreV(*cur_txt, 1);
-        cur_txt++;
-        y += row_height;
-    }
-
-    // time taken
-    int seconds = stats.timer / LOGIC_FPS;
-    int hours = seconds / 3600;
-    int minutes = (seconds / 60) % 60;
-    seconds %= 60;
-    if (hours) {
-        sprintf(
-            time_str, "%d:%d%d:%d%d", hours, minutes / 10, minutes % 10,
-            seconds / 10, seconds % 10);
-    } else {
-        sprintf(time_str, "%d:%d%d", minutes, seconds / 10, seconds % 10);
-    }
-    sprintf(buf, GS(STATS_TIME_TAKEN_FMT), time_str);
-    *cur_txt = Text_Create(0, y, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    cur_txt++;
-    y += row_height;
-
-    // border
-    int16_t height = y + border * 2 - top_y;
-    *cur_txt = Text_Create(0, top_y, " ");
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    Text_AddBackground(*cur_txt, row_width, height, 0, 0, TS_BACKGROUND);
-    Text_AddOutline(*cur_txt, TS_BACKGROUND);
-    cur_txt++;
-
-    // heading
-    sprintf(
-        buf, "%s",
-        level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
-                                : GS(STATS_FINAL_STATISTICS));
-    *cur_txt = Text_Create(0, top_y + 2, buf);
-    Text_CentreH(*cur_txt, 1);
-    Text_CentreV(*cur_txt, 1);
-    Text_AddBackground(*cur_txt, row_width - 4, 0, 0, 0, TS_HEADING);
-    Text_AddOutline(*cur_txt, TS_HEADING);
-    cur_txt++;
-}
-
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
@@ -275,14 +76,11 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     } else {
         M_FadeIn(p);
 
-        if (p->args.show_final_stats) {
-            ASSERT(p->args.level_type >= GFL_NORMAL);
-            M_CreateTextsTotal(p, p->args.level_type);
-        } else {
-            M_CreateTexts(
-                p,
-                p->args.level_num != -1 ? p->args.level_num : g_CurrentLevel);
-        }
+        p->ui = UI_StatsDialog_Create(
+            p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
+                                     : UI_STATS_DIALOG_MODE_LEVEL,
+            p->args.level_num != -1 ? p->args.level_num : g_CurrentLevel,
+            p->args.level_type);
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
@@ -291,14 +89,10 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
 static void M_End(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    Music_Stop();
-
-    for (int32_t i = 0; i < MAX_TEXTSTRINGS; i++) {
-        TEXTSTRING *cur_txt = p->texts[i];
-        if (cur_txt != NULL) {
-            Text_Remove(cur_txt);
-        }
+    if (p->ui != NULL) {
+        p->ui->free(p->ui);
     }
+    Music_Stop();
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
@@ -333,6 +127,9 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
         break;
     }
 
+    if (p->ui != NULL) {
+        p->ui->control(p->ui);
+    }
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
@@ -345,8 +142,15 @@ static void M_Draw(PHASE *const phase)
         Interpolation_Enable();
         Fader_Draw(&p->back_fader);
     }
+    if (p->ui != NULL) {
+        p->ui->draw(p->ui);
+    }
     Text_Draw();
+    Output_DrawPolyList();
     Fader_Draw(&p->top_fader);
+    Console_Draw();
+    Text_Draw();
+    Output_DrawPolyList();
 }
 
 PHASE *Phase_Stats_Create(const PHASE_STATS_ARGS args)

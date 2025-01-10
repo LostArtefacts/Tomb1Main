@@ -224,7 +224,11 @@ void UI_Stack_DoLayout(UI_WIDGET *const widget)
             x = self->x + self_width - children_width;
             break;
         case UI_STACK_H_ALIGN_DISTRIBUTE:
-            x = self->x;
+            if (self->children->count == 1) {
+                x = self->x + (self_width - children_width) / 2;
+            } else {
+                x = self->x;
+            }
             break;
         }
         break;

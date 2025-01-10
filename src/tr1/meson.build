@@ -267,6 +267,7 @@ sources = [
   'game/stats/common.c',
   'game/text.c',
   'game/ui/common.c',
+  'game/ui/widgets/stats_dialog.c',
   'game/ui/widgets/paginator.c',
   'game/ui/widgets/photo_mode.c',
   'game/viewport.c',

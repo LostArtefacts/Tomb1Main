@@ -21,6 +21,16 @@ void UI_ToggleState(bool *const config_setting)
     Console_Log(*config_setting ? GS(OSD_UI_ON) : GS(OSD_UI_OFF));
 }
 
+void UI_HandleLayoutChange(void)
+{
+    const EVENT event = {
+        .name = "layout_change",
+        .sender = NULL,
+        .data = NULL,
+    };
+    UI_Events_Fire(&event);
+}
+
 void UI_HandleKeyDown(const uint32_t key)
 {
     const EVENT event = {

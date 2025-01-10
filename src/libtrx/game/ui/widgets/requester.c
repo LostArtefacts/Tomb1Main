@@ -116,9 +116,7 @@ static M_ROW *M_AddRow(
 
 static void M_DoLayout(UI_REQUESTER *const self)
 {
-    M_SetPosition(
-        self, (UI_GetCanvasWidth() - M_GetWidth(self)) / 2,
-        (UI_GetCanvasHeight() - M_GetHeight(self)) - 50);
+    UI_HandleLayoutChange();
 }
 
 static void M_HandleCanvasResize(const EVENT *event, void *data)
@@ -240,6 +238,7 @@ UI_WIDGET *UI_Requester_Create(UI_REQUESTER_SETTINGS settings)
     self->outer_stack = UI_Stack_Create(
         UI_STACK_LAYOUT_VERTICAL, UI_STACK_AUTO_SIZE,
         settings.row_height * self->settings.visible_rows);
+    UI_Stack_SetHAlign(self->outer_stack, UI_STACK_H_ALIGN_CENTER);
 
     self->window = UI_Window_Create(self->outer_stack, 8, 8, 8, 8);
 
@@ -311,11 +310,12 @@ void UI_Requester_ChangeRowLR(
     if (idx >= self->row_count || idx < 0) {
         return;
     }
-    if (text_l != NULL) {
+    if (self->rows[idx].left_label != NULL && text_l != NULL) {
         UI_Label_ChangeText(self->rows[idx].left_label, text_l);
     }
-    if (text_r != NULL) {
+    if (self->rows[idx].right_label != NULL && text_r != NULL) {
         UI_Label_ChangeText(self->rows[idx].right_label, text_r);
     }
     self->rows[idx].user_data = user_data;
+    M_DoLayout(self);
 }
