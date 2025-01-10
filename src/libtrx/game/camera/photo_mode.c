@@ -1,20 +1,25 @@
 #include "game/camera/photo_mode.h"
 
 #include "game/camera/common.h"
+#include "game/camera/const.h"
+#include "game/camera/enum.h"
+#include "game/camera/vars.h"
 #include "game/input.h"
+#include "game/math.h"
 #include "game/output.h"
-#include "game/room.h"
+#include "game/rooms.h"
 #include "game/viewport.h"
+#include "utils.h"
 
-#include <libtrx/game/camera/common.h>
-#include <libtrx/game/camera/vars.h>
-#include <libtrx/game/math.h>
-#include <libtrx/utils.h>
+#if TR_VERSION == 1
+// TODO: remove this call when consolidating the viewport API
+extern void Output_ApplyFOV(void);
+#endif
 
 #define MIN_PHOTO_FOV 10
 #define MAX_PHOTO_FOV 150
-#define PHOTO_ROT_SHIFT (PHD_DEGREE * 4)
-#define PHOTO_MAX_PITCH_ROLL (PHD_90 - PHD_DEGREE)
+#define PHOTO_ROT_SHIFT (DEG_1 * 4)
+#define PHOTO_MAX_PITCH_ROLL (DEG_90 - DEG_1)
 #define PHOTO_MAX_SPEED 100
 
 #define SHIFT_X(distance, elevation, angle)                                    \
@@ -55,8 +60,12 @@ static void M_UpdatePhotoMode(void);
 static void M_ResetCamera(void)
 {
     g_Camera = m_OldCamera;
+#if TR_VERSION == 1
     Viewport_SetFOV(m_OldFOV);
-    m_CurrentFOV = m_OldFOV / PHD_DEGREE;
+#elif TR_VERSION == 2
+    Viewport_AlterFOV(m_OldFOV);
+#endif
+    m_CurrentFOV = m_OldFOV / DEG_1;
 }
 
 static int32_t M_GetShiftSpeed(const int32_t val)
@@ -66,7 +75,7 @@ static int32_t M_GetShiftSpeed(const int32_t val)
 
 static int32_t M_GetRotSpeed(void)
 {
-    return MAX(PHD_DEGREE, M_GetShiftSpeed(PHOTO_ROT_SHIFT));
+    return MAX(DEG_1, M_GetShiftSpeed(PHOTO_ROT_SHIFT));
 }
 
 static void M_ShiftCamera(
@@ -102,7 +111,7 @@ static void M_RotateCamera(const int16_t angle, int16_t elevation)
 
 static void M_RotateTarget(const int16_t angle)
 {
-    const PHD_ANGLE elevation = g_Camera.target_elevation;
+    const int16_t elevation = g_Camera.target_elevation;
     const int32_t distance = g_Camera.target_distance;
     const XYZ_32 shift = {
         .x = SHIFT_X(distance, elevation, angle),
@@ -154,10 +163,10 @@ static bool M_HandleShiftInputs(void)
     bool result = false;
 
     if (g_Input.camera_left) {
-        M_ShiftCamera(g_Camera.target_angle - PHD_90, 0, 0);
+        M_ShiftCamera(g_Camera.target_angle - DEG_90, 0, 0);
         result = true;
     } else if (g_Input.camera_right) {
-        M_ShiftCamera(g_Camera.target_angle + PHD_90, 0, 0);
+        M_ShiftCamera(g_Camera.target_angle + DEG_90, 0, 0);
         result = true;
     }
 
@@ -166,17 +175,17 @@ static bool M_HandleShiftInputs(void)
         result = true;
     } else if (g_Input.camera_back) {
         M_ShiftCamera(
-            g_Camera.target_angle + PHD_180, g_Camera.target_elevation, 1);
+            g_Camera.target_angle + DEG_180, g_Camera.target_elevation, 1);
         result = true;
     }
 
     if (g_Input.camera_up) {
         M_ShiftCamera(
-            g_Camera.target_angle, g_Camera.target_elevation + PHD_90, -1);
+            g_Camera.target_angle, g_Camera.target_elevation + DEG_90, -1);
         result = true;
     } else if (g_Input.camera_down) {
         M_ShiftCamera(
-            g_Camera.target_angle, g_Camera.target_elevation - PHD_90, -1);
+            g_Camera.target_angle, g_Camera.target_elevation - DEG_90, -1);
         result = true;
     }
 
@@ -224,7 +233,7 @@ static bool M_HandleTargetRotationInputs(void)
 {
     bool result = false;
     if (g_InputDB.roll) {
-        M_RotateTarget(g_Camera.target_angle - PHD_90);
+        M_RotateTarget(g_Camera.target_angle - DEG_90);
         result = true;
     }
     return result;
@@ -242,15 +251,23 @@ static bool M_HandleFOVInputs(void)
         m_CurrentFOV++;
     }
     CLAMP(m_CurrentFOV, MIN_PHOTO_FOV, MAX_PHOTO_FOV);
-    Viewport_SetFOV(m_CurrentFOV * PHD_DEGREE);
+#if TR_VERSION == 1
+    Viewport_SetFOV(m_CurrentFOV * DEG_1);
     Output_ApplyFOV();
+#elif TR_VERSION == 2
+    Viewport_AlterFOV(m_CurrentFOV * DEG_1);
+#endif
     return true;
 }
 
 void Camera_EnterPhotoMode(void)
 {
+#if TR_VERSION == 1
     m_OldFOV = Viewport_GetFOV();
-    m_CurrentFOV = m_OldFOV / PHD_DEGREE;
+#elif TR_VERSION == 2
+    m_OldFOV = Viewport_GetFOV(true);
+#endif
+    m_CurrentFOV = m_OldFOV / DEG_1;
     m_OldCamera = g_Camera;
     g_Camera.type = CAM_PHOTO_MODE;
     m_WorldBounds = Room_GetWorldBounds();
@@ -259,7 +276,11 @@ void Camera_EnterPhotoMode(void)
 
 void Camera_ExitPhotoMode(void)
 {
+#if TR_VERSION == 1
     Viewport_SetFOV(m_OldFOV);
+#elif TR_VERSION == 2
+    Viewport_AlterFOV(m_OldFOV);
+#endif
     M_ResetCamera();
 }
 
@@ -273,7 +294,7 @@ void Camera_UpdatePhotoMode(void)
     const bool rot_target_input = g_InputDB.roll;
     const bool roll_input = g_Input.step_left || g_Input.step_right;
 
-    PHD_ANGLE angles[2];
+    int16_t angles[2];
     Math_GetVectorAngles(
         g_Camera.target.x - g_Camera.pos.x, g_Camera.target.y - g_Camera.pos.y,
         g_Camera.target.z - g_Camera.pos.z, angles);

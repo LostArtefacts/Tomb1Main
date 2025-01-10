@@ -312,7 +312,7 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
     }
 
     if (CHANGED(visuals.fov) || CHANGED(visuals.use_pcx_fov)) {
-        if (Viewport_GetFOV() == -1) {
+        if (Viewport_GetFOV(false) == -1) {
             Viewport_AlterFOV(-1);
         }
     }

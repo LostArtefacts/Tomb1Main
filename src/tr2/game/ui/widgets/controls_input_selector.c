@@ -4,6 +4,9 @@
 #include <libtrx/game/ui/widgets/stack.h>
 #include <libtrx/memory.h>
 
+#include <stdio.h>
+#include <string.h>
+
 typedef struct {
     UI_WIDGET_VTABLE vtable;
     INPUT_ROLE input_role;
@@ -32,7 +35,10 @@ static void M_UpdateText(UI_CONTROLS_INPUT_SELECTOR *const self)
     } else {
         UI_Label_ChangeText(self->choice, key_name);
     }
-    UI_Label_ChangeText(self->label, Input_GetRoleName(self->input_role));
+    const char *const role_name = Input_GetRoleName(self->input_role);
+    char role_name_padded[strlen(role_name) + 2];
+    sprintf(role_name_padded, "%s  ", role_name);
+    UI_Label_ChangeText(self->label, role_name_padded);
 }
 
 static int32_t M_GetWidth(const UI_CONTROLS_INPUT_SELECTOR *const self)
@@ -119,7 +125,7 @@ UI_WIDGET *UI_ControlsInputSelector_Create(
     self->controller = controller;
     self->input_role = input_role;
 
-    self->label = UI_Label_Create("", 140, 15);
+    self->label = UI_Label_Create("", UI_LABEL_AUTO_SIZE, 15);
     self->choice = UI_Label_Create("", 70, 15);
     self->container = UI_Stack_Create(
         UI_STACK_LAYOUT_HORIZONTAL, UI_STACK_AUTO_SIZE, UI_STACK_AUTO_SIZE);

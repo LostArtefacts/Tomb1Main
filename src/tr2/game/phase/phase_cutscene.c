@@ -135,6 +135,14 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
                     .gf_cmd = { .action = GF_NOOP },
                 };
             }
+        } else if (g_InputDB.toggle_photo_mode) {
+            const GAME_FLOW_COMMAND gf_cmd = GF_EnterPhotoMode();
+            if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = { .action = GF_NOOP },
+                };
+            }
         }
 
         g_DynamicLightCount = 0;

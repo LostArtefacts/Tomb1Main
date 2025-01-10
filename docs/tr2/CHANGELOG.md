@@ -1,6 +1,7 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...develop) - ××××-××-××
 - added Linux builds and toolchain (#1598)
 - added pause dialog (#1638)
+- added a photo mode feature (#2277)
 - fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)

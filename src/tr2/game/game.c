@@ -50,6 +50,9 @@ static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
     Shell_ProcessInput();
     Game_ProcessInput();
 
+    if (g_InputDB.toggle_photo_mode) {
+        return GF_EnterPhotoMode();
+    }
     if (g_InputDB.pause) {
         return GF_PauseGame();
     }

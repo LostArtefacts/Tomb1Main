@@ -189,9 +189,11 @@ void Viewport_Restore(const VIEWPORT *ref_vp)
     M_ApplyGameVars(&m_Viewport);
 }
 
-int16_t Viewport_GetFOV(void)
+int16_t Viewport_GetFOV(bool resolve_user_fov)
 {
-    return m_Viewport.view_angle;
+    return resolve_user_fov && m_Viewport.view_angle < 0
+        ? g_Config.visuals.fov * DEG_1
+        : m_Viewport.view_angle;
 }
 
 void Viewport_AlterFOV(const int16_t view_angle)

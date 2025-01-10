@@ -51,6 +51,7 @@ typedef struct {
     } visuals;
 
     struct {
+        bool enable_photo_mode_ui;
         double text_scale;
         double bar_scale;
     } ui;

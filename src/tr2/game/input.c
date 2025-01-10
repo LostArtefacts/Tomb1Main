@@ -83,6 +83,15 @@ static void M_UpdateFromBackend(
     s->load                        |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
 
     s->pause                       |= backend->is_pressed(layout, INPUT_ROLE_PAUSE);
+    s->toggle_ui                   |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_UI);
+    s->toggle_photo_mode           |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_PHOTO_MODE);
+
+    s->camera_up                   |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_UP);
+    s->camera_down                 |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_DOWN);
+    s->camera_forward              |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_FORWARD);
+    s->camera_back                 |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_BACK);
+    s->camera_left                 |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_LEFT);
+    s->camera_right                |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_RIGHT);
 
     s->item_cheat                  |= backend->is_pressed(layout, INPUT_ROLE_ITEM_CHEAT);
     s->fly_cheat                   |= backend->is_pressed(layout, INPUT_ROLE_FLY_CHEAT);
@@ -131,6 +140,7 @@ void Input_Update(void)
     M_UpdateFromBackend(
         &g_Input, &g_Input_Controller, g_Config.input.controller_layout);
 
+    g_Input.camera_reset |= g_Input.look;
     g_Input.menu_up |= g_Input.forward;
     g_Input.menu_down |= g_Input.back;
     g_Input.menu_left |= g_Input.left;
@@ -175,27 +185,36 @@ const char *Input_GetRoleName(const INPUT_ROLE role)
 {
     // clang-format off
     switch (role) {
-    case INPUT_ROLE_UP:               return GS(KEYMAP_RUN);
-    case INPUT_ROLE_DOWN:             return GS(KEYMAP_BACK);
-    case INPUT_ROLE_LEFT:             return GS(KEYMAP_LEFT);
-    case INPUT_ROLE_RIGHT:            return GS(KEYMAP_RIGHT);
-    case INPUT_ROLE_STEP_L:           return GS(KEYMAP_STEP_LEFT);
-    case INPUT_ROLE_STEP_R:           return GS(KEYMAP_STEP_RIGHT);
-    case INPUT_ROLE_SLOW:             return GS(KEYMAP_WALK);
-    case INPUT_ROLE_JUMP:             return GS(KEYMAP_JUMP);
-    case INPUT_ROLE_ACTION:           return GS(KEYMAP_ACTION);
-    case INPUT_ROLE_DRAW:             return GS(KEYMAP_DRAW_WEAPON);
-    case INPUT_ROLE_USE_FLARE:        return GS(KEYMAP_USE_FLARE);
-    case INPUT_ROLE_LOOK:             return GS(KEYMAP_LOOK);
-    case INPUT_ROLE_ROLL:             return GS(KEYMAP_ROLL);
-    case INPUT_ROLE_OPTION:           return GS(KEYMAP_INVENTORY);
-    case INPUT_ROLE_FLY_CHEAT:        return GS(KEYMAP_FLY_CHEAT);
-    case INPUT_ROLE_ITEM_CHEAT:       return GS(KEYMAP_ITEM_CHEAT);
-    case INPUT_ROLE_LEVEL_SKIP_CHEAT: return GS(KEYMAP_LEVEL_SKIP_CHEAT);
-    case INPUT_ROLE_TURBO_CHEAT:      return GS(KEYMAP_TURBO_CHEAT);
-    case INPUT_ROLE_ENTER_CONSOLE:    return GS(KEYMAP_ENTER_CONSOLE);
-    case INPUT_ROLE_PAUSE:            return GS(KEYMAP_PAUSE);
-    default:                          return "";
+    case INPUT_ROLE_UP:                return GS(KEYMAP_RUN);
+    case INPUT_ROLE_DOWN:              return GS(KEYMAP_BACK);
+    case INPUT_ROLE_LEFT:              return GS(KEYMAP_LEFT);
+    case INPUT_ROLE_RIGHT:             return GS(KEYMAP_RIGHT);
+    case INPUT_ROLE_STEP_L:            return GS(KEYMAP_STEP_LEFT);
+    case INPUT_ROLE_STEP_R:            return GS(KEYMAP_STEP_RIGHT);
+    case INPUT_ROLE_SLOW:              return GS(KEYMAP_WALK);
+    case INPUT_ROLE_JUMP:              return GS(KEYMAP_JUMP);
+    case INPUT_ROLE_ACTION:            return GS(KEYMAP_ACTION);
+    case INPUT_ROLE_DRAW:              return GS(KEYMAP_DRAW_WEAPON);
+    case INPUT_ROLE_USE_FLARE:         return GS(KEYMAP_USE_FLARE);
+    case INPUT_ROLE_LOOK:              return GS(KEYMAP_LOOK);
+    case INPUT_ROLE_ROLL:              return GS(KEYMAP_ROLL);
+    case INPUT_ROLE_OPTION:            return GS(KEYMAP_INVENTORY);
+    case INPUT_ROLE_FLY_CHEAT:         return GS(KEYMAP_FLY_CHEAT);
+    case INPUT_ROLE_ITEM_CHEAT:        return GS(KEYMAP_ITEM_CHEAT);
+    case INPUT_ROLE_LEVEL_SKIP_CHEAT:  return GS(KEYMAP_LEVEL_SKIP_CHEAT);
+    case INPUT_ROLE_TURBO_CHEAT:       return GS(KEYMAP_TURBO_CHEAT);
+    case INPUT_ROLE_ENTER_CONSOLE:     return GS(KEYMAP_ENTER_CONSOLE);
+    case INPUT_ROLE_PAUSE:             return GS(KEYMAP_PAUSE);
+    case INPUT_ROLE_TOGGLE_UI:         return GS(KEYMAP_TOGGLE_UI);
+    case INPUT_ROLE_TOGGLE_PHOTO_MODE: return GS(KEYMAP_TOGGLE_PHOTO_MODE);
+    case INPUT_ROLE_CAMERA_RESET:      return GS(KEYMAP_CAMERA_RESET);
+    case INPUT_ROLE_CAMERA_UP:         return GS(KEYMAP_CAMERA_UP);
+    case INPUT_ROLE_CAMERA_DOWN:       return GS(KEYMAP_CAMERA_DOWN);
+    case INPUT_ROLE_CAMERA_FORWARD:    return GS(KEYMAP_CAMERA_FORWARD);
+    case INPUT_ROLE_CAMERA_BACK:       return GS(KEYMAP_CAMERA_BACK);
+    case INPUT_ROLE_CAMERA_LEFT:       return GS(KEYMAP_CAMERA_LEFT);
+    case INPUT_ROLE_CAMERA_RIGHT:      return GS(KEYMAP_CAMERA_RIGHT);
+    default:                           return "";
     }
     // clang-format on
 }

@@ -645,7 +645,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     INV_RING *const ring = Memory_Alloc(sizeof(INV_RING));
     ring->mode = mode;
-    ring->old_fov = Viewport_GetFOV();
+    ring->old_fov = Viewport_GetFOV(false);
     m_NoInputCounter = 0;
 
     switch (mode) {

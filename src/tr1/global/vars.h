@@ -3,6 +3,7 @@
 #include "global/const.h"
 #include "global/types.h"
 
+#include <libtrx/game/camera/vars.h>
 #include <libtrx/game/inventory_ring/enum.h>
 
 #include <stdbool.h>

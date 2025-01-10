@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#define CAMERA_DEFAULT_DISTANCE (WALL_L * 3 / 2)
-
 void Camera_Initialise(void);
 void Camera_Reset(void);
 void Camera_ResetPosition(void);

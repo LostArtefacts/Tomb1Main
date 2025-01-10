@@ -1,6 +1,5 @@
 #include "game/camera/common.h"
 
-#include "game/camera/photo_mode.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/los.h"
@@ -14,6 +13,8 @@
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/camera/common.h>
+#include <libtrx/game/camera/const.h>
+#include <libtrx/game/camera/photo_mode.h>
 #include <libtrx/game/camera/vars.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>

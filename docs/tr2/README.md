@@ -30,6 +30,7 @@ game with new enhancements and features.
   - free flare from underwater pickup
   - drifting into walls during underwater pickups
 - added a pause screen
+- added a photo mode feature
 - changed inventory to pause the music rather than muting it
 - fixed killing the T-Rex with a grenade launcher crashing the game
 - fixed secret rewards not displaying shotgun ammo

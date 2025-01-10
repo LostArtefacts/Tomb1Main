@@ -80,6 +80,7 @@ static void M_UpdateFromBackend(
     s->load                      |= backend->is_pressed(layout, INPUT_ROLE_LOAD);
 
     s->pause                     |= backend->is_pressed(layout, INPUT_ROLE_PAUSE);
+    s->toggle_ui                 |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_UI);
     s->toggle_photo_mode         |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_PHOTO_MODE);
 
     s->camera_up                 |= backend->is_pressed(layout, INPUT_ROLE_CAMERA_UP);
@@ -114,7 +115,6 @@ static void M_UpdateFromBackend(
     s->toggle_fps_counter        |= backend->is_pressed(layout, INPUT_ROLE_FPS);
     s->toggle_bilinear_filter    |= backend->is_pressed(layout, INPUT_ROLE_BILINEAR);
     s->toggle_perspective_filter |= backend->is_pressed(layout, INPUT_ROLE_PERSPECTIVE);
-    s->toggle_ui                 |= backend->is_pressed(layout, INPUT_ROLE_TOGGLE_UI);
     // clang-format on
 
     backend->custom_update(s, layout);

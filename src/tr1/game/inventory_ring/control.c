@@ -505,7 +505,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 break;
 
             case O_PHOTO_OPTION:
-                Sound_Effect(SFX_MENU_CHOOSE, NULL, SPM_ALWAYS);
+                Sound_Effect(SFX_MENU_LARA_HOME, NULL, SPM_ALWAYS);
                 break;
 
             case O_CONTROL_OPTION:

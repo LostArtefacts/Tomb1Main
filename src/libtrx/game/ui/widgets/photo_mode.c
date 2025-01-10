@@ -1,16 +1,15 @@
 #include "game/ui/widgets/photo_mode.h"
 
+#include "config.h"
+#include "game/game_string.h"
 #include "game/input.h"
 #include "game/text.h"
-
-#include <libtrx/config.h>
-#include <libtrx/game/game_string.h>
-#include <libtrx/game/ui/common.h>
-#include <libtrx/game/ui/widgets/label.h>
-#include <libtrx/game/ui/widgets/spacer.h>
-#include <libtrx/game/ui/widgets/stack.h>
-#include <libtrx/game/ui/widgets/window.h>
-#include <libtrx/memory.h>
+#include "game/ui/common.h"
+#include "game/ui/widgets/label.h"
+#include "game/ui/widgets/spacer.h"
+#include "game/ui/widgets/stack.h"
+#include "game/ui/widgets/window.h"
+#include "memory.h"
 
 #include <stdio.h>
 

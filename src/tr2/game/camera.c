@@ -13,6 +13,8 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/camera/const.h>
+#include <libtrx/game/camera/photo_mode.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
@@ -708,6 +710,11 @@ void Camera_Fixed(void)
 
 void Camera_Update(void)
 {
+    if (g_Camera.type == CAM_PHOTO_MODE) {
+        Camera_UpdatePhotoMode();
+        return;
+    }
+
     if (g_Camera.type == CAM_CINEMATIC) {
         Camera_LoadCutsceneFrame();
         return;
