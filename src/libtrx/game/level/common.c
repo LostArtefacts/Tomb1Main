@@ -221,15 +221,8 @@ void Level_ReadAnims(
         ANIM *const anim = Anim_GetAnim(base_idx + i);
         anim->frame_ofs = VFile_ReadU32(file);
         anim->frame_ptr = NULL; // filled later by the animation frame loader
-#if TR_VERSION == 1
-        const int16_t interpolation = VFile_ReadS16(file);
-        ASSERT(interpolation <= 0xFF);
-        anim->interpolation = interpolation & 0xFF;
-        anim->frame_size = 0;
-#else
         anim->interpolation = VFile_ReadU8(file);
         anim->frame_size = VFile_ReadU8(file);
-#endif
         anim->current_anim_state = VFile_ReadS16(file);
         anim->velocity = VFile_ReadS32(file);
         anim->acceleration = VFile_ReadS32(file);
