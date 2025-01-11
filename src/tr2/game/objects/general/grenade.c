@@ -97,7 +97,7 @@ void Grenade_Control(int16_t item_num)
         const BOUNDS_16 *const bounds = &frame->bounds;
 
         const int32_t cdy = item->pos.y - target_item->pos.y;
-        if (cdy + radius < bounds->min_y || cdy - radius > bounds->max_y) {
+        if (cdy + radius < bounds->min.y || cdy - radius > bounds->max.y) {
             continue;
         }
 
@@ -110,15 +110,15 @@ void Grenade_Control(int16_t item_num)
 
         const int32_t rx = (cy * cdx - sy * cdz) >> W2V_SHIFT;
         const int32_t sx = (cy * odx - sy * odz) >> W2V_SHIFT;
-        if ((rx + radius < bounds->min_x && sx + radius < bounds->min_x)
-            || (rx - radius > bounds->max_x && sx - radius > bounds->max_x)) {
+        if ((rx + radius < bounds->min.x && sx + radius < bounds->min.x)
+            || (rx - radius > bounds->max.x && sx - radius > bounds->max.x)) {
             continue;
         }
 
         const int32_t rz = (sy * cdx + cy * cdz) >> W2V_SHIFT;
         const int32_t sz = (sy * odx + cy * odz) >> W2V_SHIFT;
-        if ((rz + radius < bounds->min_z && sz + radius < bounds->min_z)
-            || (rz - radius > bounds->max_z && sz - radius > bounds->max_z)) {
+        if ((rz + radius < bounds->min.z && sz + radius < bounds->min.z)
+            || (rz - radius > bounds->max.z && sz - radius > bounds->max.z)) {
             continue;
         }
 

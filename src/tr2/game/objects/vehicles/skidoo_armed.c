@@ -45,21 +45,21 @@ void SkidooArmed_Push(
 
     const ANIM_FRAME *const best_frame = Item_GetBestFrame(item);
     BOUNDS_16 bounds = {
-        .min_x = best_frame->bounds.min_x - radius,
-        .max_x = best_frame->bounds.max_x + radius,
-        .min_z = best_frame->bounds.min_z - radius,
-        .max_z = best_frame->bounds.max_z + radius,
+        .min.x = best_frame->bounds.min.x - radius,
+        .max.x = best_frame->bounds.max.x + radius,
+        .min.z = best_frame->bounds.min.z - radius,
+        .max.z = best_frame->bounds.max.z + radius,
     };
 
-    if (rx < bounds.min_x || rx > bounds.max_x || rz < bounds.min_z
-        || rz > bounds.max_z) {
+    if (rx < bounds.min.x || rx > bounds.max.x || rz < bounds.min.z
+        || rz > bounds.max.z) {
         return;
     }
 
-    const int32_t r = bounds.max_x - rx;
-    const int32_t l = rx - bounds.min_x;
-    const int32_t t = bounds.max_z - rz;
-    const int32_t b = rz - bounds.min_z;
+    const int32_t r = bounds.max.x - rx;
+    const int32_t l = rx - bounds.min.x;
+    const int32_t t = bounds.max.z - rz;
+    const int32_t b = rz - bounds.min.z;
     if (l <= r && l <= t && l <= b) {
         rx -= l;
     } else if (r <= l && r <= t && r <= b) {

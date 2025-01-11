@@ -65,7 +65,7 @@ void HarpoonBolt_Control(const int16_t item_num)
         const BOUNDS_16 *const bounds = &frame->bounds;
 
         const int32_t cdy = item->pos.y - target_item->pos.y;
-        if (cdy < bounds->min_y || cdy > bounds->max_y) {
+        if (cdy < bounds->min.y || cdy > bounds->max.y) {
             continue;
         }
 
@@ -78,15 +78,15 @@ void HarpoonBolt_Control(const int16_t item_num)
 
         const int32_t rx = (cy * cdx - sy * cdz) >> W2V_SHIFT;
         const int32_t sx = (cy * odx - sy * odz) >> W2V_SHIFT;
-        if ((rx < bounds->min_x && sx < bounds->min_x)
-            || (rx > bounds->max_x && sx > bounds->max_x)) {
+        if ((rx < bounds->min.x && sx < bounds->min.x)
+            || (rx > bounds->max.x && sx > bounds->max.x)) {
             continue;
         }
 
         const int32_t rz = (sy * cdx + cy * cdz) >> W2V_SHIFT;
         const int32_t sz = (sy * odx + cy * odz) >> W2V_SHIFT;
-        if ((rz < bounds->min_z && sz < bounds->min_z)
-            || (rz > bounds->max_z && sz > bounds->max_z)) {
+        if ((rz < bounds->min.z && sz < bounds->min.z)
+            || (rz > bounds->max.z && sz > bounds->max.z)) {
             continue;
         }
 

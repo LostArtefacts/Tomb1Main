@@ -67,12 +67,12 @@ static int32_t M_ParseFrame(
 {
     const int16_t *const frame_start = data_ptr;
 #if TR_VERSION > 1
-    frame->bounds.min_x = *data_ptr++;
-    frame->bounds.max_x = *data_ptr++;
-    frame->bounds.min_y = *data_ptr++;
-    frame->bounds.max_y = *data_ptr++;
-    frame->bounds.min_z = *data_ptr++;
-    frame->bounds.max_z = *data_ptr++;
+    frame->bounds.min.x = *data_ptr++;
+    frame->bounds.max.x = *data_ptr++;
+    frame->bounds.min.y = *data_ptr++;
+    frame->bounds.max.y = *data_ptr++;
+    frame->bounds.min.z = *data_ptr++;
+    frame->bounds.max.z = *data_ptr++;
     frame->offset.x = *data_ptr++;
     frame->offset.y = *data_ptr++;
     frame->offset.z = *data_ptr++;

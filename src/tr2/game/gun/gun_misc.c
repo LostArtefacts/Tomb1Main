@@ -298,9 +298,9 @@ int32_t Gun_FireWeapon(
 void Gun_FindTargetPoint(const ITEM *const item, GAME_VECTOR *const target)
 {
     const BOUNDS_16 *const bounds = &Item_GetBestFrame(item)->bounds;
-    const int32_t x = bounds->min_x + (bounds->max_x - bounds->min_x) / 2;
-    const int32_t y = bounds->min_y + (bounds->max_y - bounds->min_y) / 3;
-    const int32_t z = bounds->min_z + (bounds->max_z - bounds->min_z) / 2;
+    const int32_t x = bounds->min.x + (bounds->max.x - bounds->min.x) / 2;
+    const int32_t y = bounds->min.y + (bounds->max.y - bounds->min.y) / 3;
+    const int32_t z = bounds->min.z + (bounds->max.z - bounds->min.z) / 2;
     const int32_t cy = Math_Cos(item->rot.y);
     const int32_t sy = Math_Sin(item->rot.y);
     target->pos.x = item->pos.x + ((cy * x + sy * z) >> W2V_SHIFT);

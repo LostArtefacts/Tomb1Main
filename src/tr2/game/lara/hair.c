@@ -320,11 +320,11 @@ void Lara_Hair_Control(const bool in_cutscene)
     } else {
         water_height = Room_GetWaterHeight(
             g_LaraItem->pos.x
-                + (frame_1->bounds.min_x + frame_1->bounds.max_x) / 2,
+                + (frame_1->bounds.min.x + frame_1->bounds.max.x) / 2,
             g_LaraItem->pos.y
-                + (frame_1->bounds.max_y + frame_1->bounds.min_y) / 2,
+                + (frame_1->bounds.max.y + frame_1->bounds.min.y) / 2,
             g_LaraItem->pos.z
-                + (frame_1->bounds.max_z + frame_1->bounds.min_z) / 2,
+                + (frame_1->bounds.max.z + frame_1->bounds.min.z) / 2,
             room_num);
     }
 

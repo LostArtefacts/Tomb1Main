@@ -35,9 +35,9 @@ void Copter_Control(const int16_t item_num)
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
     XYZ_32 pos = {
-        .x = (bounds->min_x + bounds->max_x) / 2,
-        .y = (bounds->min_y + bounds->max_y) / 2,
-        .z = (bounds->min_z + bounds->max_z) / 2,
+        .x = (bounds->min.x + bounds->max.x) / 2,
+        .y = (bounds->min.y + bounds->max.y) / 2,
+        .z = (bounds->min.z + bounds->max.z) / 2,
     };
     pos.x = lara_item->pos.x + ((pos.x - lara_item->pos.x) >> 2);
     pos.y = lara_item->pos.y + ((pos.y - lara_item->pos.y) >> 2);

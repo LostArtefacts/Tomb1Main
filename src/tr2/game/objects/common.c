@@ -205,12 +205,12 @@ BOUNDS_16 Object_GetBoundingBox(
     }
 
     BOUNDS_16 new_bounds = {
-        .min_x = 0x7FFF,
-        .min_y = 0x7FFF,
-        .min_z = 0x7FFF,
-        .max_x = -0x7FFF,
-        .max_y = -0x7FFF,
-        .max_z = -0x7FFF,
+        .min.x = 0x7FFF,
+        .min.y = 0x7FFF,
+        .min.z = 0x7FFF,
+        .max.x = -0x7FFF,
+        .max.y = -0x7FFF,
+        .max.z = -0x7FFF,
     };
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -264,12 +264,12 @@ BOUNDS_16 Object_GetBoundingBox(
             const int32_t y = ((int32_t)yv) >> W2V_SHIFT;
             const int32_t z = ((int32_t)zv) >> W2V_SHIFT;
 
-            new_bounds.min_x = MIN(new_bounds.min_x, x);
-            new_bounds.min_y = MIN(new_bounds.min_y, y);
-            new_bounds.min_z = MIN(new_bounds.min_z, z);
-            new_bounds.max_x = MAX(new_bounds.max_x, x);
-            new_bounds.max_y = MAX(new_bounds.max_y, y);
-            new_bounds.max_z = MAX(new_bounds.max_z, z);
+            new_bounds.min.x = MIN(new_bounds.min.x, x);
+            new_bounds.min.y = MIN(new_bounds.min.y, y);
+            new_bounds.min.z = MIN(new_bounds.min.z, z);
+            new_bounds.max.x = MAX(new_bounds.max.x, x);
+            new_bounds.max.y = MAX(new_bounds.max.y, y);
+            new_bounds.max.z = MAX(new_bounds.max.z, z);
             obj_ptr += 3;
         }
     }

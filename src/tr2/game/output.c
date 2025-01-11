@@ -799,10 +799,10 @@ void Output_DoAnimateTextures(const int32_t ticks)
 void Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item)
 {
-    const int32_t x1 = bounds->min_x;
-    const int32_t x2 = bounds->max_x;
-    const int32_t z1 = bounds->min_z;
-    const int32_t z2 = bounds->max_z;
+    const int32_t x1 = bounds->min.x;
+    const int32_t x2 = bounds->max.x;
+    const int32_t z1 = bounds->min.z;
+    const int32_t z2 = bounds->max.z;
     const int32_t mid_x = (x1 + x2) / 2;
     const int32_t mid_z = (z1 + z2) / 2;
     const int32_t x_add = radius * (x2 - x1) / 1024;
@@ -866,14 +866,14 @@ int32_t Output_GetObjectBounds(const BOUNDS_16 *const bounds)
 
     constexpr int32_t vtx_count = 8;
     const XYZ_32 vtx[vtx_count] = {
-        { .x = bounds->min_x, .y = bounds->min_y, .z = bounds->min_z },
-        { .x = bounds->max_x, .y = bounds->min_y, .z = bounds->min_z },
-        { .x = bounds->max_x, .y = bounds->max_y, .z = bounds->min_z },
-        { .x = bounds->min_x, .y = bounds->max_y, .z = bounds->min_z },
-        { .x = bounds->min_x, .y = bounds->min_y, .z = bounds->max_z },
-        { .x = bounds->max_x, .y = bounds->min_y, .z = bounds->max_z },
-        { .x = bounds->max_x, .y = bounds->max_y, .z = bounds->max_z },
-        { .x = bounds->min_x, .y = bounds->max_y, .z = bounds->max_z },
+        { .x = bounds->min.x, .y = bounds->min.y, .z = bounds->min.z },
+        { .x = bounds->max.x, .y = bounds->min.y, .z = bounds->min.z },
+        { .x = bounds->max.x, .y = bounds->max.y, .z = bounds->min.z },
+        { .x = bounds->min.x, .y = bounds->max.y, .z = bounds->min.z },
+        { .x = bounds->min.x, .y = bounds->min.y, .z = bounds->max.z },
+        { .x = bounds->max.x, .y = bounds->min.y, .z = bounds->max.z },
+        { .x = bounds->max.x, .y = bounds->max.y, .z = bounds->max.z },
+        { .x = bounds->min.x, .y = bounds->max.y, .z = bounds->max.z },
     };
 
     int32_t y_min = 0x3FFFFFFF;
@@ -1078,9 +1078,9 @@ void Output_CalculateObjectLighting(
     Matrix_TranslateSet(0, 0, 0);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     Matrix_TranslateRel(
-        (bounds->min_x + bounds->max_x) / 2,
-        (bounds->max_y + bounds->min_y) / 2,
-        (bounds->max_z + bounds->min_z) / 2);
+        (bounds->min.x + bounds->max.x) / 2,
+        (bounds->max.y + bounds->min.y) / 2,
+        (bounds->max.z + bounds->min.z) / 2);
     const XYZ_32 pos = {
         .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
         .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),

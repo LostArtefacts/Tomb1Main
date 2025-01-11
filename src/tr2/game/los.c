@@ -315,13 +315,13 @@ int32_t LOS_CheckSmashable(
             switch (direction) {
             case DIR_EAST:
             case DIR_WEST:
-                x_extent = &bounds->min_z;
-                z_extent = &bounds->min_x;
+                x_extent = &bounds->min.z;
+                z_extent = &bounds->min.x;
                 break;
             case DIR_NORTH:
             case DIR_SOUTH:
-                x_extent = &bounds->min_x;
-                z_extent = &bounds->min_z;
+                x_extent = &bounds->min.x;
+                z_extent = &bounds->min.z;
                 break;
             default:
                 break;
@@ -334,8 +334,8 @@ int32_t LOS_CheckSmashable(
                 for (int32_t j = 0; j < 2; j++) {
                     if ((distance >= 0) == (dz >= 0)) {
                         const int32_t y = dy * distance / dz;
-                        if (y <= item->pos.y + bounds->min_y - start->y
-                            || y >= item->pos.y + bounds->max_y - start->y) {
+                        if (y <= item->pos.y + bounds->min.y - start->y
+                            || y >= item->pos.y + bounds->max.y - start->y) {
                             continue;
                         }
 
@@ -360,8 +360,8 @@ int32_t LOS_CheckSmashable(
                 for (int32_t j = 0; j < 2; j++) {
                     if ((distance >= 0) == (dx >= 0)) {
                         const int32_t y = dy * distance / dx;
-                        if (y <= item->pos.y + bounds->min_y - start->y
-                            || y >= item->pos.y + bounds->max_y - start->y) {
+                        if (y <= item->pos.y + bounds->min.y - start->y
+                            || y >= item->pos.y + bounds->max.y - start->y) {
                             continue;
                         }
 

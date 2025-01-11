@@ -251,7 +251,7 @@ void Creature_Mood(const ITEM *item, const AI_INFO *info, int32_t violent)
         lot->target = enemy->pos;
         lot->required_box = enemy->box_num;
         if (lot->fly != 0 && g_Lara.water_status == LWS_ABOVE_WATER) {
-            lot->target.y += Item_GetBestFrame(enemy)->bounds.min_y;
+            lot->target.y += Item_GetBestFrame(enemy)->bounds.min.y;
         }
         break;
 
@@ -412,7 +412,7 @@ int32_t Creature_Animate(
     }
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-    int32_t y = item->pos.y + bounds->min_y;
+    int32_t y = item->pos.y + bounds->min.y;
 
     int16_t room_num = item->room_num;
     Room_GetSector(old.x, y, old.z, &room_num);
@@ -567,7 +567,7 @@ int32_t Creature_Animate(
             const int32_t ceiling =
                 Room_GetCeiling(sector, item->pos.x, y, item->pos.z);
             const int32_t min_y =
-                item->object_id == O_SHARK ? 128 : bounds->min_y;
+                item->object_id == O_SHARK ? 128 : bounds->min.y;
             if (item->pos.y + min_y + dy < ceiling) {
                 if (item->pos.y + min_y < ceiling) {
                     item->pos.x = old.x;

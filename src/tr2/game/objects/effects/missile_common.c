@@ -102,7 +102,7 @@ void Missile_ShootAtLara(EFFECT *const effect)
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(g_LaraItem);
     const int32_t dist_vert =
-        dy + bounds->max_y + 3 * (bounds->min_y - bounds->max_y) / 4;
+        dy + bounds->max.y + 3 * (bounds->min.y - bounds->max.y) / 4;
     const int32_t dist_horz = Math_Sqrt(SQUARE(dz) + SQUARE(dx));
     effect->rot.x = -Math_Atan(dist_horz, dist_vert);
     effect->rot.y = Math_Atan(dz, dx);

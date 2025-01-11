@@ -344,10 +344,10 @@ int32_t Item_TestBoundsCollide(
     const BOUNDS_16 *const src_bounds = &Item_GetBestFrame(src_item)->bounds;
     const BOUNDS_16 *const dst_bounds = &Item_GetBestFrame(dst_item)->bounds;
 
-    if (src_item->pos.y + src_bounds->max_y
-            <= dst_item->pos.y + dst_bounds->min_y
-        || src_item->pos.y + src_bounds->min_y
-            >= dst_item->pos.y + dst_bounds->max_y) {
+    if (src_item->pos.y + src_bounds->max.y
+            <= dst_item->pos.y + dst_bounds->min.y
+        || src_item->pos.y + src_bounds->min.y
+            >= dst_item->pos.y + dst_bounds->max.y) {
         return false;
     }
 
@@ -360,10 +360,10 @@ int32_t Item_TestBoundsCollide(
 
     // clang-format off
     return (
-        rx >= src_bounds->min_x - radius &&
-        rx <= src_bounds->max_x + radius &&
-        rz >= src_bounds->min_z - radius &&
-        rz <= src_bounds->max_z + radius);
+        rx >= src_bounds->min.x - radius &&
+        rx <= src_bounds->max.x + radius &&
+        rz >= src_bounds->min.z - radius &&
+        rz <= src_bounds->max.z + radius);
     // clang-format on
 }
 
@@ -675,12 +675,12 @@ BOUNDS_16 *Item_GetBoundsAccurate(const ITEM *const item)
     target->prop = (b1)->prop + ((((b2)->prop - (b1)->prop) * frac) / rate);
 
     BOUNDS_16 *const result = &m_InterpolatedBounds;
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min_x);
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max_x);
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min_y);
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max_y);
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min_z);
-    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max_z);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min.x);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max.x);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min.y);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max.y);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, min.z);
+    CALC(result, &frmptr[0]->bounds, &frmptr[1]->bounds, max.z);
     return result;
 }
 
@@ -709,7 +709,7 @@ bool Item_IsNearItem(
     }
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-    return d.y >= bounds->min_y && d.y <= bounds->max_y + 100;
+    return d.y >= bounds->min.y && d.y <= bounds->max.y + 100;
 }
 
 int32_t Item_GetDistance(const ITEM *const item, const XYZ_32 *const target)

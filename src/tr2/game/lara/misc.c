@@ -294,8 +294,8 @@ int32_t Lara_TestHangOnClimbWall(ITEM *item, COLL_INFO *coll)
     }
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-    int32_t y = bounds->min_y;
-    int32_t h = bounds->max_y - y;
+    int32_t y = bounds->min.y;
+    int32_t h = bounds->max.y - y;
 
     int32_t shift;
     if (!Lara_TestClimbPos(item, coll->radius, coll->radius, y, h, &shift)) {
@@ -444,7 +444,7 @@ void Lara_HangTest(ITEM *item, COLL_INFO *coll)
         item->current_anim_state = LS_UP_JUMP;
         Item_SwitchToAnim(item, LA_JUMP_UP, LF_STOP_HANG);
         const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-        item->pos.y += bounds->max_y;
+        item->pos.y += bounds->max.y;
         item->pos.x += coll->shift.x;
         item->pos.z += coll->shift.z;
         item->gravity = 1;
@@ -455,7 +455,7 @@ void Lara_HangTest(ITEM *item, COLL_INFO *coll)
     }
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-    int32_t hdif = coll->side_front.floor - bounds->min_y;
+    int32_t hdif = coll->side_front.floor - bounds->min.y;
 
     if (ABS(coll->side_left.floor - coll->side_right.floor) >= SLOPE_DIF
         || coll->side_mid.ceiling >= 0 || coll->coll_type != COLL_FRONT || flag
@@ -493,10 +493,10 @@ void Lara_HangTest(ITEM *item, COLL_INFO *coll)
 int32_t Lara_TestEdgeCatch(ITEM *item, COLL_INFO *coll, int32_t *edge)
 {
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-    int32_t hdif1 = coll->side_front.floor - bounds->min_y;
+    int32_t hdif1 = coll->side_front.floor - bounds->min.y;
     int32_t hdif2 = hdif1 + item->fall_speed;
     if ((hdif1 < 0 && hdif2 < 0) || (hdif1 > 0 && hdif2 > 0)) {
-        hdif1 = item->pos.y + bounds->min_y;
+        hdif1 = item->pos.y + bounds->min.y;
         hdif2 = hdif1 + item->fall_speed;
         if ((hdif1 >> (WALL_SHIFT - 2)) == (hdif2 >> (WALL_SHIFT - 2))) {
             return 0;
@@ -539,9 +539,9 @@ int32_t Lara_TestHangJumpUp(ITEM *item, COLL_INFO *coll)
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
     if (edge_catch > 0) {
-        item->pos.y += coll->side_front.floor - bounds->min_y;
+        item->pos.y += coll->side_front.floor - bounds->min.y;
     } else {
-        item->pos.y = edge - bounds->min_y;
+        item->pos.y = edge - bounds->min.y;
     }
     item->pos.x += coll->shift.x;
     item->pos.z += coll->shift.z;
@@ -585,11 +585,11 @@ int32_t Lara_TestHangJump(ITEM *item, COLL_INFO *coll)
 
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
     if (edge_catch > 0) {
-        item->pos.y += coll->side_front.floor - bounds->min_y;
+        item->pos.y += coll->side_front.floor - bounds->min.y;
         item->pos.x += coll->shift.x;
         item->pos.z += coll->shift.z;
     } else {
-        item->pos.y = edge - bounds->min_y;
+        item->pos.y = edge - bounds->min.y;
     }
 
     item->rot.y = angle;
@@ -1106,10 +1106,10 @@ void Lara_Push(
     int32_t rz = (c * dz + s * dx) >> W2V_SHIFT;
 
     const BOUNDS_16 *const bounds = &Item_GetBestFrame(item)->bounds;
-    int32_t min_x = bounds->min_x;
-    int32_t max_x = bounds->max_x;
-    int32_t min_z = bounds->min_z;
-    int32_t max_z = bounds->max_z;
+    int32_t min_x = bounds->min.x;
+    int32_t max_x = bounds->max.x;
+    int32_t min_z = bounds->min.z;
+    int32_t max_z = bounds->max.z;
 
     if (big_push) {
         max_x += coll->radius;
@@ -1140,12 +1140,12 @@ void Lara_Push(
     lara_item->pos.x = item->pos.x + ((rz * s + rx * c) >> W2V_SHIFT);
     lara_item->pos.z = item->pos.z + ((rz * c - rx * s) >> W2V_SHIFT);
 
-    rz = (bounds->max_z + bounds->min_z) / 2;
-    rx = (bounds->max_x + bounds->min_x) / 2;
+    rz = (bounds->max.z + bounds->min.z) / 2;
+    rx = (bounds->max.x + bounds->min.x) / 2;
     dx -= (c * rx + s * rz) >> W2V_SHIFT;
     dz -= (c * rz - s * rx) >> W2V_SHIFT;
 
-    if (spaz_on && bounds->max_y - bounds->min_y > STEP_L) {
+    if (spaz_on && bounds->max.y - bounds->min.y > STEP_L) {
         M_TakeHit(lara_item, dx, dz);
     }
 

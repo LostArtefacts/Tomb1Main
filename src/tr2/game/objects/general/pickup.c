@@ -231,13 +231,13 @@ void Pickup_Draw(const ITEM *const item)
     if (obj->anim_idx != -1) {
         frame = obj->frame_base;
         bounds = frame->bounds;
-        const int16_t y_off = frame->offset.y - bounds.max_y;
-        bounds.max_y -= bounds.max_y;
-        bounds.min_y -= bounds.max_y;
+        const int16_t y_off = frame->offset.y - bounds.max.y;
+        bounds.max.y -= bounds.max.y;
+        bounds.min.y -= bounds.max.y;
         offset = item->pos.y + y_off;
     } else {
         bounds = Object_GetBoundingBox(obj, NULL, item->mesh_bits);
-        offset = item->pos.y - (bounds.max_y - bounds.min_y) / 2;
+        offset = item->pos.y - (bounds.max.y - bounds.min.y) / 2;
     }
 
     Matrix_Push();

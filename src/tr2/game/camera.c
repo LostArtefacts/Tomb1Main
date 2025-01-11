@@ -732,10 +732,10 @@ void Camera_Update(void)
 
     int32_t y = item->pos.y;
     if (fixed_camera) {
-        y += (bounds->min_y + bounds->max_y) / 2;
+        y += (bounds->min.y + bounds->max.y) / 2;
     } else {
-        y += bounds->max_y
-            + (((int32_t)(bounds->min_y - bounds->max_y)) * 3 >> 2);
+        y += bounds->max.y
+            + (((int32_t)(bounds->min.y - bounds->max.y)) * 3 >> 2);
     }
 
     if (g_Camera.item && !fixed_camera) {
@@ -748,7 +748,7 @@ void Camera_Update(void)
 
         int16_t tilt = Math_Atan(
             shift,
-            y - (bounds->min_y + bounds->max_y) / 2 - g_Camera.item->pos.y);
+            y - (bounds->min.y + bounds->max.y) / 2 - g_Camera.item->pos.y);
         angle >>= 1;
         tilt >>= 1;
 
@@ -800,7 +800,7 @@ void Camera_Update(void)
         g_Camera.target.z = item->pos.z;
 
         if (g_Camera.flags == CF_FOLLOW_CENTRE) {
-            const int32_t shift = (bounds->min_z + bounds->max_z) / 2;
+            const int32_t shift = (bounds->min.z + bounds->max.z) / 2;
             g_Camera.target.z += (shift * Math_Cos(item->rot.y)) >> W2V_SHIFT;
             g_Camera.target.x += (shift * Math_Sin(item->rot.y)) >> W2V_SHIFT;
         }

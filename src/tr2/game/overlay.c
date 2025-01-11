@@ -384,8 +384,8 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     VIEWPORT new_vp = *Viewport_Get();
 
     BOUNDS_16 bounds = frame->bounds;
-    if (frame->bounds.min_x == frame->bounds.max_x
-        && frame->bounds.min_y == frame->bounds.max_y) {
+    if (frame->bounds.min.x == frame->bounds.max.x
+        && frame->bounds.min.y == frame->bounds.max.y) {
         // fix broken collision box for the prayer wheel
         bounds = Object_GetBoundingBox(obj, frame, -1);
     }
@@ -430,8 +430,8 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     Matrix_Push();
     Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
     Matrix_TranslateRel(
-        -(bounds.min_x + bounds.max_x) / 2, -(bounds.min_y + bounds.max_y) / 2,
-        -(bounds.min_z + bounds.max_z) / 2);
+        -(bounds.min.x + bounds.max.x) / 2, -(bounds.min.y + bounds.max.y) / 2,
+        -(bounds.min.z + bounds.max.z) / 2);
 
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     const int16_t *mesh_rots = frame->mesh_rots;
