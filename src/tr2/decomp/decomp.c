@@ -301,9 +301,9 @@ GAME_FLOW_COMMAND DisplayCredits(void)
 
     {
         PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+            .background_type = BK_IMAGE,
+            .background_path = "data/end.pcx",
             .show_final_stats = true,
-            .fade_in_time = 0.5,
-            .fade_out_time = 0.5,
         });
         const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
 

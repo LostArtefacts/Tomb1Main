@@ -16,7 +16,8 @@ static void M_Init(void)
 {
     m_Dialog = UI_StatsDialog_Create(
         g_CurrentLevel == LV_GYM ? UI_STATS_DIALOG_MODE_ASSAULT_COURSE
-                                 : UI_STATS_DIALOG_MODE_LEVEL);
+                                 : UI_STATS_DIALOG_MODE_LEVEL,
+        g_CurrentLevel);
 }
 
 static void M_Shutdown(void)

@@ -31,7 +31,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         Vector_Add(source, &source_item);
     }
 
-    const int32_t gym_level_num = GameFlow_GetGymLevelNumber();
+    const int32_t gym_level_num = GameFlow_GetGymLevelNum();
     if (gym_level_num != -1) {
         STRING_FUZZY_SOURCE source_item = {
             .key = "gym",

@@ -453,7 +453,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFE_CUTSCENE:
             if (type != GFL_SAVED) {
-                const int16_t level = g_CurrentLevel;
                 PHASE *const cutscene_phase = Phase_Cutscene_Create(ptr[1]);
                 gf_cmd = PhaseExecutor_Run(cutscene_phase);
                 Phase_Cutscene_Destroy(cutscene_phase);
@@ -469,11 +468,12 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
                 start->stats = g_SaveGame.current_stats;
 
+                Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
                 PHASE *const stats_phase =
                     Phase_Stats_Create((PHASE_STATS_ARGS) {
+                        .background_type = BK_OBJECT,
                         .show_final_stats = false,
-                        .fade_in_time = 0.0,
-                        .fade_out_time = 0.0,
+                        .level_num = g_CurrentLevel,
                     });
                 gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);

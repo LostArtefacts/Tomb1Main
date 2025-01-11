@@ -47,8 +47,7 @@ static void M_AddRow(UI_STATS_DIALOG *self, M_ROW_ROLE role, const char *text);
 static void M_AddRowFromRole(
     UI_STATS_DIALOG *self, M_ROW_ROLE role, const STATS_COMMON *stats);
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
-static void M_AddFinalStatsRows(
-    UI_STATS_DIALOG *self, GAME_FLOW_LEVEL_TYPE level_type);
+static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_UpdateTimerRow(UI_STATS_DIALOG *self);
 static void M_DoLayout(UI_STATS_DIALOG *self);
 static void M_HandleLayoutUpdate(const EVENT *event, void *data);
@@ -151,8 +150,7 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
 }
 
-static void M_AddFinalStatsRows(
-    UI_STATS_DIALOG *const self, const GAME_FLOW_LEVEL_TYPE level_type)
+static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
 {
     FINAL_STATS final_stats;
     Stats_ComputeFinal(self->level_type, &final_stats);
@@ -241,8 +239,7 @@ static void M_Free(UI_STATS_DIALOG *const self)
 }
 
 UI_WIDGET *UI_StatsDialog_Create(
-    const UI_STATS_DIALOG_MODE mode, const int32_t level_num,
-    const GAME_FLOW_LEVEL_TYPE level_type)
+    const UI_STATS_DIALOG_MODE mode, const int32_t level_num)
 {
     UI_STATS_DIALOG *const self = Memory_Alloc(sizeof(UI_STATS_DIALOG));
     self->vtable = (UI_WIDGET_VTABLE) {
@@ -256,7 +253,7 @@ UI_WIDGET *UI_StatsDialog_Create(
 
     self->mode = mode;
     self->level_num = level_num;
-    self->level_type = level_type;
+    self->level_type = g_GameFlow.levels[self->level_num].level_type;
 
     self->row_count = 0;
     self->rows = NULL;
@@ -278,11 +275,11 @@ UI_WIDGET *UI_StatsDialog_Create(
 
     case UI_STATS_DIALOG_MODE_FINAL:
         self->title = UI_Label_Create(
-            level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
-                                    : GS(STATS_FINAL_STATISTICS),
+            self->level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
+                                          : GS(STATS_FINAL_STATISTICS),
             UI_LABEL_AUTO_SIZE, ROW_HEIGHT);
         UI_Stack_AddChild(self->stack, self->title);
-        M_AddFinalStatsRows(self, level_type);
+        M_AddFinalStatsRows(self);
         break;
     }
 

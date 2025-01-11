@@ -10,6 +10,7 @@
 #include "game/music.h"
 #include "game/room.h"
 #include "game/shell.h"
+#include "game/stats.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -255,6 +256,7 @@ static bool M_LoadResumeInfo(JSON_ARRAY *resume_arr, RESUME_INFO *resume_info)
             JSON_ObjectGetInt(resume_obj, "timer", resume->stats.timer);
         resume->stats.secret_flags = JSON_ObjectGetInt(
             resume_obj, "secrets", resume->stats.secret_flags);
+        Stats_UpdateSecrets(&resume->stats);
         resume->stats.kill_count =
             JSON_ObjectGetInt(resume_obj, "kills", resume->stats.kill_count);
         resume->stats.pickup_count = JSON_ObjectGetInt(
@@ -350,6 +352,7 @@ static bool M_LoadDiscontinuedEndInfo(JSON_ARRAY *end_arr, GAME_INFO *game_info)
         end->timer = JSON_ObjectGetInt(end_obj, "timer", end->timer);
         end->secret_flags =
             JSON_ObjectGetInt(end_obj, "secrets", end->secret_flags);
+        Stats_UpdateSecrets(end);
         end->kill_count = JSON_ObjectGetInt(end_obj, "kills", end->kill_count);
         end->pickup_count =
             JSON_ObjectGetInt(end_obj, "pickups", end->pickup_count);

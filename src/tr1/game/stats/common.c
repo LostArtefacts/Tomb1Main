@@ -124,8 +124,6 @@ void Stats_ComputeFinal(
 {
     memset(final_stats, 0, sizeof(FINAL_STATS));
 
-    int16_t secret_flags = 0;
-
     for (int i = 0; i < g_GameFlow.level_count; i++) {
         if (g_GameFlow.levels[i].level_type != level_type) {
             continue;
@@ -134,14 +132,7 @@ void Stats_ComputeFinal(
 
         final_stats->kill_count += level_stats->kill_count;
         final_stats->pickup_count += level_stats->pickup_count;
-        secret_flags = level_stats->secret_flags;
-        for (int j = 0; j < MAX_SECRETS; j++) {
-            if (secret_flags & 1) {
-                final_stats->secret_count++;
-            }
-            secret_flags >>= 1;
-        }
-
+        final_stats->secret_count += level_stats->secret_count;
         final_stats->timer += level_stats->timer;
         final_stats->death_count += level_stats->death_count;
         final_stats->max_kill_count += level_stats->max_kill_count;
@@ -255,3 +246,11 @@ void Stats_UpdateTimer(void)
     g_GameInfo.current[g_CurrentLevel].stats.timer++;
 }
 #endif
+
+void Stats_UpdateSecrets(LEVEL_STATS *const stats)
+{
+    stats->secret_count = 0;
+    for (int32_t i = 0; i < MAX_SECRETS; i++) {
+        stats->secret_count += (stats->secret_flags & (1 << i)) ? 1 : 0;
+    }
+}

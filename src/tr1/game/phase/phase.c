@@ -7,7 +7,6 @@
 #include "game/phase/phase_demo.h"
 #include "game/phase/phase_game.h"
 #include "game/phase/phase_inventory.h"
-#include "game/phase/phase_stats.h"
 #include "global/types.h"
 #include "global/vars.h"
 

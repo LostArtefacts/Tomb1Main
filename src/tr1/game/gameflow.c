@@ -13,7 +13,6 @@
 #include "game/phase/phase.h"
 #include "game/phase/phase_cutscene.h"
 #include "game/phase/phase_inventory.h"
-#include "game/phase/phase_stats.h"
 #include "game/room.h"
 #include "game/savegame.h"
 #include "global/vars.h"
@@ -1090,9 +1089,9 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         case GFS_LEVEL_STATS: {
             PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                .background_type = BK_TRANSPARENT,
                 .background_path = NULL,
                 .level_num = (int32_t)(intptr_t)seq->data,
-                .level_type = GFL_NORMAL,
                 .show_final_stats = false,
             });
             command = PhaseExecutor_Run(phase);
@@ -1108,10 +1107,9 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 && level_type != GFL_SAVED) {
                 const GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
                 PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                    .background_type = BK_IMAGE,
                     .background_path = data->path,
                     .level_num = level_num,
-                    .level_type =
-                        level_type == GFL_BONUS ? GFL_BONUS : GFL_NORMAL,
                     .show_final_stats = true,
                 });
                 command = PhaseExecutor_Run(phase);
@@ -1393,7 +1391,7 @@ const char *GameFlow_GetLevelTitle(int32_t level_num)
     return g_GameFlow.levels[level_num].level_title;
 }
 
-int32_t GameFlow_GetGymLevelNumber(void)
+int32_t GameFlow_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_level_num;
 }

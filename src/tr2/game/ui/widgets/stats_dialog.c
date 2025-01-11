@@ -32,6 +32,7 @@ typedef struct {
     UI_WIDGET_VTABLE vtable;
     UI_STATS_DIALOG_MODE mode;
     UI_WIDGET *requester;
+    int32_t level_num;
     int32_t listener;
 } UI_STATS_DIALOG;
 
@@ -152,7 +153,9 @@ static void M_AddRowFromRole(
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
-    const STATS_COMMON *stats = (STATS_COMMON *)&g_SaveGame.current_stats;
+    const STATS_COMMON *stats = self->level_num == g_CurrentLevel
+        ? (STATS_COMMON *)&g_SaveGame.current_stats
+        : (STATS_COMMON *)&g_SaveGame.start[self->level_num].stats;
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
     if (g_GF_NumSecrets != 0) {
         M_AddRowFromRole(self, M_ROW_LEVEL_SECRETS, stats);
@@ -279,7 +282,7 @@ static void M_Free(UI_STATS_DIALOG *const self)
     Memory_Free(self);
 }
 
-UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
+UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_MODE mode, int32_t level_num)
 {
     UI_STATS_DIALOG *const self = Memory_Alloc(sizeof(UI_STATS_DIALOG));
     self->vtable = (UI_WIDGET_VTABLE) {
@@ -292,6 +295,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
     };
 
     self->mode = mode;
+    self->level_num = level_num;
     self->requester = UI_Requester_Create((UI_REQUESTER_SETTINGS) {
         .is_selectable = false,
         .visible_rows = VISIBLE_ROWS,
@@ -304,7 +308,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_MODE mode)
 
     switch (mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
-        UI_Requester_SetTitle(self->requester, g_GF_LevelNames[g_CurrentLevel]);
+        UI_Requester_SetTitle(self->requester, g_GF_LevelNames[level_num]);
         M_AddLevelStatsRows(self);
         break;
 

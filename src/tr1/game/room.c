@@ -925,6 +925,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
                 break;
             }
             g_GameInfo.current[g_CurrentLevel].stats.secret_flags |= secret_num;
+            g_GameInfo.current[g_CurrentLevel].stats.secret_count++;
             Music_Play(MX_SECRET);
             break;
         }

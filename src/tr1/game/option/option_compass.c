@@ -71,17 +71,9 @@ static void M_InitText(void)
     y += row_height;
 
     // secrets
-    int secret_count = 0;
-    int secret_flags = stats->secret_flags;
-    for (int i = 0; i < MAX_SECRETS; i++) {
-        if (secret_flags & 1) {
-            secret_count++;
-        }
-        secret_flags >>= 1;
-    }
     sprintf(
-        buf, GS(STATS_SECRETS_FMT), secret_count,
-        g_GameInfo.current[g_CurrentLevel].stats.max_secret_count);
+        buf, GS(STATS_SECRETS_FMT), stats->secret_count,
+        stats->max_secret_count);
     m_Text[TEXT_SECRETS] = Text_Create(0, y, buf);
     y += row_height;
 

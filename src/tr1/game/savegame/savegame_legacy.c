@@ -10,6 +10,7 @@
 #include "game/lot.h"
 #include "game/room.h"
 #include "game/shell.h"
+#include "game/stats.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -467,6 +468,7 @@ static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
     game_info->current[g_CurrentLevel].stats.timer = temp_timer;
     game_info->current[g_CurrentLevel].stats.kill_count = temp_kill_count;
     game_info->current[g_CurrentLevel].stats.secret_flags = temp_secret_flags;
+    Stats_UpdateSecrets(&game_info->current[g_CurrentLevel].stats);
     M_Read(
         &game_info->current[g_CurrentLevel].stats.pickup_count,
         sizeof(uint8_t));

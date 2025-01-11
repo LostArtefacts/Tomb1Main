@@ -1,27 +1,23 @@
 #include "game/phase/phase_stats.h"
 
+#include "config.h"
+#include "debug.h"
 #include "game/console/common.h"
+#include "game/fader.h"
 #include "game/game.h"
-#include "game/game_string.h"
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/interpolation.h"
-#include "game/music.h"
-#include "game/output.h"
-#include "game/overlay.h"
 #include "game/shell.h"
-#include "game/stats.h"
+#include "game/text.h"
 #include "game/ui/widgets/stats_dialog.h"
-#include "global/vars.h"
-
-#include <libtrx/config.h>
-#include <libtrx/debug.h>
-#include <libtrx/memory.h>
+#include "memory.h"
 
 typedef enum {
     STATE_FADE_IN,
     STATE_DISPLAY,
     STATE_FADE_OUT,
+    STATE_FINISH,
 } STATE;
 
 typedef struct {
@@ -34,7 +30,7 @@ typedef struct {
 
 static bool M_IsFading(M_PRIV *p);
 static void M_FadeIn(M_PRIV *p);
-static void M_FadeOut(M_PRIV *p);
+static void M_FadeOut(M_PRIV *p, bool force);
 
 static PHASE_CONTROL M_Start(PHASE *phase);
 static void M_End(PHASE *phase);
@@ -55,32 +51,44 @@ static void M_FadeIn(M_PRIV *const p)
     }
 }
 
-static void M_FadeOut(M_PRIV *const p)
+static void M_FadeOut(M_PRIV *const p, const bool force)
 {
-    Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
-    p->state = STATE_FADE_OUT;
+    if (p->args.background_type != BK_OBJECT || force) {
+        Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
+        p->state = STATE_FADE_OUT;
+    } else {
+        p->state = STATE_FINISH;
+    }
 }
 
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
 
-    if (p->args.background_path != NULL) {
+    if (p->args.background_type == BK_IMAGE) {
+        ASSERT(p->args.background_path != NULL);
         Output_LoadBackgroundFromFile(p->args.background_path);
+    } else if (p->args.background_type == BK_OBJECT) {
+        Output_LoadBackgroundFromObject();
     } else {
         Output_UnloadBackground();
     }
 
-    if (g_CurrentLevel == g_GameFlow.gym_level_num) {
-        M_FadeOut(p);
+    if (Game_GetCurrentLevelNum() == GameFlow_GetGymLevelNum()) {
+        M_FadeOut(p, false);
     } else {
-        M_FadeIn(p);
+        if (p->args.background_type == BK_OBJECT) {
+            p->state = STATE_DISPLAY;
+        } else {
+            p->state = STATE_FADE_IN;
+            M_FadeIn(p);
+        }
 
         p->ui = UI_StatsDialog_Create(
             p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
                                      : UI_STATS_DIALOG_MODE_LEVEL,
-            p->args.level_num != -1 ? p->args.level_num : g_CurrentLevel,
-            p->args.level_type);
+            p->args.level_num != -1 ? p->args.level_num
+                                    : Game_GetCurrentLevelNum());
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
@@ -92,7 +100,6 @@ static void M_End(PHASE *const phase)
     if (p->ui != NULL) {
         p->ui->free(p->ui);
     }
-    Music_Stop();
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
@@ -106,25 +113,32 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
         if (!M_IsFading(p)) {
             p->state = STATE_DISPLAY;
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            M_FadeOut(p);
+            M_FadeOut(p, false);
+        } else if (Game_IsExiting()) {
+            M_FadeOut(p, true);
         }
         break;
 
     case STATE_DISPLAY:
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            M_FadeOut(p);
+            M_FadeOut(p, false);
+        } else if (Game_IsExiting()) {
+            M_FadeOut(p, true);
         }
         break;
 
     case STATE_FADE_OUT:
-        M_FadeOut(p);
         if (g_InputDB.menu_confirm || g_InputDB.menu_back || !M_IsFading(p)) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_NOOP },
-            };
+            p->state = STATE_FINISH;
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
         break;
+
+    case STATE_FINISH:
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = Game_IsExiting() ? GF_EXIT_GAME : GF_NOOP },
+        };
     }
 
     if (p->ui != NULL) {
@@ -136,17 +150,22 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    if (!p->args.show_final_stats) {
+
+    if (p->args.background_type == BK_TRANSPARENT) {
         Interpolation_Disable();
         Game_Draw(false);
         Interpolation_Enable();
-        Fader_Draw(&p->back_fader);
+    } else {
+        Output_DrawBackground();
     }
+    Fader_Draw(&p->back_fader);
+
     if (p->ui != NULL) {
         p->ui->draw(p->ui);
     }
     Text_Draw();
     Output_DrawPolyList();
+
     Fader_Draw(&p->top_fader);
     Console_Draw();
     Text_Draw();

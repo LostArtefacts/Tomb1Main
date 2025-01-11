@@ -4,4 +4,5 @@
 #include "./phase/executor.h"
 #include "./phase/phase_pause.h"
 #include "./phase/phase_picture.h"
+#include "./phase/phase_stats.h"
 #include "./phase/types.h"

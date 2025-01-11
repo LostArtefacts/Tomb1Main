@@ -2,8 +2,7 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <libtrx/game/music.h>
 
 // Initializes music mixer.
 bool Music_Init(void);
@@ -19,9 +18,6 @@ bool Music_Play(MUSIC_TRACK_ID track);
 // Stops playing current track and plays a single track. Activates looped
 // playback for the chosen track.
 bool Music_PlayLooped(MUSIC_TRACK_ID track);
-
-// Stops any music, whether looped or active speech.
-void Music_Stop(void);
 
 // Stops the provided single track and restarts the looped track if applicable.
 void Music_StopTrack(MUSIC_TRACK_ID track);
@@ -43,12 +39,6 @@ int16_t Music_GetMinVolume(void);
 
 // Gets the maximum possible game volume.
 int16_t Music_GetMaxVolume(void);
-
-// Pauses the music.
-void Music_Pause(void);
-
-// Unpauses the music.
-void Music_Unpause(void);
 
 // Returns the currently playing track. Ignores looped tracks.
 MUSIC_TRACK_ID Music_GetCurrentTrack(void);

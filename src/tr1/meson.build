@@ -253,7 +253,6 @@ sources = [
   'game/phase/phase_game.c',
   'game/phase/phase_inventory.c',
   'game/phase/phase_photo_mode.c',
-  'game/phase/phase_stats.c',
   'game/requester.c',
   'game/room.c',
   'game/room_draw.c',

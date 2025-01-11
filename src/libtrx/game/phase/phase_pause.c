@@ -252,11 +252,11 @@ static void M_Draw(PHASE *const phase)
     Interpolation_Enable();
     Fader_Draw(&p->back_fader);
 
-    Text_Draw();
     if (p->ui != NULL) {
         p->ui->draw(p->ui);
     }
     Console_Draw();
+    Text_Draw();
     Output_DrawPolyList();
 }
 

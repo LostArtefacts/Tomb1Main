@@ -1115,6 +1115,12 @@ void Output_LoadBackgroundFromFile(const char *const file_name)
     }
 }
 
+void Output_LoadBackgroundFromObject(void)
+{
+    // TR1 doesn't have inventory background object.
+    Output_UnloadBackground();
+}
+
 void Output_UnloadBackground(void)
 {
     S_Output_DownloadBackdropSurface(NULL);

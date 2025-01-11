@@ -14,3 +14,4 @@ bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type);
 
 void Stats_StartTimer(void);
 void Stats_UpdateTimer(void);
+void Stats_UpdateSecrets(LEVEL_STATS *stats);

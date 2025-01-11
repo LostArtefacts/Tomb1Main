@@ -979,6 +979,7 @@ bool Level_Initialise(int32_t level_num)
     g_GameInfo.select_level_num = -1;
     g_GameInfo.current[level_num].stats.timer = 0;
     g_GameInfo.current[level_num].stats.secret_flags = 0;
+    g_GameInfo.current[level_num].stats.secret_count = 0;
     g_GameInfo.current[level_num].stats.pickup_count = 0;
     g_GameInfo.current[level_num].stats.kill_count = 0;
     g_GameInfo.current[level_num].stats.death_count = 0;

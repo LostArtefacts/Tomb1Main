@@ -236,7 +236,7 @@ const char *GameFlow_GetLevelTitle(int32_t level_num)
     return g_GF_LevelNames[level_num];
 }
 
-int32_t GameFlow_GetGymLevelNumber(void)
+int32_t GameFlow_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_enabled ? LV_GYM : -1;
 }
