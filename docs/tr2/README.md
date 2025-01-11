@@ -109,6 +109,7 @@ game with new enhancements and features.
 - fixed rendering problems on certain Intel GPUs
 - fixed bubbles spawning from flares if Lara is in shallow water
 - fixed the inventory up arrow at times overlapping the health bar
+- fixed blood spawning on Lara from gunshots using incorrect positioning data
 - improved FMV mode behavior - stopped switching screen resolutions
 - improved vertex movement when looking through water portals
 - improved support for non-4:3 aspect ratios

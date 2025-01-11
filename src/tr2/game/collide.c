@@ -579,7 +579,8 @@ void Collide_GetJointAbsPosition(
     Matrix_RotYXZsuperpack(&mesh_rots, 0);
 
     const int16_t *extra_rotation = item->data;
-    for (int32_t i = 0; i < joint; i++) {
+    const int32_t abs_joint = MIN(object->mesh_count, joint);
+    for (int32_t i = 0; i < abs_joint; i++) {
         const ANIM_BONE *const bone = Object_GetBone(object, i);
         if (bone->matrix_pop) {
             Matrix_Pop();
