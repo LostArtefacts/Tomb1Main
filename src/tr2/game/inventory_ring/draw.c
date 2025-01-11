@@ -114,8 +114,7 @@ static void M_DrawItem(
 
     Matrix_TranslateRel(
         frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
-    const int16_t *rot = frame_ptr->mesh_rots;
-    Matrix_RotYXZsuperpack(&rot, 0);
+    Matrix_RotXYZ16(frame_ptr->mesh_rots[0]);
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx > 0) {
@@ -128,7 +127,7 @@ static void M_DrawItem(
             }
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZsuperpack(&rot, 0);
+            Matrix_RotXYZ16(frame_ptr->mesh_rots[mesh_idx]);
 
             if (inv_item->object_id == O_COMPASS_OPTION) {
                 if (mesh_idx == 6) {

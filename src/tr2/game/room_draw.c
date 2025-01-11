@@ -520,8 +520,7 @@ void Room_DrawAllRooms(const int16_t current_room)
             g_MatrixPtr->_03 = 0;
             g_MatrixPtr->_13 = 0;
             g_MatrixPtr->_23 = 0;
-            const int16_t *mesh_rots = skybox->frame_base->mesh_rots;
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            Matrix_RotXYZ16(skybox->frame_base->mesh_rots[0]);
             Output_InsertSkybox(g_Meshes[skybox->mesh_idx]);
             Matrix_Pop();
         } else {

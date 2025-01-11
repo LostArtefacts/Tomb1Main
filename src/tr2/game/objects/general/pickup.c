@@ -252,9 +252,9 @@ void Pickup_Draw(const ITEM *const item)
         int32_t bit = 1;
         int16_t **meshpp = &g_Meshes[obj->mesh_idx];
 
-        const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
+        const XYZ_16 *const mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
         if (mesh_rots != NULL) {
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            Matrix_RotXYZ16(mesh_rots[0]);
         }
 
         if (item->mesh_bits & bit) {
@@ -273,7 +273,7 @@ void Pickup_Draw(const ITEM *const item)
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             if (mesh_rots != NULL) {
-                Matrix_RotYXZsuperpack(&mesh_rots, 0);
+                Matrix_RotXYZ16(mesh_rots[i]);
             }
 
             // Extra rotation is ignored in this case as it's not needed.

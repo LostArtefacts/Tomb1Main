@@ -27,11 +27,7 @@ typedef struct {
 typedef struct {
     BOUNDS_16 bounds;
     XYZ_16 offset;
-#if TR_VERSION == 1
     XYZ_16 *mesh_rots;
-#else
-    int16_t *mesh_rots;
-#endif
 } ANIM_FRAME;
 
 typedef struct {

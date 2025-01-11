@@ -45,10 +45,6 @@ void Object_DrawAnimatingItem(const ITEM *item)
 
     int16_t *const *mesh_ptrs = &g_Meshes[obj->mesh_idx];
     const int16_t *extra_rotation = item->data;
-    const int16_t *mesh_rots[2] = {
-        frames[0]->mesh_rots,
-        frames[1]->mesh_rots,
-    };
 
     if (frac != 0) {
         for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -58,7 +54,9 @@ void Object_DrawAnimatingItem(const ITEM *item)
                     frames[0]->offset.x, frames[0]->offset.y,
                     frames[0]->offset.z, frames[1]->offset.x,
                     frames[1]->offset.y, frames[1]->offset.z);
-                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+                Matrix_RotXYZ16_I(
+                    frames[0]->mesh_rots[mesh_idx],
+                    frames[1]->mesh_rots[mesh_idx]);
             } else {
                 const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
@@ -69,7 +67,9 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 }
 
                 Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
-                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+                Matrix_RotXYZ16_I(
+                    frames[0]->mesh_rots[mesh_idx],
+                    frames[1]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
                     if (bone->rot_y) {
                         Matrix_RotY_I(*extra_rotation++);
@@ -93,7 +93,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 Matrix_TranslateRel(
                     frames[0]->offset.x, frames[0]->offset.y,
                     frames[0]->offset.z);
-                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
             } else {
                 const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
@@ -104,7 +104,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 }
 
                 Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
                     if (bone->rot_y) {
                         Matrix_RotY(*extra_rotation++);
@@ -194,14 +194,14 @@ BOUNDS_16 Object_GetBoundingBox(
     const uint32_t mesh_bits)
 {
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    const int16_t *mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
+    const XYZ_16 *const mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
 
     Matrix_PushUnit();
     if (frame != NULL) {
         Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
     }
     if (mesh_rots != NULL) {
-        Matrix_RotYXZsuperpack(&mesh_rots, 0);
+        Matrix_RotXYZ16(mesh_rots[0]);
     }
 
     BOUNDS_16 new_bounds = {
@@ -226,7 +226,7 @@ BOUNDS_16 Object_GetBoundingBox(
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
             if (mesh_rots != NULL) {
-                Matrix_RotYXZsuperpack(&mesh_rots, 0);
+                Matrix_RotXYZ16(mesh_rots[mesh_idx]);
             }
         }
 

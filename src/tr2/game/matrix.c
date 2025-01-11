@@ -190,48 +190,11 @@ void Matrix_RotYXZ(const int16_t ry, const int16_t rx, const int16_t rz)
     Matrix_RotZ(rz);
 }
 
-void Matrix_RotYXZpack(const uint32_t rpack)
+void Matrix_RotXYZ16(const XYZ_16 rotation)
 {
-    const int16_t rx = ((rpack >> 20) & 0x3FF) << 6;
-    const int16_t ry = ((rpack >> 10) & 0x3FF) << 6;
-    const int16_t rz = ((rpack >> 0) & 0x3FF) << 6;
-    Matrix_RotYXZ(ry, rx, rz);
-}
-
-void Matrix_RotYXZsuperpack(const int16_t **pprot, int32_t index)
-{
-    const uint16_t *prot = (const uint16_t *)*pprot;
-
-    for (int32_t i = 0; i < index; i++) {
-        if ((*prot >> 14) == 0) {
-            prot += 2;
-        } else {
-            prot += 1;
-        }
-    }
-
-    switch (*prot >> 14) {
-    case 0: {
-        uint32_t packed = (prot[0] << 16) + prot[1];
-        Matrix_RotYXZpack(packed);
-        prot += 2;
-        break;
-    }
-    case 1:
-        Matrix_RotX((int16_t)((*prot & 1023) << 6));
-        prot += 1;
-        break;
-    case 2:
-        Matrix_RotY((int16_t)((*prot & 1023) << 6));
-        prot += 1;
-        break;
-    default:
-        Matrix_RotZ((int16_t)((*prot & 1023) << 6));
-        prot += 1;
-        break;
-    }
-
-    *pprot = (int16_t *)prot;
+    Matrix_RotY(rotation.y);
+    Matrix_RotX(rotation.x);
+    Matrix_RotZ(rotation.z);
 }
 
 bool Matrix_TranslateRel(int32_t x, int32_t y, int32_t z)
@@ -394,13 +357,12 @@ void Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z)
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotYXZsuperpack_I(
-    const int16_t **pprot1, const int16_t **pprot2, int32_t index)
+void Matrix_RotXYZ16_I(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
 {
-    Matrix_RotYXZsuperpack(pprot1, index);
-    MATRIX *old_matrix = g_MatrixPtr;
+    Matrix_RotXYZ16(rotation_1);
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
-    Matrix_RotYXZsuperpack(pprot2, index);
+    Matrix_RotXYZ16(rotation_2);
     g_MatrixPtr = old_matrix;
 }
 

@@ -980,14 +980,11 @@ void Skidoo_Draw(const ITEM *const item)
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
     if (frac) {
-        const int16_t *mesh_rots_1 = frames[0]->mesh_rots;
-        const int16_t *mesh_rots_2 = frames[1]->mesh_rots;
-
         Matrix_InitInterpolate(frac, rate);
         Matrix_TranslateRel_ID(
             frames[0]->offset.x, frames[0]->offset.y, frames[0]->offset.z,
             frames[1]->offset.x, frames[1]->offset.y, frames[1]->offset.z);
-        Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
+        Matrix_RotXYZ16_I(frames[0]->mesh_rots[0], frames[1]->mesh_rots[0]);
 
         Output_InsertPolygons_I(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -1000,15 +997,15 @@ void Skidoo_Draw(const ITEM *const item)
             }
 
             Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZsuperpack_I(&mesh_rots_1, &mesh_rots_2, 0);
+            Matrix_RotXYZ16_I(
+                frames[0]->mesh_rots[mesh_idx], frames[1]->mesh_rots[mesh_idx]);
 
             Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
         }
     } else {
-        const int16_t *mesh_rots = frames[0]->mesh_rots;
         Matrix_TranslateRel(
             frames[0]->offset.x, frames[0]->offset.y, frames[0]->offset.z);
-        Matrix_RotYXZsuperpack(&mesh_rots, 0);
+        Matrix_RotXYZ16(frames[0]->mesh_rots[0]);
 
         Output_InsertPolygons(mesh_ptrs[0], clip);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -1021,7 +1018,7 @@ void Skidoo_Draw(const ITEM *const item)
             }
 
             Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-            Matrix_RotYXZsuperpack(&mesh_rots, 0);
+            Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
 
             Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
         }

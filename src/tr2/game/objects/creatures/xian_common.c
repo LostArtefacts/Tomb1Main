@@ -41,10 +41,6 @@ void XianWarrior_Draw(const ITEM *item)
     }
 
     const int16_t *extra_rotation = item->data;
-    const int16_t *mesh_rots[2] = {
-        frames[0]->mesh_rots,
-        frames[1]->mesh_rots,
-    };
 
     if (frac != 0) {
         for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -54,7 +50,9 @@ void XianWarrior_Draw(const ITEM *item)
                     frames[0]->offset.x, frames[0]->offset.y,
                     frames[0]->offset.z, frames[1]->offset.x,
                     frames[1]->offset.y, frames[1]->offset.z);
-                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+                Matrix_RotXYZ16_I(
+                    frames[0]->mesh_rots[mesh_idx],
+                    frames[1]->mesh_rots[mesh_idx]);
             } else {
                 const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
@@ -65,7 +63,9 @@ void XianWarrior_Draw(const ITEM *item)
                 }
 
                 Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
-                Matrix_RotYXZsuperpack_I(&mesh_rots[0], &mesh_rots[1], 0);
+                Matrix_RotXYZ16_I(
+                    frames[0]->mesh_rots[mesh_idx],
+                    frames[1]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
                     if (bone->rot_y) {
                         Matrix_RotY_I(*extra_rotation++);
@@ -91,7 +91,7 @@ void XianWarrior_Draw(const ITEM *item)
                 Matrix_TranslateRel(
                     frames[0]->offset.x, frames[0]->offset.y,
                     frames[0]->offset.z);
-                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
             } else {
                 const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
@@ -102,7 +102,7 @@ void XianWarrior_Draw(const ITEM *item)
                 }
 
                 Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
-                Matrix_RotYXZsuperpack(&mesh_rots[0], 0);
+                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
                     if (bone->rot_y) {
                         Matrix_RotY(*extra_rotation++);

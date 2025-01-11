@@ -6,6 +6,15 @@
 #include "log.h"
 #include "utils.h"
 
+#if TR_VERSION > 1
+typedef enum {
+    RPM_ALL = 0,
+    RPM_X = 1,
+    RPM_Y = 2,
+    RPM_Z = 3,
+} ROT_PACK_MODE;
+#endif
+
 static ANIM_FRAME *m_Frames = NULL;
 
 static int32_t M_GetAnimFrameCount(int32_t anim_idx, int32_t frame_data_length);
@@ -80,17 +89,14 @@ static int32_t M_ParseFrame(
     mesh_count = *data_ptr++;
 #endif
 
-#if TR_VERSION == 1
     frame->mesh_rots =
         GameBuf_Alloc(sizeof(XYZ_16) * mesh_count, GBUF_ANIM_FRAMES);
     for (int32_t i = 0; i < mesh_count; i++) {
         XYZ_16 *const rot = &frame->mesh_rots[i];
         M_ParseMeshRotation(rot, &data_ptr);
     }
-#else
-    frame->mesh_rots =
-        GameBuf_Alloc(sizeof(int16_t) * (frame_size - 9), GBUF_ANIM_FRAMES);
-    memcpy(frame->mesh_rots, data_ptr, sizeof(int16_t) * (frame_size - 9));
+
+#if TR_VERSION > 1
     data_ptr += MAX(0, frame_size - (data_ptr - frame_start));
 #endif
 
@@ -105,7 +111,27 @@ static void M_ParseMeshRotation(XYZ_16 *const rot, const int16_t **data)
     const int16_t rot_val_2 = *data_ptr++;
     M_ExtractRotation(rot, rot_val_2, rot_val_1);
 #else
-    ASSERT_FAIL();
+    rot->x = 0;
+    rot->y = 0;
+    rot->z = 0;
+
+    const int16_t rot_val_1 = *data_ptr++;
+    const ROT_PACK_MODE mode = (ROT_PACK_MODE)((rot_val_1 & 0xC000) >> 14);
+    switch (mode) {
+    case RPM_X:
+        rot->x = (rot_val_1 & 0x3FF) << 6;
+        break;
+    case RPM_Y:
+        rot->y = (rot_val_1 & 0x3FF) << 6;
+        break;
+    case RPM_Z:
+        rot->z = (rot_val_1 & 0x3FF) << 6;
+        break;
+    default:
+        const int16_t rot_val_2 = *data_ptr++;
+        M_ExtractRotation(rot, rot_val_1, rot_val_2);
+        break;
+    }
 #endif
     *data = data_ptr;
 }

@@ -36,8 +36,7 @@ void Matrix_RotX(int16_t rx);
 void Matrix_RotY(int16_t ry);
 void Matrix_RotZ(int16_t rz);
 void Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);
-void Matrix_RotYXZpack(uint32_t rpack);
-void Matrix_RotYXZsuperpack(const int16_t **pprot, int32_t index);
+void Matrix_RotXYZ16(XYZ_16 rotation);
 bool Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateSet(int32_t x, int32_t y, int32_t z);
@@ -51,8 +50,7 @@ void Matrix_RotX_I(int16_t ang);
 void Matrix_RotY_I(int16_t ang);
 void Matrix_RotZ_I(int16_t ang);
 void Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z);
-void Matrix_RotYXZsuperpack_I(
-    const int16_t **pprot1, const int16_t **pprot2, int32_t index);
+void Matrix_RotXYZ16_I(XYZ_16 rotation_1, XYZ_16 rotation_2);
 void Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z);
 void Matrix_TranslateRel_ID(
     int32_t x, int32_t y, int32_t z, int32_t x2, int32_t y2, int32_t z2);
