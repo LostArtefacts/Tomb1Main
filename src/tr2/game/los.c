@@ -310,23 +310,27 @@ int32_t LOS_CheckSmashable(
 
             const DIRECTION direction = Math_GetDirection(item->rot.y);
             const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
-            const int16_t *x_extent;
-            const int16_t *z_extent = NULL;
+            int16_t x_extent[2];
+            int16_t z_extent[2];
             switch (direction) {
             case DIR_EAST:
             case DIR_WEST:
-                x_extent = &bounds->min.z;
-                z_extent = &bounds->min.x;
+                x_extent[0] = bounds->min.z;
+                x_extent[1] = bounds->max.z;
+                z_extent[0] = bounds->min.x;
+                z_extent[1] = bounds->max.x;
                 break;
             case DIR_NORTH:
             case DIR_SOUTH:
-                x_extent = &bounds->min.x;
-                z_extent = &bounds->min.z;
+                x_extent[0] = bounds->min.x;
+                x_extent[1] = bounds->max.x;
+                z_extent[0] = bounds->min.z;
+                z_extent[1] = bounds->max.z;
                 break;
             default:
+                ASSERT_FAIL();
                 break;
             }
-            ASSERT(z_extent != NULL);
 
             int32_t failure = 0;
             if (ABS(dz) > ABS(dx)) {
