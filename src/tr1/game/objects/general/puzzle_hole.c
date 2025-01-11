@@ -37,10 +37,17 @@ static const OBJECT_BOUNDS m_PuzzleHoleBounds = {
 };
 
 static const OBJECT_BOUNDS *M_Bounds(void);
+static bool M_IsUsable(int16_t item_num);
 
 static const OBJECT_BOUNDS *M_Bounds(void)
 {
     return &m_PuzzleHoleBounds;
+}
+
+static bool M_IsUsable(const int16_t item_num)
+{
+    const ITEM *const item = Item_Get(item_num);
+    return item->status == IS_INACTIVE;
 }
 
 void PuzzleHole_Setup(OBJECT *obj)
@@ -48,6 +55,7 @@ void PuzzleHole_Setup(OBJECT *obj)
     obj->collision = PuzzleHole_Collision;
     obj->save_flags = 1;
     obj->bounds = M_Bounds;
+    obj->is_usable = M_IsUsable;
 }
 
 void PuzzleHole_SetupDone(OBJECT *obj)

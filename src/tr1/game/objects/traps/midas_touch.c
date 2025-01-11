@@ -32,11 +32,17 @@ static const OBJECT_BOUNDS *M_Bounds(void)
     return &m_MidasTouch_Bounds;
 }
 
+static bool M_IsUsable(const int16_t item_num)
+{
+    return g_LaraItem->current_anim_state != LS_USE_MIDAS;
+}
+
 void MidasTouch_Setup(OBJECT *obj)
 {
     obj->collision = MidasTouch_Collision;
     obj->draw_routine = Object_DrawDummyItem;
     obj->bounds = M_Bounds;
+    obj->is_usable = M_IsUsable;
 }
 
 void MidasTouch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)

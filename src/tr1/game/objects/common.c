@@ -31,6 +31,9 @@ int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id)
         ITEM *item = &g_Items[item_num];
         if (item->object_id == receptacle_to_check) {
             const OBJECT *const obj = &g_Objects[item->object_id];
+            if (obj->is_usable != NULL && !obj->is_usable(item_num)) {
+                continue;
+            }
             if (Lara_TestPosition(item, obj->bounds())) {
                 return item_num;
             }

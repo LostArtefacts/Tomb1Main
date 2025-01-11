@@ -52,6 +52,7 @@ typedef struct {
     void (*draw_routine)(ITEM *item);
     void (*collision)(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
     const OBJECT_BOUNDS *(*bounds)(void);
+    bool (*is_usable)(int16_t item_num);
     int16_t anim_idx;
     int16_t hit_points;
     int16_t pivot_length;

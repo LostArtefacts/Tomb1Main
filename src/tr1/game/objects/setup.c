@@ -271,6 +271,7 @@ void Object_SetupAllObjects(void)
         obj->draw_routine = Object_DrawAnimatingItem;
         obj->ceiling_height_func = NULL;
         obj->floor_height_func = NULL;
+        obj->is_usable = NULL;
         obj->pivot_length = 0;
         obj->radius = DEFAULT_RADIUS;
         obj->shadow_size = 0;
