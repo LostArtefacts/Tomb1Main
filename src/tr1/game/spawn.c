@@ -164,12 +164,12 @@ int16_t Spawn_GunShotHit(
     int16_t room_num)
 {
     XYZ_32 pos = {
-        .x = 0,
-        .y = 0,
-        .z = 0,
+        .x = -((Random_GetDraw() - 0x4000) << 7) / 0x7FFF,
+        .y = -((Random_GetDraw() - 0x4000) << 7) / 0x7FFF,
+        .z = -((Random_GetDraw() - 0x4000) << 7) / 0x7FFF,
     };
     Collide_GetJointAbsPosition(
-        g_LaraItem, &pos, (Random_GetControl() * 25) / 0x7FFF);
+        g_LaraItem, &pos, (Random_GetControl() * LM_NUMBER_OF) / 0x7FFF);
     Spawn_Blood(
         pos.x, pos.y, pos.z, g_LaraItem->speed, g_LaraItem->rot.y,
         g_LaraItem->room_num);

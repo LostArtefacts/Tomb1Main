@@ -11,6 +11,7 @@
 - fixed Lara activating triggers one frame too early (#2208, regression from 4.3)
 - fixed wrong underwater caustics speed with the turbo cheat (#2231)
 - fixed 1-frame UI flicker on pause screen exit confirmation
+- fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - improved pause screen compatibility with PS1 (#2248)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21

@@ -553,6 +553,7 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - fixed incorrect transparent pixels on some Egypt textures
 - fixed doors at times disappearing if Lara is close to portals and the door's room is no longer visible
 - fixed being able to see the flipmap in Natla's Mines when moving the boat
+- fixed blood spawning on Lara from gunshots using incorrect positioning data
 - improved vertex movement when looking through water portals
 
 #### Audio
