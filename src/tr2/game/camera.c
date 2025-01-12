@@ -190,7 +190,7 @@ void Camera_Move(const GAME_VECTOR *target, int32_t speed)
 
     if (g_Config.audio.enable_lara_mic) {
         g_Camera.actual_angle =
-            g_Lara.torso_y_rot + g_Lara.head_y_rot + g_LaraItem->rot.y;
+            g_Lara.torso_rot.y + g_Lara.head_rot.y + g_LaraItem->rot.y;
         g_Camera.mic_pos.x = g_LaraItem->pos.x;
         g_Camera.mic_pos.y = g_LaraItem->pos.y;
         g_Camera.mic_pos.z = g_LaraItem->pos.z;
@@ -590,9 +590,9 @@ void Camera_Combat(const ITEM *item)
         g_Camera.target_elevation = g_Lara.target_angles[1] + item->rot.x;
     } else {
         g_Camera.target_angle =
-            g_Lara.torso_y_rot + g_Lara.head_y_rot + item->rot.y;
+            g_Lara.torso_rot.y + g_Lara.head_rot.y + item->rot.y;
         g_Camera.target_elevation =
-            g_Lara.torso_x_rot + g_Lara.head_x_rot + item->rot.x;
+            g_Lara.torso_rot.x + g_Lara.head_rot.x + item->rot.x;
     }
 
     int32_t distance =
@@ -644,10 +644,10 @@ void Camera_Look(const ITEM *item)
     g_Camera.target.z = item->pos.z;
     g_Camera.target.x = item->pos.x;
     g_Camera.target_angle =
-        item->rot.y + g_Lara.torso_y_rot + g_Lara.head_y_rot;
+        item->rot.y + g_Lara.torso_rot.y + g_Lara.head_rot.y;
     g_Camera.target_distance = LOOK_DISTANCE;
     g_Camera.target_elevation =
-        g_Lara.torso_x_rot + g_Lara.head_x_rot + item->rot.x;
+        g_Lara.torso_rot.x + g_Lara.head_rot.x + item->rot.x;
 
     int32_t distance =
         (LOOK_DISTANCE * Math_Cos(g_Camera.target_elevation)) >> W2V_SHIFT;
@@ -754,25 +754,25 @@ void Camera_Update(void)
 
         if (angle > MIN_HEAD_ROTATION_CAM && angle < MAX_HEAD_ROTATION_CAM
             && tilt > MIN_HEAD_TILT_CAM && tilt < MAX_HEAD_TILT_CAM) {
-            int16_t change = angle - g_Lara.head_y_rot;
+            int16_t change = angle - g_Lara.head_rot.y;
             if (change > HEAD_TURN_CAM) {
-                g_Lara.head_y_rot += HEAD_TURN_CAM;
+                g_Lara.head_rot.y += HEAD_TURN_CAM;
             } else if (change < -HEAD_TURN_CAM) {
-                g_Lara.head_y_rot -= HEAD_TURN_CAM;
+                g_Lara.head_rot.y -= HEAD_TURN_CAM;
             } else {
-                g_Lara.head_y_rot = angle;
+                g_Lara.head_rot.y = angle;
             }
 
-            change = tilt - g_Lara.head_x_rot;
+            change = tilt - g_Lara.head_rot.x;
             if (change > HEAD_TURN_CAM) {
-                g_Lara.head_x_rot += HEAD_TURN_CAM;
+                g_Lara.head_rot.x += HEAD_TURN_CAM;
             } else if (change < -HEAD_TURN_CAM) {
-                g_Lara.head_x_rot -= HEAD_TURN_CAM;
+                g_Lara.head_rot.x -= HEAD_TURN_CAM;
             } else {
-                g_Lara.head_x_rot += change;
+                g_Lara.head_rot.x += change;
             }
-            g_Lara.torso_x_rot = g_Lara.head_x_rot;
-            g_Lara.torso_y_rot = g_Lara.head_y_rot;
+            g_Lara.torso_rot.x = g_Lara.head_rot.x;
+            g_Lara.torso_rot.y = g_Lara.head_rot.y;
             g_Camera.type = CAM_LOOK;
             g_Camera.item->looked_at = 1;
         }
@@ -882,7 +882,7 @@ void Camera_LoadCutsceneFrame(void)
 
     if (g_Config.audio.enable_lara_mic) {
         g_Camera.actual_angle =
-            g_Lara.torso_y_rot + g_Lara.head_y_rot + g_LaraItem->rot.y;
+            g_Lara.torso_rot.y + g_Lara.head_rot.y + g_LaraItem->rot.y;
         g_Camera.mic_pos.x = g_LaraItem->pos.x;
         g_Camera.mic_pos.y = g_LaraItem->pos.y;
         g_Camera.mic_pos.z = g_LaraItem->pos.z;

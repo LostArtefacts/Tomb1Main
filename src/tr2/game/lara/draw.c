@@ -119,7 +119,7 @@ void Lara_Draw(const ITEM *const item)
     }
 
     Matrix_Rot16(mesh_rots[LM_TORSO]);
-    Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+    Matrix_RotYXZ(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
     Output_InsertPolygons(g_Lara.mesh_ptrs[LM_TORSO], clip);
 
     Matrix_Push();
@@ -127,7 +127,7 @@ void Lara_Draw(const ITEM *const item)
     mesh_rots_c = mesh_rots;
     Matrix_Rot16(mesh_rots[LM_HEAD]);
     mesh_rots = mesh_rots_c;
-    Matrix_RotYXZ(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
+    Matrix_RotYXZ(g_Lara.head_rot.y, g_Lara.head_rot.x, g_Lara.head_rot.z);
     Output_InsertPolygons(g_Lara.mesh_ptrs[LM_HEAD], clip);
 
     *g_MatrixPtr = saved_matrix;
@@ -363,7 +363,7 @@ void Lara_Draw_I(
     }
 
     Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
-    Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+    Matrix_RotYXZ_I(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
     Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_TORSO], clip);
 
     Matrix_Push_I();
@@ -373,7 +373,7 @@ void Lara_Draw_I(
     Matrix_Rot16_ID(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
     mesh_rots_1 = mesh_rots_1_c;
     mesh_rots_2 = mesh_rots_2_c;
-    Matrix_RotYXZ_I(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
+    Matrix_RotYXZ_I(g_Lara.head_rot.y, g_Lara.head_rot.x, g_Lara.head_rot.z);
     Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_HEAD], clip);
 
     *g_MatrixPtr = saved_matrix;

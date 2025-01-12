@@ -73,10 +73,10 @@ void Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
     Gun_AimWeapon(winfo, &g_Lara.left_arm);
 
     if (g_Lara.left_arm.lock) {
-        g_Lara.head_x_rot = 0;
-        g_Lara.head_y_rot = 0;
-        g_Lara.torso_x_rot = g_Lara.left_arm.rot.x;
-        g_Lara.torso_y_rot = g_Lara.left_arm.rot.y;
+        g_Lara.head_rot.x = 0;
+        g_Lara.head_rot.y = 0;
+        g_Lara.torso_rot.x = g_Lara.left_arm.rot.x;
+        g_Lara.torso_rot.y = g_Lara.left_arm.rot.y;
     }
 
     Gun_Rifle_Animate(weapon_type);

@@ -136,10 +136,10 @@ bool Lara_Cheat_EnterFlyMode(void)
         g_LaraItem->gravity = 0;
         g_LaraItem->rot.x = 30 * PHD_DEGREE;
         g_LaraItem->fall_speed = 30;
-        g_Lara.head_x_rot = 0;
-        g_Lara.head_y_rot = 0;
-        g_Lara.torso_x_rot = 0;
-        g_Lara.torso_y_rot = 0;
+        g_Lara.head_rot.x = 0;
+        g_Lara.head_rot.y = 0;
+        g_Lara.torso_rot.x = 0;
+        g_Lara.torso_rot.y = 0;
     }
 
     g_Lara.water_status = LWS_CHEAT;
@@ -180,10 +180,10 @@ bool Lara_Cheat_ExitFlyMode(void)
         Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
         g_LaraItem->rot.x = 0;
         g_LaraItem->rot.z = 0;
-        g_Lara.head_x_rot = 0;
-        g_Lara.head_y_rot = 0;
-        g_Lara.torso_x_rot = 0;
-        g_Lara.torso_y_rot = 0;
+        g_Lara.head_rot.x = 0;
+        g_Lara.head_rot.y = 0;
+        g_Lara.torso_rot.x = 0;
+        g_Lara.torso_rot.y = 0;
     }
 
     if (g_Lara.weapon_item != NO_ITEM) {
@@ -398,10 +398,10 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
             Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
             g_LaraItem->rot.x = 0;
             g_LaraItem->rot.z = 0;
-            g_Lara.head_x_rot = 0;
-            g_Lara.head_y_rot = 0;
-            g_Lara.torso_x_rot = 0;
-            g_Lara.torso_y_rot = 0;
+            g_Lara.head_rot.x = 0;
+            g_Lara.head_rot.y = 0;
+            g_Lara.torso_rot.x = 0;
+            g_Lara.torso_rot.y = 0;
         }
 
         g_Lara.extra_anim = 0;

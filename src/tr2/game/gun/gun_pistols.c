@@ -117,12 +117,12 @@ void Gun_Pistols_Undraw(const LARA_GUN_TYPE weapon_type)
     }
 
     if (!g_Input.look) {
-        g_Lara.head_x_rot =
+        g_Lara.head_rot.x =
             (g_Lara.left_arm.rot.x + g_Lara.right_arm.rot.x) / 4;
-        g_Lara.head_y_rot =
+        g_Lara.head_rot.y =
             (g_Lara.left_arm.rot.y + g_Lara.right_arm.rot.y) / 4;
-        g_Lara.torso_x_rot = g_Lara.head_x_rot;
-        g_Lara.torso_y_rot = g_Lara.head_y_rot;
+        g_Lara.torso_rot.x = g_Lara.head_rot.x;
+        g_Lara.torso_rot.y = g_Lara.head_rot.y;
     }
 }
 
@@ -183,22 +183,22 @@ void Gun_Pistols_Control(const LARA_GUN_TYPE weapon_type)
     Gun_AimWeapon(winfo, &g_Lara.right_arm);
 
     if (g_Lara.left_arm.lock && !g_Lara.right_arm.lock) {
-        g_Lara.head_x_rot = g_Lara.left_arm.rot.x / 2;
-        g_Lara.head_y_rot = g_Lara.left_arm.rot.y / 2;
-        g_Lara.torso_x_rot = g_Lara.head_x_rot;
-        g_Lara.torso_y_rot = g_Lara.head_y_rot;
+        g_Lara.head_rot.x = g_Lara.left_arm.rot.x / 2;
+        g_Lara.head_rot.y = g_Lara.left_arm.rot.y / 2;
+        g_Lara.torso_rot.x = g_Lara.head_rot.x;
+        g_Lara.torso_rot.y = g_Lara.head_rot.y;
     } else if (!g_Lara.left_arm.lock && g_Lara.right_arm.lock) {
-        g_Lara.head_x_rot = g_Lara.right_arm.rot.x / 2;
-        g_Lara.head_y_rot = g_Lara.right_arm.rot.y / 2;
-        g_Lara.torso_x_rot = g_Lara.head_x_rot;
-        g_Lara.torso_y_rot = g_Lara.head_y_rot;
+        g_Lara.head_rot.x = g_Lara.right_arm.rot.x / 2;
+        g_Lara.head_rot.y = g_Lara.right_arm.rot.y / 2;
+        g_Lara.torso_rot.x = g_Lara.head_rot.x;
+        g_Lara.torso_rot.y = g_Lara.head_rot.y;
     } else if (g_Lara.right_arm.lock) {
-        g_Lara.head_x_rot =
+        g_Lara.head_rot.x =
             (g_Lara.right_arm.rot.x + g_Lara.left_arm.rot.x) / 4;
-        g_Lara.head_y_rot =
+        g_Lara.head_rot.y =
             (g_Lara.right_arm.rot.y + g_Lara.left_arm.rot.y) / 4;
-        g_Lara.torso_x_rot = g_Lara.head_x_rot;
-        g_Lara.torso_y_rot = g_Lara.head_y_rot;
+        g_Lara.torso_rot.x = g_Lara.head_rot.x;
+        g_Lara.torso_rot.y = g_Lara.head_rot.y;
     }
 
     Gun_Pistols_Animate(weapon_type);

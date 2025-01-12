@@ -87,11 +87,7 @@ typedef struct {
     int16_t frame_num;
     int16_t anim_num;
     int16_t lock;
-    struct {
-        int16_t y;
-        int16_t x;
-        int16_t z;
-    } rot; // TODO: XYZ_16
+    XYZ_16 rot;
     int16_t flash_gun;
 } LARA_ARM;
 
@@ -134,12 +130,8 @@ typedef struct {
     int16_t target_angles[2];
     int16_t turn_rate;
     int16_t move_angle;
-    int16_t head_y_rot;
-    int16_t head_x_rot;
-    int16_t head_z_rot;
-    int16_t torso_y_rot;
-    int16_t torso_x_rot;
-    int16_t torso_z_rot;
+    XYZ_16 head_rot;
+    XYZ_16 torso_rot;
     LARA_ARM left_arm;
     LARA_ARM right_arm;
     AMMO_INFO pistol_ammo;

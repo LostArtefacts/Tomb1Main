@@ -293,12 +293,12 @@ static void M_ReadLara(LARA_INFO *const lara)
 
     lara->turn_rate = M_ReadS16();
     lara->move_angle = M_ReadS16();
-    lara->head_y_rot = M_ReadS16();
-    lara->head_x_rot = M_ReadS16();
-    lara->head_z_rot = M_ReadS16();
-    lara->torso_y_rot = M_ReadS16();
-    lara->torso_x_rot = M_ReadS16();
-    lara->torso_z_rot = M_ReadS16();
+    lara->head_rot.y = M_ReadS16();
+    lara->head_rot.x = M_ReadS16();
+    lara->head_rot.z = M_ReadS16();
+    lara->torso_rot.y = M_ReadS16();
+    lara->torso_rot.x = M_ReadS16();
+    lara->torso_rot.z = M_ReadS16();
 
     M_ReadLaraArm(&lara->left_arm);
     M_ReadLaraArm(&lara->right_arm);
@@ -478,12 +478,12 @@ static void M_WriteLara(const LARA_INFO *const lara)
 
     M_WriteS16(lara->turn_rate);
     M_WriteS16(lara->move_angle);
-    M_WriteS16(lara->head_y_rot);
-    M_WriteS16(lara->head_x_rot);
-    M_WriteS16(lara->head_z_rot);
-    M_WriteS16(lara->torso_y_rot);
-    M_WriteS16(lara->torso_x_rot);
-    M_WriteS16(lara->torso_z_rot);
+    M_WriteS16(lara->head_rot.y);
+    M_WriteS16(lara->head_rot.x);
+    M_WriteS16(lara->head_rot.z);
+    M_WriteS16(lara->torso_rot.y);
+    M_WriteS16(lara->torso_rot.x);
+    M_WriteS16(lara->torso_rot.z);
 
     M_WriteLaraArm(&lara->left_arm);
     M_WriteLaraArm(&lara->right_arm);

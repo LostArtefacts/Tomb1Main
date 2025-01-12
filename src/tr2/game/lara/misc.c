@@ -873,7 +873,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
 
     Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
     Matrix_Rot16(mesh_rots[LM_TORSO]);
-    Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+    Matrix_RotYXZ(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
 
     LARA_GUN_TYPE gun_type = LGT_UNARMED;
     if (g_Lara.gun_status == LGS_READY || g_Lara.gun_status == LGS_SPECIAL
@@ -942,7 +942,7 @@ void Lara_GetJointAbsPosition_I(
 
     Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
     Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
-    Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
+    Matrix_RotYXZ_I(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
 
     LARA_GUN_TYPE gun_type = LGT_UNARMED;
     if (g_Lara.gun_status == LGS_READY || g_Lara.gun_status == LGS_SPECIAL

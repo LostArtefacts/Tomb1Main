@@ -147,8 +147,8 @@ void Gun_GetNewTarget(const WEAPON_INFO *const winfo)
         Math_GetVectorAngles(
             target.pos.x - start.pos.x, target.pos.y - start.pos.y,
             target.pos.z - start.pos.z, angles);
-        angles[0] -= g_Lara.torso_y_rot + g_LaraItem->rot.y;
-        angles[1] -= g_Lara.torso_x_rot + g_LaraItem->rot.x;
+        angles[0] -= g_Lara.torso_rot.y + g_LaraItem->rot.y;
+        angles[1] -= g_Lara.torso_rot.x + g_LaraItem->rot.x;
 
         if (angles[0] >= winfo->lock_angles[0]
             && angles[0] <= winfo->lock_angles[1]
