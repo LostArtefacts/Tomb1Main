@@ -38,8 +38,7 @@
     MAP_GAME_VAR(flt_win_right, g_FltWinRight);                                \
     MAP_GAME_VAR(flt_win_bottom, g_FltWinBottom);                              \
     MAP_GAME_VAR(flt_win_center_x, g_FltWinCenterX);                           \
-    MAP_GAME_VAR(flt_win_center_y, g_FltWinCenterY);                           \
-    MAP_GAME_VAR(viewport_aspect_ratio, g_ViewportAspectRatio);
+    MAP_GAME_VAR(flt_win_center_y, g_FltWinCenterY);
 
 static VIEWPORT m_Viewport = {};
 

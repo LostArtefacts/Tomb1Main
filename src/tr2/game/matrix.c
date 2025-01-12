@@ -50,10 +50,6 @@ void Matrix_GenerateW2V(const XYZ_32 *pos, const XYZ_16 *rot)
     g_MatrixPtr->_13 = pos->y;
     g_MatrixPtr->_23 = pos->z;
 
-    g_MatrixPtr->_10 *= g_ViewportAspectRatio;
-    g_MatrixPtr->_11 *= g_ViewportAspectRatio;
-    g_MatrixPtr->_12 *= g_ViewportAspectRatio;
-
     g_W2VMatrix = *g_MatrixPtr;
 }
 
