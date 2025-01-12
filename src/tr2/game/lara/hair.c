@@ -363,8 +363,9 @@ void Lara_Hair_Control(const bool in_cutscene)
             s->pos.y += 10;
             if (water_height != NO_HEIGHT && s->pos.y > water_height) {
                 s->pos.y = water_height;
+            } else if (s->pos.y > height) {
+                s->pos.y = height;
             } else {
-                CLAMPG(s->pos.y, height);
                 s->pos.z += m_HairWind;
             }
             break;
