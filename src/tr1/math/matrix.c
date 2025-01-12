@@ -166,11 +166,11 @@ void Matrix_RotYXZ(PHD_ANGLE ry, PHD_ANGLE rx, PHD_ANGLE rz)
     Matrix_RotZ(rz);
 }
 
-void Matrix_RotXYZ16(const XYZ_16 *const rotation)
+void Matrix_RotXYZ16(const XYZ_16 rotation)
 {
-    Matrix_RotY(rotation->y);
-    Matrix_RotX(rotation->x);
-    Matrix_RotZ(rotation->z);
+    Matrix_RotY(rotation.y);
+    Matrix_RotX(rotation.x);
+    Matrix_RotZ(rotation.z);
 }
 
 void Matrix_TranslateRel(int32_t x, int32_t y, int32_t z)
@@ -336,8 +336,7 @@ void Matrix_RotYXZ_I(PHD_ANGLE y, PHD_ANGLE x, PHD_ANGLE z)
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotXYZ16_I(
-    const XYZ_16 *const rotation_1, const XYZ_16 *const rotation_2)
+void Matrix_RotXYZ16_I(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
 {
     Matrix_RotXYZ16(rotation_1);
     MATRIX *const old_matrix = g_MatrixPtr;
