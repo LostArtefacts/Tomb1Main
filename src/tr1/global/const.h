@@ -105,8 +105,6 @@
 #define MAX_ELEVATION (85 * PHD_DEGREE) // = 15470
 #define DEFAULT_RADIUS 10
 #define UNIT_SHADOW 256
-#define NO_HEIGHT (-32512)
-#define MAX_HEIGHT 32000
 #define NO_BAD_POS (-NO_HEIGHT)
 #define NO_BAD_NEG NO_HEIGHT
 #define BAD_JUMP_CEILING ((STEP_L * 3) / 4) // = 192

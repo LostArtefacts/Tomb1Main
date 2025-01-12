@@ -1,6 +1,7 @@
 #pragma once
 
-#include "types.h"
+#include "../math/types.h"
+#include "./types.h"
 
 extern int32_t Room_GetTotalCount(void);
 extern ROOM *Room_Get(int32_t room_num);
@@ -18,3 +19,4 @@ void Room_PopulateSectorData(
 
 int16_t Room_GetIndexFromPos(int32_t x, int32_t y, int32_t z);
 int32_t Room_FindByPos(int32_t x, int32_t y, int32_t z);
+BOUNDS_32 Room_GetWorldBounds(void);

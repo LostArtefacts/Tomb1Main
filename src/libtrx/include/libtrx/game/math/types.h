@@ -39,11 +39,9 @@ typedef struct {
     XYZ_16 max;
 } BOUNDS_16;
 
-#if TR_VERSION == 1
 typedef struct {
     XYZ_32 min;
     XYZ_32 max;
 } BOUNDS_32;
-#endif
 
 #pragma pack(pop)

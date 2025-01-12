@@ -12,8 +12,6 @@
 #define PHD_45 DEG_45
 #define PHD_135 DEG_135
 
-#define NO_HEIGHT (-32512)
-#define MAX_HEIGHT 32000
 #define NO_BAD_POS (-NO_HEIGHT) // = 32512
 #define NO_BAD_NEG (NO_HEIGHT) // = -32512
 #define BAD_JUMP_CEILING ((STEP_L * 3) / 4) // = 192
