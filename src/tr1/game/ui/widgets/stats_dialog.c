@@ -10,11 +10,14 @@
 #include <libtrx/game/ui/common.h>
 #include <libtrx/game/ui/widgets/label.h>
 #include <libtrx/game/ui/widgets/stack.h>
+#include <libtrx/game/ui/widgets/window.h>
 #include <libtrx/memory.h>
 
 #include <stdio.h>
+#include <string.h>
 
-#define ROW_HEIGHT 30
+#define ROW_HEIGHT_BARE 30
+#define ROW_HEIGHT_BORDERED 18
 
 typedef enum {
     M_ROW_KILLS,
@@ -26,26 +29,32 @@ typedef enum {
 
 typedef struct {
     M_ROW_ROLE role;
-    UI_WIDGET *label;
+    UI_WIDGET *stack;
+    UI_WIDGET *key_label;
+    UI_WIDGET *value_label;
 } M_ROW;
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
-    UI_STATS_DIALOG_MODE mode;
+    UI_STATS_DIALOG_ARGS args;
     GAME_FLOW_LEVEL_TYPE level_type;
-    int32_t level_num;
     int32_t listener;
 
     int32_t row_count;
     UI_WIDGET *title;
     UI_WIDGET *stack;
+    UI_WIDGET *window;
+    UI_WIDGET *root; // just a pointer to either stack or window
     M_ROW *rows;
 } UI_STATS_DIALOG;
 
 static void M_FormatTime(char *out, int32_t total_frames);
-static void M_AddRow(UI_STATS_DIALOG *self, M_ROW_ROLE role, const char *text);
+static const char *M_GetDialogTitle(UI_STATS_DIALOG *self);
+static void M_AddRow(
+    UI_STATS_DIALOG *self, M_ROW_ROLE role, const char *key, const char *value);
 static void M_AddRowFromRole(
     UI_STATS_DIALOG *self, M_ROW_ROLE role, const STATS_COMMON *stats);
+static void M_AddCommonRows(UI_STATS_DIALOG *self, const STATS_COMMON *stats);
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_UpdateTimerRow(UI_STATS_DIALOG *self);
@@ -65,24 +74,62 @@ static void M_FormatTime(char *const out, const int32_t total_frames)
     const int32_t hours = total_seconds / 3600;
     const int32_t minutes = (total_seconds / 60) % 60;
     const int32_t seconds = total_seconds % 60;
-    char time_str[20];
     if (hours != 0) {
-        sprintf(time_str, "%d:%02d:%02d", hours, minutes, seconds);
+        sprintf(out, "%d:%02d:%02d", hours, minutes, seconds);
     } else {
-        sprintf(time_str, "%d:%02d", minutes, seconds);
+        sprintf(out, "%d:%02d", minutes, seconds);
     }
-    sprintf(out, GS(STATS_TIME_TAKEN_FMT), time_str);
+}
+
+static const char *M_GetDialogTitle(UI_STATS_DIALOG *const self)
+{
+    switch (self->args.mode) {
+    case UI_STATS_DIALOG_MODE_LEVEL:
+        return g_GameFlow.levels[self->args.level_num].level_title;
+
+    case UI_STATS_DIALOG_MODE_FINAL:
+        return self->level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
+                                             : GS(STATS_FINAL_STATISTICS);
+    }
+
+    return NULL;
 }
 
 static void M_AddRow(
-    UI_STATS_DIALOG *const self, const M_ROW_ROLE role, const char *const text)
+    UI_STATS_DIALOG *const self, const M_ROW_ROLE role, const char *const key,
+    const char *const value)
 {
     self->row_count++;
     self->rows = Memory_Realloc(self->rows, sizeof(M_ROW) * self->row_count);
-    self->rows[self->row_count - 1].label =
-        UI_Label_Create(text, UI_LABEL_AUTO_SIZE, ROW_HEIGHT);
-    self->rows[self->row_count - 1].role = role;
-    UI_Stack_AddChild(self->stack, self->rows[self->row_count - 1].label);
+    M_ROW *const row = &self->rows[self->row_count - 1];
+    row->role = role;
+
+    // create a stack
+    int32_t row_height;
+    if (self->args.style == UI_STATS_DIALOG_STYLE_BARE) {
+        row_height = ROW_HEIGHT_BARE;
+        row->stack = UI_Stack_Create(
+            UI_STACK_LAYOUT_HORIZONTAL, UI_STACK_AUTO_SIZE, row_height);
+    } else {
+        row_height = ROW_HEIGHT_BORDERED;
+        row->stack =
+            UI_Stack_Create(UI_STACK_LAYOUT_HORIZONTAL, 200, row_height);
+        UI_Stack_SetHAlign(row->stack, UI_STACK_H_ALIGN_DISTRIBUTE);
+    }
+
+    // create a key label; append space for the bare style
+    char key2[strlen(key) + 2];
+    sprintf(
+        key2, self->args.style == UI_STATS_DIALOG_STYLE_BARE ? "%s " : "%s",
+        key);
+    row->key_label = UI_Label_Create(key2, UI_LABEL_AUTO_SIZE, row_height);
+
+    // create a value label
+    row->value_label = UI_Label_Create(value, UI_LABEL_AUTO_SIZE, row_height);
+
+    UI_Stack_AddChild(row->stack, row->key_label);
+    UI_Stack_AddChild(row->stack, row->value_label);
+    UI_Stack_AddChild(self->stack, row->stack);
 }
 
 static void M_AddRowFromRole(
@@ -90,56 +137,46 @@ static void M_AddRowFromRole(
     const STATS_COMMON *const stats)
 {
     char buf[50];
+    const char *const num_fmt = g_Config.gameplay.enable_detailed_stats
+        ? GS(STATS_DETAIL_FMT)
+        : GS(STATS_BASIC_FMT);
 
     switch (role) {
     case M_ROW_KILLS:
-        sprintf(
-            buf,
-            g_Config.gameplay.enable_detailed_stats ? GS(STATS_KILLS_DETAIL_FMT)
-                                                    : GS(STATS_KILLS_BASIC_FMT),
-            stats->kill_count, stats->max_kill_count);
-        M_AddRow(self, role, buf);
+        sprintf(buf, num_fmt, stats->kill_count, stats->max_kill_count);
+        M_AddRow(self, role, GS(STATS_KILLS), buf);
         break;
 
     case M_ROW_PICKUPS:
+        sprintf(buf, num_fmt, stats->pickup_count, stats->max_pickup_count);
+        M_AddRow(self, role, GS(STATS_PICKUPS), buf);
+        break;
+
+    case M_ROW_SECRETS:
         sprintf(
-            buf,
-            g_Config.gameplay.enable_detailed_stats
-                ? GS(STATS_PICKUPS_DETAIL_FMT)
-                : GS(STATS_PICKUPS_BASIC_FMT),
-            stats->pickup_count, stats->max_pickup_count);
-        M_AddRow(self, role, buf);
+            buf, GS(STATS_DETAIL_FMT), stats->secret_count,
+            stats->max_secret_count);
+        M_AddRow(self, role, GS(STATS_SECRETS), buf);
         break;
 
-    case M_ROW_SECRETS: {
-        int secret_count = stats->secret_count;
-        sprintf(
-            buf, GS(STATS_SECRETS_FMT), secret_count, stats->max_secret_count);
-        M_AddRow(self, role, buf);
+    case M_ROW_DEATHS:
+        sprintf(buf, "%d", stats->death_count);
+        M_AddRow(self, role, GS(STATS_DEATHS), buf);
         break;
-    }
 
-    case M_ROW_DEATHS: {
-        sprintf(buf, GS(STATS_DEATHS_FMT), stats->death_count);
-        M_AddRow(self, role, buf);
-        break;
-    }
-
-    case M_ROW_TIMER: {
+    case M_ROW_TIMER:
         M_FormatTime(buf, stats->timer);
-        M_AddRow(self, role, buf);
+        M_AddRow(self, role, GS(STATS_TIME_TAKEN), buf);
         break;
-    }
 
     default:
         break;
     }
 }
 
-static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
+static void M_AddCommonRows(
+    UI_STATS_DIALOG *const self, const STATS_COMMON *const stats)
 {
-    const STATS_COMMON *stats =
-        (STATS_COMMON *)&g_GameInfo.current[self->level_num].stats;
     M_AddRowFromRole(self, M_ROW_KILLS, stats);
     M_AddRowFromRole(self, M_ROW_PICKUPS, stats);
     M_AddRowFromRole(self, M_ROW_SECRETS, stats);
@@ -148,26 +185,25 @@ static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
         M_AddRowFromRole(self, M_ROW_DEATHS, stats);
     }
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
+}
+
+static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
+{
+    const STATS_COMMON *stats =
+        (STATS_COMMON *)&g_GameInfo.current[self->args.level_num].stats;
+    M_AddCommonRows(self, stats);
 }
 
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
 {
     FINAL_STATS final_stats;
     Stats_ComputeFinal(self->level_type, &final_stats);
-    const STATS_COMMON *stats = (STATS_COMMON *)&final_stats;
-    M_AddRowFromRole(self, M_ROW_KILLS, stats);
-    M_AddRowFromRole(self, M_ROW_PICKUPS, stats);
-    M_AddRowFromRole(self, M_ROW_SECRETS, stats);
-    if (g_Config.gameplay.enable_deaths_counter
-        && g_GameInfo.death_counter_supported) {
-        M_AddRowFromRole(self, M_ROW_DEATHS, stats);
-    }
-    M_AddRowFromRole(self, M_ROW_TIMER, stats);
+    M_AddCommonRows(self, (STATS_COMMON *)&final_stats);
 }
 
 static void M_UpdateTimerRow(UI_STATS_DIALOG *const self)
 {
-    if (self->mode != UI_STATS_DIALOG_MODE_LEVEL) {
+    if (self->args.mode != UI_STATS_DIALOG_MODE_LEVEL) {
         return;
     }
 
@@ -176,8 +212,8 @@ static void M_UpdateTimerRow(UI_STATS_DIALOG *const self)
             continue;
         }
         char buf[50];
-        M_FormatTime(buf, g_GameInfo.current[self->level_num].stats.timer);
-        UI_Label_ChangeText(self->rows[i].label, buf);
+        M_FormatTime(buf, g_GameInfo.current[self->args.level_num].stats.timer);
+        UI_Label_ChangeText(self->rows[i].value_label, buf);
         return;
     }
 }
@@ -197,49 +233,54 @@ static void M_HandleLayoutUpdate(const EVENT *event, void *data)
 
 static int32_t M_GetWidth(const UI_STATS_DIALOG *const self)
 {
-    return self->stack->get_width(self->stack);
+    return self->root->get_width(self->root);
 }
 
 static int32_t M_GetHeight(const UI_STATS_DIALOG *const self)
 {
-    return self->stack->get_height(self->stack);
+    return self->root->get_height(self->root);
 }
 
 static void M_SetPosition(
     UI_STATS_DIALOG *const self, const int32_t x, const int32_t y)
 {
-    self->stack->set_position(self->stack, x, y);
+    self->root->set_position(self->root, x, y);
 }
 
 static void M_Control(UI_STATS_DIALOG *const self)
 {
-    if (self->stack->control != NULL) {
-        self->stack->control(self->stack);
+    if (self->root->control != NULL) {
+        self->root->control(self->root);
     }
-
     M_UpdateTimerRow(self);
 }
 
 static void M_Draw(UI_STATS_DIALOG *const self)
 {
-    if (self->stack->draw != NULL) {
-        self->stack->draw(self->stack);
+    if (self->root->draw != NULL) {
+        self->root->draw(self->root);
     }
 }
 
 static void M_Free(UI_STATS_DIALOG *const self)
 {
-    self->title->free(self->title);
+    if (self->title != NULL) {
+        self->title->free(self->title);
+    }
     for (int32_t i = 0; i < self->row_count; i++) {
-        self->rows[i].label->free(self->rows[i].label);
+        self->rows[i].key_label->free(self->rows[i].key_label);
+        self->rows[i].value_label->free(self->rows[i].value_label);
+        self->rows[i].stack->free(self->rows[i].stack);
+    }
+    if (self->window != NULL) {
+        self->window->free(self->window);
     }
     self->stack->free(self->stack);
     UI_Events_Unsubscribe(self->listener);
     Memory_Free(self);
 }
 
-UI_WIDGET *UI_StatsDialog_Create(
-    const UI_STATS_DIALOG_MODE mode, const int32_t level_num)
+UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_ARGS args)
 {
     UI_STATS_DIALOG *const self = Memory_Alloc(sizeof(UI_STATS_DIALOG));
     self->vtable = (UI_WIDGET_VTABLE) {
@@ -251,9 +292,8 @@ UI_WIDGET *UI_StatsDialog_Create(
         .free = (UI_WIDGET_FREE)M_Free,
     };
 
-    self->mode = mode;
-    self->level_num = level_num;
-    self->level_type = g_GameFlow.levels[self->level_num].level_type;
+    self->args = args;
+    self->level_type = g_GameFlow.levels[self->args.level_num].level_type;
 
     self->row_count = 0;
     self->rows = NULL;
@@ -264,26 +304,30 @@ UI_WIDGET *UI_StatsDialog_Create(
     self->listener =
         UI_Events_Subscribe("layout_update", NULL, M_HandleLayoutUpdate, self);
 
-    switch (mode) {
-    case UI_STATS_DIALOG_MODE_LEVEL:
-        self->title = UI_Label_Create(
-            g_GameFlow.levels[self->level_num].level_title, UI_LABEL_AUTO_SIZE,
-            ROW_HEIGHT);
-        UI_Stack_AddChild(self->stack, self->title);
-        M_AddLevelStatsRows(self);
+    const char *title = M_GetDialogTitle(self);
+    switch (self->args.style) {
+    case UI_STATS_DIALOG_STYLE_BARE:
+        if (title != NULL) {
+            self->title =
+                UI_Label_Create(title, UI_LABEL_AUTO_SIZE, ROW_HEIGHT_BARE);
+            UI_Stack_AddChild(self->stack, self->title);
+        }
+        self->root = self->stack;
         break;
 
-    case UI_STATS_DIALOG_MODE_FINAL:
-        self->title = UI_Label_Create(
-            self->level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
-                                          : GS(STATS_FINAL_STATISTICS),
-            UI_LABEL_AUTO_SIZE, ROW_HEIGHT);
-        UI_Stack_AddChild(self->stack, self->title);
-        M_AddFinalStatsRows(self);
+    case UI_STATS_DIALOG_STYLE_BORDERED:
+        self->window = UI_Window_Create(self->stack, 8, 8, 8, 8);
+        UI_Window_SetTitle(self->window, title);
+        self->root = self->window;
         break;
     }
 
-    M_DoLayout(self);
+    if (self->args.mode == UI_STATS_DIALOG_MODE_LEVEL) {
+        M_AddLevelStatsRows(self);
+    } else if (self->args.mode == UI_STATS_DIALOG_MODE_FINAL) {
+        M_AddFinalStatsRows(self);
+    }
 
+    M_DoLayout(self);
     return (UI_WIDGET *)self;
 }

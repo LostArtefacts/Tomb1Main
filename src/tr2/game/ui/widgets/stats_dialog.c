@@ -5,6 +5,7 @@
 #include "game/stats.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/game/ui/widgets/label.h>
 #include <libtrx/game/ui/widgets/requester.h>
@@ -30,9 +31,8 @@ typedef enum {
 
 typedef struct {
     UI_WIDGET_VTABLE vtable;
-    UI_STATS_DIALOG_MODE mode;
+    UI_STATS_DIALOG_ARGS args;
     UI_WIDGET *requester;
-    int32_t level_num;
     int32_t listener;
 } UI_STATS_DIALOG;
 
@@ -153,9 +153,9 @@ static void M_AddRowFromRole(
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
-    const STATS_COMMON *stats = self->level_num == g_CurrentLevel
+    const STATS_COMMON *stats = self->args.level_num == g_CurrentLevel
         ? (STATS_COMMON *)&g_SaveGame.current_stats
-        : (STATS_COMMON *)&g_SaveGame.start[self->level_num].stats;
+        : (STATS_COMMON *)&g_SaveGame.start[self->args.level_num].stats;
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
     if (g_GF_NumSecrets != 0) {
         M_AddRowFromRole(self, M_ROW_LEVEL_SECRETS, stats);
@@ -211,7 +211,7 @@ static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
 
 static void M_UpdateTimerRow(UI_STATS_DIALOG *const self)
 {
-    if (self->mode != UI_STATS_DIALOG_MODE_LEVEL) {
+    if (self->args.mode != UI_STATS_DIALOG_MODE_LEVEL) {
         return;
     }
 
@@ -282,7 +282,7 @@ static void M_Free(UI_STATS_DIALOG *const self)
     Memory_Free(self);
 }
 
-UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_MODE mode, int32_t level_num)
+UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_ARGS args)
 {
     UI_STATS_DIALOG *const self = Memory_Alloc(sizeof(UI_STATS_DIALOG));
     self->vtable = (UI_WIDGET_VTABLE) {
@@ -294,8 +294,11 @@ UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_MODE mode, int32_t level_num)
         .free = (UI_WIDGET_FREE)M_Free,
     };
 
-    self->mode = mode;
-    self->level_num = level_num;
+    // TODO: add support for the bare style by merging TR1 and TR2 stats dialog
+    // implementations.
+    ASSERT(args.style == UI_STATS_DIALOG_STYLE_BORDERED);
+
+    self->args = args;
     self->requester = UI_Requester_Create((UI_REQUESTER_SETTINGS) {
         .is_selectable = false,
         .visible_rows = VISIBLE_ROWS,
@@ -306,9 +309,9 @@ UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_MODE mode, int32_t level_num)
     self->listener =
         UI_Events_Subscribe("layout_update", NULL, M_HandleLayoutUpdate, self);
 
-    switch (mode) {
+    switch (args.mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
-        UI_Requester_SetTitle(self->requester, g_GF_LevelNames[level_num]);
+        UI_Requester_SetTitle(self->requester, g_GF_LevelNames[args.level_num]);
         M_AddLevelStatsRows(self);
         break;
 

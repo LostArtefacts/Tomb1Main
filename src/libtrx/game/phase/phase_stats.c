@@ -84,11 +84,14 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
             M_FadeIn(p);
         }
 
-        p->ui = UI_StatsDialog_Create(
-            p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
-                                     : UI_STATS_DIALOG_MODE_LEVEL,
-            p->args.level_num != -1 ? p->args.level_num
-                                    : Game_GetCurrentLevelNum());
+        p->ui = UI_StatsDialog_Create((UI_STATS_DIALOG_ARGS) {
+            .mode = p->args.show_final_stats ? UI_STATS_DIALOG_MODE_FINAL
+                                             : UI_STATS_DIALOG_MODE_LEVEL,
+            .style = p->args.use_bare_style ? UI_STATS_DIALOG_STYLE_BARE
+                                            : UI_STATS_DIALOG_STYLE_BORDERED,
+            .level_num = p->args.level_num != -1 ? p->args.level_num
+                                                 : Game_GetCurrentLevelNum(),
+        });
     }
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };

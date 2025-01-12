@@ -159,6 +159,10 @@ void Option_Draw(INVENTORY_ITEM *inv_item)
         }
         break;
 
+    case O_COMPASS_OPTION:
+        Option_Compass_Draw();
+        break;
+
     case O_PICKUP_OPTION_1:
     case O_PICKUP_OPTION_2:
     case O_PUZZLE_OPTION_1:

@@ -304,6 +304,7 @@ GAME_FLOW_COMMAND DisplayCredits(void)
             .background_type = BK_IMAGE,
             .background_path = "data/end.pcx",
             .show_final_stats = true,
+            .use_bare_style = false,
         });
         const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
 

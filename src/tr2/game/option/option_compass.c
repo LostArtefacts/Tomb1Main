@@ -14,10 +14,12 @@ static void M_Init(void);
 
 static void M_Init(void)
 {
-    m_Dialog = UI_StatsDialog_Create(
-        g_CurrentLevel == LV_GYM ? UI_STATS_DIALOG_MODE_ASSAULT_COURSE
-                                 : UI_STATS_DIALOG_MODE_LEVEL,
-        g_CurrentLevel);
+    m_Dialog = UI_StatsDialog_Create((UI_STATS_DIALOG_ARGS) {
+        .mode = g_CurrentLevel == LV_GYM ? UI_STATS_DIALOG_MODE_ASSAULT_COURSE
+                                         : UI_STATS_DIALOG_MODE_LEVEL,
+        .level_num = g_CurrentLevel,
+        .style = UI_STATS_DIALOG_STYLE_BORDERED,
+    });
 }
 
 static void M_Shutdown(void)

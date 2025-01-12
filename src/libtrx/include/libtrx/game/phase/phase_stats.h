@@ -7,6 +7,7 @@ typedef struct {
     BACKGROUND_TYPE background_type;
     const char *background_path;
     bool show_final_stats;
+    bool use_bare_style;
     int32_t level_num;
 } PHASE_STATS_ARGS;
 

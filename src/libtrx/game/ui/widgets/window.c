@@ -144,7 +144,7 @@ UI_WIDGET *UI_Window_Create(
     self->border.bottom = border_bottom;
     self->border.left = border_left;
     self->title_margin = 2;
-    self->title_padding = 1;
+    self->title_padding = 2;
 
     self->frame = Text_Create(0, 0, "");
     self->frame->pos.z = 32;

@@ -1093,6 +1093,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 .background_path = NULL,
                 .level_num = (int32_t)(intptr_t)seq->data,
                 .show_final_stats = false,
+                .use_bare_style = true,
             });
             command = PhaseExecutor_Run(phase);
             Phase_Stats_Destroy(phase);
@@ -1111,6 +1112,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                     .background_path = data->path,
                     .level_num = level_num,
                     .show_final_stats = true,
+                    .use_bare_style = false,
                 });
                 command = PhaseExecutor_Run(phase);
                 Phase_Stats_Destroy(phase);

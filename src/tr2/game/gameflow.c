@@ -474,6 +474,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                         .background_type = BK_OBJECT,
                         .show_final_stats = false,
                         .level_num = g_CurrentLevel,
+                        .use_bare_style = false,
                     });
                 gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);
