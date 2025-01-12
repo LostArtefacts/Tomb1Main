@@ -75,7 +75,7 @@ void SphereOfDoom_Control(const int16_t item_num)
 void SphereOfDoom_Draw(const ITEM *const item)
 {
     Matrix_Push();
-    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_TranslateAbs32(item->pos);
     Matrix_RotY(item->rot.y);
 
     MATRIX *const mptr = g_MatrixPtr;

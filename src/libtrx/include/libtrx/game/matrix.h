@@ -35,8 +35,13 @@ void Matrix_RotY(int16_t ry);
 void Matrix_RotZ(int16_t rz);
 void Matrix_RotYXZ(int16_t ry, int16_t rx, int16_t rz);
 void Matrix_RotXYZ16(XYZ_16 rotation);
+
 void Matrix_TranslateRel(int32_t x, int32_t y, int32_t z);
+void Matrix_TranslateRel16(XYZ_16 offset);
+void Matrix_TranslateRel32(XYZ_32 offset);
 void Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z);
+void Matrix_TranslateAbs16(XYZ_16 offset);
+void Matrix_TranslateAbs32(XYZ_32 offset);
 void Matrix_TranslateSet(int32_t x, int32_t y, int32_t z);
 
 void Matrix_Push_I(void);
@@ -49,8 +54,12 @@ void Matrix_RotYXZ_I(int16_t y, int16_t x, int16_t z);
 void Matrix_RotXYZ16_I(XYZ_16 rotation_1, XYZ_16 rotation_2);
 
 void Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z);
+void Matrix_TranslateRel16_I(XYZ_16 offset);
+void Matrix_TranslateRel32_I(XYZ_32 offset);
 void Matrix_TranslateRel_ID(
     int32_t x, int32_t y, int32_t z, int32_t x2, int32_t y2, int32_t z2);
+void Matrix_TranslateRel16_ID(XYZ_16 offset_1, XYZ_16 offset_2);
+void Matrix_TranslateRel32_ID(XYZ_32 offset_1, XYZ_32 offset_2);
 
 void Matrix_InitInterpolate(int32_t frac, int32_t rate);
 void Matrix_Interpolate(void);

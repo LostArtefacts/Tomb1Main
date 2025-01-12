@@ -186,6 +186,16 @@ void Matrix_TranslateRel(const int32_t x, const int32_t y, const int32_t z)
     mptr->_23 += x * mptr->_20 + y * mptr->_21 + z * mptr->_22;
 }
 
+void Matrix_TranslateRel16(const XYZ_16 offset)
+{
+    Matrix_TranslateRel(offset.x, offset.y, offset.z);
+}
+
+void Matrix_TranslateRel32(const XYZ_32 offset)
+{
+    Matrix_TranslateRel(offset.x, offset.y, offset.z);
+}
+
 void Matrix_TranslateAbs(const int32_t x, const int32_t y, const int32_t z)
 {
     MATRIX *const mptr = g_MatrixPtr;
@@ -195,6 +205,16 @@ void Matrix_TranslateAbs(const int32_t x, const int32_t y, const int32_t z)
     mptr->_03 = dx * mptr->_00 + dy * mptr->_01 + dz * mptr->_02;
     mptr->_13 = dx * mptr->_10 + dy * mptr->_11 + dz * mptr->_12;
     mptr->_23 = dx * mptr->_20 + dy * mptr->_21 + dz * mptr->_22;
+}
+
+void Matrix_TranslateAbs16(const XYZ_16 offset)
+{
+    Matrix_TranslateAbs(offset.x, offset.y, offset.z);
+}
+
+void Matrix_TranslateAbs32(const XYZ_32 offset)
+{
+    Matrix_TranslateAbs(offset.x, offset.y, offset.z);
 }
 
 void Matrix_TranslateSet(const int32_t x, const int32_t y, const int32_t z)
@@ -273,6 +293,16 @@ void Matrix_TranslateRel_I(const int32_t x, const int32_t y, const int32_t z)
     g_MatrixPtr = old_matrix;
 }
 
+void Matrix_TranslateRel16_I(const XYZ_16 offset)
+{
+    Matrix_TranslateRel_I(offset.x, offset.y, offset.z);
+}
+
+void Matrix_TranslateRel32_I(const XYZ_32 offset)
+{
+    Matrix_TranslateRel_I(offset.x, offset.y, offset.z);
+}
+
 void Matrix_TranslateRel_ID(
     const int32_t x, const int32_t y, const int32_t z, const int32_t x2,
     const int32_t y2, const int32_t z2)
@@ -282,6 +312,18 @@ void Matrix_TranslateRel_ID(
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_TranslateRel(x2, y2, z2);
     g_MatrixPtr = old_matrix;
+}
+
+void Matrix_TranslateRel16_ID(const XYZ_16 offset_1, const XYZ_16 offset_2)
+{
+    Matrix_TranslateRel_ID(
+        offset_1.x, offset_1.y, offset_1.z, offset_2.x, offset_2.y, offset_2.z);
+}
+
+void Matrix_TranslateRel32_ID(const XYZ_32 offset_1, const XYZ_32 offset_2)
+{
+    Matrix_TranslateRel_ID(
+        offset_1.x, offset_1.y, offset_1.z, offset_2.x, offset_2.y, offset_2.z);
 }
 
 void Matrix_RotY_I(const int16_t ang)

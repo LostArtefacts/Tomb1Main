@@ -86,7 +86,7 @@ void Room_GetBounds(void)
         }
 
         Matrix_Push();
-        Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+        Matrix_TranslateAbs32(r->pos);
         for (int32_t i = 0; i < r->portals->count; i++) {
             const PORTAL *const portal = &r->portals->portal[i];
 
@@ -382,7 +382,7 @@ void Room_DrawSingleRoomGeometry(const int16_t room_num)
         Output_SetupAboveWater(g_CameraUnderwater);
     }
 
-    Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+    Matrix_TranslateAbs32(r->pos);
     g_PhdWinLeft = r->bound_left;
     g_PhdWinRight = r->bound_right;
     g_PhdWinTop = r->bound_top;
@@ -412,7 +412,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
     r->bound_active = 0;
 
     Matrix_Push();
-    Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+    Matrix_TranslateAbs32(r->pos);
 
     g_PhdWinLeft = r->bound_left;
     g_PhdWinTop = r->bound_top;
@@ -428,7 +428,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         }
 
         Matrix_Push();
-        Matrix_TranslateAbs(mesh->pos.x, mesh->pos.y, mesh->pos.z);
+        Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
         const int16_t bounds = Output_GetObjectBounds(&static_obj->draw_bounds);
         if (bounds) {

@@ -271,7 +271,7 @@ void Pickup_Draw(const ITEM *const item)
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32(bone->pos);
             if (mesh_rots != NULL) {
                 Matrix_RotXYZ16(mesh_rots[i]);
             }

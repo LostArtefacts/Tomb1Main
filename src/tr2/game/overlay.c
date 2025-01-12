@@ -428,10 +428,12 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     Output_SetupAboveWater(false);
 
     Matrix_Push();
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
-    Matrix_TranslateRel(
-        -(bounds.min.x + bounds.max.x) / 2, -(bounds.min.y + bounds.max.y) / 2,
-        -(bounds.min.z + bounds.max.z) / 2);
+    Matrix_TranslateRel16(frame->offset);
+    Matrix_TranslateRel32((XYZ_32) {
+        .x = -(bounds.min.x + bounds.max.x) / 2,
+        .y = -(bounds.min.y + bounds.max.y) / 2,
+        .z = -(bounds.min.z + bounds.max.z) / 2,
+    });
 
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     Matrix_RotXYZ16(frame->mesh_rots[0]);
@@ -447,7 +449,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+        Matrix_TranslateRel32(bone->pos);
         Matrix_RotXYZ16(frame->mesh_rots[mesh_idx]);
 
         Output_InsertPolygons(mesh_ptrs[mesh_idx], 0);

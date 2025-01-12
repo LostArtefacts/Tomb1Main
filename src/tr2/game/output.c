@@ -1077,10 +1077,11 @@ void Output_CalculateObjectLighting(
 
     Matrix_TranslateSet(0, 0, 0);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
-    Matrix_TranslateRel(
-        (bounds->min.x + bounds->max.x) / 2,
-        (bounds->max.y + bounds->min.y) / 2,
-        (bounds->max.z + bounds->min.z) / 2);
+    Matrix_TranslateRel32((XYZ_32) {
+        .x = (bounds->min.x + bounds->max.x) / 2,
+        .y = (bounds->max.y + bounds->min.y) / 2,
+        .z = (bounds->max.z + bounds->min.z) / 2,
+    });
     const XYZ_32 pos = {
         .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
         .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),

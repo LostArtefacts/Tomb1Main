@@ -968,7 +968,7 @@ void Skidoo_Draw(const ITEM *const item)
     const int32_t frac = Item_GetFrames(item, frames, &rate);
 
     Matrix_Push();
-    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_TranslateAbs32(item->pos);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
     const int32_t clip = Output_GetObjectBounds(&frames[0]->bounds);
@@ -981,9 +981,7 @@ void Skidoo_Draw(const ITEM *const item)
 
     if (frac) {
         Matrix_InitInterpolate(frac, rate);
-        Matrix_TranslateRel_ID(
-            frames[0]->offset.x, frames[0]->offset.y, frames[0]->offset.z,
-            frames[1]->offset.x, frames[1]->offset.y, frames[1]->offset.z);
+        Matrix_TranslateRel16_ID(frames[0]->offset, frames[1]->offset);
         Matrix_RotXYZ16_I(frames[0]->mesh_rots[0], frames[1]->mesh_rots[0]);
 
         Output_InsertPolygons_I(mesh_ptrs[0], clip);
@@ -996,15 +994,14 @@ void Skidoo_Draw(const ITEM *const item)
                 Matrix_Push_I();
             }
 
-            Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32_I(bone->pos);
             Matrix_RotXYZ16_I(
                 frames[0]->mesh_rots[mesh_idx], frames[1]->mesh_rots[mesh_idx]);
 
             Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
         }
     } else {
-        Matrix_TranslateRel(
-            frames[0]->offset.x, frames[0]->offset.y, frames[0]->offset.z);
+        Matrix_TranslateRel16(frames[0]->offset);
         Matrix_RotXYZ16(frames[0]->mesh_rots[0]);
 
         Output_InsertPolygons(mesh_ptrs[0], clip);
@@ -1017,7 +1014,7 @@ void Skidoo_Draw(const ITEM *const item)
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32(bone->pos);
             Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
 
             Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);

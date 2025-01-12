@@ -170,7 +170,7 @@ void LightningEmitter_Draw(ITEM *item)
     Item_GetFrames(item, frmptr, &rate);
 
     Matrix_Push();
-    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_TranslateAbs32(item->pos);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
     int32_t clip = Output_GetObjectBounds(&frmptr[0]->bounds);
@@ -181,8 +181,7 @@ void LightningEmitter_Draw(ITEM *item)
 
     Output_CalculateObjectLighting(item, &frmptr[0]->bounds);
 
-    Matrix_TranslateRel(
-        frmptr[0]->offset.x, frmptr[0]->offset.y, frmptr[0]->offset.z);
+    Matrix_TranslateRel16(frmptr[0]->offset);
 
     int32_t x1 = g_MatrixPtr->_03;
     int32_t y1 = g_MatrixPtr->_13;
@@ -200,7 +199,7 @@ void LightningEmitter_Draw(ITEM *item)
 
     Matrix_Push();
 
-    Matrix_TranslateAbs(l->target.x, l->target.y, l->target.z);
+    Matrix_TranslateAbs32(l->target);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
     int32_t x2 = g_MatrixPtr->_03;
@@ -253,7 +252,7 @@ void LightningEmitter_Draw(ITEM *item)
         Matrix_Pop();
         Matrix_Push();
 
-        Matrix_TranslateAbs(l->end[i].x, l->end[i].y, l->end[i].z);
+        Matrix_TranslateAbs32(l->end[i]);
         Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
         x2 = g_MatrixPtr->_03;

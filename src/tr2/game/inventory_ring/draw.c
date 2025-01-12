@@ -112,8 +112,7 @@ static void M_DrawItem(
         return;
     }
 
-    Matrix_TranslateRel(
-        frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
+    Matrix_TranslateRel16(frame_ptr->offset);
     Matrix_RotXYZ16(frame_ptr->mesh_rots[0]);
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -126,7 +125,7 @@ static void M_DrawItem(
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32(bone->pos);
             Matrix_RotXYZ16(frame_ptr->mesh_rots[mesh_idx]);
 
             if (inv_item->object_id == O_COMPASS_OPTION) {
@@ -168,8 +167,7 @@ void InvRing_Draw(INV_RING *const ring)
     InvRing_Light(ring);
 
     Matrix_Push();
-    Matrix_TranslateAbs(
-        ring->ring_pos.pos.x, ring->ring_pos.pos.y, ring->ring_pos.pos.z);
+    Matrix_TranslateAbs32(ring->ring_pos.pos);
     Matrix_RotYXZ(
         ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
 

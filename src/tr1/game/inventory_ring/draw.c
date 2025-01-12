@@ -191,8 +191,7 @@ void InvRing_Draw(INV_RING *const ring)
     InvRing_Light(ring);
 
     Matrix_Push();
-    Matrix_TranslateAbs(
-        ring->ring_pos.pos.x, ring->ring_pos.pos.y, ring->ring_pos.pos.z);
+    Matrix_TranslateAbs32(ring->ring_pos.pos);
     Matrix_RotYXZ(
         ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
 

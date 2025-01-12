@@ -200,7 +200,7 @@ void Object_DrawPickupItem(ITEM *item)
         // matches the following line.
         int32_t bit = 1;
 
-        Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+        Matrix_TranslateRel16(frame->offset);
         Matrix_RotXYZ16(frame->mesh_rots[0]);
 
         if (item->mesh_bits & bit) {
@@ -217,7 +217,7 @@ void Object_DrawPickupItem(ITEM *item)
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32(bone->pos);
             Matrix_RotXYZ16(frame->mesh_rots[i]);
 
             // Extra rotation is ignored in this case as it's not needed.
@@ -248,8 +248,7 @@ void Object_DrawInterpolatedObject(
 
     ASSERT(rate != 0);
     if (!frac) {
-        Matrix_TranslateRel(
-            frame1->offset.x, frame1->offset.y, frame1->offset.z);
+        Matrix_TranslateRel16(frame1->offset);
         Matrix_RotXYZ16(frame1->mesh_rots[0]);
 
         if (meshes & mesh_num) {
@@ -266,7 +265,7 @@ void Object_DrawInterpolatedObject(
                 Matrix_Push();
             }
 
-            Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32(bone->pos);
             Matrix_RotXYZ16(frame1->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
@@ -289,9 +288,7 @@ void Object_DrawInterpolatedObject(
     } else {
         ASSERT(frame2 != NULL);
         Matrix_InitInterpolate(frac, rate);
-        Matrix_TranslateRel_ID(
-            frame1->offset.x, frame1->offset.y, frame1->offset.z,
-            frame2->offset.x, frame2->offset.y, frame2->offset.z);
+        Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
         Matrix_RotXYZ16_I(frame1->mesh_rots[0], frame2->mesh_rots[0]);
 
         if (meshes & mesh_num) {
@@ -308,7 +305,7 @@ void Object_DrawInterpolatedObject(
                 Matrix_Push_I();
             }
 
-            Matrix_TranslateRel_I(bone->pos.x, bone->pos.y, bone->pos.z);
+            Matrix_TranslateRel32_I(bone->pos);
             Matrix_RotXYZ16_I(frame1->mesh_rots[i], frame2->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
@@ -345,9 +342,7 @@ void Object_DrawAnimatingItem(ITEM *item)
     }
 
     Matrix_Push();
-    Matrix_TranslateAbs(
-        item->interp.result.pos.x, item->interp.result.pos.y,
-        item->interp.result.pos.z);
+    Matrix_TranslateAbs32(item->interp.result.pos);
     Matrix_RotYXZ(
         item->interp.result.rot.y, item->interp.result.rot.x,
         item->interp.result.rot.z);

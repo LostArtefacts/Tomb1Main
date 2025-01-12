@@ -705,17 +705,16 @@ void Output_CalculateObjectLighting(
 
     Matrix_PushUnit();
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
-    Matrix_TranslateRel(
-        (bounds->min.x + bounds->max.x) / 2,
-        (bounds->min.y + bounds->max.y) / 2,
-        (bounds->min.z + bounds->max.z) / 2);
-
+    Matrix_TranslateRel32((XYZ_32) {
+        .x = (bounds->min.x + bounds->max.x) / 2,
+        .y = (bounds->min.y + bounds->max.y) / 2,
+        .z = (bounds->min.z + bounds->max.z) / 2,
+    });
     const XYZ_32 offset = {
         .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
         .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),
         .z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT),
     };
-
     Matrix_Pop();
 
     Output_CalculateLight(offset.x, offset.y, offset.z, item->room_num);

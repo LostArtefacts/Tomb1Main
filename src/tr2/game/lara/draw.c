@@ -18,13 +18,11 @@ static void M_DrawBodyPart(
     const XYZ_16 *mesh_rots_1, const XYZ_16 *mesh_rots_2, const int32_t clip)
 {
     if (mesh_rots_2 != NULL) {
-        Matrix_TranslateRel_I(
-            bone[mesh - 1].pos.x, bone[mesh - 1].pos.y, bone[mesh - 1].pos.z);
+        Matrix_TranslateRel32_I(bone[mesh - 1].pos);
         Matrix_RotXYZ16_I(mesh_rots_1[mesh], mesh_rots_2[mesh]);
         Output_InsertPolygons_I(g_Lara.mesh_ptrs[mesh], clip);
     } else {
-        Matrix_TranslateRel(
-            bone[mesh - 1].pos.x, bone[mesh - 1].pos.y, bone[mesh - 1].pos.z);
+        Matrix_TranslateRel32(bone[mesh - 1].pos);
         Matrix_RotXYZ16(mesh_rots_1[mesh]);
         Output_InsertPolygons(g_Lara.mesh_ptrs[mesh], clip);
     }
@@ -79,7 +77,7 @@ void Lara_Draw(const ITEM *const item)
     saved_matrix = *g_MatrixPtr;
 
     Matrix_Push();
-    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_TranslateAbs32(item->pos);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     const MATRIX item_matrix = *g_MatrixPtr;
     const int32_t clip = Output_GetObjectBounds(&frame->bounds);
@@ -95,7 +93,7 @@ void Lara_Draw(const ITEM *const item)
     const XYZ_16 *mesh_rots = frame->mesh_rots;
     const XYZ_16 *mesh_rots_c;
 
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    Matrix_TranslateRel16(frame->offset);
     Matrix_RotXYZ16(mesh_rots[LM_HIPS]);
     Output_InsertPolygons(g_Lara.mesh_ptrs[LM_HIPS], clip);
 
@@ -111,7 +109,7 @@ void Lara_Draw(const ITEM *const item)
     M_DrawBodyPart(LM_FOOT_R, bone, mesh_rots, NULL, clip);
     Matrix_Pop();
 
-    Matrix_TranslateRel(bone[6].pos.x, bone[6].pos.y, bone[6].pos.z);
+    Matrix_TranslateRel32(bone[6].pos);
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
@@ -125,7 +123,7 @@ void Lara_Draw(const ITEM *const item)
     Output_InsertPolygons(g_Lara.mesh_ptrs[LM_TORSO], clip);
 
     Matrix_Push();
-    Matrix_TranslateRel(bone[13].pos.x, bone[13].pos.y, bone[13].pos.z);
+    Matrix_TranslateRel32(bone[13].pos);
     mesh_rots_c = mesh_rots;
     Matrix_RotXYZ16(mesh_rots[LM_HEAD]);
     mesh_rots = mesh_rots_c;
@@ -141,8 +139,7 @@ void Lara_Draw(const ITEM *const item)
         Matrix_Push();
         const ANIM_BONE *const bone_c =
             Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
-        Matrix_TranslateRel(
-            bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
+        Matrix_TranslateRel32(bone_c[13].pos);
         mesh_rots_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
         Matrix_RotXYZ16(mesh_rots_c[LM_HEAD]);
         Output_InsertPolygons(
@@ -166,7 +163,7 @@ void Lara_Draw(const ITEM *const item)
         Matrix_Pop();
 
         Matrix_Push();
-        Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
+        Matrix_TranslateRel32(bone[10].pos);
         if (g_Lara.flare_control_left) {
             const ANIM *const anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
             mesh_rots =
@@ -192,7 +189,7 @@ void Lara_Draw(const ITEM *const item)
     case LGT_MAGNUMS:
     case LGT_UZIS: {
         Matrix_Push();
-        Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
+        Matrix_TranslateRel32(bone[7].pos);
         g_MatrixPtr->_00 = item_matrix._00;
         g_MatrixPtr->_01 = item_matrix._01;
         g_MatrixPtr->_02 = item_matrix._02;
@@ -222,7 +219,7 @@ void Lara_Draw(const ITEM *const item)
         Matrix_Pop();
 
         Matrix_Push();
-        Matrix_TranslateRel(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
+        Matrix_TranslateRel32(bone[10].pos);
         g_MatrixPtr->_00 = item_matrix._00;
         g_MatrixPtr->_01 = item_matrix._01;
         g_MatrixPtr->_02 = item_matrix._02;
@@ -263,7 +260,7 @@ void Lara_Draw(const ITEM *const item)
     case LGT_GRENADE:
     case LGT_HARPOON: {
         Matrix_Push();
-        Matrix_TranslateRel(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
+        Matrix_TranslateRel32(bone[7].pos);
         mesh_rots =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
         Matrix_RotXYZ16(mesh_rots[LM_UARM_R]);
@@ -319,7 +316,7 @@ void Lara_Draw_I(
     MATRIX saved_matrix = *g_MatrixPtr;
 
     Matrix_Push();
-    Matrix_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    Matrix_TranslateAbs32(item->pos);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
 
     const int32_t clip = Output_GetObjectBounds(&frame1->bounds);
@@ -339,9 +336,7 @@ void Lara_Draw_I(
     const XYZ_16 *mesh_rots_2_c;
 
     Matrix_InitInterpolate(frac, rate);
-    Matrix_TranslateRel_ID(
-        frame1->offset.x, frame1->offset.y, frame1->offset.z, frame2->offset.x,
-        frame2->offset.y, frame2->offset.z);
+    Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
     Matrix_RotXYZ16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
     Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_HIPS], clip);
 
@@ -357,7 +352,7 @@ void Lara_Draw_I(
     M_DrawBodyPart(LM_FOOT_R, bone, mesh_rots_1, mesh_rots_2, clip);
     Matrix_Pop_I();
 
-    Matrix_TranslateRel_I(bone[6].pos.x, bone[6].pos.y, bone[6].pos.z);
+    Matrix_TranslateRel32_I(bone[6].pos);
     if (g_Lara.weapon_item != -1 && g_Lara.gun_type == 5
         && ((g_Items[g_Lara.weapon_item].current_anim_state) == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
@@ -372,7 +367,7 @@ void Lara_Draw_I(
     Output_InsertPolygons_I(g_Lara.mesh_ptrs[LM_TORSO], clip);
 
     Matrix_Push_I();
-    Matrix_TranslateRel_I(bone[13].pos.x, bone[13].pos.y, bone[13].pos.z);
+    Matrix_TranslateRel32_I(bone[13].pos);
     mesh_rots_1_c = mesh_rots_1;
     mesh_rots_2_c = mesh_rots_2;
     Matrix_RotXYZ16_I(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
@@ -389,8 +384,7 @@ void Lara_Draw_I(
         Matrix_Push_I();
         const ANIM_BONE *const bone_c =
             Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
-        Matrix_TranslateRel_I(
-            bone_c[13].pos.x, bone_c[13].pos.y, bone_c[13].pos.z);
+        Matrix_TranslateRel32_I(bone_c[13].pos);
         mesh_rots_1_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
         mesh_rots_2_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
         Matrix_RotXYZ16_I(mesh_rots_1_c[LM_HEAD], mesh_rots_2_c[LM_HEAD]);
@@ -415,7 +409,7 @@ void Lara_Draw_I(
         Matrix_Pop_I();
 
         Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
+        Matrix_TranslateRel32_I(bone[10].pos);
         if (g_Lara.flare_control_left) {
             const ANIM *const anim = Anim_GetAnim(g_Lara.left_arm.anim_num);
             mesh_rots_1 =
@@ -446,7 +440,7 @@ void Lara_Draw_I(
     case LGT_MAGNUMS:
     case LGT_UZIS: {
         Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
+        Matrix_TranslateRel32_I(bone[7].pos);
         Matrix_InterpolateArm();
         Matrix_RotYXZ(
             g_Lara.right_arm.rot.y, g_Lara.right_arm.rot.x,
@@ -468,7 +462,7 @@ void Lara_Draw_I(
         Matrix_Pop_I();
 
         Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[10].pos.x, bone[10].pos.y, bone[10].pos.z);
+        Matrix_TranslateRel32_I(bone[10].pos);
         Matrix_InterpolateArm();
         Matrix_RotYXZ(
             g_Lara.left_arm.rot.y, g_Lara.left_arm.rot.x,
@@ -500,7 +494,7 @@ void Lara_Draw_I(
     case LGT_GRENADE:
     case LGT_HARPOON: {
         Matrix_Push_I();
-        Matrix_TranslateRel_I(bone[7].pos.x, bone[7].pos.y, bone[7].pos.z);
+        Matrix_TranslateRel32_I(bone[7].pos);
         mesh_rots_1 =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
         mesh_rots_2 = mesh_rots_1;

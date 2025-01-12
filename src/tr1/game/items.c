@@ -800,7 +800,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
 
     Matrix_PushUnit();
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
+    Matrix_TranslateRel16(frame->offset);
     Matrix_RotXYZ16(frame->mesh_rots[0]);
 
 #if 0
@@ -842,7 +842,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+        Matrix_TranslateRel32(bone->pos);
         Matrix_RotXYZ16(frame->mesh_rots[i]);
 
 #if 0

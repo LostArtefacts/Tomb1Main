@@ -177,7 +177,7 @@ void Effect_Draw(const int16_t effect_num)
     }
 
     Matrix_Push();
-    Matrix_TranslateAbs(effect->pos.x, effect->pos.y, effect->pos.z);
+    Matrix_TranslateAbs32(effect->pos);
     if (g_MatrixPtr->_23 > g_PhdNearZ && g_MatrixPtr->_23 < g_PhdFarZ) {
         Matrix_RotYXZ(effect->rot.y, effect->rot.x, effect->rot.z);
         if (object->mesh_count) {

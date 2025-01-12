@@ -868,13 +868,10 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     const XYZ_16 *mesh_rots = frame_ptr->mesh_rots;
     const ANIM_BONE *bone = Object_GetBone(obj, 0);
 
-    Matrix_TranslateRel(
-        frame_ptr->offset.x, frame_ptr->offset.y, frame_ptr->offset.z);
+    Matrix_TranslateRel16(frame_ptr->offset);
     Matrix_RotXYZ16(mesh_rots[LM_HIPS]);
 
-    Matrix_TranslateRel(
-        bone[LM_TORSO - 1].pos.x, bone[LM_TORSO - 1].pos.y,
-        bone[LM_TORSO - 1].pos.z);
+    Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
     Matrix_RotXYZ16(mesh_rots[LM_TORSO]);
     Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
 
@@ -885,9 +882,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     }
 
     if (g_Lara.gun_type == LGT_FLARE) {
-        Matrix_TranslateRel(
-            bone[LM_UARM_L - 1].pos.x, bone[LM_UARM_L - 1].pos.y,
-            bone[LM_UARM_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
         if (g_Lara.flare_control_left) {
             const LARA_ARM *const arm = &g_Lara.left_arm;
             const ANIM *const anim = Anim_GetAnim(arm->anim_num);
@@ -898,37 +893,27 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
         }
         Matrix_RotXYZ16(mesh_rots[LM_UARM_L]);
 
-        Matrix_TranslateRel(
-            bone[LM_LARM_L - 1].pos.x, bone[LM_LARM_L - 1].pos.y,
-            bone[LM_LARM_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_LARM_L - 1].pos);
         Matrix_RotXYZ16(mesh_rots[LM_LARM_L]);
 
-        Matrix_TranslateRel(
-            bone[LM_HAND_L - 1].pos.x, bone[LM_HAND_L - 1].pos.y,
-            bone[LM_HAND_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_HAND_L - 1].pos);
         Matrix_RotXYZ16(mesh_rots[LM_HAND_L]);
     } else if (gun_type != LGT_UNARMED) {
-        Matrix_TranslateRel(
-            bone[LM_UARM_R - 1].pos.x, bone[LM_UARM_R - 1].pos.y,
-            bone[LM_UARM_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
 
         const LARA_ARM *const arm = &g_Lara.right_arm;
         const ANIM *const anim = Anim_GetAnim(arm->anim_num);
         mesh_rots = arm->frame_base[arm->frame_num].mesh_rots;
         Matrix_RotXYZ16(mesh_rots[LM_UARM_R]);
 
-        Matrix_TranslateRel(
-            bone[LM_LARM_R - 1].pos.x, bone[LM_LARM_R - 1].pos.y,
-            bone[LM_LARM_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_LARM_R - 1].pos);
         Matrix_RotXYZ16(mesh_rots[LM_LARM_R]);
 
-        Matrix_TranslateRel(
-            bone[LM_HAND_R - 1].pos.x, bone[LM_HAND_R - 1].pos.y,
-            bone[LM_HAND_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_HAND_R - 1].pos);
         Matrix_RotXYZ16(mesh_rots[LM_HAND_R]);
     }
 
-    Matrix_TranslateRel(vec->x, vec->y, vec->z);
+    Matrix_TranslateRel32(*vec);
     vec->x = g_LaraItem->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
     vec->y = g_LaraItem->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
     vec->z = g_LaraItem->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);
@@ -952,14 +937,10 @@ void Lara_GetJointAbsPosition_I(
     const XYZ_16 *mesh_rots_2 = frame2->mesh_rots;
     Matrix_InitInterpolate(frac, rate);
 
-    Matrix_TranslateRel_ID(
-        frame1->offset.x, frame1->offset.y, frame1->offset.z, frame2->offset.x,
-        frame2->offset.y, frame2->offset.z);
+    Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
     Matrix_RotXYZ16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
 
-    Matrix_TranslateRel_I(
-        bone[LM_TORSO - 1].pos.x, bone[LM_TORSO - 1].pos.y,
-        bone[LM_TORSO - 1].pos.z);
+    Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
     Matrix_RotXYZ16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
     Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
 
@@ -971,9 +952,7 @@ void Lara_GetJointAbsPosition_I(
 
     if (g_Lara.gun_type == LGT_FLARE) {
         Matrix_Interpolate();
-        Matrix_TranslateRel(
-            bone[LM_UARM_L - 1].pos.x, bone[LM_UARM_L - 1].pos.y,
-            bone[LM_UARM_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
         if (g_Lara.flare_control_left) {
             const LARA_ARM *const arm = &g_Lara.left_arm;
             const ANIM *const anim = Anim_GetAnim(arm->anim_num);
@@ -984,38 +963,28 @@ void Lara_GetJointAbsPosition_I(
         }
         Matrix_RotXYZ16(mesh_rots_1[LM_UARM_L]);
 
-        Matrix_TranslateRel(
-            bone[LM_LARM_L - 1].pos.x, bone[LM_LARM_L - 1].pos.y,
-            bone[LM_LARM_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_LARM_L - 1].pos);
         Matrix_RotXYZ16(mesh_rots_1[LM_LARM_L]);
 
-        Matrix_TranslateRel(
-            bone[LM_HAND_L - 1].pos.x, bone[LM_HAND_L - 1].pos.y,
-            bone[LM_UARM_L - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_HAND_L - 1].pos);
         Matrix_RotXYZ16(mesh_rots_1[LM_HAND_L]);
     } else if (gun_type != LGT_UNARMED) {
         Matrix_Interpolate();
-        Matrix_TranslateRel(
-            bone[LM_UARM_R - 1].pos.x, bone[LM_UARM_R - 1].pos.y,
-            bone[LM_UARM_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
 
         const LARA_ARM *const arm = &g_Lara.right_arm;
         const ANIM *const anim = Anim_GetAnim(arm->anim_num);
         mesh_rots_1 = arm->frame_base[arm->frame_num].mesh_rots;
         Matrix_RotXYZ16(mesh_rots_1[LM_UARM_R]);
 
-        Matrix_TranslateRel(
-            bone[LM_LARM_R - 1].pos.x, bone[LM_LARM_R - 1].pos.y,
-            bone[LM_LARM_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_LARM_R - 1].pos);
         Matrix_RotXYZ16(mesh_rots_1[LM_LARM_R]);
 
-        Matrix_TranslateRel(
-            bone[LM_HAND_R - 1].pos.x, bone[LM_HAND_R - 1].pos.y,
-            bone[LM_HAND_R - 1].pos.z);
+        Matrix_TranslateRel32(bone[LM_HAND_R - 1].pos);
         Matrix_RotXYZ16(mesh_rots_1[LM_HAND_R]);
     }
 
-    Matrix_TranslateRel(vec->x, vec->y, vec->z);
+    Matrix_TranslateRel32(*vec);
     vec->x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
     vec->y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
     vec->z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);

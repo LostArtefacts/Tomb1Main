@@ -180,7 +180,7 @@ static void M_GetBounds(int16_t room_num)
         Shell_ExitSystem("Matrix stack overflow.");
     }
     m_RoomNumStack[m_RoomNumStackIdx++] = room_num;
-    Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+    Matrix_TranslateAbs32(r->pos);
     if (r->portals != NULL) {
         for (int i = 0; i < r->portals->count; i++) {
             const PORTAL *portal = &r->portals->portal[i];
@@ -229,7 +229,7 @@ static void M_PrepareToDraw(int16_t room_num)
     }
 
     Matrix_Push();
-    Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+    Matrix_TranslateAbs32(r->pos);
     if (r->portals != NULL) {
         for (int i = 0; i < r->portals->count; i++) {
             const PORTAL *portal = &r->portals->portal[i];
@@ -275,7 +275,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     r->bound_active = 0;
 
     Matrix_Push();
-    Matrix_TranslateAbs(r->pos.x, r->pos.y, r->pos.z);
+    Matrix_TranslateAbs32(r->pos);
 
     g_PhdLeft = r->bound_left;
     g_PhdRight = r->bound_right;
@@ -299,7 +299,7 @@ void Room_DrawSingleRoom(int16_t room_num)
         }
 
         Matrix_Push();
-        Matrix_TranslateAbs(mesh->pos.x, mesh->pos.y, mesh->pos.z);
+        Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
         int clip = Output_GetObjectBounds(&info->p);
         if (clip) {

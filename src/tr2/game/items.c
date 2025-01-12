@@ -743,8 +743,7 @@ int32_t Item_Explode(
     g_MatrixPtr->_23 = 0;
 
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
-    Matrix_TranslateRel(
-        best_frame->offset.x, best_frame->offset.y, best_frame->offset.z);
+    Matrix_TranslateRel16(best_frame->offset);
     Matrix_RotXYZ16(best_frame->mesh_rots[0]);
 
     // main mesh
@@ -779,7 +778,7 @@ int32_t Item_Explode(
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+        Matrix_TranslateRel32(bone->pos);
         Matrix_RotXYZ16(best_frame->mesh_rots[i]);
 
         if (extra_rotation != NULL) {

@@ -395,11 +395,12 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     const ANIM_FRAME *const frame = Object_GetAnim(obj, 0)->frame_ptr;
 
     Matrix_Push();
-    Matrix_TranslateRel(frame->offset.x, frame->offset.y, frame->offset.z);
-    Matrix_TranslateRel(
-        -(frame->bounds.min.x + frame->bounds.max.x) / 2,
-        -(frame->bounds.min.y + frame->bounds.max.y) / 2,
-        -(frame->bounds.min.z + frame->bounds.max.z) / 2);
+    Matrix_TranslateRel16(frame->offset);
+    Matrix_TranslateRel32((XYZ_32) {
+        .x = -(frame->bounds.min.x + frame->bounds.max.x) / 2,
+        .y = -(frame->bounds.min.y + frame->bounds.max.y) / 2,
+        .z = -(frame->bounds.min.z + frame->bounds.max.z) / 2,
+    });
     Matrix_RotXYZ16(frame->mesh_rots[0]);
 
     Object_DrawMesh(obj->mesh_idx, 0, false);
@@ -414,7 +415,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
             Matrix_Push();
         }
 
-        Matrix_TranslateRel(bone->pos.x, bone->pos.y, bone->pos.z);
+        Matrix_TranslateRel32(bone->pos);
         Matrix_RotXYZ16(frame->mesh_rots[i]);
 
         Object_DrawMesh(obj->mesh_idx + i, 0, false);

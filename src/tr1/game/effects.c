@@ -152,9 +152,7 @@ void Effect_Draw(const int16_t effect_num)
             4096);
     } else {
         Matrix_Push();
-        Matrix_TranslateAbs(
-            effect->interp.result.pos.x, effect->interp.result.pos.y,
-            effect->interp.result.pos.z);
+        Matrix_TranslateAbs32(effect->interp.result.pos);
         if (g_MatrixPtr->_23 > Output_GetNearZ()
             && g_MatrixPtr->_23 < Output_GetFarZ()) {
             Matrix_RotYXZ(
