@@ -938,10 +938,10 @@ void Lara_GetJointAbsPosition_I(
     Matrix_InitInterpolate(frac, rate);
 
     Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
-    Matrix_Rot16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
+    Matrix_Rot16_ID(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
 
     Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
-    Matrix_Rot16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
+    Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
     Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
 
     LARA_GUN_TYPE gun_type = LGT_UNARMED;

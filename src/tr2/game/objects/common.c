@@ -51,7 +51,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
             if (mesh_idx == 0) {
                 Matrix_InitInterpolate(frac, rate);
                 Matrix_TranslateRel16_ID(frames[0]->offset, frames[1]->offset);
-                Matrix_Rot16_I(
+                Matrix_Rot16_ID(
                     frames[0]->mesh_rots[mesh_idx],
                     frames[1]->mesh_rots[mesh_idx]);
             } else {
@@ -64,7 +64,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 }
 
                 Matrix_TranslateRel32_I(bone->pos);
-                Matrix_Rot16_I(
+                Matrix_Rot16_ID(
                     frames[0]->mesh_rots[mesh_idx],
                     frames[1]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {

@@ -289,7 +289,7 @@ void Object_DrawInterpolatedObject(
         ASSERT(frame2 != NULL);
         Matrix_InitInterpolate(frac, rate);
         Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
-        Matrix_Rot16_I(frame1->mesh_rots[0], frame2->mesh_rots[0]);
+        Matrix_Rot16_ID(frame1->mesh_rots[0], frame2->mesh_rots[0]);
 
         if (meshes & mesh_num) {
             Object_DrawMesh(object->mesh_idx, clip, true);
@@ -306,7 +306,7 @@ void Object_DrawInterpolatedObject(
             }
 
             Matrix_TranslateRel32_I(bone->pos);
-            Matrix_Rot16_I(frame1->mesh_rots[i], frame2->mesh_rots[i]);
+            Matrix_Rot16_ID(frame1->mesh_rots[i], frame2->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
                 if (bone->rot_y) {
