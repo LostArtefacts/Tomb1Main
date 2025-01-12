@@ -15,3 +15,6 @@ void Room_ParseFloorData(const int16_t *floor_data);
 void Room_PopulateSectorData(
     SECTOR *sector, const int16_t *floor_data, uint16_t start_index,
     uint16_t null_index);
+
+int16_t Room_GetIndexFromPos(int32_t x, int32_t y, int32_t z);
+int32_t Room_FindByPos(int32_t x, int32_t y, int32_t z);

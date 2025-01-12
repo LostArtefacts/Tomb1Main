@@ -28,8 +28,6 @@
 #define MIN_SQUARE SQUARE(WALL_L / 3)
 #define NO_BOX (-1)
 #define NO_ITEM (-1)
-#define NO_ROOM 255 // TODO: merge this with NO_ROOM_NEG
-#define NO_ROOM_NEG (-1)
 #define NO_CAMERA (-1)
 
 #define GRAVITY 6

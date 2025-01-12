@@ -504,23 +504,6 @@ int16_t Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num)
     }
 }
 
-int16_t Room_GetIndexFromPos(const int32_t x, const int32_t y, const int32_t z)
-{
-    for (int i = 0; i < g_RoomCount; i++) {
-        const ROOM *const room = &g_RoomInfo[i];
-        const int32_t x1 = room->pos.x + WALL_L;
-        const int32_t x2 = room->pos.x + (room->size.x << WALL_SHIFT) - WALL_L;
-        const int32_t y1 = room->max_ceiling;
-        const int32_t y2 = room->min_floor;
-        const int32_t z1 = room->pos.z + WALL_L;
-        const int32_t z2 = room->pos.z + (room->size.z << WALL_SHIFT) - WALL_L;
-        if (x >= x1 && x < x2 && y >= y1 && y <= y2 && z >= z1 && z < z2) {
-            return i;
-        }
-    }
-    return NO_ROOM;
-}
-
 BOUNDS_32 Room_GetWorldBounds(void)
 {
     BOUNDS_32 bounds = {
