@@ -505,7 +505,9 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             break;
         }
 
-        case RNG_DESELECT:
+        case RNG_DESELECT: {
+            INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
+            Option_Shutdown(inv_item);
             Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
             InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, 16);
             InvRing_MotionRotation(
@@ -513,6 +515,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             g_Input = (INPUT_STATE) {};
             g_InputDB = (INPUT_STATE) {};
             break;
+        }
 
         case RNG_CLOSING_ITEM: {
             INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
