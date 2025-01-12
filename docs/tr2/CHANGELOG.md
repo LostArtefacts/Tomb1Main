@@ -6,6 +6,7 @@
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)
+- fixed item counter shown even for a single medipack (#2222, regression from 0.3)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
@@ -266,7 +267,7 @@ Version 0.4 was skipped because of a major repository merge with TR1X into TRX.
 - fixed Lara's shadow with z-buffer option on (LostArtefacts/TR2X#64, regression from 0.1)
 - fixed rare camera issues (LostArtefacts/TR2X#65, regression from 0.1)
 - fixed flat rectangle colors (LostArtefacts/TR2X#70, regression from 0.1)
-- fixed medpacks staying open after use in Lara's inventory (LostArtefacts/TR2X#69, regression from 0.1)
+- fixed medipacks staying open after use in Lara's inventory (LostArtefacts/TR2X#69, regression from 0.1)
 - fixed pickup sprites UI drawn forever in Lara's Home (LostArtefacts/TR2X#68, regression from 0.1)
 
 ## [0.1](https://github.com/rr-/TR2X/compare/...0.1) - 2024-04-26

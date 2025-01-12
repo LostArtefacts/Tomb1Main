@@ -106,7 +106,9 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_LARGE_MEDIPACK_OPTION:
         g_HealthBarTimer = 40;
         Overlay_DrawHealthBar();
-        InvRing_ShowItemQuantity("%d", qty);
+        if (qty > 1) {
+            InvRing_ShowItemQuantity("%d", qty);
+        }
         break;
 
     case O_PUZZLE_OPTION_1:
