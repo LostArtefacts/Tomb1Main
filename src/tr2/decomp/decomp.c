@@ -388,7 +388,7 @@ void InitialiseLevelFlags(void)
     g_SaveGame.current_stats.ammo_hits = 0;
     g_SaveGame.current_stats.ammo_used = 0;
     g_SaveGame.current_stats.medipacks = 0;
-    g_SaveGame.current_stats.secrets_bitmap = 0;
+    g_SaveGame.current_stats.secret_flags = 0;
 }
 
 void GetCarriedItems(void)

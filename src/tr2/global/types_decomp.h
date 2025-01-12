@@ -165,7 +165,7 @@ typedef struct {
 
 typedef struct {
     struct STATS_COMMON;
-    uint8_t secrets_bitmap;
+    uint8_t secret_flags;
 } LEVEL_STATS;
 
 typedef struct {

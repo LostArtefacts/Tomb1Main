@@ -5,6 +5,7 @@
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
+- fixed savegame incompatibility with OG (#2271, regression from 0.8)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)
 - fixed excessive braid movement when dead in windy rooms (#2265, regression from 0.8)
 - fixed item counter shown even for a single medipack (#2222, regression from 0.3)

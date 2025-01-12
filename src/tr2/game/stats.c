@@ -47,7 +47,7 @@ FINAL_STATS Stats_ComputeFinalStats(void)
         // TODO: #170, consult GFE_NUM_SECRETS rather than hardcoding this
         if (i < total_levels - 2) {
             for (int32_t j = 0; j < 3; j++) {
-                if (g_SaveGame.start[i].stats.secrets_bitmap & (1 << j)) {
+                if (g_SaveGame.start[i].stats.secret_flags & (1 << j)) {
                     result.found_secrets++;
                 }
                 result.total_secrets++;

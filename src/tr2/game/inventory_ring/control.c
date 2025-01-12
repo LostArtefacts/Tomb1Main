@@ -754,8 +754,7 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
             if (g_Inv_ExtraData[0] == 0) {
                 // first passport page: load game.
                 Inv_RemoveAllItems();
-                S_LoadGame(
-                    &g_SaveGame, sizeof(SAVEGAME_INFO), g_Inv_ExtraData[1]);
+                S_LoadGame(g_Inv_ExtraData[1]);
                 gf_cmd = (GAME_FLOW_COMMAND) {
                     .action = GF_START_SAVED_GAME,
                     .param = g_Inv_ExtraData[1],
@@ -792,8 +791,7 @@ GAME_FLOW_COMMAND InvRing_Close(INV_RING *const ring)
                     } else {
                         CreateSaveGameInfo();
                         const int16_t slot_num = g_Inv_ExtraData[1];
-                        S_SaveGame(
-                            &g_SaveGame, sizeof(SAVEGAME_INFO), slot_num);
+                        S_SaveGame(slot_num);
                     }
                 }
             } else {

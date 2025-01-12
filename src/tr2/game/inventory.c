@@ -206,15 +206,15 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
         return true;
 
     case O_SECRET_1:
-        g_SaveGame.current_stats.secrets_bitmap |= 1;
+        g_SaveGame.current_stats.secret_flags |= 1;
         return true;
 
     case O_SECRET_2:
-        g_SaveGame.current_stats.secrets_bitmap |= 2;
+        g_SaveGame.current_stats.secret_flags |= 2;
         return true;
 
     case O_SECRET_3:
-        g_SaveGame.current_stats.secrets_bitmap |= 4;
+        g_SaveGame.current_stats.secret_flags |= 4;
         return true;
 
     case O_KEY_ITEM_1:

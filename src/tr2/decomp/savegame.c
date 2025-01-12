@@ -45,6 +45,8 @@ static void M_Read(void *ptr, size_t size);
 #define SPECIAL_READ_WRITE(name, type) static type M_Read##name(void);
 SPECIAL_READ_WRITES
 static void M_Skip(size_t size);
+static void M_ReadStartInfo(MYFILE *fp, START_INFO *start);
+static void M_ReadStats(MYFILE *fp, LEVEL_STATS *const stats);
 static void M_ReadItems(void);
 static void M_ReadLara(LARA_INFO *lara);
 static void M_ReadLaraArm(LARA_ARM *arm);
@@ -55,6 +57,8 @@ static void M_Write(const void *ptr, size_t size);
 #undef SPECIAL_READ_WRITE
 #define SPECIAL_READ_WRITE(name, type) static void M_Write##name(type value);
 SPECIAL_READ_WRITES
+static void M_WriteStartInfo(MYFILE *fp, const START_INFO *start);
+static void M_WriteStats(MYFILE *fp, const LEVEL_STATS *stats);
 static void M_WriteItems(void);
 static void M_WriteLara(const LARA_INFO *lara);
 static void M_WriteLaraArm(const LARA_ARM *arm);
@@ -88,6 +92,49 @@ static void M_Skip(const size_t size)
 {
     m_BufPos += size;
     m_BufPtr += size;
+}
+
+static void M_ReadStartInfo(MYFILE *const fp, START_INFO *const start)
+{
+    start->pistol_ammo = File_ReadU16(fp);
+    start->magnum_ammo = File_ReadU16(fp);
+    start->uzi_ammo = File_ReadU16(fp);
+    start->shotgun_ammo = File_ReadU16(fp);
+    start->m16_ammo = File_ReadU16(fp);
+    start->grenade_ammo = File_ReadU16(fp);
+    start->harpoon_ammo = File_ReadU16(fp);
+    start->small_medipacks = File_ReadU8(fp);
+    start->large_medipacks = File_ReadU8(fp);
+    start->reserved1 = File_ReadU8(fp);
+    start->flares = File_ReadU8(fp);
+    start->gun_status = File_ReadU8(fp);
+    start->gun_type = File_ReadU8(fp);
+
+    const uint16_t flags = File_ReadU16(fp);
+    // clang-format off
+    start->available     = (flags & 0x01) ? 1 : 0;
+    start->has_pistols   = (flags & 0x02) ? 1 : 0;
+    start->has_magnums   = (flags & 0x04) ? 1 : 0;
+    start->has_uzis      = (flags & 0x08) ? 1 : 0;
+    start->has_shotgun   = (flags & 0x10) ? 1 : 0;
+    start->has_m16       = (flags & 0x20) ? 1 : 0;
+    start->has_grenade   = (flags & 0x40) ? 1 : 0;
+    start->has_harpoon   = (flags & 0x80) ? 1 : 0;
+    // clang-format on
+
+    File_ReadU16(fp);
+    M_ReadStats(fp, &start->stats);
+}
+
+static void M_ReadStats(MYFILE *const fp, LEVEL_STATS *const stats)
+{
+    stats->timer = File_ReadU32(fp);
+    stats->ammo_used = File_ReadU32(fp);
+    stats->ammo_hits = File_ReadU32(fp);
+    stats->distance = File_ReadU32(fp);
+    stats->kills = File_ReadU16(fp);
+    stats->secret_flags = File_ReadU8(fp);
+    stats->medipacks = File_ReadU8(fp);
 }
 
 static void M_ReadItems(void)
@@ -358,6 +405,50 @@ static void M_Write(const void *ptr, const size_t size)
     WriteSG(ptr, size);
 }
 
+static void M_WriteStartInfo(MYFILE *const fp, const START_INFO *const start)
+{
+    File_WriteU16(fp, start->pistol_ammo);
+    File_WriteU16(fp, start->magnum_ammo);
+    File_WriteU16(fp, start->uzi_ammo);
+    File_WriteU16(fp, start->shotgun_ammo);
+    File_WriteU16(fp, start->m16_ammo);
+    File_WriteU16(fp, start->grenade_ammo);
+    File_WriteU16(fp, start->harpoon_ammo);
+    File_WriteU8(fp, start->small_medipacks);
+    File_WriteU8(fp, start->large_medipacks);
+    File_WriteU8(fp, start->reserved1);
+    File_WriteU8(fp, start->flares);
+    File_WriteU8(fp, start->gun_status);
+    File_WriteU8(fp, start->gun_type);
+
+    uint16_t flags = 0;
+    // clang-format off
+    if (start->available)   { flags |= 0x01; }
+    if (start->has_pistols) { flags |= 0x02; }
+    if (start->has_magnums) { flags |= 0x04; }
+    if (start->has_uzis)    { flags |= 0x08; }
+    if (start->has_shotgun) { flags |= 0x10; }
+    if (start->has_m16)     { flags |= 0x20; }
+    if (start->has_grenade) { flags |= 0x40; }
+    if (start->has_harpoon) { flags |= 0x80; }
+    // clang-format on
+    File_WriteU16(fp, flags);
+
+    File_WriteU16(fp, 0);
+    M_WriteStats(fp, &start->stats);
+}
+
+static void M_WriteStats(MYFILE *const fp, const LEVEL_STATS *const stats)
+{
+    File_WriteU32(fp, stats->timer);
+    File_WriteU32(fp, stats->ammo_used);
+    File_WriteU32(fp, stats->ammo_hits);
+    File_WriteU32(fp, stats->distance);
+    File_WriteU16(fp, stats->kills);
+    File_WriteU8(fp, stats->secret_flags);
+    File_WriteU8(fp, stats->medipacks);
+}
+
 static void M_WriteItems(void)
 {
     for (int32_t i = 0; i < g_LevelItemCount; i++) {
@@ -559,7 +650,7 @@ void InitialiseStartInfo(void)
         g_SaveGame.start[i].stats.distance = 0;
         g_SaveGame.start[i].stats.kills = 0;
         g_SaveGame.start[i].stats.medipacks = 0;
-        g_SaveGame.start[i].stats.secrets_bitmap = 0;
+        g_SaveGame.start[i].stats.secret_flags = 0;
     }
 
     g_SaveGame.start[LV_GYM].available = 1;
@@ -910,8 +1001,7 @@ bool S_FrontEndCheck(void)
     return true;
 }
 
-int32_t S_SaveGame(
-    const void *const save_data, const size_t save_size, const int32_t slot_num)
+int32_t S_SaveGame(const int32_t slot_num)
 {
     char file_name[80];
     sprintf(file_name, "savegame.%d", slot_num);
@@ -924,7 +1014,23 @@ int32_t S_SaveGame(
     sprintf(file_name, "%s", g_GF_LevelNames[g_SaveGame.current_level]);
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
-    File_WriteData(fp, save_data, save_size);
+    for (int32_t i = 0; i < 24; i++) {
+        M_WriteStartInfo(fp, &g_SaveGame.start[i]);
+    }
+    M_WriteStats(fp, &g_SaveGame.current_stats);
+    File_WriteS16(fp, g_SaveGame.current_level);
+    File_WriteU8(fp, g_SaveGame.bonus_flag);
+    for (int32_t i = 0; i < 2; i++) {
+        File_WriteU8(fp, g_SaveGame.num_pickup[i]);
+    }
+    for (int32_t i = 0; i < 4; i++) {
+        File_WriteU8(fp, g_SaveGame.num_puzzle[i]);
+    }
+    for (int32_t i = 0; i < 4; i++) {
+        File_WriteU8(fp, g_SaveGame.num_key[i]);
+    }
+    File_WriteS16(fp, 0);
+    File_WriteData(fp, g_SaveGame.buffer, MAX_SG_BUFFER_SIZE);
     File_Close(fp);
 
     char save_num_text[16];
@@ -942,8 +1048,7 @@ int32_t S_SaveGame(
     return true;
 }
 
-int32_t S_LoadGame(
-    void *const save_data, const size_t save_size, const int32_t slot_num)
+int32_t S_LoadGame(const int32_t slot_num)
 {
     char file_name[80];
     sprintf(file_name, "savegame.%d", slot_num);
@@ -954,7 +1059,23 @@ int32_t S_LoadGame(
     }
     File_Skip(fp, 75);
     File_Skip(fp, 4);
-    File_ReadData(fp, save_data, save_size);
+    for (int32_t i = 0; i < 24; i++) {
+        M_ReadStartInfo(fp, &g_SaveGame.start[i]);
+    }
+    M_ReadStats(fp, &g_SaveGame.current_stats);
+    g_SaveGame.current_level = File_ReadS16(fp);
+    g_SaveGame.bonus_flag = File_ReadU8(fp);
+    for (int32_t i = 0; i < 2; i++) {
+        g_SaveGame.num_pickup[i] = File_ReadU8(fp);
+    }
+    for (int32_t i = 0; i < 4; i++) {
+        g_SaveGame.num_puzzle[i] = File_ReadU8(fp);
+    }
+    for (int32_t i = 0; i < 4; i++) {
+        g_SaveGame.num_key[i] = File_ReadU8(fp);
+    }
+    File_ReadS16(fp);
+    File_ReadData(fp, g_SaveGame.buffer, MAX_SG_BUFFER_SIZE);
     File_Close(fp);
     return true;
 }

@@ -82,7 +82,7 @@ static void M_AddRowFromRole(
         char *ptr = buf;
         int32_t num_secrets = 0;
         for (int32_t i = 0; i < 3; i++) {
-            if (((LEVEL_STATS *)stats)->secrets_bitmap & (1 << i)) {
+            if (((LEVEL_STATS *)stats)->secret_flags & (1 << i)) {
                 sprintf(ptr, "\\{secret %d}", i + 1);
                 num_secrets++;
             } else {

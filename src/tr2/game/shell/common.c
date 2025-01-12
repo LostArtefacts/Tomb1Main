@@ -410,7 +410,7 @@ void Shell_Main(void)
             break;
 
         case GF_START_SAVED_GAME:
-            S_LoadGame(&g_SaveGame, sizeof(SAVEGAME_INFO), gf_cmd.param);
+            S_LoadGame(gf_cmd.param);
             if (g_SaveGame.current_level > g_GameFlow.num_levels) {
                 Shell_ExitSystemFmt(
                     "GameMain: STARTSAVEDGAME with invalid level number (%d)",

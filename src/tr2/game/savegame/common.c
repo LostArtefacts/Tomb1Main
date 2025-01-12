@@ -17,7 +17,7 @@ bool Savegame_IsSlotFree(const int32_t slot_idx)
 bool Savegame_Save(const int32_t slot_idx)
 {
     CreateSaveGameInfo();
-    S_SaveGame(&g_SaveGame, sizeof(SAVEGAME_INFO), slot_idx);
+    S_SaveGame(slot_idx);
     GetSavedGamesList(&g_LoadGameRequester);
     return true;
 }
