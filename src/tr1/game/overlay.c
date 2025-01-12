@@ -383,8 +383,8 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     Matrix_PushUnit();
     Matrix_TranslateSet(
         src_x + (dst_x - src_x) * ease, src_y + (dst_y - src_y) * ease, scale);
-    Matrix_RotYXZ(0, PHD_DEGREE * 15, 0);
-    Matrix_RotYXZ(pu->rot_y, 0, 0);
+    Matrix_RotX(PHD_DEGREE * 15);
+    Matrix_RotY(pu->rot_y);
 
     Output_SetLightDivider(0x6000);
     Output_SetLightAdder(LOW_LIGHT);

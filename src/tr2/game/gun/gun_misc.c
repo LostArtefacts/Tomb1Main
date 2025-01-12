@@ -380,8 +380,8 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
 
     case LGT_M16:
         Matrix_TranslateRel(0, 400, 99);
-        Matrix_RotYXZ(
-            0, -85 * PHD_DEGREE, ((2 * Random_GetDraw()) & 0x4000) + 0x2000);
+        Matrix_RotX(-85 * PHD_DEGREE);
+        Matrix_RotZ(((2 * Random_GetDraw()) & 0x4000) + 0x2000);
         Output_CalculateStaticLight(2560);
         Output_InsertPolygons(g_Meshes[g_Objects[O_M16_FLASH].mesh_idx], clip);
         return;
@@ -402,7 +402,8 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
     }
 
     Matrix_TranslateRel(0, y, z);
-    Matrix_RotYXZ(0, -PHD_90, 2 * Random_GetDraw());
+    Matrix_RotX(-PHD_90);
+    Matrix_RotZ(2 * Random_GetDraw());
     Output_CalculateStaticLight(shade);
     Output_InsertPolygons(g_Meshes[g_Objects[O_GUN_FLASH].mesh_idx], clip);
     return;

@@ -280,7 +280,8 @@ void Lara_Hair_Control(const bool in_cutscene)
             g_MatrixPtr->_03 = ps->pos.x << W2V_SHIFT;
             g_MatrixPtr->_13 = ps->pos.y << W2V_SHIFT;
             g_MatrixPtr->_23 = ps->pos.z << W2V_SHIFT;
-            Matrix_RotYXZ(ps->rot.y, ps->rot.x, 0);
+            Matrix_RotY(ps->rot.y);
+            Matrix_RotX(ps->rot.x);
             Matrix_TranslateRel32(bone->pos);
 
             s->pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -385,7 +386,8 @@ void Lara_Hair_Control(const bool in_cutscene)
 
         Matrix_PushUnit();
         Matrix_TranslateSet(ps->pos.x, ps->pos.y, ps->pos.z);
-        Matrix_RotYXZ(ps->rot.y, ps->rot.x, 0);
+        Matrix_RotY(ps->rot.y);
+        Matrix_RotX(ps->rot.x);
 
         if (i == HAIR_SEGMENTS) {
             const ANIM_BONE *const last_bone = bone - 1;

@@ -419,8 +419,8 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 
     Matrix_PushUnit();
     Matrix_TranslateRel(0, 0, scale);
-    Matrix_RotYXZ(0, PHD_DEGREE * 15, 0);
-    Matrix_RotYXZ(pickup->rot_y, 0, 0);
+    Matrix_RotX(PHD_DEGREE * 15);
+    Matrix_RotY(pickup->rot_y);
 
     g_LsDivider = 0x6000;
     g_LsAdder = LOW_LIGHT;

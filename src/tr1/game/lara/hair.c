@@ -304,7 +304,8 @@ void Lara_Hair_Control(void)
             Matrix_PushUnit();
             Matrix_TranslateSet(
                 m_Hair[i].pos.x, m_Hair[i].pos.y, m_Hair[i].pos.z);
-            Matrix_RotYXZ(m_Hair[i].rot.y, m_Hair[i].rot.x, 0);
+            Matrix_RotY(m_Hair[i].rot.y);
+            Matrix_RotX(m_Hair[i].rot.x);
             Matrix_TranslateRel32(hair_bone->pos);
 
             m_Hair[i + 1].pos.x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -399,7 +400,8 @@ void Lara_Hair_Control(void)
             Matrix_PushUnit();
             Matrix_TranslateSet(
                 m_Hair[i - 1].pos.x, m_Hair[i - 1].pos.y, m_Hair[i - 1].pos.z);
-            Matrix_RotYXZ(m_Hair[i - 1].rot.y, m_Hair[i - 1].rot.x, 0);
+            Matrix_RotY(m_Hair[i - 1].rot.y);
+            Matrix_RotX(m_Hair[i - 1].rot.x);
 
             if (i == HAIR_SEGMENTS) {
                 const ANIM_BONE *const last_bone = hair_bone - 1;

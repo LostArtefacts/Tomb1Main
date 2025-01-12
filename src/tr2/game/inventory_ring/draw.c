@@ -40,7 +40,8 @@ static void M_DrawItem(
     }
 
     Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
-    Matrix_RotYXZ(inv_item->y_rot, inv_item->x_rot, 0);
+    Matrix_RotY(inv_item->y_rot);
+    Matrix_RotX(inv_item->x_rot);
     const OBJECT *const obj = &g_Objects[inv_item->object_id];
     if ((obj->flags & 1) == 0) {
         return;
@@ -174,9 +175,10 @@ void InvRing_Draw(INV_RING *const ring)
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
         INVENTORY_ITEM *const inv_item = ring->list[i];
         Matrix_Push();
-        Matrix_RotYXZ(angle, 0, 0);
+        Matrix_RotY(angle);
         Matrix_TranslateRel(ring->radius, 0, 0);
-        Matrix_RotYXZ(PHD_90, inv_item->x_rot_pt, 0);
+        Matrix_RotY(PHD_90);
+        Matrix_RotX(inv_item->x_rot_pt);
         M_DrawItem(ring, inv_item);
         angle += ring->angle_adder;
         Matrix_Pop();

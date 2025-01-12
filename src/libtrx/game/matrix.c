@@ -17,6 +17,22 @@ static int32_t m_IMFrac = 0;
 static MATRIX *m_IMMatrixPtr = NULL;
 static MATRIX m_IMMatrixStack[MAX_NESTED_MATRICES] = {};
 
+static void M_RotYXZ(const int16_t ry, const int16_t rx, const int16_t rz)
+{
+    Matrix_RotY(ry);
+    Matrix_RotX(rx);
+    Matrix_RotZ(rz);
+}
+
+static void M_RotYXZ_I(const int16_t y, const int16_t x, const int16_t z)
+{
+    M_RotYXZ(y, x, z);
+    MATRIX *const old_matrix = g_MatrixPtr;
+    g_MatrixPtr = m_IMMatrixPtr;
+    M_RotYXZ(y, x, z);
+    g_MatrixPtr = old_matrix;
+}
+
 void Matrix_ResetStack(void)
 {
     g_MatrixPtr = &m_MatrixStack[0];
@@ -164,18 +180,9 @@ void Matrix_RotZ(const int16_t rz)
     mptr->_21 = r1 >> W2V_SHIFT;
 }
 
-void Matrix_RotYXZ(const int16_t ry, const int16_t rx, const int16_t rz)
-{
-    Matrix_RotY(ry);
-    Matrix_RotX(rx);
-    Matrix_RotZ(rz);
-}
-
 void Matrix_Rot16(const XYZ_16 rotation)
 {
-    Matrix_RotY(rotation.y);
-    Matrix_RotX(rotation.x);
-    Matrix_RotZ(rotation.z);
+    M_RotYXZ(rotation.y, rotation.x, rotation.z);
 }
 
 void Matrix_TranslateRel(const int32_t x, const int32_t y, const int32_t z)
@@ -353,18 +360,9 @@ void Matrix_RotZ_I(const int16_t ang)
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotYXZ_I(const int16_t y, const int16_t x, const int16_t z)
-{
-    Matrix_RotYXZ(y, x, z);
-    MATRIX *const old_matrix = g_MatrixPtr;
-    g_MatrixPtr = m_IMMatrixPtr;
-    Matrix_RotYXZ(y, x, z);
-    g_MatrixPtr = old_matrix;
-}
-
 void Matrix_Rot16_I(const XYZ_16 rotation)
 {
-    Matrix_RotYXZ_I(rotation.y, rotation.x, rotation.z);
+    M_RotYXZ_I(rotation.y, rotation.x, rotation.z);
 }
 
 void Matrix_Rot16_ID(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
