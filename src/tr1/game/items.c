@@ -801,7 +801,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
     Matrix_PushUnit();
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     Matrix_TranslateRel16(frame->offset);
-    Matrix_RotXYZ16(frame->mesh_rots[0]);
+    Matrix_Rot16(frame->mesh_rots[0]);
 
 #if 0
     // XXX: present in OG, removed by GLrage on the grounds that it sometimes
@@ -843,7 +843,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(frame->mesh_rots[i]);
+        Matrix_Rot16(frame->mesh_rots[i]);
 
 #if 0
     if (extra_rotation) {

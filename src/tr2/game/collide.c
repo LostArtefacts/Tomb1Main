@@ -509,7 +509,7 @@ int32_t Collide_GetSpheres(
 
     const ANIM_FRAME *const frame = Item_GetBestFrame(item);
     Matrix_TranslateRel16(frame->offset);
-    Matrix_RotXYZ16(frame->mesh_rots[0]);
+    Matrix_Rot16(frame->mesh_rots[0]);
 
     const OBJECT *const object = Object_GetObject(item->object_id);
     int16_t **mesh_ptr = &g_Meshes[object->mesh_idx];
@@ -533,7 +533,7 @@ int32_t Collide_GetSpheres(
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(frame->mesh_rots[i]);
+        Matrix_Rot16(frame->mesh_rots[i]);
 
         if (extra_rotation != NULL) {
             if (bone->rot_y) {
@@ -572,7 +572,7 @@ void Collide_GetJointAbsPosition(
     Matrix_TranslateSet(0, 0, 0);
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     Matrix_TranslateRel16(frame->offset);
-    Matrix_RotXYZ16(frame->mesh_rots[0]);
+    Matrix_Rot16(frame->mesh_rots[0]);
 
     const int16_t *extra_rotation = item->data;
     const int32_t abs_joint = MIN(object->mesh_count, joint);
@@ -586,7 +586,7 @@ void Collide_GetJointAbsPosition(
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(frame->mesh_rots[i + 1]);
+        Matrix_Rot16(frame->mesh_rots[i + 1]);
 
         if (extra_rotation != NULL) {
             if (bone->rot_y) {

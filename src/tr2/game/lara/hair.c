@@ -32,7 +32,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
 {
     const XYZ_16 *mesh_rots = frame->mesh_rots;
     Matrix_TranslateRel16(frame->offset);
-    Matrix_RotXYZ16(mesh_rots[LM_HIPS]);
+    Matrix_Rot16(mesh_rots[LM_HIPS]);
 
     Matrix_Push();
     const int16_t *mesh = g_Lara.mesh_ptrs[LM_HIPS];
@@ -53,7 +53,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
     }
 
-    Matrix_RotXYZ16(mesh_rots[LM_TORSO]);
+    Matrix_Rot16(mesh_rots[LM_TORSO]);
     Matrix_RotYXZ(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
     Matrix_Push();
     mesh = g_Lara.mesh_ptrs[LM_TORSO];
@@ -66,7 +66,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
 
     Matrix_Push();
     Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
-    Matrix_RotXYZ16(mesh_rots[LM_UARM_R]);
+    Matrix_Rot16(mesh_rots[LM_UARM_R]);
 
     mesh = g_Lara.mesh_ptrs[LM_UARM_R];
     Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
@@ -78,7 +78,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
 
     Matrix_Push();
     Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
-    Matrix_RotXYZ16(mesh_rots[LM_UARM_L]);
+    Matrix_Rot16(mesh_rots[LM_UARM_L]);
     mesh = g_Lara.mesh_ptrs[LM_UARM_L];
     Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
     m_HairSpheres[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -88,7 +88,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
     Matrix_Pop();
 
     Matrix_TranslateRel32(bone[LM_HEAD - 1].pos);
-    Matrix_RotXYZ16(mesh_rots[LM_HEAD]);
+    Matrix_Rot16(mesh_rots[LM_HEAD]);
     Matrix_RotYXZ(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
 
     Matrix_Push();
@@ -111,7 +111,7 @@ static void M_CalculateSpheres_I(
     const XYZ_16 *mesh_rots_2 = frame_2->mesh_rots;
     Matrix_InitInterpolate(frac, rate);
     Matrix_TranslateRel16_ID(frame_1->offset, frame_2->offset);
-    Matrix_RotXYZ16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
+    Matrix_Rot16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
 
     Matrix_Push_I();
     const int16_t *mesh = g_Lara.mesh_ptrs[LM_HIPS];
@@ -134,7 +134,7 @@ static void M_CalculateSpheres_I(
         mesh_rots_2 = mesh_rots_1;
     }
 
-    Matrix_RotXYZ16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
+    Matrix_Rot16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
     Matrix_RotYXZ_I(g_Lara.torso_y_rot, g_Lara.torso_x_rot, g_Lara.torso_z_rot);
 
     Matrix_Push_I();
@@ -149,7 +149,7 @@ static void M_CalculateSpheres_I(
 
     Matrix_Push_I();
     Matrix_TranslateRel32_I(bone[LM_UARM_R - 1].pos);
-    Matrix_RotXYZ16_I(mesh_rots_1[LM_UARM_R], mesh_rots_2[LM_UARM_R]);
+    Matrix_Rot16_I(mesh_rots_1[LM_UARM_R], mesh_rots_2[LM_UARM_R]);
 
     mesh = g_Lara.mesh_ptrs[LM_UARM_R];
     Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
@@ -162,7 +162,7 @@ static void M_CalculateSpheres_I(
 
     Matrix_Push_I();
     Matrix_TranslateRel32_I(bone[LM_UARM_L - 1].pos);
-    Matrix_RotXYZ16_I(mesh_rots_1[LM_UARM_L], mesh_rots_2[LM_UARM_L]);
+    Matrix_Rot16_I(mesh_rots_1[LM_UARM_L], mesh_rots_2[LM_UARM_L]);
 
     mesh = g_Lara.mesh_ptrs[LM_UARM_L];
     Matrix_TranslateRel_I(mesh[0], mesh[1], mesh[2]);
@@ -174,7 +174,7 @@ static void M_CalculateSpheres_I(
     Matrix_Pop_I();
 
     Matrix_TranslateRel32_I(bone[LM_HEAD - 1].pos);
-    Matrix_RotXYZ16_I(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
+    Matrix_Rot16_I(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
     Matrix_RotYXZ_I(g_Lara.head_y_rot, g_Lara.head_x_rot, g_Lara.head_z_rot);
 
     Matrix_Push_I();

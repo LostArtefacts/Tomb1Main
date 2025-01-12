@@ -254,7 +254,7 @@ static void M_DrawSkybox(void)
     g_MatrixPtr->_23 = 0;
 
     const OBJECT *const skybox = Object_GetObject(O_SKYBOX);
-    Matrix_RotXYZ16(skybox->frame_base->mesh_rots[0]);
+    Matrix_Rot16(skybox->frame_base->mesh_rots[0]);
     Output_DrawSkybox(Object_GetMesh(skybox->mesh_idx));
 
     Matrix_Pop();

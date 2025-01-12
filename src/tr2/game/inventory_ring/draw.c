@@ -113,7 +113,7 @@ static void M_DrawItem(
     }
 
     Matrix_TranslateRel16(frame_ptr->offset);
-    Matrix_RotXYZ16(frame_ptr->mesh_rots[0]);
+    Matrix_Rot16(frame_ptr->mesh_rots[0]);
 
     for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
         if (mesh_idx > 0) {
@@ -126,7 +126,7 @@ static void M_DrawItem(
             }
 
             Matrix_TranslateRel32(bone->pos);
-            Matrix_RotXYZ16(frame_ptr->mesh_rots[mesh_idx]);
+            Matrix_Rot16(frame_ptr->mesh_rots[mesh_idx]);
 
             if (inv_item->object_id == O_COMPASS_OPTION) {
                 if (mesh_idx == 6) {

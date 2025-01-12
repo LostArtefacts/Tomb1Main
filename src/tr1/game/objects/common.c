@@ -201,7 +201,7 @@ void Object_DrawPickupItem(ITEM *item)
         int32_t bit = 1;
 
         Matrix_TranslateRel16(frame->offset);
-        Matrix_RotXYZ16(frame->mesh_rots[0]);
+        Matrix_Rot16(frame->mesh_rots[0]);
 
         if (item->mesh_bits & bit) {
             Object_DrawMesh(object->mesh_idx, clip, false);
@@ -218,7 +218,7 @@ void Object_DrawPickupItem(ITEM *item)
             }
 
             Matrix_TranslateRel32(bone->pos);
-            Matrix_RotXYZ16(frame->mesh_rots[i]);
+            Matrix_Rot16(frame->mesh_rots[i]);
 
             // Extra rotation is ignored in this case as it's not needed.
 
@@ -249,7 +249,7 @@ void Object_DrawInterpolatedObject(
     ASSERT(rate != 0);
     if (!frac) {
         Matrix_TranslateRel16(frame1->offset);
-        Matrix_RotXYZ16(frame1->mesh_rots[0]);
+        Matrix_Rot16(frame1->mesh_rots[0]);
 
         if (meshes & mesh_num) {
             Object_DrawMesh(object->mesh_idx, clip, false);
@@ -266,7 +266,7 @@ void Object_DrawInterpolatedObject(
             }
 
             Matrix_TranslateRel32(bone->pos);
-            Matrix_RotXYZ16(frame1->mesh_rots[i]);
+            Matrix_Rot16(frame1->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
                 if (bone->rot_y) {
@@ -289,7 +289,7 @@ void Object_DrawInterpolatedObject(
         ASSERT(frame2 != NULL);
         Matrix_InitInterpolate(frac, rate);
         Matrix_TranslateRel16_ID(frame1->offset, frame2->offset);
-        Matrix_RotXYZ16_I(frame1->mesh_rots[0], frame2->mesh_rots[0]);
+        Matrix_Rot16_I(frame1->mesh_rots[0], frame2->mesh_rots[0]);
 
         if (meshes & mesh_num) {
             Object_DrawMesh(object->mesh_idx, clip, true);
@@ -306,7 +306,7 @@ void Object_DrawInterpolatedObject(
             }
 
             Matrix_TranslateRel32_I(bone->pos);
-            Matrix_RotXYZ16_I(frame1->mesh_rots[i], frame2->mesh_rots[i]);
+            Matrix_Rot16_I(frame1->mesh_rots[i], frame2->mesh_rots[i]);
 
             if (extra_rotation != NULL) {
                 if (bone->rot_y) {

@@ -149,7 +149,7 @@ void Lara_Hair_Control(void)
 
         Matrix_InitInterpolate(frac, rate);
         Matrix_TranslateRel16_ID(frmptr[0]->offset, frmptr[1]->offset);
-        Matrix_RotXYZ16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
+        Matrix_Rot16_I(mesh_rots_1[LM_HIPS], mesh_rots_2[LM_HIPS]);
 
         // hips
         Matrix_Push_I();
@@ -164,7 +164,7 @@ void Lara_Hair_Control(void)
 
         // torso
         Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
-        Matrix_RotXYZ16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
+        Matrix_Rot16_I(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
         Matrix_RotYXZ_I(
             g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
             g_Lara.interp.result.torso_rot.z);
@@ -181,7 +181,7 @@ void Lara_Hair_Control(void)
         // right arm
         Matrix_Push_I();
         Matrix_TranslateRel32_I(bone[LM_UARM_R - 1].pos);
-        Matrix_RotXYZ16_I(mesh_rots_1[LM_UARM_R], mesh_rots_2[LM_UARM_R]);
+        Matrix_Rot16_I(mesh_rots_1[LM_UARM_R], mesh_rots_2[LM_UARM_R]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
@@ -194,7 +194,7 @@ void Lara_Hair_Control(void)
         // left arm
         Matrix_Push_I();
         Matrix_TranslateRel32_I(bone[LM_UARM_L - 1].pos);
-        Matrix_RotXYZ16_I(mesh_rots_1[LM_UARM_L], mesh_rots_2[LM_UARM_L]);
+        Matrix_Rot16_I(mesh_rots_1[LM_UARM_L], mesh_rots_2[LM_UARM_L]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
@@ -206,7 +206,7 @@ void Lara_Hair_Control(void)
 
         // head
         Matrix_TranslateRel32_I(bone[LM_HEAD - 1].pos);
-        Matrix_RotXYZ16_I(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
+        Matrix_Rot16_I(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
         Matrix_RotYXZ_I(
             g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
             g_Lara.interp.result.head_rot.z);
@@ -226,7 +226,7 @@ void Lara_Hair_Control(void)
     } else {
         const XYZ_16 *const mesh_rots = frame->mesh_rots;
         Matrix_TranslateRel16(frame->offset);
-        Matrix_RotXYZ16(mesh_rots[LM_HIPS]);
+        Matrix_Rot16(mesh_rots[LM_HIPS]);
 
         // hips
         Matrix_Push();
@@ -240,7 +240,7 @@ void Lara_Hair_Control(void)
 
         // torso
         Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
-        Matrix_RotXYZ16(mesh_rots[LM_TORSO]);
+        Matrix_Rot16(mesh_rots[LM_TORSO]);
         Matrix_RotYXZ(
             g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
             g_Lara.interp.result.torso_rot.z);
@@ -256,7 +256,7 @@ void Lara_Hair_Control(void)
         // right arm
         Matrix_Push();
         Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
-        Matrix_RotXYZ16(mesh_rots[LM_UARM_R]);
+        Matrix_Rot16(mesh_rots[LM_UARM_R]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
         Matrix_TranslateRel16(mesh->center);
         sphere[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -268,7 +268,7 @@ void Lara_Hair_Control(void)
         // left arm
         Matrix_Push();
         Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
-        Matrix_RotXYZ16(mesh_rots[LM_UARM_L]);
+        Matrix_Rot16(mesh_rots[LM_UARM_L]);
         mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
         Matrix_TranslateRel16(mesh->center);
         sphere[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -279,7 +279,7 @@ void Lara_Hair_Control(void)
 
         // head
         Matrix_TranslateRel32(bone[LM_HEAD - 1].pos);
-        Matrix_RotXYZ16(mesh_rots[LM_HEAD]);
+        Matrix_Rot16(mesh_rots[LM_HEAD]);
         Matrix_RotYXZ(
             g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
             g_Lara.interp.result.head_rot.z);

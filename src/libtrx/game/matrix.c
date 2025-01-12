@@ -171,7 +171,7 @@ void Matrix_RotYXZ(const int16_t ry, const int16_t rx, const int16_t rz)
     Matrix_RotZ(rz);
 }
 
-void Matrix_RotXYZ16(const XYZ_16 rotation)
+void Matrix_Rot16(const XYZ_16 rotation)
 {
     Matrix_RotY(rotation.y);
     Matrix_RotX(rotation.x);
@@ -362,12 +362,12 @@ void Matrix_RotYXZ_I(const int16_t y, const int16_t x, const int16_t z)
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotXYZ16_I(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
+void Matrix_Rot16_I(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
 {
-    Matrix_RotXYZ16(rotation_1);
+    Matrix_Rot16(rotation_1);
     MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
-    Matrix_RotXYZ16(rotation_2);
+    Matrix_Rot16(rotation_2);
     g_MatrixPtr = old_matrix;
 }
 

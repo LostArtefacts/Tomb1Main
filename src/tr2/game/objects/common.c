@@ -51,7 +51,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
             if (mesh_idx == 0) {
                 Matrix_InitInterpolate(frac, rate);
                 Matrix_TranslateRel16_ID(frames[0]->offset, frames[1]->offset);
-                Matrix_RotXYZ16_I(
+                Matrix_Rot16_I(
                     frames[0]->mesh_rots[mesh_idx],
                     frames[1]->mesh_rots[mesh_idx]);
             } else {
@@ -64,7 +64,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 }
 
                 Matrix_TranslateRel32_I(bone->pos);
-                Matrix_RotXYZ16_I(
+                Matrix_Rot16_I(
                     frames[0]->mesh_rots[mesh_idx],
                     frames[1]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
@@ -88,7 +88,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
         for (int32_t mesh_idx = 0; mesh_idx < obj->mesh_count; mesh_idx++) {
             if (mesh_idx == 0) {
                 Matrix_TranslateRel16(frames[0]->offset);
-                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
+                Matrix_Rot16(frames[0]->mesh_rots[mesh_idx]);
             } else {
                 const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
                 if (bone->matrix_pop) {
@@ -99,7 +99,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
                 }
 
                 Matrix_TranslateRel32(bone->pos);
-                Matrix_RotXYZ16(frames[0]->mesh_rots[mesh_idx]);
+                Matrix_Rot16(frames[0]->mesh_rots[mesh_idx]);
                 if (extra_rotation != NULL) {
                     if (bone->rot_y) {
                         Matrix_RotY(*extra_rotation++);
@@ -196,7 +196,7 @@ BOUNDS_16 Object_GetBoundingBox(
         Matrix_TranslateRel16(frame->offset);
     }
     if (mesh_rots != NULL) {
-        Matrix_RotXYZ16(mesh_rots[0]);
+        Matrix_Rot16(mesh_rots[0]);
     }
 
     BOUNDS_16 new_bounds = {
@@ -221,7 +221,7 @@ BOUNDS_16 Object_GetBoundingBox(
 
             Matrix_TranslateRel32(bone->pos);
             if (mesh_rots != NULL) {
-                Matrix_RotXYZ16(mesh_rots[mesh_idx]);
+                Matrix_Rot16(mesh_rots[mesh_idx]);
             }
         }
 

@@ -436,7 +436,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
     });
 
     int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-    Matrix_RotXYZ16(frame->mesh_rots[0]);
+    Matrix_Rot16(frame->mesh_rots[0]);
 
     Output_InsertPolygons(mesh_ptrs[0], 0);
     for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
@@ -450,7 +450,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(frame->mesh_rots[mesh_idx]);
+        Matrix_Rot16(frame->mesh_rots[mesh_idx]);
 
         Output_InsertPolygons(mesh_ptrs[mesh_idx], 0);
     }

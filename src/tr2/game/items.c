@@ -744,7 +744,7 @@ int32_t Item_Explode(
 
     Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
     Matrix_TranslateRel16(best_frame->offset);
-    Matrix_RotXYZ16(best_frame->mesh_rots[0]);
+    Matrix_Rot16(best_frame->mesh_rots[0]);
 
     // main mesh
     int32_t bit = 1;
@@ -779,7 +779,7 @@ int32_t Item_Explode(
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(best_frame->mesh_rots[i]);
+        Matrix_Rot16(best_frame->mesh_rots[i]);
 
         if (extra_rotation != NULL) {
             if (bone->rot_y) {

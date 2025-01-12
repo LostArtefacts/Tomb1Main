@@ -401,7 +401,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         .y = -(frame->bounds.min.y + frame->bounds.max.y) / 2,
         .z = -(frame->bounds.min.z + frame->bounds.max.z) / 2,
     });
-    Matrix_RotXYZ16(frame->mesh_rots[0]);
+    Matrix_Rot16(frame->mesh_rots[0]);
 
     Object_DrawMesh(obj->mesh_idx, 0, false);
 
@@ -416,7 +416,7 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
         }
 
         Matrix_TranslateRel32(bone->pos);
-        Matrix_RotXYZ16(frame->mesh_rots[i]);
+        Matrix_Rot16(frame->mesh_rots[i]);
 
         Object_DrawMesh(obj->mesh_idx + i, 0, false);
     }
