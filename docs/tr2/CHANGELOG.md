@@ -10,6 +10,7 @@
 - fixed excessive braid movement when dead in windy rooms (#2265, regression from 0.8)
 - fixed item counter shown even for a single medipack (#2222, regression from 0.3)
 - fixed item counter always hidden in NG+, even for keys (#2223, regression from 0.3)
+- fixed the passport object not being selected when exiting to title (#2192, regression from 0.8)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)

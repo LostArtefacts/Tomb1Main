@@ -162,6 +162,10 @@ int32_t Level_Initialise(
     g_GameInfo.current_level.num = level_num;
     g_GameInfo.current_level.type = level_type;
 
+    if (level_type != GFL_TITLE && level_type != GFL_DEMO) {
+        g_GymInvOpenEnabled = false;
+    }
+
     if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
         g_CurrentLevel = level_num;
     }
@@ -277,6 +281,8 @@ GAME_FLOW_COMMAND DisplayCredits(void)
     if (!Level_Initialise(0, GFL_TITLE)) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
+
+    g_GymInvOpenEnabled = true;
 
     Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
 
