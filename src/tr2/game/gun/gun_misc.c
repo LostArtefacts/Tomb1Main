@@ -216,19 +216,19 @@ int32_t Gun_FireWeapon(
 
     ammo->ammo--;
 
-    const PHD_3DPOS view = {
-        .pos = {
-            .x = src->pos.x,
-            .y = src->pos.y - winfo->gun_height,
-            .z = src->pos.z,
-        },
-        .rot = {
-            .x = angles[1] + winfo->shot_accuracy * (Random_GetControl() - PHD_90) / PHD_ONE,
-            .y = angles[0] + winfo->shot_accuracy * (Random_GetControl() - PHD_90) / PHD_ONE,
-            .z = 0,
-        },
+    const XYZ_32 view_pos = {
+        .x = src->pos.x,
+        .y = src->pos.y - winfo->gun_height,
+        .z = src->pos.z,
     };
-    Matrix_GenerateW2V(&view);
+    const XYZ_16 view_rot = {
+        .x = angles[1]
+            + winfo->shot_accuracy * (Random_GetControl() - DEG_90) / DEG_360,
+        .y = angles[0]
+            + winfo->shot_accuracy * (Random_GetControl() - DEG_90) / DEG_360,
+        .z = 0,
+    };
+    Matrix_GenerateW2V(&view_pos, &view_rot);
 
     SPHERE spheres[33];
     int32_t sphere_count = Collide_GetSpheres(target, spheres, false);
@@ -251,17 +251,17 @@ int32_t Gun_FireWeapon(
     g_SaveGame.current_stats.ammo_used++;
 
     GAME_VECTOR start;
-    start.pos.x = view.pos.x;
-    start.pos.y = view.pos.y;
-    start.pos.z = view.pos.z;
+    start.pos.x = view_pos.x;
+    start.pos.y = view_pos.y;
+    start.pos.z = view_pos.z;
     start.room_num = src->room_num;
 
     if (best_sphere < 0) {
         const int32_t dist = winfo->target_dist;
         GAME_VECTOR hit_pos;
-        hit_pos.pos.x = view.pos.x + ((dist * g_MatrixPtr->_20) >> W2V_SHIFT);
-        hit_pos.pos.y = view.pos.y + ((dist * g_MatrixPtr->_21) >> W2V_SHIFT);
-        hit_pos.pos.z = view.pos.z + ((dist * g_MatrixPtr->_22) >> W2V_SHIFT);
+        hit_pos.pos.x = view_pos.x + ((dist * g_MatrixPtr->_20) >> W2V_SHIFT);
+        hit_pos.pos.y = view_pos.y + ((dist * g_MatrixPtr->_21) >> W2V_SHIFT);
+        hit_pos.pos.z = view_pos.z + ((dist * g_MatrixPtr->_22) >> W2V_SHIFT);
         hit_pos.room_num =
             Room_GetIndexFromPos(hit_pos.pos.x, hit_pos.pos.y, hit_pos.pos.z);
         const bool object_on_los = LOS_Check(&start, &hit_pos);
@@ -279,11 +279,11 @@ int32_t Gun_FireWeapon(
         g_SaveGame.current_stats.ammo_hits++;
         GAME_VECTOR hit_pos;
         hit_pos.pos.x =
-            view.pos.x + ((best_dist * g_MatrixPtr->_20) >> W2V_SHIFT);
+            view_pos.x + ((best_dist * g_MatrixPtr->_20) >> W2V_SHIFT);
         hit_pos.pos.y =
-            view.pos.y + ((best_dist * g_MatrixPtr->_21) >> W2V_SHIFT);
+            view_pos.y + ((best_dist * g_MatrixPtr->_21) >> W2V_SHIFT);
         hit_pos.pos.z =
-            view.pos.z + ((best_dist * g_MatrixPtr->_22) >> W2V_SHIFT);
+            view_pos.z + ((best_dist * g_MatrixPtr->_22) >> W2V_SHIFT);
         hit_pos.room_num =
             Room_GetIndexFromPos(hit_pos.pos.x, hit_pos.pos.y, hit_pos.pos.z);
         const int16_t item_to_smash = LOS_CheckSmashable(&start, &hit_pos);

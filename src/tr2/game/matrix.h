@@ -24,7 +24,7 @@ extern MATRIX *g_MatrixPtr;
 extern MATRIX g_W2VMatrix;
 
 void Matrix_ResetStack(void);
-void Matrix_GenerateW2V(const PHD_3DPOS *viewpos);
+void Matrix_GenerateW2V(const XYZ_32 *pos, const XYZ_16 *rot);
 
 void Matrix_Push(void);
 void Matrix_PushUnit(void);

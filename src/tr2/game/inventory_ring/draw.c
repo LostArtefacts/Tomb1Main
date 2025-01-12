@@ -161,9 +161,10 @@ void InvRing_Draw(INV_RING *const ring)
 
     Output_SetupAboveWater(false);
 
-    PHD_3DPOS view;
-    InvRing_GetView(ring, &view.pos, &view.rot);
-    Matrix_GenerateW2V(&view);
+    XYZ_32 view_pos;
+    XYZ_16 view_rot;
+    InvRing_GetView(ring, &view_pos, &view_rot);
+    Matrix_GenerateW2V(&view_pos, &view_rot);
     InvRing_Light(ring);
 
     Matrix_Push();
