@@ -155,9 +155,7 @@ void Effect_Draw(const int16_t effect_num)
         Matrix_TranslateAbs32(effect->interp.result.pos);
         if (g_MatrixPtr->_23 > Output_GetNearZ()
             && g_MatrixPtr->_23 < Output_GetFarZ()) {
-            Matrix_RotYXZ(
-                effect->interp.result.rot.y, effect->interp.result.rot.x,
-                effect->interp.result.rot.z);
+            Matrix_Rot16(effect->interp.result.rot);
             if (object->mesh_count) {
                 Output_CalculateStaticLight(effect->shade);
                 Object_DrawMesh(object->mesh_idx, -1, false);

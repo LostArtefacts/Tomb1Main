@@ -168,8 +168,7 @@ void InvRing_Draw(INV_RING *const ring)
 
     Matrix_Push();
     Matrix_TranslateAbs32(ring->ring_pos.pos);
-    Matrix_RotYXZ(
-        ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
+    Matrix_Rot16(ring->ring_pos.rot);
 
     int32_t angle = 0;
     for (int32_t i = 0; i < ring->number_of_objects; i++) {

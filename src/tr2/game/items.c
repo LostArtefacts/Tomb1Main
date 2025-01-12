@@ -397,7 +397,7 @@ int32_t Item_TestPosition(
     // clang-format on
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(src_item->rot.y, src_item->rot.x, src_item->rot.z);
+    Matrix_Rot16(src_item->rot);
     const MATRIX *const m = g_MatrixPtr;
     const XYZ_32 shift = {
         .x = (dist.x * m->_00 + dist.y * m->_10 + dist.z * m->_20) >> W2V_SHIFT,
@@ -423,7 +423,7 @@ void Item_AlignPosition(
 {
     dst_item->rot = src_item->rot;
     Matrix_PushUnit();
-    Matrix_RotYXZ(src_item->rot.y, src_item->rot.x, src_item->rot.z);
+    Matrix_Rot16(src_item->rot);
     const MATRIX *const m = g_MatrixPtr;
     const XYZ_32 shift = {
         .x = (vec->x * m->_00 + vec->y * m->_01 + vec->z * m->_02) >> W2V_SHIFT,
@@ -742,7 +742,7 @@ int32_t Item_Explode(
     g_MatrixPtr->_23 = 0;
     g_MatrixPtr->_23 = 0;
 
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
     Matrix_TranslateRel16(best_frame->offset);
     Matrix_Rot16(best_frame->mesh_rots[0]);
 

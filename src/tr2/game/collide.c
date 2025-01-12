@@ -505,7 +505,7 @@ int32_t Collide_GetSpheres(
         Matrix_TranslateAbs32(item->pos);
     }
 
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     const ANIM_FRAME *const frame = Item_GetBestFrame(item);
     Matrix_TranslateRel16(frame->offset);
@@ -570,7 +570,7 @@ void Collide_GetJointAbsPosition(
 
     Matrix_PushUnit();
     Matrix_TranslateSet(0, 0, 0);
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
     Matrix_TranslateRel16(frame->offset);
     Matrix_Rot16(frame->mesh_rots[0]);
 

@@ -179,7 +179,7 @@ void Effect_Draw(const int16_t effect_num)
     Matrix_Push();
     Matrix_TranslateAbs32(effect->pos);
     if (g_MatrixPtr->_23 > g_PhdNearZ && g_MatrixPtr->_23 < g_PhdFarZ) {
-        Matrix_RotYXZ(effect->rot.y, effect->rot.x, effect->rot.z);
+        Matrix_Rot16(effect->rot);
         if (object->mesh_count) {
             Output_CalculateStaticLight(effect->shade);
             Output_InsertPolygons(g_Meshes[object->mesh_idx], -1);

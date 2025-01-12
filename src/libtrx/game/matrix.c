@@ -362,6 +362,11 @@ void Matrix_RotYXZ_I(const int16_t y, const int16_t x, const int16_t z)
     g_MatrixPtr = old_matrix;
 }
 
+void Matrix_Rot16_I(const XYZ_16 rotation)
+{
+    Matrix_RotYXZ_I(rotation.y, rotation.x, rotation.z);
+}
+
 void Matrix_Rot16_ID(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
 {
     Matrix_Rot16(rotation_1);

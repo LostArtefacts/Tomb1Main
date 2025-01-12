@@ -969,7 +969,7 @@ void Skidoo_Draw(const ITEM *const item)
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->pos);
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     const int32_t clip = Output_GetObjectBounds(&frames[0]->bounds);
     if (!clip) {

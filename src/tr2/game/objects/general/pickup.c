@@ -242,7 +242,7 @@ void Pickup_Draw(const ITEM *const item)
 
     Matrix_Push();
     Matrix_TranslateAbs(item->pos.x, offset, item->pos.z);
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     Output_CalculateLight(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);

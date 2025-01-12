@@ -704,7 +704,7 @@ void Output_CalculateObjectLighting(
     }
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
     Matrix_TranslateRel32((XYZ_32) {
         .x = (bounds->min.x + bounds->max.x) / 2,
         .y = (bounds->min.y + bounds->max.y) / 2,

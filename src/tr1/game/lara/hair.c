@@ -140,7 +140,7 @@ void Lara_Hair_Control(void)
     Matrix_PushUnit();
     Matrix_TranslateSet(
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
-    Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
+    Matrix_Rot16(g_LaraItem->rot);
 
     const ANIM_BONE *bone = Object_GetBone(object, 0);
     if (frac) {
@@ -165,9 +165,7 @@ void Lara_Hair_Control(void)
         // torso
         Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
         Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
-        Matrix_RotYXZ_I(
-            g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
-            g_Lara.interp.result.torso_rot.z);
+        Matrix_Rot16_I(g_Lara.interp.result.torso_rot);
         Matrix_Push_I();
         mesh = Object_GetMesh(object->mesh_idx + LM_TORSO);
         Matrix_TranslateRel16_I(mesh->center);
@@ -207,9 +205,7 @@ void Lara_Hair_Control(void)
         // head
         Matrix_TranslateRel32_I(bone[LM_HEAD - 1].pos);
         Matrix_Rot16_ID(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
-        Matrix_RotYXZ_I(
-            g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
-            g_Lara.interp.result.head_rot.z);
+        Matrix_Rot16_I(g_Lara.interp.result.head_rot);
         Matrix_Push_I();
         mesh = Object_GetMesh(object->mesh_idx + LM_HEAD);
         Matrix_TranslateRel16_I(mesh->center);
@@ -241,9 +237,7 @@ void Lara_Hair_Control(void)
         // torso
         Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
         Matrix_Rot16(mesh_rots[LM_TORSO]);
-        Matrix_RotYXZ(
-            g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
-            g_Lara.interp.result.torso_rot.z);
+        Matrix_Rot16(g_Lara.interp.result.torso_rot);
         Matrix_Push();
         mesh = Object_GetMesh(object->mesh_idx + LM_TORSO);
         Matrix_TranslateRel16(mesh->center);
@@ -280,9 +274,7 @@ void Lara_Hair_Control(void)
         // head
         Matrix_TranslateRel32(bone[LM_HEAD - 1].pos);
         Matrix_Rot16(mesh_rots[LM_HEAD]);
-        Matrix_RotYXZ(
-            g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
-            g_Lara.interp.result.head_rot.z);
+        Matrix_Rot16(g_Lara.interp.result.head_rot);
         Matrix_Push();
         mesh = Object_GetMesh(object->mesh_idx + LM_HEAD);
         Matrix_TranslateRel16(mesh->center);

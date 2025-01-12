@@ -185,9 +185,7 @@ void Object_DrawPickupItem(ITEM *item)
     Matrix_Push();
     Matrix_TranslateAbs(
         item->interp.result.pos.x, offset, item->interp.result.pos.z);
-    Matrix_RotYXZ(
-        item->interp.result.rot.y, item->interp.result.rot.x,
-        item->interp.result.rot.z);
+    Matrix_Rot16(item->interp.result.rot);
 
     Output_CalculateLight(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
@@ -343,9 +341,7 @@ void Object_DrawAnimatingItem(ITEM *item)
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->interp.result.pos);
-    Matrix_RotYXZ(
-        item->interp.result.rot.y, item->interp.result.rot.x,
-        item->interp.result.rot.z);
+    Matrix_Rot16(item->interp.result.rot);
 
     Output_CalculateObjectLighting(item, &frmptr[0]->bounds);
     const int16_t *extra_rotation = item->data ? item->data : NULL;

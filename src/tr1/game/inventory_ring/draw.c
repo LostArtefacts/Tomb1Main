@@ -192,8 +192,7 @@ void InvRing_Draw(INV_RING *const ring)
 
     Matrix_Push();
     Matrix_TranslateAbs32(ring->ring_pos.pos);
-    Matrix_RotYXZ(
-        ring->ring_pos.rot.y, ring->ring_pos.rot.x, ring->ring_pos.rot.z);
+    Matrix_Rot16(ring->ring_pos.rot);
 
     if (!(g_InvMode == INV_TITLE_MODE
           && (Fader_IsActive(&ring->top_fader)

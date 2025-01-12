@@ -171,7 +171,7 @@ void LightningEmitter_Draw(ITEM *item)
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->pos);
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     int32_t clip = Output_GetObjectBounds(&frmptr[0]->bounds);
     if (!clip) {
@@ -198,9 +198,8 @@ void LightningEmitter_Draw(ITEM *item)
     }
 
     Matrix_Push();
-
     Matrix_TranslateAbs32(l->target);
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     int32_t x2 = g_MatrixPtr->_03;
     int32_t y2 = g_MatrixPtr->_13;
@@ -253,7 +252,7 @@ void LightningEmitter_Draw(ITEM *item)
         Matrix_Push();
 
         Matrix_TranslateAbs32(l->end[i]);
-        Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+        Matrix_Rot16(item->rot);
 
         x2 = g_MatrixPtr->_03;
         y2 = g_MatrixPtr->_13;

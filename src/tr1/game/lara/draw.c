@@ -83,9 +83,7 @@ void Lara_Draw(ITEM *item)
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->interp.result.pos);
-    Matrix_RotYXZ(
-        item->interp.result.rot.y, item->interp.result.rot.x,
-        item->interp.result.rot.z);
+    Matrix_Rot16(item->interp.result.rot);
 
     int32_t clip = Output_GetObjectBounds(&frame->bounds);
     if (!clip) {
@@ -138,18 +136,14 @@ void Lara_Draw(ITEM *item)
 
     Matrix_TranslateRel32(bone[6].pos);
     Matrix_Rot16(mesh_rots[LM_TORSO]);
-    Matrix_RotYXZ(
-        g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
-        g_Lara.interp.result.torso_rot.z);
+    Matrix_Rot16(g_Lara.interp.result.torso_rot);
     M_DrawMesh(LM_TORSO, clip, false);
 
     Matrix_Push();
 
     Matrix_TranslateRel32(bone[13].pos);
     Matrix_Rot16(mesh_rots[LM_HEAD]);
-    Matrix_RotYXZ(
-        g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
-        g_Lara.interp.result.head_rot.z);
+    Matrix_Rot16(g_Lara.interp.result.head_rot);
     M_DrawMesh(LM_HEAD, clip, false);
 
     *g_MatrixPtr = saved_matrix;
@@ -217,10 +211,7 @@ void Lara_Draw(ITEM *item)
 
         mesh_rots =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
-        Matrix_RotYXZ(
-            g_Lara.right_arm.interp.result.rot.y,
-            g_Lara.right_arm.interp.result.rot.x,
-            g_Lara.right_arm.interp.result.rot.z);
+        Matrix_Rot16(g_Lara.right_arm.interp.result.rot);
         Matrix_Rot16(mesh_rots[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
@@ -254,10 +245,7 @@ void Lara_Draw(ITEM *item)
 
         mesh_rots =
             g_Lara.left_arm.frame_base[g_Lara.left_arm.frame_num].mesh_rots;
-        Matrix_RotYXZ(
-            g_Lara.left_arm.interp.result.rot.y,
-            g_Lara.left_arm.interp.result.rot.x,
-            g_Lara.left_arm.interp.result.rot.z);
+        Matrix_Rot16(g_Lara.left_arm.interp.result.rot);
         Matrix_Rot16(mesh_rots[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 
@@ -353,9 +341,7 @@ void Lara_Draw_I(
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->interp.result.pos);
-    Matrix_RotYXZ(
-        item->interp.result.rot.y, item->interp.result.rot.x,
-        item->interp.result.rot.z);
+    Matrix_Rot16(item->interp.result.rot);
 
     int32_t clip = Output_GetObjectBounds(&frame1->bounds);
     if (!clip) {
@@ -411,18 +397,14 @@ void Lara_Draw_I(
 
     Matrix_TranslateRel32_I(bone[6].pos);
     Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
-    Matrix_RotYXZ_I(
-        g_Lara.interp.result.torso_rot.y, g_Lara.interp.result.torso_rot.x,
-        g_Lara.interp.result.torso_rot.z);
+    Matrix_Rot16_I(g_Lara.interp.result.torso_rot);
     M_DrawMesh(LM_TORSO, clip, true);
 
     Matrix_Push_I();
 
     Matrix_TranslateRel32_I(bone[13].pos);
     Matrix_Rot16_ID(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
-    Matrix_RotYXZ_I(
-        g_Lara.interp.result.head_rot.y, g_Lara.interp.result.head_rot.x,
-        g_Lara.interp.result.head_rot.z);
+    Matrix_Rot16_I(g_Lara.interp.result.head_rot);
     M_DrawMesh(LM_HEAD, clip, true);
 
     *g_MatrixPtr = saved_matrix;
@@ -481,10 +463,7 @@ void Lara_Draw_I(
 
         mesh_rots_1 =
             g_Lara.right_arm.frame_base[g_Lara.right_arm.frame_num].mesh_rots;
-        Matrix_RotYXZ(
-            g_Lara.right_arm.interp.result.rot.y,
-            g_Lara.right_arm.interp.result.rot.x,
-            g_Lara.right_arm.interp.result.rot.z);
+        Matrix_Rot16(g_Lara.right_arm.interp.result.rot);
         Matrix_Rot16(mesh_rots_1[LM_UARM_R]);
         M_DrawMesh(LM_UARM_R, clip, false);
 
@@ -509,10 +488,7 @@ void Lara_Draw_I(
 
         mesh_rots_1 =
             g_Lara.left_arm.frame_base[g_Lara.left_arm.frame_num].mesh_rots;
-        Matrix_RotYXZ(
-            g_Lara.left_arm.interp.result.rot.y,
-            g_Lara.left_arm.interp.result.rot.x,
-            g_Lara.left_arm.interp.result.rot.z);
+        Matrix_Rot16(g_Lara.left_arm.interp.result.rot);
         Matrix_Rot16(mesh_rots_1[LM_UARM_L]);
         M_DrawMesh(LM_UARM_L, clip, false);
 

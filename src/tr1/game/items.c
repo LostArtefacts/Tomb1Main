@@ -402,7 +402,7 @@ bool Item_TestPosition(
     };
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(dst_item->rot.y, dst_item->rot.x, dst_item->rot.z);
+    Matrix_Rot16(dst_item->rot);
     MATRIX *mptr = g_MatrixPtr;
     const XYZ_32 shift = {
         .x = (mptr->_00 * dist.x + mptr->_10 * dist.y + mptr->_20 * dist.z)
@@ -430,7 +430,7 @@ void Item_AlignPosition(ITEM *src_item, ITEM *dst_item, XYZ_32 *vec)
     src_item->rot.z = dst_item->rot.z;
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(dst_item->rot.y, dst_item->rot.x, dst_item->rot.z);
+    Matrix_Rot16(dst_item->rot);
     MATRIX *mptr = g_MatrixPtr;
     src_item->pos.x = dst_item->pos.x
         + ((mptr->_00 * vec->x + mptr->_01 * vec->y + mptr->_02 * vec->z)
@@ -450,7 +450,7 @@ bool Item_MovePosition(
     const XYZ_32 *ref_pos = &ref_item->pos;
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(ref_item->rot.y, ref_item->rot.x, ref_item->rot.z);
+    Matrix_Rot16(ref_item->rot);
 
     MATRIX *mptr = g_MatrixPtr;
     const XYZ_32 dst_pos = {
@@ -799,7 +799,7 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage)
     const ANIM_FRAME *const frame = Item_GetBestFrame(item);
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
     Matrix_TranslateRel16(frame->offset);
     Matrix_Rot16(frame->mesh_rots[0]);
 

@@ -863,7 +863,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     g_MatrixPtr->_03 = 0;
     g_MatrixPtr->_13 = 0;
     g_MatrixPtr->_23 = 0;
-    Matrix_RotYXZ(g_LaraItem->rot.y, g_LaraItem->rot.x, g_LaraItem->rot.z);
+    Matrix_Rot16(g_LaraItem->rot);
 
     const XYZ_16 *mesh_rots = frame_ptr->mesh_rots;
     const ANIM_BONE *bone = Object_GetBone(obj, 0);
@@ -873,7 +873,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
 
     Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
     Matrix_Rot16(mesh_rots[LM_TORSO]);
-    Matrix_RotYXZ(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
+    Matrix_Rot16(g_Lara.torso_rot);
 
     LARA_GUN_TYPE gun_type = LGT_UNARMED;
     if (g_Lara.gun_status == LGS_READY || g_Lara.gun_status == LGS_SPECIAL
@@ -930,7 +930,7 @@ void Lara_GetJointAbsPosition_I(
     g_MatrixPtr->_03 = 0;
     g_MatrixPtr->_13 = 0;
     g_MatrixPtr->_23 = 0;
-    Matrix_RotYXZ(item->rot.y, item->rot.x, item->rot.z);
+    Matrix_Rot16(item->rot);
 
     const ANIM_BONE *const bone = Object_GetBone(obj, 0);
     const XYZ_16 *mesh_rots_1 = frame1->mesh_rots;
@@ -942,7 +942,7 @@ void Lara_GetJointAbsPosition_I(
 
     Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
     Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
-    Matrix_RotYXZ_I(g_Lara.torso_rot.y, g_Lara.torso_rot.x, g_Lara.torso_rot.z);
+    Matrix_Rot16_I(g_Lara.torso_rot);
 
     LARA_GUN_TYPE gun_type = LGT_UNARMED;
     if (g_Lara.gun_status == LGS_READY || g_Lara.gun_status == LGS_SPECIAL
@@ -1144,14 +1144,10 @@ void Lara_Push(
 
 int32_t Lara_MovePosition(XYZ_32 *vec, ITEM *item, ITEM *lara_item)
 {
-    const XYZ_16 rot = {
-        .x = item->rot.x,
-        .y = item->rot.y,
-        .z = item->rot.z,
-    };
+    const XYZ_16 rot = item->rot;
 
     Matrix_PushUnit();
-    Matrix_RotYXZ(rot.y, rot.x, rot.z);
+    Matrix_Rot16(rot);
     const MATRIX *const m = g_MatrixPtr;
     const XYZ_32 shift = {
         .x = (vec->y * m->_01 + vec->z * m->_02 + vec->x * m->_00) >> W2V_SHIFT,
