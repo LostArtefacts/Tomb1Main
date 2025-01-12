@@ -11,8 +11,6 @@
 #define PHD_45 DEG_45
 #define PHD_135 DEG_135
 
-#define MAX_MATRICES 40
-#define MAX_NESTED_MATRICES 32
 #define MAX_REQLINES 18
 #define MAX_SAMPLES 256
 #define NUM_SLOTS 32
@@ -96,8 +94,6 @@
 #define CAM_A_HANG 0
 #define CAM_E_HANG (-60 * PHD_DEGREE) // = -10920
 #define CAM_WADE_ELEVATION (-22 * PHD_DEGREE) // = -4004
-#define W2V_SHIFT 14
-#define W2V_SCALE (1 << W2V_SHIFT)
 #define FOLLOW_CENTRE 1
 #define NO_CHUNKY 2
 #define CHASE_OBJECT 3

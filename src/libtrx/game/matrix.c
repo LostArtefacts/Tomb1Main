@@ -1,10 +1,15 @@
-#include "math/matrix.h"
+#include "game/matrix.h"
 
-#include "global/vars.h"
-
-#include <libtrx/game/math.h>
+#include "game/const.h"
+#include "game/math.h"
 
 #include <stddef.h>
+
+#define MAX_MATRICES 40
+#define MAX_NESTED_MATRICES 32
+
+MATRIX *g_MatrixPtr = NULL;
+MATRIX g_W2VMatrix = {};
 
 static MATRIX m_MatrixStack[MAX_MATRICES] = {};
 static int32_t m_IMRate = 0;
@@ -57,16 +62,16 @@ bool Matrix_PushUnit(void)
     if (g_MatrixPtr + 1 - m_MatrixStack >= MAX_MATRICES) {
         return false;
     }
-    MATRIX *mptr = ++g_MatrixPtr;
-    mptr->_00 = W2V_SCALE;
+    MATRIX *const mptr = ++g_MatrixPtr;
+    mptr->_00 = 1 << W2V_SHIFT;
     mptr->_01 = 0;
     mptr->_02 = 0;
     mptr->_10 = 0;
-    mptr->_11 = W2V_SCALE;
+    mptr->_11 = 1 << W2V_SHIFT;
     mptr->_12 = 0;
     mptr->_20 = 0;
     mptr->_21 = 0;
-    mptr->_22 = W2V_SCALE;
+    mptr->_22 = 1 << W2V_SHIFT;
     mptr->_03 = 0;
     mptr->_13 = 0;
     mptr->_23 = 0;
@@ -78,13 +83,13 @@ void Matrix_Pop(void)
     g_MatrixPtr--;
 }
 
-void Matrix_RotX(PHD_ANGLE rx)
+void Matrix_RotX(const int16_t rx)
 {
     if (!rx) {
         return;
     }
 
-    MATRIX *mptr = g_MatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
     const int32_t sx = Math_Sin(rx);
     const int32_t cx = Math_Cos(rx);
 
@@ -105,13 +110,13 @@ void Matrix_RotX(PHD_ANGLE rx)
     mptr->_22 = r1 >> W2V_SHIFT;
 }
 
-void Matrix_RotY(PHD_ANGLE ry)
+void Matrix_RotY(const int16_t ry)
 {
     if (!ry) {
         return;
     }
 
-    MATRIX *mptr = g_MatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
     const int32_t sy = Math_Sin(ry);
     const int32_t cy = Math_Cos(ry);
 
@@ -132,13 +137,13 @@ void Matrix_RotY(PHD_ANGLE ry)
     mptr->_22 = r1 >> W2V_SHIFT;
 }
 
-void Matrix_RotZ(PHD_ANGLE rz)
+void Matrix_RotZ(const int16_t rz)
 {
     if (!rz) {
         return;
     }
 
-    MATRIX *mptr = g_MatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
     const int32_t sz = Math_Sin(rz);
     const int32_t cz = Math_Cos(rz);
 
@@ -159,7 +164,7 @@ void Matrix_RotZ(PHD_ANGLE rz)
     mptr->_21 = r1 >> W2V_SHIFT;
 }
 
-void Matrix_RotYXZ(PHD_ANGLE ry, PHD_ANGLE rx, PHD_ANGLE rz)
+void Matrix_RotYXZ(const int16_t ry, const int16_t rx, const int16_t rz)
 {
     Matrix_RotY(ry);
     Matrix_RotX(rx);
@@ -173,56 +178,45 @@ void Matrix_RotXYZ16(const XYZ_16 rotation)
     Matrix_RotZ(rotation.z);
 }
 
-void Matrix_TranslateRel(int32_t x, int32_t y, int32_t z)
+void Matrix_TranslateRel(const int32_t x, const int32_t y, const int32_t z)
 {
-    MATRIX *mptr = g_MatrixPtr;
-    mptr->_03 += mptr->_00 * x + mptr->_01 * y + mptr->_02 * z;
-    mptr->_13 += mptr->_10 * x + mptr->_11 * y + mptr->_12 * z;
-    mptr->_23 += mptr->_20 * x + mptr->_21 * y + mptr->_22 * z;
+    MATRIX *const mptr = g_MatrixPtr;
+    mptr->_03 += x * mptr->_00 + y * mptr->_01 + z * mptr->_02;
+    mptr->_13 += x * mptr->_10 + y * mptr->_11 + z * mptr->_12;
+    mptr->_23 += x * mptr->_20 + y * mptr->_21 + z * mptr->_22;
 }
 
-void Matrix_TranslateAbs(int32_t x, int32_t y, int32_t z)
+void Matrix_TranslateAbs(const int32_t x, const int32_t y, const int32_t z)
 {
-    MATRIX *mptr = g_MatrixPtr;
-    x -= g_W2VMatrix._03;
-    y -= g_W2VMatrix._13;
-    z -= g_W2VMatrix._23;
-    mptr->_03 = mptr->_00 * x + mptr->_01 * y + mptr->_02 * z;
-    mptr->_13 = mptr->_10 * x + mptr->_11 * y + mptr->_12 * z;
-    mptr->_23 = mptr->_20 * x + mptr->_21 * y + mptr->_22 * z;
+    MATRIX *const mptr = g_MatrixPtr;
+    const int32_t dx = x - g_W2VMatrix._03;
+    const int32_t dy = y - g_W2VMatrix._13;
+    const int32_t dz = z - g_W2VMatrix._23;
+    mptr->_03 = dx * mptr->_00 + dy * mptr->_01 + dz * mptr->_02;
+    mptr->_13 = dx * mptr->_10 + dy * mptr->_11 + dz * mptr->_12;
+    mptr->_23 = dx * mptr->_20 + dy * mptr->_21 + dz * mptr->_22;
 }
 
-void Matrix_TranslateSet(int32_t x, int32_t y, int32_t z)
+void Matrix_TranslateSet(const int32_t x, const int32_t y, const int32_t z)
 {
-    MATRIX *mptr = g_MatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
     mptr->_03 = x << W2V_SHIFT;
     mptr->_13 = y << W2V_SHIFT;
     mptr->_23 = z << W2V_SHIFT;
 }
 
-void Matrix_InitInterpolate(int32_t frac, int32_t rate)
+void Matrix_InitInterpolate(const int32_t frac, const int32_t rate)
 {
     m_IMFrac = frac;
     m_IMRate = rate;
     m_IMMatrixPtr = &m_IMMatrixStack[0];
-    m_IMMatrixPtr->_00 = g_MatrixPtr->_00;
-    m_IMMatrixPtr->_01 = g_MatrixPtr->_01;
-    m_IMMatrixPtr->_02 = g_MatrixPtr->_02;
-    m_IMMatrixPtr->_03 = g_MatrixPtr->_03;
-    m_IMMatrixPtr->_10 = g_MatrixPtr->_10;
-    m_IMMatrixPtr->_11 = g_MatrixPtr->_11;
-    m_IMMatrixPtr->_12 = g_MatrixPtr->_12;
-    m_IMMatrixPtr->_13 = g_MatrixPtr->_13;
-    m_IMMatrixPtr->_20 = g_MatrixPtr->_20;
-    m_IMMatrixPtr->_21 = g_MatrixPtr->_21;
-    m_IMMatrixPtr->_22 = g_MatrixPtr->_22;
-    m_IMMatrixPtr->_23 = g_MatrixPtr->_23;
+    *m_IMMatrixPtr = *g_MatrixPtr;
 }
 
 void Matrix_Interpolate(void)
 {
-    MATRIX *mptr = g_MatrixPtr;
-    MATRIX *iptr = m_IMMatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
+    const MATRIX *const iptr = m_IMMatrixPtr;
 
     mptr->_00 += ((iptr->_00 - mptr->_00) * m_IMFrac) / m_IMRate;
     mptr->_01 += ((iptr->_01 - mptr->_01) * m_IMFrac) / m_IMRate;
@@ -240,8 +234,8 @@ void Matrix_Interpolate(void)
 
 void Matrix_InterpolateArm(void)
 {
-    MATRIX *mptr = g_MatrixPtr;
-    MATRIX *iptr = m_IMMatrixPtr;
+    MATRIX *const mptr = g_MatrixPtr;
+    const MATRIX *const iptr = m_IMMatrixPtr;
 
     mptr->_00 = mptr[-2]._00;
     mptr->_01 = mptr[-2]._01;
@@ -260,18 +254,7 @@ void Matrix_InterpolateArm(void)
 void Matrix_Push_I(void)
 {
     Matrix_Push();
-    m_IMMatrixPtr[1]._00 = m_IMMatrixPtr[0]._00;
-    m_IMMatrixPtr[1]._01 = m_IMMatrixPtr[0]._01;
-    m_IMMatrixPtr[1]._02 = m_IMMatrixPtr[0]._02;
-    m_IMMatrixPtr[1]._03 = m_IMMatrixPtr[0]._03;
-    m_IMMatrixPtr[1]._10 = m_IMMatrixPtr[0]._10;
-    m_IMMatrixPtr[1]._11 = m_IMMatrixPtr[0]._11;
-    m_IMMatrixPtr[1]._12 = m_IMMatrixPtr[0]._12;
-    m_IMMatrixPtr[1]._13 = m_IMMatrixPtr[0]._13;
-    m_IMMatrixPtr[1]._20 = m_IMMatrixPtr[0]._20;
-    m_IMMatrixPtr[1]._21 = m_IMMatrixPtr[0]._21;
-    m_IMMatrixPtr[1]._22 = m_IMMatrixPtr[0]._22;
-    m_IMMatrixPtr[1]._23 = m_IMMatrixPtr[0]._23;
+    m_IMMatrixPtr[1] = m_IMMatrixPtr[0];
     m_IMMatrixPtr++;
 }
 
@@ -281,56 +264,57 @@ void Matrix_Pop_I(void)
     m_IMMatrixPtr--;
 }
 
-void Matrix_TranslateRel_I(int32_t x, int32_t y, int32_t z)
+void Matrix_TranslateRel_I(const int32_t x, const int32_t y, const int32_t z)
 {
     Matrix_TranslateRel(x, y, z);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_TranslateRel(x, y, z);
     g_MatrixPtr = old_matrix;
 }
 
 void Matrix_TranslateRel_ID(
-    int32_t x, int32_t y, int32_t z, int32_t x2, int32_t y2, int32_t z2)
+    const int32_t x, const int32_t y, const int32_t z, const int32_t x2,
+    const int32_t y2, const int32_t z2)
 {
     Matrix_TranslateRel(x, y, z);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_TranslateRel(x2, y2, z2);
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotY_I(PHD_ANGLE ang)
+void Matrix_RotY_I(const int16_t ang)
 {
     Matrix_RotY(ang);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotY(ang);
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotX_I(PHD_ANGLE ang)
+void Matrix_RotX_I(const int16_t ang)
 {
     Matrix_RotX(ang);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotX(ang);
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotZ_I(PHD_ANGLE ang)
+void Matrix_RotZ_I(const int16_t ang)
 {
     Matrix_RotZ(ang);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotZ(ang);
     g_MatrixPtr = old_matrix;
 }
 
-void Matrix_RotYXZ_I(PHD_ANGLE y, PHD_ANGLE x, PHD_ANGLE z)
+void Matrix_RotYXZ_I(const int16_t y, const int16_t x, const int16_t z)
 {
     Matrix_RotYXZ(y, x, z);
-    MATRIX *old_matrix = g_MatrixPtr;
+    MATRIX *const old_matrix = g_MatrixPtr;
     g_MatrixPtr = m_IMMatrixPtr;
     Matrix_RotYXZ(y, x, z);
     g_MatrixPtr = old_matrix;
@@ -346,16 +330,18 @@ void Matrix_RotXYZ16_I(const XYZ_16 rotation_1, const XYZ_16 rotation_2)
 }
 
 void Matrix_LookAt(
-    int32_t xsrc, int32_t ysrc, int32_t zsrc, int32_t xtar, int32_t ytar,
-    int32_t ztar, int16_t roll)
+    const int32_t source_x, const int32_t source_y, const int32_t source_z,
+    const int32_t target_x, const int32_t target_y, const int32_t target_z,
+    const int16_t roll)
 {
-    PHD_ANGLE angles[2];
-    Math_GetVectorAngles(xtar - xsrc, ytar - ysrc, ztar - zsrc, angles);
+    int16_t angles[2];
+    Math_GetVectorAngles(
+        target_x - source_x, target_y - source_y, target_z - source_z, angles);
 
     const XYZ_32 view_pos = {
-        .x = xsrc,
-        .y = ysrc,
-        .z = zsrc,
+        .x = source_x,
+        .y = source_y,
+        .z = source_z,
     };
     const XYZ_16 view_rot = {
         .x = angles[1],

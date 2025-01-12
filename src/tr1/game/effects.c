@@ -5,9 +5,9 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/matrix.h>
 
 #include <stddef.h>
 

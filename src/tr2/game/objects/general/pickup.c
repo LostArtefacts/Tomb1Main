@@ -9,7 +9,6 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/misc.h"
-#include "game/matrix.h"
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/overlay.h"
@@ -17,6 +16,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/matrix.h>
 
 #define LF_PICKUP_ERASE 42
 #define LF_PICKUP_FLARE 58

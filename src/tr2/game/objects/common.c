@@ -3,12 +3,12 @@
 #include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
-#include "game/matrix.h"
 #include "game/output.h"
 #include "game/room.h"
 #include "game/viewport.h"
 #include "global/vars.h"
 
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 OBJECT *Object_GetObject(GAME_OBJECT_ID object_id)

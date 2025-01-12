@@ -10,7 +10,6 @@
 #include "global/const.h"
 #include "global/types.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 #include "specific/s_output.h"
 
 #include <libtrx/config.h>
@@ -20,6 +19,7 @@
 #include <libtrx/game/console/common.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/gfx/context.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
@@ -361,7 +361,7 @@ static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh)
 
     for (int32_t i = 0; i < mesh->num_lights; ++i) {
         // make sure that reflection will be drawn after normal poly
-        m_VBuf[i].zv -= (double)(W2V_SCALE / 2);
+        m_VBuf[i].zv -= (double)((1 << W2V_SHIFT) / 2);
 
         // set lighting that depends only from fog distance
         m_VBuf[i].g = 0x1000;

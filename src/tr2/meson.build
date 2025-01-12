@@ -125,7 +125,6 @@ sources = [
   'game/level.c',
   'game/los.c',
   'game/lot.c',
-  'game/matrix.c',
   'game/music/music_backend_cdaudio.c',
   'game/music/music_backend_files.c',
   'game/music/music_main.c',

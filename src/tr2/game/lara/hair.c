@@ -1,13 +1,13 @@
 #include "game/lara/hair.h"
 
 #include "game/items.h"
-#include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "global/vars.h"
 
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 #define HAIR_SEGMENTS 6

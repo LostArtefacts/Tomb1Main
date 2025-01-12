@@ -2,7 +2,6 @@
 
 #include "game/items.h"
 #include "game/los.h"
-#include "game/matrix.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/random.h"
@@ -15,6 +14,7 @@
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 #define CHASE_SPEED 10

@@ -4,7 +4,6 @@
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/inventory.h"
-#include "game/matrix.h"
 #include "game/music.h"
 #include "game/objects/common.h"
 #include "game/output.h"
@@ -14,6 +13,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 #include <stdio.h>

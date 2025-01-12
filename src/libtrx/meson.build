@@ -119,6 +119,7 @@ sources = [
   'game/level/common.c',
   'game/math/trig.c',
   'game/math/util.c',
+  'game/matrix.c',
   'game/objects/common.c',
   'game/objects/names.c',
   'game/objects/vars.c',

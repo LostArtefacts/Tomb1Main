@@ -1,13 +1,27 @@
 #pragma once
 
-#include "global/const.h"
-#include "global/types.h"
-
-#include <stdbool.h>
-#include <stdint.h>
+#include "./math/types.h"
 
 #define TRIGMULT2(A, B) (((A) * (B)) >> W2V_SHIFT)
 #define TRIGMULT3(A, B, C) (TRIGMULT2((TRIGMULT2(A, B)), C))
+
+typedef struct {
+    int32_t _00;
+    int32_t _01;
+    int32_t _02;
+    int32_t _03;
+    int32_t _10;
+    int32_t _11;
+    int32_t _12;
+    int32_t _13;
+    int32_t _20;
+    int32_t _21;
+    int32_t _22;
+    int32_t _23;
+} MATRIX;
+
+extern MATRIX *g_MatrixPtr;
+extern MATRIX g_W2VMatrix;
 
 void Matrix_ResetStack(void);
 void Matrix_GenerateW2V(const XYZ_32 *pos, const XYZ_16 *rot);

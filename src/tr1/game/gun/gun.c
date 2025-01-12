@@ -10,9 +10,9 @@
 #include "game/random.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 
 #include <libtrx/debug.h>
+#include <libtrx/game/matrix.h>
 
 #include <stdbool.h>
 #include <stddef.h>

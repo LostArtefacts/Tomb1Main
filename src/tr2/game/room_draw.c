@@ -3,10 +3,10 @@
 #include "decomp/decomp.h"
 #include "game/effects.h"
 #include "game/lara/draw.h"
-#include "game/matrix.h"
 #include "game/output.h"
 #include "global/vars.h"
 
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 static int32_t m_Outside;

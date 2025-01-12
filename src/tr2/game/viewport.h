@@ -44,7 +44,6 @@ typedef struct {
         float flt_win_center_x;
         float flt_win_center_y;
         int32_t view_distance;
-        float viewport_aspect_ratio;
     } game_vars;
 } VIEWPORT;
 

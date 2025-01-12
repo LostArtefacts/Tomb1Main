@@ -1,11 +1,11 @@
 #include "game/collide.h"
 
 #include "game/items.h"
-#include "game/matrix.h"
 #include "game/room.h"
 #include "global/vars.h"
 
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 void Collide_GetCollisionInfo(

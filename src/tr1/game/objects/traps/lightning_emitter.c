@@ -11,9 +11,9 @@
 #include "game/viewport.h"
 #include "global/const.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/matrix.h>
 
 #define LIGHTNING_DAMAGE 400
 #define LIGHTNING_STEPS 8

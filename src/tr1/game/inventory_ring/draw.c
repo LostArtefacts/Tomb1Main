@@ -13,10 +13,10 @@
 #include "game/text.h"
 #include "game/viewport.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 
 #include <libtrx/config.h>
 #include <libtrx/game/inventory_ring/priv.h>
+#include <libtrx/game/matrix.h>
 
 static int32_t M_GetFrames(
     const INV_RING *ring, const INVENTORY_ITEM *inv_item,

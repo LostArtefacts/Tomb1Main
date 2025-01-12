@@ -10,7 +10,6 @@
 #include "game/inventory_ring/draw.h"
 #include "game/inventory_ring/vars.h"
 #include "game/lara/control.h"
-#include "game/matrix.h"
 #include "game/music.h"
 #include "game/option/option.h"
 #include "game/output.h"
@@ -23,6 +22,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/game/inventory_ring/priv.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/game/objects/names.h>
 #include <libtrx/game/objects/vars.h>
 #include <libtrx/memory.h>

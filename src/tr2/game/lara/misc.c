@@ -8,7 +8,6 @@
 #include "game/inventory_ring.h"
 #include "game/items.h"
 #include "game/lara/control.h"
-#include "game/matrix.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -17,6 +16,7 @@
 
 #include <libtrx/game/lara/misc.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 #define MAX_BADDIE_COLLISION 20

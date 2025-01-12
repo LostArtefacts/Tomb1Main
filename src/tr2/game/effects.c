@@ -1,6 +1,5 @@
 #include "game/effects.h"
 
-#include "game/matrix.h"
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/room.h"
@@ -8,6 +7,7 @@
 #include "global/vars.h"
 
 #include <libtrx/game/gamebuf.h>
+#include <libtrx/game/matrix.h>
 
 static EFFECT *m_Effects = NULL;
 static int16_t m_NextEffectFree = NO_EFFECT;

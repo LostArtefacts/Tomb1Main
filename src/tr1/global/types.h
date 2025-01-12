@@ -13,6 +13,7 @@
 #include <libtrx/game/lara/types.h>
 #include <libtrx/game/lot.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/game/objects/common.h>
 #include <libtrx/game/rooms.h>
 #include <libtrx/game/sound/enum.h>
@@ -322,21 +323,6 @@ typedef struct {
     uint8_t b;
     uint8_t a;
 } RGBA_8888;
-
-typedef struct {
-    int32_t _00;
-    int32_t _01;
-    int32_t _02;
-    int32_t _03;
-    int32_t _10;
-    int32_t _11;
-    int32_t _12;
-    int32_t _13;
-    int32_t _20;
-    int32_t _21;
-    int32_t _22;
-    int32_t _23;
-} MATRIX;
 
 typedef struct {
     float xv;

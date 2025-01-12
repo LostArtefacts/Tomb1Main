@@ -3,10 +3,11 @@
 #include "game/gun/gun_misc.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
-#include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "global/vars.h"
+
+#include <libtrx/game/matrix.h>
 
 static void M_DrawBodyPart(
     LARA_MESH mesh, const ANIM_BONE *bone, const XYZ_16 *mesh_rots_1,

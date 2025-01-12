@@ -4,7 +4,6 @@
 #include "game/gun/gun.h"
 #include "game/items.h"
 #include "game/los.h"
-#include "game/matrix.h"
 #include "game/objects/general/window.h"
 #include "game/output.h"
 #include "game/random.h"
@@ -14,6 +13,7 @@
 
 #include <libtrx/debug.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 #define NEAR_ANGLE (PHD_DEGREE * 15) // = 2730

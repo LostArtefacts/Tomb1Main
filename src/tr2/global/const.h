@@ -12,7 +12,6 @@
 #define PHD_45 DEG_45
 #define PHD_135 DEG_135
 
-#define W2V_SHIFT 14
 #define NO_HEIGHT (-32512)
 #define MAX_HEIGHT 32000
 #define NO_BAD_POS (-NO_HEIGHT) // = 32512

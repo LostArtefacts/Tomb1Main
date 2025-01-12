@@ -102,9 +102,6 @@ static void M_InitGameVars(VIEWPORT *const vp)
         vp->game_vars.flt_persp / vp->game_vars.flt_near_z;
     vp->game_vars.view_distance = vp->far_z;
 
-    vp->game_vars.viewport_aspect_ratio =
-        vp->render_ar / ((double)vp->width / (double)vp->height);
-
     M_AlterFov(vp);
 }
 

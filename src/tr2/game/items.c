@@ -3,7 +3,6 @@
 #include "game/effects.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/item_actions.h"
-#include "game/matrix.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
@@ -13,6 +12,7 @@
 
 #include <libtrx/debug.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
 static int16_t m_NextItemFree;

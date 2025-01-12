@@ -10,11 +10,11 @@
 #include "game/sound.h"
 #include "game/viewport.h"
 #include "global/vars.h"
-#include "math/matrix.h"
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/math.h>
+#include <libtrx/game/matrix.h>
 
 // Camera speed option ranges from 1-10, so index 0 is unused.
 static double m_ManualCameraMultiplier[11] = {
