@@ -7,6 +7,7 @@
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)
 - fixed item counter shown even for a single medipack (#2222, regression from 0.3)
+- fixed item counter always hidden in NG+, even for keys (#2223, regression from 0.3)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
