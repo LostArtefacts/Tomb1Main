@@ -682,6 +682,7 @@ void Camera_Look(const ITEM *item)
     g_Camera.target.z = old.z + (g_Camera.target.z - old.z) / g_Camera.speed;
     g_Camera.target.x = old.x + (g_Camera.target.x - old.x) / g_Camera.speed;
     Camera_Move(&target, g_Camera.speed);
+    g_Camera.debuff = 5;
 }
 
 void Camera_Fixed(void)
@@ -796,8 +797,15 @@ void Camera_Update(void)
             Camera_Combat(item);
         }
     } else {
-        g_Camera.target.x = item->pos.x;
-        g_Camera.target.z = item->pos.z;
+        if (g_Camera.debuff > 0) {
+            const XYZ_32 old = g_Camera.target.pos;
+            g_Camera.target.x = (item->pos.x + old.x) / 2;
+            g_Camera.target.z = (item->pos.z + old.z) / 2;
+            g_Camera.debuff--;
+        } else {
+            g_Camera.target.x = item->pos.x;
+            g_Camera.target.z = item->pos.z;
+        }
 
         if (g_Camera.flags == CF_FOLLOW_CENTRE) {
             const int32_t shift = (bounds->min.z + bounds->max.z) / 2;

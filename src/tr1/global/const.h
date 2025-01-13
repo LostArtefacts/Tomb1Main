@@ -70,7 +70,7 @@
 #define DEATH_WAIT_MIN (2 * LOGIC_FPS)
 #define MAX_HEAD_ROTATION (50 * DEG_1) // = 9100
 #define MAX_HEAD_TILT_LOOK (22 * DEG_1) // = 4004
-#define MIN_HEAD_TILT_LOOK (-35 * DEG_1) // = -6370
+#define MIN_HEAD_TILT_LOOK (-42 * DEG_1) // = -7644
 #define MAX_HEAD_TILT_CAM (85 * DEG_1) // = 15470
 #define MIN_HEAD_TILT_CAM (-85 * DEG_1) // = 15470
 #define HEAD_TURN (4 * DEG_1) // = 728

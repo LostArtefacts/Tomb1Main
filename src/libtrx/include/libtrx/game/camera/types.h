@@ -20,7 +20,6 @@ typedef struct {
     int16_t actual_angle;
 #endif
     int16_t target_elevation;
-    int16_t box;
     int16_t num;
     int16_t last;
     int16_t timer;
@@ -29,6 +28,8 @@ typedef struct {
     ITEM *item;
     ITEM *last_item;
     OBJECT_VECTOR *fixed;
+
+    int32_t debuff;
 
 #if TR_VERSION == 1
     // used for the manual camera control
@@ -44,8 +45,6 @@ typedef struct {
         int16_t room_num;
     } interp;
 #else
-    // TODO: remove this - now stored in g_Config
-    int32_t is_lara_mic;
     XYZ_32 mic_pos;
 #endif
 } CAMERA_INFO;

@@ -58,7 +58,7 @@
 
 #define HEAD_TURN (2 * DEG_1) // = 364
 #define MAX_HEAD_TILT (22 * DEG_1) // = 4004
-#define MIN_HEAD_TILT (-35 * DEG_1) // = -6370
+#define MIN_HEAD_TILT (-42 * DEG_1) // = -7644
 #define MAX_HEAD_ROTATION (44 * DEG_1) // = 8008
 #define MIN_HEAD_ROTATION (-MAX_HEAD_ROTATION) // = -8008
 #define HEAD_TURN_CAM (4 * DEG_1) // = 728
