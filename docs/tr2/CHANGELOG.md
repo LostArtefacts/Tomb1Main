@@ -2,6 +2,15 @@
 - added Linux builds and toolchain (#1598)
 - added pause dialog (#1638)
 - added a photo mode feature (#2277)
+- changed default input bindings to let the photo mode binding be compatible with TR1X:
+    | Key                           | Old binding | New binding  |
+    | ----------------------------- | ----------- | ------------ |
+    | Decrease resolution           | Shift+F1    | Shift+F11    |
+    | Increase resolution           | F1          | F11          |
+    | Decrease internal screen size | Shift+F2    | Shift+F10    |
+    | Increase internal screen size | F2          | F10          |
+    | Toggle photo mode             | ---         | F1           |
+    | Toggle photo mode UI          | ---         | H            |
 - fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
