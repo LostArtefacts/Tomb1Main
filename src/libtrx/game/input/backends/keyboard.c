@@ -17,11 +17,7 @@ static bool m_Conflicts[INPUT_LAYOUT_NUMBER_OF][INPUT_ROLE_NUMBER_OF] = {};
 static BUILTIN_KEYBOARD_LAYOUT m_BuiltinLayout[] = {
 // clang-format off
 #define INPUT_KEYBOARD_ASSIGN(role, key) { role, key },
-#if TR_VERSION == 1
-#include "game/input/backends/keyboard_tr1.def"
-#elif TR_VERSION == 2
-#include "game/input/backends/keyboard_tr2.def"
-#endif
+#include "game/input/backends/keyboard.def"
     { -1, SDL_SCANCODE_UNKNOWN },
     // clang-format on
 };
@@ -382,11 +378,9 @@ static void M_Init(void)
 static bool M_CustomUpdate(INPUT_STATE *const result, const INPUT_LAYOUT layout)
 {
     // we only do this for keyboard input
-#if TR_VERSION == 1 || TR_VERSION == 2
     result->menu_confirm |= result->action;
     result->toggle_fullscreen =
         KEY_DOWN(SDL_SCANCODE_RETURN) && KEY_DOWN(SDL_SCANCODE_LALT);
-#endif
     return true;
 }
 

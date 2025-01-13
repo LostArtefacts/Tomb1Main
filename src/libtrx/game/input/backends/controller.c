@@ -30,11 +30,7 @@ static BUILTIN_CONTROLLER_LAYOUT m_BuiltinLayout[] = {
     { role, { BT_BUTTON, { .button = bind }, 0 } },
 #define INPUT_CONTROLLER_ASSIGN_AXIS(role, bind, axis_dir)                     \
     { role, { BT_AXIS, { .axis = bind }, axis_dir } },
-#if TR_VERSION == 1
-    #include "game/input/backends/controller_tr1.def"
-#elif TR_VERSION == 2
-    #include "game/input/backends/controller_tr2.def"
-#endif
+#include "game/input/backends/controller.def"
     // guard
     { -1, { 0, { 0 }, 0 } },
 };
@@ -436,9 +432,7 @@ static bool M_CustomUpdate(INPUT_STATE *const result, const INPUT_LAYOUT layout)
     if (m_Controller == NULL) {
         return false;
     }
-#if TR_VERSION == 1 || TR_VERSION == 2
     result->menu_back |= M_JoyBtn(SDL_CONTROLLER_BUTTON_Y);
-#endif
     return true;
 }
 

@@ -22,11 +22,7 @@ static GLYPH_INFO m_Glyphs[] = {
       .width = width_,                                                         \
       .mesh_idx = mesh_idx_,                                                   \
       __VA_ARGS__ },
-#if TR_VERSION == 1
-    #include "text_tr1.def"
-#elif TR_VERSION == 2
-    #include "text_tr2.def"
-#endif
+#include "text.def"
     { .text = NULL }, // guard
 };
 
