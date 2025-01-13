@@ -1029,21 +1029,30 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         switch (seq->type) {
         case GFS_START_GAME:
-            if (!Game_Start((int32_t)(intptr_t)seq->data, level_type)) {
+            if (level_type == GFL_DEMO) {
+                break;
+            } else if (!Game_Start((int32_t)(intptr_t)seq->data, level_type)) {
                 g_CurrentLevel = -1;
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             break;
 
         case GFS_LOOP_GAME:
-            if (level_type != GFL_SAVED
-                && level_num != g_GameFlow.first_level_num) {
-                Lara_RevertToPistolsIfNeeded();
-            }
-            Phase_Set(PHASE_GAME, NULL);
-            command = Phase_Run();
-            if (command.action != GF_NOOP) {
-                return command;
+            if (level_type == GFL_DEMO) {
+                PHASE *const phase = Phase_Demo_Create(level_num);
+                const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+                Phase_Demo_Destroy(phase);
+                return gf_cmd;
+            } else {
+                if (level_type != GFL_SAVED
+                    && level_num != g_GameFlow.first_level_num) {
+                    Lara_RevertToPistolsIfNeeded();
+                }
+                Phase_Set(PHASE_GAME, NULL);
+                command = Phase_Run();
+                if (command.action != GF_NOOP) {
+                    return command;
+                }
             }
             break;
 
@@ -1513,9 +1522,9 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
-GAME_FLOW_COMMAND GF_PlayDemo(const int32_t demo_num)
+GAME_FLOW_COMMAND GF_PlayDemo(const int32_t level_num)
 {
-    PHASE *const phase = Phase_Demo_Create(demo_num);
+    PHASE *const phase = Phase_Demo_Create(level_num);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Demo_Destroy(phase);
     return gf_cmd;

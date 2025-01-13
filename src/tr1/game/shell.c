@@ -2,6 +2,7 @@
 
 #include "game/clock.h"
 #include "game/console/common.h"
+#include "game/demo.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_string.h"
@@ -12,7 +13,6 @@
 #include "game/option.h"
 #include "game/output.h"
 #include "game/phase/phase.h"
-#include "game/phase/phase_demo.h"
 #include "game/random.h"
 #include "game/savegame.h"
 #include "game/screen.h"
@@ -218,7 +218,8 @@ void Shell_Main(void)
             break;
 
         case GF_START_DEMO: {
-            command = GF_PlayDemo(command.param);
+            const int32_t level_num = Demo_ChooseLevel(command.param);
+            command = GameFlow_InterpretSequence(level_num, GFL_DEMO);
             break;
         }
 

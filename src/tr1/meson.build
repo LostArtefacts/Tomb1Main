@@ -249,7 +249,6 @@ sources = [
   'game/packer.c',
   'game/phase/phase.c',
   'game/phase/phase_cutscene.c',
-  'game/phase/phase_demo.c',
   'game/phase/phase_game.c',
   'game/phase/phase_inventory.c',
   'game/requester.c',

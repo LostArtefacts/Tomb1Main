@@ -2,13 +2,13 @@
 
 #include "game/console/common.h"
 #include "game/demo.h"
+#include "game/fader.h"
 #include "game/game.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
-
-#include <libtrx/game/fader.h>
-#include <libtrx/memory.h>
+#include "game/text.h"
+#include "memory.h"
 
 typedef enum {
     STATE_RUN,
@@ -56,7 +56,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
 
 static void M_End(PHASE *const phase)
 {
-    Game_SetIsPlaying(false);
     Demo_End();
 }
 
@@ -95,6 +94,8 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_FADE_OUT:
+        Game_SetIsPlaying(false);
+        Demo_StopFlashing();
         if (!Fader_IsActive(&p->top_fader) && !Fader_IsActive(&p->exit_fader)) {
             p->state = STATE_FINISH;
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
@@ -116,11 +117,11 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Game_Draw(true);
+    Text_Draw();
     Fader_Draw(&p->top_fader);
     Output_DrawPolyList();
 
     Console_Draw();
-    Text_Draw();
     Fader_Draw(&p->exit_fader);
     Output_DrawPolyList();
 }

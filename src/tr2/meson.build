@@ -254,7 +254,6 @@ sources = [
   'game/output.c',
   'game/overlay.c',
   'game/phase/phase_cutscene.c',
-  'game/phase/phase_demo.c',
   'game/phase/phase_game.c',
   'game/phase/phase_inventory.c',
   'game/render/common.c',

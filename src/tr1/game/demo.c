@@ -14,6 +14,7 @@
 #include "game/level.h"
 #include "game/output.h"
 #include "game/overlay.h"
+#include "game/phase.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -272,11 +273,40 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
 
 GAME_FLOW_COMMAND Demo_Control(void)
 {
+    Interpolation_Remember();
     M_PRIV *const p = &m_Priv;
-    Lara_Cheat_Control();
-    if (g_LevelComplete || !M_ProcessInput(p)) {
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+
+    Input_Update();
+    Shell_ProcessInput();
+
+    if (g_InputDB.pause) {
+        PHASE *const subphase = Phase_Pause_Create();
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+        Phase_Pause_Destroy(subphase);
+        return gf_cmd;
+    } else if (g_InputDB.toggle_photo_mode) {
+        PHASE *const subphase = Phase_PhotoMode_Create();
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+        Phase_PhotoMode_Destroy(subphase);
+        return gf_cmd;
     }
+
+    if (g_LevelComplete || g_InputDB.menu_confirm || g_InputDB.menu_back) {
+        return (GAME_FLOW_COMMAND) {
+            .action = GF_LEVEL_COMPLETE,
+            .param = p->level_num,
+        };
+    }
+    g_Input.any = 0;
+    g_InputDB.any = 0;
+
+    if (!M_ProcessInput(p)) {
+        return (GAME_FLOW_COMMAND) {
+            .action = GF_LEVEL_COMPLETE,
+            .param = p->level_num,
+        };
+    }
+    Lara_Cheat_Control();
 
     Game_ProcessInput();
 
