@@ -5,6 +5,7 @@
 #include "game/fader.h"
 #include "game/game.h"
 #include "game/input.h"
+#include "game/interpolation.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
 #include "game/text.h"
@@ -79,10 +80,15 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_RUN:
         for (int32_t i = 0; i < num_frames; i++) {
             const GAME_FLOW_COMMAND gf_cmd = Demo_Control();
-            if (gf_cmd.action != GF_NOOP) {
+            if (gf_cmd.action == GF_LEVEL_COMPLETE) {
                 p->state = STATE_FADE_OUT;
                 Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
-                break;
+                return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+            } else if (gf_cmd.action != GF_NOOP) {
+                return (PHASE_CONTROL) {
+                    .action = PHASE_ACTION_END,
+                    .gf_cmd = gf_cmd,
+                };
             }
         }
 
@@ -116,7 +122,13 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
+    if (p->state == STATE_FADE_OUT) {
+        Interpolation_Disable();
+    }
     Game_Draw(true);
+    if (p->state == STATE_FADE_OUT) {
+        Interpolation_Enable();
+    }
     Text_Draw();
     Fader_Draw(&p->top_fader);
     Output_DrawPolyList();

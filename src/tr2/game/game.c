@@ -59,11 +59,11 @@ static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
 
     if (demo_mode) {
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            return GF_TranslateScriptCommand(g_GameFlow.on_demo_interrupt);
+            return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
         }
         if (!Demo_GetInput()) {
             g_Input = (INPUT_STATE) {};
-            return GF_TranslateScriptCommand(g_GameFlow.on_demo_end);
+            return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
         }
     }
 
