@@ -15,6 +15,7 @@
 - fixed 1-frame UI flicker on pause screen exit confirmation
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - fixed being able to use keys and puzzle items in keyholes/slots that have already been used (#2256, regression from 4.0)
+- fixed textures animating during demo fade-outs (#2217, regression from 4.0)
 - improved pause screen compatibility with PS1 (#2248)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21

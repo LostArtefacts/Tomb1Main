@@ -92,6 +92,7 @@ GAME_FLOW_COMMAND
 GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level);
 GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num);
 
+GAME_FLOW_COMMAND GF_PlayDemo(int32_t demo_num);
 GAME_FLOW_COMMAND GF_ShowInventory(INVENTORY_MODE inv_mode);
 GAME_FLOW_COMMAND GF_ShowInventoryKeys(GAME_OBJECT_ID receptacle_type_id);
 

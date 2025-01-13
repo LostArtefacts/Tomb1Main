@@ -497,7 +497,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFE_DEMO_PLAY:
             if (type != GFL_SAVED && type != GFL_STORY
                 && type != GFL_MID_STORY) {
-                return GF_StartDemo(ptr[1]);
+                return GF_StartGame(ptr[1], GFL_DEMO);
             }
             ptr += 2;
             break;
@@ -648,24 +648,29 @@ void GF_ModifyInventory(const int32_t level, const int32_t type)
     }
 }
 
-GAME_FLOW_COMMAND GF_StartDemo(const int32_t level_num)
+GAME_FLOW_COMMAND GF_StartDemo(const int32_t demo_num)
 {
+    const int32_t level_num = Demo_ChooseLevel(demo_num);
     if (level_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    PHASE *const demo_phase = Phase_Demo_Create(level_num);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
-    Phase_Demo_Destroy(demo_phase);
-    return gf_cmd;
+    return GF_DoLevelSequence(level_num, GFL_DEMO);
 }
 
 GAME_FLOW_COMMAND GF_StartGame(
     const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    PHASE *const phase = Phase_Game_Create(level_num, level_type);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Game_Destroy(phase);
-    return gf_cmd;
+    if (level_type == GFL_DEMO) {
+        PHASE *const demo_phase = Phase_Demo_Create(level_num);
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
+        Phase_Demo_Destroy(demo_phase);
+        return gf_cmd;
+    } else {
+        PHASE *const phase = Phase_Game_Create(level_num, level_type);
+        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+        Phase_Game_Destroy(phase);
+        return gf_cmd;
+    }
 }
 
 GAME_FLOW_COMMAND GF_EnterPhotoMode(void)

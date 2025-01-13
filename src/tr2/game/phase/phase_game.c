@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/camera.h"
+#include "game/console/common.h"
 #include "game/game.h"
 #include "game/music.h"
 #include "game/output.h"
@@ -106,6 +107,9 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Game_Draw(true);
+    Console_Draw();
+    Text_Draw();
+    Output_DrawPolyList();
     Fader_Draw(&p->exit_fader);
 }
 

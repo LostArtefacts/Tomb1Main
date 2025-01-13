@@ -4,7 +4,6 @@
 #include "game/interpolation.h"
 #include "game/output.h"
 #include "game/phase/phase_cutscene.h"
-#include "game/phase/phase_demo.h"
 #include "game/phase/phase_game.h"
 #include "game/phase/phase_inventory.h"
 #include "global/types.h"
@@ -69,10 +68,6 @@ static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args)
 
     case PHASE_GAME:
         m_Phaser = &g_GamePhaser;
-        break;
-
-    case PHASE_DEMO:
-        m_Phaser = &g_DemoPhaser;
         break;
 
     case PHASE_CUTSCENE:

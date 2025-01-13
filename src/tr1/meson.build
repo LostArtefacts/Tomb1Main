@@ -106,6 +106,7 @@ sources = [
   'game/console/common.c',
   'game/console/setup.c',
   'game/creature.c',
+  'game/demo.c',
   'game/effects.c',
   'game/fmv.c',
   'game/game/game.c',

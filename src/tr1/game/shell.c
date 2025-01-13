@@ -218,10 +218,7 @@ void Shell_Main(void)
             break;
 
         case GF_START_DEMO: {
-            PHASE_DEMO_ARGS *const args = Memory_Alloc(sizeof(PHASE_DEMO_ARGS));
-            args->demo_num = command.param;
-            Phase_Set(PHASE_DEMO, args);
-            command = Phase_Run();
+            command = GF_PlayDemo(command.param);
             break;
         }
 

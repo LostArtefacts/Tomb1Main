@@ -2,7 +2,6 @@
 
 #include "decomp/decomp.h"
 #include "game/clock.h"
-#include "game/console/common.h"
 #include "game/inventory.h"
 #include "game/music.h"
 #include "game/objects/common.h"
@@ -158,8 +157,6 @@ void Overlay_DrawGameInfo(const bool pickup_state)
     }
     Overlay_DrawAmmoInfo();
     Overlay_DrawModeInfo();
-    Console_Draw();
-    Text_Draw();
 }
 
 void Overlay_Animate(int32_t ticks)

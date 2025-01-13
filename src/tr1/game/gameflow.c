@@ -10,7 +10,7 @@
 #include "game/objects/creatures/bacon_lara.h"
 #include "game/objects/vars.h"
 #include "game/output.h"
-#include "game/phase/phase.h"
+#include "game/phase.h"
 #include "game/phase/phase_cutscene.h"
 #include "game/phase/phase_inventory.h"
 #include "game/room.h"
@@ -1511,6 +1511,14 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
     }
 
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+}
+
+GAME_FLOW_COMMAND GF_PlayDemo(const int32_t demo_num)
+{
+    PHASE *const phase = Phase_Demo_Create(demo_num);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Demo_Destroy(phase);
+    return gf_cmd;
 }
 
 GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE inv_mode)

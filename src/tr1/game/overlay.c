@@ -240,7 +240,7 @@ static void M_BarGetLocation(
             - m_BarOffsetY[bar_info->location];
     }
 
-    if (Phase_Get() == PHASE_DEMO && bar_info->location == BL_BOTTOM_CENTER) {
+    if (g_GameInfo.showing_demo && bar_info->location == BL_BOTTOM_CENTER) {
         *y -= M_GetBarToTextScale() * (TEXT_HEIGHT + bar_spacing);
     } else if (
         g_GameInfo.inv_ring_shown

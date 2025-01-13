@@ -1,10 +1,6 @@
 #pragma once
 
-#include "game/phase/phase.h"
+#include <libtrx/game/phase/types.h>
 
-typedef struct {
-    int32_t demo_num;
-    bool resume_existing;
-} PHASE_DEMO_ARGS;
-
-extern PHASER g_DemoPhaser;
+PHASE *Phase_Demo_Create(int32_t level_num);
+void Phase_Demo_Destroy(PHASE *phase);

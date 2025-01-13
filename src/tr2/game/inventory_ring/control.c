@@ -181,14 +181,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     Shell_ProcessInput();
     Game_ProcessInput();
 
-    if (g_Inv_DemoMode) {
-        if (g_InputDB.any) {
-            return GF_TranslateScriptCommand(g_GameFlow.on_demo_interrupt);
-        }
-        if (!Demo_GetInput()) {
-            return GF_TranslateScriptCommand(g_GameFlow.on_demo_end);
-        }
-    } else if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
+    if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
         m_NoInputCounter = 0;
     } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
         m_NoInputCounter++;
