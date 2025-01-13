@@ -132,7 +132,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             if (gf_cmd.action != GF_NOOP) {
                 return (PHASE_CONTROL) {
                     .action = PHASE_ACTION_END,
-                    .gf_cmd = { .action = GF_NOOP },
+                    .gf_cmd = gf_cmd,
                 };
             }
         } else if (g_InputDB.toggle_photo_mode) {
@@ -140,7 +140,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             if (gf_cmd.action != GF_NOOP) {
                 return (PHASE_CONTROL) {
                     .action = PHASE_ACTION_END,
-                    .gf_cmd = { .action = GF_NOOP },
+                    .gf_cmd = gf_cmd,
                 };
             }
         }
