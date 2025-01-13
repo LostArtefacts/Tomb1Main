@@ -58,6 +58,8 @@ typedef enum {
     LA_VEHICLE_HIT_BACK = 14,
 } LARA_ANIM_VEHICLE;
 
+static CAMERA_INFO m_LocalCamera = {};
+
 GAME_FLOW_COMMAND TitleSequence(void)
 {
     GF_N_LoadStrings(-1);
@@ -81,10 +83,10 @@ void Game_SetCutsceneTrack(const int32_t track)
 void CutscenePlayer_Control(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    item->rot.y = g_Camera.target_angle;
-    item->pos.x = g_Camera.pos.pos.x;
-    item->pos.y = g_Camera.pos.pos.y;
-    item->pos.z = g_Camera.pos.pos.z;
+    item->rot.y = m_LocalCamera.target_angle;
+    item->pos.x = m_LocalCamera.pos.pos.x;
+    item->pos.y = m_LocalCamera.pos.pos.y;
+    item->pos.z = m_LocalCamera.pos.pos.z;
 
     XYZ_32 pos = {};
     Collide_GetJointAbsPosition(item, &pos, 0);
@@ -108,10 +110,10 @@ void CutscenePlayer_Control(const int16_t item_num)
 void Lara_Control_Cutscene(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    item->rot.y = g_Camera.target_angle;
-    item->pos.x = g_Camera.pos.pos.x;
-    item->pos.y = g_Camera.pos.pos.y;
-    item->pos.z = g_Camera.pos.pos.z;
+    item->rot.y = m_LocalCamera.target_angle;
+    item->pos.x = m_LocalCamera.pos.pos.x;
+    item->pos.y = m_LocalCamera.pos.pos.y;
+    item->pos.z = m_LocalCamera.pos.pos.z;
 
     XYZ_32 pos = {};
     Collide_GetJointAbsPosition(item, &pos, 0);
@@ -132,11 +134,11 @@ void CutscenePlayer1_Initialise(const int16_t item_num)
 
     Item_AddActive(item_num);
     ITEM *const item = &g_Items[item_num];
-    g_Camera.pos.pos.x = item->pos.x;
-    g_Camera.pos.pos.y = item->pos.y;
-    g_Camera.pos.pos.z = item->pos.z;
-    g_Camera.target_angle = 0;
-    g_Camera.pos.room_num = item->room_num;
+    m_LocalCamera.pos.pos.x = item->pos.x;
+    m_LocalCamera.pos.pos.y = item->pos.y;
+    m_LocalCamera.pos.pos.z = item->pos.z;
+    m_LocalCamera.target_angle = g_CineTargetAngle;
+    m_LocalCamera.pos.room_num = item->room_num;
 
     item->rot.y = 0;
     item->dynamic_light = 0;

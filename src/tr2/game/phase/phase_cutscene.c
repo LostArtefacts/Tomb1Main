@@ -162,6 +162,7 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     g_CameraUnderwater = false;
+    Camera_Apply();
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
     Console_Draw();

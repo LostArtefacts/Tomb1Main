@@ -13,6 +13,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/camera/common.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 

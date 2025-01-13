@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/camera.h>
+
 void Camera_Initialise(void);
 void Camera_ResetPosition(void);
 void Camera_Move(const GAME_VECTOR *target, int32_t speed);
@@ -24,7 +26,6 @@ int32_t Camera_ShiftClamp(GAME_VECTOR *pos, int32_t clamp);
 void Camera_Combat(const ITEM *item);
 void Camera_Look(const ITEM *item);
 void Camera_Fixed(void);
-void Camera_Update(void);
 void Camera_LoadCutsceneFrame(void);
 void Camera_UpdateCutscene(void);
 void Camera_RefreshFromTrigger(const TRIGGER *trigger);

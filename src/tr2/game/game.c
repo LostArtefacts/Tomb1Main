@@ -151,6 +151,7 @@ GAME_FLOW_COMMAND Game_Control(const int32_t num_frames, const bool demo_mode)
 
 void Game_Draw(bool draw_overlay)
 {
+    Camera_Apply();
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
     if (draw_overlay) {

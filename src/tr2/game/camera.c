@@ -183,10 +183,6 @@ void Camera_Move(const GAME_VECTOR *target, int32_t speed)
         g_Camera.pos.x, g_Camera.pos.y + g_Camera.shift, g_Camera.pos.z,
         &g_Camera.pos.room_num);
 
-    Matrix_LookAt(
-        g_Camera.pos.x, g_Camera.shift + g_Camera.pos.y, g_Camera.pos.z,
-        g_Camera.target.x, g_Camera.target.y, g_Camera.target.z, 0);
-
     if (g_Config.audio.enable_lara_mic) {
         g_Camera.actual_angle =
             g_Lara.torso_rot.y + g_Lara.head_rot.y + g_LaraItem->rot.y;
@@ -712,8 +708,6 @@ void Camera_Fixed(void)
 
 void Camera_Update(void)
 {
-    M_EnsureEnvironment();
-
     if (g_Camera.type == CAM_CINEMATIC) {
         Camera_LoadCutsceneFrame();
         return;
@@ -870,11 +864,10 @@ void Camera_LoadCutsceneFrame(void)
     g_Camera.pos.x = g_CinePos.pos.x + ((cx * c + cz * s) >> W2V_SHIFT);
     g_Camera.pos.y = g_CinePos.pos.y + cy;
     g_Camera.pos.z = g_CinePos.pos.z + ((cz * c - cx * s) >> W2V_SHIFT);
+    g_Camera.roll = roll;
+    g_Camera.shift = 0;
 
     Viewport_AlterFOV(fov);
-    Matrix_LookAt(
-        g_Camera.pos.x, g_Camera.pos.y, g_Camera.pos.z, g_Camera.target.x,
-        g_Camera.target.y, g_Camera.target.z, roll);
 
     Room_GetSector(
         g_Camera.pos.x, g_Camera.pos.y, g_Camera.pos.z, &g_Camera.pos.room_num);
@@ -899,7 +892,7 @@ void Camera_LoadCutsceneFrame(void)
 
 void Camera_UpdateCutscene(void)
 {
-    const CINE_FRAME *frame = &g_CineData[g_CineFrameIdx];
+    const CINE_FRAME *const frame = &g_CineData[g_CineFrameIdx];
     int32_t tx = frame->tx;
     int32_t ty = frame->ty;
     int32_t tz = frame->tz;
@@ -910,23 +903,26 @@ void Camera_UpdateCutscene(void)
     int32_t roll = frame->roll;
     int32_t c = Math_Cos(g_Camera.target_angle);
     int32_t s = Math_Sin(g_Camera.target_angle);
-    const XYZ_32 camtar = {
+    const XYZ_32 camera_target = {
         .x = g_LaraItem->pos.x + ((tx * c + tz * s) >> W2V_SHIFT),
         .y = g_LaraItem->pos.y + ty,
         .z = g_LaraItem->pos.z + ((tz * c - tx * s) >> W2V_SHIFT),
     };
-    const XYZ_32 campos = {
+    const XYZ_32 camera_pos = {
         .x = g_LaraItem->pos.x + ((cx * c + cz * s) >> W2V_SHIFT),
         .y = g_LaraItem->pos.y + cy,
         .z = g_LaraItem->pos.z + ((cz * c - cx * s) >> W2V_SHIFT),
     };
-    int16_t room_num = Room_FindByPos(campos.x, campos.y, campos.z);
+    int16_t room_num = Room_FindByPos(camera_pos.x, camera_pos.y, camera_pos.z);
     if (room_num != NO_ROOM_NEG) {
         g_Camera.pos.room_num = room_num;
     }
+
+    g_Camera.pos.pos = camera_pos;
+    g_Camera.target.pos = camera_target;
+    g_Camera.roll = roll;
+    g_Camera.shift = 0;
     Viewport_AlterFOV(fov);
-    Matrix_LookAt(
-        campos.x, campos.y, campos.z, camtar.x, camtar.y, camtar.z, roll);
 }
 
 void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
@@ -969,4 +965,12 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
     if (g_Camera.num == -1 && g_Camera.timer > 0) {
         g_Camera.timer = -1;
     }
+}
+
+void Camera_Apply(void)
+{
+    M_EnsureEnvironment();
+    Matrix_LookAt(
+        g_Camera.pos.x, g_Camera.pos.y + g_Camera.shift, g_Camera.pos.z,
+        g_Camera.target.x, g_Camera.target.y, g_Camera.target.z, g_Camera.roll);
 }
