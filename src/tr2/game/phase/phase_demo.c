@@ -10,9 +10,16 @@
 #include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
+typedef enum {
+    STATE_RUN,
+    STATE_FADE_OUT,
+    STATE_FINISH,
+} STATE;
+
 typedef struct {
-    bool exiting;
+    STATE state;
     int32_t level_num;
+    FADER top_fader;
     FADER exit_fader;
 } M_PRIV;
 
@@ -26,7 +33,6 @@ static void M_Draw(PHASE *phase);
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-
     if (p->level_num == -1) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
@@ -40,8 +46,8 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
             .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
-    Fader_Init(&p->exit_fader, FADER_TRANSPARENT, FADER_TRANSPARENT, 0.0);
 
+    p->state = STATE_RUN;
     g_OldInputDB = g_Input;
     Game_SetIsPlaying(true);
 
@@ -69,25 +75,40 @@ static void M_Resume(PHASE *const phase)
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
-    if (Game_IsExiting() && !p->exiting) {
-        p->exiting = true;
-        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 0.5);
-    } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
-        return (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_EXIT_GAME },
-        };
-    } else {
+
+    switch (p->state) {
+    case STATE_RUN:
         for (int32_t i = 0; i < num_frames; i++) {
             const GAME_FLOW_COMMAND gf_cmd = Demo_Control();
             if (gf_cmd.action != GF_NOOP) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .gf_cmd = gf_cmd,
-                };
+                p->state = STATE_FADE_OUT;
+                Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
+                break;
             }
         }
+
+        if (Game_IsExiting() && !Fader_IsActive(&p->exit_fader)) {
+            p->state = STATE_FADE_OUT;
+            Fader_Init(&p->exit_fader, FADER_TRANSPARENT, FADER_BLACK, 0.5);
+        }
+
+        break;
+
+    case STATE_FADE_OUT:
+        if (!Fader_IsActive(&p->top_fader) && !Fader_IsActive(&p->exit_fader)) {
+            p->state = STATE_FINISH;
+            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
+        }
+        break;
+
+    case STATE_FINISH:
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = Game_IsExiting() ? GF_EXIT_GAME
+                                                   : GF_EXIT_TO_TITLE },
+        };
     }
+
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
@@ -95,7 +116,9 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Game_Draw(true);
+    Fader_Draw(&p->top_fader);
     Output_DrawPolyList();
+
     Console_Draw();
     Text_Draw();
     Fader_Draw(&p->exit_fader);
