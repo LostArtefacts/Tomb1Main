@@ -16,8 +16,8 @@ static const OBJECT_BOUNDS m_KeyHoleBounds = {
         .max = { .x = +200, .y = +0, .z = +WALL_L / 2, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = -30 * PHD_DEGREE, .z = -10 * PHD_DEGREE, },
-        .max = { .x = +10 * PHD_DEGREE, .y = +30 * PHD_DEGREE, .z = +10 * PHD_DEGREE, },
+        .min = { .x = -10 * DEG_1, .y = -30 * DEG_1, .z = -10 * DEG_1, },
+        .max = { .x = +10 * DEG_1, .y = +30 * DEG_1, .z = +10 * DEG_1, },
     },
 };
 

@@ -376,14 +376,14 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     // translating the object in order to avoid perspective distortion in the
     // screen corners.
     int16_t old_fov = Viewport_GetFOV();
-    Viewport_SetFOV(PICKUPS_FOV * PHD_DEGREE);
+    Viewport_SetFOV(PICKUPS_FOV * DEG_1);
     Viewport_Init(vp_x1, vp_y1, vp_x2 - vp_x1, vp_y2 - vp_y1);
     Output_ApplyFOV();
 
     Matrix_PushUnit();
     Matrix_TranslateSet(
         src_x + (dst_x - src_x) * ease, src_y + (dst_y - src_y) * ease, scale);
-    Matrix_RotX(PHD_DEGREE * 15);
+    Matrix_RotX(DEG_1 * 15);
     Matrix_RotY(pu->rot_y);
 
     Output_SetLightDivider(0x6000);
@@ -463,7 +463,7 @@ static void M_DrawPickups3D(void)
             break;
         }
 
-        pu->rot_y += 4 * PHD_DEGREE * (elapsed * LOGIC_FPS);
+        pu->rot_y += 4 * DEG_1 * (elapsed * LOGIC_FPS);
 
         M_DrawPickup3D(pu);
     }

@@ -14,8 +14,8 @@
 #define APE_ATTACK_DAMAGE 200
 #define APE_TOUCH 0xFF00
 #define APE_DIE_ANIM 7
-#define APE_RUN_TURN (PHD_DEGREE * 5) // = 910
-#define APE_DISPLAY_ANGLE (PHD_DEGREE * 45) // = 8190
+#define APE_RUN_TURN (DEG_1 * 5) // = 910
+#define APE_DISPLAY_ANGLE (DEG_1 * 45) // = 8190
 #define APE_ATTACK_RANGE SQUARE(430) // = 184900
 #define APE_PANIC_RANGE SQUARE(WALL_L * 2) // = 4194304
 #define APE_JUMP_CHANCE 160
@@ -60,10 +60,10 @@ static bool M_Vault(int16_t item_num, int16_t angle)
     int16_t room_num = item->room_num;
 
     if (ape->flags & APE_TURN_L_FLAG) {
-        item->rot.y -= PHD_90;
+        item->rot.y -= DEG_90;
         ape->flags &= ~APE_TURN_L_FLAG;
     } else if (ape->flags & APE_TURN_R_FLAG) {
-        item->rot.y += PHD_90;
+        item->rot.y += DEG_90;
         ape->flags &= ~APE_TURN_R_FLAG;
     }
 
@@ -82,10 +82,10 @@ static bool M_Vault(int16_t item_num, int16_t angle)
         }
 
         if (x >= x_floor) {
-            item->rot.y = -PHD_90;
+            item->rot.y = -DEG_90;
             item->pos.x = (x << WALL_SHIFT) + APE_SHIFT;
         } else {
-            item->rot.y = PHD_90;
+            item->rot.y = DEG_90;
             item->pos.x = (x_floor << WALL_SHIFT) - APE_SHIFT;
         }
     } else if (x == x_floor) {
@@ -93,7 +93,7 @@ static bool M_Vault(int16_t item_num, int16_t angle)
             item->rot.y = 0;
             item->pos.z = (z_floor << WALL_SHIFT) - APE_SHIFT;
         } else {
-            item->rot.y = -PHD_180;
+            item->rot.y = -DEG_180;
             item->pos.z = (z << WALL_SHIFT) + APE_SHIFT;
         }
     }
@@ -171,10 +171,10 @@ void Ape_Control(int16_t item_num)
         switch (item->current_anim_state) {
         case APE_STATE_STOP:
             if (ape->flags & APE_TURN_L_FLAG) {
-                item->rot.y -= PHD_90;
+                item->rot.y -= DEG_90;
                 ape->flags &= ~APE_TURN_L_FLAG;
             } else if (ape->flags & APE_TURN_R_FLAG) {
-                item->rot.y += PHD_90;
+                item->rot.y += DEG_90;
                 ape->flags &= ~APE_TURN_R_FLAG;
             }
 
@@ -229,7 +229,7 @@ void Ape_Control(int16_t item_num)
 
         case APE_STATE_RUN_LEFT:
             if (!(ape->flags & APE_TURN_R_FLAG)) {
-                item->rot.y -= PHD_90;
+                item->rot.y -= DEG_90;
                 ape->flags |= APE_TURN_R_FLAG;
             }
             item->goal_anim_state = APE_STATE_STOP;
@@ -237,7 +237,7 @@ void Ape_Control(int16_t item_num)
 
         case APE_STATE_RUN_RIGHT:
             if (!(ape->flags & APE_TURN_L_FLAG)) {
-                item->rot.y += PHD_90;
+                item->rot.y += DEG_90;
                 ape->flags |= APE_TURN_L_FLAG;
             }
             item->goal_anim_state = APE_STATE_STOP;

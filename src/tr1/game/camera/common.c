@@ -863,7 +863,7 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
 
 void Camera_MoveManual(void)
 {
-    const int16_t camera_delta = (const int)PHD_90 / (const int)LOGIC_FPS
+    const int16_t camera_delta = (const int)DEG_90 / (const int)LOGIC_FPS
         * (double)m_ManualCameraMultiplier[g_Config.gameplay.camera_speed];
 
     if (g_Input.camera_left) {

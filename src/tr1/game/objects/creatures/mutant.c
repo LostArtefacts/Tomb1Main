@@ -17,8 +17,8 @@
 #define FLYER_LUNGE_DAMAGE 150
 #define FLYER_PUNCH_DAMAGE 200
 #define FLYER_PART_DAMAGE 100
-#define FLYER_WALK_TURN (PHD_DEGREE * 2) // = 364
-#define FLYER_RUN_TURN (PHD_DEGREE * 6) // = 1092
+#define FLYER_WALK_TURN (DEG_1 * 2) // = 364
+#define FLYER_RUN_TURN (DEG_1 * 6) // = 1092
 #define FLYER_POSE_CHANCE 80
 #define FLYER_UNPOSE_CHANCE 256
 #define FLYER_WALK_RANGE SQUARE(WALL_L * 9 / 2) // = 21233664
@@ -145,9 +145,9 @@ void Mutant_FlyerControl(int16_t item_num)
             && Creature_CanTargetEnemy(item, &info)
             && (info.zone_num != info.enemy_zone
                 || info.distance > FLYER_ATTACK_RANGE)) {
-            if (info.angle > 0 && info.angle < PHD_45) {
+            if (info.angle > 0 && info.angle < DEG_45) {
                 shoot1 = 1;
-            } else if (info.angle < 0 && info.angle > -PHD_45) {
+            } else if (info.angle < 0 && info.angle > -DEG_45) {
                 shoot2 = 1;
             }
         }

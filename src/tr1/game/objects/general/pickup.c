@@ -33,8 +33,8 @@ static const OBJECT_BOUNDS m_PickUpBounds = {
         .max = { .x = +256, .y = +100, .z = +256, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = 0, .z = 0, },
-        .max = { .x = +10 * PHD_DEGREE, .y = 0, .z = 0, },
+        .min = { .x = -10 * DEG_1, .y = 0, .z = 0, },
+        .max = { .x = +10 * DEG_1, .y = 0, .z = 0, },
     },
 };
 
@@ -44,8 +44,8 @@ static const OBJECT_BOUNDS m_PickUpBoundsControlled = {
         .max = { .x = +256, .y = +200, .z = +256, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = 0, .z = 0, },
-        .max = { .x = +10 * PHD_DEGREE, .y = 0, .z = 0, },
+        .min = { .x = -10 * DEG_1, .y = 0, .z = 0, },
+        .max = { .x = +10 * DEG_1, .y = 0, .z = 0, },
     },
 };
 
@@ -55,8 +55,8 @@ static const OBJECT_BOUNDS m_PickUpBoundsUW = {
         .max = { .x = +512, .y = +512, .z = +512, },
     },
     .rot = {
-        .min = { .x = -45 * PHD_DEGREE, .y = -45 * PHD_DEGREE, .z = -45 * PHD_DEGREE, },
-        .max = { .x = +45 * PHD_DEGREE, .y = +45 * PHD_DEGREE, .z = +45 * PHD_DEGREE, },
+        .min = { .x = -45 * DEG_1, .y = -45 * DEG_1, .z = -45 * DEG_1, },
+        .max = { .x = +45 * DEG_1, .y = +45 * DEG_1, .z = +45 * DEG_1, },
     },
 };
 
@@ -219,7 +219,7 @@ void Pickup_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             goto cleanup;
         }
     } else if (g_Lara.water_status == LWS_UNDERWATER) {
-        item->rot.x = -25 * PHD_DEGREE;
+        item->rot.x = -25 * DEG_1;
         if (!Lara_TestPosition(item, obj->bounds())) {
             goto cleanup;
         }
@@ -306,7 +306,7 @@ void Pickup_CollisionControlled(
             }
         }
     } else if (g_Lara.water_status == LWS_UNDERWATER) {
-        item->rot.x = -25 * PHD_DEGREE;
+        item->rot.x = -25 * DEG_1;
 
         if ((g_Input.action && lara_item->current_anim_state == LS_TREAD
              && g_Lara.gun_status == LGS_ARMLESS

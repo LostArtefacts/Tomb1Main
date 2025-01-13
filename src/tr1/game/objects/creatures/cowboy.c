@@ -11,8 +11,8 @@
 #include <libtrx/utils.h>
 
 #define COWBOY_SHOT_DAMAGE 70
-#define COWBOY_WALK_TURN (PHD_DEGREE * 3) // = 546
-#define COWBOY_RUN_TURN (PHD_DEGREE * 6) // = 1092
+#define COWBOY_WALK_TURN (DEG_1 * 3) // = 546
+#define COWBOY_RUN_TURN (DEG_1 * 6) // = 1092
 #define COWBOY_WALK_RANGE SQUARE(WALL_L * 3) // = 9437184
 #define COWBOY_DIE_ANIM 7
 #define COWBOY_HITPOINTS 150

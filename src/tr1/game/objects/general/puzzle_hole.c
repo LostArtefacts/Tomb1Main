@@ -24,14 +24,14 @@ static const OBJECT_BOUNDS m_PuzzleHoleBounds = {
     },
     .rot = {
         .min = {
-            .x = -10 * PHD_DEGREE,
-            .y = -30 * PHD_DEGREE,
-            .z = -10 * PHD_DEGREE,
+            .x = -10 * DEG_1,
+            .y = -30 * DEG_1,
+            .z = -10 * DEG_1,
         },
         .max = {
-            .x = +10 * PHD_DEGREE,
-            .y = +30 * PHD_DEGREE,
-            .z = +10 * PHD_DEGREE,
+            .x = +10 * DEG_1,
+            .y = +30 * DEG_1,
+            .z = +10 * DEG_1,
         },
     },
 };

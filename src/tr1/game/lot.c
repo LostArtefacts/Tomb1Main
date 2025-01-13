@@ -97,7 +97,7 @@ void LOT_InitialiseSlot(int16_t item_num, int32_t slot)
     creature->mood = MOOD_BORED;
     creature->head_rotation = 0;
     creature->neck_rotation = 0;
-    creature->maximum_turn = PHD_DEGREE;
+    creature->maximum_turn = DEG_1;
     creature->flags = 0;
 
     creature->lot.step = STEP_L;

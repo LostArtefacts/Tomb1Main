@@ -29,13 +29,13 @@ static bool M_IsItemOnTop(const ITEM *item, int32_t x, int32_t z)
     if (item->rot.y == 0 && x == ix && (z == iz - 1 || z == iz - 2)) {
         return true;
     } else if (
-        item->rot.y == -PHD_180 && x == ix && (z == iz + 1 || z == iz + 2)) {
+        item->rot.y == -DEG_180 && x == ix && (z == iz + 1 || z == iz + 2)) {
         return true;
     } else if (
-        item->rot.y == PHD_90 && z == iz && (x == ix - 1 || x == ix - 2)) {
+        item->rot.y == DEG_90 && z == iz && (x == ix - 1 || x == ix - 2)) {
         return true;
     } else if (
-        item->rot.y == -PHD_90 && z == iz && (x == ix + 1 || x == ix + 2)) {
+        item->rot.y == -DEG_90 && z == iz && (x == ix + 1 || x == ix + 2)) {
         return true;
     }
 

@@ -9,8 +9,8 @@
 #include <libtrx/utils.h>
 
 #define BALDY_SHOT_DAMAGE 150
-#define BALDY_WALK_TURN (PHD_DEGREE * 3) // = 546
-#define BALDY_RUN_TURN (PHD_DEGREE * 6) // = 1092
+#define BALDY_WALK_TURN (DEG_1 * 3) // = 546
+#define BALDY_RUN_TURN (DEG_1 * 6) // = 1092
 #define BALDY_WALK_RANGE SQUARE(WALL_L * 4) // = 16777216
 #define BALDY_DIE_ANIM 14
 #define BALDY_HITPOINTS 200

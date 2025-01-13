@@ -86,7 +86,7 @@ void BaconLara_Control(int16_t item_num)
         item->pos.y = y;
         item->pos.z = z;
         item->rot.x = g_LaraItem->rot.x;
-        item->rot.y = g_LaraItem->rot.y - PHD_180;
+        item->rot.y = g_LaraItem->rot.y - DEG_180;
         item->rot.z = g_LaraItem->rot.z;
         Item_NewRoom(item_num, g_LaraItem->room_num);
 

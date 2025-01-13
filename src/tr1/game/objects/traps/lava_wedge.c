@@ -37,11 +37,11 @@ void LavaWedge_Control(int16_t item_num)
             item->pos.z += LAVA_WEDGE_SPEED;
             z += 2 * WALL_L;
             break;
-        case -PHD_180:
+        case -DEG_180:
             item->pos.z -= LAVA_WEDGE_SPEED;
             z -= 2 * WALL_L;
             break;
-        case PHD_90:
+        case DEG_90:
             item->pos.x += LAVA_WEDGE_SPEED;
             x += 2 * WALL_L;
             break;
@@ -70,7 +70,7 @@ void LavaWedge_Control(int16_t item_num)
         g_Camera.item = item;
         g_Camera.flags = CHASE_OBJECT;
         g_Camera.type = CAM_FIXED;
-        g_Camera.target_angle = -PHD_180;
+        g_Camera.target_angle = -DEG_180;
         g_Camera.target_distance = WALL_L * 3;
     }
 }

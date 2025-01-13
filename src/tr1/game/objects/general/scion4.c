@@ -16,8 +16,8 @@ static const OBJECT_BOUNDS m_Scion4_Bounds = {
         .max = { .x = +256, .y = +256 + 50, .z = -200, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = 0, .z = 0, },
-        .max = { .x = +10 * PHD_DEGREE, .y = 0, .z = 0, },
+        .min = { .x = -10 * DEG_1, .y = 0, .z = 0, },
+        .max = { .x = +10 * DEG_1, .y = 0, .z = 0, },
     },
 };
 
@@ -67,7 +67,7 @@ void Scion4_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         g_Camera.type = CAM_CINEMATIC;
         g_CineFrame = 0;
         g_CinePosition.pos = lara_item->pos;
-        g_CinePosition.rot = lara_item->rot.y - PHD_90;
+        g_CinePosition.rot = lara_item->rot.y - DEG_90;
     }
 cleanup:
     item->rot.x = rotx;

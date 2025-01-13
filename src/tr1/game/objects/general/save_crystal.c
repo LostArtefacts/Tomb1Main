@@ -16,8 +16,8 @@ static const OBJECT_BOUNDS m_SaveCrystal_Bounds = {
         .max = { .x = +256, .y = +100, .z = +256, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = 0, .z = 0, },
-        .max = { .x = +10 * PHD_DEGREE, .y = 0, .z = 0, },
+        .min = { .x = -10 * DEG_1, .y = 0, .z = 0, },
+        .max = { .x = +10 * DEG_1, .y = 0, .z = 0, },
     },
 };
 

@@ -64,7 +64,7 @@ void Spawn_Splash(ITEM *item)
             effect->pos.x = item->pos.x;
             effect->pos.y = wh;
             effect->pos.z = item->pos.z;
-            effect->rot.y = PHD_180 + 2 * Random_GetDraw();
+            effect->rot.y = DEG_180 + 2 * Random_GetDraw();
             effect->object_id = O_SPLASH_1;
             effect->frame_num = 0;
             effect->speed = Random_GetDraw() / 256;

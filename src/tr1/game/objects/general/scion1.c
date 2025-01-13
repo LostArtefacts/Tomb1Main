@@ -20,8 +20,8 @@ static const OBJECT_BOUNDS m_Scion1_Bounds = {
         .max = { .x = +256, .y = +640 + 100, .z = -200, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = 0, .z = 0, },
-        .max = { .x = +10 * PHD_DEGREE, .y = 0, .z = 0, },
+        .min = { .x = -10 * DEG_1, .y = 0, .z = 0, },
+        .max = { .x = +10 * DEG_1, .y = 0, .z = 0, },
     },
 };
 

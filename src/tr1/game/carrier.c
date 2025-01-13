@@ -19,8 +19,8 @@
 
 #define DROP_FAST_RATE GRAVITY
 #define DROP_SLOW_RATE 1
-#define DROP_FAST_TURN (PHD_DEGREE * 5)
-#define DROP_SLOW_TURN (PHD_DEGREE * 3)
+#define DROP_FAST_TURN (DEG_1 * 5)
+#define DROP_SLOW_TURN (DEG_1 * 3)
 
 static int16_t m_AnimatingCount = 0;
 

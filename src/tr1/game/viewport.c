@@ -81,7 +81,7 @@ int16_t Viewport_GetFOV(void)
 
 int16_t Viewport_GetUserFOV(void)
 {
-    return g_Config.visuals.fov_value * PHD_DEGREE;
+    return g_Config.visuals.fov_value * DEG_1;
 }
 
 void Viewport_SetFOV(int16_t fov)

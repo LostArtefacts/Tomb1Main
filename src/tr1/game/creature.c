@@ -32,7 +32,7 @@ void Creature_Initialise(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
 
-    item->rot.y += (PHD_ANGLE)((Random_GetControl() - PHD_90) >> 1);
+    item->rot.y += (PHD_ANGLE)((Random_GetControl() - DEG_90) >> 1);
     item->collidable = 1;
     item->data = NULL;
 }
@@ -87,7 +87,7 @@ void Creature_AIInfo(ITEM *item, AI_INFO *info)
         info->distance = SQUARE(MAX_CREATURE_DISTANCE);
     }
     info->angle = angle - item->rot.y;
-    info->enemy_facing = angle - g_LaraItem->rot.y + PHD_180;
+    info->enemy_facing = angle - g_LaraItem->rot.y + DEG_180;
     info->ahead = info->angle > -FRONT_ARC && info->angle < FRONT_ARC;
     info->bite = info->ahead && (g_LaraItem->pos.y > item->pos.y - STEP_L)
         && (g_LaraItem->pos.y < item->pos.y + STEP_L);
@@ -502,7 +502,7 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
                 && Box_BadFloor(
                     x - radius, y, z - radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_135 && item->rot.y < PHD_45) {
+                if (item->rot.y > -DEG_135 && item->rot.y < DEG_45) {
                     shift_z = radius - pos_z;
                 } else {
                     shift_x = radius - pos_x;
@@ -517,7 +517,7 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
                 && Box_BadFloor(
                     x + radius, y, z - radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_45 && item->rot.y < PHD_135) {
+                if (item->rot.y > -DEG_45 && item->rot.y < DEG_135) {
                     shift_z = radius - pos_z;
                 } else {
                     shift_x = WALL_L - radius - pos_x;
@@ -539,7 +539,7 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
                 && Box_BadFloor(
                     x - radius, y, z + radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_45 && item->rot.y < PHD_135) {
+                if (item->rot.y > -DEG_45 && item->rot.y < DEG_135) {
                     shift_x = radius - pos_x;
                 } else {
                     shift_z = WALL_L - radius - pos_z;
@@ -554,7 +554,7 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
                 && Box_BadFloor(
                     x + radius, y, z + radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_135 && item->rot.y < PHD_45) {
+                if (item->rot.y > -DEG_135 && item->rot.y < DEG_45) {
                     shift_x = WALL_L - radius - pos_x;
                 } else {
                     shift_z = WALL_L - radius - pos_z;
@@ -629,10 +629,10 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
         item->floor = Room_GetHeight(sector, item->pos.x, y, item->pos.z);
 
         angle = item->speed ? Math_Atan(item->speed, -dy) : 0;
-        if (angle < item->rot.x - PHD_DEGREE) {
-            item->rot.x -= PHD_DEGREE;
-        } else if (angle > item->rot.x + PHD_DEGREE) {
-            item->rot.x += PHD_DEGREE;
+        if (angle < item->rot.x - DEG_1) {
+            item->rot.x -= DEG_1;
+        } else if (angle > item->rot.x + DEG_1) {
+            item->rot.x += DEG_1;
         } else {
             item->rot.x = angle;
         }

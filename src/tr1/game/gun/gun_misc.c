@@ -19,35 +19,35 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define PISTOL_LOCK_YMIN (-60 * PHD_DEGREE)
-#define PISTOL_LOCK_YMAX (+60 * PHD_DEGREE)
-#define PISTOL_LOCK_XMIN (-60 * PHD_DEGREE)
-#define PISTOL_LOCK_XMAX (+60 * PHD_DEGREE)
+#define PISTOL_LOCK_YMIN (-60 * DEG_1)
+#define PISTOL_LOCK_YMAX (+60 * DEG_1)
+#define PISTOL_LOCK_XMIN (-60 * DEG_1)
+#define PISTOL_LOCK_XMAX (+60 * DEG_1)
 
-#define PISTOL_LARM_YMIN (-170 * PHD_DEGREE)
-#define PISTOL_LARM_YMAX (+60 * PHD_DEGREE)
-#define PISTOL_LARM_XMIN (-80 * PHD_DEGREE)
-#define PISTOL_LARM_XMAX (+80 * PHD_DEGREE)
+#define PISTOL_LARM_YMIN (-170 * DEG_1)
+#define PISTOL_LARM_YMAX (+60 * DEG_1)
+#define PISTOL_LARM_XMIN (-80 * DEG_1)
+#define PISTOL_LARM_XMAX (+80 * DEG_1)
 
-#define PISTOL_RARM_YMIN (-60 * PHD_DEGREE)
-#define PISTOL_RARM_YMAX (+170 * PHD_DEGREE)
-#define PISTOL_RARM_XMIN (-80 * PHD_DEGREE)
-#define PISTOL_RARM_XMAX (+80 * PHD_DEGREE)
+#define PISTOL_RARM_YMIN (-60 * DEG_1)
+#define PISTOL_RARM_YMAX (+170 * DEG_1)
+#define PISTOL_RARM_XMIN (-80 * DEG_1)
+#define PISTOL_RARM_XMAX (+80 * DEG_1)
 
-#define SHOTGUN_LOCK_YMIN (-60 * PHD_DEGREE)
-#define SHOTGUN_LOCK_YMAX (+60 * PHD_DEGREE)
-#define SHOTGUN_LOCK_XMIN (-55 * PHD_DEGREE)
-#define SHOTGUN_LOCK_XMAX (+55 * PHD_DEGREE)
+#define SHOTGUN_LOCK_YMIN (-60 * DEG_1)
+#define SHOTGUN_LOCK_YMAX (+60 * DEG_1)
+#define SHOTGUN_LOCK_XMIN (-55 * DEG_1)
+#define SHOTGUN_LOCK_XMAX (+55 * DEG_1)
 
-#define SHOTGUN_LARM_YMIN (-80 * PHD_DEGREE)
-#define SHOTGUN_LARM_YMAX (+80 * PHD_DEGREE)
-#define SHOTGUN_LARM_XMIN (-65 * PHD_DEGREE)
-#define SHOTGUN_LARM_XMAX (+65 * PHD_DEGREE)
+#define SHOTGUN_LARM_YMIN (-80 * DEG_1)
+#define SHOTGUN_LARM_YMAX (+80 * DEG_1)
+#define SHOTGUN_LARM_XMIN (-65 * DEG_1)
+#define SHOTGUN_LARM_XMAX (+65 * DEG_1)
 
-#define SHOTGUN_RARM_YMIN (-80 * PHD_DEGREE)
-#define SHOTGUN_RARM_YMAX (+80 * PHD_DEGREE)
-#define SHOTGUN_RARM_XMIN (-65 * PHD_DEGREE)
-#define SHOTGUN_RARM_XMAX (+65 * PHD_DEGREE)
+#define SHOTGUN_RARM_YMIN (-80 * DEG_1)
+#define SHOTGUN_RARM_YMAX (+80 * DEG_1)
+#define SHOTGUN_RARM_XMIN (-65 * DEG_1)
+#define SHOTGUN_RARM_XMAX (+65 * DEG_1)
 
 static ITEM *m_TargetList[NUM_SLOTS];
 static ITEM *m_LastTargetList[NUM_SLOTS];
@@ -76,8 +76,8 @@ WEAPON_INFO g_Weapons[NUM_WEAPONS] = {
           PISTOL_LARM_XMAX }, // left_angles
         { PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN,
           PISTOL_RARM_XMAX }, // right_angles
-        10 * PHD_DEGREE, // aim_speed
-        8 * PHD_DEGREE, // shot_accuracy
+        10 * DEG_1, // aim_speed
+        8 * DEG_1, // shot_accuracy
         650, // gun_height
         1, // damage
         8 * WALL_L, // target_dist
@@ -94,8 +94,8 @@ WEAPON_INFO g_Weapons[NUM_WEAPONS] = {
           PISTOL_LARM_XMAX }, // left_angles
         { PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN,
           PISTOL_RARM_XMAX }, // right_angles
-        10 * PHD_DEGREE, // aim_speed
-        8 * PHD_DEGREE, // shot_accuracy
+        10 * DEG_1, // aim_speed
+        8 * DEG_1, // shot_accuracy
         650, // gun_height
         2, // damage
         8 * WALL_L, // target_dist
@@ -112,8 +112,8 @@ WEAPON_INFO g_Weapons[NUM_WEAPONS] = {
           PISTOL_LARM_XMAX }, // left_angles
         { PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN,
           PISTOL_RARM_XMAX }, // right_angles
-        10 * PHD_DEGREE, // aim_speed
-        8 * PHD_DEGREE, // shot_accuracy
+        10 * DEG_1, // aim_speed
+        8 * DEG_1, // shot_accuracy
         650, // gun_height
         1, // damage
         8 * WALL_L, // target_dist
@@ -130,7 +130,7 @@ WEAPON_INFO g_Weapons[NUM_WEAPONS] = {
           SHOTGUN_LARM_XMAX }, // left_angles
         { SHOTGUN_RARM_YMIN, SHOTGUN_RARM_YMAX, SHOTGUN_RARM_XMIN,
           SHOTGUN_RARM_XMAX }, // right_angles
-        10 * PHD_DEGREE, // aim_speed
+        10 * DEG_1, // aim_speed
         0, // shot_accuracy
         0x1F4, // gun_height
         4, // damage
@@ -440,9 +440,9 @@ int32_t Gun_FireWeapon(
     };
     const XYZ_16 view_rot = {
         .x = angles[1]
-            + (winfo->shot_accuracy * (Random_GetControl() - PHD_90)) / PHD_ONE,
+            + (winfo->shot_accuracy * (Random_GetControl() - DEG_90)) / DEG_360,
         .y = angles[0]
-            + (winfo->shot_accuracy * (Random_GetControl() - PHD_90)) / PHD_ONE,
+            + (winfo->shot_accuracy * (Random_GetControl() - DEG_90)) / DEG_360,
         .z = 0,
     };
     Matrix_GenerateW2V(&view_pos, &view_rot);

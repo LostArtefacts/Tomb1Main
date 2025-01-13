@@ -17,7 +17,7 @@
 #define RAT_CHARGE_DAMAGE 20
 #define RAT_TOUCH 0x300018F
 #define RAT_DIE_ANIM 8
-#define RAT_RUN_TURN (PHD_DEGREE * 6) // = 1092
+#define RAT_RUN_TURN (DEG_1 * 6) // = 1092
 #define RAT_BITE_RANGE SQUARE(341) // = 116281
 #define RAT_CHARGE_RANGE SQUARE(WALL_L * 3 / 2) // = 2359296
 #define RAT_POSE_CHANCE 256
@@ -26,7 +26,7 @@
 #define RAT_SMARTNESS 0x2000
 
 #define VOLE_DIE_ANIM 2
-#define VOLE_SWIM_TURN (PHD_DEGREE * 3) // = 546
+#define VOLE_SWIM_TURN (DEG_1 * 3) // = 546
 #define VOLE_ATTACK_RANGE SQUARE(300) // = 90000
 
 typedef enum {

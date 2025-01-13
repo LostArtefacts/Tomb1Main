@@ -293,7 +293,7 @@ void Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip)
     }
 
     Matrix_TranslateRel(0, len, off);
-    Matrix_RotX(-90 * PHD_DEGREE);
+    Matrix_RotX(-90 * DEG_1);
     Matrix_RotZ((int16_t)(Random_GetDraw() * 2));
     Output_CalculateStaticLight(light);
     const OBJECT *const object = Object_GetObject(O_GUN_FLASH);

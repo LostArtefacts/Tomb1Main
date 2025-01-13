@@ -180,7 +180,7 @@ void InvRing_Draw(INV_RING *const ring)
     }
 
     int16_t old_fov = Viewport_GetFOV();
-    Viewport_SetFOV(PASSPORT_FOV * PHD_DEGREE);
+    Viewport_SetFOV(PASSPORT_FOV * DEG_1);
     Output_ApplyFOV();
 
     Output_SetupAboveWater(false);
@@ -205,7 +205,7 @@ void InvRing_Draw(INV_RING *const ring)
             Matrix_Push();
             Matrix_RotY(angle);
             Matrix_TranslateRel(ring->radius, 0, 0);
-            Matrix_RotY(PHD_90);
+            Matrix_RotY(DEG_90);
             Matrix_RotX(inv_item->x_rot_pt);
             M_DrawItem(ring, inv_item, num_frames);
             angle += ring->angle_adder;

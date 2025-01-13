@@ -82,9 +82,9 @@ static void M_WaterCurrent(COLL_INFO *coll)
         item->room_num, UW_HEIGHT);
 
     if (coll->coll_type == COLL_FRONT) {
-        if (item->rot.x > 35 * PHD_DEGREE) {
+        if (item->rot.x > 35 * DEG_1) {
             item->rot.x += UW_WALLDEFLECT;
-        } else if (item->rot.x < -35 * PHD_DEGREE) {
+        } else if (item->rot.x < -35 * DEG_1) {
             item->rot.x -= UW_WALLDEFLECT;
         } else {
             item->fall_speed = 0;
@@ -94,9 +94,9 @@ static void M_WaterCurrent(COLL_INFO *coll)
     } else if (coll->coll_type == COLL_TOPFRONT) {
         item->fall_speed = 0;
     } else if (coll->coll_type == COLL_LEFT) {
-        item->rot.y += 5 * PHD_DEGREE;
+        item->rot.y += 5 * DEG_1;
     } else if (coll->coll_type == COLL_RIGHT) {
-        item->rot.y -= 5 * PHD_DEGREE;
+        item->rot.y -= 5 * DEG_1;
     }
 
     if (coll->mid_floor < 0) {
@@ -146,8 +146,8 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
     if (g_Lara.spaz_effect_count && g_Lara.spaz_effect && coll->enable_spaz) {
         int32_t x = g_Lara.spaz_effect->pos.x - lara_item->pos.x;
         int32_t z = g_Lara.spaz_effect->pos.z - lara_item->pos.z;
-        PHD_ANGLE hitang = lara_item->rot.y - (PHD_180 + Math_Atan(z, x));
-        g_Lara.hit_direction = (hitang + PHD_45) / PHD_90;
+        PHD_ANGLE hitang = lara_item->rot.y - (DEG_180 + Math_Atan(z, x));
+        g_Lara.hit_direction = (hitang + DEG_45) / DEG_90;
         if (!g_Lara.hit_frame) {
             Sound_Effect(SFX_LARA_BODYSL, &lara_item->pos, SPM_NORMAL);
         }
@@ -346,7 +346,7 @@ void Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Config.gameplay.enable_tr2_swimming) {
-        CLAMP(item->rot.x, -85 * PHD_DEGREE, 85 * PHD_DEGREE);
+        CLAMP(item->rot.x, -85 * DEG_1, 85 * DEG_1);
         CLAMP(item->rot.z, -LARA_LEAN_MAX_UW, LARA_LEAN_MAX_UW);
 
         if (g_Lara.turn_rate < -LARA_TURN_UNDO) {
@@ -358,7 +358,7 @@ void Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll)
         }
         item->rot.y += g_Lara.turn_rate;
     } else {
-        CLAMP(item->rot.x, -100 * PHD_DEGREE, 100 * PHD_DEGREE);
+        CLAMP(item->rot.x, -100 * DEG_1, 100 * DEG_1);
         CLAMP(item->rot.z, -LARA_LEAN_MAX_UW, LARA_LEAN_MAX_UW);
     }
 

@@ -32,8 +32,8 @@ static const OBJECT_BOUNDS m_MovableBlock_Bounds = {
         .max = { .x = +300, .y = 0, .z = -WALL_L / 2, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = -30 * PHD_DEGREE, .z = -10 * PHD_DEGREE, },
-        .max = { .x = +10 * PHD_DEGREE, .y = +30 * PHD_DEGREE, .z = +10 * PHD_DEGREE, },
+        .min = { .x = -10 * DEG_1, .y = -30 * DEG_1, .z = -10 * DEG_1, },
+        .max = { .x = +10 * DEG_1, .y = +30 * DEG_1, .z = +10 * DEG_1, },
     },
 };
 
@@ -349,7 +349,7 @@ void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         return;
     }
 
-    DIRECTION quadrant = ((uint16_t)lara_item->rot.y + PHD_45) / PHD_90;
+    DIRECTION quadrant = ((uint16_t)lara_item->rot.y + DEG_45) / DEG_90;
     if (lara_item->current_anim_state == LS_STOP) {
         if (g_Input.forward || g_Input.back
             || g_Lara.gun_status != LGS_ARMLESS) {
@@ -361,13 +361,13 @@ void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             item->rot.y = 0;
             break;
         case DIR_EAST:
-            item->rot.y = PHD_90;
+            item->rot.y = DEG_90;
             break;
         case DIR_SOUTH:
-            item->rot.y = -PHD_180;
+            item->rot.y = -DEG_180;
             break;
         case DIR_WEST:
-            item->rot.y = -PHD_90;
+            item->rot.y = -DEG_90;
             break;
         default:
             break;

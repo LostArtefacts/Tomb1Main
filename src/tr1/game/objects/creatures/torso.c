@@ -21,8 +21,8 @@
 #define TORSO_PART_DAMAGE 250
 #define TORSO_ATTACK_DAMAGE 500
 #define TORSO_TOUCH_DAMAGE 5
-#define TORSO_NEED_TURN (PHD_DEGREE * 45) // = 8190
-#define TORSO_TURN (PHD_DEGREE * 3) // = 546
+#define TORSO_NEED_TURN (DEG_1 * 45) // = 8190
+#define TORSO_TURN (DEG_1 * 3) // = 546
 #define TORSO_ATTACK_RANGE SQUARE(2600) // = 6760000
 #define TORSO_CLOSE_RANGE SQUARE(2250) // = 5062500
 #define TORSO_TLEFT 0x7FF0
@@ -165,7 +165,7 @@ void Torso_Control(int16_t item_num)
                 Item_TestAnimEqual(item, TORSO_TURN_L_ANIM)
                 && Item_TestFrameRange(
                     item, TORSO_FRAME_TURN_L_START, TORSO_FRAME_TURN_L_END)) {
-                item->rot.y -= PHD_DEGREE * 9;
+                item->rot.y -= DEG_1 * 9;
             }
 
             if (angle > -TORSO_NEED_TURN) {
@@ -180,7 +180,7 @@ void Torso_Control(int16_t item_num)
                 Item_TestAnimEqual(item, TORSO_TURN_R_ANIM)
                 && Item_TestFrameRange(
                     item, TORSO_FRAME_TURN_R_START, TORSO_FRAME_TURN_R_END)) {
-                item->rot.y += PHD_DEGREE * 14;
+                item->rot.y += DEG_1 * 14;
             }
 
             if (angle < TORSO_NEED_TURN) {

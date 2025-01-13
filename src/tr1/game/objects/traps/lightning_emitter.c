@@ -156,7 +156,7 @@ void LightningEmitter_Collision(
         return;
     }
 
-    g_Lara.hit_direction = 1 + (Random_GetControl() * 4) / (PHD_180 - 1);
+    g_Lara.hit_direction = 1 + (Random_GetControl() * 4) / (DEG_180 - 1);
     g_Lara.hit_frame++;
     if (g_Lara.hit_frame > 34) {
         g_Lara.hit_frame = 34;
@@ -212,9 +212,9 @@ void LightningEmitter_Draw(ITEM *item)
     for (int i = 0; i < LIGHTNING_STEPS; i++) {
         XYZ_32 *pos = &l->wibble[i];
         if (Game_IsPlaying()) {
-            pos->x += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
-            pos->y += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
-            pos->z += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
+            pos->x += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
+            pos->y += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
+            pos->z += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
         }
         if (i == LIGHTNING_STEPS - 1) {
             pos->y = 0;
@@ -266,9 +266,9 @@ void LightningEmitter_Draw(ITEM *item)
         for (int k = 0; k < steps; k++) {
             XYZ_32 *pos = &l->shoot[i][k];
             if (Game_IsPlaying()) {
-                pos->x += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
-                pos->y += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
-                pos->z += (Random_GetDraw() - PHD_90) * LIGHTNING_RND;
+                pos->x += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
+                pos->y += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
+                pos->z += (Random_GetDraw() - DEG_90) * LIGHTNING_RND;
             }
             if (k == steps - 1) {
                 pos->y = 0;

@@ -62,18 +62,18 @@ void Interpolation_Commit(void)
             g_Camera.interp.result.pos.z, &g_Camera.interp.room_num);
     }
 
-    INTERPOLATE_ROT(&g_Lara.left_arm, rot.x, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara.left_arm, rot.y, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara.left_arm, rot.z, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara.right_arm, rot.x, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara.right_arm, rot.y, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara.right_arm, rot.z, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, torso_rot.x, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, torso_rot.y, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, torso_rot.z, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, head_rot.x, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, head_rot.y, ratio, PHD_45);
-    INTERPOLATE_ROT(&g_Lara, head_rot.z, ratio, PHD_45);
+    INTERPOLATE_ROT(&g_Lara.left_arm, rot.x, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara.left_arm, rot.y, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara.left_arm, rot.z, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara.right_arm, rot.x, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara.right_arm, rot.y, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara.right_arm, rot.z, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, torso_rot.x, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, torso_rot.y, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, torso_rot.z, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, head_rot.x, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, head_rot.y, ratio, DEG_45);
+    INTERPOLATE_ROT(&g_Lara, head_rot.z, ratio, DEG_45);
 
     for (int i = 0; i < Item_GetTotalCount(); i++) {
         ITEM *const item = &g_Items[i];
@@ -93,9 +93,9 @@ void Interpolation_Commit(void)
         INTERPOLATE(item, pos.x, ratio, max_xz);
         INTERPOLATE(item, pos.y, ratio, max_y);
         INTERPOLATE(item, pos.z, ratio, max_xz);
-        INTERPOLATE_ROT(item, rot.x, ratio, PHD_45);
-        INTERPOLATE_ROT(item, rot.y, ratio, PHD_45);
-        INTERPOLATE_ROT(item, rot.z, ratio, PHD_45);
+        INTERPOLATE_ROT(item, rot.x, ratio, DEG_45);
+        INTERPOLATE_ROT(item, rot.y, ratio, DEG_45);
+        INTERPOLATE_ROT(item, rot.z, ratio, DEG_45);
     }
 
     if (g_LaraItem) {
@@ -103,9 +103,9 @@ void Interpolation_Commit(void)
         INTERPOLATE(
             g_LaraItem, pos.y, ratio, MAX(128, g_LaraItem->fall_speed * 2));
         INTERPOLATE(g_LaraItem, pos.z, ratio, 128);
-        INTERPOLATE_ROT(g_LaraItem, rot.x, ratio, PHD_45);
-        INTERPOLATE_ROT(g_LaraItem, rot.y, ratio, PHD_45);
-        INTERPOLATE_ROT(g_LaraItem, rot.z, ratio, PHD_45);
+        INTERPOLATE_ROT(g_LaraItem, rot.x, ratio, DEG_45);
+        INTERPOLATE_ROT(g_LaraItem, rot.y, ratio, DEG_45);
+        INTERPOLATE_ROT(g_LaraItem, rot.z, ratio, DEG_45);
     }
 
     int16_t effect_num = Effect_GetActiveNum();
@@ -114,9 +114,9 @@ void Interpolation_Commit(void)
         INTERPOLATE(effect, pos.x, ratio, 128);
         INTERPOLATE(effect, pos.y, ratio, MAX(128, effect->fall_speed * 2));
         INTERPOLATE(effect, pos.z, ratio, 128);
-        INTERPOLATE_ROT(effect, rot.x, ratio, PHD_45);
-        INTERPOLATE_ROT(effect, rot.y, ratio, PHD_45);
-        INTERPOLATE_ROT(effect, rot.z, ratio, PHD_45);
+        INTERPOLATE_ROT(effect, rot.x, ratio, DEG_45);
+        INTERPOLATE_ROT(effect, rot.y, ratio, DEG_45);
+        INTERPOLATE_ROT(effect, rot.z, ratio, DEG_45);
         effect_num = effect->next_active;
     }
 
@@ -127,9 +127,9 @@ void Interpolation_Commit(void)
             INTERPOLATE(
                 hair, pos.y, ratio, MAX(128, g_LaraItem->fall_speed * 2));
             INTERPOLATE(hair, pos.z, ratio, 128);
-            INTERPOLATE_ROT(hair, rot.x, ratio, PHD_45);
-            INTERPOLATE_ROT(hair, rot.y, ratio, PHD_45);
-            INTERPOLATE_ROT(hair, rot.z, ratio, PHD_45);
+            INTERPOLATE_ROT(hair, rot.x, ratio, DEG_45);
+            INTERPOLATE_ROT(hair, rot.y, ratio, DEG_45);
+            INTERPOLATE_ROT(hair, rot.z, ratio, DEG_45);
         }
     }
 }

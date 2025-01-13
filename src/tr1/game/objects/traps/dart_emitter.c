@@ -46,13 +46,13 @@ void DartEmitter_Control(int16_t item_num)
             case 0:
                 z = -WALL_L / 2 + 100;
                 break;
-            case PHD_90:
+            case DEG_90:
                 x = -WALL_L / 2 + 100;
                 break;
-            case -PHD_180:
+            case -DEG_180:
                 z = WALL_L / 2 - 100;
                 break;
-            case -PHD_90:
+            case -DEG_90:
                 x = WALL_L / 2 - 100;
                 break;
             }

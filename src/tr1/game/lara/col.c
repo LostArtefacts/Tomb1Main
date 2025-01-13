@@ -338,7 +338,7 @@ void Lara_Col_Pose(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_FastBack(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     item->gravity = 0;
     item->fall_speed = 0;
     coll->bad_pos = NO_BAD_POS;
@@ -521,7 +521,7 @@ void Lara_Col_Compress(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_Back(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     item->gravity = 0;
     item->fall_speed = 0;
     if (g_Lara.water_status == LWS_WADE) {
@@ -575,7 +575,7 @@ void Lara_Col_FastTurn(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_StepRight(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y + PHD_90;
+    g_Lara.move_angle = item->rot.y + DEG_90;
     item->gravity = 0;
     item->fall_speed = 0;
     if (g_Lara.water_status == LWS_WADE) {
@@ -610,7 +610,7 @@ void Lara_Col_StepRight(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_StepLeft(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_90;
+    g_Lara.move_angle = item->rot.y - DEG_90;
     item->gravity = 0;
     item->fall_speed = 0;
     if (g_Lara.water_status == LWS_WADE) {
@@ -651,19 +651,19 @@ void Lara_Col_Slide(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_BackJump(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     M_Jumper(item, coll);
 }
 
 void Lara_Col_RightJump(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y + PHD_90;
+    g_Lara.move_angle = item->rot.y + DEG_90;
     M_Jumper(item, coll);
 }
 
 void Lara_Col_LeftJump(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_90;
+    g_Lara.move_angle = item->rot.y - DEG_90;
     M_Jumper(item, coll);
 }
 
@@ -675,7 +675,7 @@ void Lara_Col_UpJump(ITEM *item, COLL_INFO *coll)
     coll->bad_ceiling = BAD_JUMP_CEILING;
     coll->facing = g_Lara.move_angle;
     if (g_Config.gameplay.enable_lean_jumping && item->speed < 0) {
-        coll->facing += PHD_180;
+        coll->facing += DEG_180;
     }
 
     Collide_GetCollisionInfo(
@@ -715,7 +715,7 @@ void Lara_Col_UpJump(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_FallBack(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     coll->bad_pos = NO_BAD_POS;
     coll->bad_neg = -STEPUP_HEIGHT;
     coll->bad_ceiling = BAD_JUMP_CEILING;
@@ -737,21 +737,21 @@ void Lara_Col_FallBack(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_HangLeft(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_90;
+    g_Lara.move_angle = item->rot.y - DEG_90;
     Lara_HangTest(item, coll);
-    g_Lara.move_angle = item->rot.y - PHD_90;
+    g_Lara.move_angle = item->rot.y - DEG_90;
 }
 
 void Lara_Col_HangRight(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y + PHD_90;
+    g_Lara.move_angle = item->rot.y + DEG_90;
     Lara_HangTest(item, coll);
-    g_Lara.move_angle = item->rot.y + PHD_90;
+    g_Lara.move_angle = item->rot.y + DEG_90;
 }
 
 void Lara_Col_SlideBack(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     Lara_SlideSlope(item, coll);
 }
 
@@ -844,7 +844,7 @@ void Lara_Col_Roll(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_Roll2(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     item->gravity = 0;
     item->fall_speed = 0;
     coll->bad_pos = NO_BAD_POS;
@@ -956,19 +956,19 @@ void Lara_Col_SurfTread(ITEM *item, COLL_INFO *coll)
 
 void Lara_Col_SurfBack(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_180;
+    g_Lara.move_angle = item->rot.y - DEG_180;
     Lara_SurfaceCollision(item, coll);
 }
 
 void Lara_Col_SurfLeft(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y - PHD_90;
+    g_Lara.move_angle = item->rot.y - DEG_90;
     Lara_SurfaceCollision(item, coll);
 }
 
 void Lara_Col_SurfRight(ITEM *item, COLL_INFO *coll)
 {
-    g_Lara.move_angle = item->rot.y + PHD_90;
+    g_Lara.move_angle = item->rot.y + DEG_90;
     Lara_SurfaceCollision(item, coll);
 }
 

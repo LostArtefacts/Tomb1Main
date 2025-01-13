@@ -15,8 +15,8 @@ void Bubble_Setup(OBJECT *obj)
 void Bubble_Control(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    effect->rot.y += 9 * PHD_DEGREE;
-    effect->rot.x += 13 * PHD_DEGREE;
+    effect->rot.y += 9 * DEG_1;
+    effect->rot.x += 13 * DEG_1;
 
     int32_t x = effect->pos.x + ((Math_Sin(effect->rot.y) * 11) >> W2V_SHIFT);
     int32_t y = effect->pos.y - effect->speed;

@@ -34,14 +34,14 @@ int32_t Bridge_GetOffset(
         } else {
             offset = (WALL_L - x) & (WALL_L - 1);
         }
-    } else if (item->rot.y == -PHD_180) {
+    } else if (item->rot.y == -DEG_180) {
         if (g_Config.gameplay.fix_bridge_collision
             && x >= item->pos.x + WALL_L / 2) {
             offset = 0;
         } else {
             offset = x & (WALL_L - 1);
         }
-    } else if (item->rot.y == PHD_90) {
+    } else if (item->rot.y == DEG_90) {
         if (g_Config.gameplay.fix_bridge_collision
             && z >= item->pos.z + WALL_L / 2) {
             offset = WALL_L - 1;

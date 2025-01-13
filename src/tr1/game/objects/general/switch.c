@@ -15,8 +15,8 @@ static const OBJECT_BOUNDS m_Switch_Bounds = {
         .max = { .x = +200, .y = +0, .z = +WALL_L / 2, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = -30 * PHD_DEGREE, .z = -10 * PHD_DEGREE, },
-        .max = { .x = +10 * PHD_DEGREE, .y = +30 * PHD_DEGREE, .z = +10 * PHD_DEGREE, },
+        .min = { .x = -10 * DEG_1, .y = -30 * DEG_1, .z = -10 * DEG_1, },
+        .max = { .x = +10 * DEG_1, .y = +30 * DEG_1, .z = +10 * DEG_1, },
     },
 };
 
@@ -26,8 +26,8 @@ static OBJECT_BOUNDS m_Switch_BoundsControlled = {
         .max = { .x = +0, .y = +0, .z = +0, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = -30 * PHD_DEGREE, .z = -10 * PHD_DEGREE, },
-        .max = { .x = +10 * PHD_DEGREE, .y = +30 * PHD_DEGREE, .z = +10 * PHD_DEGREE, },
+        .min = { .x = -10 * DEG_1, .y = -30 * DEG_1, .z = -10 * DEG_1, },
+        .max = { .x = +10 * DEG_1, .y = +30 * DEG_1, .z = +10 * DEG_1, },
     },
 };
 
@@ -37,8 +37,8 @@ static const OBJECT_BOUNDS m_Switch_BoundsUW = {
         .max = { .x = +WALL_L, .y = +WALL_L, .z = +WALL_L / 2, },
     },
     .rot = {
-        .min = { .x = -80 * PHD_DEGREE, .y = -80 * PHD_DEGREE, .z = -80 * PHD_DEGREE, },
-        .max = { .x = +80 * PHD_DEGREE, .y = +80 * PHD_DEGREE, .z = +80 * PHD_DEGREE, },
+        .min = { .x = -80 * DEG_1, .y = -80 * DEG_1, .z = -80 * DEG_1, },
+        .max = { .x = +80 * DEG_1, .y = +80 * DEG_1, .z = +80 * DEG_1, },
     },
 };
 

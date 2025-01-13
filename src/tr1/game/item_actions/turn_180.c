@@ -4,6 +4,6 @@
 
 void ItemAction_Turn180(ITEM *item)
 {
-    item->rot.y += PHD_180;
+    item->rot.y += DEG_180;
     item->rot.x *= -1;
 }

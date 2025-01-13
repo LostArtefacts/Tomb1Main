@@ -25,8 +25,8 @@
 #define BEAR_ATTACK_RANGE SQUARE(WALL_L) // = 1048576
 #define BEAR_PAT_RANGE SQUARE(600) // = 360000
 #define BEAR_FIX_PAT_RANGE SQUARE(300) // = 90000
-#define BEAR_RUN_TURN (5 * PHD_DEGREE) // = 910
-#define BEAR_WALK_TURN (2 * PHD_DEGREE) // = 364
+#define BEAR_RUN_TURN (5 * DEG_1) // = 910
+#define BEAR_WALK_TURN (2 * DEG_1) // = 364
 #define BEAR_EAT_RANGE SQUARE(WALL_L * 3 / 4) // = 589824
 #define BEAR_HITPOINTS 20
 #define BEAR_RADIUS (WALL_L / 3) // = 341
@@ -89,7 +89,7 @@ void Bear_Control(int16_t item_num)
     PHD_ANGLE angle = 0;
 
     if (item->hit_points <= 0) {
-        angle = Creature_Turn(item, PHD_DEGREE);
+        angle = Creature_Turn(item, DEG_1);
 
         switch (item->current_anim_state) {
         case BEAR_STATE_WALK:

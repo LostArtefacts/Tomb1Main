@@ -538,7 +538,7 @@ static int32_t M_CalcFogShade(int32_t depth)
 static void M_CalcWibbleTable(void)
 {
     for (int i = 0; i < WIBBLE_SIZE; i++) {
-        PHD_ANGLE angle = (i * PHD_360) / WIBBLE_SIZE;
+        PHD_ANGLE angle = (i * DEG_360) / WIBBLE_SIZE;
         m_WibbleTable[i] = Math_Sin(angle) * MAX_WIBBLE >> W2V_SHIFT;
         m_ShadeTable[i] = Math_Sin(angle) * MAX_SHADE >> W2V_SHIFT;
         m_RandTable[i] = (Random_GetDraw() >> 5) - 0x01FF;
@@ -821,9 +821,9 @@ void Output_DrawShadow(
     int32_t z_add = (z1 - z0) * size / 1024;
 
     for (int32_t i = 0; i < shadow.vertex_count; i++) {
-        int32_t angle = (PHD_180 + i * PHD_360) / shadow.vertex_count;
-        shadow.vertices[i].x = x_mid + (x_add * 2) * Math_Sin(angle) / PHD_90;
-        shadow.vertices[i].z = z_mid + (z_add * 2) * Math_Cos(angle) / PHD_90;
+        int32_t angle = (DEG_180 + i * DEG_360) / shadow.vertex_count;
+        shadow.vertices[i].x = x_mid + (x_add * 2) * Math_Sin(angle) / DEG_90;
+        shadow.vertices[i].z = z_mid + (z_add * 2) * Math_Cos(angle) / DEG_90;
         shadow.vertices[i].y = 0;
     }
 
@@ -1263,9 +1263,9 @@ void Output_ApplyFOV(void)
     if (g_Config.visuals.fov_vertical) {
         double aspect_ratio =
             Screen_GetResWidth() / (double)Screen_GetResHeight();
-        double fov_rad_h = fov * M_PI / (180 * PHD_DEGREE);
+        double fov_rad_h = fov * M_PI / (180 * DEG_1);
         double fov_rad_v = 2 * atan(aspect_ratio * tan(fov_rad_h / 2));
-        fov = round((fov_rad_v / M_PI) * (180 * PHD_DEGREE));
+        fov = round((fov_rad_v / M_PI) * (180 * DEG_1));
     }
 
     int16_t c = Math_Cos(fov / 2);

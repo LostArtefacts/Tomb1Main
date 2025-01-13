@@ -19,11 +19,11 @@
 #define TREX_BITE_RANGE SQUARE(1500) // = 2250000
 #define TREX_ROAR_CHANCE 512
 #define TREX_RUN_RANGE SQUARE(WALL_L * 5) // = 26214400
-#define TREX_RUN_TURN (4 * PHD_DEGREE) // = 728
+#define TREX_RUN_TURN (4 * DEG_1) // = 728
 #define TREX_TOUCH 0x3000
 #define TREX_TOUCH_DAMAGE 1
 #define TREX_TRAMPLE_DAMAGE 10
-#define TREX_WALK_TURN (2 * PHD_DEGREE) // = 364
+#define TREX_WALK_TURN (2 * DEG_1) // = 364
 #define TREX_HITPOINTS 100
 #define TREX_RADIUS (WALL_L / 3) // = 341
 #define TREX_SMARTNESS 0x7FFF
@@ -204,6 +204,6 @@ void TRex_LaraDeath(ITEM *item)
     g_Lara.gun_type = LGT_UNARMED;
 
     g_Camera.flags = FOLLOW_CENTRE;
-    g_Camera.target_angle = 170 * PHD_DEGREE;
-    g_Camera.target_elevation = -25 * PHD_DEGREE;
+    g_Camera.target_angle = 170 * DEG_1;
+    g_Camera.target_elevation = -25 * DEG_1;
 }

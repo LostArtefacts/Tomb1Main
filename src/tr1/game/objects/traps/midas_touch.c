@@ -23,8 +23,8 @@ static const OBJECT_BOUNDS m_MidasTouch_Bounds = {
         .max = { .x = +700, .y = +384 + 100 + 512, .z = +700, },
     },
     .rot = {
-        .min = { .x = -10 * PHD_DEGREE, .y = -30 * PHD_DEGREE, .z = -10 * PHD_DEGREE, },
-        .max = { .x = +10 * PHD_DEGREE, .y = +30 * PHD_DEGREE, .z = +10 * PHD_DEGREE, },
+        .min = { .x = -10 * DEG_1, .y = -30 * DEG_1, .z = -10 * DEG_1, },
+        .max = { .x = +10 * DEG_1, .y = +30 * DEG_1, .z = +10 * DEG_1, },
     },
 };
 
@@ -51,19 +51,19 @@ void MidasTouch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
     ITEM *item = &g_Items[item_num];
     const OBJECT *const obj = &g_Objects[item->object_id];
 
-    DIRECTION quadrant = (uint16_t)(lara_item->rot.y + PHD_45) / PHD_90;
+    DIRECTION quadrant = (uint16_t)(lara_item->rot.y + DEG_45) / DEG_90;
     switch (quadrant) {
     case DIR_NORTH:
         item->rot.y = 0;
         break;
     case DIR_EAST:
-        item->rot.y = PHD_90;
+        item->rot.y = DEG_90;
         break;
     case DIR_SOUTH:
-        item->rot.y = -PHD_180;
+        item->rot.y = -DEG_180;
         break;
     case DIR_WEST:
-        item->rot.y = -PHD_90;
+        item->rot.y = -DEG_90;
         break;
     default:
         break;

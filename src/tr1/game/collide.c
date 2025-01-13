@@ -20,7 +20,7 @@ void Collide_GetCollisionInfo(
     coll->shift.x = 0;
     coll->shift.y = 0;
     coll->shift.z = 0;
-    coll->quadrant = (uint16_t)(coll->facing + PHD_45) / PHD_90;
+    coll->quadrant = (uint16_t)(coll->facing + DEG_45) / DEG_90;
 
     int32_t x = xpos;
     int32_t y = ypos - obj_height;
@@ -358,21 +358,21 @@ bool Collide_CollideStaticObjects(
             int32_t zmin;
             int32_t zmax;
             switch (mesh->rot.y) {
-            case PHD_90:
+            case DEG_90:
                 xmin = mesh->pos.x + sinfo->c.min.z;
                 xmax = mesh->pos.x + sinfo->c.max.z;
                 zmin = mesh->pos.z - sinfo->c.max.x;
                 zmax = mesh->pos.z - sinfo->c.min.x;
                 break;
 
-            case -PHD_180:
+            case -DEG_180:
                 xmin = mesh->pos.x - sinfo->c.max.x;
                 xmax = mesh->pos.x - sinfo->c.min.x;
                 zmin = mesh->pos.z - sinfo->c.max.z;
                 zmax = mesh->pos.z - sinfo->c.min.z;
                 break;
 
-            case -PHD_90:
+            case -DEG_90:
                 xmin = mesh->pos.x - sinfo->c.max.z;
                 xmax = mesh->pos.x - sinfo->c.min.z;
                 zmin = mesh->pos.z + sinfo->c.min.x;

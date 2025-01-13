@@ -115,19 +115,19 @@ void Lara_Control(void)
             Sound_StopEffect(SFX_LARA_FALL, NULL);
             if (item->current_anim_state == LS_SWAN_DIVE) {
                 item->goal_anim_state = LS_DIVE;
-                item->rot.x = -45 * PHD_DEGREE;
+                item->rot.x = -45 * DEG_1;
                 Lara_Animate(item);
                 item->fall_speed *= 2;
             } else if (item->current_anim_state == LS_FAST_DIVE) {
                 item->goal_anim_state = LS_DIVE;
-                item->rot.x = -85 * PHD_DEGREE;
+                item->rot.x = -85 * DEG_1;
                 Lara_Animate(item);
                 item->fall_speed *= 2;
             } else {
                 item->current_anim_state = LS_DIVE;
                 item->goal_anim_state = LS_SWIM;
                 Item_SwitchToAnim(item, LA_JUMP_IN, 0);
-                item->rot.x = -45 * PHD_DEGREE;
+                item->rot.x = -45 * DEG_1;
                 item->fall_speed = (item->fall_speed * 3) / 2;
             }
             g_Lara.head_rot.x = 0;
@@ -896,8 +896,8 @@ void Lara_Push(ITEM *item, COLL_INFO *coll, bool spaz_on, bool big_push)
         z -= (c * rz - s * rx) >> W2V_SHIFT;
 
         if (spaz_on) {
-            PHD_ANGLE hitang = lara_item->rot.y - (PHD_180 + Math_Atan(z, x));
-            g_Lara.hit_direction = (hitang + PHD_45) / PHD_90;
+            PHD_ANGLE hitang = lara_item->rot.y - (DEG_180 + Math_Atan(z, x));
+            g_Lara.hit_direction = (hitang + DEG_45) / DEG_90;
             if (!g_Lara.hit_frame) {
                 Sound_Effect(SFX_LARA_BODYSL, &lara_item->pos, SPM_NORMAL);
             }

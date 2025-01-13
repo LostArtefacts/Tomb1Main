@@ -19,8 +19,8 @@ void BodyPart_Setup(OBJECT *obj)
 void BodyPart_Control(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    effect->rot.x += 5 * PHD_DEGREE;
-    effect->rot.z += 10 * PHD_DEGREE;
+    effect->rot.x += 5 * DEG_1;
+    effect->rot.z += 10 * DEG_1;
     effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
     effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
     effect->fall_speed += GRAVITY;

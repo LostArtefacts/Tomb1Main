@@ -503,10 +503,10 @@ bool Item_MovePosition(
 
             const int32_t dx = item->pos.x - dst_pos.x;
             const int32_t dz = item->pos.z - dst_pos.z;
-            const int32_t angle = (PHD_ONE - Math_Atan(dx, dz)) % PHD_ONE;
-            const uint32_t src_quadrant = (uint32_t)(angle + PHD_45) / PHD_90;
+            const int32_t angle = (DEG_360 - Math_Atan(dx, dz)) % DEG_360;
+            const uint32_t src_quadrant = (uint32_t)(angle + DEG_45) / DEG_90;
             const uint32_t dst_quadrant =
-                (uint32_t)(dst_rot.y + PHD_45) / PHD_90;
+                (uint32_t)(dst_rot.y + DEG_45) / DEG_90;
             const DIRECTION quadrant = (src_quadrant - dst_quadrant) % 4;
 
             Item_SwitchToAnim(item, step_to_anim_num[quadrant], 0);
