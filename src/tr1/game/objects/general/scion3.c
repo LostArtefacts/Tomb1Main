@@ -1,5 +1,6 @@
 #include "game/objects/general/scion3.h"
 
+#include "game/camera.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/random.h"

@@ -106,7 +106,6 @@ int16_t g_NumCineFrames;
 CINE_FRAME *g_CineData = NULL;
 PHD_3DPOS g_CinePos;
 int16_t g_CineFrameIdx;
-CAMERA_INFO g_Camera;
 BOX_INFO *g_Boxes = NULL;
 int16_t *g_FlyZone[2] = {};
 int16_t *g_GroundZone[4][2] = {};

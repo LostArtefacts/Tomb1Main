@@ -1,5 +1,6 @@
 #include "game/lara/state.h"
 
+#include "game/camera.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"

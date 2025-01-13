@@ -1,5 +1,6 @@
 #include "game/objects/traps/midas_touch.h"
 
+#include "game/camera.h"
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"

@@ -1,5 +1,6 @@
 #include "game/savegame/savegame_legacy.h"
 
+#include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
 #include "game/gameflow.h"

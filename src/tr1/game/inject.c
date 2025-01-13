@@ -1,5 +1,6 @@
 #include "game/inject.h"
 
+#include "game/camera.h"
 #include "game/output.h"
 #include "game/packer.h"
 #include "game/room.h"

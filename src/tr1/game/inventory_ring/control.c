@@ -1,5 +1,6 @@
 #include "game/inventory_ring/control.h"
 
+#include "game/camera.h"
 #include "game/console/common.h"
 #include "game/game.h"
 #include "game/game_string.h"

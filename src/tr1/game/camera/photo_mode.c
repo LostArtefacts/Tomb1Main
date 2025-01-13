@@ -5,8 +5,9 @@
 #include "game/output.h"
 #include "game/room.h"
 #include "game/viewport.h"
-#include "global/vars.h"
 
+#include <libtrx/game/camera/common.h>
+#include <libtrx/game/camera/vars.h>
 #include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 

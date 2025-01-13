@@ -103,7 +103,6 @@ extern int16_t g_NumCineFrames;
 extern CINE_FRAME *g_CineData;
 extern PHD_3DPOS g_CinePos;
 extern int16_t g_CineFrameIdx;
-extern CAMERA_INFO g_Camera;
 extern BOX_INFO *g_Boxes;
 extern int16_t *g_FlyZone[2];
 extern int16_t *g_GroundZone[][2];

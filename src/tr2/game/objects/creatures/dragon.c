@@ -1,5 +1,6 @@
 #include "game/objects/creatures/dragon.h"
 
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/creature.h"
 #include "game/input.h"

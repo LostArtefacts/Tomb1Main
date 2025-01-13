@@ -1,6 +1,7 @@
 #include "game/objects/vehicles/boat.h"
 
 #include "decomp/decomp.h"
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/effects.h"
 #include "game/input.h"

@@ -1,6 +1,7 @@
 #include "game/lot.h"
 
 #include "game/box.h"
+#include "game/camera.h"
 #include "global/const.h"
 #include "global/vars.h"
 

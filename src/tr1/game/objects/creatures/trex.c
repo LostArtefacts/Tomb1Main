@@ -1,5 +1,6 @@
 #include "game/objects/creatures/trex.h"
 
+#include "game/camera.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/lara/common.h"

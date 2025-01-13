@@ -1,5 +1,6 @@
 #include "game/sound.h"
 
+#include "game/camera.h"
 #include "game/random.h"
 #include "global/const.h"
 #include "global/vars.h"

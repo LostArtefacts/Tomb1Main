@@ -1,5 +1,6 @@
 #include "game/objects/general/detonator.h"
 
+#include "game/camera.h"
 #include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory.h"

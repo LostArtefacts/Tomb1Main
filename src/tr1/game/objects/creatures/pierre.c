@@ -1,5 +1,6 @@
 #include "game/objects/creatures/pierre.h"
 
+#include "game/camera.h"
 #include "game/creature.h"
 #include "game/items.h"
 #include "game/los.h"

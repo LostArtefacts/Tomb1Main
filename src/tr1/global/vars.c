@@ -25,7 +25,6 @@ PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES] = {};
 
 LARA_INFO g_Lara = {};
 ITEM *g_LaraItem = NULL;
-CAMERA_INFO g_Camera = {};
 GAME_INFO g_GameInfo = { .override_gf_command = { .action = GF_NOOP }, 0 };
 int32_t g_SavedGamesCount = 0;
 int32_t g_SaveCounter = 0;

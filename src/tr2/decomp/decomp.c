@@ -2,6 +2,7 @@
 
 #include "decomp/savegame.h"
 #include "decomp/stats.h"
+#include "game/camera.h"
 #include "game/clock.h"
 #include "game/collide.h"
 #include "game/console/common.h"

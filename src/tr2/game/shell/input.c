@@ -1,6 +1,7 @@
 #include "game/shell/input.h"
 
 #include "decomp/decomp.h"
+#include "game/camera.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/gameflow/gameflow_new.h"

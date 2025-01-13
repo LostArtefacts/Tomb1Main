@@ -80,6 +80,7 @@ sources = [
   'filesystem.c',
   'game/anims/common.c',
   'game/anims/frames.c',
+  'game/camera/vars.c',
   'game/clock/common.c',
   'game/clock/timer.c',
   'game/clock/turbo.c',

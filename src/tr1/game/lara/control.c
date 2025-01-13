@@ -1,6 +1,7 @@
 #include "game/lara/control.h"
 
 #include "game/box.h"
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/gun.h"
 #include "game/input.h"

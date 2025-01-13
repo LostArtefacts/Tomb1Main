@@ -1,5 +1,6 @@
 #include "game/objects/traps/movable_block.h"
 
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/gameflow.h"
 #include "game/input.h"

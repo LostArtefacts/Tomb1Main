@@ -1,5 +1,6 @@
 #include "game/interpolation.h"
 
+#include "game/camera.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/lara/hair.h"

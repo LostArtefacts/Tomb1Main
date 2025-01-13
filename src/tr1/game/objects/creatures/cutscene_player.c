@@ -1,5 +1,6 @@
 #include "game/objects/creatures/cutscene_player.h"
 
+#include "game/camera.h"
 #include "game/items.h"
 #include "global/vars.h"
 

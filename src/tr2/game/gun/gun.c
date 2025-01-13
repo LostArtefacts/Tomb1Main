@@ -1,6 +1,7 @@
 #include "game/gun/gun.h"
 
 #include "decomp/flares.h"
+#include "game/camera.h"
 #include "game/gun/gun_misc.h"
 #include "game/gun/gun_pistols.h"
 #include "game/gun/gun_rifle.h"

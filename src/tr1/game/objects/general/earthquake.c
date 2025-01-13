@@ -1,5 +1,6 @@
 #include "game/objects/general/earthquake.h"
 
+#include "game/camera.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/random.h"

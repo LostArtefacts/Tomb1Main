@@ -1,6 +1,7 @@
 #include "game/creature.h"
 
 #include "game/box.h"
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/effects.h"
 #include "game/gun/gun_misc.h"

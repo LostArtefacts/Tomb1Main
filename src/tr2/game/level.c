@@ -1,6 +1,7 @@
 #include "game/level.h"
 
 #include "decomp/decomp.h"
+#include "game/camera.h"
 #include "game/effects.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/inject.h"

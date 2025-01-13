@@ -1,5 +1,6 @@
 #include "game/objects/traps/lava_wedge.h"
 
+#include "game/camera.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/objects/common.h"

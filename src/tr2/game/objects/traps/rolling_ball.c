@@ -1,5 +1,6 @@
 #include "game/objects/traps/rolling_ball.h"
 
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/items.h"
 #include "game/lara/misc.h"

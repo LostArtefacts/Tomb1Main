@@ -1,6 +1,7 @@
 #include "decomp/savegame.h"
 
 #include "decomp/skidoo.h"
+#include "game/camera.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"

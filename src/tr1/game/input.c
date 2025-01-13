@@ -1,5 +1,6 @@
 #include "game/input.h"
 
+#include "game/camera.h"
 #include "game/clock.h"
 #include "global/vars.h"
 

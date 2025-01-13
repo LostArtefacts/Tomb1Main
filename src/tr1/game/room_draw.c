@@ -1,5 +1,6 @@
 #include "game/room_draw.h"
 
+#include "game/camera.h"
 #include "game/effects.h"
 #include "game/items.h"
 #include "game/lara/draw.h"

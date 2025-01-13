@@ -1,5 +1,6 @@
 #include "game/lot.h"
 
+#include "game/camera.h"
 #include "game/items.h"
 #include "game/shell.h"
 #include "global/const.h"

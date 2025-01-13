@@ -1,5 +1,6 @@
 #include "game/objects/creatures/bartoli.h"
 
+#include "game/camera.h"
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/shell.h"

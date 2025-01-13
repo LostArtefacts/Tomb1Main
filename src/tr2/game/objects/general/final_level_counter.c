@@ -1,6 +1,7 @@
 #include "game/objects/general/final_level_counter.h"
 
 #include "decomp/flares.h"
+#include "game/camera.h"
 #include "game/creature.h"
 #include "game/gun/gun.h"
 #include "game/items.h"

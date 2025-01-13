@@ -1,6 +1,7 @@
 #include "game/item_actions.h"
 
 #include "decomp/stats.h"
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/lara/hair.h"
 #include "game/music.h"
