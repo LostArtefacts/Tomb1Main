@@ -170,7 +170,7 @@ void Overlay_Animate(int32_t ticks)
         DISPLAY_PICKUP *const pickup = &m_Pickups[i];
 
         if (g_Config.visuals.enable_3d_pickups) {
-            pickup->rot_y += 4 * PHD_DEGREE * ticks;
+            pickup->rot_y += 4 * DEG_1 * ticks;
         } else {
             // Stop existing animations
             switch (pickup->phase) {
@@ -380,7 +380,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 
     const VIEWPORT old_vp = *Viewport_Get();
 
-    Viewport_AlterFOV(80 * PHD_DEGREE);
+    Viewport_AlterFOV(80 * DEG_1);
     VIEWPORT new_vp = *Viewport_Get();
 
     BOUNDS_16 bounds = frame->bounds;
@@ -419,7 +419,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
 
     Matrix_PushUnit();
     Matrix_TranslateRel(0, 0, scale);
-    Matrix_RotX(PHD_DEGREE * 15);
+    Matrix_RotX(DEG_1 * 15);
     Matrix_RotY(pickup->rot_y);
 
     g_LsDivider = 0x6000;

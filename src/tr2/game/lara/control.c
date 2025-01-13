@@ -277,7 +277,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 
 void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
 {
-    g_Camera.target_elevation = -22 * PHD_DEGREE;
+    g_Camera.target_elevation = -22 * DEG_1;
 
     coll->old.x = item->pos.x;
     coll->old.y = item->pos.y;
@@ -372,7 +372,7 @@ void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
         item->rot.z = 0;
     }
 
-    CLAMP(item->rot.x, -85 * PHD_DEGREE, 85 * PHD_DEGREE);
+    CLAMP(item->rot.x, -85 * DEG_1, 85 * DEG_1);
     CLAMP(item->rot.z, -LARA_LEAN_MAX_UW, LARA_LEAN_MAX_UW);
 
     if (g_Lara.turn_rate < -LARA_TURN_UNDO) {
@@ -473,17 +473,17 @@ void Lara_Control(const int16_t item_num)
                 Item_UpdateRoom(item, 0);
                 Sound_StopEffect(SFX_LARA_FALL);
                 if (item->current_anim_state == LS_SWAN_DIVE) {
-                    item->rot.x = -45 * PHD_DEGREE;
+                    item->rot.x = -45 * DEG_1;
                     item->goal_anim_state = LS_DIVE;
                     Lara_Animate(item);
                     item->fall_speed *= 2;
                 } else if (item->current_anim_state == LS_FAST_DIVE) {
-                    item->rot.x = -85 * PHD_DEGREE;
+                    item->rot.x = -85 * DEG_1;
                     item->goal_anim_state = LS_DIVE;
                     Lara_Animate(item);
                     item->fall_speed *= 2;
                 } else {
-                    item->rot.x = -45 * PHD_DEGREE;
+                    item->rot.x = -45 * DEG_1;
                     Item_SwitchToAnim(item, LA_FREEFALL_TO_UNDERWATER, 0);
                     item->current_anim_state = LS_DIVE;
                     item->goal_anim_state = LS_SWIM;
@@ -564,7 +564,7 @@ void Lara_Control(const int16_t item_num)
             break;
 
         case LWS_WADE:
-            g_Camera.target_elevation = -22 * PHD_DEGREE;
+            g_Camera.target_elevation = -22 * DEG_1;
 
             if (water_height_diff < LARA_WADE_DEPTH) {
                 g_Lara.water_status = LWS_ABOVE_WATER;

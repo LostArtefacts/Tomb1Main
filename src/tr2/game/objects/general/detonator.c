@@ -25,8 +25,8 @@ static int16_t m_GongBounds[12] = {
     +100,
     -WALL_L / 2 - 300,
     -WALL_L / 2 + 100,
-    -30 * PHD_DEGREE,
-    +30 * PHD_DEGREE,
+    -30 * DEG_1,
+    +30 * DEG_1,
     +0,
     +0,
     +0,
@@ -144,7 +144,7 @@ void Detonator_Collision(
         lara_item->goal_anim_state = LA_EXTRA_PLUNGER;
     } else {
         lara_item->goal_anim_state = LA_EXTRA_GONG_BONG;
-        lara_item->rot.y += PHD_180;
+        lara_item->rot.y += DEG_180;
     }
 
     Item_Animate(lara_item);

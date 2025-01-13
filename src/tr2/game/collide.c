@@ -323,21 +323,21 @@ int32_t Collide_CollideStaticObjects(
             const int32_t y_min = mesh->pos.y + sinfo->collision_bounds.min.y;
             const int32_t y_max = mesh->pos.y + sinfo->collision_bounds.max.y;
             switch (mesh->rot.y) {
-            case PHD_90:
+            case DEG_90:
                 x_min = mesh->pos.x + sinfo->collision_bounds.min.z;
                 x_max = mesh->pos.x + sinfo->collision_bounds.max.z;
                 z_min = mesh->pos.z - sinfo->collision_bounds.max.x;
                 z_max = mesh->pos.z - sinfo->collision_bounds.min.x;
                 break;
 
-            case -PHD_180:
+            case -DEG_180:
                 x_min = mesh->pos.x - sinfo->collision_bounds.max.x;
                 x_max = mesh->pos.x - sinfo->collision_bounds.min.x;
                 z_min = mesh->pos.z - sinfo->collision_bounds.max.z;
                 z_max = mesh->pos.z - sinfo->collision_bounds.min.z;
                 break;
 
-            case -PHD_90:
+            case -DEG_90:
                 x_min = mesh->pos.x - sinfo->collision_bounds.max.z;
                 x_max = mesh->pos.x - sinfo->collision_bounds.min.z;
                 z_min = mesh->pos.z + sinfo->collision_bounds.min.x;

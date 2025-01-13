@@ -29,7 +29,7 @@
 #define LOOK_CLAMP (STEP_L + 50) // = 296
 #define LOOK_SPEED 4
 
-#define MAX_ELEVATION (85 * PHD_DEGREE) // = 15470
+#define MAX_ELEVATION (85 * DEG_1) // = 15470
 
 static void M_AdjustMusicVolume(bool underwater);
 static void M_EnsureEnvironment(void);

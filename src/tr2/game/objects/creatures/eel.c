@@ -15,10 +15,10 @@
 #define EEL_HITPOINTS  5
 #define EEL_TOUCH_BITS 0b00000001'10000000 // = 0x180
 #define EEL_DAMAGE     50
-#define EEL_ANGLE      (PHD_DEGREE * 10) // = 1820
+#define EEL_ANGLE      (DEG_1 * 10) // = 1820
 #define EEL_RANGE      (WALL_L * 2) // = 2048
 #define EEL_MOVE       (WALL_L / 10) // = 102
-#define EEL_TURN       (PHD_DEGREE / 2) // = 91
+#define EEL_TURN       (DEG_1 / 2) // = 91
 #define EEL_LENGTH     (WALL_L / 2) // = 512
 #define EEL_SLIDE      (EEL_RANGE - EEL_LENGTH) // = 1536
 // clang-format on
@@ -78,7 +78,7 @@ void Eel_Control(const int16_t item_num)
     } else {
         const int32_t dx = g_LaraItem->pos.x - item->pos.x;
         const int32_t dz = g_LaraItem->pos.z - item->pos.z;
-        const int16_t quadrant = (item->rot.y + PHD_45) & 0xC000;
+        const int16_t quadrant = (item->rot.y + DEG_45) & 0xC000;
         const int16_t angle = Math_Atan(dz, dx);
         const int32_t distance = Math_Sqrt(SQUARE(dx) + SQUARE(dz));
 

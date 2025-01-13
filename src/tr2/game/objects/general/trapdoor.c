@@ -29,17 +29,17 @@ int32_t Trapdoor_IsItemOnTop(
         fixed_bounds.max.x = orig_bounds->max.x;
         fixed_bounds.min.z = orig_bounds->min.z;
         fixed_bounds.max.z = orig_bounds->max.z;
-    } else if (item->rot.y == PHD_90) {
+    } else if (item->rot.y == DEG_90) {
         fixed_bounds.min.x = orig_bounds->min.z;
         fixed_bounds.max.x = orig_bounds->max.z;
         fixed_bounds.min.z = -orig_bounds->max.x;
         fixed_bounds.max.z = -orig_bounds->min.x;
-    } else if (item->rot.y == -PHD_180) {
+    } else if (item->rot.y == -DEG_180) {
         fixed_bounds.min.x = -orig_bounds->max.x;
         fixed_bounds.max.x = -orig_bounds->min.x;
         fixed_bounds.min.z = -orig_bounds->max.z;
         fixed_bounds.max.z = -orig_bounds->min.z;
-    } else if (item->rot.y == -PHD_90) {
+    } else if (item->rot.y == -DEG_90) {
         fixed_bounds.min.x = -orig_bounds->max.z;
         fixed_bounds.max.x = -orig_bounds->min.z;
         fixed_bounds.min.z = orig_bounds->min.x;

@@ -44,9 +44,9 @@
 #define BOAT_REVERSE (-5)
 #define BOAT_SLOWDOWN 1
 #define BOAT_WAKE 700
-#define BOAT_UNDO_TURN (PHD_DEGREE / 4) // = 45
-#define BOAT_TURN (PHD_DEGREE / 8) // = 22
-#define BOAT_MAX_TURN (PHD_DEGREE * 4) // = 728
+#define BOAT_UNDO_TURN (DEG_1 / 4) // = 45
+#define BOAT_TURN (DEG_1 / 8) // = 22
+#define BOAT_MAX_TURN (DEG_1 * 4) // = 728
 #define BOAT_SOUND_CEILING (WALL_L * 5) // = 5120
 
 typedef enum {
@@ -111,18 +111,18 @@ int32_t Boat_CheckGetOn(const int16_t item_num, const COLL_INFO *const coll)
             return 0;
         }
 
-        if (rot > PHD_45 && rot < PHD_135) {
+        if (rot > DEG_45 && rot < DEG_135) {
             get_on = 1;
-        } else if (rot > -PHD_135 && rot < -PHD_45) {
+        } else if (rot > -DEG_135 && rot < -DEG_45) {
             get_on = 2;
         }
     } else if (g_Lara.water_status == LWS_ABOVE_WATER) {
         int16_t fall_speed = lara->fall_speed;
         if (fall_speed > 0) {
-            if (rot > -PHD_135 && rot < PHD_135 && lara->pos.y > boat->pos.y) {
+            if (rot > -DEG_135 && rot < DEG_135 && lara->pos.y > boat->pos.y) {
                 get_on = 3;
             }
-        } else if (!fall_speed && rot > -PHD_135 && rot < PHD_135) {
+        } else if (!fall_speed && rot > -DEG_135 && rot < DEG_135) {
             if (lara->pos.x == boat->pos.x && lara->pos.y == boat->pos.y
                 && lara->pos.z == boat->pos.z) {
                 get_on = 4;
@@ -312,7 +312,7 @@ void Boat_DoWakeEffect(const ITEM *const boat)
         effect->pos.x = boat->pos.x + ((-c * w - s * h) >> W2V_SHIFT);
         effect->pos.y = boat->pos.y;
         effect->pos.z = boat->pos.z + ((-c * h + s * w) >> W2V_SHIFT);
-        effect->rot.y = boat->rot.y + (i << W2V_SHIFT) - PHD_90;
+        effect->rot.y = boat->rot.y + (i << W2V_SHIFT) - DEG_90;
 
         effect->counter = 20;
         effect->speed = boat->speed >> 2;
@@ -743,7 +743,7 @@ void Boat_Control(const int16_t item_num)
             Item_SwitchToAnim(boat, lara_anim_num, lara_frame_num);
         }
 
-        g_Camera.target_elevation = -20 * PHD_DEGREE;
+        g_Camera.target_elevation = -20 * DEG_1;
         g_Camera.target_distance = 2 * WALL_L;
     } else {
         if (room_num != boat->room_num) {
@@ -784,9 +784,9 @@ void Boat_Control(const int16_t item_num)
          || lara->current_anim_state == BOAT_STATE_JUMP_L)
         && Item_TestFrameEqual(lara, LF_BOAT_EXIT_END)) {
         if (lara->current_anim_state == BOAT_STATE_JUMP_L) {
-            lara->rot.y -= PHD_90;
+            lara->rot.y -= DEG_90;
         } else {
-            lara->rot.y += PHD_90;
+            lara->rot.y += DEG_90;
         }
 
         Item_SwitchToAnim(lara, LA_JUMP_FORWARD, 0);

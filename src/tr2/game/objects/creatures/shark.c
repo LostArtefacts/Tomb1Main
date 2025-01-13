@@ -19,8 +19,8 @@
 #define SHARK_SWIM_2_RANGE    SQUARE(WALL_L * 3) // = 9437184
 #define SHARK_ATTACK_1_RANGE  SQUARE(WALL_L * 3 / 4) // = 589824
 #define SHARK_ATTACK_2_RANGE  SQUARE(WALL_L * 4 / 3) // = 1863225
-#define SHARK_SWIM_1_TURN     (PHD_DEGREE / 2) // = 91
-#define SHARK_SWIM_2_TURN     (PHD_DEGREE * 2) // = 364
+#define SHARK_SWIM_1_TURN     (DEG_1 / 2) // = 91
+#define SHARK_SWIM_2_TURN     (DEG_1 * 2) // = 364
 #define SHARK_ATTACK_1_CHANCE 0x800
 // clang-format on
 

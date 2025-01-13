@@ -191,8 +191,8 @@ void RollingBall_Collision(
             lara_item->goal_anim_state = LA_REACH_TO_FREEFALL;
 
             g_Camera.flags = CF_FOLLOW_CENTRE;
-            g_Camera.target_angle = 170 * PHD_DEGREE;
-            g_Camera.target_elevation = -25 * PHD_DEGREE;
+            g_Camera.target_angle = 170 * DEG_1;
+            g_Camera.target_elevation = -25 * DEG_1;
 
             for (int32_t i = 0; i < 15; i++) {
                 Spawn_Blood(

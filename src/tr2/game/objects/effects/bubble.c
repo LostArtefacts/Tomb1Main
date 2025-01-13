@@ -15,8 +15,8 @@ void Bubble_Setup(void)
 void Bubble_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    effect->rot.y += 9 * PHD_DEGREE;
-    effect->rot.x += 13 * PHD_DEGREE;
+    effect->rot.y += 9 * DEG_1;
+    effect->rot.x += 13 * DEG_1;
 
     const int32_t x =
         effect->pos.x + ((Math_Sin(effect->rot.y) * 11) >> W2V_SHIFT);

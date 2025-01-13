@@ -10,8 +10,8 @@
 // clang-format off
 #define CULTIST_3_HITPOINTS   150
 #define CULTIST_3_SHOT_DAMAGE 50
-#define CULTIST_3_WALK_TURN   (PHD_DEGREE * 3) // = 546
-#define CULTIST_3_RUN_TURN    (PHD_DEGREE * 3) // = 546
+#define CULTIST_3_WALK_TURN   (DEG_1 * 3) // = 546
+#define CULTIST_3_RUN_TURN    (DEG_1 * 3) // = 546
 #define CULTIST_3_STOP_RANGE  SQUARE(WALL_L * 3) // = 9437184
 #define CULTIST_3_RUN_RANGE   SQUARE(WALL_L * 5) // = 26214400
 // clang-format on

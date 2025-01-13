@@ -195,12 +195,12 @@ void Lara_Hair_Initialise(void)
 {
     const OBJECT *const object = Object_GetObject(O_LARA_HAIR);
     m_IsFirstHair = true;
-    m_HairSegments[0].rot.x = -PHD_90;
+    m_HairSegments[0].rot.x = -DEG_90;
     m_HairSegments[0].rot.y = 0;
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
         const ANIM_BONE *const bone = Object_GetBone(object, i);
         m_HairSegments[i + 1].pos = bone->pos;
-        m_HairSegments[i + 1].rot.x = -PHD_90;
+        m_HairSegments[i + 1].rot.x = -DEG_90;
         m_HairSegments[i + 1].rot.y = 0;
         m_HairSegments[i + 1].rot.z = 0;
         m_HairVelocity[i].x = 0;

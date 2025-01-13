@@ -16,8 +16,8 @@
 #define YETI_TOUCH_BITS_L     0b00111000'00000000 // = 0x3800
 #define YETI_TOUCH_BITS_LR    (YETI_TOUCH_BITS_R | YETI_TOUCH_BITS_L) // = 0x3F00
 #define YETI_RADIUS           (WALL_L / 8) // = 128
-#define YETI_WALK_TURN        (PHD_DEGREE * 4) // = 728
-#define YETI_RUN_TURN         (PHD_DEGREE * 6) // = 1092
+#define YETI_WALK_TURN        (DEG_1 * 4) // = 728
+#define YETI_RUN_TURN         (DEG_1 * 6) // = 1092
 #define YETI_VAULT_SHIFT      300
 #define YETI_ATTACK_1_RANGE   SQUARE(WALL_L / 2) // = 262144
 #define YETI_ATTACK_2_RANGE   SQUARE(WALL_L * 2 / 3) // = 465124

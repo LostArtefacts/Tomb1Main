@@ -13,8 +13,8 @@
 #define BARRACUDA_TOUCH_BITS  0b11100000 // = 0xE0
 #define BARRACUDA_RADIUS      (WALL_L / 5) // = 204
 #define BARRACUDA_BITE_DAMAGE 100
-#define BARA_SWIM_1_TURN      (PHD_DEGREE * 2) // = 364
-#define BARA_SWIM_2_TURN      (PHD_DEGREE * 4) // = 728
+#define BARA_SWIM_1_TURN      (DEG_1 * 2) // = 364
+#define BARA_SWIM_2_TURN      (DEG_1 * 4) // = 728
 #define BARA_ATTACK_1_RANGE   SQUARE(WALL_L * 2 / 3) // = 465124
 #define BARA_ATTACK_2_RANGE   SQUARE(WALL_L / 3) // = 116281
 // clang-format on

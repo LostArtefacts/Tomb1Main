@@ -846,7 +846,7 @@ void Output_InsertShadow(
 void Output_CalculateWibbleTable(void)
 {
     for (int32_t i = 0; i < WIBBLE_SIZE; i++) {
-        const int32_t sine = Math_Sin(i * PHD_360 / WIBBLE_SIZE);
+        const int32_t sine = Math_Sin(i * DEG_360 / WIBBLE_SIZE);
         m_WibbleTable[i] = (sine * MAX_WIBBLE) >> W2V_SHIFT;
         m_ShadesTable[i] = (sine * MAX_SHADE) >> W2V_SHIFT;
         m_RandomTable[i] = (Random_GetDraw() >> 5) - 0x01FF;
@@ -1180,7 +1180,7 @@ void Output_AnimateTextures(const int32_t ticks)
     g_WibbleOffset = (g_WibbleOffset + (ticks / TICKS_PER_FRAME)) % WIBBLE_SIZE;
     m_RoomLightShades[1] = Random_GetDraw() % WIBBLE_SIZE;
     m_RoomLightShades[2] = (WIBBLE_SIZE - 1)
-            * (Math_Sin((g_WibbleOffset * PHD_360) / WIBBLE_SIZE) + 0x4000)
+            * (Math_Sin((g_WibbleOffset * DEG_360) / WIBBLE_SIZE) + 0x4000)
         >> 15;
 
     if (g_GF_SunsetEnabled) {

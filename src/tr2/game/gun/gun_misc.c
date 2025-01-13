@@ -16,7 +16,7 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-#define NEAR_ANGLE (PHD_DEGREE * 15) // = 2730
+#define NEAR_ANGLE (DEG_1 * 15) // = 2730
 
 static LARA_STATE m_HoldStates[] = {
     LS_WALK,   LS_STOP,      LS_POSE,       LS_TURN_RIGHT,  LS_TURN_LEFT,
@@ -380,7 +380,7 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
 
     case LGT_M16:
         Matrix_TranslateRel(0, 400, 99);
-        Matrix_RotX(-85 * PHD_DEGREE);
+        Matrix_RotX(-85 * DEG_1);
         Matrix_RotZ(((2 * Random_GetDraw()) & 0x4000) + 0x2000);
         Output_CalculateStaticLight(2560);
         Output_InsertPolygons(g_Meshes[g_Objects[O_M16_FLASH].mesh_idx], clip);
@@ -388,7 +388,7 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
 
     case LGT_FLARE:
         Matrix_TranslateRel(11, 32, 80);
-        Matrix_RotX(-PHD_90);
+        Matrix_RotX(-DEG_90);
         Matrix_RotY(2 * Random_GetDraw());
         Output_CalculateStaticLight(2048);
         Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_FIRE].mesh_idx], clip);
@@ -402,7 +402,7 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
     }
 
     Matrix_TranslateRel(0, y, z);
-    Matrix_RotX(-PHD_90);
+    Matrix_RotX(-DEG_90);
     Matrix_RotZ(2 * Random_GetDraw());
     Output_CalculateStaticLight(shade);
     Output_InsertPolygons(g_Meshes[g_Objects[O_GUN_FLASH].mesh_idx], clip);

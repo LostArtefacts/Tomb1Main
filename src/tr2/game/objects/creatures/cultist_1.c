@@ -11,8 +11,8 @@
 // clang-format off
 #define CULTIST_1_HITPOINTS     25
 #define CULTIST_1_SHOOT_DAMAGE  50
-#define CULTIST_1_WALK_TURN     (PHD_DEGREE * 5) // = 910
-#define CULTIST_1_RUN_TURN      (PHD_DEGREE * 5) // = 910
+#define CULTIST_1_WALK_TURN     (DEG_1 * 5) // = 910
+#define CULTIST_1_RUN_TURN      (DEG_1 * 5) // = 910
 #define CULTIST_1_RUN_RANGE     SQUARE(WALL_L * 2) // = 4194304
 #define CULTIST_1_POSE_CHANCE   0x500 // = 1280
 #define CULTIST_1_UNPOSE_CHANCE 0x100 // = 256

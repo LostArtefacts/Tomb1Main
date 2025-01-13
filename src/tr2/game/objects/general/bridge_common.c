@@ -6,9 +6,9 @@ int32_t Bridge_GetOffset(
     switch (item->rot.y) {
     case 0:
         return (WALL_L - x) & (WALL_L - 1);
-    case -PHD_180:
+    case -DEG_180:
         return x & (WALL_L - 1);
-    case PHD_90:
+    case DEG_90:
         return z & (WALL_L - 1);
     default:
         return (WALL_L - z) & (WALL_L - 1);

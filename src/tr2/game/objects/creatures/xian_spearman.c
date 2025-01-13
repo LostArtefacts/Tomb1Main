@@ -24,8 +24,8 @@
 #define XIAN_SPEARMAN_RADIUS       (WALL_L / 5) // = 204
 #define XIAN_SPEARMAN_TOUCH_L_BITS 0b00000000'00001000'00000000 // = 0x00800
 #define XIAN_SPEARMAN_TOUCH_R_BITS 0b00000100'00000000'00000000 // = 0x40000
-#define XIAN_WALK_TURN             (PHD_DEGREE * 3) // = 546
-#define XIAN_RUN_TURN              (PHD_DEGREE * 5) // = 910
+#define XIAN_WALK_TURN             (DEG_1 * 3) // = 546
+#define XIAN_RUN_TURN              (DEG_1 * 5) // = 910
 #define XIAN_ATTACK_1_RANGE        SQUARE(WALL_L) // = 1048576
 #define XIAN_ATTACK_2_RANGE        SQUARE(WALL_L * 3 / 2) // = 2359296
 #define XIAN_ATTACK_3_RANGE        SQUARE(WALL_L * 2) // = 4194304

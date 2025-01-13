@@ -114,9 +114,9 @@ void Door_Initialise(const int16_t item_num)
     int32_t dz = 0;
     if (item->rot.y == 0) {
         dz = -1;
-    } else if (item->rot.y == -PHD_180) {
+    } else if (item->rot.y == -DEG_180) {
         dz = 1;
-    } else if (item->rot.y == PHD_90) {
+    } else if (item->rot.y == DEG_90) {
         dx = -1;
     } else {
         dx = 1;

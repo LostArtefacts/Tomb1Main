@@ -18,24 +18,37 @@ static XYZ_32 m_AirlockPosition = { .x = 0, .y = 0, .z = 212 };
 static XYZ_32 m_SwitchUWPosition = { .x = 0, .y = 0, .z = 108 };
 
 static int16_t m_SwitchBounds[12] = {
+    // clang-format off
     -220,
     +220,
     +0,
     +0,
     +WALL_L / 2 - 220,
     +WALL_L / 2,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
-    -30 * PHD_DEGREE,
-    +30 * PHD_DEGREE,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
+    -10 * DEG_1,
+    +10 * DEG_1,
+    -30 * DEG_1,
+    +30 * DEG_1,
+    -10 * DEG_1,
+    +10 * DEG_1,
+    // clang-format on
 };
 
 static int16_t m_SwitchBoundsUW[12] = {
-    -WALL_L,          +WALL_L,          -WALL_L,          +WALL_L,
-    -WALL_L,          +WALL_L / 2,      -80 * PHD_DEGREE, +80 * PHD_DEGREE,
-    -80 * PHD_DEGREE, +80 * PHD_DEGREE, -80 * PHD_DEGREE, +80 * PHD_DEGREE,
+    // clang-format off
+    -WALL_L,
+    +WALL_L,
+    -WALL_L,
+    +WALL_L,
+    -WALL_L,
+    +WALL_L / 2,
+    -80 * DEG_1,
+    +80 * DEG_1,
+    -80 * DEG_1,
+    +80 * DEG_1,
+    -80 * DEG_1,
+    +80 * DEG_1,
+    // clang-format on
 };
 
 static void M_AlignLara(ITEM *lara_item, ITEM *switch_item);

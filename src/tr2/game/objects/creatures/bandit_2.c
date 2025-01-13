@@ -13,8 +13,8 @@
 // clang-format off
 #define BANDIT_2_HITPOINTS      50
 #define BANDIT_2_SHOOT_DAMAGE   50
-#define BANDIT_2_WALK_TURN      (PHD_DEGREE * 4) // = 728
-#define BANDIT_2_RUN_TURN       (PHD_DEGREE * 6) // = 1092
+#define BANDIT_2_WALK_TURN      (DEG_1 * 4) // = 728
+#define BANDIT_2_RUN_TURN       (DEG_1 * 6) // = 1092
 #define BANDIT_2_WALK_RANGE     SQUARE(WALL_L * 2) // = 4194304
 #define BANDIT_2_WALK_CHANCE    0x4000
 #define BANDIT_2_SHOOT_1_CHANCE 0x2000

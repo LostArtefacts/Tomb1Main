@@ -406,7 +406,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     }
 
     g_GF_MusicTracks[0] = 2;
-    g_CineTargetAngle = PHD_90;
+    g_CineTargetAngle = DEG_90;
     g_GF_NumSecrets = 3;
 
     int32_t ntracks = 0;

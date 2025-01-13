@@ -15,8 +15,8 @@
 
 // clang-format off
 #define WORKER_2_SHOOT_DAMAGE  30
-#define WORKER_2_WALK_TURN     (PHD_DEGREE * 3) // = 546
-#define WORKER_2_RUN_TURN      (PHD_DEGREE * 5) // = 910
+#define WORKER_2_WALK_TURN     (DEG_1 * 3) // = 546
+#define WORKER_2_RUN_TURN      (DEG_1 * 5) // = 910
 #define WORKER_2_RUN_RANGE     SQUARE(WALL_L * 2) // = 4194304
 #define WORKER_2_SHOOT_1_RANGE SQUARE(WALL_L * 3) // = 9437184
 // clang-format on

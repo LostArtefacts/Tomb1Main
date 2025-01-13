@@ -114,7 +114,7 @@ void LOT_InitialiseSlot(const int16_t item_num, const int32_t slot)
     creature->mood = MOOD_BORED;
     creature->neck_rotation = 0;
     creature->head_rotation = 0;
-    creature->maximum_turn = PHD_DEGREE;
+    creature->maximum_turn = DEG_1;
     creature->flags = 0;
     creature->enemy = 0;
     creature->lot.step = STEP_L;

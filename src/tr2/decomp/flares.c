@@ -144,7 +144,7 @@ void Flare_DrawInAir(const ITEM *const item)
         Output_InsertPolygons(g_Meshes[g_Objects[O_FLARE_ITEM].mesh_idx], clip);
         if (((int32_t)(intptr_t)item->data) & 0x8000) {
             Matrix_TranslateRel(-6, 6, 80);
-            Matrix_RotX(-90 * PHD_DEGREE);
+            Matrix_RotX(-90 * DEG_1);
             Matrix_RotY((int16_t)(2 * Random_GetDraw()));
             Output_CalculateStaticLight(8 * 256);
             Output_InsertPolygons(
@@ -188,7 +188,7 @@ void Flare_Create(const bool thrown)
         if (thrown) {
             item->rot.y = g_LaraItem->rot.y;
         } else {
-            item->rot.y = g_LaraItem->rot.y - PHD_45;
+            item->rot.y = g_LaraItem->rot.y - DEG_45;
         }
     }
 
@@ -382,8 +382,8 @@ void Flare_Control(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
     if (item->fall_speed) {
-        item->rot.x += PHD_DEGREE * 3;
-        item->rot.z += PHD_DEGREE * 5;
+        item->rot.x += DEG_1 * 3;
+        item->rot.z += DEG_1 * 5;
     } else {
         item->rot.x = 0;
         item->rot.z = 0;
@@ -421,7 +421,7 @@ void Flare_Control(const int16_t item_num)
             item->pos.x = x;
             item->pos.y = y;
             item->pos.z = z;
-            item->rot.y += PHD_180;
+            item->rot.y += DEG_180;
             item->speed /= 2;
             room_num = item->room_num;
         } else {

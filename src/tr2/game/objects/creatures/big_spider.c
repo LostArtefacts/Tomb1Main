@@ -9,7 +9,7 @@
 // clang-format off
 #define BIG_SPIDER_HITPOINTS 40
 #define BIG_SPIDER_RADIUS    (WALL_L / 3) // = 341
-#define BIG_SPIDER_TURN      (PHD_DEGREE * 4) // = 728
+#define BIG_SPIDER_TURN      (DEG_1 * 4) // = 728
 #define BIG_SPIDER_DAMAGE    100
 // clang-format on
 

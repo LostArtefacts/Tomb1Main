@@ -118,7 +118,7 @@ void M_FinishLevel(ITEM *const item)
 void M_Turn180(ITEM *const item)
 {
     item->rot.x = -item->rot.x;
-    item->rot.y += PHD_180;
+    item->rot.y += DEG_180;
 }
 
 void M_FloorShake(ITEM *const item)

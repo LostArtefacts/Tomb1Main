@@ -16,7 +16,7 @@
 #define BIG_EEL_HITPOINTS  20
 #define BIG_EEL_TOUCH_BITS 0b00000001'10000000 // = 0x180
 #define BIG_EEL_DAMAGE     500
-#define BIG_EEL_ANGLE      (PHD_DEGREE * 10) // = 1820
+#define BIG_EEL_ANGLE      (DEG_1 * 10) // = 1820
 #define BIG_EEL_RANGE      (WALL_L * 6) // = 6144
 #define BIG_EEL_MOVE       (WALL_L / 10) // = 102
 #define BIG_EEL_LENGTH     (WALL_L * 5 / 2) // = 2560

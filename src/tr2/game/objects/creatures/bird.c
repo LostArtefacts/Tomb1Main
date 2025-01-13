@@ -11,7 +11,7 @@
 #define BIRD_DAMAGE 20
 #define BIRD_RADIUS (WALL_L / 5) // = 204
 #define BIRD_ATTACK_RANGE SQUARE(WALL_L / 2) // = 262144
-#define BIRD_TURN (PHD_DEGREE * 3) // = 546
+#define BIRD_TURN (DEG_1 * 3) // = 546
 #define BIRD_START_ANIM 5
 #define BIRD_DIE_ANIM 8
 #define EAGLE_HITPOINTS 20

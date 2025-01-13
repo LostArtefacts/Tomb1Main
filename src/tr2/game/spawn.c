@@ -109,7 +109,7 @@ void Spawn_Splash(const ITEM *const item)
         effect->pos.x = item->pos.x;
         effect->pos.y = water_height;
         effect->pos.z = item->pos.z;
-        effect->rot.y = 2 * Random_GetDraw() + PHD_180;
+        effect->rot.y = 2 * Random_GetDraw() + DEG_180;
         effect->speed = Random_GetDraw() / 256;
         effect->frame_num = 0;
     }

@@ -28,12 +28,12 @@ static int16_t m_MovableBlockBounds[12] = {
     +0,
     -WALL_L / 2 - LARA_RADIUS - 80,
     -WALL_L / 2,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
-    -30 * PHD_DEGREE,
-    +30 * PHD_DEGREE,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
+    -10 * DEG_1,
+    +10 * DEG_1,
+    -30 * DEG_1,
+    +30 * DEG_1,
+    -10 * DEG_1,
+    +10 * DEG_1,
 };
 
 int32_t MovableBlock_TestDestination(
@@ -248,13 +248,13 @@ void MovableBlock_Collision(
                 item->rot.y = 0;
                 break;
             case DIR_EAST:
-                item->rot.y = PHD_90;
+                item->rot.y = DEG_90;
                 break;
             case DIR_SOUTH:
-                item->rot.y = -PHD_180;
+                item->rot.y = -DEG_180;
                 break;
             case DIR_WEST:
-                item->rot.y = -PHD_90;
+                item->rot.y = -DEG_90;
                 break;
             default:
                 break;

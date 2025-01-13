@@ -25,9 +25,20 @@ static XYZ_32 m_ZiplineHandlePosition = {
     .z = WALL_L / 2 - 141,
 };
 static int16_t m_ZiplineHandleBounds[12] = {
-    -WALL_L / 4,      +WALL_L / 4,      -100, +100,
-    +WALL_L / 4,      +WALL_L / 2,      +0,   +0,
-    -25 * PHD_DEGREE, +25 * PHD_DEGREE, +0,   +0,
+    // clang-format off
+    -WALL_L / 4,
+    +WALL_L / 4,
+    -100,
+    +100,
+    +WALL_L / 4,
+    +WALL_L / 2,
+    +0,
+    +0,
+    -25 * DEG_1,
+    +25 * DEG_1,
+    +0,
+    +0,
+    // clang-format on
 };
 
 void Zipline_Collision(

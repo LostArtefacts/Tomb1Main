@@ -23,7 +23,7 @@ uint32_t g_PerspectiveDistance = 0x3000000;
 int32_t g_CineTrackID = 1;
 uint32_t g_AssaultBestTime = -1;
 
-int16_t g_CineTargetAngle = PHD_90;
+int16_t g_CineTargetAngle = DEG_90;
 int32_t g_OverlayStatus = 1;
 bool g_GymInvOpenEnabled = true; // TODO: make me configurable
 int32_t g_MidSort = 0;

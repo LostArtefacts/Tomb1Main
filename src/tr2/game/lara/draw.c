@@ -423,7 +423,7 @@ void Lara_Draw_I(
 
         if (g_Lara.gun_type == LGT_FLARE && g_Lara.left_arm.flash_gun) {
             Matrix_TranslateRel_I(11, 32, 80);
-            Matrix_RotX_I(-90 * PHD_DEGREE);
+            Matrix_RotX_I(-90 * DEG_1);
             Matrix_RotY_I(2 * Random_GetDraw());
             Output_CalculateStaticLight(2048);
             Output_InsertPolygons_I(

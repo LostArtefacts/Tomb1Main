@@ -41,13 +41,13 @@ int32_t Drawbridge_IsItemOnTop(
     case 0:
         return test.x == obj.x && (test.z == obj.z - 1 || test.z == obj.z - 2);
 
-    case -PHD_180:
+    case -DEG_180:
         return test.x == obj.x && (test.z == obj.z + 1 || test.z == obj.z + 2);
 
-    case -PHD_90:
+    case -DEG_90:
         return test.z == obj.z && (test.x == obj.x + 1 || test.x == obj.x + 2);
 
-    case PHD_90:
+    case DEG_90:
         return test.z == obj.z && (test.x == obj.x - 1 || test.x == obj.x - 2);
     }
 

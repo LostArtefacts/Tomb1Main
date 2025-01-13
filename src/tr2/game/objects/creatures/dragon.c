@@ -29,8 +29,8 @@
 #define DRAGON_STOP_RANGE   37748736
 #define DRAGON_TOUCH_DAMAGE 10
 #define DRAGON_SWIPE_DAMAGE 250
-#define DRAGON_WALK_TURN    (PHD_DEGREE * 2) // = 364
-#define DRAGON_NEED_TURN    (PHD_DEGREE) // = 182
+#define DRAGON_WALK_TURN    (DEG_1 * 2) // = 364
+#define DRAGON_NEED_TURN    (DEG_1) // = 182
 #define DRAGON_TOUCH_L      0x7F000000
 #define DRAGON_TOUCH_R      0x000000FE
 #define DRAGON_LIVE_TIME    330
@@ -203,8 +203,7 @@ void Dragon_Collision(
                 && Item_TestFrameRange(item, 0, DRAGON_ALMOST_LIVE)))
         && !lara_item->gravity && shift <= DRAGON_MID
         && shift > DRAGON_CLOSE - 350 && side_shift > -350 && side_shift < 350
-        && angle > PHD_90 - 30 * PHD_DEGREE
-        && angle < PHD_90 + 30 * PHD_DEGREE) {
+        && angle > DEG_90 - 30 * DEG_1 && angle < DEG_90 + 30 * DEG_1) {
         M_PullDagger(lara_item, item);
     } else {
         M_PushLaraAway(lara_item, item, shift);
@@ -417,12 +416,12 @@ void Dragon_Control(const int16_t item_num)
 
         case DRAGON_STATE_TURN_LEFT:
             creature->flags = 0;
-            dragon_front_item->rot.y += -PHD_DEGREE - angle;
+            dragon_front_item->rot.y += -DEG_1 - angle;
             break;
 
         case DRAGON_STATE_TURN_RIGHT:
             creature->flags = 0;
-            dragon_front_item->rot.y += PHD_DEGREE - angle;
+            dragon_front_item->rot.y += DEG_1 - angle;
             break;
 
         case DRAGON_STATE_SWIPE_LEFT:

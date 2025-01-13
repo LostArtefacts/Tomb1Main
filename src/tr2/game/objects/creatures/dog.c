@@ -14,8 +14,8 @@
 #define DOG_HITPOINTS       10
 #define DOG_TOUCH_BITS      0b00000001'00111111'01110000'00000000
 #define DOG_RADIUS          (WALL_L / 3) // = 341
-#define DOG_WALK_TURN       (3 * PHD_DEGREE) // = 546
-#define DOG_RUN_TURN        (6 * PHD_DEGREE) // = 1092
+#define DOG_WALK_TURN       (3 * DEG_1) // = 546
+#define DOG_RUN_TURN        (6 * DEG_1) // = 1092
 #define DOG_ATTACK_1_RANGE  SQUARE(WALL_L / 3) // = 116281
 #define DOG_ATTACK_2_RANGE  SQUARE(WALL_L * 3 / 4) // = 589824
 #define DOG_ATTACK_3_RANGE  SQUARE(WALL_L * 2 / 3) // = 465124

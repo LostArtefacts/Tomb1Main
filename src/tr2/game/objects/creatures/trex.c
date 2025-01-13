@@ -14,9 +14,9 @@
 #define TREX_HITPOINTS      100
 #define TREX_TOUCH_BITS     0b00110000'00000000
 #define TREX_RADIUS         (WALL_L / 3) // = 341
-#define TREX_RUN_TURN       (PHD_DEGREE * 4) // = 728
-#define TREX_WALK_TURN      (PHD_DEGREE * 2) // = 364
-#define TREX_FRONT_ARC      PHD_90
+#define TREX_RUN_TURN       (DEG_1 * 4) // = 728
+#define TREX_WALK_TURN      (DEG_1 * 2) // = 364
+#define TREX_FRONT_ARC      DEG_90
 #define TREX_RUN_RANGE      SQUARE(WALL_L * 5) // = 26214400
 #define TREX_ATTACK_RANGE   SQUARE(WALL_L * 4) // = 16777216
 #define TREX_BITE_RANGE     SQUARE(1500) // = 2250000

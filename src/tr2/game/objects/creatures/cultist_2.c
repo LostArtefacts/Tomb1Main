@@ -10,8 +10,8 @@
 
 // clang-format off
 #define CULTIST_2_HITPOINTS   60
-#define CULTIST_2_WALK_TURN   (PHD_DEGREE * 3) // = 546
-#define CULTIST_2_RUN_TURN    (PHD_DEGREE * 6) // = 1092
+#define CULTIST_2_WALK_TURN   (DEG_1 * 3) // = 546
+#define CULTIST_2_RUN_TURN    (DEG_1 * 6) // = 1092
 #define CULTIST_2_WALK_RANGE  SQUARE(WALL_L * 4) // = 16777216
 #define CULTIST_2_KNIFE_RANGE SQUARE(WALL_L * 6) // = 37748736
 #define CULTIST_2_STOP_RANGE  SQUARE(WALL_L * 5 / 2) // = 6553600

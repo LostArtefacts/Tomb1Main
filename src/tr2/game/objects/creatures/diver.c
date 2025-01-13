@@ -10,8 +10,8 @@
 #include "global/vars.h"
 
 // clang-format off
-#define DIVER_SWIM_TURN     (3 * PHD_DEGREE) // = 546
-#define DIVER_FRONT_ARC     PHD_45
+#define DIVER_SWIM_TURN     (3 * DEG_1) // = 546
+#define DIVER_FRONT_ARC     DEG_45
 #define DIVER_DIE_ANIM      16
 #define DIVER_HITPOINTS     20
 #define DIVER_RADIUS        (WALL_L / 3) // = 341

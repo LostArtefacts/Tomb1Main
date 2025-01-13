@@ -41,10 +41,10 @@
 #define SKIDOO_MAX_BACK -30
 #define SKIDOO_BRAKE 5
 #define SKIDOO_REVERSE (-5)
-#define SKIDOO_UNDO_TURN (PHD_DEGREE * 2) // = 364
-#define SKIDOO_TURN (PHD_DEGREE / 2 + SKIDOO_UNDO_TURN) // = 455
-#define SKIDOO_MOMENTUM_TURN (PHD_DEGREE * 3) // = 546
-#define SKIDOO_MAX_MOMENTUM_TURN (PHD_DEGREE * 150) // = 27300
+#define SKIDOO_UNDO_TURN (DEG_1 * 2) // = 364
+#define SKIDOO_TURN (DEG_1 / 2 + SKIDOO_UNDO_TURN) // = 455
+#define SKIDOO_MOMENTUM_TURN (DEG_1 * 3) // = 546
+#define SKIDOO_MAX_MOMENTUM_TURN (DEG_1 * 150) // = 27300
 
 #define LF_SKIDOO_EXIT_END 59
 #define LF_SKIDOO_LET_GO_END 17
@@ -179,9 +179,9 @@ int32_t Skidoo_CheckGetOn(const int16_t item_num, COLL_INFO *const coll)
     const int16_t angle = item->rot.y - g_LaraItem->rot.y;
 
     SKIDOO_GET_ON_SIDE get_on = SKIDOO_GET_ON_NONE;
-    if (angle > PHD_45 && angle < PHD_135) {
+    if (angle > DEG_45 && angle < DEG_135) {
         get_on = SKIDOO_GET_ON_LEFT;
-    } else if (angle > -PHD_135 && angle < -PHD_45) {
+    } else if (angle > -DEG_135 && angle < -DEG_45) {
         get_on = SKIDOO_GET_ON_RIGHT;
     }
 
@@ -542,9 +542,9 @@ int32_t Skidoo_CheckGetOffOK(int32_t direction)
 
     int16_t rot;
     if (direction == LARA_STATE_SKIDOO_GET_OFF_L) {
-        rot = skidoo->rot.y + PHD_90;
+        rot = skidoo->rot.y + DEG_90;
     } else {
-        rot = skidoo->rot.y - PHD_90;
+        rot = skidoo->rot.y - DEG_90;
     }
 
     const int32_t c = Math_Cos(rot);
@@ -708,9 +708,9 @@ int32_t Skidoo_CheckGetOff(void)
          || g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_L)
         && Item_TestFrameEqual(g_LaraItem, LF_SKIDOO_EXIT_END)) {
         if (g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_L) {
-            g_LaraItem->rot.y += PHD_90;
+            g_LaraItem->rot.y += DEG_90;
         } else {
-            g_LaraItem->rot.y -= PHD_90;
+            g_LaraItem->rot.y -= DEG_90;
         }
         Item_SwitchToAnim(g_LaraItem, LA_STAND_STILL, 0);
         g_LaraItem->goal_anim_state = LS_STOP;

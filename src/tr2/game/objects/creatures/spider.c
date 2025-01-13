@@ -15,7 +15,7 @@
 
 // clang-format off
 #define SPIDER_HITPOINTS      5
-#define SPIDER_TURN           (PHD_DEGREE * 8) // = 1456
+#define SPIDER_TURN           (DEG_1 * 8) // = 1456
 #define SPIDER_RADIUS         (WALL_L / 10) // = 102
 #define SPIDER_ATTACK_2_RANGE SQUARE(WALL_L / 2) // = 262144
 #define SPIDER_ATTACK_3_RANGE SQUARE(WALL_L / 5) // = 41616

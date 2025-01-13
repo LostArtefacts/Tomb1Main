@@ -18,18 +18,20 @@ static XYZ_32 m_KeyholePosition = {
 };
 
 static int16_t m_KeyholeBounds[12] = {
+    // clang-format off
     -200,
     +200,
     +0,
     +0,
     +WALL_L / 2 - 200,
     +WALL_L / 2,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
-    -30 * PHD_DEGREE,
-    +30 * PHD_DEGREE,
-    -10 * PHD_DEGREE,
-    +10 * PHD_DEGREE,
+    -10 * DEG_1,
+    +10 * DEG_1,
+    -30 * DEG_1,
+    +30 * DEG_1,
+    -10 * DEG_1,
+    +10 * DEG_1,
+    // clang-format on
 };
 
 static void M_Consume(

@@ -14,7 +14,7 @@
 #define MOUSE_HITPOINTS     4
 #define MOUSE_TOUCH_BITS    0b01111111 // = 0x7F
 #define MOUSE_RADIUS        (WALL_L / 10) // = 102
-#define MOUSE_RUN_TURN      (PHD_DEGREE * 6) // = 1092
+#define MOUSE_RUN_TURN      (DEG_1 * 6) // = 1092
 #define MOUSE_ATTACK_RANGE  SQUARE(WALL_L / 3) // = 116281
 #define MOUSE_BITE_DAMAGE   20
 #define MOUSE_WAIT_1_CHANCE 0x500 // = 1280

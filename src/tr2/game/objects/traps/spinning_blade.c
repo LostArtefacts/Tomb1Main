@@ -93,7 +93,7 @@ void SpinningBlade_Control(const int16_t item_num)
 
     if (spinning) {
         if (item->current_anim_state == SPINNING_BLADE_STATE_STOP) {
-            item->rot.y += PHD_180;
+            item->rot.y += DEG_180;
         }
     }
 }

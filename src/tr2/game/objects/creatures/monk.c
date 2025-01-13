@@ -16,9 +16,9 @@
 #define MONK_RADIUS            (WALL_L / 10) // = 102
 #define MONK_BIFF_DAMAGE       150
 #define MONK_BIFF_ENEMY_DAMAGE 5
-#define MONK_WALK_TURN         (PHD_DEGREE * 3) // = 546
-#define MONK_RUN_TURN          (PHD_DEGREE * 4) // = 728
-#define MONK_RUN_TURN_FAST     (PHD_DEGREE * 5) // = 910
+#define MONK_WALK_TURN         (DEG_1 * 3) // = 546
+#define MONK_RUN_TURN          (DEG_1 * 4) // = 728
+#define MONK_RUN_TURN_FAST     (DEG_1 * 5) // = 910
 #define MONK_CLOSE_RANGE       SQUARE(WALL_L / 2) // = 262144
 #define MONK_LONG_RANGE        SQUARE(WALL_L) // = 1048576
 #define MONK_ATTACK_5_RANGE    SQUARE(WALL_L * 3) // = 9437184

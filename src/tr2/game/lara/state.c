@@ -361,22 +361,22 @@ void Lara_State_Compress(ITEM *item, COLL_INFO *coll)
             g_Lara.move_angle = item->rot.y;
         } else if (
             g_Input.left
-            && Lara_FloorFront(item, item->rot.y - PHD_90, STEP_L)
+            && Lara_FloorFront(item, item->rot.y - DEG_90, STEP_L)
                 >= -STEPUP_HEIGHT) {
             item->goal_anim_state = LS_LEFT_JUMP;
-            g_Lara.move_angle = item->rot.y - PHD_90;
+            g_Lara.move_angle = item->rot.y - DEG_90;
         } else if (
             g_Input.right
-            && Lara_FloorFront(item, item->rot.y + PHD_90, STEP_L)
+            && Lara_FloorFront(item, item->rot.y + DEG_90, STEP_L)
                 >= -STEPUP_HEIGHT) {
             item->goal_anim_state = LS_RIGHT_JUMP;
-            g_Lara.move_angle = item->rot.y + PHD_90;
+            g_Lara.move_angle = item->rot.y + DEG_90;
         } else if (
             g_Input.back
-            && Lara_FloorFront(item, item->rot.y + PHD_180, STEP_L)
+            && Lara_FloorFront(item, item->rot.y + DEG_180, STEP_L)
                 >= -STEPUP_HEIGHT) {
             item->goal_anim_state = LS_BACK_JUMP;
-            g_Lara.move_angle = item->rot.y + PHD_180;
+            g_Lara.move_angle = item->rot.y + DEG_180;
         }
     }
 
@@ -790,7 +790,7 @@ void Lara_State_Extra_PullDagger(ITEM *item, COLL_INFO *coll)
             g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
         Inv_AddItem(O_PUZZLE_ITEM_2);
     } else if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_ANIM_END)) {
-        item->rot.y += PHD_90;
+        item->rot.y += DEG_90;
 
         const ITEM *const dragon_bones = Item_Find(O_DRAGON_BONES_2);
         if (dragon_bones != NULL) {
@@ -882,7 +882,7 @@ void Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll)
     } else if (g_Input.jump) {
         item->goal_anim_state = LS_BACK_JUMP;
         g_Lara.gun_status = LGS_ARMLESS;
-        g_Lara.move_angle = item->rot.y + PHD_180;
+        g_Lara.move_angle = item->rot.y + DEG_180;
     }
 }
 
@@ -1034,7 +1034,7 @@ void Lara_State_SurfTread(ITEM *item, COLL_INFO *coll)
             Item_SwitchToAnim(item, LA_ONWATER_DIVE, 0);
             item->goal_anim_state = LS_SWIM;
             item->current_anim_state = LS_DIVE;
-            item->rot.x = -45 * PHD_DEGREE;
+            item->rot.x = -45 * DEG_1;
             item->fall_speed = 80;
             g_Lara.water_status = LWS_UNDERWATER;
         }
@@ -1123,7 +1123,7 @@ void Lara_State_Tread(ITEM *item, COLL_INFO *coll)
 void Lara_State_Dive(ITEM *item, COLL_INFO *coll)
 {
     if (g_Input.forward) {
-        item->rot.x -= PHD_DEGREE;
+        item->rot.x -= DEG_1;
     }
 }
 
@@ -1133,7 +1133,7 @@ void Lara_State_UWDeath(ITEM *item, COLL_INFO *coll)
     item->fall_speed -= 8;
     CLAMPL(item->fall_speed, 0);
 
-    int32_t angle = 2 * PHD_DEGREE;
+    int32_t angle = 2 * DEG_1;
     if (item->rot.x >= -angle && item->rot.x <= angle) {
         item->rot.x = 0;
     } else if (item->rot.x >= 0) {

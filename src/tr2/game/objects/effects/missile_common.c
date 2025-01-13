@@ -20,7 +20,7 @@ void Missile_Control(const int16_t effect_num)
     if (effect->object_id == O_MISSILE_HARPOON
         && !(Room_Get(effect->room_num)->flags & RF_UNDERWATER)) {
         if (effect->rot.x > -0x3000) {
-            effect->rot.x -= PHD_DEGREE;
+            effect->rot.x -= DEG_1;
         }
     }
 
@@ -90,7 +90,7 @@ void Missile_Control(const int16_t effect_num)
             Effect_Kill(effect_num);
         }
     } else if (effect->object_id == O_MISSILE_KNIFE) {
-        effect->rot.z += 30 * PHD_DEGREE;
+        effect->rot.z += 30 * DEG_1;
     }
 }
 

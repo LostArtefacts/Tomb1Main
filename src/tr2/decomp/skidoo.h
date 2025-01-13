@@ -8,7 +8,7 @@
 #define SKIDOO_SLOW_SPEED 50
 #define SKIDOO_FAST_SPEED 150
 
-#define SKIDOO_MAX_TURN (PHD_DEGREE * 6) // = 1092
+#define SKIDOO_MAX_TURN (DEG_1 * 6) // = 1092
 #define SKIDOO_GUN_MESH 4
 
 extern BITE g_Skidoo_LeftGun;

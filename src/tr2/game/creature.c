@@ -20,12 +20,12 @@
 #include <libtrx/game/math.h>
 #include <libtrx/utils.h>
 
-#define FRONT_ARC PHD_90
+#define FRONT_ARC DEG_90
 #define ESCAPE_CHANCE 2048
 #define RECOVER_CHANCE 256
-#define MAX_X_ROT (20 * PHD_DEGREE) // = 3640
-#define MAX_TILT (3 * PHD_DEGREE) // = 546
-#define MAX_HEAD_CHANGE (5 * PHD_DEGREE) // = 910
+#define MAX_X_ROT (20 * DEG_1) // = 3640
+#define MAX_TILT (3 * DEG_1) // = 546
+#define MAX_HEAD_CHANGE (5 * DEG_1) // = 910
 #define HEAD_ARC 0x3000 // = 12288
 #define FLOAT_SPEED 32
 #define TARGET_TOLERANCE 0x400000
@@ -38,7 +38,7 @@
 void Creature_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    item->rot.y += (Random_GetControl() - PHD_90) >> 1;
+    item->rot.y += (Random_GetControl() - DEG_90) >> 1;
     item->collidable = 1;
     item->data = 0;
 }
@@ -131,7 +131,7 @@ void Creature_AIInfo(ITEM *const item, AI_INFO *const info)
     }
 
     info->angle = angle - item->rot.y;
-    info->enemy_facing = angle - enemy->rot.y + PHD_180;
+    info->enemy_facing = angle - enemy->rot.y + DEG_180;
     info->ahead = info->angle > -FRONT_ARC && info->angle < FRONT_ARC;
     info->bite = info->ahead && enemy->hit_points > 0
         && ABS(enemy->pos.y - item->pos.y) <= STEP_L;
@@ -472,7 +472,7 @@ int32_t Creature_Animate(
                 && Box_BadFloor(
                     x - radius, y, z - radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_135 && item->rot.y < PHD_45) {
+                if (item->rot.y > -DEG_135 && item->rot.y < DEG_45) {
                     shift_z = radius - pos_z;
                 } else {
                     shift_x = radius - pos_x;
@@ -487,7 +487,7 @@ int32_t Creature_Animate(
                 && Box_BadFloor(
                     x + radius, y, z - radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_45 && item->rot.y < PHD_135) {
+                if (item->rot.y > -DEG_45 && item->rot.y < DEG_135) {
                     shift_z = radius - pos_z;
                 } else {
                     shift_x = WALL_L - radius - pos_x;
@@ -509,7 +509,7 @@ int32_t Creature_Animate(
                 && Box_BadFloor(
                     x - radius, y, z + radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_45 && item->rot.y < PHD_135) {
+                if (item->rot.y > -DEG_45 && item->rot.y < DEG_135) {
                     shift_x = radius - pos_x;
                 } else {
                     shift_z = WALL_L - radius - pos_z;
@@ -524,7 +524,7 @@ int32_t Creature_Animate(
                 && Box_BadFloor(
                     x + radius, y, z + radius, height, next_height, room_num,
                     lot)) {
-                if (item->rot.y > -PHD_135 && item->rot.y < PHD_45) {
+                if (item->rot.y > -DEG_135 && item->rot.y < DEG_45) {
                     shift_x = WALL_L - radius - pos_x;
                 } else {
                     shift_z = WALL_L - radius - pos_z;
@@ -594,10 +594,10 @@ int32_t Creature_Animate(
         int16_t angle = item->speed != 0 ? Math_Atan(item->speed, -dy) : 0;
         CLAMP(angle, -MAX_X_ROT, MAX_X_ROT);
 
-        if (angle < item->rot.x - PHD_DEGREE) {
-            item->rot.x -= PHD_DEGREE;
-        } else if (angle > item->rot.x + PHD_DEGREE) {
-            item->rot.x += PHD_DEGREE;
+        if (angle < item->rot.x - DEG_1) {
+            item->rot.x -= DEG_1;
+        } else if (angle > item->rot.x + DEG_1) {
+            item->rot.x += DEG_1;
         } else {
             item->rot.x = angle;
         }
@@ -724,8 +724,8 @@ void Creature_Underwater(ITEM *const item, const int32_t depth)
     }
 
     item->pos.y = wh + depth;
-    if (item->rot.x > 2 * PHD_DEGREE) {
-        item->rot.x -= 2 * PHD_DEGREE;
+    if (item->rot.x > 2 * DEG_1) {
+        item->rot.x -= 2 * DEG_1;
     } else {
         CLAMPG(item->rot.x, 0);
     }
@@ -775,15 +775,15 @@ int32_t Creature_Vault(
         }
 
         if (old_x_sector >= x_sector) {
-            item->rot.y = -PHD_90;
+            item->rot.y = -DEG_90;
             item->pos.x = (old_x_sector << WALL_SHIFT) + shift;
         } else {
-            item->rot.y = PHD_90;
+            item->rot.y = DEG_90;
             item->pos.x = (x_sector << WALL_SHIFT) - shift;
         }
     } else if (old_x_sector == x_sector) {
         if (old_z_sector >= z_sector) {
-            item->rot.y = -PHD_180;
+            item->rot.y = -DEG_180;
             item->pos.z = (old_z_sector << WALL_SHIFT) + shift;
         } else {
             item->rot.y = 0;

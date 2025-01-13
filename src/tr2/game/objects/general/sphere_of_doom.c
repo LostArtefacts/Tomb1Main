@@ -30,12 +30,12 @@ void SphereOfDoom_Collision(
 
     const int16_t angle = Math_Atan(dz, dx);
     const int16_t diff = lara_item->rot.y - angle;
-    if (ABS(diff) < PHD_90) {
+    if (ABS(diff) < DEG_90) {
         lara_item->speed = 150;
         lara_item->rot.y = angle;
     } else {
         lara_item->speed = -150;
-        lara_item->rot.y = angle + PHD_180;
+        lara_item->rot.y = angle + DEG_180;
     }
 
     lara_item->gravity = 1;
@@ -55,8 +55,8 @@ void SphereOfDoom_Control(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
     item->timer += 64;
-    item->rot.y += item->object_id == O_SPHERE_OF_DOOM_2 ? PHD_DEGREE * 10
-                                                         : -PHD_DEGREE * 10;
+    item->rot.y +=
+        item->object_id == O_SPHERE_OF_DOOM_2 ? DEG_1 * 10 : -DEG_1 * 10;
     const int32_t dx = item->pos.x - g_LaraItem->pos.x;
     const int32_t dy = item->pos.y - g_LaraItem->pos.y;
     const int32_t dz = item->pos.z - g_LaraItem->pos.z;

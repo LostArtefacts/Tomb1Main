@@ -30,9 +30,9 @@ static void M_DrawItem(
     if (inv_item->object_id == O_COMPASS_OPTION) {
         const int32_t total_seconds =
             g_SaveGame.current_stats.timer / FRAMES_PER_SECOND;
-        hours = (total_seconds % 43200) * PHD_DEGREE * -360 / 43200;
-        minutes = (total_seconds % 3600) * PHD_DEGREE * -360 / 3600;
-        seconds = (total_seconds % 60) * PHD_DEGREE * -360 / 60;
+        hours = (total_seconds % 43200) * DEG_1 * -360 / 43200;
+        minutes = (total_seconds % 3600) * DEG_1 * -360 / 3600;
+        seconds = (total_seconds % 60) * DEG_1 * -360 / 60;
     } else {
         seconds = 0;
         minutes = 0;
@@ -177,7 +177,7 @@ void InvRing_Draw(INV_RING *const ring)
         Matrix_Push();
         Matrix_RotY(angle);
         Matrix_TranslateRel(ring->radius, 0, 0);
-        Matrix_RotY(PHD_90);
+        Matrix_RotY(DEG_90);
         Matrix_RotX(inv_item->x_rot_pt);
         M_DrawItem(ring, inv_item);
         angle += ring->angle_adder;

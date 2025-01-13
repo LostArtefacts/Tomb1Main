@@ -13,7 +13,7 @@
 #define JELLY_HITPOINTS    10
 #define JELLY_RADIUS       (WALL_L / 10) // = 102
 #define JELLY_STING_DAMAGE 5
-#define JELLY_TURN         (PHD_DEGREE * 90) // = 16380
+#define JELLY_TURN         (DEG_1 * 90) // = 16380
 // clang-format on
 
 typedef enum {
