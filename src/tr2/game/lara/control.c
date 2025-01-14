@@ -746,19 +746,7 @@ void Lara_Animate(ITEM *const item)
         case AC_SOUND_FX: {
             const ANIM_COMMAND_EFFECT_DATA *const data =
                 (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            if (item->frame_num != data->frame_num) {
-                break;
-            }
-
-            const ANIM_COMMAND_ENVIRONMENT type = data->environment;
-            if (type == ACE_ALL
-                || (type == ACE_LAND
-                    && (g_Lara.water_surface_dist >= 0
-                        || g_Lara.water_surface_dist == NO_HEIGHT))
-                || (type == ACE_WATER && g_Lara.water_surface_dist < 0
-                    && g_Lara.water_surface_dist != NO_HEIGHT)) {
-                Sound_Effect(data->effect_num, &item->pos, SPM_ALWAYS);
-            }
+            Item_PlayAnimSFX(item, data);
             break;
         }
         case AC_EFFECT: {

@@ -619,7 +619,7 @@ void Item_Animate(ITEM *item)
         case AC_SOUND_FX: {
             const ANIM_COMMAND_EFFECT_DATA *const data =
                 (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            Item_PlayAnimSFX(item, data, Room_Get(item->room_num)->flags);
+            Item_PlayAnimSFX(item, data);
             break;
         }
 
@@ -650,26 +650,6 @@ void Item_Animate(ITEM *item)
 
     item->pos.x += (Math_Sin(item->rot.y) * item->speed) >> W2V_SHIFT;
     item->pos.z += (Math_Cos(item->rot.y) * item->speed) >> W2V_SHIFT;
-}
-
-void Item_PlayAnimSFX(
-    ITEM *const item, const ANIM_COMMAND_EFFECT_DATA *const data,
-    const uint16_t flags)
-{
-    if (item->frame_num != data->frame_num) {
-        return;
-    }
-
-    const ANIM_COMMAND_ENVIRONMENT mode = data->environment;
-    if (mode != ACE_ALL) {
-        const int16_t height = Item_GetWaterHeight(item);
-        if ((mode == ACE_WATER && (height >= 0 || height == NO_HEIGHT))
-            || (mode == ACE_LAND && height < 0 && height != NO_HEIGHT)) {
-            return;
-        }
-    }
-
-    Sound_Effect(data->effect_num, &item->pos, flags);
 }
 
 bool Item_IsTriggerActive(ITEM *item)

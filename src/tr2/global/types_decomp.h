@@ -271,14 +271,6 @@ typedef struct {
     int32_t mesh_num;
 } BITE;
 
-typedef enum {
-    RF_UNDERWATER  = 0x01,
-    RF_OUTSIDE     = 0x08,
-    RF_DYNAMIC_LIT = 0x10,
-    RF_NOT_INSIDE  = 0x20,
-    RF_INSIDE      = 0x40,
-} ROOM_FLAG;
-
 typedef struct {
     SECTOR *sector;
     SECTOR old_sector;

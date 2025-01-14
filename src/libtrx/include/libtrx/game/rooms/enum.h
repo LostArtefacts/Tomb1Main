@@ -1,6 +1,14 @@
 #pragma once
 
 typedef enum {
+    RF_UNDERWATER = 0x01,
+    RF_OUTSIDE = 0x08,
+    RF_DYNAMIC_LIT = 0x10,
+    RF_NOT_INSIDE = 0x20,
+    RF_INSIDE = 0x40,
+} ROOM_FLAG;
+
+typedef enum {
     SMF_NON_COLLIDABLE = 1 << 0,
     SMF_VISIBLE = 1 << 1,
 } STATIC_MESH_FLAG;

@@ -186,10 +186,6 @@ typedef enum {
 } HEIGHT_TYPE;
 
 typedef enum {
-    RF_UNDERWATER = 1,
-} ROOM_FLAG;
-
-typedef enum {
     IC_BLACK = 0,
     IC_GREY = 1,
     IC_WHITE = 2,

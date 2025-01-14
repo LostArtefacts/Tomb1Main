@@ -412,7 +412,7 @@ void Lara_Animate(ITEM *item)
         case AC_SOUND_FX: {
             const ANIM_COMMAND_EFFECT_DATA *const data =
                 (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            Item_PlayAnimSFX(item, data, SPM_ALWAYS);
+            Item_PlayAnimSFX(item, data);
             break;
         }
 

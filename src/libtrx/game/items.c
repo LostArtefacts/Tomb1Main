@@ -1,7 +1,10 @@
 #include "game/items.h"
 
 #include "game/const.h"
+#include "game/lara/common.h"
 #include "game/objects/common.h"
+#include "game/rooms.h"
+#include "game/sound/common.h"
 #include "utils.h"
 
 #include <stddef.h>
@@ -107,4 +110,48 @@ bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
     }
 
     return false;
+}
+
+void Item_PlayAnimSFX(
+    const ITEM *const item, const ANIM_COMMAND_EFFECT_DATA *const data)
+{
+    if (item->frame_num != data->frame_num) {
+        return;
+    }
+
+    const bool underwater = Room_Get(item->room_num)->flags & RF_UNDERWATER;
+    const ITEM *const lara_item = Lara_GetItem();
+    const ANIM_COMMAND_ENVIRONMENT mode = data->environment;
+
+    if (mode != ACE_ALL && item->room_num != NO_ROOM) {
+        int32_t height = NO_HEIGHT;
+        if (item == lara_item) {
+            height = Lara_GetLaraInfo()->water_surface_dist;
+        } else if (underwater) {
+            height = -STEP_L;
+        }
+
+        if ((mode == ACE_WATER && (height >= 0 || height == NO_HEIGHT))
+            || (mode == ACE_LAND && height < 0 && height != NO_HEIGHT)) {
+            return;
+        }
+    }
+
+    SOUND_PLAY_MODE play_mode = SPM_NORMAL;
+    if (item == lara_item) {
+        play_mode = SPM_ALWAYS;
+    }
+#if TR_VERSION == 1
+    else if (underwater) {
+        play_mode = SPM_UNDERWATER;
+    }
+#else
+    else if (Object_GetObject(item->object_id)->water_creature) {
+        play_mode = SPM_UNDERWATER;
+    } else if (item->object_id == O_LARA_HARPOON) {
+        play_mode = SPM_ALWAYS;
+    }
+#endif
+
+    Sound_Effect(data->effect_num, &item->pos, play_mode);
 }

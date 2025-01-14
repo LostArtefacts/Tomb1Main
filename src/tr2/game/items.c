@@ -524,28 +524,7 @@ void Item_Animate(ITEM *const item)
         case AC_SOUND_FX: {
             const ANIM_COMMAND_EFFECT_DATA *const data =
                 (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            if (item->frame_num != data->frame_num) {
-                break;
-            }
-
-            const ANIM_COMMAND_ENVIRONMENT type = data->environment;
-            if (g_Objects[item->object_id].water_creature) {
-                Sound_Effect(data->effect_num, &item->pos, SPM_UNDERWATER);
-            } else if (item->room_num == NO_ROOM) {
-                item->pos.x = g_LaraItem->pos.x;
-                item->pos.y = g_LaraItem->pos.y - LARA_HEIGHT;
-                item->pos.z = g_LaraItem->pos.z;
-                Sound_Effect(
-                    data->effect_num, &item->pos,
-                    item->object_id == O_LARA_HARPOON ? SPM_ALWAYS
-                                                      : SPM_NORMAL);
-            } else if (g_Rooms[item->room_num].flags & RF_UNDERWATER) {
-                if (type == ACE_ALL || type == ACE_WATER) {
-                    Sound_Effect(data->effect_num, &item->pos, SPM_NORMAL);
-                }
-            } else if (type == ACE_ALL || type == ACE_LAND) {
-                Sound_Effect(data->effect_num, &item->pos, SPM_NORMAL);
-            }
+            Item_PlayAnimSFX(item, data);
             break;
         }
 

@@ -23,6 +23,18 @@
 static bool m_M16Firing = false;
 static bool m_HarpoonFired = false;
 
+static void M_AnimateGun(ITEM *item);
+
+static void M_AnimateGun(ITEM *const item)
+{
+    // While the item is drawn in Lara_Draw, it needs a world position for
+    // sound effect commands in Item_Animate.
+    item->pos.x = g_LaraItem->pos.x;
+    item->pos.y = g_LaraItem->pos.y - LARA_HEIGHT;
+    item->pos.z = g_LaraItem->pos.z;
+    Item_Animate(item);
+}
+
 void Gun_Rifle_DrawMeshes(const LARA_GUN_TYPE weapon_type)
 {
     Gun_SetLaraHandRMesh(weapon_type);
@@ -256,7 +268,7 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
         g_Lara.right_arm.frame_base = g_Objects[item->object_id].frame_base;
         g_Lara.left_arm.frame_base = g_Objects[item->object_id].frame_base;
     }
-    Item_Animate(item);
+    M_AnimateGun(item);
 
     if (item->current_anim_state == LA_G_AIM
         || item->current_anim_state == LA_G_UAIM) {
@@ -285,7 +297,7 @@ void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
     } else {
         item->goal_anim_state = LA_G_UNDRAW;
     }
-    Item_Animate(item);
+    M_AnimateGun(item);
 
     if (item->status == IS_DEACTIVATED) {
         Item_Kill(g_Lara.weapon_item);
@@ -433,7 +445,7 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
         break;
     }
 
-    Item_Animate(item);
+    M_AnimateGun(item);
     g_Lara.left_arm.anim_num = item->anim_num;
     g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
     g_Lara.left_arm.frame_num =
