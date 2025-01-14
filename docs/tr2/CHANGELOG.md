@@ -12,6 +12,7 @@
     | Increase internal screen size | F2          | F10          |
     | Toggle photo mode             | ---         | F1           |
     | Toggle photo mode UI          | ---         | H            |
+- changed the `/kill` command with no arguments to look for enemies within 5 tiles (#2297)
 - fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
@@ -23,6 +24,7 @@
 - fixed item counter always hidden in NG+, even for keys (#2223, regression from 0.3)
 - fixed the passport object not being selected when exiting to title (#2192, regression from 0.8)
 - fixed the upside-down camera fix to no longer limit Lara's vision (#2276, regression from 0.8)
+- fixed /kill command freezing the game under rare circumstances (#2297, regression from 0.3)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)

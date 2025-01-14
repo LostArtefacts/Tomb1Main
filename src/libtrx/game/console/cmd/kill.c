@@ -15,6 +15,8 @@
 #include "strings.h"
 
 static bool M_CanTargetObjectCreature(GAME_OBJECT_ID object_id);
+static bool M_KillSingleEnemyInRange(int32_t max_dist);
+static int32_t M_KillAllEnemiesInRange(int32_t max_dist);
 static COMMAND_RESULT M_KillAllEnemies(void);
 static COMMAND_RESULT M_KillNearestEnemies(void);
 static COMMAND_RESULT M_KillEnemyType(const char *enemy_name);
@@ -25,6 +27,50 @@ static bool M_CanTargetObjectCreature(const GAME_OBJECT_ID object_id)
     return (Object_IsObjectType(object_id, g_EnemyObjects)
             || Object_IsObjectType(object_id, g_AllyObjects))
         && Object_GetObject(object_id)->loaded;
+}
+
+static bool M_KillSingleEnemyInRange(const int32_t max_dist)
+{
+    const ITEM *const lara_item = Lara_GetItem();
+    int32_t best_dist = -1;
+    int16_t best_item_num = NO_ITEM;
+    for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
+        const ITEM *const item = Item_Get(item_num);
+        if (Creature_IsEnemy(item)) {
+            const int32_t dist = Item_GetDistance(item, &lara_item->pos);
+            if (dist <= max_dist) {
+                if (best_item_num == NO_ITEM || dist < best_dist) {
+                    best_dist = dist;
+                    best_item_num = item_num;
+                }
+            }
+        }
+    }
+    if (best_item_num != NO_ITEM) {
+        if (Lara_Cheat_KillEnemy(best_item_num)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static int32_t M_KillAllEnemiesInRange(const int32_t max_dist)
+{
+    int32_t kill_count = 0;
+    const ITEM *const lara_item = Lara_GetItem();
+    for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
+        const ITEM *const item = Item_Get(item_num);
+        if (Creature_IsEnemy(item)) {
+            const int32_t dist = Item_GetDistance(item, &lara_item->pos);
+            if (dist <= max_dist) {
+                // Kill this enemy
+                if (Lara_Cheat_KillEnemy(item_num)) {
+                    kill_count++;
+                }
+            }
+        }
+    }
+    return kill_count;
 }
 
 static COMMAND_RESULT M_KillAllEnemies(void)
@@ -51,29 +97,21 @@ static COMMAND_RESULT M_KillAllEnemies(void)
 
 static COMMAND_RESULT M_KillNearestEnemies(void)
 {
-    bool found = false;
-    while (true) {
-        const int16_t best_item_num = Lara_GetNearestEnemy();
-        if (best_item_num == NO_ITEM) {
-            break;
-        }
-
-        const ITEM *const lara_item = Lara_GetItem();
-        const ITEM *const item = Item_Get(best_item_num);
-        const int32_t distance = Item_GetDistance(item, &lara_item->pos);
-        found |= Lara_Cheat_KillEnemy(best_item_num);
-        if (distance >= WALL_L) {
-            break;
-        }
+    const ITEM *const lara_item = Lara_GetItem();
+    int32_t kill_count = M_KillAllEnemiesInRange(WALL_L);
+    if (kill_count == 0) {
+        kill_count = M_KillSingleEnemyInRange(5 * WALL_L);
     }
 
-    if (!found) {
+    if (kill_count == 0) {
+        // No enemies killed
         Console_Log(GS(OSD_KILL_FAIL));
         return CR_FAILURE;
+    } else {
+        // At least one enemy was killed.
+        Console_Log(GS(OSD_KILL));
+        return CR_SUCCESS;
     }
-
-    Console_Log(GS(OSD_KILL));
-    return CR_SUCCESS;
 }
 
 static COMMAND_RESULT M_KillEnemyType(const char *const enemy_name)

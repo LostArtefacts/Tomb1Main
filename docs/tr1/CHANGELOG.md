@@ -8,6 +8,7 @@
 - changed the pause screen to wait before yielding control during fade out effect
 - changed the compass and final stats to use two columns, similar to TR2 (doesn't apply to end-of-level "bare" stats)
 - changed the fix for transparent eyes on wolves to use black instead of off-white (#2252)
+- changed the `/kill` command with no arguments to look for enemies within 5 tiles (#2297)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - fixed the upside-down camera fix to no longer limit Lara's vision (#2276, regression from 4.2)
 - fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
