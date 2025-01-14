@@ -327,7 +327,7 @@ static void M_LoadAnimCommands(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.anim_command_count = VFile_ReadS32(file);
     LOG_INFO("%d anim commands", m_LevelInfo.anim_command_count);
-    Anim_InitialiseCommands(
+    Level_InitialiseAnimCommands(
         m_LevelInfo.anim_command_count + m_InjectionInfo->anim_cmd_count);
     Level_ReadAnimCommands(0, m_LevelInfo.anim_command_count, file);
     Benchmark_End(benchmark, NULL);
@@ -799,6 +799,8 @@ static void M_CompleteSetup(int32_t level_num)
     Anim_LoadFrames(
         m_LevelInfo.anim_frame_data, m_LevelInfo.anim_frame_data_count);
     Memory_FreePointer(&m_LevelInfo.anim_frame_data);
+
+    Level_LoadAnimCommands();
 
     M_MarkWaterEdgeVertices();
 

@@ -701,42 +701,35 @@ void Lara_Animate(ITEM *const item)
     }
 
     if (item->frame_num > anim->frame_end) {
-        if (anim->num_commands > 0) {
-            const int16_t *cmd_ptr = Anim_GetCommand(anim->command_idx);
-            for (int32_t i = 0; i < anim->num_commands; i++) {
-                const int16_t cmd = *cmd_ptr++;
+        for (int32_t i = 0; i < anim->num_commands; i++) {
+            const ANIM_COMMAND *const command = &anim->commands[i];
+            switch (command->type) {
+            case AC_MOVE_ORIGIN: {
+                const XYZ_16 *const pos = (XYZ_16 *)command->data;
+                Item_Translate(item, pos->x, pos->y, pos->z);
+                break;
+            }
 
-                switch (cmd) {
-                case AC_MOVE_ORIGIN:
-                    Item_Translate(item, cmd_ptr[0], cmd_ptr[1], cmd_ptr[2]);
-                    cmd_ptr += 3;
-                    break;
-
-                case AC_JUMP_VELOCITY:
-                    item->fall_speed = *cmd_ptr++;
-                    item->speed = *cmd_ptr++;
-                    item->gravity = 1;
-
-                    if (g_Lara.calc_fall_speed) {
-                        item->fall_speed = g_Lara.calc_fall_speed;
-                        g_Lara.calc_fall_speed = 0;
-                    }
-                    break;
-
-                case AC_ATTACK_READY:
-                    if (g_Lara.gun_status != LGS_SPECIAL) {
-                        g_Lara.gun_status = LGS_ARMLESS;
-                    }
-                    break;
-
-                case AC_SOUND_FX:
-                case AC_EFFECT:
-                    cmd_ptr += 2;
-                    break;
-
-                default:
-                    break;
+            case AC_JUMP_VELOCITY: {
+                const ANIM_COMMAND_VELOCITY_DATA *const data =
+                    (ANIM_COMMAND_VELOCITY_DATA *)command->data;
+                item->fall_speed = data->fall_speed;
+                item->speed = data->speed;
+                item->gravity = true;
+                if (g_Lara.calc_fall_speed) {
+                    item->fall_speed = g_Lara.calc_fall_speed;
+                    g_Lara.calc_fall_speed = 0;
                 }
+                break;
+            }
+
+            case AC_ATTACK_READY:
+                if (g_Lara.gun_status != LGS_SPECIAL) {
+                    g_Lara.gun_status = LGS_ARMLESS;
+                }
+                break;
+            default:
+                break;
             }
         }
 
@@ -746,66 +739,47 @@ void Lara_Animate(ITEM *const item)
         item->current_anim_state = anim->current_anim_state;
     }
 
-    if (anim->num_commands > 0) {
-        const int16_t *cmd_ptr = Anim_GetCommand(anim->command_idx);
-        for (int32_t i = 0; i < anim->num_commands; i++) {
-            const int16_t cmd = *cmd_ptr++;
+    for (int32_t i = 0; i < anim->num_commands; i++) {
+        const ANIM_COMMAND *const command = &anim->commands[i];
 
-            switch (cmd) {
-            case AC_MOVE_ORIGIN:
-                cmd_ptr += 3;
-                break;
-
-            case AC_JUMP_VELOCITY:
-                cmd_ptr += 2;
-                break;
-
-            case AC_SOUND_FX: {
-                const int32_t frame = cmd_ptr[0];
-                const SOUND_EFFECT_ID sound_id =
-                    ANIM_CMD_PARAM_BITS(cmd_ptr[1]);
-                const ANIM_COMMAND_ENVIRONMENT type =
-                    ANIM_CMD_ENVIRONMENT_BITS(cmd_ptr[1]);
-                cmd_ptr += 2;
-
-                if (item->frame_num != frame) {
-                    break;
-                }
-
-                if (type == ACE_ALL
-                    || (type == ACE_LAND
-                        && (g_Lara.water_surface_dist >= 0
-                            || g_Lara.water_surface_dist == NO_HEIGHT))
-                    || (type == ACE_WATER && g_Lara.water_surface_dist < 0
-                        && g_Lara.water_surface_dist != NO_HEIGHT)) {
-                    Sound_Effect(sound_id, &item->pos, SPM_ALWAYS);
-                }
+        switch (command->type) {
+        case AC_SOUND_FX: {
+            const ANIM_COMMAND_EFFECT_DATA *const data =
+                (ANIM_COMMAND_EFFECT_DATA *)command->data;
+            if (item->frame_num != data->frame_num) {
                 break;
             }
 
-            case AC_EFFECT:
-                const int32_t frame = cmd_ptr[0];
-                const int32_t action_id = ANIM_CMD_PARAM_BITS(cmd_ptr[1]);
-                const ANIM_COMMAND_ENVIRONMENT type =
-                    ANIM_CMD_ENVIRONMENT_BITS(cmd_ptr[1]);
-                cmd_ptr += 2;
-
-                if (item->frame_num != frame) {
-                    break;
-                }
-
-                if (type == ACE_ALL
-                    || (type == ACE_LAND
-                        && (g_Lara.water_surface_dist >= 0
-                            || g_Lara.water_surface_dist == NO_HEIGHT))
-                    || (type == ACE_WATER && g_Lara.water_surface_dist < 0)) {
-                    ItemAction_Run(action_id, item);
-                }
-                break;
-
-            default:
+            const ANIM_COMMAND_ENVIRONMENT type = data->environment;
+            if (type == ACE_ALL
+                || (type == ACE_LAND
+                    && (g_Lara.water_surface_dist >= 0
+                        || g_Lara.water_surface_dist == NO_HEIGHT))
+                || (type == ACE_WATER && g_Lara.water_surface_dist < 0
+                    && g_Lara.water_surface_dist != NO_HEIGHT)) {
+                Sound_Effect(data->effect_num, &item->pos, SPM_ALWAYS);
+            }
+            break;
+        }
+        case AC_EFFECT: {
+            const ANIM_COMMAND_EFFECT_DATA *const data =
+                (ANIM_COMMAND_EFFECT_DATA *)command->data;
+            if (item->frame_num != data->frame_num) {
                 break;
             }
+
+            const ANIM_COMMAND_ENVIRONMENT type = data->environment;
+            if (type == ACE_ALL
+                || (type == ACE_LAND
+                    && (g_Lara.water_surface_dist >= 0
+                        || g_Lara.water_surface_dist == NO_HEIGHT))
+                || (type == ACE_WATER && g_Lara.water_surface_dist < 0)) {
+                ItemAction_Run(data->effect_num, item);
+            }
+            break;
+        }
+        default:
+            break;
         }
     }
 

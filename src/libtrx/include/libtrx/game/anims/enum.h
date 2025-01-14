@@ -9,7 +9,7 @@ typedef enum {
     AC_DEACTIVATE    = 4,
     AC_SOUND_FX      = 5,
     AC_EFFECT        = 6,
-} ANIM_COMMAND;
+} ANIM_COMMAND_TYPE;
 
 typedef enum {
     ACE_ALL   = 0,

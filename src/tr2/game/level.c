@@ -267,7 +267,7 @@ static void M_LoadAnimCommands(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_anim_commands = VFile_ReadS32(file);
     LOG_INFO("anim commands: %d", num_anim_commands);
-    Anim_InitialiseCommands(num_anim_commands);
+    Level_InitialiseAnimCommands(num_anim_commands);
     Level_ReadAnimCommands(0, num_anim_commands, file);
     Benchmark_End(benchmark, NULL);
 }
@@ -823,6 +823,8 @@ static void M_CompleteSetup(void)
     Anim_InitialiseFrames(frame_count);
     Anim_LoadFrames(m_AnimFrameData, m_AnimFrameDataLength);
     Memory_FreePointer(&m_AnimFrameData);
+
+    Level_LoadAnimCommands();
 
     // Must be called after Setup_AllObjects using the cached item
     // count, as individual setups may increment g_LevelItemCount.

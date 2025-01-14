@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../math.h"
+#include "./enum.h"
 
 typedef struct {
     int16_t goal_anim_state;
@@ -14,6 +15,22 @@ typedef struct {
     int16_t link_anim_num;
     int16_t link_frame_num;
 } ANIM_RANGE;
+
+typedef struct {
+    ANIM_COMMAND_TYPE type;
+    void *data;
+} ANIM_COMMAND;
+
+typedef struct {
+    int16_t fall_speed;
+    int16_t speed;
+} ANIM_COMMAND_VELOCITY_DATA;
+
+typedef struct {
+    int16_t frame_num;
+    int16_t effect_num;
+    ANIM_COMMAND_ENVIRONMENT environment;
+} ANIM_COMMAND_EFFECT_DATA;
 
 typedef struct {
     bool matrix_pop;
@@ -46,4 +63,5 @@ typedef struct {
     int16_t change_idx;
     int16_t num_commands;
     int16_t command_idx;
+    ANIM_COMMAND *commands;
 } ANIM;

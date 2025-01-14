@@ -575,31 +575,30 @@ void Item_Animate(ITEM *item)
     }
 
     if (item->frame_num > anim->frame_end) {
-        if (anim->num_commands > 0) {
-            const int16_t *command = Anim_GetCommand(anim->command_idx);
-            for (int i = 0; i < anim->num_commands; i++) {
-                switch (*command++) {
-                case AC_MOVE_ORIGIN:
-                    Item_Translate(item, command[0], command[1], command[2]);
-                    command += 3;
-                    break;
+        for (int32_t i = 0; i < anim->num_commands; i++) {
+            const ANIM_COMMAND *const command = &anim->commands[i];
+            switch (command->type) {
+            case AC_MOVE_ORIGIN: {
+                const XYZ_16 *const pos = (XYZ_16 *)command->data;
+                Item_Translate(item, pos->x, pos->y, pos->z);
+                break;
+            }
 
-                case AC_JUMP_VELOCITY:
-                    item->fall_speed = command[0];
-                    item->speed = command[1];
-                    item->gravity = 1;
-                    command += 2;
-                    break;
+            case AC_JUMP_VELOCITY: {
+                const ANIM_COMMAND_VELOCITY_DATA *const data =
+                    (ANIM_COMMAND_VELOCITY_DATA *)command->data;
+                item->fall_speed = data->fall_speed;
+                item->speed = data->speed;
+                item->gravity = true;
+                break;
+            }
 
-                case AC_DEACTIVATE:
-                    item->status = IS_DEACTIVATED;
-                    break;
+            case AC_DEACTIVATE:
+                item->status = IS_DEACTIVATED;
+                break;
 
-                case AC_SOUND_FX:
-                case AC_EFFECT:
-                    command += 2;
-                    break;
-                }
+            default:
+                break;
             }
         }
 
@@ -614,31 +613,27 @@ void Item_Animate(ITEM *item)
         }
     }
 
-    if (anim->num_commands > 0) {
-        const int16_t *command = Anim_GetCommand(anim->command_idx);
-        for (int i = 0; i < anim->num_commands; i++) {
-            switch (*command++) {
-            case AC_MOVE_ORIGIN:
-                command += 3;
-                break;
+    for (int32_t i = 0; i < anim->num_commands; i++) {
+        const ANIM_COMMAND *const command = &anim->commands[i];
+        switch (command->type) {
+        case AC_SOUND_FX: {
+            const ANIM_COMMAND_EFFECT_DATA *const data =
+                (ANIM_COMMAND_EFFECT_DATA *)command->data;
+            Item_PlayAnimSFX(item, data, Room_Get(item->room_num)->flags);
+            break;
+        }
 
-            case AC_JUMP_VELOCITY:
-                command += 2;
-                break;
-
-            case AC_SOUND_FX:
-                Item_PlayAnimSFX(
-                    item, command, g_RoomInfo[item->room_num].flags);
-                command += 2;
-                break;
-
-            case AC_EFFECT:
-                if (item->frame_num == command[0]) {
-                    ItemAction_Run(command[1], item);
-                }
-                command += 2;
-                break;
+        case AC_EFFECT: {
+            const ANIM_COMMAND_EFFECT_DATA *const data =
+                (ANIM_COMMAND_EFFECT_DATA *)command->data;
+            if (item->frame_num == data->frame_num) {
+                ItemAction_Run(data->effect_num, item);
             }
+            break;
+        }
+
+        default:
+            break;
         }
     }
 
@@ -658,13 +653,14 @@ void Item_Animate(ITEM *item)
 }
 
 void Item_PlayAnimSFX(
-    ITEM *const item, const int16_t *const command, const uint16_t flags)
+    ITEM *const item, const ANIM_COMMAND_EFFECT_DATA *const data,
+    const uint16_t flags)
 {
-    if (item->frame_num != command[0]) {
+    if (item->frame_num != data->frame_num) {
         return;
     }
 
-    const ANIM_COMMAND_ENVIRONMENT mode = ANIM_CMD_ENVIRONMENT_BITS(command[1]);
+    const ANIM_COMMAND_ENVIRONMENT mode = data->environment;
     if (mode != ACE_ALL) {
         const int16_t height = Item_GetWaterHeight(item);
         if ((mode == ACE_WATER && (height >= 0 || height == NO_HEIGHT))
@@ -673,7 +669,7 @@ void Item_PlayAnimSFX(
         }
     }
 
-    Sound_Effect(ANIM_CMD_PARAM_BITS(command[1]), &item->pos, flags);
+    Sound_Effect(data->effect_num, &item->pos, flags);
 }
 
 bool Item_IsTriggerActive(ITEM *item)

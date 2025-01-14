@@ -78,6 +78,7 @@ sources = [
   'enum_map.c',
   'event_manager.c',
   'filesystem.c',
+  'game/anims/commands.c',
   'game/anims/common.c',
   'game/anims/frames.c',
   'game/camera/photo_mode.c',

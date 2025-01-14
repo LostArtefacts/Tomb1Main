@@ -7,8 +7,11 @@
 #include "game/objects/common.h"
 #include "game/rooms.h"
 #include "log.h"
+#include "memory.h"
 #include "utils.h"
 #include "vector.h"
+
+static int16_t *m_AnimCommands = NULL;
 
 static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
@@ -260,14 +263,21 @@ void Level_ReadAnimRanges(
     }
 }
 
+void Level_InitialiseAnimCommands(const int32_t num_cmds)
+{
+    m_AnimCommands = Memory_Alloc(sizeof(int16_t) * num_cmds);
+}
+
 void Level_ReadAnimCommands(
     const int32_t base_idx, const int32_t num_cmds, VFILE *const file)
 {
-    // TODO: structure these, although they are of variable size.
-    for (int32_t i = 0; i < num_cmds; i++) {
-        int16_t *const cmd = Anim_GetCommand(base_idx + i);
-        *cmd = VFile_ReadS16(file);
-    }
+    VFile_Read(file, m_AnimCommands + base_idx, sizeof(int16_t) * num_cmds);
+}
+
+void Level_LoadAnimCommands(void)
+{
+    Anim_LoadCommands(m_AnimCommands);
+    Memory_FreePointer(&m_AnimCommands);
 }
 
 void Level_ReadAnimBones(

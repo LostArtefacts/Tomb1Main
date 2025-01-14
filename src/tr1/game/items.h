@@ -38,7 +38,8 @@ void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 
 void Item_Animate(ITEM *item);
-void Item_PlayAnimSFX(ITEM *item, const int16_t *command, uint16_t flags);
+void Item_PlayAnimSFX(
+    ITEM *item, const ANIM_COMMAND_EFFECT_DATA *data, uint16_t flags);
 
 bool Item_IsTriggerActive(ITEM *item);
 
