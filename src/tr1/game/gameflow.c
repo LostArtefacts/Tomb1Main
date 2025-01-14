@@ -12,7 +12,6 @@
 #include "game/output.h"
 #include "game/phase.h"
 #include "game/phase/phase_cutscene.h"
-#include "game/phase/phase_inventory.h"
 #include "game/room.h"
 #include "game/savegame.h"
 #include "global/vars.h"

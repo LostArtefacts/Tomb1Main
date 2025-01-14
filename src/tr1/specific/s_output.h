@@ -19,6 +19,7 @@ void S_Output_DisableDepthTest(void);
 
 void S_Output_RenderBegin(void);
 void S_Output_RenderEnd(void);
+void S_Output_Flush(void);
 void S_Output_FlipScreen(void);
 void S_Output_ClearDepthBuffer(void);
 

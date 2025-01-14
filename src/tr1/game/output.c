@@ -1,7 +1,6 @@
 #include "game/output.h"
 
 #include "game/clock.h"
-#include "game/console/common.h"
 #include "game/overlay.h"
 #include "game/phase/phase.h"
 #include "game/random.h"
@@ -16,7 +15,6 @@
 #include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
-#include <libtrx/game/console/common.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
@@ -620,7 +618,6 @@ void Output_EndScene(void)
     S_Output_DisableDepthTest();
     S_Output_ClearDepthBuffer();
     Overlay_DrawFPSInfo();
-    Console_Draw();
     S_Output_EnableDepthTest();
     S_Output_RenderEnd();
     S_Output_FlipScreen();
@@ -1243,7 +1240,7 @@ void Output_DrawBlackRectangle(int32_t opacity)
 
 void Output_DrawBackground(void)
 {
-    S_Output_DrawBackdropSurface();
+    // already handled in S_Output_RenderBegin
 }
 
 void Output_DrawPolyList(void)

@@ -28,8 +28,7 @@
 #include <libtrx/memory.h>
 
 #define INV_RING_FADE_TIME_FAST                                                \
-    (CLOSE_FRAMES / INV_RING_FRAMES / (double)LOGIC_FPS)
-#define INV_RING_FADE_TIME_SLOW (INV_RING_FADE_TIME_FAST + 1. / 5.)
+    (INV_RING_CLOSE_FRAMES / INV_RING_FRAMES / (double)LOGIC_FPS)
 #define INV_RING_FADE_TIME_TITLE_FINISH 0.25
 
 static TEXTSTRING *m_ExamineItemText = NULL;
@@ -51,7 +50,7 @@ static void M_RingActive(INV_RING *ring);
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
-static GAME_FLOW_COMMAND M_Finish(INV_RING *ring, const bool apply_changes);
+static GAME_FLOW_COMMAND M_Finish(INV_RING *ring, bool apply_changes);
 static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
 static bool M_CheckDemoTimer(const INV_RING *ring);
 
@@ -232,7 +231,7 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
 static GAME_FLOW_COMMAND M_Finish(
     INV_RING *const ring, const bool apply_changes)
 {
-    // Make this function not have any side effects.
+    // TODO: Make this function not have any side effects.
     // Consider adding new GF_ constants, but research other solutions first.
 
     if (m_StartLevel != -1) {
@@ -407,6 +406,10 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         && ((ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count != 0)
             || (ring->type == RT_OPTION && g_InvRing_Source[RT_MAIN].count));
 
+    if (g_Config.gameplay.enable_timer_in_inventory) {
+        Stats_UpdateTimer();
+    }
+
     if (ring->rotating) {
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
@@ -456,9 +459,10 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
             if (M_Finish(ring, false).action != GF_NOOP) {
                 InvRing_MotionSetup(
-                    ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
+                    ring, RNG_CLOSING, RNG_FADING_OUT, INV_RING_CLOSE_FRAMES);
             } else {
-                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+                InvRing_MotionSetup(
+                    ring, RNG_CLOSING, RNG_DONE, INV_RING_CLOSE_FRAMES);
                 Fader_Init(
                     &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
                     INV_RING_FADE_TIME_FAST);
@@ -466,7 +470,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
-                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
+                ring, INV_RING_CLOSE_ROTATION,
+                ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
 
             g_Input = (INPUT_STATE) {};
             g_InputDB = (INPUT_STATE) {};
@@ -534,8 +539,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                         RINGSWITCH_FRAMES / 2);
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
-                        ring, CLOSE_ROTATION,
-                        ring->ring_pos.rot.y - CLOSE_ROTATION);
+                        ring, INV_RING_CLOSE_ROTATION,
+                        ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, 0x2000);
                     ring->motion.misc = 0x2000;
                 }
@@ -548,8 +553,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                         RINGSWITCH_FRAMES / 2);
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
-                        ring, CLOSE_ROTATION,
-                        ring->ring_pos.rot.y - CLOSE_ROTATION);
+                        ring, INV_RING_CLOSE_ROTATION,
+                        ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, 0x2000);
                     ring->motion.misc = 0x2000;
                 }
@@ -565,8 +570,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                         RINGSWITCH_FRAMES / 2);
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
-                        ring, CLOSE_ROTATION,
-                        ring->ring_pos.rot.y - CLOSE_ROTATION);
+                        ring, INV_RING_CLOSE_ROTATION,
+                        ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, -0x2000);
                     ring->motion.misc = -0x2000;
                 }
@@ -579,8 +584,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                         RINGSWITCH_FRAMES / 2);
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
-                        ring, CLOSE_ROTATION,
-                        ring->ring_pos.rot.y - CLOSE_ROTATION);
+                        ring, INV_RING_CLOSE_ROTATION,
+                        ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
                     InvRing_MotionCameraPitch(ring, -0x2000);
                     ring->motion.misc = -0x2000;
                 }
@@ -764,10 +769,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             if (M_Finish(ring, false).action != GF_NOOP) {
                 // Fade to black. Do it later once reaching RNG_FADING_OUT.
                 InvRing_MotionSetup(
-                    ring, RNG_CLOSING, RNG_FADING_OUT, CLOSE_FRAMES);
+                    ring, RNG_CLOSING, RNG_FADING_OUT, INV_RING_CLOSE_FRAMES);
             } else {
                 // Fade to game. Do it as soon as the ring starts to close.
-                InvRing_MotionSetup(ring, RNG_CLOSING, RNG_DONE, CLOSE_FRAMES);
+                InvRing_MotionSetup(
+                    ring, RNG_CLOSING, RNG_DONE, INV_RING_CLOSE_FRAMES);
                 Fader_Init(
                     &ring->back_fader, FADER_ANY, FADER_TRANSPARENT,
                     INV_RING_FADE_TIME_FAST);
@@ -775,7 +781,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             InvRing_MotionRadius(ring, 0);
             InvRing_MotionCameraPos(ring, INV_RING_CAMERA_START_HEIGHT);
             InvRing_MotionRotation(
-                ring, CLOSE_ROTATION, ring->ring_pos.rot.y - CLOSE_ROTATION);
+                ring, INV_RING_CLOSE_ROTATION,
+                ring->ring_pos.rot.y - INV_RING_CLOSE_ROTATION);
         }
         break;
 
@@ -804,10 +811,6 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_FADING_OUT
         || ring->motion.status == RNG_DONE || ring->rotating) {
         M_RingActive(ring);
-    }
-
-    if (g_Config.gameplay.enable_timer_in_inventory) {
-        Stats_UpdateTimer();
     }
 
     for (int32_t i = 0; i < ring->number_of_objects; i++) {
@@ -930,9 +933,6 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
         break;
     }
 
-    // reset the delta timer before starting the spinout animation
-    ClockTimer_Sync(&g_InvRing_MotionTimer);
-
     g_InvMode = mode;
     Interpolation_Remember();
     if (g_Config.gameplay.enable_timer_in_inventory) {
@@ -957,8 +957,6 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
 void InvRing_Close(INV_RING *const ring)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
-
     InvRing_RemoveAllText();
     InvRing_RemoveVersionText();
 

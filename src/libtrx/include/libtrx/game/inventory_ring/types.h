@@ -112,6 +112,7 @@ typedef struct {
     int32_t old_fov;
 #endif
 
+    CLOCK_TIMER motion_timer;
     FADER top_fader;
     FADER back_fader;
 } INV_RING;

@@ -120,6 +120,9 @@ void InvRing_InitRing(
     ring->light.x = -1536;
     ring->light.y = 256;
     ring->light.z = 1024;
+
+    ring->motion_timer.type = CLOCK_TIMER_SIM;
+    ClockTimer_Sync(&ring->motion_timer);
 }
 
 void InvRing_InitInvItem(INVENTORY_ITEM *const inv_item)

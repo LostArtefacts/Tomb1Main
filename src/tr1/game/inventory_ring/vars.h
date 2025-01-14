@@ -36,5 +36,4 @@ extern INVENTORY_ITEM g_InvRing_Item_Sound;
 extern INVENTORY_ITEM g_InvRing_Item_Controls;
 extern INVENTORY_ITEM g_InvRing_Item_LarasHome;
 
-extern CLOCK_TIMER g_InvRing_MotionTimer;
 extern CAMERA_INFO g_InvRing_OldCamera;

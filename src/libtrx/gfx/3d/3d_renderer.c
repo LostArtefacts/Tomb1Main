@@ -187,6 +187,12 @@ void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *const renderer)
     GFX_GL_CheckError();
 }
 
+void GFX_3D_Renderer_Flush(GFX_3D_RENDERER *const renderer)
+{
+    ASSERT(renderer != NULL);
+    M_Flush(renderer);
+}
+
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *const renderer)
 {
     ASSERT(renderer != NULL);

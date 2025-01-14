@@ -15,5 +15,4 @@ void Overlay_DrawPickups(bool pickup_state);
 void Overlay_AddDisplayPickup(int16_t object_id);
 void Overlay_DisplayModeInfo(const char *string);
 
-void Overlay_DrawModeInfo(void);
 void Overlay_Animate(int32_t ticks);

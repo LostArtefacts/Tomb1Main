@@ -21,8 +21,7 @@
 static int32_t M_GetFrames(
     const INV_RING *ring, const INVENTORY_ITEM *inv_item,
     ANIM_FRAME **out_frame1, ANIM_FRAME **out_frame2, int32_t *out_rate);
-static void M_DrawItem(
-    const INV_RING *ring, INVENTORY_ITEM *inv_item, int32_t num_frames);
+static void M_DrawItem(const INV_RING *ring, INVENTORY_ITEM *inv_item);
 
 static int32_t M_GetFrames(
     const INV_RING *const ring, const INVENTORY_ITEM *const inv_item,
@@ -67,8 +66,7 @@ fallback:
 }
 
 static void M_DrawItem(
-    const INV_RING *const ring, INVENTORY_ITEM *const inv_item,
-    const int32_t num_frames)
+    const INV_RING *const ring, INVENTORY_ITEM *const inv_item)
 {
     if (ring->motion.status != RNG_FADING_OUT && ring->motion.status != RNG_DONE
         && inv_item == ring->list[ring->current_object] && !ring->rotating) {
@@ -156,11 +154,12 @@ static void M_DrawItem(
 void InvRing_Draw(INV_RING *const ring)
 {
     const int32_t num_frames = round(
-        ClockTimer_TakeElapsed(&g_InvRing_MotionTimer) * LOGIC_FPS
+        ClockTimer_TakeElapsed(&ring->motion_timer) * LOGIC_FPS
         * INV_RING_FRAMES);
+
     ring->camera.pos.z = ring->radius + CAMERA_2_RING;
 
-    if (g_InvMode == INV_TITLE_MODE) {
+    if (ring->mode == INV_TITLE_MODE) {
         Interpolation_Commit();
     } else {
         Matrix_LookAt(
@@ -195,19 +194,19 @@ void InvRing_Draw(INV_RING *const ring)
     Matrix_TranslateAbs32(ring->ring_pos.pos);
     Matrix_Rot16(ring->ring_pos.rot);
 
-    if (!(g_InvMode == INV_TITLE_MODE
+    if (!(ring->mode == INV_TITLE_MODE
           && (Fader_IsActive(&ring->top_fader)
               || Fader_IsActive(&ring->back_fader))
           && ring->motion.status == RNG_OPENING)) {
-        PHD_ANGLE angle = 0;
-        for (int i = 0; i < ring->number_of_objects; i++) {
-            INVENTORY_ITEM *inv_item = ring->list[i];
+        int16_t angle = 0;
+        for (int32_t i = 0; i < ring->number_of_objects; i++) {
+            INVENTORY_ITEM *const inv_item = ring->list[i];
             Matrix_Push();
             Matrix_RotY(angle);
             Matrix_TranslateRel(ring->radius, 0, 0);
             Matrix_RotY(DEG_90);
             Matrix_RotX(inv_item->x_rot_pt);
-            M_DrawItem(ring, inv_item, num_frames);
+            M_DrawItem(ring, inv_item);
             angle += ring->angle_adder;
             Matrix_Pop();
         }
@@ -238,13 +237,12 @@ void InvRing_Draw(INV_RING *const ring)
         Option_Draw(inv_item);
     }
 
-    if ((ring->motion.status != RNG_OPENING
-         || (g_InvMode != INV_TITLE_MODE
-             || !(
-                 Fader_IsActive(&ring->top_fader)
-                 || Fader_IsActive(&ring->back_fader))))
-        && ring->motion.status != RNG_DONE) {
-        for (int i = 0; i < num_frames; i++) {
+    if (ring->motion.status != RNG_DONE
+        && (ring->motion.status != RNG_OPENING
+            || (ring->mode != INV_TITLE_MODE
+                || (!Fader_IsActive(&ring->top_fader)
+                    && !Fader_IsActive(&ring->back_fader))))) {
+        for (int32_t i = 0; i < num_frames; i++) {
             InvRing_DoMotions(ring);
         }
     }

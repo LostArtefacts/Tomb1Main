@@ -1,11 +1,11 @@
 #include "game/phase/phase.h"
 
 #include "game/clock.h"
+#include "game/console/common.h"
 #include "game/interpolation.h"
 #include "game/output.h"
 #include "game/phase/phase_cutscene.h"
 #include "game/phase/phase_game.h"
-#include "game/phase/phase_inventory.h"
 #include "global/types.h"
 #include "global/vars.h"
 
@@ -51,6 +51,8 @@ static void M_Draw(void)
     if (m_Phaser && m_Phaser->draw) {
         m_Phaser->draw();
     }
+    Output_DrawPolyList();
+    Console_Draw();
     Output_EndScene();
 }
 

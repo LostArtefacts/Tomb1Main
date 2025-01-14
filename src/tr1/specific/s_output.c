@@ -459,6 +459,11 @@ void S_Output_RenderEnd(void)
     GFX_3D_Renderer_RenderEnd(m_Renderer3D);
 }
 
+void S_Output_Flush(void)
+{
+    GFX_3D_Renderer_Flush(m_Renderer3D);
+}
+
 void S_Output_FlipScreen(void)
 {
     M_FlipPrimaryBuffer();

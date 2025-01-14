@@ -157,6 +157,10 @@ static void M_DrawItem(
 
 void InvRing_Draw(INV_RING *const ring)
 {
+    const int32_t num_frames = round(
+        ClockTimer_TakeElapsed(&ring->motion_timer) * LOGIC_FPS
+        * INV_RING_FRAMES);
+
     ring->camera.pos.z = ring->radius + 598;
 
     Output_SetupAboveWater(false);
@@ -171,17 +175,22 @@ void InvRing_Draw(INV_RING *const ring)
     Matrix_TranslateAbs32(ring->ring_pos.pos);
     Matrix_Rot16(ring->ring_pos.rot);
 
-    int32_t angle = 0;
-    for (int32_t i = 0; i < ring->number_of_objects; i++) {
-        INVENTORY_ITEM *const inv_item = ring->list[i];
-        Matrix_Push();
-        Matrix_RotY(angle);
-        Matrix_TranslateRel(ring->radius, 0, 0);
-        Matrix_RotY(DEG_90);
-        Matrix_RotX(inv_item->x_rot_pt);
-        M_DrawItem(ring, inv_item);
-        angle += ring->angle_adder;
-        Matrix_Pop();
+    if (!(ring->mode == INV_TITLE_MODE
+          && (Fader_IsActive(&ring->top_fader)
+              || Fader_IsActive(&ring->back_fader))
+          && ring->motion.status == RNG_OPENING)) {
+        int16_t angle = 0;
+        for (int32_t i = 0; i < ring->number_of_objects; i++) {
+            INVENTORY_ITEM *const inv_item = ring->list[i];
+            Matrix_Push();
+            Matrix_RotY(angle);
+            Matrix_TranslateRel(ring->radius, 0, 0);
+            Matrix_RotY(DEG_90);
+            Matrix_RotX(inv_item->x_rot_pt);
+            M_DrawItem(ring, inv_item);
+            angle += ring->angle_adder;
+            Matrix_Pop();
+        }
     }
 
     if (ring->list != NULL && !ring->rotating
@@ -215,4 +224,16 @@ void InvRing_Draw(INV_RING *const ring)
         }
         Option_Draw(inv_item);
     }
+
+    if (ring->motion.status != RNG_DONE
+        && (ring->motion.status != RNG_OPENING
+            || (ring->mode != INV_TITLE_MODE
+                || (!Fader_IsActive(&ring->top_fader)
+                    && !Fader_IsActive(&ring->back_fader))))) {
+        for (int32_t i = 0; i < num_frames; i++) {
+            InvRing_DoMotions(ring);
+        }
+    }
+
+    Fader_Draw(&ring->top_fader);
 }

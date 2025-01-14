@@ -867,3 +867,7 @@ void Overlay_MakeAmmoString(char *const string)
 
     strcpy(string, result);
 }
+
+void Overlay_DrawModeInfo(void)
+{
+}

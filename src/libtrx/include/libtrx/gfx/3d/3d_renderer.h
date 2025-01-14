@@ -28,6 +28,7 @@ void GFX_3D_Renderer_Destroy(GFX_3D_RENDERER *renderer);
 
 void GFX_3D_Renderer_RenderBegin(GFX_3D_RENDERER *renderer);
 void GFX_3D_Renderer_RenderEnd(GFX_3D_RENDERER *renderer);
+void GFX_3D_Renderer_Flush(GFX_3D_RENDERER *renderer);
 void GFX_3D_Renderer_ClearDepth(GFX_3D_RENDERER *renderer);
 
 int GFX_3D_Renderer_RegisterTexturePage(

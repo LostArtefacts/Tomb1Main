@@ -255,6 +255,8 @@ static void M_Draw(PHASE *const phase)
     if (p->ui != NULL) {
         p->ui->draw(p->ui);
     }
+    Output_DrawPolyList();
+
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
