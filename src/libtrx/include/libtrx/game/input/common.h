@@ -101,3 +101,5 @@ bool Input_AssignFromJSONObject(
 bool Input_AssignToJSONObject(
     INPUT_BACKEND backend, INPUT_LAYOUT layout, JSON_OBJECT *bind_obj,
     INPUT_ROLE role);
+
+INPUT_STATE Input_GetDebounced(const INPUT_STATE input);

@@ -8,10 +8,15 @@
 
 #include <stdint.h>
 
+#define DELAY_TIME 0.4
+#define HOLD_TIME 0.1
+
 INPUT_STATE g_Input = {};
 INPUT_STATE g_InputDB = {};
 INPUT_STATE g_OldInputDB = {};
 
+static CLOCK_TIMER m_HoldBackTimer = { .type = CLOCK_TIMER_REAL };
+static CLOCK_TIMER m_HoldForwardTimer = { .type = CLOCK_TIMER_REAL };
 static bool m_ListenMode = false;
 
 static bool m_IsRoleHardcoded[INPUT_ROLE_NUMBER_OF] = {
@@ -251,4 +256,42 @@ bool Input_AssignToJSONObject(
 const char *Input_GetLayoutName(const INPUT_LAYOUT layout)
 {
     return GameString_Get(m_LayoutMap[layout]);
+}
+
+INPUT_STATE Input_GetDebounced(const INPUT_STATE input)
+{
+    INPUT_STATE result;
+    result.any = input.any & ~g_OldInputDB.any;
+
+    // Allow holding down key to move faster
+    if (input.forward || !input.back) {
+        m_HoldBackTimer.ref = 0.0;
+    } else if (input.back && m_HoldBackTimer.ref == 0.0) {
+        ClockTimer_Sync(&m_HoldBackTimer);
+    } else if (
+        input.back
+        && ClockTimer_CheckElapsedAndTake(
+            &m_HoldBackTimer, DELAY_TIME + HOLD_TIME)) {
+        result.back = 1;
+        result.menu_down = 1;
+        ClockTimer_Sync(&m_HoldBackTimer);
+        m_HoldBackTimer.ref -= DELAY_TIME;
+    }
+
+    if (!input.forward || input.back) {
+        m_HoldForwardTimer.ref = 0.0;
+    } else if (input.forward && m_HoldForwardTimer.ref == 0.0) {
+        ClockTimer_Sync(&m_HoldForwardTimer);
+    } else if (
+        input.forward
+        && ClockTimer_CheckElapsed(
+            &m_HoldForwardTimer, DELAY_TIME + HOLD_TIME)) {
+        result.forward = 1;
+        result.menu_up = 1;
+        ClockTimer_Sync(&m_HoldForwardTimer);
+        m_HoldForwardTimer.ref -= DELAY_TIME;
+    }
+
+    g_OldInputDB = input;
+    return result;
 }

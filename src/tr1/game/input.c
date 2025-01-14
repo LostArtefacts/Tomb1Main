@@ -9,53 +9,8 @@
 #include <libtrx/game/input/backends/controller.h>
 #include <libtrx/game/input/backends/keyboard.h>
 
-#define DELAY_TIME 0.4
-#define HOLD_TIME 0.1
-
-static CLOCK_TIMER m_HoldBackTimer = { .type = CLOCK_TIMER_REAL };
-static CLOCK_TIMER m_HoldForwardTimer = { .type = CLOCK_TIMER_REAL };
-
-static INPUT_STATE M_GetDebounced(INPUT_STATE input);
 static void M_UpdateFromBackend(
     INPUT_STATE *s, const INPUT_BACKEND_IMPL *backend, int32_t layout);
-
-static INPUT_STATE M_GetDebounced(const INPUT_STATE input)
-{
-    INPUT_STATE result;
-    result.any = input.any & ~g_OldInputDB.any;
-
-    // Allow holding down key to move faster
-    if (input.forward || !input.back) {
-        m_HoldBackTimer.ref = 0.0;
-    } else if (input.back && m_HoldBackTimer.ref == 0.0) {
-        ClockTimer_Sync(&m_HoldBackTimer);
-    } else if (
-        input.back
-        && ClockTimer_CheckElapsedAndTake(
-            &m_HoldBackTimer, DELAY_TIME + HOLD_TIME)) {
-        result.back = 1;
-        result.menu_down = 1;
-        ClockTimer_Sync(&m_HoldBackTimer);
-        m_HoldBackTimer.ref -= DELAY_TIME;
-    }
-
-    if (!input.forward || input.back) {
-        m_HoldForwardTimer.ref = 0.0;
-    } else if (input.forward && m_HoldForwardTimer.ref == 0.0) {
-        ClockTimer_Sync(&m_HoldForwardTimer);
-    } else if (
-        input.forward
-        && ClockTimer_CheckElapsed(
-            &m_HoldForwardTimer, DELAY_TIME + HOLD_TIME)) {
-        result.forward = 1;
-        result.menu_up = 1;
-        ClockTimer_Sync(&m_HoldForwardTimer);
-        m_HoldForwardTimer.ref -= DELAY_TIME;
-    }
-
-    g_OldInputDB = input;
-    return result;
-}
 
 static void M_UpdateFromBackend(
     INPUT_STATE *const s, const INPUT_BACKEND_IMPL *const backend,
@@ -167,7 +122,7 @@ void Input_Update(void)
         g_Input.change_target = 0;
     }
 
-    g_InputDB = M_GetDebounced(g_Input);
+    g_InputDB = Input_GetDebounced(g_Input);
 
     if (Input_IsInListenMode()) {
         g_Input.any = 0;
