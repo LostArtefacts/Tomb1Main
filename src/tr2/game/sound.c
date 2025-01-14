@@ -143,15 +143,10 @@ void Sound_Init(void)
 
     Sound_SetMasterVolume(g_Config.audio.sound_volume);
     M_ClearAllSlots();
-    g_SoundIsActive = true;
 }
 
 void Sound_Shutdown(void)
 {
-    if (!g_SoundIsActive) {
-        return;
-    }
-
     Audio_Shutdown();
     M_ClearAllSlots();
 }
@@ -176,10 +171,6 @@ bool Sound_Effect(
     const SOUND_EFFECT_ID sample_id, const XYZ_32 *const pos,
     const uint32_t flags)
 {
-    if (!g_SoundIsActive) {
-        return false;
-    }
-
     if (flags != SPM_ALWAYS
         && ((flags & SPM_UNDERWATER)
             != (g_Rooms[g_Camera.pos.room_num].flags & RF_UNDERWATER))) {
@@ -341,10 +332,6 @@ bool Sound_Effect(
 
 void Sound_StopEffect(const SOUND_EFFECT_ID sample_id)
 {
-    if (!g_SoundIsActive) {
-        return;
-    }
-
     const int32_t sample_num = g_SampleLUT[sample_id];
     const int32_t num_samples = (g_SampleInfos[sample_num].flags >> 2) & 0xF;
 
@@ -365,10 +352,6 @@ void Sound_StopAll(void)
 
 void Sound_EndScene(void)
 {
-    if (!g_SoundIsActive) {
-        return;
-    }
-
     for (int32_t i = 0; i < SOUND_MAX_SLOTS; i++) {
         SOUND_SLOT *const slot = &m_SoundSlots[i];
         SAMPLE_INFO *const s = &g_SampleInfos[slot->sample_num];

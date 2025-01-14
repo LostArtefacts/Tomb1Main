@@ -27,7 +27,6 @@
 typedef struct {
     int32_t level_num;
     bool exiting;
-    bool old_sound_active;
     FADER exit_fader;
 } M_PRIV;
 
@@ -66,9 +65,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     CutscenePlayer1_Initialise(g_Lara.item_num);
     g_Camera.target_angle = g_CineTargetAngle;
 
-    p->old_sound_active = g_SoundIsActive;
-    g_SoundIsActive = false;
-
     if (!Music_PlaySynced(g_CineTrackID)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
@@ -88,7 +84,6 @@ static void M_End(PHASE *const phase)
     M_PRIV *const p = phase->priv;
     Music_SetVolume(g_Config.audio.music_volume);
     Music_Stop();
-    g_SoundIsActive = p->old_sound_active;
     Sound_StopAll();
 
     g_LevelComplete = true;
