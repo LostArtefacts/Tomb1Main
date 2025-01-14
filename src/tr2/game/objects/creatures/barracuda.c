@@ -60,7 +60,6 @@ void Barracuda_Setup(void)
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
     obj->save_anim = 1;
-    obj->water_creature = 1;
 
     Object_GetBone(obj, 6)->rot_y = true;
 }

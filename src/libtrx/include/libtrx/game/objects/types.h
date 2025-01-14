@@ -101,8 +101,7 @@ typedef struct {
             uint16_t save_flags:       1; // 0x10 16
             uint16_t save_anim:        1; // 0x20 32
             uint16_t semi_transparent: 1; // 0x40 64
-            uint16_t water_creature:   1; // 0x80 128
-            uint16_t pad:              8;
+            uint16_t pad:              9;
         };
         // clang-format on
     };

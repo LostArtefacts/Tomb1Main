@@ -209,9 +209,9 @@ void Object_SetupTrapObjects(void)
     Pendulum_Setup(Object_GetObject(O_PENDULUM_1));
     Pendulum_Setup(Object_GetObject(O_PENDULUM_2));
     PowerSaw_Setup();
-    Propeller_Setup(Object_GetObject(O_PROPELLER_1), false);
-    Propeller_Setup(Object_GetObject(O_PROPELLER_2), true);
-    Propeller_Setup(Object_GetObject(O_PROPELLER_3), false);
+    Propeller_Setup(Object_GetObject(O_PROPELLER_1));
+    Propeller_Setup(Object_GetObject(O_PROPELLER_2));
+    Propeller_Setup(Object_GetObject(O_PROPELLER_3));
     RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_1));
     RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_2));
     RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_3));
@@ -394,7 +394,6 @@ void Object_SetupAllObjects(void)
         object->save_flags = 0;
         object->save_anim = 0;
         object->intelligent = 0;
-        object->water_creature = 0;
     }
 
     Object_SetupBaddyObjects();

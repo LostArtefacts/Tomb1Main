@@ -96,7 +96,6 @@ void Diver_Setup(void)
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
     obj->save_anim = 1;
-    obj->water_creature = 1;
 
     Object_GetBone(obj, 10)->rot_y = true;
     Object_GetBone(obj, 14)->rot_z = true;

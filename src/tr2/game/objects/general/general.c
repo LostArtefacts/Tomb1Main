@@ -47,5 +47,4 @@ void General_Setup(void)
     obj->collision = Object_Collision;
     obj->save_flags = 1;
     obj->save_anim = 1;
-    obj->water_creature = 1;
 }

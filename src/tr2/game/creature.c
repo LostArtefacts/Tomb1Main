@@ -398,7 +398,7 @@ int32_t Creature_Animate(
         zone = g_GroundZone[BOX_ZONE(lot->step)][g_FlipStatus];
     }
 
-    if (!object->water_creature) {
+    if (!Object_IsObjectType(item->object_id, g_WaterObjects)) {
         int16_t room_num = item->room_num;
         Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
         if (room_num != item->room_num) {
@@ -617,7 +617,7 @@ int32_t Creature_Animate(
         item->rot.x = 0;
     }
 
-    if (!object->water_creature) {
+    if (!Object_IsObjectType(item->object_id, g_WaterObjects)) {
         Room_GetSector(
             item->pos.x, item->pos.y - (STEP_L * 2), item->pos.z, &room_num);
         if (g_Rooms[room_num].flags & RF_UNDERWATER) {

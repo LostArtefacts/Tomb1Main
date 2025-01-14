@@ -44,6 +44,20 @@ const GAME_OBJECT_ID g_EnemyObjects[] = {
     // clang-format on
 };
 
+const GAME_OBJECT_ID g_WaterObjects[] = {
+    // clang-format off
+    O_SHARK,
+    O_EEL,
+    O_BIG_EEL,
+    O_BARRACUDA,
+    O_DIVER,
+    O_JELLY,
+    O_GENERAL,
+    O_PROPELLER_2,
+    NO_OBJECT,
+    // clang-format on
+};
+
 const GAME_OBJECT_ID g_AllyObjects[] = {
     // clang-format off
     O_LARA,

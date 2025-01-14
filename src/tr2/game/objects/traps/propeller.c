@@ -65,11 +65,10 @@ void Propeller_Control(const int16_t item_num)
     }
 }
 
-void Propeller_Setup(OBJECT *const obj, const bool is_underwater)
+void Propeller_Setup(OBJECT *const obj)
 {
     obj->control = Propeller_Control;
     obj->collision = Object_Collision_Trap;
     obj->save_flags = 1;
     obj->save_anim = 1;
-    obj->water_creature = is_underwater;
 }

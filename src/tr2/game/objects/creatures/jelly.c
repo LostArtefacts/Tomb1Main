@@ -43,7 +43,6 @@ void Jelly_Setup(void)
     obj->save_hitpoints = 1;
     obj->save_flags = 1;
     obj->save_anim = 1;
-    obj->water_creature = 1;
 }
 
 void Jelly_Control(const int16_t item_num)

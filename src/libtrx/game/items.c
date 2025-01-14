@@ -3,6 +3,7 @@
 #include "game/const.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
+#include "game/objects/vars.h"
 #include "game/rooms.h"
 #include "game/sound/common.h"
 #include "utils.h"
@@ -119,7 +120,6 @@ void Item_PlayAnimSFX(
         return;
     }
 
-    const bool underwater = Room_Get(item->room_num)->flags & RF_UNDERWATER;
     const ITEM *const lara_item = Lara_GetItem();
     const ANIM_COMMAND_ENVIRONMENT mode = data->environment;
 
@@ -127,7 +127,7 @@ void Item_PlayAnimSFX(
         int32_t height = NO_HEIGHT;
         if (item == lara_item) {
             height = Lara_GetLaraInfo()->water_surface_dist;
-        } else if (underwater) {
+        } else if (Room_Get(item->room_num)->flags & RF_UNDERWATER) {
             height = -STEP_L;
         }
 
@@ -140,15 +140,11 @@ void Item_PlayAnimSFX(
     SOUND_PLAY_MODE play_mode = SPM_NORMAL;
     if (item == lara_item) {
         play_mode = SPM_ALWAYS;
-    }
-#if TR_VERSION == 1
-    else if (underwater) {
+    } else if (Object_IsObjectType(item->object_id, g_WaterObjects)) {
         play_mode = SPM_UNDERWATER;
     }
-#else
-    else if (Object_GetObject(item->object_id)->water_creature) {
-        play_mode = SPM_UNDERWATER;
-    } else if (item->object_id == O_LARA_HARPOON) {
+#if TR_VERSION > 1
+    else if (item->object_id == O_LARA_HARPOON) {
         play_mode = SPM_ALWAYS;
     }
 #endif
