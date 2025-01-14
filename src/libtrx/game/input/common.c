@@ -11,13 +11,30 @@
 #define DELAY_TIME 0.4
 #define HOLD_TIME 0.1
 
+typedef enum {
+    HOLD_INACTIVE,
+    HOLD_DELAY,
+    HOLD_REPEATING,
+} M_HOLD_STATE;
+
+typedef struct {
+    CLOCK_TIMER hold_timer;
+    CLOCK_TIMER repeat_timer;
+    M_HOLD_STATE state;
+    INPUT_ROLE role;
+} M_HOLD_CHECK;
+
 INPUT_STATE g_Input = {};
 INPUT_STATE g_InputDB = {};
 INPUT_STATE g_OldInputDB = {};
 
-static CLOCK_TIMER m_HoldBackTimer = { .type = CLOCK_TIMER_REAL };
-static CLOCK_TIMER m_HoldForwardTimer = { .type = CLOCK_TIMER_REAL };
 static bool m_ListenMode = false;
+
+static M_HOLD_CHECK m_HoldChecks[] = {
+    { .role = INPUT_ROLE_MENU_UP },
+    { .role = INPUT_ROLE_MENU_DOWN },
+    { .role = (INPUT_ROLE)-1 }, // sentinel
+};
 
 static bool m_IsRoleHardcoded[INPUT_ROLE_NUMBER_OF] = {
     0,
@@ -55,8 +72,42 @@ static INPUT_BACKEND_IMPL *M_GetBackend(const INPUT_BACKEND backend)
     }
 }
 
+static bool M_IsPressed(const INPUT_STATE input, const INPUT_ROLE role)
+{
+    switch (role) {
+#undef INPUT_ROLE_DEFINE
+#define INPUT_ROLE_DEFINE(role_name, state_name)                               \
+    case INPUT_ROLE_##role_name:                                               \
+        return input.state_name;
+#include "game/input/roles.def"
+    case INPUT_ROLE_NUMBER_OF:
+        break;
+    }
+    return false;
+}
+
+static INPUT_STATE M_SetPressed(
+    INPUT_STATE input, const INPUT_ROLE role, const bool is_pressed)
+{
+    switch (role) {
+#undef INPUT_ROLE_DEFINE
+#define INPUT_ROLE_DEFINE(role_name, state_name)                               \
+    case INPUT_ROLE_##role_name:                                               \
+        input.state_name = is_pressed;                                         \
+        break;
+#include "game/input/roles.def"
+    case INPUT_ROLE_NUMBER_OF:
+        break;
+    }
+    return input;
+}
+
 void Input_Init(void)
 {
+    for (int32_t i = 0; m_HoldChecks[i].role != (INPUT_ROLE)-1; i++) {
+        m_HoldChecks[i].hold_timer.type = CLOCK_TIMER_REAL;
+        m_HoldChecks[i].repeat_timer.type = CLOCK_TIMER_REAL;
+    }
     if (g_Input_Keyboard.init != NULL) {
         g_Input_Keyboard.init();
     }
@@ -263,33 +314,25 @@ INPUT_STATE Input_GetDebounced(const INPUT_STATE input)
     INPUT_STATE result;
     result.any = input.any & ~g_OldInputDB.any;
 
-    // Allow holding down key to move faster
-    if (input.forward || !input.back) {
-        m_HoldBackTimer.ref = 0.0;
-    } else if (input.back && m_HoldBackTimer.ref == 0.0) {
-        ClockTimer_Sync(&m_HoldBackTimer);
-    } else if (
-        input.back
-        && ClockTimer_CheckElapsedAndTake(
-            &m_HoldBackTimer, DELAY_TIME + HOLD_TIME)) {
-        result.back = 1;
-        result.menu_down = 1;
-        ClockTimer_Sync(&m_HoldBackTimer);
-        m_HoldBackTimer.ref -= DELAY_TIME;
-    }
-
-    if (!input.forward || input.back) {
-        m_HoldForwardTimer.ref = 0.0;
-    } else if (input.forward && m_HoldForwardTimer.ref == 0.0) {
-        ClockTimer_Sync(&m_HoldForwardTimer);
-    } else if (
-        input.forward
-        && ClockTimer_CheckElapsed(
-            &m_HoldForwardTimer, DELAY_TIME + HOLD_TIME)) {
-        result.forward = 1;
-        result.menu_up = 1;
-        ClockTimer_Sync(&m_HoldForwardTimer);
-        m_HoldForwardTimer.ref -= DELAY_TIME;
+    // Allow holding certain keys
+    for (int32_t i = 0; m_HoldChecks[i].role != (INPUT_ROLE)-1; i++) {
+        M_HOLD_CHECK *const hold_check = &m_HoldChecks[i];
+        if (!M_IsPressed(input, hold_check->role)) {
+            hold_check->state = HOLD_INACTIVE;
+        } else if (hold_check->state == HOLD_INACTIVE) {
+            hold_check->state = HOLD_DELAY;
+            ClockTimer_Sync(&hold_check->hold_timer);
+        } else if (
+            hold_check->state == HOLD_DELAY
+            && ClockTimer_CheckElapsedAndTake(
+                &hold_check->hold_timer, DELAY_TIME)) {
+            hold_check->state = HOLD_REPEATING;
+        } else if (
+            hold_check->state == HOLD_REPEATING
+            && ClockTimer_CheckElapsedAndTake(
+                &hold_check->repeat_timer, HOLD_TIME)) {
+            result = M_SetPressed(result, hold_check->role, true);
+        }
     }
 
     g_OldInputDB = input;
