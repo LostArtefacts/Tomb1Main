@@ -99,8 +99,6 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             && g_Config.audio.music_volume > Music_GetMinVolume()) {
             g_Config.audio.music_volume--;
             Config_Write();
-            g_IDelay = true;
-            g_IDCount = 5;
             Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
             sprintf(buf, "\\{icon music} %2d", g_Config.audio.music_volume);
@@ -110,8 +108,6 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             && g_Config.audio.music_volume < Music_GetMaxVolume()) {
             g_Config.audio.music_volume++;
             Config_Write();
-            g_IDelay = true;
-            g_IDCount = 5;
             Music_SetVolume(g_Config.audio.music_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
             sprintf(buf, "\\{icon music} %2d", g_Config.audio.music_volume);
@@ -132,8 +128,6 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             && g_Config.audio.sound_volume > Sound_GetMinVolume()) {
             g_Config.audio.sound_volume--;
             Config_Write();
-            g_IDelay = true;
-            g_IDCount = 5;
             Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
             sprintf(buf, "\\{icon sound} %2d", g_Config.audio.sound_volume);
@@ -143,8 +137,6 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             && g_Config.audio.sound_volume < Sound_GetMaxVolume()) {
             g_Config.audio.sound_volume++;
             Config_Write();
-            g_IDelay = true;
-            g_IDCount = 5;
             Sound_SetMasterVolume(g_Config.audio.sound_volume);
             Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
             sprintf(buf, "\\{icon sound} %2d", g_Config.audio.sound_volume);

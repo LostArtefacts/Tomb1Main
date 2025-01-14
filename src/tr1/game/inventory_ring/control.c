@@ -394,14 +394,6 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     m_StartLevel = g_LevelComplete ? g_GameInfo.select_level_num : -1;
 
-    if (g_IDelay) {
-        if (g_IDCount) {
-            g_IDCount--;
-        } else {
-            g_IDelay = false;
-        }
-    }
-
     g_GameInfo.inv_ring_above = ring->mode == INV_GAME_MODE
         && ((ring->type == RT_MAIN && g_InvRing_Source[RT_KEYS].count != 0)
             || (ring->type == RT_OPTION && g_InvRing_Source[RT_MAIN].count));
@@ -690,7 +682,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             }
         }
 
-        if (!busy && !g_IDelay) {
+        if (!busy) {
             Option_Control(inv_item);
 
             if (g_InputDB.menu_back) {

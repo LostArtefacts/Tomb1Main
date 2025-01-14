@@ -8,8 +8,6 @@ int16_t g_SampleLUT[MAX_SAMPLES] = {};
 SAMPLE_INFO *g_SampleInfos = NULL;
 uint16_t g_MusicTrackFlags[MAX_CD_TRACKS] = {};
 
-bool g_IDelay = false;
-int32_t g_IDCount = 0;
 int32_t g_OptionSelected = 0;
 
 int32_t g_PhdPersp = 0;

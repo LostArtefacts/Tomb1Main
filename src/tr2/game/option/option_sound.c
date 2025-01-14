@@ -85,14 +85,10 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
 
     if (g_SoundOptionLine) {
         bool changed = false;
-        if (g_Input.menu_left && g_Config.audio.sound_volume > 0) {
-            g_Inv_IsOptionsDelay = true;
-            g_Inv_OptionsDelayCounter = 10;
+        if (g_Input.left && g_Config.audio.sound_volume > 0) {
             g_Config.audio.sound_volume--;
             changed = true;
-        } else if (g_Input.menu_right && g_Config.audio.sound_volume < 10) {
-            g_Inv_IsOptionsDelay = true;
-            g_Inv_OptionsDelayCounter = 10;
+        } else if (g_Input.right && g_Config.audio.sound_volume < 10) {
             g_Config.audio.sound_volume++;
             changed = true;
         }
@@ -114,8 +110,6 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
         }
 
         if (changed) {
-            g_Inv_IsOptionsDelay = true;
-            g_Inv_OptionsDelayCounter = 10;
             sprintf(text, "\\{icon music} %2d", g_Config.audio.music_volume);
             Text_ChangeText(m_SoundText[0], text);
             Music_SetVolume(g_Config.audio.music_volume);
