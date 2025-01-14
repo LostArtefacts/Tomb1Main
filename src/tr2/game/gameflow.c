@@ -456,7 +456,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 PHASE *const cutscene_phase = Phase_Cutscene_Create(ptr[1]);
                 gf_cmd = PhaseExecutor_Run(cutscene_phase);
                 Phase_Cutscene_Destroy(cutscene_phase);
-                if (gf_cmd.action != GF_NOOP) {
+                if (gf_cmd.action != GF_NOOP
+                    && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;
                 }
             }
