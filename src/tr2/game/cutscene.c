@@ -2,7 +2,6 @@
 
 #include "decomp/decomp.h"
 #include "game/camera.h"
-#include "game/console/common.h"
 #include "game/effects.h"
 #include "game/gameflow.h"
 #include "game/items.h"
@@ -99,7 +98,5 @@ void Cutscene_Draw(void)
     g_CameraUnderwater = false;
     Camera_Apply();
     Room_DrawAllRooms(g_Camera.pos.room_num);
-    Output_DrawPolyList();
-    Console_Draw();
     Output_DrawPolyList();
 }

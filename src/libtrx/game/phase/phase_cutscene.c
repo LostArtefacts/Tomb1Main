@@ -1,10 +1,12 @@
 #include "game/phase/phase_cutscene.h"
 
+#include "game/console/common.h"
 #include "game/cutscene.h"
+#include "game/fader.h"
 #include "game/game.h"
-
-#include <libtrx/game/fader.h>
-#include <libtrx/memory.h>
+#include "game/output.h"
+#include "game/text.h"
+#include "memory.h"
 
 typedef struct {
     int32_t level_num;

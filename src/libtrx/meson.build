@@ -127,6 +127,7 @@ sources = [
   'game/objects/names.c',
   'game/objects/vars.c',
   'game/phase/executor.c',
+  'game/phase/phase_cutscene.c',
   'game/phase/phase_demo.c',
   'game/phase/phase_inventory.c',
   'game/phase/phase_pause.c',

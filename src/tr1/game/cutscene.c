@@ -12,7 +12,6 @@
 #include "game/level.h"
 #include "game/music.h"
 #include "game/output.h"
-#include "game/phase.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -86,7 +85,6 @@ bool Cutscene_Start(const int32_t level_num)
         }
     }
 
-    g_Camera.target_angle = g_CinePosition.rot;
     g_CineFrame = 0;
     return true;
 }
@@ -103,21 +101,15 @@ GAME_FLOW_COMMAND Cutscene_Control(void)
 
     Input_Update();
     Shell_ProcessInput();
-    Game_ProcessInput();
-
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
         return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
-    } else if (g_InputDB.toggle_photo_mode) {
-        PHASE *const subphase = Phase_PhotoMode_Create();
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
-        Phase_PhotoMode_Destroy(subphase);
+    } else if (g_InputDB.pause) {
+        const GAME_FLOW_COMMAND gf_cmd = GF_PauseGame();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }
-    } else if (g_InputDB.pause) {
-        PHASE *const subphase = Phase_Pause_Create();
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
-        Phase_Pause_Destroy(subphase);
+    } else if (g_InputDB.toggle_photo_mode) {
+        const GAME_FLOW_COMMAND gf_cmd = GF_EnterPhotoMode();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }

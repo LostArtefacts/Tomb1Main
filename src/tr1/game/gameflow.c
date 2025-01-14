@@ -1547,6 +1547,22 @@ GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t level_num)
     return gf_cmd;
 }
 
+GAME_FLOW_COMMAND GF_EnterPhotoMode(void)
+{
+    PHASE *const subphase = Phase_PhotoMode_Create();
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+    Phase_PhotoMode_Destroy(subphase);
+    return gf_cmd;
+}
+
+GAME_FLOW_COMMAND GF_PauseGame(void)
+{
+    PHASE *const subphase = Phase_Pause_Create();
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+    Phase_Pause_Destroy(subphase);
+    return gf_cmd;
+}
+
 GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE inv_mode)
 {
     PHASE *const phase = Phase_Inventory_Create(inv_mode);

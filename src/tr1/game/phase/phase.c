@@ -4,7 +4,6 @@
 #include "game/console/common.h"
 #include "game/interpolation.h"
 #include "game/output.h"
-#include "game/phase/phase_cutscene.h"
 #include "game/phase/phase_game.h"
 #include "global/types.h"
 #include "global/vars.h"
