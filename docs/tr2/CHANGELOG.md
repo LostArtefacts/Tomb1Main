@@ -3,6 +3,7 @@
 - added pause dialog (#1638)
 - added a photo mode feature (#2277)
 - added fade-out effect to the demos
+- added the ability to hold forward/back to move through menus more quickly (#2298)
 - changed default input bindings to let the photo mode binding be compatible with TR1X:
     | Key                           | Old binding | New binding  |
     | ----------------------------- | ----------- | ------------ |

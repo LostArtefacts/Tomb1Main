@@ -1,4 +1,5 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7.1...develop) - ××××-××-××
+- added the ability to hold forward/back to move through menus more quickly (#2298)
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
 - added an optional demo number argument to the `/demo` command
 - added pause screen support to demos

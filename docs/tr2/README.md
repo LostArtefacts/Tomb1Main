@@ -77,7 +77,7 @@ game with new enhancements and features.
 
 #### Input
 - added ability to sidestep like in TR3
-- added ability to hold forward/back to move through menus more quickly
+- added ability to hold arrows to move through menus more quickly
 - added additional custom control schemes
 - added customizable controller support
 - fixed setting user keys being very difficult

@@ -8,9 +8,6 @@
 
 #include <stdint.h>
 
-#define DELAY_TIME 0.4
-#define HOLD_TIME 0.1
-
 typedef enum {
     HOLD_INACTIVE,
     HOLD_DELAY,
@@ -18,8 +15,10 @@ typedef enum {
 } M_HOLD_STATE;
 
 typedef struct {
-    CLOCK_TIMER hold_timer;
+    CLOCK_TIMER delay_timer;
     CLOCK_TIMER repeat_timer;
+    double delay_time;
+    double hold_time;
     M_HOLD_STATE state;
     INPUT_ROLE role;
 } M_HOLD_CHECK;
@@ -31,8 +30,10 @@ INPUT_STATE g_OldInputDB = {};
 static bool m_ListenMode = false;
 
 static M_HOLD_CHECK m_HoldChecks[] = {
-    { .role = INPUT_ROLE_MENU_UP },
-    { .role = INPUT_ROLE_MENU_DOWN },
+    { .role = INPUT_ROLE_MENU_UP, .delay_time = 0.4, .hold_time = 0.1 },
+    { .role = INPUT_ROLE_MENU_DOWN, .delay_time = 0.4, .hold_time = 0.1 },
+    { .role = INPUT_ROLE_MENU_LEFT, .delay_time = 0.4, .hold_time = 0.2 },
+    { .role = INPUT_ROLE_MENU_RIGHT, .delay_time = 0.4, .hold_time = 0.2 },
     { .role = (INPUT_ROLE)-1 }, // sentinel
 };
 
@@ -105,7 +106,7 @@ static INPUT_STATE M_SetPressed(
 void Input_Init(void)
 {
     for (int32_t i = 0; m_HoldChecks[i].role != (INPUT_ROLE)-1; i++) {
-        m_HoldChecks[i].hold_timer.type = CLOCK_TIMER_REAL;
+        m_HoldChecks[i].delay_timer.type = CLOCK_TIMER_REAL;
         m_HoldChecks[i].repeat_timer.type = CLOCK_TIMER_REAL;
     }
     if (g_Input_Keyboard.init != NULL) {
@@ -321,16 +322,16 @@ INPUT_STATE Input_GetDebounced(const INPUT_STATE input)
             hold_check->state = HOLD_INACTIVE;
         } else if (hold_check->state == HOLD_INACTIVE) {
             hold_check->state = HOLD_DELAY;
-            ClockTimer_Sync(&hold_check->hold_timer);
+            ClockTimer_Sync(&hold_check->delay_timer);
         } else if (
             hold_check->state == HOLD_DELAY
             && ClockTimer_CheckElapsedAndTake(
-                &hold_check->hold_timer, DELAY_TIME)) {
+                &hold_check->delay_timer, hold_check->delay_time)) {
             hold_check->state = HOLD_REPEATING;
         } else if (
             hold_check->state == HOLD_REPEATING
             && ClockTimer_CheckElapsedAndTake(
-                &hold_check->repeat_timer, HOLD_TIME)) {
+                &hold_check->repeat_timer, hold_check->hold_time)) {
             result = M_SetPressed(result, hold_check->role, true);
         }
     }

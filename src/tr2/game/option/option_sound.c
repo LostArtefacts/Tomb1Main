@@ -85,10 +85,10 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
 
     if (g_SoundOptionLine) {
         bool changed = false;
-        if (g_Input.left && g_Config.audio.sound_volume > 0) {
+        if (g_InputDB.menu_left && g_Config.audio.sound_volume > 0) {
             g_Config.audio.sound_volume--;
             changed = true;
-        } else if (g_Input.right && g_Config.audio.sound_volume < 10) {
+        } else if (g_InputDB.menu_right && g_Config.audio.sound_volume < 10) {
             g_Config.audio.sound_volume++;
             changed = true;
         }
