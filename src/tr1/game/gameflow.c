@@ -6,12 +6,13 @@
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
 #include "game/lara/common.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
 #include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/phase.h"
-#include "game/phase/phase_cutscene.h"
+#include "game/phase/phase.h"
 #include "game/room.h"
 #include "game/savegame.h"
 #include "global/vars.h"
@@ -1071,17 +1072,15 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_START_CINE:
-            if (level_type != GFL_SAVED) {
-                PHASE_CUTSCENE_ARGS *const args =
-                    Memory_Alloc(sizeof(PHASE_CUTSCENE_ARGS));
-                args->level_num = (int32_t)(intptr_t)seq->data;
-                Phase_Set(PHASE_CUTSCENE, args);
+            command = GF_LoadLevel((int32_t)(intptr_t)seq->data, GFL_CUTSCENE);
+            if (command.action != GF_NOOP) {
+                return command;
             }
             break;
 
         case GFS_LOOP_CINE:
             if (level_type != GFL_SAVED) {
-                command = Phase_Run();
+                command = GF_PlayCutscene((int32_t)(intptr_t)seq->data);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
@@ -1299,16 +1298,15 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
             }
             break;
 
-        case GFS_START_CINE: {
-            PHASE_CUTSCENE_ARGS *const args =
-                Memory_Alloc(sizeof(PHASE_CUTSCENE_ARGS));
-            args->level_num = (int32_t)(intptr_t)seq->data;
-            Phase_Set(PHASE_CUTSCENE, args);
+        case GFS_START_CINE:
+            command = GF_LoadLevel((int32_t)(intptr_t)seq->data, GFL_CUTSCENE);
+            if (command.action != GF_NOOP) {
+                return command;
+            }
             break;
-        }
 
         case GFS_LOOP_CINE:
-            command = Phase_Run();
+            command = GF_PlayCutscene((int32_t)(intptr_t)seq->data);
             if (command.action != GF_NOOP
                 && command.action != GF_LEVEL_COMPLETE) {
                 return command;
@@ -1521,11 +1519,31 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
+GAME_FLOW_COMMAND GF_LoadLevel(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    if (!Level_Initialise(level_num)) {
+        if (level_num == g_GameFlow.title_level_num) {
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        }
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+    }
+    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+}
+
 GAME_FLOW_COMMAND GF_PlayDemo(const int32_t level_num)
 {
     PHASE *const phase = Phase_Demo_Create(level_num);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Demo_Destroy(phase);
+    return gf_cmd;
+}
+
+GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t level_num)
+{
+    PHASE *const phase = Phase_Cutscene_Create(level_num);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Cutscene_Destroy(phase);
     return gf_cmd;
 }
 

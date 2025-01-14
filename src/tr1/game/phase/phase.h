@@ -9,7 +9,6 @@
 typedef enum {
     PHASE_NULL,
     PHASE_GAME,
-    PHASE_CUTSCENE,
 } PHASE_ENUM;
 
 typedef void (*PHASER_START)(const void *args);

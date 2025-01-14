@@ -56,7 +56,6 @@ void Cutscene_End(void)
     Music_SetVolume(g_Config.audio.music_volume);
     Music_Stop();
     Sound_StopAll();
-    g_LevelComplete = true;
 }
 
 GAME_FLOW_COMMAND Cutscene_Control(void)
