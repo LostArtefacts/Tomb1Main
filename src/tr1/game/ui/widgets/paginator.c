@@ -96,7 +96,8 @@ static bool M_SelectPage(UI_PAGINATOR *const self, const int32_t new_page)
 
 static void M_Control(UI_PAGINATOR *const self)
 {
-    const int32_t page_shift = g_InputDB.left ? -1 : (g_InputDB.right ? 1 : 0);
+    const int32_t page_shift =
+        g_InputDB.menu_left ? -1 : (g_InputDB.menu_right ? 1 : 0);
     if (M_SelectPage(self, self->current_page + page_shift)) {
         Sound_Effect(SFX_MENU_PASSPORT, NULL, SPM_ALWAYS);
     }

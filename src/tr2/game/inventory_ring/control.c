@@ -368,13 +368,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     switch (ring->motion.status) {
     case RNG_OPEN:
-        if (g_Input.right && ring->number_of_objects > 1) {
+        if (g_Input.menu_right && ring->number_of_objects > 1) {
             InvRing_RotateLeft(ring);
             Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
             break;
         }
 
-        if (g_Input.left && ring->number_of_objects > 1) {
+        if (g_Input.menu_left && ring->number_of_objects > 1) {
             InvRing_RotateRight(ring);
             Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
             break;
@@ -469,7 +469,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             }
         }
 
-        if (g_InputDB.forward && ring->mode != INV_TITLE_MODE
+        if (g_InputDB.menu_up && ring->mode != INV_TITLE_MODE
             && ring->mode != INV_KEYS_MODE) {
             if (ring->type == RT_OPTION) {
                 if (g_InvRing_Source[RT_MAIN].count > 0) {
@@ -496,7 +496,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_InputDB = (INPUT_STATE) {};
             }
         } else if (
-            g_InputDB.back && ring->mode != INV_TITLE_MODE
+            g_InputDB.menu_down && ring->mode != INV_TITLE_MODE
             && ring->mode != INV_KEYS_MODE) {
             if (ring->type == RT_KEYS) {
                 if (g_InvRing_Source[RT_MAIN].count > 0) {

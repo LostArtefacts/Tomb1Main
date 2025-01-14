@@ -26,14 +26,14 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
 
     if (g_Inv_Mode == INV_LOAD_MODE || g_Inv_Mode == INV_SAVE_MODE
         || g_GameFlow.load_save_disabled) {
-        g_InputDB.left = 0;
-        g_InputDB.right = 0;
+        g_InputDB.menu_left = 0;
+        g_InputDB.menu_right = 0;
     }
 
     switch (page) {
     case 0:
         if (g_GameFlow.load_save_disabled) {
-            g_InputDB = (INPUT_STATE) { .right = 1 };
+            g_InputDB = (INPUT_STATE) { .menu_right = 1 };
             break;
         }
 
@@ -47,7 +47,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                     g_Inv_ExtraData[1] = select - 1;
                 }
                 m_PassportMode = PASSPORT_MODE_BROWSE;
-            } else if (g_InputDB.right) {
+            } else if (g_InputDB.menu_right) {
                 Requester_Shutdown(&g_LoadGameRequester);
                 m_PassportMode = PASSPORT_MODE_BROWSE;
             } else {
@@ -75,14 +75,14 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 g_Input = (INPUT_STATE) {};
                 g_InputDB = (INPUT_STATE) {};
             } else {
-                g_InputDB = (INPUT_STATE) { .right = 1 };
+                g_InputDB = (INPUT_STATE) { .menu_right = 1 };
             }
         }
         break;
 
     case 1:
         if (g_GameFlow.load_save_disabled) {
-            g_InputDB = (INPUT_STATE) { .right = 1 };
+            g_InputDB = (INPUT_STATE) { .menu_right = 1 };
             break;
         }
 
@@ -102,7 +102,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                     g_Inv_ExtraData[1] = select - 1;
                 }
                 m_PassportMode = PASSPORT_MODE_BROWSE;
-            } else if (g_InputDB.left || g_InputDB.right) {
+            } else if (g_InputDB.menu_left || g_InputDB.menu_right) {
                 if (m_PassportMode == PASSPORT_MODE_LOAD_GAME) {
                     Requester_Shutdown(&g_LoadGameRequester);
                 } else {
@@ -116,9 +116,9 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         } else if (m_PassportMode == PASSPORT_MODE_BROWSE) {
             if (g_Inv_Mode == INV_DEATH_MODE) {
                 if (item->anim_direction == -1) {
-                    g_InputDB = (INPUT_STATE) { .left = 1 };
+                    g_InputDB = (INPUT_STATE) { .menu_left = 1 };
                 } else {
-                    g_InputDB = (INPUT_STATE) { .right = 1 };
+                    g_InputDB = (INPUT_STATE) { .menu_right = 1 };
                 }
                 break;
             }
@@ -185,7 +185,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         break;
     }
 
-    if (g_InputDB.left && (g_Inv_Mode != INV_DEATH_MODE || g_SavedGames != 0)) {
+    if (g_InputDB.menu_left
+        && (g_Inv_Mode != INV_DEATH_MODE || g_SavedGames != 0)) {
         item->anim_direction = -1;
         item->goal_frame -= 5;
 
@@ -209,7 +210,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         g_InputDB = (INPUT_STATE) {};
     }
 
-    if (g_InputDB.right) {
+    if (g_InputDB.menu_right) {
         item->anim_direction = 1;
         item->goal_frame += 5;
 

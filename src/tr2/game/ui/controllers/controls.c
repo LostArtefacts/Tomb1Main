@@ -128,15 +128,15 @@ static bool M_NavigateLayout(UI_CONTROLS_CONTROLLER *const controller)
         controller->state = UI_CONTROLS_STATE_EXIT;
     } else if (g_InputDB.menu_back) {
         controller->state = UI_CONTROLS_STATE_NAVIGATE_BACKEND;
-    } else if (g_InputDB.left) {
+    } else if (g_InputDB.menu_left) {
         M_CycleLayout(controller, -1);
-    } else if (g_InputDB.right) {
+    } else if (g_InputDB.menu_right) {
         M_CycleLayout(controller, 1);
-    } else if (g_InputDB.back && controller->active_layout != 0) {
+    } else if (g_InputDB.menu_down && controller->active_layout != 0) {
         controller->state = UI_CONTROLS_STATE_NAVIGATE_INPUTS;
         controller->active_col = 0;
         controller->active_row = 0;
-    } else if (g_InputDB.forward && controller->active_layout != 0) {
+    } else if (g_InputDB.menu_up && controller->active_layout != 0) {
         controller->state = UI_CONTROLS_STATE_NAVIGATE_INPUTS;
         controller->active_col = 1;
         controller->active_row = UI_ControlsController_GetInputRoleCount(1) - 1;
@@ -152,13 +152,13 @@ static bool M_NavigateInputs(UI_CONTROLS_CONTROLLER *const controller)
 {
     if (g_InputDB.menu_back) {
         controller->state = UI_CONTROLS_STATE_NAVIGATE_BACKEND;
-    } else if (g_InputDB.left || g_InputDB.right) {
+    } else if (g_InputDB.menu_left || g_InputDB.menu_right) {
         controller->active_col ^= 1;
         CLAMP(
             controller->active_row, 0,
             UI_ControlsController_GetInputRoleCount(controller->active_col)
                 - 1);
-    } else if (g_InputDB.forward) {
+    } else if (g_InputDB.menu_up) {
         controller->active_row--;
         if (controller->active_row < 0) {
             if (controller->active_col == 0) {
@@ -169,7 +169,7 @@ static bool M_NavigateInputs(UI_CONTROLS_CONTROLLER *const controller)
                     UI_ControlsController_GetInputRoleCount(0) - 1;
             }
         }
-    } else if (g_InputDB.back) {
+    } else if (g_InputDB.menu_down) {
         controller->active_row++;
         if (controller->active_row >= UI_ControlsController_GetInputRoleCount(
                 controller->active_col)) {

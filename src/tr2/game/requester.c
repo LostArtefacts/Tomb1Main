@@ -272,7 +272,7 @@ int32_t Requester_Display(
         }
     }
 
-    if (g_InputDB.back) {
+    if (g_InputDB.menu_down) {
         if (req->no_selector) {
             req->line_old_offset = req->line_offset;
             if (req->visible_count + req->line_offset < req->items_count) {
@@ -292,7 +292,7 @@ int32_t Requester_Display(
         return 0;
     }
 
-    if (g_InputDB.forward) {
+    if (g_InputDB.menu_up) {
         if (req->no_selector) {
             req->line_old_offset = req->line_offset;
             if (req->line_offset > 0) {

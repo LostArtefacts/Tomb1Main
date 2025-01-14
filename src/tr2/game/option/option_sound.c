@@ -65,7 +65,7 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
         M_InitText();
     }
 
-    if (g_InputDB.forward && g_SoundOptionLine > 0) {
+    if (g_InputDB.menu_up && g_SoundOptionLine > 0) {
         Text_RemoveOutline(m_SoundText[g_SoundOptionLine]);
         Text_RemoveBackground(m_SoundText[g_SoundOptionLine]);
         g_SoundOptionLine--;
@@ -74,7 +74,7 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
         Text_AddOutline(m_SoundText[g_SoundOptionLine], TS_REQUESTED);
     }
 
-    if (g_InputDB.back && g_SoundOptionLine < 1) {
+    if (g_InputDB.menu_down && g_SoundOptionLine < 1) {
         Text_RemoveOutline(m_SoundText[g_SoundOptionLine]);
         Text_RemoveBackground(m_SoundText[g_SoundOptionLine]);
         g_SoundOptionLine++;
@@ -85,12 +85,12 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
 
     if (g_SoundOptionLine) {
         bool changed = false;
-        if (g_Input.left && g_Config.audio.sound_volume > 0) {
+        if (g_Input.menu_left && g_Config.audio.sound_volume > 0) {
             g_Inv_IsOptionsDelay = true;
             g_Inv_OptionsDelayCounter = 10;
             g_Config.audio.sound_volume--;
             changed = true;
-        } else if (g_Input.right && g_Config.audio.sound_volume < 10) {
+        } else if (g_Input.menu_right && g_Config.audio.sound_volume < 10) {
             g_Inv_IsOptionsDelay = true;
             g_Inv_OptionsDelayCounter = 10;
             g_Config.audio.sound_volume++;
@@ -105,10 +105,10 @@ void Option_Sound_Control(INVENTORY_ITEM *const item)
         }
     } else {
         bool changed = false;
-        if (g_Input.left && g_Config.audio.music_volume > 0) {
+        if (g_InputDB.menu_left && g_Config.audio.music_volume > 0) {
             g_Config.audio.music_volume--;
             changed = true;
-        } else if (g_Input.right && g_Config.audio.music_volume < 10) {
+        } else if (g_InputDB.menu_right && g_Config.audio.music_volume < 10) {
             g_Config.audio.music_volume++;
             changed = true;
         }

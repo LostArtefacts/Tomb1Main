@@ -572,7 +572,8 @@ void InvRing_UpdateInventoryItem(
             }
         }
     } else if (
-        ring->number_of_objects == 1 || (!g_Input.right && !g_Input.left)) {
+        ring->number_of_objects == 1
+        || (!g_Input.menu_right && !g_Input.menu_left)) {
         for (int32_t i = 0; i < num_frames; i++) {
             inv_item->y_rot += 256;
         }
