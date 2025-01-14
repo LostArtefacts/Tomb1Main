@@ -339,6 +339,14 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         }
     }
 
+    if (g_Inv_IsOptionsDelay) {
+        if (g_Inv_OptionsDelayCounter) {
+            g_Inv_OptionsDelayCounter--;
+        } else {
+            g_Inv_IsOptionsDelay = false;
+        }
+    }
+
     if (g_CurrentLevel != LV_GYM) {
         Stats_UpdateTimer();
     }
