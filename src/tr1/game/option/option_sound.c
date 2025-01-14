@@ -118,14 +118,12 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             Text_ChangeText(m_Text[TEXT_MUSIC_VOLUME], buf);
         }
 
-        if (g_Config.audio.music_volume == Music_GetMinVolume()) {
-            Text_Hide(m_Text[TEXT_LEFT_ARROW], true);
-        } else if (g_Config.audio.music_volume == Music_GetMaxVolume()) {
-            Text_Hide(m_Text[TEXT_RIGHT_ARROW], true);
-        } else {
-            Text_Hide(m_Text[TEXT_LEFT_ARROW], false);
-            Text_Hide(m_Text[TEXT_RIGHT_ARROW], false);
-        }
+        Text_Hide(
+            m_Text[TEXT_LEFT_ARROW],
+            g_Config.audio.music_volume == Music_GetMinVolume());
+        Text_Hide(
+            m_Text[TEXT_RIGHT_ARROW],
+            g_Config.audio.music_volume == Music_GetMaxVolume());
 
         break;
 
@@ -153,14 +151,12 @@ void Option_Sound_Control(INVENTORY_ITEM *inv_item)
             Text_ChangeText(m_Text[TEXT_SOUND_VOLUME], buf);
         }
 
-        if (g_Config.audio.sound_volume == Sound_GetMinVolume()) {
-            Text_Hide(m_Text[TEXT_LEFT_ARROW], true);
-        } else if (g_Config.audio.sound_volume == Sound_GetMaxVolume()) {
-            Text_Hide(m_Text[TEXT_RIGHT_ARROW], true);
-        } else {
-            Text_Hide(m_Text[TEXT_LEFT_ARROW], false);
-            Text_Hide(m_Text[TEXT_RIGHT_ARROW], false);
-        }
+        Text_Hide(
+            m_Text[TEXT_LEFT_ARROW],
+            g_Config.audio.sound_volume == Sound_GetMinVolume());
+        Text_Hide(
+            m_Text[TEXT_RIGHT_ARROW],
+            g_Config.audio.sound_volume == Sound_GetMaxVolume());
 
         break;
     }

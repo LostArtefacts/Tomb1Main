@@ -19,6 +19,7 @@
 - fixed being able to use keys and puzzle items in keyholes/slots that have already been used (#2256, regression from 4.0)
 - fixed textures animating during demo fade-outs (#2217, regression from 4.0)
 - fixed waterfall mist not animating during demo (#2218, regression from 3.0)
+- fixed sound option arrows disappearing with specific volumes chosen (#2295, regression from 2.7)
 - improved pause screen compatibility with PS1 (#2248)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21
