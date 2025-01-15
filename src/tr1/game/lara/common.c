@@ -437,7 +437,7 @@ void Lara_Animate(ITEM *item)
         speed += anim->acceleration;
         item->speed += (int16_t)(speed >> 16);
 
-        item->fall_speed += (item->fall_speed < FASTFALL_SPEED) ? GRAVITY : 1;
+        item->fall_speed += (item->fall_speed < FAST_FALL_SPEED) ? GRAVITY : 1;
         item->pos.y += item->fall_speed;
     } else {
         int32_t speed = anim->velocity;

@@ -18,8 +18,6 @@
 #define DEMO_COUNT_MAX 9000
 #define MAX_ITEMS 10240
 #define MAX_SECRETS 16
-#define GRAVITY 6
-#define FASTFALL_SPEED 128
 #define LARA_MAX_HITPOINTS 1000
 #define LARA_MAX_AIR 1800
 #define LARA_TURN_UNDO (2 * DEG_1) // = 364
@@ -37,7 +35,7 @@
 #define LARA_LEAN_RATE_SWIM (LARA_LEAN_RATE * 2) // = 546
 #define LARA_LEAN_MAX ((10 * DEG_1) + LARA_LEAN_UNDO) // = 2002
 #define LARA_LEAN_MAX_UW (LARA_LEAN_MAX * 2)
-#define LARA_FASTFALL_SPEED (FASTFALL_SPEED + 3) // = 131
+#define LARA_FASTFALL_SPEED (FAST_FALL_SPEED + 3) // = 131
 #define LARA_SWING_FASTFALL_SPEED (LARA_FASTFALL_SPEED + 2) // = 133
 #define LARA_RAD 100 // global radius of g_Lara
 #define LARA_HEIGHT 762 // global height of g_Lara - less than 3/4 block

@@ -93,7 +93,8 @@ static void M_AnimateDrop(CARRIED_ITEM *const item)
         pickup->fall_speed = 0;
         m_AnimatingCount--;
     } else {
-        pickup->fall_speed += (!in_water && pickup->fall_speed < FASTFALL_SPEED)
+        pickup->fall_speed +=
+            (!in_water && pickup->fall_speed < FAST_FALL_SPEED)
             ? DROP_FAST_RATE
             : DROP_SLOW_RATE;
         pickup->pos.y += pickup->fall_speed;

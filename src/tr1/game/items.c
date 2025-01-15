@@ -644,7 +644,7 @@ void Item_Animate(ITEM *item)
         }
         item->speed = speed >> 16;
     } else {
-        item->fall_speed += (item->fall_speed < FASTFALL_SPEED) ? GRAVITY : 1;
+        item->fall_speed += (item->fall_speed < FAST_FALL_SPEED) ? GRAVITY : 1;
         item->pos.y += item->fall_speed;
     }
 

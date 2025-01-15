@@ -22,7 +22,6 @@
 #define NO_ITEM (-1)
 #define NO_CAMERA (-1)
 
-#define GRAVITY 6
 #define MAX_FRAMES 10
 #define SUNSET_TIMEOUT (40 * 60 * (FRAMES_PER_SECOND)) // = 72000
 
@@ -66,7 +65,6 @@
 #define MIN_HEAD_TILT_CAM (-MAX_HEAD_TILT_CAM) // = -15470
 #define MAX_HEAD_ROTATION_CAM (50 * DEG_1) // = 9100
 #define MIN_HEAD_ROTATION_CAM (-MAX_HEAD_ROTATION_CAM) // = -9100
-#define FAST_FALL_SPEED 128
 #define LARA_TURN_UNDO (2 * DEG_1) // = 364
 #define LARA_TURN_RATE ((DEG_1 / 4) + LARA_TURN_UNDO) // = 409
 #define LARA_TURN_RATE_UW (2 * DEG_1) // = 364
