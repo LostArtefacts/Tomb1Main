@@ -208,6 +208,7 @@ void Room_DrawAllRooms(int16_t base_room, int16_t target_room)
     for (int i = 0; i < g_RoomsToDrawCount; i++) {
         Room_DrawSingleRoom(g_RoomsToDraw[i]);
     }
+    Output_SetupAboveWater(false);
 }
 
 static void M_PrepareToDraw(int16_t room_num)

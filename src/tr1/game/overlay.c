@@ -387,7 +387,6 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     Output_SetLightDivider(0x6000);
     Output_SetLightAdder(LOW_LIGHT);
     Output_RotateLight(0, 0);
-    Output_SetupAboveWater(false);
 
     OBJECT *obj = &g_Objects[Inv_GetItemOption(pu->object_id)];
     const ANIM_FRAME *const frame = Object_GetAnim(obj, 0)->frame_ptr;

@@ -32,9 +32,9 @@ void Game_Draw(bool draw_overlay)
         } else {
             Output_SetupAboveWater(g_Camera.underwater);
         }
-
         Lara_Draw(g_LaraItem);
         Output_FlushTranslucentObjects();
+        Output_SetupAboveWater(false);
 
         if (draw_overlay) {
             Overlay_DrawGameInfo();
@@ -54,7 +54,6 @@ void Game_Draw(bool draw_overlay)
             Room_DrawSingleRoom(room_num);
         }
 
-        Output_SetupAboveWater(false);
         Lara_Hair_Draw();
         Output_FlushTranslucentObjects();
     }

@@ -182,8 +182,6 @@ void InvRing_Draw(INV_RING *const ring)
     Viewport_SetFOV(PASSPORT_FOV * DEG_1);
     Output_ApplyFOV();
 
-    Output_SetupAboveWater(false);
-
     XYZ_32 view_pos;
     XYZ_16 view_rot;
     InvRing_GetView(ring, &view_pos, &view_rot);

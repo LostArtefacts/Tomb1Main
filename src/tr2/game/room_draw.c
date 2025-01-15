@@ -550,4 +550,6 @@ void Room_DrawAllRooms(const int16_t current_room)
         const int16_t room_num = g_RoomsToDraw[i];
         Room_DrawSingleRoomObjects(room_num);
     }
+
+    Output_SetupAboveWater(false);
 }

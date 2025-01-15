@@ -142,7 +142,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     M_PRIV *const p = phase->priv;
 
     g_OldInputDB = g_Input;
-    Output_SetupAboveWater(false);
 
     M_PauseGame(p);
 
