@@ -1,19 +1,8 @@
 #include "game/phase/phase_game.h"
 
-#include "decomp/decomp.h"
-#include "decomp/savegame.h"
-#include "game/camera.h"
 #include "game/console/common.h"
 #include "game/game.h"
-#include "game/music.h"
-#include "game/output.h"
-#include "game/overlay.h"
-#include "game/sound.h"
-#include "game/stats.h"
-#include "global/vars.h"
 
-#include <libtrx/config.h>
-#include <libtrx/game/fader.h>
 #include <libtrx/memory.h>
 
 typedef struct {
@@ -32,52 +21,34 @@ static void M_Draw(PHASE *phase);
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-
-    if (p->level_type == GFL_NORMAL || p->level_type == GFL_SAVED
-        || p->level_type == GFL_DEMO) {
-        g_CurrentLevel = p->level_num;
-    }
-    if (p->level_type != GFL_SAVED) {
-        ModifyStartInfo(p->level_num);
-    }
-    if (p->level_type != GFL_SAVED) {
-        InitialiseLevelFlags();
-    }
-    if (!Level_Initialise(p->level_num, p->level_type)) {
-        g_CurrentLevel = 0;
+    if (!Game_Start(p->level_num, p->level_type)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_EXIT_GAME },
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
         };
     }
-
-    g_OverlayStatus = 1;
-    Camera_Initialise();
-    Stats_StartTimer();
     Game_SetIsPlaying(true);
-
-    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
+    return (PHASE_CONTROL) {
+        .action = PHASE_ACTION_CONTINUE,
+    };
 }
 
 static void M_End(PHASE *const phase)
 {
+    Game_End();
     Game_SetIsPlaying(false);
-    M_PRIV *const p = phase->priv;
-    Overlay_HideGameInfo();
-    Sound_StopAll();
-    Music_Stop();
-    Music_SetVolume(g_Config.audio.music_volume);
 }
 
 static void M_Suspend(PHASE *const phase)
 {
+    Game_Suspend();
     Game_SetIsPlaying(false);
 }
 
 static void M_Resume(PHASE *const phase)
 {
+    Game_Resume();
     Game_SetIsPlaying(true);
-    Stats_StartTimer();
 }
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
@@ -85,13 +56,18 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     M_PRIV *const p = phase->priv;
 
     GAME_FLOW_COMMAND gf_cmd;
-    if (g_IsGameToExit && !p->exiting) {
+    if (Game_IsExiting() && !p->exiting) {
         p->exiting = true;
         Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
     } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
         gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     } else {
-        gf_cmd = Game_Control(num_frames, false);
+        for (int32_t i = 0; i < num_frames; i++) {
+            gf_cmd = Game_Control(false);
+            if (gf_cmd.action != GF_NOOP) {
+                break;
+            }
+        }
     }
 
     if (gf_cmd.action != GF_NOOP) {

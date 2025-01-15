@@ -248,7 +248,7 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
 
 GAME_FLOW_COMMAND Demo_Control(void)
 {
-    return Game_Control(1, true);
+    return Game_Control(true);
 }
 
 void Demo_StopFlashing(void)

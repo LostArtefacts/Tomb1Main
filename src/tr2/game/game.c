@@ -1,13 +1,13 @@
 #include "game/game.h"
 
+#include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/demo.h"
 #include "game/effects.h"
 #include "game/gameflow.h"
 #include "game/gameflow/gameflow_new.h"
-#include "game/input.h"
 #include "game/inventory.h"
-#include "game/inventory_ring.h"
 #include "game/item_actions.h"
 #include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
@@ -15,19 +15,53 @@
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"
-#include "game/phase.h"
 #include "game/room_draw.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
 #include "global/vars.h"
 
-#include <libtrx/log.h>
-#include <libtrx/utils.h>
+#include <libtrx/config.h>
 
-static GAME_FLOW_COMMAND M_Control(bool demo_mode);
+bool Game_Start(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
+        || level_type == GFL_DEMO) {
+        g_CurrentLevel = level_num;
+    }
+    if (level_type != GFL_SAVED) {
+        ModifyStartInfo(level_num);
+        InitialiseLevelFlags();
+    }
+    if (!Level_Initialise(level_num, level_type)) {
+        g_CurrentLevel = 0;
+        return false;
+    }
 
-static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
+    g_OverlayStatus = 1;
+    Camera_Initialise();
+    Stats_StartTimer();
+    return true;
+}
+
+void Game_End(void)
+{
+    Overlay_HideGameInfo();
+    Sound_StopAll();
+    Music_Stop();
+    Music_SetVolume(g_Config.audio.music_volume);
+}
+
+void Game_Suspend(void)
+{
+}
+
+void Game_Resume(void)
+{
+    Stats_StartTimer();
+}
+
+GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 {
     if (!g_GameFlow.cheat_mode_check_disabled) {
         Lara_Cheat_CheckKeys();
@@ -127,6 +161,8 @@ static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
     Sound_UpdateEffects();
     Sound_EndScene();
     ItemAction_RunActive();
+    Overlay_Animate(1);
+    Output_AnimateTextures(1 * TICKS_PER_FRAME);
 
     g_HealthBarTimer--;
     if (g_CurrentLevel != LV_GYM || g_IsAssaultTimerActive) {
@@ -134,22 +170,6 @@ static GAME_FLOW_COMMAND M_Control(const bool demo_mode)
     }
 
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-}
-
-GAME_FLOW_COMMAND Game_Control(const int32_t num_frames, const bool demo_mode)
-{
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
-    for (int32_t i = 0; i < num_frames; i++) {
-        gf_cmd = M_Control(demo_mode);
-        if (gf_cmd.action != GF_NOOP) {
-            break;
-        }
-    }
-
-    Overlay_Animate(num_frames);
-    Output_AnimateTextures(num_frames * TICKS_PER_FRAME);
-
-    return gf_cmd;
 }
 
 void Game_Draw(bool draw_overlay)
