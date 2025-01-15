@@ -2,7 +2,6 @@
 
 #include "game/effects.h"
 #include "game/gameflow/gameflow_new.h"
-#include "game/item_actions.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
@@ -454,106 +453,6 @@ void Item_AlignPosition(
     dst_item->pos.x = new_pos.x;
     dst_item->pos.y = new_pos.y;
     dst_item->pos.z = new_pos.z;
-}
-
-void Item_Animate(ITEM *const item)
-{
-    item->hit_status = 0;
-    item->touch_bits = 0;
-
-    const ANIM *anim = Item_GetAnim(item);
-
-    item->frame_num++;
-
-    if (anim->num_changes > 0) {
-        if (Item_GetAnimChange(item, anim)) {
-            anim = Item_GetAnim(item);
-            item->current_anim_state = anim->current_anim_state;
-
-            if (item->required_anim_state == anim->current_anim_state) {
-                item->required_anim_state = 0;
-            }
-        }
-    }
-
-    if (item->frame_num > anim->frame_end) {
-        for (int32_t i = 0; i < anim->num_commands; i++) {
-            const ANIM_COMMAND *const command = &anim->commands[i];
-            switch (command->type) {
-            case AC_MOVE_ORIGIN: {
-                const XYZ_16 *const pos = (XYZ_16 *)command->data;
-                Item_Translate(item, pos->x, pos->y, pos->z);
-                break;
-            }
-
-            case AC_JUMP_VELOCITY: {
-                const ANIM_COMMAND_VELOCITY_DATA *const data =
-                    (ANIM_COMMAND_VELOCITY_DATA *)command->data;
-                item->fall_speed = data->fall_speed;
-                item->speed = data->speed;
-                item->gravity = true;
-                break;
-            }
-
-            case AC_DEACTIVATE:
-                item->status = IS_DEACTIVATED;
-                break;
-
-            default:
-                break;
-            }
-        }
-
-        item->anim_num = anim->jump_anim_num;
-        item->frame_num = anim->jump_frame_num;
-        anim = Item_GetAnim(item);
-
-        if (item->current_anim_state != anim->current_anim_state) {
-            item->current_anim_state = anim->current_anim_state;
-            item->goal_anim_state = anim->current_anim_state;
-        }
-
-        if (item->required_anim_state == item->current_anim_state) {
-            item->required_anim_state = 0;
-        }
-    }
-
-    for (int32_t i = 0; i < anim->num_commands; i++) {
-        const ANIM_COMMAND *const command = &anim->commands[i];
-        switch (command->type) {
-        case AC_SOUND_FX: {
-            const ANIM_COMMAND_EFFECT_DATA *const data =
-                (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            Item_PlayAnimSFX(item, data);
-            break;
-        }
-
-        case AC_EFFECT:
-            const ANIM_COMMAND_EFFECT_DATA *const data =
-                (ANIM_COMMAND_EFFECT_DATA *)command->data;
-            if (item->frame_num == data->frame_num) {
-                ItemAction_Run(data->effect_num, item);
-            }
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    if (item->gravity) {
-        item->fall_speed += item->fall_speed < FAST_FALL_SPEED ? GRAVITY : 1;
-        item->pos.y += item->fall_speed;
-    } else {
-        int32_t speed = anim->velocity;
-        if (anim->acceleration) {
-            speed += anim->acceleration * (item->frame_num - anim->frame_base);
-        }
-        item->speed = speed >> 16;
-    }
-
-    item->pos.x += (item->speed * Math_Sin(item->rot.y)) >> W2V_SHIFT;
-    item->pos.z += (item->speed * Math_Cos(item->rot.y)) >> W2V_SHIFT;
 }
 
 int32_t Item_IsTriggerActive(ITEM *const item)

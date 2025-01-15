@@ -35,8 +35,6 @@ bool Item_MovePosition(
 void Item_ShiftCol(ITEM *item, COLL_INFO *coll);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 
-void Item_Animate(ITEM *item);
-
 bool Item_IsTriggerActive(ITEM *item);
 
 ANIM_FRAME *Item_GetBestFrame(const ITEM *item);

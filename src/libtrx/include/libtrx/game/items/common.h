@@ -27,4 +27,5 @@ bool Item_GetAnimChange(ITEM *item, const ANIM *anim);
 
 void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 
+void Item_Animate(ITEM *item);
 void Item_PlayAnimSFX(const ITEM *item, const ANIM_COMMAND_EFFECT_DATA *data);
