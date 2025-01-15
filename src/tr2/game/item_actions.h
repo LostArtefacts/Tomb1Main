@@ -2,6 +2,8 @@
 
 #include "game/items.h"
 
+#include <libtrx/game/item_actions.h>
+
 typedef enum {
     // clang-format off
     ITEM_ACTION_TURN_180                     = 0,
@@ -39,5 +41,4 @@ typedef enum {
     // clang-format on
 } ITEM_ACTION;
 
-void ItemAction_Run(int16_t action, ITEM *item);
 void ItemAction_RunActive(void);
