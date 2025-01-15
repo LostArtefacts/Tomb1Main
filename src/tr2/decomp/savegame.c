@@ -2,6 +2,7 @@
 
 #include "decomp/skidoo.h"
 #include "game/camera.h"
+#include "game/game_string.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"
@@ -970,8 +971,7 @@ bool S_FrontEndCheck(void)
 
         if (!File_Exists(file_name)) {
             Requester_AddItem(
-                &g_LoadGameRequester, g_GF_PCStrings[GF_S_PC_EMPTY_SLOT], 0, 0,
-                0);
+                &g_LoadGameRequester, GS(MISC_EMPTY_SLOT), 0, 0, 0);
             g_SavedLevels[i] = 0;
         } else {
             MYFILE *const fp = File_Open(file_name, FILE_OPEN_READ);

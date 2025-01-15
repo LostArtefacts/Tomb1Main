@@ -322,9 +322,9 @@ int32_t Requester_Display(
     }
 
     // TODO: WTF!?
-    if (!strncmp(
+    if (!strcmp(
             req->item_texts1[req->selected - req->line_offset]->content,
-            g_GF_PCStrings[GF_S_PC_EMPTY_SLOT], 12)
+            GS(MISC_EMPTY_SLOT))
         && !strcmp(g_PasswordText1->content, GS(PASSPORT_LOAD_GAME))) {
         g_Input = (INPUT_STATE) {};
         return 0;

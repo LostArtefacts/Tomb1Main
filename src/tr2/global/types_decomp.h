@@ -461,31 +461,6 @@ typedef struct {
 } ROOM_LIGHT_TABLE;
 
 typedef enum {
-    GF_S_PC_DETAIL_LEVELS      = 0,
-    GF_S_PC_DEMO_MODE          = 1,
-    GF_S_PC_SOUND              = 2,
-    GF_S_PC_CONTROLS           = 3,
-    GF_S_PC_GAMMA              = 4,
-    GF_S_PC_SET_VOLUMES        = 5,
-    GF_S_PC_USER_KEYS          = 6,
-    GF_S_PC_SAVE_FILE_WARNING  = 7,
-    GF_S_PC_TRY_AGAIN_QUESTION = 8,
-    GF_S_PC_YES                = 9,
-    GF_S_PC_NO                 = 10,
-    GF_S_PC_SAVE_COMPLETE      = 11,
-    GF_S_PC_NO_SAVE_GAMES      = 12,
-    GF_S_PC_NONE_VALID         = 13,
-    GF_S_PC_SAVE_GAME_QUESTION = 14,
-    GF_S_PC_EMPTY_SLOT         = 15,
-    GF_S_PC_OFF                = 16,
-    GF_S_PC_ON                 = 17,
-    GF_S_PC_SETUP_SOUND_CARD   = 18,
-    GF_S_PC_DEFAULT_KEYS       = 19,
-    GF_S_PC_DOZY               = 20,
-    GF_S_PC_NUMBER_OF          = 41,
-} GF_PC_STRING;
-
-typedef enum {
     GF_ADD_INV_PISTOLS      = 0,
     GF_ADD_INV_SHOTGUN      = 1,
     GF_ADD_INV_MAGNUMS      = 2,

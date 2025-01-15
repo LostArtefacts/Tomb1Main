@@ -151,6 +151,9 @@ void GF_N_LoadStrings(const int32_t level_num)
         { O_KEY_OPTION_4,          GS(INV_ITEM_KEY_4) },
         { O_PASSPORT_OPTION,       GS(INV_ITEM_GAME) },
         { O_PASSPORT_CLOSED,       GS(INV_ITEM_GAME) },
+        { O_DETAIL_OPTION,         GS(INV_ITEM_DETAILS) },
+        { O_SOUND_OPTION,          GS(INV_ITEM_SOUND) },
+        { O_CONTROL_OPTION,        GS(INV_ITEM_CONTROLS) },
         { O_PHOTO_OPTION,          GS(INV_ITEM_LARAS_HOME) },
         { NO_OBJECT, NULL },
         // clang-format on
@@ -160,24 +163,6 @@ void GF_N_LoadStrings(const int32_t level_num)
         const char *const new_name = game_string_defs[i].name;
         if (new_name != NULL) {
             Object_SetName(game_string_defs[i].object_id, new_name);
-        }
-    }
-
-    struct {
-        GAME_OBJECT_ID object_id;
-        GF_PC_STRING pc_string;
-    } pc_string_defs[] = {
-        { O_DETAIL_OPTION, GF_S_PC_DETAIL_LEVELS },
-        { O_SOUND_OPTION, GF_S_PC_SOUND },
-        { O_CONTROL_OPTION, GF_S_PC_CONTROLS },
-        { NO_OBJECT, -1 },
-    };
-
-    for (int32_t i = 0; pc_string_defs[i].object_id != NO_OBJECT; i++) {
-        const char *const new_name =
-            g_GF_PCStrings[pc_string_defs[i].pc_string];
-        if (new_name != NULL) {
-            Object_SetName(pc_string_defs[i].object_id, new_name);
         }
     }
 

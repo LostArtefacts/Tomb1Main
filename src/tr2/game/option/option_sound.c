@@ -1,3 +1,4 @@
+#include "game/game_string.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/music.h"
@@ -34,7 +35,7 @@ static void M_InitText(void)
     Text_AddBackground(m_SoundText[2], 140, 85, 0, 0, TS_BACKGROUND);
     Text_AddOutline(m_SoundText[2], TS_BACKGROUND);
 
-    m_SoundText[3] = Text_Create(0, -30, g_GF_PCStrings[GF_S_PC_SET_VOLUMES]);
+    m_SoundText[3] = Text_Create(0, -30, GS(SOUND_SET_VOLUMES));
     Text_AddBackground(m_SoundText[3], 136, 0, 0, 0, TS_HEADING);
     Text_AddOutline(m_SoundText[3], TS_HEADING);
 

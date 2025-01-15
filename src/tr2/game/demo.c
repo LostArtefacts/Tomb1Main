@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "game/camera.h"
 #include "game/game.h"
+#include "game/game_string.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
@@ -195,8 +196,7 @@ bool Demo_Start(const int32_t level_num)
     Camera_Initialise();
     Stats_StartTimer();
 
-    p->text =
-        Text_Create(0, g_PhdWinHeight - 16, g_GF_PCStrings[GF_S_PC_DEMO_MODE]);
+    p->text = Text_Create(0, g_PhdWinHeight - 16, GS(MISC_DEMO_MODE));
     Text_Flash(p->text, true, 20);
     Text_CentreV(p->text, true);
     Text_CentreH(p->text, true);

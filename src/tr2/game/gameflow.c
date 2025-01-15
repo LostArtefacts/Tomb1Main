@@ -308,8 +308,7 @@ bool GF_LoadFromFile(const char *const file_name)
     }
     M_ReadStringTable(file, 89, NULL, NULL);
 
-    M_ReadStringTable(
-        file, GF_S_PC_NUMBER_OF, &g_GF_PCStrings, &g_GF_PCStringsBuf);
+    M_ReadStringTable(file, 41, NULL, NULL);
     M_ReadStringTable(
         file, g_GameFlow.num_levels, &g_GF_Puzzle1Strings,
         &g_GF_Puzzle1StringsBuf);
