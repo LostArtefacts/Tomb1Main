@@ -17,9 +17,7 @@ typedef enum {
     LGS_DRAW       = 2,
     LGS_UNDRAW     = 3,
     LGS_READY      = 4,
-#if TR_VERSION == 2
-    LGS_SPECIAL = 5,
-#endif
+    LGS_SPECIAL    = 5,
 } LARA_GUN_STATE;
 // clang-format on
 

@@ -5,3 +5,4 @@
 
 LARA_INFO *Lara_GetLaraInfo(void);
 ITEM *Lara_GetItem(void);
+void Lara_Animate(ITEM *item);

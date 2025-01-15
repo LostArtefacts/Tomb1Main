@@ -119,6 +119,7 @@ sources = [
   'game/inventory.c',
   'game/inventory_ring/priv.c',
   'game/items.c',
+  'game/lara/common.c',
   'game/level/common.c',
   'game/math/trig.c',
   'game/math/util.c',
