@@ -53,19 +53,25 @@ static void M_ReadStringTable(
     VFile_Read(file, m_LevelOffsets, sizeof(int16_t) * count);
 
     const int16_t buf_size = VFile_ReadS16(file);
-    *buffer = Memory_Alloc(buf_size);
-    VFile_Read(file, *buffer, buf_size);
+    if (buffer != NULL) {
+        *buffer = Memory_Alloc(buf_size);
+        VFile_Read(file, *buffer, buf_size);
 
-    if (g_GameFlow.cyphered_strings) {
-        for (int32_t i = 0; i < buf_size; i++) {
-            (*buffer)[i] ^= g_GameFlow.cypher_code;
+        if (g_GameFlow.cyphered_strings) {
+            for (int32_t i = 0; i < buf_size; i++) {
+                (*buffer)[i] ^= g_GameFlow.cypher_code;
+            }
         }
-    }
 
-    *table = Memory_Alloc(sizeof(char *) * count);
-    for (int32_t i = 0; i < count; i++) {
-        const int32_t offset = m_LevelOffsets[i];
-        (*table)[i] = &(*buffer)[offset];
+        if (table != NULL) {
+            *table = Memory_Alloc(sizeof(char *) * count);
+            for (int32_t i = 0; i < count; i++) {
+                const int32_t offset = m_LevelOffsets[i];
+                (*table)[i] = &(*buffer)[offset];
+            }
+        }
+    } else {
+        VFile_Skip(file, buf_size);
     }
 }
 
@@ -268,9 +274,7 @@ bool GF_LoadFromFile(const char *const file_name)
 
     M_ReadStringTable(
         file, g_GameFlow.num_levels, &g_GF_LevelNames, &g_GF_LevelNamesBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_pictures, &g_GF_PicFilenames,
-        &g_GF_PicFilenamesBuf);
+    M_ReadStringTable(file, g_GameFlow.num_pictures, NULL, NULL);
     M_ReadStringTable(
         file, g_GameFlow.num_titles, &g_GF_TitleFileNames,
         &g_GF_TitleFileNamesBuf);
