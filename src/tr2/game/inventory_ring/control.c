@@ -98,12 +98,12 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
     case O_UZI_AMMO_OPTION:
     case O_HARPOON_AMMO_OPTION:
     case O_M16_AMMO_OPTION:
-        InvRing_ShowItemQuantity("%d", 2 * qty);
+        M_ShowAmmoQuantity("%d", 2 * qty);
         break;
 
     case O_GRENADE_AMMO_OPTION:
     case O_FLARES_OPTION:
-        InvRing_ShowItemQuantity("%d", qty);
+        M_ShowAmmoQuantity("%d", qty);
         break;
 
     case O_SMALL_MEDIPACK_OPTION:
