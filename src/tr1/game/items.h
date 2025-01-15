@@ -33,7 +33,6 @@ void Item_AlignPosition(ITEM *src_item, ITEM *dst_item, XYZ_32 *vec);
 bool Item_MovePosition(
     ITEM *src_item, const ITEM *dst_item, const XYZ_32 *vec, int32_t velocity);
 void Item_ShiftCol(ITEM *item, COLL_INFO *coll);
-void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 
 void Item_Animate(ITEM *item);

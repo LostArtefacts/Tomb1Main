@@ -556,16 +556,6 @@ void Item_Animate(ITEM *const item)
     item->pos.z += (item->speed * Math_Cos(item->rot.y)) >> W2V_SHIFT;
 }
 
-void Item_Translate(
-    ITEM *const item, const int32_t x, const int32_t y, const int32_t z)
-{
-    const int32_t c = Math_Cos(item->rot.y);
-    const int32_t s = Math_Sin(item->rot.y);
-    item->pos.x += ((c * x + s * z) >> W2V_SHIFT);
-    item->pos.y += y;
-    item->pos.z += ((c * z - s * x) >> W2V_SHIFT);
-}
-
 int32_t Item_IsTriggerActive(ITEM *const item)
 {
     const bool ok = !(item->flags & IF_REVERSE);

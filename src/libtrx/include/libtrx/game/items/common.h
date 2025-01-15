@@ -25,4 +25,6 @@ bool Item_TestFrameEqual(const ITEM *item, int16_t frame);
 bool Item_TestFrameRange(const ITEM *item, int16_t start, int16_t end);
 bool Item_GetAnimChange(ITEM *item, const ANIM *anim);
 
+void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z);
+
 void Item_PlayAnimSFX(const ITEM *item, const ANIM_COMMAND_EFFECT_DATA *data);

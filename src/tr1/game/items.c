@@ -545,15 +545,6 @@ void Item_ShiftCol(ITEM *item, COLL_INFO *coll)
     coll->shift.z = 0;
 }
 
-void Item_Translate(ITEM *item, int32_t x, int32_t y, int32_t z)
-{
-    int32_t c = Math_Cos(item->rot.y);
-    int32_t s = Math_Sin(item->rot.y);
-    item->pos.x += (c * x + s * z) >> W2V_SHIFT;
-    item->pos.y += y;
-    item->pos.z += (c * z - s * x) >> W2V_SHIFT;
-}
-
 void Item_Animate(ITEM *item)
 {
     item->touch_bits = 0;

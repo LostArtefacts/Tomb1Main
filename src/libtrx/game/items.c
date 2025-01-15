@@ -113,6 +113,16 @@ bool Item_GetAnimChange(ITEM *const item, const ANIM *const anim)
     return false;
 }
 
+void Item_Translate(
+    ITEM *const item, const int32_t x, const int32_t y, const int32_t z)
+{
+    const int32_t c = Math_Cos(item->rot.y);
+    const int32_t s = Math_Sin(item->rot.y);
+    item->pos.x += ((c * x + s * z) >> W2V_SHIFT);
+    item->pos.y += y;
+    item->pos.z += ((c * z - s * x) >> W2V_SHIFT);
+}
+
 void Item_PlayAnimSFX(
     const ITEM *const item, const ANIM_COMMAND_EFFECT_DATA *const data)
 {
