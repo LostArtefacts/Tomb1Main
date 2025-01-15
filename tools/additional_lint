@@ -6,7 +6,7 @@ from fnmatch import fnmatch
 from pathlib import Path
 
 from shared.files import find_versioned_files, is_binary_file
-from shared.linting import LintContext, lint_bulk_files, lint_file
+from shared.linting import LintContext, lint_repo, lint_bulk_files, lint_file
 from shared.paths import REPO_DIR
 
 IGNORED_PATTERNS = ["*.patch", "*.bin", "gl_core_3_3.h"]
@@ -16,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=Path, nargs="*")
     parser.add_argument("-D", "--debug", action="store_true")
+    parser.add_argument("-a", "--all", action="store_true")
     return parser.parse_args()
 
 
@@ -46,7 +47,7 @@ def main(root_dir: Path) -> None:
 
     context = LintContext(
         root_dir=root_dir,
-        versioned_files=find_versioned_files(root_dir=REPO_DIR),
+        versioned_files=list(find_versioned_files(root_dir=REPO_DIR)),
     )
     if args.path:
         files = args.path
@@ -71,6 +72,13 @@ def main(root_dir: Path) -> None:
     for lint_warning in lint_bulk_files(context, files):
         print(str(lint_warning), file=sys.stderr)
         exit_code = 1
+
+    if args.all:
+        if args.debug:
+            print(f"Checking for repository-wide warnings...", file=sys.stderr)
+        for lint_warning in lint_repo(context):
+            print(str(lint_warning), file=sys.stderr)
+            exit_code = 1
 
     exit(exit_code)
 
