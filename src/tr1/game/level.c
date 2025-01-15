@@ -489,6 +489,9 @@ static void M_LoadCameras(VFILE *file)
     if (g_NumberCameras != 0) {
         g_Camera.fixed = GameBuf_Alloc(
             sizeof(OBJECT_VECTOR) * g_NumberCameras, GBUF_CAMERAS);
+        if (!g_Camera.fixed) {
+            Shell_ExitSystem("Error allocating the fixed cameras.");
+        }
         for (int32_t i = 0; i < g_NumberCameras; i++) {
             OBJECT_VECTOR *camera = &g_Camera.fixed[i];
             camera->x = VFile_ReadS32(file);
@@ -509,6 +512,9 @@ static void M_LoadSoundEffects(VFILE *file)
     if (g_NumberSoundEffects != 0) {
         g_SoundEffectsTable = GameBuf_Alloc(
             sizeof(OBJECT_VECTOR) * g_NumberSoundEffects, GBUF_SOUND_FX);
+        if (!g_SoundEffectsTable) {
+            Shell_ExitSystem("Error allocating the sound effects table.");
+        }
         for (int32_t i = 0; i < g_NumberSoundEffects; i++) {
             OBJECT_VECTOR *sound = &g_SoundEffectsTable[i];
             sound->x = VFile_ReadS32(file);
