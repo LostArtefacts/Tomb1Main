@@ -3,7 +3,6 @@
 #include "../gl/buffer.h"
 #include "../gl/vertex_array.h"
 
-#include <stdbool.h>
 #include <stddef.h>
 
 typedef enum {

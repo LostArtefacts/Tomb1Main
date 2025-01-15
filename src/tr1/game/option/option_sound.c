@@ -9,7 +9,6 @@
 
 #include <libtrx/config.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 
 typedef enum {

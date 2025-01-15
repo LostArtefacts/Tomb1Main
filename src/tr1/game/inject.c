@@ -18,7 +18,6 @@
 #include <libtrx/utils.h>
 #include <libtrx/virtual_file.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #define INJECTION_MAGIC MKTAG('T', '1', 'M', 'J')

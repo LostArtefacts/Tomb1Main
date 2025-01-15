@@ -18,7 +18,6 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 

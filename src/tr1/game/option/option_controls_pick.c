@@ -6,7 +6,6 @@
 #include "global/types.h"
 #include "global/vars.h"
 
-#include <stdbool.h>
 #include <stdio.h>
 
 typedef enum {

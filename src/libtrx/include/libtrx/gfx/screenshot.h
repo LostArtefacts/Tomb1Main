@@ -2,7 +2,6 @@
 
 #include "gl/gl_core_3_3.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 bool GFX_Screenshot_CaptureToFile(const char *path);

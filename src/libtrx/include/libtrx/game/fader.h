@@ -2,7 +2,6 @@
 
 #include "clock/timer.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define FADER_ANY (-1)

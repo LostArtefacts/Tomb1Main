@@ -12,7 +12,6 @@
 #define GFX_NO_TEXTURE (-1)
 #define GFX_ENV_MAP_TEXTURE (-2)
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum {

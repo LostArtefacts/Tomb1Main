@@ -5,7 +5,6 @@
 
 #include <libtrx/game/rooms.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 extern int32_t g_FlipTimer;

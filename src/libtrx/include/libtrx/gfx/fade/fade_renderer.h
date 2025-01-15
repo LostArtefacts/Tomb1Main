@@ -6,7 +6,6 @@
 #include "../gl/texture.h"
 #include "../gl/vertex_array.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct GFX_FADE_RENDERER GFX_FADE_RENDERER;

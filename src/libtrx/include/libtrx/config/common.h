@@ -4,7 +4,6 @@
 #include "../json.h"
 #include "./option.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 void Config_Init(void);

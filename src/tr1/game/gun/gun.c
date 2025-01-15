@@ -15,7 +15,6 @@
 #include <libtrx/debug.h>
 #include <libtrx/game/matrix.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 
 void Gun_Control(void)

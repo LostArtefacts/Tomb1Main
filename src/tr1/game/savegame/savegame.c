@@ -25,7 +25,6 @@
 #include <libtrx/filesystem.h>
 #include <libtrx/memory.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>

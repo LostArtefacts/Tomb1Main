@@ -5,7 +5,6 @@
 
 #include <libtrx/filesystem.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 // TR1X implementation of savegames.

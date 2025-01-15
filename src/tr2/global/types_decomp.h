@@ -12,7 +12,6 @@
 #include <libtrx/game/text.h>
 #include <libtrx/game/types.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 // clang-format off

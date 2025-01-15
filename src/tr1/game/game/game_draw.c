@@ -13,7 +13,6 @@
 
 #include <libtrx/config.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 void Game_Draw(bool draw_overlay)

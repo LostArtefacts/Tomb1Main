@@ -4,7 +4,6 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 void Lara_Control(void);

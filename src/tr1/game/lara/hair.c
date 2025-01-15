@@ -12,7 +12,6 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define HAIR_SEGMENTS 6

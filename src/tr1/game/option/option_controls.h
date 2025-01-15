@@ -4,8 +4,6 @@
 
 #include <libtrx/game/inventory_ring/types.h>
 
-#include <stdbool.h>
-
 typedef enum {
     CM_PICK,
     CM_KEYBOARD,

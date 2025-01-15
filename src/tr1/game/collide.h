@@ -2,7 +2,6 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 void Collide_GetCollisionInfo(

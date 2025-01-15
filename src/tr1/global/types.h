@@ -23,7 +23,6 @@
 #include <libtrx/game/text.h>
 #include <libtrx/game/types.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 

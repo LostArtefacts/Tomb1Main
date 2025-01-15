@@ -16,7 +16,6 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #define PISTOL_LOCK_YMIN (-60 * DEG_1)

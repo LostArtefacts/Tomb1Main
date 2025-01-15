@@ -5,7 +5,6 @@
 #include "common.h"
 #include "renderers/fbo_renderer.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 bool GFX_Context_Attach(void *window_handle, GFX_GL_BACKEND backend);

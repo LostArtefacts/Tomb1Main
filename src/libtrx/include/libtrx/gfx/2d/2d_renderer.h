@@ -7,7 +7,6 @@
 #include "../gl/vertex_array.h"
 #include "2d_surface.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

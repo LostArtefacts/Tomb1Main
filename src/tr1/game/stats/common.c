@@ -12,7 +12,6 @@
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/log.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -2,8 +2,6 @@
 
 #include "../gl/gl_core_3_3.h"
 
-#include <stdbool.h>
-
 typedef struct {
     bool initialized;
     GLuint id;

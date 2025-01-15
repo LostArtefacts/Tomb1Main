@@ -3,7 +3,6 @@
 #include "../../engine/image.h"
 #include "../gl/gl_core_3_3.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

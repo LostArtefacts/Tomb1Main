@@ -3,8 +3,6 @@
 #include "../anims.h"
 #include "./types.h"
 
-#include <stdbool.h>
-
 ITEM *Item_Get(int16_t num);
 ITEM *Item_Find(GAME_OBJECT_ID object_id);
 int32_t Item_GetTotalCount(void);

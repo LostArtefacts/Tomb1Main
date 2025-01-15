@@ -5,7 +5,6 @@
 #include "../gfx/common.h"
 #include "../screenshot.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum {

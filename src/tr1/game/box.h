@@ -2,7 +2,6 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 bool Box_SearchLOT(LOT_INFO *lot, int32_t expansion);

@@ -6,7 +6,6 @@
 #include <libtrx/game/camera/vars.h>
 #include <libtrx/game/inventory_ring/enum.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 

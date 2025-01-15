@@ -11,7 +11,6 @@
 #include <libtrx/gfx/context.h>
 #include <libtrx/utils.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 

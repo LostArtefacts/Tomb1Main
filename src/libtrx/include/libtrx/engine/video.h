@@ -1,7 +1,6 @@
 #pragma once
 
 #include <libavutil/pixfmt.h>
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

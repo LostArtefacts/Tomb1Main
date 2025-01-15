@@ -2,7 +2,6 @@
 
 #include "ids.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 const char *Object_GetName(GAME_OBJECT_ID object_id);

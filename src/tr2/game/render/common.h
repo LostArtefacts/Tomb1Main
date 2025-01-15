@@ -5,7 +5,6 @@
 #include <libtrx/engine/image.h>
 #include <libtrx/gfx/2d/2d_surface.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum {

@@ -4,8 +4,6 @@
 #include "../types.h"
 #include "./enum.h"
 
-#include <stdbool.h>
-
 typedef struct TRIGGER_CMD {
     TRIGGER_OBJECT type;
     void *parameter;

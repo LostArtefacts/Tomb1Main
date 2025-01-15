@@ -9,7 +9,6 @@
 #include "global/types.h"
 #include "global/vars.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 bool Inv_AddItem(const GAME_OBJECT_ID object_id)

@@ -14,8 +14,6 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/log.h>
 
-#include <stdbool.h>
-
 static int32_t m_RoomNumStack[MAX_ROOMS_TO_DRAW] = {};
 static int32_t m_RoomNumStackIdx = 0;
 

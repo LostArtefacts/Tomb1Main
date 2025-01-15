@@ -4,7 +4,6 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 extern WEAPON_INFO g_Weapons[NUM_WEAPONS];

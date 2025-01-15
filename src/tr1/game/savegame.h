@@ -4,7 +4,6 @@
 
 #include <libtrx/game/savegame.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 // Loading a saved game is divided into two phases. First, the game reads the

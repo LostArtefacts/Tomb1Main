@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define GS_DEFINE(id, value) GameString_Define(#id, value);

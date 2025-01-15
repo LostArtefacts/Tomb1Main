@@ -5,7 +5,6 @@
 
 #include <libtrx/utils.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define CREATURE_SHOOT_RANGE SQUARE(WALL_L * 7) // = 51380224

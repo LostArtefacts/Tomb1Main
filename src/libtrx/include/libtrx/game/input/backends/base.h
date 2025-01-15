@@ -2,8 +2,6 @@
 
 #include "../common.h"
 
-#include <stdbool.h>
-
 typedef struct {
     void (*init)(void);
     void (*shutdown)(void);

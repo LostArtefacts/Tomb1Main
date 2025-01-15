@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define CLOCK_TURBO_SPEED_MIN -2

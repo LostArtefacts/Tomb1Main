@@ -4,7 +4,6 @@
 #include "enum_map.h"
 #include "json.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

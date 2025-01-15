@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <stdint.h>
 
 extern bool Lara_Cheat_GiveAllKeys(void);

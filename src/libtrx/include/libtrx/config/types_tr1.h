@@ -4,7 +4,6 @@
 #include "../gfx/common.h"
 #include "../screenshot.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define CONFIG_MIN_BRIGHTNESS 0.1f

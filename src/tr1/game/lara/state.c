@@ -15,7 +15,6 @@
 #include <libtrx/config.h>
 #include <libtrx/game/math.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define LF_ROLL 2

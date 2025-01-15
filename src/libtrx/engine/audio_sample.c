@@ -18,7 +18,6 @@
 #include <libavutil/samplefmt.h>
 #include <libswresample/swresample.h>
 #include <math.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>

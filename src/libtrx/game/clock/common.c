@@ -6,7 +6,6 @@
 
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
 

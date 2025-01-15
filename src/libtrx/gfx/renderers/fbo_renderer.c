@@ -15,7 +15,6 @@
 #include "memory.h"
 
 #include <SDL2/SDL_video.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 

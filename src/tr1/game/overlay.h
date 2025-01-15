@@ -6,7 +6,6 @@
 #include <libtrx/config/types.h>
 #include <libtrx/game/overlay.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

@@ -14,7 +14,6 @@
 #include <libtrx/log.h>
 #include <libtrx/vector.h>
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #define DROP_FAST_RATE GRAVITY

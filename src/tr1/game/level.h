@@ -2,7 +2,6 @@
 
 #include "global/types.h"
 
-#include <stdbool.h>
 #include <stdint.h>
 
 void Level_Load(int32_t level_num);

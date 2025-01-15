@@ -4,7 +4,6 @@
 
 #include <libtrx/game/inventory_ring/types.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {

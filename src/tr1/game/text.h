@@ -4,7 +4,6 @@
 
 #include <libtrx/game/text.h>
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #define TEXT_HEIGHT 11 // TODO: Get rid of this

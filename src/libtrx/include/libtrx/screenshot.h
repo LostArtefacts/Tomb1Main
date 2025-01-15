@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
-
 typedef enum {
     SCREENSHOT_FORMAT_JPEG,
     SCREENSHOT_FORMAT_PNG,
