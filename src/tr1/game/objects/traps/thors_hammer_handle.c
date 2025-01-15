@@ -6,6 +6,8 @@
 #include "game/room.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
+
 typedef enum {
     THOR_HAMMER_HANDLE_STATE_SET = 0,
     THOR_HAMMER_HANDLE_STATE_TEASE = 1,
@@ -27,6 +29,7 @@ void ThorsHammerHandle_Initialise(int16_t item_num)
 {
     ITEM *hand_item = &g_Items[item_num];
     int16_t head_item_num = Item_Create();
+    ASSERT(head_item_num != NO_ITEM);
     ITEM *head_item = &g_Items[head_item_num];
     head_item->object_id = O_THORS_HEAD;
     head_item->room_num = hand_item->room_num;

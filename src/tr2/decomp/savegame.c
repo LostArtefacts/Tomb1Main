@@ -936,7 +936,7 @@ void WriteSG(const void *const pointer, const size_t size)
 {
     m_BufPos += size;
     if (m_BufPos >= MAX_SG_BUFFER_SIZE) {
-        Shell_ExitSystem("FATAL: Savegame is too big to fit in buffer");
+        Shell_ExitSystem("Savegame is too big to fit in buffer");
     }
 
     memcpy(m_BufPtr, pointer, size);

@@ -30,11 +30,7 @@ static void M_UpdateText(UI_CONTROLS_INPUT_SELECTOR *const self)
     const char *const key_name = Input_GetKeyName(
         self->controller->backend, self->controller->active_layout,
         self->input_role);
-    if (key_name == NULL) {
-        UI_Label_ChangeText(self->choice, "BAD");
-    } else {
-        UI_Label_ChangeText(self->choice, key_name);
-    }
+    UI_Label_ChangeText(self->choice, key_name);
     const char *const role_name = Input_GetRoleName(self->input_role);
     char role_name_padded[strlen(role_name) + 2];
     sprintf(role_name_padded, "%s  ", role_name);

@@ -6,6 +6,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
@@ -52,7 +53,7 @@ bool LOT_EnableBaddieAI(int16_t item_num, int32_t always)
                 return true;
             }
         }
-        Shell_ExitSystem("UnpauseBaddie() grimmer!");
+        ASSERT_FAIL();
     }
 
     int32_t worst_dist = 0;

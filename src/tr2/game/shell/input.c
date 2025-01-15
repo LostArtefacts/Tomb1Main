@@ -4,6 +4,7 @@
 #include "game/camera.h"
 #include "game/clock.h"
 #include "game/console/common.h"
+#include "game/game_string.h"
 #include "game/gameflow/gameflow_new.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -35,8 +36,9 @@ static void M_ToggleBilinearFiltering(void)
                                                              : GFX_TF_BILINEAR;
     Config_Write();
     Overlay_DisplayModeInfo(
-        g_Config.rendering.texture_filter == GFX_TF_BILINEAR ? "Bilinear On"
-                                                             : "Bilinear Off");
+        g_Config.rendering.texture_filter == GFX_TF_BILINEAR
+            ? GS(OSD_BILINEAR_FILTER_ON)
+            : GS(OSD_BILINEAR_FILTER_OFF));
 }
 
 static void M_TogglePerspectiveCorrection(void)
@@ -49,8 +51,8 @@ static void M_TogglePerspectiveCorrection(void)
     Config_Write();
     Overlay_DisplayModeInfo(
         g_Config.rendering.enable_perspective_filter
-            ? "Perspective Correction On"
-            : "Perspective Correction Off");
+            ? GS(OSD_PERSPECTIVE_FILTER_ON)
+            : GS(OSD_PERSPECTIVE_FILTER_OFF));
 }
 
 static void M_ToggleZBuffer(void)
@@ -60,13 +62,14 @@ static void M_ToggleZBuffer(void)
             !g_Config.rendering.enable_wireframe;
         Config_Write();
         Overlay_DisplayModeInfo(
-            g_Config.rendering.enable_wireframe ? "Wireframe On"
-                                                : "Wireframe Off");
+            g_Config.rendering.enable_wireframe ? GS(OSD_WIREFRAME_MODE_ON)
+                                                : GS(OSD_WIREFRAME_MODE_OFF));
     } else {
         g_Config.rendering.enable_zbuffer = !g_Config.rendering.enable_zbuffer;
         Config_Write();
         Overlay_DisplayModeInfo(
-            g_Config.rendering.enable_zbuffer ? "Z-Buffer On" : "Z-Buffer Off");
+            g_Config.rendering.enable_zbuffer ? GS(OSD_DEPTH_BUFFER_ON)
+                                              : GS(OSD_DEPTH_BUFFER_OFF));
     }
 }
 
@@ -81,7 +84,7 @@ static void M_CycleLightingContrast(void)
     Config_Write();
     char tmp[100];
     sprintf(
-        tmp, "Lighting Contrast: %s",
+        tmp, GS(OSD_LIGHTNING_CONTRAST_FMT),
         ENUM_MAP_TO_STRING(LIGHTING_CONTRAST, value));
     Overlay_DisplayModeInfo(tmp);
 }
@@ -99,8 +102,9 @@ static void M_ToggleRenderingMode(void)
                                                       : RM_HARDWARE;
     Config_Write();
     Overlay_DisplayModeInfo(
-        g_Config.rendering.render_mode == RM_HARDWARE ? "Hardware Rendering"
-                                                      : "Software Rendering");
+        g_Config.rendering.render_mode == RM_HARDWARE
+            ? GS(OSD_HARDWARE_RENDERING)
+            : GS(OSD_SOFTWARE_RENDERING));
 }
 
 static void M_DecreaseResolutionOrBPP(void)
@@ -112,7 +116,7 @@ static void M_DecreaseResolutionOrBPP(void)
     g_Config.rendering.scaler--;
     Config_Write();
     char mode_string[64] = {};
-    sprintf(mode_string, "Scaler: %d", g_Config.rendering.scaler);
+    sprintf(mode_string, GS(OSD_SCALER_FMT), g_Config.rendering.scaler);
     Overlay_DisplayModeInfo(mode_string);
 }
 
@@ -125,7 +129,7 @@ static void M_IncreaseResolutionOrBPP(void)
     g_Config.rendering.scaler++;
     Config_Write();
     char mode_string[64] = {};
-    sprintf(mode_string, "Scaler: %d", g_Config.rendering.scaler);
+    sprintf(mode_string, GS(OSD_SCALER_FMT), g_Config.rendering.scaler);
     Overlay_DisplayModeInfo(mode_string);
 }
 

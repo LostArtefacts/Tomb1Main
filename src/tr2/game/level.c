@@ -759,17 +759,10 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     Memory_FreePointer(&full_path);
 
     const int32_t version = VFile_ReadS32(file);
-    if (version > 45) {
+    if (version != 45) {
         Shell_ExitSystemFmt(
-            "FATAL: Level %d (%s) requires a new TOMB2.EXE (version %d) to run",
-            level_num, full_path, file_name);
-    }
-
-    if (version < 45) {
-        Shell_ExitSystemFmt(
-            "FATAL: Level %d (%s) is OUT OF DATE (version %d). COPY NEW "
-            "EDITORS AND REMAKE LEVEL",
-            level_num, full_path, file_name);
+            "Unexpected level version (%d, expected: %d, path: %s)", level_num,
+            45, file_name);
     }
 
     M_LoadPalettes(file);

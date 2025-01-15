@@ -3,10 +3,10 @@
 #include "game/camera.h"
 #include "game/items.h"
 #include "game/lot.h"
-#include "game/shell.h"
 #include "game/spawn.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/utils.h>
 
 #define BOOM_TIME 130
@@ -85,9 +85,8 @@ void Bartoli_Initialise(const int16_t item_num)
 
     const int16_t item_dragon_back_num = Item_Create();
     const int16_t item_dragon_front_num = Item_Create();
-    if (item_dragon_back_num == NO_ITEM || item_dragon_front_num == NO_ITEM) {
-        Shell_ExitSystem("Unable to create dragon");
-    }
+    ASSERT(item_dragon_back_num != NO_ITEM);
+    ASSERT(item_dragon_front_num != NO_ITEM);
 
     ITEM *const item_dragon_back = Item_Get(item_dragon_back_num);
     item_dragon_back->object_id = O_DRAGON_BACK;

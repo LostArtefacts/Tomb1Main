@@ -3,11 +3,11 @@
 #include "game/items.h"
 #include "game/lot.h"
 #include "game/objects/common.h"
-#include "game/shell.h"
 #include "game/sound.h"
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/utils.h>
 
@@ -32,10 +32,7 @@ void Statue_Initialise(int16_t item_num)
     ITEM *item = &g_Items[item_num];
 
     int16_t centaur_item_num = Item_Create();
-    if (centaur_item_num == NO_ITEM) {
-        Shell_ExitSystem("FATAL: Cannot create CENTAUR in STATUE");
-        return;
-    }
+    ASSERT(centaur_item_num != NO_ITEM);
 
     ITEM *centaur = &g_Items[centaur_item_num];
     centaur->object_id = O_CENTAUR;
