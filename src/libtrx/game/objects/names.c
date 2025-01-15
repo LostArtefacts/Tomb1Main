@@ -79,7 +79,9 @@ GAME_OBJECT_ID *Object_IdsFromName(
                 .value = (void *)(intptr_t)object_id,
                 .weight = 2,
             };
-            Vector_Add(source, &source_item);
+            if (source_item.key != NULL) {
+                Vector_Add(source, &source_item);
+            }
         }
 
         if (Object_IsObjectType(object_id, g_PickupObjects)) {

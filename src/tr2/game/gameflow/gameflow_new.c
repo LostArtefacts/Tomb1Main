@@ -23,7 +23,9 @@ static void M_LoadObjectString(const char *const key, const char *const value)
 {
     const GAME_OBJECT_ID object_id =
         ENUM_MAP_GET(GAME_OBJECT_ID, key, NO_OBJECT);
-    if (object_id != NO_OBJECT) {
+    if (object_id == NO_OBJECT) {
+        LOG_ERROR("Invalid object id: %s", key);
+    } else {
         Object_SetName(object_id, value);
     }
 }
@@ -155,7 +157,7 @@ void GF_N_LoadStrings(const int32_t level_num)
         { O_SOUND_OPTION,          GS(INV_ITEM_SOUND) },
         { O_CONTROL_OPTION,        GS(INV_ITEM_CONTROLS) },
         { O_PHOTO_OPTION,          GS(INV_ITEM_LARAS_HOME) },
-        { NO_OBJECT, NULL },
+        { NO_OBJECT,               NULL },
         // clang-format on
     };
 
@@ -163,42 +165,6 @@ void GF_N_LoadStrings(const int32_t level_num)
         const char *const new_name = game_string_defs[i].name;
         if (new_name != NULL) {
             Object_SetName(game_string_defs[i].object_id, new_name);
-        }
-    }
-
-    struct {
-        GAME_OBJECT_ID object_id;
-        char **strings;
-    } level_item_defs[] = {
-        { O_PUZZLE_ITEM_1, g_GF_Puzzle1Strings },
-        { O_PUZZLE_ITEM_2, g_GF_Puzzle2Strings },
-        { O_PUZZLE_ITEM_3, g_GF_Puzzle3Strings },
-        { O_PUZZLE_ITEM_4, g_GF_Puzzle4Strings },
-        { O_KEY_ITEM_1, g_GF_Key1Strings },
-        { O_KEY_ITEM_2, g_GF_Key2Strings },
-        { O_KEY_ITEM_3, g_GF_Key3Strings },
-        { O_KEY_ITEM_4, g_GF_Key4Strings },
-        { O_PICKUP_ITEM_1, g_GF_Pickup1Strings },
-        { O_PICKUP_ITEM_2, g_GF_Pickup2Strings },
-        { O_PUZZLE_OPTION_1, g_GF_Puzzle1Strings },
-        { O_PUZZLE_OPTION_2, g_GF_Puzzle2Strings },
-        { O_PUZZLE_OPTION_3, g_GF_Puzzle3Strings },
-        { O_PUZZLE_OPTION_4, g_GF_Puzzle4Strings },
-        { O_KEY_OPTION_1, g_GF_Key1Strings },
-        { O_KEY_OPTION_2, g_GF_Key2Strings },
-        { O_KEY_OPTION_3, g_GF_Key3Strings },
-        { O_KEY_OPTION_4, g_GF_Key4Strings },
-        { O_PICKUP_OPTION_1, g_GF_Pickup1Strings },
-        { O_PICKUP_OPTION_2, g_GF_Pickup2Strings },
-        { NO_OBJECT, NULL },
-    };
-
-    if (level_num >= 0 && level_num < g_GameFlow.num_levels) {
-        for (int32_t i = 0; level_item_defs[i].object_id != NO_OBJECT; i++) {
-            const char *const new_name = level_item_defs[i].strings[level_num];
-            if (new_name != NULL) {
-                Object_SetName(level_item_defs[i].object_id, new_name);
-            }
         }
     }
 

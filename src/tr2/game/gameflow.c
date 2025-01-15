@@ -308,33 +308,22 @@ bool GF_LoadFromFile(const char *const file_name)
     }
     M_ReadStringTable(file, 89, NULL, NULL);
 
+    // pc strings
     M_ReadStringTable(file, 41, NULL, NULL);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Puzzle1Strings,
-        &g_GF_Puzzle1StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Puzzle2Strings,
-        &g_GF_Puzzle2StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Puzzle3Strings,
-        &g_GF_Puzzle3StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Puzzle4Strings,
-        &g_GF_Puzzle4StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Pickup1Strings,
-        &g_GF_Pickup1StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Pickup2Strings,
-        &g_GF_Pickup2StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Key1Strings, &g_GF_Key1StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Key2Strings, &g_GF_Key2StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Key3Strings, &g_GF_Key3StringsBuf);
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_Key4Strings, &g_GF_Key4StringsBuf);
+
+    // puzzle 1-4 strings
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    // pickup 1-2 strings
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    // key 1-4 strings
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
 
     VFile_Close(file);
     Benchmark_End(benchmark, NULL);

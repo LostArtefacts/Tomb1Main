@@ -11,13 +11,28 @@
             "injections": [
                 "data/injections/wall_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Guardhouse Key",
+                "INV_ITEM_KEY_2": "Rusty Key",
+            },
         },
 
         // 2. Venice
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Boathouse Key",
+                "INV_ITEM_KEY_2": "Steel Key",
+                "INV_ITEM_KEY_3": "Iron Key",
+            },
+        },
 
         // 3. Bartoli's Hideout
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Library Key",
+                "INV_ITEM_KEY_2": "Detonator Key",
+            },
+        },
 
         // 4. Opera House
         {
@@ -25,6 +40,11 @@
                 "data/injections/opera_fd.bin",
                 "data/injections/opera_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Ornate Key",
+                "INV_ITEM_PUZZLE_1": "Relay Box",
+                "INV_ITEM_PUZZLE_2": "Circuit Board",
+            },
         },
 
         // 5. Offshore Rig
@@ -32,6 +52,11 @@
             "injections": [
                 "data/injections/rig_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Red Pass Card",
+                "INV_ITEM_KEY_2": "Yellow Pass Card",
+                "INV_ITEM_KEY_3": "Green Pass Card",
+            },
         },
 
         // 6. Diving Area
@@ -39,6 +64,11 @@
             "injections": [
                 "data/injections/diving_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Red Pass Card",
+                "INV_ITEM_KEY_4": "Blue Pass Card",
+                "INV_ITEM_PUZZLE_1": "Machine Chip",
+            },
         },
 
         // 7. 40 Fathoms
@@ -50,16 +80,33 @@
                 "data/injections/wreck_fd.bin",
                 "data/injections/wreck_itemrots.bin",
             ],
+            "game_strings": {
+                 "INV_ITEM_KEY_1": "Rest Room Key",
+                 "INV_ITEM_KEY_2": "Rusty Key",
+                 "INV_ITEM_KEY_3": "Cabin Key",
+                 "INV_ITEM_PUZZLE_1": "Circuit Breaker",
+            },
         },
 
         // 9. Living Quarters
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Theatre Key",
+                "INV_ITEM_KEY_2": "Rusty Key",
+            },
+        },
 
         // 10. The Deck
         {
             "injections": [
                 "data/injections/deck_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_2": "Stern Key",
+                "INV_ITEM_KEY_3": "Storage Key",
+                "INV_ITEM_KEY_4": "Cabin Key",
+                "INV_ITEM_PUZZLE_4": "The Seraph",
+            },
         },
 
         // 11. Tibetan Foothills
@@ -71,6 +118,11 @@
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
             },
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Drawbridge Key",
+                "INV_ITEM_KEY_2": "Hut Key",
+                "INV_ITEM_PUZZLE_4": "The Seraph",
+            },
         },
 
         // 12. Barkhang Monastery
@@ -78,6 +130,15 @@
             "injections": [
                 "data/injections/barkhang_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Strongroom Key",
+                "INV_ITEM_KEY_2": "Trapdoor Key",
+                "INV_ITEM_KEY_3": "Rooftops Key",
+                "INV_ITEM_KEY_4": "Main Hall Key",
+                "INV_ITEM_PUZZLE_1": "Prayer Wheels",
+                "INV_ITEM_PUZZLE_2": "Gemstones",
+                "INV_ITEM_PUZZLE_4": "The Seraph",
+            },
         },
 
         // 13. Catacombs of the Talion
@@ -88,6 +149,10 @@
             ],
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
+            },
+            "game_strings": {
+                "INV_ITEM_PICKUP_1": "Gong Hammer",
+                "INV_ITEM_PUZZLE_1": "Tibetan Mask",
             },
         },
 
@@ -100,6 +165,11 @@
             "object_strings": {
                 "O_TIGER": "Snow Leopard",
             },
+            "game_strings": {
+                "INV_ITEM_KEY_2": "Gong Hammer",
+                "INV_ITEM_PICKUP_2": "Talion",
+                "INV_ITEM_PUZZLE_1": "Tibetan Mask",
+            },
         },
 
         // 15. Temple of Xian
@@ -108,6 +178,12 @@
                 "data/injections/xian_fd.bin",
                 "data/injections/xian_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_2": "Gold Key",
+                "INV_ITEM_KEY_3": "Silver Key",
+                "INV_ITEM_KEY_4": "Main Chamber Key",
+                "INV_ITEM_PUZZLE_1": "The Dragon Seal",
+            },
         },
 
         // 16. Floating Islands
@@ -116,26 +192,58 @@
                 "data/injections/floating_fd.bin",
                 "data/injections/floating_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_PUZZLE_1": "Mystic Plaque",
+                "INV_ITEM_PUZZLE_2": "Mystic Plaque",
+            },
         },
 
         // 17. The Dragon's Lair
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_PUZZLE_1": "Mystic Plaque",
+                "INV_ITEM_PUZZLE_2": "Dagger of Xian",
+            },
+        },
 
         // 18. Home Sweet Home
         {
             "injections": [
                 "data/injections/house_itemrots.bin",
             ],
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Gun Cupboard Key",
+                "INV_ITEM_PUZZLE_1": "Dagger of Xian",
+            },
         },
 
         // 19. Demo 1
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Boathouse Key",
+                "INV_ITEM_KEY_2": "Steel Key",
+                "INV_ITEM_KEY_3": "Iron Key",
+            },
+        },
 
         // 20. Demo 2
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Rest Room Key",
+                "INV_ITEM_KEY_2": "Rusty Key",
+                "INV_ITEM_KEY_3": "Cabin Key",
+                "INV_ITEM_PUZZLE_1": "Circuit Breaker",
+            },
+        },
 
         // 21. Demo 3
-        {},
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Drawbridge Key",
+                "INV_ITEM_KEY_2": "Hut Key",
+                "INV_ITEM_PUZZLE_4": "The Seraph",
+            },
+        },
     ],
 
     "object_strings": {
@@ -259,9 +367,6 @@
         "O_BRIDGE_FLAT": "Bridge Flat",
         "O_BRIDGE_TILT_1": "Bridge Tilt 1",
         "O_BRIDGE_TILT_2": "Bridge Tilt 2",
-        "O_PASSPORT_OPTION": "Passport Option",
-        "O_COMPASS_OPTION": "Compass Option",
-        "O_PHOTO_OPTION": "Photo Option",
         "O_PLAYER_1": "Cutscene Actor 1",
         "O_PLAYER_2": "Cutscene Actor 2",
         "O_PLAYER_3": "Cutscene Actor 3",
@@ -272,55 +377,8 @@
         "O_PLAYER_8": "Cutscene Actor 8",
         "O_PLAYER_9": "Cutscene Actor 9",
         "O_PLAYER_10": "Cutscene Actor 10",
-        "O_PASSPORT_CLOSED": "Passport Closed",
-        "O_COMPASS_ITEM": "Compass",
-        "O_PISTOL_ITEM": "Pistols",
-        "O_SHOTGUN_ITEM": "Shotgun",
-        "O_MAGNUM_ITEM": "Automatic Pistols",
-        "O_UZI_ITEM": "Uzis",
-        "O_HARPOON_ITEM": "Harpoon",
-        "O_M16_ITEM": "M16",
-        "O_GRENADE_ITEM": "Grenade Launcher",
-        "O_PISTOL_AMMO_ITEM": "Pistol Ammo",
-        "O_SHOTGUN_AMMO_ITEM": "Shotgun Ammo",
-        "O_MAGNUM_AMMO_ITEM": "Magnum Ammo",
-        "O_UZI_AMMO_ITEM": "Uzi Ammo",
-        "O_HARPOON_AMMO_ITEM": "Harpoon Ammo",
-        "O_M16_AMMO_ITEM": "M16 Ammo",
-        "O_GRENADE_AMMO_ITEM": "Grenade Launcher Ammo",
-        "O_SMALL_MEDIPACK_ITEM": "Small Medipack",
-        "O_LARGE_MEDIPACK_ITEM": "Large Medipack",
         "O_FLARES_ITEM": "Flares Box",
-        "O_FLARE_ITEM": "Flare",
-        "O_DETAIL_OPTION": "Detail Option",
-        "O_SOUND_OPTION": "Sound Option",
-        "O_CONTROL_OPTION": "Controls Option",
         "O_GAMMA_OPTION": "Gamma Option",
-        "O_PISTOL_OPTION": "Pistol Option",
-        "O_SHOTGUN_OPTION": "Shotgun Option",
-        "O_MAGNUM_OPTION": "Magnums Option",
-        "O_UZI_OPTION": "Uzis Option",
-        "O_HARPOON_OPTION": "Harpoon Option",
-        "O_M16_OPTION": "M16 Option",
-        "O_GRENADE_OPTION": "Grenade Launcher Option",
-        "O_PISTOL_AMMO_OPTION": "Pistol Ammo Option",
-        "O_SHOTGUN_AMMO_OPTION": "Shotgun Ammo Option",
-        "O_MAGNUM_AMMO_OPTION": "Magnum Ammo Option",
-        "O_UZI_AMMO_OPTION": "Uzi Ammo Option",
-        "O_HARPOON_AMMO_OPTION": "Harpoon Ammo Option",
-        "O_M16_AMMO_OPTION": "M16 Ammo Option",
-        "O_GRENADE_AMMO_OPTION": "Grenade Launcher Ammo Option",
-        "O_SMALL_MEDIPACK_OPTION": "Small Medipack Option",
-        "O_LARGE_MEDIPACK_OPTION": "Large Medipack Option",
-        "O_FLARES_OPTION": "Flare Option",
-        "O_PUZZLE_ITEM_1": "Puzzle Item 1",
-        "O_PUZZLE_ITEM_2": "Puzzle Item 2",
-        "O_PUZZLE_ITEM_3": "Puzzle Item 3",
-        "O_PUZZLE_ITEM_4": "Puzzle Item 4",
-        "O_PUZZLE_OPTION_1": "Puzzle Option 1",
-        "O_PUZZLE_OPTION_2": "Puzzle Option 2",
-        "O_PUZZLE_OPTION_3": "Puzzle Option 3",
-        "O_PUZZLE_OPTION_4": "Puzzle Option 4",
         "O_PUZZLE_HOLE_1": "Puzzle Hole 1 (Empty)",
         "O_PUZZLE_HOLE_2": "Puzzle Hole 2 (Empty)",
         "O_PUZZLE_HOLE_3": "Puzzle Hole 3 (Empty)",
@@ -332,22 +390,10 @@
         "O_SECRET_1": "Secret 1",
         "O_SECRET_2": "Secret 2",
         "O_SECRET_3": "Secret 3",
-        "O_KEY_ITEM_1": "Key 1",
-        "O_KEY_ITEM_2": "Key 2",
-        "O_KEY_ITEM_3": "Key 3",
-        "O_KEY_ITEM_4": "Key 4",
-        "O_KEY_OPTION_1": "Key Option 1",
-        "O_KEY_OPTION_2": "Key Option 2",
-        "O_KEY_OPTION_3": "Key Option 3",
-        "O_KEY_OPTION_4": "Key Option 4",
         "O_KEY_HOLE_1": "Keyhole 1",
         "O_KEY_HOLE_2": "Keyhole 2",
         "O_KEY_HOLE_3": "Keyhole 3",
         "O_KEY_HOLE_4": "Keyhole 4",
-        "O_PICKUP_ITEM_1": "Pickup Item 1",
-        "O_PICKUP_ITEM_2": "Pickup Item 2",
-        "O_PICKUP_OPTION_1": "Pickup Option 1",
-        "O_PICKUP_OPTION_2": "Pickup Option 2",
         "O_SPHERE_OF_DOOM_1": "Dragon Explosion 1",
         "O_SPHERE_OF_DOOM_2": "Dragon Explosion 2",
         "O_SPHERE_OF_DOOM_3": "Dragon Explosion 3",
