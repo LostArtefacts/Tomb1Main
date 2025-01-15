@@ -7,7 +7,6 @@
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/output.h"
-#include "game/phase/phase.h"
 #include "game/screen.h"
 #include "game/text.h"
 #include "game/viewport.h"
