@@ -2,7 +2,6 @@
 
 #include "config.h"
 #include "debug.h"
-#include "game/console/common.h"
 #include "game/fader.h"
 #include "game/game.h"
 #include "game/gameflow.h"
@@ -166,9 +165,6 @@ static void M_Draw(PHASE *const phase)
     Output_DrawPolyList();
 
     Fader_Draw(&p->top_fader);
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
 }
 
 PHASE *Phase_Stats_Create(const PHASE_STATS_ARGS args)

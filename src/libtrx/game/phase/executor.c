@@ -1,14 +1,13 @@
 #include "game/phase/executor.h"
 
 #include "game/clock.h"
+#include "game/console/common.h"
 #include "game/fader.h"
 #include "game/game.h"
 #include "game/gameflow.h"
 #include "game/interpolation.h"
 #include "game/output.h"
-
-#include <stdbool.h>
-#include <stddef.h>
+#include "game/text.h"
 
 #define MAX_PHASES 10
 
@@ -55,7 +54,12 @@ static void M_Draw(PHASE *const phase)
     if (phase != NULL && phase->draw != NULL) {
         phase->draw(phase);
     }
+
+    Console_Draw();
+    Text_Draw();
+    Output_DrawPolyList();
     Fader_Draw(&m_ExitFader);
+
     Output_EndScene();
 }
 

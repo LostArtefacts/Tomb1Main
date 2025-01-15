@@ -1,11 +1,9 @@
 #include "game/phase/phase_picture.h"
 
-#include "game/console/common.h"
 #include "game/fader.h"
 #include "game/input.h"
 #include "game/output.h"
 #include "game/shell.h"
-#include "game/text.h"
 #include "memory.h"
 
 typedef enum {
@@ -96,9 +94,6 @@ static void M_Draw(PHASE *const phase)
     Output_DrawBackground();
     Output_DrawPolyList();
     Fader_Draw(&p->fader);
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
 }
 
 PHASE *Phase_Picture_Create(const PHASE_PICTURE_ARGS args)

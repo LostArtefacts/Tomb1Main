@@ -1,7 +1,6 @@
 #include "game/phase/phase_inventory.h"
 
 #include "debug.h"
-#include "game/console/common.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
 #include "game/overlay.h"
@@ -58,10 +57,6 @@ static void M_Draw(PHASE *const phase)
     Output_DrawBackground();
     InvRing_Draw(p->ring);
     Overlay_DrawModeInfo();
-    Text_Draw();
-    Output_DrawPolyList();
-
-    Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
 }

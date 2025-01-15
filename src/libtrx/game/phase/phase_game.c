@@ -1,9 +1,7 @@
 #include "game/phase/phase_game.h"
 
-#include "game/console/common.h"
 #include "game/game.h"
 #include "game/output.h"
-#include "game/text.h"
 #include "memory.h"
 
 typedef struct {
@@ -67,9 +65,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 static void M_Draw(PHASE *const phase)
 {
     Game_Draw(true);
-    Console_Draw();
-    Text_Draw();
-    Output_DrawPolyList();
 }
 
 PHASE *Phase_Game_Create(

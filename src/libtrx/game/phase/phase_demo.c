@@ -1,6 +1,5 @@
 #include "game/phase/phase_demo.h"
 
-#include "game/console/common.h"
 #include "game/demo.h"
 #include "game/fader.h"
 #include "game/game.h"
@@ -125,9 +124,6 @@ static void M_Draw(PHASE *const phase)
     }
     Text_Draw();
     Fader_Draw(&p->top_fader);
-    Output_DrawPolyList();
-
-    Console_Draw();
     Output_DrawPolyList();
 }
 

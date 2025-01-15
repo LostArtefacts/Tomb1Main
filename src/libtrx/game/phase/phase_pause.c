@@ -1,6 +1,5 @@
 #include "game/phase/phase_pause.h"
 
-#include "game/console/common.h"
 #include "game/fader.h"
 #include "game/game.h"
 #include "game/game_string.h"
@@ -244,10 +243,6 @@ static void M_Draw(PHASE *const phase)
     if (p->ui != NULL) {
         p->ui->draw(p->ui);
     }
-    Output_DrawPolyList();
-
-    Console_Draw();
-    Text_Draw();
     Output_DrawPolyList();
 }
 

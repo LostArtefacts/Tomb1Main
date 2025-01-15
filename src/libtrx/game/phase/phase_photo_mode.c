@@ -12,7 +12,6 @@
 #include "game/overlay.h"
 #include "game/shell.h"
 #include "game/sound.h"
-#include "game/text.h"
 #include "game/ui/common.h"
 #include "game/ui/widgets/photo_mode.h"
 #include "memory.h"
@@ -112,9 +111,6 @@ static void M_Draw(PHASE *const phase)
     if (!p->taking_screenshot) {
         p->ui->draw(p->ui);
     }
-
-    Console_Draw();
-    Text_Draw();
     Output_DrawPolyList();
 }
 

@@ -1,10 +1,8 @@
 #include "game/phase/phase_cutscene.h"
 
-#include "game/console/common.h"
 #include "game/cutscene.h"
 #include "game/game.h"
 #include "game/output.h"
-#include "game/text.h"
 #include "memory.h"
 
 typedef struct {
@@ -62,10 +60,6 @@ static void M_Draw(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
     Cutscene_Draw();
-    Output_DrawPolyList();
-
-    Console_Draw();
-    Text_Draw();
     Output_DrawPolyList();
 }
 
