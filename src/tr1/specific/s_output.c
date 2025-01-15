@@ -95,7 +95,7 @@ static void M_ReleaseSurfaces(void)
     }
 
     for (int i = 0; i < GFX_MAX_TEXTURES; i++) {
-        if (m_TextureSurfaces[i]) {
+        if (m_TextureSurfaces[i] != NULL) {
             GFX_2D_Surface_Free(m_TextureSurfaces[i]);
             m_TextureSurfaces[i] = NULL;
         }
@@ -832,16 +832,6 @@ void S_Output_ApplyRenderSettings(void)
         m_PrimarySurface = GFX_2D_Surface_Create(&surface_desc);
     }
     M_ClearSurface(m_PrimarySurface);
-
-    for (int i = 0; i < GFX_MAX_TEXTURES; i++) {
-        GFX_2D_SURFACE_DESC surface_desc = {
-            .width = 256,
-            .height = 256,
-        };
-        if (m_TextureSurfaces[i] == NULL) {
-            m_TextureSurfaces[i] = GFX_2D_Surface_Create(&surface_desc);
-        }
-    }
 }
 
 void S_Output_SetWindowSize(int width, int height)
@@ -1260,6 +1250,13 @@ void S_Output_DownloadTextures(int32_t pages)
     M_ReleaseTextures();
 
     for (int i = 0; i < pages; i++) {
+        if (m_TextureSurfaces[i] == NULL) {
+            const GFX_2D_SURFACE_DESC surface_desc = {
+                .width = 256,
+                .height = 256,
+            };
+            m_TextureSurfaces[i] = GFX_2D_Surface_Create(&surface_desc);
+        }
         GFX_2D_SURFACE *const surface = m_TextureSurfaces[i];
         RGBA_8888 *output_ptr = (RGBA_8888 *)surface->buffer;
         RGBA_8888 *input_ptr = g_TexturePagePtrs[i];
@@ -1268,7 +1265,7 @@ void S_Output_DownloadTextures(int32_t pages)
             surface->desc.width * surface->desc.height * sizeof(RGBA_8888));
 
         m_TextureMap[i] = GFX_3D_Renderer_RegisterTexturePage(
-            m_Renderer3D, surface->buffer, surface->desc.width,
+            m_Renderer3D, output_ptr, surface->desc.width,
             surface->desc.height);
     }
 
