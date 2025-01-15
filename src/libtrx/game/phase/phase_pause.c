@@ -41,7 +41,6 @@ static void M_FadeIn(M_PRIV *p);
 static void M_FadeOut(M_PRIV *p);
 static void M_PauseGame(M_PRIV *p);
 static void M_ReturnToGame(M_PRIV *p);
-static void M_ExitGame(M_PRIV *p);
 static void M_ExitToTitle(M_PRIV *p);
 static void M_CreateText(M_PRIV *p);
 static void M_RemoveText(M_PRIV *p);
@@ -86,12 +85,6 @@ static void M_ReturnToGame(M_PRIV *const p)
 {
     Music_Unpause();
     Sound_UnpauseAll();
-    M_FadeOut(p);
-}
-
-static void M_ExitGame(M_PRIV *const p)
-{
-    p->action = GF_EXIT_GAME;
     M_FadeOut(p);
 }
 
@@ -177,10 +170,6 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t const num_frames)
 
     if (p->ui != NULL) {
         p->ui->control(p->ui);
-    }
-
-    if (Game_IsExiting()) {
-        M_ExitGame(p);
     }
 
     switch (p->state) {

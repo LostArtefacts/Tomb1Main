@@ -21,7 +21,6 @@ typedef struct {
     STATE state;
     int32_t level_num;
     FADER top_fader;
-    FADER exit_fader;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -92,17 +91,12 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
             }
         }
 
-        if (Game_IsExiting() && !Fader_IsActive(&p->exit_fader)) {
-            p->state = STATE_FADE_OUT;
-            Fader_Init(&p->exit_fader, FADER_TRANSPARENT, FADER_BLACK, 0.5);
-        }
-
         break;
 
     case STATE_FADE_OUT:
         Game_SetIsPlaying(false);
         Demo_StopFlashing();
-        if (!Fader_IsActive(&p->top_fader) && !Fader_IsActive(&p->exit_fader)) {
+        if (!Fader_IsActive(&p->top_fader)) {
             p->state = STATE_FINISH;
             return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
         }
@@ -134,7 +128,6 @@ static void M_Draw(PHASE *const phase)
     Output_DrawPolyList();
 
     Console_Draw();
-    Fader_Draw(&p->exit_fader);
     Output_DrawPolyList();
 }
 

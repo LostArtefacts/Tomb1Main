@@ -2,7 +2,6 @@
 
 #include "game/console/common.h"
 #include "game/cutscene.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/output.h"
 #include "game/text.h"
@@ -10,8 +9,6 @@
 
 typedef struct {
     int32_t level_num;
-    bool exiting;
-    FADER exit_fader;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -49,28 +46,16 @@ static void M_Resume(PHASE *const phase)
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
-
-    if (Game_IsExiting() && !p->exiting) {
-        p->exiting = true;
-        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-    } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
-        return (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = GF_EXIT_GAME },
-        };
-    } else {
-        for (int32_t i = 0; i < num_frames; i++) {
-            const GAME_FLOW_COMMAND gf_cmd = Cutscene_Control();
-            if (gf_cmd.action != GF_NOOP) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .gf_cmd = gf_cmd,
-                };
-            }
+    for (int32_t i = 0; i < num_frames; i++) {
+        const GAME_FLOW_COMMAND gf_cmd = Cutscene_Control();
+        if (gf_cmd.action != GF_NOOP) {
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = gf_cmd,
+            };
         }
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
     }
+    return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(PHASE *const phase)
@@ -82,7 +67,6 @@ static void M_Draw(PHASE *const phase)
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
-    Fader_Draw(&p->exit_fader);
 }
 
 PHASE *Phase_Cutscene_Create(const int32_t level_num)

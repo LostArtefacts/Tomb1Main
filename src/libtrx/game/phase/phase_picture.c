@@ -2,7 +2,6 @@
 
 #include "game/console/common.h"
 #include "game/fader.h"
-#include "game/game.h"
 #include "game/input.h"
 #include "game/output.h"
 #include "game/shell.h"
@@ -58,7 +57,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 
     switch (p->state) {
     case STATE_FADE_IN:
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()) {
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             M_FadeOut(p);
         } else if (!Fader_IsActive(&p->fader)) {
             p->state = STATE_DISPLAY;
@@ -67,7 +66,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         break;
 
     case STATE_DISPLAY:
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back || Game_IsExiting()
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back
             || ClockTimer_CheckElapsed(
                 &p->timer,
                 p->args.display_time

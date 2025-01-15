@@ -1,6 +1,7 @@
 #include "game/phase/executor.h"
 
 #include "game/clock.h"
+#include "game/fader.h"
 #include "game/game.h"
 #include "game/gameflow.h"
 #include "game/interpolation.h"
@@ -11,6 +12,8 @@
 
 #define MAX_PHASES 10
 
+static bool m_Exiting;
+static FADER m_ExitFader;
 static int32_t m_PhaseStackSize = 0;
 static PHASE *m_PhaseStack[MAX_PHASES] = {};
 
@@ -26,6 +29,17 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
         GameFlow_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_NOOP });
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
+
+    if (Game_IsExiting() && !m_Exiting) {
+        m_Exiting = true;
+        Fader_Init(&m_ExitFader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
+    } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_EXIT_GAME },
+        };
+    }
+
     if (phase != NULL && phase->control != NULL) {
         return phase->control(phase, nframes);
     }
@@ -41,6 +55,7 @@ static void M_Draw(PHASE *const phase)
     if (phase != NULL && phase->draw != NULL) {
         phase->draw(phase);
     }
+    Fader_Draw(&m_ExitFader);
     Output_EndScene();
 }
 

@@ -117,16 +117,12 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
             p->state = STATE_DISPLAY;
         } else if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             M_FadeOut(p, false);
-        } else if (Game_IsExiting()) {
-            M_FadeOut(p, true);
         }
         break;
 
     case STATE_DISPLAY:
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
             M_FadeOut(p, false);
-        } else if (Game_IsExiting()) {
-            M_FadeOut(p, true);
         }
         break;
 
@@ -140,7 +136,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
     case STATE_FINISH:
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = Game_IsExiting() ? GF_EXIT_GAME : GF_NOOP },
+            .gf_cmd = { .action = GF_NOOP },
         };
     }
 

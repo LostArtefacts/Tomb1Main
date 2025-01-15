@@ -2,7 +2,6 @@
 
 #include "debug.h"
 #include "game/console/common.h"
-#include "game/game.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
 #include "game/overlay.h"
@@ -12,8 +11,6 @@
 typedef struct {
     INVENTORY_MODE mode;
     INV_RING *ring;
-    bool exiting;
-    FADER exit_fader;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -38,28 +35,12 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
     ASSERT(p->ring != NULL);
-
-    if (Game_IsExiting() && !p->exiting) {
-        p->exiting = true;
-        Fader_Init(&p->exit_fader, FADER_TRANSPARENT, FADER_BLACK, 0.5);
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-    } else if (p->exiting) {
-        if (!Fader_IsActive(&p->exit_fader)) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_EXIT_GAME },
-            };
-        }
-        return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-    } else {
-        const GAME_FLOW_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
-        return (PHASE_CONTROL) {
-            .action = p->ring->motion.status == RNG_DONE
-                ? PHASE_ACTION_END
-                : PHASE_ACTION_CONTINUE,
-            .gf_cmd = gf_cmd,
-        };
-    }
+    const GAME_FLOW_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
+    return (PHASE_CONTROL) {
+        .action = p->ring->motion.status == RNG_DONE ? PHASE_ACTION_END
+                                                     : PHASE_ACTION_CONTINUE,
+        .gf_cmd = gf_cmd,
+    };
 }
 
 static void M_End(PHASE *const phase)
@@ -82,7 +63,6 @@ static void M_Draw(PHASE *const phase)
 
     Console_Draw();
     Text_Draw();
-    Fader_Draw(&p->exit_fader);
     Output_DrawPolyList();
 }
 

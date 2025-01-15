@@ -1,15 +1,12 @@
 #include "game/phase/phase_game.h"
 
 #include "game/console/common.h"
-#include "game/fader.h"
 #include "game/game.h"
 #include "game/output.h"
 #include "game/text.h"
 #include "memory.h"
 
 typedef struct {
-    bool exiting;
-    FADER exit_fader;
     int32_t level_num;
     GAME_FLOW_LEVEL_TYPE level_type;
 } M_PRIV;
@@ -55,40 +52,24 @@ static void M_Resume(PHASE *const phase)
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
-    M_PRIV *const p = phase->priv;
-
-    GAME_FLOW_COMMAND gf_cmd;
-    if (Game_IsExiting() && !p->exiting) {
-        p->exiting = true;
-        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
-    } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
-        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
-    } else {
-        for (int32_t i = 0; i < num_frames; i++) {
-            gf_cmd = Game_Control(false);
-            if (gf_cmd.action != GF_NOOP) {
-                break;
-            }
+    for (int32_t i = 0; i < num_frames; i++) {
+        const GAME_FLOW_COMMAND gf_cmd = Game_Control(false);
+        if (gf_cmd.action != GF_NOOP) {
+            return (PHASE_CONTROL) {
+                .action = PHASE_ACTION_END,
+                .gf_cmd = gf_cmd,
+            };
         }
-    }
-
-    if (gf_cmd.action != GF_NOOP) {
-        return (PHASE_CONTROL) {
-            .action = PHASE_ACTION_END,
-            .gf_cmd = gf_cmd,
-        };
     }
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
 static void M_Draw(PHASE *const phase)
 {
-    M_PRIV *const p = phase->priv;
     Game_Draw(true);
     Console_Draw();
     Text_Draw();
     Output_DrawPolyList();
-    Fader_Draw(&p->exit_fader);
 }
 
 PHASE *Phase_Game_Create(
