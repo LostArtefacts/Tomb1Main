@@ -129,6 +129,7 @@ sources = [
   'game/phase/executor.c',
   'game/phase/phase_cutscene.c',
   'game/phase/phase_demo.c',
+  'game/phase/phase_game.c',
   'game/phase/phase_inventory.c',
   'game/phase/phase_pause.c',
   'game/phase/phase_photo_mode.c',

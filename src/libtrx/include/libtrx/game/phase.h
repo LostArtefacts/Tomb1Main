@@ -4,6 +4,7 @@
 #include "./phase/executor.h"
 #include "./phase/phase_cutscene.h"
 #include "./phase/phase_demo.h"
+#include "./phase/phase_game.h"
 #include "./phase/phase_inventory.h"
 #include "./phase/phase_pause.h"
 #include "./phase/phase_photo_mode.h"

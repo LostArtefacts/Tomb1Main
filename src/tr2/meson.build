@@ -254,7 +254,6 @@ sources = [
   'game/option/option_sound.c',
   'game/output.c',
   'game/overlay.c',
-  'game/phase/phase_game.c',
   'game/render/common.c',
   'game/render/hwr.c',
   'game/render/priv.c',

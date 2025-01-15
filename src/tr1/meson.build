@@ -249,7 +249,6 @@ sources = [
   'game/overlay.c',
   'game/packer.c',
   'game/phase/phase.c',
-  'game/phase/phase_game.c',
   'game/requester.c',
   'game/room.c',
   'game/room_draw.c',

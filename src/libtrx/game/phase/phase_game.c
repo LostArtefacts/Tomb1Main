@@ -1,9 +1,11 @@
 #include "game/phase/phase_game.h"
 
 #include "game/console/common.h"
+#include "game/fader.h"
 #include "game/game.h"
-
-#include <libtrx/memory.h>
+#include "game/output.h"
+#include "game/text.h"
+#include "memory.h"
 
 typedef struct {
     bool exiting;

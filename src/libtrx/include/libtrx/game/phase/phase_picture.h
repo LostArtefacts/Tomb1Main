@@ -2,8 +2,6 @@
 
 #include "./types.h"
 
-#include <stdint.h>
-
 typedef struct {
     const char *file_name;
     double display_time;
