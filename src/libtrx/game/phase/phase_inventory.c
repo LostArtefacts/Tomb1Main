@@ -45,9 +45,10 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 static void M_End(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    ASSERT(p->ring != NULL);
-    InvRing_Close(p->ring);
-    p->ring = NULL;
+    if (p->ring != NULL) {
+        InvRing_Close(p->ring);
+        p->ring = NULL;
+    }
 }
 
 static void M_Draw(PHASE *const phase)
