@@ -299,6 +299,11 @@ static void M_LoadObjects(VFILE *const file)
     LOG_INFO("objects: %d", num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
+        if (object_id < 0 || object_id >= O_NUMBER_OF) {
+            Shell_ExitSystemFmt(
+                "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
+        }
+
         OBJECT *const object = &g_Objects[object_id];
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
@@ -317,8 +322,14 @@ static void M_LoadStaticObjects(VFILE *const file)
     const int32_t num_static_objects = VFile_ReadS32(file);
     LOG_INFO("static objects: %d", num_static_objects);
     for (int32_t i = 0; i < num_static_objects; i++) {
-        const int32_t static_num = VFile_ReadS32(file);
-        STATIC_INFO *static_obj = &g_StaticObjects[static_num];
+        const int32_t static_id = VFile_ReadS32(file);
+        if (static_id < 0 || static_id >= MAX_STATIC_OBJECTS) {
+            Shell_ExitSystemFmt(
+                "Invalid static ID: %d (max=%d)", static_id,
+                MAX_STATIC_OBJECTS);
+        }
+
+        STATIC_INFO *const static_obj = &g_StaticObjects[static_id];
         static_obj->mesh_idx = VFile_ReadS16(file);
         static_obj->draw_bounds.min.x = VFile_ReadS16(file);
         static_obj->draw_bounds.max.x = VFile_ReadS16(file);

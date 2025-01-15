@@ -365,8 +365,12 @@ static void M_LoadObjects(VFILE *file)
     LOG_INFO("%d objects", m_LevelInfo.object_count);
     for (int32_t i = 0; i < m_LevelInfo.object_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
-        OBJECT *object = &g_Objects[object_id];
+        if (object_id < 0 || object_id >= O_NUMBER_OF) {
+            Shell_ExitSystemFmt(
+                "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
+        }
 
+        OBJECT *const object = &g_Objects[object_id];
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
         object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
@@ -383,11 +387,15 @@ static void M_LoadStaticObjects(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.static_count = VFile_ReadS32(file);
-    LOG_INFO("%d statics", m_LevelInfo.static_count);
+    LOG_INFO("%d static objects", m_LevelInfo.static_count);
     for (int i = 0; i < m_LevelInfo.static_count; i++) {
-        const int32_t tmp = VFile_ReadS32(file);
-        STATIC_INFO *object = &g_StaticObjects[tmp];
+        const int32_t static_id = VFile_ReadS32(file);
+        if (static_id < 0 || static_id >= STATIC_NUMBER_OF) {
+            Shell_ExitSystemFmt(
+                "Invalid static ID: %d (max=%d)", static_id, STATIC_NUMBER_OF);
+        }
 
+        STATIC_INFO *const object = &g_StaticObjects[static_id];
         object->mesh_num = VFile_ReadS16(file);
         object->p.min.x = VFile_ReadS16(file);
         object->p.max.x = VFile_ReadS16(file);
@@ -438,7 +446,7 @@ static void M_LoadSprites(VFILE *file)
         Shell_ExitSystem("Too many sprites in level");
     }
     for (int32_t i = 0; i < m_LevelInfo.sprite_info_count; i++) {
-        PHD_SPRITE *sprite = &g_PhdSpriteInfo[i];
+        PHD_SPRITE *const sprite = &g_PhdSpriteInfo[i];
         sprite->tpage = VFile_ReadU16(file);
         sprite->offset = VFile_ReadU16(file);
         sprite->width = VFile_ReadU16(file);
@@ -455,7 +463,7 @@ static void M_LoadSprites(VFILE *file)
         const int16_t num_meshes = VFile_ReadS16(file);
         const int16_t mesh_idx = VFile_ReadS16(file);
 
-        if (object_id < O_NUMBER_OF) {
+        if (object_id >= 0 && object_id < O_NUMBER_OF) {
             OBJECT *object = &g_Objects[object_id];
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
@@ -465,6 +473,8 @@ static void M_LoadSprites(VFILE *file)
             object->mesh_count = num_meshes;
             object->mesh_num = mesh_idx;
             object->loaded = true;
+        } else {
+            Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }
     }
 
@@ -479,9 +489,6 @@ static void M_LoadCameras(VFILE *file)
     if (g_NumberCameras != 0) {
         g_Camera.fixed = GameBuf_Alloc(
             sizeof(OBJECT_VECTOR) * g_NumberCameras, GBUF_CAMERAS);
-        if (!g_Camera.fixed) {
-            Shell_ExitSystem("Error allocating the fixed cameras.");
-        }
         for (int32_t i = 0; i < g_NumberCameras; i++) {
             OBJECT_VECTOR *camera = &g_Camera.fixed[i];
             camera->x = VFile_ReadS32(file);
@@ -502,9 +509,6 @@ static void M_LoadSoundEffects(VFILE *file)
     if (g_NumberSoundEffects != 0) {
         g_SoundEffectsTable = GameBuf_Alloc(
             sizeof(OBJECT_VECTOR) * g_NumberSoundEffects, GBUF_SOUND_FX);
-        if (!g_SoundEffectsTable) {
-            Shell_ExitSystem("Error allocating the sound effects table.");
-        }
         for (int32_t i = 0; i < g_NumberSoundEffects; i++) {
             OBJECT_VECTOR *sound = &g_SoundEffectsTable[i];
             sound->x = VFile_ReadS32(file);
