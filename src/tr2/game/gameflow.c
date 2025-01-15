@@ -13,7 +13,6 @@
 #include "game/objects/vars.h"
 #include "game/overlay.h"
 #include "game/phase.h"
-#include "game/requester.h"
 #include "gameflow/gameflow_new.h"
 #include "global/vars.h"
 
@@ -274,6 +273,7 @@ bool GF_LoadFromFile(const char *const file_name)
 
     M_ReadStringTable(
         file, g_GameFlow.num_levels, &g_GF_LevelNames, &g_GF_LevelNamesBuf);
+    // picture filename strings
     M_ReadStringTable(file, g_GameFlow.num_pictures, NULL, NULL);
     M_ReadStringTable(
         file, g_GameFlow.num_titles, &g_GF_TitleFileNames,
@@ -302,12 +302,12 @@ bool GF_LoadFromFile(const char *const file_name)
 
     VFile_Read(file, g_GF_ValidDemos, sizeof(int16_t) * g_GameFlow.num_demos);
 
-    if (VFile_ReadS16(file) != GF_S_GAME_NUMBER_OF) {
+    // game strings
+    if (VFile_ReadS16(file) != 89) {
         return false;
     }
+    M_ReadStringTable(file, 89, NULL, NULL);
 
-    M_ReadStringTable(
-        file, GF_S_GAME_NUMBER_OF, &g_GF_GameStrings, &g_GF_GameStringsBuf);
     M_ReadStringTable(
         file, GF_S_PC_NUMBER_OF, &g_GF_PCStrings, &g_GF_PCStringsBuf);
     M_ReadStringTable(
@@ -351,14 +351,6 @@ bool GF_LoadScriptFile(const char *const fname)
     }
 
     g_GameFlow.level_complete_track = MX_END_OF_LEVEL;
-
-    Requester_SetHeading(
-        &g_LoadGameRequester, g_GF_GameStrings[GF_S_GAME_PASSPORT_SELECT_LEVEL],
-        0, 0, 0);
-    Requester_SetHeading(
-        &g_SaveGameRequester, g_GF_GameStrings[GF_S_GAME_PASSPORT_SELECT_LEVEL],
-        0, 0, 0);
-
     return true;
 }
 

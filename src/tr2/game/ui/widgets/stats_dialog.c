@@ -74,7 +74,7 @@ static void M_AddRowFromRole(
         const int32_t sec = stats->timer / FRAMES_PER_SECOND;
         sprintf(
             buf, "%02d:%02d:%02d", (sec / 60) / 60, (sec / 60) % 60, sec % 60);
-        M_AddRow(self, role, g_GF_GameStrings[GF_S_GAME_MISC_TIME_TAKEN], buf);
+        M_AddRow(self, role, GS(STATS_TIME_TAKEN), buf);
         break;
     }
 
@@ -92,35 +92,32 @@ static void M_AddRowFromRole(
         }
         *ptr++ = '\0';
         if (num_secrets == 0) {
-            strcpy(buf, g_GF_GameStrings[GF_S_GAME_MISC_NONE]);
+            strcpy(buf, GS(MISC_NONE));
         }
-        M_AddRow(
-            self, role, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
+        M_AddRow(self, role, GS(STATS_SECRETS), buf);
         break;
     }
 
     case M_ROW_ALL_SECRETS:
         sprintf(
-            buf, "%d %s %d", ((FINAL_STATS *)stats)->found_secrets,
-            g_GF_GameStrings[GF_S_GAME_MISC_OF],
+            buf, GS(STATS_DETAIL_FMT), ((FINAL_STATS *)stats)->found_secrets,
             ((FINAL_STATS *)stats)->total_secrets);
-        M_AddRow(
-            self, role, g_GF_GameStrings[GF_S_GAME_MISC_SECRETS_FOUND], buf);
+        M_AddRow(self, role, GS(STATS_SECRETS), buf);
         break;
 
     case M_ROW_KILLS:
-        sprintf(buf, "%d", stats->kills);
-        M_AddRow(self, role, g_GF_GameStrings[GF_S_GAME_MISC_KILLS], buf);
+        sprintf(buf, GS(STATS_BASIC_FMT), stats->kills);
+        M_AddRow(self, role, GS(STATS_KILLS), buf);
         break;
 
     case M_ROW_AMMO_USED:
         sprintf(buf, "%d", stats->ammo_used);
-        M_AddRow(self, role, g_GF_GameStrings[GF_S_GAME_MISC_AMMO_USED], buf);
+        M_AddRow(self, role, GS(STATS_AMMO_USED), buf);
         break;
 
     case M_ROW_AMMO_HITS:
         sprintf(buf, "%d", stats->ammo_hits);
-        M_AddRow(self, role, g_GF_GameStrings[GF_S_GAME_MISC_HITS], buf);
+        M_AddRow(self, role, GS(STATS_AMMO_HITS), buf);
         break;
 
     case M_ROW_MEDIPACKS:
@@ -129,9 +126,7 @@ static void M_AddRowFromRole(
         } else {
             sprintf(buf, "%d.0", stats->medipacks >> 1);
         }
-        M_AddRow(
-            self, role, g_GF_GameStrings[GF_S_GAME_MISC_HEALTH_PACKS_USED],
-            buf);
+        M_AddRow(self, role, GS(STATS_MEDIPACKS_USED), buf);
         break;
 
     case M_ROW_DISTANCE_TRAVELED:
@@ -141,9 +136,7 @@ static void M_AddRowFromRole(
         } else {
             sprintf(buf, "%d.%02dkm", distance / 1000, distance % 100);
         }
-        M_AddRow(
-            self, role, g_GF_GameStrings[GF_S_GAME_MISC_DISTANCE_TRAVELLED],
-            buf);
+        M_AddRow(self, role, GS(STATS_DISTANCE_TRAVELLED), buf);
         break;
 
     default:
@@ -183,9 +176,7 @@ static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
 static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
 {
     if (!g_Assault.best_time[0]) {
-        M_AddRow(
-            self, M_ROW_GENERIC, g_GF_GameStrings[GF_S_GAME_MISC_NO_TIMES_SET],
-            NULL);
+        M_AddRow(self, M_ROW_GENERIC, GS(STATS_ASSAULT_NO_TIMES_SET), NULL);
         return;
     }
 
@@ -194,8 +185,7 @@ static void M_AddAssaultCourseStatsRows(UI_STATS_DIALOG *const self)
         char right_buf[32] = "";
         if (g_Assault.best_time[i]) {
             sprintf(
-                left_buf, "%2d: %s %d", i + 1,
-                g_GF_GameStrings[GF_S_GAME_MISC_FINISH],
+                left_buf, "%2d: %s %d", i + 1, GS(STATS_ASSAULT_FINISH),
                 g_Assault.best_finish[i]);
 
             const int32_t sec = g_Assault.best_time[i] / FRAMES_PER_SECOND;
@@ -316,14 +306,12 @@ UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_ARGS args)
         break;
 
     case UI_STATS_DIALOG_MODE_FINAL:
-        UI_Requester_SetTitle(
-            self->requester, g_GF_GameStrings[GF_S_GAME_MISC_FINAL_STATISTICS]);
+        UI_Requester_SetTitle(self->requester, GS(STATS_FINAL_STATISTICS));
         M_AddFinalStatsRows(self);
         break;
 
     case UI_STATS_DIALOG_MODE_ASSAULT_COURSE:
-        UI_Requester_SetTitle(
-            self->requester, g_GF_GameStrings[GF_S_GAME_MISC_BEST_TIMES]);
+        UI_Requester_SetTitle(self->requester, GS(STATS_ASSAULT_TITLE));
         M_AddAssaultCourseStatsRows(self);
         break;
     }

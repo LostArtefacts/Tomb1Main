@@ -1,5 +1,6 @@
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
+#include "game/game_string.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/option/option.h"
@@ -57,8 +58,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         } else if (m_PassportMode == PASSPORT_MODE_BROWSE) {
             if (g_SavedGames != 0 && g_Inv_Mode != INV_SAVE_MODE) {
                 if (g_PasswordText1 == NULL) {
-                    g_PasswordText1 = Text_Create(
-                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_LOAD_GAME]);
+                    g_PasswordText1 =
+                        Text_Create(0, -16, GS(PASSPORT_LOAD_GAME));
                     Text_AlignBottom(g_PasswordText1, true);
                     Text_CentreH(g_PasswordText1, true);
                 }
@@ -68,8 +69,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
 
                 GetSavedGamesList(&g_LoadGameRequester);
                 Requester_SetHeading(
-                    &g_LoadGameRequester,
-                    g_GF_GameStrings[GF_S_GAME_PASSPORT_LOAD_GAME], 0, NULL, 0);
+                    &g_LoadGameRequester, GS(PASSPORT_LOAD_GAME), 0, NULL, 0);
 
                 m_PassportMode = PASSPORT_MODE_LOAD_GAME;
                 g_Input = (INPUT_STATE) {};
@@ -125,11 +125,11 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
 
             if (g_PasswordText1 == NULL) {
                 if (g_Inv_Mode == INV_TITLE_MODE || g_CurrentLevel == LV_GYM) {
-                    g_PasswordText1 = Text_Create(
-                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_NEW_GAME]);
+                    g_PasswordText1 =
+                        Text_Create(0, -16, GS(PASSPORT_NEW_GAME));
                 } else {
-                    g_PasswordText1 = Text_Create(
-                        0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_SAVE_GAME]);
+                    g_PasswordText1 =
+                        Text_Create(0, -16, GS(PASSPORT_SAVE_GAME));
                 }
                 Text_AlignBottom(g_PasswordText1, true);
                 Text_CentreH(g_PasswordText1, true);
@@ -141,8 +141,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
 
                 GetSavedGamesList(&g_LoadGameRequester);
                 Requester_SetHeading(
-                    &g_LoadGameRequester,
-                    g_GF_GameStrings[GF_S_GAME_PASSPORT_SAVE_GAME], 0, NULL, 0);
+                    &g_LoadGameRequester, GS(PASSPORT_SAVE_GAME), 0, NULL, 0);
 
                 m_PassportMode = PASSPORT_MODE_LOAD_GAME;
                 g_Input = (INPUT_STATE) {};
@@ -154,8 +153,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 Requester_Init(&g_SaveGameRequester);
                 GetValidLevelsList(&g_SaveGameRequester);
                 Requester_SetHeading(
-                    &g_SaveGameRequester,
-                    g_GF_GameStrings[GF_S_GAME_PASSPORT_SELECT_LEVEL], 0, NULL,
+                    &g_SaveGameRequester, GS(PASSPORT_SELECT_LEVEL), 0, NULL,
                     0);
 
                 m_PassportMode = PASSPORT_MODE_SELECT_LEVEL;
@@ -170,14 +168,12 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
     case 2:
         if (g_PasswordText1 == NULL) {
             if (g_Inv_Mode == INV_TITLE_MODE) {
-                g_PasswordText1 = Text_Create(
-                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_GAME]);
+                g_PasswordText1 = Text_Create(0, -16, GS(PASSPORT_EXIT_GAME));
             } else if (g_GameFlow.demo_version) {
-                g_PasswordText1 = Text_Create(
-                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_DEMO]);
+                g_PasswordText1 = Text_Create(0, -16, GS(PASSPORT_EXIT_DEMO));
             } else {
-                g_PasswordText1 = Text_Create(
-                    0, -16, g_GF_GameStrings[GF_S_GAME_PASSPORT_EXIT_TO_TITLE]);
+                g_PasswordText1 =
+                    Text_Create(0, -16, GS(PASSPORT_EXIT_TO_TITLE));
             }
             Text_AlignBottom(g_PasswordText1, true);
             Text_CentreH(g_PasswordText1, true);

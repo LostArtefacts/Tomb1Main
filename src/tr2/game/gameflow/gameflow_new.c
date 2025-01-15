@@ -1,6 +1,7 @@
 #include "game/gameflow/gameflow_new.h"
 
 #include "game/game_string.h"
+#include "game/requester.h"
 #include "global/types.h"
 #include "global/vars.h"
 
@@ -89,73 +90,74 @@ void GF_N_LoadStrings(const int32_t level_num)
 
     struct {
         GAME_OBJECT_ID object_id;
-        GF_GAME_STRING game_string;
+        const char *name;
     } game_string_defs[] = {
-        { O_COMPASS_OPTION, GF_S_GAME_INV_ITEM_STATISTICS },
-        { O_COMPASS_ITEM, GF_S_GAME_INV_ITEM_STATISTICS },
-        { O_PISTOL_ITEM, GF_S_GAME_INV_ITEM_PISTOLS },
-        { O_PISTOL_OPTION, GF_S_GAME_INV_ITEM_PISTOLS },
-        { O_FLARE_ITEM, GF_S_GAME_INV_ITEM_FLARE },
-        { O_FLARES_OPTION, GF_S_GAME_INV_ITEM_FLARE },
-        { O_SHOTGUN_ITEM, GF_S_GAME_INV_ITEM_SHOTGUN },
-        { O_SHOTGUN_OPTION, GF_S_GAME_INV_ITEM_SHOTGUN },
-        { O_MAGNUM_ITEM, GF_S_GAME_INV_ITEM_MAGNUMS },
-        { O_MAGNUM_OPTION, GF_S_GAME_INV_ITEM_MAGNUMS },
-        { O_UZI_ITEM, GF_S_GAME_INV_ITEM_UZIS },
-        { O_UZI_OPTION, GF_S_GAME_INV_ITEM_UZIS },
-        { O_HARPOON_ITEM, GF_S_GAME_INV_ITEM_HARPOON },
-        { O_HARPOON_OPTION, GF_S_GAME_INV_ITEM_HARPOON },
-        { O_M16_ITEM, GF_S_GAME_INV_ITEM_M16 },
-        { O_M16_OPTION, GF_S_GAME_INV_ITEM_M16 },
-        { O_GRENADE_ITEM, GF_S_GAME_INV_ITEM_GRENADE },
-        { O_GRENADE_OPTION, GF_S_GAME_INV_ITEM_GRENADE },
-        { O_PISTOL_AMMO_ITEM, GF_S_GAME_INV_ITEM_PISTOL_AMMO },
-        { O_PISTOL_AMMO_OPTION, GF_S_GAME_INV_ITEM_PISTOL_AMMO },
-        { O_SHOTGUN_AMMO_ITEM, GF_S_GAME_INV_ITEM_SHOTGUN_AMMO },
-        { O_SHOTGUN_AMMO_OPTION, GF_S_GAME_INV_ITEM_SHOTGUN_AMMO },
-        { O_MAGNUM_AMMO_ITEM, GF_S_GAME_INV_ITEM_MAGNUM_AMMO },
-        { O_MAGNUM_AMMO_OPTION, GF_S_GAME_INV_ITEM_MAGNUM_AMMO },
-        { O_UZI_AMMO_ITEM, GF_S_GAME_INV_ITEM_UZI_AMMO },
-        { O_UZI_AMMO_OPTION, GF_S_GAME_INV_ITEM_UZI_AMMO },
-        { O_HARPOON_AMMO_ITEM, GF_S_GAME_INV_ITEM_HARPOON_AMMO },
-        { O_HARPOON_AMMO_OPTION, GF_S_GAME_INV_ITEM_HARPOON_AMMO },
-        { O_M16_AMMO_ITEM, GF_S_GAME_INV_ITEM_M16_AMMO },
-        { O_M16_AMMO_OPTION, GF_S_GAME_INV_ITEM_M16_AMMO },
-        { O_GRENADE_AMMO_ITEM, GF_S_GAME_INV_ITEM_GRENADE_AMMO },
-        { O_GRENADE_AMMO_OPTION, GF_S_GAME_INV_ITEM_GRENADE_AMMO },
-        { O_SMALL_MEDIPACK_ITEM, GF_S_GAME_INV_ITEM_SMALL_MEDIPACK },
-        { O_SMALL_MEDIPACK_OPTION, GF_S_GAME_INV_ITEM_SMALL_MEDIPACK },
-        { O_LARGE_MEDIPACK_ITEM, GF_S_GAME_INV_ITEM_LARGE_MEDIPACK },
-        { O_LARGE_MEDIPACK_OPTION, GF_S_GAME_INV_ITEM_LARGE_MEDIPACK },
-        { O_PICKUP_ITEM_1, GF_S_GAME_INV_ITEM_PICKUP },
-        { O_PICKUP_OPTION_1, GF_S_GAME_INV_ITEM_PICKUP },
-        { O_PICKUP_ITEM_2, GF_S_GAME_INV_ITEM_PICKUP },
-        { O_PICKUP_OPTION_2, GF_S_GAME_INV_ITEM_PICKUP },
-        { O_PUZZLE_ITEM_1, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_OPTION_1, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_ITEM_2, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_OPTION_2, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_ITEM_3, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_OPTION_3, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_ITEM_4, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_PUZZLE_OPTION_4, GF_S_GAME_INV_ITEM_PUZZLE },
-        { O_KEY_ITEM_1, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_OPTION_1, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_ITEM_2, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_OPTION_2, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_ITEM_3, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_OPTION_3, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_ITEM_4, GF_S_GAME_INV_ITEM_KEY },
-        { O_KEY_OPTION_4, GF_S_GAME_INV_ITEM_KEY },
-        { O_PASSPORT_OPTION, GF_S_GAME_INV_ITEM_GAME },
-        { O_PASSPORT_CLOSED, GF_S_GAME_INV_ITEM_GAME },
-        { O_PHOTO_OPTION, GF_S_GAME_INV_ITEM_LARA_HOME },
-        { NO_OBJECT, -1 },
+        // clang-format off
+        { O_COMPASS_OPTION,        GS(INV_ITEM_STOPWATCH) },
+        { O_COMPASS_ITEM,          GS(INV_ITEM_STOPWATCH) },
+        { O_PISTOL_ITEM,           GS(INV_ITEM_PISTOLS) },
+        { O_PISTOL_OPTION,         GS(INV_ITEM_PISTOLS) },
+        { O_FLARE_ITEM,            GS(INV_ITEM_FLARE) },
+        { O_FLARES_OPTION,         GS(INV_ITEM_FLARE) },
+        { O_SHOTGUN_ITEM,          GS(INV_ITEM_SHOTGUN) },
+        { O_SHOTGUN_OPTION,        GS(INV_ITEM_SHOTGUN) },
+        { O_MAGNUM_ITEM,           GS(INV_ITEM_MAGNUMS) },
+        { O_MAGNUM_OPTION,         GS(INV_ITEM_MAGNUMS) },
+        { O_UZI_ITEM,              GS(INV_ITEM_UZIS) },
+        { O_UZI_OPTION,            GS(INV_ITEM_UZIS) },
+        { O_HARPOON_ITEM,          GS(INV_ITEM_HARPOON) },
+        { O_HARPOON_OPTION,        GS(INV_ITEM_HARPOON) },
+        { O_M16_ITEM,              GS(INV_ITEM_M16) },
+        { O_M16_OPTION,            GS(INV_ITEM_M16) },
+        { O_GRENADE_ITEM,          GS(INV_ITEM_GRENADE) },
+        { O_GRENADE_OPTION,        GS(INV_ITEM_GRENADE) },
+        { O_PISTOL_AMMO_ITEM,      GS(INV_ITEM_PISTOL_AMMO) },
+        { O_PISTOL_AMMO_OPTION,    GS(INV_ITEM_PISTOL_AMMO) },
+        { O_SHOTGUN_AMMO_ITEM,     GS(INV_ITEM_SHOTGUN_AMMO) },
+        { O_SHOTGUN_AMMO_OPTION,   GS(INV_ITEM_SHOTGUN_AMMO) },
+        { O_MAGNUM_AMMO_ITEM,      GS(INV_ITEM_MAGNUM_AMMO) },
+        { O_MAGNUM_AMMO_OPTION,    GS(INV_ITEM_MAGNUM_AMMO) },
+        { O_UZI_AMMO_ITEM,         GS(INV_ITEM_UZI_AMMO) },
+        { O_UZI_AMMO_OPTION,       GS(INV_ITEM_UZI_AMMO) },
+        { O_HARPOON_AMMO_ITEM,     GS(INV_ITEM_HARPOON_AMMO) },
+        { O_HARPOON_AMMO_OPTION,   GS(INV_ITEM_HARPOON_AMMO) },
+        { O_M16_AMMO_ITEM,         GS(INV_ITEM_M16_AMMO) },
+        { O_M16_AMMO_OPTION,       GS(INV_ITEM_M16_AMMO) },
+        { O_GRENADE_AMMO_ITEM,     GS(INV_ITEM_GRENADE_AMMO) },
+        { O_GRENADE_AMMO_OPTION,   GS(INV_ITEM_GRENADE_AMMO) },
+        { O_SMALL_MEDIPACK_ITEM,   GS(INV_ITEM_SMALL_MEDIPACK) },
+        { O_SMALL_MEDIPACK_OPTION, GS(INV_ITEM_SMALL_MEDIPACK) },
+        { O_LARGE_MEDIPACK_ITEM,   GS(INV_ITEM_LARGE_MEDIPACK) },
+        { O_LARGE_MEDIPACK_OPTION, GS(INV_ITEM_LARGE_MEDIPACK) },
+        { O_PICKUP_ITEM_1,         GS(INV_ITEM_PICKUP_1) },
+        { O_PICKUP_OPTION_1,       GS(INV_ITEM_PICKUP_1) },
+        { O_PICKUP_ITEM_2,         GS(INV_ITEM_PICKUP_2) },
+        { O_PICKUP_OPTION_2,       GS(INV_ITEM_PICKUP_2) },
+        { O_PUZZLE_ITEM_1,         GS(INV_ITEM_PUZZLE_1) },
+        { O_PUZZLE_OPTION_1,       GS(INV_ITEM_PUZZLE_1) },
+        { O_PUZZLE_ITEM_2,         GS(INV_ITEM_PUZZLE_2) },
+        { O_PUZZLE_OPTION_2,       GS(INV_ITEM_PUZZLE_2) },
+        { O_PUZZLE_ITEM_3,         GS(INV_ITEM_PUZZLE_3) },
+        { O_PUZZLE_OPTION_3,       GS(INV_ITEM_PUZZLE_3) },
+        { O_PUZZLE_ITEM_4,         GS(INV_ITEM_PUZZLE_4) },
+        { O_PUZZLE_OPTION_4,       GS(INV_ITEM_PUZZLE_4) },
+        { O_KEY_ITEM_1,            GS(INV_ITEM_KEY_1) },
+        { O_KEY_OPTION_1,          GS(INV_ITEM_KEY_1) },
+        { O_KEY_ITEM_2,            GS(INV_ITEM_KEY_2) },
+        { O_KEY_OPTION_2,          GS(INV_ITEM_KEY_2) },
+        { O_KEY_ITEM_3,            GS(INV_ITEM_KEY_3) },
+        { O_KEY_OPTION_3,          GS(INV_ITEM_KEY_3) },
+        { O_KEY_ITEM_4,            GS(INV_ITEM_KEY_4) },
+        { O_KEY_OPTION_4,          GS(INV_ITEM_KEY_4) },
+        { O_PASSPORT_OPTION,       GS(INV_ITEM_GAME) },
+        { O_PASSPORT_CLOSED,       GS(INV_ITEM_GAME) },
+        { O_PHOTO_OPTION,          GS(INV_ITEM_LARAS_HOME) },
+        { NO_OBJECT, NULL },
+        // clang-format on
     };
 
     for (int32_t i = 0; game_string_defs[i].object_id != NO_OBJECT; i++) {
-        const char *const new_name =
-            g_GF_GameStrings[game_string_defs[i].game_string];
+        const char *const new_name = game_string_defs[i].name;
         if (new_name != NULL) {
             Object_SetName(game_string_defs[i].object_id, new_name);
         }
@@ -214,6 +216,11 @@ void GF_N_LoadStrings(const int32_t level_num)
             }
         }
     }
+
+    Requester_SetHeading(
+        &g_LoadGameRequester, GS(PASSPORT_SELECT_LEVEL), 0, 0, 0);
+    Requester_SetHeading(
+        &g_SaveGameRequester, GS(PASSPORT_SELECT_LEVEL), 0, 0, 0);
 }
 
 int32_t GameFlow_GetLevelCount(void)

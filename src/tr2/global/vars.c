@@ -328,7 +328,6 @@ REQUEST_INFO g_SaveGameRequester = {
 
 char **g_GF_CutsceneFileNames = NULL;
 char **g_GF_FMVFilenames = NULL;
-char **g_GF_GameStrings = NULL;
 char **g_GF_Key1Strings = NULL;
 char **g_GF_Key2Strings = NULL;
 char **g_GF_Key3Strings = NULL;
@@ -345,7 +344,6 @@ char **g_GF_Puzzle4Strings = NULL;
 char **g_GF_TitleFileNames = NULL;
 char *g_GF_CutsceneFileNamesBuf = NULL;
 char *g_GF_FMVFilenamesBuf = NULL;
-char *g_GF_GameStringsBuf = NULL;
 char *g_GF_Key1StringsBuf = NULL;
 char *g_GF_Key2StringsBuf = NULL;
 char *g_GF_Key3StringsBuf = NULL;

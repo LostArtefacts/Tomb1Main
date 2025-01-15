@@ -137,7 +137,6 @@ extern REQUEST_INFO g_SaveGameRequester;
 
 extern char **g_GF_CutsceneFileNames;
 extern char **g_GF_FMVFilenames;
-extern char **g_GF_GameStrings;
 extern char **g_GF_Key1Strings;
 extern char **g_GF_Key2Strings;
 extern char **g_GF_Key3Strings;
@@ -154,7 +153,6 @@ extern char **g_GF_Puzzle4Strings;
 extern char **g_GF_TitleFileNames;
 extern char *g_GF_CutsceneFileNamesBuf;
 extern char *g_GF_FMVFilenamesBuf;
-extern char *g_GF_GameStringsBuf;
 extern char *g_GF_Key1StringsBuf;
 extern char *g_GF_Key2StringsBuf;
 extern char *g_GF_Key3StringsBuf;
