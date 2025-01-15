@@ -66,10 +66,6 @@ static void M_SetUnconditionally(const PHASE_ENUM phase, const void *args)
     case PHASE_NULL:
         m_Phaser = NULL;
         break;
-
-    case PHASE_GAME:
-        m_Phaser = &g_GamePhaser;
-        break;
     }
 
     if (m_Phaser && m_Phaser->start != NULL) {

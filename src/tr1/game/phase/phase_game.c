@@ -1,192 +1,114 @@
 #include "game/phase/phase_game.h"
 
-#include "game/camera.h"
-#include "game/effects.h"
+#include "game/console/common.h"
 #include "game/game.h"
-#include "game/gameflow.h"
-#include "game/input.h"
-#include "game/interpolation.h"
-#include "game/item_actions.h"
-#include "game/items.h"
-#include "game/lara/cheat.h"
-#include "game/lara/common.h"
-#include "game/lara/hair.h"
-#include "game/output.h"
-#include "game/overlay.h"
-#include "game/phase.h"
-#include "game/shell.h"
-#include "game/sound.h"
-#include "game/stats.h"
-#include "game/text.h"
-#include "global/const.h"
-#include "global/types.h"
-#include "global/vars.h"
 
 #include <libtrx/memory.h>
-#include <libtrx/utils.h>
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
+typedef struct {
+    bool exiting;
+    FADER exit_fader;
+    int32_t level_num;
+    GAME_FLOW_LEVEL_TYPE level_type;
+} M_PRIV;
 
-static void M_Start(const void *args);
-static void M_End(void);
-static PHASE_CONTROL M_Control(int32_t nframes);
-static void M_Draw(void);
+static PHASE_CONTROL M_Start(PHASE *phase);
+static void M_End(PHASE *phase);
+static void M_Resume(PHASE *const phase);
+static PHASE_CONTROL M_Control(PHASE *phase, int32_t n_frames);
+static void M_Draw(PHASE *phase);
 
-static void M_Start(const void *const args)
+static PHASE_CONTROL M_Start(PHASE *const phase)
 {
-    Interpolation_Remember();
-    Stats_StartTimer();
+    M_PRIV *const p = phase->priv;
+    if (!Game_Start(p->level_num, p->level_type)) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_EXIT_TO_TITLE },
+        };
+    }
     Game_SetIsPlaying(true);
+    return (PHASE_CONTROL) {
+        .action = PHASE_ACTION_CONTINUE,
+    };
 }
 
-static void M_End(void)
+static void M_End(PHASE *const phase)
 {
+    Game_End();
     Game_SetIsPlaying(false);
 }
 
-static PHASE_CONTROL M_Control(int32_t nframes)
+static void M_Suspend(PHASE *const phase)
 {
-    Interpolation_Remember();
-    Stats_UpdateTimer();
-    CLAMPG(nframes, MAX_FRAMES);
+    Game_Suspend();
+    Game_SetIsPlaying(false);
+}
 
-    for (int32_t i = 0; i < nframes; i++) {
-        Lara_Cheat_Control();
-        if (g_LevelComplete) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = { .action = GF_NOOP },
-            };
-        }
+static void M_Resume(PHASE *const phase)
+{
+    Game_Resume();
+    Game_SetIsPlaying(true);
+}
 
-        Input_Update();
-        Shell_ProcessInput();
-        Game_ProcessInput();
+static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
+{
+    M_PRIV *const p = phase->priv;
 
-        if (g_Lara.death_timer > DEATH_WAIT
-            || (g_Lara.death_timer > DEATH_WAIT_MIN && g_Input.any
-                && !g_Input.fly_cheat)
-            || g_OverlayFlag == 2) {
-            if (g_OverlayFlag == 2) {
-                g_OverlayFlag = 1;
-                const GAME_FLOW_COMMAND gf_cmd =
-                    GF_ShowInventory(INV_DEATH_MODE);
-                if (gf_cmd.action != GF_NOOP) {
-                    return (PHASE_CONTROL) {
-                        .action = PHASE_ACTION_END,
-                        .gf_cmd = gf_cmd,
-                    };
-                }
-                return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-            } else {
-                g_OverlayFlag = 2;
-            }
-        }
-
-        if ((g_InputDB.option || g_Input.save || g_Input.load
-             || g_OverlayFlag <= 0)
-            && !g_Lara.death_timer) {
-            if (g_Camera.type == CAM_CINEMATIC) {
-                g_OverlayFlag = 0;
-            } else if (g_OverlayFlag > 0) {
-                if (g_Input.load) {
-                    g_OverlayFlag = -1;
-                } else if (g_Input.save) {
-                    g_OverlayFlag = -2;
-                } else {
-                    g_OverlayFlag = 0;
-                }
-            } else {
-                GAME_FLOW_COMMAND gf_cmd;
-                Game_SetIsPlaying(false);
-                if (g_OverlayFlag == -1) {
-                    gf_cmd = GF_ShowInventory(INV_LOAD_MODE);
-                } else if (g_OverlayFlag == -2) {
-                    gf_cmd = GF_ShowInventory(INV_SAVE_MODE);
-                } else {
-                    gf_cmd = GF_ShowInventory(INV_GAME_MODE);
-                }
-                Game_SetIsPlaying(true);
-                g_OverlayFlag = 1;
-                if (gf_cmd.action != GF_NOOP) {
-                    return (PHASE_CONTROL) {
-                        .action = PHASE_ACTION_END,
-                        .gf_cmd = gf_cmd,
-                    };
-                }
-                return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
-            }
-        }
-
-        if (!g_Lara.death_timer && g_InputDB.pause) {
-            Game_SetIsPlaying(false);
-            PHASE *const phase_pause = Phase_Pause_Create();
-            const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase_pause);
-            Phase_Pause_Destroy(phase_pause);
-            Game_SetIsPlaying(true);
+    GAME_FLOW_COMMAND gf_cmd;
+    if (Game_IsExiting() && !p->exiting) {
+        p->exiting = true;
+        Fader_Init(&p->exit_fader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
+    } else if (p->exiting && !Fader_IsActive(&p->exit_fader)) {
+        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+    } else {
+        for (int32_t i = 0; i < num_frames; i++) {
+            gf_cmd = Game_Control(false);
             if (gf_cmd.action != GF_NOOP) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .gf_cmd = gf_cmd,
-                };
+                break;
             }
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
-        } else if (g_InputDB.toggle_photo_mode) {
-            Game_SetIsPlaying(false);
-            PHASE *const subphase = Phase_PhotoMode_Create();
-            const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
-            Phase_PhotoMode_Destroy(subphase);
-            Game_SetIsPlaying(true);
-            if (gf_cmd.action != GF_NOOP) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .gf_cmd = gf_cmd,
-                };
-            }
-            return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
-        } else {
-            Item_Control();
-            Effect_Control();
-
-            Lara_Control();
-            Lara_Hair_Control();
-
-            Camera_Update();
-            Sound_ResetAmbient();
-            ItemAction_RunActive();
-            Sound_UpdateEffects();
-            Overlay_BarHealthTimerTick();
         }
     }
 
-    if (g_GameInfo.ask_for_save) {
-        const GAME_FLOW_COMMAND gf_cmd =
-            GF_ShowInventory(INV_SAVE_CRYSTAL_MODE);
-        g_GameInfo.ask_for_save = false;
-        if (gf_cmd.action != GF_NOOP) {
-            return (PHASE_CONTROL) {
-                .action = PHASE_ACTION_END,
-                .gf_cmd = gf_cmd,
-            };
-        }
+    if (gf_cmd.action != GF_NOOP) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = gf_cmd,
+        };
     }
-
-    Output_AnimateTextures(nframes);
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };
 }
 
-static void M_Draw(void)
+static void M_Draw(PHASE *const phase)
 {
+    M_PRIV *const p = phase->priv;
     Game_Draw(true);
+    Console_Draw();
     Text_Draw();
+    Output_DrawPolyList();
+    Fader_Draw(&p->exit_fader);
 }
 
-PHASER g_GamePhaser = {
-    .start = M_Start,
-    .end = M_End,
-    .control = M_Control,
-    .draw = M_Draw,
-    .wait = NULL,
-};
+PHASE *Phase_Game_Create(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    PHASE *const phase = Memory_Alloc(sizeof(PHASE));
+    M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));
+    p->level_num = level_num;
+    p->level_type = level_type;
+    phase->priv = p;
+    phase->start = M_Start;
+    phase->end = M_End;
+    phase->suspend = M_Suspend;
+    phase->resume = M_Resume;
+    phase->control = M_Control;
+    phase->draw = M_Draw;
+    return phase;
+}
+
+void Phase_Game_Destroy(PHASE *const phase)
+{
+    M_PRIV *const p = phase->priv;
+    Memory_Free(p);
+    Memory_Free(phase);
+}

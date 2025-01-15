@@ -12,7 +12,6 @@
 #include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/phase.h"
-#include "game/phase/phase.h"
 #include "game/room.h"
 #include "game/savegame.h"
 #include "global/vars.h"
@@ -1031,7 +1030,8 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_START_GAME:
             if (level_type == GFL_DEMO) {
                 break;
-            } else if (!Game_Start((int32_t)(intptr_t)seq->data, level_type)) {
+            } else if (!Game_Start_Legacy(
+                           (int32_t)(intptr_t)seq->data, level_type)) {
                 g_CurrentLevel = -1;
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
@@ -1048,16 +1048,16 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                     && level_num != g_GameFlow.first_level_num) {
                     Lara_RevertToPistolsIfNeeded();
                 }
-                Phase_Set(PHASE_GAME, NULL);
-                command = Phase_Run();
-                if (command.action != GF_NOOP) {
+                command = GF_PlayLevel(level_num, level_type);
+                if (command.action != GF_NOOP
+                    && command.action != GF_LEVEL_COMPLETE) {
                     return command;
                 }
             }
             break;
 
         case GFS_STOP_GAME:
-            command = Game_Stop();
+            command = Game_Stop_Legacy();
             if (command.action != GF_NOOP
                 && command.action != GF_LEVEL_COMPLETE) {
                 return command;
@@ -1529,6 +1529,15 @@ GAME_FLOW_COMMAND GF_LoadLevel(
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+}
+
+GAME_FLOW_COMMAND GF_PlayLevel(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    PHASE *const phase = Phase_Game_Create(level_num, level_type);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Game_Destroy(phase);
+    return gf_cmd;
 }
 
 GAME_FLOW_COMMAND GF_PlayDemo(const int32_t level_num)
