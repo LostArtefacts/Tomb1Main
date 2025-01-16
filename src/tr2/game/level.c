@@ -30,8 +30,7 @@ static int32_t m_AnimFrameDataLength = 0;
 
 static void M_LoadFromFile(const char *file_name, int32_t level_num);
 static void M_LoadRooms(VFILE *file);
-static void M_LoadMeshBase(VFILE *file);
-static void M_LoadMeshes(VFILE *file);
+static void M_LoadObjectMeshes(VFILE *file);
 static void M_LoadAnims(VFILE *file);
 static void M_LoadAnimChanges(VFILE *file);
 static void M_LoadAnimRanges(VFILE *file);
@@ -201,21 +200,19 @@ finish:
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadMeshBase(VFILE *const file)
+static void M_LoadObjectMeshes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_meshes = VFile_ReadS32(file);
-    LOG_INFO("meshes: %d", num_meshes);
+    LOG_INFO("object mesh data: %d", num_meshes);
+
+    const size_t data_start_pos = VFile_GetPos(file);
+    // TODO: skip, handled in Level_ReadObjectMeshes
     g_MeshBase = GameBuf_Alloc(sizeof(int16_t) * num_meshes, GBUF_MESHES);
     VFile_Read(file, g_MeshBase, sizeof(int16_t) * num_meshes);
-    Benchmark_End(benchmark, NULL);
-}
 
-static void M_LoadMeshes(VFILE *const file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_mesh_ptrs = VFile_ReadS32(file);
-    LOG_INFO("mesh pointers: %d", num_mesh_ptrs);
+    LOG_INFO("object mesh indices: %d", num_mesh_ptrs);
     int32_t *const mesh_indices =
         (int32_t *)Memory_Alloc(sizeof(int32_t) * num_mesh_ptrs);
     VFile_Read(file, mesh_indices, sizeof(int32_t) * num_mesh_ptrs);
@@ -225,6 +222,12 @@ static void M_LoadMeshes(VFILE *const file)
     for (int32_t i = 0; i < num_mesh_ptrs; i++) {
         g_Meshes[i] = &g_MeshBase[mesh_indices[i] / 2];
     }
+
+    const size_t end_pos = VFile_GetPos(file);
+    VFile_SetPos(file, data_start_pos);
+    Object_InitialiseMeshes(num_mesh_ptrs);
+    Level_ReadObjectMeshes(num_mesh_ptrs, mesh_indices, file);
+    VFile_SetPos(file, end_pos);
 
     Memory_Free(mesh_indices);
     Benchmark_End(benchmark, NULL);
@@ -794,8 +797,7 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     VFile_Skip(file, 4);
     M_LoadRooms(file);
 
-    M_LoadMeshBase(file);
-    M_LoadMeshes(file);
+    M_LoadObjectMeshes(file);
 
     M_LoadAnims(file);
     M_LoadAnimChanges(file);
