@@ -23,6 +23,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/enum_map.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/shell.h>
 #include <libtrx/game/ui/common.h>
@@ -37,6 +38,7 @@
 
 static Uint64 m_UpdateDebounce = 0;
 static const char *m_CurrentGameFlowPath = "cfg/TR2X_gameflow.json5";
+static const char *m_CurrentGameStringsPath = "cfg/TR2X_strings.json5";
 
 static void M_SyncToWindow(void);
 static void M_SyncFromWindow(void);
@@ -362,12 +364,17 @@ void Shell_Main(void)
     Viewport_Reset();
 
     if (!GF_LoadScriptFile("data\\tombPC.dat")) {
-        Shell_ExitSystem("GameMain: could not load script file");
+        Shell_ExitSystem("Could not load the original script file.");
         return;
     }
 
     if (!GF_N_Load(m_CurrentGameFlowPath)) {
-        Shell_ExitSystem("GameMain: could not load new script file");
+        Shell_ExitSystem("Could not load the new script file.");
+        return;
+    }
+
+    if (!GameStringTable_LoadFromFile(m_CurrentGameStringsPath)) {
+        Shell_ExitSystem("Could not load game strings.");
         return;
     }
 

@@ -95,7 +95,7 @@ def process_tr2() -> None:
     assert object_strings_map
     assert game_strings_map
 
-    for gameflow_path in TR2Paths.shipped_data_dir.rglob("*gameflow*.json*"):
+    for gameflow_path in TR2Paths.shipped_data_dir.rglob("*strings*.json*"):
         old_gameflow = gameflow_path.read_text()
         new_gameflow = postprocess_gameflow(
             old_gameflow, object_strings_map, game_strings_map

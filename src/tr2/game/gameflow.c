@@ -19,7 +19,7 @@
 #include <libtrx/benchmark.h>
 #include <libtrx/config.h>
 #include <libtrx/filesystem.h>
-#include <libtrx/game/objects/names.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
@@ -344,7 +344,7 @@ bool GF_LoadScriptFile(const char *const fname)
 
 bool GF_DoFrontendSequence(void)
 {
-    GF_N_LoadStrings(-1);
+    GameStringTable_Apply(-1);
     const GAME_FLOW_COMMAND gf_cmd =
         GF_InterpretSequence(m_FrontendSequence, GFL_NORMAL);
     return gf_cmd.action == GF_EXIT_GAME;
@@ -353,8 +353,7 @@ bool GF_DoFrontendSequence(void)
 GAME_FLOW_COMMAND GF_DoLevelSequence(
     const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
 {
-    GF_N_LoadStrings(start_level);
-
+    GameStringTable_Apply(start_level);
     int32_t current_level = start_level;
     while (true) {
         if (current_level > g_GameFlow.num_levels - 1) {

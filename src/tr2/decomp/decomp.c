@@ -36,6 +36,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/ui/common.h>
@@ -63,8 +64,7 @@ static CAMERA_INFO m_LocalCamera = {};
 
 GAME_FLOW_COMMAND TitleSequence(void)
 {
-    GF_N_LoadStrings(-1);
-
+    GameStringTable_Apply(-1);
     if (!Level_Initialise(0, GFL_TITLE)) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }

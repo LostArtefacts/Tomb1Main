@@ -164,7 +164,7 @@ def lint_unused_game_strings(context: LintContext) -> Iterable[LintWarning]:
 
     used_strings = defaultdict(set)
     for path in context.versioned_files:
-        if path.suffix != ".c":
+        if path.suffix not in {".c", ".def"}:
             continue
 
         relevant_project = get_relevant_project(context, path)
@@ -189,7 +189,7 @@ def lint_unused_game_strings(context: LintContext) -> Iterable[LintWarning]:
                 )
             elif project == 'libtrx' and 'libtrx' not in used_projects and len(used_projects) == 1:
                 yield LintWarning(
-                    project_paths[project], f"game string used only in a single child project: {def_} ({used_projects!r}."
+                    project_paths[project], f"game string used only in a single child project: {def_} ({used_projects!s})."
                 )
 
 

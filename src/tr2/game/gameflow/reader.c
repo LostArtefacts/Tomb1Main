@@ -11,9 +11,6 @@
 static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW_NEW *gf, GAME_FLOW_NEW_LEVEL *level);
-static void M_StringTableShutdown(GAME_FLOW_NEW_STRING_ENTRY *dest);
-static bool M_LoadStringTable(
-    JSON_OBJECT *root_obj, const char *key, GAME_FLOW_NEW_STRING_ENTRY **dest);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
 
 static void M_LoadGlobalInjections(
@@ -75,53 +72,6 @@ static void M_LoadLevelInjections(
     }
 }
 
-static void M_StringTableShutdown(GAME_FLOW_NEW_STRING_ENTRY *const dest)
-{
-    if (dest == NULL) {
-        return;
-    }
-    GAME_FLOW_NEW_STRING_ENTRY *cur = dest;
-    while (cur->key != NULL) {
-        Memory_FreePointer(&cur->key);
-        Memory_FreePointer(&cur->value);
-        cur++;
-    }
-    Memory_Free(dest);
-}
-
-static bool M_LoadStringTable(
-    JSON_OBJECT *const root_obj, const char *const key,
-    GAME_FLOW_NEW_STRING_ENTRY **dest)
-{
-    const JSON_OBJECT *const strings_obj = JSON_ObjectGetObject(root_obj, key);
-    if (strings_obj == NULL) {
-        // key is missing - rely on default strings
-        return true;
-    }
-
-    *dest = Memory_Alloc(
-        sizeof(GAME_FLOW_NEW_STRING_ENTRY) * (strings_obj->length + 1));
-
-    GAME_FLOW_NEW_STRING_ENTRY *cur = *dest;
-    JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
-    for (size_t i = 0; i < strings_obj->length;
-         i++, strings_elem = strings_elem->next) {
-        const char *const key = strings_elem->name->string;
-        const char *const value = JSON_ObjectGetString(strings_obj, key, NULL);
-        if (value == NULL) {
-            LOG_ERROR("invalid string key %s", strings_elem->name->string);
-            return NULL;
-        }
-        cur->key = Memory_DupStr(key);
-        cur->value = Memory_DupStr(value);
-        cur++;
-    }
-
-    cur->key = NULL;
-    cur->value = NULL;
-    return true;
-}
-
 static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *const gf)
 {
     bool result = true;
@@ -158,11 +108,6 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *const gf)
         }
 
         M_LoadLevelInjections(jlvl_obj, gf, level);
-
-        result &= M_LoadStringTable(
-            jlvl_obj, "object_strings", &level->object_strings);
-        result &=
-            M_LoadStringTable(jlvl_obj, "game_strings", &level->game_strings);
     }
 
 end:
@@ -199,9 +144,6 @@ bool GF_N_Load(const char *const path)
     GAME_FLOW_NEW *const gf = &g_GameFlowNew;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadGlobalInjections(root_obj, gf);
-    result &=
-        M_LoadStringTable(root_obj, "object_strings", &gf->object_strings);
-    result &= M_LoadStringTable(root_obj, "game_strings", &gf->game_strings);
     result &= M_LoadScriptLevels(root_obj, gf);
 
 end:
@@ -228,15 +170,11 @@ void GF_N_Shutdown(void)
     Memory_FreePointer(&gf->injections.data_paths);
 
     for (int32_t i = 0; i < gf->level_count; i++) {
-        M_StringTableShutdown(gf->levels[i].object_strings);
-        M_StringTableShutdown(gf->levels[i].game_strings);
-
         for (int32_t j = 0; j < gf->levels[i].injections.count; j++) {
             Memory_FreePointer(&gf->levels[i].injections.data_paths[j]);
         }
         Memory_FreePointer(&gf->levels[i].injections.data_paths);
     }
-
-    M_StringTableShutdown(gf->object_strings);
-    M_StringTableShutdown(gf->game_strings);
+    Memory_FreePointer(&gf->levels);
+    gf->level_count = 0;
 }
