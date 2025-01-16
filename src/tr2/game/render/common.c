@@ -128,11 +128,11 @@ void Render_Reset(const RENDER_RESET_FLAGS reset_flags)
         Render_AdjustTextureUVs(reset_flags & RENDER_RESET_TEXTURES);
         M_ReuploadBackground();
     }
-
     if (reset_flags & RENDER_RESET_PARAMS) {
         GFX_Context_SetWireframeMode(g_Config.rendering.enable_wireframe);
         GFX_Context_SetLineWidth(g_Config.rendering.wireframe_width);
     }
+
     LOG_DEBUG("reset finished");
 }
 
