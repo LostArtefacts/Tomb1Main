@@ -344,6 +344,7 @@ static void M_LoadStaticObjects(VFILE *const file)
         static_obj->collision_bounds.min.z = VFile_ReadS16(file);
         static_obj->collision_bounds.max.z = VFile_ReadS16(file);
         static_obj->flags = VFile_ReadU16(file);
+        static_obj->loaded = true;
     }
     Benchmark_End(benchmark, NULL);
 }
@@ -409,17 +410,31 @@ static void M_LoadSprites(VFILE *const file)
     const int32_t num_statics = VFile_ReadS32(file);
     LOG_DEBUG("statics: %d", num_statics);
     for (int32_t i = 0; i < num_statics; i++) {
-        int32_t object_id = VFile_ReadS32(file);
-        if (object_id >= O_NUMBER_OF) {
-            object_id -= O_NUMBER_OF;
-            STATIC_INFO *const static_object = &g_StaticObjects[object_id];
-            VFile_Skip(file, sizeof(int16_t));
-            static_object->mesh_idx = VFile_ReadS16(file);
-        } else {
+        const int32_t object_id = VFile_ReadS32(file);
+        const int16_t num_meshes = VFile_ReadS16(file);
+        const int16_t mesh_idx = VFile_ReadS16(file);
+
+        if (object_id >= 0 && object_id < O_NUMBER_OF) {
             OBJECT *const object = &g_Objects[object_id];
-            object->mesh_count = VFile_ReadS16(file);
-            object->mesh_idx = VFile_ReadS16(file);
+            object->mesh_count = num_meshes;
+            object->mesh_idx = mesh_idx;
             object->loaded = 1;
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
+            STATIC_INFO *const object =
+                &g_StaticObjects[object_id - O_NUMBER_OF];
+            if (object->loaded) {
+                LOG_WARNING(
+                    "sprite %d is already loaded "
+                    "(trying to override %d:%d with %d:%d)",
+                    object_id - O_NUMBER_OF, object->mesh_count,
+                    object->mesh_idx, num_meshes, mesh_idx);
+            } else {
+                object->mesh_count = num_meshes;
+                object->mesh_idx = mesh_idx;
+                object->loaded = true;
+            }
+        } else {
+            Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }
     }
 

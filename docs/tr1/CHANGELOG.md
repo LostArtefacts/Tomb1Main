@@ -11,6 +11,7 @@
 - changed the fix for transparent eyes on wolves to use black instead of off-white (#2252)
 - changed the `/kill` command with no arguments to look for enemies within 5 tiles (#2297)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
+- fixed ghost meshes appearing near statics in custom levels (#2310)
 - fixed the upside-down camera fix to no longer limit Lara's vision (#2276, regression from 4.2)
 - fixed being unable to load some old custom levels that contain certain (invalid) floor data (#2114, regression from 4.3)
 - fixed a desync in the Lost Valley demo if responsive swim cancellation was enabled (#2113, regression from 4.6)

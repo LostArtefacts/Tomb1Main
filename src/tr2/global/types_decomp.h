@@ -144,6 +144,8 @@ typedef enum {
 } DRAW_TYPE;
 
 typedef struct {
+    bool loaded;
+    int16_t mesh_count;
     int16_t mesh_idx;
     uint16_t flags;
     BOUNDS_16 draw_bounds;

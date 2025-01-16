@@ -236,7 +236,7 @@ static void M_LoadRooms(VFILE *file)
                 mesh->pos.z = VFile_ReadS32(file);
                 mesh->rot.y = VFile_ReadS16(file);
                 mesh->shade = VFile_ReadU16(file);
-                mesh->static_num = VFile_ReadU16(file);
+                mesh->static_num = VFile_ReadS16(file);
             }
         }
 
@@ -409,7 +409,7 @@ static void M_LoadStaticObjects(VFILE *file)
         object->c.max.y = VFile_ReadS16(file);
         object->c.min.z = VFile_ReadS16(file);
         object->c.max.z = VFile_ReadS16(file);
-        object->flags = VFile_ReadS16(file);
+        object->flags = VFile_ReadU16(file);
         object->loaded = true;
     }
 
@@ -459,20 +459,29 @@ static void M_LoadSprites(VFILE *file)
 
     m_LevelInfo.sprite_count = VFile_ReadS32(file);
     for (int i = 0; i < m_LevelInfo.sprite_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
+        const int32_t object_id = VFile_ReadS32(file);
         const int16_t num_meshes = VFile_ReadS16(file);
         const int16_t mesh_idx = VFile_ReadS16(file);
 
         if (object_id >= 0 && object_id < O_NUMBER_OF) {
-            OBJECT *object = &g_Objects[object_id];
+            OBJECT *const object = &g_Objects[object_id];
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
         } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
-            STATIC_INFO *object = &g_StaticObjects[object_id - O_NUMBER_OF];
-            object->mesh_count = num_meshes;
-            object->mesh_num = mesh_idx;
-            object->loaded = true;
+            STATIC_INFO *const object =
+                &g_StaticObjects[object_id - O_NUMBER_OF];
+            if (object->loaded) {
+                LOG_WARNING(
+                    "sprite %d is already loaded "
+                    "(trying to override %d:%d with %d:%d)",
+                    object_id - O_NUMBER_OF, object->mesh_count,
+                    object->mesh_num, num_meshes, mesh_idx);
+            } else {
+                object->mesh_count = num_meshes;
+                object->mesh_num = mesh_idx;
+                object->loaded = true;
+            }
         } else {
             Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }

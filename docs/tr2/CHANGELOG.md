@@ -17,6 +17,7 @@
 - fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
+- fixed ghost meshes appearing near statics in custom levels (#2310)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed savegame incompatibility with OG (#2271, regression from 0.8)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)
