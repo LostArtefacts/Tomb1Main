@@ -1,0 +1,17 @@
+{
+    "levels": [
+        // Level 2: City of Vilcabamba
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Silver Key",
+                "INV_ITEM_PUZZLE_1": "Gold Idol"
+            },
+        },
+
+        // Level 3: Title
+        {},
+
+        // Level 4: Current Position
+        {},
+    ],
+}

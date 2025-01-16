@@ -27,6 +27,7 @@
 #include <libtrx/benchmark.h>
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
@@ -1014,7 +1015,7 @@ bool Level_Initialise(int32_t level_num)
 
     Lara_InitialiseLoad(NO_ITEM);
     Level_Load(level_num);
-    GameFlow_LoadStrings(level_num);
+    GameStringTable_Apply(level_num);
 
     if (g_Lara.item_num != NO_ITEM) {
         Lara_Initialise(level_num);

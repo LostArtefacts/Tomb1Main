@@ -24,6 +24,7 @@
 #include <libtrx/config.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/game/gamebuf.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>
@@ -38,9 +39,31 @@
 #define LEVEL_TITLE_SIZE 25
 #define TIMESTAMP_SIZE 20
 
-static const char m_TR1XGameFlowPath[] = "cfg/TR1X_gameflow.json5";
-static const char m_TR1XGameFlowGoldPath[] = "cfg/TR1X_gameflow_ub.json5";
-static const char m_TR1XGameFlowDemoPath[] = "cfg/TR1X_gameflow_demo_pc.json5";
+typedef enum {
+    M_MOD_UNKNOWN,
+    M_MOD_OG,
+    M_MOD_UB,
+    M_MOD_DEMO_PC,
+} M_MOD;
+
+static struct {
+    char *game_flow_path;
+    char *game_strings_path;
+} m_ModPaths[] = {
+    [M_MOD_OG] = {
+        .game_flow_path = "cfg/TR1X_gameflow.json5",
+        .game_strings_path = "cfg/TR1X_strings.json5",
+    },
+    [M_MOD_UB] = {
+        .game_flow_path = "cfg/TR1X_gameflow_ub.json5",
+        .game_strings_path = "cfg/TR1X_strings_ub.json5",
+    },
+    [M_MOD_DEMO_PC] = {
+        .game_flow_path = "cfg/TR1X_gameflow_demo_pc.json5",
+        .game_strings_path = "cfg/TR1X_strings_demo_pc.json5",
+    },
+};
+static M_MOD m_ActiveMod = M_MOD_UNKNOWN;
 
 static const char *m_CurrentGameFlowPath;
 
@@ -79,7 +102,8 @@ static void M_LoadConfig(void)
     Music_SetVolume(g_Config.audio.music_volume);
 }
 
-void Shell_Init(const char *gameflow_path)
+void Shell_Init(
+    const char *const game_flow_path, const char *const game_strings_path)
 {
     Text_Init();
     UI_Init();
@@ -103,8 +127,13 @@ void Shell_Init(const char *gameflow_path)
     }
     Screen_Init();
 
-    if (!GameFlow_LoadFromFile(gameflow_path)) {
-        Shell_ExitSystemFmt("Unable to load gameflow file: %s", gameflow_path);
+    if (!GameFlow_LoadFromFile(game_flow_path)) {
+        Shell_ExitSystemFmt("Unable to load gameflow file: %s", game_flow_path);
+        return;
+    }
+    if (!GameStringTable_LoadFromFile(game_strings_path)) {
+        Shell_ExitSystemFmt(
+            "Unable to load game strings: %s", game_strings_path);
         return;
     }
     Savegame_Init();
@@ -138,22 +167,22 @@ const char *Shell_GetConfigPath(void)
 
 const char *Shell_GetGameFlowPath(void)
 {
-    return m_CurrentGameFlowPath;
+    return m_ModPaths[m_ActiveMod].game_flow_path;
 }
 
 void Shell_Main(void)
 {
-    m_CurrentGameFlowPath = m_TR1XGameFlowPath;
+    m_ActiveMod = M_MOD_OG;
 
     char **args = NULL;
-    int arg_count = 0;
+    int32_t arg_count = 0;
     S_Shell_GetCommandLine(&arg_count, &args);
-    for (int i = 0; i < arg_count; i++) {
+    for (int32_t i = 0; i < arg_count; i++) {
         if (!strcmp(args[i], "-gold")) {
-            m_CurrentGameFlowPath = m_TR1XGameFlowGoldPath;
+            m_ActiveMod = M_MOD_UB;
         }
         if (!strcmp(args[i], "-demo_pc")) {
-            m_CurrentGameFlowPath = m_TR1XGameFlowDemoPath;
+            m_ActiveMod = M_MOD_DEMO_PC;
         }
     }
     for (int i = 0; i < arg_count; i++) {
@@ -165,7 +194,9 @@ void Shell_Main(void)
     EnumMap_Init();
     Config_Init();
 
-    Shell_Init(m_CurrentGameFlowPath);
+    Shell_Init(
+        m_ModPaths[m_ActiveMod].game_flow_path,
+        m_ModPaths[m_ActiveMod].game_strings_path);
 
     GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
     bool intro_played = false;

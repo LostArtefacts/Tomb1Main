@@ -1,0 +1,29 @@
+{
+    "levels": [
+        // Level 0: Return to Egypt
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Gold Key",
+            },
+        },
+
+        // Level 1: Temple of the Cat
+        {
+            "game_strings": {
+                "INV_ITEM_KEY_1": "Ornate Key",
+            },
+        },
+
+        // Level 2: Atlantean Stronghold
+        {},
+
+        // Level 3: The Hive
+        {},
+
+        // Level 4: Title
+        {},
+
+        // Level 5: Current Position
+        {},
+    ],
+}

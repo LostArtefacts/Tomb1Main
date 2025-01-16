@@ -3,12 +3,7 @@ import json
 import re
 from pathlib import Path
 
-from shared.paths import SHARED_INCLUDE_DIR, TR1Paths, TR2Paths
-
-GAME_STRING_DEF_PATHS = [
-    TR1Paths.src_dir / "game/game_string.def",
-    SHARED_INCLUDE_DIR / "game/game_string.def",
-]
+from shared.paths import PROJECT_PATHS, SHARED_INCLUDE_DIR
 
 
 def get_strings_map(paths: list[Path]) -> dict[str, str]:
@@ -22,91 +17,63 @@ def get_strings_map(paths: list[Path]) -> dict[str, str]:
     return result
 
 
-def process_tr1() -> None:
-    strings_map = get_strings_map(GAME_STRING_DEF_PATHS)
-    assert strings_map
-
-    def postprocess_gameflow(
-        gameflow: str, strings_map: dict[str, str]
-    ) -> str:
-        gameflow = re.sub(
-            r'^(    "strings": {)[\S\s]*?^(    })',
-            '    "strings": {\n'
-            + "\n".join(
-                f"        {json.dumps(key)}: {json.dumps(value)},"
-                for key, value in sorted(
-                    strings_map.items(), key=lambda kv: kv[0]
-                )
-            )
-            + "\n    }",
-            gameflow,
-            flags=re.M | re.DOTALL,
+def postprocess_game_strings(
+    content: str,
+    object_names_map: dict[str, str],
+    game_strings_map: dict[str, str],
+) -> str:
+    content = re.sub(
+        r'^(    "object_names": {)[\S\s]*?^(    })',
+        '    "object_names": {\n'
+        + "\n".join(
+            f"        {json.dumps(key)}: {json.dumps(value)},"
+            for key, value in object_names_map.items()
         )
-        return gameflow
+        + "\n    }",
+        content,
+        flags=re.M | re.DOTALL,
+    )
 
-    for gameflow_path in TR1Paths.shipped_data_dir.rglob("*gameflow*.json*"):
-        old_gameflow = gameflow_path.read_text()
-        new_gameflow = postprocess_gameflow(old_gameflow, strings_map)
-        if new_gameflow != old_gameflow:
-            gameflow_path.write_text(new_gameflow)
+    content = re.sub(
+        r'^(    "game_strings": {)[\S\s]*?^(    })',
+        '    "game_strings": {\n'
+        + "\n".join(
+            f"        {json.dumps(key)}: {json.dumps(value)},"
+            for key, value in sorted(
+                game_strings_map.items(), key=lambda kv: kv[0]
+            )
+        )
+        + "\n    }",
+        content,
+        flags=re.M | re.DOTALL,
+    )
+    return content
 
 
-def process_tr2() -> None:
+def process(game: int) -> None:
     GAME_STRING_DEF_PATHS = [
-        TR2Paths.src_dir / "game/game_string.def",
+        PROJECT_PATHS[game].src_dir / "game/game_string.def",
         SHARED_INCLUDE_DIR / "game/game_string.def",
     ]
-    OBJECT_STRINGS_DEF_PATH = SHARED_INCLUDE_DIR / "game/objects/names_tr2.def"
+    OBJECT_NAMES_DEF_PATH = SHARED_INCLUDE_DIR / f"game/objects/names_tr{game}.def"
 
-    def postprocess_gameflow(
-        gameflow: str,
-        object_strings_map: dict[str, str],
-        game_strings_map: dict[str, str],
-    ) -> str:
-        gameflow = re.sub(
-            r'^(    "object_strings": {)[\S\s]*?^(    })',
-            '    "object_strings": {\n'
-            + "\n".join(
-                f"        {json.dumps(key)}: {json.dumps(value)},"
-                for key, value in object_strings_map.items()
-            )
-            + "\n    }",
-            gameflow,
-            flags=re.M | re.DOTALL,
-        )
-
-        gameflow = re.sub(
-            r'^(    "game_strings": {)[\S\s]*?^(    })',
-            '    "game_strings": {\n'
-            + "\n".join(
-                f"        {json.dumps(key)}: {json.dumps(value)},"
-                for key, value in sorted(
-                    game_strings_map.items(), key=lambda kv: kv[0]
-                )
-            )
-            + "\n    }",
-            gameflow,
-            flags=re.M | re.DOTALL,
-        )
-        return gameflow
-
-    object_strings_map = get_strings_map([OBJECT_STRINGS_DEF_PATH])
+    object_names_map = get_strings_map([OBJECT_NAMES_DEF_PATH])
     game_strings_map = get_strings_map(GAME_STRING_DEF_PATHS)
-    assert object_strings_map
+    assert object_names_map
     assert game_strings_map
 
-    for gameflow_path in TR2Paths.shipped_data_dir.rglob("*strings*.json*"):
-        old_gameflow = gameflow_path.read_text()
-        new_gameflow = postprocess_gameflow(
-            old_gameflow, object_strings_map, game_strings_map
+    for path in PROJECT_PATHS[game].shipped_data_dir.rglob("*strings*.json*"):
+        old_content = path.read_text()
+        new_content = postprocess_game_strings(
+            old_content, object_names_map, game_strings_map
         )
-        if new_gameflow != old_gameflow:
-            gameflow_path.write_text(new_gameflow)
+        if new_content != old_content:
+            path.write_text(new_content)
 
 
 def main() -> None:
-    process_tr1()
-    process_tr2()
+    process(1)
+    process(2)
 
 
 if __name__ == "__main__":

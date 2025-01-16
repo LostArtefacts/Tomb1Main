@@ -7,11 +7,6 @@
 #include <stdint.h>
 
 typedef struct {
-    const char *key;
-    const char *value;
-} GAME_FLOW_STRING_ENTRY;
-
-typedef struct {
     GAME_FLOW_SEQUENCE_TYPE type;
     void *data;
 } GAME_FLOW_SEQUENCE;
@@ -27,8 +22,6 @@ typedef struct {
     int16_t music;
     char *level_title;
     char *level_file;
-    GAME_FLOW_STRING_ENTRY *object_strings;
-    GAME_FLOW_STRING_ENTRY *examine_strings;
     int8_t demo;
     GAME_FLOW_SEQUENCE *sequence;
     struct {

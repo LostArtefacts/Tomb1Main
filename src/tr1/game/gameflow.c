@@ -54,16 +54,9 @@ GAME_FLOW g_GameFlow = {};
 static int32_t M_StringToEnumType(
     const char *const str, const STRING_TO_ENUM_TYPE *map);
 static bool M_LoadScriptMeta(JSON_OBJECT *obj);
-static bool M_LoadScriptGameStrings(JSON_OBJECT *obj);
 static bool M_IsLegacySequence(const char *type_str);
 static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj);
-static void M_StringTableShutdown(GAME_FLOW_STRING_ENTRY *dest);
-static bool M_LoadObjectNames(
-    JSON_OBJECT *root_obj, const char *key, GAME_FLOW_STRING_ENTRY **dest);
-static void M_ScanLevelText(
-    const GAME_FLOW_STRING_ENTRY *entry,
-    void (*callback)(GAME_OBJECT_ID object_id, const char *text));
 
 static const STRING_TO_ENUM_TYPE m_GameFlowLevelTypeEnumMap[] = {
     { "title", GFL_TITLE },
@@ -211,31 +204,6 @@ static bool M_LoadScriptMeta(JSON_OBJECT *obj)
         JSON_ObjectGetBool(obj, "convert_dropped_guns", false);
     g_GameFlow.enable_killer_pushblocks =
         JSON_ObjectGetBool(obj, "enable_killer_pushblocks", true);
-
-    return true;
-}
-
-static bool M_LoadScriptGameStrings(JSON_OBJECT *obj)
-{
-    JSON_OBJECT *strings_obj = JSON_ObjectGetObject(obj, "strings");
-    if (!strings_obj) {
-        LOG_ERROR("'strings' must be a dictionary");
-        return false;
-    }
-
-    JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
-    while (strings_elem) {
-        const char *const key = strings_elem->name->string;
-        const char *const value = JSON_ObjectGetString(strings_obj, key, NULL);
-        if (!GameString_IsKnown(key)) {
-            LOG_ERROR("invalid game string key: %s", key);
-        } else if (value == NULL) {
-            LOG_ERROR("invalid game string value: %s", key);
-        } else {
-            GameString_Define(key, value);
-        }
-        strings_elem = strings_elem->next;
-    }
 
     return true;
 }
@@ -509,88 +477,6 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
     return true;
 }
 
-static void M_StringTableShutdown(GAME_FLOW_STRING_ENTRY *const dest)
-{
-    if (dest == NULL) {
-        return;
-    }
-    GAME_FLOW_STRING_ENTRY *cur = dest;
-    while (cur->key != NULL) {
-        Memory_FreePointer(&cur->key);
-        Memory_FreePointer(&cur->value);
-        cur++;
-    }
-    Memory_Free(dest);
-}
-
-static bool M_LoadObjectNames(
-    JSON_OBJECT *const root_obj, const char *const key,
-    GAME_FLOW_STRING_ENTRY **dest)
-{
-    JSON_OBJECT *strings_obj = JSON_ObjectGetObject(root_obj, key);
-    if (strings_obj == NULL) {
-        return false;
-    }
-
-    struct {
-        char *json_key;
-        char *target_string;
-    } legacy_string_defs[] = {
-        { "puzzle1", "O_PUZZLE_ITEM_1" }, { "puzzle1", "O_PUZZLE_OPTION_1" },
-        { "puzzle2", "O_PUZZLE_ITEM_2" }, { "puzzle2", "O_PUZZLE_OPTION_2" },
-        { "puzzle3", "O_PUZZLE_ITEM_3" }, { "puzzle3", "O_PUZZLE_OPTION_3" },
-        { "puzzle4", "O_PUZZLE_ITEM_4" }, { "puzzle4", "O_PUZZLE_OPTION_4" },
-        { "key1", "O_KEY_ITEM_1" },       { "key1", "O_KEY_OPTION_1" },
-        { "key2", "O_KEY_ITEM_2" },       { "key2", "O_KEY_OPTION_2" },
-        { "key3", "O_KEY_ITEM_3" },       { "key3", "O_KEY_OPTION_3" },
-        { "key4", "O_KEY_ITEM_4" },       { "key4", "O_KEY_OPTION_4" },
-        { "pickup1", "O_PICKUP_ITEM_1" }, { "pickup1", "O_PICKUP_OPTION_1" },
-        { "pickup2", "O_PICKUP_ITEM_2" }, { "pickup2", "O_PICKUP_OPTION_2" },
-        { "leadbar", "O_LEADBAR_ITEM" },  { "leadbar", "O_LEADBAR_OPTION" },
-        { "scion", "O_SCION_OPTION" },    { NULL, NULL },
-    };
-
-    // count allocation size
-    int32_t count = 0;
-    for (int32_t i = 0; legacy_string_defs[i].json_key != NULL; i++) {
-        if (JSON_ObjectGetString(
-                strings_obj, legacy_string_defs[i].json_key,
-                JSON_INVALID_STRING)
-            != JSON_INVALID_STRING) {
-            count++;
-        }
-    }
-
-    *dest = Memory_Alloc(sizeof(GAME_FLOW_STRING_ENTRY) * (count + 1));
-
-    GAME_FLOW_STRING_ENTRY *cur = *dest;
-    for (int32_t i = 0; legacy_string_defs[i].json_key != NULL; i++) {
-        const char *value = JSON_ObjectGetString(
-            strings_obj, legacy_string_defs[i].json_key, JSON_INVALID_STRING);
-        if (value != JSON_INVALID_STRING) {
-            cur->key = Memory_DupStr(legacy_string_defs[i].target_string);
-            cur->value = Memory_DupStr(value);
-            cur++;
-        }
-    }
-
-    return true;
-}
-
-static void M_ScanLevelText(
-    const GAME_FLOW_STRING_ENTRY *entry,
-    void (*callback)(GAME_OBJECT_ID object_id, const char *text))
-{
-    while (entry != NULL && entry->key != NULL) {
-        const GAME_OBJECT_ID object_id =
-            ENUM_MAP_GET(GAME_OBJECT_ID, entry->key, NO_OBJECT);
-        if (object_id != NO_OBJECT) {
-            callback(object_id, entry->value);
-        }
-        entry++;
-    }
-}
-
 static bool M_LoadScriptLevels(JSON_OBJECT *obj)
 {
     JSON_ARRAY *jlvl_arr = JSON_ObjectGetArray(obj, "levels");
@@ -745,9 +631,6 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
         cur->unobtainable.secrets =
             JSON_ObjectGetInt(jlvl_obj, "unobtainable_secrets", 0);
 
-        M_LoadObjectNames(jlvl_obj, "strings", &cur->object_strings);
-        M_LoadObjectNames(jlvl_obj, "examine", &cur->examine_strings);
-
         tmp_i = JSON_ObjectGetBool(jlvl_obj, "inherit_injections", 1);
         tmp_arr = JSON_ObjectGetArray(jlvl_obj, "injections");
         if (tmp_arr) {
@@ -891,7 +774,6 @@ bool GameFlow_LoadFromFile(const char *file_name)
 
     result = true;
     result &= M_LoadScriptMeta(root_obj);
-    result &= M_LoadScriptGameStrings(root_obj);
     result &= M_LoadScriptLevels(root_obj);
 
 cleanup:
@@ -920,8 +802,6 @@ void GameFlow_Shutdown(void)
         for (int i = 0; i < g_GameFlow.level_count; i++) {
             Memory_FreePointer(&g_GameFlow.levels[i].level_file);
             Memory_FreePointer(&g_GameFlow.levels[i].level_title);
-            M_StringTableShutdown(g_GameFlow.levels[i].object_strings);
-            M_StringTableShutdown(g_GameFlow.levels[i].examine_strings);
 
             for (int j = 0; j < g_GameFlow.levels[i].injections.length; j++) {
                 Memory_FreePointer(
@@ -1412,90 +1292,6 @@ void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
 GAME_FLOW_COMMAND GameFlow_GetOverrideCommand(void)
 {
     return g_GameInfo.override_gf_command;
-}
-
-void GameFlow_LoadStrings(int32_t level_num)
-{
-    Object_ResetNames();
-
-    struct {
-        GAME_OBJECT_ID object_id;
-        const char *name;
-    } game_string_defs[] = {
-        // clang-format off
-        { O_PISTOL_ITEM,        GS(INV_ITEM_PISTOLS) },
-        { O_PISTOL_OPTION,      GS(INV_ITEM_PISTOLS) },
-        { O_SHOTGUN_ITEM,       GS(INV_ITEM_SHOTGUN) },
-        { O_SHOTGUN_OPTION,     GS(INV_ITEM_SHOTGUN) },
-        { O_MAGNUM_ITEM,        GS(INV_ITEM_MAGNUM) },
-        { O_MAGNUM_OPTION,      GS(INV_ITEM_MAGNUM) },
-        { O_UZI_ITEM,           GS(INV_ITEM_UZI) },
-        { O_UZI_OPTION,         GS(INV_ITEM_UZI) },
-        { O_PISTOL_AMMO_ITEM,   GS(INV_ITEM_PISTOL_AMMO) },
-        { O_PISTOL_AMMO_OPTION, GS(INV_ITEM_PISTOL_AMMO) },
-        { O_SG_AMMO_ITEM,       GS(INV_ITEM_SHOTGUN_AMMO) },
-        { O_SG_AMMO_OPTION,     GS(INV_ITEM_SHOTGUN_AMMO) },
-        { O_MAG_AMMO_ITEM,      GS(INV_ITEM_MAGNUM_AMMO) },
-        { O_MAG_AMMO_OPTION,    GS(INV_ITEM_MAGNUM_AMMO) },
-        { O_UZI_AMMO_ITEM,      GS(INV_ITEM_UZI_AMMO) },
-        { O_UZI_AMMO_OPTION,    GS(INV_ITEM_UZI_AMMO) },
-        { O_EXPLOSIVE_ITEM,     GS(INV_ITEM_GRENADE) },
-        { O_EXPLOSIVE_OPTION,   GS(INV_ITEM_GRENADE) },
-        { O_MEDI_ITEM,          GS(INV_ITEM_SMALL_MEDIPACK) },
-        { O_MEDI_OPTION,        GS(INV_ITEM_SMALL_MEDIPACK) },
-        { O_BIGMEDI_ITEM,       GS(INV_ITEM_LARGE_MEDIPACK) },
-        { O_BIGMEDI_OPTION,     GS(INV_ITEM_LARGE_MEDIPACK) },
-        { O_PUZZLE_ITEM_1,      GS(INV_ITEM_PUZZLE_1) },
-        { O_PUZZLE_OPTION_1,    GS(INV_ITEM_PUZZLE_1) },
-        { O_PUZZLE_ITEM_2,      GS(INV_ITEM_PUZZLE_2) },
-        { O_PUZZLE_OPTION_2,    GS(INV_ITEM_PUZZLE_2) },
-        { O_PUZZLE_ITEM_3,      GS(INV_ITEM_PUZZLE_3) },
-        { O_PUZZLE_OPTION_3,    GS(INV_ITEM_PUZZLE_3) },
-        { O_PUZZLE_ITEM_4,      GS(INV_ITEM_PUZZLE_4) },
-        { O_PUZZLE_OPTION_4,    GS(INV_ITEM_PUZZLE_4) },
-        { O_KEY_ITEM_1,         GS(INV_ITEM_KEY_1) },
-        { O_KEY_OPTION_1,       GS(INV_ITEM_KEY_1) },
-        { O_KEY_ITEM_2,         GS(INV_ITEM_KEY_2) },
-        { O_KEY_OPTION_2,       GS(INV_ITEM_KEY_2) },
-        { O_KEY_ITEM_3,         GS(INV_ITEM_KEY_3) },
-        { O_KEY_OPTION_3,       GS(INV_ITEM_KEY_3) },
-        { O_KEY_ITEM_4,         GS(INV_ITEM_KEY_4) },
-        { O_KEY_OPTION_4,       GS(INV_ITEM_KEY_4) },
-        { O_PICKUP_ITEM_1,      GS(INV_ITEM_PICKUP_1) },
-        { O_PICKUP_OPTION_1,    GS(INV_ITEM_PICKUP_1) },
-        { O_PICKUP_ITEM_2,      GS(INV_ITEM_PICKUP_2) },
-        { O_PICKUP_OPTION_2,    GS(INV_ITEM_PICKUP_2) },
-        { O_LEADBAR_ITEM,       GS(INV_ITEM_LEADBAR) },
-        { O_LEADBAR_OPTION,     GS(INV_ITEM_LEADBAR) },
-        { O_SCION_ITEM_1,       GS(INV_ITEM_SCION) },
-        { O_SCION_ITEM_2,       GS(INV_ITEM_SCION) },
-        { O_SCION_ITEM_3,       GS(INV_ITEM_SCION) },
-        { O_SCION_ITEM_4,       GS(INV_ITEM_SCION) },
-        { O_SCION_OPTION,       GS(INV_ITEM_SCION) },
-        { O_COMPASS_OPTION,     GS(INV_ITEM_COMPASS) },
-        { O_PASSPORT_OPTION,    GS(INV_ITEM_GAME) },
-        { O_PASSPORT_CLOSED,    GS(INV_ITEM_GAME) },
-        { O_DETAIL_OPTION,      GS(INV_ITEM_DETAILS) },
-        { O_SOUND_OPTION,       GS(INV_ITEM_SOUND) },
-        { O_CONTROL_OPTION,     GS(INV_ITEM_CONTROLS) },
-        { O_PHOTO_OPTION,       GS(INV_ITEM_LARAS_HOME) },
-        { NO_OBJECT,            NULL },
-        // clang-format on
-    };
-
-    for (int32_t i = 0; game_string_defs[i].object_id != NO_OBJECT; i++) {
-        const char *const new_name = game_string_defs[i].name;
-        if (new_name != NULL) {
-            Object_SetName(game_string_defs[i].object_id, new_name);
-        }
-    }
-
-    if (level_num >= 0) {
-        ASSERT(level_num < g_GameFlow.level_count);
-        const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
-        M_ScanLevelText(level->object_strings, Object_SetName);
-        M_ScanLevelText(level->examine_strings, Object_SetDescription);
-    }
 }
 
 GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
