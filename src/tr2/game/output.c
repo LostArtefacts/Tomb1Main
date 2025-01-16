@@ -25,7 +25,7 @@ static int32_t m_RandomTable[32];
 
 static int32_t M_CalcFogShade(int32_t depth);
 
-static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr);
+static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
 
 static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
@@ -79,17 +79,15 @@ static void M_InsertBar(
     }
 }
 
-static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
+static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
 {
-    const int32_t vtx_count = *obj_ptr++;
-
-    for (int32_t i = 0; i < vtx_count; i++) {
-        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
-        if (obj_ptr[4] < 0) {
-            obj_ptr += 6;
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
+        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
+        if (vertex->flags != 0) {
             continue;
         }
 
+        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
         double xs = vbuf->xs;
         double ys = vbuf->ys;
         xs += m_WibbleTable
@@ -114,10 +112,7 @@ static const int16_t *M_CalcRoomVerticesWibble(const int16_t *obj_ptr)
         vbuf->xs = xs;
         vbuf->ys = ys;
         vbuf->clip = clip_flags;
-        obj_ptr += 6;
     }
-
-    return obj_ptr;
 }
 
 void Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
@@ -147,7 +142,7 @@ void Output_InsertPolygons_I(const int16_t *const ptr, const int32_t clip)
     Matrix_Pop();
 }
 
-void Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside)
+void Output_InsertRoom(const ROOM_MESH *const mesh, const bool is_outside)
 {
     g_FltWinLeft = g_PhdWinLeft;
     g_FltWinTop = g_PhdWinTop;
@@ -156,23 +151,22 @@ void Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside)
     g_FltWinCenterX = g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinCenterY;
 
-    const int16_t *const old_obj_ptr = obj_ptr;
-    obj_ptr = Output_CalcRoomVertices(obj_ptr, is_outside ? 0 : 16);
+    Output_CalcRoomVertices(mesh, is_outside ? 0 : 16);
 
     if (g_IsWibbleEffect) {
         Render_EnableZBuffer(false, true);
         g_DiscardTransparent = true;
-        obj_ptr = Render_InsertObjectGT4(obj_ptr + 1, *obj_ptr, ST_MAX_Z);
-        obj_ptr = Render_InsertObjectGT3(obj_ptr + 1, *obj_ptr, ST_MAX_Z);
+        Render_InsertTexturedFace4s(mesh->face4s, mesh->num_face4s, ST_MAX_Z);
+        Render_InsertTexturedFace3s(mesh->face3s, mesh->num_face3s, ST_MAX_Z);
         g_DiscardTransparent = false;
-        obj_ptr = M_CalcRoomVerticesWibble(old_obj_ptr);
+        M_CalcRoomVerticesWibble(mesh);
         Render_EnableZBuffer(true, true);
     }
 
-    obj_ptr = Render_InsertObjectGT4(obj_ptr + 1, *obj_ptr, ST_MAX_Z);
-    obj_ptr = Render_InsertObjectGT3(obj_ptr + 1, *obj_ptr, ST_MAX_Z);
+    Render_InsertTexturedFace4s(mesh->face4s, mesh->num_face4s, ST_MAX_Z);
+    Render_InsertTexturedFace3s(mesh->face3s, mesh->num_face3s, ST_MAX_Z);
 
-    Output_InsertRoomSprite(obj_ptr + 1, *obj_ptr);
+    Output_InsertRoomSprite(mesh);
 }
 
 void Output_InsertSkybox(const int16_t *obj_ptr)
@@ -342,34 +336,34 @@ const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr)
     return obj_ptr;
 }
 
-const int16_t *Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip)
+void Output_CalcRoomVertices(const ROOM_MESH *const mesh, int32_t far_clip)
 {
     const double base_z = g_Config.rendering.enable_zbuffer
         ? 0.0
         : (g_MidSort << (W2V_SHIFT + 8));
-    const int32_t vtx_count = *obj_ptr++;
 
-    for (int32_t i = 0; i < vtx_count; i++) {
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
         PHD_VBUF *const vbuf = &g_PhdVBuf[i];
+        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
 
         // clang-format off
         const MATRIX *const mptr = g_MatrixPtr;
         const double xv = (
-            mptr->_00 * obj_ptr[0] +
-            mptr->_01 * obj_ptr[1] +
-            mptr->_02 * obj_ptr[2] +
+            mptr->_00 * vertex->pos.x +
+            mptr->_01 * vertex->pos.y +
+            mptr->_02 * vertex->pos.z +
             mptr->_03
         );
         const double yv = (
-            mptr->_10 * obj_ptr[0] +
-            mptr->_11 * obj_ptr[1] +
-            mptr->_12 * obj_ptr[2] +
+            mptr->_10 * vertex->pos.x +
+            mptr->_11 * vertex->pos.y +
+            mptr->_12 * vertex->pos.z +
             mptr->_13
         );
         const int32_t zv_int = (
-            mptr->_20 * obj_ptr[0] +
-            mptr->_21 * obj_ptr[1] +
-            mptr->_22 * obj_ptr[2] +
+            mptr->_20 * vertex->pos.x +
+            mptr->_21 * vertex->pos.y +
+            mptr->_22 * vertex->pos.z +
             mptr->_23
         );
         const double zv = zv_int;
@@ -379,11 +373,12 @@ const int16_t *Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip)
         vbuf->yv = yv;
         vbuf->zv = zv;
 
-        int16_t shade = obj_ptr[5];
+        int16_t shade = vertex->light_adder;
         if (g_IsWaterEffect) {
             shade += m_ShadesTable
                 [((uint8_t)g_WibbleOffset
-                  + (uint8_t)m_RandomTable[(vtx_count - i) % WIBBLE_SIZE])
+                  + (uint8_t)
+                      m_RandomTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
                  % WIBBLE_SIZE];
         }
 
@@ -430,10 +425,7 @@ const int16_t *Output_CalcRoomVertices(const int16_t *obj_ptr, int32_t far_clip)
         CLAMP(shade, 0, 0x1FFF);
         vbuf->g = shade;
         vbuf->clip = clip_flags;
-        obj_ptr += 6;
     }
-
-    return obj_ptr;
 }
 
 void Output_RotateLight(int16_t pitch, int16_t yaw)
@@ -453,17 +445,16 @@ void Output_RotateLight(int16_t pitch, int16_t yaw)
     g_LsVectorView.z = (m->_20 * x + m->_21 * y + m->_22 * z) >> W2V_SHIFT;
 }
 
-const int16_t *Output_InsertRoomSprite(
-    const int16_t *obj_ptr, const int32_t vtx_count)
+void Output_InsertRoomSprite(const ROOM_MESH *const mesh)
 {
-    for (int32_t i = 0; i < vtx_count; i++) {
-        const PHD_VBUF *vbuf = &g_PhdVBuf[*obj_ptr++];
-        const int16_t sprite_idx = *obj_ptr++;
+    for (int32_t i = 0; i < mesh->num_sprites; i++) {
+        const ROOM_SPRITE *room_sprite = &mesh->sprites[i];
+        const PHD_VBUF *vbuf = &g_PhdVBuf[room_sprite->vertex];
         if ((int8_t)vbuf->clip < 0) {
             continue;
         }
 
-        const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+        const PHD_SPRITE *const sprite = &g_PhdSprites[room_sprite->texture];
         const double persp = (double)(vbuf->zv / g_PhdPersp);
         const double x0 =
             g_PhdWinCenterX + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / persp;
@@ -475,11 +466,10 @@ const int16_t *Output_InsertRoomSprite(
             g_PhdWinCenterY + (vbuf->yv + (sprite->y1 << W2V_SHIFT)) / persp;
         if (x1 >= g_PhdWinLeft && y1 >= g_PhdWinTop && x0 < g_PhdWinRight
             && y0 < g_PhdWinBottom) {
-            Render_InsertSprite(vbuf->zv, x0, y0, x1, y1, sprite_idx, vbuf->g);
+            Render_InsertSprite(
+                vbuf->zv, x0, y0, x1, y1, room_sprite->texture, vbuf->g);
         }
     }
-
-    return obj_ptr;
 }
 
 void Output_DrawSprite(
@@ -1097,18 +1087,16 @@ void Output_LightRoom(ROOM *const room)
     if (room->light_mode != 0) {
         const ROOM_LIGHT_TABLE *const light_table =
             &m_RoomLightTables[m_RoomLightShades[room->light_mode]];
-        int32_t vtx_count = *room->data;
-        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
-        for (int32_t i = 0; i < vtx_count; i++) {
+        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
+            ROOM_VERTEX *const vtx = &room->mesh.vertices[i];
             const int32_t wibble =
-                light_table->table[vtx[i].light_table_value % WIBBLE_SIZE];
-            vtx[i].light_adder = vtx[i].light_base + wibble;
+                light_table->table[vtx->light_table_value % WIBBLE_SIZE];
+            vtx->light_adder = vtx->light_base + wibble;
         }
     } else if (room->flags & RF_DYNAMIC_LIT) {
-        const int32_t vtx_count = *room->data;
-        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
-        for (int32_t i = 0; i < vtx_count; i++) {
-            vtx[i].light_adder = vtx[i].light_base;
+        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
+            ROOM_VERTEX *const vtx = &room->mesh.vertices[i];
+            vtx->light_adder = vtx->light_base;
         }
         room->flags &= ~RF_DYNAMIC_LIT;
     }
@@ -1131,10 +1119,8 @@ void Output_LightRoom(ROOM *const room)
 
         room->flags |= RF_DYNAMIC_LIT;
 
-        const int32_t vtx_count = *room->data;
-        ROOM_VERTEX *const vtx = (ROOM_VERTEX *)(room->data + 1);
-        for (int32_t j = 0; j < vtx_count; j++) {
-            ROOM_VERTEX *const v = &vtx[j];
+        for (int32_t j = 0; j < room->mesh.num_vertices; j++) {
+            ROOM_VERTEX *const v = &room->mesh.vertices[j];
             if (v->light_adder == 0) {
                 continue;
             }

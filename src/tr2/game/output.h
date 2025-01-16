@@ -18,16 +18,14 @@ typedef struct {
 
 void Output_InsertPolygons(const int16_t *obj_ptr, int32_t clip);
 void Output_InsertPolygons_I(const int16_t *ptr, int32_t clip);
-void Output_InsertRoom(const int16_t *obj_ptr, int32_t is_outside);
+void Output_InsertRoom(const ROOM_MESH *mesh, bool is_outside);
 void Output_InsertSkybox(const int16_t *obj_ptr);
 const int16_t *Output_CalcObjectVertices(const int16_t *obj_ptr);
 const int16_t *Output_CalcSkyboxLight(const int16_t *obj_ptr);
 const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr);
-const int16_t *Output_CalcRoomVertices(
-    const int16_t *obj_ptr, int32_t far_clip);
+void Output_CalcRoomVertices(const ROOM_MESH *mesh, int32_t far_clip);
 
-const int16_t *Output_InsertRoomSprite(
-    const int16_t *obj_ptr, int32_t vtx_count);
+void Output_InsertRoomSprite(const ROOM_MESH *mesh);
 
 void Output_InsertClippedPoly_Textured(
     int32_t vtx_count, float z, int16_t poly_type, int16_t tex_page);

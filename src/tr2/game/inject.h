@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/inject.h>
+
 typedef enum {
     IDT_FLOOR_EDIT = 0,
     IDT_ITEM_EDIT = 1,

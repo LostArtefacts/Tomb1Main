@@ -315,10 +315,8 @@ static void M_RoomShift(
     }
 
     // Update vertex Y values to match; x and z are room-relative.
-    int16_t *data_ptr = room->data;
-    const int16_t vertex_count = *data_ptr++;
-    for (int32_t i = 0; i < vertex_count; i++) {
-        *(data_ptr + (i * 4) + 1) += y_shift;
+    for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
+        room->mesh.vertices[i].pos.y += y_shift;
     }
 }
 
@@ -451,4 +449,11 @@ void Inject_Cleanup(void)
     Memory_FreePointer(&m_Injections);
     Benchmark_End(benchmark, NULL);
     m_NumInjections = 0;
+}
+
+INJECTION_MESH_META Inject_GetRoomMeshMeta(const int32_t room_index)
+{
+    // TODO: implement during injection refactor
+    INJECTION_MESH_META summed_meta = {};
+    return summed_meta;
 }

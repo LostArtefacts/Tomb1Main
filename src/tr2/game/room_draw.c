@@ -390,12 +390,12 @@ void Room_DrawSingleRoomGeometry(const int16_t room_num)
 
     Output_LightRoom(r);
     if (m_Outside > 0 && !(r->flags & RF_INSIDE)) {
-        Output_InsertRoom(r->data, true);
+        Output_InsertRoom(&r->mesh, true);
     } else {
         if (m_Outside >= 0) {
             Room_Clip(r);
         }
-        Output_InsertRoom(r->data, false);
+        Output_InsertRoom(&r->mesh, false);
     }
 }
 

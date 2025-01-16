@@ -109,9 +109,7 @@ static void M_LoadRooms(VFILE *const file)
         r->min_floor = VFile_ReadS32(file);
         r->max_ceiling = VFile_ReadS32(file);
 
-        const int32_t data_size = VFile_ReadS32(file);
-        r->data = GameBuf_Alloc(sizeof(int16_t) * data_size, GBUF_ROOM_MESH);
-        VFile_Read(file, r->data, sizeof(int16_t) * data_size);
+        Level_ReadRoomMesh(i, file);
 
         const int16_t num_doors = VFile_ReadS16(file);
         if (num_doors <= 0) {

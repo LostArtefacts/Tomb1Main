@@ -115,7 +115,6 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
 
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
 {
-#if TR_VERSION == 1
     ROOM *const room = Room_Get(room_num);
     const INJECTION_MESH_META inj_data = Inject_GetRoomMeshMeta(room_num);
 
@@ -131,8 +130,15 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
         for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
             ROOM_VERTEX *const vertex = &room->mesh.vertices[i];
             M_ReadVertex(&vertex->pos, file);
+#if TR_VERSION == 1
             vertex->shade = VFile_ReadU16(file);
             vertex->flags = 0;
+#elif TR_VERSION == 2
+            vertex->light_base = VFile_ReadS16(file);
+            vertex->light_table_value = VFile_ReadU8(file);
+            vertex->flags = VFile_ReadU8(file);
+            vertex->light_adder = VFile_ReadS16(file);
+#endif
         }
     }
 
@@ -173,7 +179,6 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
     const size_t total_read =
         (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
     ASSERT(total_read == mesh_length);
-#endif
 }
 
 void Level_ReadObjectMeshes(

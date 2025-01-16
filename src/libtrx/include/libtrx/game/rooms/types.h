@@ -69,11 +69,17 @@ typedef struct {
 #endif
 } LIGHT;
 
-#if TR_VERSION == 1
 typedef struct {
     XYZ_16 pos;
+#if TR_VERSION == 1
     uint16_t flags;
     uint16_t shade;
+#elif TR_VERSION == 2
+    int16_t light_base;
+    uint8_t light_table_value;
+    uint8_t flags;
+    int16_t light_adder;
+#endif
 } ROOM_VERTEX;
 
 typedef struct {
@@ -91,15 +97,6 @@ typedef struct {
     FACE3 *face3s;
     ROOM_SPRITE *sprites;
 } ROOM_MESH;
-#elif TR_VERSION == 2
-typedef struct {
-    XYZ_16 pos;
-    int16_t light_base;
-    uint8_t light_table_value;
-    uint8_t flags;
-    int16_t light_adder;
-} ROOM_VERTEX;
-#endif
 
 typedef struct {
     XYZ_32 pos;
@@ -116,11 +113,7 @@ typedef struct {
 } STATIC_MESH;
 
 typedef struct {
-#if TR_VERSION == 1
     ROOM_MESH mesh;
-#elif TR_VERSION == 2
-    int16_t *data;
-#endif
     PORTALS *portals;
     SECTOR *sectors;
     LIGHT *lights;
