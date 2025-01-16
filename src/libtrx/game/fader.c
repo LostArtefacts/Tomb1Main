@@ -67,5 +67,7 @@ void Fader_Draw(FADER *const fader)
 {
     const int32_t current = Fader_GetCurrentValue(fader);
     fader->target_drawn |= current == fader->args.target;
-    Output_DrawBlackRectangle(current);
+    if (current != 0) {
+        Output_DrawBlackRectangle(current);
+    }
 }
