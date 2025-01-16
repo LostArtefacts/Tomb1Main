@@ -512,14 +512,13 @@ int32_t Collide_GetSpheres(
     Matrix_Rot16(frame->mesh_rots[0]);
 
     const OBJECT *const object = Object_GetObject(item->object_id);
-    int16_t **mesh_ptr = &g_Meshes[object->mesh_idx];
-    const int16_t *mesh = *mesh_ptr++;
+    const OBJECT_MESH *mesh = Object_GetMesh(object->mesh_idx);
     Matrix_Push();
-    Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+    Matrix_TranslateRel16(mesh->center);
     spheres[0].x = pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
     spheres[0].y = pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
     spheres[0].z = pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);
-    spheres[0].r = mesh[3];
+    spheres[0].r = mesh->radius;
     Matrix_Pop();
 
     const int16_t *extra_rotation = (int16_t *)item->data;
@@ -547,14 +546,14 @@ int32_t Collide_GetSpheres(
             }
         }
 
-        mesh = *mesh_ptr++;
+        mesh = Object_GetMesh(object->mesh_idx + i);
         Matrix_Push();
-        Matrix_TranslateRel(mesh[0], mesh[1], mesh[2]);
+        Matrix_TranslateRel16(mesh->center);
         SPHERE *const sphere = &spheres[i];
         sphere->x = pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
         sphere->y = pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT);
         sphere->z = pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT);
-        sphere->r = mesh[3];
+        sphere->r = mesh->radius;
         Matrix_Pop();
     }
 
