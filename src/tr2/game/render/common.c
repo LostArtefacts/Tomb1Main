@@ -317,6 +317,42 @@ const int16_t *Render_InsertObjectGT4(
     return obj_ptr + num * 5;
 }
 
+void Render_InsertFlatFace3s(
+    const FACE3 *const faces, const int32_t num, const SORT_TYPE sort_type)
+{
+    RENDERER *const r = M_GetRenderer();
+    if (r->InsertFlatFace3s != NULL) {
+        r->InsertFlatFace3s(r, faces, num, sort_type);
+    }
+}
+
+void Render_InsertFlatFace4s(
+    const FACE4 *const faces, const int32_t num, const SORT_TYPE sort_type)
+{
+    RENDERER *const r = M_GetRenderer();
+    if (r->InsertFlatFace4s != NULL) {
+        r->InsertFlatFace4s(r, faces, num, sort_type);
+    }
+}
+
+void Render_InsertTexturedFace3s(
+    const FACE3 *const faces, const int32_t num, const SORT_TYPE sort_type)
+{
+    RENDERER *const r = M_GetRenderer();
+    if (r->InsertTexturedFace3s != NULL) {
+        r->InsertTexturedFace3s(r, faces, num, sort_type);
+    }
+}
+
+void Render_InsertTexturedFace4s(
+    const FACE4 *const faces, const int32_t num, const SORT_TYPE sort_type)
+{
+    RENDERER *const r = M_GetRenderer();
+    if (r->InsertTexturedFace4s != NULL) {
+        r->InsertTexturedFace4s(r, faces, num, sort_type);
+    }
+}
+
 void Render_InsertLine(
     const int32_t x0, const int32_t y0, const int32_t x1, const int32_t y1,
     const int32_t z, const uint8_t color_idx)

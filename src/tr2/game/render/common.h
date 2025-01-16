@@ -56,6 +56,14 @@ const int16_t *Render_InsertObjectGT3(
     const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
 const int16_t *Render_InsertObjectGT4(
     const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
+void Render_InsertFlatFace3s(
+    const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+void Render_InsertFlatFace4s(
+    const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
+void Render_InsertTexturedFace3s(
+    const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+void Render_InsertTexturedFace4s(
+    const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
 void Render_InsertLine(
     int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t z,
     uint8_t color_idx);

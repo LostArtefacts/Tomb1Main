@@ -42,6 +42,18 @@ typedef struct RENDERER {
     const int16_t *(*InsertObjectGT4)(
         struct RENDERER *renderer, const int16_t *obj_ptr, int32_t num,
         SORT_TYPE sort_type);
+    void (*InsertFlatFace3s)(
+        struct RENDERER *renderer, const FACE3 *faces, int32_t num,
+        SORT_TYPE sort_type);
+    void (*InsertFlatFace4s)(
+        struct RENDERER *renderer, const FACE4 *faces, int32_t num,
+        SORT_TYPE sort_type);
+    void (*InsertTexturedFace3s)(
+        struct RENDERER *renderer, const FACE3 *faces, int32_t num,
+        SORT_TYPE sort_type);
+    void (*InsertTexturedFace4s)(
+        struct RENDERER *renderer, const FACE4 *faces, int32_t num,
+        SORT_TYPE sort_type);
     void (*InsertTransQuad)(
         struct RENDERER *renderer, int32_t x, int32_t y, int32_t width,
         int32_t height, int32_t z);

@@ -88,6 +88,14 @@ static const int16_t *M_InsertObjectGT3_Sorted(
 static const int16_t *M_InsertObjectGT4_Sorted(
     RENDERER *renderer, const int16_t *obj_ptr, int32_t num,
     SORT_TYPE sort_type);
+static void M_InsertFlatFace3s_Sorted(
+    RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertFlatFace4s_Sorted(
+    RENDERER *renderer, const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertTexturedFace3s_Sorted(
+    RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertTexturedFace4s_Sorted(
+    RENDERER *renderer, const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
 static void M_InsertFlatRect_Sorted(
     RENDERER *renderer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
     int32_t z, uint8_t color_idx);
@@ -122,6 +130,14 @@ static const int16_t *M_InsertObjectGT3_ZBuffered(
 static const int16_t *M_InsertObjectGT4_ZBuffered(
     RENDERER *renderer, const int16_t *obj_ptr, int32_t num,
     SORT_TYPE sort_type);
+static void M_InsertFlatFace3s_ZBuffered(
+    RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertFlatFace4s_ZBuffered(
+    RENDERER *renderer, const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertTexturedFace3s_ZBuffered(
+    RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
+static void M_InsertTexturedFace4s_ZBuffered(
+    RENDERER *renderer, const FACE4 *faces, int32_t num, SORT_TYPE sort_type);
 static void M_InsertFlatRect_ZBuffered(
     RENDERER *renderer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
     int32_t z, uint8_t color_idx);
@@ -755,6 +771,215 @@ static const int16_t *M_InsertObjectGT4_Sorted(
     return obj_ptr;
 }
 
+static void M_InsertFlatFace3s_Sorted(
+    RENDERER *const renderer, const FACE3 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        if (M_VertexBufferFull()) {
+            break;
+        }
+
+        int32_t num_points = 3;
+        const FACE3 *const face = &faces[i];
+        const PHD_VBUF *vtx[3] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+        };
+        const int16_t color_idx = face->texture;
+
+        const int8_t clip_or = vtx[0]->clip | vtx[1]->clip | vtx[2]->clip;
+        const int8_t clip_and = vtx[0]->clip & vtx[1]->clip & vtx[2]->clip;
+        if (clip_and != 0) {
+            continue;
+        }
+
+        if (clip_or >= 0) {
+            if (!VBUF_VISIBLE(*vtx[0], *vtx[1], *vtx[2])) {
+                continue;
+            }
+
+            for (int32_t i = 0; i < 3; i++) {
+                VERTEX_INFO *const vbuf = &m_VBuffer[i];
+                vbuf->x = vtx[i]->xs;
+                vbuf->y = vtx[i]->ys;
+                vbuf->z = vtx[i]->zv;
+                vbuf->rhw = vtx[i]->rhw;
+                vbuf->g = vtx[i]->g;
+            }
+            if (clip_or > 0) {
+                num_points = Render_XYGClipper(num_points, m_VBuffer);
+            }
+        } else {
+            if (!Render_VisibleZClip(vtx[0], vtx[1], vtx[2])) {
+                continue;
+            }
+
+            POINT_INFO points[3];
+            for (int32_t i = 0; i < 3; i++) {
+                points[i].xv = vtx[i]->xv;
+                points[i].yv = vtx[i]->yv;
+                points[i].zv = vtx[i]->zv;
+                points[i].rhw = vtx[i]->rhw;
+                points[i].xs = vtx[i]->xs;
+                points[i].ys = vtx[i]->ys;
+                points[i].g = vtx[i]->g;
+            }
+            num_points = Render_ZedClipper(num_points, points, m_VBuffer);
+            if (num_points == 0) {
+                continue;
+            }
+
+            num_points = Render_XYGClipper(num_points, m_VBuffer);
+        }
+
+        if (num_points == 0) {
+            continue;
+        }
+
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const double zv = Render_CalculatePolyZ(
+            sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
+        M_InsertPolyFlat(
+            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
+    }
+}
+
+static void M_InsertFlatFace4s_Sorted(
+    RENDERER *const renderer, const FACE4 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        if (M_VertexBufferFull()) {
+            break;
+        }
+
+        int32_t num_points = 4;
+        const FACE4 *const face = &faces[i];
+        const PHD_VBUF *const vtx[4] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+            &g_PhdVBuf[face->vertices[3]],
+        };
+        const int16_t color_idx = face->texture;
+
+        const int8_t clip_or =
+            vtx[0]->clip | vtx[1]->clip | vtx[2]->clip | vtx[3]->clip;
+        const int8_t clip_and =
+            vtx[0]->clip & vtx[1]->clip & vtx[2]->clip & vtx[3]->clip;
+        if (clip_and != 0) {
+            continue;
+        }
+
+        if (clip_or >= 0) {
+            if (!VBUF_VISIBLE(*vtx[0], *vtx[1], *vtx[2])) {
+                continue;
+            }
+
+            for (int32_t i = 0; i < 4; i++) {
+                VERTEX_INFO *const vbuf = &m_VBuffer[i];
+                vbuf->x = vtx[i]->xs;
+                vbuf->y = vtx[i]->ys;
+                vbuf->z = vtx[i]->zv;
+                vbuf->rhw = vtx[i]->rhw;
+                vbuf->g = vtx[i]->g;
+            }
+
+            if (clip_or > 0) {
+                num_points = Render_XYGClipper(num_points, m_VBuffer);
+            }
+        } else {
+            if (!Render_VisibleZClip(vtx[0], vtx[1], vtx[2])) {
+                continue;
+            }
+
+            POINT_INFO points[4];
+            for (int32_t i = 0; i < 4; i++) {
+                points[i].xv = vtx[i]->xv;
+                points[i].yv = vtx[i]->yv;
+                points[i].zv = vtx[i]->zv;
+                points[i].rhw = vtx[i]->rhw;
+                points[i].xs = vtx[i]->xs;
+                points[i].ys = vtx[i]->ys;
+                points[i].g = vtx[i]->g;
+            }
+            num_points = Render_ZedClipper(num_points, points, m_VBuffer);
+            if (num_points == 0) {
+                continue;
+            }
+            num_points = Render_XYGClipper(num_points, m_VBuffer);
+        }
+
+        if (num_points == 0) {
+            continue;
+        }
+
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const double zv = Render_CalculatePolyZ(
+            sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
+        M_InsertPolyFlat(
+            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
+    }
+}
+
+static void M_InsertTexturedFace3s_Sorted(
+    RENDERER *const renderer, const FACE3 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        if (M_VertexBufferFull()) {
+            break;
+        }
+
+        const FACE3 *const face = &faces[i];
+        const PHD_VBUF *const vtx[3] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+        };
+
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_UV *const uv = texture->uv;
+
+        if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
+            continue;
+        }
+
+        M_InsertGT3_Sorted(
+            renderer, vtx[0], vtx[1], vtx[2], texture, &uv[0], &uv[1], &uv[2],
+            sort_type);
+    }
+}
+
+static void M_InsertTexturedFace4s_Sorted(
+    RENDERER *const renderer, const FACE4 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        if (M_VertexBufferFull()) {
+            break;
+        }
+
+        const FACE4 *const face = &faces[i];
+        const PHD_VBUF *const vtx[4] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+            &g_PhdVBuf[face->vertices[3]],
+        };
+
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
+            continue;
+        }
+
+        M_InsertGT4_Sorted(
+            renderer, vtx[0], vtx[1], vtx[2], vtx[3], texture, sort_type);
+    }
+}
+
 static void M_InsertFlatRect_Sorted(
     RENDERER *const renderer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
     const int32_t z, const uint8_t color_idx)
@@ -1345,6 +1570,217 @@ static const int16_t *M_InsertObjectGT4_ZBuffered(
     return obj_ptr;
 }
 
+static void M_InsertFlatFace3s_ZBuffered(
+    RENDERER *const renderer, const FACE3 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    M_SelectTexture(renderer, -1);
+    M_EnableColorKey(renderer, false);
+
+    if (num == 0) {
+        return;
+    }
+
+    for (int32_t i = 0; i < num; i++) {
+        int32_t num_points = 3;
+        const FACE3 *const face = &faces[i];
+        const PHD_VBUF *vtx[3] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+        };
+        const int16_t color_idx = face->texture;
+
+        const int8_t clip_or = vtx[0]->clip | vtx[1]->clip | vtx[2]->clip;
+        const int8_t clip_and = vtx[0]->clip & vtx[1]->clip & vtx[2]->clip;
+
+        if (clip_and != 0) {
+            continue;
+        }
+
+        if (clip_or >= 0) {
+            if (!VBUF_VISIBLE(*vtx[0], *vtx[1], *vtx[2])) {
+                continue;
+            }
+
+            for (int32_t i = 0; i < 3; i++) {
+                VERTEX_INFO *const vbuf = &m_VBuffer[i];
+                vbuf->x = vtx[i]->xs;
+                vbuf->y = vtx[i]->ys;
+                vbuf->z = vtx[i]->zv;
+                vbuf->rhw = vtx[i]->rhw;
+                vbuf->g = vtx[i]->g;
+            }
+        } else {
+            if (!Render_VisibleZClip(vtx[0], vtx[1], vtx[2])) {
+                continue;
+            }
+
+            POINT_INFO points[3];
+            for (int32_t i = 0; i < 3; i++) {
+                points[i].xv = vtx[i]->xv;
+                points[i].yv = vtx[i]->yv;
+                points[i].zv = vtx[i]->zv;
+                points[i].rhw = vtx[i]->rhw;
+                points[i].xs = vtx[i]->xs;
+                points[i].ys = vtx[i]->ys;
+                points[i].g = vtx[i]->g;
+            }
+            num_points = Render_ZedClipper(num_points, points, m_VBuffer);
+            if (num_points == 0) {
+                continue;
+            }
+        }
+
+        if (clip_or != 0) {
+            num_points = Render_XYGClipper(num_points, m_VBuffer);
+        }
+        if (num_points == 0) {
+            continue;
+        }
+
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
+    }
+}
+
+static void M_InsertFlatFace4s_ZBuffered(
+    RENDERER *const renderer, const FACE4 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    M_SelectTexture(renderer, -1);
+    M_EnableColorKey(renderer, false);
+
+    if (num == 0) {
+        return;
+    }
+
+    for (int32_t i = 0; i < num; i++) {
+        int32_t num_points = 4;
+        const FACE4 *const face = &faces[i];
+        const PHD_VBUF *const vtx[4] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+            &g_PhdVBuf[face->vertices[3]],
+        };
+        const int16_t color_idx = face->texture;
+
+        const int8_t clip_or =
+            vtx[0]->clip | vtx[1]->clip | vtx[2]->clip | vtx[3]->clip;
+        const int8_t clip_and =
+            vtx[0]->clip & vtx[1]->clip & vtx[2]->clip & vtx[3]->clip;
+
+        if (clip_and != 0) {
+            continue;
+        }
+
+        if (clip_or >= 0) {
+            if (!VBUF_VISIBLE(*vtx[0], *vtx[1], *vtx[2])) {
+                continue;
+            }
+
+            for (int32_t i = 0; i < 4; i++) {
+                VERTEX_INFO *const vbuf = &m_VBuffer[i];
+                vbuf->x = vtx[i]->xs;
+                vbuf->y = vtx[i]->ys;
+                vbuf->z = vtx[i]->zv;
+                vbuf->rhw = vtx[i]->rhw;
+                vbuf->g = vtx[i]->g;
+            }
+        } else {
+            if (!Render_VisibleZClip(vtx[0], vtx[1], vtx[2])) {
+                continue;
+            }
+
+            POINT_INFO points[4];
+            for (int32_t i = 0; i < 4; i++) {
+                points[i].xv = vtx[i]->xv;
+                points[i].yv = vtx[i]->yv;
+                points[i].zv = vtx[i]->zv;
+                points[i].rhw = vtx[i]->rhw;
+                points[i].xs = vtx[i]->xs;
+                points[i].ys = vtx[i]->ys;
+                points[i].g = vtx[i]->g;
+            }
+            num_points = Render_ZedClipper(num_points, points, m_VBuffer);
+            if (num_points == 0) {
+                continue;
+            }
+        }
+
+        if (clip_or != 0) {
+            num_points = Render_XYGClipper(num_points, m_VBuffer);
+        }
+        if (num_points == 0) {
+            continue;
+        }
+
+        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
+    }
+}
+
+static void M_InsertTexturedFace3s_ZBuffered(
+    RENDERER *const renderer, const FACE3 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        const FACE3 *const face = &faces[i];
+        const PHD_VBUF *const vtx[3] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+        };
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+
+        if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
+            continue;
+        }
+
+        const PHD_UV *const uv = texture->uv;
+        if (texture->draw_type != DRAW_OPAQUE) {
+            M_InsertGT3_Sorted(
+                renderer, vtx[0], vtx[1], vtx[2], texture, &uv[0], &uv[1],
+                &uv[2], sort_type);
+        } else {
+            M_InsertGT3_ZBuffered(
+                renderer, vtx[0], vtx[1], vtx[2], texture, &uv[0], &uv[1],
+                &uv[2]);
+        }
+    }
+}
+
+static void M_InsertTexturedFace4s_ZBuffered(
+    RENDERER *const renderer, const FACE4 *const faces, const int32_t num,
+    const SORT_TYPE sort_type)
+{
+    for (int32_t i = 0; i < num; i++) {
+        const FACE4 *const face = &faces[i];
+        const PHD_VBUF *const vtx[4] = {
+            &g_PhdVBuf[face->vertices[0]],
+            &g_PhdVBuf[face->vertices[1]],
+            &g_PhdVBuf[face->vertices[2]],
+            &g_PhdVBuf[face->vertices[3]],
+
+        };
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+
+        if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
+            continue;
+        }
+
+        const PHD_UV *const uv = texture->uv;
+        if (texture->draw_type != DRAW_OPAQUE) {
+            M_InsertGT4_Sorted(
+                renderer, vtx[0], vtx[1], vtx[2], vtx[3], texture, sort_type);
+        } else {
+            M_InsertGT4_ZBuffered(
+                renderer, vtx[0], vtx[1], vtx[2], vtx[3], texture);
+        }
+    }
+}
+
 static void M_InsertFlatRect_ZBuffered(
     RENDERER *const renderer, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
     int32_t z, const uint8_t color_idx)
@@ -1423,6 +1859,10 @@ static void M_ResetFuncPtrs(RENDERER *const renderer)
         renderer->InsertObjectG4 = M_InsertObjectG4_ZBuffered;
         renderer->InsertObjectGT3 = M_InsertObjectGT3_ZBuffered;
         renderer->InsertObjectGT4 = M_InsertObjectGT4_ZBuffered;
+        renderer->InsertFlatFace3s = M_InsertFlatFace3s_ZBuffered;
+        renderer->InsertFlatFace4s = M_InsertFlatFace4s_ZBuffered;
+        renderer->InsertTexturedFace3s = M_InsertTexturedFace3s_ZBuffered;
+        renderer->InsertTexturedFace4s = M_InsertTexturedFace4s_ZBuffered;
         renderer->InsertLine = M_InsertLine_ZBuffered;
         renderer->InsertFlatRect = M_InsertFlatRect_ZBuffered;
     } else {
@@ -1430,6 +1870,10 @@ static void M_ResetFuncPtrs(RENDERER *const renderer)
         renderer->InsertObjectG4 = M_InsertObjectG4_Sorted;
         renderer->InsertObjectGT3 = M_InsertObjectGT3_Sorted;
         renderer->InsertObjectGT4 = M_InsertObjectGT4_Sorted;
+        renderer->InsertFlatFace3s = M_InsertFlatFace3s_Sorted;
+        renderer->InsertFlatFace4s = M_InsertFlatFace4s_Sorted;
+        renderer->InsertTexturedFace3s = M_InsertTexturedFace3s_Sorted;
+        renderer->InsertTexturedFace4s = M_InsertTexturedFace4s_Sorted;
         renderer->InsertLine = M_InsertLine_Sorted;
         renderer->InsertFlatRect = M_InsertFlatRect_Sorted;
     }
