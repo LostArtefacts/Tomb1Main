@@ -272,3 +272,14 @@ BOUNDS_16 Object_GetBoundingBox(
     Matrix_Pop();
     return new_bounds;
 }
+
+void Object_DrawMesh(
+    const int32_t mesh_idx, const int32_t clip, const bool interpolated)
+{
+    const OBJECT_MESH *const mesh = Object_GetMesh(mesh_idx);
+    if (interpolated) {
+        Output_DrawObjectMesh_I(mesh, clip);
+    } else {
+        Output_DrawObjectMesh(mesh, clip);
+    }
+}

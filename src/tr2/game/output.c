@@ -31,6 +31,9 @@ static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
     COLOR_NAME bar_color_main, COLOR_NAME bar_color_highlight);
 
+static bool M_CalcObjectVertices(const OBJECT_MESH *mesh);
+static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
+
 static int32_t M_CalcFogShade(const int32_t depth)
 {
     if (depth > FOG_START) {
@@ -115,6 +118,128 @@ static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
     }
 }
 
+static bool M_CalcObjectVertices(const OBJECT_MESH *const mesh)
+{
+    const double base_z = g_Config.rendering.enable_zbuffer
+        ? 0.0
+        : (g_MidSort << (W2V_SHIFT + 8));
+    uint8_t total_clip = 0xFF;
+
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
+        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
+        const XYZ_16 *const vertex = &mesh->vertices[i];
+
+        // clang-format off
+        const MATRIX *const mptr = g_MatrixPtr;
+        const double xv = (
+            mptr->_00 * vertex->x +
+            mptr->_01 * vertex->y +
+            mptr->_02 * vertex->z +
+            mptr->_03
+        );
+        const double yv = (
+            mptr->_10 * vertex->x +
+            mptr->_11 * vertex->y +
+            mptr->_12 * vertex->z +
+            mptr->_13
+        );
+        double zv = (
+            mptr->_20 * vertex->x +
+            mptr->_21 * vertex->y +
+            mptr->_22 * vertex->z +
+            mptr->_23
+        );
+        // clang-format on
+
+        vbuf->xv = xv;
+        vbuf->yv = yv;
+
+        uint8_t clip_flags;
+        if (zv < g_FltNearZ) {
+            vbuf->zv = zv;
+            clip_flags = 0x80;
+        } else {
+            if (zv >= g_FltFarZ) {
+                vbuf->zv = g_FltFarZ;
+            } else {
+                vbuf->zv = zv + base_z;
+            }
+
+            const double persp = g_FltPersp / zv;
+            vbuf->xs = persp * xv + g_FltWinCenterX;
+            vbuf->ys = persp * yv + g_FltWinCenterY;
+            vbuf->rhw = persp * g_FltRhwOPersp;
+
+            clip_flags = 0x00;
+            if (vbuf->xs < g_FltWinLeft) {
+                clip_flags |= 1;
+            } else if (vbuf->xs > g_FltWinRight) {
+                clip_flags |= 2;
+            }
+
+            if (vbuf->ys < g_FltWinTop) {
+                clip_flags |= 4;
+            } else if (vbuf->ys > g_FltWinBottom) {
+                clip_flags |= 8;
+            }
+        }
+
+        vbuf->clip = clip_flags;
+        total_clip &= clip_flags;
+    }
+
+    return total_clip == 0;
+}
+
+static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
+{
+    // TODO: refactor
+    if (mesh->num_lights > 0) {
+        if (g_LsDivider) {
+            // clang-format off
+            const MATRIX *const mptr = g_MatrixPtr;
+            int32_t xv = (
+                g_LsVectorView.x * mptr->_00 +
+                g_LsVectorView.y * mptr->_10 +
+                g_LsVectorView.z * mptr->_20
+            ) / g_LsDivider;
+            int32_t yv = (
+                g_LsVectorView.x * mptr->_01 +
+                g_LsVectorView.y * mptr->_11 +
+                g_LsVectorView.z * mptr->_21
+            ) / g_LsDivider;
+            int32_t zv = (
+                g_LsVectorView.x * mptr->_02 +
+                g_LsVectorView.y * mptr->_12 +
+                g_LsVectorView.z * mptr->_22
+            ) / g_LsDivider;
+            // clang-format on
+
+            for (int32_t i = 0; i < mesh->num_lights; i++) {
+                const XYZ_16 *const normal = &mesh->lighting.normals[i];
+                int16_t shade = g_LsAdder
+                    + ((xv * normal->x + yv * normal->y + zv * normal->z)
+                       >> 16);
+                CLAMP(shade, 0, 0x1FFF);
+
+                g_PhdVBuf[i].g = shade;
+            }
+        } else {
+            int16_t shade = g_LsAdder;
+            CLAMP(shade, 0, 0x1FFF);
+            for (int32_t i = 0; i < mesh->num_lights; i++) {
+                g_PhdVBuf[i].g = shade;
+            }
+        }
+    } else if (mesh->num_lights < 0) {
+        for (int32_t i = 0; i < -mesh->num_lights; i++) {
+            int16_t shade = g_LsAdder + mesh->lighting.lights[i];
+            CLAMP(shade, 0, 0x1FFF);
+            g_PhdVBuf[i].g = shade;
+        }
+    }
+}
+
 void Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
 {
     g_FltWinLeft = 0.0f;
@@ -139,6 +264,36 @@ void Output_InsertPolygons_I(const int16_t *const ptr, const int32_t clip)
     Matrix_Push();
     Matrix_Interpolate();
     Output_InsertPolygons(ptr, clip);
+    Matrix_Pop();
+}
+
+void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
+{
+    g_FltWinLeft = 0.0f;
+    g_FltWinTop = 0.0f;
+    g_FltWinRight = g_PhdWinMaxX + 1;
+    g_FltWinBottom = g_PhdWinMaxY + 1;
+    g_FltWinCenterX = g_PhdWinCenterX;
+    g_FltWinCenterY = g_PhdWinCenterY;
+
+    if (!M_CalcObjectVertices(mesh)) {
+        return;
+    }
+
+    M_CalcVerticeLight(mesh);
+    Render_InsertTexturedFace4s(
+        mesh->tex_face4s, mesh->num_tex_face4s, ST_AVG_Z);
+    Render_InsertTexturedFace3s(
+        mesh->tex_face3s, mesh->num_tex_face3s, ST_AVG_Z);
+    Render_InsertFlatFace4s(mesh->flat_face4s, mesh->num_flat_face4s, ST_AVG_Z);
+    Render_InsertFlatFace3s(mesh->flat_face3s, mesh->num_flat_face3s, ST_AVG_Z);
+}
+
+void Output_DrawObjectMesh_I(const OBJECT_MESH *const mesh, const int32_t clip)
+{
+    Matrix_Push();
+    Matrix_Interpolate();
+    Output_DrawObjectMesh(mesh, clip);
     Matrix_Pop();
 }
 
@@ -190,6 +345,7 @@ void Output_InsertSkybox(const int16_t *obj_ptr)
     }
 }
 
+// TODO: Eliminate
 const int16_t *Output_CalcObjectVertices(const int16_t *obj_ptr)
 {
     const double base_z = g_Config.rendering.enable_zbuffer
@@ -283,6 +439,7 @@ const int16_t *Output_CalcSkyboxLight(const int16_t *obj_ptr)
     return obj_ptr;
 }
 
+// TODO: eliminate
 const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr)
 {
     int32_t vtx_count = *obj_ptr++;
