@@ -131,11 +131,8 @@ void Shell_Init(
         Shell_ExitSystemFmt("Unable to load gameflow file: %s", game_flow_path);
         return;
     }
-    if (!GameStringTable_LoadFromFile(game_strings_path)) {
-        Shell_ExitSystemFmt(
-            "Unable to load game strings: %s", game_strings_path);
-        return;
-    }
+    GameStringTable_LoadFromFile(game_strings_path);
+
     Savegame_Init();
     Savegame_ScanSavedGames();
     Savegame_HighlightNewestSlot();

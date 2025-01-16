@@ -6,6 +6,18 @@ from pathlib import Path
 from shared.paths import PROJECT_PATHS, SHARED_INCLUDE_DIR
 
 
+def get_objects_map(paths: list[Path]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for path in paths:
+        for line in path.read_text().splitlines():
+            if match := re.match(
+                r'^OBJ_NAME_DEFINE\((\w+),\s*"([^"]+)",\s*"([^"]+)"\)$',
+                line.strip(),
+            ):
+                result[match.group(2)] = match.group(3)
+    return result
+
+
 def get_strings_map(paths: list[Path]) -> dict[str, str]:
     result: dict[str, str] = {}
     for path in paths:
@@ -22,11 +34,15 @@ def postprocess_game_strings(
     object_names_map: dict[str, str],
     game_strings_map: dict[str, str],
 ) -> str:
+    max_key_length = (
+        max(len(json.dumps(key)) for key in object_names_map.keys()) + 2
+    )
+    indent = " " * 8
     content = re.sub(
-        r'^(    "object_names": {)[\S\s]*?^(    })',
-        '    "object_names": {\n'
+        r'^(    "objects": {)[\S\s]*?^(    })',
+        '    "objects": {\n'
         + "\n".join(
-            f"        {json.dumps(key)}: {json.dumps(value)},"
+            f"{indent}{f'{json.dumps(key)}: '.ljust(max_key_length)}{json.dumps({'name': value})},"
             for key, value in object_names_map.items()
         )
         + "\n    }",
@@ -55,9 +71,11 @@ def process(game: int) -> None:
         PROJECT_PATHS[game].src_dir / "game/game_string.def",
         SHARED_INCLUDE_DIR / "game/game_string.def",
     ]
-    OBJECT_NAMES_DEF_PATH = SHARED_INCLUDE_DIR / f"game/objects/names_tr{game}.def"
+    OBJECT_NAMES_DEF_PATH = (
+        SHARED_INCLUDE_DIR / f"game/objects/names_tr{game}.def"
+    )
 
-    object_names_map = get_strings_map([OBJECT_NAMES_DEF_PATH])
+    object_names_map = get_objects_map([OBJECT_NAMES_DEF_PATH])
     game_strings_map = get_strings_map(GAME_STRING_DEF_PATHS)
     assert object_names_map
     assert game_strings_map

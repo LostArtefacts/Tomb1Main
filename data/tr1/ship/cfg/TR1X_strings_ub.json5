@@ -2,15 +2,15 @@
     "levels": [
         // Level 0: Return to Egypt
         {
-            "game_strings": {
-                "INV_ITEM_KEY_1": "Gold Key",
+            "objects": {
+                "key_1": {"name": "Gold Key"},
             },
         },
 
         // Level 1: Temple of the Cat
         {
-            "game_strings": {
-                "INV_ITEM_KEY_1": "Ornate Key",
+            "objects": {
+                "key_1": {"name": "Ornate Key"},
             },
         },
 

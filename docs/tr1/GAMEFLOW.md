@@ -42,11 +42,6 @@ various pieces of global behaviour.
         // etc
     }
 ],
-"strings": {
-    "HEADING_INVENTORY": "INVENTORY",
-    "HEADING_GAME_OVER": "GAME OVER",
-    // etc
-},
 ```
 </details>
 
@@ -195,17 +190,6 @@ various pieces of global behaviour.
   </tr>
   <tr valign="top">
     <td>
-      <code>strings</code>
-    </td>
-    <td>String-to-string map</td>
-    <td>Yes</td>
-    <td>
-      All language used in the game is defined here. Edit the right-hand values
-      only.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
       <a name="water-color"></a>
       <code>water_color</code>
     </td>
@@ -259,16 +243,6 @@ Following are each of the properties available within a level.
         {"type": "start_game"},
         // etc
     ],
-    "strings": {
-        "key1": "Silver Key",
-        "puzzle2": "Machine Cog",
-        // etc
-    },
-    "examine": {
-        "key1": "This shows when the player examines key1 in the inventory.",
-        "puzzle2": "You can use \n to make new lines and \f to make new pages.",
-        // etc
-    },
 },
 ```
 </details>
@@ -311,22 +285,6 @@ Following are each of the properties available within a level.
     <td colspan="2">
       Can be customized per level. See <a href="#draw-distance-max">above</a>
       for details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>examine</code>
-    </td>
-    <td>String-to-string map</td>
-    <td>No</td>
-    <td colspan="2">
-      Allows longer text descriptions to be defined for key and puzzle items,
-      over and above the names defined in <code>strings</code> (see below).
-      Players can examine items in the inventory when this text has been
-      defined. Use <code>\n</code> in the text to create new lines; you can also
-      use <code>\f</code> to force a page break. Long text will be automatically
-      wrapped and paginated as necessary. If an empty string is defined, the UI
-      will not be shown and the inventory item simply focussed instead.
     </td>
   </tr>
   <tr valign="top">
@@ -400,86 +358,6 @@ Following are each of the properties available within a level.
       Instructions to define how a level plays out. See
       <a href="#sequences">Sequences</a> for full details.
     </td>
-  </tr>
-  <tr valign="top">
-    <td rowspan="12">
-      <code>strings</code>
-    </td>
-    <td rowspan="12">String-to-string map</td>
-    <td rowspan="12">No</td>
-    <td colspan="2">
-      Key and puzzle item names. The possible types are as follows. If this map
-      is missing, or is missing an item's name, the game will use a suitable
-      default value.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <strong>String ID</strong>
-    </td>
-    <td>
-      <strong>Description</strong>
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>key1</code>
-    </td>
-    <td>Describes pickup object ID 129 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>key2</code>
-    </td>
-    <td>Describes pickup object ID 130 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>key3</code>
-    </td>
-    <td>Describes pickup object ID 131 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>key4</code>
-    </td>
-    <td>Describes pickup object ID 132 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>pickup1</code>
-    </td>
-    <td>Describes pickup object ID 141 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>pickup2</code>
-    </td>
-    <td>Describes pickup object ID 142 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>puzzle1</code>
-    </td>
-    <td>Describes pickup object ID 110 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>puzzle2</code>
-    </td>
-    <td>Describes pickup object ID 111 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>puzzle3</code>
-    </td>
-    <td>Describes pickup object ID 112 in the inventory top-ring.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>puzzle4</code>
-    </td>
-    <td>Describes pickup object ID 113 in the inventory top-ring.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -935,7 +813,6 @@ game will exit to title.
          {"type": "level_stats", "level_id": 1},
          {"type": "exit_to_level", "level_id": 2},
     ],
-    "strings": {},
 },
 
 {
@@ -950,7 +827,6 @@ game will exit to title.
          {"type": "level_stats", "level_id": 2},
          {"type": "exit_to_level", "level_id": 3},
     ],
-    "strings": {},
 },
 
 {
@@ -971,7 +847,6 @@ game will exit to title.
          {"type": "total_stats", "picture_path": "data/install.pcx"},
          {"type": "exit_to_level", "level_id": 4},
     ],
-    "strings": {},
 },
 
 {
@@ -986,7 +861,6 @@ game will exit to title.
          {"type": "stop_game"},
          {"type": "exit_to_cine", "level_id": 6},
     ],
-    "strings": {},
 },
 
 {
@@ -1003,7 +877,6 @@ game will exit to title.
          {"type": "total_stats", "picture_path": "data/install.pcx"},
          {"type": "exit_to_title"},
     ],
-    "strings": {},
 },
 
 {
@@ -1021,7 +894,6 @@ game will exit to title.
         {"type": "level_stats", "level_id": 4},
         {"type": "exit_to_level", "level_id": 5},
     ],
-    "strings": {},
 },
 ```
 </details>
@@ -1066,10 +938,6 @@ the engine's overall item limit).
          {"type": "level_stats", "level_id": 1},
          {"type": "exit_to_level", "level_id": 2},
     ],
-    "strings": {
-        "key1": "Silver Key",
-        "puzzle2": "Machine Cog",
-    },
 },
 ```
 

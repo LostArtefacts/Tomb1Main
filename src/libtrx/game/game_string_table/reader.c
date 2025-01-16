@@ -1,47 +1,89 @@
-
 #include "filesystem.h"
 #include "game/game_string_table.h"
 #include "game/game_string_table/priv.h"
-#include "game/gameflow.h"
 #include "json.h"
 #include "log.h"
 #include "memory.h"
 
 #include <string.h>
 
-static bool M_LoadTableFromJSON(
-    JSON_OBJECT *root_obj, const char *key, GS_TABLE_ENTRY **dest);
+static bool M_LoadTableFromJSON(JSON_OBJECT *root_obj, GS_TABLE *out_table);
 static bool M_LoadLevelsFromJSON(JSON_OBJECT *obj, GS_FILE *gs_file);
 
 static bool M_LoadTableFromJSON(
-    JSON_OBJECT *const root_obj, const char *const key, GS_TABLE_ENTRY **dest)
+    JSON_OBJECT *const root_obj, GS_TABLE *const out_table)
 {
-    const JSON_OBJECT *const strings_obj = JSON_ObjectGetObject(root_obj, key);
-    if (strings_obj == NULL) {
-        // key is missing - rely on default strings
-        return true;
-    }
+    bool result = true;
 
-    *dest = Memory_Alloc(sizeof(GS_TABLE_ENTRY) * (strings_obj->length + 1));
+    // Load objects
+    JSON_OBJECT *const jobjs = JSON_ObjectGetObject(root_obj, "objects");
+    if (jobjs != NULL) {
+        const size_t object_count = jobjs->length;
+        out_table->objects =
+            Memory_Alloc(sizeof(GS_OBJECT_ENTRY) * (object_count + 1));
 
-    GS_TABLE_ENTRY *cur = *dest;
-    JSON_OBJECT_ELEMENT *strings_elem = strings_obj->start;
-    for (size_t i = 0; i < strings_obj->length;
-         i++, strings_elem = strings_elem->next) {
-        const char *const key = strings_elem->name->string;
-        const char *const value = JSON_ObjectGetString(strings_obj, key, NULL);
-        if (value == NULL) {
-            LOG_ERROR("invalid string key %s", strings_elem->name->string);
-            return NULL;
+        JSON_OBJECT_ELEMENT *jobj_elem = jobjs->start;
+        for (size_t i = 0; i < object_count; i++, jobj_elem = jobj_elem->next) {
+            JSON_OBJECT *const jobj_obj = JSON_ValueAsObject(jobj_elem->value);
+
+            const char *const key = jobj_elem->name->string;
+            const char *const name =
+                JSON_ObjectGetString(jobj_obj, "name", JSON_INVALID_STRING);
+            const char *const description = JSON_ObjectGetString(
+                jobj_obj, "description", JSON_INVALID_STRING);
+
+            if (key == JSON_INVALID_STRING) {
+                LOG_WARNING(
+                    "Invalid game string object entry %d: missing key.", i);
+            } else if (name == JSON_INVALID_STRING) {
+                LOG_WARNING(
+                    "Invalid game string object entry %s: missing value.", key);
+            } else {
+                GS_OBJECT_ENTRY *const object_entry = &out_table->objects[i];
+                object_entry->key = Memory_DupStr(key);
+                object_entry->name = Memory_DupStr(name);
+                object_entry->description = description != JSON_INVALID_STRING
+                    ? Memory_DupStr(description)
+                    : NULL;
+            }
         }
-        cur->key = Memory_DupStr(key);
-        cur->value = Memory_DupStr(value);
-        cur++;
     }
 
-    cur->key = NULL;
-    cur->value = NULL;
-    return true;
+    // Load game_strings
+    JSON_OBJECT *const jgs_obj = JSON_ObjectGetObject(root_obj, "game_strings");
+    if (jgs_obj != NULL) {
+        const size_t gs_count = jgs_obj->length;
+        out_table->game_strings =
+            Memory_Alloc(sizeof(GS_GAME_STRING_ENTRY) * (gs_count + 1));
+
+        JSON_OBJECT_ELEMENT *jgs_elem = jgs_obj->start;
+        for (size_t i = 0; i < gs_count; i++, jgs_elem = jgs_elem->next) {
+            JSON_OBJECT *const jgs_obj = JSON_ValueAsObject(jgs_elem->value);
+
+            const char *const key = jgs_elem->name->string;
+            const char *const value =
+                JSON_ValueGetString(jgs_elem->value, JSON_INVALID_STRING);
+
+            if (key == JSON_INVALID_STRING) {
+                LOG_WARNING("Invalid game string entry %d: missing key.", i);
+            } else if (value == JSON_INVALID_STRING) {
+                LOG_WARNING("Invalid game string entry %d: missing value.", i);
+            } else {
+                GS_GAME_STRING_ENTRY *const gs_entry =
+                    &out_table->game_strings[i];
+                gs_entry->key = Memory_DupStr(key);
+                gs_entry->value = Memory_DupStr(value);
+            }
+        }
+    }
+
+end:
+    if (!result) {
+        if (out_table != NULL) {
+            GS_Table_Free(out_table);
+        }
+    }
+    return result;
 }
 
 static bool M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
@@ -55,22 +97,12 @@ static bool M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
         goto end;
     }
 
-    int32_t level_count = jlvl_arr->length;
-    if (level_count != GameFlow_GetLevelCount()) {
-        LOG_ERROR(
-            "'levels' must have exactly %d levels, as we still rely on legacy "
-            "tombpc.dat",
-            GameFlow_GetLevelCount());
-        result = false;
-        goto end;
-    }
-
-    gs_file->level_count = level_count;
-    gs_file->levels = Memory_Alloc(sizeof(GS_TABLE) * level_count);
+    gs_file->level_count = jlvl_arr->length;
+    gs_file->levels = Memory_Alloc(sizeof(GS_TABLE) * jlvl_arr->length);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
-        GS_TABLE *const level = &gs_file->levels[i];
+        GS_TABLE *const level_table = &gs_file->levels[i];
 
         JSON_OBJECT *const jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
         if (jlvl_obj == NULL) {
@@ -79,12 +111,7 @@ static bool M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
             goto end;
         }
 
-        result &=
-            M_LoadTableFromJSON(jlvl_obj, "object_names", &level->object_names);
-        result &= M_LoadTableFromJSON(
-            jlvl_obj, "object_descriptions", &level->object_descriptions);
-        result &=
-            M_LoadTableFromJSON(jlvl_obj, "game_strings", &level->game_strings);
+        result &= M_LoadTableFromJSON(jlvl_obj, level_table);
     }
 
 end:
@@ -120,12 +147,7 @@ bool GameStringTable_LoadFromFile(const char *const path)
 
     GS_FILE *const gs_file = &g_GST_File;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
-    result &= M_LoadTableFromJSON(
-        root_obj, "object_names", &gs_file->global.object_names);
-    result &= M_LoadTableFromJSON(
-        root_obj, "object_descriptions", &gs_file->global.object_descriptions);
-    result &= M_LoadTableFromJSON(
-        root_obj, "game_strings", &gs_file->global.game_strings);
+    result &= M_LoadTableFromJSON(root_obj, &gs_file->global);
     result &= M_LoadLevelsFromJSON(root_obj, gs_file);
 
 end:

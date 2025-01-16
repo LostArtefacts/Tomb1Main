@@ -58,8 +58,20 @@ void Object_ResetNames(void)
 {
     M_ClearNames();
 
-#define OBJ_NAME_DEFINE(object_id, name) Object_SetName(object_id, name);
+// first set up the names
+#define OBJ_ALIAS_DEFINE(target_object_id, source_object_id)
+#define OBJ_NAME_DEFINE(object_id, key, name) Object_SetName(object_id, name);
 #include "game/objects/names.def"
+#undef OBJ_NAME_DEFINE
+#undef OBJ_ALIAS_DEFINE
+
+// then do the aliases
+#define OBJ_ALIAS_DEFINE(target_object_id, source_object_id)                   \
+    Object_SetName(target_object_id, Object_GetName(source_object_id));
+#define OBJ_NAME_DEFINE(object_id, key, name)
+#include "game/objects/names.def"
+#undef OBJ_NAME_DEFINE
+#undef OBJ_ALIAS_DEFINE
 }
 
 GAME_OBJECT_ID *Object_IdsFromName(

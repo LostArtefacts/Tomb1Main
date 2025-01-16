@@ -372,11 +372,7 @@ void Shell_Main(void)
         Shell_ExitSystem("Could not load the new script file.");
         return;
     }
-
-    if (!GameStringTable_LoadFromFile(m_CurrentGameStringsPath)) {
-        Shell_ExitSystem("Could not load game strings.");
-        return;
-    }
+    GameStringTable_LoadFromFile(m_CurrentGameStringsPath);
 
     InitialiseStartInfo();
     S_FrontEndCheck();

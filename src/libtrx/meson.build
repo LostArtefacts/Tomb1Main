@@ -111,6 +111,7 @@ sources = [
   'game/game.c',
   'game/game_string.c',
   'game/game_string_table/common.c',
+  'game/game_string_table/priv.c',
   'game/game_string_table/reader.c',
   'game/gamebuf.c',
   'game/input/backends/controller.c',

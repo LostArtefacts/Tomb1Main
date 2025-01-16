@@ -2,9 +2,9 @@
     "levels": [
         // Level 2: City of Vilcabamba
         {
-            "game_strings": {
-                "INV_ITEM_KEY_1": "Silver Key",
-                "INV_ITEM_PUZZLE_1": "Gold Idol"
+            "objects": {
+                "key_1": {"name": "Silver Key"},
+                "puzzle_1": {"name": "Gold Idol"},
             },
         },
 
