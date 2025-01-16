@@ -91,7 +91,7 @@
 
         // 11. Tibetan Foothills
         {
-            "object_strings": {
+            "object_names": {
                 "O_TIGER": "Snow Leopard",
             },
             "game_strings": {
@@ -116,7 +116,7 @@
 
         // 13. Catacombs of the Talion
         {
-            "object_strings": {
+            "object_names": {
                 "O_TIGER": "Snow Leopard",
             },
             "game_strings": {
@@ -127,7 +127,7 @@
 
         // 14. Ice Palace
         {
-            "object_strings": {
+            "object_names": {
                 "O_TIGER": "Snow Leopard",
             },
             "game_strings": {
@@ -200,7 +200,7 @@
         },
     ],
 
-    "object_strings": {
+    "object_names": {
         "O_LARA": "Lara",
         "O_LARA_PISTOLS": "Pistols Animation",
         "O_LARA_HAIR": "Braid",

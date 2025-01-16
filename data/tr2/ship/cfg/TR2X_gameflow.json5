@@ -68,9 +68,6 @@
                 "data/injections/tibet_fd.bin",
                 "data/injections/tibet_itemrots.bin",
             ],
-            "object_strings": {
-                "O_TIGER": "Snow Leopard",
-            },
         },
 
         // 12. Barkhang Monastery

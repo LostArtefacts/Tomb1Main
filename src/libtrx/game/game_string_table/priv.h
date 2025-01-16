@@ -8,7 +8,8 @@ typedef struct {
 } GS_TABLE_ENTRY;
 
 typedef struct {
-    GS_TABLE_ENTRY *object_strings;
+    GS_TABLE_ENTRY *object_names;
+    GS_TABLE_ENTRY *object_descriptions;
     GS_TABLE_ENTRY *game_strings;
 } GS_TABLE;
 

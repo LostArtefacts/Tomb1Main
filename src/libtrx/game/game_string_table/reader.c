@@ -79,8 +79,10 @@ static bool M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
             goto end;
         }
 
+        result &=
+            M_LoadTableFromJSON(jlvl_obj, "object_names", &level->object_names);
         result &= M_LoadTableFromJSON(
-            jlvl_obj, "object_strings", &level->object_strings);
+            jlvl_obj, "object_descriptions", &level->object_descriptions);
         result &=
             M_LoadTableFromJSON(jlvl_obj, "game_strings", &level->game_strings);
     }
@@ -119,7 +121,9 @@ bool GameStringTable_LoadFromFile(const char *const path)
     GS_FILE *const gs_file = &g_GST_File;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     result &= M_LoadTableFromJSON(
-        root_obj, "object_strings", &gs_file->global.object_strings);
+        root_obj, "object_names", &gs_file->global.object_names);
+    result &= M_LoadTableFromJSON(
+        root_obj, "object_descriptions", &gs_file->global.object_descriptions);
     result &= M_LoadTableFromJSON(
         root_obj, "game_strings", &gs_file->global.game_strings);
     result &= M_LoadLevelsFromJSON(root_obj, gs_file);

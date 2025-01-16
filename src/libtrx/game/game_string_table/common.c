@@ -28,14 +28,17 @@ static void M_GameStringTableEntry_Free(GS_TABLE_ENTRY *entry);
 static void M_GameStringTable_Free(GS_TABLE *gs_table);
 static void M_GameStringFile_Free(GS_FILE *gs_file);
 static void M_ApplyGameString(const char *key, const char *value);
-static void M_ApplyObjectString(const char *key, const char *value);
+static void M_ApplyObjectName(const char *key, const char *value);
+static void M_ApplyObjectDescription(const char *key, const char *value);
 static void M_ApplyEntries(
     const GS_TABLE_ENTRY *const entries, M_LOAD_STRING_FUNC load_func);
 static void M_ApplyStrings(
     const GS_TABLE_ENTRY *global_entries, const GS_TABLE_ENTRY *level_entries,
     M_LOAD_STRING_FUNC load_func);
 static void M_ApplyGameStrings(const GS_FILE *gs_table, int32_t level_num);
-static void M_ApplyObjectStrings(const GS_FILE *gs_table, int32_t level_num);
+static void M_ApplyObjectNames(const GS_FILE *gs_table, int32_t level_num);
+static void M_ApplyObjectDescriptions(
+    const GS_FILE *gs_table, int32_t level_num);
 
 static void M_GameStringTableEntry_Free(GS_TABLE_ENTRY *const entry)
 {
@@ -53,8 +56,10 @@ static void M_GameStringTableEntry_Free(GS_TABLE_ENTRY *const entry)
 
 static void M_GameStringTable_Free(GS_TABLE *const gs_table)
 {
-    M_GameStringTableEntry_Free(gs_table->object_strings);
-    gs_table->object_strings = NULL;
+    M_GameStringTableEntry_Free(gs_table->object_names);
+    gs_table->object_names = NULL;
+    M_GameStringTableEntry_Free(gs_table->object_descriptions);
+    gs_table->object_descriptions = NULL;
     M_GameStringTableEntry_Free(gs_table->game_strings);
     gs_table->game_strings = NULL;
 }
@@ -80,7 +85,7 @@ static void M_ApplyGameString(const char *const key, const char *const value)
     }
 }
 
-static void M_ApplyObjectString(const char *const key, const char *const value)
+static void M_ApplyObjectName(const char *const key, const char *const value)
 {
     const GAME_OBJECT_ID object_id =
         ENUM_MAP_GET(GAME_OBJECT_ID, key, NO_OBJECT);
@@ -88,6 +93,18 @@ static void M_ApplyObjectString(const char *const key, const char *const value)
         LOG_ERROR("Invalid object id: %s", key);
     } else {
         Object_SetName(object_id, value);
+    }
+}
+
+static void M_ApplyObjectDescription(
+    const char *const key, const char *const value)
+{
+    const GAME_OBJECT_ID object_id =
+        ENUM_MAP_GET(GAME_OBJECT_ID, key, NO_OBJECT);
+    if (object_id == NO_OBJECT) {
+        LOG_ERROR("Invalid object id: %s", key);
+    } else {
+        Object_SetDescription(object_id, value);
     }
 }
 
@@ -121,14 +138,24 @@ static void M_ApplyGameStrings(
         M_ApplyGameString);
 }
 
-static void M_ApplyObjectStrings(
+static void M_ApplyObjectNames(
     const GS_FILE *const gs_file, const int32_t level_num)
 {
     ASSERT(level_num >= -1 && level_num < gs_file->level_count);
     M_ApplyStrings(
-        gs_file->global.object_strings,
-        level_num != -1 ? gs_file->levels[level_num].object_strings : NULL,
-        M_ApplyObjectString);
+        gs_file->global.object_names,
+        level_num != -1 ? gs_file->levels[level_num].object_names : NULL,
+        M_ApplyObjectName);
+}
+
+static void M_ApplyObjectDescriptions(
+    const GS_FILE *const gs_file, const int32_t level_num)
+{
+    ASSERT(level_num >= -1 && level_num < gs_file->level_count);
+    M_ApplyStrings(
+        gs_file->global.object_descriptions,
+        level_num != -1 ? gs_file->levels[level_num].object_descriptions : NULL,
+        M_ApplyObjectDescription);
 }
 
 void GameStringTable_Apply(const int32_t level_num)
@@ -136,7 +163,8 @@ void GameStringTable_Apply(const int32_t level_num)
     Object_ResetNames();
 
     const GS_FILE *const gs_file = &g_GST_File;
-    M_ApplyObjectStrings(gs_file, level_num);
+    M_ApplyObjectNames(gs_file, level_num);
+    M_ApplyObjectDescriptions(gs_file, level_num);
     M_ApplyGameStrings(gs_file, level_num);
 
     for (int32_t i = 0; m_ObjectAliases[i].object_id != NO_OBJECT; i++) {
