@@ -31,7 +31,7 @@ static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
     COLOR_NAME bar_color_main, COLOR_NAME bar_color_highlight);
 
-static bool M_CalcObjectVertices(const OBJECT_MESH *mesh);
+static bool M_CalcObjectVertices(const XYZ_16 *vertices, int16_t count);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
 static void M_CalcSkyboxLight(const OBJECT_MESH *mesh);
 
@@ -119,16 +119,17 @@ static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
     }
 }
 
-static bool M_CalcObjectVertices(const OBJECT_MESH *const mesh)
+static bool M_CalcObjectVertices(
+    const XYZ_16 *const vertices, const int16_t count)
 {
     const double base_z = g_Config.rendering.enable_zbuffer
         ? 0.0
         : (g_MidSort << (W2V_SHIFT + 8));
     uint8_t total_clip = 0xFF;
 
-    for (int32_t i = 0; i < mesh->num_vertices; i++) {
+    for (int32_t i = 0; i < count; i++) {
         PHD_VBUF *const vbuf = &g_PhdVBuf[i];
-        const XYZ_16 *const vertex = &mesh->vertices[i];
+        const XYZ_16 *const vertex = &vertices[i];
 
         // clang-format off
         const MATRIX *const mptr = g_MatrixPtr;
@@ -284,7 +285,7 @@ void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
     g_FltWinCenterX = g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinCenterY;
 
-    if (!M_CalcObjectVertices(mesh)) {
+    if (!M_CalcObjectVertices(mesh->vertices, mesh->num_vertices)) {
         return;
     }
 
@@ -341,7 +342,7 @@ void Output_DrawSkybox(const OBJECT_MESH *const mesh)
     g_FltWinCenterX = g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinCenterY;
 
-    if (!M_CalcObjectVertices(mesh)) {
+    if (!M_CalcObjectVertices(mesh->vertices, mesh->num_vertices)) {
         return;
     }
 
@@ -965,7 +966,7 @@ void Output_InsertShadow(
     Matrix_Push();
     Matrix_TranslateAbs(item->pos.x, item->floor, item->pos.z);
     Matrix_RotY(item->rot.y);
-    if (Output_CalcObjectVertices((int16_t *)&shadow_info)) {
+    if (M_CalcObjectVertices(shadow_info.vertex, shadow_info.vertex_count)) {
         Render_InsertTransOctagon(g_PhdVBuf, 24);
     }
     Matrix_Pop();
