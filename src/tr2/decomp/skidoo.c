@@ -276,7 +276,7 @@ int32_t Skidoo_TestHeight(
     return Room_GetHeight(sector, out_pos->x, out_pos->y, out_pos->z);
 }
 
-void Skidoo_DoSnowEffect(ITEM *const skidoo)
+void Skidoo_DoSnowEffect(const ITEM *const skidoo)
 {
     const int16_t effect_num = Effect_Create(skidoo->room_num);
     if (effect_num == NO_EFFECT) {
@@ -296,7 +296,8 @@ void Skidoo_DoSnowEffect(ITEM *const skidoo)
     effect->frame_num = 0;
     effect->speed = 0;
     if (skidoo->speed < 64) {
-        effect->fall_speed = (Random_GetDraw() * ABS(skidoo->speed)) >> 15;
+        effect->fall_speed =
+            (Random_GetDraw() * (ABS(skidoo->speed) - 64)) >> 15;
     } else {
         effect->fall_speed = 0;
     }

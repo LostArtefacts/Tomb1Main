@@ -30,6 +30,7 @@
 - fixed /kill command freezing the game under rare circumstances (#2297, regression from 0.3)
 - fixed wireframe mode discarding transparent pixels (#2315, regression from 0.7)
 - fixed sprite pickups not being paused in the pause/inventory screen (#2319, regression from 0.6)
+- fixed Skidoo snow wake effects at slow speeds (#2324, regression from 0.6)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)

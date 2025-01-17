@@ -20,7 +20,7 @@ void Skidoo_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 void Skidoo_BaddieCollision(ITEM *skidoo);
 int32_t Skidoo_TestHeight(
     const ITEM *item, int32_t z_off, int32_t x_off, XYZ_32 *out_pos);
-void Skidoo_DoSnowEffect(ITEM *skidoo);
+void Skidoo_DoSnowEffect(const ITEM *skidoo);
 int32_t Skidoo_Dynamics(ITEM *skidoo);
 int32_t Skidoo_UserControl(ITEM *skidoo, int32_t height, int32_t *out_pitch);
 int32_t Skidoo_CheckGetOffOK(int32_t direction);
