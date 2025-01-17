@@ -2,6 +2,7 @@
 
 #include "decomp/decomp.h"
 #include "game/clock.h"
+#include "game/game.h"
 #include "game/inventory.h"
 #include "game/music.h"
 #include "game/objects/common.h"
@@ -57,9 +58,17 @@ static int32_t m_AmmoTextY = 0;
 static TEXTSTRING *m_AmmoTextInfo = NULL;
 
 static float M_Ease(int32_t cur_frame, int32_t max_frames);
+static bool M_AnimateFlash(int32_t frames);
+static void M_AnimatePickups(int32_t frames);
 static BOUNDS_16 M_GetBounds(const OBJECT *obj, const ANIM_FRAME *frame);
 static void M_DrawPickup3D(const DISPLAY_PICKUP *pickup);
 static void M_DrawPickupSprite(const DISPLAY_PICKUP *pickup);
+static void M_DrawPickups(void);
+static void M_DrawAssaultTimer(void);
+static void M_DrawHealthBar(void);
+static void M_DrawAirBar(void);
+static void M_DrawAmmoInfo(void);
+static void M_DrawModeInfo(void);
 
 static float M_Ease(const int32_t cur_frame, const int32_t max_frames)
 {
@@ -74,10 +83,10 @@ static float M_Ease(const int32_t cur_frame, const int32_t max_frames)
     return result;
 }
 
-bool Overlay_FlashCounter(const int32_t ticks)
+static bool M_AnimateFlash(const int32_t frames)
 {
     if (m_FlashCounter > 0) {
-        m_FlashCounter -= ticks;
+        m_FlashCounter -= frames;
         return m_FlashState;
     } else {
         m_FlashCounter = FLASH_FRAMES;
@@ -86,7 +95,64 @@ bool Overlay_FlashCounter(const int32_t ticks)
     return m_FlashState;
 }
 
-void Overlay_DrawAssaultTimer(void)
+static void M_AnimatePickups(const int32_t frames)
+{
+    for (int i = 0; i < MAX_PICKUPS; i++) {
+        DISPLAY_PICKUP *const pickup = &m_Pickups[i];
+
+        if (g_Config.visuals.enable_3d_pickups) {
+            pickup->rot_y += 4 * DEG_1 * frames;
+        } else {
+            // Stop existing animations
+            switch (pickup->phase) {
+            case DPP_EASE_IN:
+                pickup->phase = DPP_DISPLAY;
+                pickup->duration = 0;
+                break;
+
+            case DPP_EASE_OUT:
+                pickup->phase = DPP_DEAD;
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        switch (pickup->phase) {
+        case DPP_DEAD:
+            continue;
+
+        case DPP_EASE_IN:
+            pickup->duration += frames;
+            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_IN) {
+                pickup->phase = DPP_DISPLAY;
+                pickup->duration = 0;
+            }
+            break;
+
+        case DPP_DISPLAY:
+            pickup->duration += frames;
+            if (pickup->duration >= MAX_PICKUP_DURATION_DISPLAY) {
+                pickup->phase = g_Config.visuals.enable_3d_pickups
+                    ? DPP_EASE_OUT
+                    : DPP_DEAD;
+                pickup->duration = 0;
+            }
+            break;
+
+        case DPP_EASE_OUT:
+            pickup->duration += frames;
+            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_OUT) {
+                pickup->phase = DPP_DEAD;
+                pickup->duration = 0;
+            }
+            break;
+        }
+    }
+}
+
+static void M_DrawAssaultTimer(void)
 {
     if (g_CurrentLevel != 0 || !g_IsAssaultTimerDisplay) {
         return;
@@ -146,79 +212,7 @@ void Overlay_DrawAssaultTimer(void)
     }
 }
 
-void Overlay_DrawGameInfo(const bool pickup_state)
-{
-    m_AmmoTextY = ABS(AMMO_X) + TEXT_HEIGHT;
-    if (g_OverlayStatus > 0) {
-        Overlay_DrawHealthBar();
-        Overlay_DrawAirBar();
-        Overlay_DrawPickups(pickup_state);
-        Overlay_DrawAssaultTimer();
-    }
-    Overlay_DrawAmmoInfo();
-    Overlay_DrawModeInfo();
-}
-
-void Overlay_Animate(int32_t ticks)
-{
-    Overlay_FlashCounter(ticks);
-
-    for (int i = 0; i < MAX_PICKUPS; i++) {
-        DISPLAY_PICKUP *const pickup = &m_Pickups[i];
-
-        if (g_Config.visuals.enable_3d_pickups) {
-            pickup->rot_y += 4 * DEG_1 * ticks;
-        } else {
-            // Stop existing animations
-            switch (pickup->phase) {
-            case DPP_EASE_IN:
-                pickup->phase = DPP_DISPLAY;
-                pickup->duration = 0;
-                break;
-
-            case DPP_EASE_OUT:
-                pickup->phase = DPP_DEAD;
-                break;
-
-            default:
-                break;
-            }
-        }
-
-        switch (pickup->phase) {
-        case DPP_DEAD:
-            continue;
-
-        case DPP_EASE_IN:
-            pickup->duration += ticks;
-            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_IN) {
-                pickup->phase = DPP_DISPLAY;
-                pickup->duration = 0;
-            }
-            break;
-
-        case DPP_DISPLAY:
-            pickup->duration += ticks;
-            if (pickup->duration >= MAX_PICKUP_DURATION_DISPLAY) {
-                pickup->phase = g_Config.visuals.enable_3d_pickups
-                    ? DPP_EASE_OUT
-                    : DPP_DEAD;
-                pickup->duration = 0;
-            }
-            break;
-
-        case DPP_EASE_OUT:
-            pickup->duration += ticks;
-            if (pickup->duration >= MAX_PICKUP_DURATION_EASE_OUT) {
-                pickup->phase = DPP_DEAD;
-                pickup->duration = 0;
-            }
-            break;
-        }
-    }
-}
-
-void Overlay_DrawHealthBar(void)
+static void M_DrawHealthBar(void)
 {
     int32_t hit_points = g_LaraItem->hit_points;
     CLAMP(hit_points, 0, LARA_MAX_HITPOINTS);
@@ -237,7 +231,7 @@ void Overlay_DrawHealthBar(void)
     }
 }
 
-void Overlay_DrawAirBar(void)
+static void M_DrawAirBar(void)
 {
     if (g_Lara.water_status != LWS_UNDERWATER
         && g_Lara.water_status != LWS_SURFACE) {
@@ -257,42 +251,7 @@ void Overlay_DrawAirBar(void)
     }
 }
 
-void Overlay_HideGameInfo(void)
-{
-    Text_Remove(m_AmmoTextInfo);
-    m_AmmoTextInfo = NULL;
-
-    Text_Remove(m_DisplayModeTextInfo);
-    m_DisplayModeTextInfo = NULL;
-}
-
-void Overlay_MakeAmmoString(char *const string)
-{
-    char result[128] = "";
-
-    char *ptr = string;
-    while (*ptr != '\0') {
-        if (*ptr == ' ') {
-            strcat(result, " ");
-        } else if (*ptr == 'A') {
-            strcat(result, "\\{ammo shotgun}");
-        } else if (*ptr == 'B') {
-            strcat(result, "\\{ammo magnums}");
-        } else if (*ptr == 'C') {
-            strcat(result, "\\{ammo uzis}");
-        } else if (*ptr >= '0' && *ptr <= '9') {
-            strcat(result, "\\{small digit ");
-            char tmp[2] = { *ptr, '\0' };
-            strcat(result, tmp);
-            strcat(result, "}");
-        }
-        ptr++;
-    }
-
-    strcpy(string, result);
-}
-
-void Overlay_DrawAmmoInfo(void)
+static void M_DrawAmmoInfo(void)
 {
     if (g_Lara.gun_status != LGS_READY || g_OverlayStatus <= 0
         || g_SaveGame.bonus_flag) {
@@ -343,8 +302,80 @@ void Overlay_DrawAmmoInfo(void)
     }
 }
 
-void Overlay_InitialisePickUpDisplay(void)
+void M_DrawModeInfo(void)
 {
+    if (m_DisplayModeTextInfo == NULL) {
+        return;
+    }
+
+    m_DisplayModeInfoTimer--;
+    if (m_DisplayModeInfoTimer <= 0) {
+        Text_Remove(m_DisplayModeTextInfo);
+        m_DisplayModeTextInfo = NULL;
+    }
+}
+
+void Overlay_DrawGameInfo(void)
+{
+    m_AmmoTextY = ABS(AMMO_X) + TEXT_HEIGHT;
+    if (g_OverlayStatus > 0) {
+        M_DrawHealthBar();
+        M_DrawAirBar();
+    }
+    if (Game_IsPlaying()) {
+        M_DrawPickups();
+        M_DrawAssaultTimer();
+    }
+    M_DrawAmmoInfo();
+    M_DrawModeInfo();
+}
+
+void Overlay_Animate(int32_t frames)
+{
+    M_AnimateFlash(frames);
+    if (Game_IsPlaying()) {
+        M_AnimatePickups(frames);
+    }
+}
+
+void Overlay_HideGameInfo(void)
+{
+    Text_Remove(m_AmmoTextInfo);
+    m_AmmoTextInfo = NULL;
+
+    Text_Remove(m_DisplayModeTextInfo);
+    m_DisplayModeTextInfo = NULL;
+}
+
+void Overlay_MakeAmmoString(char *const string)
+{
+    char result[128] = "";
+
+    char *ptr = string;
+    while (*ptr != '\0') {
+        if (*ptr == ' ') {
+            strcat(result, " ");
+        } else if (*ptr == 'A') {
+            strcat(result, "\\{ammo shotgun}");
+        } else if (*ptr == 'B') {
+            strcat(result, "\\{ammo magnums}");
+        } else if (*ptr == 'C') {
+            strcat(result, "\\{ammo uzis}");
+        } else if (*ptr >= '0' && *ptr <= '9') {
+            strcat(result, "\\{small digit ");
+            char tmp[2] = { *ptr, '\0' };
+            strcat(result, tmp);
+            strcat(result, "}");
+        }
+        ptr++;
+    }
+
+    strcpy(string, result);
+}
+
+void Overlay_Reset(void)
+{
+    Overlay_HideGameInfo();
     for (int32_t i = 0; i < MAX_PICKUPS; i++) {
         m_Pickups[i].phase = DPP_DEAD;
     }
@@ -472,7 +503,7 @@ static void M_DrawPickupSprite(const DISPLAY_PICKUP *const pickup)
     Output_DrawPickup(x, y, scale, sprite_num, 4096);
 }
 
-void Overlay_DrawPickups(const bool timed)
+static void M_DrawPickups(void)
 {
     for (int i = 0; i < MAX_PICKUPS; i++) {
         const DISPLAY_PICKUP *const pickup = &m_Pickups[i];
@@ -488,7 +519,7 @@ void Overlay_DrawPickups(const bool timed)
     }
 }
 
-void Overlay_AddDisplayPickup(const int16_t object_id)
+void Overlay_AddDisplayPickup(const GAME_OBJECT_ID object_id)
 {
     if (object_id == O_SECRET_1 || object_id == O_SECRET_2
         || object_id == O_SECRET_3) {
@@ -555,15 +586,12 @@ void Overlay_DisplayModeInfo(const char *const string)
     m_DisplayModeInfoTimer = 2.5 * FRAMES_PER_SECOND;
 }
 
+void Overlay_DrawHealthBar(void)
+{
+    M_DrawHealthBar();
+}
+
 void Overlay_DrawModeInfo(void)
 {
-    if (m_DisplayModeTextInfo == NULL) {
-        return;
-    }
-
-    m_DisplayModeInfoTimer--;
-    if (m_DisplayModeInfoTimer <= 0) {
-        Text_Remove(m_DisplayModeTextInfo);
-        m_DisplayModeTextInfo = NULL;
-    }
+    M_DrawModeInfo();
 }

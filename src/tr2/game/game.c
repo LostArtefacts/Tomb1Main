@@ -178,7 +178,7 @@ void Game_Draw(bool draw_overlay)
     Room_DrawAllRooms(g_Camera.pos.room_num);
     Output_DrawPolyList();
     if (draw_overlay) {
-        Overlay_DrawGameInfo(true);
+        Overlay_DrawGameInfo();
         Output_DrawPolyList();
     } else {
         Overlay_HideGameInfo();

@@ -199,8 +199,7 @@ int32_t Level_Initialise(
 
     Effect_InitialiseArray();
     LOT_InitialiseArray();
-    Overlay_HideGameInfo();
-    Overlay_InitialisePickUpDisplay();
+    Overlay_Reset();
     g_HealthBarTimer = 100;
     Sound_StopAll();
     if (level_type == GFL_SAVED) {

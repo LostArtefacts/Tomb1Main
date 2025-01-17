@@ -732,6 +732,7 @@ void Overlay_HideGameInfo(void)
 {
     M_ResetBarLocations();
     M_RemoveAmmoText();
+    ClockTimer_Sync(&m_PickupsTimer);
 }
 
 void Overlay_DrawGameInfo(void)
@@ -741,7 +742,9 @@ void Overlay_DrawGameInfo(void)
     Overlay_BarDrawHealth();
     M_BarDrawAir();
     M_BarDrawEnemy();
-    M_DrawPickups();
+    if (Game_IsPlaying()) {
+        M_DrawPickups();
+    }
     M_DrawAmmoInfo();
 }
 
