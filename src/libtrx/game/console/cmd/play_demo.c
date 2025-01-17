@@ -1,7 +1,7 @@
 #include "game/console/cmd/play_demo.h"
 
+#include "game/game_flow/common.h"
 #include "game/game_string.h"
-#include "game/gameflow/common.h"
 #include "strings.h"
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);

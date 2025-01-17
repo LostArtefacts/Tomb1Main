@@ -4,7 +4,7 @@
 #include "game/clock.h"
 #include "game/demo.h"
 #include "game/game.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/inventory_ring/draw.h"

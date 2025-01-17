@@ -113,7 +113,7 @@ sources = [
   'game/game/game.c',
   'game/game/game_draw.c',
   'game/game_string.c',
-  'game/gameflow.c',
+  'game/game_flow.c',
   'game/gun/gun.c',
   'game/gun/gun_misc.c',
   'game/gun/gun_pistols.c',

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../gameflow/types.h"
+#include "../game_flow/types.h"
 #include "../objects/types.h"
 #include "./types.h"
 

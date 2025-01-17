@@ -1,4 +1,4 @@
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"

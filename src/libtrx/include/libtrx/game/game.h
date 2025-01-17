@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./gameflow/types.h"
+#include "./game_flow/types.h"
 
 void Game_SetIsPlaying(bool is_playing);
 bool Game_IsPlaying(void);

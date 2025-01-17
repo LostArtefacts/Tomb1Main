@@ -4,7 +4,7 @@
 #include "game/console/common.h"
 #include "game/fader.h"
 #include "game/game.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/interpolation.h"
 #include "game/output.h"
 #include "game/text.h"

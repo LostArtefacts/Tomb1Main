@@ -3,7 +3,7 @@
 #include "decomp/decomp.h"
 #include "game/camera.h"
 #include "game/effects.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
 #include "game/music.h"

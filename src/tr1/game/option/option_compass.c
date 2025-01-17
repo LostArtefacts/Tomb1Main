@@ -1,7 +1,7 @@
 #include "game/option/option_compass.h"
 
+#include "game/game_flow.h"
 #include "game/game_string.h"
-#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/text.h"
 #include "game/ui/widgets/stats_dialog.h"

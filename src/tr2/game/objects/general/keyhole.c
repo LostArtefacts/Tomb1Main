@@ -1,6 +1,6 @@
 #include "game/objects/general/keyhole.h"
 
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"

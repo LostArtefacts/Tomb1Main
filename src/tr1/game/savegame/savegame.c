@@ -1,7 +1,7 @@
 #include "game/savegame.h"
 
+#include "game/game_flow.h"
 #include "game/game_string.h"
-#include "game/gameflow.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lot.h"

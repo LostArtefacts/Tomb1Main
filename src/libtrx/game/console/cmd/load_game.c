@@ -1,8 +1,8 @@
 #include "game/console/cmd/load_game.h"
 
 #include "config.h"
+#include "game/game_flow/common.h"
 #include "game/game_string.h"
-#include "game/gameflow/common.h"
 #include "game/savegame.h"
 #include "strings.h"
 

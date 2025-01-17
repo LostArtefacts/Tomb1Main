@@ -4,7 +4,7 @@
 #include "debug.h"
 #include "game/fader.h"
 #include "game/game.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/interpolation.h"
 #include "game/shell.h"

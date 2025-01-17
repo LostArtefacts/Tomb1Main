@@ -1,7 +1,7 @@
 #include "game/items.h"
 
 #include "game/effects.h"
-#include "game/gameflow/gameflow_new.h"
+#include "game/game_flow/game_flow_new.h"
 #include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"

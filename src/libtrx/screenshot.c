@@ -3,7 +3,7 @@
 #include "filesystem.h"
 #include "game/clock.h"
 #include "game/game.h"
-#include "game/gameflow/common.h"
+#include "game/game_flow/common.h"
 #include "game/output.h"
 #include "memory.h"
 

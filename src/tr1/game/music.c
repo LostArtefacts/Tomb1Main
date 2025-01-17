@@ -1,6 +1,6 @@
 #include "game/music.h"
 
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/sound.h"
 #include "global/vars.h"
 

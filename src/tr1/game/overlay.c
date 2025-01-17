@@ -3,7 +3,7 @@
 #include "game/clock.h"
 #include "game/creature.h"
 #include "game/game.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/output.h"

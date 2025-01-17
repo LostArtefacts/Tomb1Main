@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libtrx/game/gameflow/types.h>
+#include <libtrx/game/game_flow/types.h>
 #include <libtrx/game/inventory_ring/control.h>
 #include <libtrx/game/inventory_ring/enum.h>
 #include <libtrx/game/inventory_ring/types.h>

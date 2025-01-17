@@ -1,6 +1,6 @@
-#include "game/gameflow/reader.h"
+#include "game/game_flow/reader.h"
 
-#include "game/gameflow/gameflow_new.h"
+#include "game/game_flow/game_flow_new.h"
 #include "global/vars.h"
 
 #include <libtrx/filesystem.h>

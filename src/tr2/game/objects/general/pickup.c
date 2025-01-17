@@ -1,7 +1,7 @@
 #include "game/objects/general/pickup.h"
 
 #include "decomp/flares.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"

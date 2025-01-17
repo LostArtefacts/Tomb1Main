@@ -1,4 +1,4 @@
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 
 #include "game/fmv.h"
 #include "game/game.h"
@@ -1360,9 +1360,9 @@ GAME_FLOW_COMMAND GF_PauseGame(void)
     return gf_cmd;
 }
 
-GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE inv_mode)
+GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
 {
-    PHASE *const phase = Phase_Inventory_Create(inv_mode);
+    PHASE *const phase = Phase_Inventory_Create(mode);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Inventory_Destroy(phase);
     return gf_cmd;
@@ -1375,6 +1375,5 @@ GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
             receptacle_type_id, g_KeyItemToReceptacleMap);
         InvRing_SetRequestedObjectID(object_id);
     }
-
     return GF_ShowInventory(INV_KEYS_MODE);
 }

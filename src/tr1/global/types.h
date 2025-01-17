@@ -9,8 +9,8 @@
 #include <libtrx/game/collision.h>
 #include <libtrx/game/creature.h>
 #include <libtrx/game/effects/types.h>
-#include <libtrx/game/gameflow/enum.h>
-#include <libtrx/game/gameflow/types.h>
+#include <libtrx/game/game_flow/enum.h>
+#include <libtrx/game/game_flow/types.h>
 #include <libtrx/game/items.h>
 #include <libtrx/game/lara/types.h>
 #include <libtrx/game/lot.h>

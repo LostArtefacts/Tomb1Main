@@ -2,7 +2,7 @@
 
 #include "game/camera.h"
 #include "game/collide.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"

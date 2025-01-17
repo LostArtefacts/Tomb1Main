@@ -3,7 +3,7 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/inject.h"
 #include "game/inventory_ring/vars.h"
 #include "game/items.h"

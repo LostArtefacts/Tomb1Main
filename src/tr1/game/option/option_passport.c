@@ -1,7 +1,7 @@
 #include "game/option/option_passport.h"
 
+#include "game/game_flow.h"
 #include "game/game_string.h"
-#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/inventory_ring.h"
 #include "game/requester.h"

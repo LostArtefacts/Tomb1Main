@@ -1,7 +1,7 @@
 #include "game/ui/widgets/stats_dialog.h"
 
+#include "game/game_flow.h"
 #include "game/game_string.h"
-#include "game/gameflow.h"
 #include "game/input.h"
 #include "game/stats.h"
 #include "global/vars.h"

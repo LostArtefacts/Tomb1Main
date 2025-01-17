@@ -1,6 +1,6 @@
 #include "game/objects/general/save_crystal.h"
 
-#include "game/gameflow.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/common.h"

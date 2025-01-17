@@ -1,6 +1,6 @@
 #include "game/console/cmd/exit_game.h"
 
-#include "game/gameflow/common.h"
+#include "game/game_flow/common.h"
 #include "strings.h"
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
