@@ -866,7 +866,7 @@ bool Level_Load(const char *const file_name, const int32_t level_num)
         object->loaded = false;
     }
 
-    const GAME_FLOW_NEW_LEVEL *const level = &g_GameFlowNew.levels[level_num];
+    const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
     Inject_Init(level->injections.count, level->injections.data_paths);
 
     M_LoadFromFile(file_name, level_num);

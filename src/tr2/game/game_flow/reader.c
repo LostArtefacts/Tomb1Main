@@ -8,13 +8,12 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
+static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadLevelInjections(
-    JSON_OBJECT *obj, const GAME_FLOW_NEW *gf, GAME_FLOW_NEW_LEVEL *level);
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *gf);
+    JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
+static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
 
-static void M_LoadGlobalInjections(
-    JSON_OBJECT *const obj, GAME_FLOW_NEW *const gf)
+static void M_LoadGlobalInjections(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     gf->injections.count = 0;
     JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
@@ -32,8 +31,8 @@ static void M_LoadGlobalInjections(
 }
 
 static void M_LoadLevelInjections(
-    JSON_OBJECT *const obj, const GAME_FLOW_NEW *const gf,
-    GAME_FLOW_NEW_LEVEL *const level)
+    JSON_OBJECT *const obj, const GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level)
 {
     const bool inherit = JSON_ObjectGetBool(obj, "inherit_injections", true);
     JSON_ARRAY *const injections = JSON_ObjectGetArray(obj, "injections");
@@ -72,7 +71,7 @@ static void M_LoadLevelInjections(
     }
 }
 
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *const gf)
+static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
     bool result = true;
 
@@ -94,11 +93,11 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW_NEW *const gf)
     }
 
     gf->level_count = level_count;
-    gf->levels = Memory_Alloc(sizeof(GAME_FLOW_NEW_LEVEL) * level_count);
+    gf->levels = Memory_Alloc(sizeof(GAME_FLOW_LEVEL) * level_count);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
-        GAME_FLOW_NEW_LEVEL *const level = &gf->levels[i];
+        GAME_FLOW_LEVEL *const level = &gf->levels[i];
 
         JSON_OBJECT *const jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
         if (jlvl_obj == NULL) {
@@ -141,7 +140,7 @@ bool GF_N_Load(const char *const path)
         goto end;
     }
 
-    GAME_FLOW_NEW *const gf = &g_GameFlowNew;
+    GAME_FLOW *const gf = &g_GameFlow;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadGlobalInjections(root_obj, gf);
     result &= M_LoadScriptLevels(root_obj, gf);
@@ -162,7 +161,7 @@ end:
 
 void GF_N_Shutdown(void)
 {
-    GAME_FLOW_NEW *const gf = &g_GameFlowNew;
+    GAME_FLOW *const gf = &g_GameFlow;
 
     for (int32_t i = 0; i < gf->injections.count; i++) {
         Memory_FreePointer(&gf->injections.data_paths[i]);

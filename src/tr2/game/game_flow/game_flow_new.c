@@ -4,12 +4,12 @@
 
 #include <libtrx/memory.h>
 
-GAME_FLOW_NEW g_GameFlowNew;
+GAME_FLOW g_GameFlow;
 GAME_INFO g_GameInfo;
 
 int32_t GF_GetLevelCount(void)
 {
-    return g_GameFlowNew.level_count;
+    return g_GameFlow.level_count;
 }
 
 int32_t GF_GetDemoCount(void)

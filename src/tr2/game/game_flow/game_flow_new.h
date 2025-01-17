@@ -16,13 +16,13 @@ typedef struct {
 
 typedef struct {
     INJECTION_DATA injections;
-} GAME_FLOW_NEW_LEVEL;
+} GAME_FLOW_LEVEL;
 
 typedef struct {
     int32_t level_count;
-    GAME_FLOW_NEW_LEVEL *levels;
+    GAME_FLOW_LEVEL *levels;
     INJECTION_DATA injections;
-} GAME_FLOW_NEW;
+} GAME_FLOW;
 
-extern GAME_FLOW_NEW g_GameFlowNew;
+extern GAME_FLOW g_GameFlow;
 extern GAME_INFO g_GameInfo;
