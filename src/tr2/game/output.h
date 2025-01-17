@@ -22,9 +22,8 @@ void Output_InsertPolygons_I(const int16_t *ptr, int32_t clip);
 void Output_DrawObjectMesh(const OBJECT_MESH *mesh, int32_t clip);
 void Output_DrawObjectMesh_I(const OBJECT_MESH *mesh, int32_t clip);
 void Output_InsertRoom(const ROOM_MESH *mesh, bool is_outside);
-void Output_InsertSkybox(const int16_t *obj_ptr);
+void Output_DrawSkybox(const OBJECT_MESH *mesh);
 const int16_t *Output_CalcObjectVertices(const int16_t *obj_ptr);
-const int16_t *Output_CalcSkyboxLight(const int16_t *obj_ptr);
 const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr);
 void Output_CalcRoomVertices(const ROOM_MESH *mesh, int32_t far_clip);
 

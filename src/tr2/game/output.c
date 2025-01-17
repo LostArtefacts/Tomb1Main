@@ -33,6 +33,7 @@ static void M_InsertBar(
 
 static bool M_CalcObjectVertices(const OBJECT_MESH *mesh);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
+static void M_CalcSkyboxLight(const OBJECT_MESH *mesh);
 
 static int32_t M_CalcFogShade(const int32_t depth)
 {
@@ -240,6 +241,13 @@ static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
     }
 }
 
+static void M_CalcSkyboxLight(const OBJECT_MESH *const mesh)
+{
+    for (int32_t i = 0; i < ABS(mesh->num_lights); i++) {
+        g_PhdVBuf[i].g = 0xFFF;
+    }
+}
+
 void Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
 {
     g_FltWinLeft = 0.0f;
@@ -324,7 +332,7 @@ void Output_InsertRoom(const ROOM_MESH *const mesh, const bool is_outside)
     Output_InsertRoomSprite(mesh);
 }
 
-void Output_InsertSkybox(const int16_t *obj_ptr)
+void Output_DrawSkybox(const OBJECT_MESH *const mesh)
 {
     g_FltWinLeft = g_PhdWinLeft;
     g_FltWinTop = g_PhdWinTop;
@@ -333,16 +341,19 @@ void Output_InsertSkybox(const int16_t *obj_ptr)
     g_FltWinCenterX = g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinCenterY;
 
-    obj_ptr = Output_CalcObjectVertices(obj_ptr + 4);
-    if (obj_ptr) {
-        Render_EnableZBuffer(false, false);
-        obj_ptr = Output_CalcSkyboxLight(obj_ptr);
-        obj_ptr = Render_InsertObjectGT4(obj_ptr + 1, *obj_ptr, ST_FAR_Z);
-        obj_ptr = Render_InsertObjectGT3(obj_ptr + 1, *obj_ptr, ST_FAR_Z);
-        obj_ptr = Render_InsertObjectG4(obj_ptr + 1, *obj_ptr, ST_FAR_Z);
-        obj_ptr = Render_InsertObjectG3(obj_ptr + 1, *obj_ptr, ST_FAR_Z);
-        Render_EnableZBuffer(true, true);
+    if (!M_CalcObjectVertices(mesh)) {
+        return;
     }
+
+    Render_EnableZBuffer(false, false);
+    M_CalcSkyboxLight(mesh);
+    Render_InsertTexturedFace4s(
+        mesh->tex_face4s, mesh->num_tex_face4s, ST_FAR_Z);
+    Render_InsertTexturedFace3s(
+        mesh->tex_face3s, mesh->num_tex_face3s, ST_FAR_Z);
+    Render_InsertFlatFace4s(mesh->flat_face4s, mesh->num_flat_face4s, ST_FAR_Z);
+    Render_InsertFlatFace3s(mesh->flat_face3s, mesh->num_flat_face3s, ST_FAR_Z);
+    Render_EnableZBuffer(true, true);
 }
 
 // TODO: Eliminate
@@ -420,23 +431,6 @@ const int16_t *Output_CalcObjectVertices(const int16_t *obj_ptr)
     }
 
     return total_clip == 0 ? obj_ptr : 0;
-}
-
-const int16_t *Output_CalcSkyboxLight(const int16_t *obj_ptr)
-{
-    int32_t count = *obj_ptr++;
-    if (count > 0) {
-        obj_ptr += 3 * count;
-    } else if (count < 0) {
-        count = -count;
-        obj_ptr += count;
-    }
-
-    for (int32_t i = 0; i < count; i++) {
-        g_PhdVBuf[i].g = 0xFFF;
-    }
-
-    return obj_ptr;
 }
 
 // TODO: eliminate

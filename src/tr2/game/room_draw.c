@@ -521,7 +521,7 @@ void Room_DrawAllRooms(const int16_t current_room)
             g_MatrixPtr->_13 = 0;
             g_MatrixPtr->_23 = 0;
             Matrix_Rot16(skybox->frame_base->mesh_rots[0]);
-            Output_InsertSkybox(g_Meshes[skybox->mesh_idx]);
+            Output_DrawSkybox(Object_GetMesh(skybox->mesh_idx));
             Matrix_Pop();
         } else {
             m_Outside = -1;
