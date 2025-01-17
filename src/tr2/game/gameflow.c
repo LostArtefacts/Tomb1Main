@@ -2,10 +2,8 @@
 
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
-#include "decomp/stats.h"
 #include "game/demo.h"
 #include "game/fmv.h"
-#include "game/game.h"
 #include "game/gun/gun.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
@@ -13,7 +11,6 @@
 #include "game/objects/vars.h"
 #include "game/overlay.h"
 #include "game/phase.h"
-#include "gameflow/gameflow_new.h"
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
@@ -23,8 +20,6 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
-
-#include <stdio.h>
 
 #define GF_CURRENT_VERSION 3
 
@@ -271,8 +266,8 @@ bool GF_LoadFromFile(const char *const file_name)
     g_GameFlow.level_complete_track = VFile_ReadU8(file);
     VFile_Skip(file, 4);
 
-    M_ReadStringTable(
-        file, g_GameFlow.num_levels, &g_GF_LevelNames, &g_GF_LevelNamesBuf);
+    g_GF_LevelNames = Memory_Alloc(sizeof(char *) * g_GameFlow.num_levels);
+    M_ReadStringTable(file, g_GameFlow.num_levels, NULL, NULL);
     // picture filename strings
     M_ReadStringTable(file, g_GameFlow.num_pictures, NULL, NULL);
     M_ReadStringTable(

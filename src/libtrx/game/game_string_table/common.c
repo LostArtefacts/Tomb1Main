@@ -1,13 +1,12 @@
 #include "debug.h"
-#include "enum_map.h"
 #include "game/game_string.h"
 #include "game/game_string_table.h"
 #include "game/game_string_table/priv.h"
+#include "game/gameflow.h"
 #include "game/objects/names.h"
 #include "log.h"
 #include "memory.h"
 
-#include <stddef.h>
 #include <string.h>
 
 typedef void (*M_LOAD_STRING_FUNC)(const char *, const char *);
@@ -119,8 +118,11 @@ void GameStringTable_Apply(const int32_t level_num)
     LOG_DEBUG("loading file %d", level_num);
     Object_ResetNames();
     M_Apply(&gs_file->global);
+    for (int32_t i = 0; i < GameFlow_GetLevelCount(); i++) {
+        GameFlow_SetLevelTitle(i, gs_file->levels[i].title);
+    }
     if (level_num != -1) {
-        M_Apply(&gs_file->levels[level_num]);
+        M_Apply(&gs_file->levels[level_num].table);
     }
     M_DoObjectAliases();
 }

@@ -334,7 +334,6 @@ char **g_GF_TitleFileNames = NULL;
 char *g_GF_CutsceneFileNamesBuf = NULL;
 char *g_GF_FMVFilenamesBuf = NULL;
 char *g_GF_LevelFileNamesBuf = NULL;
-char *g_GF_LevelNamesBuf = NULL;
 char *g_GF_TitleFileNamesBuf = NULL;
 
 bool g_GF_DeadlyWater = false;

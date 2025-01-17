@@ -14,6 +14,7 @@ The document is organized as follows:
 {
     "levels": {
         {
+            "title": "City of Vilcabamba",
             "objects": {
                 "key_1": {
                     "name": "Silver Key",
@@ -29,7 +30,7 @@ The document is organized as follows:
                 // etc
             },
             "game_strings": {
-                "STATS_TIME_TAKEN": "...",
+                "STATS_TIME_TAKEN": "Time Taken",
                 // etc
             },
         },
@@ -40,7 +41,7 @@ The document is organized as follows:
         // etc
     },
     "game_strings": {
-        "STATS_TIME_TAKEN": "...",
+        "STATS_TIME_TAKEN": "Time Taken",
         // etc
     },
 }
@@ -67,6 +68,15 @@ The document is organized as follows:
       If the global scope doesn't define it either, it'll default to an
       internal default value shipped with the engine.
     </td>
+  </tr>
+
+  <tr valign="top">
+    <td>
+      <code>title</code>
+    </td>
+    <td>String</td>
+    <td>Yes</td>
+    <td colspan="2">The title of the level.</td>
   </tr>
 
   <tr valign="top">
@@ -147,12 +157,14 @@ The document is organized as follows:
 ## Usage Guidelines
 - Levels are zero-indexed and match the order with the game flow file.
 - It doesn't make sense to ship a custom level with all of the strings defined.
-  Actually, your file should be as small as possible - the game will fall back to the
-  built-in defaults for you! For example - the following document is perfectly fine:
+  We encourage you to make your strings file as small as possible - the game
+  will fall back to the built-in defaults for you! For example, the following
+  document is perfectly fine:
   ```json5
   {
       "levels": [
           {
+              "title": "City of Vilcabamba",
               "objects": {
                   {"name": "key_1": "Gold Key"},
               },

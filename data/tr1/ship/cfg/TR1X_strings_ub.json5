@@ -2,6 +2,7 @@
     "levels": [
         // Level 0: Return to Egypt
         {
+            "title": "Return to Egypt",
             "objects": {
                 "key_1": {"name": "Gold Key"},
             },
@@ -9,21 +10,30 @@
 
         // Level 1: Temple of the Cat
         {
+            "title": "Temple of the Cat",
             "objects": {
                 "key_1": {"name": "Ornate Key"},
             },
         },
 
         // Level 2: Atlantean Stronghold
-        {},
+        {
+            "title": "Atlantean Stronghold",
+        },
 
         // Level 3: The Hive
-        {},
+        {
+            "title": "The Hive",
+        },
 
         // Level 4: Title
-        {},
+        {
+            "title": "Title",
+        },
 
         // Level 5: Current Position
-        {},
+        {
+            "title": "Current Position",
+        },
     ],
 }

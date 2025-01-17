@@ -29,9 +29,8 @@
     },
 
     "levels": [
-        // Level 0
+        // Level 0: Return to Egypt
         {
-            "title": "Return to Egypt",
             "file": "data/egypt.phd",
             "type": "normal",
             "music": 59,
@@ -52,9 +51,8 @@
             "unobtainable_kills": 1,
         },
 
-        // Level 1
+        // Level 1: Temple of the Cat
         {
-            "title": "Temple of the Cat",
             "file": "data/cat.phd",
             "type": "normal",
             "music": 59,
@@ -76,9 +74,8 @@
             "unobtainable_pickups": 1,
         },
 
-        // Level 2
+        // Level 2: Atlantean Stronghold
         {
-            "title": "Atlantean Stronghold",
             "file": "data/end.phd",
             "type": "normal",
             "music": 60,
@@ -97,9 +94,8 @@
             "unobtainable_kills": 1,
         },
 
-        // Level 3
+        // Level 3: The Hive
         {
-            "title": "The Hive",
             "file": "data/end2.phd",
             "type": "normal",
             "music": 60,
@@ -124,9 +120,8 @@
             ],
         },
 
-        // Level 4
+        // Level 4: Title
         {
-            "title": "Title",
             "file": "data/title.phd",
             "type": "title",
             "music": 2,
@@ -142,12 +137,7 @@
             ],
         },
 
-        // Level 5
-        // This level is necessary to read TombATI's save files!
-        // OG has a special level called LV_CURRENT to handle save/load logic.
-        // TR1X does away without this hack. However, the existing save games
-        // expect the level count to match, otherwise the game will crash.
-        // Hence this dummy level.
+        // Level 5: Current Position
         {
             "title": "Current Position",
             "file": "data/current.phd",

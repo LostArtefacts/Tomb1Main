@@ -26,9 +26,8 @@
     "enable_killer_pushblocks": true,
 
     "levels": [
-        // Level 0
+        // Level 0: Lara's Home
         {
-            "title": "Lara's Home",
             "file": "data/gym.phd",
             "type": "gym",
             "music": 0,
@@ -53,9 +52,8 @@
             ],
         },
 
-        // Level 1
+        // Level 1: Caves
         {
-            "title": "Caves",
             "file": "data/level1.phd",
             "type": "normal",
             "music": 57,
@@ -75,9 +73,8 @@
             ],
         },
 
-        // Level 2
+        // Level 2: City of Vilcabamba
         {
-            "title": "City of Vilcabamba",
             "file": "data/level2.phd",
             "type": "normal",
             "music": 57,
@@ -96,9 +93,8 @@
             "demo": true,
         },
 
-        // Level 3
+        // Level 3: Lost Valley
         {
-            "title": "Lost Valley",
             "file": "data/level3a.phd",
             "type": "normal",
             "music": 57,
@@ -119,9 +115,8 @@
             "demo": true,
         },
 
-        // Level 4
+        // Level 4: Tomb of Qualopec
         {
-            "title": "Tomb of Qualopec",
             "file": "data/level3b.phd",
             "type": "normal",
             "music": 57,
@@ -140,9 +135,8 @@
             ],
         },
 
-        // Level 5
+        // Level 5: St. Francis' Folly
         {
-            "title": "St. Francis' Folly",
             "file": "data/level4.phd",
             "type": "normal",
             "music": 59,
@@ -162,9 +156,8 @@
             ],
         },
 
-        // Level 6
+        // Level 6: Colosseum
         {
-            "title": "Colosseum",
             "file": "data/level5.phd",
             "type": "normal",
             "music": 59,
@@ -185,9 +178,8 @@
             ],
         },
 
-        // Level 7
+        // Level 7: Palace Midas
         {
-            "title": "Palace Midas",
             "file": "data/level6.phd",
             "type": "normal",
             "music": 59,
@@ -206,9 +198,8 @@
             "unobtainable_pickups": 1,
         },
 
-        // Level 8
+        // Level 8: The Cistern
         {
-            "title": "The Cistern",
             "file": "data/level7a.phd",
             "type": "normal",
             "music": 58,
@@ -228,9 +219,8 @@
             ],
         },
 
-        // Level 9
+        // Level 9: Tomb of Tihocan
         {
-            "title": "Tomb of Tihocan",
             "file": "data/level7b.phd",
             "type": "normal",
             "music": 58,
@@ -252,9 +242,8 @@
             ],
         },
 
-        // Level 10
+        // Level 10: City of Khamoon
         {
-            "title": "City of Khamoon",
             "file": "data/level8a.phd",
             "type": "normal",
             "music": 59,
@@ -274,9 +263,8 @@
             ],
         },
 
-        // Level 11
+        // Level 11: Obelisk of Khamoon
         {
-            "title": "Obelisk of Khamoon",
             "file": "data/level8b.phd",
             "type": "normal",
             "music": 59,
@@ -297,9 +285,8 @@
             ],
         },
 
-        // Level 12
+        // Level 12: Sanctuary of the Scion
         {
-            "title": "Sanctuary of the Scion",
             "file": "data/level8c.phd",
             "type": "normal",
             "music": 59,
@@ -318,9 +305,8 @@
             ],
         },
 
-        // Level 13
+        // Level 13: Natla's Mines
         {
-            "title": "Natla's Mines",
             "file": "data/level10a.phd",
             "type": "normal",
             "music": 58,
@@ -353,9 +339,8 @@
             ],
         },
 
-        // Level 14
+        // Level 14: Atlantis
         {
-            "title": "Atlantis",
             "file": "data/level10b.phd",
             "type": "normal",
             "music": 60,
@@ -377,9 +362,8 @@
             "unobtainable_pickups": 3,
         },
 
-        // Level 15
+        // Level 15: The Great Pyramid
         {
-            "title": "The Great Pyramid",
             "file": "data/level10c.phd",
             "type": "normal",
             "music": 60,
@@ -405,9 +389,8 @@
             ],
         },
 
-        // Level 16
+        // Level 16: Cut Scene 1
         {
-            "title": "Cut Scene 1",
             "file": "data/cut1.phd",
             "type": "cutscene",
             "music": 0,
@@ -431,9 +414,8 @@
             ],
         },
 
-        // Level 17
+        // Level 17: Cut Scene 2
         {
-            "title": "Cut Scene 2",
             "file": "data/cut2.phd",
             "type": "cutscene",
             "music": 0,
@@ -459,9 +441,8 @@
             ],
         },
 
-        // Level 18
+        // Level 18: Cut Scene 3
         {
-            "title": "Cut Scene 3",
             "file": "data/cut3.phd",
             "type": "cutscene",
             "music": 0,
@@ -481,9 +462,8 @@
             ],
         },
 
-        // Level 19
+        // Level 19: Cut Scene 4
         {
-            "title": "Cut Scene 4",
             "file": "data/cut4.phd",
             "type": "cutscene",
             "music": 0,
@@ -510,9 +490,8 @@
             ],
         },
 
-        // Level 20
+        // Level 20: Title
         {
-            "title": "Title",
             "file": "data/title.phd",
             "type": "title",
             "music": 2,
@@ -530,9 +509,13 @@
             ],
         },
 
-        // Level 21
+        // Level 21: Current Position
+        // This level is necessary to read TombATI's save files!
+        // OG has a special level called LV_CURRENT to handle save/load logic.
+        // TR1X does away without this hack. However, the existing save games
+        // expect the level count to match, otherwise the game will crash.
+        // Hence this dummy level.
         {
-            "title": "Current Position",
             "file": "data/current.phd",
             "type": "current",
             "music": 0,

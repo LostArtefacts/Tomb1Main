@@ -2,6 +2,7 @@
     "levels": [
         // Level 2: City of Vilcabamba
         {
+            "title": "City of Vilcabamba",
             "objects": {
                 "key_1": {"name": "Silver Key"},
                 "puzzle_1": {"name": "Gold Idol"},
@@ -9,9 +10,13 @@
         },
 
         // Level 3: Title
-        {},
+        {
+            "title": "Title",
+        },
 
         // Level 4: Current Position
-        {},
+        {
+            "title": "Current Position",
+        },
     ],
 }

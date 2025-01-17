@@ -4,13 +4,18 @@
 
     "levels": [
         // Level 0: Lara's Home
-        {},
+        {
+            "title": "Lara's Home",
+        },
 
         // Level 1: Caves
-        {},
+        {
+            "title": "Caves",
+        },
 
         // Level 2: City of Vilcabamba
         {
+            "title": "City of Vilcabamba",
             "objects": {
                 "key_1": {"name": "Silver Key"},
                 "puzzle_1": {"name": "Gold Idol"},
@@ -19,16 +24,20 @@
 
         // Level 3: Lost Valley
         {
+            "title": "Lost Valley",
             "objects": {
                 "puzzle_1": {"name": "Machine Cog"},
             },
         },
 
         // Level 4: Tomb of Qualopec
-        {},
+        {
+            "title": "Tomb of Qualopec",
+        },
 
         // Level 5: St. Francis' Folly
         {
+            "title": "St. Francis' Folly",
             "objects": {
                 "key_1": {"name": "Neptune Key"},
                 "key_2": {"name": "Atlas Key"},
@@ -39,6 +48,7 @@
 
         // Level 6: Colosseum
         {
+            "title": "Colosseum",
             "objects": {
                 "key_1": {"name": "Rusty Key"},
             },
@@ -46,6 +56,7 @@
 
         // Level 7: Palace Midas
         {
+            "title": "Palace Midas",
             "objects": {
                 "puzzle_1": {"name": "Gold Bar"},
             },
@@ -53,6 +64,7 @@
 
         // Level 8: The Cistern
         {
+            "title": "The Cistern",
             "objects": {
                 "key_1": {"name": "Gold Key"},
                 "key_2": {"name": "Silver Key"},
@@ -62,6 +74,7 @@
 
         // Level 9: Tomb of Tihocan
         {
+            "title": "Tomb of Tihocan",
             "objects": {
                 "key_1": {"name": "Gold Key"},
                 "key_2": {"name": "Rusty Key"},
@@ -71,6 +84,7 @@
 
         // Level 10: City of Khamoon
         {
+            "title": "City of Khamoon",
             "objects": {
                 "key_1": {"name": "Sapphire Key"},
             },
@@ -78,6 +92,7 @@
 
         // Level 11: Obelisk of Khamoon
         {
+            "title": "Obelisk of Khamoon",
             "objects": {
                 "key_1": {"name": "Sapphire Key"},
                 "puzzle_1": {"name": "Eye of Horus"},
@@ -89,6 +104,7 @@
 
         // Level 12: Sanctuary of the Scion
         {
+            "title": "Sanctuary of the Scion",
             "objects": {
                 "key_1": {"name": "Gold Key"},
                 "puzzle_1": {"name": "Ankh"},
@@ -98,6 +114,7 @@
 
         // Level 13: Natla's Mines
         {
+            "title": "Natla's Mines",
             "objects": {
                 "puzzle_1": {"name": "Fuse"},
                 "puzzle_2": {"name": "Pyramid Key"},
@@ -105,28 +122,44 @@
         },
 
         // Level 14: Atlantis
-        {},
+        {
+            "title": "Atlantis",
+        },
 
         // Level 15: The Great Pyramid
-        {},
+        {
+            "title": "The Great Pyramid",
+        },
 
         // Level 16: Cut Scene 1
-        {},
+        {
+            "title": "Cut Scene 1",
+        },
 
         // Level 17: Cut Scene 2
-        {},
+        {
+            "title": "Cut Scene 2",
+        },
 
         // Level 18: Cut Scene 3
-        {},
+        {
+            "title": "Cut Scene 3",
+        },
 
         // Level 19: Cut Scene 4
-        {},
+        {
+            "title": "Cut Scene 4",
+        },
 
         // Level 20: Title
-        {},
+        {
+            "title": "Title",
+        },
 
         // Level 21: Current Position
-        {},
+        {
+            "title": "Current Position",
+        },
     ],
 
     "objects": {

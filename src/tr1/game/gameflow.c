@@ -2,7 +2,6 @@
 
 #include "game/fmv.h"
 #include "game/game.h"
-#include "game/game_string.h"
 #include "game/inventory.h"
 #include "game/inventory_ring.h"
 #include "game/lara/common.h"
@@ -10,19 +9,12 @@
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
 #include "game/objects/vars.h"
-#include "game/output.h"
-#include "game/phase.h"
-#include "game/room.h"
 #include "game/savegame.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
-#include <libtrx/debug.h>
-#include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
-#include <libtrx/game/objects/names.h>
 #include <libtrx/game/phase.h>
-#include <libtrx/json.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
@@ -525,13 +517,6 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             return false;
         }
         cur->level_file = Memory_DupStr(tmp_s);
-
-        tmp_s = JSON_ObjectGetString(jlvl_obj, "title", JSON_INVALID_STRING);
-        if (tmp_s == JSON_INVALID_STRING) {
-            LOG_ERROR("level %d: 'title' must be a string", level_num);
-            return false;
-        }
-        cur->level_title = Memory_DupStr(tmp_s);
 
         tmp_s = JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
         if (tmp_s == JSON_INVALID_STRING) {
@@ -1274,9 +1259,16 @@ const char *GameFlow_GetLevelFileName(int32_t level_num)
     return g_GameFlow.levels[level_num].level_file;
 }
 
-const char *GameFlow_GetLevelTitle(int32_t level_num)
+const char *GameFlow_GetLevelTitle(const int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_title;
+}
+
+void GameFlow_SetLevelTitle(const int32_t level_num, const char *const title)
+{
+    Memory_FreePointer(&g_GameFlow.levels[level_num].level_title);
+    g_GameFlow.levels[level_num].level_title =
+        title != NULL ? Memory_DupStr(title) : NULL;
 }
 
 int32_t GameFlow_GetGymLevelNum(void)

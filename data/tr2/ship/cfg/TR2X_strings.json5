@@ -4,10 +4,13 @@
 
     "levels": [
         // 0. Lara's Home
-        {},
+        {
+            "title": "Lara's Home",
+        },
 
         // 1. The Great Wall
         {
+            "title": "The Great Wall",
             "objects": {
                 "key_1": {"name": "Guardhouse Key"},
                 "key_2": {"name": "Rusty Key"},
@@ -16,6 +19,7 @@
 
         // 2. Venice
         {
+            "title": "Venice",
             "objects": {
                 "key_1": {"name": "Boathouse Key"},
                 "key_2": {"name": "Steel Key"},
@@ -25,6 +29,7 @@
 
         // 3. Bartoli's Hideout
         {
+            "title": "Bartoli's Hideout",
             "objects": {
                 "key_1": {"name": "Library Key"},
                 "key_2": {"name": "Detonator Key"},
@@ -33,6 +38,7 @@
 
         // 4. Opera House
         {
+            "title": "Opera House",
             "objects": {
                 "key_1": {"name": "Ornate Key"},
                 "puzzle_1": {"name": "Relay Box"},
@@ -42,6 +48,7 @@
 
         // 5. Offshore Rig
         {
+            "title": "Offshore Rig",
             "objects": {
                 "key_1": {"name": "Red Pass Card"},
                 "key_2": {"name": "Yellow Pass Card"},
@@ -51,6 +58,7 @@
 
         // 6. Diving Area
         {
+            "title": "Diving Area",
             "objects": {
                 "key_1": {"name": "Red Pass Card"},
                 "key_4": {"name": "Blue Pass Card"},
@@ -59,10 +67,13 @@
         },
 
         // 7. 40 Fathoms
-        {},
+        {
+            "title": "40 Fathoms",
+        },
 
         // 8. Wreck of the Maria Doria
         {
+            "title": "Wreck of the Maria Doria",
             "objects": {
                  "key_1": {"name": "Rest Room Key"},
                  "key_2": {"name": "Rusty Key"},
@@ -73,6 +84,7 @@
 
         // 9. Living Quarters
         {
+            "title": "Living Quarters",
             "objects": {
                 "key_1": {"name": "Theatre Key"},
                 "key_2": {"name": "Rusty Key"},
@@ -81,6 +93,7 @@
 
         // 10. The Deck
         {
+            "title": "The Deck",
             "objects": {
                 "key_2": {"name": "Stern Key"},
                 "key_3": {"name": "Storage Key"},
@@ -91,6 +104,7 @@
 
         // 11. Tibetan Foothills
         {
+            "title": "Tibetan Foothills",
             "objects": {
                 "tiger": {"name": "Snow Leopard"},
                 "key_1": {"name": "Drawbridge Key"},
@@ -101,6 +115,7 @@
 
         // 12. Barkhang Monastery
         {
+            "title": "Barkhang Monastery",
             "objects": {
                 "key_1": {"name": "Strongroom Key"},
                 "key_2": {"name": "Trapdoor Key"},
@@ -114,6 +129,7 @@
 
         // 13. Catacombs of the Talion
         {
+            "title": "Catacombs of the Talion",
             "objects": {
                 "tiger": {"name": "Snow Leopard"},
                 "pickup_1": {"name": "Gong Hammer"},
@@ -123,6 +139,7 @@
 
         // 14. Ice Palace
         {
+            "title": "Ice Palace",
             "objects": {
                 "tiger": {"name": "Snow Leopard"},
                 "key_2": {"name": "Gong Hammer"},
@@ -133,6 +150,7 @@
 
         // 15. Temple of Xian
         {
+            "title": "Temple of Xian",
             "objects": {
                 "key_2": {"name": "Gold Key"},
                 "key_3": {"name": "Silver Key"},
@@ -143,6 +161,7 @@
 
         // 16. Floating Islands
         {
+            "title": "Floating Islands",
             "objects": {
                 "puzzle_1": {"name": "Mystic Plaque"},
                 "puzzle_2": {"name": "Mystic Plaque"},
@@ -151,6 +170,7 @@
 
         // 17. The Dragon's Lair
         {
+            "title": "The Dragon's Lair",
             "objects": {
                 "puzzle_1": {"name": "Mystic Plaque"},
                 "puzzle_2": {"name": "Dagger of Xian"},
@@ -159,6 +179,7 @@
 
         // 18. Home Sweet Home
         {
+            "title": "Home Sweet Home",
             "objects": {
                 "key_1": {"name": "Gun Cupboard Key"},
                 "puzzle_1": {"name": "Dagger of Xian"},
@@ -167,6 +188,7 @@
 
         // 19. Demo 1
         {
+            "title": "Venice",
             "objects": {
                 "key_1": {"name": "Boathouse Key"},
                 "key_2": {"name": "Steel Key"},
@@ -176,6 +198,7 @@
 
         // 20. Demo 2
         {
+            "title": "Wreck of the Maria Doria",
             "objects": {
                 "key_1": {"name": "Rest Room Key"},
                 "key_2": {"name": "Rusty Key"},
@@ -186,6 +209,7 @@
 
         // 21. Demo 3
         {
+            "title": "Tibetan Foothills",
             "objects": {
                 "key_1": {"name": "Drawbridge Key"},
                 "key_2": {"name": "Hut Key"},

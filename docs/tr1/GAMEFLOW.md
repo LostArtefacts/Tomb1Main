@@ -38,7 +38,7 @@ various pieces of global behaviour.
 },
 "levels": [
     {
-        "title": "Caves",
+        "file": "data/gym.phd",
         // etc
     }
 ],
@@ -217,7 +217,6 @@ Following are each of the properties available within a level.
 
 ```json5
 {
-    "title": "Example Level",
     "file": "data/example.phd",
     "type": "normal",
     "music": 57,
@@ -358,14 +357,6 @@ Following are each of the properties available within a level.
       Instructions to define how a level plays out. See
       <a href="#sequences">Sequences</a> for full details.
     </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>title</code>
-    </td>
-    <td>String</td>
-    <td>Yes</td>
-    <td colspan="2">The title of the level.</td>
   </tr>
   <tr valign="top">
     <td rowspan="8">
@@ -802,7 +793,6 @@ game will exit to title.
 },
 
 {
-    "title": "Level 1",
     "file": "data/level1.phd",
     "type": "normal",
     "music": 57,
@@ -816,7 +806,6 @@ game will exit to title.
 },
 
 {
-    "title": "Level 2",
     "file": "data/level2.phd",
     "type": "normal",
     "music": 57,
@@ -830,7 +819,6 @@ game will exit to title.
 },
 
 {
-    "title": "Level 3",
     "file": "data/level3.phd",
     "type": "normal",
     "music": 57,
@@ -850,7 +838,6 @@ game will exit to title.
 },
 
 {
-    "title": "Level 4",
     "file": "data/bonus1.phd",
     "type": "bonus",
     "music": 57,
@@ -864,7 +851,6 @@ game will exit to title.
 },
 
 {
-    "title": "Level 5",
     "file": "data/bonus2.phd",
     "type": "bonus",
     "music": 57,
@@ -880,7 +866,6 @@ game will exit to title.
 },
 
 {
-    "title": "Bonus Cut Scene",
     "file": "data/bonuscut1.phd",
     "type": "cutscene",
     "music": 0,
@@ -921,7 +906,6 @@ the engine's overall item limit).
 
 ```json5
 {
-    "title": "Example Level",
     "file": "data/example.phd",
     "type": "normal",
     "music": 57,

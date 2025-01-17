@@ -2,6 +2,7 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/gameflow.h>
 #include <libtrx/game/inventory_ring/types.h>
 
 #include <stdint.h>

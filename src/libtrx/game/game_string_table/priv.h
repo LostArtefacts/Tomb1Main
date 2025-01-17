@@ -19,9 +19,14 @@ typedef struct {
 } GS_TABLE;
 
 typedef struct {
+    const char *title;
+    GS_TABLE table;
+} GS_LEVEL;
+
+typedef struct {
     int32_t level_count;
     GS_TABLE global;
-    GS_TABLE *levels;
+    GS_LEVEL *levels;
 } GS_FILE;
 
 extern GS_FILE g_GST_File;

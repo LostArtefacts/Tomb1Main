@@ -26,9 +26,8 @@
     "enable_killer_pushblocks": true,
 
     "levels": [
-        // Level 2
+        // Level 2: City of Vilcabamba
         {
-            "title": "City of Vilcabamba",
             "file": "data_demo_pc/level2.phd",
             "type": "level_demo_pc",
             "music": 0,
@@ -47,9 +46,8 @@
             "demo": true,
         },
 
-        // Level 3
+        // Level 3: Title
         {
-            "title": "Title",
             "file": "data_demo_pc/title.phd",
             "type": "title_demo_pc",
             "music": 0,
@@ -62,9 +60,8 @@
             ],
         },
 
-        // Level 4
+        // Level 4: Current Position
         {
-            "title": "Current Position",
             "file": "data/current.phd",
             "type": "current",
             "music": 0,

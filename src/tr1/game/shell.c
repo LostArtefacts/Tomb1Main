@@ -36,7 +36,6 @@
 #include <string.h>
 
 #define GAMEBUF_MEM_CAP 0x8000000
-#define LEVEL_TITLE_SIZE 25
 #define TIMESTAMP_SIZE 20
 
 typedef enum {

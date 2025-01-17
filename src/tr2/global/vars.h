@@ -143,7 +143,6 @@ extern char **g_GF_TitleFileNames;
 extern char *g_GF_CutsceneFileNamesBuf;
 extern char *g_GF_FMVFilenamesBuf;
 extern char *g_GF_LevelFileNamesBuf;
-extern char *g_GF_LevelNamesBuf;
 extern char *g_GF_TitleFileNamesBuf;
 
 extern bool g_GF_DeadlyWater;

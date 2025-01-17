@@ -39,7 +39,8 @@ void GS_File_Free(GS_FILE *const gs_file)
     GS_Table_Free(&gs_file->global);
     if (gs_file->levels != NULL) {
         for (int32_t i = 0; i < gs_file->level_count; i++) {
-            GS_Table_Free(&gs_file->levels[i]);
+            Memory_FreePointer(&gs_file->levels[i].title);
+            GS_Table_Free(&gs_file->levels[i].table);
         }
     }
     Memory_FreePointer(&gs_file->levels);
