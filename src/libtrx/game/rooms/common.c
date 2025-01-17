@@ -2,7 +2,7 @@
 
 #include "debug.h"
 #include "game/const.h"
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 #include "game/items.h"
 #include "game/rooms/const.h"
 #include "game/rooms/enum.h"

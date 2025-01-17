@@ -1,7 +1,7 @@
 #include "game/objects/common.h"
 
 #include "game/anims.h"
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 
 static OBJECT_MESH **m_MeshPointers = NULL;
 static int32_t m_MeshCount = 0;

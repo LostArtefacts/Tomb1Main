@@ -8,7 +8,7 @@
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/utils.h>
 
 #define STATUE_EXPLODE_DIST (WALL_L * 7 / 2) // = 3584

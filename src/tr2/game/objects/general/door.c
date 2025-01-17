@@ -9,7 +9,7 @@
 #include "global/utils.h"
 #include "global/vars.h"
 
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 
 typedef struct {
     DOORPOS_DATA d1;

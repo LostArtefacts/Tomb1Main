@@ -27,8 +27,8 @@
 #include <libtrx/benchmark.h>
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/game/game_string_table.h>
-#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>

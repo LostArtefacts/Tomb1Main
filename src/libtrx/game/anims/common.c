@@ -1,6 +1,6 @@
 #include "game/anims/common.h"
 
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 
 static int32_t m_AnimCount = 0;
 static ANIM *m_Anims = NULL;

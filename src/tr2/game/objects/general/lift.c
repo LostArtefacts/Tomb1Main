@@ -4,7 +4,7 @@
 #include "game/room.h"
 #include "global/vars.h"
 
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 
 #define LIFT_WAIT_TIME (3 * FRAMES_PER_SECOND) // = 90
 #define LIFT_SHIFT 16

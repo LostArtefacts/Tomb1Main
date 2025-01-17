@@ -14,7 +14,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/engine/image.h>
 #include <libtrx/filesystem.h>
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/gfx/context.h>

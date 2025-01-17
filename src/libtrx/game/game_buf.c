@@ -1,4 +1,4 @@
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 
 #include "enum_map.h"
 #include "game/shell.h"

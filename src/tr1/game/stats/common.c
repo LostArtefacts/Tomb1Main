@@ -9,7 +9,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/log.h>
 
 #include <stdio.h>

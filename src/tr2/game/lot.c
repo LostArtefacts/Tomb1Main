@@ -6,7 +6,7 @@
 #include "global/vars.h"
 
 #include <libtrx/debug.h>
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/utils.h>
 
 static int32_t m_SlotsUsed = 0;

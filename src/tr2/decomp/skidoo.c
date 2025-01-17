@@ -20,7 +20,7 @@
 #include "game/spawn.h"
 #include "global/vars.h"
 
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>

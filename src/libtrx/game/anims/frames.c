@@ -1,7 +1,7 @@
 #include "benchmark.h"
 #include "debug.h"
 #include "game/anims.h"
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 #include "game/objects/common.h"
 #include "log.h"
 #include "utils.h"

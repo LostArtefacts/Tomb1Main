@@ -5,7 +5,7 @@
 #include "game/room.h"
 #include "global/vars.h"
 
-#include <libtrx/game/gamebuf.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/game/lara/common.h>
 #include <libtrx/utils.h>
 

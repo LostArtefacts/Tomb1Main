@@ -1,6 +1,6 @@
 #include "benchmark.h"
 #include "game/anims.h"
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 
 static void M_ParseCommand(ANIM_COMMAND *command, const int16_t **data);
 

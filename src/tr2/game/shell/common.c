@@ -23,8 +23,8 @@
 
 #include <libtrx/config.h>
 #include <libtrx/enum_map.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/game/game_string_table.h>
-#include <libtrx/game/gamebuf.h>
 #include <libtrx/game/shell.h>
 #include <libtrx/game/ui/common.h>
 #include <libtrx/log.h>

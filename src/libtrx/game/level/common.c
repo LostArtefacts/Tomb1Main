@@ -2,7 +2,7 @@
 
 #include "debug.h"
 #include "game/anims.h"
-#include "game/gamebuf.h"
+#include "game/game_buf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
 #include "game/rooms.h"
