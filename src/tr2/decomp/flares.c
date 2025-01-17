@@ -12,6 +12,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/lara/common.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
@@ -353,14 +354,12 @@ void Flare_Undraw(void)
 
 void Flare_DrawMeshes(void)
 {
-    g_Lara.mesh_ptrs[LM_HAND_L] =
-        g_Meshes[g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L];
+    Lara_SwapSingleMesh(LM_HAND_L, O_LARA_FLARE);
 }
 
 void Flare_UndrawMeshes(void)
 {
-    g_Lara.mesh_ptrs[LM_HAND_L] =
-        g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_L];
+    Lara_SwapSingleMesh(LM_HAND_L, O_LARA);
 }
 
 void Flare_Ready(void)

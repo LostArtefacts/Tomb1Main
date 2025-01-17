@@ -331,8 +331,10 @@ static void M_ReadLara(LARA_INFO *const lara)
     lara->mesh_effects = M_ReadU32();
 
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
-        lara->mesh_ptrs[i] =
-            (int16_t *)((intptr_t)g_MeshBase + (intptr_t)M_ReadS32());
+        OBJECT_MESH *const mesh = Object_FindMesh(M_ReadS32() / 2);
+        if (mesh != NULL) {
+            Lara_SetMesh(i, mesh);
+        }
     }
 
     M_Skip(4);
@@ -560,9 +562,8 @@ static void M_WriteLara(const LARA_INFO *const lara)
     M_WriteU32(lara->mesh_effects);
 
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
-        const int32_t mesh_idx =
-            (intptr_t)lara->mesh_ptrs[i] - (intptr_t)g_MeshBase;
-        M_WriteS32(mesh_idx);
+        const int32_t mesh_offset = Object_GetMeshOffset(Lara_GetMesh(i));
+        M_WriteS32(mesh_offset * 2);
     }
 
     M_Skip(4);

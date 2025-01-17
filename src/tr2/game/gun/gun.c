@@ -155,8 +155,7 @@ void Gun_Control(void)
         break;
 
     case LGS_UNDRAW:
-        g_Lara.mesh_ptrs[LM_HEAD] =
-            g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HEAD];
+        Lara_SwapSingleMesh(LM_HEAD, O_LARA);
 
         switch (g_Lara.gun_type) {
         case LGT_PISTOLS:
@@ -182,11 +181,9 @@ void Gun_Control(void)
 
     case LGS_READY:
         if (g_Lara.pistol_ammo.ammo && g_Input.action) {
-            g_Lara.mesh_ptrs[LM_HEAD] =
-                g_Meshes[g_Objects[O_LARA_UZIS].mesh_idx + LM_HEAD];
+            Lara_SwapSingleMesh(LM_HEAD, O_LARA_UZIS);
         } else {
-            g_Lara.mesh_ptrs[LM_HEAD] =
-                g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HEAD];
+            Lara_SwapSingleMesh(LM_HEAD, O_LARA);
         }
 
         if (g_Camera.type != CAM_CINEMATIC && g_Camera.type != CAM_LOOK) {

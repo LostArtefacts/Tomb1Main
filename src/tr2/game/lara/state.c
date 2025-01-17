@@ -786,8 +786,7 @@ void Lara_State_Extra_PullDagger(ITEM *item, COLL_INFO *coll)
     if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_PULLED)) {
         Music_PlaySynced(MX_DAGGER_PULL);
     } else if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_STORED)) {
-        g_Lara.mesh_ptrs[LM_HAND_R] =
-            g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
+        Lara_SwapSingleMesh(LM_HAND_R, O_LARA);
         Inv_AddItem(O_PUZZLE_ITEM_2);
     } else if (Item_TestFrameEqual(item, LF_DRAGON_DAGGER_ANIM_END)) {
         item->rot.y += DEG_90;
@@ -808,13 +807,11 @@ void Lara_State_Extra_StartHouse(ITEM *item, COLL_INFO *coll)
 {
     if (Item_TestFrameEqual(item, LF_START_HOUSE_BEGIN)) {
         Music_PlaySynced(MX_REVEAL_2);
-        g_Lara.mesh_ptrs[LM_HAND_R] =
-            g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx + LM_HAND_R];
-        g_Lara.mesh_ptrs[LM_HIPS] = g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx];
+        Lara_SwapSingleMesh(LM_HAND_R, O_LARA_EXTRA);
+        Lara_SwapSingleMesh(LM_HIPS, O_LARA_EXTRA);
     } else if (Item_TestFrameEqual(item, LF_START_HOUSE_DAGGER_STORED)) {
-        g_Lara.mesh_ptrs[LM_HAND_R] =
-            g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
-        g_Lara.mesh_ptrs[LM_HIPS] = g_Meshes[g_Objects[O_LARA].mesh_idx];
+        Lara_SwapSingleMesh(LM_HAND_R, O_LARA);
+        Lara_SwapSingleMesh(LM_HIPS, O_LARA);
         Inv_AddItem(O_PUZZLE_ITEM_1);
     } else if (Item_TestFrameEqual(item, LF_START_HOUSE_END)) {
         g_Camera.type = CAM_CHASE;
@@ -828,16 +825,12 @@ void Lara_State_Extra_FinalAnim(ITEM *item, COLL_INFO *coll)
 
     if (Item_TestFrameEqual(item, LF_SHOWER_START)) {
         g_Lara.back_gun = 0;
-        g_Lara.mesh_ptrs[LM_HAND_R] =
-            g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HAND_R];
-        g_Lara.mesh_ptrs[LM_HEAD] =
-            g_Meshes[g_Objects[O_LARA].mesh_idx + LM_HEAD];
-        g_Lara.mesh_ptrs[LM_HIPS] =
-            g_Meshes[g_Objects[O_LARA_EXTRA].mesh_idx + LM_HIPS];
+        Lara_SwapSingleMesh(LM_HAND_R, O_LARA);
+        Lara_SwapSingleMesh(LM_HEAD, O_LARA);
+        Lara_SwapSingleMesh(LM_HIPS, O_LARA_EXTRA);
         Music_PlaySynced(MX_CUTSCENE_BATH);
     } else if (Item_TestFrameEqual(item, LF_SHOWER_SHOTGUN_PICKUP)) {
-        g_Lara.mesh_ptrs[LM_HAND_R] =
-            g_Meshes[g_Objects[O_LARA_SHOTGUN].mesh_idx + LM_HAND_R];
+        Lara_SwapSingleMesh(LM_HAND_R, O_LARA_SHOTGUN);
     } else if (Item_TestFrameEqual(item, LF_SHOWER_END)) {
         g_LevelComplete = true;
     }

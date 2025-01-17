@@ -13,6 +13,7 @@
 #include "game/viewport.h"
 #include "global/vars.h"
 
+#include <libtrx/game/lara/common.h>
 #include <libtrx/utils.h>
 
 typedef void (*M_FUNC)(ITEM *item);
@@ -230,59 +231,43 @@ void M_FlipMap(ITEM *const item)
 
 void M_LaraDrawRightGun(ITEM *const item)
 {
-    const OBJECT *const obj = Object_GetObject(O_LARA_PISTOLS);
-    int16_t *tmp;
-    SWAP(
-        g_Lara.mesh_ptrs[LM_THIGH_R], g_Meshes[obj->mesh_idx + LM_THIGH_R],
-        tmp);
-    SWAP(g_Lara.mesh_ptrs[LM_HAND_R], g_Meshes[obj->mesh_idx + LM_HAND_R], tmp);
+    Object_SwapMesh(item->object_id, O_LARA_PISTOLS, LM_THIGH_R);
+    Object_SwapMesh(item->object_id, O_LARA_PISTOLS, LM_HAND_R);
+    Lara_SwapSingleMesh(LM_THIGH_R, item->object_id);
+    Lara_SwapSingleMesh(LM_HAND_R, item->object_id);
 }
 
 void M_LaraDrawLeftGun(ITEM *const item)
 {
-    const OBJECT *const obj = Object_GetObject(O_LARA_PISTOLS);
-    int16_t *tmp;
-    SWAP(
-        g_Lara.mesh_ptrs[LM_THIGH_L], g_Meshes[obj->mesh_idx + LM_THIGH_L],
-        tmp);
-    SWAP(g_Lara.mesh_ptrs[LM_HAND_L], g_Meshes[obj->mesh_idx + LM_HAND_L], tmp);
+    Object_SwapMesh(item->object_id, O_LARA_PISTOLS, LM_THIGH_L);
+    Object_SwapMesh(item->object_id, O_LARA_PISTOLS, LM_HAND_L);
+    Lara_SwapSingleMesh(LM_THIGH_L, item->object_id);
+    Lara_SwapSingleMesh(LM_HAND_L, item->object_id);
 }
 
 void M_SwapMeshesWithMeshSwap1(ITEM *const item)
 {
     const OBJECT *const obj_1 = Object_GetObject(item->object_id);
-    const OBJECT *const obj_2 = Object_GetObject(O_MESH_SWAP_1);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
-        int16_t *tmp;
-        SWAP(
-            g_Meshes[obj_1->mesh_idx + mesh_idx],
-            g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
+        Object_SwapMesh(item->object_id, O_MESH_SWAP_1, mesh_idx);
     }
 }
 
 void M_SwapMeshesWithMeshSwap2(ITEM *const item)
 {
     const OBJECT *const obj_1 = Object_GetObject(item->object_id);
-    const OBJECT *const obj_2 = Object_GetObject(O_MESH_SWAP_2);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
-        int16_t *tmp;
-        SWAP(
-            g_Meshes[obj_1->mesh_idx + mesh_idx],
-            g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
+        Object_SwapMesh(item->object_id, O_MESH_SWAP_2, mesh_idx);
     }
 }
 
 void M_SwapMeshesWithMeshSwap3(ITEM *const item)
 {
-    OBJECT *const obj_1 = Object_GetObject(item->object_id);
-    OBJECT *const obj_2 = Object_GetObject(O_LARA_SWAP);
+    const OBJECT *const obj_1 = Object_GetObject(item->object_id);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
-        int16_t *tmp;
-        SWAP(
-            g_Meshes[obj_1->mesh_idx + mesh_idx],
-            g_Meshes[obj_2->mesh_idx + mesh_idx], tmp);
+        Object_SwapMesh(item->object_id, O_LARA_SWAP, mesh_idx);
         if (item == g_LaraItem) {
-            g_Lara.mesh_ptrs[mesh_idx] = g_Meshes[obj_1->mesh_idx + mesh_idx];
+            Lara_SwapSingleMesh(mesh_idx, item->object_id);
         }
     }
 }

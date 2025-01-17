@@ -841,13 +841,11 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
 
     if (type == GFL_CUTSCENE) {
         for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
-            g_Lara.mesh_ptrs[i] = g_Meshes[g_Objects[O_LARA].mesh_idx + i];
+            Lara_SwapSingleMesh(i, O_LARA);
         }
 
-        g_Lara.mesh_ptrs[LM_THIGH_L] =
-            g_Meshes[g_Objects[O_LARA_PISTOLS].mesh_idx + LM_THIGH_L];
-        g_Lara.mesh_ptrs[LM_THIGH_R] =
-            g_Meshes[g_Objects[O_LARA_PISTOLS].mesh_idx + LM_THIGH_R];
+        Lara_SwapSingleMesh(LM_THIGH_L, O_LARA_PISTOLS);
+        Lara_SwapSingleMesh(LM_THIGH_R, O_LARA_PISTOLS);
         g_Lara.gun_status = LGS_ARMLESS;
     } else {
         Lara_InitialiseInventory(g_CurrentLevel);
@@ -963,7 +961,7 @@ void Lara_InitialiseInventory(const int32_t level_num)
 void Lara_InitialiseMeshes(const int32_t level_num)
 {
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
-        g_Lara.mesh_ptrs[i] = g_Meshes[g_Objects[O_LARA].mesh_idx + i];
+        Lara_SwapSingleMesh(i, O_LARA);
     }
 
     const START_INFO *const start = &g_SaveGame.start[level_num];
@@ -980,15 +978,12 @@ void Lara_InitialiseMeshes(const int32_t level_num)
     }
 
     if (holster_object_id != NO_OBJECT) {
-        g_Lara.mesh_ptrs[LM_THIGH_L] =
-            g_Meshes[g_Objects[holster_object_id].mesh_idx + LM_THIGH_L];
-        g_Lara.mesh_ptrs[LM_THIGH_R] =
-            g_Meshes[g_Objects[holster_object_id].mesh_idx + LM_THIGH_R];
+        Lara_SwapSingleMesh(LM_THIGH_L, holster_object_id);
+        Lara_SwapSingleMesh(LM_THIGH_R, holster_object_id);
     }
 
     if (start->gun_type == LGT_FLARE) {
-        g_Lara.mesh_ptrs[LM_HAND_L] =
-            g_Meshes[g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L];
+        Lara_SwapSingleMesh(LM_HAND_L, O_LARA_FLARE);
     }
 
     switch (start->gun_type) {
@@ -1014,11 +1009,6 @@ void Lara_InitialiseMeshes(const int32_t level_num)
     } else if (start->has_harpoon) {
         g_Lara.back_gun = O_LARA_HARPOON;
     }
-}
-
-void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID object_id)
-{
-    g_Lara.mesh_ptrs[mesh] = g_Meshes[g_Objects[object_id].mesh_idx + mesh];
 }
 
 void Lara_GetOffVehicle(void)

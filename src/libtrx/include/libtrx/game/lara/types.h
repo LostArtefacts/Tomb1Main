@@ -125,7 +125,7 @@ typedef struct {
     XYZ_32 last_pos;
     EFFECT *spaz_effect;
     uint32_t mesh_effects;
-    int16_t *mesh_ptrs[15];
+    OBJECT_MESH *mesh_ptrs[LM_NUMBER_OF];
     ITEM *target;
     int16_t target_angles[2];
     int16_t turn_rate;

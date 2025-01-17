@@ -108,3 +108,19 @@ void Lara_Animate(ITEM *const item)
     item->pos.x += (item->speed * Math_Sin(lara->move_angle)) >> W2V_SHIFT;
     item->pos.z += (item->speed * Math_Cos(lara->move_angle)) >> W2V_SHIFT;
 }
+
+void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID object_id)
+{
+    const OBJECT *const object = Object_GetObject(object_id);
+    Lara_SetMesh(mesh, Object_GetMesh(object->mesh_idx + mesh));
+}
+
+OBJECT_MESH *Lara_GetMesh(const LARA_MESH mesh)
+{
+    return Lara_GetLaraInfo()->mesh_ptrs[mesh];
+}
+
+void Lara_SetMesh(const LARA_MESH mesh, OBJECT_MESH *const mesh_ptr)
+{
+    Lara_GetLaraInfo()->mesh_ptrs[mesh] = mesh_ptr;
+}
