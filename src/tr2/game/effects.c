@@ -182,10 +182,10 @@ void Effect_Draw(const int16_t effect_num)
         Matrix_Rot16(effect->rot);
         if (object->mesh_count) {
             Output_CalculateStaticLight(effect->shade);
-            Output_InsertPolygons(g_Meshes[object->mesh_idx], -1);
+            Object_DrawMesh(object->mesh_idx, -1, false);
         } else {
             Output_CalculateStaticLight(effect->shade);
-            Output_InsertPolygons(g_Meshes[effect->frame_num], -1);
+            Object_DrawMesh(effect->frame_num, -1, false);
         }
     }
     Matrix_Pop();

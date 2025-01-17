@@ -93,8 +93,7 @@ void SphereOfDoom_Draw(const ITEM *const item)
     const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
     if (clip) {
         Output_CalculateObjectLighting(item, &frame_ptr->bounds);
-        Output_InsertPolygons(
-            g_Meshes[g_Objects[item->object_id].mesh_idx], clip);
+        Object_DrawMesh(g_Objects[item->object_id].mesh_idx, clip, false);
     }
 
     Matrix_Pop();

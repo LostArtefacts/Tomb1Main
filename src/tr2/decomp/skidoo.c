@@ -937,28 +937,23 @@ int32_t Skidoo_Control(void)
 
 void Skidoo_Draw(const ITEM *const item)
 {
-    int32_t track_mesh = 0;
+    int32_t track_mesh_status = 0;
     const SKIDOO_INFO *const skidoo_data = item->data;
     if (skidoo_data != NULL) {
-        track_mesh = skidoo_data->track_mesh;
+        track_mesh_status = skidoo_data->track_mesh;
     }
 
     OBJECT *obj = &g_Objects[item->object_id];
-    if ((track_mesh & SKIDOO_GUN_MESH) != 0) {
+    if ((track_mesh_status & SKIDOO_GUN_MESH) != 0) {
         obj = &g_Objects[O_SKIDOO_ARMED];
     }
 
-    int16_t *track_mesh_ptr = NULL;
-    if ((track_mesh & 3) == 1) {
-        track_mesh_ptr = g_Meshes[g_Objects[O_SKIDOO_TRACK].mesh_idx + 1];
-    } else if ((track_mesh & 3) == 2) {
-        track_mesh_ptr = g_Meshes[g_Objects[O_SKIDOO_TRACK].mesh_idx + 7];
-    }
-    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
-
-    int16_t *old_track_mesh_ptr = mesh_ptrs[1];
-    if (track_mesh_ptr != NULL) {
-        mesh_ptrs[1] = track_mesh_ptr;
+    const OBJECT *const track_obj = Object_GetObject(O_SKIDOO_TRACK);
+    const OBJECT_MESH *track_mesh = NULL;
+    if ((track_mesh_status & 3) == 1) {
+        track_mesh = Object_GetMesh(track_obj->mesh_idx + 1);
+    } else if ((track_mesh_status & 3) == 2) {
+        track_mesh = Object_GetMesh(track_obj->mesh_idx + 7);
     }
 
     // TODO: merge common code parts down below with Object_DrawAnimatingItem.
@@ -984,7 +979,7 @@ void Skidoo_Draw(const ITEM *const item)
         Matrix_TranslateRel16_ID(frames[0]->offset, frames[1]->offset);
         Matrix_Rot16_ID(frames[0]->mesh_rots[0], frames[1]->mesh_rots[0]);
 
-        Output_InsertPolygons_I(mesh_ptrs[0], clip);
+        Object_DrawMesh(obj->mesh_idx, clip, true);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
             const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
@@ -998,13 +993,17 @@ void Skidoo_Draw(const ITEM *const item)
             Matrix_Rot16_ID(
                 frames[0]->mesh_rots[mesh_idx], frames[1]->mesh_rots[mesh_idx]);
 
-            Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
+            if (mesh_idx == 1 && track_mesh != NULL) {
+                Output_DrawObjectMesh_I(track_mesh, clip);
+            } else {
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, true);
+            }
         }
     } else {
         Matrix_TranslateRel16(frames[0]->offset);
         Matrix_Rot16(frames[0]->mesh_rots[0]);
 
-        Output_InsertPolygons(mesh_ptrs[0], clip);
+        Object_DrawMesh(obj->mesh_idx, clip, false);
         for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
             const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
             if (bone->matrix_pop) {
@@ -1017,11 +1016,13 @@ void Skidoo_Draw(const ITEM *const item)
             Matrix_TranslateRel32(bone->pos);
             Matrix_Rot16(frames[0]->mesh_rots[mesh_idx]);
 
-            Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
+            if (mesh_idx == 1 && track_mesh != NULL) {
+                Output_DrawObjectMesh(track_mesh, clip);
+            } else {
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, false);
+            }
         }
     }
 
     Matrix_Pop();
-
-    mesh_ptrs[1] = old_track_mesh_ptr;
 }

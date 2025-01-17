@@ -430,12 +430,12 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         Matrix_Push();
         Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
-        const int16_t bounds = Output_GetObjectBounds(&static_obj->draw_bounds);
-        if (bounds) {
+        const int16_t clip = Output_GetObjectBounds(&static_obj->draw_bounds);
+        if (clip != 0) {
             Output_CalculateStaticMeshLight(
                 mesh->pos.x, mesh->pos.y, mesh->pos.z, mesh->shade_1,
                 mesh->shade_2, r);
-            Output_InsertPolygons(g_Meshes[static_obj->mesh_idx], bounds);
+            Object_DrawMesh(static_obj->mesh_idx, clip, false);
         }
         Matrix_Pop();
     }

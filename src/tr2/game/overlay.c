@@ -462,10 +462,9 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
         .z = -(bounds.min.z + bounds.max.z) / 2,
     });
 
-    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     Matrix_Rot16(frame->mesh_rots[0]);
 
-    Output_InsertPolygons(mesh_ptrs[0], 0);
+    Object_DrawMesh(obj->mesh_idx, 0, false);
     for (int32_t mesh_idx = 1; mesh_idx < obj->mesh_count; mesh_idx++) {
         const ANIM_BONE *const bone = Object_GetBone(obj, mesh_idx - 1);
         if (bone->matrix_pop) {
@@ -479,7 +478,7 @@ static void M_DrawPickup3D(const DISPLAY_PICKUP *const pickup)
         Matrix_TranslateRel32(bone->pos);
         Matrix_Rot16(frame->mesh_rots[mesh_idx]);
 
-        Output_InsertPolygons(mesh_ptrs[mesh_idx], 0);
+        Object_DrawMesh(obj->mesh_idx + mesh_idx, 0, false);
     }
     Matrix_Pop();
 

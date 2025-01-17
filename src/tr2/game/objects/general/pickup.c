@@ -273,7 +273,6 @@ void Pickup_Draw(const ITEM *const item)
     const int32_t clip = Output_GetObjectBounds(&bounds);
     if (clip) {
         int32_t bit = 1;
-        int16_t **meshpp = &g_Meshes[obj->mesh_idx];
 
         const XYZ_16 *const mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
         if (mesh_rots != NULL) {
@@ -281,7 +280,7 @@ void Pickup_Draw(const ITEM *const item)
         }
 
         if (item->mesh_bits & bit) {
-            Output_InsertPolygons(*meshpp++, clip);
+            Object_DrawMesh(obj->mesh_idx, clip, false);
         }
 
         for (int i = 1; i < obj->mesh_count; i++) {
@@ -303,10 +302,8 @@ void Pickup_Draw(const ITEM *const item)
 
             bit <<= 1;
             if (item->mesh_bits & bit) {
-                Output_InsertPolygons(*meshpp, clip);
+                Object_DrawMesh(obj->mesh_idx + i, clip, false);
             }
-
-            meshpp++;
         }
     }
 

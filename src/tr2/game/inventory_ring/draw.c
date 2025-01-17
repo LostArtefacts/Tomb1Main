@@ -148,7 +148,7 @@ static void M_DrawItem(
         }
 
         if (inv_item->meshes_drawn & (1 << mesh_idx)) {
-            Output_InsertPolygons(g_Meshes[obj->mesh_idx + mesh_idx], clip);
+            Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, false);
         }
     }
 

@@ -31,14 +31,11 @@ void XianWarrior_Draw(const ITEM *item)
 
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
-    int16_t **normal_mesh_ptrs = NULL;
-    int16_t **jade_mesh_ptrs = NULL;
+    const OBJECT *jade_obj;
     if (item->object_id == O_XIAN_SPEARMAN) {
-        normal_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_SPEARMAN].mesh_idx];
-        jade_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_SPEARMAN_STATUE].mesh_idx];
+        jade_obj = Object_GetObject(O_XIAN_SPEARMAN_STATUE);
     } else {
-        normal_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_KNIGHT].mesh_idx];
-        jade_mesh_ptrs = &g_Meshes[g_Objects[O_XIAN_KNIGHT_STATUE].mesh_idx];
+        jade_obj = Object_GetObject(O_XIAN_KNIGHT_STATUE);
     }
 
     const int16_t *extra_rotation = item->data;
@@ -78,9 +75,9 @@ void XianWarrior_Draw(const ITEM *item)
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
-                Output_InsertPolygons_I(normal_mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, true);
             } else {
-                Output_InsertPolygons_I(jade_mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(jade_obj->mesh_idx + mesh_idx, clip, true);
             }
         }
     } else {
@@ -113,9 +110,9 @@ void XianWarrior_Draw(const ITEM *item)
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
-                Output_InsertPolygons(normal_mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, false);
             } else {
-                Output_InsertPolygons(jade_mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(jade_obj->mesh_idx + mesh_idx, clip, false);
             }
         }
     }

@@ -805,25 +805,12 @@ void Output_LoadBackgroundFromObject(void)
         return;
     }
 
-    const int16_t *mesh_ptr = g_Meshes[obj->mesh_idx];
-    mesh_ptr += 5;
-    const int32_t num_vertices = *mesh_ptr++;
-    mesh_ptr += num_vertices * 3;
-
-    const int32_t num_normals = *mesh_ptr++;
-    if (num_normals >= 0) {
-        mesh_ptr += num_normals * 3;
-    } else {
-        mesh_ptr -= num_normals;
-    }
-    const int32_t num_quads = *mesh_ptr++;
-    if (num_quads < 1) {
+    const OBJECT_MESH *const mesh = Object_GetMesh(obj->mesh_idx);
+    if (mesh->num_tex_face4s < 1) {
         return;
     }
 
-    mesh_ptr += 4;
-
-    const int32_t texture_idx = *mesh_ptr++;
+    const int32_t texture_idx = mesh->tex_face4s[0].texture;
     const PHD_TEXTURE *const texture = &g_TextureInfo[texture_idx];
     Render_LoadBackgroundFromTexture(texture, 8, 6);
     return;

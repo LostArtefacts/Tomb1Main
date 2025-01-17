@@ -43,7 +43,6 @@ void Object_DrawAnimatingItem(const ITEM *item)
 
     Output_CalculateObjectLighting(item, &frames[0]->bounds);
 
-    int16_t *const *mesh_ptrs = &g_Meshes[obj->mesh_idx];
     const int16_t *extra_rotation = item->data;
 
     if (frac != 0) {
@@ -81,7 +80,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
-                Output_InsertPolygons_I(mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, true);
             }
         }
     } else {
@@ -114,7 +113,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
             }
 
             if (item->mesh_bits & (1 << mesh_idx)) {
-                Output_InsertPolygons(mesh_ptrs[mesh_idx], clip);
+                Object_DrawMesh(obj->mesh_idx + mesh_idx, clip, false);
             }
         }
     }
@@ -188,7 +187,6 @@ BOUNDS_16 Object_GetBoundingBox(
     const OBJECT *const obj, const ANIM_FRAME *const frame,
     const uint32_t mesh_bits)
 {
-    int16_t **mesh_ptrs = &g_Meshes[obj->mesh_idx];
     const XYZ_16 *const mesh_rots = frame != NULL ? frame->mesh_rots : NULL;
 
     Matrix_PushUnit();
@@ -229,28 +227,28 @@ BOUNDS_16 Object_GetBoundingBox(
             continue;
         }
 
-        const int16_t *obj_ptr = mesh_ptrs[mesh_idx];
-        obj_ptr += 5;
-        const int32_t vtx_count = *obj_ptr++;
-        for (int32_t i = 0; i < vtx_count; i++) {
+        const OBJECT_MESH *const mesh =
+            Object_GetMesh(obj->mesh_idx + mesh_idx);
+        for (int32_t i = 0; i < mesh->num_vertices; i++) {
             // clang-format off
+            const XYZ_16 *const vertex = &mesh->vertices[i];
             const MATRIX *const mptr = g_MatrixPtr;
             const double xv = (
-                mptr->_00 * obj_ptr[0] +
-                mptr->_01 * obj_ptr[1] +
-                mptr->_02 * obj_ptr[2] +
+                mptr->_00 * vertex->x +
+                mptr->_01 * vertex->y +
+                mptr->_02 * vertex->z +
                 mptr->_03
             );
             const double yv = (
-                mptr->_10 * obj_ptr[0] +
-                mptr->_11 * obj_ptr[1] +
-                mptr->_12 * obj_ptr[2] +
+                mptr->_10 * vertex->x +
+                mptr->_11 * vertex->y +
+                mptr->_12 * vertex->z +
                 mptr->_13
             );
             double zv = (
-                mptr->_20 * obj_ptr[0] +
-                mptr->_21 * obj_ptr[1] +
-                mptr->_22 * obj_ptr[2] +
+                mptr->_20 * vertex->x +
+                mptr->_21 * vertex->y +
+                mptr->_22 * vertex->z +
                 mptr->_23
             );
             // clang-format on
@@ -265,7 +263,6 @@ BOUNDS_16 Object_GetBoundingBox(
             new_bounds.max.x = MAX(new_bounds.max.x, x);
             new_bounds.max.y = MAX(new_bounds.max.y, y);
             new_bounds.max.z = MAX(new_bounds.max.z, z);
-            obj_ptr += 3;
         }
     }
 
