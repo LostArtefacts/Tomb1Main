@@ -22,10 +22,10 @@ static int32_t M_Wait(PHASE *phase);
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
 {
-    const GAME_FLOW_COMMAND gf_override_cmd = GameFlow_GetOverrideCommand();
+    const GAME_FLOW_COMMAND gf_override_cmd = GF_GetOverrideCommand();
     if (gf_override_cmd.action != GF_NOOP) {
         const GAME_FLOW_COMMAND gf_cmd = gf_override_cmd;
-        GameFlow_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_NOOP });
+        GF_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_NOOP });
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
 

@@ -731,9 +731,9 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
     return true;
 }
 
-bool GameFlow_LoadFromFile(const char *file_name)
+bool GF_LoadFromFile(const char *file_name)
 {
-    GameFlow_Shutdown();
+    GF_Shutdown();
     bool result = false;
     JSON_VALUE *root = NULL;
     char *script_data = NULL;
@@ -771,7 +771,7 @@ cleanup:
     return result;
 }
 
-void GameFlow_Shutdown(void)
+void GF_Shutdown(void)
 {
     Memory_FreePointer(&g_GameFlow.main_menu_background_path);
     Memory_FreePointer(&g_GameFlow.savegame_fmt_legacy);
@@ -854,7 +854,7 @@ void GameFlow_Shutdown(void)
 }
 
 GAME_FLOW_COMMAND
-GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
+GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 {
     LOG_INFO("level_num=%d level_type=%d", level_num, level_type);
 
@@ -1131,7 +1131,7 @@ GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 }
 
 GAME_FLOW_COMMAND
-GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
+GF_StorySoFar(int32_t level_num, int32_t savegame_level)
 {
     LOG_INFO("%d", level_num);
 
@@ -1237,12 +1237,12 @@ GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level)
     return command;
 }
 
-int32_t GameFlow_GetLevelCount(void)
+int32_t GF_GetLevelCount(void)
 {
     return g_GameFlow.level_count;
 }
 
-int32_t GameFlow_GetDemoCount(void)
+int32_t GF_GetDemoCount(void)
 {
     int32_t demo_count = 0;
     for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
@@ -1254,39 +1254,39 @@ int32_t GameFlow_GetDemoCount(void)
     return demo_count;
 }
 
-const char *GameFlow_GetLevelFileName(int32_t level_num)
+const char *GF_GetLevelFileName(int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_file;
 }
 
-const char *GameFlow_GetLevelTitle(const int32_t level_num)
+const char *GF_GetLevelTitle(const int32_t level_num)
 {
     return g_GameFlow.levels[level_num].level_title;
 }
 
-void GameFlow_SetLevelTitle(const int32_t level_num, const char *const title)
+void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 {
     Memory_FreePointer(&g_GameFlow.levels[level_num].level_title);
     g_GameFlow.levels[level_num].level_title =
         title != NULL ? Memory_DupStr(title) : NULL;
 }
 
-int32_t GameFlow_GetGymLevelNum(void)
+int32_t GF_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_level_num;
 }
 
-void GameFlow_OverrideCommand(const GAME_FLOW_COMMAND command)
+void GF_OverrideCommand(const GAME_FLOW_COMMAND command)
 {
     g_GameInfo.override_gf_command = command;
 }
 
-GAME_FLOW_COMMAND GameFlow_GetOverrideCommand(void)
+GAME_FLOW_COMMAND GF_GetOverrideCommand(void)
 {
     return g_GameInfo.override_gf_command;
 }
 
-GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
+GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num)
 {
     GAME_FLOW_COMMAND command = {
         .action = GF_START_GAME,
@@ -1295,7 +1295,7 @@ GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num)
 
     const int32_t savegame_level = Savegame_GetLevelNumber(slot_num);
     while (1) {
-        command = GameFlow_StorySoFar(command.param, savegame_level);
+        command = GF_StorySoFar(command.param, savegame_level);
 
         if ((g_GameFlow.levels[command.param].level_type == GFL_NORMAL
              || g_GameFlow.levels[command.param].level_type == GFL_BONUS)

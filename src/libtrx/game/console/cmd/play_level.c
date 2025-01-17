@@ -21,17 +21,16 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 
     source = Vector_Create(sizeof(STRING_FUZZY_SOURCE));
-    for (int32_t level_num = 0; level_num < GameFlow_GetLevelCount();
-         level_num++) {
+    for (int32_t level_num = 0; level_num < GF_GetLevelCount(); level_num++) {
         STRING_FUZZY_SOURCE source_item = {
-            .key = GameFlow_GetLevelTitle(level_num),
+            .key = GF_GetLevelTitle(level_num),
             .value = (void *)(intptr_t)level_num,
             .weight = 1,
         };
         Vector_Add(source, &source_item);
     }
 
-    const int32_t gym_level_num = GameFlow_GetGymLevelNum();
+    const int32_t gym_level_num = GF_GetGymLevelNum();
     if (gym_level_num != -1) {
         STRING_FUZZY_SOURCE source_item = {
             .key = "gym",
@@ -55,12 +54,12 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 
 matched:
-    if (level_to_load >= 0 && level_to_load < GameFlow_GetLevelCount()) {
-        GameFlow_OverrideCommand((GAME_FLOW_COMMAND) {
+    if (level_to_load >= 0 && level_to_load < GF_GetLevelCount()) {
+        GF_OverrideCommand((GAME_FLOW_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = level_to_load,
         });
-        Console_Log(GS(OSD_PLAY_LEVEL), GameFlow_GetLevelTitle(level_to_load));
+        Console_Log(GS(OSD_PLAY_LEVEL), GF_GetLevelTitle(level_to_load));
         result = CR_SUCCESS;
     } else {
         Console_Log(GS(OSD_INVALID_LEVEL));

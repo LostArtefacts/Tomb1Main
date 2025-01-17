@@ -85,7 +85,7 @@ static const char *M_GetDialogTitle(UI_STATS_DIALOG *const self)
 {
     switch (self->args.mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
-        return GameFlow_GetLevelTitle(self->args.level_num);
+        return GF_GetLevelTitle(self->args.level_num);
 
     case UI_STATS_DIALOG_MODE_FINAL:
         return self->level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)

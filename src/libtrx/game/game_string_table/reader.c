@@ -84,11 +84,11 @@ static void M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
         return;
     }
 
-    if (jlvl_arr->length != (size_t)GameFlow_GetLevelCount()) {
+    if (jlvl_arr->length != (size_t)GF_GetLevelCount()) {
         Shell_ExitSystemFmt(
             "'levels' length must match with the game flow level count (got: "
             "%d, expected: %d)",
-            jlvl_arr->length, GameFlow_GetLevelCount());
+            jlvl_arr->length, GF_GetLevelCount());
     }
 
     gs_file->level_count = jlvl_arr->length;

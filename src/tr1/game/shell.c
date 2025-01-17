@@ -126,7 +126,7 @@ void Shell_Init(
     }
     Screen_Init();
 
-    if (!GameFlow_LoadFromFile(game_flow_path)) {
+    if (!GF_LoadFromFile(game_flow_path)) {
         Shell_ExitSystemFmt("Unable to load gameflow file: %s", game_flow_path);
         return;
     }
@@ -144,7 +144,7 @@ void Shell_Shutdown(void)
     Console_Shutdown();
     GameBuf_Shutdown();
     Savegame_Shutdown();
-    GameFlow_Shutdown();
+    GF_Shutdown();
 
     Output_Shutdown();
     Input_Shutdown();
@@ -208,7 +208,7 @@ void Shell_Main(void)
             if (g_GameFlow.levels[command.param].level_type == GFL_BONUS) {
                 level_type = GFL_BONUS;
             }
-            command = GameFlow_InterpretSequence(command.param, level_type);
+            command = GF_InterpretSequence(command.param, level_type);
             break;
         }
 
@@ -219,33 +219,33 @@ void Shell_Main(void)
                 command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 g_GameInfo.current_save_slot = command.param;
-                command = GameFlow_InterpretSequence(level_num, GFL_SAVED);
+                command = GF_InterpretSequence(level_num, GFL_SAVED);
             }
             break;
         }
 
         case GF_RESTART_GAME: {
-            command = GameFlow_InterpretSequence(command.param, GFL_RESTART);
+            command = GF_InterpretSequence(command.param, GFL_RESTART);
             break;
         }
 
         case GF_SELECT_GAME: {
-            command = GameFlow_InterpretSequence(command.param, GFL_SELECT);
+            command = GF_InterpretSequence(command.param, GFL_SELECT);
             break;
         }
 
         case GF_STORY_SO_FAR: {
-            command = GameFlow_PlayAvailableStory(command.param);
+            command = GF_PlayAvailableStory(command.param);
             break;
         }
 
         case GF_START_CINE:
-            command = GameFlow_InterpretSequence(command.param, GFL_CUTSCENE);
+            command = GF_InterpretSequence(command.param, GFL_CUTSCENE);
             break;
 
         case GF_START_DEMO: {
             const int32_t level_num = Demo_ChooseLevel(command.param);
-            command = GameFlow_InterpretSequence(level_num, GFL_DEMO);
+            command = GF_InterpretSequence(level_num, GFL_DEMO);
             break;
         }
 
@@ -256,8 +256,7 @@ void Shell_Main(void)
         case GF_EXIT_TO_TITLE:
             g_GameInfo.current_save_slot = -1;
             if (!intro_played) {
-                GameFlow_InterpretSequence(
-                    g_GameFlow.title_level_num, GFL_TITLE);
+                GF_InterpretSequence(g_GameFlow.title_level_num, GFL_TITLE);
                 intro_played = true;
             }
 
@@ -275,7 +274,7 @@ void Shell_Main(void)
             break;
 
         case GF_START_GYM:
-            command = GameFlow_InterpretSequence(command.param, GFL_GYM);
+            command = GF_InterpretSequence(command.param, GFL_GYM);
             break;
 
         default:

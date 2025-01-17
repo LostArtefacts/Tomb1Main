@@ -73,7 +73,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
         Output_UnloadBackground();
     }
 
-    if (Game_GetCurrentLevelNum() == GameFlow_GetGymLevelNum()) {
+    if (Game_GetCurrentLevelNum() == GF_GetGymLevelNum()) {
         M_FadeOut(p, false);
     } else {
         if (p->args.background_type == BK_OBJECT) {

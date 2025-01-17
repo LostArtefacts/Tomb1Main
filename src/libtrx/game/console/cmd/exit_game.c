@@ -11,7 +11,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         return CR_BAD_INVOCATION;
     }
 
-    GameFlow_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME });
+    GF_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME });
     return CR_SUCCESS;
 }
 

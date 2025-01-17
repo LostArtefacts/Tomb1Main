@@ -80,10 +80,10 @@ typedef struct {
 extern GAME_FLOW g_GameFlow;
 
 GAME_FLOW_COMMAND
-GameFlow_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
+GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 GAME_FLOW_COMMAND
-GameFlow_StorySoFar(int32_t level_num, int32_t savegame_level);
-GAME_FLOW_COMMAND GameFlow_PlayAvailableStory(int32_t slot_num);
+GF_StorySoFar(int32_t level_num, int32_t savegame_level);
+GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num);
 
 GAME_FLOW_COMMAND GF_LoadLevel(
     int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
@@ -96,7 +96,7 @@ GAME_FLOW_COMMAND GF_EnterPhotoMode(void);
 GAME_FLOW_COMMAND GF_ShowInventory(INVENTORY_MODE inv_mode);
 GAME_FLOW_COMMAND GF_ShowInventoryKeys(GAME_OBJECT_ID receptacle_type_id);
 
-bool GameFlow_LoadFromFile(const char *file_name);
-void GameFlow_Shutdown(void);
+bool GF_LoadFromFile(const char *file_name);
+void GF_Shutdown(void);
 
-void GameFlow_LoadStrings(int32_t level_num);
+void GF_LoadStrings(int32_t level_num);
