@@ -48,14 +48,6 @@ void Render_EnableZBuffer(bool z_write_enable, bool z_test_enable);
 void Render_SetWet(bool is_wet);
 
 // TODO: there's too much repetition for these
-const int16_t *Render_InsertObjectG3(
-    const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
-const int16_t *Render_InsertObjectG4(
-    const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
-const int16_t *Render_InsertObjectGT3(
-    const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
-const int16_t *Render_InsertObjectGT4(
-    const int16_t *obj_ptr, int32_t num, SORT_TYPE sort_type);
 void Render_InsertFlatFace3s(
     const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
 void Render_InsertFlatFace4s(

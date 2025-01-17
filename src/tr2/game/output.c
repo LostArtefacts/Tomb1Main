@@ -25,7 +25,9 @@ static int32_t m_RandomTable[32];
 
 static int32_t M_CalcFogShade(int32_t depth);
 
+static void M_CalcRoomVertices(const ROOM_MESH *mesh, int32_t far_clip);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
+static void M_DrawRoomSprites(const ROOM_MESH *mesh);
 
 static void M_InsertBar(
     int32_t l, int32_t t, int32_t w, int32_t h, int32_t percent,
@@ -80,6 +82,98 @@ static void M_InsertBar(
             y_offset + Scaler_Calc(rects[i].y2, SCALER_TARGET_BAR),
             g_PhdNearZ + z_offset * (5 - i),
             g_NamedColors[rects[i].color].palette_index);
+    }
+}
+
+static void M_CalcRoomVertices(const ROOM_MESH *const mesh, int32_t far_clip)
+{
+    const double base_z = g_Config.rendering.enable_zbuffer
+        ? 0.0
+        : (g_MidSort << (W2V_SHIFT + 8));
+
+    for (int32_t i = 0; i < mesh->num_vertices; i++) {
+        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
+        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
+
+        // clang-format off
+        const MATRIX *const mptr = g_MatrixPtr;
+        const double xv = (
+            mptr->_00 * vertex->pos.x +
+            mptr->_01 * vertex->pos.y +
+            mptr->_02 * vertex->pos.z +
+            mptr->_03
+        );
+        const double yv = (
+            mptr->_10 * vertex->pos.x +
+            mptr->_11 * vertex->pos.y +
+            mptr->_12 * vertex->pos.z +
+            mptr->_13
+        );
+        const int32_t zv_int = (
+            mptr->_20 * vertex->pos.x +
+            mptr->_21 * vertex->pos.y +
+            mptr->_22 * vertex->pos.z +
+            mptr->_23
+        );
+        const double zv = zv_int;
+        // clang-format on
+
+        vbuf->xv = xv;
+        vbuf->yv = yv;
+        vbuf->zv = zv;
+
+        int16_t shade = vertex->light_adder;
+        if (g_IsWaterEffect) {
+            shade += m_ShadesTable
+                [((uint8_t)g_WibbleOffset
+                  + (uint8_t)
+                      m_RandomTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
+                 % WIBBLE_SIZE];
+        }
+
+        uint16_t clip_flags = 0;
+        if (zv < g_FltNearZ) {
+            clip_flags = 0xFF80;
+        } else {
+            const double persp = g_FltPersp / zv;
+            const int32_t depth = zv_int >> W2V_SHIFT;
+            vbuf->zv += base_z;
+
+            if (depth < FOG_END) {
+                if (depth > FOG_START) {
+                    shade += depth - FOG_START;
+                }
+                vbuf->rhw = persp * g_FltRhwOPersp;
+            } else {
+                // clip_flags = far_clip;
+                shade = 0x1FFF;
+                vbuf->zv = g_FltFarZ;
+                vbuf->rhw = persp * g_FltRhwOPersp;
+            }
+
+            double xs = xv * persp + g_FltWinCenterX;
+            double ys = yv * persp + g_FltWinCenterY;
+
+            if (xs < g_FltWinLeft) {
+                clip_flags |= 1;
+            } else if (xs > g_FltWinRight) {
+                clip_flags |= 2;
+            }
+
+            if (ys < g_FltWinTop) {
+                clip_flags |= 4;
+            } else if (ys > g_FltWinBottom) {
+                clip_flags |= 8;
+            }
+
+            vbuf->xs = xs;
+            vbuf->ys = ys;
+            // clip_flags |= (~((uint8_t)(vbuf->zv / 0x155555.p0))) << 8;
+        }
+
+        CLAMP(shade, 0, 0x1FFF);
+        vbuf->g = shade;
+        vbuf->clip = clip_flags;
     }
 }
 
@@ -193,6 +287,33 @@ static bool M_CalcObjectVertices(
     return total_clip == 0;
 }
 
+static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
+{
+    for (int32_t i = 0; i < mesh->num_sprites; i++) {
+        const ROOM_SPRITE *const room_sprite = &mesh->sprites[i];
+        const PHD_VBUF *vbuf = &g_PhdVBuf[room_sprite->vertex];
+        if ((int8_t)vbuf->clip < 0) {
+            continue;
+        }
+
+        const PHD_SPRITE *const sprite = &g_PhdSprites[room_sprite->texture];
+        const double persp = (double)(vbuf->zv / g_PhdPersp);
+        const double x0 =
+            g_PhdWinCenterX + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / persp;
+        const double y0 =
+            g_PhdWinCenterY + (vbuf->yv + (sprite->y0 << W2V_SHIFT)) / persp;
+        const double x1 =
+            g_PhdWinCenterX + (vbuf->xv + (sprite->x1 << W2V_SHIFT)) / persp;
+        const double y1 =
+            g_PhdWinCenterY + (vbuf->yv + (sprite->y1 << W2V_SHIFT)) / persp;
+        if (x1 >= g_PhdWinLeft && y1 >= g_PhdWinTop && x0 < g_PhdWinRight
+            && y0 < g_PhdWinBottom) {
+            Render_InsertSprite(
+                vbuf->zv, x0, y0, x1, y1, room_sprite->texture, vbuf->g);
+        }
+    }
+}
+
 static void M_CalcVerticeLight(const OBJECT_MESH *const mesh)
 {
     // TODO: refactor
@@ -249,33 +370,6 @@ static void M_CalcSkyboxLight(const OBJECT_MESH *const mesh)
     }
 }
 
-void Output_InsertPolygons(const int16_t *obj_ptr, const int32_t clip)
-{
-    g_FltWinLeft = 0.0f;
-    g_FltWinTop = 0.0f;
-    g_FltWinRight = g_PhdWinMaxX + 1;
-    g_FltWinBottom = g_PhdWinMaxY + 1;
-    g_FltWinCenterX = g_PhdWinCenterX;
-    g_FltWinCenterY = g_PhdWinCenterY;
-
-    obj_ptr = Output_CalcObjectVertices(obj_ptr + 4);
-    if (obj_ptr) {
-        obj_ptr = Output_CalcVerticeLight(obj_ptr);
-        obj_ptr = Render_InsertObjectGT4(obj_ptr + 1, *obj_ptr, ST_AVG_Z);
-        obj_ptr = Render_InsertObjectGT3(obj_ptr + 1, *obj_ptr, ST_AVG_Z);
-        obj_ptr = Render_InsertObjectG4(obj_ptr + 1, *obj_ptr, ST_AVG_Z);
-        obj_ptr = Render_InsertObjectG3(obj_ptr + 1, *obj_ptr, ST_AVG_Z);
-    }
-}
-
-void Output_InsertPolygons_I(const int16_t *const ptr, const int32_t clip)
-{
-    Matrix_Push();
-    Matrix_Interpolate();
-    Output_InsertPolygons(ptr, clip);
-    Matrix_Pop();
-}
-
 void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
 {
     g_FltWinLeft = 0.0f;
@@ -306,7 +400,7 @@ void Output_DrawObjectMesh_I(const OBJECT_MESH *const mesh, const int32_t clip)
     Matrix_Pop();
 }
 
-void Output_InsertRoom(const ROOM_MESH *const mesh, const bool is_outside)
+void Output_DrawRoom(const ROOM_MESH *const mesh, const bool is_outside)
 {
     g_FltWinLeft = g_PhdWinLeft;
     g_FltWinTop = g_PhdWinTop;
@@ -315,7 +409,7 @@ void Output_InsertRoom(const ROOM_MESH *const mesh, const bool is_outside)
     g_FltWinCenterX = g_PhdWinCenterX;
     g_FltWinCenterY = g_PhdWinCenterY;
 
-    Output_CalcRoomVertices(mesh, is_outside ? 0 : 16);
+    M_CalcRoomVertices(mesh, is_outside ? 0 : 16);
 
     if (g_IsWibbleEffect) {
         Render_EnableZBuffer(false, true);
@@ -330,7 +424,7 @@ void Output_InsertRoom(const ROOM_MESH *const mesh, const bool is_outside)
     Render_InsertTexturedFace4s(mesh->face4s, mesh->num_face4s, ST_MAX_Z);
     Render_InsertTexturedFace3s(mesh->face3s, mesh->num_face3s, ST_MAX_Z);
 
-    Output_InsertRoomSprite(mesh);
+    M_DrawRoomSprites(mesh);
 }
 
 void Output_DrawSkybox(const OBJECT_MESH *const mesh)
@@ -357,229 +451,6 @@ void Output_DrawSkybox(const OBJECT_MESH *const mesh)
     Render_EnableZBuffer(true, true);
 }
 
-// TODO: Eliminate
-const int16_t *Output_CalcObjectVertices(const int16_t *obj_ptr)
-{
-    const double base_z = g_Config.rendering.enable_zbuffer
-        ? 0.0
-        : (g_MidSort << (W2V_SHIFT + 8));
-    uint8_t total_clip = 0xFF;
-
-    obj_ptr++; // skip poly counter
-    const int32_t vtx_count = *obj_ptr++;
-
-    for (int32_t i = 0; i < vtx_count; i++) {
-        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
-
-        // clang-format off
-        const MATRIX *const mptr = g_MatrixPtr;
-        const double xv = (
-            mptr->_00 * obj_ptr[0] +
-            mptr->_01 * obj_ptr[1] +
-            mptr->_02 * obj_ptr[2] +
-            mptr->_03
-        );
-        const double yv = (
-            mptr->_10 * obj_ptr[0] +
-            mptr->_11 * obj_ptr[1] +
-            mptr->_12 * obj_ptr[2] +
-            mptr->_13
-        );
-        double zv = (
-            mptr->_20 * obj_ptr[0] +
-            mptr->_21 * obj_ptr[1] +
-            mptr->_22 * obj_ptr[2] +
-            mptr->_23
-        );
-        // clang-format on
-
-        vbuf->xv = xv;
-        vbuf->yv = yv;
-
-        uint8_t clip_flags;
-        if (zv < g_FltNearZ) {
-            vbuf->zv = zv;
-            clip_flags = 0x80;
-        } else {
-            if (zv >= g_FltFarZ) {
-                vbuf->zv = g_FltFarZ;
-            } else {
-                vbuf->zv = zv + base_z;
-            }
-
-            const double persp = g_FltPersp / zv;
-            vbuf->xs = persp * xv + g_FltWinCenterX;
-            vbuf->ys = persp * yv + g_FltWinCenterY;
-            vbuf->rhw = persp * g_FltRhwOPersp;
-
-            clip_flags = 0x00;
-            if (vbuf->xs < g_FltWinLeft) {
-                clip_flags |= 1;
-            } else if (vbuf->xs > g_FltWinRight) {
-                clip_flags |= 2;
-            }
-
-            if (vbuf->ys < g_FltWinTop) {
-                clip_flags |= 4;
-            } else if (vbuf->ys > g_FltWinBottom) {
-                clip_flags |= 8;
-            }
-        }
-
-        vbuf->clip = clip_flags;
-        total_clip &= clip_flags;
-        obj_ptr += 3;
-    }
-
-    return total_clip == 0 ? obj_ptr : 0;
-}
-
-// TODO: eliminate
-const int16_t *Output_CalcVerticeLight(const int16_t *obj_ptr)
-{
-    int32_t vtx_count = *obj_ptr++;
-
-    if (vtx_count > 0) {
-        if (g_LsDivider) {
-            // clang-format off
-            const MATRIX *const mptr = g_MatrixPtr;
-            int32_t xv = (
-                g_LsVectorView.x * mptr->_00 +
-                g_LsVectorView.y * mptr->_10 +
-                g_LsVectorView.z * mptr->_20
-            ) / g_LsDivider;
-            int32_t yv = (
-                g_LsVectorView.x * mptr->_01 +
-                g_LsVectorView.y * mptr->_11 +
-                g_LsVectorView.z * mptr->_21
-            ) / g_LsDivider;
-            int32_t zv = (
-                g_LsVectorView.x * mptr->_02 +
-                g_LsVectorView.y * mptr->_12 +
-                g_LsVectorView.z * mptr->_22
-            ) / g_LsDivider;
-            // clang-format on
-
-            for (int32_t i = 0; i < vtx_count; i++) {
-                int16_t shade = g_LsAdder
-                    + ((xv * obj_ptr[0] + yv * obj_ptr[1] + zv * obj_ptr[2])
-                       >> 16);
-                CLAMP(shade, 0, 0x1FFF);
-
-                g_PhdVBuf[i].g = shade;
-                obj_ptr += 3;
-            }
-        } else {
-            int16_t shade = g_LsAdder;
-            CLAMP(shade, 0, 0x1FFF);
-            obj_ptr += 3 * vtx_count;
-            for (int32_t i = 0; i < vtx_count; i++) {
-                g_PhdVBuf[i].g = shade;
-            }
-        }
-    } else if (vtx_count < 0) {
-        for (int32_t i = 0; i < -vtx_count; i++) {
-            int16_t shade = g_LsAdder + *obj_ptr++;
-            CLAMP(shade, 0, 0x1FFF);
-            g_PhdVBuf[i].g = shade;
-        }
-    }
-
-    return obj_ptr;
-}
-
-void Output_CalcRoomVertices(const ROOM_MESH *const mesh, int32_t far_clip)
-{
-    const double base_z = g_Config.rendering.enable_zbuffer
-        ? 0.0
-        : (g_MidSort << (W2V_SHIFT + 8));
-
-    for (int32_t i = 0; i < mesh->num_vertices; i++) {
-        PHD_VBUF *const vbuf = &g_PhdVBuf[i];
-        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
-
-        // clang-format off
-        const MATRIX *const mptr = g_MatrixPtr;
-        const double xv = (
-            mptr->_00 * vertex->pos.x +
-            mptr->_01 * vertex->pos.y +
-            mptr->_02 * vertex->pos.z +
-            mptr->_03
-        );
-        const double yv = (
-            mptr->_10 * vertex->pos.x +
-            mptr->_11 * vertex->pos.y +
-            mptr->_12 * vertex->pos.z +
-            mptr->_13
-        );
-        const int32_t zv_int = (
-            mptr->_20 * vertex->pos.x +
-            mptr->_21 * vertex->pos.y +
-            mptr->_22 * vertex->pos.z +
-            mptr->_23
-        );
-        const double zv = zv_int;
-        // clang-format on
-
-        vbuf->xv = xv;
-        vbuf->yv = yv;
-        vbuf->zv = zv;
-
-        int16_t shade = vertex->light_adder;
-        if (g_IsWaterEffect) {
-            shade += m_ShadesTable
-                [((uint8_t)g_WibbleOffset
-                  + (uint8_t)
-                      m_RandomTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
-                 % WIBBLE_SIZE];
-        }
-
-        uint16_t clip_flags = 0;
-        if (zv < g_FltNearZ) {
-            clip_flags = 0xFF80;
-        } else {
-            const double persp = g_FltPersp / zv;
-            const int32_t depth = zv_int >> W2V_SHIFT;
-            vbuf->zv += base_z;
-
-            if (depth < FOG_END) {
-                if (depth > FOG_START) {
-                    shade += depth - FOG_START;
-                }
-                vbuf->rhw = persp * g_FltRhwOPersp;
-            } else {
-                // clip_flags = far_clip;
-                shade = 0x1FFF;
-                vbuf->zv = g_FltFarZ;
-                vbuf->rhw = persp * g_FltRhwOPersp;
-            }
-
-            double xs = xv * persp + g_FltWinCenterX;
-            double ys = yv * persp + g_FltWinCenterY;
-
-            if (xs < g_FltWinLeft) {
-                clip_flags |= 1;
-            } else if (xs > g_FltWinRight) {
-                clip_flags |= 2;
-            }
-
-            if (ys < g_FltWinTop) {
-                clip_flags |= 4;
-            } else if (ys > g_FltWinBottom) {
-                clip_flags |= 8;
-            }
-
-            vbuf->xs = xs;
-            vbuf->ys = ys;
-            // clip_flags |= (~((uint8_t)(vbuf->zv / 0x155555.p0))) << 8;
-        }
-
-        CLAMP(shade, 0, 0x1FFF);
-        vbuf->g = shade;
-        vbuf->clip = clip_flags;
-    }
-}
-
 void Output_RotateLight(int16_t pitch, int16_t yaw)
 {
     int32_t xcos = Math_Cos(pitch);
@@ -595,33 +466,6 @@ void Output_RotateLight(int16_t pitch, int16_t yaw)
     g_LsVectorView.x = (m->_00 * x + m->_01 * y + m->_02 * z) >> W2V_SHIFT;
     g_LsVectorView.y = (m->_10 * x + m->_11 * y + m->_12 * z) >> W2V_SHIFT;
     g_LsVectorView.z = (m->_20 * x + m->_21 * y + m->_22 * z) >> W2V_SHIFT;
-}
-
-void Output_InsertRoomSprite(const ROOM_MESH *const mesh)
-{
-    for (int32_t i = 0; i < mesh->num_sprites; i++) {
-        const ROOM_SPRITE *room_sprite = &mesh->sprites[i];
-        const PHD_VBUF *vbuf = &g_PhdVBuf[room_sprite->vertex];
-        if ((int8_t)vbuf->clip < 0) {
-            continue;
-        }
-
-        const PHD_SPRITE *const sprite = &g_PhdSprites[room_sprite->texture];
-        const double persp = (double)(vbuf->zv / g_PhdPersp);
-        const double x0 =
-            g_PhdWinCenterX + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / persp;
-        const double y0 =
-            g_PhdWinCenterY + (vbuf->yv + (sprite->y0 << W2V_SHIFT)) / persp;
-        const double x1 =
-            g_PhdWinCenterX + (vbuf->xv + (sprite->x1 << W2V_SHIFT)) / persp;
-        const double y1 =
-            g_PhdWinCenterY + (vbuf->yv + (sprite->y1 << W2V_SHIFT)) / persp;
-        if (x1 >= g_PhdWinLeft && y1 >= g_PhdWinTop && x0 < g_PhdWinRight
-            && y0 < g_PhdWinBottom) {
-            Render_InsertSprite(
-                vbuf->zv, x0, y0, x1, y1, room_sprite->texture, vbuf->g);
-        }
-    }
 }
 
 void Output_DrawSprite(

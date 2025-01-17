@@ -277,46 +277,6 @@ void Render_DrawBlackRectangle(const int32_t opacity)
     GFX_FadeRenderer_Render(m_FadeRenderer);
 }
 
-const int16_t *Render_InsertObjectG3(
-    const int16_t *const obj_ptr, const int32_t num, const SORT_TYPE sort_type)
-{
-    RENDERER *const r = M_GetRenderer();
-    if (r->InsertObjectG3 != NULL) {
-        return r->InsertObjectG3(r, obj_ptr, num, sort_type);
-    }
-    return obj_ptr + num * 4;
-}
-
-const int16_t *Render_InsertObjectG4(
-    const int16_t *const obj_ptr, const int32_t num, const SORT_TYPE sort_type)
-{
-    RENDERER *const r = M_GetRenderer();
-    if (r->InsertObjectG4 != NULL) {
-        return r->InsertObjectG4(r, obj_ptr, num, sort_type);
-    }
-    return obj_ptr + num * 5;
-}
-
-const int16_t *Render_InsertObjectGT3(
-    const int16_t *const obj_ptr, const int32_t num, const SORT_TYPE sort_type)
-{
-    RENDERER *const r = M_GetRenderer();
-    if (r->InsertObjectGT3 != NULL) {
-        return r->InsertObjectGT3(r, obj_ptr, num, sort_type);
-    }
-    return obj_ptr + num * 4;
-}
-
-const int16_t *Render_InsertObjectGT4(
-    const int16_t *const obj_ptr, const int32_t num, const SORT_TYPE sort_type)
-{
-    RENDERER *const r = M_GetRenderer();
-    if (r->InsertObjectGT4 != NULL) {
-        return r->InsertObjectGT4(r, obj_ptr, num, sort_type);
-    }
-    return obj_ptr + num * 5;
-}
-
 void Render_InsertFlatFace3s(
     const FACE3 *const faces, const int32_t num, const SORT_TYPE sort_type)
 {
