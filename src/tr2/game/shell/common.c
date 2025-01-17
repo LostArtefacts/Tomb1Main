@@ -394,17 +394,17 @@ void Shell_Main(void)
     }
 
     GAME_FLOW_COMMAND gf_cmd =
-        GF_TranslateScriptCommand(g_GameFlow.first_option);
+        GF_TranslateScriptCommand(g_GameFlowLegacy.first_option);
     bool is_loop_continued = true;
     while (is_loop_continued) {
         switch (gf_cmd.action) {
         case GF_START_GAME:
         case GF_SELECT_GAME:
-            if (g_GameFlow.single_level >= 0) {
-                gf_cmd =
-                    GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
+            if (g_GameFlowLegacy.single_level >= 0) {
+                gf_cmd = GF_DoLevelSequence(
+                    g_GameFlowLegacy.single_level, GFL_NORMAL);
             } else {
-                if (gf_cmd.param > g_GameFlow.num_levels) {
+                if (gf_cmd.param > g_GameFlowLegacy.num_levels) {
                     Shell_ExitSystemFmt(
                         "GameMain: STARTGAME with invalid level number (%d)",
                         gf_cmd.param);
@@ -416,7 +416,7 @@ void Shell_Main(void)
 
         case GF_START_SAVED_GAME:
             S_LoadGame(gf_cmd.param);
-            if (g_SaveGame.current_level > g_GameFlow.num_levels) {
+            if (g_SaveGame.current_level > g_GameFlowLegacy.num_levels) {
                 Shell_ExitSystemFmt(
                     "GameMain: STARTSAVEDGAME with invalid level number (%d)",
                     g_SaveGame.current_level);
@@ -442,8 +442,9 @@ void Shell_Main(void)
             break;
 
         case GF_EXIT_TO_TITLE:
-            if (g_GameFlow.title_disabled) {
-                gf_cmd = GF_TranslateScriptCommand(g_GameFlow.title_replace);
+            if (g_GameFlowLegacy.title_disabled) {
+                gf_cmd =
+                    GF_TranslateScriptCommand(g_GameFlowLegacy.title_replace);
                 if (gf_cmd.action == GF_NOOP
                     || gf_cmd.action == GF_EXIT_TO_TITLE) {
                     Shell_ExitSystem(

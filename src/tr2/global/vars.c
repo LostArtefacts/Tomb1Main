@@ -93,7 +93,7 @@ LARA_INFO g_Lara;
 ITEM *g_LaraItem = NULL;
 int16_t g_NextItemActive;
 int16_t g_PrevItemActive;
-GAME_FLOW g_GameFlow;
+GAME_FLOW_LEGACY g_GameFlowLegacy;
 int32_t g_SoundEffectCount;
 OBJECT g_Objects[265] = {};
 int16_t **g_Meshes = NULL;

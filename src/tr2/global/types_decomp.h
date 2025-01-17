@@ -363,7 +363,7 @@ typedef struct {
     uint8_t secret_track;
     uint8_t level_complete_track;
     uint16_t reserved4[2];
-} GAME_FLOW;
+} GAME_FLOW_LEGACY;
 
 typedef enum {
     CF_NORMAL        = 0,

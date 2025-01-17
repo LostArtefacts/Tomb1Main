@@ -26,14 +26,14 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
     const int32_t page = frame % 5 == 0 ? frame / 5 : -1;
 
     if (g_Inv_Mode == INV_LOAD_MODE || g_Inv_Mode == INV_SAVE_MODE
-        || g_GameFlow.load_save_disabled) {
+        || g_GameFlowLegacy.load_save_disabled) {
         g_InputDB.menu_left = 0;
         g_InputDB.menu_right = 0;
     }
 
     switch (page) {
     case 0:
-        if (g_GameFlow.load_save_disabled) {
+        if (g_GameFlowLegacy.load_save_disabled) {
             g_InputDB = (INPUT_STATE) { .menu_right = 1 };
             break;
         }
@@ -81,7 +81,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         break;
 
     case 1:
-        if (g_GameFlow.load_save_disabled) {
+        if (g_GameFlowLegacy.load_save_disabled) {
             g_InputDB = (INPUT_STATE) { .menu_right = 1 };
             break;
         }
@@ -146,7 +146,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 m_PassportMode = PASSPORT_MODE_LOAD_GAME;
                 g_Input = (INPUT_STATE) {};
                 g_InputDB = (INPUT_STATE) {};
-            } else if (g_GameFlow.play_any_level) {
+            } else if (g_GameFlowLegacy.play_any_level) {
                 Text_Remove(m_LevelText);
                 m_LevelText = NULL;
 
@@ -169,7 +169,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
         if (g_PasswordText1 == NULL) {
             if (g_Inv_Mode == INV_TITLE_MODE) {
                 g_PasswordText1 = Text_Create(0, -16, GS(PASSPORT_EXIT_GAME));
-            } else if (g_GameFlow.demo_version) {
+            } else if (g_GameFlowLegacy.demo_version) {
                 g_PasswordText1 = Text_Create(0, -16, GS(PASSPORT_EXIT_DEMO));
             } else {
                 g_PasswordText1 =

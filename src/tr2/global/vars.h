@@ -91,7 +91,7 @@ extern LARA_INFO g_Lara;
 extern ITEM *g_LaraItem;
 extern int16_t g_NextItemActive;
 extern int16_t g_PrevItemActive;
-extern GAME_FLOW g_GameFlow;
+extern GAME_FLOW_LEGACY g_GameFlowLegacy;
 extern int32_t g_SoundEffectCount;
 extern OBJECT g_Objects[265];
 extern int16_t **g_Meshes;

@@ -42,12 +42,12 @@ static void M_RestoreStartInfo(M_PRIV *p);
 
 static int32_t M_GetNextLevel(M_PRIV *const p)
 {
-    if (g_GameFlow.num_demos <= 0) {
+    if (g_GameFlowLegacy.num_demos <= 0) {
         return -1;
     }
     const int32_t level_num = g_GF_ValidDemos[p->demo_num];
     p->demo_num++;
-    p->demo_num %= g_GameFlow.num_demos;
+    p->demo_num %= g_GameFlowLegacy.num_demos;
     return level_num;
 }
 
@@ -237,9 +237,9 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
     M_PRIV *const p = &m_Priv;
     if (demo_num < 0) {
         return M_GetNextLevel(p);
-    } else if (g_GameFlow.num_demos <= 0) {
+    } else if (g_GameFlowLegacy.num_demos <= 0) {
         return -1;
-    } else if (demo_num < 0 || demo_num >= g_GameFlow.num_demos) {
+    } else if (demo_num < 0 || demo_num >= g_GameFlowLegacy.num_demos) {
         return -1;
     } else {
         return g_GF_ValidDemos[demo_num];

@@ -63,12 +63,12 @@ void Game_Resume(void)
 
 GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 {
-    if (!g_GameFlow.cheat_mode_check_disabled) {
+    if (!g_GameFlowLegacy.cheat_mode_check_disabled) {
         Lara_Cheat_CheckKeys();
     }
 
     if (g_LevelComplete) {
-        if (g_GameFlow.demo_version && g_GameFlow.single_level) {
+        if (g_GameFlowLegacy.demo_version && g_GameFlowLegacy.single_level) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_CurrentLevel == LV_GYM) {
@@ -105,13 +105,14 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         || (g_Lara.death_timer > DEATH_WAIT_INPUT && g_Input.any)
         || g_OverlayStatus == 2) {
         if (demo_mode) {
-            return GF_TranslateScriptCommand(g_GameFlow.on_death_demo_mode);
+            return GF_TranslateScriptCommand(
+                g_GameFlowLegacy.on_death_demo_mode);
         }
         if (g_CurrentLevel == LV_GYM) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (g_GameFlow.on_death_in_game) {
-            return GF_TranslateScriptCommand(g_GameFlow.on_death_in_game);
+        if (g_GameFlowLegacy.on_death_in_game) {
+            return GF_TranslateScriptCommand(g_GameFlowLegacy.on_death_in_game);
         }
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;
@@ -128,7 +129,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
          || g_OverlayStatus <= 0)
         && g_Lara.death_timer == 0 && !g_Lara.extra_anim) {
         if (g_OverlayStatus > 0) {
-            if (g_GameFlow.load_save_disabled) {
+            if (g_GameFlowLegacy.load_save_disabled) {
                 g_OverlayStatus = 0;
             } else if (g_Input.load) {
                 g_OverlayStatus = -1;
@@ -245,7 +246,7 @@ void Game_ProcessInput(void)
         Lara_UseItem(O_LARGE_MEDIPACK_OPTION);
     }
 
-    if (g_GameFlow.load_save_disabled) {
+    if (g_GameFlowLegacy.load_save_disabled) {
         g_Input.save = 0;
         g_Input.load = 0;
     }

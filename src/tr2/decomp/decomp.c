@@ -69,8 +69,8 @@ GAME_FLOW_COMMAND TitleSequence(void)
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 
-    if (g_GameFlow.title_track) {
-        Music_Play(g_GameFlow.title_track, MPM_LOOPED);
+    if (g_GameFlowLegacy.title_track) {
+        Music_Play(g_GameFlowLegacy.title_track, MPM_LOOPED);
     }
 
     return GF_ShowInventory(INV_TITLE_MODE);
@@ -362,7 +362,7 @@ void S_UnloadLevelFile(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    for (int32_t i = 1; i < g_GameFlow.num_levels; i++) {
+    for (int32_t i = 1; i < g_GameFlowLegacy.num_levels; i++) {
         Requester_AddItem(req, g_GF_LevelNames[i], 0, NULL, 0);
     }
 }

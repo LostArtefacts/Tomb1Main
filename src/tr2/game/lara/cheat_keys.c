@@ -65,7 +65,8 @@ void Lara_Cheat_CheckKeys(void)
         return;
     }
 
-    if (g_CurrentLevel == g_GameFlow.num_levels - g_GameFlow.num_demos - 1) {
+    if (g_CurrentLevel
+        == g_GameFlowLegacy.num_levels - g_GameFlowLegacy.num_demos - 1) {
         return;
     }
 

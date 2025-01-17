@@ -14,7 +14,7 @@ int32_t GF_GetLevelCount(void)
 
 int32_t GF_GetDemoCount(void)
 {
-    return g_GameFlow.num_demos;
+    return g_GameFlowLegacy.num_demos;
 }
 
 const char *GF_GetLevelFileName(int32_t level_num)
@@ -35,7 +35,7 @@ void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 
 int32_t GF_GetGymLevelNum(void)
 {
-    return g_GameFlow.gym_enabled ? LV_GYM : -1;
+    return g_GameFlowLegacy.gym_enabled ? LV_GYM : -1;
 }
 
 void GF_OverrideCommand(const GAME_FLOW_COMMAND command)

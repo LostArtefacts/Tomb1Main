@@ -202,7 +202,7 @@ static GAME_FLOW_COMMAND M_Finish(
             // second passport page:
             if (ring->mode == INV_TITLE_MODE) {
                 // title mode - new game or select level.
-                if (g_GameFlow.play_any_level) {
+                if (g_GameFlowLegacy.play_any_level) {
                     return (GAME_FLOW_COMMAND) {
                         .action = GF_START_GAME,
                         .param = g_Inv_ExtraData[1] + 1,
@@ -249,7 +249,7 @@ static GAME_FLOW_COMMAND M_Finish(
         break;
 
     case O_PHOTO_OPTION:
-        if (g_GameFlow.gym_enabled) {
+        if (g_GameFlowLegacy.gym_enabled) {
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
                 .param = LV_GYM,
@@ -332,9 +332,10 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
         m_NoInputCounter = 0;
-    } else if (g_GameFlow.num_demos > 0 && ring->motion.status == RNG_OPEN) {
+    } else if (
+        g_GameFlowLegacy.num_demos > 0 && ring->motion.status == RNG_OPEN) {
         m_NoInputCounter++;
-        if (m_NoInputCounter > g_GameFlow.no_input_time) {
+        if (m_NoInputCounter > g_GameFlowLegacy.no_input_time) {
             ring->is_demo_needed = true;
         }
     }
@@ -504,7 +505,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
                 g_InputDB = (INPUT_STATE) {};
             } else if (ring->type == RT_MAIN) {
                 if (g_InvRing_Source[RT_OPTION].count > 0
-                    && !g_GameFlow.lockout_option_ring) {
+                    && !g_GameFlowLegacy.lockout_option_ring) {
                     InvRing_MotionSetup(ring, RNG_CLOSING, RNG_MAIN2OPTION, 24);
                     InvRing_MotionRadius(ring, 0);
                     InvRing_MotionRotation(
@@ -763,7 +764,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     if (mode == INV_TITLE_MODE) {
         g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
-        if (g_GameFlow.gym_enabled) {
+        if (g_GameFlowLegacy.gym_enabled) {
             g_InvRing_Source[RT_OPTION].count++;
         }
         InvRing_ShowVersionText();
@@ -786,7 +787,8 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     g_InvRing_Source[RT_OPTION].current = 0;
     if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
-        && !g_GameFlow.load_save_disabled && g_GameFlow.gym_enabled) {
+        && !g_GameFlowLegacy.load_save_disabled
+        && g_GameFlowLegacy.gym_enabled) {
         for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
             if (g_InvRing_Source[RT_OPTION].items[i]->object_id
                 == O_PHOTO_OPTION) {
@@ -903,5 +905,5 @@ GAME_FLOW_COMMAND InvRing_Control(
 
 bool InvRing_IsOptionLockedOut(void)
 {
-    return g_GameFlow.lockout_option_ring;
+    return g_GameFlowLegacy.lockout_option_ring;
 }

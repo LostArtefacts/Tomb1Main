@@ -35,7 +35,8 @@ FINAL_STATS Stats_ComputeFinalStats(void)
 {
     FINAL_STATS result = {};
 
-    const int32_t total_levels = g_GameFlow.num_levels - g_GameFlow.num_demos;
+    const int32_t total_levels =
+        g_GameFlowLegacy.num_levels - g_GameFlowLegacy.num_demos;
     for (int32_t i = LV_FIRST; i < total_levels; i++) {
         result.timer += g_SaveGame.start[i].stats.timer;
         result.ammo_used += g_SaveGame.start[i].stats.ammo_used;
