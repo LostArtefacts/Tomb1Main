@@ -328,26 +328,26 @@ void M_AssaultFinished(ITEM *const item)
         if ((int32_t)g_AssaultBestTime < 0) {
             if (g_SaveGame.current_stats.timer < 100 * FRAMES_PER_SECOND) {
                 // "Gosh! That was my best time yet!"
-                Music_Legacy_Play(MX_GYM_HINT_15, false);
+                Music_Play(MX_GYM_HINT_15, MPM_ALWAYS);
                 g_AssaultBestTime = g_SaveGame.current_stats.timer;
             } else {
                 // "Congratulations! You did it! But perhaps I could've been
                 // faster."
-                Music_Legacy_Play(MX_GYM_HINT_17, false);
+                Music_Play(MX_GYM_HINT_17, MPM_ALWAYS);
                 g_AssaultBestTime = 100 * FRAMES_PER_SECOND;
             }
         } else if (g_SaveGame.current_stats.timer < g_AssaultBestTime) {
             // "Gosh! That was my best time yet!"
-            Music_Legacy_Play(MX_GYM_HINT_15, false);
+            Music_Play(MX_GYM_HINT_15, MPM_ALWAYS);
             g_AssaultBestTime = g_SaveGame.current_stats.timer;
         } else if (
             g_SaveGame.current_stats.timer
             < g_AssaultBestTime + 5 * FRAMES_PER_SECOND) {
             // "Almost. Perhaps another try and I might beat it."
-            Music_Legacy_Play(MX_GYM_HINT_16, false);
+            Music_Play(MX_GYM_HINT_16, MPM_ALWAYS);
         } else {
             // "Great. But nowhere near my best time."
-            Music_Legacy_Play(MX_GYM_HINT_14, false);
+            Music_Play(MX_GYM_HINT_14, MPM_ALWAYS);
         }
 
         g_IsAssaultTimerActive = false;

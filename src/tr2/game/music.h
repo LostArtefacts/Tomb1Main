@@ -96,6 +96,3 @@ MUSIC_TRACK_ID Music_GetDelayedTrack(void);
 void Music_Pause(void);
 void Music_Unpause(void);
 int32_t Music_GetRealTrack(int32_t track_id);
-
-// TODO: eliminate
-void Music_Legacy_Play(int16_t track_id, bool is_looped);

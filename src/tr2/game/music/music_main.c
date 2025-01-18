@@ -109,11 +109,6 @@ void Music_Shutdown(void)
     Audio_Stream_Close(m_AudioStreamID);
 }
 
-void Music_Legacy_Play(int16_t track_id, bool is_looped)
-{
-    Music_Play(track_id, is_looped ? MPM_LOOPED : MPM_ALWAYS);
-}
-
 void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 {
     if (track_id == m_TrackCurrent && mode != MPM_ALWAYS) {
