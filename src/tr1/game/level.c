@@ -412,6 +412,7 @@ static void M_LoadStaticObjects(VFILE *file)
         object->c.max.z = VFile_ReadS16(file);
         object->flags = VFile_ReadU16(file);
         object->loaded = true;
+        object->mesh_count = 1;
     }
 
     Benchmark_End(benchmark, NULL);
