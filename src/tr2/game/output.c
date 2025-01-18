@@ -649,7 +649,7 @@ void Output_LoadBackgroundFromObject(void)
         return;
     }
 
-    const int32_t texture_idx = mesh->tex_face4s[0].texture;
+    const int32_t texture_idx = mesh->tex_face4s[0].texture_idx;
     const PHD_TEXTURE *const texture = &g_TextureInfo[texture_idx];
     Render_LoadBackgroundFromTexture(texture, 8, 6);
     return;

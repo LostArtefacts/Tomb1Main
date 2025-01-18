@@ -31,13 +31,19 @@ typedef struct {
 } OBJECT_VECTOR;
 
 typedef struct {
-    uint16_t texture;
+    union {
+        uint16_t texture_idx;
+        uint16_t palette_idx;
+    };
     uint16_t vertices[4];
     bool enable_reflections;
 } FACE4;
 
 typedef struct {
-    uint16_t texture;
+    union {
+        uint16_t texture_idx;
+        uint16_t palette_idx;
+    };
     uint16_t vertices[3];
     bool enable_reflections;
 } FACE3;

@@ -105,7 +105,7 @@ static void M_DrawFlatFace3s(const FACE3 *const faces, const int32_t count)
             &m_VBuf[face->vertices[2]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor(face->texture);
+        const RGB_888 color = Output_GetPaletteColor(face->palette_idx);
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
     }
 }
@@ -123,7 +123,7 @@ static void M_DrawFlatFace4s(const FACE4 *const faces, const int32_t count)
             &m_VBuf[face->vertices[3]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor(face->texture);
+        const RGB_888 color = Output_GetPaletteColor(face->palette_idx);
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
         S_Output_DrawFlatTriangle(vns[2], vns[3], vns[0], color);
     }
@@ -141,7 +141,7 @@ static void M_DrawTexturedFace3s(const FACE3 *const faces, const int32_t count)
             &m_VBuf[face->vertices[2]],
         };
 
-        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture];
+        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture_idx];
         S_Output_DrawTexturedTriangle(
             vns[0], vns[1], vns[2], tex->tpage, &tex->uv[0], &tex->uv[1],
             &tex->uv[2], tex->drawtype);
@@ -161,7 +161,7 @@ static void M_DrawTexturedFace4s(const FACE4 *const faces, const int32_t count)
             &m_VBuf[face->vertices[3]],
         };
 
-        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture];
+        PHD_TEXTURE *const tex = &g_PhdTextureInfo[face->texture_idx];
         S_Output_DrawTexturedQuad(
             vns[0], vns[1], vns[2], vns[3], tex->tpage, &tex->uv[0],
             &tex->uv[1], &tex->uv[2], &tex->uv[3], tex->drawtype);

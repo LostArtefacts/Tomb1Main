@@ -685,21 +685,21 @@ static void M_AlignTextureReferences(
     for (int32_t i = 0; i < object->mesh_count; i++) {
         OBJECT_MESH *const mesh = Object_GetMesh(object->mesh_idx + i);
         for (int32_t j = 0; j < mesh->num_tex_face4s; j++) {
-            mesh->tex_face4s[j].texture += tex_info_base;
+            mesh->tex_face4s[j].texture_idx += tex_info_base;
         }
 
         for (int32_t j = 0; j < mesh->num_tex_face3s; j++) {
-            mesh->tex_face3s[j].texture += tex_info_base;
+            mesh->tex_face3s[j].texture_idx += tex_info_base;
         }
 
         for (int32_t j = 0; j < mesh->num_flat_face4s; j++) {
             FACE4 *const face = &mesh->flat_face4s[j];
-            face->texture = palette_map[face->texture];
+            face->palette_idx = palette_map[face->palette_idx];
         }
 
         for (int32_t j = 0; j < mesh->num_flat_face3s; j++) {
             FACE3 *const face = &mesh->flat_face3s[j];
-            face->texture = palette_map[face->texture];
+            face->palette_idx = palette_map[face->palette_idx];
         }
     }
 }
@@ -863,7 +863,7 @@ static void M_ApplyFace4Edit(
 {
     for (int32_t i = 0; i < edit->target_count; i++) {
         FACE4 *const face = &faces[edit->targets[i]];
-        face->texture = texture;
+        face->texture_idx = texture;
     }
 }
 
@@ -872,7 +872,7 @@ static void M_ApplyFace3Edit(
 {
     for (int32_t i = 0; i < edit->target_count; i++) {
         FACE3 *const face = &faces[edit->targets[i]];
-        face->texture = texture;
+        face->texture_idx = texture;
     }
 }
 
@@ -888,22 +888,22 @@ static uint16_t *M_GetMeshTexture(const FACE_EDIT *const face_edit)
 
     if (face_edit->face_type == FT_TEXTURED_QUAD) {
         FACE4 *const face = &mesh->tex_face4s[face_edit->face_index];
-        return &face->texture;
+        return &face->texture_idx;
     }
 
     if (face_edit->face_type == FT_TEXTURED_TRIANGLE) {
         FACE3 *const face = &mesh->tex_face3s[face_edit->face_index];
-        return &face->texture;
+        return &face->texture_idx;
     }
 
     if (face_edit->face_type == FT_COLOURED_QUAD) {
         FACE4 *const face = &mesh->flat_face4s[face_edit->face_index];
-        return &face->texture;
+        return &face->palette_idx;
     }
 
     if (face_edit->face_type == FT_COLOURED_TRIANGLE) {
         FACE3 *const face = &mesh->flat_face3s[face_edit->face_index];
-        return &face->texture;
+        return &face->palette_idx;
     }
 
     return NULL;
@@ -1345,13 +1345,13 @@ static void M_AddRoomFace(const INJECTION *const injection)
     uint16_t *face_vertices;
     if (face_type == FT_TEXTURED_QUAD) {
         FACE4 *const face = &room->mesh.face4s[room->mesh.num_face4s];
-        face->texture = *source_texture;
+        face->texture_idx = *source_texture;
         face_vertices = face->vertices;
         room->mesh.num_face4s++;
 
     } else {
         FACE3 *const face = &room->mesh.face3s[room->mesh.num_face3s];
-        face->texture = *source_texture;
+        face->texture_idx = *source_texture;
         face_vertices = face->vertices;
         room->mesh.num_face3s++;
     }
@@ -1409,10 +1409,10 @@ static uint16_t *M_GetRoomTexture(
     const ROOM *const room = Room_Get(room_num);
     if (face_type == FT_TEXTURED_QUAD && face_index < room->mesh.num_face4s) {
         FACE4 *const face = &room->mesh.face4s[face_index];
-        return &face->texture;
+        return &face->texture_idx;
     } else if (face_index < room->mesh.num_face3s) {
         FACE3 *const face = &room->mesh.face3s[face_index];
-        return &face->texture;
+        return &face->texture_idx;
     }
 
     LOG_WARNING(

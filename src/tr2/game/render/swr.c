@@ -1511,7 +1511,6 @@ static void M_InsertFlatFace3s(
             &g_PhdVBuf[face->vertices[1]],
             &g_PhdVBuf[face->vertices[2]],
         };
-        const int16_t color_idx = face->texture;
 
         int8_t clip_or = vtx[0]->clip | vtx[1]->clip | vtx[2]->clip;
         int8_t clip_and = vtx[0]->clip & vtx[1]->clip & vtx[2]->clip;
@@ -1592,7 +1591,7 @@ static void M_InsertFlatFace3s(
         g_Sort3DPtr++;
 
         *g_Info3DPtr++ = POLY_GOURAUD;
-        *g_Info3DPtr++ = color_idx;
+        *g_Info3DPtr++ = face->palette_idx;
         *g_Info3DPtr++ = num_points;
 
         for (int32_t j = 0; j < num_points; j++) {
@@ -1617,7 +1616,6 @@ static void M_InsertFlatFace4s(
             &g_PhdVBuf[face->vertices[2]],
             &g_PhdVBuf[face->vertices[3]],
         };
-        const int16_t color_idx = face->texture;
 
         const int8_t clip_or =
             vtx[0]->clip | vtx[1]->clip | vtx[2]->clip | vtx[3]->clip;
@@ -1714,7 +1712,7 @@ static void M_InsertFlatFace4s(
         g_Sort3DPtr++;
 
         *g_Info3DPtr++ = POLY_GOURAUD;
-        *g_Info3DPtr++ = color_idx;
+        *g_Info3DPtr++ = face->palette_idx;
         *g_Info3DPtr++ = num_points;
 
         for (int32_t j = 0; j < num_points; j++) {
@@ -1739,7 +1737,7 @@ static void M_InsertTexturedFace3s(
             &g_PhdVBuf[face->vertices[2]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
         const PHD_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
@@ -1958,7 +1956,7 @@ static void M_InsertTexturedFace4s(
             &g_PhdVBuf[face->vertices[3]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
         const PHD_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {

@@ -539,7 +539,6 @@ static void M_InsertFlatFace3s_Sorted(
             &g_PhdVBuf[face->vertices[1]],
             &g_PhdVBuf[face->vertices[2]],
         };
-        const int16_t color_idx = face->texture;
 
         const int8_t clip_or = vtx[0]->clip | vtx[1]->clip | vtx[2]->clip;
         const int8_t clip_and = vtx[0]->clip & vtx[1]->clip & vtx[2]->clip;
@@ -590,7 +589,7 @@ static void M_InsertFlatFace3s_Sorted(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
         M_InsertPolyFlat(
@@ -615,7 +614,6 @@ static void M_InsertFlatFace4s_Sorted(
             &g_PhdVBuf[face->vertices[2]],
             &g_PhdVBuf[face->vertices[3]],
         };
-        const int16_t color_idx = face->texture;
 
         const int8_t clip_or =
             vtx[0]->clip | vtx[1]->clip | vtx[2]->clip | vtx[3]->clip;
@@ -668,7 +666,7 @@ static void M_InsertFlatFace4s_Sorted(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
         M_InsertPolyFlat(
@@ -692,7 +690,7 @@ static void M_InsertTexturedFace3s_Sorted(
             &g_PhdVBuf[face->vertices[2]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
         const PHD_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
@@ -722,7 +720,7 @@ static void M_InsertTexturedFace4s_Sorted(
             &g_PhdVBuf[face->vertices[3]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
         }
@@ -1123,7 +1121,6 @@ static void M_InsertFlatFace3s_ZBuffered(
             &g_PhdVBuf[face->vertices[1]],
             &g_PhdVBuf[face->vertices[2]],
         };
-        const int16_t color_idx = face->texture;
 
         const int8_t clip_or = vtx[0]->clip | vtx[1]->clip | vtx[2]->clip;
         const int8_t clip_and = vtx[0]->clip & vtx[1]->clip & vtx[2]->clip;
@@ -1173,7 +1170,7 @@ static void M_InsertFlatFace3s_ZBuffered(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
         M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
     }
 }
@@ -1198,7 +1195,6 @@ static void M_InsertFlatFace4s_ZBuffered(
             &g_PhdVBuf[face->vertices[2]],
             &g_PhdVBuf[face->vertices[3]],
         };
-        const int16_t color_idx = face->texture;
 
         const int8_t clip_or =
             vtx[0]->clip | vtx[1]->clip | vtx[2]->clip | vtx[3]->clip;
@@ -1250,7 +1246,7 @@ static void M_InsertFlatFace4s_ZBuffered(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[color_idx >> 8];
+        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
         M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
     }
 }
@@ -1266,7 +1262,7 @@ static void M_InsertTexturedFace3s_ZBuffered(
             &g_PhdVBuf[face->vertices[1]],
             &g_PhdVBuf[face->vertices[2]],
         };
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
@@ -1298,7 +1294,7 @@ static void M_InsertTexturedFace4s_ZBuffered(
             &g_PhdVBuf[face->vertices[3]],
 
         };
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture];
+        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
