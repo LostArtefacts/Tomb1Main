@@ -181,6 +181,16 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
     ASSERT(total_read == mesh_length);
 }
 
+void Level_ReadFloorData(VFILE *const file)
+{
+    const int32_t floor_data_size = VFile_ReadS32(file);
+    int16_t *floor_data = Memory_Alloc(sizeof(int16_t) * floor_data_size);
+    VFile_Read(file, floor_data, sizeof(int16_t) * floor_data_size);
+
+    Room_ParseFloorData(floor_data);
+    Memory_FreePointer(&floor_data);
+}
+
 void Level_ReadObjectMeshes(
     const int32_t num_indices, const int32_t *const indices, VFILE *const file)
 {

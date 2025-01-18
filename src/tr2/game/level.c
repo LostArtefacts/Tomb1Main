@@ -24,7 +24,6 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-static int16_t *m_FloorData = NULL;
 static int16_t *m_AnimFrameData = NULL;
 static int32_t m_AnimFrameDataLength = 0;
 
@@ -189,12 +188,7 @@ static void M_LoadRooms(VFILE *const file)
         r->effect_num = NO_EFFECT;
     }
 
-    // TODO: store this temporarily in a m_LevelInfo property similar to TR1 and
-    // release after parsing.
-    const int32_t floor_data_size = VFile_ReadS32(file);
-    m_FloorData =
-        GameBuf_Alloc(sizeof(int16_t) * floor_data_size, GBUF_FLOOR_DATA);
-    VFile_Read(file, m_FloorData, sizeof(int16_t) * floor_data_size);
+    Level_ReadFloorData(file);
 
 finish:
     Benchmark_End(benchmark, NULL);
@@ -824,10 +818,6 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
 static void M_CompleteSetup(void)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-
-    // Expand raw floor data into sectors
-    Room_ParseFloorData(m_FloorData);
-    // TODO: store raw FD temporarily, release here and eliminate g_FloorData
 
     Inject_AllInjections();
 

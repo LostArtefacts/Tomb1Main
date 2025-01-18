@@ -257,9 +257,8 @@ static void M_LoadRooms(VFILE *file)
         r->effect_num = NO_EFFECT;
     }
 
-    const int32_t fd_length = VFile_ReadS32(file);
-    m_LevelInfo.floor_data = Memory_Alloc(sizeof(int16_t) * fd_length);
-    VFile_Read(file, m_LevelInfo.floor_data, sizeof(int16_t) * fd_length);
+    Level_ReadFloorData(file);
+
     Benchmark_End(benchmark, NULL);
 }
 
@@ -778,10 +777,6 @@ static void M_LoadSamples(VFILE *file)
 static void M_CompleteSetup(int32_t level_num)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-
-    // Expand raw floor data into sectors
-    Room_ParseFloorData(m_LevelInfo.floor_data);
-    Memory_FreePointer(&m_LevelInfo.floor_data);
 
     // Expand paletted texture data to RGB
     m_LevelInfo.texture_rgb_page_ptrs = Memory_Alloc(
