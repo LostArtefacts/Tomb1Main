@@ -54,6 +54,7 @@ void Game_Draw(bool draw_overlay)
             Room_DrawSingleRoom(room_num);
         }
 
+        Output_SetupAboveWater(false);
         Lara_Hair_Draw();
         Output_FlushTranslucentObjects();
     }
