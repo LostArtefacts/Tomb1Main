@@ -942,7 +942,7 @@ int32_t Creature_CanTargetEnemy(
     return LOS_Check(&start, &target);
 }
 
-bool Creature_IsEnemy(const ITEM *const item)
+bool Creature_IsHostile(const ITEM *const item)
 {
     return Object_IsObjectType(item->object_id, g_EnemyObjects)
         || (g_IsMonkAngry

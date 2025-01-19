@@ -36,7 +36,7 @@ static bool M_KillSingleEnemyInRange(const int32_t max_dist)
     int16_t best_item_num = NO_ITEM;
     for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         const ITEM *const item = Item_Get(item_num);
-        if (Creature_IsEnemy(item)) {
+        if (Creature_IsHostile(item)) {
             const int32_t dist = Item_GetDistance(item, &lara_item->pos);
             if (dist <= max_dist) {
                 if (best_item_num == NO_ITEM || dist < best_dist) {
@@ -60,7 +60,7 @@ static int32_t M_KillAllEnemiesInRange(const int32_t max_dist)
     const ITEM *const lara_item = Lara_GetItem();
     for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         const ITEM *const item = Item_Get(item_num);
-        if (Creature_IsEnemy(item)) {
+        if (Creature_IsHostile(item)) {
             const int32_t dist = Item_GetDistance(item, &lara_item->pos);
             if (dist <= max_dist) {
                 // Kill this enemy
@@ -78,7 +78,7 @@ static COMMAND_RESULT M_KillAllEnemies(void)
     int32_t num_killed = 0;
     for (int16_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         const ITEM *const item = Item_Get(item_num);
-        if (!Creature_IsEnemy(item)) {
+        if (!Creature_IsHostile(item)) {
             continue;
         }
         if (Lara_Cheat_KillEnemy(item_num)) {

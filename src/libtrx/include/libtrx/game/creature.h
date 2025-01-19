@@ -27,4 +27,4 @@ typedef struct {
 #endif
 } CREATURE;
 
-bool Creature_IsEnemy(const ITEM *item);
+bool Creature_IsHostile(const ITEM *item);

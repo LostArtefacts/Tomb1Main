@@ -29,7 +29,7 @@ void Creature_Kill(
 void Creature_GetBaddieTarget(int16_t item_num, int32_t goody);
 void Creature_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 int32_t Creature_CanTargetEnemy(const ITEM *item, const AI_INFO *info);
-bool Creature_IsEnemy(const ITEM *item);
+bool Creature_IsHostile(const ITEM *item);
 bool Creature_IsAlly(const ITEM *item);
 int32_t Creature_ShootAtLara(
     ITEM *item, const AI_INFO *info, const BITE *gun, int16_t extra_rotation,

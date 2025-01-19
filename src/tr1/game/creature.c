@@ -819,7 +819,7 @@ static bool M_TestSwitchOrKill(
     return false;
 }
 
-bool Creature_IsEnemy(const ITEM *const item)
+bool Creature_IsHostile(const ITEM *const item)
 {
     return Object_IsObjectType(item->object_id, g_EnemyObjects);
 }
