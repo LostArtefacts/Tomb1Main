@@ -5,6 +5,8 @@
 #include "log.h"
 #include "memory.h"
 
+#define M_PREALLOC_VERTEX_COUNT 8000
+
 static const GLenum GL_PRIM_MODES[] = {
     GL_LINES, // GFX_3D_PRIM_LINE
     GL_TRIANGLES, // GFX_3D_PRIM_TRI
@@ -32,14 +34,19 @@ static void M_PushVertex(
 void GFX_3D_VertexStream_Init(GFX_3D_VERTEX_STREAM *const vertex_stream)
 {
     vertex_stream->prim_type = GFX_3D_PRIM_TRI;
-    vertex_stream->buffer_size = 0;
-    vertex_stream->pending_vertices.data = NULL;
-    vertex_stream->pending_vertices.count = 0;
-    vertex_stream->pending_vertices.capacity = 0;
+    vertex_stream->buffer_size =
+        M_PREALLOC_VERTEX_COUNT * sizeof(GFX_3D_VERTEX);
     vertex_stream->rendered_count = 0;
+    vertex_stream->pending_vertices.count = 0;
+    vertex_stream->pending_vertices.capacity = M_PREALLOC_VERTEX_COUNT;
+    vertex_stream->pending_vertices.data = Memory_Alloc(
+        vertex_stream->pending_vertices.capacity * sizeof(GFX_3D_VERTEX));
 
     GFX_GL_Buffer_Init(&vertex_stream->buffer, GL_ARRAY_BUFFER);
     GFX_GL_Buffer_Bind(&vertex_stream->buffer);
+    GFX_GL_Buffer_Data(
+        &vertex_stream->buffer, vertex_stream->buffer_size, NULL,
+        GL_STREAM_DRAW);
 
     GFX_GL_VertexArray_Init(&vertex_stream->vtc_format);
     GFX_GL_VertexArray_Bind(&vertex_stream->vtc_format);

@@ -33,6 +33,7 @@
 - fixed sprite pickups not being paused in the pause/inventory screen (#2319, regression from 0.6)
 - fixed Skidoo snow wake effects at slow speeds (#2324, regression from 0.6)
 - fixed software renderer skybox occlusion issues (#2343, regression from 0.7)
+- fixed Floating Islands losing some frames if played first (#2325, regression from 0.7)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
 - completed decompilation efforts – TR2X.dll is gone, Tomb2.exe no longer needed (#1694)
