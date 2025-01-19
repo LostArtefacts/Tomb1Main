@@ -355,7 +355,8 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
                 MAX_STATIC_OBJECTS);
         }
 
-        STATIC_INFO *const static_obj = Object_GetStaticObject(static_id);
+        STATIC_OBJECT_3D *const static_obj =
+            Object_GetStaticObject3D(static_id);
         static_obj->mesh_idx = VFile_ReadS16(file);
         static_obj->mesh_count = 1;
         static_obj->loaded = true;

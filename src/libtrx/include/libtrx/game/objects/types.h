@@ -116,4 +116,4 @@ typedef struct {
     bool visible;
     BOUNDS_16 draw_bounds;
     BOUNDS_16 collision_bounds;
-} STATIC_INFO;
+} STATIC_OBJECT_3D;

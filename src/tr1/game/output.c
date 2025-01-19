@@ -1186,7 +1186,7 @@ void Output_AnimateTextures(const int32_t num_frames)
         }
 
         for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-            const STATIC_INFO *const static_info = &g_StaticObjects[i];
+            const STATIC_OBJECT_3D *const static_info = &g_StaticObjects3D[i];
             if (!static_info->loaded || static_info->mesh_count >= -1) {
                 continue;
             }

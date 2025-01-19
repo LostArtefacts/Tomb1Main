@@ -43,7 +43,7 @@ extern int32_t g_HeightType;
 
 extern ROOM *g_RoomInfo;
 extern OBJECT g_Objects[O_NUMBER_OF];
-extern STATIC_INFO g_StaticObjects[MAX_STATIC_OBJECTS];
+extern STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
 extern RGBA_8888 *g_TexturePagePtrs[MAX_TEXTPAGES];
 extern int16_t g_RoomCount;
 extern int32_t g_LevelItemCount;

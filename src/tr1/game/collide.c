@@ -346,7 +346,8 @@ bool Collide_CollideStaticObjects(
 
         for (int j = 0; j < r->num_static_meshes; j++) {
             const STATIC_MESH *const mesh = &r->static_meshes[j];
-            const STATIC_INFO *const sinfo = &g_StaticObjects[mesh->static_num];
+            const STATIC_OBJECT_3D *const sinfo =
+                &g_StaticObjects3D[mesh->static_num];
             if (!sinfo->collidable) {
                 continue;
             }

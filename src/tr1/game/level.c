@@ -429,8 +429,8 @@ static void M_LoadSprites(VFILE *file)
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_INFO *const object =
-                &g_StaticObjects[object_id - O_NUMBER_OF];
+            STATIC_OBJECT_3D *const object =
+                &g_StaticObjects3D[object_id - O_NUMBER_OF];
             if (object->loaded) {
                 LOG_WARNING(
                     "sprite %d is already loaded "
@@ -878,7 +878,7 @@ static size_t M_CalculateMaxVertices(void)
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        const STATIC_INFO *static_info = &g_StaticObjects[i];
+        const STATIC_OBJECT_3D *static_info = &g_StaticObjects3D[i];
         if (!static_info->loaded || static_info->mesh_count < 0) {
             continue;
         }
@@ -981,7 +981,7 @@ bool Level_Initialise(int32_t level_num)
         g_Objects[i].loaded = 0;
     }
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        g_StaticObjects[i].loaded = false;
+        g_StaticObjects3D[i].loaded = false;
     }
 
     Camera_Reset();

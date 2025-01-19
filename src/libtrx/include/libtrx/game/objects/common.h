@@ -13,7 +13,7 @@ typedef struct {
 } GAME_OBJECT_PAIR;
 
 extern OBJECT *Object_GetObject(GAME_OBJECT_ID object_id);
-extern STATIC_INFO *Object_GetStaticObject(int32_t static_id);
+extern STATIC_OBJECT_3D *Object_GetStaticObject3D(int32_t static_id);
 
 bool Object_IsObjectType(
     GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr);
