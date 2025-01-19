@@ -296,10 +296,9 @@ static void M_LoadStaticObjects(VFILE *const file)
     LOG_INFO("static objects: %d", num_static_objects);
     for (int32_t i = 0; i < num_static_objects; i++) {
         const int32_t static_id = VFile_ReadS32(file);
-        if (static_id < 0 || static_id >= MAX_STATIC_OBJECTS) {
+        if (static_id < 0 || static_id >= STATIC_NUMBER_OF) {
             Shell_ExitSystemFmt(
-                "Invalid static ID: %d (max=%d)", static_id,
-                MAX_STATIC_OBJECTS);
+                "Invalid static ID: %d (max=%d)", static_id, STATIC_NUMBER_OF);
         }
 
         STATIC_INFO *const static_obj = &g_StaticObjects[static_id];
@@ -392,7 +391,7 @@ static void M_LoadSprites(VFILE *const file)
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
+        } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
             STATIC_INFO *const object =
                 &g_StaticObjects[object_id - O_NUMBER_OF];
             if (object->loaded) {

@@ -11,9 +11,14 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-OBJECT *Object_GetObject(GAME_OBJECT_ID object_id)
+OBJECT *Object_GetObject(const GAME_OBJECT_ID object_id)
 {
     return &g_Objects[object_id];
+}
+
+STATIC_INFO *Object_GetStaticObject(const GAME_STATIC_ID static_id)
+{
+    return &g_StaticObjects[static_id];
 }
 
 void Object_DrawDummyItem(const ITEM *const item)

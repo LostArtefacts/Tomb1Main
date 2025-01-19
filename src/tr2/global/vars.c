@@ -111,7 +111,7 @@ uint16_t *g_Overlap = NULL;
 CREATURE *g_BaddieSlots = NULL;
 int32_t g_DynamicLightCount;
 
-STATIC_INFO g_StaticObjects[MAX_STATIC_OBJECTS];
+STATIC_INFO g_StaticObjects[STATIC_NUMBER_OF];
 OBJECT_VECTOR *g_SoundEffects = NULL;
 int16_t g_SampleLUT[SFX_NUMBER_OF];
 SAMPLE_INFO *g_SampleInfos = NULL;

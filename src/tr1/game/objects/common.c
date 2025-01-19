@@ -18,9 +18,14 @@
 
 #include <stddef.h>
 
-OBJECT *Object_GetObject(GAME_OBJECT_ID object_id)
+OBJECT *Object_GetObject(const GAME_OBJECT_ID object_id)
 {
     return &g_Objects[object_id];
+}
+
+STATIC_INFO *Object_GetStaticObject(const GAME_STATIC_ID static_id)
+{
+    return &g_StaticObjects[static_id];
 }
 
 int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id)

@@ -143,15 +143,6 @@ typedef enum {
     DRAW_COLOR_KEY = 1,
 } DRAW_TYPE;
 
-typedef struct {
-    bool loaded;
-    int16_t mesh_count;
-    int16_t mesh_idx;
-    uint16_t flags;
-    BOUNDS_16 draw_bounds;
-    BOUNDS_16 collision_bounds;
-} STATIC_INFO;
-
 typedef struct STATS_COMMON {
     uint32_t timer;
     uint32_t ammo_used;

@@ -108,7 +108,7 @@ extern int16_t *g_GroundZone[][2];
 extern uint16_t *g_Overlap;
 extern CREATURE *g_BaddieSlots;
 extern int32_t g_DynamicLightCount;
-extern STATIC_INFO g_StaticObjects[MAX_STATIC_OBJECTS];
+extern STATIC_INFO g_StaticObjects[STATIC_NUMBER_OF];
 extern OBJECT_VECTOR *g_SoundEffects;
 extern int16_t g_SampleLUT[];
 extern SAMPLE_INFO *g_SampleInfos;
