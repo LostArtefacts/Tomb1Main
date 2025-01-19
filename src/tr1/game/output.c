@@ -1192,12 +1192,12 @@ void Output_AnimateTextures(const int32_t num_frames)
             }
 
             const int32_t num_meshes = -static_info->mesh_count;
-            const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_num];
+            const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_idx];
             for (int32_t j = 0; j < num_meshes - 1; j++) {
-                g_PhdSpriteInfo[static_info->mesh_num + j] =
-                    g_PhdSpriteInfo[static_info->mesh_num + j + 1];
+                g_PhdSpriteInfo[static_info->mesh_idx + j] =
+                    g_PhdSpriteInfo[static_info->mesh_idx + j + 1];
             }
-            g_PhdSpriteInfo[static_info->mesh_num + num_meshes - 1] = temp;
+            g_PhdSpriteInfo[static_info->mesh_idx + num_meshes - 1] = temp;
         }
         m_AnimatedTexturesOffset -= 5;
     }

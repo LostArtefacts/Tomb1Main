@@ -447,7 +447,7 @@ static void M_TextureData(
         } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
             STATIC_INFO *object = &g_StaticObjects[object_id - O_NUMBER_OF];
             object->mesh_count = num_meshes;
-            object->mesh_num = mesh_idx + level_info->sprite_info_count;
+            object->mesh_idx = mesh_idx + level_info->sprite_info_count;
             object->loaded = true;
         }
         level_info->sprite_info_count -= num_meshes;
@@ -805,7 +805,7 @@ static void M_ApplyMeshEdit(
     } else if (mesh_edit->object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
         const STATIC_INFO *const info =
             &g_StaticObjects[mesh_edit->object_id - O_NUMBER_OF];
-        mesh = Object_GetMesh(info->mesh_num);
+        mesh = Object_GetMesh(info->mesh_idx);
     } else {
         LOG_WARNING("Invalid object ID %d", mesh_edit->object_id);
         return;

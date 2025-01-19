@@ -301,10 +301,10 @@ void Room_DrawSingleRoom(int16_t room_num)
         Matrix_Push();
         Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
-        int clip = Output_GetObjectBounds(&info->p);
-        if (clip) {
+        int32_t clip = Output_GetObjectBounds(&info->draw_bounds);
+        if (clip != 0) {
             Output_CalculateStaticLight(mesh->shade);
-            Object_DrawMesh(info->mesh_num, clip, false);
+            Object_DrawMesh(info->mesh_idx, clip, false);
         }
         Matrix_Pop();
     }

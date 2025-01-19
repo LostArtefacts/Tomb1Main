@@ -380,19 +380,19 @@ static void M_LoadStaticObjects(VFILE *file)
         }
 
         STATIC_INFO *const object = &g_StaticObjects[static_id];
-        object->mesh_num = VFile_ReadS16(file);
-        object->p.min.x = VFile_ReadS16(file);
-        object->p.max.x = VFile_ReadS16(file);
-        object->p.min.y = VFile_ReadS16(file);
-        object->p.max.y = VFile_ReadS16(file);
-        object->p.min.z = VFile_ReadS16(file);
-        object->p.max.z = VFile_ReadS16(file);
-        object->c.min.x = VFile_ReadS16(file);
-        object->c.max.x = VFile_ReadS16(file);
-        object->c.min.y = VFile_ReadS16(file);
-        object->c.max.y = VFile_ReadS16(file);
-        object->c.min.z = VFile_ReadS16(file);
-        object->c.max.z = VFile_ReadS16(file);
+        object->mesh_idx = VFile_ReadS16(file);
+        object->draw_bounds.min.x = VFile_ReadS16(file);
+        object->draw_bounds.max.x = VFile_ReadS16(file);
+        object->draw_bounds.min.y = VFile_ReadS16(file);
+        object->draw_bounds.max.y = VFile_ReadS16(file);
+        object->draw_bounds.min.z = VFile_ReadS16(file);
+        object->draw_bounds.max.z = VFile_ReadS16(file);
+        object->collision_bounds.min.x = VFile_ReadS16(file);
+        object->collision_bounds.max.x = VFile_ReadS16(file);
+        object->collision_bounds.min.y = VFile_ReadS16(file);
+        object->collision_bounds.max.y = VFile_ReadS16(file);
+        object->collision_bounds.min.z = VFile_ReadS16(file);
+        object->collision_bounds.max.z = VFile_ReadS16(file);
         object->flags = VFile_ReadU16(file);
         object->loaded = true;
         object->mesh_count = 1;
@@ -461,10 +461,10 @@ static void M_LoadSprites(VFILE *file)
                     "sprite %d is already loaded "
                     "(trying to override %d:%d with %d:%d)",
                     object_id - O_NUMBER_OF, object->mesh_count,
-                    object->mesh_num, num_meshes, mesh_idx);
+                    object->mesh_idx, num_meshes, mesh_idx);
             } else {
                 object->mesh_count = num_meshes;
-                object->mesh_num = mesh_idx;
+                object->mesh_idx = mesh_idx;
                 object->loaded = true;
             }
         } else {
@@ -908,7 +908,7 @@ static size_t M_CalculateMaxVertices(void)
             continue;
         }
 
-        const OBJECT_MESH *const mesh = Object_GetMesh(static_info->mesh_num);
+        const OBJECT_MESH *const mesh = Object_GetMesh(static_info->mesh_idx);
         max_vertices = MAX(max_vertices, mesh->num_vertices);
     }
 

@@ -457,10 +457,10 @@ typedef enum {
 typedef struct {
     bool loaded;
     int16_t mesh_count;
-    int16_t mesh_num;
+    int16_t mesh_idx;
     int16_t flags;
-    BOUNDS_16 p;
-    BOUNDS_16 c;
+    BOUNDS_16 draw_bounds;
+    BOUNDS_16 collision_bounds;
 } STATIC_INFO;
 
 typedef struct {
