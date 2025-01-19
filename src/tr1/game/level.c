@@ -953,10 +953,11 @@ bool Level_Initialise(int32_t level_num)
 
     /* Clear Object Loaded flags */
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        g_Objects[i].loaded = 0;
+        Object_GetObject(i)->loaded = false;
     }
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        g_StaticObjects3D[i].loaded = false;
+        Object_GetStaticObject2D(i)->loaded = false;
+        Object_GetStaticObject3D(i)->loaded = false;
     }
 
     Camera_Reset();

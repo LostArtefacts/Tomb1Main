@@ -779,8 +779,11 @@ bool Level_Load(const char *const file_name, const int32_t level_num)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *const object = Object_GetObject(i);
-        object->loaded = false;
+        Object_GetObject(i)->loaded = false;
+    }
+    for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
+        Object_GetStaticObject2D(i)->loaded = false;
+        Object_GetStaticObject3D(i)->loaded = false;
     }
 
     const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
