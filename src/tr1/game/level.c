@@ -361,25 +361,9 @@ static void M_LoadAnimFrames(VFILE *file)
 static void M_LoadObjects(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.object_count = VFile_ReadS32(file);
-    LOG_INFO("%d objects", m_LevelInfo.object_count);
-    for (int32_t i = 0; i < m_LevelInfo.object_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
-        if (object_id < 0 || object_id >= O_NUMBER_OF) {
-            Shell_ExitSystemFmt(
-                "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
-        }
-
-        OBJECT *const object = &g_Objects[object_id];
-        object->mesh_count = VFile_ReadS16(file);
-        object->mesh_idx = VFile_ReadS16(file);
-        object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
-        object->frame_ofs = VFile_ReadU32(file);
-        object->frame_base = NULL;
-        object->anim_idx = VFile_ReadS16(file);
-        object->loaded = true;
-    }
-
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_INFO("%d objects", num_objects);
+    Level_ReadObjects(num_objects, file);
     Benchmark_End(benchmark, NULL);
 }
 

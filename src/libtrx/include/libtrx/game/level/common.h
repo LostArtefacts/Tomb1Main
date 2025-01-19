@@ -15,3 +15,4 @@ void Level_InitialiseAnimCommands(int32_t num_cmds);
 void Level_ReadAnimCommands(int32_t base_idx, int32_t num_cmds, VFILE *file);
 void Level_LoadAnimCommands(void);
 void Level_ReadAnimBones(int32_t base_idx, int32_t num_bones, VFILE *file);
+void Level_ReadObjects(int32_t num_objects, VFILE *file);

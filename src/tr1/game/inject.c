@@ -132,7 +132,8 @@ static void M_MeshData(const INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimRangeEdits(INJECTION *injection);
 static void M_ObjectData(
-    INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map);
+    const INJECTION *injection, const LEVEL_INFO *level_info,
+    const uint16_t *palette_map);
 static void M_SFXData(INJECTION *injection, LEVEL_INFO *level_info);
 
 static uint16_t *M_GetMeshTexture(const FACE_EDIT *face_edit);
@@ -598,27 +599,25 @@ static void M_AnimRangeEdits(INJECTION *injection)
 }
 
 static void M_ObjectData(
-    INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map)
+    const INJECTION *const injection, const LEVEL_INFO *const level_info,
+    const uint16_t *palette_map)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
     INJECTION_INFO *inj_info = injection->info;
     VFILE *const fp = injection->fp;
 
-    // TODO: consider refactoring once we have more injection
-    // use cases.
     for (int32_t i = 0; i < inj_info->object_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
-        OBJECT *object = &g_Objects[object_id];
+        OBJECT *const object = Object_GetObject(object_id);
 
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
         const int32_t bone_idx = VFile_ReadS32(fp) / ANIM_BONE_SIZE;
 
-        // When mesh data has been omitted from the injection, this indicates
-        // that we wish to retain what's already defined so to avoid duplicate
-        // packing.
-        if (!object->loaded || num_meshes) {
+        // Omitted mesh data indicates that we wish to retain what's already
+        // defined in level data to avoid duplicate texture packing.
+        if (!object->loaded || num_meshes != 0) {
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->mesh_ptr_count;
             object->bone_idx = bone_idx + level_info->anim_bone_count;
@@ -632,7 +631,7 @@ static void M_ObjectData(
         }
         object->loaded = true;
 
-        if (num_meshes) {
+        if (num_meshes != 0) {
             M_AlignTextureReferences(
                 object, palette_map, level_info->texture_count);
         }

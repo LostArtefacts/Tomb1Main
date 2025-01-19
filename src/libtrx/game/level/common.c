@@ -6,6 +6,7 @@
 #include "game/inject.h"
 #include "game/objects/common.h"
 #include "game/rooms.h"
+#include "game/shell.h"
 #include "log.h"
 #include "memory.h"
 #include "utils.h"
@@ -309,5 +310,25 @@ void Level_ReadAnimBones(
         bone->pos.x = VFile_ReadS32(file);
         bone->pos.y = VFile_ReadS32(file);
         bone->pos.z = VFile_ReadS32(file);
+    }
+}
+
+void Level_ReadObjects(const int32_t num_objects, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_objects; i++) {
+        const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
+        if (object_id < 0 || object_id >= O_NUMBER_OF) {
+            Shell_ExitSystemFmt(
+                "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
+        }
+
+        OBJECT *const object = Object_GetObject(object_id);
+        object->mesh_count = VFile_ReadS16(file);
+        object->mesh_idx = VFile_ReadS16(file);
+        object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
+        object->frame_ofs = VFile_ReadU32(file);
+        object->frame_base = NULL;
+        object->anim_idx = VFile_ReadS16(file);
+        object->loaded = true;
     }
 }
