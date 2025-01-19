@@ -401,6 +401,7 @@ static void M_LoadSprites(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.sprite_info_count = VFile_ReadS32(file);
+    LOG_DEBUG("sprite textures: %d", m_LevelInfo.sprite_info_count);
     if (m_LevelInfo.sprite_info_count + m_InjectionInfo->sprite_info_count
         > MAX_SPRITES) {
         Shell_ExitSystem("Too many sprites in level");
@@ -417,8 +418,9 @@ static void M_LoadSprites(VFILE *file)
         sprite->y2 = VFile_ReadS16(file);
     }
 
-    m_LevelInfo.sprite_count = VFile_ReadS32(file);
-    for (int i = 0; i < m_LevelInfo.sprite_count; i++) {
+    const int32_t num_sequences = VFile_ReadS32(file);
+    LOG_DEBUG("sprite sequences: %d", num_sequences);
+    for (int i = 0; i < num_sequences; i++) {
         const int32_t object_id = VFile_ReadS32(file);
         const int16_t num_meshes = VFile_ReadS16(file);
         const int16_t mesh_idx = VFile_ReadS16(file);
@@ -429,19 +431,11 @@ static void M_LoadSprites(VFILE *file)
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_3D *const object =
-                &g_StaticObjects3D[object_id - O_NUMBER_OF];
-            if (object->loaded) {
-                LOG_WARNING(
-                    "sprite %d is already loaded "
-                    "(trying to override %d:%d with %d:%d)",
-                    object_id - O_NUMBER_OF, object->mesh_count,
-                    object->mesh_idx, num_meshes, mesh_idx);
-            } else {
-                object->mesh_count = num_meshes;
-                object->mesh_idx = mesh_idx;
-                object->loaded = true;
-            }
+            STATIC_OBJECT_2D *const object =
+                &g_StaticObjects2D[object_id - O_NUMBER_OF];
+            object->frame_count = ABS(num_meshes);
+            object->texture_idx = mesh_idx;
+            object->loaded = true;
         } else {
             Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }
@@ -879,7 +873,7 @@ static size_t M_CalculateMaxVertices(void)
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
         const STATIC_OBJECT_3D *static_info = &g_StaticObjects3D[i];
-        if (!static_info->loaded || static_info->mesh_count < 0) {
+        if (!static_info->loaded) {
             continue;
         }
 

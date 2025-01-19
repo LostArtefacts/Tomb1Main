@@ -358,7 +358,6 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
         STATIC_OBJECT_3D *const static_obj =
             Object_GetStaticObject3D(static_id);
         static_obj->mesh_idx = VFile_ReadS16(file);
-        static_obj->mesh_count = 1;
         static_obj->loaded = true;
 
         M_ReadBounds16(&static_obj->draw_bounds, file);

@@ -23,6 +23,7 @@
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
+#include <libtrx/utils.h>
 
 static int16_t *m_AnimFrameData = NULL;
 static int32_t m_AnimFrameDataLength = 0;
@@ -342,9 +343,9 @@ static void M_LoadTextures(VFILE *const file)
 static void M_LoadSprites(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_sprites = VFile_ReadS32(file);
-    LOG_DEBUG("sprites: %d", num_sprites);
-    for (int32_t i = 0; i < num_sprites; i++) {
+    const int32_t num_textures = VFile_ReadS32(file);
+    LOG_DEBUG("sprite textures: %d", num_textures);
+    for (int32_t i = 0; i < num_textures; i++) {
         PHD_SPRITE *const sprite = &g_PhdSprites[i];
         sprite->tex_page = VFile_ReadU16(file);
         sprite->offset = VFile_ReadU16(file);
@@ -356,9 +357,9 @@ static void M_LoadSprites(VFILE *const file)
         sprite->y1 = VFile_ReadS16(file);
     }
 
-    const int32_t num_statics = VFile_ReadS32(file);
-    LOG_DEBUG("statics: %d", num_statics);
-    for (int32_t i = 0; i < num_statics; i++) {
+    const int32_t num_sequences = VFile_ReadS32(file);
+    LOG_DEBUG("sprite sequences: %d", num_sequences);
+    for (int32_t i = 0; i < num_sequences; i++) {
         const int32_t object_id = VFile_ReadS32(file);
         const int16_t num_meshes = VFile_ReadS16(file);
         const int16_t mesh_idx = VFile_ReadS16(file);
@@ -369,19 +370,11 @@ static void M_LoadSprites(VFILE *const file)
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_3D *const object =
-                &g_StaticObjects3D[object_id - O_NUMBER_OF];
-            if (object->loaded) {
-                LOG_WARNING(
-                    "sprite %d is already loaded "
-                    "(trying to override %d:%d with %d:%d)",
-                    object_id - O_NUMBER_OF, object->mesh_count,
-                    object->mesh_idx, num_meshes, mesh_idx);
-            } else {
-                object->mesh_count = num_meshes;
-                object->mesh_idx = mesh_idx;
-                object->loaded = true;
-            }
+            STATIC_OBJECT_2D *const object =
+                &g_StaticObjects2D[object_id - O_NUMBER_OF];
+            object->frame_count = ABS(num_meshes);
+            object->texture_idx = mesh_idx;
+            object->loaded = true;
         } else {
             Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }

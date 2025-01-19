@@ -112,6 +112,7 @@ CREATURE *g_BaddieSlots = NULL;
 int32_t g_DynamicLightCount;
 
 STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
+STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS];
 OBJECT_VECTOR *g_SoundEffects = NULL;
 int16_t g_SampleLUT[SFX_NUMBER_OF];
 SAMPLE_INFO *g_SampleInfos = NULL;

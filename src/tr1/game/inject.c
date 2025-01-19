@@ -440,19 +440,18 @@ static void M_TextureData(
         const int16_t mesh_idx = VFile_ReadS16(fp);
 
         if (object_id < O_NUMBER_OF) {
-            OBJECT *object = &g_Objects[object_id];
-            object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx + level_info->sprite_info_count;
-            object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_3D *object =
-                &g_StaticObjects3D[object_id - O_NUMBER_OF];
+            OBJECT *const object = &g_Objects[object_id];
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->sprite_info_count;
             object->loaded = true;
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
+            STATIC_OBJECT_2D *const object =
+                &g_StaticObjects2D[object_id - O_NUMBER_OF];
+            object->frame_count = ABS(num_meshes);
+            object->texture_idx = mesh_idx + level_info->sprite_info_count;
+            object->loaded = true;
         }
-        level_info->sprite_info_count -= num_meshes;
-        level_info->sprite_count++;
+        level_info->sprite_info_count += ABS(num_meshes);
     }
 
     Benchmark_End(benchmark, NULL);

@@ -109,6 +109,7 @@ extern uint16_t *g_Overlap;
 extern CREATURE *g_BaddieSlots;
 extern int32_t g_DynamicLightCount;
 extern STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
+extern STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS];
 extern OBJECT_VECTOR *g_SoundEffects;
 extern int16_t g_SampleLUT[];
 extern SAMPLE_INFO *g_SampleInfos;

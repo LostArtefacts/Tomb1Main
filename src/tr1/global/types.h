@@ -503,7 +503,6 @@ typedef struct {
     int32_t anim_texture_range_count;
     int32_t item_count;
     int32_t sprite_info_count;
-    int32_t sprite_count;
     int32_t overlap_count;
     int32_t sample_info_count;
     int32_t sample_count;

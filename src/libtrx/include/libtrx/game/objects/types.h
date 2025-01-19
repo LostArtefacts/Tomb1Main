@@ -110,10 +110,15 @@ typedef struct {
 
 typedef struct {
     bool loaded;
-    int16_t mesh_count;
     int16_t mesh_idx;
     bool collidable;
     bool visible;
     BOUNDS_16 draw_bounds;
     BOUNDS_16 collision_bounds;
 } STATIC_OBJECT_3D;
+
+typedef struct {
+    bool loaded;
+    int16_t frame_count;
+    int16_t texture_idx;
+} STATIC_OBJECT_2D;

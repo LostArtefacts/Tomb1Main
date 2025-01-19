@@ -1186,18 +1186,18 @@ void Output_AnimateTextures(const int32_t num_frames)
         }
 
         for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-            const STATIC_OBJECT_3D *const static_info = &g_StaticObjects3D[i];
-            if (!static_info->loaded || static_info->mesh_count >= -1) {
+            const STATIC_OBJECT_2D *const object = &g_StaticObjects2D[i];
+            if (!object->loaded || object->frame_count == 1) {
                 continue;
             }
 
-            const int32_t num_meshes = -static_info->mesh_count;
-            const PHD_SPRITE temp = g_PhdSpriteInfo[static_info->mesh_idx];
-            for (int32_t j = 0; j < num_meshes - 1; j++) {
-                g_PhdSpriteInfo[static_info->mesh_idx + j] =
-                    g_PhdSpriteInfo[static_info->mesh_idx + j + 1];
+            const int16_t frame_count = object->frame_count;
+            const PHD_SPRITE temp = g_PhdSpriteInfo[object->texture_idx];
+            for (int32_t j = 0; j < frame_count - 1; j++) {
+                g_PhdSpriteInfo[object->texture_idx + j] =
+                    g_PhdSpriteInfo[object->texture_idx + j + 1];
             }
-            g_PhdSpriteInfo[static_info->mesh_idx + num_meshes - 1] = temp;
+            g_PhdSpriteInfo[object->texture_idx + frame_count - 1] = temp;
         }
         m_AnimatedTexturesOffset -= 5;
     }
