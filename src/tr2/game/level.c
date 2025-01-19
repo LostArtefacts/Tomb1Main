@@ -368,7 +368,7 @@ static void M_LoadSprites(VFILE *const file)
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_INFO *const object =
                 &g_StaticObjects[object_id - O_NUMBER_OF];
             if (object->loaded) {

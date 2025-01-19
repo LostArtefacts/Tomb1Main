@@ -2,6 +2,7 @@
 
 #include "debug.h"
 #include "game/anims.h"
+#include "game/const.h"
 #include "game/game_buf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
@@ -348,9 +349,10 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
 {
     for (int32_t i = 0; i < num_objects; i++) {
         const int32_t static_id = VFile_ReadS32(file);
-        if (static_id < 0 || static_id >= STATIC_NUMBER_OF) {
+        if (static_id < 0 || static_id >= MAX_STATIC_OBJECTS) {
             Shell_ExitSystemFmt(
-                "Invalid static ID: %d (max=%d)", static_id, STATIC_NUMBER_OF);
+                "Invalid static ID: %d (max=%d)", static_id,
+                MAX_STATIC_OBJECTS);
         }
 
         STATIC_INFO *const static_obj = Object_GetStaticObject(static_id);

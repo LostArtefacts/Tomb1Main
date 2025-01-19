@@ -35,7 +35,7 @@ int32_t g_HeightType = 0;
 
 ROOM *g_RoomInfo = NULL;
 OBJECT g_Objects[O_NUMBER_OF] = {};
-STATIC_INFO g_StaticObjects[STATIC_NUMBER_OF] = {};
+STATIC_INFO g_StaticObjects[MAX_STATIC_OBJECTS] = {};
 RGBA_8888 *g_TexturePagePtrs[MAX_TEXTPAGES] = { NULL };
 int16_t g_RoomCount = 0;
 int32_t g_LevelItemCount = 0;

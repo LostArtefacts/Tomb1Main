@@ -444,7 +444,7 @@ static void M_TextureData(
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->sprite_info_count;
             object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_INFO *object = &g_StaticObjects[object_id - O_NUMBER_OF];
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->sprite_info_count;
@@ -802,7 +802,7 @@ static void M_ApplyMeshEdit(
         }
 
         mesh = Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
-    } else if (mesh_edit->object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
+    } else if (mesh_edit->object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
         const STATIC_INFO *const info =
             &g_StaticObjects[mesh_edit->object_id - O_NUMBER_OF];
         mesh = Object_GetMesh(info->mesh_idx);

@@ -428,7 +428,7 @@ static void M_LoadSprites(VFILE *file)
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
             object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < STATIC_NUMBER_OF) {
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_INFO *const object =
                 &g_StaticObjects[object_id - O_NUMBER_OF];
             if (object->loaded) {
@@ -877,7 +877,7 @@ static size_t M_CalculateMaxVertices(void)
         }
     }
 
-    for (int32_t i = 0; i < STATIC_NUMBER_OF; i++) {
+    for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
         const STATIC_INFO *static_info = &g_StaticObjects[i];
         if (!static_info->loaded || static_info->mesh_count < 0) {
             continue;
@@ -980,7 +980,7 @@ bool Level_Initialise(int32_t level_num)
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
         g_Objects[i].loaded = 0;
     }
-    for (int32_t i = 0; i < STATIC_NUMBER_OF; i++) {
+    for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
         g_StaticObjects[i].loaded = false;
     }
 

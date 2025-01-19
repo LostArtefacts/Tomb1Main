@@ -13,3 +13,5 @@
 
 #define GRAVITY 6
 #define FAST_FALL_SPEED 128
+
+#define MAX_STATIC_OBJECTS 50

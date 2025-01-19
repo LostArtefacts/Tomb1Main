@@ -23,7 +23,7 @@ OBJECT *Object_GetObject(const GAME_OBJECT_ID object_id)
     return &g_Objects[object_id];
 }
 
-STATIC_INFO *Object_GetStaticObject(const GAME_STATIC_ID static_id)
+STATIC_INFO *Object_GetStaticObject(const int32_t static_id)
 {
     return &g_StaticObjects[static_id];
 }
