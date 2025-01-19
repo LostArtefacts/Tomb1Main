@@ -370,34 +370,9 @@ static void M_LoadObjects(VFILE *file)
 static void M_LoadStaticObjects(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.static_count = VFile_ReadS32(file);
-    LOG_INFO("%d static objects", m_LevelInfo.static_count);
-    for (int i = 0; i < m_LevelInfo.static_count; i++) {
-        const int32_t static_id = VFile_ReadS32(file);
-        if (static_id < 0 || static_id >= STATIC_NUMBER_OF) {
-            Shell_ExitSystemFmt(
-                "Invalid static ID: %d (max=%d)", static_id, STATIC_NUMBER_OF);
-        }
-
-        STATIC_INFO *const object = &g_StaticObjects[static_id];
-        object->mesh_idx = VFile_ReadS16(file);
-        object->draw_bounds.min.x = VFile_ReadS16(file);
-        object->draw_bounds.max.x = VFile_ReadS16(file);
-        object->draw_bounds.min.y = VFile_ReadS16(file);
-        object->draw_bounds.max.y = VFile_ReadS16(file);
-        object->draw_bounds.min.z = VFile_ReadS16(file);
-        object->draw_bounds.max.z = VFile_ReadS16(file);
-        object->collision_bounds.min.x = VFile_ReadS16(file);
-        object->collision_bounds.max.x = VFile_ReadS16(file);
-        object->collision_bounds.min.y = VFile_ReadS16(file);
-        object->collision_bounds.max.y = VFile_ReadS16(file);
-        object->collision_bounds.min.z = VFile_ReadS16(file);
-        object->collision_bounds.max.z = VFile_ReadS16(file);
-        object->flags = VFile_ReadU16(file);
-        object->loaded = true;
-        object->mesh_count = 1;
-    }
-
+    const int32_t num_static_objects = VFile_ReadS32(file);
+    LOG_INFO("%d static objects", num_static_objects);
+    Level_ReadStaticObjects(num_static_objects, file);
     Benchmark_End(benchmark, NULL);
 }
 

@@ -18,6 +18,7 @@ static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
 static void M_ReadFace3(FACE3 *face, VFILE *file);
 static void M_ReadObjectMesh(OBJECT_MESH *mesh, VFILE *file);
+static void M_ReadBounds16(BOUNDS_16 *bounds, VFILE *file);
 
 static void M_ReadVertex(XYZ_16 *const vertex, VFILE *const file)
 {
@@ -112,6 +113,16 @@ static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
             M_ReadFace3(&mesh->flat_face3s[i], file);
         }
     }
+}
+
+static void M_ReadBounds16(BOUNDS_16 *const bounds, VFILE *const file)
+{
+    bounds->min.x = VFile_ReadS16(file);
+    bounds->max.x = VFile_ReadS16(file);
+    bounds->min.y = VFile_ReadS16(file);
+    bounds->max.y = VFile_ReadS16(file);
+    bounds->min.z = VFile_ReadS16(file);
+    bounds->max.z = VFile_ReadS16(file);
 }
 
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
@@ -330,5 +341,25 @@ void Level_ReadObjects(const int32_t num_objects, VFILE *const file)
         object->frame_base = NULL;
         object->anim_idx = VFile_ReadS16(file);
         object->loaded = true;
+    }
+}
+
+void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_objects; i++) {
+        const int32_t static_id = VFile_ReadS32(file);
+        if (static_id < 0 || static_id >= STATIC_NUMBER_OF) {
+            Shell_ExitSystemFmt(
+                "Invalid static ID: %d (max=%d)", static_id, STATIC_NUMBER_OF);
+        }
+
+        STATIC_INFO *const static_obj = Object_GetStaticObject(static_id);
+        static_obj->mesh_idx = VFile_ReadS16(file);
+        static_obj->mesh_count = 1;
+        static_obj->loaded = true;
+
+        M_ReadBounds16(&static_obj->draw_bounds, file);
+        M_ReadBounds16(&static_obj->collision_bounds, file);
+        static_obj->flags = VFile_ReadU16(file);
     }
 }

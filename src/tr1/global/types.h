@@ -496,7 +496,6 @@ typedef struct {
     int32_t anim_bone_count;
     int32_t anim_frame_data_count;
     int16_t *anim_frame_data;
-    int32_t static_count;
     int32_t texture_count;
     int32_t texture_page_count;
     uint8_t *texture_palette_page_ptrs;
