@@ -32,6 +32,7 @@
 - fixed sprite pickup not being paused in the pause/inventory screen (#2319, regression from 4.1)
 - fixed 3D pickups not being paused in the pause/inventory screen (#2319, regression from 2.16)
 - fixed incorrect sprite sequences potentially animating after visiting a level with valid animating sprites (#2309, regression from 4.0)
+- fixed `/kill all` command destroying Scion and causing a soft lock in The Great Pyramid (#2329, regression from 4.4)
 - improved pause screen compatibility with PS1 (#2248)
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21

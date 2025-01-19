@@ -31,7 +31,6 @@ const GAME_OBJECT_ID g_EnemyObjects[] = {
     O_COWBOY,
     O_BALDY,
     O_NATLA,
-    O_SCION_ITEM_3,
     O_STATUE,
     NO_OBJECT,
     // clang-format on
