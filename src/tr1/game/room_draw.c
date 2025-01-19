@@ -294,7 +294,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     for (int i = 0; i < r->num_static_meshes; i++) {
         const STATIC_MESH *const mesh = &r->static_meshes[i];
         const STATIC_OBJECT_3D *const info =
-            &g_StaticObjects3D[mesh->static_num];
+            Object_GetStaticObject3D(mesh->static_num);
         if (!info->visible) {
             continue;
         }

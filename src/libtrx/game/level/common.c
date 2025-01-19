@@ -368,3 +368,27 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
         static_obj->visible = (flags & 2) != 0;
     }
 }
+
+void Level_ReadSpriteSequences(const int32_t num_sequences, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_sequences; i++) {
+        const int32_t object_id = VFile_ReadS32(file);
+        const int16_t num_meshes = VFile_ReadS16(file);
+        const int16_t mesh_idx = VFile_ReadS16(file);
+
+        if (object_id >= 0 && object_id < O_NUMBER_OF) {
+            OBJECT *const object = Object_GetObject(object_id);
+            object->mesh_count = num_meshes;
+            object->mesh_idx = mesh_idx;
+            object->loaded = true;
+        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
+            STATIC_OBJECT_2D *const object =
+                Object_GetStaticObject2D(object_id - O_NUMBER_OF);
+            object->frame_count = ABS(num_meshes);
+            object->texture_idx = mesh_idx;
+            object->loaded = true;
+        } else {
+            Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
+        }
+    }
+}

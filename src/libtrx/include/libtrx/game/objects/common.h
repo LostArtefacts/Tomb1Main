@@ -14,6 +14,7 @@ typedef struct {
 
 extern OBJECT *Object_GetObject(GAME_OBJECT_ID object_id);
 extern STATIC_OBJECT_3D *Object_GetStaticObject3D(int32_t static_id);
+extern STATIC_OBJECT_2D *Object_GetStaticObject2D(int32_t static_id);
 
 bool Object_IsObjectType(
     GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr);

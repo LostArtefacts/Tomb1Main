@@ -440,13 +440,13 @@ static void M_TextureData(
         const int16_t mesh_idx = VFile_ReadS16(fp);
 
         if (object_id < O_NUMBER_OF) {
-            OBJECT *const object = &g_Objects[object_id];
+            OBJECT *const object = Object_GetObject(object_id);
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->sprite_info_count;
             object->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_OBJECT_2D *const object =
-                &g_StaticObjects2D[object_id - O_NUMBER_OF];
+                Object_GetStaticObject2D(object_id - O_NUMBER_OF);
             object->frame_count = ABS(num_meshes);
             object->texture_idx = mesh_idx + level_info->sprite_info_count;
             object->loaded = true;
@@ -804,7 +804,7 @@ static void M_ApplyMeshEdit(
         mesh = Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
     } else if (mesh_edit->object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
         const STATIC_OBJECT_3D *const info =
-            &g_StaticObjects3D[mesh_edit->object_id - O_NUMBER_OF];
+            Object_GetStaticObject3D(mesh_edit->object_id - O_NUMBER_OF);
         mesh = Object_GetMesh(info->mesh_idx);
     } else {
         LOG_WARNING("Invalid object ID %d", mesh_edit->object_id);

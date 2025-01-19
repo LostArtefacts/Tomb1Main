@@ -420,26 +420,7 @@ static void M_LoadSprites(VFILE *file)
 
     const int32_t num_sequences = VFile_ReadS32(file);
     LOG_DEBUG("sprite sequences: %d", num_sequences);
-    for (int i = 0; i < num_sequences; i++) {
-        const int32_t object_id = VFile_ReadS32(file);
-        const int16_t num_meshes = VFile_ReadS16(file);
-        const int16_t mesh_idx = VFile_ReadS16(file);
-
-        if (object_id >= 0 && object_id < O_NUMBER_OF) {
-            OBJECT *const object = &g_Objects[object_id];
-            object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx;
-            object->loaded = 1;
-        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_2D *const object =
-                &g_StaticObjects2D[object_id - O_NUMBER_OF];
-            object->frame_count = ABS(num_meshes);
-            object->texture_idx = mesh_idx;
-            object->loaded = true;
-        } else {
-            Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
-        }
-    }
+    Level_ReadSpriteSequences(num_sequences, file);
 
     Benchmark_End(benchmark, NULL);
 }
@@ -872,7 +853,7 @@ static size_t M_CalculateMaxVertices(void)
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        const STATIC_OBJECT_3D *static_info = &g_StaticObjects3D[i];
+        const STATIC_OBJECT_3D *static_info = Object_GetStaticObject3D(i);
         if (!static_info->loaded) {
             continue;
         }
