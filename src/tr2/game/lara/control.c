@@ -1027,32 +1027,6 @@ void Lara_GetOffVehicle(void)
     }
 }
 
-int16_t Lara_GetNearestEnemy(void)
-{
-    if (g_LaraItem == NULL) {
-        return NO_ITEM;
-    }
-
-    int32_t best_distance = -1;
-    int16_t best_item_num = NO_ITEM;
-    int16_t item_num = g_NextItemActive;
-    while (item_num != NO_ITEM) {
-        const ITEM *const item = &g_Items[item_num];
-
-        if (Creature_IsEnemy(item)) {
-            const int32_t distance = Item_GetDistance(item, &g_LaraItem->pos);
-            if (best_item_num == NO_ITEM || distance < best_distance) {
-                best_item_num = item_num;
-                best_distance = distance;
-            }
-        }
-
-        item_num = item->next_active;
-    }
-
-    return best_item_num;
-}
-
 void Lara_TakeDamage(const int16_t damage, const bool hit_status)
 {
     Item_TakeDamage(g_LaraItem, damage, hit_status);
