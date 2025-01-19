@@ -360,6 +360,9 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
 
         M_ReadBounds16(&static_obj->draw_bounds, file);
         M_ReadBounds16(&static_obj->collision_bounds, file);
-        static_obj->flags = VFile_ReadU16(file);
+
+        const uint16_t flags = VFile_ReadU16(file);
+        static_obj->collidable = (flags & 1) == 0;
+        static_obj->visible = (flags & 2) != 0;
     }
 }

@@ -312,7 +312,7 @@ int32_t Collide_CollideStaticObjects(
             const STATIC_MESH *const mesh = &room->static_meshes[j];
             const STATIC_INFO *const sinfo = &g_StaticObjects[mesh->static_num];
 
-            if (sinfo->flags & SMF_NON_COLLIDABLE) {
+            if (!sinfo->collidable) {
                 continue;
             }
 

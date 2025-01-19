@@ -423,7 +423,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         const STATIC_MESH *const mesh = &r->static_meshes[i];
         const STATIC_INFO *const static_obj =
             &g_StaticObjects[mesh->static_num];
-        if (!(static_obj->flags & SMF_VISIBLE)) {
+        if (!static_obj->visible) {
             continue;
         }
 

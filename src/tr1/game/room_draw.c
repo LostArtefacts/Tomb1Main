@@ -294,7 +294,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     for (int i = 0; i < r->num_static_meshes; i++) {
         const STATIC_MESH *const mesh = &r->static_meshes[i];
         const STATIC_INFO *const info = &g_StaticObjects[mesh->static_num];
-        if (!(info->flags & SMF_VISIBLE)) {
+        if (!info->visible) {
             continue;
         }
 
