@@ -12,13 +12,13 @@ repos:
     name: Run additional linters
     entry: tools/additional_lint
     language: python
-    stages: [commit]
+    stages: [pre-commit]
 
   - id: additional-lint -a
     name: Run additional linters (repo-wide)
     entry: tools/additional_lint -a
     language: python
-    stages: [commit]
+    stages: [pre-commit]
     pass_filenames: false
 
   - id: imports
@@ -31,4 +31,4 @@ repos:
     name: Update game flow files
     entry: tools/update_gameflow
     language: python
-    stages: [commit]
+    stages: [pre-commit]
