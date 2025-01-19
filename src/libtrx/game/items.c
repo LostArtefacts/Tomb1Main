@@ -233,13 +233,15 @@ void Item_PlayAnimSFX(
     }
 
     const ITEM *const lara_item = Lara_GetItem();
+    const bool item_underwater =
+        (Room_Get(item->room_num)->flags & RF_UNDERWATER) != 0;
     const ANIM_COMMAND_ENVIRONMENT mode = data->environment;
 
     if (mode != ACE_ALL && item->room_num != NO_ROOM) {
         int32_t height = NO_HEIGHT;
         if (item == lara_item) {
             height = Lara_GetLaraInfo()->water_surface_dist;
-        } else if (Room_Get(item->room_num)->flags & RF_UNDERWATER) {
+        } else if (item_underwater) {
             height = -STEP_L;
         }
 
@@ -252,7 +254,9 @@ void Item_PlayAnimSFX(
     SOUND_PLAY_MODE play_mode = SPM_NORMAL;
     if (item == lara_item) {
         play_mode = SPM_ALWAYS;
-    } else if (Object_IsObjectType(item->object_id, g_WaterObjects)) {
+    } else if (
+        Object_IsObjectType(item->object_id, g_WaterObjects)
+        || (TR_VERSION == 1 && item_underwater)) {
         play_mode = SPM_UNDERWATER;
     }
 #if TR_VERSION > 1
