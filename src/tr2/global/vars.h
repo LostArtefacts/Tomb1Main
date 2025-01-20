@@ -3,6 +3,7 @@
 #include "global/types.h"
 
 #include <libtrx/game/camera/vars.h>
+#include <libtrx/game/output/vars.h>
 #include <libtrx/gfx/context.h>
 
 #include <SDL2/SDL.h>
@@ -14,7 +15,6 @@ extern int16_t g_RoomsToDrawCount;
 
 extern const float g_RhwFactor;
 extern uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES];
-extern OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 extern SDL_Window *g_SDLWindow;
 
@@ -27,7 +27,6 @@ extern bool g_GymInvOpenEnabled;
 extern int32_t g_MidSort;
 extern GOURAUD_ENTRY g_GouraudTable[256];
 extern int32_t g_PhdWinTop;
-extern SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES];
 extern int32_t g_LsAdder;
 extern float g_FltWinBottom;
 extern float g_FltResZBuf;

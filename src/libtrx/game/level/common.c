@@ -6,6 +6,7 @@
 #include "game/game_buf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
+#include "game/output.h"
 #include "game/rooms.h"
 #include "game/shell.h"
 #include "log.h"
@@ -366,6 +367,52 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
         const uint16_t flags = VFile_ReadU16(file);
         static_obj->collidable = (flags & 1) == 0;
         static_obj->visible = (flags & 2) != 0;
+    }
+}
+
+void Level_ReadObjectTextures(
+    const int32_t base_idx, const int16_t base_page_idx,
+    const int32_t num_textures, VFILE *const file)
+{
+    if ((base_idx + num_textures) > MAX_OBJECT_TEXTURES) {
+        Shell_ExitSystemFmt(
+            "Too many object textures: %d (max=%d)", base_idx + num_textures,
+            MAX_OBJECT_TEXTURES);
+        return;
+    }
+
+    for (int32_t i = 0; i < num_textures; i++) {
+        OBJECT_TEXTURE *const texture = &g_ObjectTextures[base_idx + i];
+        texture->draw_type = VFile_ReadU16(file);
+        texture->tex_page = VFile_ReadU16(file) + base_page_idx;
+        for (int32_t j = 0; j < 4; j++) {
+            texture->uv[j].u = VFile_ReadU16(file);
+            texture->uv[j].v = VFile_ReadU16(file);
+        }
+    }
+}
+
+void Level_ReadSpriteTextures(
+    const int32_t base_idx, const int16_t base_page_idx,
+    const int32_t num_textures, VFILE *const file)
+{
+    if ((base_idx + num_textures) > MAX_SPRITE_TEXTURES) {
+        Shell_ExitSystemFmt(
+            "Too many sprite textures: %d (max=%d)", base_idx + num_textures,
+            MAX_SPRITE_TEXTURES);
+        return;
+    }
+
+    for (int32_t i = 0; i < num_textures; i++) {
+        SPRITE_TEXTURE *const sprite = &g_SpriteTextures[base_idx + i];
+        sprite->tex_page = VFile_ReadU16(file) + base_page_idx;
+        sprite->offset = VFile_ReadU16(file);
+        sprite->width = VFile_ReadU16(file);
+        sprite->height = VFile_ReadU16(file);
+        sprite->x0 = VFile_ReadS16(file);
+        sprite->y0 = VFile_ReadS16(file);
+        sprite->x1 = VFile_ReadS16(file);
+        sprite->y1 = VFile_ReadS16(file);
     }
 }
 

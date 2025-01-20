@@ -409,32 +409,11 @@ static void M_TextureData(
     VFILE *const fp = injection->fp;
 
     // Read the tex_infos and align them to the end of the page list.
-    for (int32_t i = 0; i < inj_info->texture_count; i++) {
-        OBJECT_TEXTURE *const texture =
-            &g_ObjectTextures[level_info->texture_count + i];
-        texture->draw_type = VFile_ReadU16(fp);
-        texture->tex_page = VFile_ReadU16(fp);
-        for (int32_t j = 0; j < 4; j++) {
-            texture->uv[j].u = VFile_ReadU16(fp);
-            texture->uv[j].v = VFile_ReadU16(fp);
-        }
-        g_ObjectTextures[level_info->texture_count + i].tex_page += page_base;
-    }
-
-    for (int32_t i = 0; i < inj_info->sprite_info_count; i++) {
-        SPRITE_TEXTURE *const sprite =
-            &g_SpriteTextures[level_info->sprite_info_count + i];
-        sprite->tex_page = VFile_ReadU16(fp);
-        sprite->offset = VFile_ReadU16(fp);
-        sprite->width = VFile_ReadU16(fp);
-        sprite->height = VFile_ReadU16(fp);
-        sprite->x0 = VFile_ReadS16(fp);
-        sprite->y0 = VFile_ReadS16(fp);
-        sprite->x1 = VFile_ReadS16(fp);
-        sprite->y1 = VFile_ReadS16(fp);
-        g_SpriteTextures[level_info->sprite_info_count + i].tex_page +=
-            page_base;
-    }
+    Level_ReadObjectTextures(
+        level_info->texture_count, page_base, inj_info->texture_count, fp);
+    Level_ReadSpriteTextures(
+        level_info->sprite_info_count, page_base, inj_info->sprite_info_count,
+        fp);
 
     for (int32_t i = 0; i < inj_info->sprite_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);

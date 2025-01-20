@@ -303,21 +303,10 @@ static void M_LoadTextures(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_INFO("object textures: %d", num_textures);
-    if (num_textures > MAX_OBJECT_TEXTURES) {
-        Shell_ExitSystem("Too many object textures");
-    }
+    Level_ReadObjectTextures(0, 0, num_textures, file);
 
+    // TODO: handle this post-injection/packing
     g_ObjectTextureCount = num_textures;
-    for (int32_t i = 0; i < num_textures; i++) {
-        OBJECT_TEXTURE *texture = &g_ObjectTextures[i];
-        texture->draw_type = VFile_ReadU16(file);
-        texture->tex_page = VFile_ReadU16(file);
-        for (int32_t j = 0; j < 4; j++) {
-            texture->uv[j].u = VFile_ReadU16(file);
-            texture->uv[j].v = VFile_ReadU16(file);
-        }
-    }
-
     for (int32_t i = 0; i < num_textures; i++) {
         uint16_t *const uv = &g_ObjectTextures[i].uv[0].u;
         uint8_t byte = 0;
@@ -344,20 +333,7 @@ static void M_LoadSprites(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", num_textures);
-    if (num_textures > MAX_SPRITE_TEXTURES) {
-        Shell_ExitSystem("Too many sprite textures in level");
-    }
-    for (int32_t i = 0; i < num_textures; i++) {
-        SPRITE_TEXTURE *const sprite = &g_SpriteTextures[i];
-        sprite->tex_page = VFile_ReadU16(file);
-        sprite->offset = VFile_ReadU16(file);
-        sprite->width = VFile_ReadU16(file);
-        sprite->height = VFile_ReadU16(file);
-        sprite->x0 = VFile_ReadS16(file);
-        sprite->y0 = VFile_ReadS16(file);
-        sprite->x1 = VFile_ReadS16(file);
-        sprite->y1 = VFile_ReadS16(file);
-    }
+    Level_ReadSpriteTextures(0, 0, num_textures, file);
 
     const int32_t num_sequences = VFile_ReadS32(file);
     LOG_DEBUG("sprite sequences: %d", num_sequences);

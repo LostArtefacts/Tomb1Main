@@ -5,6 +5,7 @@
 
 #include <libtrx/game/camera/vars.h>
 #include <libtrx/game/inventory_ring/enum.h>
+#include <libtrx/game/output/vars.h>
 
 #include <stddef.h>
 #include <stdint.h>
@@ -16,9 +17,6 @@ extern int32_t g_PhdRight;
 extern int32_t g_PhdTop;
 extern float g_FltResZ;
 extern float g_FltResZBuf;
-
-extern SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES];
-extern OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 extern int32_t g_OptionSelected;
 

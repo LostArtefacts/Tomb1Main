@@ -2,6 +2,7 @@
 
 #include "./output/const.h"
 #include "./output/types.h"
+#include "./output/vars.h"
 
 #include <stdint.h>
 
