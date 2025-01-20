@@ -95,8 +95,7 @@ bool GF_LoadFromFile(const char *const file_name)
     M_ReadStringTable(
         file, num_titles, &g_GF_TitleFileNames, &g_GF_TitleFileNamesBuf,
         cypher_code);
-    M_ReadStringTable(
-        file, num_fmvs, &g_GF_FMVFilenames, &g_GF_FMVFilenamesBuf, cypher_code);
+    M_ReadStringTable(file, num_fmvs, NULL, NULL, 0);
     M_ReadStringTable(
         file, num_levels, &g_GF_LevelFileNames, &g_GF_LevelFileNamesBuf,
         cypher_code);
@@ -196,9 +195,13 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFE_PLAY_FMV:
             if (type != GFL_SAVED) {
-                FMV_Play(g_GF_FMVFilenames[ptr[1]]);
-                if (g_IsGameToExit) {
-                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                if (ptr[1] >= g_GameFlow.fmv_count) {
+                    LOG_ERROR("Invalid FMV number: %d", ptr[1]);
+                } else {
+                    FMV_Play(g_GameFlow.fmvs[ptr[1]].path);
+                    if (g_IsGameToExit) {
+                        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                    }
                 }
             }
             ptr += 2;

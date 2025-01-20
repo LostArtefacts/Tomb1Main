@@ -147,4 +147,15 @@
             "type": "demo",
         },
     ],
+
+    "fmvs": [
+        {"path": "fmv/LOGO.RPL"},
+        {"path": "fmv/ANCIENT.RPL"},
+        {"path": "fmv/MODERN.RPL"},
+        {"path": "fmv/LANDING.RPL"},
+        {"path": "fmv/MS.RPL"},
+        {"path": "fmv/CRASH.RPL"},
+        {"path": "fmv/JEEP.RPL"},
+        {"path": "fmv/END.RPL"},
+    ],
 }

@@ -13,10 +13,16 @@
 
 static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadLevel(
+
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+static bool M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+
+static void M_LoadFMV(
+    JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *level);
+static bool M_LoadFMVs(JSON_OBJECT *obj, GAME_FLOW *gf);
+
 static bool M_LoadGlobal(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadGlobalInjections(JSON_OBJECT *const obj, GAME_FLOW *const gf)
@@ -93,7 +99,7 @@ static void M_LoadLevelInjections(
     }
 }
 
-static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *const gf)
+static bool M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
     bool result = true;
 
@@ -135,6 +141,46 @@ end:
     return result;
 }
 
+static void M_LoadFMV(JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *fmv)
+{
+    const char *const path = JSON_ObjectGetString(obj, "path", NULL);
+    if (path == NULL) {
+        Shell_ExitSystemFmt("Missing FMV path");
+    }
+    fmv->path = Memory_DupStr(path);
+}
+
+static bool M_LoadFMVs(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    bool result = true;
+
+    JSON_ARRAY *const jlvl_arr = JSON_ObjectGetArray(obj, "fmvs");
+    if (jlvl_arr == NULL) {
+        goto end;
+    }
+
+    int32_t fmv_count = jlvl_arr->length;
+    gf->fmv_count = fmv_count;
+    gf->fmvs = Memory_Alloc(sizeof(GAME_FLOW_FMV) * fmv_count);
+
+    JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
+    for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
+        GAME_FLOW_FMV *const fmv = &gf->fmvs[i];
+
+        JSON_OBJECT *const fmv_obj = JSON_ValueAsObject(jlvl_elem->value);
+        if (fmv_obj == NULL) {
+            LOG_ERROR("'levels' elements must be dictionaries");
+            result = false;
+            goto end;
+        }
+
+        M_LoadFMV(fmv_obj, gf, fmv);
+    }
+
+end:
+    return result;
+}
+
 static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     gf->title_replace =
@@ -168,6 +214,8 @@ static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     gf->secret_track = JSON_ObjectGetInt(obj, "secret_track", MX_INACTIVE);
     gf->level_complete_track =
         JSON_ObjectGetInt(obj, "level_complete_track", MX_INACTIVE);
+
+    M_LoadGlobalInjections(obj, gf);
     return true;
 }
 
@@ -200,9 +248,9 @@ bool GF_N_Load(const char *const path)
 
     GAME_FLOW *const gf = &g_GameFlow;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
-    M_LoadGlobalInjections(root_obj, gf);
     result &= M_LoadGlobal(root_obj, gf);
-    result &= M_LoadScriptLevels(root_obj, gf);
+    result &= M_LoadLevels(root_obj, gf);
+    result &= M_LoadFMVs(root_obj, gf);
 
 end:
     if (root != NULL) {
@@ -247,8 +295,16 @@ void GF_N_Shutdown(void)
         }
         Memory_FreePointer(&gf->levels[i].injections.data_paths);
     }
+
     Memory_FreePointer(&gf->levels);
     gf->level_count = 0;
+
     Memory_FreePointer(&gf->demo_levels);
     gf->demo_level_count = 0;
+
+    for (int32_t i = 0; i < gf->fmv_count; i++) {
+        Memory_FreePointer(&gf->fmvs[i].path);
+    }
+    Memory_FreePointer(&gf->fmvs);
+    gf->fmv_count = 0;
 }

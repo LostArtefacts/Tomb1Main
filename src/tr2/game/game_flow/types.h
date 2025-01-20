@@ -16,6 +16,10 @@ typedef struct {
 } GAME_INFO;
 
 typedef struct {
+    const char *path;
+} GAME_FLOW_FMV;
+
+typedef struct {
     bool demo;
     INJECTION_DATA injections;
 } GAME_FLOW_LEVEL;
@@ -23,6 +27,10 @@ typedef struct {
 typedef struct {
     int32_t level_count;
     GAME_FLOW_LEVEL *levels;
+
+    int32_t fmv_count;
+    GAME_FLOW_FMV *fmvs;
+
     INJECTION_DATA injections;
 
     GAME_FLOW_COMMAND first_option;
