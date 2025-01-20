@@ -312,7 +312,6 @@ typedef enum {
 
 typedef struct {
     uint16_t num_levels;
-    uint16_t num_demos;
 } GAME_FLOW_LEGACY;
 
 typedef enum {

@@ -1,6 +1,7 @@
 #include "game/stats.h"
 
 #include "game/clock.h"
+#include "game/game_flow.h"
 #include "global/vars.h"
 
 #define USE_REAL_CLOCK 0
@@ -35,8 +36,7 @@ FINAL_STATS Stats_ComputeFinalStats(void)
 {
     FINAL_STATS result = {};
 
-    const int32_t total_levels =
-        g_GameFlowLegacy.num_levels - g_GameFlowLegacy.num_demos;
+    const int32_t total_levels = GF_GetLevelCount() - GF_GetDemoCount();
     for (int32_t i = LV_FIRST; i < total_levels; i++) {
         result.timer += g_SaveGame.start[i].stats.timer;
         result.ammo_used += g_SaveGame.start[i].stats.ammo_used;

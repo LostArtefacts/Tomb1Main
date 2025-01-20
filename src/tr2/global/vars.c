@@ -342,7 +342,6 @@ bool g_GF_SunsetEnabled = false;
 int16_t g_GF_MusicTracks[16] = {};
 int16_t g_GF_NoFloor = 0;
 int16_t g_GF_NumSecrets = 3;
-int16_t g_GF_ValidDemos[MAX_DEMO_FILES] = {};
 int32_t g_GF_LaraStartAnim;
 int32_t g_GF_ScriptVersion;
 

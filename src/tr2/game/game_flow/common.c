@@ -12,7 +12,7 @@ int32_t GF_GetLevelCount(void)
 
 int32_t GF_GetDemoCount(void)
 {
-    return g_GameFlowLegacy.num_demos;
+    return g_GameFlow.demo_level_count;
 }
 
 const char *GF_GetLevelFileName(int32_t level_num)

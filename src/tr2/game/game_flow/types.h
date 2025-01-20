@@ -16,6 +16,7 @@ typedef struct {
 } GAME_INFO;
 
 typedef struct {
+    bool demo;
     INJECTION_DATA injections;
 } GAME_FLOW_LEVEL;
 
@@ -44,4 +45,8 @@ typedef struct {
     MUSIC_TRACK_ID title_track;
     MUSIC_TRACK_ID secret_track;
     MUSIC_TRACK_ID level_complete_track;
+
+    // denormalized data
+    int32_t demo_level_count;
+    int32_t *demo_levels;
 } GAME_FLOW;

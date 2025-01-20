@@ -151,7 +151,6 @@ extern bool g_GF_RemoveWeapons;
 extern int16_t g_GF_MusicTracks[16];
 extern int16_t g_GF_NoFloor;
 extern int16_t g_GF_NumSecrets;
-extern int16_t g_GF_ValidDemos[MAX_DEMO_FILES];
 extern int32_t g_GF_LaraStartAnim;
 
 extern int32_t g_SavedGames;

@@ -1,5 +1,6 @@
 #include "game/lara/cheat_keys.h"
 
+#include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/sound.h"
 #include "global/vars.h"
@@ -65,8 +66,7 @@ void Lara_Cheat_CheckKeys(void)
         return;
     }
 
-    if (g_CurrentLevel
-        == g_GameFlowLegacy.num_levels - g_GameFlowLegacy.num_demos - 1) {
+    if (g_CurrentLevel == GF_GetLevelCount() - GF_GetDemoCount() - 1) {
         return;
     }
 

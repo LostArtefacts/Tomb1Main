@@ -332,8 +332,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
         m_NoInputCounter = 0;
-    } else if (
-        g_GameFlowLegacy.num_demos > 0 && ring->motion.status == RNG_OPEN) {
+    } else if (GF_GetDemoCount() > 0 && ring->motion.status == RNG_OPEN) {
         m_NoInputCounter++;
         if (m_NoInputCounter > g_GameFlow.demo_delay * LOGIC_FPS) {
             ring->is_demo_needed = true;

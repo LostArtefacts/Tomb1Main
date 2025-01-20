@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "game/camera.h"
 #include "game/game.h"
+#include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -42,12 +43,12 @@ static void M_RestoreStartInfo(M_PRIV *p);
 
 static int32_t M_GetNextLevel(M_PRIV *const p)
 {
-    if (g_GameFlowLegacy.num_demos <= 0) {
+    if (g_GameFlow.demo_level_count <= 0) {
         return -1;
     }
-    const int32_t level_num = g_GF_ValidDemos[p->demo_num];
+    const int32_t level_num = g_GameFlow.demo_levels[p->demo_num];
     p->demo_num++;
-    p->demo_num %= g_GameFlowLegacy.num_demos;
+    p->demo_num %= g_GameFlow.demo_level_count;
     return level_num;
 }
 
@@ -237,12 +238,12 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
     M_PRIV *const p = &m_Priv;
     if (demo_num < 0) {
         return M_GetNextLevel(p);
-    } else if (g_GameFlowLegacy.num_demos <= 0) {
+    } else if (g_GameFlow.demo_level_count <= 0) {
         return -1;
-    } else if (demo_num < 0 || demo_num >= g_GameFlowLegacy.num_demos) {
+    } else if (demo_num < 0 || demo_num >= GF_GetDemoCount()) {
         return -1;
     } else {
-        return g_GF_ValidDemos[demo_num];
+        return g_GameFlow.demo_levels[demo_num];
     }
 }
 

@@ -83,8 +83,7 @@ bool GF_LoadFromFile(const char *const file_name)
     const uint16_t num_titles = VFile_ReadU16(file);
     const uint16_t num_fmvs = VFile_ReadU16(file);
     const uint16_t num_cutscenes = VFile_ReadU16(file);
-    g_GameFlowLegacy.num_demos = VFile_ReadU16(file);
-    VFile_Skip(file, 44);
+    VFile_Skip(file, 46);
 
     const uint8_t cypher_code = VFile_ReadU8(file);
     VFile_Skip(file, 7);
@@ -119,9 +118,6 @@ bool GF_LoadFromFile(const char *const file_name)
     for (int32_t i = 0; i < g_GameFlowLegacy.num_levels; i++) {
         m_ScriptTable[i] = m_SequenceBuf + (m_LevelOffsets[i + 1] / 2);
     }
-
-    VFile_Read(
-        file, g_GF_ValidDemos, sizeof(int16_t) * g_GameFlowLegacy.num_demos);
 
     VFile_Close(file);
     Benchmark_End(benchmark, NULL);

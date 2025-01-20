@@ -3,6 +3,7 @@
 #include "game/game_flow.h"
 #include "game/game_flow/common.h"
 #include "game/game_flow/vars.h"
+#include "game/shell.h"
 #include "global/vars.h"
 
 #include <libtrx/filesystem.h>
@@ -11,6 +12,8 @@
 #include <libtrx/memory.h>
 
 static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
+static void M_LoadLevel(
+    JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
@@ -31,6 +34,22 @@ static void M_LoadGlobalInjections(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         const char *const str = JSON_ArrayGetString(injections, i, NULL);
         gf->injections.data_paths[i] = Memory_DupStr(str);
     }
+}
+
+static void M_LoadLevel(
+    JSON_OBJECT *const obj, const GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level)
+{
+    const char *const level_type = JSON_ObjectGetString(obj, "type", NULL);
+    if (level_type == NULL) {
+        level->demo = false;
+    } else if (strcmp(level_type, "demo") == 0) {
+        level->demo = true;
+    } else {
+        Shell_ExitSystemFmt("Invalid level type: '%s'", level_type);
+    }
+
+    M_LoadLevelInjections(obj, gf, level);
 }
 
 static void M_LoadLevelInjections(
@@ -102,14 +121,14 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *const gf)
     for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
         GAME_FLOW_LEVEL *const level = &gf->levels[i];
 
-        JSON_OBJECT *const jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
-        if (jlvl_obj == NULL) {
+        JSON_OBJECT *const lvl_obj = JSON_ValueAsObject(jlvl_elem->value);
+        if (lvl_obj == NULL) {
             LOG_ERROR("'levels' elements must be dictionaries");
             result = false;
             goto end;
         }
 
-        M_LoadLevelInjections(jlvl_obj, gf, level);
+        M_LoadLevel(lvl_obj, gf, level);
     }
 
 end:
@@ -195,6 +214,20 @@ end:
         GF_N_Shutdown();
     }
 
+    gf->demo_level_count = 0;
+    for (int32_t i = 0; i < gf->level_count; i++) {
+        if (gf->levels[i].demo) {
+            gf->demo_level_count++;
+        }
+    }
+    gf->demo_levels = Memory_Alloc(sizeof(int32_t) * gf->demo_level_count);
+    int32_t count = 0;
+    for (int32_t i = 0; i < gf->level_count; i++) {
+        if (gf->levels[i].demo) {
+            gf->demo_levels[count++] = i;
+        }
+    }
+
     Memory_FreePointer(&script_data);
     return result;
 }
@@ -216,4 +249,6 @@ void GF_N_Shutdown(void)
     }
     Memory_FreePointer(&gf->levels);
     gf->level_count = 0;
+    Memory_FreePointer(&gf->demo_levels);
+    gf->demo_level_count = 0;
 }
