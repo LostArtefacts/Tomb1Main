@@ -14,7 +14,7 @@ extern int16_t g_RoomsToDrawCount;
 
 extern const float g_RhwFactor;
 extern uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES];
-extern PHD_TEXTURE g_TextureInfo[MAX_TEXTURES];
+extern OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 extern SDL_Window *g_SDLWindow;
 
@@ -118,8 +118,8 @@ extern int32_t g_FlipMaps[MAX_FLIP_MAPS];
 extern bool g_CameraUnderwater;
 extern int32_t g_BoxCount;
 extern int32_t g_TexturePageCount;
-extern int32_t g_TextureInfoCount;
-extern uint8_t g_LabTextureUVFlag[MAX_TEXTURES];
+extern int32_t g_ObjectTextureCount;
+extern uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 extern int32_t g_NumCameras;
 extern int16_t *g_AnimTextureRanges;
 extern uint32_t *g_DemoPtr;

@@ -35,7 +35,7 @@ void Render_BeginScene(void);
 void Render_EndScene(void);
 
 void Render_LoadBackgroundFromTexture(
-    const PHD_TEXTURE *texture, int32_t repeat_x, int32_t repeat_y);
+    const OBJECT_TEXTURE *texture, int32_t repeat_x, int32_t repeat_y);
 void Render_LoadBackgroundFromImage(const IMAGE *image);
 void Render_UnloadBackground(void);
 void Render_DrawBackground(void);

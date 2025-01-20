@@ -70,11 +70,11 @@ static void M_InsertPolyFlat(
 
 static void M_InsertGT3_Sorted(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const PHD_TEXTURE *texture, const PHD_UV *uv0,
+    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const PHD_UV *uv0,
     const PHD_UV *uv1, const PHD_UV *uv2, const SORT_TYPE sort_type);
 static void M_InsertGT4_Sorted(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const PHD_TEXTURE *texture,
+    const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const OBJECT_TEXTURE *texture,
     const SORT_TYPE sort_type);
 static void M_InsertFlatFace3s_Sorted(
     RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
@@ -101,11 +101,11 @@ static void M_InsertTransOctagon_Sorted(
 
 static void M_InsertGT3_ZBuffered(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const PHD_TEXTURE *texture, const PHD_UV *uv0,
+    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const PHD_UV *uv0,
     const PHD_UV *uv1, const PHD_UV *uv2);
 static void M_InsertGT4_ZBuffered(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const PHD_TEXTURE *texture);
+    const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const OBJECT_TEXTURE *texture);
 static void M_InsertFlatFace3s_ZBuffered(
     RENDERER *renderer, const FACE3 *faces, int32_t num, SORT_TYPE sort_type);
 static void M_InsertFlatFace4s_ZBuffered(
@@ -362,7 +362,7 @@ static void M_InsertPolyFlat(
 static void M_InsertGT3_Sorted(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const PHD_TEXTURE *const texture, const PHD_UV *const uv0,
+    const OBJECT_TEXTURE *const texture, const PHD_UV *const uv0,
     const PHD_UV *const uv1, const PHD_UV *const uv2, const SORT_TYPE sort_type)
 {
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip;
@@ -455,7 +455,7 @@ static void M_InsertGT3_Sorted(
 static void M_InsertGT4_Sorted(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const PHD_VBUF *const vtx3, const PHD_TEXTURE *const texture,
+    const PHD_VBUF *const vtx3, const OBJECT_TEXTURE *const texture,
     const SORT_TYPE sort_type)
 {
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip | vtx3->clip;
@@ -690,7 +690,8 @@ static void M_InsertTexturedFace3s_Sorted(
             &g_PhdVBuf[face->vertices[2]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
+        const OBJECT_TEXTURE *const texture =
+            &g_ObjectTextures[face->texture_idx];
         const PHD_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
@@ -720,7 +721,8 @@ static void M_InsertTexturedFace4s_Sorted(
             &g_PhdVBuf[face->vertices[3]],
         };
 
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
+        const OBJECT_TEXTURE *const texture =
+            &g_ObjectTextures[face->texture_idx];
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
         }
@@ -974,7 +976,7 @@ static void M_InsertTransOctagon_Sorted(
 static void M_InsertGT3_ZBuffered(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const PHD_TEXTURE *const texture, const PHD_UV *const uv0,
+    const OBJECT_TEXTURE *const texture, const PHD_UV *const uv0,
     const PHD_UV *const uv1, const PHD_UV *const uv2)
 {
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip;
@@ -1056,7 +1058,7 @@ static void M_InsertGT3_ZBuffered(
 static void M_InsertGT4_ZBuffered(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const PHD_VBUF *const vtx3, const PHD_TEXTURE *const texture)
+    const PHD_VBUF *const vtx3, const OBJECT_TEXTURE *const texture)
 {
     const int8_t clip_and = vtx0->clip & vtx1->clip & vtx2->clip & vtx3->clip;
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip | vtx3->clip;
@@ -1262,7 +1264,8 @@ static void M_InsertTexturedFace3s_ZBuffered(
             &g_PhdVBuf[face->vertices[1]],
             &g_PhdVBuf[face->vertices[2]],
         };
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
+        const OBJECT_TEXTURE *const texture =
+            &g_ObjectTextures[face->texture_idx];
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
@@ -1294,7 +1297,8 @@ static void M_InsertTexturedFace4s_ZBuffered(
             &g_PhdVBuf[face->vertices[3]],
 
         };
-        const PHD_TEXTURE *const texture = &g_TextureInfo[face->texture_idx];
+        const OBJECT_TEXTURE *const texture =
+            &g_ObjectTextures[face->texture_idx];
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;

@@ -650,7 +650,7 @@ void Output_LoadBackgroundFromObject(void)
     }
 
     const int32_t texture_idx = mesh->tex_face4s[0].texture_idx;
-    const PHD_TEXTURE *const texture = &g_TextureInfo[texture_idx];
+    const OBJECT_TEXTURE *const texture = &g_ObjectTextures[texture_idx];
     Render_LoadBackgroundFromTexture(texture, 8, 6);
     return;
 }
@@ -759,11 +759,11 @@ void Output_DoAnimateTextures(const int32_t ticks)
         int16_t i = *(ptr++);
         for (; i > 0; --i, ++ptr) {
             int16_t j = *(ptr++);
-            const PHD_TEXTURE temp = g_TextureInfo[*ptr];
+            const OBJECT_TEXTURE temp = g_ObjectTextures[*ptr];
             for (; j > 0; --j, ++ptr) {
-                g_TextureInfo[ptr[0]] = g_TextureInfo[ptr[1]];
+                g_ObjectTextures[ptr[0]] = g_ObjectTextures[ptr[1]];
             }
-            g_TextureInfo[*ptr] = temp;
+            g_ObjectTextures[*ptr] = temp;
         }
         m_TickComp -= TICKS_PER_FRAME * 5;
     }

@@ -302,14 +302,14 @@ static void M_LoadTextures(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_textures = VFile_ReadS32(file);
-    LOG_INFO("textures: %d", num_textures);
-    if (num_textures > MAX_TEXTURES) {
-        Shell_ExitSystem("Too many textures");
+    LOG_INFO("object textures: %d", num_textures);
+    if (num_textures > MAX_OBJECT_TEXTURES) {
+        Shell_ExitSystem("Too many object textures");
     }
 
-    g_TextureInfoCount = num_textures;
+    g_ObjectTextureCount = num_textures;
     for (int32_t i = 0; i < num_textures; i++) {
-        PHD_TEXTURE *texture = &g_TextureInfo[i];
+        OBJECT_TEXTURE *texture = &g_ObjectTextures[i];
         texture->draw_type = VFile_ReadU16(file);
         texture->tex_page = VFile_ReadU16(file);
         for (int32_t j = 0; j < 4; j++) {
@@ -319,7 +319,7 @@ static void M_LoadTextures(VFILE *const file)
     }
 
     for (int32_t i = 0; i < num_textures; i++) {
-        uint16_t *const uv = &g_TextureInfo[i].uv[0].u;
+        uint16_t *const uv = &g_ObjectTextures[i].uv[0].u;
         uint8_t byte = 0;
         for (int32_t j = 0; j < 8; j++) {
             if ((uv[j] & 0x80) != 0) {
@@ -332,7 +332,7 @@ static void M_LoadTextures(VFILE *const file)
         g_LabTextureUVFlag[i] = byte;
 
         for (int32_t j = 0; j < 4; j++) {
-            g_TextureInfo[i].uv_backup[j] = g_TextureInfo[i].uv[j];
+            g_ObjectTextures[i].uv_backup[j] = g_ObjectTextures[i].uv[j];
         }
     }
 

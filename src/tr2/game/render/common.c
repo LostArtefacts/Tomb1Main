@@ -24,7 +24,7 @@ static GFX_2D_RENDERER *m_BackgroundRenderer = NULL;
 static struct {
     bool ready;
     GFX_2D_SURFACE *surface;
-    const PHD_TEXTURE *texture;
+    const OBJECT_TEXTURE *texture;
     int32_t repeat_x;
     int32_t repeat_y;
 } m_Background = {};
@@ -164,7 +164,7 @@ void Render_EndScene(void)
 }
 
 void Render_LoadBackgroundFromTexture(
-    const PHD_TEXTURE *const texture, const int32_t repeat_x,
+    const OBJECT_TEXTURE *const texture, const int32_t repeat_x,
     const int32_t repeat_y)
 {
     if (g_TexturePageBuffer16[texture->tex_page] == NULL) {

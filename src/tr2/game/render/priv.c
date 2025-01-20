@@ -116,14 +116,14 @@ int32_t Render_GetUVAdjustment(void)
 
 void Render_AdjustTextureUVs(const bool reset_uv_add)
 {
-    if (g_TextureInfoCount <= 0) {
+    if (g_ObjectTextureCount <= 0) {
         return;
     }
 
     const int32_t offset = Render_GetUVAdjustment();
-    for (int32_t i = 0; i < g_TextureInfoCount; i++) {
-        PHD_UV *const uv = g_TextureInfo[i].uv;
-        const PHD_UV *const uv_backup = g_TextureInfo[i].uv_backup;
+    for (int32_t i = 0; i < g_ObjectTextureCount; i++) {
+        PHD_UV *const uv = g_ObjectTextures[i].uv;
+        const PHD_UV *const uv_backup = g_ObjectTextures[i].uv_backup;
         int32_t uv_flags = g_LabTextureUVFlag[i];
         for (int32_t j = 0; j < 4; j++) {
             uv[j].u = uv_backup[j].u + ((uv_flags & 1) ? -offset : offset);

@@ -356,7 +356,7 @@ void S_UnloadLevelFile(void)
     strcpy(g_LevelFileName, "");
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
-    g_TextureInfoCount = 0;
+    g_ObjectTextureCount = 0;
 }
 
 void GetValidLevelsList(REQUEST_INFO *const req)

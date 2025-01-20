@@ -15,7 +15,7 @@ int16_t g_RoomsToDrawCount = 0;
 
 const float g_RhwFactor = 0x14000000.p0;
 uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES] = {};
-PHD_TEXTURE g_TextureInfo[MAX_TEXTURES];
+OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 SDL_Window *g_SDLWindow = NULL;
 
@@ -121,8 +121,8 @@ int32_t g_FlipMaps[MAX_FLIP_MAPS];
 bool g_CameraUnderwater;
 int32_t g_BoxCount;
 int32_t g_TexturePageCount;
-int32_t g_TextureInfoCount;
-uint8_t g_LabTextureUVFlag[MAX_TEXTURES];
+int32_t g_ObjectTextureCount;
+uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 int32_t g_NumCameras;
 int16_t *g_AnimTextureRanges = NULL;
 uint32_t *g_DemoPtr = NULL;
