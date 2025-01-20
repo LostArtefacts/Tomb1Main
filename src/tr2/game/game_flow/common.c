@@ -25,6 +25,16 @@ const char *GF_GetLevelTitle(const int32_t level_num)
     return g_GameFlow.levels[level_num].title;
 }
 
+int32_t GF_GetCutsceneCount(void)
+{
+    return g_GameFlow.cutscene_count;
+}
+
+const char *GF_GetCutscenePath(const int32_t cutscene_num)
+{
+    return g_GameFlow.cutscenes[cutscene_num].path;
+}
+
 void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 {
     Memory_FreePointer(&g_GameFlow.levels[level_num].title);

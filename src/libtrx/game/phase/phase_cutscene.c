@@ -19,7 +19,12 @@ static void M_Draw(PHASE *phase);
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    Cutscene_Start(p->level_num);
+    if (!Cutscene_Start(p->level_num)) {
+        return (PHASE_CONTROL) {
+            .action = PHASE_ACTION_END,
+            .gf_cmd = { .action = GF_NOOP },
+        };
+    }
     Game_SetIsPlaying(true);
     return (PHASE_CONTROL) {};
 }

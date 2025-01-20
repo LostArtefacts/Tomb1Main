@@ -96,9 +96,7 @@ bool GF_LoadFromFile(const char *const file_name)
         cypher_code);
     M_ReadStringTable(file, num_fmvs, NULL, NULL, 0);
     M_ReadStringTable(file, num_levels, NULL, NULL, 0);
-    M_ReadStringTable(
-        file, num_cutscenes, &g_GF_CutsceneFileNames,
-        &g_GF_CutsceneFileNamesBuf, cypher_code);
+    M_ReadStringTable(file, num_cutscenes, NULL, NULL, 0);
 
     VFile_Read(file, &m_LevelOffsets, sizeof(int16_t) * (num_levels + 1));
     {

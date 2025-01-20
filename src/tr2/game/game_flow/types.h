@@ -20,6 +20,10 @@ typedef struct {
 } GAME_FLOW_FMV;
 
 typedef struct {
+    const char *path;
+} GAME_FLOW_CUTSCENE;
+
+typedef struct {
     bool demo;
     const char *path;
     char *title;
@@ -30,6 +34,9 @@ typedef struct {
 typedef struct {
     int32_t level_count;
     GAME_FLOW_LEVEL *levels;
+
+    int32_t cutscene_count;
+    GAME_FLOW_CUTSCENE *cutscenes;
 
     int32_t fmv_count;
     GAME_FLOW_FMV *fmvs;
