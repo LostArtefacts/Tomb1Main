@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/music.h"
 #include "global/types.h"
 
 typedef struct {
@@ -22,4 +23,25 @@ typedef struct {
     int32_t level_count;
     GAME_FLOW_LEVEL *levels;
     INJECTION_DATA injections;
+
+    GAME_FLOW_COMMAND first_option;
+    GAME_FLOW_COMMAND title_replace;
+    GAME_FLOW_COMMAND on_death_demo_mode;
+    GAME_FLOW_COMMAND on_death_in_game;
+    GAME_FLOW_COMMAND on_demo_interrupt;
+    GAME_FLOW_COMMAND on_demo_end;
+
+    float demo_delay;
+    bool is_demo_version;
+    bool title_disabled;
+    bool play_any_level;
+    bool gym_enabled;
+    bool lockout_option_ring;
+    bool cheat_keys;
+    bool load_save_disabled;
+    int32_t single_level;
+
+    MUSIC_TRACK_ID title_track;
+    MUSIC_TRACK_ID secret_track;
+    MUSIC_TRACK_ID level_complete_track;
 } GAME_FLOW;

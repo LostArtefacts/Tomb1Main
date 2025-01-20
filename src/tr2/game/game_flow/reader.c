@@ -1,5 +1,6 @@
 #include "game/game_flow/reader.h"
 
+#include "game/game_flow.h"
 #include "game/game_flow/common.h"
 #include "game/game_flow/vars.h"
 #include "global/vars.h"
@@ -13,6 +14,7 @@ static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+static bool M_LoadGlobal(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadGlobalInjections(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
@@ -114,6 +116,42 @@ end:
     return result;
 }
 
+static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
+{
+    gf->title_replace =
+        GF_TranslateScriptCommand(JSON_ObjectGetInt(obj, "title_replace", -1));
+
+    gf->first_option = GF_TranslateScriptCommand(
+        JSON_ObjectGetInt(obj, "first_option", 0x500));
+    gf->on_death_demo_mode = GF_TranslateScriptCommand(
+        JSON_ObjectGetInt(obj, "on_death_demo_mode", 0x500));
+    gf->on_death_in_game = GF_TranslateScriptCommand(
+        JSON_ObjectGetInt(obj, "on_death_in_game", -1));
+    gf->demo_delay = JSON_ObjectGetInt(obj, "demo_delay", 30);
+    gf->on_demo_interrupt = GF_TranslateScriptCommand(
+        JSON_ObjectGetInt(obj, "on_demo_interrupt", 0x500));
+    gf->on_demo_end =
+        GF_TranslateScriptCommand(JSON_ObjectGetInt(obj, "on_demo_end", 0x500));
+
+    gf->is_demo_version = JSON_ObjectGetBool(obj, "demo_version", false);
+    gf->title_disabled = JSON_ObjectGetBool(obj, "title_disabled", false);
+
+    // clang-format off
+    gf->load_save_disabled = JSON_ObjectGetBool(obj, "load_save_disabled", false);
+    gf->cheat_keys = JSON_ObjectGetBool(obj, "cheat_keys", true);
+    gf->lockout_option_ring = JSON_ObjectGetBool(obj, "lockout_option_ring", true);
+    gf->play_any_level = JSON_ObjectGetBool(obj, "play_any_level", false);
+    gf->gym_enabled = JSON_ObjectGetBool(obj, "gym_enabled", true);
+    gf->single_level = JSON_ObjectGetInt(obj, "single_level", -1);
+    // clang-format on
+
+    gf->title_track = JSON_ObjectGetInt(obj, "title_track", MX_INACTIVE);
+    gf->secret_track = JSON_ObjectGetInt(obj, "secret_track", MX_INACTIVE);
+    gf->level_complete_track =
+        JSON_ObjectGetInt(obj, "level_complete_track", MX_INACTIVE);
+    return true;
+}
+
 bool GF_N_Load(const char *const path)
 {
     GF_N_Shutdown();
@@ -144,6 +182,7 @@ bool GF_N_Load(const char *const path)
     GAME_FLOW *const gf = &g_GameFlow;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadGlobalInjections(root_obj, gf);
+    result &= M_LoadGlobal(root_obj, gf);
     result &= M_LoadScriptLevels(root_obj, gf);
 
 end:

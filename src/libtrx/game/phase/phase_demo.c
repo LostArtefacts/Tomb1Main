@@ -20,6 +20,7 @@ typedef struct {
     STATE state;
     int32_t level_num;
     FADER top_fader;
+    GAME_FLOW_COMMAND exit_gf_cmd;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -78,15 +79,11 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_RUN:
         for (int32_t i = 0; i < num_frames; i++) {
             const GAME_FLOW_COMMAND gf_cmd = Demo_Control();
-            if (gf_cmd.action == GF_LEVEL_COMPLETE) {
+            if (gf_cmd.action != GF_NOOP) {
                 p->state = STATE_FADE_OUT;
+                p->exit_gf_cmd = gf_cmd;
                 Fader_Init(&p->top_fader, FADER_ANY, FADER_BLACK, 0.5);
                 return (PHASE_CONTROL) { .action = PHASE_ACTION_NO_WAIT };
-            } else if (gf_cmd.action != GF_NOOP) {
-                return (PHASE_CONTROL) {
-                    .action = PHASE_ACTION_END,
-                    .gf_cmd = gf_cmd,
-                };
             }
         }
 
@@ -104,8 +101,9 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_FINISH:
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .gf_cmd = { .action = Game_IsExiting() ? GF_EXIT_GAME
-                                                   : GF_EXIT_TO_TITLE },
+            .gf_cmd = Game_IsExiting()
+                ? (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME }
+                : p->exit_gf_cmd,
         };
     }
 

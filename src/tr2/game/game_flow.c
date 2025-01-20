@@ -15,6 +15,8 @@
 #include <libtrx/virtual_file.h>
 
 #define GF_CURRENT_VERSION 3
+#define GF_DESCRIPTION_SIZE 256
+#define GF_EXPECTED_SIZE 128
 
 static int16_t m_LevelOffsets[200] = {};
 static int16_t *m_SequenceBuf = NULL;
@@ -22,11 +24,12 @@ static int16_t *m_ScriptTable[MAX_LEVELS] = {};
 static int16_t *m_FrontendSequence = NULL;
 
 static void M_ReadStringTable(
-    VFILE *file, int32_t count, char ***table, char **buffer);
+    VFILE *file, int32_t count, char ***table, char **buffer,
+    uint8_t cypher_code);
 
 static void M_ReadStringTable(
     VFILE *const file, const int32_t count, char ***const table,
-    char **const buffer)
+    char **const buffer, const uint8_t cypher_code)
 {
     VFile_Read(file, m_LevelOffsets, sizeof(int16_t) * count);
 
@@ -35,10 +38,8 @@ static void M_ReadStringTable(
         *buffer = Memory_Alloc(buf_size);
         VFile_Read(file, *buffer, buf_size);
 
-        if (g_GameFlowLegacy.cyphered_strings) {
-            for (int32_t i = 0; i < buf_size; i++) {
-                (*buffer)[i] ^= g_GameFlowLegacy.cypher_code;
-            }
+        for (int32_t i = 0; i < buf_size; i++) {
+            (*buffer)[i] ^= cypher_code;
         }
 
         if (table != NULL) {
@@ -70,69 +71,40 @@ bool GF_LoadFromFile(const char *const file_name)
         return false;
     }
 
-    char description[256];
-    VFile_Read(file, description, 256);
+    char description[GF_DESCRIPTION_SIZE];
+    VFile_Read(file, description, GF_DESCRIPTION_SIZE);
 
-    if (VFile_ReadS16(file) != sizeof(GAME_FLOW_LEGACY)) {
+    if (VFile_ReadS16(file) != GF_EXPECTED_SIZE) {
         return false;
     }
-    g_GameFlowLegacy.first_option = VFile_ReadS32(file);
-    g_GameFlowLegacy.title_replace = VFile_ReadS32(file);
-    g_GameFlowLegacy.on_death_demo_mode = VFile_ReadS32(file);
-    g_GameFlowLegacy.on_death_in_game = VFile_ReadS32(file);
-    g_GameFlowLegacy.no_input_time = VFile_ReadS32(file);
-    g_GameFlowLegacy.on_demo_interrupt = VFile_ReadS32(file);
-    g_GameFlowLegacy.on_demo_end = VFile_ReadS32(file);
-    VFile_Skip(file, 36);
+    VFile_Skip(file, 64);
     g_GameFlowLegacy.num_levels = VFile_ReadU16(file);
-    g_GameFlowLegacy.num_pictures = VFile_ReadU16(file);
-    g_GameFlowLegacy.num_titles = VFile_ReadU16(file);
-    g_GameFlowLegacy.num_fmvs = VFile_ReadU16(file);
-    g_GameFlowLegacy.num_cutscenes = VFile_ReadU16(file);
+    const uint16_t num_pictures = VFile_ReadU16(file);
+    const uint16_t num_titles = VFile_ReadU16(file);
+    const uint16_t num_fmvs = VFile_ReadU16(file);
+    const uint16_t num_cutscenes = VFile_ReadU16(file);
     g_GameFlowLegacy.num_demos = VFile_ReadU16(file);
-    g_GameFlowLegacy.title_track = VFile_ReadU16(file);
-    g_GameFlowLegacy.single_level = VFile_ReadS16(file);
-    VFile_Skip(file, 32);
+    VFile_Skip(file, 44);
 
-    const uint16_t flags = VFile_ReadU16(file);
-    // clang-format off
-    g_GameFlowLegacy.demo_version              = flags & 0x0001 ? 1 : 0;
-    g_GameFlowLegacy.title_disabled            = flags & 0x0002 ? 1 : 0;
-    g_GameFlowLegacy.cheat_mode_check_disabled = flags & 0x0004 ? 1 : 0;
-    g_GameFlowLegacy.load_save_disabled        = flags & 0x0010 ? 1 : 0;
-    g_GameFlowLegacy.screen_sizing_disabled    = flags & 0x0020 ? 1 : 0;
-    g_GameFlowLegacy.lockout_option_ring       = flags & 0x0040 ? 1 : 0;
-    g_GameFlowLegacy.dozy_cheat_enabled        = flags & 0x0080 ? 1 : 0;
-    g_GameFlowLegacy.cyphered_strings          = flags & 0x0100 ? 1 : 0;
-    g_GameFlowLegacy.gym_enabled               = flags & 0x0200 ? 1 : 0;
-    g_GameFlowLegacy.play_any_level            = flags & 0x0400 ? 1 : 0;
-    g_GameFlowLegacy.cheat_enable              = flags & 0x0800 ? 1 : 0;
-    // clang-format on
-    VFile_Skip(file, 6);
-
-    g_GameFlowLegacy.cypher_code = VFile_ReadU8(file);
-    g_GameFlowLegacy.language = VFile_ReadU8(file);
-    g_GameFlowLegacy.secret_track = VFile_ReadU8(file);
-    g_GameFlowLegacy.level_complete_track = VFile_ReadU8(file);
-    VFile_Skip(file, 4);
+    const uint8_t cypher_code = VFile_ReadU8(file);
+    VFile_Skip(file, 7);
 
     g_GF_LevelNames =
         Memory_Alloc(sizeof(char *) * g_GameFlowLegacy.num_levels);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
+    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL, 0);
     // picture filename strings
-    M_ReadStringTable(file, g_GameFlowLegacy.num_pictures, NULL, NULL);
+    M_ReadStringTable(file, num_pictures, NULL, NULL, 0);
     M_ReadStringTable(
-        file, g_GameFlowLegacy.num_titles, &g_GF_TitleFileNames,
-        &g_GF_TitleFileNamesBuf);
+        file, num_titles, &g_GF_TitleFileNames, &g_GF_TitleFileNamesBuf,
+        cypher_code);
     M_ReadStringTable(
-        file, g_GameFlowLegacy.num_fmvs, &g_GF_FMVFilenames,
-        &g_GF_FMVFilenamesBuf);
+        file, num_fmvs, &g_GF_FMVFilenames, &g_GF_FMVFilenamesBuf, cypher_code);
     M_ReadStringTable(
         file, g_GameFlowLegacy.num_levels, &g_GF_LevelFileNames,
-        &g_GF_LevelFileNamesBuf);
+        &g_GF_LevelFileNamesBuf, cypher_code);
     M_ReadStringTable(
-        file, g_GameFlowLegacy.num_cutscenes, &g_GF_CutsceneFileNames,
-        &g_GF_CutsceneFileNamesBuf);
+        file, num_cutscenes, &g_GF_CutsceneFileNames,
+        &g_GF_CutsceneFileNamesBuf, cypher_code);
 
     VFile_Read(
         file, &m_LevelOffsets,
@@ -151,29 +123,6 @@ bool GF_LoadFromFile(const char *const file_name)
     VFile_Read(
         file, g_GF_ValidDemos, sizeof(int16_t) * g_GameFlowLegacy.num_demos);
 
-    // game strings
-    if (VFile_ReadS16(file) != 89) {
-        return false;
-    }
-    M_ReadStringTable(file, 89, NULL, NULL);
-
-    // pc strings
-    M_ReadStringTable(file, 41, NULL, NULL);
-
-    // puzzle 1-4 strings
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    // pickup 1-2 strings
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    // key 1-4 strings
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL);
-
     VFile_Close(file);
     Benchmark_End(benchmark, NULL);
     return true;
@@ -186,8 +135,6 @@ bool GF_LoadScriptFile(const char *const fname)
     if (!GF_LoadFromFile(fname)) {
         return false;
     }
-
-    g_GameFlowLegacy.level_complete_track = MX_END_OF_LEVEL;
     return true;
 }
 
@@ -213,7 +160,7 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
         const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(ptr, type);
         current_level++;
 
-        if (g_GameFlowLegacy.single_level >= 0) {
+        if (g_GameFlow.single_level >= 0) {
             return gf_cmd;
         }
         if (gf_cmd.action != GF_LEVEL_COMPLETE) {
@@ -298,7 +245,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
                 start->stats = g_SaveGame.current_stats;
 
-                Music_Play(g_GameFlowLegacy.level_complete_track, MPM_ALWAYS);
+                if (g_GameFlow.level_complete_track != MX_INACTIVE) {
+                    Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
+                }
                 PHASE *const stats_phase =
                     Phase_Stats_Create((PHASE_STATS_ARGS) {
                         .background_type = BK_OBJECT,

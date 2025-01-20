@@ -2,6 +2,8 @@
 
 #include "./types.h"
 
+bool GF_IsGymEnabled(void);
+
 extern int32_t GF_GetLevelCount(void);
 extern int32_t GF_GetDemoCount(void);
 extern const char *GF_GetLevelFileName(int32_t level_num);

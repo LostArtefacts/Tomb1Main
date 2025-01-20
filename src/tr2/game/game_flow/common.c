@@ -33,7 +33,7 @@ void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 
 int32_t GF_GetGymLevelNum(void)
 {
-    return g_GameFlowLegacy.gym_enabled ? LV_GYM : -1;
+    return g_GameFlow.gym_enabled ? LV_GYM : -1;
 }
 
 void GF_OverrideCommand(const GAME_FLOW_COMMAND command)

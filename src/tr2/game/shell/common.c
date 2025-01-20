@@ -393,16 +393,16 @@ void Shell_Main(void)
         return;
     }
 
-    GAME_FLOW_COMMAND gf_cmd =
-        GF_TranslateScriptCommand(g_GameFlowLegacy.first_option);
+    GAME_FLOW_COMMAND gf_cmd = g_GameFlow.first_option;
     bool is_loop_continued = true;
     while (is_loop_continued) {
+        LOG_DEBUG("action=%d param=%x", gf_cmd.action, gf_cmd.param);
         switch (gf_cmd.action) {
         case GF_START_GAME:
         case GF_SELECT_GAME:
-            if (g_GameFlowLegacy.single_level >= 0) {
-                gf_cmd = GF_DoLevelSequence(
-                    g_GameFlowLegacy.single_level, GFL_NORMAL);
+            if (g_GameFlow.single_level >= 0) {
+                gf_cmd =
+                    GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
             } else {
                 if (gf_cmd.param > g_GameFlowLegacy.num_levels) {
                     Shell_ExitSystemFmt(
@@ -442,13 +442,11 @@ void Shell_Main(void)
             break;
 
         case GF_EXIT_TO_TITLE:
-            if (g_GameFlowLegacy.title_disabled) {
-                gf_cmd =
-                    GF_TranslateScriptCommand(g_GameFlowLegacy.title_replace);
+            if (g_GameFlow.title_disabled) {
+                gf_cmd = g_GameFlow.title_replace;
                 if (gf_cmd.action == GF_NOOP
                     || gf_cmd.action == GF_EXIT_TO_TITLE) {
-                    Shell_ExitSystem(
-                        "GameMain Failed: Title disabled & no replacement");
+                    Shell_ExitSystem("Title disabled & no replacement");
                     return;
                 }
             } else {

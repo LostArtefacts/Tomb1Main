@@ -3,6 +3,7 @@
 #include "decomp/decomp.h"
 #include "game/clock.h"
 #include "game/game.h"
+#include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/music.h"
 #include "game/objects/common.h"
@@ -522,7 +523,7 @@ void Overlay_AddDisplayPickup(const GAME_OBJECT_ID object_id)
 {
     if (object_id == O_SECRET_1 || object_id == O_SECRET_2
         || object_id == O_SECRET_3) {
-        Music_Play(g_GameFlowLegacy.secret_track, MPM_ALWAYS);
+        Music_Play(g_GameFlow.secret_track, MPM_ALWAYS);
     }
 
     int32_t grid_x = -1;

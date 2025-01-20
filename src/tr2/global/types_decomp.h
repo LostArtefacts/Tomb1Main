@@ -304,13 +304,6 @@ typedef struct {
 } NAMED_COLOR;
 
 typedef enum {
-    GAMEMODE_NOT_IN_GAME,
-    GAMEMODE_IN_GAME,
-    GAMEMODE_IN_DEMO,
-    GAMEMODE_IN_CUTSCENE
-} GAMEMODE;
-
-typedef enum {
     TRAP_SET      = 0,
     TRAP_ACTIVATE = 1,
     TRAP_WORKING  = 2,
@@ -318,42 +311,8 @@ typedef enum {
 } TRAP_ANIM;
 
 typedef struct {
-    int32_t first_option;
-    int32_t title_replace;
-    int32_t on_death_demo_mode;
-    int32_t on_death_in_game;
-    int32_t no_input_time;
-    int32_t on_demo_interrupt;
-    int32_t on_demo_end;
-    uint16_t reserved1[18];
     uint16_t num_levels;
-    uint16_t num_pictures;
-    uint16_t num_titles;
-    uint16_t num_fmvs;
-    uint16_t num_cutscenes;
     uint16_t num_demos;
-    uint16_t title_track;
-    int16_t single_level;
-    uint16_t reserved2[16];
-
-    uint16_t demo_version:              1;
-    uint16_t title_disabled:            1;
-    uint16_t cheat_mode_check_disabled: 1;
-    uint16_t load_save_disabled:        1;
-    uint16_t screen_sizing_disabled:    1;
-    uint16_t lockout_option_ring:       1;
-    uint16_t dozy_cheat_enabled:        1;
-    uint16_t cyphered_strings:          1;
-    uint16_t gym_enabled:               1;
-    uint16_t play_any_level:            1;
-    uint16_t cheat_enable:              1;
-
-    uint16_t reserved3[3];
-    uint8_t cypher_code;
-    uint8_t language;
-    uint8_t secret_track;
-    uint8_t level_complete_track;
-    uint16_t reserved4[2];
 } GAME_FLOW_LEGACY;
 
 typedef enum {

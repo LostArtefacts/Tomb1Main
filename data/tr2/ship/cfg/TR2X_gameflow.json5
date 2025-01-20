@@ -2,6 +2,19 @@
     // NOTE: bad changes to this file may result in crashes.
     // Lines starting with double slashes are comments and are ignored.
 
+    "title_replace": -1,
+    "title_disabled": false,
+    "load_save_disabled": false,
+    "play_any_level": false,
+    "lockout_option_ring": false,
+    "gym_enabled": true,
+    "demo_version": false,
+    "single_level": -1,
+
+    "title_track": 64,
+    "secret_track": 47,
+    "level_complete_track": 41,
+
     "levels": [
         // 0. Lara's Home
         {},
