@@ -17,6 +17,7 @@
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/game/objects/common.h>
+#include <libtrx/game/output.h>
 #include <libtrx/game/rooms.h>
 #include <libtrx/game/sound/enum.h>
 #include <libtrx/game/sound/ids.h>
@@ -280,28 +281,6 @@ typedef struct {
     int16_t u;
     int16_t v;
 } PHD_VBUF;
-
-typedef struct {
-    uint16_t u;
-    uint16_t v;
-} PHD_UV;
-
-typedef struct {
-    uint16_t draw_type;
-    uint16_t tex_page;
-    PHD_UV uv[4];
-} OBJECT_TEXTURE;
-
-typedef struct {
-    uint16_t tex_page;
-    uint16_t offset;
-    uint16_t width;
-    uint16_t height;
-    int16_t x0;
-    int16_t y0;
-    int16_t x1;
-    int16_t y1;
-} SPRITE_TEXTURE;
 
 typedef struct TEXTURE_RANGE {
     int16_t num_textures;

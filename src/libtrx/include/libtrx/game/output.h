@@ -1,5 +1,8 @@
 #pragma once
 
+#include "./output/const.h"
+#include "./output/types.h"
+
 #include <stdint.h>
 
 typedef enum {
