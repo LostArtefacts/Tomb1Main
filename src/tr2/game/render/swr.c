@@ -1739,7 +1739,7 @@ static void M_InsertTexturedFace3s(
 
         const OBJECT_TEXTURE *const texture =
             &g_ObjectTextures[face->texture_idx];
-        const PHD_UV *const uv = texture->uv;
+        const TEXTURE_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
@@ -1959,7 +1959,7 @@ static void M_InsertTexturedFace4s(
 
         const OBJECT_TEXTURE *const texture =
             &g_ObjectTextures[face->texture_idx];
-        const PHD_UV *const uv = texture->uv;
+        const TEXTURE_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;

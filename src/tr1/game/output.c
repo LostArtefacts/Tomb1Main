@@ -63,7 +63,7 @@ static int32_t m_ShadeTable[WIBBLE_SIZE] = {};
 static int32_t m_RandTable[WIBBLE_SIZE] = {};
 
 static PHD_VBUF *m_VBuf = NULL;
-static PHD_UV *m_EnvMapUV = NULL;
+static TEXTURE_UV *m_EnvMapUV = NULL;
 static int32_t m_DrawDistFade = 0;
 static int32_t m_DrawDistMax = 0;
 static RGB_F m_WaterColor = {};
@@ -172,7 +172,7 @@ static void M_DrawObjectFace3EnvMap(
     const FACE3 *const faces, const int32_t count)
 {
     const PHD_VBUF *vns[3];
-    const PHD_UV *uv[3];
+    const TEXTURE_UV *uv[3];
 
     for (int32_t i = 0; i < count; i++) {
         const FACE3 *const face = &faces[i];
@@ -193,7 +193,7 @@ static void M_DrawObjectFace4EnvMap(
     const FACE4 *const faces, const int32_t count)
 {
     const PHD_VBUF *vns[4];
-    const PHD_UV *uv[4];
+    const TEXTURE_UV *uv[4];
 
     for (int32_t i = 0; i < count; i++) {
         const FACE4 *const face = &faces[i];
@@ -559,7 +559,7 @@ void Output_Shutdown(void)
 void Output_ReserveVertexBuffer(const size_t size)
 {
     m_VBuf = GameBuf_Alloc(size * sizeof(PHD_VBUF), GBUF_VERTEX_BUFFER);
-    m_EnvMapUV = GameBuf_Alloc(size * sizeof(PHD_UV), GBUF_VERTEX_BUFFER);
+    m_EnvMapUV = GameBuf_Alloc(size * sizeof(TEXTURE_UV), GBUF_VERTEX_BUFFER);
 }
 
 void Output_SetWindowSize(int width, int height)

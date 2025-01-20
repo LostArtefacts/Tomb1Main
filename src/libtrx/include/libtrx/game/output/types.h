@@ -5,14 +5,14 @@
 typedef struct {
     uint16_t u;
     uint16_t v;
-} PHD_UV;
+} TEXTURE_UV;
 
 typedef struct {
     uint16_t draw_type;
     uint16_t tex_page;
-    PHD_UV uv[4];
+    TEXTURE_UV uv[4];
 #if TR_VERSION == 2
-    PHD_UV uv_backup[4];
+    TEXTURE_UV uv_backup[4];
 #endif
 } OBJECT_TEXTURE;
 

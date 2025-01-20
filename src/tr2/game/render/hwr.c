@@ -70,8 +70,8 @@ static void M_InsertPolyFlat(
 
 static void M_InsertGT3_Sorted(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const PHD_UV *uv0,
-    const PHD_UV *uv1, const PHD_UV *uv2, const SORT_TYPE sort_type);
+    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const TEXTURE_UV *uv0,
+    const TEXTURE_UV *uv1, const TEXTURE_UV *uv2, const SORT_TYPE sort_type);
 static void M_InsertGT4_Sorted(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
     const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const OBJECT_TEXTURE *texture,
@@ -101,8 +101,8 @@ static void M_InsertTransOctagon_Sorted(
 
 static void M_InsertGT3_ZBuffered(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
-    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const PHD_UV *uv0,
-    const PHD_UV *uv1, const PHD_UV *uv2);
+    const PHD_VBUF *vtx2, const OBJECT_TEXTURE *texture, const TEXTURE_UV *uv0,
+    const TEXTURE_UV *uv1, const TEXTURE_UV *uv2);
 static void M_InsertGT4_ZBuffered(
     RENDERER *renderer, const PHD_VBUF *vtx0, const PHD_VBUF *vtx1,
     const PHD_VBUF *vtx2, const PHD_VBUF *vtx3, const OBJECT_TEXTURE *texture);
@@ -362,8 +362,9 @@ static void M_InsertPolyFlat(
 static void M_InsertGT3_Sorted(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const OBJECT_TEXTURE *const texture, const PHD_UV *const uv0,
-    const PHD_UV *const uv1, const PHD_UV *const uv2, const SORT_TYPE sort_type)
+    const OBJECT_TEXTURE *const texture, const TEXTURE_UV *const uv0,
+    const TEXTURE_UV *const uv1, const TEXTURE_UV *const uv2,
+    const SORT_TYPE sort_type)
 {
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip;
     const int8_t clip_and = vtx0->clip & vtx1->clip & vtx2->clip;
@@ -376,7 +377,7 @@ static void M_InsertGT3_Sorted(
     const POLY_HWR_TYPE poly_type =
         texture->draw_type == DRAW_OPAQUE ? POLY_HWR_GTMAP : POLY_HWR_WGTMAP;
     const PHD_VBUF *const vtx[3] = { vtx0, vtx1, vtx2 };
-    const PHD_UV *const uv[3] = { uv0, uv1, uv2 };
+    const TEXTURE_UV *const uv[3] = { uv0, uv1, uv2 };
 
     int32_t num_points = 3;
     if (clip_or >= 0) {
@@ -692,7 +693,7 @@ static void M_InsertTexturedFace3s_Sorted(
 
         const OBJECT_TEXTURE *const texture =
             &g_ObjectTextures[face->texture_idx];
-        const PHD_UV *const uv = texture->uv;
+        const TEXTURE_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
@@ -976,8 +977,8 @@ static void M_InsertTransOctagon_Sorted(
 static void M_InsertGT3_ZBuffered(
     RENDERER *const renderer, const PHD_VBUF *const vtx0,
     const PHD_VBUF *const vtx1, const PHD_VBUF *const vtx2,
-    const OBJECT_TEXTURE *const texture, const PHD_UV *const uv0,
-    const PHD_UV *const uv1, const PHD_UV *const uv2)
+    const OBJECT_TEXTURE *const texture, const TEXTURE_UV *const uv0,
+    const TEXTURE_UV *const uv1, const TEXTURE_UV *const uv2)
 {
     const int8_t clip_or = vtx0->clip | vtx1->clip | vtx2->clip;
     const int8_t clip_and = vtx0->clip & vtx1->clip & vtx2->clip;
@@ -986,7 +987,7 @@ static void M_InsertGT3_ZBuffered(
     }
 
     const PHD_VBUF *const vtx[3] = { vtx0, vtx1, vtx2 };
-    const PHD_UV *const uv[3] = { uv0, uv1, uv2 };
+    const TEXTURE_UV *const uv[3] = { uv0, uv1, uv2 };
     int32_t num_points = 3;
 
     if (clip_or >= 0) {
@@ -1271,7 +1272,7 @@ static void M_InsertTexturedFace3s_ZBuffered(
             continue;
         }
 
-        const PHD_UV *const uv = texture->uv;
+        const TEXTURE_UV *const uv = texture->uv;
         if (texture->draw_type != DRAW_OPAQUE) {
             M_InsertGT3_Sorted(
                 renderer, vtx[0], vtx[1], vtx[2], texture, &uv[0], &uv[1],
@@ -1304,7 +1305,7 @@ static void M_InsertTexturedFace4s_ZBuffered(
             continue;
         }
 
-        const PHD_UV *const uv = texture->uv;
+        const TEXTURE_UV *const uv = texture->uv;
         if (texture->draw_type != DRAW_OPAQUE) {
             M_InsertGT4_Sorted(
                 renderer, vtx[0], vtx[1], vtx[2], vtx[3], texture, sort_type);
