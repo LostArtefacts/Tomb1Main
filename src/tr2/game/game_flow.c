@@ -2,19 +2,12 @@
 
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
-#include "game/demo.h"
 #include "game/fmv.h"
-#include "game/gun/gun.h"
-#include "game/inventory.h"
-#include "game/inventory_ring.h"
 #include "game/music.h"
-#include "game/objects/vars.h"
-#include "game/overlay.h"
 #include "game/phase.h"
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
-#include <libtrx/config.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
@@ -27,18 +20,9 @@ static int16_t m_LevelOffsets[200] = {};
 static int16_t *m_SequenceBuf = NULL;
 static int16_t *m_ScriptTable[MAX_LEVELS] = {};
 static int16_t *m_FrontendSequence = NULL;
-static int8_t m_SecretInvItems[GF_ADD_INV_NUMBER_OF] = {};
-static int8_t m_Add2InvItems[GF_ADD_INV_NUMBER_OF];
 
 static void M_ReadStringTable(
     VFILE *file, int32_t count, char ***table, char **buffer);
-
-static GF_ADD_INV M_ModifyInventory_GetGunAdder(LARA_GUN_TYPE gun_type);
-static GF_ADD_INV M_ModifyInventory_GetAmmoAdder(LARA_GUN_TYPE gun_type);
-static GF_ADD_INV M_ModifyInventory_GetItemAdder(GAME_OBJECT_ID object_id);
-static void M_ModifyInventory_GunOrAmmo(
-    START_INFO *start, int32_t type, LARA_GUN_TYPE gun_type);
-static void M_ModifyInventory_Item(int32_t type, GAME_OBJECT_ID object_id);
 
 static void M_ReadStringTable(
     VFILE *const file, const int32_t count, char ***const table,
@@ -66,140 +50,6 @@ static void M_ReadStringTable(
         }
     } else {
         VFile_Skip(file, buf_size);
-    }
-}
-
-static GF_ADD_INV M_ModifyInventory_GetGunAdder(const LARA_GUN_TYPE gun_type)
-{
-    // clang-format off
-    switch (gun_type) {
-    case LGT_PISTOLS: return GF_ADD_INV_PISTOLS;
-    case LGT_MAGNUMS: return GF_ADD_INV_MAGNUMS;
-    case LGT_UZIS:    return GF_ADD_INV_UZIS;
-    case LGT_SHOTGUN: return GF_ADD_INV_SHOTGUN;
-    case LGT_HARPOON: return GF_ADD_INV_HARPOON;
-    case LGT_M16:     return GF_ADD_INV_M16;
-    case LGT_GRENADE: return GF_ADD_INV_GRENADE;
-    default:          return (GF_ADD_INV)-1;
-    }
-    // clang-format on
-}
-
-static GF_ADD_INV M_ModifyInventory_GetAmmoAdder(const LARA_GUN_TYPE gun_type)
-{
-    // clang-format off
-    switch (gun_type) {
-    case LGT_PISTOLS: return GF_ADD_INV_PISTOL_AMMO;
-    case LGT_MAGNUMS: return GF_ADD_INV_MAGNUM_AMMO;
-    case LGT_UZIS:    return GF_ADD_INV_UZI_AMMO;
-    case LGT_SHOTGUN: return GF_ADD_INV_SHOTGUN_AMMO;
-    case LGT_HARPOON: return GF_ADD_INV_HARPOON_AMMO;
-    case LGT_M16:     return GF_ADD_INV_M16_AMMO;
-    case LGT_GRENADE: return GF_ADD_INV_GRENADE_AMMO;
-    default:          return (GF_ADD_INV)-1;
-    }
-    // clang-format on
-}
-
-static GF_ADD_INV M_ModifyInventory_GetItemAdder(const GAME_OBJECT_ID object_id)
-{
-    // clang-format off
-    switch (object_id) {
-    case O_FLARE_ITEM:          return GF_ADD_INV_FLARES;
-    case O_SMALL_MEDIPACK_ITEM: return GF_ADD_INV_SMALL_MEDI;
-    case O_LARGE_MEDIPACK_ITEM: return GF_ADD_INV_LARGE_MEDI;
-    case O_PICKUP_ITEM_1:       return GF_ADD_INV_PICKUP_1;
-    case O_PICKUP_ITEM_2:       return GF_ADD_INV_PICKUP_2;
-    case O_PUZZLE_ITEM_1:       return GF_ADD_INV_PUZZLE_1;
-    case O_PUZZLE_ITEM_2:       return GF_ADD_INV_PUZZLE_2;
-    case O_PUZZLE_ITEM_3:       return GF_ADD_INV_PUZZLE_3;
-    case O_PUZZLE_ITEM_4:       return GF_ADD_INV_PUZZLE_4;
-    case O_KEY_ITEM_1:          return GF_ADD_INV_KEY_1;
-    case O_KEY_ITEM_2:          return GF_ADD_INV_KEY_2;
-    case O_KEY_ITEM_3:          return GF_ADD_INV_KEY_3;
-    case O_KEY_ITEM_4:          return GF_ADD_INV_KEY_4;
-    default:                    return (GF_ADD_INV)-1;
-    }
-    // clang-format on
-}
-
-static void M_ModifyInventory_GunOrAmmo(
-    START_INFO *const start, const int32_t type, const LARA_GUN_TYPE gun_type)
-{
-    const GAME_OBJECT_ID gun_item = Gun_GetGunObject(gun_type);
-    const GAME_OBJECT_ID ammo_item = Gun_GetAmmoObject(gun_type);
-    const int32_t ammo_qty = Gun_GetAmmoQuantity(gun_type);
-    AMMO_INFO *const ammo_info = Gun_GetAmmoInfo(gun_type);
-
-    const GF_ADD_INV gun_adder = M_ModifyInventory_GetGunAdder(gun_type);
-    const GF_ADD_INV ammo_adder = M_ModifyInventory_GetAmmoAdder(gun_type);
-
-    if (Inv_RequestItem(gun_item)) {
-        if (type == 1) {
-            ammo_info->ammo += ammo_qty * m_SecretInvItems[ammo_adder];
-            for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
-                Overlay_AddDisplayPickup(ammo_item);
-            }
-        } else if (type == 0) {
-            ammo_info->ammo += ammo_qty * m_Add2InvItems[ammo_adder];
-        }
-    } else if (
-        (type == 0 && m_Add2InvItems[gun_adder])
-        || (type == 1 && m_SecretInvItems[gun_adder])) {
-
-        // clang-format off
-        // TODO: consider moving this to Inv_AddItem
-        switch (gun_type) {
-        case LGT_PISTOLS: start->has_pistols = 1; break;
-        case LGT_MAGNUMS: start->has_magnums = 1; break;
-        case LGT_UZIS:    start->has_uzis = 1;    break;
-        case LGT_SHOTGUN: start->has_shotgun = 1; break;
-        case LGT_HARPOON: start->has_harpoon = 1; break;
-        case LGT_M16:     start->has_m16 = 1;     break;
-        case LGT_GRENADE: start->has_grenade = 1; break;
-        default: break;
-        }
-        // clang-format on
-
-        Inv_AddItem(gun_item);
-
-        if (type == 1) {
-            ammo_info->ammo += ammo_qty * m_SecretInvItems[ammo_adder];
-            Overlay_AddDisplayPickup(gun_item);
-            for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
-                Overlay_AddDisplayPickup(ammo_item);
-            }
-        } else if (type == 0) {
-            ammo_info->ammo += ammo_qty * m_Add2InvItems[ammo_adder];
-        }
-    } else if (type == 1) {
-        for (int32_t i = 0; i < m_SecretInvItems[ammo_adder]; i++) {
-            Inv_AddItem(ammo_item);
-            Overlay_AddDisplayPickup(ammo_item);
-        }
-    } else if (type == 0) {
-        for (int32_t i = 0; i < m_Add2InvItems[ammo_adder]; i++) {
-            Inv_AddItem(ammo_item);
-        }
-    }
-}
-
-static void M_ModifyInventory_Item(
-    const int32_t type, const GAME_OBJECT_ID object_id)
-{
-    const GF_ADD_INV item_adder = M_ModifyInventory_GetItemAdder(object_id);
-    int32_t qty = 0;
-    if (type == 1) {
-        qty = m_SecretInvItems[item_adder];
-    } else if (type == 0) {
-        qty = m_Add2InvItems[item_adder];
-    }
-
-    for (int32_t i = 0; i < qty; i++) {
-        Inv_AddItem(object_id);
-        if (type == 1) {
-            Overlay_AddDisplayPickup(object_id);
-        }
     }
 }
 
@@ -382,10 +232,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     g_GF_RemoveAmmo = false;
     g_GF_RemoveWeapons = false;
 
-    for (int32_t i = 0; i < GF_ADD_INV_NUMBER_OF; i++) {
-        m_SecretInvItems[i] = 0;
-        m_Add2InvItems[i] = 0;
-    }
+    GF_InventoryModifier_Reset();
 
     g_GF_MusicTracks[0] = 2;
     g_CineTargetAngle = DEG_90;
@@ -547,9 +394,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFE_ADD_TO_INV:
             if (type != GFL_STORY && type != GFL_MID_STORY) {
                 if (ptr[1] < 1000) {
-                    m_SecretInvItems[ptr[1]]++;
+                    GF_InventoryModifier_Add(ptr[1], GF_INV_SECRET);
                 } else if (type != GFL_SAVED) {
-                    m_Add2InvItems[ptr[1] - 1000]++;
+                    GF_InventoryModifier_Add(ptr[1] - 1000, GF_INV_REGULAR);
                 }
             }
             ptr += 2;
@@ -590,104 +437,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     return gf_cmd;
-}
-
-void GF_ModifyInventory(const int32_t level, const int32_t type)
-{
-    START_INFO *const start = &g_SaveGame.start[level];
-
-    if (!start->has_pistols && m_Add2InvItems[GF_ADD_INV_PISTOLS]) {
-        start->has_pistols = 1;
-        Inv_AddItem(O_PISTOL_ITEM);
-    }
-
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_MAGNUMS);
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_UZIS);
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_SHOTGUN);
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_HARPOON);
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_M16);
-    M_ModifyInventory_GunOrAmmo(start, type, LGT_GRENADE);
-
-    M_ModifyInventory_Item(type, O_FLARE_ITEM);
-    M_ModifyInventory_Item(type, O_SMALL_MEDIPACK_ITEM);
-    M_ModifyInventory_Item(type, O_LARGE_MEDIPACK_ITEM);
-    M_ModifyInventory_Item(type, O_PICKUP_ITEM_1);
-    M_ModifyInventory_Item(type, O_PICKUP_ITEM_2);
-    M_ModifyInventory_Item(type, O_PUZZLE_ITEM_1);
-    M_ModifyInventory_Item(type, O_PUZZLE_ITEM_2);
-    M_ModifyInventory_Item(type, O_PUZZLE_ITEM_3);
-    M_ModifyInventory_Item(type, O_PUZZLE_ITEM_4);
-    M_ModifyInventory_Item(type, O_KEY_ITEM_1);
-    M_ModifyInventory_Item(type, O_KEY_ITEM_2);
-    M_ModifyInventory_Item(type, O_KEY_ITEM_3);
-    M_ModifyInventory_Item(type, O_KEY_ITEM_4);
-
-    for (int32_t i = 0; i < GF_ADD_INV_NUMBER_OF; i++) {
-        if (type == 1) {
-            m_SecretInvItems[i] = 0;
-        } else if (type == 0) {
-            m_Add2InvItems[i] = 0;
-        }
-    }
-}
-
-GAME_FLOW_COMMAND GF_StartDemo(const int32_t demo_num)
-{
-    const int32_t level_num = Demo_ChooseLevel(demo_num);
-    if (level_num < 0) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-    }
-    return GF_DoLevelSequence(level_num, GFL_DEMO);
-}
-
-GAME_FLOW_COMMAND GF_StartGame(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
-{
-    if (level_type == GFL_DEMO) {
-        PHASE *const demo_phase = Phase_Demo_Create(level_num);
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
-        Phase_Demo_Destroy(demo_phase);
-        return gf_cmd;
-    } else {
-        PHASE *const phase = Phase_Game_Create(level_num, level_type);
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-        Phase_Game_Destroy(phase);
-        return gf_cmd;
-    }
-}
-
-GAME_FLOW_COMMAND GF_EnterPhotoMode(void)
-{
-    PHASE *const subphase = Phase_PhotoMode_Create();
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
-    Phase_PhotoMode_Destroy(subphase);
-    return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_PauseGame(void)
-{
-    PHASE *const subphase = Phase_Pause_Create();
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
-    Phase_Pause_Destroy(subphase);
-    return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
-{
-    PHASE *const phase = Phase_Inventory_Create(mode);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Inventory_Destroy(phase);
-    return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
-{
-    if (g_Config.gameplay.enable_auto_item_selection) {
-        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
-            receptacle_type_id, g_KeyItemToReceptacleMap);
-        InvRing_SetRequestedObjectID(object_id);
-    }
-    return GF_ShowInventory(INV_KEYS_MODE);
 }
 
 GAME_FLOW_COMMAND GF_TranslateScriptCommand(const uint16_t dir)

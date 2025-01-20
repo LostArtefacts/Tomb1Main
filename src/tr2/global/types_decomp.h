@@ -453,37 +453,6 @@ typedef struct {
 } ROOM_LIGHT_TABLE;
 
 typedef enum {
-    GF_ADD_INV_PISTOLS      = 0,
-    GF_ADD_INV_SHOTGUN      = 1,
-    GF_ADD_INV_MAGNUMS      = 2,
-    GF_ADD_INV_UZIS         = 3,
-    GF_ADD_INV_HARPOON      = 4,
-    GF_ADD_INV_M16          = 5,
-    GF_ADD_INV_GRENADE      = 6,
-    GF_ADD_INV_PISTOL_AMMO  = 7,
-    GF_ADD_INV_SHOTGUN_AMMO = 8,
-    GF_ADD_INV_MAGNUM_AMMO  = 9,
-    GF_ADD_INV_UZI_AMMO     = 10,
-    GF_ADD_INV_HARPOON_AMMO = 11,
-    GF_ADD_INV_M16_AMMO     = 12,
-    GF_ADD_INV_GRENADE_AMMO = 13,
-    GF_ADD_INV_FLARES       = 14,
-    GF_ADD_INV_SMALL_MEDI   = 15,
-    GF_ADD_INV_LARGE_MEDI   = 16,
-    GF_ADD_INV_PICKUP_1     = 17,
-    GF_ADD_INV_PICKUP_2     = 18,
-    GF_ADD_INV_PUZZLE_1     = 19,
-    GF_ADD_INV_PUZZLE_2     = 20,
-    GF_ADD_INV_PUZZLE_3     = 21,
-    GF_ADD_INV_PUZZLE_4     = 22,
-    GF_ADD_INV_KEY_1        = 23,
-    GF_ADD_INV_KEY_2        = 24,
-    GF_ADD_INV_KEY_3        = 25,
-    GF_ADD_INV_KEY_4        = 26,
-    GF_ADD_INV_NUMBER_OF    = 27,
-} GF_ADD_INV;
-
-typedef enum {
     REQ_CENTER      = 0x00,
     REQ_USE         = 0x01,
     REQ_ALIGN_LEFT  = 0x02,

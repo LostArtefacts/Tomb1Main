@@ -82,7 +82,7 @@ static void M_DoPickup(const int16_t item_num)
                 + ((g_SaveGame.current_stats.secret_flags >> 1) & 1)
                 + ((g_SaveGame.current_stats.secret_flags >> 2) & 1)
             >= 3) {
-        GF_ModifyInventory(g_CurrentLevel, 1);
+        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_SECRET);
     }
 
     item->status = IS_INVISIBLE;

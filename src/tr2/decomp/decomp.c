@@ -204,7 +204,7 @@ int32_t Level_Initialise(
     if (level_type == GFL_SAVED) {
         ExtractSaveGameInfo();
     } else if (level_type == GFL_NORMAL) {
-        GF_ModifyInventory(g_CurrentLevel, 0);
+        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_REGULAR);
     }
 
     if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {
