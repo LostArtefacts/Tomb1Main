@@ -296,7 +296,8 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
             continue;
         }
 
-        const PHD_SPRITE *const sprite = &g_PhdSprites[room_sprite->texture];
+        const SPRITE_TEXTURE *const sprite =
+            &g_SpriteTextures[room_sprite->texture];
         const double persp = (double)(vbuf->zv / g_PhdPersp);
         const double x0 =
             g_PhdWinCenterX + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / persp;
@@ -509,7 +510,7 @@ void Output_DrawSprite(
         yv = mptr->_13;
     }
 
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
     int32_t x0 = sprite->x0;
     int32_t y0 = sprite->y0;
     int32_t x1 = sprite->x1;
@@ -568,7 +569,7 @@ void Output_DrawPickup(
     const int32_t sx, const int32_t sy, const int32_t scale,
     const int16_t sprite_idx, const int16_t shade)
 {
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
     const int32_t x0 = sx + ((sprite->x0 * scale) / PHD_ONE);
     const int32_t y0 = sy + ((sprite->y0 * scale) / PHD_ONE);
     const int32_t x1 = sx + ((sprite->x1 * scale) / PHD_ONE);
@@ -583,7 +584,7 @@ void Output_DrawScreenSprite2D(
     const int32_t scale_v, const int16_t sprite_idx, const int16_t shade,
     const uint16_t flags)
 {
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
     const int32_t x0 = sx + ((sprite->x0 * scale_h) / PHD_ONE);
     const int32_t y0 = sy + ((sprite->y0 * scale_v) / PHD_ONE);
     const int32_t x1 = sx + ((sprite->x1 * scale_h) / PHD_ONE);
@@ -599,7 +600,7 @@ void Output_DrawScreenSprite(
     const int32_t scale_v, const int16_t sprite_idx, const int16_t shade,
     const uint16_t flags)
 {
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
     const int32_t x0 = sx + (((sprite->x0 / 8) * scale_h) / PHD_ONE);
     const int32_t x1 = sx + (((sprite->x1 / 8) * scale_h) / PHD_ONE);
     const int32_t y0 = sy + (((sprite->y0 / 8) * scale_v) / PHD_ONE);

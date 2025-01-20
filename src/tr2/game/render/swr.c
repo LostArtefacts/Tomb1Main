@@ -1298,7 +1298,7 @@ static void M_DrawScaledSpriteC(
     }
 
     const DEPTHQ_ENTRY *const depth = &g_DepthQTable[shade >> 8];
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
 
     int32_t u_base = 0x4000;
     int32_t v_base = 0x4000;

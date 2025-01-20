@@ -29,7 +29,7 @@ bool g_GymInvOpenEnabled = true; // TODO: make me configurable
 int32_t g_MidSort = 0;
 GOURAUD_ENTRY g_GouraudTable[256];
 int32_t g_PhdWinTop;
-PHD_SPRITE g_PhdSprites[512];
+SPRITE_TEXTURE g_SpriteTextures[512];
 int32_t g_LsAdder;
 float g_FltWinBottom;
 float g_FltResZBuf;

@@ -345,7 +345,7 @@ static void M_LoadSprites(VFILE *const file)
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", num_textures);
     for (int32_t i = 0; i < num_textures; i++) {
-        PHD_SPRITE *const sprite = &g_PhdSprites[i];
+        SPRITE_TEXTURE *const sprite = &g_SpriteTextures[i];
         sprite->tex_page = VFile_ReadU16(file);
         sprite->offset = VFile_ReadU16(file);
         sprite->width = VFile_ReadU16(file);

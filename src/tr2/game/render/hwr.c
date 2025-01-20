@@ -829,7 +829,7 @@ static void M_InsertSprite_Sorted(
 
     int32_t num_points = 4;
 
-    const PHD_SPRITE *const sprite = &g_PhdSprites[sprite_idx];
+    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprite_idx];
     const double rhw = g_RhwFactor / (double)z;
     const int32_t u_offset = (sprite->offset & 0xFF) * 256;
     const int32_t v_offset = (sprite->offset >> 8) * 256;
