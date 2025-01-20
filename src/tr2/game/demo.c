@@ -165,8 +165,7 @@ bool Demo_Start(const int32_t level_num)
 
     g_LevelComplete = false;
     if (!g_IsDemoLoaded) {
-        LOG_ERROR(
-            "Level '%s' has no demo data", g_GF_LevelFileNames[p->level_num]);
+        LOG_ERROR("Level '%s' has no demo data", GF_GetLevelPath(p->level_num));
         return false;
     }
 

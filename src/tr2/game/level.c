@@ -696,7 +696,7 @@ finish:
 
 static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
 {
-    LOG_DEBUG("%s (num=%d)", g_GF_LevelNames[level_num], level_num);
+    LOG_DEBUG("%s (num=%d)", GF_GetLevelTitle(level_num), level_num);
     GameBuf_Reset();
 
     BENCHMARK *const benchmark = Benchmark_Start();

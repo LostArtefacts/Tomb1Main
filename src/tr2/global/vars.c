@@ -326,11 +326,8 @@ REQUEST_INFO g_SaveGameRequester = {
 };
 
 char **g_GF_CutsceneFileNames = NULL;
-char **g_GF_LevelFileNames = NULL;
-char **g_GF_LevelNames = NULL;
 char **g_GF_TitleFileNames = NULL;
 char *g_GF_CutsceneFileNamesBuf = NULL;
-char *g_GF_LevelFileNamesBuf = NULL;
 char *g_GF_TitleFileNamesBuf = NULL;
 
 bool g_GF_DeadlyWater = false;

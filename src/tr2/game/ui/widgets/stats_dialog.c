@@ -1,5 +1,6 @@
 #include "game/ui/widgets/stats_dialog.h"
 
+#include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/input.h"
 #include "game/stats.h"
@@ -13,6 +14,7 @@
 #include <libtrx/memory.h>
 
 #include <stdio.h>
+#include <string.h>
 
 #define VISIBLE_ROWS 7
 #define ROW_HEIGHT 18
@@ -301,7 +303,8 @@ UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_ARGS args)
 
     switch (args.mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
-        UI_Requester_SetTitle(self->requester, g_GF_LevelNames[args.level_num]);
+        UI_Requester_SetTitle(
+            self->requester, GF_GetLevelTitle(args.level_num));
         M_AddLevelStatsRows(self);
         break;
 

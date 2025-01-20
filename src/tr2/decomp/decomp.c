@@ -181,8 +181,8 @@ int32_t Level_Initialise(
         result = S_LoadLevelFile(
             g_GF_CutsceneFileNames[level_num], level_num, level_type);
     } else {
-        result = S_LoadLevelFile(
-            g_GF_LevelFileNames[level_num], level_num, level_type);
+        result =
+            S_LoadLevelFile(GF_GetLevelPath(level_num), level_num, level_type);
     }
     if (!result) {
         return result;
@@ -361,8 +361,8 @@ void S_UnloadLevelFile(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    for (int32_t i = 1; i < GF_GetLevelCount(); i++) {
-        Requester_AddItem(req, g_GF_LevelNames[i], 0, NULL, 0);
+    for (int32_t i = LV_FIRST; i < GF_GetLevelCount(); i++) {
+        Requester_AddItem(req, GF_GetLevelTitle(i), 0, NULL, 0);
     }
 }
 

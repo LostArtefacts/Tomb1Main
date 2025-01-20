@@ -88,7 +88,6 @@ bool GF_LoadFromFile(const char *const file_name)
     const uint8_t cypher_code = VFile_ReadU8(file);
     VFile_Skip(file, 7);
 
-    g_GF_LevelNames = Memory_Alloc(sizeof(char *) * num_levels);
     M_ReadStringTable(file, num_levels, NULL, NULL, 0);
     // picture filename strings
     M_ReadStringTable(file, num_pictures, NULL, NULL, 0);
@@ -96,9 +95,7 @@ bool GF_LoadFromFile(const char *const file_name)
         file, num_titles, &g_GF_TitleFileNames, &g_GF_TitleFileNamesBuf,
         cypher_code);
     M_ReadStringTable(file, num_fmvs, NULL, NULL, 0);
-    M_ReadStringTable(
-        file, num_levels, &g_GF_LevelFileNames, &g_GF_LevelFileNamesBuf,
-        cypher_code);
+    M_ReadStringTable(file, num_levels, NULL, NULL, 0);
     M_ReadStringTable(
         file, num_cutscenes, &g_GF_CutsceneFileNames,
         &g_GF_CutsceneFileNamesBuf, cypher_code);

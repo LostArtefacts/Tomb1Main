@@ -55,6 +55,12 @@ static void M_LoadLevel(
         Shell_ExitSystemFmt("Invalid level type: '%s'", level_type);
     }
 
+    const char *const path = JSON_ObjectGetString(obj, "path", NULL);
+    if (path == NULL) {
+        Shell_ExitSystemFmt("Missing level path");
+    }
+    level->path = Memory_DupStr(path);
+
     M_LoadLevelInjections(obj, gf, level);
 }
 
@@ -294,8 +300,9 @@ void GF_N_Shutdown(void)
             Memory_FreePointer(&gf->levels[i].injections.data_paths[j]);
         }
         Memory_FreePointer(&gf->levels[i].injections.data_paths);
+        Memory_FreePointer(&gf->levels[i].path);
+        Memory_FreePointer(&gf->levels[i].title);
     }
-
     Memory_FreePointer(&gf->levels);
     gf->level_count = 0;
 

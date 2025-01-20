@@ -15,20 +15,21 @@ int32_t GF_GetDemoCount(void)
     return g_GameFlow.demo_level_count;
 }
 
-const char *GF_GetLevelFileName(int32_t level_num)
+const char *GF_GetLevelPath(const int32_t level_num)
 {
-    return g_GF_LevelFileNames[level_num];
+    return g_GameFlow.levels[level_num].path;
 }
 
 const char *GF_GetLevelTitle(const int32_t level_num)
 {
-    return g_GF_LevelNames[level_num];
+    return g_GameFlow.levels[level_num].title;
 }
 
 void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 {
-    Memory_FreePointer(&g_GF_LevelNames[level_num]);
-    g_GF_LevelNames[level_num] = title != NULL ? Memory_DupStr(title) : NULL;
+    Memory_FreePointer(&g_GameFlow.levels[level_num].title);
+    g_GameFlow.levels[level_num].title =
+        title != NULL ? Memory_DupStr(title) : NULL;
 }
 
 int32_t GF_GetGymLevelNum(void)

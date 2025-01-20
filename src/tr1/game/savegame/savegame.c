@@ -494,7 +494,7 @@ bool Savegame_Save(const int32_t slot_num)
         REQUEST_INFO *req = &g_SavegameRequester;
         Requester_ChangeItem(
             req, slot_num, false, "%s %d",
-            g_GameFlow.levels[g_CurrentLevel].level_title, g_SaveCounter);
+            g_GameFlow.levels[g_CurrentLevel].title, g_SaveCounter);
     }
 
     Savegame_ScanSavedGames();
@@ -644,7 +644,7 @@ void Savegame_ScanAvailableLevels(REQUEST_INFO *req)
 
     for (int i = g_GameFlow.first_level_num; i <= savegame_info->level_num;
          i++) {
-        Requester_AddItem(req, false, "%s", g_GameFlow.levels[i].level_title);
+        Requester_AddItem(req, false, "%s", g_GameFlow.levels[i].title);
     }
 
     if (g_InvMode == INV_TITLE_MODE) {

@@ -21,6 +21,9 @@ typedef struct {
 
 typedef struct {
     bool demo;
+    const char *path;
+    char *title;
+
     INJECTION_DATA injections;
 } GAME_FLOW_LEVEL;
 

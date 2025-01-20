@@ -692,7 +692,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     char title[SAVEGAME_LEGACY_TITLE_SIZE];
     snprintf(
         title, SAVEGAME_LEGACY_TITLE_SIZE, "%s",
-        g_GameFlow.levels[g_CurrentLevel].level_title);
+        g_GameFlow.levels[g_CurrentLevel].title);
     M_Write(title, SAVEGAME_LEGACY_TITLE_SIZE);
     M_Write(&g_SaveCounter, sizeof(int32_t));
 

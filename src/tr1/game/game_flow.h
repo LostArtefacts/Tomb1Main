@@ -21,8 +21,8 @@ typedef struct {
 typedef struct {
     GAME_FLOW_LEVEL_TYPE level_type;
     int16_t music;
-    char *level_title;
-    char *level_file;
+    char *title;
+    char *path;
     int8_t demo;
     GAME_FLOW_SEQUENCE *sequence;
     struct {

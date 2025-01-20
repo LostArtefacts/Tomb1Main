@@ -1461,7 +1461,7 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     JSON_OBJECT *root_obj = JSON_ObjectNew();
 
     JSON_ObjectAppendString(
-        root_obj, "level_title", g_GameFlow.levels[g_CurrentLevel].level_title);
+        root_obj, "level_title", g_GameFlow.levels[g_CurrentLevel].title);
     JSON_ObjectAppendInt(root_obj, "save_counter", g_SaveCounter);
     JSON_ObjectAppendInt(root_obj, "level_num", g_CurrentLevel);
 

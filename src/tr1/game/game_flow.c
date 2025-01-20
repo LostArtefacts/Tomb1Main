@@ -516,7 +516,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             LOG_ERROR("level %d: 'file' must be a string", level_num);
             return false;
         }
-        cur->level_file = Memory_DupStr(tmp_s);
+        cur->path = Memory_DupStr(tmp_s);
 
         tmp_s = JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
         if (tmp_s == JSON_INVALID_STRING) {
@@ -785,8 +785,8 @@ void GF_Shutdown(void)
 
     if (g_GameFlow.levels) {
         for (int i = 0; i < g_GameFlow.level_count; i++) {
-            Memory_FreePointer(&g_GameFlow.levels[i].level_file);
-            Memory_FreePointer(&g_GameFlow.levels[i].level_title);
+            Memory_FreePointer(&g_GameFlow.levels[i].path);
+            Memory_FreePointer(&g_GameFlow.levels[i].title);
 
             for (int j = 0; j < g_GameFlow.levels[i].injections.length; j++) {
                 Memory_FreePointer(
@@ -1254,20 +1254,20 @@ int32_t GF_GetDemoCount(void)
     return demo_count;
 }
 
-const char *GF_GetLevelFileName(int32_t level_num)
+const char *GF_GetLevelPath(const int32_t level_num)
 {
-    return g_GameFlow.levels[level_num].level_file;
+    return g_GameFlow.levels[level_num].path;
 }
 
 const char *GF_GetLevelTitle(const int32_t level_num)
 {
-    return g_GameFlow.levels[level_num].level_title;
+    return g_GameFlow.levels[level_num].title;
 }
 
 void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 {
-    Memory_FreePointer(&g_GameFlow.levels[level_num].level_title);
-    g_GameFlow.levels[level_num].level_title =
+    Memory_FreePointer(&g_GameFlow.levels[level_num].title);
+    g_GameFlow.levels[level_num].title =
         title != NULL ? Memory_DupStr(title) : NULL;
 }
 

@@ -2,6 +2,7 @@
 
 #include "decomp/skidoo.h"
 #include "game/camera.h"
+#include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -1013,7 +1014,7 @@ int32_t S_SaveGame(const int32_t slot_num)
         return false;
     }
 
-    sprintf(file_name, "%s", g_GF_LevelNames[g_SaveGame.current_level]);
+    sprintf(file_name, "%s", GF_GetLevelTitle(g_SaveGame.current_level));
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
     for (int32_t i = 0; i < 24; i++) {

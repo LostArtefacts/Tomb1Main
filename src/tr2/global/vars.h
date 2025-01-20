@@ -135,11 +135,8 @@ extern REQUEST_INFO g_LoadGameRequester;
 extern REQUEST_INFO g_SaveGameRequester;
 
 extern char **g_GF_CutsceneFileNames;
-extern char **g_GF_LevelFileNames;
-extern char **g_GF_LevelNames;
 extern char **g_GF_TitleFileNames;
 extern char *g_GF_CutsceneFileNamesBuf;
-extern char *g_GF_LevelFileNamesBuf;
 extern char *g_GF_TitleFileNamesBuf;
 
 extern bool g_GF_DeadlyWater;

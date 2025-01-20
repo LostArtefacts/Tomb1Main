@@ -873,7 +873,7 @@ static size_t M_CalculateMaxVertices(void)
 
 void Level_Load(int level_num)
 {
-    LOG_INFO("%d (%s)", level_num, g_GameFlow.levels[level_num].level_file);
+    LOG_INFO("%d (%s)", level_num, g_GameFlow.levels[level_num].path);
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // clean previous level data
@@ -892,7 +892,7 @@ void Level_Load(int level_num)
         (g_GameFlow.levels[level_num].level_type == GFL_TITLE_DEMO_PC)
         | (g_GameFlow.levels[level_num].level_type == GFL_LEVEL_DEMO_PC);
 
-    M_LoadFromFile(g_GameFlow.levels[level_num].level_file, level_num, is_demo);
+    M_LoadFromFile(g_GameFlow.levels[level_num].path, level_num, is_demo);
     M_CompleteSetup(level_num);
 
     Inject_Cleanup();
