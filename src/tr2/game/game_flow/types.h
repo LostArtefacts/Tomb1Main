@@ -23,6 +23,3 @@ typedef struct {
     GAME_FLOW_LEVEL *levels;
     INJECTION_DATA injections;
 } GAME_FLOW;
-
-extern GAME_FLOW g_GameFlow;
-extern GAME_INFO g_GameInfo;

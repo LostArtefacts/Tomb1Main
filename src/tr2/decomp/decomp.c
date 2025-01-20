@@ -9,7 +9,6 @@
 #include "game/effects.h"
 #include "game/game.h"
 #include "game/game_flow.h"
-#include "game/game_flow/game_flow_new.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"

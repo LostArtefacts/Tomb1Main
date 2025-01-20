@@ -1,11 +1,9 @@
-#include "game/game_flow/game_flow_new.h"
+#include "game/game_flow/common.h"
 
+#include "game/game_flow/vars.h"
 #include "global/vars.h"
 
 #include <libtrx/memory.h>
-
-GAME_FLOW g_GameFlow;
-GAME_INFO g_GameInfo;
 
 int32_t GF_GetLevelCount(void)
 {

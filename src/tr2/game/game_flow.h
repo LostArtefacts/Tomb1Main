@@ -1,10 +1,9 @@
 #pragma once
 
-#include "global/types.h"
+#include "game/game_flow/common.h"
+#include "game/game_flow/vars.h"
 
 #include <libtrx/game/inventory_ring/types.h>
-
-#include <stdint.h>
 
 bool GF_LoadFromFile(const char *file_name);
 bool GF_LoadScriptFile(const char *fname);
