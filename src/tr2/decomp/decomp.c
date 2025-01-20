@@ -361,7 +361,7 @@ void S_UnloadLevelFile(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    for (int32_t i = 1; i < g_GameFlowLegacy.num_levels; i++) {
+    for (int32_t i = 1; i < GF_GetLevelCount(); i++) {
         Requester_AddItem(req, g_GF_LevelNames[i], 0, NULL, 0);
     }
 }

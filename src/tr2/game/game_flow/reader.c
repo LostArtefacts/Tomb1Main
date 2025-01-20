@@ -105,11 +105,11 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj, GAME_FLOW *const gf)
     }
 
     int32_t level_count = jlvl_arr->length;
-    if (level_count != g_GameFlowLegacy.num_levels) {
+    if (level_count != g_LegacyLevelCount) {
         LOG_ERROR(
             "'levels' must have exactly %d levels, as we still rely on legacy "
             "tombpc.dat",
-            g_GameFlowLegacy.num_levels);
+            g_LegacyLevelCount);
         result = false;
         goto end;
     }

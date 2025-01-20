@@ -310,10 +310,6 @@ typedef enum {
     TRAP_FINISHED = 3,
 } TRAP_ANIM;
 
-typedef struct {
-    uint16_t num_levels;
-} GAME_FLOW_LEGACY;
-
 typedef enum {
     CF_NORMAL        = 0,
     CF_FOLLOW_CENTRE = 1,

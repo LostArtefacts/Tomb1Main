@@ -78,7 +78,7 @@ bool GF_LoadFromFile(const char *const file_name)
         return false;
     }
     VFile_Skip(file, 64);
-    g_GameFlowLegacy.num_levels = VFile_ReadU16(file);
+    const uint16_t num_levels = VFile_ReadU16(file);
     const uint16_t num_pictures = VFile_ReadU16(file);
     const uint16_t num_titles = VFile_ReadU16(file);
     const uint16_t num_fmvs = VFile_ReadU16(file);
@@ -88,9 +88,8 @@ bool GF_LoadFromFile(const char *const file_name)
     const uint8_t cypher_code = VFile_ReadU8(file);
     VFile_Skip(file, 7);
 
-    g_GF_LevelNames =
-        Memory_Alloc(sizeof(char *) * g_GameFlowLegacy.num_levels);
-    M_ReadStringTable(file, g_GameFlowLegacy.num_levels, NULL, NULL, 0);
+    g_GF_LevelNames = Memory_Alloc(sizeof(char *) * num_levels);
+    M_ReadStringTable(file, num_levels, NULL, NULL, 0);
     // picture filename strings
     M_ReadStringTable(file, num_pictures, NULL, NULL, 0);
     M_ReadStringTable(
@@ -99,15 +98,13 @@ bool GF_LoadFromFile(const char *const file_name)
     M_ReadStringTable(
         file, num_fmvs, &g_GF_FMVFilenames, &g_GF_FMVFilenamesBuf, cypher_code);
     M_ReadStringTable(
-        file, g_GameFlowLegacy.num_levels, &g_GF_LevelFileNames,
-        &g_GF_LevelFileNamesBuf, cypher_code);
+        file, num_levels, &g_GF_LevelFileNames, &g_GF_LevelFileNamesBuf,
+        cypher_code);
     M_ReadStringTable(
         file, num_cutscenes, &g_GF_CutsceneFileNames,
         &g_GF_CutsceneFileNamesBuf, cypher_code);
 
-    VFile_Read(
-        file, &m_LevelOffsets,
-        sizeof(int16_t) * (g_GameFlowLegacy.num_levels + 1));
+    VFile_Read(file, &m_LevelOffsets, sizeof(int16_t) * (num_levels + 1));
     {
         const int16_t size = VFile_ReadS16(file);
         m_SequenceBuf = Memory_Alloc(size);
@@ -115,9 +112,11 @@ bool GF_LoadFromFile(const char *const file_name)
     }
 
     m_FrontendSequence = m_SequenceBuf;
-    for (int32_t i = 0; i < g_GameFlowLegacy.num_levels; i++) {
+    for (int32_t i = 0; i < num_levels; i++) {
         m_ScriptTable[i] = m_SequenceBuf + (m_LevelOffsets[i + 1] / 2);
     }
+
+    g_LegacyLevelCount = num_levels;
 
     VFile_Close(file);
     Benchmark_End(benchmark, NULL);
@@ -148,7 +147,7 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
     GameStringTable_Apply(start_level);
     int32_t current_level = start_level;
     while (true) {
-        if (current_level > g_GameFlowLegacy.num_levels - 1) {
+        if (current_level > GF_GetLevelCount() - 1) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
 
@@ -206,7 +205,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
 
         case GFE_START_LEVEL:
-            if (ptr[1] > g_GameFlowLegacy.num_levels) {
+            if (ptr[1] > GF_GetLevelCount()) {
                 gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else if (type != GFL_STORY) {
                 if (type == GFL_MID_STORY) {
