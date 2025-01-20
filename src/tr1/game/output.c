@@ -222,18 +222,18 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
         const int32_t zv = vbuf->zv;
         const PHD_SPRITE *const sprite = &g_PhdSpriteInfo[room_sprite->texture];
         const int32_t zp = (zv / g_PhdPersp);
+        const int32_t x0 =
+            Viewport_GetCenterX() + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / zp;
+        const int32_t y0 =
+            Viewport_GetCenterY() + (vbuf->yv + (sprite->y0 << W2V_SHIFT)) / zp;
         const int32_t x1 =
             Viewport_GetCenterX() + (vbuf->xv + (sprite->x1 << W2V_SHIFT)) / zp;
         const int32_t y1 =
             Viewport_GetCenterY() + (vbuf->yv + (sprite->y1 << W2V_SHIFT)) / zp;
-        const int32_t x2 =
-            Viewport_GetCenterX() + (vbuf->xv + (sprite->x2 << W2V_SHIFT)) / zp;
-        const int32_t y2 =
-            Viewport_GetCenterY() + (vbuf->yv + (sprite->y2 << W2V_SHIFT)) / zp;
-        if (x2 >= g_PhdLeft && y2 >= g_PhdTop && x1 < g_PhdRight
-            && y1 < g_PhdBottom) {
+        if (x1 >= g_PhdLeft && y1 >= g_PhdTop && x0 < g_PhdRight
+            && y0 < g_PhdBottom) {
             S_Output_DrawSprite(
-                x1, y1, x2, y2, zv, room_sprite->texture, vbuf->g);
+                x0, y0, x1, y1, zv, room_sprite->texture, vbuf->g);
         }
     }
 }
@@ -944,16 +944,20 @@ void Output_DrawSprite(
     int32_t zp = zv / g_PhdPersp;
 
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-    int32_t x1 = Viewport_GetCenterX() + (xv + (sprite->x1 << W2V_SHIFT)) / zp;
-    int32_t y1 = Viewport_GetCenterY() + (yv + (sprite->y1 << W2V_SHIFT)) / zp;
-    int32_t x2 = Viewport_GetCenterX() + (xv + (sprite->x2 << W2V_SHIFT)) / zp;
-    int32_t y2 = Viewport_GetCenterY() + (yv + (sprite->y2 << W2V_SHIFT)) / zp;
-    if (x2 >= Viewport_GetMinX() && y2 >= Viewport_GetMinY()
-        && x1 <= Viewport_GetMaxX() && y1 <= Viewport_GetMaxY()) {
+    const int32_t x0 =
+        Viewport_GetCenterX() + (xv + (sprite->x0 << W2V_SHIFT)) / zp;
+    const int32_t y0 =
+        Viewport_GetCenterY() + (yv + (sprite->y0 << W2V_SHIFT)) / zp;
+    const int32_t x1 =
+        Viewport_GetCenterX() + (xv + (sprite->x1 << W2V_SHIFT)) / zp;
+    const int32_t y1 =
+        Viewport_GetCenterY() + (yv + (sprite->y1 << W2V_SHIFT)) / zp;
+    if (x1 >= Viewport_GetMinX() && y1 >= Viewport_GetMinY()
+        && x0 <= Viewport_GetMaxX() && y0 <= Viewport_GetMaxY()) {
         int32_t depth = zv >> W2V_SHIFT;
         shade += M_CalcFogShade(depth);
         CLAMPG(shade, 0x1FFF);
-        S_Output_DrawSprite(x1, y1, x2, y2, zv, sprnum, shade);
+        S_Output_DrawSprite(x0, y0, x1, y1, zv, sprnum, shade);
     }
 }
 
@@ -1024,14 +1028,14 @@ void Output_DrawScreenSprite(
     int16_t sprnum, int16_t shade, uint16_t flags)
 {
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-    int32_t x1 = sx + (scale_h * (sprite->x1 >> 3) / PHD_ONE);
-    int32_t x2 = sx + (scale_h * (sprite->x2 >> 3) / PHD_ONE);
-    int32_t y1 = sy + (scale_v * (sprite->y1 >> 3) / PHD_ONE);
-    int32_t y2 = sy + (scale_v * (sprite->y2 >> 3) / PHD_ONE);
-    if (x2 >= 0 && y2 >= 0 && x1 < Viewport_GetWidth()
-        && y1 < Viewport_GetHeight()) {
+    const int32_t x0 = sx + (scale_h * (sprite->x0 >> 3) / PHD_ONE);
+    const int32_t x1 = sx + (scale_h * (sprite->x1 >> 3) / PHD_ONE);
+    const int32_t y0 = sy + (scale_v * (sprite->y0 >> 3) / PHD_ONE);
+    const int32_t y1 = sy + (scale_v * (sprite->y1 >> 3) / PHD_ONE);
+    if (x1 >= 0 && y1 >= 0 && x0 < Viewport_GetWidth()
+        && y0 < Viewport_GetHeight()) {
         S_Output_DrawSprite(
-            x1, y1, x2, y2, Output_GetNearZ() + 8 * z, sprnum, shade);
+            x0, y0, x1, y1, Output_GetNearZ() + 8 * z, sprnum, shade);
     }
 }
 
@@ -1040,13 +1044,13 @@ void Output_DrawScreenSprite2D(
     int32_t sprnum, int16_t shade, uint16_t flags, int32_t page)
 {
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-    int32_t x1 = sx + (scale_h * sprite->x1 / PHD_ONE);
-    int32_t x2 = sx + (scale_h * sprite->x2 / PHD_ONE);
-    int32_t y1 = sy + (scale_v * sprite->y1 / PHD_ONE);
-    int32_t y2 = sy + (scale_v * sprite->y2 / PHD_ONE);
-    if (x2 >= 0 && y2 >= 0 && x1 < Viewport_GetWidth()
-        && y1 < Viewport_GetHeight()) {
-        S_Output_DrawSprite(x1, y1, x2, y2, Output_GetNearZ() + 200, sprnum, 0);
+    const int32_t x0 = sx + (scale_h * sprite->x0 / PHD_ONE);
+    const int32_t x1 = sx + (scale_h * sprite->x1 / PHD_ONE);
+    const int32_t y0 = sy + (scale_v * sprite->y0 / PHD_ONE);
+    const int32_t y1 = sy + (scale_v * sprite->y1 / PHD_ONE);
+    if (x1 >= 0 && y1 >= 0 && x0 < Viewport_GetWidth()
+        && y0 < Viewport_GetHeight()) {
+        S_Output_DrawSprite(x0, y0, x1, y1, Output_GetNearZ() + 200, sprnum, 0);
     }
 }
 
@@ -1066,16 +1070,20 @@ void Output_DrawSpriteRel(
     int32_t zp = zv / g_PhdPersp;
 
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-    int32_t x1 = Viewport_GetCenterX() + (xv + (sprite->x1 << W2V_SHIFT)) / zp;
-    int32_t y1 = Viewport_GetCenterY() + (yv + (sprite->y1 << W2V_SHIFT)) / zp;
-    int32_t x2 = Viewport_GetCenterX() + (xv + (sprite->y1 << W2V_SHIFT)) / zp;
-    int32_t y2 = Viewport_GetCenterY() + (yv + (sprite->y2 << W2V_SHIFT)) / zp;
-    if (x2 >= Viewport_GetMinX() && y2 >= Viewport_GetMinY()
-        && x1 <= Viewport_GetMaxX() && y1 <= Viewport_GetMaxY()) {
+    const int32_t x0 =
+        Viewport_GetCenterX() + (xv + (sprite->x0 << W2V_SHIFT)) / zp;
+    const int32_t y0 =
+        Viewport_GetCenterY() + (yv + (sprite->y0 << W2V_SHIFT)) / zp;
+    const int32_t x1 =
+        Viewport_GetCenterX() + (xv + (sprite->y0 << W2V_SHIFT)) / zp;
+    const int32_t y1 =
+        Viewport_GetCenterY() + (yv + (sprite->y1 << W2V_SHIFT)) / zp;
+    if (x1 >= Viewport_GetMinX() && y1 >= Viewport_GetMinY()
+        && x0 <= Viewport_GetMaxX() && y0 <= Viewport_GetMaxY()) {
         int32_t depth = zv >> W2V_SHIFT;
         shade += M_CalcFogShade(depth);
         CLAMPG(shade, 0x1FFF);
-        S_Output_DrawSprite(x1, y1, x2, y2, zv, sprnum, shade);
+        S_Output_DrawSprite(x0, y0, x1, y1, zv, sprnum, shade);
     }
 }
 
@@ -1083,14 +1091,14 @@ void Output_DrawUISprite(
     int32_t x, int32_t y, int32_t scale, int16_t sprnum, int16_t shade)
 {
     PHD_SPRITE *sprite = &g_PhdSpriteInfo[sprnum];
-    int32_t x1 = x + (scale * sprite->x1 >> 16);
-    int32_t x2 = x + (scale * sprite->x2 >> 16);
-    int32_t y1 = y + (scale * sprite->y1 >> 16);
-    int32_t y2 = y + (scale * sprite->y2 >> 16);
-    if (x2 >= Viewport_GetMinX() && y2 >= Viewport_GetMinY()
-        && x1 <= Viewport_GetMaxX() && y1 <= Viewport_GetMaxY()) {
+    const int32_t x0 = x + (scale * sprite->x0 >> 16);
+    const int32_t x1 = x + (scale * sprite->x1 >> 16);
+    const int32_t y0 = y + (scale * sprite->y0 >> 16);
+    const int32_t y1 = y + (scale * sprite->y1 >> 16);
+    if (x1 >= Viewport_GetMinX() && y1 >= Viewport_GetMinY()
+        && x0 <= Viewport_GetMaxX() && y0 <= Viewport_GetMaxY()) {
         S_Output_DrawSprite(
-            x1, y1, x2, y2, Output_GetNearZ() + 200, sprnum, shade);
+            x0, y0, x1, y1, Output_GetNearZ() + 200, sprnum, shade);
     }
 }
 

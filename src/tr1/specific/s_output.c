@@ -590,9 +590,9 @@ void S_Output_DrawSprite(
         return;
     }
 
-    if (m_TextureMap[sprite->tpage] != GFX_NO_TEXTURE) {
+    if (m_TextureMap[sprite->tex_page] != GFX_NO_TEXTURE) {
         S_Output_EnableTextureMode();
-        S_Output_SelectTexture(sprite->tpage);
+        S_Output_SelectTexture(sprite->tex_page);
         M_DrawTriangleFan(vertices, vertex_count);
     } else {
         S_Output_DisableTextureMode();

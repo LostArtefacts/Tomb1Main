@@ -183,7 +183,7 @@ void Object_DrawPickupItem(ITEM *item)
             // bottom is necessary.
             int centred = ABS(min_y + max_y) < 8;
             if (floor_mapped_delta) {
-                offset = item->pos.y - ABS(min_y - sprite->y1) / 8;
+                offset = item->pos.y - ABS(min_y - sprite->y0) / 8;
             } else if (centred) {
                 offset = item->pos.y + min_y;
             }

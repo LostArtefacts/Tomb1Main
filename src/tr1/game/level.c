@@ -408,14 +408,14 @@ static void M_LoadSprites(VFILE *file)
     }
     for (int32_t i = 0; i < m_LevelInfo.sprite_info_count; i++) {
         PHD_SPRITE *const sprite = &g_PhdSpriteInfo[i];
-        sprite->tpage = VFile_ReadU16(file);
+        sprite->tex_page = VFile_ReadU16(file);
         sprite->offset = VFile_ReadU16(file);
         sprite->width = VFile_ReadU16(file);
         sprite->height = VFile_ReadU16(file);
+        sprite->x0 = VFile_ReadS16(file);
+        sprite->y0 = VFile_ReadS16(file);
         sprite->x1 = VFile_ReadS16(file);
         sprite->y1 = VFile_ReadS16(file);
-        sprite->x2 = VFile_ReadS16(file);
-        sprite->y2 = VFile_ReadS16(file);
     }
 
     const int32_t num_sequences = VFile_ReadS32(file);

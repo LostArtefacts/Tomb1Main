@@ -137,14 +137,14 @@ static void M_PrepareObject(int object_index)
 static void M_PrepareSprite(int sprite_index)
 {
     PHD_SPRITE *sprite_texture = &g_PhdSpriteInfo[sprite_index];
-    if (sprite_texture->tpage == m_StartPage) {
+    if (sprite_texture->tex_page == m_StartPage) {
         RECTANGLE *bounds = M_GetSpriteBounds(sprite_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
         Memory_FreePointer(&bounds);
-    } else if (sprite_texture->tpage > m_StartPage) {
+    } else if (sprite_texture->tex_page > m_StartPage) {
         TEX_INFO *info = Memory_Alloc(sizeof(TEX_INFO));
         info->index = sprite_index;
-        info->tpage = sprite_texture->tpage;
+        info->tpage = sprite_texture->tex_page;
         info->bounds = M_GetSpriteBounds(sprite_texture);
         info->move = M_MoveSprite;
         if (!M_EnqueueTexInfo(info)) {
@@ -383,7 +383,7 @@ static void M_MoveSprite(
     uint16_t new_y)
 {
     PHD_SPRITE *texture = &g_PhdSpriteInfo[index];
-    texture->tpage = tpage;
+    texture->tex_page = tpage;
     texture->offset = (new_y << 8) | new_x;
 }
 
