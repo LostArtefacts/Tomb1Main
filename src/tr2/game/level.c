@@ -344,6 +344,9 @@ static void M_LoadSprites(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", num_textures);
+    if (num_textures > MAX_SPRITE_TEXTURES) {
+        Shell_ExitSystem("Too many sprite textures in level");
+    }
     for (int32_t i = 0; i < num_textures; i++) {
         SPRITE_TEXTURE *const sprite = &g_SpriteTextures[i];
         sprite->tex_page = VFile_ReadU16(file);

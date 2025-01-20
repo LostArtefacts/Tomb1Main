@@ -27,7 +27,7 @@ extern bool g_GymInvOpenEnabled;
 extern int32_t g_MidSort;
 extern GOURAUD_ENTRY g_GouraudTable[256];
 extern int32_t g_PhdWinTop;
-extern SPRITE_TEXTURE g_SpriteTextures[];
+extern SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES];
 extern int32_t g_LsAdder;
 extern float g_FltWinBottom;
 extern float g_FltResZBuf;
