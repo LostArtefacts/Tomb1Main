@@ -41,6 +41,8 @@ typedef struct {
     int32_t fmv_count;
     GAME_FLOW_FMV *fmvs;
 
+    GAME_FLOW_LEVEL *title_level;
+
     INJECTION_DATA injections;
 
     GAME_FLOW_COMMAND first_option;
@@ -52,7 +54,6 @@ typedef struct {
 
     float demo_delay;
     bool is_demo_version;
-    bool title_disabled;
     bool play_any_level;
     bool gym_enabled;
     bool lockout_option_ring;

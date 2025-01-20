@@ -3,7 +3,6 @@
     // Lines starting with double slashes are comments and are ignored.
 
     "title_replace": -1,
-    "title_disabled": false,
     "load_save_disabled": false,
     "play_any_level": false,
     "lockout_option_ring": false,
@@ -14,6 +13,10 @@
     "title_track": 64,
     "secret_track": 47,
     "level_complete_track": 41,
+
+    "title": {
+        "path": "data/title.tr2",
+    },
 
     "levels": [
         // 0. Lara's Home

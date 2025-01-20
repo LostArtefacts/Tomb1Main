@@ -176,7 +176,7 @@ int32_t Level_Initialise(
 
     bool result;
     if (level_type == GFL_TITLE) {
-        result = S_LoadLevelFile(g_GF_TitleFileNames[0], level_num, level_type);
+        result = S_LoadLevelFile(GF_GetTitleLevelPath(), level_num, level_type);
     } else if (level_type == GFL_CUTSCENE) {
         if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
             LOG_ERROR("Invalid cutscene number: %d", level_num);

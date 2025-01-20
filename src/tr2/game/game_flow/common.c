@@ -5,6 +5,14 @@
 
 #include <libtrx/memory.h>
 
+const char *GF_GetTitleLevelPath(void)
+{
+    if (g_GameFlow.title_level == NULL) {
+        return NULL;
+    }
+    return g_GameFlow.title_level->path;
+}
+
 int32_t GF_GetLevelCount(void)
 {
     return g_GameFlow.level_count;

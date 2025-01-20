@@ -35,6 +35,14 @@ static void M_LoadCutscene(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_CUTSCENE *level);
 static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
 
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
+
+static void M_FreeLevel(GAME_FLOW_LEVEL *level);
+static void M_FreeLevels(GAME_FLOW *gf);
+static void M_FreeDemos(GAME_FLOW *gf);
+static void M_FreeCutscenes(GAME_FLOW *gf);
+static void M_FreeFMVs(GAME_FLOW *gf);
+
 static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     gf->title_replace =
@@ -53,7 +61,6 @@ static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         GF_TranslateScriptCommand(JSON_ObjectGetInt(obj, "on_demo_end", 0x500));
 
     gf->is_demo_version = JSON_ObjectGetBool(obj, "demo_version", false);
-    gf->title_disabled = JSON_ObjectGetBool(obj, "title_disabled", false);
 
     // clang-format off
     gf->load_save_disabled = JSON_ObjectGetBool(obj, "load_save_disabled", false);
@@ -231,6 +238,15 @@ static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
         (void **)&gf->cutscenes);
 }
 
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    JSON_OBJECT *title_obj = JSON_ObjectGetObject(obj, "title");
+    if (title_obj != NULL) {
+        gf->title_level = Memory_Alloc(sizeof(GAME_FLOW_LEVEL));
+        M_LoadLevel(title_obj, gf, gf->title_level);
+    }
+}
+
 bool GF_N_Load(const char *const path)
 {
     GF_N_Shutdown();
@@ -264,6 +280,7 @@ bool GF_N_Load(const char *const path)
     result &= M_LoadLevels(root_obj, gf);
     result &= M_LoadCutscenes(root_obj, gf);
     result &= M_LoadFMVs(root_obj, gf);
+    M_LoadTitleLevel(root_obj, gf);
 
     if (gf->level_count != g_LegacyLevelCount) {
         LOG_ERROR(
@@ -302,6 +319,49 @@ end:
     return result;
 }
 
+static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
+{
+    for (int32_t j = 0; j < level->injections.count; j++) {
+        Memory_FreePointer(&level->injections.data_paths[j]);
+    }
+    Memory_FreePointer(&level->injections.data_paths);
+    Memory_FreePointer(&level->path);
+    Memory_FreePointer(&level->title);
+}
+
+static void M_FreeLevels(GAME_FLOW *const gf)
+{
+    for (int32_t i = 0; i < gf->level_count; i++) {
+        M_FreeLevel(&gf->levels[i]);
+    }
+    Memory_FreePointer(&gf->levels);
+    gf->level_count = 0;
+}
+
+static void M_FreeDemos(GAME_FLOW *const gf)
+{
+    Memory_FreePointer(&gf->demo_levels);
+    gf->demo_level_count = 0;
+}
+
+static void M_FreeCutscenes(GAME_FLOW *const gf)
+{
+    for (int32_t i = 0; i < gf->cutscene_count; i++) {
+        Memory_FreePointer(&gf->cutscenes[i].path);
+    }
+    Memory_FreePointer(&gf->cutscenes);
+    gf->cutscene_count = 0;
+}
+
+static void M_FreeFMVs(GAME_FLOW *const gf)
+{
+    for (int32_t i = 0; i < gf->fmv_count; i++) {
+        Memory_FreePointer(&gf->fmvs[i].path);
+    }
+    Memory_FreePointer(&gf->fmvs);
+    gf->fmv_count = 0;
+}
+
 void GF_N_Shutdown(void)
 {
     GAME_FLOW *const gf = &g_GameFlow;
@@ -311,29 +371,13 @@ void GF_N_Shutdown(void)
     }
     Memory_FreePointer(&gf->injections.data_paths);
 
-    for (int32_t i = 0; i < gf->level_count; i++) {
-        for (int32_t j = 0; j < gf->levels[i].injections.count; j++) {
-            Memory_FreePointer(&gf->levels[i].injections.data_paths[j]);
-        }
-        Memory_FreePointer(&gf->levels[i].injections.data_paths);
-        Memory_FreePointer(&gf->levels[i].path);
-        Memory_FreePointer(&gf->levels[i].title);
-    }
-    Memory_FreePointer(&gf->levels);
-    gf->level_count = 0;
+    M_FreeLevels(gf);
+    M_FreeDemos(gf);
+    M_FreeCutscenes(gf);
+    M_FreeFMVs(gf);
 
-    Memory_FreePointer(&gf->demo_levels);
-    gf->demo_level_count = 0;
-
-    for (int32_t i = 0; i < gf->cutscene_count; i++) {
-        Memory_FreePointer(&gf->cutscenes[i].path);
+    if (gf->title_level != NULL) {
+        M_FreeLevel(gf->title_level);
+        Memory_FreePointer(&gf->title_level);
     }
-    Memory_FreePointer(&gf->cutscenes);
-    gf->cutscene_count = 0;
-
-    for (int32_t i = 0; i < gf->fmv_count; i++) {
-        Memory_FreePointer(&gf->fmvs[i].path);
-    }
-    Memory_FreePointer(&gf->fmvs);
-    gf->fmv_count = 0;
 }

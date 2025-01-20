@@ -442,7 +442,7 @@ void Shell_Main(void)
             break;
 
         case GF_EXIT_TO_TITLE:
-            if (g_GameFlow.title_disabled) {
+            if (g_GameFlow.title_level == NULL) {
                 gf_cmd = g_GameFlow.title_replace;
                 if (gf_cmd.action == GF_NOOP
                     || gf_cmd.action == GF_EXIT_TO_TITLE) {

@@ -325,9 +325,6 @@ REQUEST_INFO g_SaveGameRequester = {
     .render_height = 0,
 };
 
-char **g_GF_TitleFileNames = NULL;
-char *g_GF_TitleFileNamesBuf = NULL;
-
 bool g_GF_DeadlyWater = false;
 bool g_GF_RemoveAmmo = false;
 bool g_GF_RemoveWeapons = false;
