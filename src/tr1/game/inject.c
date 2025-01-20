@@ -422,8 +422,8 @@ static void M_TextureData(
     }
 
     for (int32_t i = 0; i < inj_info->sprite_info_count; i++) {
-        PHD_SPRITE *sprite =
-            &g_PhdSpriteInfo[level_info->sprite_info_count + i];
+        SPRITE_TEXTURE *const sprite =
+            &g_SpriteTextures[level_info->sprite_info_count + i];
         sprite->tex_page = VFile_ReadU16(fp);
         sprite->offset = VFile_ReadU16(fp);
         sprite->width = VFile_ReadU16(fp);
@@ -432,7 +432,7 @@ static void M_TextureData(
         sprite->y0 = VFile_ReadS16(fp);
         sprite->x1 = VFile_ReadS16(fp);
         sprite->y1 = VFile_ReadS16(fp);
-        g_PhdSpriteInfo[level_info->sprite_info_count + i].tex_page +=
+        g_SpriteTextures[level_info->sprite_info_count + i].tex_page +=
             page_base;
     }
 

@@ -17,7 +17,7 @@ extern int32_t g_PhdTop;
 extern float g_FltResZ;
 extern float g_FltResZBuf;
 
-extern PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES];
+extern SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES];
 extern OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 extern int32_t g_OptionSelected;

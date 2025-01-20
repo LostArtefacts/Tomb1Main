@@ -53,7 +53,7 @@ static void M_Cleanup(void);
 static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2);
 static bool M_EnqueueTexInfo(TEX_INFO *info);
 static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *texture);
-static RECTANGLE *M_GetSpriteBounds(PHD_SPRITE *texture);
+static RECTANGLE *M_GetSpriteBounds(const SPRITE_TEXTURE *texture);
 static void M_PrepareObject(int object_index);
 static void M_PrepareSprite(int sprite_index);
 
@@ -136,7 +136,8 @@ static void M_PrepareObject(int object_index)
 
 static void M_PrepareSprite(int sprite_index)
 {
-    PHD_SPRITE *sprite_texture = &g_PhdSpriteInfo[sprite_index];
+    const SPRITE_TEXTURE *const sprite_texture =
+        &g_SpriteTextures[sprite_index];
     if (sprite_texture->tex_page == m_StartPage) {
         RECTANGLE *bounds = M_GetSpriteBounds(sprite_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
@@ -239,7 +240,7 @@ static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *const texture)
     return rectangle;
 }
 
-static RECTANGLE *M_GetSpriteBounds(PHD_SPRITE *texture)
+static RECTANGLE *M_GetSpriteBounds(const SPRITE_TEXTURE *const texture)
 {
     RECTANGLE *rectangle = Memory_Alloc(sizeof(RECTANGLE));
 
@@ -382,7 +383,7 @@ static void M_MoveSprite(
     int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
     uint16_t new_y)
 {
-    PHD_SPRITE *texture = &g_PhdSpriteInfo[index];
+    SPRITE_TEXTURE *const texture = &g_SpriteTextures[index];
     texture->tex_page = tpage;
     texture->offset = (new_y << 8) | new_x;
 }

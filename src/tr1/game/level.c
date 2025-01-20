@@ -403,11 +403,11 @@ static void M_LoadSprites(VFILE *file)
     m_LevelInfo.sprite_info_count = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", m_LevelInfo.sprite_info_count);
     if (m_LevelInfo.sprite_info_count + m_InjectionInfo->sprite_info_count
-        > MAX_SPRITES) {
-        Shell_ExitSystem("Too many sprites in level");
+        > MAX_SPRITE_TEXTURES) {
+        Shell_ExitSystem("Too many sprite textures in level");
     }
     for (int32_t i = 0; i < m_LevelInfo.sprite_info_count; i++) {
-        PHD_SPRITE *const sprite = &g_PhdSpriteInfo[i];
+        SPRITE_TEXTURE *const sprite = &g_SpriteTextures[i];
         sprite->tex_page = VFile_ReadU16(file);
         sprite->offset = VFile_ReadU16(file);
         sprite->width = VFile_ReadU16(file);

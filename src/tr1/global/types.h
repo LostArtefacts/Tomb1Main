@@ -301,7 +301,7 @@ typedef struct {
     int16_t y0;
     int16_t x1;
     int16_t y1;
-} PHD_SPRITE;
+} SPRITE_TEXTURE;
 
 typedef struct TEXTURE_RANGE {
     int16_t num_textures;

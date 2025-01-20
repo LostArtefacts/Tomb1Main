@@ -18,7 +18,7 @@ int32_t g_PhdTop = 0;
 float g_FltResZ;
 float g_FltResZBuf;
 
-PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES] = {};
+SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
 OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
 
 LARA_INFO g_Lara = {};
