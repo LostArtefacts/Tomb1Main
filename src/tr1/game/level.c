@@ -387,8 +387,8 @@ static void M_LoadTextures(VFILE *file)
     }
     for (int32_t i = 0; i < m_LevelInfo.texture_count; i++) {
         PHD_TEXTURE *texture = &g_PhdTextureInfo[i];
-        texture->drawtype = VFile_ReadU16(file);
-        texture->tpage = VFile_ReadU16(file);
+        texture->draw_type = VFile_ReadU16(file);
+        texture->tex_page = VFile_ReadU16(file);
         for (int32_t j = 0; j < 4; j++) {
             texture->uv[j].u = VFile_ReadU16(file);
             texture->uv[j].v = VFile_ReadU16(file);

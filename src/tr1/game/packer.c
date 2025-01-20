@@ -116,15 +116,15 @@ int32_t Packer_GetAddedPageCount(void)
 static void M_PrepareObject(int object_index)
 {
     PHD_TEXTURE *object_texture = &g_PhdTextureInfo[object_index];
-    if (object_texture->tpage == m_StartPage) {
+    if (object_texture->tex_page == m_StartPage) {
         RECTANGLE *bounds = M_GetObjectBounds(object_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
         Memory_FreePointer(&bounds);
 
-    } else if (object_texture->tpage > m_StartPage) {
+    } else if (object_texture->tex_page > m_StartPage) {
         TEX_INFO *info = Memory_Alloc(sizeof(TEX_INFO));
         info->index = object_index;
-        info->tpage = object_texture->tpage;
+        info->tpage = object_texture->tex_page;
         info->bounds = M_GetObjectBounds(object_texture);
         info->move = M_MoveObject;
         if (!M_EnqueueTexInfo(info)) {
@@ -360,7 +360,7 @@ static void M_MoveObject(
     uint16_t new_y)
 {
     PHD_TEXTURE *texture = &g_PhdTextureInfo[index];
-    texture->tpage = tpage;
+    texture->tex_page = tpage;
 
     int x_diff = (new_x - old_bounds->x) << 8;
     int y_diff = (new_y - old_bounds->y) << 8;
