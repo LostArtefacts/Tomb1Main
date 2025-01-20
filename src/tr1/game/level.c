@@ -380,13 +380,13 @@ static void M_LoadTextures(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.texture_count = VFile_ReadS32(file);
-    LOG_INFO("%d textures", m_LevelInfo.texture_count);
+    LOG_INFO("%d object textures", m_LevelInfo.texture_count);
     if ((m_LevelInfo.texture_count + m_InjectionInfo->texture_count)
-        > MAX_TEXTURES) {
-        Shell_ExitSystem("Too many textures in level");
+        > MAX_OBJECT_TEXTURES) {
+        Shell_ExitSystem("Too many object textures in level");
     }
     for (int32_t i = 0; i < m_LevelInfo.texture_count; i++) {
-        PHD_TEXTURE *texture = &g_PhdTextureInfo[i];
+        OBJECT_TEXTURE *const texture = &g_ObjectTextures[i];
         texture->draw_type = VFile_ReadU16(file);
         texture->tex_page = VFile_ReadU16(file);
         for (int32_t j = 0; j < 4; j++) {

@@ -52,7 +52,7 @@ static void M_Cleanup(void);
 
 static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2);
 static bool M_EnqueueTexInfo(TEX_INFO *info);
-static RECTANGLE *M_GetObjectBounds(PHD_TEXTURE *texture);
+static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *texture);
 static RECTANGLE *M_GetSpriteBounds(PHD_SPRITE *texture);
 static void M_PrepareObject(int object_index);
 static void M_PrepareSprite(int sprite_index);
@@ -115,7 +115,8 @@ int32_t Packer_GetAddedPageCount(void)
 
 static void M_PrepareObject(int object_index)
 {
-    PHD_TEXTURE *object_texture = &g_PhdTextureInfo[object_index];
+    const OBJECT_TEXTURE *const object_texture =
+        &g_ObjectTextures[object_index];
     if (object_texture->tex_page == m_StartPage) {
         RECTANGLE *bounds = M_GetObjectBounds(object_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
@@ -209,7 +210,7 @@ static bool M_EnqueueTexInfo(TEX_INFO *info)
     return true;
 }
 
-static RECTANGLE *M_GetObjectBounds(PHD_TEXTURE *texture)
+static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *const texture)
 {
     RECTANGLE *rectangle = Memory_Alloc(sizeof(RECTANGLE));
 
@@ -359,7 +360,7 @@ static void M_MoveObject(
     int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
     uint16_t new_y)
 {
-    PHD_TEXTURE *texture = &g_PhdTextureInfo[index];
+    OBJECT_TEXTURE *const texture = &g_ObjectTextures[index];
     texture->tex_page = tpage;
 
     int x_diff = (new_x - old_bounds->x) << 8;

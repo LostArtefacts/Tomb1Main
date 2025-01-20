@@ -18,7 +18,7 @@ extern float g_FltResZ;
 extern float g_FltResZBuf;
 
 extern PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES];
-extern PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES];
+extern OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 extern int32_t g_OptionSelected;
 

@@ -290,7 +290,7 @@ typedef struct {
     uint16_t draw_type;
     uint16_t tex_page;
     PHD_UV uv[4];
-} PHD_TEXTURE;
+} OBJECT_TEXTURE;
 
 typedef struct {
     uint16_t tpage;

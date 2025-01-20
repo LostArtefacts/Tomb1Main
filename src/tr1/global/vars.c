@@ -19,7 +19,7 @@ float g_FltResZ;
 float g_FltResZBuf;
 
 PHD_SPRITE g_PhdSpriteInfo[MAX_SPRITES] = {};
-PHD_TEXTURE g_PhdTextureInfo[MAX_TEXTURES] = {};
+OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
 
 LARA_INFO g_Lara = {};
 ITEM *g_LaraItem = NULL;
