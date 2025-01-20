@@ -108,34 +108,30 @@ static int32_t m_XGenY1 = 0;
 static int32_t m_XGenY2 = 0;
 
 static void M_FlatA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, uint8_t color_idx);
 static void M_TransA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t depth);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, uint8_t depth);
 static void M_GourA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2, uint8_t color_idx);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, uint8_t color_idx);
 static void M_GTMapA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
-    const uint8_t *tex_page);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, const uint8_t *tex_page);
 static void M_WGTMapA(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
-    const uint8_t *tex_page);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, const uint8_t *tex_page);
 static void M_GTMapPersp32FP(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
-    const uint8_t *tex_page);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, const uint8_t *tex_page);
 static void M_WGTMapPersp32FP(
-    GFX_2D_SURFACE *target_surface, int32_t y1, int32_t y2,
-    const uint8_t *tex_page);
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface, int32_t y1,
+    int32_t y2, const uint8_t *tex_page);
 
 static bool M_XGenX(const int16_t *obj_ptr);
 static bool M_XGenXG(const int16_t *obj_ptr);
 static bool M_XGenXGUV(const int16_t *obj_ptr);
-
-static void M_OccludeX(GFX_2D_SURFACE *alpha_surface, int32_t y1, int32_t y2);
-static void M_OccludeXG(GFX_2D_SURFACE *alpha_surface, int32_t y1, int32_t y2);
-static void M_OccludeXGUV(
-    GFX_2D_SURFACE *alpha_surface, int32_t y1, int32_t y2);
-static void M_OccludeXGUVP(
-    GFX_2D_SURFACE *alpha_surface, int32_t y1, int32_t y2);
 
 static void M_DrawPolyFlat(
     const int16_t *obj_ptr, GFX_2D_SURFACE *target_surface,
@@ -206,44 +202,50 @@ static void (*m_PolyDrawRoutines[])(
 };
 
 static void M_FlatA(
-    GFX_2D_SURFACE *const target_surface, int32_t y1, int32_t y2,
-    const uint8_t color_idx)
+    GFX_2D_SURFACE *const alpha_surface, GFX_2D_SURFACE *const target_surface,
+    int32_t y1, int32_t y2, const uint8_t color_idx)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
         const int32_t x_size = (xbuf->x2 / PHD_ONE) - x;
         if (x_size > 0) {
             memset(
-                draw_ptr + x, MAKE_PAL_IDX(color_idx),
+                target_ptr + x, MAKE_PAL_IDX(color_idx),
                 x_size * sizeof(PIX_FMT));
+            memset(alpha_ptr + x, 255, x_size * sizeof(ALPHA_FMT));
         }
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_TransA(
-    GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t depth)
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *const target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t depth)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0 || depth >= LIGHT_MAP_SIZE) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
     const DEPTHQ_ENTRY *qt = g_DepthQTable + depth;
 
     while (y_size > 0) {
@@ -253,32 +255,37 @@ static void M_TransA(
             goto loop_end;
         }
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         while (x_size > 0) {
-            *line_ptr = MAKE_PAL_IDX(qt->index[*line_ptr]);
-            line_ptr++;
+            *target_line_ptr = MAKE_PAL_IDX(qt->index[*target_line_ptr]);
+            target_line_ptr++;
+            *alpha_line_ptr++ = 255;
             x_size--;
         }
 
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_GourA(
-    GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t color_idx)
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *const target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t color_idx)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_XG *xbuf = (const XBUF_XG *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
     const GOURAUD_ENTRY *gt = g_GouraudTable + color_idx;
 
     while (y_size > 0) {
@@ -291,10 +298,11 @@ static void M_GourA(
         int32_t g = xbuf->g1;
         const int32_t g_add = (xbuf->g2 - g) / x_size;
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         while (x_size > 0) {
-            *line_ptr = MAKE_PAL_IDX(gt->index[MAKE_Q_ID(g)]);
-            line_ptr++;
+            *target_line_ptr++ = MAKE_PAL_IDX(gt->index[MAKE_Q_ID(g)]);
+            *alpha_line_ptr++ = 255;
             g += g_add;
             x_size--;
         }
@@ -302,22 +310,25 @@ static void M_GourA(
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_GTMapA(
-    GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t *const tex_page)
+    GFX_2D_SURFACE *const alpha_surface, GFX_2D_SURFACE *const target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t *const tex_page)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -333,12 +344,13 @@ static void M_GTMapA(
         const int32_t u_add = (xbuf->u2 - u) / x_size;
         const int32_t v_add = (xbuf->v2 - v) / x_size;
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         while (x_size > 0) {
             uint8_t color_idx = tex_page[MAKE_TEX_ID(v, u)];
-            *line_ptr =
+            *target_line_ptr++ =
                 MAKE_PAL_IDX(g_DepthQTable[MAKE_Q_ID(g)].index[color_idx]);
-            line_ptr++;
+            *alpha_line_ptr++ = 255;
             g += g_add;
             u += u_add;
             v += v_add;
@@ -348,22 +360,25 @@ static void M_GTMapA(
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_WGTMapA(
-    GFX_2D_SURFACE *target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t *tex_page)
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t *tex_page)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -379,14 +394,17 @@ static void M_WGTMapA(
         const int32_t u_add = (xbuf->u2 - u) / x_size;
         const int32_t v_add = (xbuf->v2 - v) / x_size;
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         while (x_size > 0) {
             const uint8_t color_idx = tex_page[MAKE_TEX_ID(v, u)];
             if (color_idx != 0) {
-                *line_ptr =
+                *target_line_ptr =
                     MAKE_PAL_IDX(g_DepthQTable[MAKE_Q_ID(g)].index[color_idx]);
+                *alpha_line_ptr = 255;
             }
-            line_ptr++;
+            target_line_ptr++;
+            alpha_line_ptr++;
             g += g_add;
             u += u_add;
             v += v_add;
@@ -396,22 +414,25 @@ static void M_WGTMapA(
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_GTMapPersp32FP(
-    GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t *const tex_page)
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *const target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t *const tex_page)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -430,7 +451,8 @@ static void M_GTMapPersp32FP(
         int32_t u0 = PHD_HALF * u / rhw;
         int32_t v0 = PHD_HALF * v / rhw;
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         int32_t batch_size = 32;
 
         if (x_size >= batch_size) {
@@ -458,8 +480,10 @@ static void M_GTMapPersp32FP(
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         const uint8_t color =
                             g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                        *line_ptr++ = MAKE_PAL_IDX(color);
-                        *line_ptr++ = MAKE_PAL_IDX(color);
+                        *target_line_ptr++ = MAKE_PAL_IDX(color);
+                        *target_line_ptr++ = MAKE_PAL_IDX(color);
+                        *alpha_line_ptr++ = 255;
+                        *alpha_line_ptr++ = 255;
                         g += g_add * 2;
                         u0 += u0_add * 2;
                         v0 += v0_add * 2;
@@ -470,7 +494,8 @@ static void M_GTMapPersp32FP(
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         const uint8_t color =
                             g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                        *line_ptr++ = MAKE_PAL_IDX(color);
+                        *target_line_ptr++ = MAKE_PAL_IDX(color);
+                        *alpha_line_ptr++ = 255;
                         g += g_add;
                         u0 += u0_add;
                         v0 += v0_add;
@@ -498,8 +523,10 @@ static void M_GTMapPersp32FP(
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     const uint8_t color =
                         g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                    *line_ptr++ = MAKE_PAL_IDX(color);
-                    *line_ptr++ = MAKE_PAL_IDX(color);
+                    *target_line_ptr++ = MAKE_PAL_IDX(color);
+                    *target_line_ptr++ = MAKE_PAL_IDX(color);
+                    *alpha_line_ptr++ = 255;
+                    *alpha_line_ptr++ = 255;
                     g += g_add * 2;
                     u0 += u0_add * 2;
                     v0 += v0_add * 2;
@@ -510,7 +537,8 @@ static void M_GTMapPersp32FP(
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     const uint8_t color =
                         g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                    *line_ptr++ = MAKE_PAL_IDX(color);
+                    *target_line_ptr++ = MAKE_PAL_IDX(color);
+                    *alpha_line_ptr++ = 255;
                     g += g_add;
                     u0 += u0_add;
                     v0 += v0_add;
@@ -521,28 +549,32 @@ static void M_GTMapPersp32FP(
         if (x_size == 1) {
             const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
             const uint8_t color = g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-            *line_ptr = MAKE_PAL_IDX(color);
+            *target_line_ptr = MAKE_PAL_IDX(color);
+            *alpha_line_ptr = 255;
         }
 
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
 static void M_WGTMapPersp32FP(
-    GFX_2D_SURFACE *const target_surface, const int32_t y1, const int32_t y2,
-    const uint8_t *const tex_page)
+    GFX_2D_SURFACE *alpha_surface, GFX_2D_SURFACE *const target_surface,
+    const int32_t y1, const int32_t y2, const uint8_t *const tex_page)
 {
     int32_t y_size = y2 - y1;
     if (y_size <= 0) {
         return;
     }
 
-    const int32_t stride = target_surface->desc.pitch;
     const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
-    PIX_FMT *draw_ptr = target_surface->buffer + y1 * stride;
+    const int32_t target_stride = target_surface->desc.pitch;
+    const int32_t alpha_stride = alpha_surface->desc.pitch;
+    PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
+    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -561,7 +593,8 @@ static void M_WGTMapPersp32FP(
         int32_t u0 = PHD_HALF * u / rhw;
         int32_t v0 = PHD_HALF * v / rhw;
 
-        PIX_FMT *line_ptr = draw_ptr + x;
+        PIX_FMT *target_line_ptr = target_ptr + x;
+        ALPHA_FMT *alpha_line_ptr = alpha_ptr + x;
         int32_t batch_size = 32;
 
         if (x_size >= batch_size) {
@@ -590,10 +623,13 @@ static void M_WGTMapPersp32FP(
                         if (color_idx != 0) {
                             const uint8_t color =
                                 g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                            line_ptr[0] = MAKE_PAL_IDX(color);
-                            line_ptr[1] = MAKE_PAL_IDX(color);
+                            target_line_ptr[0] = MAKE_PAL_IDX(color);
+                            target_line_ptr[1] = MAKE_PAL_IDX(color);
+                            alpha_line_ptr[0] = 255;
+                            alpha_line_ptr[1] = 255;
                         }
-                        line_ptr += 2;
+                        target_line_ptr += 2;
+                        alpha_line_ptr += 2;
                         g += g_add * 2;
                         u0 += u0_add * 2;
                         v0 += v0_add * 2;
@@ -605,9 +641,11 @@ static void M_WGTMapPersp32FP(
                         if (color_idx != 0) {
                             const uint8_t color =
                                 g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                            *line_ptr = MAKE_PAL_IDX(color);
+                            *target_line_ptr = MAKE_PAL_IDX(color);
+                            *alpha_line_ptr = 255;
                         }
-                        line_ptr++;
+                        target_line_ptr++;
+                        alpha_line_ptr++;
                         g += g_add;
                         u0 += u0_add;
                         v0 += v0_add;
@@ -636,10 +674,13 @@ static void M_WGTMapPersp32FP(
                     if (color_idx != 0) {
                         const uint8_t color =
                             g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                        line_ptr[0] = MAKE_PAL_IDX(color);
-                        line_ptr[1] = MAKE_PAL_IDX(color);
+                        target_line_ptr[0] = MAKE_PAL_IDX(color);
+                        target_line_ptr[1] = MAKE_PAL_IDX(color);
+                        alpha_line_ptr[0] = 255;
+                        alpha_line_ptr[1] = 255;
                     }
-                    line_ptr += 2;
+                    target_line_ptr += 2;
+                    alpha_line_ptr += 2;
                     g += g_add * 2;
                     u0 += u0_add * 2;
                     v0 += v0_add * 2;
@@ -651,9 +692,11 @@ static void M_WGTMapPersp32FP(
                     if (color_idx != 0) {
                         const uint8_t color =
                             g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                        *line_ptr = MAKE_PAL_IDX(color);
+                        *target_line_ptr = MAKE_PAL_IDX(color);
+                        *alpha_line_ptr = 255;
                     }
-                    line_ptr++;
+                    target_line_ptr++;
+                    alpha_line_ptr++;
                     g += g_add;
                     u0 += u0_add;
                     v0 += v0_add;
@@ -666,110 +709,16 @@ static void M_WGTMapPersp32FP(
             if (color_idx != 0) {
                 const uint8_t color =
                     g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
-                *line_ptr = MAKE_PAL_IDX(color);
+                *target_line_ptr = MAKE_PAL_IDX(color);
+                *alpha_line_ptr = 255;
             }
         }
 
     loop_end:
         y_size--;
         xbuf++;
-        draw_ptr += stride;
-    }
-}
-
-static void M_OccludeX(
-    GFX_2D_SURFACE *const alpha_surface, const int32_t y1, const int32_t y2)
-{
-    int32_t y_size = y2 - y1;
-    if (y_size <= 0) {
-        return;
-    }
-
-    const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_X *xbuf = (const XBUF_X *)m_XBuffer + y1;
-    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
-
-    while (y_size > 0) {
-        const int32_t x = xbuf->x1 / PHD_ONE;
-        const int32_t x_size = (xbuf->x2 / PHD_ONE) - x;
-        if (x_size > 0) {
-            memset(alpha_ptr + x, 255, x_size * sizeof(ALPHA_FMT));
-        }
-        y_size--;
-        xbuf++;
-        alpha_ptr += stride;
-    }
-}
-
-static void M_OccludeXG(
-    GFX_2D_SURFACE *const alpha_surface, const int32_t y1, const int32_t y2)
-{
-    int32_t y_size = y2 - y1;
-    if (y_size <= 0) {
-        return;
-    }
-
-    const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XG *xbuf = (const XBUF_XG *)m_XBuffer + y1;
-    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
-
-    while (y_size > 0) {
-        const int32_t x = xbuf->x1 / PHD_ONE;
-        const int32_t x_size = (xbuf->x2 / PHD_ONE) - x;
-        if (x_size > 0) {
-            memset(alpha_ptr + x, 255, x_size * sizeof(ALPHA_FMT));
-        }
-        y_size--;
-        xbuf++;
-        alpha_ptr += stride;
-    }
-}
-
-static void M_OccludeXGUV(
-    GFX_2D_SURFACE *const alpha_surface, const int32_t y1, const int32_t y2)
-{
-    int32_t y_size = y2 - y1;
-    if (y_size <= 0) {
-        return;
-    }
-
-    const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XGUV *xbuf = (const XBUF_XGUV *)m_XBuffer + y1;
-    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
-
-    while (y_size > 0) {
-        const int32_t x = xbuf->x1 / PHD_ONE;
-        const int32_t x_size = (xbuf->x2 / PHD_ONE) - x;
-        if (x_size > 0) {
-            memset(alpha_ptr + x, 255, x_size * sizeof(ALPHA_FMT));
-        }
-        y_size--;
-        xbuf++;
-        alpha_ptr += stride;
-    }
-}
-
-static void M_OccludeXGUVP(
-    GFX_2D_SURFACE *const alpha_surface, const int32_t y1, const int32_t y2)
-{
-    int32_t y_size = y2 - y1;
-    if (y_size <= 0) {
-        return;
-    }
-
-    const int32_t stride = alpha_surface->desc.pitch;
-    const XBUF_XGUVP *xbuf = (const XBUF_XGUVP *)m_XBuffer + y1;
-    ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * stride;
-
-    while (y_size > 0) {
-        const int32_t x = xbuf->x1 / PHD_ONE;
-        const int32_t x_size = (xbuf->x2 / PHD_ONE) - x;
-        if (x_size > 0) {
-            memset(alpha_ptr + x, 255, x_size * sizeof(ALPHA_FMT));
-        }
-        y_size--;
-        xbuf++;
-        alpha_ptr += stride;
+        target_ptr += target_stride;
+        alpha_ptr += alpha_stride;
     }
 }
 
@@ -1102,8 +1051,7 @@ static void M_DrawPolyFlat(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenX(obj_ptr + 1)) {
-        M_OccludeX(alpha_surface, m_XGenY1, m_XGenY2);
-        M_FlatA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
+        M_FlatA(alpha_surface, target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1112,8 +1060,7 @@ static void M_DrawPolyTrans(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenX(obj_ptr + 1)) {
-        M_OccludeX(alpha_surface, m_XGenY1, m_XGenY2);
-        M_TransA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
+        M_TransA(alpha_surface, target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1122,8 +1069,7 @@ static void M_DrawPolyGouraud(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXG(obj_ptr + 1)) {
-        M_OccludeXG(alpha_surface, m_XGenY1, m_XGenY2);
-        M_GourA(target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
+        M_GourA(alpha_surface, target_surface, m_XGenY1, m_XGenY2, *obj_ptr);
     }
 }
 
@@ -1132,9 +1078,9 @@ static void M_DrawPolyGTMap(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUV(obj_ptr + 1)) {
-        M_OccludeXGUV(alpha_surface, m_XGenY1, m_XGenY2);
         M_GTMapA(
-            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            alpha_surface, target_surface, m_XGenY1, m_XGenY2,
+            g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1143,9 +1089,9 @@ static void M_DrawPolyWGTMap(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUV(obj_ptr + 1)) {
-        M_OccludeXGUV(alpha_surface, m_XGenY1, m_XGenY2);
         M_WGTMapA(
-            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            alpha_surface, target_surface, m_XGenY1, m_XGenY2,
+            g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1154,9 +1100,9 @@ static void M_DrawPolyGTMapPersp(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
-        M_OccludeXGUVP(alpha_surface, m_XGenY1, m_XGenY2);
         M_GTMapPersp32FP(
-            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            alpha_surface, target_surface, m_XGenY1, m_XGenY2,
+            g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1165,9 +1111,9 @@ static void M_DrawPolyWGTMapPersp(
     GFX_2D_SURFACE *const alpha_surface)
 {
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
-        M_OccludeXGUVP(alpha_surface, m_XGenY1, m_XGenY2);
         M_WGTMapPersp32FP(
-            target_surface, m_XGenY1, m_XGenY2, g_TexturePageBuffer8[*obj_ptr]);
+            alpha_surface, target_surface, m_XGenY1, m_XGenY2,
+            g_TexturePageBuffer8[*obj_ptr]);
     }
 }
 
@@ -1180,7 +1126,7 @@ static void M_DrawPolyLine(
     int32_t x2 = *obj_ptr++;
     int32_t y2 = *obj_ptr++;
     uint8_t lcolor = (uint8_t)*obj_ptr;
-    const int32_t stride = target_surface->desc.pitch;
+    const int32_t target_stride = target_surface->desc.pitch;
 
     if (x2 < x1) {
         int32_t tmp;
@@ -1224,11 +1170,11 @@ static void M_DrawPolyLine(
 
     int32_t x_size = x2 - x1;
     int32_t y_size = y2 - y1;
-    PIX_FMT *draw_ptr = &target_surface->buffer[x1 + stride * y1];
-    ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[x1 + stride * y1];
+    PIX_FMT *target_ptr = &target_surface->buffer[x1 + target_stride * y1];
+    ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[x1 + target_stride * y1];
 
     if (!x_size && !y_size) {
-        *draw_ptr = lcolor;
+        *target_ptr = lcolor;
         //*alpha_ptr = 255;
         return;
     }
@@ -1243,10 +1189,10 @@ static void M_DrawPolyLine(
 
     int32_t y_add;
     if (y_size < 0) {
-        y_add = -stride;
+        y_add = -target_stride;
         y_size = -y_size;
     } else {
-        y_add = stride;
+        y_add = target_stride;
     }
 
     int32_t col_add;
@@ -1269,12 +1215,12 @@ static void M_DrawPolyLine(
     int32_t part = PHD_ONE * rows / cols;
     for (int32_t i = 0; i < cols; i++) {
         part_sum += part;
-        *draw_ptr = lcolor;
-        draw_ptr += col_add;
+        *target_ptr = lcolor;
+        target_ptr += col_add;
         //*alpha_ptr = 255;
         // alpha_ptr += col_add;
         if (part_sum >= PHD_ONE) {
-            draw_ptr += row_add;
+            target_ptr += row_add;
             // alpha_ptr += row_add;
             part_sum -= PHD_ONE;
         }
@@ -1316,15 +1262,15 @@ static void M_DrawScaledSpriteC(
     CLAMPG(x1, g_PhdWinMaxX + 1);
     CLAMPG(y1, g_PhdWinMaxY + 1);
 
-    const int32_t stride = target_surface->desc.pitch;
+    const int32_t target_stride = target_surface->desc.pitch;
     const int32_t width = x1 - x0;
     const int32_t height = y1 - y0;
 
     const uint8_t *const src_base =
         &g_TexturePageBuffer8[sprite->tex_page][sprite->offset];
-    PIX_FMT *draw_ptr = &target_surface->buffer[y0 * stride + x0];
-    ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[y0 * stride + x0];
-    const int32_t dst_add = stride - width;
+    PIX_FMT *target_ptr = &target_surface->buffer[y0 * target_stride + x0];
+    ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[y0 * target_stride + x0];
+    const int32_t dst_add = target_stride - width;
 
     const bool is_depth_q = depth != &g_DepthQTable[16];
 
@@ -1334,14 +1280,14 @@ static void M_DrawScaledSpriteC(
         for (int32_t j = 0; j < width; j++) {
             const uint8_t pix = src[u >> 16];
             if (pix != 0) {
-                *draw_ptr = is_depth_q ? depth->index[pix] : pix;
+                *target_ptr = is_depth_q ? depth->index[pix] : pix;
                 *alpha_ptr = 255;
             }
             u += u_add;
-            draw_ptr++;
+            target_ptr++;
             alpha_ptr++;
         }
-        draw_ptr += dst_add;
+        target_ptr += dst_add;
         alpha_ptr += dst_add;
         v_base += v_add;
     }
@@ -1455,7 +1401,7 @@ static void M_BeginScene(RENDERER *const renderer)
 
     memset(
         priv->surface_alpha->buffer, 0,
-        priv->surface_alpha->desc.width * priv->surface_alpha->desc.height);
+        priv->surface_alpha->desc.pitch * priv->surface_alpha->desc.height);
 }
 
 static void M_EndScene(RENDERER *const renderer)
