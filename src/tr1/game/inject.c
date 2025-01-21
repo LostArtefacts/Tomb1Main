@@ -1256,8 +1256,9 @@ static void M_AlterRoomVertex(const INJECTION *const injection)
     vertex->pos.x += x_change;
     vertex->pos.y += y_change;
     vertex->pos.z += z_change;
-    vertex->shade += shade_change;
-    CLAMPG(vertex->shade, MAX_LIGHTING);
+    vertex->light_base += shade_change;
+    CLAMPG(vertex->light_base, MAX_LIGHTING);
+    vertex->light_adder = vertex->light_base;
 }
 
 static void M_RotateRoomFace(const INJECTION *const injection)
@@ -1362,7 +1363,8 @@ static void M_AddRoomVertex(const INJECTION *const injection)
     ROOM *const room = Room_Get(target_room);
     ROOM_VERTEX *const vertex = &room->mesh.vertices[room->mesh.num_vertices];
     vertex->pos = pos;
-    vertex->shade = shade;
+    vertex->light_base = shade;
+    vertex->light_adder = shade;
     room->mesh.num_vertices++;
 }
 

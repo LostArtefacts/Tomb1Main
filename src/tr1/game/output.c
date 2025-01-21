@@ -434,7 +434,7 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
         vbuf->xv = xv;
         vbuf->yv = yv;
         vbuf->zv = zv;
-        vbuf->g = vertex->shade & MAX_LIGHTING;
+        vbuf->g = vertex->light_adder & MAX_LIGHTING;
 
         if (zv < Output_GetNearZ()) {
             vbuf->clip = (int16_t)0x8000;

@@ -64,14 +64,13 @@ typedef struct {
 
 typedef struct {
     XYZ_16 pos;
+    int16_t light_base;
+    int16_t light_adder;
 #if TR_VERSION == 1
     uint16_t flags;
-    uint16_t shade;
 #elif TR_VERSION == 2
-    int16_t light_base;
     uint8_t light_table_value;
     uint8_t flags;
-    int16_t light_adder;
 #endif
 } ROOM_VERTEX;
 

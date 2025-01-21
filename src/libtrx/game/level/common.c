@@ -144,11 +144,11 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
         for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
             ROOM_VERTEX *const vertex = &room->mesh.vertices[i];
             M_ReadVertex(&vertex->pos, file);
-#if TR_VERSION == 1
-            vertex->shade = VFile_ReadU16(file);
-            vertex->flags = 0;
-#elif TR_VERSION == 2
             vertex->light_base = VFile_ReadS16(file);
+#if TR_VERSION == 1
+            vertex->flags = 0;
+            vertex->light_adder = vertex->light_base;
+#elif TR_VERSION == 2
             vertex->light_table_value = VFile_ReadU8(file);
             vertex->flags = VFile_ReadU8(file);
             vertex->light_adder = VFile_ReadS16(file);
