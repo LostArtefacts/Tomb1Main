@@ -130,7 +130,7 @@ typedef struct {
 #else
     int16_t ambient_1;
     int16_t ambient_2;
-    int16_t light_mode;
+    ROOM_LIGHT_MODE light_mode;
 #endif
     int16_t num_lights;
     int16_t num_static_meshes;

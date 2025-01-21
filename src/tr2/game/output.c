@@ -16,7 +16,7 @@
 #include <libtrx/utils.h>
 
 static int32_t m_TickComp = 0;
-static int32_t m_RoomLightShades[4] = {};
+static int32_t m_RoomLightShades[RLM_NUMBER_OF] = {};
 static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
 static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
@@ -905,7 +905,7 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
     int32_t brightest_shade = 0;
     XYZ_32 brightest_pos = {};
 
-    if (r->light_mode != 0) {
+    if (r->light_mode != RLM_NORMAL) {
         const int32_t light_shade = m_RoomLightShades[r->light_mode];
         for (int32_t i = 0; i < r->num_lights; i++) {
             const LIGHT *const light = &r->lights[i];
@@ -1005,7 +1005,7 @@ void Output_CalculateStaticMeshLight(
     const ROOM *const room)
 {
     int32_t adder = shade_1;
-    if (room->light_mode != 0) {
+    if (room->light_mode != RLM_NORMAL) {
         adder += (shade_2 - shade_1) * m_RoomLightShades[room->light_mode]
             / (WIBBLE_SIZE - 1);
     }
@@ -1067,7 +1067,7 @@ void Output_CalculateObjectLighting(
 
 void Output_LightRoom(ROOM *const room)
 {
-    if (room->light_mode != 0) {
+    if (room->light_mode != RLM_NORMAL) {
         const ROOM_LIGHT_TABLE *const light_table =
             &m_RoomLightTables[m_RoomLightShades[room->light_mode]];
         for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
@@ -1147,15 +1147,15 @@ void Output_SetupAboveWater(const bool is_underwater)
 void Output_AnimateTextures(const int32_t ticks)
 {
     g_WibbleOffset = (g_WibbleOffset + (ticks / TICKS_PER_FRAME)) % WIBBLE_SIZE;
-    m_RoomLightShades[1] = Random_GetDraw() % WIBBLE_SIZE;
-    m_RoomLightShades[2] = (WIBBLE_SIZE - 1)
+    m_RoomLightShades[RLM_FLICKER] = Random_GetDraw() % WIBBLE_SIZE;
+    m_RoomLightShades[RLM_GLOW] = (WIBBLE_SIZE - 1)
             * (Math_Sin((g_WibbleOffset * DEG_360) / WIBBLE_SIZE) + 0x4000)
         >> 15;
 
     if (g_GF_SunsetEnabled) {
         g_SunsetTimer += ticks;
         CLAMPG(g_SunsetTimer, SUNSET_TIMEOUT);
-        m_RoomLightShades[3] =
+        m_RoomLightShades[RLM_SUNSET] =
             g_SunsetTimer * (WIBBLE_SIZE - 1) / SUNSET_TIMEOUT;
     }
 

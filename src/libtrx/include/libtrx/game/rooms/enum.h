@@ -9,6 +9,14 @@ typedef enum {
 } ROOM_FLAG;
 
 typedef enum {
+    RLM_NORMAL = 0,
+    RLM_FLICKER = 1,
+    RLM_GLOW = 2,
+    RLM_SUNSET = 3,
+    RLM_NUMBER_OF = 4,
+} ROOM_LIGHT_MODE;
+
+typedef enum {
     FT_FLOOR = 0,
     FT_DOOR = 1,
     FT_TILT = 2,
