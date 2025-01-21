@@ -656,9 +656,9 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 
             int32_t distance =
                 (SQUARE(lc.x) + SQUARE(lc.y) + SQUARE(lc.z)) >> 12;
-            int32_t falloff = SQUARE(light->falloff) >> 12;
-            int32_t shade =
-                ambient + (light->intensity * falloff) / (distance + falloff);
+            int32_t falloff = SQUARE(light->falloff.value_1) >> 12;
+            int32_t shade = ambient
+                + (light->shade.value_1 * falloff) / (distance + falloff);
 
             if (shade > brightest) {
                 brightest = shade;
@@ -695,8 +695,8 @@ void Output_CalculateStaticLight(int16_t adder)
 void Output_CalculateObjectLighting(
     const ITEM *const item, const BOUNDS_16 *const bounds)
 {
-    if (item->shade >= 0) {
-        Output_CalculateStaticLight(item->shade);
+    if (item->shade.value_1 >= 0) {
+        Output_CalculateStaticLight(item->shade.value_1);
         return;
     }
 

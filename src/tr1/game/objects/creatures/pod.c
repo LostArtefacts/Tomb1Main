@@ -60,7 +60,7 @@ void Pod_Initialise(int16_t item_num)
         bug->pos.z = item->pos.z;
         bug->rot.y = item->rot.y;
         bug->flags = IF_INVISIBLE;
-        bug->shade = -1;
+        bug->shade.value_1 = -1;
 
         Item_Initialise(bug_item_num);
 

@@ -198,7 +198,7 @@ void Flare_Create(const bool thrown)
 
     item->rot.z = 0;
     item->rot.x = 0;
-    item->shade_1 = -1;
+    item->shade.value_1 = -1;
 
     if (thrown) {
         item->speed = g_LaraItem->speed + 50;

@@ -35,7 +35,7 @@ void ThorsHammerHandle_Initialise(int16_t item_num)
     head_item->room_num = hand_item->room_num;
     head_item->pos = hand_item->pos;
     head_item->rot = hand_item->rot;
-    head_item->shade = hand_item->shade;
+    head_item->shade.value_1 = hand_item->shade.value_1;
     Item_Initialise(head_item_num);
     hand_item->data = head_item;
     g_LevelItemCount++;

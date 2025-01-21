@@ -150,10 +150,10 @@ static void M_LoadRooms(VFILE *const file)
                 light->pos.x = VFile_ReadS32(file);
                 light->pos.y = VFile_ReadS32(file);
                 light->pos.z = VFile_ReadS32(file);
-                light->intensity_1 = VFile_ReadS16(file);
-                light->intensity_2 = VFile_ReadS16(file);
-                light->falloff_1 = VFile_ReadS32(file);
-                light->falloff_2 = VFile_ReadS32(file);
+                light->shade.value_1 = VFile_ReadS16(file);
+                light->shade.value_2 = VFile_ReadS16(file);
+                light->falloff.value_1 = VFile_ReadS32(file);
+                light->falloff.value_2 = VFile_ReadS32(file);
             }
         }
 
@@ -170,8 +170,8 @@ static void M_LoadRooms(VFILE *const file)
                 mesh->pos.y = VFile_ReadS32(file);
                 mesh->pos.z = VFile_ReadS32(file);
                 mesh->rot.y = VFile_ReadS16(file);
-                mesh->shade_1 = VFile_ReadS16(file);
-                mesh->shade_2 = VFile_ReadS16(file);
+                mesh->shade.value_1 = VFile_ReadS16(file);
+                mesh->shade.value_2 = VFile_ReadS16(file);
                 mesh->static_num = VFile_ReadS16(file);
             }
         }
@@ -371,8 +371,8 @@ static void M_LoadItems(VFILE *const file)
         item->pos.y = VFile_ReadS32(file);
         item->pos.z = VFile_ReadS32(file);
         item->rot.y = VFile_ReadS16(file);
-        item->shade_1 = VFile_ReadS16(file);
-        item->shade_2 = VFile_ReadS16(file);
+        item->shade.value_1 = VFile_ReadS16(file);
+        item->shade.value_2 = VFile_ReadS16(file);
         item->flags = VFile_ReadS16(file);
         if (item->object_id < 0 || item->object_id >= O_NUMBER_OF) {
             Shell_ExitSystemFmt(

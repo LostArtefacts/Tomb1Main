@@ -913,14 +913,14 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
             const int32_t dy = pos.y - light->pos.y;
             const int32_t dz = pos.z - light->pos.z;
 
-            const int32_t falloff_1 = SQUARE(light->falloff_1) >> 12;
-            const int32_t falloff_2 = SQUARE(light->falloff_2) >> 12;
+            const int32_t falloff_1 = SQUARE(light->falloff.value_1) >> 12;
+            const int32_t falloff_2 = SQUARE(light->falloff.value_2) >> 12;
             const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
 
             const int32_t shade_1 =
-                falloff_1 * light->intensity_1 / (falloff_1 + dist);
+                falloff_1 * light->shade.value_1 / (falloff_1 + dist);
             const int32_t shade_2 =
-                falloff_2 * light->intensity_2 / (falloff_2 + dist);
+                falloff_2 * light->shade.value_2 / (falloff_2 + dist);
             const int32_t shade =
                 shade_1 + (shade_2 - shade_1) * light_shade / (WIBBLE_SIZE - 1);
 
@@ -935,11 +935,10 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
             const int32_t dx = pos.x - light->pos.x;
             const int32_t dy = pos.y - light->pos.y;
             const int32_t dz = pos.z - light->pos.z;
-            const int32_t falloff_1 =
-                (light->falloff_1 * light->falloff_1) >> 12;
+            const int32_t falloff_1 = SQUARE(light->falloff.value_1) >> 12;
             const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
             const int32_t shade =
-                falloff_1 * light->intensity_1 / (falloff_1 + dist);
+                falloff_1 * light->shade.value_1 / (falloff_1 + dist);
             if (shade > brightest_shade) {
                 brightest_shade = shade;
                 brightest_pos = light->pos;
@@ -953,7 +952,7 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
         const int32_t dx = pos.x - light->pos.x;
         const int32_t dy = pos.y - light->pos.y;
         const int32_t dz = pos.z - light->pos.z;
-        const int32_t radius = 1 << light->falloff_1;
+        const int32_t radius = 1 << light->falloff.value_1;
         if (dx < -radius || dx > radius || dy < -radius || dy > radius
             || dz < -radius || dz > radius) {
             continue;
@@ -964,8 +963,8 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
             continue;
         }
 
-        const int32_t shade = (1 << light->intensity_1)
-            - (dist >> (2 * light->falloff_1 - light->intensity_1));
+        const int32_t shade = (1 << light->shade.value_1)
+            - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
         if (shade > brightest_shade) {
             brightest_shade = shade;
             brightest_pos = light->pos;
@@ -1001,13 +1000,12 @@ void Output_CalculateStaticLight(const int16_t adder)
 }
 
 void Output_CalculateStaticMeshLight(
-    const XYZ_32 pos, const int32_t shade_1, const int32_t shade_2,
-    const ROOM *const room)
+    const XYZ_32 pos, const SHADE shade, const ROOM *const room)
 {
-    int32_t adder = shade_1;
+    int32_t adder = shade.value_1;
     if (room->light_mode != RLM_NORMAL) {
-        adder += (shade_2 - shade_1) * m_RoomLightShades[room->light_mode]
-            / (WIBBLE_SIZE - 1);
+        adder += (shade.value_2 - shade.value_1)
+            * m_RoomLightShades[room->light_mode] / (WIBBLE_SIZE - 1);
     }
 
     for (int32_t i = 0; i < m_DynamicLightCount; i++) {
@@ -1015,7 +1013,7 @@ void Output_CalculateStaticMeshLight(
         const int32_t dx = pos.x - light->pos.x;
         const int32_t dy = pos.y - light->pos.y;
         const int32_t dz = pos.z - light->pos.z;
-        const int32_t radius = 1 << light->falloff_1;
+        const int32_t radius = 1 << light->falloff.value_1;
         if (dx < -radius || dx > radius || dy < -radius || dy > radius
             || dz < -radius || dz > radius) {
             continue;
@@ -1026,8 +1024,8 @@ void Output_CalculateStaticMeshLight(
             continue;
         }
 
-        const int32_t shade = (1 << light->intensity_1)
-            - (dist >> (2 * light->falloff_1 - light->intensity_1));
+        const int32_t shade = (1 << light->shade.value_1)
+            - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
         adder -= shade;
         if (adder < 0) {
             break;
@@ -1040,9 +1038,9 @@ void Output_CalculateStaticMeshLight(
 void Output_CalculateObjectLighting(
     const ITEM *const item, const BOUNDS_16 *const bounds)
 {
-    if (item->shade_1 >= 0) {
+    if (item->shade.value_1 >= 0) {
         Output_CalculateStaticMeshLight(
-            item->pos, item->shade_1, item->shade_2, &g_Rooms[item->room_num]);
+            item->pos, item->shade, &g_Rooms[item->room_num]);
         return;
     }
 
@@ -1094,7 +1092,7 @@ void Output_LightRoom(ROOM *const room)
         const int32_t x = light->pos.x - room->pos.x;
         const int32_t y = light->pos.y;
         const int32_t z = light->pos.z - room->pos.z;
-        const int32_t radius = 1 << light->falloff_1;
+        const int32_t radius = 1 << light->falloff.value_1;
         if (x - radius > x_max || z - radius > z_max || x + radius < x_min
             || z + radius < z_min) {
             continue;
@@ -1121,8 +1119,8 @@ void Output_LightRoom(ROOM *const room)
                 continue;
             }
 
-            const int32_t shade = (1 << light->intensity_1)
-                - (dist >> (2 * light->falloff_1 - light->intensity_1));
+            const int32_t shade = (1 << light->shade.value_1)
+                - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
             v->light_adder -= shade;
             CLAMPL(v->light_adder, 0);
         }
@@ -1175,8 +1173,8 @@ void Output_AddDynamicLight(
 
     LIGHT *const light = &m_DynamicLights[idx];
     light->pos = pos;
-    light->intensity_1 = intensity;
-    light->falloff_1 = falloff;
+    light->shade.value_1 = intensity;
+    light->falloff.value_1 = falloff;
 }
 
 void Output_SetLightAdder(const int32_t adder)

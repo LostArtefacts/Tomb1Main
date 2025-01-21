@@ -197,7 +197,7 @@ void SkidooDriver_Initialise(const int16_t item_num)
     skidoo->rot.y = skidoo_driver->rot.y;
     skidoo->room_num = skidoo_driver->room_num;
     skidoo->flags = IF_ONE_SHOT;
-    skidoo->shade_1 = -1;
+    skidoo->shade.value_1 = -1;
     Item_Initialise(skidoo_item_num);
 
     skidoo_driver->data = (void *)(intptr_t)skidoo_item_num;

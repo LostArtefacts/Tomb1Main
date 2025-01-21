@@ -25,7 +25,7 @@ static void M_CreateDart(ITEM *const item)
     ITEM *const dart_item = Item_Get(dart_item_num);
     dart_item->object_id = O_DART;
     dart_item->room_num = item->room_num;
-    dart_item->shade_1 = -1;
+    dart_item->shade.value_1 = -1;
     dart_item->rot.y = item->rot.y;
     dart_item->pos.y = item->pos.y - 512;
 

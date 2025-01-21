@@ -3,6 +3,16 @@
 #include <stdint.h>
 
 typedef struct {
+    int16_t value_1;
+    int16_t value_2;
+} SHADE;
+
+typedef struct {
+    int32_t value_1;
+    int32_t value_2;
+} FALLOFF;
+
+typedef struct {
     uint16_t u;
     uint16_t v;
 } TEXTURE_UV;

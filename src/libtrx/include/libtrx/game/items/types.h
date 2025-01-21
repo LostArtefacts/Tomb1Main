@@ -2,6 +2,7 @@
 
 #include "../math.h"
 #include "../objects/ids.h"
+#include "../output/types.h"
 #include "./enum.h"
 
 #if TR_VERSION == 1
@@ -41,15 +42,13 @@ typedef struct {
     int16_t timer;
     uint16_t flags;
 
+    SHADE shade;
 #if TR_VERSION == 1
-    int16_t shade;
     void *data;
     void *priv;
     CARRIED_ITEM *carried_item;
     bool enable_shadow;
 #elif TR_VERSION == 2
-    int16_t shade_1;
-    int16_t shade_2;
     int16_t carried_item;
     void *data;
 #endif

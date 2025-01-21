@@ -91,7 +91,8 @@ void Object_DrawSpriteItem(ITEM *item)
     Output_DrawSprite(
         item->interp.result.pos.x, item->interp.result.pos.y,
         item->interp.result.pos.z,
-        g_Objects[item->object_id].mesh_idx - item->frame_num, item->shade);
+        g_Objects[item->object_id].mesh_idx - item->frame_num,
+        item->shade.value_1);
 }
 
 void Object_DrawPickupItem(ITEM *item)

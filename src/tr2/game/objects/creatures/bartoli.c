@@ -30,7 +30,7 @@ static void M_CreateBoom(
     sphere_item->pos.y = origin_item->pos.y + 256;
     sphere_item->pos.z = origin_item->pos.z;
     sphere_item->room_num = origin_item->room_num;
-    sphere_item->shade_1 = -1;
+    sphere_item->shade.value_1 = -1;
     Item_Initialise(item_num);
     Item_AddActive(item_num);
     sphere_item->status = IS_ACTIVE;
@@ -96,7 +96,7 @@ void Bartoli_Initialise(const int16_t item_num)
     item_dragon_back->rot.y = item->rot.y;
     item_dragon_back->room_num = item->room_num;
     item_dragon_back->flags = IF_INVISIBLE;
-    item_dragon_back->shade_1 = -1;
+    item_dragon_back->shade.value_1 = -1;
     Item_Initialise(item_dragon_back_num);
     item_dragon_back->mesh_bits = 0x1FFFFF;
 
@@ -108,7 +108,7 @@ void Bartoli_Initialise(const int16_t item_num)
     item_dragon_front->rot.y = item->rot.y;
     item_dragon_front->room_num = item->room_num;
     item_dragon_front->flags = IF_INVISIBLE;
-    item_dragon_front->shade_1 = -1;
+    item_dragon_front->shade.value_1 = -1;
     Item_Initialise(item_dragon_front_num);
     item_dragon_back->data = (void *)(intptr_t)item_dragon_front_num;
 

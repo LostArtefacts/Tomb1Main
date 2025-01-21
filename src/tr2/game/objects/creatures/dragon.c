@@ -230,7 +230,7 @@ void Dragon_Bones(const int16_t item_num)
     bone_back->rot.y = dragon_item->rot.y;
     bone_back->rot.z = 0;
     bone_back->room_num = dragon_item->room_num;
-    bone_back->shade_1 = -1;
+    bone_back->shade.value_1 = -1;
     Item_Initialise(bone_back_item_num);
 
     ITEM *const bone_front = Item_Get(bone_front_item_num);
@@ -242,7 +242,7 @@ void Dragon_Bones(const int16_t item_num)
     bone_front->rot.y = dragon_item->rot.y;
     bone_front->rot.z = 0;
     bone_front->room_num = dragon_item->room_num;
-    bone_front->shade_1 = -1;
+    bone_front->shade.value_1 = -1;
     Item_Initialise(bone_front_item_num);
     bone_front->mesh_bits = ~0xC00000u;
 }

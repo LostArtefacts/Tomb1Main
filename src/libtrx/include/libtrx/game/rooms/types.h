@@ -58,15 +58,8 @@ typedef struct {
 
 typedef struct {
     XYZ_32 pos;
-#if TR_VERSION == 1
-    int16_t intensity;
-    int32_t falloff;
-#elif TR_VERSION == 2
-    int16_t intensity_1;
-    int16_t intensity_2;
-    int32_t falloff_1;
-    int32_t falloff_2;
-#endif
+    SHADE shade;
+    FALLOFF falloff;
 } LIGHT;
 
 typedef struct {
@@ -103,12 +96,7 @@ typedef struct {
     struct {
         int16_t y;
     } rot;
-#if TR_VERSION == 1
-    uint16_t shade;
-#elif TR_VERSION == 2
-    int16_t shade_1;
-    int16_t shade_2;
-#endif
+    SHADE shade;
     int16_t static_num;
 } STATIC_MESH;
 

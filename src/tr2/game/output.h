@@ -82,8 +82,7 @@ void Output_CalculateWibbleTable(void);
 int32_t Output_GetObjectBounds(const BOUNDS_16 *bounds);
 void Output_CalculateLight(XYZ_32 pos, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);
-void Output_CalculateStaticMeshLight(
-    XYZ_32 pos, int32_t shade_1, int32_t shade_2, const ROOM *room);
+void Output_CalculateStaticMeshLight(XYZ_32 pos, SHADE shade, const ROOM *room);
 void Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
 void Output_LightRoom(ROOM *room);
 void Output_SetupBelowWater(bool is_underwater);

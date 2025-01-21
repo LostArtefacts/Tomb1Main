@@ -36,7 +36,7 @@ void DartEmitter_Control(int16_t item_num)
             ITEM *dart = &g_Items[dart_item_num];
             dart->object_id = O_DART;
             dart->room_num = item->room_num;
-            dart->shade = -1;
+            dart->shade.value_1 = -1;
             dart->rot.y = item->rot.y;
             dart->pos.y = item->pos.y - WALL_L / 2;
 

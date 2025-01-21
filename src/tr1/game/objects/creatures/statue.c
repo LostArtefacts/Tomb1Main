@@ -41,7 +41,7 @@ void Statue_Initialise(int16_t item_num)
     centaur->pos.y = item->pos.y;
     centaur->pos.z = item->pos.z;
     centaur->flags = IF_INVISIBLE;
-    centaur->shade = -1;
+    centaur->shade.value_1 = -1;
 
     Item_Initialise(centaur_item_num);
 
