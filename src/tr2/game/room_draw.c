@@ -433,8 +433,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         const int16_t clip = Output_GetObjectBounds(&static_obj->draw_bounds);
         if (clip != 0) {
             Output_CalculateStaticMeshLight(
-                mesh->pos.x, mesh->pos.y, mesh->pos.z, mesh->shade_1,
-                mesh->shade_2, r);
+                mesh->pos, mesh->shade_1, mesh->shade_2, r);
             Object_DrawMesh(static_obj->mesh_idx, clip, false);
         }
         Matrix_Pop();

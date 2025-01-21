@@ -898,8 +898,7 @@ int32_t Output_GetObjectBounds(const BOUNDS_16 *const bounds)
     return 1;
 }
 
-void Output_CalculateLight(
-    const int32_t x, const int32_t y, const int32_t z, const int16_t room_num)
+void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 {
     const ROOM *const r = &g_Rooms[room_num];
 
@@ -910,9 +909,9 @@ void Output_CalculateLight(
         const int32_t light_shade = m_RoomLightShades[r->light_mode];
         for (int32_t i = 0; i < r->num_lights; i++) {
             const LIGHT *const light = &r->lights[i];
-            const int32_t dx = x - light->pos.x;
-            const int32_t dy = y - light->pos.y;
-            const int32_t dz = z - light->pos.z;
+            const int32_t dx = pos.x - light->pos.x;
+            const int32_t dy = pos.y - light->pos.y;
+            const int32_t dz = pos.z - light->pos.z;
 
             const int32_t falloff_1 = SQUARE(light->falloff_1) >> 12;
             const int32_t falloff_2 = SQUARE(light->falloff_2) >> 12;
@@ -933,9 +932,9 @@ void Output_CalculateLight(
     } else {
         for (int32_t i = 0; i < r->num_lights; i++) {
             const LIGHT *const light = &r->lights[i];
-            const int32_t dx = x - light->pos.x;
-            const int32_t dy = y - light->pos.y;
-            const int32_t dz = z - light->pos.z;
+            const int32_t dx = pos.x - light->pos.x;
+            const int32_t dy = pos.y - light->pos.y;
+            const int32_t dz = pos.z - light->pos.z;
             const int32_t falloff_1 =
                 (light->falloff_1 * light->falloff_1) >> 12;
             const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
@@ -951,9 +950,9 @@ void Output_CalculateLight(
     int32_t adder = brightest_shade;
     for (int32_t i = 0; i < m_DynamicLightCount; i++) {
         const LIGHT *const light = &m_DynamicLights[i];
-        const int32_t dx = x - light->pos.x;
-        const int32_t dy = y - light->pos.y;
-        const int32_t dz = z - light->pos.z;
+        const int32_t dx = pos.x - light->pos.x;
+        const int32_t dy = pos.y - light->pos.y;
+        const int32_t dz = pos.z - light->pos.z;
         const int32_t radius = 1 << light->falloff_1;
         if (dx < -radius || dx > radius || dy < -radius || dy > radius
             || dz < -radius || dz > radius) {
@@ -980,8 +979,8 @@ void Output_CalculateLight(
         g_LsDivider = (1 << (W2V_SHIFT + 12)) / adder;
         int16_t angles[2];
         Math_GetVectorAngles(
-            x - brightest_pos.x, y - brightest_pos.y, z - brightest_pos.z,
-            angles);
+            pos.x - brightest_pos.x, pos.y - brightest_pos.y,
+            pos.z - brightest_pos.z, angles);
         Output_RotateLight(angles[1], angles[0]);
     } else {
         g_LsAdder = r->ambient_1;
@@ -1002,8 +1001,8 @@ void Output_CalculateStaticLight(const int16_t adder)
 }
 
 void Output_CalculateStaticMeshLight(
-    const int32_t x, const int32_t y, const int32_t z, const int32_t shade_1,
-    const int32_t shade_2, const ROOM *const room)
+    const XYZ_32 pos, const int32_t shade_1, const int32_t shade_2,
+    const ROOM *const room)
 {
     int32_t adder = shade_1;
     if (room->light_mode != 0) {
@@ -1013,9 +1012,9 @@ void Output_CalculateStaticMeshLight(
 
     for (int32_t i = 0; i < m_DynamicLightCount; i++) {
         const LIGHT *const light = &m_DynamicLights[i];
-        const int32_t dx = x - light->pos.x;
-        const int32_t dy = y - light->pos.y;
-        const int32_t dz = z - light->pos.z;
+        const int32_t dx = pos.x - light->pos.x;
+        const int32_t dy = pos.y - light->pos.y;
+        const int32_t dz = pos.z - light->pos.z;
         const int32_t radius = 1 << light->falloff_1;
         if (dx < -radius || dx > radius || dy < -radius || dy > radius
             || dz < -radius || dz > radius) {
@@ -1043,8 +1042,7 @@ void Output_CalculateObjectLighting(
 {
     if (item->shade_1 >= 0) {
         Output_CalculateStaticMeshLight(
-            item->pos.x, item->pos.y, item->pos.z, item->shade_1, item->shade_2,
-            &g_Rooms[item->room_num]);
+            item->pos, item->shade_1, item->shade_2, &g_Rooms[item->room_num]);
         return;
     }
 
@@ -1064,7 +1062,7 @@ void Output_CalculateObjectLighting(
     };
     Matrix_Pop();
 
-    Output_CalculateLight(pos.x, pos.y, pos.z, item->room_num);
+    Output_CalculateLight(pos, item->room_num);
 }
 
 void Output_LightRoom(ROOM *const room)

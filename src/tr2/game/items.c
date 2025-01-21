@@ -574,8 +574,7 @@ int32_t Item_Explode(
     ITEM *const item = &g_Items[item_num];
     const OBJECT *const object = &g_Objects[item->object_id];
 
-    Output_CalculateLight(
-        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculateLight(item->pos, item->room_num);
 
     const ANIM_FRAME *const best_frame = Item_GetBestFrame(item);
 

@@ -25,8 +25,7 @@ void Waterfall_Control(const int16_t item_num)
         return;
     }
 
-    Output_CalculateLight(
-        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculateLight(item->pos, item->room_num);
     Sound_Effect(SFX_WATERFALL_LOOP, &item->pos, SPM_NORMAL);
 
     const int16_t effect_num = Effect_Create(item->room_num);

@@ -267,8 +267,7 @@ void Pickup_Draw(const ITEM *const item)
     Matrix_TranslateAbs(item->pos.x, offset, item->pos.z);
     Matrix_Rot16(item->rot);
 
-    Output_CalculateLight(
-        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculateLight(item->pos, item->room_num);
 
     const int32_t clip = Output_GetObjectBounds(&bounds);
     if (clip) {
