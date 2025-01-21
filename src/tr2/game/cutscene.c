@@ -77,7 +77,7 @@ GAME_FLOW_COMMAND Cutscene_Control(void)
         }
     }
 
-    g_DynamicLightCount = 0;
+    Output_ResetDynamicLights();
 
     Item_Control();
     Effect_Control();

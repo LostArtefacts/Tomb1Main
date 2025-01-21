@@ -107,7 +107,6 @@ int16_t *g_FlyZone[2] = {};
 int16_t *g_GroundZone[4][2] = {};
 uint16_t *g_Overlap = NULL;
 CREATURE *g_BaddieSlots = NULL;
-int32_t g_DynamicLightCount;
 
 STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
 STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS];

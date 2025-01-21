@@ -18,6 +18,7 @@
 static int32_t m_TickComp = 0;
 static int32_t m_RoomLightShades[4] = {};
 static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
+static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
 static float m_WibbleTable[32];
 static int16_t m_ShadesTable[32];
@@ -948,7 +949,7 @@ void Output_CalculateLight(
     }
 
     int32_t adder = brightest_shade;
-    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
         const LIGHT *const light = &m_DynamicLights[i];
         const int32_t dx = x - light->pos.x;
         const int32_t dy = y - light->pos.y;
@@ -1010,7 +1011,7 @@ void Output_CalculateStaticMeshLight(
             / (WIBBLE_SIZE - 1);
     }
 
-    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
         const LIGHT *const light = &m_DynamicLights[i];
         const int32_t dx = x - light->pos.x;
         const int32_t dy = y - light->pos.y;
@@ -1090,7 +1091,7 @@ void Output_LightRoom(ROOM *const room)
     const int32_t x_max = (room->size.x - 1) * WALL_L;
     const int32_t z_max = (room->size.z - 1) * WALL_L;
 
-    for (int32_t i = 0; i < g_DynamicLightCount; i++) {
+    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
         const LIGHT *const light = &m_DynamicLights[i];
         const int32_t x = light->pos.x - room->pos.x;
         const int32_t y = light->pos.y;
@@ -1163,11 +1164,16 @@ void Output_AnimateTextures(const int32_t ticks)
     Output_DoAnimateTextures(ticks);
 }
 
+void Output_ResetDynamicLights(void)
+{
+    m_DynamicLightCount = 0;
+}
+
 void Output_AddDynamicLight(
     const XYZ_32 pos, const int32_t intensity, const int32_t falloff)
 {
     const int32_t idx =
-        g_DynamicLightCount < MAX_DYNAMIC_LIGHTS ? g_DynamicLightCount++ : 0;
+        m_DynamicLightCount < MAX_DYNAMIC_LIGHTS ? m_DynamicLightCount++ : 0;
 
     LIGHT *const light = &m_DynamicLights[idx];
     light->pos = pos;

@@ -150,7 +150,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         }
     }
 
-    g_DynamicLightCount = 0;
+    Output_ResetDynamicLights();
 
     Item_Control();
     Effect_Control();
