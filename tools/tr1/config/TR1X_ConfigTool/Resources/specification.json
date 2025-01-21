@@ -590,6 +590,11 @@
           "Field": "enable_fade_effects",
           "DataType": "Bool",
           "DefaultValue": true
+        },
+        {
+          "Field": "enable_exit_fade_effects",
+          "DataType": "Bool",
+          "DefaultValue": true
         }
       ]
     }

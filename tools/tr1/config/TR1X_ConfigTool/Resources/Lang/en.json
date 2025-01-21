@@ -428,6 +428,10 @@
     "enable_fade_effects": {
       "Title": "Fade effects",
       "Description": "Makes the inventory and pause screen use fade transitions for the semitransparent backdrop, similar to PS1."
+    },
+    "enable_exit_fade_effects": {
+      "Title": "Exit fade effects",
+      "Description": "Enables the fade effects when exiting the game to desktop."
     }
   }
 }

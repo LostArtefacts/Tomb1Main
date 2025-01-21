@@ -184,6 +184,10 @@
       "Title": "Efectos de fundido",
       "Description": "Hace que el inventario y la pantalla de pausa usen transiciones de fundido para el fondo semitransparente, similar a PS1."
     },
+    "enable_exit_fade_effects": {
+      "Title": "Efectos de fundido de salida",
+      "Description": "Habilita los efectos de desvanecimiento al salir del juego al escritorio."
+    },
     "enable_fmv": {
       "Title": "Habilitar FMV",
       "Description": "Habilita la reproducción de vídeos FMV."

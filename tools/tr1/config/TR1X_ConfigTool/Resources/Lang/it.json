@@ -439,6 +439,10 @@
     "enable_fade_effects": {
       "Title": "Effetti di dissolvenza",
       "Description": "Fa in modo che l'inventario e la schermata di pausa utilizzino transizioni in dissolvenza per lo sfondo semitrasparente, simile alla PS1."
+    },
+    "enable_exit_fade_effects": {
+      "Title": "Effetti di dissolvenza di uscita",
+      "Description": "Abilita gli effetti di dissolvenza quando si esce dal gioco al desktop."
     }
   }
 }

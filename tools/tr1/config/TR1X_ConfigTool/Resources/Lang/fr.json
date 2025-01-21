@@ -439,6 +439,10 @@
     "enable_fade_effects": {
       "Title": "Effets de fondu",
       "Description": "Fait en sorte que l'inventaire et l'écran de pause utilisent des transitions de fondu pour le fond semi-transparent, similaire à la version PlayStation."
+    },
+    "enable_exit_fade_effects": {
+      "Title": "Effets de fondu de sortie",
+      "Description": "Active les effets de fondu lors de la sortie du jeu vers le bureau."
     }
   }
 }

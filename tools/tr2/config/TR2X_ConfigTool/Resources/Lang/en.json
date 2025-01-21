@@ -97,6 +97,10 @@
     "enable_fade_effects": {
       "Title": "Fade effects",
       "Description": "Enable fade transitions, for example between credit graphics."
+    },
+    "enable_exit_fade_effects": {
+      "Title": "Exit fade effects",
+      "Description": "Enables the fade effects when exiting the game to desktop."
     }
   }
 }
