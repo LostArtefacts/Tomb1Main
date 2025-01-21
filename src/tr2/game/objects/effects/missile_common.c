@@ -47,8 +47,7 @@ void Missile_Control(const int16_t effect_num)
             effect->counter = 6;
             Sound_Effect(SFX_CIRCLE_BLADE_HIT, &effect->pos, SPM_NORMAL);
         } else if (effect->object_id == O_MISSILE_FLAME) {
-            Output_AddDynamicLight(
-                effect->pos.x, effect->pos.y, effect->pos.z, 14, 11);
+            Output_AddDynamicLight(effect->pos, 14, 11);
             Effect_Kill(effect_num);
         }
         return;
@@ -84,8 +83,7 @@ void Missile_Control(const int16_t effect_num)
         Spawn_Bubble(&effect->pos, effect->room_num);
     } else if (effect->object_id == O_MISSILE_FLAME) {
         if (!effect->counter--) {
-            Output_AddDynamicLight(
-                effect->pos.x, effect->pos.y, effect->pos.z, 14, 11);
+            Output_AddDynamicLight(effect->pos, 14, 11);
             Sound_Effect(SFX_DRAGON_FIRE, &effect->pos, SPM_NORMAL);
             Effect_Kill(effect_num);
         }

@@ -98,10 +98,12 @@ void Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
         && (weapon_type == LGT_SHOTGUN || weapon_type == LGT_M16)) {
         const int32_t c = Math_Cos(g_LaraItem->rot.y);
         const int32_t s = Math_Sin(g_LaraItem->rot.y);
-        const int32_t x = g_LaraItem->pos.x + (s >> (W2V_SHIFT - 10));
-        const int32_t y = g_LaraItem->pos.y - WALL_L / 2;
-        const int32_t z = g_LaraItem->pos.z + (c >> (W2V_SHIFT - 10));
-        Output_AddDynamicLight(x, y, z, 12, 11);
+        const XYZ_32 pos = {
+            .x = g_LaraItem->pos.x + (s >> (W2V_SHIFT - 10)),
+            .y = g_LaraItem->pos.y - WALL_L / 2,
+            .z = g_LaraItem->pos.z + (c >> (W2V_SHIFT - 10)),
+        };
+        Output_AddDynamicLight(pos, 12, 11);
     }
 }
 

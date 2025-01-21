@@ -14,14 +14,12 @@ void Explosion_Control(const int16_t effect_num)
         effect->frame_num--;
         effect->counter = 0;
         if (effect->frame_num > obj->mesh_count) {
-            Output_AddDynamicLight(
-                effect->pos.x, effect->pos.y, effect->pos.z, 13, 11);
+            Output_AddDynamicLight(effect->pos, 13, 11);
         } else {
             Effect_Kill(effect_num);
         }
     } else {
-        Output_AddDynamicLight(
-            effect->pos.x, effect->pos.y, effect->pos.z, 12, 10);
+        Output_AddDynamicLight(effect->pos, 12, 10);
     }
 }
 

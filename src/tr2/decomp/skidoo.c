@@ -780,10 +780,12 @@ void Skidoo_Guns(void)
 
     const int32_t cy = Math_Cos(g_LaraItem->rot.y);
     const int32_t sy = Math_Sin(g_LaraItem->rot.y);
-    const int32_t x = g_LaraItem->pos.x + (sy >> 4);
-    const int32_t z = g_LaraItem->pos.z + (cy >> 4);
-    const int32_t y = g_LaraItem->pos.y - 512;
-    Output_AddDynamicLight(x, y, z, 12, 11);
+    const XYZ_32 pos = {
+        .x = g_LaraItem->pos.x + (sy >> 4),
+        .z = g_LaraItem->pos.z + (cy >> 4),
+        .y = g_LaraItem->pos.y - 512,
+    };
+    Output_AddDynamicLight(pos, 12, 11);
 
     ITEM *const skidoo = Item_Get(g_Lara.skidoo);
     Creature_Effect(skidoo, &g_Skidoo_LeftGun, Spawn_GunShot);

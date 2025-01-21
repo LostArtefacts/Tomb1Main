@@ -79,7 +79,7 @@ void Detonator_Control(const int16_t item_num)
     Item_Animate(item);
 
     if (Item_TestFrameRange(item, EXPLOSION_START_FRAME, EXPLOSION_END_FRAME)) {
-        Output_AddDynamicLight(item->pos.x, item->pos.y, item->pos.z, 13, 11);
+        Output_AddDynamicLight(item->pos, 13, 11);
     }
 
     if (Item_TestFrameEqual(item, EXPLOSION_ACTION_FRAME)) {

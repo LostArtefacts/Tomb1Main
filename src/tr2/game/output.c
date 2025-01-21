@@ -1164,16 +1164,13 @@ void Output_AnimateTextures(const int32_t ticks)
 }
 
 void Output_AddDynamicLight(
-    const int32_t x, const int32_t y, const int32_t z, const int32_t intensity,
-    const int32_t falloff)
+    const XYZ_32 pos, const int32_t intensity, const int32_t falloff)
 {
     const int32_t idx =
         g_DynamicLightCount < MAX_DYNAMIC_LIGHTS ? g_DynamicLightCount++ : 0;
 
     LIGHT *const light = &m_DynamicLights[idx];
-    light->pos.x = x;
-    light->pos.y = y;
-    light->pos.z = z;
+    light->pos = pos;
     light->intensity_1 = intensity;
     light->falloff_1 = falloff;
 }

@@ -32,7 +32,7 @@ void General_Control(const int16_t item_num)
 
     XYZ_32 pos = { .x = 3000, .y = 720, .z = 0 };
     Collide_GetJointAbsPosition(item, &pos, 0);
-    Output_AddDynamicLight(pos.x, pos.y, pos.z, 14, 11);
+    Output_AddDynamicLight(pos, 14, 11);
 
     if (item->status == IS_DEACTIVATED) {
         Item_RemoveActive(item_num);

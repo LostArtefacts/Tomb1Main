@@ -91,5 +91,4 @@ void Output_SetupBelowWater(bool is_underwater);
 void Output_SetupAboveWater(bool is_underwater);
 void Output_AnimateTextures(int32_t ticks);
 
-void Output_AddDynamicLight(
-    int32_t x, int32_t y, int32_t z, int32_t intensity, int32_t falloff);
+void Output_AddDynamicLight(XYZ_32 pos, int32_t intensity, int32_t falloff);

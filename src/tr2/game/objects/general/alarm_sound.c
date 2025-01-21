@@ -15,7 +15,7 @@ void AlarmSound_Control(int16_t item_num)
     int32_t counter = (int32_t)(intptr_t)item->data;
     counter++;
     if (counter > 6) {
-        Output_AddDynamicLight(item->pos.x, item->pos.y, item->pos.z, 12, 11);
+        Output_AddDynamicLight(item->pos, 12, 11);
         if (counter > 12) {
             counter = 0;
         }

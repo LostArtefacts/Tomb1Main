@@ -285,9 +285,7 @@ void Dragon_Control(const int16_t item_num)
             if (creature->flags > -20) {
                 // clang-format off
                 Output_AddDynamicLight(
-                    dragon_front_item->pos.x,
-                    dragon_front_item->pos.y,
-                    dragon_front_item->pos.z,
+                    dragon_front_item->pos,
                     ((4 * Random_GetDraw()) >> 15) + 12 + creature->flags / 2,
                     ((4 * Random_GetDraw()) >> 15) + 10 + creature->flags / 2);
                 // clang-format on

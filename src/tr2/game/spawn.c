@@ -69,9 +69,7 @@ void Spawn_MysticLight(const int16_t item_num)
 
     // clang-format off
     Output_AddDynamicLight(
-        item->pos.x,
-        item->pos.y,
-        item->pos.z,
+        item->pos,
         ((4 * Random_GetDraw()) >> 15) + 12,
         ((4 * Random_GetDraw()) >> 15) + 10);
     // clang-format on

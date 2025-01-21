@@ -16,7 +16,7 @@ void GunFlash_Control(const int16_t effect_num)
     }
 
     effect->rot.z = Random_GetControl();
-    Output_AddDynamicLight(effect->pos.x, effect->pos.y, effect->pos.z, 12, 11);
+    Output_AddDynamicLight(effect->pos, 12, 11);
 }
 
 void GunFlash_Setup(void)

@@ -81,30 +81,32 @@ int32_t Flare_DoLight(const XYZ_32 *const pos, const int32_t flare_age)
     }
 
     const int32_t random = Random_GetDraw();
-    const int32_t x = pos->x + (random & 0xF);
-    const int32_t y = pos->y;
-    const int32_t z = pos->z;
+    const XYZ_32 light_pos = {
+        .x = pos->x + (random & 0xF),
+        .y = pos->y,
+        .z = pos->z,
+    };
 
     if (flare_age < FLARE_YOUNG_AGE) {
         const int32_t intensity = FLARE_INTENSITY
                 * (flare_age - FLARE_YOUNG_AGE) / (2 * FLARE_YOUNG_AGE)
             + FLARE_INTENSITY;
-        Output_AddDynamicLight(x, y, z, intensity, FLARE_FALL_OFF);
+        Output_AddDynamicLight(light_pos, intensity, FLARE_FALL_OFF);
         return true;
     }
 
     if (flare_age < FLARE_OLD_AGE) {
-        Output_AddDynamicLight(x, y, z, FLARE_INTENSITY, FLARE_FALL_OFF);
+        Output_AddDynamicLight(light_pos, FLARE_INTENSITY, FLARE_FALL_OFF);
         return true;
     }
 
     if (random > 0x2000) {
         Output_AddDynamicLight(
-            x, y, z, FLARE_INTENSITY - (random & 3), FLARE_FALL_OFF);
+            light_pos, FLARE_INTENSITY - (random & 3), FLARE_FALL_OFF);
         return true;
     }
 
-    Output_AddDynamicLight(x, y, z, FLARE_INTENSITY, FLARE_FALL_OFF / 2);
+    Output_AddDynamicLight(light_pos, FLARE_INTENSITY, FLARE_FALL_OFF / 2);
     return false;
 }
 
