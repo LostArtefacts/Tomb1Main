@@ -92,11 +92,11 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 
     if (demo_mode) {
         if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-            return g_GameFlow.on_demo_interrupt;
+            return g_GameFlow.cmd_demo_interrupt;
         }
         if (!Demo_GetInput()) {
             g_Input = (INPUT_STATE) {};
-            return g_GameFlow.on_demo_end;
+            return g_GameFlow.cmd_demo_end;
         }
     }
 
@@ -104,13 +104,13 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         || (g_Lara.death_timer > DEATH_WAIT_INPUT && g_Input.any)
         || g_OverlayStatus == 2) {
         if (demo_mode) {
-            return g_GameFlow.on_death_demo_mode;
+            return g_GameFlow.cmd_death_demo_mode;
         }
         if (g_CurrentLevel == LV_GYM) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (g_GameFlow.on_death_in_game.action != GF_NOOP) {
-            return g_GameFlow.on_death_in_game;
+        if (g_GameFlow.cmd_death_in_game.action != GF_NOOP) {
+            return g_GameFlow.cmd_death_in_game;
         }
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;

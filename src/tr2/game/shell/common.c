@@ -365,11 +365,6 @@ void Shell_Main(void)
     Viewport_Reset();
     Render_Reset(RENDER_RESET_PARAMS);
 
-    if (!GF_LoadScriptFile("data\\tombPC.dat")) {
-        Shell_ExitSystem("Could not load the original script file.");
-        return;
-    }
-
     if (!GF_N_Load(m_CurrentGameFlowPath)) {
         Shell_ExitSystem("Could not load the new script file.");
         return;
@@ -393,7 +388,7 @@ void Shell_Main(void)
         return;
     }
 
-    GAME_FLOW_COMMAND gf_cmd = g_GameFlow.first_option;
+    GAME_FLOW_COMMAND gf_cmd = g_GameFlow.cmd_init;
     bool is_loop_continued = true;
     while (is_loop_continued) {
         LOG_DEBUG("action=%d param=%x", gf_cmd.action, gf_cmd.param);
@@ -443,7 +438,7 @@ void Shell_Main(void)
 
         case GF_EXIT_TO_TITLE:
             if (g_GameFlow.title_level == NULL) {
-                gf_cmd = g_GameFlow.title_replace;
+                gf_cmd = g_GameFlow.cmd_title;
                 if (gf_cmd.action == GF_NOOP
                     || gf_cmd.action == GF_EXIT_TO_TITLE) {
                     Shell_ExitSystem("Title disabled & no replacement");

@@ -92,7 +92,6 @@ LARA_INFO g_Lara;
 ITEM *g_LaraItem = NULL;
 int16_t g_NextItemActive;
 int16_t g_PrevItemActive;
-int16_t g_LegacyLevelCount;
 int32_t g_SoundEffectCount;
 OBJECT g_Objects[265] = {};
 int32_t g_RoomCount;

@@ -6,12 +6,37 @@
 #include "game/shell.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
+#include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
+typedef int32_t (*M_SEQUENCE_EVENT_HANDLER_FUNC)(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+
+typedef struct {
+    GAME_FLOW_SEQUENCE_EVENT_TYPE event_type;
+    M_SEQUENCE_EVENT_HANDLER_FUNC handler_func;
+    void *handler_func_arg;
+} M_SEQUENCE_EVENT_HANDLER;
+
 typedef void (*M_LOAD_ARRAY_FUNC)(JSON_OBJECT *, GAME_FLOW *, void *);
+
+static GAME_FLOW_COMMAND M_LoadCommand(
+    JSON_OBJECT *jcmd, GAME_FLOW_COMMAND fallback);
+
+static int32_t M_HandleIntEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static int32_t M_HandleAddItemEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static size_t M_LoadSequenceEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data);
+static void M_LoadSequence(JSON_ARRAY *jarr, GAME_FLOW_SEQUENCE *sequence);
 
 static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
 static bool M_LoadGlobal(JSON_OBJECT *obj, GAME_FLOW *gf);
@@ -37,32 +62,195 @@ static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
 
+static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
 static void M_FreeLevel(GAME_FLOW_LEVEL *level);
 static void M_FreeLevels(GAME_FLOW *gf);
 static void M_FreeDemos(GAME_FLOW *gf);
 static void M_FreeCutscenes(GAME_FLOW *gf);
 static void M_FreeFMVs(GAME_FLOW *gf);
 
+static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
+    // clang-format off
+    // Events without arguments
+    { GFS_ENABLE_SUNSET,       NULL, NULL },
+    { GFS_ENABLE_DEADLY_WATER, NULL, NULL },
+    { GFS_REMOVE_WEAPONS,      NULL, NULL },
+    { GFS_REMOVE_AMMO,         NULL, NULL },
+    { GFS_LEVEL_COMPLETE,      NULL, NULL },
+    { GFS_GAME_COMPLETE,       NULL, NULL },
+
+    // Events with integer arguments
+    { GFS_SET_MUSIC_TRACK,     M_HandleIntEvent, "music_track" },
+    { GFS_SET_NUM_SECRETS,     M_HandleIntEvent, "count" },
+    { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "anim" },
+    { GFS_SET_START_ANIM,      M_HandleIntEvent, "anim" },
+    { GFS_PLAY_LEVEL,          M_HandleIntEvent, "level_num" },
+    { GFS_PLAY_CUTSCENE,       M_HandleIntEvent, "cutscene_num" },
+    { GFS_PLAY_FMV,            M_HandleIntEvent, "fmv_num" },
+    { GFS_PLAY_DEMO,           M_HandleIntEvent, "demo_num" },
+    { GFS_DISABLE_FLOOR,       M_HandleIntEvent, "height" },
+
+    // Special cases with custom handlers
+    { GFS_ADD_ITEM,            M_HandleAddItemEvent, NULL },
+    { GFS_ADD_SECRET_REWARD,   M_HandleAddItemEvent, NULL },
+
+    // Sentinel to mark the end of the table
+    { (GAME_FLOW_SEQUENCE_EVENT_TYPE)-1, NULL, NULL },
+    // clang-format on
+};
+
+static GAME_FLOW_COMMAND M_LoadCommand(
+    JSON_OBJECT *const jcmd, const GAME_FLOW_COMMAND fallback)
+{
+    if (jcmd == NULL) {
+        return fallback;
+    }
+
+    const char *const action_str =
+        JSON_ObjectGetString(jcmd, "action", JSON_INVALID_STRING);
+    const int32_t param = JSON_ObjectGetInt(jcmd, "param", -1);
+    if (action_str == JSON_INVALID_STRING) {
+        LOG_ERROR("Unknown game flow action: %s", action_str);
+        return fallback;
+    }
+
+    const GAME_FLOW_ACTION action =
+        ENUM_MAP_GET(GAME_FLOW_ACTION, action_str, (GAME_FLOW_ACTION)-1234);
+    if (action == (GAME_FLOW_ACTION)-1234) {
+        LOG_ERROR("Unknown game flow action: %s", action_str);
+        return fallback;
+    }
+
+    return (GAME_FLOW_COMMAND) { .action = action, .param = param };
+}
+
+static int32_t M_HandleIntEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    if (event != NULL) {
+        event->data =
+            (void *)(intptr_t)JSON_ObjectGetInt(event_obj, user_arg, -1);
+    }
+    return 0;
+}
+
+static int32_t M_HandleAddItemEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    if (event != NULL) {
+        GFS_ADD_ITEM_DATA *const event_data = extra_data;
+        event_data->item = JSON_ObjectGetInt(event_obj, "item", 0);
+        event_data->inv_type =
+            event->type == GFS_ADD_ITEM ? GF_INV_REGULAR : GF_INV_SECRET;
+        event->data = event_data;
+    }
+    return sizeof(GFS_ADD_ITEM_DATA);
+}
+
+static size_t M_LoadSequenceEvent(
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data)
+{
+    const char *const type_str = JSON_ObjectGetString(event_obj, "type", "");
+    const GAME_FLOW_SEQUENCE_EVENT_TYPE type =
+        ENUM_MAP_GET(GAME_FLOW_SEQUENCE_EVENT_TYPE, type_str, -1);
+
+    const M_SEQUENCE_EVENT_HANDLER *handler = m_SequenceEventHandlers;
+    while (handler->event_type != (GAME_FLOW_SEQUENCE_EVENT_TYPE)-1
+           && handler->event_type != type) {
+        handler++;
+    }
+
+    if (handler->event_type != type) {
+        LOG_ERROR("Unknown game flow sequence event type: '%s'", type);
+        return -1;
+    }
+
+    int32_t extra_data_size = 0;
+    if (handler->handler_func != NULL) {
+        extra_data_size = handler->handler_func(
+            event_obj, NULL, NULL, handler->handler_func_arg);
+    }
+    if (extra_data_size >= 0 && event != NULL) {
+        event->type = handler->event_type;
+        LOG_DEBUG("wtf %s %p", type_str, handler->handler_func);
+        if (handler->handler_func != NULL) {
+            handler->handler_func(
+                event_obj, event, extra_data, handler->handler_func_arg);
+        } else {
+            event->data = NULL;
+        }
+    }
+    return extra_data_size;
+}
+
+static void M_LoadSequence(
+    JSON_ARRAY *const jarr, GAME_FLOW_SEQUENCE *const sequence)
+{
+    if (jarr == NULL) {
+        Shell_ExitSystem("Level has no sequence");
+    }
+
+    sequence->length = 0;
+    size_t event_base_size = sizeof(GAME_FLOW_SEQUENCE_EVENT);
+    size_t total_data_size = 0;
+    for (size_t i = 0; i < jarr->length; i++) {
+        JSON_OBJECT *jevent = JSON_ArrayGetObject(jarr, i);
+        const int32_t event_extra_size =
+            M_LoadSequenceEvent(jevent, NULL, NULL);
+        if (event_extra_size < 0) {
+            // Parsing this event failed - discard it
+            continue;
+        }
+        total_data_size += event_base_size;
+        total_data_size += event_extra_size;
+        sequence->length++;
+    }
+
+    char *const data = Memory_Alloc(total_data_size);
+    char *extra_data_ptr = data + event_base_size * sequence->length;
+    sequence->events = (GAME_FLOW_SEQUENCE_EVENT *)data;
+
+    int32_t j = 0;
+    for (int32_t i = 0; i < sequence->length; i++) {
+        JSON_OBJECT *const jevent = JSON_ArrayGetObject(jarr, i);
+        const int32_t event_extra_size =
+            M_LoadSequenceEvent(jevent, &sequence->events[j++], extra_data_ptr);
+        if (event_extra_size < 0) {
+            // Parsing this event failed - discard it
+            continue;
+        }
+        extra_data_ptr += event_extra_size;
+    }
+}
+
 static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
-    gf->title_replace =
-        GF_TranslateScriptCommand(JSON_ObjectGetInt(obj, "title_replace", -1));
-
-    gf->first_option = GF_TranslateScriptCommand(
-        JSON_ObjectGetInt(obj, "first_option", 0x500));
-    gf->on_death_demo_mode = GF_TranslateScriptCommand(
-        JSON_ObjectGetInt(obj, "on_death_demo_mode", 0x500));
-    gf->on_death_in_game = GF_TranslateScriptCommand(
-        JSON_ObjectGetInt(obj, "on_death_in_game", -1));
-    gf->demo_delay = JSON_ObjectGetInt(obj, "demo_delay", 30);
-    gf->on_demo_interrupt = GF_TranslateScriptCommand(
-        JSON_ObjectGetInt(obj, "on_demo_interrupt", 0x500));
-    gf->on_demo_end =
-        GF_TranslateScriptCommand(JSON_ObjectGetInt(obj, "on_demo_end", 0x500));
+    gf->cmd_init = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_init"),
+        (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE });
+    gf->cmd_title = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_title"),
+        (GAME_FLOW_COMMAND) { .action = GF_NOOP });
+    gf->cmd_death_demo_mode = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_death_demo_mode"),
+        (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE });
+    gf->cmd_death_in_game = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_death_in_game"),
+        (GAME_FLOW_COMMAND) { .action = GF_NOOP });
+    gf->cmd_demo_interrupt = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_demo_interrupt"),
+        (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE });
+    gf->cmd_demo_end = M_LoadCommand(
+        JSON_ObjectGetObject(obj, "cmd_demo_end"),
+        (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE });
 
     gf->is_demo_version = JSON_ObjectGetBool(obj, "demo_version", false);
 
     // clang-format off
+    gf->demo_delay = JSON_ObjectGetInt(obj, "demo_delay", 30);
     gf->load_save_disabled = JSON_ObjectGetBool(obj, "load_save_disabled", false);
     gf->cheat_keys = JSON_ObjectGetBool(obj, "cheat_keys", true);
     gf->lockout_option_ring = JSON_ObjectGetBool(obj, "lockout_option_ring", true);
@@ -132,6 +320,17 @@ end:
     return result;
 }
 
+static void M_LoadLevelSequence(
+    JSON_OBJECT *const obj, GAME_FLOW_LEVEL *const level)
+{
+    JSON_ARRAY *const jarr = JSON_ObjectGetArray(obj, "sequence");
+    if (jarr == NULL) {
+        Shell_ExitSystem("Level has no sequence");
+    }
+
+    M_LoadSequence(jarr, &level->sequence);
+}
+
 static void M_LoadLevel(
     JSON_OBJECT *const obj, const GAME_FLOW *const gf,
     GAME_FLOW_LEVEL *const level)
@@ -150,6 +349,8 @@ static void M_LoadLevel(
         Shell_ExitSystemFmt("Missing level path");
     }
     level->path = Memory_DupStr(path);
+
+    M_LoadLevelSequence(obj, level);
 
     M_LoadLevelInjections(obj, gf, level);
 }
@@ -282,15 +483,6 @@ bool GF_N_Load(const char *const path)
     result &= M_LoadFMVs(root_obj, gf);
     M_LoadTitleLevel(root_obj, gf);
 
-    if (gf->level_count != g_LegacyLevelCount) {
-        LOG_ERROR(
-            "'levels' must have exactly %d levels, as we still rely on legacy "
-            "tombpc.dat",
-            g_LegacyLevelCount);
-        result = false;
-        goto end;
-    }
-
 end:
     if (root != NULL) {
         JSON_ValueFree(root);
@@ -319,11 +511,17 @@ end:
     return result;
 }
 
+static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
+{
+    Memory_Free(sequence);
+}
+
 static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
 {
     for (int32_t j = 0; j < level->injections.count; j++) {
         Memory_FreePointer(&level->injections.data_paths[j]);
     }
+    M_FreeSequence(&level->sequence);
     Memory_FreePointer(&level->injections.data_paths);
     Memory_FreePointer(&level->path);
     Memory_FreePointer(&level->title);
