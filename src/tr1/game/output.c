@@ -630,7 +630,7 @@ void Output_ClearDepthBuffer(void)
     S_Output_ClearDepthBuffer();
 }
 
-void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num)
+void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 {
     ROOM *r = &g_RoomInfo[room_num];
 
@@ -649,9 +649,9 @@ void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num)
         for (int i = 0; i < r->num_lights; i++) {
             LIGHT *light = &r->lights[i];
             XYZ_32 lc = {
-                .x = x - light->pos.x,
-                .y = y - light->pos.y,
-                .z = z - light->pos.z,
+                .x = pos.x - light->pos.x,
+                .y = pos.y - light->pos.y,
+                .z = pos.z - light->pos.z,
             };
 
             int32_t distance =
@@ -714,7 +714,7 @@ void Output_CalculateObjectLighting(
     };
     Matrix_Pop();
 
-    Output_CalculateLight(offset.x, offset.y, offset.z, item->room_num);
+    Output_CalculateLight(offset, item->room_num);
 }
 
 void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)

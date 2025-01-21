@@ -161,8 +161,7 @@ void Effect_Draw(const int16_t effect_num)
                 Object_DrawMesh(object->mesh_idx, -1, false);
             } else {
                 Output_CalculateLight(
-                    effect->interp.result.pos.x, effect->interp.result.pos.y,
-                    effect->interp.result.pos.z, effect->room_num);
+                    effect->interp.result.pos, effect->room_num);
                 Object_DrawMesh(effect->frame_num, -1, false);
             }
         }

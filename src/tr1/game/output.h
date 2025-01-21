@@ -33,7 +33,7 @@ void Output_EndScene(void);
 void Output_DrawBlack(void);
 void Output_ClearDepthBuffer(void);
 
-void Output_CalculateLight(int32_t x, int32_t y, int32_t z, int16_t room_num);
+void Output_CalculateLight(XYZ_32 pos, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);
 void Output_CalculateObjectLighting(const ITEM *item, const BOUNDS_16 *bounds);
 

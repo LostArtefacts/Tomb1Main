@@ -197,8 +197,7 @@ void Object_DrawPickupItem(ITEM *item)
         item->interp.result.pos.x, offset, item->interp.result.pos.z);
     Matrix_Rot16(item->interp.result.rot);
 
-    Output_CalculateLight(
-        item->pos.x, item->pos.y, item->pos.z, item->room_num);
+    Output_CalculateLight(item->pos, item->room_num);
 
     frame = object->frame_base;
     int32_t clip = Output_GetObjectBounds(&frame->bounds);
