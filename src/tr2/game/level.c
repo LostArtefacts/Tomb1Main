@@ -135,8 +135,8 @@ static void M_LoadRooms(VFILE *const file)
             sector->ceiling.height = VFile_ReadS8(file) * STEP_L;
         }
 
-        r->ambient_1 = VFile_ReadS16(file);
-        r->ambient_2 = VFile_ReadS16(file);
+        r->ambient = VFile_ReadS16(file);
+        VFile_Skip(file, sizeof(int16_t)); // Unused second ambient
         r->light_mode = VFile_ReadS16(file);
 
         r->num_lights = VFile_ReadS16(file);

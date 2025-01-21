@@ -206,6 +206,7 @@ static void M_LoadRooms(VFILE *file)
 
         // Room lights
         r->ambient = VFile_ReadS16(file);
+        r->light_mode = RLM_NORMAL;
         r->num_lights = VFile_ReadS16(file);
         if (!r->num_lights) {
             r->lights = NULL;

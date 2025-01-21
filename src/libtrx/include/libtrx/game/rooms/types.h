@@ -125,13 +125,8 @@ typedef struct {
         int16_t z;
         int16_t x;
     } size;
-#if TR_VERSION == 1
     int16_t ambient;
-#else
-    int16_t ambient_1;
-    int16_t ambient_2;
     ROOM_LIGHT_MODE light_mode;
-#endif
     int16_t num_lights;
     int16_t num_static_meshes;
     int16_t bound_left;

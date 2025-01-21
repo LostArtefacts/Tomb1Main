@@ -975,7 +975,7 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 
     adder /= 2;
     if (adder != 0) {
-        g_LsAdder = r->ambient_1 - adder;
+        g_LsAdder = r->ambient - adder;
         g_LsDivider = (1 << (W2V_SHIFT + 12)) / adder;
         int16_t angles[2];
         Math_GetVectorAngles(
@@ -983,7 +983,7 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
             pos.z - brightest_pos.z, angles);
         Output_RotateLight(angles[1], angles[0]);
     } else {
-        g_LsAdder = r->ambient_1;
+        g_LsAdder = r->ambient;
         g_LsDivider = 0;
     }
 
