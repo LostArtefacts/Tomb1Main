@@ -38,10 +38,16 @@ static int m_ArgCount = 0;
 static char **m_ArgStrings = NULL;
 static SDL_Window *m_Window = NULL;
 
+static void M_HandleQuit(void);
 static void M_SetWindowPos(int32_t x, int32_t y, bool update);
 static void M_SetWindowSize(int32_t width, int32_t height, bool update);
 static void M_SetWindowMaximized(bool is_enabled, bool update);
 static void M_SetFullscreen(bool is_enabled, bool update);
+
+static void M_HandleQuit(void)
+{
+    Shell_ScheduleExit();
+}
 
 static void M_SetWindowPos(int32_t x, int32_t y, bool update)
 {
@@ -150,7 +156,7 @@ void Shell_ProcessEvents(void)
     while (SDL_PollEvent(&event) != 0) {
         switch (event.type) {
         case SDL_QUIT:
-            Shell_Terminate(0);
+            M_HandleQuit();
             break;
 
         case SDL_WINDOWEVENT:

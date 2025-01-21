@@ -80,7 +80,6 @@ extern uint16_t g_SoundOptionLine;
 extern ASSAULT_STATS g_Assault;
 extern int32_t g_LevelItemCount;
 extern int32_t g_HealthBarTimer;
-extern uint8_t g_IsGameToExit;
 extern int32_t g_CurrentLevel;
 extern int32_t g_LevelComplete;
 extern RGB_888 g_GamePalette8[256];

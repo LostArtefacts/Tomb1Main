@@ -5,6 +5,7 @@
 #include "game/fmv.h"
 #include "game/music.h"
 #include "game/phase.h"
+#include "game/shell.h"
 #include "global/vars.h"
 
 #include <libtrx/benchmark.h>
@@ -163,7 +164,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                     LOG_ERROR("Invalid FMV number: %d", ptr[1]);
                 } else {
                     FMV_Play(g_GameFlow.fmvs[ptr[1]].path);
-                    if (g_IsGameToExit) {
+                    if (Shell_IsExiting()) {
                         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                     }
                 }

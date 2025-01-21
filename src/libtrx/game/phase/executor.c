@@ -1,12 +1,13 @@
 #include "game/phase/executor.h"
 
+#include "config.h"
 #include "game/clock.h"
 #include "game/console/common.h"
 #include "game/fader.h"
-#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/interpolation.h"
 #include "game/output.h"
+#include "game/shell.h"
 #include "game/text.h"
 
 #define MAX_PHASES 10
@@ -29,9 +30,11 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
 
-    if (Game_IsExiting() && !m_Exiting) {
+    if (Shell_IsExiting() && !m_Exiting) {
         m_Exiting = true;
-        Fader_Init(&m_ExitFader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
+        if (g_Config.visuals.enable_exit_fade_effects) {
+            Fader_Init(&m_ExitFader, FADER_ANY, FADER_BLACK, 1.0 / 3.0);
+        }
     } else if (m_Exiting && !Fader_IsActive(&m_ExitFader)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
@@ -86,7 +89,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
     if (phase->start != NULL) {
         Clock_SyncTick();
         const PHASE_CONTROL control = phase->start(phase);
-        if (Game_IsExiting()) {
+        if (Shell_IsExiting()) {
             gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             goto finish;
         } else if (control.action == PHASE_ACTION_END) {
@@ -100,7 +103,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
         const PHASE_CONTROL control = M_Control(phase, nframes);
 
         if (control.action == PHASE_ACTION_END) {
-            if (Game_IsExiting()) {
+            if (Shell_IsExiting()) {
                 gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
             } else {
                 gf_cmd = control.gf_cmd;

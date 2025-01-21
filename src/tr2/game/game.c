@@ -194,11 +194,6 @@ extern int32_t Game_GetCurrentLevelNum(void)
     return g_CurrentLevel;
 }
 
-bool Game_IsExiting(void)
-{
-    return g_IsGameToExit;
-}
-
 bool Game_IsPlayable(void)
 {
     if (g_GameInfo.current_level.type == GFL_TITLE

@@ -176,7 +176,7 @@ static GAME_FLOW_COMMAND M_Finish(
 
     GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
 
-    if (g_IsGameToExit) {
+    if (Shell_IsExiting()) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     } else if (g_GF_OverrideCommand.action != GF_NOOP) {
         return g_GF_OverrideCommand;
@@ -343,7 +343,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         Stats_UpdateTimer();
     }
 
-    if (g_IsGameToExit) {
+    if (Shell_IsExiting()) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 

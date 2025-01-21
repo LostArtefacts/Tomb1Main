@@ -83,7 +83,6 @@ uint16_t g_SoundOptionLine;
 ASSAULT_STATS g_Assault;
 int32_t g_LevelItemCount;
 int32_t g_HealthBarTimer;
-uint8_t g_IsGameToExit;
 int32_t g_CurrentLevel;
 int32_t g_LevelComplete;
 RGB_888 g_GamePalette8[256];

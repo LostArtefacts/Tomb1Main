@@ -76,6 +76,7 @@ typedef struct {
 
     struct {
         bool enable_fade_effects;
+        bool enable_exit_fade_effects;
         int32_t fov_value;
         bool fov_vertical;
         float brightness;

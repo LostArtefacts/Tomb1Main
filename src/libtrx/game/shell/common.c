@@ -10,6 +10,8 @@
 
 #include <libavcodec/version.h>
 
+static bool m_IsExiting = false;
+
 static void M_SetupHiDPI(void);
 static void M_SetupLibAV(void);
 static void M_SetupSDL(void);
@@ -152,4 +154,14 @@ void Shell_GetWindowSize(int32_t *const out_width, int32_t *const out_height)
     } else {
         SDL_GetWindowSize(window, out_width, out_height);
     }
+}
+
+void Shell_ScheduleExit(void)
+{
+    m_IsExiting = true;
+}
+
+bool Shell_IsExiting(void)
+{
+    return m_IsExiting;
 }

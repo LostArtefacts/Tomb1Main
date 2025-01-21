@@ -7,6 +7,7 @@
 #include "game/interpolation.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
+#include "game/shell.h"
 #include "game/text.h"
 #include "memory.h"
 
@@ -101,7 +102,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     case STATE_FINISH:
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
-            .gf_cmd = Game_IsExiting()
+            .gf_cmd = Shell_IsExiting()
                 ? (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME }
                 : p->exit_gf_cmd,
         };

@@ -139,7 +139,8 @@ static void M_Play(const char *const file_name)
 
         Input_Update();
         Shell_ProcessInput();
-        if (g_InputDB.menu_back || g_InputDB.menu_confirm || g_IsGameToExit) {
+        if (g_InputDB.menu_back || g_InputDB.menu_confirm
+            || Shell_IsExiting()) {
             Video_Stop(video);
             break;
         }
@@ -159,7 +160,7 @@ void FMV_Play(const char *const file_name)
 
     M_Play(file_name);
 
-    if (!g_IsGameToExit) {
+    if (!Shell_IsExiting()) {
         Render_Reset(RENDER_RESET_ALL);
     }
 }

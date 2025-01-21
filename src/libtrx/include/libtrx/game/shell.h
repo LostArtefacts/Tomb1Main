@@ -11,6 +11,9 @@ void Shell_Terminate(int32_t exit_code);
 void Shell_ExitSystem(const char *message);
 void Shell_ExitSystemFmt(const char *fmt, ...);
 
+void Shell_ScheduleExit(void);
+bool Shell_IsExiting(void);
+
 int32_t Shell_GetCurrentDisplayWidth(void);
 int32_t Shell_GetCurrentDisplayHeight(void);
 void Shell_GetWindowSize(int32_t *out_width, int32_t *out_height);

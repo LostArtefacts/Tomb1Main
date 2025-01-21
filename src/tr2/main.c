@@ -8,7 +8,6 @@
 int main(int argc, char **argv)
 {
     Log_Init(File_GetFullPath("TR2X.log"));
-    g_IsGameToExit = false;
     Shell_Setup();
     Shell_Main();
     Shell_Shutdown();

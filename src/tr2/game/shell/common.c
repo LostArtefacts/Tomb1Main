@@ -220,7 +220,7 @@ static void M_HandleKeyUp(const SDL_Event *const event)
 
 static void M_HandleQuit(void)
 {
-    g_IsGameToExit = true;
+    Shell_ScheduleExit();
 }
 
 static void M_ConfigureOpenGL(void)
@@ -383,7 +383,7 @@ void Shell_Main(void)
     M_DisplayLegal();
 
     const bool is_frontend_fail = GF_DoFrontendSequence();
-    if (g_IsGameToExit) {
+    if (Shell_IsExiting()) {
         Config_Write();
         return;
     }
