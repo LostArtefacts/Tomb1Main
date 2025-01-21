@@ -31,6 +31,7 @@ typedef struct {
     GFX_2D_SURFACE *surface_tex[GFX_MAX_TEXTURES];
     int32_t texture_map[GFX_MAX_TEXTURES];
     int32_t env_map_texture;
+    int32_t current_texture;
 } M_PRIV;
 
 static VERTEX_INFO m_VBuffer[32] = {};
@@ -238,11 +239,13 @@ static void M_SelectTexture(RENDERER *const renderer, const int32_t tex_source)
         return;
     }
     if (tex_source == -1) {
+        priv->current_texture = tex_source;
         GFX_3D_Renderer_SetTexturingEnabled(priv->renderer_3d, false);
-    } else {
+    } else if (tex_source != priv->current_texture) {
+        priv->current_texture = tex_source;
+        GFX_3D_Renderer_SetTexturingEnabled(priv->renderer_3d, true);
         GFX_3D_Renderer_SelectTexture(
             priv->renderer_3d, priv->texture_map[tex_source]);
-        GFX_3D_Renderer_SetTexturingEnabled(priv->renderer_3d, true);
     }
 }
 
@@ -1420,6 +1423,7 @@ static void M_Init(RENDERER *const renderer)
     M_PRIV *const priv = Memory_Alloc(sizeof(M_PRIV));
     priv->renderer_2d = GFX_2D_Renderer_Create();
     priv->renderer_3d = GFX_3D_Renderer_Create();
+    priv->current_texture = -1;
 
     for (int32_t i = 0; i < GFX_MAX_TEXTURES; i++) {
         priv->texture_map[i] = GFX_NO_TEXTURE;
@@ -1503,6 +1507,7 @@ static void M_Close(RENDERER *const renderer)
 static void M_BeginScene(RENDERER *const renderer)
 {
     M_PRIV *const priv = renderer->priv;
+    priv->current_texture = -1;
     ASSERT(renderer->initialized && renderer->open);
     M_EnableZBuffer(renderer, true, true);
     GFX_3D_Renderer_RenderBegin(priv->renderer_3d);
