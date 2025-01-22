@@ -6,6 +6,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>
@@ -18,66 +19,10 @@ typedef struct {
     const int32_t val;
 } STRING_TO_ENUM_TYPE;
 
-static int32_t M_StringToEnumType(
-    const char *const str, const STRING_TO_ENUM_TYPE *map);
 static bool M_LoadScriptMeta(JSON_OBJECT *obj);
 static bool M_IsLegacySequence(const char *type_str);
 static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num);
 static bool M_LoadScriptLevels(JSON_OBJECT *obj);
-
-static const STRING_TO_ENUM_TYPE m_GameFlowLevelTypeEnumMap[] = {
-    { "title", GFL_TITLE },
-    { "normal", GFL_NORMAL },
-    { "cutscene", GFL_CUTSCENE },
-    { "gym", GFL_GYM },
-    { "current", GFL_CURRENT },
-    { "bonus", GFL_BONUS },
-    { "title_demo_pc", GFL_TITLE_DEMO_PC },
-    { "level_demo_pc", GFL_LEVEL_DEMO_PC },
-    { NULL, -1 },
-};
-
-static const STRING_TO_ENUM_TYPE m_GameFlowSeqTypeEnumMap[] = {
-    { "start_game", GFS_START_GAME },
-    { "stop_game", GFS_STOP_GAME },
-    { "loop_game", GFS_LOOP_GAME },
-    { "start_cine", GFS_START_CINE },
-    { "loop_cine", GFS_LOOP_CINE },
-    { "play_fmv", GFS_PLAY_FMV },
-    { "loading_screen", GFS_LOADING_SCREEN },
-    { "display_picture", GFS_DISPLAY_PICTURE },
-    { "level_stats", GFS_LEVEL_STATS },
-    { "total_stats", GFS_TOTAL_STATS },
-    { "exit_to_title", GFS_EXIT_TO_TITLE },
-    { "exit_to_level", GFS_EXIT_TO_LEVEL },
-    { "exit_to_cine", GFS_EXIT_TO_CINE },
-    { "set_cam_x", GFS_SET_CAM_X },
-    { "set_cam_y", GFS_SET_CAM_Y },
-    { "set_cam_z", GFS_SET_CAM_Z },
-    { "set_cam_angle", GFS_SET_CAM_ANGLE },
-    { "flip_map", GFS_FLIP_MAP },
-    { "remove_guns", GFS_REMOVE_GUNS },
-    { "remove_scions", GFS_REMOVE_SCIONS },
-    { "remove_ammo", GFS_REMOVE_AMMO },
-    { "remove_medipacks", GFS_REMOVE_MEDIPACKS },
-    { "give_item", GFS_GIVE_ITEM },
-    { "play_synced_audio", GFS_PLAY_SYNCED_AUDIO },
-    { "mesh_swap", GFS_MESH_SWAP },
-    { "setup_bacon_lara", GFS_SETUP_BACON_LARA },
-    { NULL, -1 },
-};
-
-static int32_t M_StringToEnumType(
-    const char *const str, const STRING_TO_ENUM_TYPE *map)
-{
-    while (map->str) {
-        if (!strcmp(str, map->str)) {
-            break;
-        }
-        map++;
-    }
-    return map->val;
-}
 
 static bool M_LoadScriptMeta(JSON_OBJECT *obj)
 {
@@ -212,7 +157,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             return false;
         }
 
-        event->type = M_StringToEnumType(type_str, m_GameFlowSeqTypeEnumMap);
+        event->type = ENUM_MAP_GET(GAME_FLOW_SEQUENCE_EVENT_TYPE, type_str, -1);
 
         switch (event->type) {
         case GFS_START_GAME:
@@ -498,7 +443,7 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             return false;
         }
 
-        cur->level_type = M_StringToEnumType(tmp_s, m_GameFlowLevelTypeEnumMap);
+        cur->level_type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp_s, -1);
 
         switch (cur->level_type) {
         case GFL_TITLE:

@@ -1,3 +1,4 @@
+#include "game/game_flow/types.h"
 #include "global/types.h"
 
 #include <libtrx/config/types.h>
