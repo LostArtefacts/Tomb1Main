@@ -9,6 +9,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/objects/names.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -140,8 +141,14 @@ static int32_t M_HandleAddItemEvent(
     void *user_arg)
 {
     if (event != NULL) {
+        const char *const object_key =
+            JSON_ObjectGetString(event_obj, "item", JSON_INVALID_STRING);
+        const GAME_OBJECT_ID object_id = Object_IdFromKey(object_key);
+        if (object_id == NO_OBJECT) {
+            LOG_ERROR("Invalid item: %s", object_key);
+        }
         GFS_ADD_ITEM_DATA *const event_data = extra_data;
-        event_data->item = JSON_ObjectGetInt(event_obj, "item", 0);
+        event_data->object_id = object_id;
         event_data->inv_type =
             event->type == GFS_ADD_ITEM ? GF_INV_REGULAR : GF_INV_SECRET;
         event->data = event_data;

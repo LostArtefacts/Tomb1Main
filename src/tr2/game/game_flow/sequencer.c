@@ -254,7 +254,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             const GFS_ADD_ITEM_DATA *const data =
                 (GFS_ADD_ITEM_DATA *)event->data;
             if (type != GFL_STORY && type != GFL_MID_STORY) {
-                GF_InventoryModifier_Add(data->item, data->inv_type);
+                GF_InventoryModifier_Add(data->object_id, data->inv_type);
             }
             break;
 

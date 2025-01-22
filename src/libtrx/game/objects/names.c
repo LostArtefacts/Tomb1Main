@@ -7,10 +7,25 @@
 #include "memory.h"
 #include "strings/fuzzy_match.h"
 
+#include <string.h>
+
 typedef struct {
     char *name;
     char *description;
 } M_NAME_ENTRY;
+
+static struct {
+    GAME_OBJECT_ID object_id;
+    const char *key_name;
+} m_ObjectKeyNames[] = {
+#define OBJ_ALIAS_DEFINE(object_id_, source_object_id_)
+#define OBJ_NAME_DEFINE(object_id_, key_name_, default_name)                   \
+    { .object_id = object_id_, .key_name = key_name_ },
+#include "game/objects/names.def"
+#undef OBJ_ALIAS_DEFINE
+#undef OBJ_NAME_DEFINE
+    { .object_id = NO_OBJECT },
+};
 
 static M_NAME_ENTRY m_NamesTable[O_NUMBER_OF] = {};
 
@@ -123,4 +138,14 @@ GAME_OBJECT_ID *Object_IdsFromName(
     matches = NULL;
 
     return results;
+}
+
+GAME_OBJECT_ID Object_IdFromKey(const char *const key)
+{
+    for (int32_t i = 0; m_ObjectKeyNames[i].object_id != NO_OBJECT; i++) {
+        if (strcmp(m_ObjectKeyNames[i].key_name, key) == 0) {
+            return m_ObjectKeyNames[i].object_id;
+        }
+    }
+    return NO_OBJECT;
 }

@@ -14,19 +14,6 @@ typedef void (*M_LOAD_STRING_FUNC)(const char *, const char *);
 GS_FILE g_GST_File = {};
 
 static struct {
-    GAME_OBJECT_ID object_id;
-    const char *key_name;
-} m_ObjectKeyNames[] = {
-#define OBJ_ALIAS_DEFINE(object_id_, source_object_id_)
-#define OBJ_NAME_DEFINE(object_id_, key_name_, default_name)                   \
-    { .object_id = object_id_, .key_name = key_name_ },
-#include "game/objects/names.def"
-#undef OBJ_ALIAS_DEFINE
-#undef OBJ_NAME_DEFINE
-    { .object_id = NO_OBJECT },
-};
-
-static struct {
     GAME_OBJECT_ID target_object_id;
     GAME_OBJECT_ID source_object_id;
 } m_ObjectAliases[] = {
@@ -40,18 +27,7 @@ static struct {
     { .target_object_id = NO_OBJECT },
 };
 
-static GAME_OBJECT_ID M_GetObjectID(const char *const key);
 static void M_Apply(const GS_TABLE *table);
-
-static GAME_OBJECT_ID M_GetObjectID(const char *const key)
-{
-    for (int32_t i = 0; m_ObjectKeyNames[i].object_id != NO_OBJECT; i++) {
-        if (strcmp(m_ObjectKeyNames[i].key_name, key) == 0) {
-            return m_ObjectKeyNames[i].object_id;
-        }
-    }
-    return NO_OBJECT;
-}
 
 static void M_DoObjectAliases(void)
 {
@@ -87,7 +63,7 @@ static void M_Apply(const GS_TABLE *const table)
     {
         const GS_OBJECT_ENTRY *cur = table->objects;
         while (cur != NULL && cur->key != NULL) {
-            const GAME_OBJECT_ID object_id = M_GetObjectID(cur->key);
+            const GAME_OBJECT_ID object_id = Object_IdFromKey(cur->key);
             if (object_id == NO_OBJECT) {
                 LOG_ERROR("Invalid object id: %s", cur->key);
             } else {
