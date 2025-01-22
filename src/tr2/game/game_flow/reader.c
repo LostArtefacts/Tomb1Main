@@ -529,7 +529,7 @@ end:
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
 {
-    Memory_Free(sequence);
+    Memory_Free(sequence->events);
 }
 
 static void M_FreeLevel(GAME_FLOW_LEVEL *const level)

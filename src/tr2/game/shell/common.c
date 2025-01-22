@@ -445,6 +445,7 @@ void Shell_Main(void)
 
 void Shell_Shutdown(void)
 {
+    GF_Shutdown();
     GameString_Shutdown();
     Console_Shutdown();
     Render_Shutdown();
