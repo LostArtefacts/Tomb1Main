@@ -48,6 +48,7 @@ typedef enum {
 typedef struct {
     GAME_OBJECT_ID object_id;
     GF_INV_TYPE inv_type;
+    int32_t qty;
 } GFS_ADD_ITEM_DATA;
 
 // ----------------------------------------------------------------------------

@@ -151,6 +151,7 @@ static int32_t M_HandleAddItemEvent(
         event_data->object_id = object_id;
         event_data->inv_type =
             event->type == GFS_ADD_ITEM ? GF_INV_REGULAR : GF_INV_SECRET;
+        event_data->qty = JSON_ObjectGetInt(event_obj, "qty", 1);
         event->data = event_data;
     }
     return sizeof(GFS_ADD_ITEM_DATA);
