@@ -210,17 +210,25 @@ void InvRing_Draw(INV_RING *const ring)
         }
     }
 
-    INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
-    switch (inv_item->object_id) {
-    case O_MEDI_OPTION:
-    case O_BIGMEDI_OPTION:
-        if (g_Config.ui.enable_game_ui) {
-            Overlay_BarDrawHealth();
-        }
-        break;
+    if (ring->list != NULL && !ring->rotating
+        && (ring->motion.status == RNG_OPEN
+            || ring->motion.status == RNG_SELECTING
+            || ring->motion.status == RNG_SELECTED
+            || ring->motion.status == RNG_DESELECTING
+            || ring->motion.status == RNG_DESELECT
+            || ring->motion.status == RNG_CLOSING_ITEM)) {
+        const INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+        switch (inv_item->object_id) {
+        case O_MEDI_OPTION:
+        case O_BIGMEDI_OPTION:
+            if (g_Config.ui.enable_game_ui) {
+                Overlay_BarDrawHealth();
+            }
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
 
     Matrix_Pop();
