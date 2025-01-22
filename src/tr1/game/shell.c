@@ -126,7 +126,7 @@ void Shell_Init(
     }
     Screen_Init();
 
-    if (!GF_LoadFromFile(game_flow_path)) {
+    if (!GF_Load(game_flow_path)) {
         Shell_ExitSystemFmt("Unable to load gameflow file: %s", game_flow_path);
         return;
     }
