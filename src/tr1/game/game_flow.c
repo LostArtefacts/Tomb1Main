@@ -43,6 +43,7 @@ typedef struct {
 
 GAME_FLOW g_GameFlow = {};
 
+static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
 static int32_t M_StringToEnumType(
     const char *const str, const STRING_TO_ENUM_TYPE *map);
 static bool M_LoadScriptMeta(JSON_OBJECT *obj);
@@ -91,6 +92,51 @@ static const STRING_TO_ENUM_TYPE m_GameFlowSeqTypeEnumMap[] = {
     { "setup_bacon_lara", GFS_SETUP_BACON_LARA },
     { NULL, -1 },
 };
+
+static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
+{
+    for (int32_t i = 0; i < sequence->length; i++) {
+        GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
+        switch (event->type) {
+        case GFS_LOADING_SCREEN:
+        case GFS_DISPLAY_PICTURE:
+        case GFS_TOTAL_STATS: {
+            GAME_FLOW_DISPLAY_PICTURE_DATA *data = event->data;
+            Memory_FreePointer(&data->path);
+            Memory_FreePointer(&data);
+            break;
+        }
+        case GFS_PLAY_FMV:
+        case GFS_MESH_SWAP:
+        case GFS_GIVE_ITEM:
+            Memory_FreePointer(&event->data);
+            break;
+        case GFS_START_GAME:
+        case GFS_LOOP_GAME:
+        case GFS_STOP_GAME:
+        case GFS_START_CINE:
+        case GFS_LOOP_CINE:
+        case GFS_LEVEL_STATS:
+        case GFS_EXIT_TO_TITLE:
+        case GFS_EXIT_TO_LEVEL:
+        case GFS_EXIT_TO_CINE:
+        case GFS_SET_CAM_X:
+        case GFS_SET_CAM_Y:
+        case GFS_SET_CAM_Z:
+        case GFS_SET_CAM_ANGLE:
+        case GFS_FLIP_MAP:
+        case GFS_PLAY_SYNCED_AUDIO:
+        case GFS_REMOVE_GUNS:
+        case GFS_REMOVE_SCIONS:
+        case GFS_REMOVE_AMMO:
+        case GFS_REMOVE_MEDIPACKS:
+        case GFS_SETUP_BACON_LARA:
+        case GFS_LEGACY:
+            break;
+        }
+    }
+    Memory_Free(sequence->events);
+}
 
 static int32_t M_StringToEnumType(
     const char *const str, const STRING_TO_ENUM_TYPE *map)
@@ -216,10 +262,12 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
 
     JSON_ARRAY_ELEMENT *jseq_elem = jseq_arr->start;
 
-    g_GameFlow.levels[level_num].sequence =
-        Memory_Alloc(sizeof(GAME_FLOW_SEQUENCE) * (jseq_arr->length + 1));
+    GAME_FLOW_SEQUENCE *sequence = &g_GameFlow.levels[level_num].sequence;
+    sequence->length = jseq_arr->length;
+    sequence->events =
+        Memory_Alloc(sizeof(GAME_FLOW_SEQUENCE_EVENT) * jseq_arr->length);
 
-    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
+    GAME_FLOW_SEQUENCE_EVENT *event = sequence->events;
     int32_t i = 0;
     while (jseq_elem) {
         JSON_OBJECT *jseq_obj = JSON_ValueAsObject(jseq_elem->value);
@@ -235,15 +283,15 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             return false;
         }
 
-        seq->type = M_StringToEnumType(type_str, m_GameFlowSeqTypeEnumMap);
+        event->type = M_StringToEnumType(type_str, m_GameFlowSeqTypeEnumMap);
 
-        switch (seq->type) {
+        switch (event->type) {
         case GFS_START_GAME:
         case GFS_STOP_GAME:
         case GFS_LOOP_GAME:
         case GFS_START_CINE:
         case GFS_LOOP_CINE:
-            seq->data = (void *)(intptr_t)level_num;
+            event->data = (void *)(intptr_t)level_num;
             break;
 
         case GFS_PLAY_FMV: {
@@ -255,7 +303,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = Memory_DupStr(tmp_s);
+            event->data = Memory_DupStr(tmp_s);
             break;
         }
 
@@ -283,7 +331,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                 return false;
             }
             data->display_time = tmp_d;
-            seq->data = data;
+            event->data = data;
             break;
         }
 
@@ -296,7 +344,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = (void *)(intptr_t)tmp;
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
@@ -314,7 +362,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             }
             data->path = Memory_DupStr(tmp_s);
             data->display_time = 0;
-            seq->data = data;
+            event->data = data;
             break;
         }
 
@@ -331,7 +379,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = (void *)(intptr_t)tmp;
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
@@ -346,7 +394,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = (void *)(intptr_t)tmp;
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
@@ -373,7 +421,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             give_item_data->quantity =
                 JSON_ObjectGetInt(jseq_obj, "quantity", 1);
 
-            seq->data = give_item_data;
+            event->data = give_item_data;
             break;
         }
 
@@ -386,7 +434,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = (void *)(intptr_t)tmp;
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
@@ -421,7 +469,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                 return false;
             }
 
-            seq->data = swap_data;
+            event->data = swap_data;
             break;
         }
 
@@ -440,13 +488,13 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
                     level_num, type_str);
                 return false;
             }
-            seq->data = (void *)(intptr_t)tmp;
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
         default:
             if (M_IsLegacySequence(type_str)) {
-                seq->type = GFS_LEGACY;
+                event->type = GFS_LEGACY;
                 LOG_WARNING(
                     "level %d, sequence %s: legacy type ignored", level_num,
                     type_str);
@@ -460,11 +508,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
 
         jseq_elem = jseq_elem->next;
         i++;
-        seq++;
+        event++;
     }
-
-    seq->type = GFS_END;
-    seq->data = NULL;
 
     return true;
 }
@@ -783,71 +828,25 @@ void GF_Shutdown(void)
     }
     Memory_FreePointer(&g_GameFlow.injections.data_paths);
 
-    if (g_GameFlow.levels) {
+    if (g_GameFlow.levels != NULL) {
         for (int i = 0; i < g_GameFlow.level_count; i++) {
-            Memory_FreePointer(&g_GameFlow.levels[i].path);
-            Memory_FreePointer(&g_GameFlow.levels[i].title);
+            GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[i];
+            Memory_FreePointer(&level->path);
+            Memory_FreePointer(&level->title);
 
-            for (int j = 0; j < g_GameFlow.levels[i].injections.length; j++) {
-                Memory_FreePointer(
-                    &g_GameFlow.levels[i].injections.data_paths[j]);
+            for (int j = 0; j < level->injections.length; j++) {
+                Memory_FreePointer(&level->injections.data_paths[j]);
             }
-            Memory_FreePointer(&g_GameFlow.levels[i].injections.data_paths);
+            Memory_FreePointer(&level->injections.data_paths);
 
-            if (g_GameFlow.levels[i].item_drops.count) {
-                for (int j = 0; j < g_GameFlow.levels[i].item_drops.count;
-                     j++) {
-                    Memory_FreePointer(
-                        &g_GameFlow.levels[i].item_drops.data[j].object_ids);
+            if (level->item_drops.count) {
+                for (int j = 0; j < level->item_drops.count; j++) {
+                    Memory_FreePointer(&level->item_drops.data[j].object_ids);
                 }
-                Memory_FreePointer(&g_GameFlow.levels[i].item_drops.data);
+                Memory_FreePointer(&level->item_drops.data);
             }
 
-            GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[i].sequence;
-            if (seq) {
-                while (seq->type != GFS_END) {
-                    switch (seq->type) {
-                    case GFS_LOADING_SCREEN:
-                    case GFS_DISPLAY_PICTURE:
-                    case GFS_TOTAL_STATS: {
-                        GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
-                        Memory_FreePointer(&data->path);
-                        Memory_FreePointer(&data);
-                        break;
-                    }
-                    case GFS_PLAY_FMV:
-                    case GFS_MESH_SWAP:
-                    case GFS_GIVE_ITEM:
-                        Memory_FreePointer(&seq->data);
-                        break;
-                    case GFS_END:
-                    case GFS_START_GAME:
-                    case GFS_LOOP_GAME:
-                    case GFS_STOP_GAME:
-                    case GFS_START_CINE:
-                    case GFS_LOOP_CINE:
-                    case GFS_LEVEL_STATS:
-                    case GFS_EXIT_TO_TITLE:
-                    case GFS_EXIT_TO_LEVEL:
-                    case GFS_EXIT_TO_CINE:
-                    case GFS_SET_CAM_X:
-                    case GFS_SET_CAM_Y:
-                    case GFS_SET_CAM_Z:
-                    case GFS_SET_CAM_ANGLE:
-                    case GFS_FLIP_MAP:
-                    case GFS_REMOVE_GUNS:
-                    case GFS_REMOVE_SCIONS:
-                    case GFS_PLAY_SYNCED_AUDIO:
-                    case GFS_REMOVE_AMMO:
-                    case GFS_REMOVE_MEDIPACKS:
-                    case GFS_SETUP_BACON_LARA:
-                    case GFS_LEGACY:
-                        break;
-                    }
-                    seq++;
-                }
-            }
-            Memory_FreePointer(&g_GameFlow.levels[i].sequence);
+            M_FreeSequence(&level->sequence);
         }
         Memory_FreePointer(&g_GameFlow.levels);
     }
@@ -863,16 +862,18 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
     g_GameInfo.remove_ammo = false;
     g_GameInfo.remove_medipacks = false;
 
-    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
     GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
 
-    while (seq->type != GFS_END) {
-        LOG_INFO("seq %d %d", seq->type, seq->data);
+    const GAME_FLOW_SEQUENCE *const sequence =
+        &g_GameFlow.levels[level_num].sequence;
+    for (int32_t i = 0; i < sequence->length; i++) {
+        const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
+        LOG_INFO("event %d %d", event->type, event->data);
 
         if (!g_Config.gameplay.enable_cine
             && g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
             bool skip;
-            switch (seq->type) {
+            switch (event->type) {
             case GFS_EXIT_TO_TITLE:
             case GFS_EXIT_TO_LEVEL:
             case GFS_EXIT_TO_CINE:
@@ -886,17 +887,16 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 break;
             }
             if (skip) {
-                seq++;
                 continue;
             }
         }
 
-        switch (seq->type) {
+        switch (event->type) {
         case GFS_START_GAME:
             if (level_type == GFL_DEMO) {
                 break;
             } else if (!Game_Start_Legacy(
-                           (int32_t)(intptr_t)seq->data, level_type)) {
+                           (int32_t)(intptr_t)event->data, level_type)) {
                 g_CurrentLevel = -1;
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
@@ -937,7 +937,8 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_START_CINE:
-            command = GF_LoadLevel((int32_t)(intptr_t)seq->data, GFL_CUTSCENE);
+            command =
+                GF_LoadLevel((int32_t)(intptr_t)event->data, GFL_CUTSCENE);
             if (command.action != GF_NOOP) {
                 return command;
             }
@@ -945,7 +946,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         case GFS_LOOP_CINE:
             if (level_type != GFL_SAVED) {
-                command = GF_PlayCutscene((int32_t)(intptr_t)seq->data);
+                command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
@@ -955,7 +956,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         case GFS_PLAY_FMV:
             if (level_type != GFL_SAVED) {
-                FMV_Play((char *)seq->data);
+                FMV_Play((char *)event->data);
             }
             break;
 
@@ -963,7 +964,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                 .background_type = BK_TRANSPARENT,
                 .background_path = NULL,
-                .level_num = (int32_t)(intptr_t)seq->data,
+                .level_num = (int32_t)(intptr_t)event->data,
                 .show_final_stats = false,
                 .use_bare_style = true,
             });
@@ -978,7 +979,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_TOTAL_STATS:
             if (g_Config.gameplay.enable_total_stats
                 && level_type != GFL_SAVED) {
-                const GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
+                const GAME_FLOW_DISPLAY_PICTURE_DATA *data = event->data;
                 PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                     .background_type = BK_IMAGE,
                     .background_path = data->path,
@@ -996,7 +997,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         case GFS_LOADING_SCREEN:
         case GFS_DISPLAY_PICTURE:
-            if (seq->type == GFS_LOADING_SCREEN
+            if (event->type == GFS_LOADING_SCREEN
                 && !g_Config.gameplay.enable_loading_screens) {
                 break;
             }
@@ -1009,7 +1010,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 break;
             }
 
-            GAME_FLOW_DISPLAY_PICTURE_DATA *data = seq->data;
+            GAME_FLOW_DISPLAY_PICTURE_DATA *data = event->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
                 .display_time = data->display_time,
@@ -1028,7 +1029,8 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
         case GFS_EXIT_TO_LEVEL: {
-            int32_t next_level = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1);
+            int32_t next_level =
+                (int32_t)(intptr_t)event->data & ((1 << 6) - 1);
             if (g_GameFlow.levels[next_level].level_type == GFL_BONUS
                 && !g_GameInfo.bonus_level_unlock) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
@@ -1042,32 +1044,32 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_EXIT_TO_CINE:
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_CINE,
-                .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
+                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
         case GFS_SET_CAM_X:
-            g_CinePosition.pos.x = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.x = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_Y:
-            g_CinePosition.pos.y = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.y = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_Z:
-            g_CinePosition.pos.z = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.z = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_ANGLE:
-            g_CinePosition.rot = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;
         case GFS_FLIP_MAP:
             Room_FlipMap();
             break;
         case GFS_PLAY_SYNCED_AUDIO:
-            Music_Play((int32_t)(intptr_t)seq->data);
+            Music_Play((int32_t)(intptr_t)event->data);
             break;
 
         case GFS_GIVE_ITEM:
             if (level_type != GFL_SAVED) {
                 const GAME_FLOW_GIVE_ITEM_DATA *give_item_data =
-                    (const GAME_FLOW_GIVE_ITEM_DATA *)seq->data;
+                    (const GAME_FLOW_GIVE_ITEM_DATA *)event->data;
                 Inv_AddItemNTimes(
                     give_item_data->object_id, give_item_data->quantity);
             }
@@ -1100,7 +1102,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_MESH_SWAP: {
-            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = seq->data;
+            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = event->data;
             Object_SwapMesh(
                 swap_data->object1_id, swap_data->object2_id,
                 swap_data->mesh_num);
@@ -1108,7 +1110,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
 
         case GFS_SETUP_BACON_LARA: {
-            int32_t anchor_room = (int32_t)(intptr_t)seq->data;
+            int32_t anchor_room = (int32_t)(intptr_t)event->data;
             if (!BaconLara_InitialiseAnchor(anchor_room)) {
                 LOG_ERROR(
                     "Could not anchor Bacon Lara to room %d", anchor_room);
@@ -1119,12 +1121,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 
         case GFS_LEGACY:
             break;
-
-        case GFS_END:
-            return command;
         }
-
-        seq++;
     }
 
     return command;
@@ -1135,13 +1132,15 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
 {
     LOG_INFO("%d", level_num);
 
-    GAME_FLOW_SEQUENCE *seq = g_GameFlow.levels[level_num].sequence;
     GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
 
-    while (seq->type != GFS_END) {
-        LOG_INFO("seq %d %d", seq->type, seq->data);
+    const GAME_FLOW_SEQUENCE *const sequence =
+        &g_GameFlow.levels[level_num].sequence;
+    for (int32_t i = 0; i < sequence->length; i++) {
+        const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
+        LOG_INFO("event %d %d", event->type, event->data);
 
-        switch (seq->type) {
+        switch (event->type) {
         case GFS_LOOP_GAME:
         case GFS_STOP_GAME:
         case GFS_LEVEL_STATS:
@@ -1164,14 +1163,15 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
             break;
 
         case GFS_START_CINE:
-            command = GF_LoadLevel((int32_t)(intptr_t)seq->data, GFL_CUTSCENE);
+            command =
+                GF_LoadLevel((int32_t)(intptr_t)event->data, GFL_CUTSCENE);
             if (command.action != GF_NOOP) {
                 return command;
             }
             break;
 
         case GFS_LOOP_CINE:
-            command = GF_PlayCutscene((int32_t)(intptr_t)seq->data);
+            command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
             if (command.action != GF_NOOP
                 && command.action != GF_LEVEL_COMPLETE) {
                 return command;
@@ -1179,7 +1179,7 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
             break;
 
         case GFS_PLAY_FMV:
-            FMV_Play((char *)seq->data);
+            FMV_Play((char *)event->data);
             break;
 
         case GFS_EXIT_TO_TITLE:
@@ -1190,48 +1190,43 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
             Music_Stop();
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
-                .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
+                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
         case GFS_EXIT_TO_CINE:
             Music_Stop();
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_CINE,
-                .param = (int32_t)(intptr_t)seq->data & ((1 << 6) - 1),
+                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
         case GFS_SET_CAM_X:
-            g_CinePosition.pos.x = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.x = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_Y:
-            g_CinePosition.pos.y = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.y = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_Z:
-            g_CinePosition.pos.z = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.pos.z = (int32_t)(intptr_t)event->data;
             break;
         case GFS_SET_CAM_ANGLE:
-            g_CinePosition.rot = (int32_t)(intptr_t)seq->data;
+            g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;
         case GFS_FLIP_MAP:
             Room_FlipMap();
             break;
         case GFS_PLAY_SYNCED_AUDIO:
-            Music_Play((int32_t)(intptr_t)seq->data);
+            Music_Play((int32_t)(intptr_t)event->data);
             break;
 
         case GFS_MESH_SWAP: {
-            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = seq->data;
+            const GAME_FLOW_MESH_SWAP_DATA *const swap_data = event->data;
             Object_SwapMesh(
                 swap_data->object1_id, swap_data->object2_id,
                 swap_data->mesh_num);
             break;
         }
-
-        case GFS_END:
-            return command;
         }
-
-        seq++;
     }
 
     return command;

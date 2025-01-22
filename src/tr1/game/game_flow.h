@@ -7,8 +7,13 @@
 #include <stdint.h>
 
 typedef struct {
-    GAME_FLOW_SEQUENCE_TYPE type;
+    GAME_FLOW_SEQUENCE_EVENT_TYPE type;
     void *data;
+} GAME_FLOW_SEQUENCE_EVENT;
+
+typedef struct {
+    int32_t length;
+    GAME_FLOW_SEQUENCE_EVENT *events;
 } GAME_FLOW_SEQUENCE;
 
 typedef struct {
@@ -23,7 +28,7 @@ typedef struct {
     char *title;
     char *path;
     int8_t demo;
-    GAME_FLOW_SEQUENCE *sequence;
+    GAME_FLOW_SEQUENCE sequence;
     struct {
         bool override;
         RGB_F value;

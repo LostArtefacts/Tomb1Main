@@ -173,7 +173,6 @@ typedef enum {
 } SLIDING_PILLAR_STATE;
 
 typedef enum {
-    GFS_END = -1,
     GFS_START_GAME,
     GFS_LOOP_GAME,
     GFS_STOP_GAME,
@@ -201,7 +200,7 @@ typedef enum {
     GFS_REMOVE_MEDIPACKS,
     GFS_SETUP_BACON_LARA,
     GFS_LEGACY,
-} GAME_FLOW_SEQUENCE_TYPE;
+} GAME_FLOW_SEQUENCE_EVENT_TYPE;
 
 typedef enum {
     BT_LARA_HEALTH = 0,
