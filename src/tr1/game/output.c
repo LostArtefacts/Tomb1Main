@@ -90,7 +90,6 @@ static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh);
 static void M_CalcSkyboxLight(const OBJECT_MESH *mesh);
 static void M_CalcRoomVertices(const ROOM_MESH *mesh);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
-static int32_t M_CalcFogShade(int32_t depth);
 static void M_CalcWibbleTable(void);
 
 static void M_DrawFlatFace3s(const FACE3 *const faces, const int32_t count)
@@ -365,7 +364,7 @@ static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh)
         m_VBuf[i].g = 0x1000;
 
         const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
-        m_VBuf[i].g += M_CalcFogShade(depth);
+        m_VBuf[i].g += Output_CalcFogShade(depth);
 
         // reflection can be darker but not brighter
         CLAMP(m_VBuf[i].g, 0x1000, 0x1FFF);
@@ -434,7 +433,7 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
         vbuf->xv = xv;
         vbuf->yv = yv;
         vbuf->zv = zv;
-        vbuf->g = vertex->light_adder & MAX_LIGHTING;
+        vbuf->g = vertex->light_adder;
 
         if (zv < Output_GetNearZ()) {
             vbuf->clip = (int16_t)0x8000;
@@ -447,7 +446,7 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
                     clip_flags |= 16;
                 }
             } else if (depth) {
-                vbuf->g += M_CalcFogShade(depth);
+                vbuf->g += Output_CalcFogShade(depth);
                 if (!m_IsWaterEffect) {
                     CLAMPG(vbuf->g, MAX_LIGHTING);
                 }
@@ -516,21 +515,6 @@ static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
         vbuf->ys = ys;
         vbuf->clip = clip_flags;
     }
-}
-
-static int32_t M_CalcFogShade(int32_t depth)
-{
-    int32_t fog_begin = Output_GetDrawDistFade();
-    int32_t fog_end = Output_GetDrawDistMax();
-
-    if (depth < fog_begin) {
-        return 0;
-    }
-    if (depth >= fog_end) {
-        return 0x1FFF;
-    }
-
-    return (depth - fog_begin) * 0x1FFF / (fog_end - fog_begin);
 }
 
 static void M_CalcWibbleTable(void)
@@ -628,93 +612,6 @@ void Output_EndScene(void)
 void Output_ClearDepthBuffer(void)
 {
     S_Output_ClearDepthBuffer();
-}
-
-void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
-{
-    ROOM *r = &g_RoomInfo[room_num];
-
-    if (r->num_lights == 0) {
-        m_LsAdder = r->ambient;
-        m_LsDivider = 0;
-    } else {
-        int32_t ambient = 0x1FFF - r->ambient;
-        int32_t brightest = 0;
-
-        XYZ_32 ls = {
-            .x = 0,
-            .y = 0,
-            .z = 0,
-        };
-        for (int i = 0; i < r->num_lights; i++) {
-            LIGHT *light = &r->lights[i];
-            XYZ_32 lc = {
-                .x = pos.x - light->pos.x,
-                .y = pos.y - light->pos.y,
-                .z = pos.z - light->pos.z,
-            };
-
-            int32_t distance =
-                (SQUARE(lc.x) + SQUARE(lc.y) + SQUARE(lc.z)) >> 12;
-            int32_t falloff = SQUARE(light->falloff.value_1) >> 12;
-            int32_t shade = ambient
-                + (light->shade.value_1 * falloff) / (distance + falloff);
-
-            if (shade > brightest) {
-                brightest = shade;
-                ls = lc;
-            }
-        }
-
-        m_LsAdder = (ambient + brightest) / 2;
-        if (brightest == ambient) {
-            m_LsDivider = 0;
-        } else {
-            m_LsDivider = (1 << (W2V_SHIFT + 12)) / (brightest - m_LsAdder);
-        }
-        m_LsAdder = 0x1FFF - m_LsAdder;
-
-        PHD_ANGLE angles[2];
-        Math_GetVectorAngles(ls.x, ls.y, ls.z, angles);
-        Output_RotateLight(angles[1], angles[0]);
-    }
-
-    int32_t distance = g_MatrixPtr->_23 >> W2V_SHIFT;
-    m_LsAdder += M_CalcFogShade(distance);
-    CLAMPG(m_LsAdder, 0x1FFF);
-}
-
-void Output_CalculateStaticLight(int16_t adder)
-{
-    m_LsAdder = adder - 16 * 256;
-    int32_t distance = g_MatrixPtr->_23 >> W2V_SHIFT;
-    m_LsAdder += M_CalcFogShade(distance);
-    CLAMPG(m_LsAdder, 0x1FFF);
-}
-
-void Output_CalculateObjectLighting(
-    const ITEM *const item, const BOUNDS_16 *const bounds)
-{
-    if (item->shade.value_1 >= 0) {
-        Output_CalculateStaticLight(item->shade.value_1);
-        return;
-    }
-
-    Matrix_PushUnit();
-    Matrix_Rot16(item->rot);
-    Matrix_TranslateRel32((XYZ_32) {
-        .x = (bounds->min.x + bounds->max.x) / 2,
-        .y = (bounds->min.y + bounds->max.y) / 2,
-        .z = (bounds->min.z + bounds->max.z) / 2,
-    });
-    const XYZ_32 offset = {
-        .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
-        .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),
-        .z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT),
-    };
-    Matrix_Pop();
-
-    Output_CalculateLight(offset, item->room_num);
 }
 
 void Output_DrawObjectMesh(const OBJECT_MESH *const mesh, const int32_t clip)
@@ -956,7 +853,7 @@ void Output_DrawSprite(
     if (x1 >= Viewport_GetMinX() && y1 >= Viewport_GetMinY()
         && x0 <= Viewport_GetMaxX() && y0 <= Viewport_GetMaxY()) {
         int32_t depth = zv >> W2V_SHIFT;
-        shade += M_CalcFogShade(depth);
+        shade += Output_CalcFogShade(depth);
         CLAMPG(shade, 0x1FFF);
         S_Output_DrawSprite(x0, y0, x1, y1, zv, sprnum, shade);
     }
@@ -1082,7 +979,7 @@ void Output_DrawSpriteRel(
     if (x1 >= Viewport_GetMinX() && y1 >= Viewport_GetMinY()
         && x0 <= Viewport_GetMaxX() && y0 <= Viewport_GetMaxY()) {
         int32_t depth = zv >> W2V_SHIFT;
-        shade += M_CalcFogShade(depth);
+        shade += Output_CalcFogShade(depth);
         CLAMPG(shade, 0x1FFF);
         S_Output_DrawSprite(x0, y0, x1, y1, zv, sprnum, shade);
     }
@@ -1404,4 +1301,32 @@ RGB_888 Output_GetPaletteColor(uint16_t idx)
         return (RGB_888) { 0, 0, 0 };
     }
     return m_ColorPalette[idx];
+}
+
+int32_t Output_CalcFogShade(const int32_t depth)
+{
+    int32_t fog_begin = Output_GetDrawDistFade();
+    int32_t fog_end = Output_GetDrawDistMax();
+
+    if (depth < fog_begin) {
+        return 0;
+    }
+    if (depth >= fog_end) {
+        return 0x1FFF;
+    }
+
+    return (depth - fog_begin) * 0x1FFF / (fog_end - fog_begin);
+}
+
+int32_t Output_GetRoomLightShade(const ROOM_LIGHT_MODE mode)
+{
+    // TODO: remove
+    ASSERT_FAIL();
+    return 0;
+}
+
+void Output_LightRoomVertices(const ROOM *room)
+{
+    // TODO: remove
+    ASSERT_FAIL();
 }

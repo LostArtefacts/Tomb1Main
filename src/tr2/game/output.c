@@ -18,13 +18,9 @@
 static int32_t m_TickComp = 0;
 static int32_t m_RoomLightShades[RLM_NUMBER_OF] = {};
 static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
-static int32_t m_DynamicLightCount = 0;
-static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
 static float m_WibbleTable[32];
 static int16_t m_ShadesTable[32];
 static int32_t m_RandomTable[32];
-
-static int32_t M_CalcFogShade(int32_t depth);
 
 static void M_CalcRoomVertices(const ROOM_MESH *mesh, int32_t far_clip);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
@@ -37,17 +33,6 @@ static void M_InsertBar(
 static bool M_CalcObjectVertices(const XYZ_16 *vertices, int16_t count);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
 static void M_CalcSkyboxLight(const OBJECT_MESH *mesh);
-
-static int32_t M_CalcFogShade(const int32_t depth)
-{
-    if (depth > FOG_START) {
-        return depth - FOG_START;
-    }
-    if (depth > FOG_END) {
-        return 0x1FFF;
-    }
-    return 0;
-}
 
 static void M_InsertBar(
     const int32_t l, const int32_t t, const int32_t w, const int32_t h,
@@ -898,235 +883,6 @@ int32_t Output_GetObjectBounds(const BOUNDS_16 *const bounds)
     return 1;
 }
 
-void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
-{
-    const ROOM *const r = &g_Rooms[room_num];
-
-    int32_t brightest_shade = 0;
-    XYZ_32 brightest_pos = {};
-
-    if (r->light_mode != RLM_NORMAL) {
-        const int32_t light_shade = m_RoomLightShades[r->light_mode];
-        for (int32_t i = 0; i < r->num_lights; i++) {
-            const LIGHT *const light = &r->lights[i];
-            const int32_t dx = pos.x - light->pos.x;
-            const int32_t dy = pos.y - light->pos.y;
-            const int32_t dz = pos.z - light->pos.z;
-
-            const int32_t falloff_1 = SQUARE(light->falloff.value_1) >> 12;
-            const int32_t falloff_2 = SQUARE(light->falloff.value_2) >> 12;
-            const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
-
-            const int32_t shade_1 =
-                falloff_1 * light->shade.value_1 / (falloff_1 + dist);
-            const int32_t shade_2 =
-                falloff_2 * light->shade.value_2 / (falloff_2 + dist);
-            const int32_t shade =
-                shade_1 + (shade_2 - shade_1) * light_shade / (WIBBLE_SIZE - 1);
-
-            if (shade > brightest_shade) {
-                brightest_shade = shade;
-                brightest_pos = light->pos;
-            }
-        }
-    } else {
-        for (int32_t i = 0; i < r->num_lights; i++) {
-            const LIGHT *const light = &r->lights[i];
-            const int32_t dx = pos.x - light->pos.x;
-            const int32_t dy = pos.y - light->pos.y;
-            const int32_t dz = pos.z - light->pos.z;
-            const int32_t falloff_1 = SQUARE(light->falloff.value_1) >> 12;
-            const int32_t dist = (SQUARE(dx) + SQUARE(dy) + SQUARE(dz)) >> 12;
-            const int32_t shade =
-                falloff_1 * light->shade.value_1 / (falloff_1 + dist);
-            if (shade > brightest_shade) {
-                brightest_shade = shade;
-                brightest_pos = light->pos;
-            }
-        }
-    }
-
-    int32_t adder = brightest_shade;
-    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
-        const LIGHT *const light = &m_DynamicLights[i];
-        const int32_t dx = pos.x - light->pos.x;
-        const int32_t dy = pos.y - light->pos.y;
-        const int32_t dz = pos.z - light->pos.z;
-        const int32_t radius = 1 << light->falloff.value_1;
-        if (dx < -radius || dx > radius || dy < -radius || dy > radius
-            || dz < -radius || dz > radius) {
-            continue;
-        }
-
-        const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
-        if (dist > SQUARE(radius)) {
-            continue;
-        }
-
-        const int32_t shade = (1 << light->shade.value_1)
-            - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
-        if (shade > brightest_shade) {
-            brightest_shade = shade;
-            brightest_pos = light->pos;
-        }
-        adder += shade;
-    }
-
-    adder /= 2;
-    if (adder != 0) {
-        g_LsAdder = r->ambient - adder;
-        g_LsDivider = (1 << (W2V_SHIFT + 12)) / adder;
-        int16_t angles[2];
-        Math_GetVectorAngles(
-            pos.x - brightest_pos.x, pos.y - brightest_pos.y,
-            pos.z - brightest_pos.z, angles);
-        Output_RotateLight(angles[1], angles[0]);
-    } else {
-        g_LsAdder = r->ambient;
-        g_LsDivider = 0;
-    }
-
-    const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
-    g_LsAdder += M_CalcFogShade(depth);
-    CLAMPG(g_LsAdder, 0x1FFF);
-}
-
-void Output_CalculateStaticLight(const int16_t adder)
-{
-    g_LsAdder = adder - 0x1000;
-    const int32_t depth = g_MatrixPtr->_23 >> W2V_SHIFT;
-    g_LsAdder += M_CalcFogShade(depth);
-    CLAMPG(g_LsAdder, 0x1FFF);
-}
-
-void Output_CalculateStaticMeshLight(
-    const XYZ_32 pos, const SHADE shade, const ROOM *const room)
-{
-    int32_t adder = shade.value_1;
-    if (room->light_mode != RLM_NORMAL) {
-        adder += (shade.value_2 - shade.value_1)
-            * m_RoomLightShades[room->light_mode] / (WIBBLE_SIZE - 1);
-    }
-
-    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
-        const LIGHT *const light = &m_DynamicLights[i];
-        const int32_t dx = pos.x - light->pos.x;
-        const int32_t dy = pos.y - light->pos.y;
-        const int32_t dz = pos.z - light->pos.z;
-        const int32_t radius = 1 << light->falloff.value_1;
-        if (dx < -radius || dx > radius || dy < -radius || dy > radius
-            || dz < -radius || dz > radius) {
-            continue;
-        }
-
-        const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
-        if (dist > SQUARE(radius)) {
-            continue;
-        }
-
-        const int32_t shade = (1 << light->shade.value_1)
-            - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
-        adder -= shade;
-        if (adder < 0) {
-            break;
-        }
-    }
-
-    Output_CalculateStaticLight(adder);
-}
-
-void Output_CalculateObjectLighting(
-    const ITEM *const item, const BOUNDS_16 *const bounds)
-{
-    if (item->shade.value_1 >= 0) {
-        Output_CalculateStaticMeshLight(
-            item->pos, item->shade, &g_Rooms[item->room_num]);
-        return;
-    }
-
-    Matrix_PushUnit();
-
-    Matrix_TranslateSet(0, 0, 0);
-    Matrix_Rot16(item->rot);
-    Matrix_TranslateRel32((XYZ_32) {
-        .x = (bounds->min.x + bounds->max.x) / 2,
-        .y = (bounds->max.y + bounds->min.y) / 2,
-        .z = (bounds->max.z + bounds->min.z) / 2,
-    });
-    const XYZ_32 pos = {
-        .x = item->pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT),
-        .y = item->pos.y + (g_MatrixPtr->_13 >> W2V_SHIFT),
-        .z = item->pos.z + (g_MatrixPtr->_23 >> W2V_SHIFT),
-    };
-    Matrix_Pop();
-
-    Output_CalculateLight(pos, item->room_num);
-}
-
-void Output_LightRoom(ROOM *const room)
-{
-    if (room->light_mode != RLM_NORMAL) {
-        const ROOM_LIGHT_TABLE *const light_table =
-            &m_RoomLightTables[m_RoomLightShades[room->light_mode]];
-        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
-            ROOM_VERTEX *const vtx = &room->mesh.vertices[i];
-            const int32_t wibble =
-                light_table->table[vtx->light_table_value % WIBBLE_SIZE];
-            vtx->light_adder = vtx->light_base + wibble;
-        }
-    } else if (room->flags & RF_DYNAMIC_LIT) {
-        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
-            ROOM_VERTEX *const vtx = &room->mesh.vertices[i];
-            vtx->light_adder = vtx->light_base;
-        }
-        room->flags &= ~RF_DYNAMIC_LIT;
-    }
-
-    const int32_t x_min = WALL_L;
-    const int32_t z_min = WALL_L;
-    const int32_t x_max = (room->size.x - 1) * WALL_L;
-    const int32_t z_max = (room->size.z - 1) * WALL_L;
-
-    for (int32_t i = 0; i < m_DynamicLightCount; i++) {
-        const LIGHT *const light = &m_DynamicLights[i];
-        const int32_t x = light->pos.x - room->pos.x;
-        const int32_t y = light->pos.y;
-        const int32_t z = light->pos.z - room->pos.z;
-        const int32_t radius = 1 << light->falloff.value_1;
-        if (x - radius > x_max || z - radius > z_max || x + radius < x_min
-            || z + radius < z_min) {
-            continue;
-        }
-
-        room->flags |= RF_DYNAMIC_LIT;
-
-        for (int32_t j = 0; j < room->mesh.num_vertices; j++) {
-            ROOM_VERTEX *const v = &room->mesh.vertices[j];
-            if (v->light_adder == 0) {
-                continue;
-            }
-
-            const int32_t dx = v->pos.x - x;
-            const int32_t dy = v->pos.y - y;
-            const int32_t dz = v->pos.z - z;
-            if (dx < -radius || dx > radius || dy < -radius || dy > radius
-                || dz < -radius || dz > radius) {
-                continue;
-            }
-
-            const int32_t dist = SQUARE(dx) + SQUARE(dy) + SQUARE(dz);
-            if (dist > SQUARE(radius)) {
-                continue;
-            }
-
-            const int32_t shade = (1 << light->shade.value_1)
-                - (dist >> (2 * light->falloff.value_1 - light->shade.value_1));
-            v->light_adder -= shade;
-            CLAMPL(v->light_adder, 0);
-        }
-    }
-}
-
 void Output_SetupBelowWater(const bool is_underwater)
 {
     Render_SetWet(is_underwater);
@@ -1160,23 +916,6 @@ void Output_AnimateTextures(const int32_t ticks)
     Output_DoAnimateTextures(ticks);
 }
 
-void Output_ResetDynamicLights(void)
-{
-    m_DynamicLightCount = 0;
-}
-
-void Output_AddDynamicLight(
-    const XYZ_32 pos, const int32_t intensity, const int32_t falloff)
-{
-    const int32_t idx =
-        m_DynamicLightCount < MAX_DYNAMIC_LIGHTS ? m_DynamicLightCount++ : 0;
-
-    LIGHT *const light = &m_DynamicLights[idx];
-    light->pos = pos;
-    light->shade.value_1 = intensity;
-    light->falloff.value_1 = falloff;
-}
-
 void Output_SetLightAdder(const int32_t adder)
 {
     g_LsAdder = adder;
@@ -1185,4 +924,32 @@ void Output_SetLightAdder(const int32_t adder)
 void Output_SetLightDivider(const int32_t divider)
 {
     g_LsDivider = divider;
+}
+
+int32_t Output_CalcFogShade(const int32_t depth)
+{
+    if (depth > FOG_START) {
+        return depth - FOG_START;
+    }
+    if (depth > FOG_END) {
+        return 0x1FFF;
+    }
+    return 0;
+}
+
+int32_t Output_GetRoomLightShade(const ROOM_LIGHT_MODE mode)
+{
+    return m_RoomLightShades[mode];
+}
+
+void Output_LightRoomVertices(const ROOM *const room)
+{
+    const ROOM_LIGHT_TABLE *const light_table =
+        &m_RoomLightTables[m_RoomLightShades[room->light_mode]];
+    for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
+        ROOM_VERTEX *const vtx = &room->mesh.vertices[i];
+        const int32_t wibble =
+            light_table->table[vtx->light_table_value % WIBBLE_SIZE];
+        vtx->light_adder = vtx->light_base + wibble;
+    }
 }

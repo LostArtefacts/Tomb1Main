@@ -11,7 +11,6 @@
 #define BAD_JUMP_CEILING ((STEP_L * 3) / 4) // = 192
 #define STEPUP_HEIGHT ((STEP_L * 3) / 2) // = 384
 #define SLOPE_DIF 60
-#define WIBBLE_SIZE 32
 #define MAX_WIBBLE 2
 #define MAX_SHADE 0x300
 #define LIGHT_MAP_SIZE 32
@@ -37,7 +36,6 @@
 #define MAX_BOUND_ROOMS 128
 #define MAX_ITEMS 256
 #define MAX_EFFECTS 100
-#define MAX_DYNAMIC_LIGHTS 10
 #define MAX_LEVELS 24
 #define MAX_LEVEL_NAME_SIZE 50 // TODO: get rid of this limit
 #define MAX_DEMO_FILES MAX_LEVELS

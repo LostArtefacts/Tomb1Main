@@ -98,7 +98,6 @@
 #define NO_BAD_POS (-NO_HEIGHT)
 #define NO_BAD_NEG NO_HEIGHT
 #define BAD_JUMP_CEILING ((STEP_L * 3) / 4) // = 192
-#define WIBBLE_SIZE 32
 #define MAX_WIBBLE 2
 #define MAX_SHADE 0x300
 #define MAX_LIGHTING 0x1FFF
