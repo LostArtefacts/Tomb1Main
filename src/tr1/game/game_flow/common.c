@@ -34,9 +34,6 @@ static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
         case GFS_EXIT_TO_TITLE:
         case GFS_EXIT_TO_LEVEL:
         case GFS_EXIT_TO_CINE:
-        case GFS_SET_CAM_X:
-        case GFS_SET_CAM_Y:
-        case GFS_SET_CAM_Z:
         case GFS_SET_CAM_ANGLE:
         case GFS_FLIP_MAP:
         case GFS_PLAY_SYNCED_AUDIO:

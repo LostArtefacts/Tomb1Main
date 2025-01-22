@@ -257,9 +257,6 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             break;
         }
 
-        case GFS_SET_CAM_X:
-        case GFS_SET_CAM_Y:
-        case GFS_SET_CAM_Z:
         case GFS_SET_CAM_ANGLE: {
             int tmp = JSON_ObjectGetInt(jseq_obj, "value", JSON_INVALID_NUMBER);
             if (tmp == JSON_INVALID_NUMBER) {

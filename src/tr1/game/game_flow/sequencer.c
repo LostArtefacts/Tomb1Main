@@ -210,15 +210,6 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
-        case GFS_SET_CAM_X:
-            g_CinePosition.pos.x = (int32_t)(intptr_t)event->data;
-            break;
-        case GFS_SET_CAM_Y:
-            g_CinePosition.pos.y = (int32_t)(intptr_t)event->data;
-            break;
-        case GFS_SET_CAM_Z:
-            g_CinePosition.pos.z = (int32_t)(intptr_t)event->data;
-            break;
         case GFS_SET_CAM_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;
@@ -360,15 +351,6 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
                 .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
-        case GFS_SET_CAM_X:
-            g_CinePosition.pos.x = (int32_t)(intptr_t)event->data;
-            break;
-        case GFS_SET_CAM_Y:
-            g_CinePosition.pos.y = (int32_t)(intptr_t)event->data;
-            break;
-        case GFS_SET_CAM_Z:
-            g_CinePosition.pos.z = (int32_t)(intptr_t)event->data;
-            break;
         case GFS_SET_CAM_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;

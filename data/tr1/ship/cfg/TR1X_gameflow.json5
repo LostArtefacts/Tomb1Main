@@ -404,8 +404,6 @@
             ],
             "sequence": [
                 {"type": "start_cine"},
-                {"type": "set_cam_x", "value": 36668},
-                {"type": "set_cam_z", "value": 63180},
                 {"type": "set_cam_angle", "value": -23312},
                 {"type": "play_synced_audio", "audio_id": 23},
                 {"type": "loop_cine"},
@@ -429,8 +427,6 @@
             ],
             "sequence": [
                 {"type": "start_cine"},
-                {"type": "set_cam_x", "value": 51962},
-                {"type": "set_cam_z", "value": 53760},
                 {"type": "set_cam_angle", "value": 16380},
                 {"type": "play_synced_audio", "audio_id": 25},
                 {"type": "mesh_swap", "object1_id": 77, "object2_id": 1, "mesh_id": 1},
