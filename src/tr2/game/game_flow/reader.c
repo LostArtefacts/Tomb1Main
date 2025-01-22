@@ -412,9 +412,21 @@ static void M_LoadLevelInjections(
 
 static bool M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
-    return M_LoadArray(
+    const bool result = M_LoadArray(
         obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
         gf, &gf->level_count, (void **)&gf->levels);
+
+    for (int32_t i = 0; i < gf->level_count; i++) {
+        const GAME_FLOW_SEQUENCE *const sequence = &gf->levels[i].sequence;
+        for (int32_t j = 0; j < sequence->length; j++) {
+            GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[j];
+            if (event->type == GFS_PLAY_LEVEL
+                && (int32_t)(intptr_t)event->data == -1) {
+                event->data = (void *)(intptr_t)i;
+            }
+        }
+    }
+    return result;
 }
 
 static void M_LoadFMV(

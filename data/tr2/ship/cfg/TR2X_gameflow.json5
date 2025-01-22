@@ -38,7 +38,7 @@
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
                 {"type": "set_music_track", "music_track": 0},
-                {"type": "play_level", "level_num": 0},
+                {"type": "play_level"},
             ],
         },
 
@@ -51,7 +51,7 @@
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "add_secret_reward", "item": "small_medipack"},
-                {"type": "play_level", "level_num": 1},
+                {"type": "play_level"},
                 {"type": "set_music_track", "music_track": 3},
                 {"type": "set_cutscene_angle", "angle": 0},
                 {"type": "play_cutscene", "cutscene_num": 0},
@@ -68,7 +68,7 @@
             "sequence": [
                 {"type": "set_music_track", "music_track": 0},
                 {"type": "add_secret_reward", "item": "magnums_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 2},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
         },
@@ -80,7 +80,7 @@
                 {"type": "set_music_track", "music_track": 0},
                 {"type": "enable_sunset"},
                 {"type": "add_secret_reward", "item": "shotgun_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 3},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
         },
@@ -92,7 +92,7 @@
                 {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "uzis"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 4},
+                {"type": "play_level"},
                 {"type": "set_music_track", "music_track": 4},
                 {"type": "play_cutscene", "cutscene_num": 1},
                 {"type": "level_complete"},
@@ -113,7 +113,7 @@
                 {"type": "remove_weapons"},
                 {"type": "add_secret_reward", "item": "uzis"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 2},
-                {"type": "play_level", "level_num": 5},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -127,7 +127,7 @@
             "sequence": [
                 {"type": "set_music_track", "music_track": 58},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 6},
+                {"type": "play_level"},
                 {"type": "set_music_track", "music_track": 5},
                 {"type": "play_cutscene", "cutscene_num": 2},
                 {"type": "level_complete"},
@@ -144,7 +144,7 @@
                 {"type": "play_fmv", "fmv_num": 4},
                 {"type": "set_music_track", "music_track": 34},
                 {"type": "add_secret_reward", "item": "harpoon_gun_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 7},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
         },
@@ -156,7 +156,7 @@
                 {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
-                {"type": "play_level", "level_num": 8},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -171,7 +171,7 @@
             "sequence": [
                 {"type": "set_music_track", "music_track": 34},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 9},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
         },
@@ -182,7 +182,7 @@
             "sequence": [
                 {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 10},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -198,7 +198,7 @@
                 {"type": "set_music_track", "music_track": 33},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 11},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -214,7 +214,7 @@
                 {"type": "set_music_track", "music_track": 0},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 12},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -229,7 +229,7 @@
                 {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 2},
-                {"type": "play_level", "level_num": 13},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -244,7 +244,7 @@
             "sequence": [
                 {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 14},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -260,7 +260,7 @@
                 {"type": "play_fmv", "fmv_num": 6},
                 {"type": "set_music_track", "music_track": 59},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 8},
-                {"type": "play_level", "level_num": 15},
+                {"type": "play_level"},
                 {"type": "set_music_track", "music_track": 30},
                 {"type": "set_cutscene_angle", "angle": 0},
                 {"type": "play_cutscene", "cutscene_num": 3},
@@ -279,7 +279,7 @@
                 {"type": "set_music_track", "music_track": 59},
                 {"type": "disable_floor", "height": 9728},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 8},
-                {"type": "play_level", "level_num": 16},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -294,7 +294,7 @@
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
                 {"type": "set_music_track", "music_track": 59},
-                {"type": "play_level", "level_num": 17},
+                {"type": "play_level"},
                 {"type": "level_complete"},
                 {"type": "play_fmv", "fmv_num": 7},
             ],
@@ -310,7 +310,7 @@
                 {"type": "set_music_track", "music_track": 0},
                 {"type": "remove_weapons"},
                 {"type": "remove_ammo"},
-                {"type": "play_level", "level_num": 18},
+                {"type": "play_level"},
                 {"type": "set_music_track", "music_track": 52},
                 {"type": "game_complete"},
             ],
