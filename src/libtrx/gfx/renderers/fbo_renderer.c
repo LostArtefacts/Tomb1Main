@@ -86,6 +86,7 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
     GFX_GL_VertexArray_Attribute(
         &priv->vertex_array, 0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+    glActiveTexture(GL_TEXTURE0);
     GFX_GL_Texture_Init(&priv->texture, GL_TEXTURE_2D);
 
     GFX_GL_Sampler_Init(&priv->sampler);
@@ -106,12 +107,18 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
     GFX_GL_Program_FragmentData(&priv->program, "outColor");
     GFX_GL_Program_Link(&priv->program);
 
+    const GLint loc_texture =
+        GFX_GL_Program_UniformLocation(&priv->program, "tex0");
+    GFX_GL_Program_Bind(&priv->program);
+    GFX_GL_Program_Uniform1i(&priv->program, loc_texture, 0);
+
     glGenFramebuffers(1, &priv->fbo);
     GFX_GL_CheckError();
 
     glBindFramebuffer(GL_FRAMEBUFFER, priv->fbo);
     GFX_GL_CheckError();
 
+    glActiveTexture(GL_TEXTURE0);
     GFX_GL_Texture_Load(
         &priv->texture, NULL, fbo_width, fbo_height, GL_RGB, GL_RGB);
 
@@ -192,9 +199,10 @@ static void M_Render(GFX_RENDERER *renderer)
     GFX_GL_Program_Bind(&priv->program);
     GFX_GL_Buffer_Bind(&priv->buffer);
     GFX_GL_VertexArray_Bind(&priv->vertex_array);
+    glActiveTexture(GL_TEXTURE0);
     GFX_GL_Texture_Bind(&priv->texture);
-    GFX_GL_Sampler_Bind(&priv->sampler, 0);
 
+    GFX_GL_Sampler_Bind(&priv->sampler, 0);
     GFX_GL_Sampler_Parameteri(&priv->sampler, GL_TEXTURE_MAG_FILTER, filter);
     GFX_GL_Sampler_Parameteri(&priv->sampler, GL_TEXTURE_MIN_FILTER, filter);
 
