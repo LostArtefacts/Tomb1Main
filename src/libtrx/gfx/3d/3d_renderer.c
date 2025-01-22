@@ -51,8 +51,10 @@ static void M_ApplyUniforms(GFX_3D_RENDERER *const renderer)
 static void M_Flush(GFX_3D_RENDERER *const renderer)
 {
     GFX_3D_VertexStream_RenderPending(&renderer->vertex_stream);
+#ifndef __APPLE__
     glLineWidth(renderer->config->line_width);
     GFX_GL_CheckError();
+#endif
     glPolygonMode(
         GL_FRONT_AND_BACK,
         renderer->config->enable_wireframe ? GL_LINE : GL_FILL);
