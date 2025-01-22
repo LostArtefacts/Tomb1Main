@@ -85,7 +85,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_PLAY_LEVEL,          M_HandleIntEvent, "level_num" },
     { GFS_PLAY_CUTSCENE,       M_HandleIntEvent, "cutscene_num" },
     { GFS_PLAY_FMV,            M_HandleIntEvent, "fmv_num" },
-    { GFS_PLAY_DEMO,           M_HandleIntEvent, "demo_num" },
     { GFS_DISABLE_FLOOR,       M_HandleIntEvent, "height" },
 
     // Special cases with custom handlers

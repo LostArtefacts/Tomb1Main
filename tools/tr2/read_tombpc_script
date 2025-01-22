@@ -235,7 +235,7 @@ def transform_script(script: list[int]):
 
             case GameFlowEvent.DEMO_PLAY:
                 demo_num = script.pop(0)
-                yield {"type": "play_demo", "demo_num": demo_num}
+                yield {"type": "play_level", "level_num": demo_num}
 
             case GameFlowEvent.JUMP_TO_SEQ:
                 seq_num = script.pop(0)

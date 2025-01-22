@@ -128,15 +128,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
         }
 
-        case GFS_PLAY_DEMO: {
-            const int16_t demo_num = (int16_t)(intptr_t)event->data;
-            if (type != GFL_SAVED && type != GFL_STORY
-                && type != GFL_MID_STORY) {
-                return GF_StartGame(demo_num, GFL_DEMO);
-            }
-            break;
-        }
-
         case GFS_PLAY_FMV: {
             const int16_t fmv_num = (int16_t)(intptr_t)event->data;
             if (type != GFL_SAVED) {
