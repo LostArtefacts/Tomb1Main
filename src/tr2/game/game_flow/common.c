@@ -20,7 +20,7 @@ int32_t GF_GetLevelCount(void)
 
 int32_t GF_GetDemoCount(void)
 {
-    return g_GameFlow.demo_level_count;
+    return g_GameFlow.demo_count;
 }
 
 const char *GF_GetLevelPath(const int32_t level_num)

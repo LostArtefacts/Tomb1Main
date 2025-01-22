@@ -66,7 +66,7 @@ void Lara_Cheat_CheckKeys(void)
         return;
     }
 
-    if (g_CurrentLevel == GF_GetLevelCount() - GF_GetDemoCount() - 1) {
+    if (g_CurrentLevel == GF_GetLevelCount() - 1) {
         return;
     }
 

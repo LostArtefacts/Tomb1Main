@@ -413,7 +413,7 @@ void Shell_Main(void)
         }
 
         case GF_START_DEMO: {
-            gf_cmd = GF_StartDemo(gf_cmd.param);
+            gf_cmd = GF_DoDemoSequence(gf_cmd.param);
             break;
         }
 

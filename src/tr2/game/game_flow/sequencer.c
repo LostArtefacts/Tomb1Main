@@ -16,13 +16,13 @@
 #include <libtrx/game/objects/vars.h>
 #include <libtrx/log.h>
 
-GAME_FLOW_COMMAND GF_StartDemo(const int32_t demo_num)
+GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
 {
-    const int32_t level_num = Demo_ChooseLevel(demo_num);
-    if (level_num < 0) {
+    demo_num = Demo_ChooseLevel(demo_num);
+    if (demo_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    return GF_DoLevelSequence(level_num, GFL_DEMO);
+    return GF_InterpretSequence(&g_GameFlow.demos[demo_num].sequence, GFL_DEMO);
 }
 
 GAME_FLOW_COMMAND GF_StartGame(

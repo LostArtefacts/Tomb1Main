@@ -185,37 +185,6 @@
                 "puzzle_1": {"name": "Dagger of Xian"},
             },
         },
-
-        // 19. Demo 1
-        {
-            "title": "Venice",
-            "objects": {
-                "key_1": {"name": "Boathouse Key"},
-                "key_2": {"name": "Steel Key"},
-                "key_3": {"name": "Iron Key"},
-            },
-        },
-
-        // 20. Demo 2
-        {
-            "title": "Wreck of the Maria Doria",
-            "objects": {
-                "key_1": {"name": "Rest Room Key"},
-                "key_2": {"name": "Rusty Key"},
-                "key_3": {"name": "Cabin Key"},
-                "puzzle_1": {"name": "Circuit Breaker"},
-            },
-        },
-
-        // 21. Demo 3
-        {
-            "title": "Tibetan Foothills",
-            "objects": {
-                "key_1": {"name": "Drawbridge Key"},
-                "key_2": {"name": "Hut Key"},
-                "puzzle_4": {"name": "The Seraph"},
-            },
-        },
     ],
 
     "objects": {

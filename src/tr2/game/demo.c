@@ -31,26 +31,15 @@ typedef struct {
     START_INFO old_start;
 } M_PRIV;
 
+static int32_t m_LastDemoNum = 0;
 static M_PRIV m_Priv;
 
 static INPUT_STATE m_OldDemoInputDB = {};
 
-static int32_t M_GetNextLevel(M_PRIV *p);
 static void M_PrepareConfig(M_PRIV *p);
 static void M_RestoreConfig(M_PRIV *p);
 static void M_PrepareStartInfo(M_PRIV *p);
 static void M_RestoreStartInfo(M_PRIV *p);
-
-static int32_t M_GetNextLevel(M_PRIV *const p)
-{
-    if (g_GameFlow.demo_level_count <= 0) {
-        return -1;
-    }
-    const int32_t level_num = g_GameFlow.demo_levels[p->demo_num];
-    p->demo_num++;
-    p->demo_num %= g_GameFlow.demo_level_count;
-    return level_num;
-}
 
 static void M_PrepareConfig(M_PRIV *const p)
 {
@@ -235,14 +224,12 @@ void Demo_Unpause(void)
 int32_t Demo_ChooseLevel(const int32_t demo_num)
 {
     M_PRIV *const p = &m_Priv;
-    if (demo_num < 0) {
-        return M_GetNextLevel(p);
-    } else if (g_GameFlow.demo_level_count <= 0) {
+    if (GF_GetDemoCount() <= 0) {
         return -1;
     } else if (demo_num < 0 || demo_num >= GF_GetDemoCount()) {
-        return -1;
+        return (m_LastDemoNum++) % GF_GetDemoCount();
     } else {
-        return g_GameFlow.demo_levels[demo_num];
+        return demo_num;
     }
 }
 

@@ -318,35 +318,49 @@
                 "data/injections/house_itemrots.bin",
             ],
         },
+    ],
 
-        // 19. Demo 1
+    "demos": [
+        // 0. Venice
         {
             "path": "data/boat.tr2",
             "sequence": [
                 {"type": "set_music_track", "music_track": 0},
-                {"type": "play_demo", "demo_num": 19},
+                {"type": "add_secret_reward", "item": "magnums_ammo", "qty": 4},
+                {"type": "play_level", "level_num": 2},
+                {"type": "level_complete"},
             ],
-            "type": "demo",
         },
 
-        // 20. Demo 2
+        // 1. Wreck of the Maria Doria
         {
             "path": "data/keel.tr2",
-            "type": "demo",
             "sequence": [
-                {"type": "set_music_track", "music_track": 32},
-                {"type": "play_demo", "demo_num": 20},
+                {"type": "set_music_track", "music_track": 31},
+                {"type": "add_secret_reward", "item": "grenade_launcher"},
+                {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
+                {"type": "play_level", "level_num": 8},
+                {"type": "level_complete"},
+            ],
+            "injections": [
+                "data/injections/wreck_fd.bin",
+                "data/injections/wreck_itemrots.bin",
             ],
         },
 
-        // 21. Demo 3
+        // 2. Tibetan Foothills
         {
             "path": "data/skidoo.tr2",
-            "type": "demo",
             "sequence": [
                 {"type": "set_music_track", "music_track": 33},
                 {"type": "give_item", "item": "puzzle_4"},
-                {"type": "play_demo", "demo_num": 21}
+                {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
+                {"type": "play_level", "level_num": 11},
+                {"type": "level_complete"},
+            ],
+            "injections": [
+                "data/injections/tibet_fd.bin",
+                "data/injections/tibet_itemrots.bin",
             ],
         },
     ],

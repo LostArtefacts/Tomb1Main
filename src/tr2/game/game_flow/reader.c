@@ -64,6 +64,8 @@ static void M_LoadCutscene(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_CUTSCENE *level);
 static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
 
+static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
+
 static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
@@ -364,15 +366,6 @@ static void M_LoadLevel(
     JSON_OBJECT *const obj, const GAME_FLOW *const gf,
     GAME_FLOW_LEVEL *const level)
 {
-    const char *const level_type = JSON_ObjectGetString(obj, "type", NULL);
-    if (level_type == NULL) {
-        level->demo = false;
-    } else if (strcmp(level_type, "demo") == 0) {
-        level->demo = true;
-    } else {
-        Shell_ExitSystemFmt("Invalid level type: '%s'", level_type);
-    }
-
     const char *const path = JSON_ObjectGetString(obj, "path", NULL);
     if (path == NULL) {
         Shell_ExitSystemFmt("Missing level path");
@@ -468,6 +461,13 @@ static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
         (void **)&gf->cutscenes);
 }
 
+static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    return M_LoadArray(
+        obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
+        gf, &gf->demo_count, (void **)&gf->demos);
+}
+
 static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
     JSON_OBJECT *title_obj = JSON_ObjectGetObject(obj, "title");
@@ -509,6 +509,7 @@ bool GF_N_Load(const char *const path)
     result &= M_LoadGlobal(root_obj, gf);
     result &= M_LoadLevels(root_obj, gf);
     result &= M_LoadCutscenes(root_obj, gf);
+    result &= M_LoadDemos(root_obj, gf);
     result &= M_LoadFMVs(root_obj, gf);
     M_LoadTitleLevel(root_obj, gf);
 
@@ -520,20 +521,6 @@ end:
 
     if (!result) {
         GF_N_Shutdown();
-    }
-
-    gf->demo_level_count = 0;
-    for (int32_t i = 0; i < gf->level_count; i++) {
-        if (gf->levels[i].demo) {
-            gf->demo_level_count++;
-        }
-    }
-    gf->demo_levels = Memory_Alloc(sizeof(int32_t) * gf->demo_level_count);
-    int32_t count = 0;
-    for (int32_t i = 0; i < gf->level_count; i++) {
-        if (gf->levels[i].demo) {
-            gf->demo_levels[count++] = i;
-        }
     }
 
     Memory_FreePointer(&script_data);
@@ -567,8 +554,8 @@ static void M_FreeLevels(GAME_FLOW *const gf)
 
 static void M_FreeDemos(GAME_FLOW *const gf)
 {
-    Memory_FreePointer(&gf->demo_levels);
-    gf->demo_level_count = 0;
+    Memory_FreePointer(&gf->demos);
+    gf->demo_count = 0;
 }
 
 static void M_FreeCutscenes(GAME_FLOW *const gf)

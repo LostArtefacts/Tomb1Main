@@ -73,7 +73,6 @@ typedef struct {
 } GAME_FLOW_CUTSCENE;
 
 typedef struct {
-    bool demo;
     const char *path;
     char *title;
     GAME_FLOW_SEQUENCE sequence;
@@ -93,6 +92,12 @@ typedef struct {
     struct {
         int32_t cutscene_count;
         GAME_FLOW_CUTSCENE *cutscenes;
+    };
+
+    // demos
+    struct {
+        int32_t demo_count;
+        GAME_FLOW_LEVEL *demos;
     };
 
     // FMVs
@@ -132,10 +137,6 @@ typedef struct {
 
     // other data
     INJECTION_DATA injections;
-
-    // denormalized data
-    int32_t demo_level_count;
-    int32_t *demo_levels;
 } GAME_FLOW;
 
 // ----------------------------------------------------------------------------
