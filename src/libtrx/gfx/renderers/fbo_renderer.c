@@ -93,9 +93,9 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
     GFX_GL_Sampler_Parameteri(&priv->sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     GFX_GL_Sampler_Parameteri(&priv->sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     GFX_GL_Sampler_Parameteri(
-        &priv->sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        &priv->sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     GFX_GL_Sampler_Parameteri(
-        &priv->sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        &priv->sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     GFX_GL_Program_Init(&priv->program);
     GFX_GL_Program_AttachShader(
