@@ -347,7 +347,6 @@ typedef struct {
     int32_t select_level_num;
     bool death_counter_supported;
     GAME_FLOW_LEVEL_TYPE current_level_type;
-    GAME_FLOW_COMMAND override_gf_command;
     bool remove_guns;
     bool remove_scions;
     bool remove_ammo;

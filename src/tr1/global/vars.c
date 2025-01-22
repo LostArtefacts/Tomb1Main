@@ -23,7 +23,7 @@ OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
 
 LARA_INFO g_Lara = {};
 ITEM *g_LaraItem = NULL;
-GAME_INFO g_GameInfo = { .override_gf_command = { .action = GF_NOOP }, 0 };
+GAME_INFO g_GameInfo = {};
 int32_t g_SavedGamesCount = 0;
 int32_t g_SaveCounter = 0;
 int16_t g_CurrentLevel = -1;

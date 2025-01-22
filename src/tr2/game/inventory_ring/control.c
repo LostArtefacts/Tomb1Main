@@ -177,8 +177,8 @@ static GAME_FLOW_COMMAND M_Finish(
 
     if (Shell_IsExiting()) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
-    } else if (g_GF_OverrideCommand.action != GF_NOOP) {
-        return g_GF_OverrideCommand;
+    } else if (GF_GetOverrideCommand().action != GF_NOOP) {
+        return GF_GetOverrideCommand();
     } else if (ring->is_demo_needed) {
         return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
     } else if (g_Inv_Chosen == NO_OBJECT) {

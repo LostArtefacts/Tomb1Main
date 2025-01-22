@@ -3,7 +3,6 @@
 #include "global/types.h"
 
 #include <libtrx/game/game_flow.h>
-#include <libtrx/game/inventory_ring/types.h>
 
 #include <stdint.h>
 
@@ -91,10 +90,6 @@ GAME_FLOW_COMMAND GF_PlayLevel(
     int32_t demo_num, GAME_FLOW_LEVEL_TYPE level_type);
 GAME_FLOW_COMMAND GF_PlayDemo(int32_t demo_num);
 GAME_FLOW_COMMAND GF_PlayCutscene(int32_t level_num);
-GAME_FLOW_COMMAND GF_PauseGame(void);
-GAME_FLOW_COMMAND GF_EnterPhotoMode(void);
-GAME_FLOW_COMMAND GF_ShowInventory(INVENTORY_MODE inv_mode);
-GAME_FLOW_COMMAND GF_ShowInventoryKeys(GAME_OBJECT_ID receptacle_type_id);
 
 bool GF_LoadFromFile(const char *file_name);
 void GF_Shutdown(void);

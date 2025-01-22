@@ -54,13 +54,3 @@ int32_t GF_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_enabled ? LV_GYM : -1;
 }
-
-void GF_OverrideCommand(const GAME_FLOW_COMMAND command)
-{
-    g_GF_OverrideCommand = command;
-}
-
-GAME_FLOW_COMMAND GF_GetOverrideCommand(void)
-{
-    return g_GF_OverrideCommand;
-}

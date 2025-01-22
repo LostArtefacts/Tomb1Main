@@ -8,8 +8,6 @@
 const char *g_TRXVersion = "TR2X (non-Docker build)";
 #endif
 
-GAME_FLOW_COMMAND g_GF_OverrideCommand = { .action = GF_NOOP };
-
 int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW] = {};
 int16_t g_RoomsToDrawCount = 0;
 
