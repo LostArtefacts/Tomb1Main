@@ -120,7 +120,7 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
 
     glActiveTexture(GL_TEXTURE0);
     GFX_GL_Texture_Load(
-        &priv->texture, NULL, fbo_width, fbo_height, GL_RGB, GL_RGB);
+        &priv->texture, NULL, fbo_width, fbo_height, GL_RGB8, GL_RGB);
 
     glFramebufferTexture2D(
         GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, priv->texture.id,
