@@ -291,14 +291,10 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 }
 
 GAME_FLOW_COMMAND
-GF_StorySoFar(int32_t level_num, int32_t savegame_level)
+GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
 {
-    LOG_INFO("%d", level_num);
-
     GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
 
-    const GAME_FLOW_SEQUENCE *const sequence =
-        &g_GameFlow.levels[level_num].sequence;
     for (int32_t i = 0; i < sequence->length; i++) {
         const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
         LOG_INFO("event %d %d", event->type, event->data);
@@ -320,7 +316,7 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
             break;
 
         case GFS_START_GAME:
-            if (level_num == savegame_level) {
+            if ((int32_t)(intptr_t)event->data == savegame_level) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             break;
@@ -328,7 +324,8 @@ GF_StorySoFar(int32_t level_num, int32_t savegame_level)
         case GFS_START_CINE:
             command =
                 GF_LoadLevel((int32_t)(intptr_t)event->data, GFL_CUTSCENE);
-            if (command.action != GF_NOOP) {
+            if (command.action != GF_NOOP
+                && command.action != GF_LEVEL_COMPLETE) {
                 return command;
             }
             break;
@@ -404,11 +401,10 @@ GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num)
 
     const int32_t savegame_level = Savegame_GetLevelNumber(slot_num);
     while (1) {
-        command = GF_StorySoFar(command.param, savegame_level);
-
-        if ((g_GameFlow.levels[command.param].level_type == GFL_NORMAL
-             || g_GameFlow.levels[command.param].level_type == GFL_BONUS)
-            && command.param >= savegame_level) {
+        command = GF_StorySoFar(
+            &g_GameFlow.levels[command.param].sequence, savegame_level);
+        if (command.action == GF_EXIT_TO_TITLE
+            || command.action == GF_EXIT_GAME) {
             break;
         }
     }
