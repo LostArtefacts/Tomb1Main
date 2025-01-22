@@ -55,15 +55,26 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
 
         switch (event->type) {
-        case GFS_START_GAME:
+        case GFS_START_GAME: {
+            const int32_t num = (int32_t)(intptr_t)event->data;
             if (level_type == GFL_DEMO) {
                 break;
-            } else if (!Game_Start_Legacy(
-                           (int32_t)(intptr_t)event->data, level_type)) {
-                g_CurrentLevel = -1;
-                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            }
+            if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
+                command = GF_LoadLevel(level_num, GFL_CUTSCENE);
+                if (command.action != GF_NOOP
+                    && command.action != GF_LEVEL_COMPLETE) {
+                    return command;
+                }
+            } else {
+                const bool result = Game_Start_Legacy(num, level_type);
+                if (!result) {
+                    g_CurrentLevel = -1;
+                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                }
             }
             break;
+        }
 
         case GFS_LOOP_GAME:
             if (level_type == GFL_DEMO) {
@@ -96,14 +107,6 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 } else {
                     level_type = GFL_NORMAL;
                 }
-            }
-            break;
-
-        case GFS_START_CINE:
-            command =
-                GF_LoadLevel((int32_t)(intptr_t)event->data, GFL_CUTSCENE);
-            if (command.action != GF_NOOP) {
-                return command;
             }
             break;
 
@@ -306,20 +309,20 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         case GFS_LEGACY:
             break;
 
-        case GFS_START_GAME:
-            if ((int32_t)(intptr_t)event->data == savegame_level) {
+        case GFS_START_GAME: {
+            const int32_t level_num = (int32_t)(intptr_t)event->data;
+            if (level_num == savegame_level) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
-            break;
-
-        case GFS_START_CINE:
-            command =
-                GF_LoadLevel((int32_t)(intptr_t)event->data, GFL_CUTSCENE);
-            if (command.action != GF_NOOP
-                && command.action != GF_LEVEL_COMPLETE) {
-                return command;
+            if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
+                command = GF_LoadLevel(level_num, GFL_CUTSCENE);
+                if (command.action != GF_NOOP
+                    && command.action != GF_LEVEL_COMPLETE) {
+                    return command;
+                }
             }
             break;
+        }
 
         case GFS_LOOP_CINE:
             command = GF_PlayCutscene((int32_t)(intptr_t)event->data);

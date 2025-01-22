@@ -736,17 +736,10 @@ default gameflow for examples.
 
   <tr valign="top">
     <td>
-      <code>start_cine</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Starts a new cinematic level.</td>
-  </tr>
-  <tr valign="top">
-    <td>
       <code>start_game</code>
     </td>
     <td colspan="2" align="center">N/A</td>
-    <td>Starts a new level.</td>
+    <td>Starts a new level or a cinematic.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -870,7 +863,7 @@ game will exit to title.
     "type": "cutscene",
     "music": 0,
     "sequence": [
-        {"type": "start_cine"},
+        {"type": "start_game"},
         {"type": "set_cam_x", "value": 36668},
         {"type": "set_cam_z", "value": 63180},
         {"type": "set_cam_angle", "value": -23312},
