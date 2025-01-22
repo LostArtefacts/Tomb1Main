@@ -137,6 +137,7 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     GFX_GL_Program_AttachShader(
         &renderer->program, GL_FRAGMENT_SHADER, "shaders/3d.glsl",
         renderer->config->backend);
+    GFX_GL_Program_FragmentData(&renderer->program, "outColor");
     GFX_GL_Program_Link(&renderer->program);
 
     renderer->loc_mat_projection =
@@ -154,7 +155,6 @@ GFX_3D_RENDERER *GFX_3D_Renderer_Create(void)
     renderer->loc_brightness_multiplier = GFX_GL_Program_UniformLocation(
         &renderer->program, "brightnessMultiplier");
 
-    GFX_GL_Program_FragmentData(&renderer->program, "fragColor");
     GFX_GL_Program_Bind(&renderer->program);
 
     GLfloat model_view[4][4] = {

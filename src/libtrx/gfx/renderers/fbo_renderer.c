@@ -103,8 +103,8 @@ static void M_Init(GFX_RENDERER *const renderer, const GFX_CONFIG *const config)
     GFX_GL_Program_AttachShader(
         &priv->program, GL_FRAGMENT_SHADER, "shaders/fbo.glsl",
         config->backend);
+    GFX_GL_Program_FragmentData(&priv->program, "outColor");
     GFX_GL_Program_Link(&priv->program);
-    GFX_GL_Program_FragmentData(&priv->program, "fragColor");
 
     glGenFramebuffers(1, &priv->fbo);
     GFX_GL_CheckError();

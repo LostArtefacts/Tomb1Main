@@ -43,8 +43,8 @@ GFX_FADE_RENDERER *GFX_FadeRenderer_Create(void)
         &r->program, GL_VERTEX_SHADER, "shaders/fade.glsl", config->backend);
     GFX_GL_Program_AttachShader(
         &r->program, GL_FRAGMENT_SHADER, "shaders/fade.glsl", config->backend);
+    GFX_GL_Program_FragmentData(&r->program, "outColor");
     GFX_GL_Program_Link(&r->program);
-    GFX_GL_Program_FragmentData(&r->program, "fragColor");
 
     r->loc_opacity = GFX_GL_Program_UniformLocation(&r->program, "opacity");
 

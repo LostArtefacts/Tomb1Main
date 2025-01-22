@@ -137,8 +137,8 @@ GFX_2D_RENDERER *GFX_2D_Renderer_Create(void)
         &r->program, GL_VERTEX_SHADER, "shaders/2d.glsl", config->backend);
     GFX_GL_Program_AttachShader(
         &r->program, GL_FRAGMENT_SHADER, "shaders/2d.glsl", config->backend);
+    GFX_GL_Program_FragmentData(&r->program, "outColor");
     GFX_GL_Program_Link(&r->program);
-    GFX_GL_Program_FragmentData(&r->program, "fragColor");
 
     struct {
         M_UNIFORM loc;
