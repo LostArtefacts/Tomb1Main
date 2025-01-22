@@ -89,7 +89,7 @@ void InvRing_InitRing(
         ring->camera_pitch = 0;
     }
 
-    ring->rotating = 0;
+    ring->rotating = false;
     ring->rot_count = 0;
     ring->target_object = 0;
     ring->rot_adder = 0;
@@ -236,14 +236,14 @@ void InvRing_DoMotions(INV_RING *const ring)
             ring->current_object = ring->target_object;
             ring->ring_pos.rot.y =
                 -DEG_90 - ring->target_object * ring->angle_adder;
-            ring->rotating = 0;
+            ring->rotating = false;
         }
     }
 }
 
 void InvRing_RotateLeft(INV_RING *const ring)
 {
-    ring->rotating = 1;
+    ring->rotating = true;
     if (ring->current_object <= 0) {
         ring->target_object = ring->number_of_objects - 1;
     } else {
@@ -255,7 +255,7 @@ void InvRing_RotateLeft(INV_RING *const ring)
 
 void InvRing_RotateRight(INV_RING *const ring)
 {
-    ring->rotating = 1;
+    ring->rotating = true;
     if (ring->current_object + 1 >= ring->number_of_objects) {
         ring->target_object = 0;
     } else {
@@ -473,6 +473,9 @@ void InvRing_ShowHeader(INV_RING *const ring)
 
         case RT_KEYS:
             m_HeadingText = Text_Create(0, 26, GS(HEADING_ITEMS));
+            break;
+
+        case RT_NUMBER_OF:
             break;
         }
 

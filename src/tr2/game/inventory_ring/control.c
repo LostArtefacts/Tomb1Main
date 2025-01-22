@@ -361,13 +361,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     case RNG_OPEN:
         if (g_Input.menu_right && ring->number_of_objects > 1) {
             InvRing_RotateLeft(ring);
-            Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
+            Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
             break;
         }
 
         if (g_Input.menu_left && ring->number_of_objects > 1) {
             InvRing_RotateRight(ring);
-            Sound_Effect(SFX_MENU_ROTATE, 0, SPM_ALWAYS);
+            Sound_Effect(SFX_MENU_ROTATE, NULL, SPM_ALWAYS);
             break;
         }
 
@@ -437,11 +437,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
             switch (inv_item->object_id) {
             case O_COMPASS_OPTION:
-                Sound_Effect(SFX_MENU_STOPWATCH, 0, SPM_ALWAYS);
+                Sound_Effect(SFX_MENU_STOPWATCH, NULL, SPM_ALWAYS);
                 break;
 
             case O_PHOTO_OPTION:
-                Sound_Effect(SFX_MENU_LARA_HOME, 0, SPM_ALWAYS);
+                Sound_Effect(SFX_MENU_LARA_HOME, NULL, SPM_ALWAYS);
                 break;
 
             case O_PISTOL_OPTION:
@@ -451,11 +451,11 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
             case O_HARPOON_OPTION:
             case O_M16_OPTION:
             case O_GRENADE_OPTION:
-                Sound_Effect(SFX_MENU_GUNS, 0, SPM_ALWAYS);
+                Sound_Effect(SFX_MENU_GUNS, NULL, SPM_ALWAYS);
                 break;
 
             default:
-                Sound_Effect(SFX_MENU_SPININ, 0, SPM_ALWAYS);
+                Sound_Effect(SFX_MENU_SPININ, NULL, SPM_ALWAYS);
                 break;
             }
         }
@@ -656,7 +656,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     case RNG_DESELECT: {
         INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
         Option_Shutdown(inv_item);
-        Sound_Effect(SFX_MENU_SPINOUT, 0, SPM_ALWAYS);
+        Sound_Effect(SFX_MENU_SPINOUT, NULL, SPM_ALWAYS);
         InvRing_MotionSetup(ring, RNG_DESELECTING, RNG_OPEN, 16);
         InvRing_MotionRotation(
             ring, 0, -DEG_90 - ring->angle_adder * ring->current_object);
@@ -727,6 +727,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_MAIN2OPTION
         || ring->motion.status == RNG_OPTION2MAIN
         || ring->motion.status == RNG_EXITING_INVENTORY
+        || ring->motion.status == RNG_FADING_OUT
         || ring->motion.status == RNG_DONE || ring->rotating) {
         M_RingActive();
     }

@@ -82,10 +82,10 @@ typedef struct {
 typedef struct {
     INVENTORY_MODE mode;
     INVENTORY_ITEM **list;
-    int16_t type;
+    RING_TYPE type;
     int16_t radius;
     int16_t camera_pitch;
-    int16_t rotating;
+    bool rotating;
     int16_t rot_count;
     int16_t current_object;
     int16_t target_object;

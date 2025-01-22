@@ -202,7 +202,7 @@ static void M_RingNotActive(const INVENTORY_ITEM *const inv_item)
 
 static void M_RingActive(INV_RING *const ring)
 {
-    InvRing_RemoveAllText();
+    InvRing_RemoveItemTexts();
 }
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
@@ -788,7 +788,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         || ring->motion.status == RNG_DESELECT
         || ring->motion.status == RNG_CLOSING_ITEM) {
         if (!ring->rotating && !g_Input.menu_left && !g_Input.menu_right) {
-            INVENTORY_ITEM *inv_item = ring->list[ring->current_object];
+            INVENTORY_ITEM *const inv_item = ring->list[ring->current_object];
             M_RingNotActive(inv_item);
         }
         M_RingIsOpen(ring);
@@ -796,7 +796,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         M_RingIsNotOpen(ring);
     }
 
-    if (!ring->motion.status || ring->motion.status == RNG_CLOSING
+    if (ring->motion.status == RNG_OPENING || ring->motion.status == RNG_CLOSING
         || ring->motion.status == RNG_MAIN2OPTION
         || ring->motion.status == RNG_OPTION2MAIN
         || ring->motion.status == RNG_EXITING_INVENTORY
