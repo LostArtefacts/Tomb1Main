@@ -453,6 +453,7 @@ void Shell_Shutdown(void)
     UI_Shutdown();
     GameBuf_Shutdown();
     Config_Shutdown();
+    EnumMap_Shutdown();
 }
 
 const char *Shell_GetConfigPath(void)

@@ -55,6 +55,7 @@ static void M_DefineInverse(
         // (This means that the first call to ENUM_MAP_DEFINE for a given enum
         // value also determines what serializing it back to string will pick
         // in the event there are multiple aliases).
+        Memory_Free(key);
         return;
     }
 
