@@ -50,10 +50,10 @@ static void M_SwapBuffers(GFX_RENDERER *renderer)
     GFX_Context_SwitchToWindowViewportAR();
     M_Render(renderer);
 
+    M_Unbind(renderer);
     SDL_GL_SwapWindow(GFX_Context_GetWindowHandle());
 
     GFX_Context_SwitchToWindowViewport();
-    M_Unbind(renderer);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GFX_GL_CheckError();
 
