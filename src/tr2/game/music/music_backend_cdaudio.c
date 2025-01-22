@@ -27,6 +27,7 @@ static bool M_Parse(BACKEND_DATA *data);
 static bool M_Init(MUSIC_BACKEND *backend);
 static const char *M_Describe(const MUSIC_BACKEND *backend);
 static int32_t M_Play(const MUSIC_BACKEND *backend, int32_t track_id);
+static void M_Shutdown(MUSIC_BACKEND *backend);
 
 static bool M_Parse(BACKEND_DATA *const data)
 {
@@ -155,6 +156,22 @@ static int32_t M_Play(
     return audio_stream_id;
 }
 
+static void M_Shutdown(MUSIC_BACKEND *backend)
+{
+    if (backend == NULL) {
+        return;
+    }
+
+    if (backend->data != NULL) {
+        BACKEND_DATA *const data = backend->data;
+        Memory_FreePointer(&data->path);
+        Memory_FreePointer(&data->description);
+        Memory_FreePointer(&data->tracks);
+    }
+    Memory_FreePointer(&backend->data);
+    Memory_FreePointer(&backend);
+}
+
 MUSIC_BACKEND *Music_Backend_CDAudio_Factory(const char *path)
 {
     ASSERT(path != NULL);
@@ -173,21 +190,6 @@ MUSIC_BACKEND *Music_Backend_CDAudio_Factory(const char *path)
     backend->init = M_Init;
     backend->describe = M_Describe;
     backend->play = M_Play;
+    backend->shutdown = M_Shutdown;
     return backend;
-}
-
-void Music_Backend_CDAudio_Destroy(MUSIC_BACKEND *backend)
-{
-    if (backend == NULL) {
-        return;
-    }
-
-    if (backend->data != NULL) {
-        BACKEND_DATA *const data = backend->data;
-        Memory_FreePointer(&data->path);
-        Memory_FreePointer(&data->description);
-        Memory_FreePointer(&data->tracks);
-    }
-    Memory_FreePointer(&backend->data);
-    Memory_FreePointer(&backend);
 }

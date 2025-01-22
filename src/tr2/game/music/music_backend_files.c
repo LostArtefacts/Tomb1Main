@@ -19,6 +19,7 @@ static char *M_GetTrackFileName(const char *base_dir, int32_t track);
 static const char *M_Describe(const MUSIC_BACKEND *backend);
 static bool M_Init(MUSIC_BACKEND *backend);
 static int32_t M_Play(const MUSIC_BACKEND *backend, int32_t track_id);
+static void M_Shutdown(MUSIC_BACKEND *backend);
 
 static char *M_GetTrackFileName(const char *base_dir, int32_t track)
 {
@@ -62,7 +63,24 @@ static int32_t M_Play(
         return -1;
     }
 
-    return Audio_Stream_CreateFromFile(file_path);
+    const int32_t stream_id = Audio_Stream_CreateFromFile(file_path);
+    Memory_Free(file_path);
+    return stream_id;
+}
+
+static void M_Shutdown(MUSIC_BACKEND *backend)
+{
+    if (backend == NULL) {
+        return;
+    }
+
+    if (backend->data != NULL) {
+        BACKEND_DATA *const data = backend->data;
+        Memory_FreePointer(&data->dir);
+        Memory_FreePointer(&data->description);
+    }
+    Memory_FreePointer(&backend->data);
+    Memory_FreePointer(&backend);
 }
 
 MUSIC_BACKEND *Music_Backend_Files_Factory(const char *path)
@@ -83,20 +101,6 @@ MUSIC_BACKEND *Music_Backend_Files_Factory(const char *path)
     backend->init = M_Init;
     backend->describe = M_Describe;
     backend->play = M_Play;
+    backend->shutdown = M_Shutdown;
     return backend;
-}
-
-void Music_Backend_Files_Destroy(MUSIC_BACKEND *backend)
-{
-    if (backend == NULL) {
-        return;
-    }
-
-    if (backend->data != NULL) {
-        BACKEND_DATA *const data = backend->data;
-        Memory_FreePointer(&data->dir);
-        Memory_FreePointer(&data->description);
-    }
-    Memory_FreePointer(&backend->data);
-    Memory_FreePointer(&backend);
 }

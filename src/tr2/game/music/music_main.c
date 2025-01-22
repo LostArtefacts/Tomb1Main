@@ -33,18 +33,23 @@ static const MUSIC_BACKEND *M_FindBackend(void)
         NULL,
     };
 
-    MUSIC_BACKEND **backend_ptr = all_backends;
-    while (true) {
-        MUSIC_BACKEND *backend = *backend_ptr;
-        if (backend == NULL) {
+    MUSIC_BACKEND *result = NULL;
+    for (MUSIC_BACKEND **backend_ptr = all_backends; *backend_ptr != NULL;
+         backend_ptr++) {
+        if ((*backend_ptr)->init(*backend_ptr)) {
+            result = *backend_ptr;
             break;
         }
-        if (backend->init(backend)) {
-            return backend;
-        }
-        backend_ptr++;
     }
-    return NULL;
+
+    for (MUSIC_BACKEND **backend_ptr = all_backends; *backend_ptr != NULL;
+         backend_ptr++) {
+        if (*backend_ptr != result) {
+            (*backend_ptr)->shutdown(*backend_ptr);
+        }
+    }
+
+    return result;
 }
 
 static void M_StopActiveStream(void)
