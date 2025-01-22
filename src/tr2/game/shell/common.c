@@ -59,7 +59,6 @@ static bool M_CreateGameWindow(void);
 
 static void M_LoadConfig(void);
 static void M_HandleConfigChange(const EVENT *event, void *data);
-static void M_DisplayLegal(void);
 
 static struct {
     bool is_fullscreen;
@@ -321,19 +320,6 @@ static void M_HandleConfigChange(const EVENT *const event, void *const data)
     }
 }
 
-static void M_DisplayLegal(void)
-{
-    PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
-        .file_name = "data/legal.pcx",
-        .display_time = 6.0,
-        .fade_in_time = 1.0,
-        .fade_out_time = 1.0 / 3.0,
-        .display_time_includes_fades = true,
-    });
-    PhaseExecutor_Run(phase);
-    Phase_Picture_Destroy(phase);
-}
-
 // TODO: refactor the hell out of me
 void Shell_Main(void)
 {
@@ -375,7 +361,6 @@ void Shell_Main(void)
     S_FrontEndCheck();
 
     GameBuf_Init(GAMEBUF_MEM_CAP);
-    M_DisplayLegal();
 
     const bool is_frontend_fail = GF_DoFrontendSequence();
     if (Shell_IsExiting()) {

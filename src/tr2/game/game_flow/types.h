@@ -40,6 +40,11 @@ typedef struct {
 
 // Concrete events data
 
+typedef struct {
+    char *path;
+    float duration;
+} GFS_PICTURE_DATA;
+
 typedef enum {
     GF_INV_REGULAR,
     GF_INV_SECRET,

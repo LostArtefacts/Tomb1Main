@@ -32,6 +32,9 @@ static GAME_FLOW_COMMAND M_LoadCommand(
 static int32_t M_HandleIntEvent(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
     void *user_arg);
+static int32_t M_HandlePictureEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
 static int32_t M_HandleAddItemEvent(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
     void *user_arg);
@@ -92,6 +95,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_DISABLE_FLOOR,       M_HandleIntEvent, "height" },
 
     // Special cases with custom handlers
+    { GFS_PICTURE,             M_HandlePictureEvent, NULL },
     { GFS_ADD_ITEM,            M_HandleAddItemEvent, NULL },
     { GFS_ADD_SECRET_REWARD,   M_HandleAddItemEvent, NULL },
 
@@ -134,6 +138,25 @@ static int32_t M_HandleIntEvent(
             (void *)(intptr_t)JSON_ObjectGetInt(event_obj, user_arg, -1);
     }
     return 0;
+}
+
+static int32_t M_HandlePictureEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    const char *const path = JSON_ObjectGetString(event_obj, "path", NULL);
+    if (path == NULL) {
+        LOG_ERROR("Missing picture path");
+        return -1;
+    }
+    if (event != NULL) {
+        GFS_PICTURE_DATA *const event_data = extra_data;
+        event_data->duration = JSON_ObjectGetDouble(event_obj, "duration", 6.0);
+        event_data->path = (char *)extra_data + sizeof(GFS_PICTURE_DATA);
+        memcpy(event_data->path, path, strlen(path) + 1);
+        event->data = event_data;
+    }
+    return sizeof(GFS_PICTURE_DATA) + strlen(path) + 1;
 }
 
 static int32_t M_HandleAddItemEvent(

@@ -108,13 +108,25 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     for (int32_t i = 0; i < sequence->length; i++) {
         const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
         LOG_DEBUG(
-            "event type=%s data=0x%x",
+            "event type=%s(%d) data=0x%x",
             ENUM_MAP_TO_STRING(GAME_FLOW_SEQUENCE_EVENT_TYPE, event->type),
-            event->data);
+            event->type, event->data);
 
         switch (event->type) {
-        case GFS_PICTURE:
+        case GFS_PICTURE: {
+            const GFS_PICTURE_DATA *const data =
+                (GFS_PICTURE_DATA *)event->data;
+            PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
+                .file_name = data->path,
+                .display_time = data->duration,
+                .fade_in_time = 1.0,
+                .fade_out_time = 1.0 / 3.0,
+                .display_time_includes_fades = true,
+            });
+            PhaseExecutor_Run(phase);
+            Phase_Picture_Destroy(phase);
             break;
+        }
 
         case GFS_PLAY_LEVEL: {
             const int16_t level_num = (int16_t)(intptr_t)event->data;

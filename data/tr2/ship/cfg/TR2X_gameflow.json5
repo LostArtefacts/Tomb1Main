@@ -25,6 +25,7 @@
     "title": {
         "path": "data/title.tr2",
         "sequence": [
+            {"type": "display_picture", "path": "data/legal.pcx"},
             {"type": "play_fmv", "fmv_num": 0},
             {"type": "play_fmv", "fmv_num": 1},
         ],
