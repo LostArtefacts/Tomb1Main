@@ -77,7 +77,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format off
     // Events without arguments
     { GFS_ENABLE_SUNSET,       NULL, NULL },
-    { GFS_ENABLE_DEADLY_WATER, NULL, NULL },
     { GFS_REMOVE_WEAPONS,      NULL, NULL },
     { GFS_REMOVE_AMMO,         NULL, NULL },
     { GFS_LEVEL_COMPLETE,      NULL, NULL },

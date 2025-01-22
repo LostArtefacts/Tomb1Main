@@ -90,7 +90,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     const GAME_FLOW_SEQUENCE *sequence, GAME_FLOW_LEVEL_TYPE type)
 {
     g_GF_NoFloor = 0;
-    g_GF_DeadlyWater = false;
     g_GF_SunsetEnabled = false;
     g_GF_LaraStartAnim = 0;
     g_GF_RemoveAmmo = false;
@@ -233,12 +232,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFS_ENABLE_SUNSET:
             if (type != GFL_STORY && type != GFL_MID_STORY) {
                 g_GF_SunsetEnabled = true;
-            }
-            break;
-
-        case GFS_ENABLE_DEADLY_WATER:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
-                g_GF_DeadlyWater = true;
             }
             break;
 

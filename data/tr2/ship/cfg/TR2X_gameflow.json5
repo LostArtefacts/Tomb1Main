@@ -243,7 +243,6 @@
             "path": "data/icecave.tr2",
             "sequence": [
                 {"type": "set_music_track", "music_track": 31},
-                {"type": "enable_deadly_water"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 4},
                 {"type": "play_level", "level_num": 14},
                 {"type": "level_complete"},

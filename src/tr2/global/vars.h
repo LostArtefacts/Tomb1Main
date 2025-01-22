@@ -131,7 +131,6 @@ extern int16_t g_FinalBossItem[5];
 extern REQUEST_INFO g_LoadGameRequester;
 extern REQUEST_INFO g_SaveGameRequester;
 
-extern bool g_GF_DeadlyWater;
 extern bool g_GF_SunsetEnabled;
 extern bool g_GF_RemoveAmmo;
 extern bool g_GF_RemoveWeapons;

@@ -323,7 +323,6 @@ REQUEST_INFO g_SaveGameRequester = {
     .render_height = 0,
 };
 
-bool g_GF_DeadlyWater = false;
 bool g_GF_RemoveAmmo = false;
 bool g_GF_RemoveWeapons = false;
 bool g_GF_SunsetEnabled = false;
