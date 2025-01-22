@@ -351,7 +351,7 @@ void Shell_Main(void)
     Viewport_Reset();
     Render_Reset(RENDER_RESET_PARAMS);
 
-    if (!GF_N_Load(m_CurrentGameFlowPath)) {
+    if (!GF_Load(m_CurrentGameFlowPath)) {
         Shell_ExitSystem("Could not load the new script file.");
         return;
     }

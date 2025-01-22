@@ -477,9 +477,9 @@ static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
     }
 }
 
-bool GF_N_Load(const char *const path)
+bool GF_Load(const char *const path)
 {
-    GF_N_Shutdown();
+    GF_Shutdown();
 
     bool result = true;
     JSON_VALUE *root = NULL;
@@ -520,7 +520,7 @@ end:
     }
 
     if (!result) {
-        GF_N_Shutdown();
+        GF_Shutdown();
     }
 
     Memory_FreePointer(&script_data);
@@ -576,7 +576,7 @@ static void M_FreeFMVs(GAME_FLOW *const gf)
     gf->fmv_count = 0;
 }
 
-void GF_N_Shutdown(void)
+void GF_Shutdown(void)
 {
     GAME_FLOW *const gf = &g_GameFlow;
 
