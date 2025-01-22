@@ -812,7 +812,7 @@ static void M_MarkWaterEdgeVertices(void)
 static size_t M_CalculateMaxVertices(void)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    size_t max_vertices = 0;
+    int32_t max_vertices = 0;
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
         const OBJECT *const object = Object_GetObject(i);
         if (!object->loaded) {
