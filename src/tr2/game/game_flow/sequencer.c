@@ -116,10 +116,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 if (cutscene_num < 0 || cutscene_num >= GF_GetCutsceneCount()) {
                     LOG_ERROR("Invalid cutscene number: %d", cutscene_num);
                 }
-                PHASE *const cutscene_phase =
-                    Phase_Cutscene_Create(cutscene_num);
-                gf_cmd = PhaseExecutor_Run(cutscene_phase);
-                Phase_Cutscene_Destroy(cutscene_phase);
+                gf_cmd = GF_PlayCutscene(cutscene_num);
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;

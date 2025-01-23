@@ -412,14 +412,6 @@ GAME_FLOW_COMMAND GF_PlayDemo(const int32_t level_num)
     return gf_cmd;
 }
 
-GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t level_num)
-{
-    PHASE *const phase = Phase_Cutscene_Create(level_num);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Cutscene_Destroy(phase);
-    return gf_cmd;
-}
-
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
 {
     const int32_t level_num = Demo_ChooseLevel(demo_num);

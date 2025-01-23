@@ -16,4 +16,3 @@ GAME_FLOW_COMMAND GF_LoadLevel(
 GAME_FLOW_COMMAND GF_PlayLevel(
     int32_t demo_num, GAME_FLOW_LEVEL_TYPE level_type);
 GAME_FLOW_COMMAND GF_PlayDemo(int32_t demo_num);
-GAME_FLOW_COMMAND GF_PlayCutscene(int32_t level_num);

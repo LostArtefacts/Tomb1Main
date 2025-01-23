@@ -38,3 +38,11 @@ GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
     }
     return GF_ShowInventory(INV_KEYS_MODE);
 }
+
+GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t cutscene_num)
+{
+    PHASE *const cutscene_phase = Phase_Cutscene_Create(cutscene_num);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(cutscene_phase);
+    Phase_Cutscene_Destroy(cutscene_phase);
+    return gf_cmd;
+}

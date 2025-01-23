@@ -366,10 +366,22 @@
     ],
 
     "cutscenes": [
-        {"path": "data/cut1.tr2"},
-        {"path": "data/cut2.tr2"},
-        {"path": "data/cut3.tr2"},
-        {"path": "data/cut4.tr2"},
+        {
+            "path": "data/cut1.tr2",
+            "sequence": [{"type": "play_level"}],
+        },
+        {
+            "path": "data/cut2.tr2",
+            "sequence": [{"type": "play_level"}],
+        },
+        {
+            "path": "data/cut3.tr2",
+            "sequence": [{"type": "play_level"}],
+        },
+        {
+            "path": "data/cut4.tr2",
+            "sequence": [{"type": "play_level"}],
+        },
     ],
 
     "fmvs": [

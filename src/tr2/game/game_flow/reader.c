@@ -55,18 +55,13 @@ static void M_LoadLevel(
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
 static bool M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
+static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadFMV(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *level);
 static bool M_LoadFMVs(JSON_OBJECT *obj, GAME_FLOW *gf);
-
-static void M_LoadCutscene(
-    JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_CUTSCENE *level);
-static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
-
-static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
-
-static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format off
@@ -447,22 +442,11 @@ static bool M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         &gf->fmv_count, (void **)&gf->fmvs);
 }
 
-static void M_LoadCutscene(
-    JSON_OBJECT *const obj, const GAME_FLOW *const gf,
-    GAME_FLOW_CUTSCENE *const cutscene)
-{
-    const char *const path = JSON_ObjectGetString(obj, "path", NULL);
-    if (path == NULL) {
-        Shell_ExitSystemFmt("Missing cutscene path");
-    }
-    cutscene->path = Memory_DupStr(path);
-}
-
 static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
     return M_LoadArray(
-        obj, "cutscenes", sizeof(GAME_FLOW_CUTSCENE),
-        (M_LOAD_ARRAY_FUNC)M_LoadCutscene, gf, &gf->cutscene_count,
+        obj, "cutscenes", sizeof(GAME_FLOW_LEVEL),
+        (M_LOAD_ARRAY_FUNC)M_LoadLevel, gf, &gf->cutscene_count,
         (void **)&gf->cutscenes);
 }
 

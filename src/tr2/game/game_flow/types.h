@@ -51,10 +51,6 @@ typedef struct {
 
 typedef struct {
     const char *path;
-} GAME_FLOW_CUTSCENE;
-
-typedef struct {
-    const char *path;
     char *title;
     GAME_FLOW_SEQUENCE sequence;
     INJECTION_DATA injections;
@@ -72,7 +68,7 @@ typedef struct {
     // cutscenes
     struct {
         int32_t cutscene_count;
-        GAME_FLOW_CUTSCENE *cutscenes;
+        GAME_FLOW_LEVEL *cutscenes;
     };
 
     // demos
