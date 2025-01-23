@@ -282,6 +282,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     g_PhdTop = r->bound_top;
     g_PhdBottom = r->bound_bottom;
 
+    Output_LightRoom(r);
     Output_DrawRoom(&r->mesh);
 
     for (int i = r->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
@@ -304,7 +305,7 @@ void Room_DrawSingleRoom(int16_t room_num)
         Matrix_RotY(mesh->rot.y);
         int32_t clip = Output_GetObjectBounds(&info->draw_bounds);
         if (clip != 0) {
-            Output_CalculateStaticLight(mesh->shade.value_1);
+            Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, r);
             Object_DrawMesh(info->mesh_idx, clip, false);
         }
         Matrix_Pop();

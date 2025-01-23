@@ -114,6 +114,8 @@ GAME_FLOW_COMMAND Cutscene_Control(void)
         }
     }
 
+    Output_ResetDynamicLights();
+
     Item_Control();
     Effect_Control();
     Lara_Hair_Control();

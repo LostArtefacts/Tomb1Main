@@ -310,6 +310,8 @@ GAME_FLOW_COMMAND Demo_Control(void)
 
     Game_ProcessInput();
 
+    Output_ResetDynamicLights();
+
     Item_Control();
     Effect_Control();
 

@@ -339,6 +339,8 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
     } else if (g_InputDB.toggle_photo_mode) {
         return GF_EnterPhotoMode();
     } else {
+        Output_ResetDynamicLights();
+
         Item_Control();
         Effect_Control();
 
