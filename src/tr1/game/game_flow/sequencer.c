@@ -80,23 +80,20 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_PLAY_LEVEL:
             if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
                 if (level_type != GFL_SAVED) {
-                    command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
+                    command = GF_RunCutscene((int32_t)(intptr_t)event->data);
                     if (command.action != GF_NOOP
                         && command.action != GF_LEVEL_COMPLETE) {
                         return command;
                     }
                 }
             } else if (level_type == GFL_DEMO) {
-                PHASE *const phase = Phase_Demo_Create(level_num);
-                const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-                Phase_Demo_Destroy(phase);
-                return gf_cmd;
+                return GF_RunDemo(level_num);
             } else {
                 if (level_type != GFL_SAVED
                     && level_num != g_GameFlow.first_level_num) {
                     Lara_RevertToPistolsIfNeeded();
                 }
-                command = GF_PlayLevel(level_num, level_type);
+                command = GF_RunGame(level_num, level_type);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
@@ -309,7 +306,7 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         case GFS_PLAY_LEVEL: {
             const int32_t level_num = (int32_t)(intptr_t)event->data;
             if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
-                command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
+                command = GF_RunCutscene((int32_t)(intptr_t)event->data);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
@@ -393,23 +390,6 @@ GAME_FLOW_COMMAND GF_LoadLevel(
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-}
-
-GAME_FLOW_COMMAND GF_PlayLevel(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
-{
-    PHASE *const phase = Phase_Game_Create(level_num, level_type);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Game_Destroy(phase);
-    return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_PlayDemo(const int32_t level_num)
-{
-    PHASE *const phase = Phase_Demo_Create(level_num);
-    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Demo_Destroy(phase);
-    return gf_cmd;
 }
 
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)

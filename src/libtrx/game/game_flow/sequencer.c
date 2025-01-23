@@ -39,10 +39,27 @@ GAME_FLOW_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
     return GF_ShowInventory(INV_KEYS_MODE);
 }
 
-GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t cutscene_num)
+GAME_FLOW_COMMAND GF_RunDemo(const int32_t demo_num)
+{
+    PHASE *const demo_phase = Phase_Demo_Create(demo_num);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
+    Phase_Demo_Destroy(demo_phase);
+    return gf_cmd;
+}
+
+GAME_FLOW_COMMAND GF_RunCutscene(const int32_t cutscene_num)
 {
     PHASE *const cutscene_phase = Phase_Cutscene_Create(cutscene_num);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(cutscene_phase);
     Phase_Cutscene_Destroy(cutscene_phase);
+    return gf_cmd;
+}
+
+GAME_FLOW_COMMAND GF_RunGame(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    PHASE *const phase = Phase_Game_Create(level_num, level_type);
+    const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Game_Destroy(phase);
     return gf_cmd;
 }

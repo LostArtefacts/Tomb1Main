@@ -22,20 +22,10 @@ GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
     return GF_InterpretSequence(&g_GameFlow.demos[demo_num].sequence, GFL_DEMO);
 }
 
-GAME_FLOW_COMMAND GF_StartGame(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
 {
-    if (level_type == GFL_DEMO) {
-        PHASE *const demo_phase = Phase_Demo_Create(level_num);
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(demo_phase);
-        Phase_Demo_Destroy(demo_phase);
-        return gf_cmd;
-    } else {
-        PHASE *const phase = Phase_Game_Create(level_num, level_type);
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-        Phase_Game_Destroy(phase);
-        return gf_cmd;
-    }
+    return GF_InterpretSequence(
+        &g_GameFlow.cutscenes[cutscene_num].sequence, GFL_CUTSCENE);
 }
 
 bool GF_DoFrontendSequence(void)
@@ -47,6 +37,43 @@ bool GF_DoFrontendSequence(void)
     const GAME_FLOW_COMMAND gf_cmd =
         GF_InterpretSequence(&g_GameFlow.title_level->sequence, GFL_NORMAL);
     return gf_cmd.action == GF_EXIT_GAME;
+}
+
+GAME_FLOW_COMMAND GF_DoLevelSequence(
+    const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
+{
+    GameStringTable_Apply(start_level);
+    int32_t current_level = start_level;
+    while (true) {
+        if (current_level > GF_GetLevelCount() - 1) {
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+
+        LOG_DEBUG("running sequence for level=%d type=%d", current_level, type);
+        const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
+            &g_GameFlow.levels[current_level].sequence, type);
+        LOG_DEBUG("sequence finished");
+        current_level++;
+
+        if (g_GameFlow.single_level >= 0) {
+            return gf_cmd;
+        }
+        if (gf_cmd.action != GF_LEVEL_COMPLETE) {
+            return gf_cmd;
+        }
+    }
+}
+
+GAME_FLOW_COMMAND GF_RunLevel(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    if (level_type == GFL_DEMO) {
+        return GF_RunDemo(level_num);
+    } else if (level_type == GFL_CUTSCENE) {
+        return GF_RunCutscene(level_num);
+    } else {
+        return GF_RunGame(level_num, level_type);
+    }
 }
 
 GAME_FLOW_COMMAND GF_InterpretSequence(
@@ -95,7 +122,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 if (type == GFL_MID_STORY) {
                     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
                 }
-                gf_cmd = GF_StartGame(level_num, type);
+                gf_cmd = GF_RunLevel(level_num, type);
                 if (type == GFL_SAVED) {
                     type = GFL_NORMAL;
                 }
@@ -109,10 +136,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFS_PLAY_CUTSCENE: {
             const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
             if (type != GFL_SAVED) {
-                if (cutscene_num < 0 || cutscene_num >= GF_GetCutsceneCount()) {
-                    LOG_ERROR("Invalid cutscene number: %d", cutscene_num);
-                }
-                gf_cmd = GF_PlayCutscene(cutscene_num);
+                gf_cmd = GF_DoCutsceneSequence(cutscene_num);
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;
@@ -235,29 +259,4 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_DoLevelSequence(
-    const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
-{
-    GameStringTable_Apply(start_level);
-    int32_t current_level = start_level;
-    while (true) {
-        if (current_level > GF_GetLevelCount() - 1) {
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
-
-        LOG_DEBUG("running sequence for level=%d type=%d", current_level, type);
-        const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
-            &g_GameFlow.levels[current_level].sequence, type);
-        LOG_DEBUG("sequence finished");
-        current_level++;
-
-        if (g_GameFlow.single_level >= 0) {
-            return gf_cmd;
-        }
-        if (gf_cmd.action != GF_LEVEL_COMPLETE) {
-            return gf_cmd;
-        }
-    }
 }
