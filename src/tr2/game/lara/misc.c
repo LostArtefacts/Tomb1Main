@@ -952,7 +952,7 @@ void Lara_GetJointAbsPosition_I(
 
     if (g_Lara.gun_type == LGT_FLARE) {
         Matrix_Interpolate();
-        Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
+        Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
         if (g_Lara.flare_control_left) {
             const LARA_ARM *const arm = &g_Lara.left_arm;
             const ANIM *const anim = Anim_GetAnim(arm->anim_num);
