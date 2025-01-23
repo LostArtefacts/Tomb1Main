@@ -35,8 +35,8 @@ typedef struct {
 
 typedef struct {
     GAME_OBJECT_ID object_id;
-    int quantity;
-} GAME_FLOW_GIVE_ITEM_DATA;
+    int32_t quantity;
+} GAME_FLOW_ADD_ITEM_DATA;
 
 typedef struct {
     int32_t enemy_num;

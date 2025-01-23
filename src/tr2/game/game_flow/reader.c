@@ -88,7 +88,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_DISABLE_FLOOR,       M_HandleIntEvent, "height" },
 
     // Special cases with custom handlers
-    { GFS_PICTURE,             M_HandlePictureEvent, NULL },
+    { GFS_DISPLAY_PICTURE,     M_HandlePictureEvent, NULL },
     { GFS_ADD_ITEM,            M_HandleAddItemEvent, NULL },
     { GFS_ADD_SECRET_REWARD,   M_HandleAddItemEvent, NULL },
 
@@ -143,13 +143,14 @@ static int32_t M_HandlePictureEvent(
         return -1;
     }
     if (event != NULL) {
-        GFS_PICTURE_DATA *const event_data = extra_data;
+        GFS_DISPLAY_PICTURE_DATA *const event_data = extra_data;
         event_data->duration = JSON_ObjectGetDouble(event_obj, "duration", 6.0);
-        event_data->path = (char *)extra_data + sizeof(GFS_PICTURE_DATA);
+        event_data->path =
+            (char *)extra_data + sizeof(GFS_DISPLAY_PICTURE_DATA);
         memcpy(event_data->path, path, strlen(path) + 1);
         event->data = event_data;
     }
-    return sizeof(GFS_PICTURE_DATA) + strlen(path) + 1;
+    return sizeof(GFS_DISPLAY_PICTURE_DATA) + strlen(path) + 1;
 }
 
 static int32_t M_HandleAddItemEvent(

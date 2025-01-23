@@ -1,30 +1,12 @@
 #pragma once
 
+#include "./enum.h"
 #include "game/music.h"
 #include "global/types.h"
 
 // ----------------------------------------------------------------------------
 // Sequencer structures
 // ----------------------------------------------------------------------------
-
-typedef enum {
-    GFS_PICTURE,
-    GFS_PLAY_FMV,
-    GFS_PLAY_LEVEL,
-    GFS_PLAY_CUTSCENE,
-    GFS_LEVEL_COMPLETE,
-    GFS_GAME_COMPLETE,
-    GFS_SET_MUSIC_TRACK,
-    GFS_SET_CAMERA_ANGLE,
-    GFS_SET_START_ANIM,
-    GFS_DISABLE_FLOOR,
-    GFS_ENABLE_SUNSET,
-    GFS_REMOVE_WEAPONS,
-    GFS_REMOVE_AMMO,
-    GFS_SET_NUM_SECRETS,
-    GFS_ADD_ITEM,
-    GFS_ADD_SECRET_REWARD,
-} GAME_FLOW_SEQUENCE_EVENT_TYPE;
 
 typedef struct {
     GAME_FLOW_SEQUENCE_EVENT_TYPE type;
@@ -41,7 +23,7 @@ typedef struct {
 typedef struct {
     char *path;
     float duration;
-} GFS_PICTURE_DATA;
+} GFS_DISPLAY_PICTURE_DATA;
 
 typedef enum {
     GF_INV_REGULAR,

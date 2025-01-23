@@ -37,8 +37,8 @@
             ],
             "sequence": [
                 {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
-                {"type": "start_game"},
-                {"type": "loop_game"},
+                {"type": "load_level"},
+                {"type": "play_level"},
                 {"type": "level_stats", "level_id": 0},
                 {"type": "exit_to_level", "level_id": 1},
             ],

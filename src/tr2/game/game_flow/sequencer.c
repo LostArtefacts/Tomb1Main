@@ -75,9 +75,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             event->type, event->data);
 
         switch (event->type) {
-        case GFS_PICTURE: {
-            const GFS_PICTURE_DATA *const data =
-                (GFS_PICTURE_DATA *)event->data;
+        case GFS_DISPLAY_PICTURE: {
+            const GFS_DISPLAY_PICTURE_DATA *const data =
+                (GFS_DISPLAY_PICTURE_DATA *)event->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
                 .display_time = data->duration,

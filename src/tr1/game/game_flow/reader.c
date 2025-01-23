@@ -160,8 +160,8 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
         event->type = ENUM_MAP_GET(GAME_FLOW_SEQUENCE_EVENT_TYPE, type_str, -1);
 
         switch (event->type) {
-        case GFS_START_GAME:
-        case GFS_LOOP_GAME:
+        case GFS_LOAD_LEVEL:
+        case GFS_PLAY_LEVEL:
             event->data = (void *)(intptr_t)level_num;
             break;
 
@@ -254,7 +254,7 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
             break;
         }
 
-        case GFS_SET_CAM_ANGLE: {
+        case GFS_SET_CAMERA_ANGLE: {
             int tmp = JSON_ObjectGetInt(jseq_obj, "value", JSON_INVALID_NUMBER);
             if (tmp == JSON_INVALID_NUMBER) {
                 LOG_ERROR(
@@ -267,29 +267,29 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
         }
 
         case GFS_FLIP_MAP:
-        case GFS_REMOVE_GUNS:
+        case GFS_REMOVE_WEAPONS:
         case GFS_REMOVE_SCIONS:
         case GFS_REMOVE_AMMO:
         case GFS_REMOVE_MEDIPACKS:
             break;
 
-        case GFS_GIVE_ITEM: {
-            GAME_FLOW_GIVE_ITEM_DATA *give_item_data =
-                Memory_Alloc(sizeof(GAME_FLOW_GIVE_ITEM_DATA));
+        case GFS_ADD_ITEM: {
+            GAME_FLOW_ADD_ITEM_DATA *add_item_data =
+                Memory_Alloc(sizeof(GAME_FLOW_ADD_ITEM_DATA));
 
-            give_item_data->object_id =
+            add_item_data->object_id =
                 JSON_ObjectGetInt(jseq_obj, "object_id", JSON_INVALID_NUMBER);
-            if (give_item_data->object_id == JSON_INVALID_NUMBER) {
+            if (add_item_data->object_id == JSON_INVALID_NUMBER) {
                 LOG_ERROR(
                     "level %d, sequence %s: 'object_id' must be a number",
                     level_num, type_str);
                 return false;
             }
 
-            give_item_data->quantity =
+            add_item_data->quantity =
                 JSON_ObjectGetInt(jseq_obj, "quantity", 1);
 
-            event->data = give_item_data;
+            event->data = add_item_data;
             break;
         }
 

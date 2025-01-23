@@ -55,7 +55,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
 
         switch (event->type) {
-        case GFS_START_GAME: {
+        case GFS_LOAD_LEVEL: {
             const int32_t num = (int32_t)(intptr_t)event->data;
             if (level_type == GFL_DEMO) {
                 break;
@@ -76,7 +76,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
         }
 
-        case GFS_LOOP_GAME:
+        case GFS_PLAY_LEVEL:
             if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
                 if (level_type != GFL_SAVED) {
                     command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
@@ -196,7 +196,7 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
-        case GFS_SET_CAM_ANGLE:
+        case GFS_SET_CAMERA_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;
         case GFS_FLIP_MAP:
@@ -206,16 +206,16 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             Music_Play((int32_t)(intptr_t)event->data);
             break;
 
-        case GFS_GIVE_ITEM:
+        case GFS_ADD_ITEM:
             if (level_type != GFL_SAVED) {
-                const GAME_FLOW_GIVE_ITEM_DATA *give_item_data =
-                    (const GAME_FLOW_GIVE_ITEM_DATA *)event->data;
+                const GAME_FLOW_ADD_ITEM_DATA *add_item_data =
+                    (const GAME_FLOW_ADD_ITEM_DATA *)event->data;
                 Inv_AddItemNTimes(
-                    give_item_data->object_id, give_item_data->quantity);
+                    add_item_data->object_id, add_item_data->quantity);
             }
             break;
 
-        case GFS_REMOVE_GUNS:
+        case GFS_REMOVE_WEAPONS:
             if (level_type != GFL_SAVED
                 && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
                 g_GameInfo.remove_guns = true;
@@ -281,8 +281,8 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         case GFS_TOTAL_STATS:
         case GFS_LOADING_SCREEN:
         case GFS_DISPLAY_PICTURE:
-        case GFS_GIVE_ITEM:
-        case GFS_REMOVE_GUNS:
+        case GFS_ADD_ITEM:
+        case GFS_REMOVE_WEAPONS:
         case GFS_REMOVE_SCIONS:
         case GFS_REMOVE_AMMO:
         case GFS_REMOVE_MEDIPACKS:
@@ -290,7 +290,7 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         case GFS_LEGACY:
             break;
 
-        case GFS_START_GAME: {
+        case GFS_LOAD_LEVEL: {
             const int32_t level_num = (int32_t)(intptr_t)event->data;
             if (level_num == savegame_level) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
@@ -305,7 +305,7 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
             break;
         }
 
-        case GFS_LOOP_GAME: {
+        case GFS_PLAY_LEVEL: {
             const int32_t level_num = (int32_t)(intptr_t)event->data;
             if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
                 command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
@@ -339,7 +339,7 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
                 .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
-        case GFS_SET_CAM_ANGLE:
+        case GFS_SET_CAMERA_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
             break;
         case GFS_FLIP_MAP:

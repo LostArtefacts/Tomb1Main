@@ -22,19 +22,19 @@ static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
         }
         case GFS_PLAY_FMV:
         case GFS_MESH_SWAP:
-        case GFS_GIVE_ITEM:
+        case GFS_ADD_ITEM:
             Memory_FreePointer(&event->data);
             break;
-        case GFS_START_GAME:
-        case GFS_LOOP_GAME:
+        case GFS_LOAD_LEVEL:
+        case GFS_PLAY_LEVEL:
         case GFS_LEVEL_STATS:
         case GFS_EXIT_TO_TITLE:
         case GFS_EXIT_TO_LEVEL:
         case GFS_EXIT_TO_CINE:
-        case GFS_SET_CAM_ANGLE:
+        case GFS_SET_CAMERA_ANGLE:
         case GFS_FLIP_MAP:
         case GFS_PLAY_SYNCED_AUDIO:
-        case GFS_REMOVE_GUNS:
+        case GFS_REMOVE_WEAPONS:
         case GFS_REMOVE_SCIONS:
         case GFS_REMOVE_AMMO:
         case GFS_REMOVE_MEDIPACKS:

@@ -41,8 +41,8 @@
                 "data/injections/egypt_textures.bin",
             ],
             "sequence": [
-                {"type": "start_game"},
-                {"type": "loop_game"},
+                {"type": "load_level"},
+                {"type": "play_level"},
                 {"type": "level_stats", "level_id": 0},
                 {"type": "exit_to_level", "level_id": 1},
             ],
@@ -63,8 +63,8 @@
                 "data/injections/cat_textures.bin",
             ],
             "sequence": [
-                {"type": "start_game"},
-                {"type": "loop_game"},
+                {"type": "load_level"},
+                {"type": "play_level"},
                 {"type": "level_stats", "level_id": 1},
                 {"type": "exit_to_level", "level_id": 2},
             ],
@@ -83,8 +83,8 @@
                 "data/injections/stronghold_textures.bin",
             ],
             "sequence": [
-                {"type": "start_game"},
-                {"type": "loop_game"},
+                {"type": "load_level"},
+                {"type": "play_level"},
                 {"type": "level_stats", "level_id": 2},
                 {"type": "exit_to_level", "level_id": 3},
             ],
@@ -102,8 +102,8 @@
                 "data/injections/hive_textures.bin",
             ],
             "sequence": [
-                {"type": "start_game"},
-                {"type": "loop_game"},
+                {"type": "load_level"},
+                {"type": "play_level"},
                 {"type": "level_stats", "level_id": 3},
                 {"type": "play_synced_audio", "audio_id": 19},
                 {"type": "display_picture", "picture_path": "data/images/end.webp", "display_time": 7.5},
