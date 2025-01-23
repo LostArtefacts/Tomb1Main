@@ -438,6 +438,13 @@ static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
         GAME_FLOW_LEVEL *const level = &gf->cutscenes[i];
         level->num = i;
         level->type = GFL_CUTSCENE;
+        for (int32_t j = 0; j < level->sequence.length; j++) {
+            GAME_FLOW_SEQUENCE_EVENT *const event = &level->sequence.events[j];
+            if (event->type == GFS_PLAY_LEVEL
+                && (int32_t)(intptr_t)event->data == -1) {
+                event->data = (void *)(intptr_t)i;
+            }
+        }
     }
     return result;
 }
@@ -451,6 +458,13 @@ static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
         GAME_FLOW_LEVEL *const level = &gf->demos[i];
         level->num = i;
         level->type = GFL_DEMO;
+        for (int32_t j = 0; j < level->sequence.length; j++) {
+            GAME_FLOW_SEQUENCE_EVENT *const event = &level->sequence.events[j];
+            if (event->type == GFS_PLAY_LEVEL
+                && (int32_t)(intptr_t)event->data == -1) {
+                event->data = (void *)(intptr_t)i;
+            }
+        }
     }
     return result;
 }

@@ -131,10 +131,6 @@ void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 
     M_StopActiveStream();
 
-    if (track_id == MX_INACTIVE) {
-        goto finish;
-    }
-
     if (m_Backend == NULL) {
         LOG_DEBUG(
             "Not playing track %d because no backend is available", track_id);

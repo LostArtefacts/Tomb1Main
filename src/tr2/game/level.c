@@ -32,6 +32,8 @@
 static int16_t *m_AnimFrameData = NULL;
 static int32_t m_AnimFrameDataLength = 0;
 
+static GAME_FLOW_LEVEL *M_GetFromNumberAndType(
+    int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
@@ -54,6 +56,41 @@ static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
 static void M_CompleteSetup(void);
+
+GAME_FLOW_LEVEL *M_GetFromNumberAndType(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    switch (level_type) {
+    case GFL_TITLE:
+        return g_GameFlow.title_level;
+
+    case GFL_CUTSCENE:
+        if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
+            LOG_ERROR("Invalid cutscene number: %d", level_num);
+            return NULL;
+        }
+        return &g_GameFlow.cutscenes[level_num];
+
+    case GFL_DEMO:
+        if (level_num < 0 || level_num >= GF_GetDemoCount()) {
+            LOG_ERROR("Invalid demo number: %d", level_num);
+            return NULL;
+        }
+        return &g_GameFlow.demos[level_num];
+
+    case GFL_NORMAL:
+    case GFL_SAVED:
+        if (level_num < 0 || level_num >= GF_GetLevelCount()) {
+            LOG_ERROR("Invalid level number: %d", level_num);
+            return NULL;
+        }
+        return &g_GameFlow.levels[level_num];
+
+    default:
+        LOG_ERROR("Invalid level type: %d", level_type);
+        return NULL;
+    }
+}
 
 static void M_LoadTexturePages(VFILE *const file)
 {
@@ -799,21 +836,15 @@ bool Level_Initialise(
     InitialiseGameFlags();
     g_Lara.item_num = NO_ITEM;
 
-    bool result;
-    Level_Unload();
-    if (level_type == GFL_TITLE) {
-        result = Level_Load(g_GameFlow.title_level);
-    } else if (level_type == GFL_CUTSCENE) {
-        if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
-            LOG_ERROR("Invalid cutscene number: %d", level_num);
-            return false;
-        }
-        result = Level_Load(&g_GameFlow.cutscenes[level_num]);
-    } else {
-        result = Level_Load(&g_GameFlow.levels[level_num]);
+    const GAME_FLOW_LEVEL *level =
+        M_GetFromNumberAndType(level_num, level_type);
+    if (level == NULL) {
+        return false;
     }
-    if (!result) {
-        return result;
+
+    Level_Unload();
+    if (!Level_Load(level)) {
+        return false;
     }
 
     if (g_Lara.item_num != NO_ITEM) {
@@ -839,26 +870,7 @@ bool Level_Initialise(
         InitialiseFinalLevel();
     }
 
-    const GAME_FLOW_LEVEL *level = NULL;
-    switch (level_type) {
-    case GFL_TITLE:
-        level = g_GameFlow.title_level;
-        break;
-    case GFL_DEMO:
-        level = &g_GameFlow.levels[level_num];
-        break;
-    case GFL_CUTSCENE:
-        level = &g_GameFlow.cutscenes[level_num];
-        break;
-    case GFL_NORMAL:
-    case GFL_SAVED:
-        level = &g_GameFlow.levels[level_num];
-        break;
-    default:
-        level = NULL;
-        break;
-    }
-    if (level != NULL && level->music_track != MX_INACTIVE) {
+    if (level->music_track != MX_INACTIVE) {
         Music_Play(
             level->music_track,
             level_type == GFL_CUTSCENE ? MPM_ALWAYS : MPM_LOOPED);

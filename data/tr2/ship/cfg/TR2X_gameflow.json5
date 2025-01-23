@@ -323,7 +323,7 @@
             "music_track": -1,
             "sequence": [
                 {"type": "add_secret_reward", "item": "magnums_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 2},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
         },
@@ -335,7 +335,7 @@
             "sequence": [
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
-                {"type": "play_level", "level_num": 8},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -351,7 +351,7 @@
             "sequence": [
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
-                {"type": "play_level", "level_num": 11},
+                {"type": "play_level"},
                 {"type": "level_complete"},
             ],
             "injections": [

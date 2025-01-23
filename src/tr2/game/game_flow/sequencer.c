@@ -91,10 +91,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_PLAY_LEVEL: {
             const int16_t level_num = (int16_t)(intptr_t)event->data;
-            if (level_num < 0 || level_num > GF_GetLevelCount()) {
-                LOG_ERROR("Invalid level number: %d", level_num);
-                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-            } else if (type != GFL_STORY) {
+            if (type != GFL_STORY) {
                 if (type == GFL_MID_STORY) {
                     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
                 }
