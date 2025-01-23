@@ -16,6 +16,7 @@
     | Toggle photo mode UI          | ---         | H            |
 - changed the `/kill` command with no arguments to look for enemies within 5 tiles (#2297)
 - changed the game data to use a separate strings file for text information, removing it from the game flow file
+- changed dynamic lighting for gun flashes and explosions to be optional (#2357)
 - fixed showing inventory ring up/down arrows when uncalled for (#2225)
 - fixed Lara never stepping backwards off a step using her right foot (#1602)
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)

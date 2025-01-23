@@ -100,6 +100,7 @@ game with new enhancements and features.
 - changed the hardware renderer to always use 16-bit textures
 - changed the software renderer to use the picture's palette for the background pictures
 - changed fullscreen behavior to use windowed desktop mode
+- changed dynamic lighting for gun flashes and explosions to be optional
 - fixed fullscreen issues
 - fixed black borders in windowed mode
 - fixed "Failed to create device" when toggling fullscreen

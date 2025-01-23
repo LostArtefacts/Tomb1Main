@@ -5,6 +5,8 @@
 #include "game/output.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
+
 void Explosion_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
@@ -13,12 +15,13 @@ void Explosion_Control(const int16_t effect_num)
     if (effect->counter == 2) {
         effect->frame_num--;
         effect->counter = 0;
-        if (effect->frame_num > obj->mesh_count) {
+        if (g_Config.visuals.enable_gun_lighting
+            && effect->frame_num > obj->mesh_count) {
             Output_AddDynamicLight(effect->pos, 13, 11);
-        } else {
+        } else if (effect->frame_num <= obj->mesh_count) {
             Effect_Kill(effect_num);
         }
-    } else {
+    } else if (g_Config.visuals.enable_gun_lighting) {
         Output_AddDynamicLight(effect->pos, 12, 10);
     }
 }

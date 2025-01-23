@@ -9,6 +9,7 @@
 - added pause screen support to demos
 - added a fade-out effect when exiting the pause screen to the inventory
 - added exit fade-out effects (#2348)
+- added optional dynamic lighting for gun flashes and explosions, similar to TR2+ (#2357)
 - ⚠️ changed the game data to use a separate strings file for text information, removing it from the game flow file
 - changed the sprite limit from 512 to 1024
 - changed demo to be interrupted only by esc or action keys
