@@ -582,13 +582,6 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>loop_cine</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Plays the cinematic loop.</td>
-  </tr>
-  <tr valign="top">
-    <td>
       <code>loop_game</code>
     </td>
     <td colspan="2" align="center">N/A</td>
@@ -856,7 +849,7 @@ game will exit to title.
         {"type": "set_cam_z", "value": 63180},
         {"type": "set_cam_angle", "value": -23312},
         {"type": "play_synced_audio", "audio_id": 23},
-        {"type": "loop_cine"},
+        {"type": "loop_game"},
         {"type": "level_stats", "level_id": 4},
         {"type": "exit_to_level", "level_id": 5},
     ],

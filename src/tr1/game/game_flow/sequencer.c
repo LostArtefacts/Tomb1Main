@@ -77,7 +77,15 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
 
         case GFS_LOOP_GAME:
-            if (level_type == GFL_DEMO) {
+            if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
+                if (level_type != GFL_SAVED) {
+                    command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
+                    if (command.action != GF_NOOP
+                        && command.action != GF_LEVEL_COMPLETE) {
+                        return command;
+                    }
+                }
+            } else if (level_type == GFL_DEMO) {
                 PHASE *const phase = Phase_Demo_Create(level_num);
                 const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
                 Phase_Demo_Destroy(phase);
@@ -88,16 +96,6 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                     Lara_RevertToPistolsIfNeeded();
                 }
                 command = GF_PlayLevel(level_num, level_type);
-                if (command.action != GF_NOOP
-                    && command.action != GF_LEVEL_COMPLETE) {
-                    return command;
-                }
-            }
-            break;
-
-        case GFS_LOOP_CINE:
-            if (level_type != GFL_SAVED) {
-                command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
                     return command;
@@ -279,7 +277,6 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         LOG_INFO("event %d %d", event->type, event->data);
 
         switch (event->type) {
-        case GFS_LOOP_GAME:
         case GFS_LEVEL_STATS:
         case GFS_TOTAL_STATS:
         case GFS_LOADING_SCREEN:
@@ -297,8 +294,8 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
             const int32_t level_num = (int32_t)(intptr_t)event->data;
             if (level_num == savegame_level) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-            }
-            if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
+            } else if (
+                g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
                 command = GF_LoadLevel(level_num, GFL_CUTSCENE);
                 if (command.action != GF_NOOP
                     && command.action != GF_LEVEL_COMPLETE) {
@@ -308,13 +305,17 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
             break;
         }
 
-        case GFS_LOOP_CINE:
-            command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
-            if (command.action != GF_NOOP
-                && command.action != GF_LEVEL_COMPLETE) {
-                return command;
+        case GFS_LOOP_GAME: {
+            const int32_t level_num = (int32_t)(intptr_t)event->data;
+            if (g_GameFlow.levels[level_num].level_type == GFL_CUTSCENE) {
+                command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
+                if (command.action != GF_NOOP
+                    && command.action != GF_LEVEL_COMPLETE) {
+                    return command;
+                }
             }
             break;
+        }
 
         case GFS_PLAY_FMV:
             FMV_Play((char *)event->data);
