@@ -7,7 +7,7 @@
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
 static void M_FreeLevel(GAME_FLOW_LEVEL *level);
-static void M_FreeLevels(GAME_FLOW *gf);
+static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *level_count);
 static void M_FreeDemos(GAME_FLOW *gf);
 static void M_FreeCutscenes(GAME_FLOW *gf);
 static void M_FreeFMVs(GAME_FLOW *gf);
@@ -28,28 +28,15 @@ static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
     Memory_FreePointer(&level->title);
 }
 
-static void M_FreeLevels(GAME_FLOW *const gf)
+static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *const level_count)
 {
-    for (int32_t i = 0; i < gf->level_count; i++) {
-        M_FreeLevel(&gf->levels[i]);
+    if (levels != NULL) {
+        for (int32_t i = 0; i < *level_count; i++) {
+            M_FreeLevel(&(*levels)[i]);
+        }
+        Memory_FreePointer(levels);
     }
-    Memory_FreePointer(&gf->levels);
-    gf->level_count = 0;
-}
-
-static void M_FreeDemos(GAME_FLOW *const gf)
-{
-    Memory_FreePointer(&gf->demos);
-    gf->demo_count = 0;
-}
-
-static void M_FreeCutscenes(GAME_FLOW *const gf)
-{
-    for (int32_t i = 0; i < gf->cutscene_count; i++) {
-        Memory_FreePointer(&gf->cutscenes[i].path);
-    }
-    Memory_FreePointer(&gf->cutscenes);
-    gf->cutscene_count = 0;
+    *level_count = 0;
 }
 
 static void M_FreeFMVs(GAME_FLOW *const gf)
@@ -120,9 +107,9 @@ void GF_Shutdown(void)
     }
     Memory_FreePointer(&gf->injections.data_paths);
 
-    M_FreeLevels(gf);
-    M_FreeDemos(gf);
-    M_FreeCutscenes(gf);
+    M_FreeLevels(&gf->levels, &gf->level_count);
+    M_FreeLevels(&gf->demos, &gf->demo_count);
+    M_FreeLevels(&gf->cutscenes, &gf->cutscene_count);
     M_FreeFMVs(gf);
 
     if (gf->title_level != NULL) {

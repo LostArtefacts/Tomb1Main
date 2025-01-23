@@ -50,10 +50,11 @@ typedef struct {
 } GAME_FLOW_FMV;
 
 typedef struct {
+    int32_t num;
+    GAME_FLOW_LEVEL_TYPE type;
     const char *path;
     char *title;
-    GAME_FLOW_LEVEL_TYPE type;
-    int32_t num;
+
     MUSIC_TRACK_ID music_track;
     GAME_FLOW_SEQUENCE sequence;
     INJECTION_DATA injections;
