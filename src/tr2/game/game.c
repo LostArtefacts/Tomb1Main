@@ -11,6 +11,7 @@
 #include "game/lara/cheat_keys.h"
 #include "game/lara/control.h"
 #include "game/lara/hair.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/overlay.h"

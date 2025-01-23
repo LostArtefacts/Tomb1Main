@@ -1,6 +1,5 @@
 #include "game/demo.h"
 
-#include "decomp/decomp.h"
 #include "game/camera.h"
 #include "game/game.h"
 #include "game/game_flow.h"
@@ -8,6 +7,7 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/overlay.h"
 #include "game/random.h"

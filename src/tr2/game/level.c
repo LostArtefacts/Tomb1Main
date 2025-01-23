@@ -1,13 +1,17 @@
 #include "game/level.h"
 
 #include "decomp/decomp.h"
+#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/effects.h"
 #include "game/game_flow.h"
 #include "game/inject.h"
 #include "game/items.h"
+#include "game/lara/control.h"
+#include "game/lot.h"
 #include "game/objects/setup.h"
 #include "game/output.h"
+#include "game/overlay.h"
 #include "game/render/common.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -23,6 +27,7 @@
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
+#include <libtrx/virtual_file.h>
 
 static int16_t *m_AnimFrameData = NULL;
 static int32_t m_AnimFrameDataLength = 0;
@@ -776,4 +781,80 @@ bool Level_Load(const char *const file_name, const int32_t level_num)
     Benchmark_End(benchmark, NULL);
 
     return true;
+}
+
+bool Level_Initialise(
+    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    g_GameInfo.current_level.num = level_num;
+    g_GameInfo.current_level.type = level_type;
+
+    if (level_type != GFL_TITLE && level_type != GFL_DEMO) {
+        g_GymInvOpenEnabled = false;
+    }
+
+    if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
+        g_CurrentLevel = level_num;
+    }
+    InitialiseGameFlags();
+    g_Lara.item_num = NO_ITEM;
+
+    bool result;
+    Level_Unload();
+    if (level_type == GFL_TITLE) {
+        result = Level_Load(GF_GetTitleLevelPath(), level_num);
+    } else if (level_type == GFL_CUTSCENE) {
+        if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
+            LOG_ERROR("Invalid cutscene number: %d", level_num);
+            return false;
+        }
+        result = Level_Load(GF_GetCutscenePath(level_num), level_num);
+    } else {
+        result = Level_Load(GF_GetLevelPath(level_num), level_num);
+    }
+    if (!result) {
+        return result;
+    }
+
+    if (g_Lara.item_num != NO_ITEM) {
+        Lara_Initialise(level_type);
+    }
+    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
+        || level_type == GFL_DEMO) {
+        GetCarriedItems();
+    }
+
+    Effect_InitialiseArray();
+    LOT_InitialiseArray();
+    Overlay_Reset();
+    g_HealthBarTimer = 100;
+    Sound_StopAll();
+    if (level_type == GFL_SAVED) {
+        ExtractSaveGameInfo();
+    } else if (level_type == GFL_NORMAL) {
+        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_REGULAR);
+    }
+
+    if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {
+        InitialiseFinalLevel();
+    }
+
+    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
+        || level_type == GFL_DEMO) {
+        if (g_GF_MusicTracks[0]) {
+            Music_Play(g_GF_MusicTracks[0], MPM_LOOPED);
+        }
+    }
+    g_IsAssaultTimerActive = false;
+    g_IsAssaultTimerDisplay = false;
+    g_Camera.underwater = 0;
+    return true;
+}
+
+void Level_Unload(void)
+{
+    strcpy(g_LevelFileName, "");
+    memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
+    memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
+    g_ObjectTextureCount = 0;
 }

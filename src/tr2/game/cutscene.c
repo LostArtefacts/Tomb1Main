@@ -6,6 +6,7 @@
 #include "game/game_flow.h"
 #include "game/items.h"
 #include "game/lara/hair.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/output.h"
 #include "game/room.h"

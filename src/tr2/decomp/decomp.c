@@ -1,51 +1,22 @@
 #include "decomp/decomp.h"
 
-#include "decomp/savegame.h"
-#include "decomp/stats.h"
-#include "game/camera.h"
-#include "game/clock.h"
 #include "game/collide.h"
-#include "game/console/common.h"
-#include "game/effects.h"
-#include "game/game.h"
 #include "game/game_flow.h"
-#include "game/input.h"
-#include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
 #include "game/level.h"
-#include "game/lot.h"
-#include "game/music.h"
 #include "game/objects/vars.h"
 #include "game/output.h"
-#include "game/overlay.h"
 #include "game/phase.h"
-#include "game/random.h"
 #include "game/requester.h"
 #include "game/room.h"
-#include "game/shell.h"
-#include "game/sound.h"
-#include "game/text.h"
 #include "game/viewport.h"
-#include "global/const.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
-#include <libtrx/debug.h>
-#include <libtrx/engine/image.h>
-#include <libtrx/filesystem.h>
-#include <libtrx/game/game_buf.h>
 #include <libtrx/game/game_string_table.h>
-#include <libtrx/game/math.h>
-#include <libtrx/game/ui/common.h>
-#include <libtrx/log.h>
-#include <libtrx/memory.h>
 #include <libtrx/utils.h>
-#include <libtrx/virtual_file.h>
-
-#include <SDL2/SDL.h>
-#include <stdio.h>
 
 // TODO: delegate these constants to individual vehicle code
 #define VEHICLE_MIN_BOUNCE 50
@@ -158,75 +129,6 @@ void CutscenePlayerGen_Initialise(const int16_t item_num)
     item->dynamic_light = 0;
 }
 
-int32_t Level_Initialise(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
-{
-    g_GameInfo.current_level.num = level_num;
-    g_GameInfo.current_level.type = level_type;
-
-    if (level_type != GFL_TITLE && level_type != GFL_DEMO) {
-        g_GymInvOpenEnabled = false;
-    }
-
-    if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
-        g_CurrentLevel = level_num;
-    }
-    InitialiseGameFlags();
-    g_Lara.item_num = NO_ITEM;
-
-    bool result;
-    if (level_type == GFL_TITLE) {
-        result = S_LoadLevelFile(GF_GetTitleLevelPath(), level_num, level_type);
-    } else if (level_type == GFL_CUTSCENE) {
-        if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
-            LOG_ERROR("Invalid cutscene number: %d", level_num);
-            return false;
-        }
-        result = S_LoadLevelFile(
-            GF_GetCutscenePath(level_num), level_num, level_type);
-    } else {
-        result =
-            S_LoadLevelFile(GF_GetLevelPath(level_num), level_num, level_type);
-    }
-    if (!result) {
-        return result;
-    }
-
-    if (g_Lara.item_num != NO_ITEM) {
-        Lara_Initialise(level_type);
-    }
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
-        GetCarriedItems();
-    }
-
-    Effect_InitialiseArray();
-    LOT_InitialiseArray();
-    Overlay_Reset();
-    g_HealthBarTimer = 100;
-    Sound_StopAll();
-    if (level_type == GFL_SAVED) {
-        ExtractSaveGameInfo();
-    } else if (level_type == GFL_NORMAL) {
-        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_REGULAR);
-    }
-
-    if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {
-        InitialiseFinalLevel();
-    }
-
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
-        if (g_GF_MusicTracks[0]) {
-            Music_Play(g_GF_MusicTracks[0], MPM_LOOPED);
-        }
-    }
-    g_IsAssaultTimerActive = false;
-    g_IsAssaultTimerDisplay = false;
-    g_Camera.underwater = 0;
-    return true;
-}
-
 int32_t Misc_Move3DPosTo3DPos(
     PHD_3DPOS *const src_pos, const PHD_3DPOS *const dst_pos,
     const int32_t velocity, const int16_t ang_add)
@@ -282,7 +184,7 @@ GAME_FLOW_COMMAND LevelCompleteSequence(void)
 
 GAME_FLOW_COMMAND DisplayCredits(void)
 {
-    S_UnloadLevelFile();
+    Level_Unload();
     if (!Level_Initialise(0, GFL_TITLE)) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
@@ -344,22 +246,6 @@ void DecreaseScreenSize(void)
         CLAMPL(g_Config.rendering.sizer, 0.44);
         Viewport_Reset();
     }
-}
-
-bool S_LoadLevelFile(
-    const char *const file_name, const int32_t level_num,
-    const GAME_FLOW_LEVEL_TYPE level_type)
-{
-    S_UnloadLevelFile();
-    return Level_Load(file_name, level_num);
-}
-
-void S_UnloadLevelFile(void)
-{
-    strcpy(g_LevelFileName, "");
-    memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
-    memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
-    g_ObjectTextureCount = 0;
 }
 
 void GetValidLevelsList(REQUEST_INFO *const req)
