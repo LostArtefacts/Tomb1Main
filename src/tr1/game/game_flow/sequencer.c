@@ -1,5 +1,6 @@
 #include "game/game_flow/sequencer.h"
 
+#include "game/demo.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow/vars.h"
@@ -417,4 +418,13 @@ GAME_FLOW_COMMAND GF_PlayCutscene(const int32_t level_num)
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Cutscene_Destroy(phase);
     return gf_cmd;
+}
+
+GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
+{
+    const int32_t level_num = Demo_ChooseLevel(demo_num);
+    if (level_num < 0) {
+        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+    }
+    return GF_InterpretSequence(level_num, GFL_DEMO);
 }
