@@ -124,8 +124,10 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
     } else {
 #if TR_VERSION == 1
         global_adder = 0x1FFF - adder;
-        global_divider =
-            (1 << (W2V_SHIFT + 12)) / (brightest_light.shade - adder);
+        const int32_t divider = brightest_light.shade == adder
+            ? adder
+            : brightest_light.shade - adder;
+        global_divider = (1 << (W2V_SHIFT + 12)) / divider;
 #else
         global_adder = room->ambient - adder;
         global_divider = (1 << (W2V_SHIFT + 12)) / adder;
