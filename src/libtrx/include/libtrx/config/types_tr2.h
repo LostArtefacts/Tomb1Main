@@ -43,6 +43,7 @@ typedef struct {
 
     struct {
         bool enable_3d_pickups;
+        bool enable_gun_lighting;
         bool enable_fade_effects;
         bool enable_exit_fade_effects;
         bool fix_item_rots;

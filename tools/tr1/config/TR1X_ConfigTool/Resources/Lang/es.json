@@ -284,6 +284,10 @@
       "Title": "Sombras redondeadas",
       "Description": "Habilita sombras redondas en lugar de las octogonales predeterminadas."
     },
+    "enable_gun_lighting": {
+      "Title": "Iluminación de pistola/explosión",
+      "Description": "Permite generar iluminación dinámica para disparos y explosiones, similar a TR2+."
+    },
     "enable_shotgun_flash": {
       "Title": "Destello de escopeta",
       "Description": "Muestra llamas al disparar la escopeta, al igual que en otras armas."

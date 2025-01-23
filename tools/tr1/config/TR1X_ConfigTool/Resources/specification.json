@@ -452,6 +452,11 @@
           "DefaultValue": true
         },
         {
+          "Field": "enable_gun_lighting",
+          "DataType": "Bool",
+          "DefaultValue": true
+        },
+        {
           "Field": "enable_shotgun_flash",
           "DataType": "Bool",
           "DefaultValue": true

@@ -337,6 +337,10 @@
       "Title": "Rounded shadows",
       "Description": "Enables round shadows instead of the default octagonal ones."
     },
+    "enable_gun_lighting": {
+      "Title": "Gun/explosion lighting",
+      "Description": "Enables dynamic lighting to be generated for gunshots and explosions, similar to TR2+."
+    },
     "enable_shotgun_flash": {
       "Title": "Shotgun flash",
       "Description": "Draws flames when firing the shotgun, like for other guns."

@@ -86,6 +86,10 @@
       "Title": "Screenshot format",
       "Description": "Screenshot file format."
     },
+    "enable_gun_lighting": {
+      "Title": "Gun/explosion lighting",
+      "Description": "Enables dynamic lighting to be generated for gunshots and explosions."
+    },
     "enable_lara_mic" : {
       "Title": "Microphone at Lara",
       "Description": "Set the microphone to be at Lara's position. If disabled, the microphone will be at the camera's position."

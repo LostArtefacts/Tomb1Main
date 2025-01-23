@@ -348,6 +348,10 @@
       "Title": "Ombres rondes",
       "Description": "Active les ombres rondes au lieu d'ombres octagonales."
     },
+    "enable_gun_lighting": {
+      "Title": "Éclairage de pistolet/explosion",
+      "Description": "Permet de générer un éclairage dynamique pour les coups de feu et les explosions, similaire au TR2+."
+    },
     "enable_shotgun_flash": {
       "Title": "Flash du fusil à pompe",
       "Description": "Affiche un flash lorsque Lara tire avec le fusil à pompe, tout comme les autres armes."

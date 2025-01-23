@@ -348,6 +348,10 @@
       "Title": "Ombre arrotondate",
       "Description": "Abilita le ombre arrotondate invece di quelle ottagonali predefinite."
     },
+    "enable_gun_lighting": {
+      "Title": "Illuminazione di armi/esplosioni",
+      "Description": "Consente di generare un'illuminazione dinamica per spari ed esplosioni, simile a TR2+."
+    },
     "enable_shotgun_flash": {
       "Title": "Lampo dello sparo del fucile",
       "Description": "Mostra il lampo dello sparo quando Lara fa fuoco con il fucile a pompa, come per le altre armi."

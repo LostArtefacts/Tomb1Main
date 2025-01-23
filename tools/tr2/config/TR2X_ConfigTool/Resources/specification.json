@@ -137,6 +137,11 @@
           "DataType": "Enum",
           "EnumKey": "screenshot_format",
           "DefaultValue": "jpg"
+        },
+        {
+          "Field": "enable_gun_lighting",
+          "DataType": "Bool",
+          "DefaultValue": true
         }
       ]
     },
