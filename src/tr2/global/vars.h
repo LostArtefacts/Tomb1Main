@@ -17,7 +17,6 @@ extern uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES];
 extern SDL_Window *g_SDLWindow;
 
 extern uint32_t g_PerspectiveDistance;
-extern int32_t g_CineTrackID;
 extern uint32_t g_AssaultBestTime;
 extern int16_t g_CineTargetAngle;
 extern int32_t g_OverlayStatus;
@@ -131,7 +130,6 @@ extern REQUEST_INFO g_SaveGameRequester;
 extern bool g_GF_SunsetEnabled;
 extern bool g_GF_RemoveAmmo;
 extern bool g_GF_RemoveWeapons;
-extern int16_t g_GF_MusicTracks[16];
 extern int16_t g_GF_NoFloor;
 extern int16_t g_GF_NumSecrets;
 extern int32_t g_GF_LaraStartAnim;

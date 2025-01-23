@@ -786,6 +786,7 @@ bool Level_Load(const char *const file_name, const int32_t level_num)
 bool Level_Initialise(
     const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
+    LOG_DEBUG("num=%d type=%d", level_num, level_type);
     g_GameInfo.current_level.num = level_num;
     g_GameInfo.current_level.type = level_type;
 
@@ -839,12 +840,31 @@ bool Level_Initialise(
         InitialiseFinalLevel();
     }
 
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
-        if (g_GF_MusicTracks[0]) {
-            Music_Play(g_GF_MusicTracks[0], MPM_LOOPED);
-        }
+    const GAME_FLOW_LEVEL *level = NULL;
+    switch (level_type) {
+    case GFL_TITLE:
+        level = g_GameFlow.title_level;
+        break;
+    case GFL_DEMO:
+        level = &g_GameFlow.levels[level_num];
+        break;
+    case GFL_CUTSCENE:
+        level = &g_GameFlow.cutscenes[level_num];
+        break;
+    case GFL_NORMAL:
+    case GFL_SAVED:
+        level = &g_GameFlow.levels[level_num];
+        break;
+    default:
+        level = NULL;
+        break;
     }
+    if (level != NULL && level->music_track != MX_INACTIVE) {
+        Music_Play(
+            level->music_track,
+            level_type == GFL_CUTSCENE ? MPM_ALWAYS : MPM_LOOPED);
+    }
+
     g_IsAssaultTimerActive = false;
     g_IsAssaultTimerDisplay = false;
     g_Camera.underwater = 0;

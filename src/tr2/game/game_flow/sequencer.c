@@ -60,7 +60,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
     GF_InventoryModifier_Reset();
 
-    g_GF_MusicTracks[0] = 2;
     g_CineTargetAngle = DEG_90;
     g_GF_NumSecrets = 3;
 
@@ -171,14 +170,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 };
             }
             break;
-
-        case GFS_SET_MUSIC_TRACK: {
-            const int16_t music_track_id = (int16_t)(intptr_t)event->data;
-            g_GF_MusicTracks[ntracks] = music_track_id;
-            Game_SetCutsceneTrack(music_track_id);
-            ntracks++;
-            break;
-        }
 
         case GFS_ENABLE_SUNSET:
             if (type != GFL_STORY && type != GFL_MID_STORY) {

@@ -52,6 +52,7 @@ typedef struct {
 typedef struct {
     const char *path;
     char *title;
+    MUSIC_TRACK_ID music_track;
     GAME_FLOW_SEQUENCE sequence;
     INJECTION_DATA injections;
 } GAME_FLOW_LEVEL;
@@ -107,9 +108,9 @@ typedef struct {
 
     // music
     struct {
-        MUSIC_TRACK_ID title_track;
         MUSIC_TRACK_ID secret_track;
         MUSIC_TRACK_ID level_complete_track;
+        MUSIC_TRACK_ID game_complete_track;
     };
 
     // other data

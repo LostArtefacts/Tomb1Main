@@ -18,7 +18,6 @@ OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 SDL_Window *g_SDLWindow = NULL;
 
 uint32_t g_PerspectiveDistance = 0x3000000;
-int32_t g_CineTrackID = 1;
 uint32_t g_AssaultBestTime = -1;
 
 int16_t g_CineTargetAngle = DEG_90;
@@ -323,7 +322,6 @@ REQUEST_INFO g_SaveGameRequester = {
 bool g_GF_RemoveAmmo = false;
 bool g_GF_RemoveWeapons = false;
 bool g_GF_SunsetEnabled = false;
-int16_t g_GF_MusicTracks[16] = {};
 int16_t g_GF_NoFloor = 0;
 int16_t g_GF_NumSecrets = 3;
 int32_t g_GF_LaraStartAnim;

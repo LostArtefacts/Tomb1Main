@@ -18,12 +18,13 @@
     "single_level": -1,
 
     "demo_delay": 30,
-    "title_track": 64,
     "secret_track": 47,
     "level_complete_track": 41,
+    "game_complete_track": 52,
 
     "title": {
         "path": "data/title.tr2",
+        "music_track": 64,
         "sequence": [
             {"type": "display_picture", "path": "data/legal.pcx"},
             {"type": "play_fmv", "fmv_num": 0},
@@ -35,9 +36,9 @@
         // 0. Lara's Home
         {
             "path": "data/assault.tr2",
+            "music_track": -1,
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "play_level"},
             ],
         },
@@ -45,14 +46,13 @@
         // 1. The Great Wall
         {
             "path": "data/wall.tr2",
+            "music_track": 33,
             "sequence": [
                 {"type": "play_fmv", "fmv_num": 2},
-                {"type": "set_music_track", "music_track": 33},
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "add_secret_reward", "item": "small_medipack"},
                 {"type": "play_level"},
-                {"type": "set_music_track", "music_track": 3},
                 {"type": "set_cutscene_angle", "angle": 0},
                 {"type": "play_cutscene", "cutscene_num": 0},
                 {"type": "level_complete"},
@@ -65,8 +65,8 @@
         // 2. Venice
         {
             "path": "data/boat.tr2",
+            "music_track": -1,
             "sequence": [
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "add_secret_reward", "item": "magnums_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -76,8 +76,8 @@
         // 3. Bartoli's Hideout
         {
             "path": "data/venice.tr2",
+            "music_track": -1,
             "sequence": [
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "enable_sunset"},
                 {"type": "add_secret_reward", "item": "shotgun_ammo", "qty": 4},
                 {"type": "play_level"},
@@ -88,12 +88,11 @@
         // 4. Opera House
         {
             "path": "data/opera.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "uzis"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
-                {"type": "set_music_track", "music_track": 4},
                 {"type": "play_cutscene", "cutscene_num": 1},
                 {"type": "level_complete"},
             ],
@@ -106,9 +105,9 @@
         // 5. Offshore Rig
         {
             "path": "data/rig.tr2",
+            "music_track": 58,
             "sequence": [
                 {"type": "play_fmv", "fmv_num": 3},
-                {"type": "set_music_track", "music_track": 58},
                 {"type": "set_lara_start_anim", "anim": 8},
                 {"type": "remove_weapons"},
                 {"type": "add_secret_reward", "item": "uzis"},
@@ -124,11 +123,10 @@
         // 6. Diving Area
         {
             "path": "data/platform.tr2",
+            "music_track": 58,
             "sequence": [
-                {"type": "set_music_track", "music_track": 58},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
-                {"type": "set_music_track", "music_track": 5},
                 {"type": "play_cutscene", "cutscene_num": 2},
                 {"type": "level_complete"},
             ],
@@ -140,9 +138,9 @@
         // 7. 40 Fathoms
         {
             "path": "data/unwater.tr2",
+            "music_track": 34,
             "sequence": [
                 {"type": "play_fmv", "fmv_num": 4},
-                {"type": "set_music_track", "music_track": 34},
                 {"type": "add_secret_reward", "item": "harpoon_gun_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -152,8 +150,8 @@
         // 8. Wreck of the Maria Doria
         {
             "path": "data/keel.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "play_level"},
@@ -168,8 +166,8 @@
         // 9. Living Quarters
         {
             "path": "data/living.tr2",
+            "music_track": 34,
             "sequence": [
-                {"type": "set_music_track", "music_track": 34},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -179,8 +177,8 @@
         // 10. The Deck
         {
             "path": "data/deck.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -193,9 +191,9 @@
         // 11. Tibetan Foothills
         {
             "path": "data/skidoo.tr2",
+            "music_track": 33,
             "sequence": [
                 {"type": "play_fmv", "fmv_num": 5},
-                {"type": "set_music_track", "music_track": 33},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
@@ -210,8 +208,8 @@
         // 12. Barkhang Monastery
         {
             "path": "data/monastry.tr2",
+            "music_track": -1,
             "sequence": [
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 4},
                 {"type": "play_level"},
@@ -225,8 +223,8 @@
         // 13. Catacombs of the Talion
         {
             "path": "data/catacomb.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "add_secret_reward", "item": "m16_ammo", "qty": 2},
                 {"type": "play_level"},
@@ -241,8 +239,8 @@
         // 14. Ice Palace
         {
             "path": "data/icecave.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -256,12 +254,11 @@
         // 15. Temple of Xian
         {
             "path": "data/emprtomb.tr2",
+            "music_track": 59,
             "sequence": [
                 {"type": "play_fmv", "fmv_num": 6},
-                {"type": "set_music_track", "music_track": 59},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 8},
                 {"type": "play_level"},
-                {"type": "set_music_track", "music_track": 30},
                 {"type": "set_cutscene_angle", "angle": 0},
                 {"type": "play_cutscene", "cutscene_num": 3},
                 {"type": "level_complete"},
@@ -275,8 +272,8 @@
         // 16. Floating Islands
         {
             "path": "data/floating.tr2",
+            "music_track": 59,
             "sequence": [
-                {"type": "set_music_track", "music_track": 59},
                 {"type": "disable_floor", "height": 9728},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 8},
                 {"type": "play_level"},
@@ -291,9 +288,9 @@
         // 17. The Dragon's Lair
         {
             "path": "data/xian.tr2",
+            "music_track": 59,
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
-                {"type": "set_music_track", "music_track": 59},
                 {"type": "play_level"},
                 {"type": "level_complete"},
                 {"type": "play_fmv", "fmv_num": 7},
@@ -303,15 +300,14 @@
         // 18. Home Sweet Home
         {
             "path": "data/house.tr2",
+            "music_track": -1,
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
                 {"type": "give_item", "item": "key_1"},
                 {"type": "set_lara_start_anim", "anim": 9},
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "remove_weapons"},
                 {"type": "remove_ammo"},
                 {"type": "play_level"},
-                {"type": "set_music_track", "music_track": 52},
                 {"type": "game_complete"},
             ],
             "injections": [
@@ -324,8 +320,8 @@
         // 0. Venice
         {
             "path": "data/boat.tr2",
+            "music_track": -1,
             "sequence": [
-                {"type": "set_music_track", "music_track": 0},
                 {"type": "add_secret_reward", "item": "magnums_ammo", "qty": 4},
                 {"type": "play_level", "level_num": 2},
                 {"type": "level_complete"},
@@ -335,8 +331,8 @@
         // 1. Wreck of the Maria Doria
         {
             "path": "data/keel.tr2",
+            "music_track": 31,
             "sequence": [
-                {"type": "set_music_track", "music_track": 31},
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "play_level", "level_num": 8},
@@ -351,8 +347,8 @@
         // 2. Tibetan Foothills
         {
             "path": "data/skidoo.tr2",
+            "music_track": 33,
             "sequence": [
-                {"type": "set_music_track", "music_track": 33},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level", "level_num": 11},
@@ -368,18 +364,24 @@
     "cutscenes": [
         {
             "path": "data/cut1.tr2",
-            "sequence": [{"type": "play_level"}],
+            "music_track": 3,
+            "sequence": [
+                {"type": "play_level"}
+            ],
         },
         {
             "path": "data/cut2.tr2",
+            "music_track": 4,
             "sequence": [{"type": "play_level"}],
         },
         {
             "path": "data/cut3.tr2",
+            "music_track": 5,
             "sequence": [{"type": "play_level"}],
         },
         {
             "path": "data/cut4.tr2",
+            "music_track": 30,
             "sequence": [{"type": "play_level"}],
         },
     ],

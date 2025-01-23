@@ -73,7 +73,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_GAME_COMPLETE,       NULL, NULL },
 
     // Events with integer arguments
-    { GFS_SET_MUSIC_TRACK,     M_HandleIntEvent, "music_track" },
     { GFS_SET_NUM_SECRETS,     M_HandleIntEvent, "count" },
     { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "anim" },
     { GFS_SET_START_ANIM,      M_HandleIntEvent, "anim" },
@@ -278,10 +277,11 @@ static bool M_LoadGlobal(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     gf->single_level = JSON_ObjectGetInt(obj, "single_level", -1);
     // clang-format on
 
-    gf->title_track = JSON_ObjectGetInt(obj, "title_track", MX_INACTIVE);
     gf->secret_track = JSON_ObjectGetInt(obj, "secret_track", MX_INACTIVE);
     gf->level_complete_track =
         JSON_ObjectGetInt(obj, "level_complete_track", MX_INACTIVE);
+    gf->game_complete_track =
+        JSON_ObjectGetInt(obj, "game_complete_track", MX_INACTIVE);
 
     M_LoadGlobalInjections(obj, gf);
     return true;
@@ -360,8 +360,9 @@ static void M_LoadLevel(
     }
     level->path = Memory_DupStr(path);
 
-    M_LoadLevelSequence(obj, level);
+    level->music_track = JSON_ObjectGetInt(obj, "music_track", MX_INACTIVE);
 
+    M_LoadLevelSequence(obj, level);
     M_LoadLevelInjections(obj, gf, level);
 }
 

@@ -39,16 +39,7 @@ GAME_FLOW_COMMAND TitleSequence(void)
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 
-    if (g_GameFlow.title_track != MX_INACTIVE) {
-        Music_Play(g_GameFlow.title_track, MPM_LOOPED);
-    }
-
     return GF_ShowInventory(INV_TITLE_MODE);
-}
-
-void Game_SetCutsceneTrack(const int32_t track)
-{
-    g_CineTrackID = track;
 }
 
 void CutscenePlayer_Control(const int16_t item_num)
@@ -191,7 +182,7 @@ GAME_FLOW_COMMAND DisplayCredits(void)
 
     g_GymInvOpenEnabled = true;
 
-    Music_Play(MX_SKIDOO_THEME, MPM_ALWAYS);
+    Music_Play(g_GameFlow.game_complete_track, MPM_ALWAYS);
 
     for (int32_t i = 0; i < 8; i++) {
         char file_name[60];
