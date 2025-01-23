@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/game_flow/types.h"
 #include "global/types.h"
 
 #include <libtrx/game/lara/common.h>
@@ -17,11 +18,11 @@ void Lara_UseItem(GAME_OBJECT_ID object_id);
 
 void Lara_InitialiseLoad(int16_t item_num);
 
-void Lara_Initialise(GAME_FLOW_LEVEL_TYPE type);
+void Lara_Initialise(const GAME_FLOW_LEVEL *level);
 
-void Lara_InitialiseInventory(int32_t level_num);
+void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *level);
 
-void Lara_InitialiseMeshes(int32_t level_num);
+void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *level);
 
 void Lara_GetOffVehicle(void);
 

@@ -293,7 +293,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_ARGS args)
     };
 
     self->args = args;
-    self->level_type = g_GameFlow.levels[self->args.level_num].level_type;
+    self->level_type = g_GameFlow.levels[self->args.level_num].type;
 
     self->row_count = 0;
     self->rows = NULL;

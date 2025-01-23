@@ -468,13 +468,13 @@ void Lara_InitialiseLoad(int16_t item_num)
     }
 }
 
-void Lara_Initialise(int32_t level_num)
+void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
 {
-    RESUME_INFO *resume = &g_GameInfo.current[level_num];
+    RESUME_INFO *const resume = GF_GetResumeInfo(level);
 
     g_LaraItem->collidable = 0;
     g_LaraItem->data = &g_Lara;
-    if (g_Config.gameplay.disable_healing_between_levels) {
+    if (resume != NULL && g_Config.gameplay.disable_healing_between_levels) {
         g_LaraItem->hit_points = resume->lara_hitpoints;
     } else {
         g_LaraItem->hit_points = g_Config.gameplay.start_lara_hitpoints;
@@ -526,102 +526,104 @@ void Lara_Initialise(int32_t level_num)
     g_Lara.lot.drop = -WALL_L * 20;
     g_Lara.lot.fly = STEP_L;
 
-    Lara_InitialiseInventory(level_num);
+    Lara_InitialiseInventory(level);
 }
 
-void Lara_InitialiseInventory(int32_t level_num)
+void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *const level)
 {
     Inv_RemoveAllItems();
 
-    RESUME_INFO *resume = &g_GameInfo.current[level_num];
+    RESUME_INFO *const resume = GF_GetResumeInfo(level);
 
     g_Lara.pistols.ammo = 1000;
 
-    if (g_GameInfo.remove_guns) {
-        resume->flags.got_pistols = 0;
-        resume->flags.got_shotgun = 0;
-        resume->flags.got_magnums = 0;
-        resume->flags.got_uzis = 0;
-        resume->equipped_gun_type = LGT_UNARMED;
-        resume->holsters_gun_type = LGT_UNARMED;
-        resume->back_gun_type = LGT_UNARMED;
-        resume->gun_status = LGS_ARMLESS;
-    }
-
-    if (g_GameInfo.remove_scions) {
-        resume->num_scions = 0;
-    }
-
-    if (g_GameInfo.remove_ammo) {
-        resume->shotgun_ammo = 0;
-        resume->magnum_ammo = 0;
-        resume->uzi_ammo = 0;
-    }
-
-    if (g_GameInfo.remove_medipacks) {
-        resume->num_medis = 0;
-        resume->num_big_medis = 0;
-    }
-
-    if (resume->flags.got_pistols) {
-        Inv_AddItem(O_PISTOL_ITEM);
-    }
-
-    if (resume->flags.got_magnums) {
-        Inv_AddItem(O_MAGNUM_ITEM);
-        g_Lara.magnums.ammo = resume->magnum_ammo;
-        Item_GlobalReplace(O_MAGNUM_ITEM, O_MAG_AMMO_ITEM);
-    } else {
-        int32_t ammo = resume->magnum_ammo / MAGNUM_AMMO_QTY;
-        for (int i = 0; i < ammo; i++) {
-            Inv_AddItem(O_MAG_AMMO_ITEM);
+    if (resume != NULL) {
+        if (g_GameInfo.remove_guns) {
+            resume->flags.got_pistols = 0;
+            resume->flags.got_shotgun = 0;
+            resume->flags.got_magnums = 0;
+            resume->flags.got_uzis = 0;
+            resume->equipped_gun_type = LGT_UNARMED;
+            resume->holsters_gun_type = LGT_UNARMED;
+            resume->back_gun_type = LGT_UNARMED;
+            resume->gun_status = LGS_ARMLESS;
         }
-        g_Lara.magnums.ammo = 0;
-    }
 
-    if (resume->flags.got_uzis) {
-        Inv_AddItem(O_UZI_ITEM);
-        g_Lara.uzis.ammo = resume->uzi_ammo;
-        Item_GlobalReplace(O_UZI_ITEM, O_UZI_AMMO_ITEM);
-    } else {
-        int32_t ammo = resume->uzi_ammo / UZI_AMMO_QTY;
-        for (int i = 0; i < ammo; i++) {
-            Inv_AddItem(O_UZI_AMMO_ITEM);
+        if (g_GameInfo.remove_scions) {
+            resume->num_scions = 0;
         }
-        g_Lara.uzis.ammo = 0;
-    }
 
-    if (resume->flags.got_shotgun) {
-        Inv_AddItem(O_SHOTGUN_ITEM);
-        g_Lara.shotgun.ammo = resume->shotgun_ammo;
-        Item_GlobalReplace(O_SHOTGUN_ITEM, O_SG_AMMO_ITEM);
-    } else {
-        int32_t ammo = resume->shotgun_ammo / SHOTGUN_AMMO_QTY;
-        for (int i = 0; i < ammo; i++) {
-            Inv_AddItem(O_SG_AMMO_ITEM);
+        if (g_GameInfo.remove_ammo) {
+            resume->shotgun_ammo = 0;
+            resume->magnum_ammo = 0;
+            resume->uzi_ammo = 0;
         }
-        g_Lara.shotgun.ammo = 0;
+
+        if (g_GameInfo.remove_medipacks) {
+            resume->num_medis = 0;
+            resume->num_big_medis = 0;
+        }
+
+        if (resume->flags.got_pistols) {
+            Inv_AddItem(O_PISTOL_ITEM);
+        }
+
+        if (resume->flags.got_magnums) {
+            Inv_AddItem(O_MAGNUM_ITEM);
+            g_Lara.magnums.ammo = resume->magnum_ammo;
+            Item_GlobalReplace(O_MAGNUM_ITEM, O_MAG_AMMO_ITEM);
+        } else {
+            int32_t ammo = resume->magnum_ammo / MAGNUM_AMMO_QTY;
+            for (int i = 0; i < ammo; i++) {
+                Inv_AddItem(O_MAG_AMMO_ITEM);
+            }
+            g_Lara.magnums.ammo = 0;
+        }
+
+        if (resume->flags.got_uzis) {
+            Inv_AddItem(O_UZI_ITEM);
+            g_Lara.uzis.ammo = resume->uzi_ammo;
+            Item_GlobalReplace(O_UZI_ITEM, O_UZI_AMMO_ITEM);
+        } else {
+            int32_t ammo = resume->uzi_ammo / UZI_AMMO_QTY;
+            for (int i = 0; i < ammo; i++) {
+                Inv_AddItem(O_UZI_AMMO_ITEM);
+            }
+            g_Lara.uzis.ammo = 0;
+        }
+
+        if (resume->flags.got_shotgun) {
+            Inv_AddItem(O_SHOTGUN_ITEM);
+            g_Lara.shotgun.ammo = resume->shotgun_ammo;
+            Item_GlobalReplace(O_SHOTGUN_ITEM, O_SG_AMMO_ITEM);
+        } else {
+            int32_t ammo = resume->shotgun_ammo / SHOTGUN_AMMO_QTY;
+            for (int i = 0; i < ammo; i++) {
+                Inv_AddItem(O_SG_AMMO_ITEM);
+            }
+            g_Lara.shotgun.ammo = 0;
+        }
+
+        for (int i = 0; i < resume->num_scions; i++) {
+            Inv_AddItem(O_SCION_ITEM_1);
+        }
+
+        for (int i = 0; i < resume->num_medis; i++) {
+            Inv_AddItem(O_MEDI_ITEM);
+        }
+
+        for (int i = 0; i < resume->num_big_medis; i++) {
+            Inv_AddItem(O_BIGMEDI_ITEM);
+        }
+
+        g_Lara.gun_status = resume->gun_status;
+        g_Lara.gun_type = resume->equipped_gun_type;
+        g_Lara.request_gun_type = resume->equipped_gun_type;
+        g_Lara.holsters_gun_type = resume->holsters_gun_type;
+        g_Lara.back_gun_type = resume->back_gun_type;
     }
 
-    for (int i = 0; i < resume->num_scions; i++) {
-        Inv_AddItem(O_SCION_ITEM_1);
-    }
-
-    for (int i = 0; i < resume->num_medis; i++) {
-        Inv_AddItem(O_MEDI_ITEM);
-    }
-
-    for (int i = 0; i < resume->num_big_medis; i++) {
-        Inv_AddItem(O_BIGMEDI_ITEM);
-    }
-
-    g_Lara.gun_status = resume->gun_status;
-    g_Lara.gun_type = resume->equipped_gun_type;
-    g_Lara.request_gun_type = resume->equipped_gun_type;
-    g_Lara.holsters_gun_type = resume->holsters_gun_type;
-    g_Lara.back_gun_type = resume->back_gun_type;
-
-    Lara_InitialiseMeshes(level_num);
+    Lara_InitialiseMeshes(level);
     Gun_InitialiseNewWeapon();
 }
 
@@ -648,11 +650,11 @@ void Lara_RevertToPistolsIfNeeded(void)
     Gun_SetLaraBackMesh(g_Lara.back_gun_type);
 }
 
-void Lara_InitialiseMeshes(int32_t level_num)
+void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *const level)
 {
-    const RESUME_INFO *const resume = &g_GameInfo.current[level_num];
+    const RESUME_INFO *const resume = GF_GetResumeInfo(level);
 
-    if (resume->flags.costume) {
+    if (resume != NULL && resume->flags.costume) {
         for (LARA_MESH mesh = LM_FIRST; mesh < LM_NUMBER_OF; mesh++) {
             Lara_SwapSingleMesh(mesh, mesh == LM_HEAD ? O_LARA : O_LARA_EXTRA);
         }
@@ -663,8 +665,10 @@ void Lara_InitialiseMeshes(int32_t level_num)
         Lara_SwapSingleMesh(mesh, O_LARA);
     }
 
-    LARA_GUN_TYPE holsters_gun_type = resume->holsters_gun_type;
-    LARA_GUN_TYPE back_gun_type = resume->back_gun_type;
+    LARA_GUN_TYPE holsters_gun_type =
+        resume != NULL ? resume->holsters_gun_type : LGT_UNKNOWN;
+    LARA_GUN_TYPE back_gun_type =
+        resume != NULL ? resume->back_gun_type : LGT_UNKNOWN;
 
     if (holsters_gun_type != LGT_UNKNOWN) {
         Gun_SetLaraHolsterLMesh(holsters_gun_type);

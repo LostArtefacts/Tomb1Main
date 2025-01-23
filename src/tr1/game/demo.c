@@ -161,7 +161,7 @@ bool Demo_Start(const int32_t level_num)
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
 
-    if (!Level_Initialise(level_num)) {
+    if (!Level_Initialise(&g_GameFlow.levels[level_num])) {
         return false;
     }
     g_GameInfo.current_level_type = GFL_DEMO;

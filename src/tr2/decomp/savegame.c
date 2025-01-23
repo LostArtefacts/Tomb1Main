@@ -870,7 +870,7 @@ void CreateSaveGameInfo(void)
 
 void ExtractSaveGameInfo(void)
 {
-    Lara_InitialiseInventory(g_CurrentLevel);
+    Lara_InitialiseInventory(&g_GameFlow.levels[g_CurrentLevel]);
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, g_SaveGame.num_pickup[0]);
     Inv_AddItemNTimes(O_PICKUP_ITEM_2, g_SaveGame.num_pickup[1]);
     Inv_AddItemNTimes(O_PUZZLE_ITEM_1, g_SaveGame.num_puzzle[0]);

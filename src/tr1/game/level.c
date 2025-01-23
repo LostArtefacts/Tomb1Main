@@ -41,8 +41,7 @@
 static LEVEL_INFO m_LevelInfo = {};
 static INJECTION_INFO *m_InjectionInfo = NULL;
 
-static void M_LoadFromFile(
-    const char *filename, int32_t level_num, bool is_demo);
+static void M_LoadFromFile(const GAME_FLOW_LEVEL *level, bool is_demo);
 static void M_LoadTexturePages(VFILE *file);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
@@ -66,25 +65,25 @@ static void M_LoadPalette(VFILE *file);
 static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
-static void M_CompleteSetup(int32_t level_num);
+static void M_CompleteSetup(const GAME_FLOW_LEVEL *level);
 static void M_MarkWaterEdgeVertices(void);
 static size_t M_CalculateMaxVertices(void);
 
 static void M_LoadFromFile(
-    const char *filename, int32_t level_num, bool is_demo)
+    const GAME_FLOW_LEVEL *const level, const bool is_demo)
 {
     GameBuf_Reset();
 
-    VFILE *file = VFile_CreateFromPath(filename);
+    VFILE *file = VFile_CreateFromPath(level->path);
     if (!file) {
-        Shell_ExitSystemFmt("M_LoadFromFile(): Could not open %s", filename);
+        Shell_ExitSystemFmt("M_LoadFromFile(): Could not open %s", level->path);
     }
 
     const int32_t version = VFile_ReadS32(file);
     if (version != 32) {
         Shell_ExitSystemFmt(
             "Level %d (%s) is version %d (this game code is version %d)",
-            level_num, filename, version, 32);
+            level->num, level->path, version, 32);
     }
 
     M_LoadTexturePages(file);
@@ -683,7 +682,7 @@ static void M_LoadSamples(VFILE *file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_CompleteSetup(int32_t level_num)
+static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -742,7 +741,7 @@ static void M_CompleteSetup(int32_t level_num)
     }
 
     // Configure enemies who carry and drop items
-    Carrier_InitialiseLevel(level_num);
+    Carrier_InitialiseLevel(level);
 
     const size_t max_vertices = M_CalculateMaxVertices();
     LOG_INFO("Maximum vertices: %d", max_vertices);
@@ -846,9 +845,9 @@ static size_t M_CalculateMaxVertices(void)
     return max_vertices;
 }
 
-void Level_Load(int level_num)
+void Level_Load(const GAME_FLOW_LEVEL *const level)
 {
-    LOG_INFO("%d (%s)", level_num, g_GameFlow.levels[level_num].path);
+    LOG_INFO("%d (%s)", level->num, level->path);
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // clean previous level data
@@ -860,33 +859,29 @@ void Level_Load(int level_num)
 
     m_InjectionInfo = Memory_Alloc(sizeof(INJECTION_INFO));
     Inject_Init(
-        g_GameFlow.levels[level_num].injections.length,
-        g_GameFlow.levels[level_num].injections.data_paths, m_InjectionInfo);
+        level->injections.length, level->injections.data_paths,
+        m_InjectionInfo);
 
-    bool is_demo =
-        (g_GameFlow.levels[level_num].level_type == GFL_TITLE_DEMO_PC)
-        | (g_GameFlow.levels[level_num].level_type == GFL_LEVEL_DEMO_PC);
+    const bool is_demo =
+        (level->type == GFL_TITLE_DEMO_PC) | (level->type == GFL_LEVEL_DEMO_PC);
 
-    M_LoadFromFile(g_GameFlow.levels[level_num].path, level_num, is_demo);
-    M_CompleteSetup(level_num);
+    M_LoadFromFile(level, is_demo);
+    M_CompleteSetup(level);
 
     Inject_Cleanup();
 
     Output_SetWaterColor(
-        g_GameFlow.levels[level_num].water_color.override
-            ? &g_GameFlow.levels[level_num].water_color.value
-            : &g_GameFlow.water_color);
+        level->water_color.override ? &level->water_color.value
+                                    : &g_GameFlow.water_color);
 
     Output_SetDrawDistFade(
-        (g_GameFlow.levels[level_num].draw_distance_fade.override
-             ? g_GameFlow.levels[level_num].draw_distance_fade.value
-             : g_GameFlow.draw_distance_fade)
+        (level->draw_distance_fade.override ? level->draw_distance_fade.value
+                                            : g_GameFlow.draw_distance_fade)
         * WALL_L);
 
     Output_SetDrawDistMax(
-        (g_GameFlow.levels[level_num].draw_distance_max.override
-             ? g_GameFlow.levels[level_num].draw_distance_max.value
-             : g_GameFlow.draw_distance_max)
+        (level->draw_distance_max.override ? level->draw_distance_max.value
+                                           : g_GameFlow.draw_distance_max)
         * WALL_L);
 
     Output_SetSkyboxEnabled(
@@ -895,21 +890,25 @@ void Level_Load(int level_num)
     Benchmark_End(benchmark, NULL);
 }
 
-bool Level_Initialise(int32_t level_num)
+bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    LOG_DEBUG("%d", level_num);
+    LOG_DEBUG("num=%d (%s)", level->num, level->path);
 
     // loading a save can override it to false
     g_GameInfo.death_counter_supported = true;
 
     g_GameInfo.select_level_num = -1;
-    g_GameInfo.current[level_num].stats.timer = 0;
-    g_GameInfo.current[level_num].stats.secret_flags = 0;
-    g_GameInfo.current[level_num].stats.secret_count = 0;
-    g_GameInfo.current[level_num].stats.pickup_count = 0;
-    g_GameInfo.current[level_num].stats.kill_count = 0;
-    g_GameInfo.current[level_num].stats.death_count = 0;
+    const int32_t level_num = level->num;
+    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    if (resume != NULL) {
+        resume->stats.timer = 0;
+        resume->stats.secret_flags = 0;
+        resume->stats.secret_count = 0;
+        resume->stats.pickup_count = 0;
+        resume->stats.kill_count = 0;
+        resume->stats.death_count = 0;
+    }
 
     g_LevelComplete = false;
     g_CurrentLevel = level_num;
@@ -939,11 +938,11 @@ bool Level_Initialise(int32_t level_num)
     Pierre_Reset();
 
     Lara_InitialiseLoad(NO_ITEM);
-    Level_Load(level_num);
+    Level_Load(level);
     GameStringTable_Apply(level_num);
 
     if (g_Lara.item_num != NO_ITEM) {
-        Lara_Initialise(level_num);
+        Lara_Initialise(level);
     }
 
     Effect_InitialiseArray();
@@ -958,8 +957,8 @@ bool Level_Initialise(int32_t level_num)
 
     const bool disable_music = level_num == g_GameFlow.title_level_num
         && !g_Config.audio.enable_music_in_menu;
-    if (g_GameFlow.levels[level_num].music && !disable_music) {
-        Music_PlayLooped(g_GameFlow.levels[level_num].music);
+    if (level->music && !disable_music) {
+        Music_PlayLooped(level->music);
     }
 
     Viewport_SetFOV(-1);

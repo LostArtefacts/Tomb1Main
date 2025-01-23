@@ -204,7 +204,7 @@ void Shell_Main(void)
         switch (command.action) {
         case GF_START_GAME: {
             GAME_FLOW_LEVEL_TYPE level_type = GFL_NORMAL;
-            if (g_GameFlow.levels[command.param].level_type == GFL_BONUS) {
+            if (g_GameFlow.levels[command.param].type == GFL_BONUS) {
                 level_type = GFL_BONUS;
             }
             command = GF_InterpretSequence(command.param, level_type);
@@ -258,7 +258,8 @@ void Shell_Main(void)
                 intro_played = true;
             }
 
-            if (!Level_Initialise(g_GameFlow.title_level_num)) {
+            if (!Level_Initialise(
+                    &g_GameFlow.levels[g_GameFlow.title_level_num])) {
                 command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 break;
             }

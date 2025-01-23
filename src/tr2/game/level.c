@@ -848,7 +848,7 @@ bool Level_Initialise(
     }
 
     if (g_Lara.item_num != NO_ITEM) {
-        Lara_Initialise(level_type);
+        Lara_Initialise(level);
     }
     if (level_type == GFL_NORMAL || level_type == GFL_SAVED
         || level_type == GFL_DEMO) {

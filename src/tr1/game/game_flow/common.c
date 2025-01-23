@@ -120,3 +120,15 @@ int32_t GF_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_level_num;
 }
+
+RESUME_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *const level)
+{
+    if (level->type == GFL_NORMAL) {
+        return &g_GameInfo.current[level->num];
+    } else if (level->type == GFL_GYM) {
+        return &g_GameInfo.current[g_GameFlow.gym_level_num];
+    } else if (level->type == GFL_DEMO) {
+        return &g_GameInfo.current[0];
+    }
+    return NULL;
+}

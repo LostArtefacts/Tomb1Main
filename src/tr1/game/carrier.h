@@ -1,10 +1,9 @@
 #pragma once
 
+#include "game/game_flow/types.h"
 #include "global/types.h"
 
-#include <stdint.h>
-
-void Carrier_InitialiseLevel(int32_t level_num);
+void Carrier_InitialiseLevel(const GAME_FLOW_LEVEL *level);
 int32_t Carrier_GetItemCount(int16_t item_num);
 bool Carrier_IsItemCarried(int16_t item_num);
 void Carrier_TestItemDrops(int16_t item_num);

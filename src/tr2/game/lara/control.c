@@ -3,6 +3,7 @@
 #include "decomp/skidoo.h"
 #include "game/camera.h"
 #include "game/creature.h"
+#include "game/game_flow.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -767,7 +768,7 @@ void Lara_InitialiseLoad(const int16_t item_num)
     g_LaraItem = &g_Items[item_num];
 }
 
-void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
+void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
 {
     ITEM *const item = g_LaraItem;
 
@@ -814,7 +815,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
     g_Lara.right_arm.lock = 0;
     g_Lara.creature = NULL;
 
-    if (type == GFL_NORMAL && g_GF_LaraStartAnim) {
+    if (level->type == GFL_NORMAL && g_GF_LaraStartAnim) {
         g_Lara.water_status = LWS_ABOVE_WATER;
         g_Lara.gun_status = LGS_HANDS_BUSY;
         Item_SwitchToObjAnim(item, LA_EXTRA_BREATH, 0, O_LARA_EXTRA);
@@ -839,7 +840,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
         Item_SwitchToAnim(item, LA_STAND_STILL, 0);
     }
 
-    if (type == GFL_CUTSCENE) {
+    if (level->type == GFL_CUTSCENE) {
         for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
             Lara_SwapSingleMesh(i, O_LARA);
         }
@@ -848,123 +849,129 @@ void Lara_Initialise(const GAME_FLOW_LEVEL_TYPE type)
         Lara_SwapSingleMesh(LM_THIGH_R, O_LARA_PISTOLS);
         g_Lara.gun_status = LGS_ARMLESS;
     } else {
-        Lara_InitialiseInventory(g_CurrentLevel);
+        Lara_InitialiseInventory(level);
     }
 }
 
-void Lara_InitialiseInventory(const int32_t level_num)
+void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *const level)
 {
     Inv_RemoveAllItems();
 
-    START_INFO *const start = &g_SaveGame.start[level_num];
-    if (g_GF_RemoveWeapons) {
-        start->has_pistols = 0;
-        start->has_magnums = 0;
-        start->has_uzis = 0;
-        start->has_shotgun = 0;
-        start->has_m16 = 0;
-        start->has_grenade = 0;
-        start->has_harpoon = 0;
-        start->gun_type = LGT_UNARMED;
-        start->gun_status = LGS_ARMLESS;
-        g_GF_RemoveWeapons = false;
-    }
-
-    if (g_GF_RemoveAmmo) {
-        start->m16_ammo = 0;
-        start->grenade_ammo = 0;
-        start->harpoon_ammo = 0;
-        start->shotgun_ammo = 0;
-        start->uzi_ammo = 0;
-        start->magnum_ammo = 0;
-        start->pistol_ammo = 0;
-        start->flares = 0;
-        start->large_medipacks = 0;
-        start->small_medipacks = 0;
-        g_GF_RemoveAmmo = false;
-    }
-
     Inv_AddItem(O_COMPASS_ITEM);
 
-    g_Lara.pistol_ammo.ammo = 1000;
-    if (start->has_pistols) {
-        Inv_AddItem(O_PISTOL_ITEM);
-    }
+    START_INFO *const start = GF_GetResumeInfo(level);
+    if (start != NULL) {
+        if (g_GF_RemoveWeapons) {
+            start->has_pistols = 0;
+            start->has_magnums = 0;
+            start->has_uzis = 0;
+            start->has_shotgun = 0;
+            start->has_m16 = 0;
+            start->has_grenade = 0;
+            start->has_harpoon = 0;
+            start->gun_type = LGT_UNARMED;
+            start->gun_status = LGS_ARMLESS;
+            g_GF_RemoveWeapons = false;
+        }
 
-    if (start->has_magnums) {
-        Inv_AddItem(O_MAGNUM_ITEM);
-        g_Lara.magnum_ammo.ammo = start->magnum_ammo;
-        Item_GlobalReplace(O_MAGNUM_ITEM, O_MAGNUM_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_MAGNUM_AMMO_ITEM, start->magnum_ammo / 40);
-        g_Lara.magnum_ammo.ammo = 0;
-    }
+        if (g_GF_RemoveAmmo) {
+            start->m16_ammo = 0;
+            start->grenade_ammo = 0;
+            start->harpoon_ammo = 0;
+            start->shotgun_ammo = 0;
+            start->uzi_ammo = 0;
+            start->magnum_ammo = 0;
+            start->pistol_ammo = 0;
+            start->flares = 0;
+            start->large_medipacks = 0;
+            start->small_medipacks = 0;
+            g_GF_RemoveAmmo = false;
+        }
 
-    if (start->has_uzis) {
-        Inv_AddItem(O_UZI_ITEM);
-        g_Lara.uzi_ammo.ammo = start->uzi_ammo;
-        Item_GlobalReplace(O_UZI_ITEM, O_UZI_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_UZI_AMMO_ITEM, start->uzi_ammo / 80);
-        g_Lara.uzi_ammo.ammo = 0;
-    }
+        g_Lara.pistol_ammo.ammo = 1000;
+        if (start->has_pistols) {
+            Inv_AddItem(O_PISTOL_ITEM);
+        }
 
-    if (start->has_shotgun) {
-        Inv_AddItem(O_SHOTGUN_ITEM);
-        g_Lara.shotgun_ammo.ammo = start->shotgun_ammo;
-        Item_GlobalReplace(O_SHOTGUN_ITEM, O_SHOTGUN_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_SHOTGUN_AMMO_ITEM, start->shotgun_ammo / 12);
-        g_Lara.shotgun_ammo.ammo = 0;
-    }
+        if (start->has_magnums) {
+            Inv_AddItem(O_MAGNUM_ITEM);
+            g_Lara.magnum_ammo.ammo = start->magnum_ammo;
+            Item_GlobalReplace(O_MAGNUM_ITEM, O_MAGNUM_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_MAGNUM_AMMO_ITEM, start->magnum_ammo / 40);
+            g_Lara.magnum_ammo.ammo = 0;
+        }
 
-    if (start->has_m16) {
-        Inv_AddItem(O_M16_ITEM);
-        g_Lara.m16_ammo.ammo = start->m16_ammo;
-        Item_GlobalReplace(O_M16_ITEM, O_M16_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_M16_AMMO_ITEM, start->m16_ammo / 40);
-        g_Lara.m16_ammo.ammo = 0;
-    }
+        if (start->has_uzis) {
+            Inv_AddItem(O_UZI_ITEM);
+            g_Lara.uzi_ammo.ammo = start->uzi_ammo;
+            Item_GlobalReplace(O_UZI_ITEM, O_UZI_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_UZI_AMMO_ITEM, start->uzi_ammo / 80);
+            g_Lara.uzi_ammo.ammo = 0;
+        }
 
-    if (start->has_grenade) {
-        Inv_AddItem(O_GRENADE_ITEM);
-        g_Lara.grenade_ammo.ammo = start->grenade_ammo;
-        Item_GlobalReplace(O_GRENADE_ITEM, O_GRENADE_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_GRENADE_AMMO_ITEM, start->grenade_ammo / 2);
-        g_Lara.grenade_ammo.ammo = 0;
-    }
+        if (start->has_shotgun) {
+            Inv_AddItem(O_SHOTGUN_ITEM);
+            g_Lara.shotgun_ammo.ammo = start->shotgun_ammo;
+            Item_GlobalReplace(O_SHOTGUN_ITEM, O_SHOTGUN_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_SHOTGUN_AMMO_ITEM, start->shotgun_ammo / 12);
+            g_Lara.shotgun_ammo.ammo = 0;
+        }
 
-    if (start->has_harpoon) {
-        Inv_AddItem(O_HARPOON_ITEM);
-        g_Lara.harpoon_ammo.ammo = start->harpoon_ammo;
-        Item_GlobalReplace(O_HARPOON_ITEM, O_HARPOON_AMMO_ITEM);
-    } else {
-        Inv_AddItemNTimes(O_HARPOON_AMMO_ITEM, start->harpoon_ammo / 3);
-        g_Lara.harpoon_ammo.ammo = 0;
-    }
+        if (start->has_m16) {
+            Inv_AddItem(O_M16_ITEM);
+            g_Lara.m16_ammo.ammo = start->m16_ammo;
+            Item_GlobalReplace(O_M16_ITEM, O_M16_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_M16_AMMO_ITEM, start->m16_ammo / 40);
+            g_Lara.m16_ammo.ammo = 0;
+        }
 
-    Inv_AddItemNTimes(O_FLARE_ITEM, start->flares);
-    Inv_AddItemNTimes(O_SMALL_MEDIPACK_ITEM, start->small_medipacks);
-    Inv_AddItemNTimes(O_LARGE_MEDIPACK_ITEM, start->large_medipacks);
+        if (start->has_grenade) {
+            Inv_AddItem(O_GRENADE_ITEM);
+            g_Lara.grenade_ammo.ammo = start->grenade_ammo;
+            Item_GlobalReplace(O_GRENADE_ITEM, O_GRENADE_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_GRENADE_AMMO_ITEM, start->grenade_ammo / 2);
+            g_Lara.grenade_ammo.ammo = 0;
+        }
+
+        if (start->has_harpoon) {
+            Inv_AddItem(O_HARPOON_ITEM);
+            g_Lara.harpoon_ammo.ammo = start->harpoon_ammo;
+            Item_GlobalReplace(O_HARPOON_ITEM, O_HARPOON_AMMO_ITEM);
+        } else {
+            Inv_AddItemNTimes(O_HARPOON_AMMO_ITEM, start->harpoon_ammo / 3);
+            g_Lara.harpoon_ammo.ammo = 0;
+        }
+
+        Inv_AddItemNTimes(O_FLARE_ITEM, start->flares);
+        Inv_AddItemNTimes(O_SMALL_MEDIPACK_ITEM, start->small_medipacks);
+        Inv_AddItemNTimes(O_LARGE_MEDIPACK_ITEM, start->large_medipacks);
+
+        g_Lara.last_gun_type = start->gun_type;
+    }
 
     g_Lara.gun_status = LGS_ARMLESS;
-    g_Lara.last_gun_type = start->gun_type;
     g_Lara.gun_type = g_Lara.last_gun_type;
     g_Lara.request_gun_type = g_Lara.last_gun_type;
 
-    Lara_InitialiseMeshes(level_num);
+    Lara_InitialiseMeshes(level);
     Gun_InitialiseNewWeapon();
 }
 
-void Lara_InitialiseMeshes(const int32_t level_num)
+void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *const level)
 {
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
         Lara_SwapSingleMesh(i, O_LARA);
     }
 
-    const START_INFO *const start = &g_SaveGame.start[level_num];
+    const START_INFO *const start = GF_GetResumeInfo(level);
+    if (start == NULL) {
+        return;
+    }
 
     GAME_OBJECT_ID holster_object_id = NO_OBJECT;
     if (start->gun_type != LGT_UNARMED) {

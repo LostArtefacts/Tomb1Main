@@ -23,11 +23,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-static void M_InitialiseLara(int32_t level_num);
+static void M_InitialiseLara(const GAME_FLOW_LEVEL *level);
 
-static void M_InitialiseLara(const int32_t level_num)
+static void M_InitialiseLara(const GAME_FLOW_LEVEL *const level)
 {
-    const GAME_OBJECT_ID lara_type = g_GameFlow.levels[level_num].lara_type;
+    const GAME_OBJECT_ID lara_type = level->lara_type;
     Lara_Hair_SetLaraType(lara_type);
     if (!Lara_Hair_IsActive()) {
         return;
@@ -50,7 +50,7 @@ static void M_InitialiseLara(const int32_t level_num)
     }
 
     Lara_InitialiseLoad(lara_item_num);
-    Lara_Initialise(level_num);
+    Lara_Initialise(level);
 
     Item_SwitchToObjAnim(g_LaraItem, 0, 0, lara_type);
     const ANIM *const cut_anim = Item_GetAnim(g_LaraItem);
@@ -60,14 +60,15 @@ static void M_InitialiseLara(const int32_t level_num)
 
 bool Cutscene_Start(const int32_t level_num)
 {
+    const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
     if (g_CurrentLevel != level_num) {
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
     }
     g_GameInfo.current_level_type = GFL_CUTSCENE;
 
-    M_InitialiseLara(level_num);
+    M_InitialiseLara(level);
 
     for (int16_t room_num = 0; room_num < g_RoomCount; room_num++) {
         if (g_RoomInfo[room_num].flipped_room >= 0) {

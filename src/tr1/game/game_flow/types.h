@@ -49,7 +49,9 @@ typedef struct {
 // ----------------------------------------------------------------------------
 
 typedef struct {
-    GAME_FLOW_LEVEL_TYPE level_type;
+    int32_t num;
+    GAME_FLOW_LEVEL_TYPE type;
+
     int16_t music;
     char *title;
     char *path;

@@ -161,7 +161,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_LEVEL_COMPLETE:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (type == GFL_NORMAL) {
                 START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
                 start->stats = g_SaveGame.current_stats;
 
@@ -199,10 +199,14 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
 
         case GFS_GAME_COMPLETE:
-            START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
-            start->stats = g_SaveGame.current_stats;
-            g_SaveGame.bonus_flag = true;
-            gf_cmd = DisplayCredits();
+            if (type == GFL_NORMAL) {
+                START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
+                start->stats = g_SaveGame.current_stats;
+                g_SaveGame.bonus_flag = true;
+                gf_cmd = DisplayCredits();
+            } else {
+                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            }
             break;
 
         case GFS_SET_CAMERA_ANGLE:

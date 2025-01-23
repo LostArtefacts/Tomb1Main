@@ -457,7 +457,7 @@ bool Savegame_Save(const int32_t slot_num)
     Savegame_PersistGameToCurrentInfo(g_CurrentLevel);
 
     for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].level_type == GFL_CURRENT) {
+        if (g_GameFlow.levels[i].type == GFL_CURRENT) {
             game_info->current[i] = game_info->current[g_CurrentLevel];
         }
     }

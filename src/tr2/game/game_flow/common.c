@@ -117,3 +117,13 @@ void GF_Shutdown(void)
         Memory_FreePointer(&gf->title_level);
     }
 }
+
+START_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *const level)
+{
+    if (level->type == GFL_NORMAL) {
+        return &g_SaveGame.start[level->num];
+    } else if (level->type == GFL_DEMO) {
+        return &g_SaveGame.start[0];
+    }
+    return NULL;
+}

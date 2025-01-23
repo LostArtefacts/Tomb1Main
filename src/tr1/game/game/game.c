@@ -72,6 +72,7 @@ void Game_ProcessInput(void)
 bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 {
     g_GameInfo.current_level_type = level_type;
+    const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
 
     switch (level_type) {
     case GFL_SAVED:
@@ -79,7 +80,7 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         // Item_GlobalReplace in the inventory initialization routines too early
         Savegame_InitCurrentInfo();
 
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         if (!Savegame_Load(g_GameInfo.current_save_slot)) {
@@ -97,7 +98,7 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             Savegame_CarryCurrentInfoToNextLevel(level_num - 1, level_num);
             Savegame_ApplyLogicToCurrentInfo(level_num);
         }
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         break;
@@ -124,7 +125,7 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
                 Savegame_ApplyLogicToCurrentInfo(i);
             }
         }
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         break;
@@ -132,7 +133,7 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
     case GFL_GYM:
         Savegame_ResetCurrentInfo(level_num);
         Savegame_ApplyLogicToCurrentInfo(level_num);
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         break;
@@ -140,13 +141,13 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
     case GFL_BONUS:
         Savegame_CarryCurrentInfoToNextLevel(level_num - 1, level_num);
         Savegame_ApplyLogicToCurrentInfo(level_num);
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         break;
 
     default:
-        if (!Level_Initialise(level_num)) {
+        if (!Level_Initialise(level)) {
             return false;
         }
         break;

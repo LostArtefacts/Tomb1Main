@@ -422,7 +422,7 @@ static void M_ReadLOT(LOT_INFO *lot)
 static void M_SetCurrentPosition(int level_num)
 {
     for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].level_type == GFL_CURRENT) {
+        if (g_GameFlow.levels[i].type == GFL_CURRENT) {
             g_GameInfo.current[g_CurrentLevel] = g_GameInfo.current[i];
         }
     }
@@ -549,7 +549,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     g_Lara.holsters_gun_type = LGT_UNKNOWN;
     g_Lara.back_gun_type = LGT_UNKNOWN;
 
-    Lara_InitialiseInventory(g_CurrentLevel);
+    Lara_InitialiseInventory(&g_GameFlow.levels[g_CurrentLevel]);
     SAVEGAME_LEGACY_ITEM_STATS item_stats = {};
     M_Read(&item_stats, sizeof(SAVEGAME_LEGACY_ITEM_STATS));
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, item_stats.num_pickup1);

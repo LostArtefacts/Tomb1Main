@@ -21,7 +21,6 @@
 #include <libtrx/log.h>
 
 typedef struct {
-    int32_t demo_num;
     int32_t level_num;
     TEXTSTRING *text;
 
@@ -54,7 +53,7 @@ static void M_RestoreConfig(M_PRIV *const p)
 
 static void M_PrepareStartInfo(M_PRIV *const p)
 {
-    START_INFO *const start = &g_SaveGame.start[p->level_num];
+    START_INFO *const start = GF_GetResumeInfo(&g_GameFlow.demos[p->level_num]);
     p->old_start = *start;
     start->available = 1;
     start->has_pistols = 1;
@@ -65,7 +64,8 @@ static void M_PrepareStartInfo(M_PRIV *const p)
 
 static void M_RestoreStartInfo(M_PRIV *const p)
 {
-    g_SaveGame.start[p->level_num] = p->old_start;
+    START_INFO *const start = GF_GetResumeInfo(&g_GameFlow.demos[p->level_num]);
+    *start = p->old_start;
 }
 
 bool Demo_GetInput(void)

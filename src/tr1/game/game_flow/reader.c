@@ -437,9 +437,10 @@ static bool M_LoadScriptLevels(JSON_OBJECT *obj)
             return false;
         }
 
-        cur->level_type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp_s, -1);
+        cur->num = cur - g_GameFlow.levels;
+        cur->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp_s, -1);
 
-        switch (cur->level_type) {
+        switch (cur->type) {
         case GFL_TITLE:
         case GFL_TITLE_DEMO_PC:
             if (g_GameFlow.title_level_num != -1) {

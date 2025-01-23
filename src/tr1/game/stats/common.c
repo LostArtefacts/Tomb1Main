@@ -124,7 +124,7 @@ void Stats_ComputeFinal(
     memset(final_stats, 0, sizeof(FINAL_STATS));
 
     for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].level_type != level_type) {
+        if (g_GameFlow.levels[i].type != level_type) {
             continue;
         }
         const LEVEL_STATS *level_stats = &g_GameInfo.current[i].stats;
