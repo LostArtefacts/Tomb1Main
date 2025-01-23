@@ -32,7 +32,7 @@
 static int16_t *m_AnimFrameData = NULL;
 static int32_t m_AnimFrameDataLength = 0;
 
-static void M_LoadFromFile(const char *file_name, int32_t level_num);
+static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
 static void M_LoadAnims(VFILE *file);
@@ -678,14 +678,14 @@ finish:
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
+static void M_LoadFromFile(const GAME_FLOW_LEVEL *const level)
 {
-    LOG_DEBUG("%s (num=%d)", GF_GetLevelTitle(level_num), level_num);
+    LOG_DEBUG("%s (num=%d)", level->title, level->num);
     GameBuf_Reset();
 
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    const char *full_path = File_GetFullPath(file_name);
+    const char *full_path = File_GetFullPath(level->path);
     strcpy(g_LevelFileName, full_path);
     VFILE *const file = VFile_CreateFromPath(full_path);
     Memory_FreePointer(&full_path);
@@ -693,8 +693,8 @@ static void M_LoadFromFile(const char *const file_name, const int32_t level_num)
     const int32_t version = VFile_ReadS32(file);
     if (version != 45) {
         Shell_ExitSystemFmt(
-            "Unexpected level version (%d, expected: %d, path: %s)", level_num,
-            45, file_name);
+            "Unexpected level version (%d, expected: %d, path: %s)", level->num,
+            45, level->path);
     }
 
     M_LoadPalettes(file);
@@ -758,7 +758,7 @@ static void M_CompleteSetup(void)
     Benchmark_End(benchmark, NULL);
 }
 
-bool Level_Load(const char *const file_name, const int32_t level_num)
+bool Level_Load(const GAME_FLOW_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -770,10 +770,9 @@ bool Level_Load(const char *const file_name, const int32_t level_num)
         Object_GetStaticObject3D(i)->loaded = false;
     }
 
-    const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
     Inject_Init(level->injections.count, level->injections.data_paths);
 
-    M_LoadFromFile(file_name, level_num);
+    M_LoadFromFile(level);
     M_CompleteSetup();
 
     Inject_Cleanup();
@@ -803,15 +802,15 @@ bool Level_Initialise(
     bool result;
     Level_Unload();
     if (level_type == GFL_TITLE) {
-        result = Level_Load(GF_GetTitleLevelPath(), level_num);
+        result = Level_Load(g_GameFlow.title_level);
     } else if (level_type == GFL_CUTSCENE) {
         if (level_num < 0 || level_num >= GF_GetCutsceneCount()) {
             LOG_ERROR("Invalid cutscene number: %d", level_num);
             return false;
         }
-        result = Level_Load(GF_GetCutscenePath(level_num), level_num);
+        result = Level_Load(&g_GameFlow.cutscenes[level_num]);
     } else {
-        result = Level_Load(GF_GetLevelPath(level_num), level_num);
+        result = Level_Load(&g_GameFlow.levels[level_num]);
     }
     if (!result) {
         return result;

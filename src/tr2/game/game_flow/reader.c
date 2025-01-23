@@ -414,9 +414,11 @@ static bool M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         gf, &gf->level_count, (void **)&gf->levels);
 
     for (int32_t i = 0; i < gf->level_count; i++) {
-        const GAME_FLOW_SEQUENCE *const sequence = &gf->levels[i].sequence;
-        for (int32_t j = 0; j < sequence->length; j++) {
-            GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[j];
+        GAME_FLOW_LEVEL *const level = &gf->levels[i];
+        level->num = i;
+        level->type = GFL_NORMAL;
+        for (int32_t j = 0; j < level->sequence.length; j++) {
+            GAME_FLOW_SEQUENCE_EVENT *const event = &level->sequence.events[j];
             if (event->type == GFS_PLAY_LEVEL
                 && (int32_t)(intptr_t)event->data == -1) {
                 event->data = (void *)(intptr_t)i;
@@ -424,6 +426,44 @@ static bool M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         }
     }
     return result;
+}
+
+static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    const bool result = M_LoadArray(
+        obj, "cutscenes", sizeof(GAME_FLOW_LEVEL),
+        (M_LOAD_ARRAY_FUNC)M_LoadLevel, gf, &gf->cutscene_count,
+        (void **)&gf->cutscenes);
+    for (int32_t i = 0; i < gf->cutscene_count; i++) {
+        GAME_FLOW_LEVEL *const level = &gf->cutscenes[i];
+        level->num = i;
+        level->type = GFL_CUTSCENE;
+    }
+    return result;
+}
+
+static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    const bool result = M_LoadArray(
+        obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
+        gf, &gf->demo_count, (void **)&gf->demos);
+    for (int32_t i = 0; i < gf->demo_count; i++) {
+        GAME_FLOW_LEVEL *const level = &gf->demos[i];
+        level->num = i;
+        level->type = GFL_DEMO;
+    }
+    return result;
+}
+
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    JSON_OBJECT *title_obj = JSON_ObjectGetObject(obj, "title");
+    if (title_obj != NULL) {
+        gf->title_level = Memory_Alloc(sizeof(GAME_FLOW_LEVEL));
+        M_LoadLevel(title_obj, gf, gf->title_level);
+        gf->title_level->num = 0;
+        gf->title_level->type = GFL_TITLE;
+    }
 }
 
 static void M_LoadFMV(
@@ -441,30 +481,6 @@ static bool M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     return M_LoadArray(
         obj, "fmvs", sizeof(GAME_FLOW_FMV), (M_LOAD_ARRAY_FUNC)M_LoadFMV, gf,
         &gf->fmv_count, (void **)&gf->fmvs);
-}
-
-static bool M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
-{
-    return M_LoadArray(
-        obj, "cutscenes", sizeof(GAME_FLOW_LEVEL),
-        (M_LOAD_ARRAY_FUNC)M_LoadLevel, gf, &gf->cutscene_count,
-        (void **)&gf->cutscenes);
-}
-
-static bool M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
-{
-    return M_LoadArray(
-        obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
-        gf, &gf->demo_count, (void **)&gf->demos);
-}
-
-static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
-{
-    JSON_OBJECT *title_obj = JSON_ObjectGetObject(obj, "title");
-    if (title_obj != NULL) {
-        gf->title_level = Memory_Alloc(sizeof(GAME_FLOW_LEVEL));
-        M_LoadLevel(title_obj, gf, gf->title_level);
-    }
 }
 
 bool GF_Load(const char *const path)
