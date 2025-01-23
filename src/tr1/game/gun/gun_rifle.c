@@ -138,6 +138,10 @@ void Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
     }
 
     Gun_Rifle_Animate(weapon_type);
+
+    if (g_Lara.right_arm.flash_gun) {
+        Gun_AddDynamicLight();
+    }
 }
 
 void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
@@ -262,9 +266,7 @@ void Gun_Rifle_Fire(const LARA_GUN_TYPE weapon_type)
         return;
     }
 
-    if (g_Config.visuals.enable_shotgun_flash) {
-        g_Lara.right_arm.flash_gun = g_Weapons[weapon_type].flash_time;
-    }
+    g_Lara.right_arm.flash_gun = g_Weapons[weapon_type].flash_time;
     Sound_Effect(
         g_Weapons[weapon_type].sample_num, &g_LaraItem->pos, SPM_NORMAL);
 }

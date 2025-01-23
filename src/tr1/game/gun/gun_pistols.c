@@ -172,6 +172,10 @@ void Gun_Pistols_Control(const LARA_GUN_TYPE weapon_type)
     }
 
     Gun_Pistols_Animate(weapon_type);
+
+    if (g_Lara.left_arm.flash_gun || g_Lara.right_arm.flash_gun) {
+        Gun_AddDynamicLight();
+    }
 }
 
 void Gun_Pistols_Animate(const LARA_GUN_TYPE weapon_type)

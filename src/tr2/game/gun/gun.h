@@ -2,6 +2,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/gun.h>
+
 void Gun_Control(void);
 void Gun_InitialiseNewWeapon(void);
 int32_t Gun_GetWeaponAnim(LARA_GUN_TYPE gun_type);

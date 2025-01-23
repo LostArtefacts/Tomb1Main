@@ -3,7 +3,6 @@
 #include "game/gun/gun.h"
 #include "game/gun/gun_misc.h"
 #include "game/input.h"
-#include "game/output.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
@@ -204,14 +203,7 @@ void Gun_Pistols_Control(const LARA_GUN_TYPE weapon_type)
     Gun_Pistols_Animate(weapon_type);
 
     if (g_Lara.left_arm.flash_gun || g_Lara.right_arm.flash_gun) {
-        const int32_t c = Math_Cos(g_LaraItem->rot.y);
-        const int32_t s = Math_Sin(g_LaraItem->rot.y);
-        const XYZ_32 pos = {
-            .x = g_LaraItem->pos.x + (s >> (W2V_SHIFT - 10)),
-            .y = g_LaraItem->pos.y - WALL_L / 2,
-            .z = g_LaraItem->pos.z + (c >> (W2V_SHIFT - 10)),
-        };
-        Output_AddDynamicLight(pos, 12, 11);
+        Gun_AddDynamicLight();
     }
 }
 

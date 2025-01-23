@@ -12,6 +12,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/debug.h>
 #include <libtrx/game/matrix.h>
 
@@ -279,6 +280,9 @@ void Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip)
         break;
 
     case LGT_SHOTGUN:
+        if (!g_Config.visuals.enable_shotgun_flash) {
+            return;
+        }
         light = 10 * 256;
         len = 285;
         off = 0;

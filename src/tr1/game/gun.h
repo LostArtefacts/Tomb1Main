@@ -4,6 +4,8 @@
 
 #include "global/types.h"
 
+#include <libtrx/game/gun.h>
+
 #include <stdint.h>
 
 void Gun_Control(void);

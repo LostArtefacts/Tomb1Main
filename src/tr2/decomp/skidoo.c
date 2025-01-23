@@ -21,6 +21,7 @@
 #include "global/vars.h"
 
 #include <libtrx/game/game_buf.h>
+#include <libtrx/game/gun.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
@@ -776,15 +777,7 @@ void Skidoo_Guns(void)
 
     g_Lara.right_arm.flash_gun = winfo->flash_time;
     Sound_Effect(winfo->sample_num, &g_LaraItem->pos, SPM_NORMAL);
-
-    const int32_t cy = Math_Cos(g_LaraItem->rot.y);
-    const int32_t sy = Math_Sin(g_LaraItem->rot.y);
-    const XYZ_32 pos = {
-        .x = g_LaraItem->pos.x + (sy >> 4),
-        .z = g_LaraItem->pos.z + (cy >> 4),
-        .y = g_LaraItem->pos.y - 512,
-    };
-    Output_AddDynamicLight(pos, 12, 11);
+    Gun_AddDynamicLight();
 
     ITEM *const skidoo = Item_Get(g_Lara.skidoo);
     Creature_Effect(skidoo, &g_Skidoo_LeftGun, Spawn_GunShot);

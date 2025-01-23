@@ -5,7 +5,6 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
-#include "game/output.h"
 #include "game/random.h"
 #include "game/room.h"
 #include "game/sound.h"
@@ -96,14 +95,7 @@ void Gun_Rifle_Control(const LARA_GUN_TYPE weapon_type)
 
     if (g_Lara.right_arm.flash_gun
         && (weapon_type == LGT_SHOTGUN || weapon_type == LGT_M16)) {
-        const int32_t c = Math_Cos(g_LaraItem->rot.y);
-        const int32_t s = Math_Sin(g_LaraItem->rot.y);
-        const XYZ_32 pos = {
-            .x = g_LaraItem->pos.x + (s >> (W2V_SHIFT - 10)),
-            .y = g_LaraItem->pos.y - WALL_L / 2,
-            .z = g_LaraItem->pos.z + (c >> (W2V_SHIFT - 10)),
-        };
-        Output_AddDynamicLight(pos, 12, 11);
+        Gun_AddDynamicLight();
     }
 }
 
