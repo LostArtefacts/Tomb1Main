@@ -95,21 +95,6 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             }
             break;
 
-        case GFS_STOP_GAME:
-            command = Game_Stop_Legacy();
-            if (command.action != GF_NOOP
-                && command.action != GF_LEVEL_COMPLETE) {
-                return command;
-            }
-            if (level_type == GFL_SAVED) {
-                if (g_GameFlow.levels[level_num].level_type == GFL_BONUS) {
-                    level_type = GFL_BONUS;
-                } else {
-                    level_type = GFL_NORMAL;
-                }
-            }
-            break;
-
         case GFS_LOOP_CINE:
             if (level_type != GFL_SAVED) {
                 command = GF_PlayCutscene((int32_t)(intptr_t)event->data);
@@ -295,7 +280,6 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
 
         switch (event->type) {
         case GFS_LOOP_GAME:
-        case GFS_STOP_GAME:
         case GFS_LEVEL_STATS:
         case GFS_TOTAL_STATS:
         case GFS_LOADING_SCREEN:

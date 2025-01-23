@@ -161,7 +161,6 @@ static bool M_LoadLevelSequence(JSON_OBJECT *obj, int32_t level_num)
 
         switch (event->type) {
         case GFS_START_GAME:
-        case GFS_STOP_GAME:
         case GFS_LOOP_GAME:
         case GFS_LOOP_CINE:
             event->data = (void *)(intptr_t)level_num;

@@ -43,7 +43,6 @@
             "sequence": [
                 {"type": "start_game"},
                 {"type": "loop_game"},
-                {"type": "stop_game"},
                 {"type": "level_stats", "level_id": 0},
                 {"type": "exit_to_level", "level_id": 1},
             ],
@@ -66,7 +65,6 @@
             "sequence": [
                 {"type": "start_game"},
                 {"type": "loop_game"},
-                {"type": "stop_game"},
                 {"type": "level_stats", "level_id": 1},
                 {"type": "exit_to_level", "level_id": 2},
             ],
@@ -87,7 +85,6 @@
             "sequence": [
                 {"type": "start_game"},
                 {"type": "loop_game"},
-                {"type": "stop_game"},
                 {"type": "level_stats", "level_id": 2},
                 {"type": "exit_to_level", "level_id": 3},
             ],
@@ -107,7 +104,6 @@
             "sequence": [
                 {"type": "start_game"},
                 {"type": "loop_game"},
-                {"type": "stop_game"},
                 {"type": "level_stats", "level_id": 3},
                 {"type": "play_synced_audio", "audio_id": 19},
                 {"type": "display_picture", "picture_path": "data/images/end.webp", "display_time": 7.5},

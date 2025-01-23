@@ -289,8 +289,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 
     Lara_Cheat_Control();
     if (g_LevelComplete) {
-        // exit details are set up in GFS_STOP_GAME / Game_Stop_Legacy
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return Game_Stop_Legacy();
     }
 
     Input_Update();

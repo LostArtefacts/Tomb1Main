@@ -743,13 +743,6 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>stop_game</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Ends a level.</td>
-  </tr>
-  <tr valign="top">
-    <td>
       <code>total_stats</code>
     </td>
     <td>
@@ -792,7 +785,6 @@ game will exit to title.
     "sequence": [
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "level_stats", "level_id": 1},
          {"type": "exit_to_level", "level_id": 2},
     ],
@@ -805,7 +797,6 @@ game will exit to title.
     "sequence": [
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "level_stats", "level_id": 2},
          {"type": "exit_to_level", "level_id": 3},
     ],
@@ -818,7 +809,6 @@ game will exit to title.
     "sequence": [
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "level_stats", "level_id": 3},
          {"type": "play_synced_audio", "audio_id": 19},
          {"type": "display_picture", "picture_path": "data/end.pcx", "display_time": 7.5},
@@ -838,7 +828,6 @@ game will exit to title.
          {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "exit_to_cine", "level_id": 6},
     ],
 },
@@ -850,7 +839,6 @@ game will exit to title.
     "sequence": [
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "level_stats", "level_id": 5},
          {"type": "play_synced_audio", "audio_id": 14},
          {"type": "total_stats", "picture_path": "data/install.pcx"},
@@ -911,7 +899,6 @@ the engine's overall item limit).
     "sequence": [
          {"type": "start_game"},
          {"type": "loop_game"},
-         {"type": "stop_game"},
          {"type": "level_stats", "level_id": 1},
          {"type": "exit_to_level", "level_id": 2},
     ],

@@ -27,7 +27,6 @@ static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
             break;
         case GFS_START_GAME:
         case GFS_LOOP_GAME:
-        case GFS_STOP_GAME:
         case GFS_LOOP_CINE:
         case GFS_LEVEL_STATS:
         case GFS_EXIT_TO_TITLE:

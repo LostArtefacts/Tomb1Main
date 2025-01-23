@@ -4,7 +4,6 @@ typedef enum {
     GFS_DISPLAY_PICTURE,
     GFS_START_GAME,
     GFS_LOOP_GAME,
-    GFS_STOP_GAME,
     GFS_LOOP_CINE,
     GFS_PLAY_FMV,
     GFS_LEVEL_STATS,
