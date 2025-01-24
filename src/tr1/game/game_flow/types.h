@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./enum.h"
+#include "game/music.h"
 #include "global/types.h"
 
 #include <libtrx/game/game_flow/types.h>
