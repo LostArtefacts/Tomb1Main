@@ -63,7 +63,7 @@ void Game_Resume(void)
 
 GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 {
-    if (!g_GameFlow.cheat_keys) {
+    if (g_GameFlow.cheat_keys) {
         Lara_Cheat_CheckKeys();
     }
 
