@@ -36,7 +36,7 @@ static void M_ReinitialiseGunMeshes(void)
     const bool has_flare = Lara_GetMesh(LM_HAND_L)
         == Object_GetMesh(g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L);
 
-    Lara_InitialiseMeshes(&g_GameFlow.levels[g_CurrentLevel]);
+    Lara_InitialiseMeshes(g_CurrentLevel);
     Gun_InitialiseNewWeapon();
     if (has_flare) {
         Flare_DrawMeshes();

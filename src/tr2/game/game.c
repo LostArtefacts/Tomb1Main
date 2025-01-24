@@ -23,18 +23,21 @@
 
 #include <libtrx/config.h>
 
-bool Game_Start(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+bool Game_Start(int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
-        g_CurrentLevel = level_num;
+    if (level_type == GFL_NORMAL || level_type == GFL_SAVED) {
+        g_CurrentLevel = &g_GameFlow.levels[level_num];
+    } else if (level_type == GFL_DEMO) {
+        g_CurrentLevel = &g_GameFlow.demos[level_num];
     }
     if (level_type != GFL_SAVED) {
-        ModifyStartInfo(level_num);
+        if (g_CurrentLevel != NULL) {
+            ModifyStartInfo(g_CurrentLevel);
+        }
         InitialiseLevelFlags();
     }
     if (!Level_Initialise(level_num, level_type)) {
-        g_CurrentLevel = 0;
+        g_CurrentLevel = NULL;
         return false;
     }
 
@@ -71,13 +74,10 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         if (g_GameFlow.is_demo_version && g_GameFlow.single_level) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (g_CurrentLevel == LV_GYM) {
+        if (g_CurrentLevel->num == LV_GYM) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        return (GAME_FLOW_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
-            .param = g_CurrentLevel,
-        };
+        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
     Input_Update();
@@ -107,7 +107,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         if (demo_mode) {
             return g_GameFlow.cmd_death_demo_mode;
         }
-        if (g_CurrentLevel == LV_GYM) {
+        if (g_CurrentLevel->num == LV_GYM) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_GameFlow.cmd_death_in_game.action != GF_NOOP) {
@@ -165,7 +165,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
     Output_AnimateTextures(1 * TICKS_PER_FRAME);
 
     g_HealthBarTimer--;
-    if (g_CurrentLevel != LV_GYM || g_IsAssaultTimerActive) {
+    if (g_CurrentLevel->num != LV_GYM || g_IsAssaultTimerActive) {
         Stats_UpdateTimer();
     }
 
@@ -192,7 +192,7 @@ GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
 
 extern int32_t Game_GetCurrentLevelNum(void)
 {
-    return g_CurrentLevel;
+    return g_CurrentLevel != NULL ? g_CurrentLevel->num : -1;
 }
 
 bool Game_IsPlayable(void)

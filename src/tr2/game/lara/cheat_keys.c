@@ -62,11 +62,7 @@ static void M_ExplodeLara(void)
 
 void Lara_Cheat_CheckKeys(void)
 {
-    if (g_CurrentLevel == LV_GYM) {
-        return;
-    }
-
-    if (g_CurrentLevel == GF_GetLevelCount() - 1) {
+    if (g_CurrentLevel != NULL && g_CurrentLevel->num == LV_GYM) {
         return;
     }
 

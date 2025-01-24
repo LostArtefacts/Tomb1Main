@@ -125,7 +125,8 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
             }
 
             if (g_PasswordText1 == NULL) {
-                if (g_Inv_Mode == INV_TITLE_MODE || g_CurrentLevel == LV_GYM) {
+                if (g_Inv_Mode == INV_TITLE_MODE
+                    || g_CurrentLevel->num == LV_GYM) {
                     g_PasswordText1 =
                         Text_Create(0, -16, GS(PASSPORT_NEW_GAME));
                 } else {
@@ -136,7 +137,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 Text_CentreH(g_PasswordText1, true);
             }
 
-            if (g_Inv_Mode != INV_TITLE_MODE && g_CurrentLevel != LV_GYM) {
+            if (g_Inv_Mode != INV_TITLE_MODE && g_CurrentLevel->num != LV_GYM) {
                 Text_Remove(m_LevelText);
                 m_LevelText = NULL;
 

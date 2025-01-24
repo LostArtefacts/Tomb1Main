@@ -645,8 +645,8 @@ void InitialiseStartInfo(void)
         return;
     }
 
-    for (int32_t i = 0; i < MAX_LEVELS; i++) {
-        ModifyStartInfo(i);
+    for (int32_t i = 0; i < g_GameFlow.level_count; i++) {
+        ModifyStartInfo(&g_GameFlow.levels[i]);
         g_SaveGame.start[i].available = 0;
         g_SaveGame.start[i].stats.timer = 0;
         g_SaveGame.start[i].stats.ammo_used = 0;
@@ -662,14 +662,14 @@ void InitialiseStartInfo(void)
     g_SaveGame.bonus_flag = 0;
 }
 
-void ModifyStartInfo(const int32_t level_num)
+void ModifyStartInfo(const GAME_FLOW_LEVEL *const level)
 {
-    START_INFO *start = &g_SaveGame.start[level_num];
+    START_INFO *start = GF_GetResumeInfo(level);
     start->has_pistols = 1;
     start->gun_type = LGT_PISTOLS;
     start->pistol_ammo = 1000;
 
-    if (level_num == LV_GYM) {
+    if (level->num == LV_GYM) {
         start->available = 1;
 
         start->has_pistols = 0;
@@ -693,7 +693,7 @@ void ModifyStartInfo(const int32_t level_num)
         start->small_medipacks = 0;
         start->gun_type = LGT_UNARMED;
         start->gun_status = LGS_ARMLESS;
-    } else if (level_num == LV_FIRST) {
+    } else if (level->num == LV_FIRST) {
         start->available = 1;
 
         start->has_pistols = 1;
@@ -717,7 +717,7 @@ void ModifyStartInfo(const int32_t level_num)
         start->gun_status = LGS_ARMLESS;
     }
 
-    if (g_SaveGame.bonus_flag && level_num != LV_GYM) {
+    if (g_SaveGame.bonus_flag && level->num != LV_GYM) {
         start->has_pistols = 1;
         start->has_shotgun = 1;
         start->has_magnums = 1;
@@ -739,9 +739,9 @@ void ModifyStartInfo(const int32_t level_num)
     }
 }
 
-void CreateStartInfo(const int32_t level_num)
+void CreateStartInfo(const GAME_FLOW_LEVEL *const level)
 {
-    START_INFO *const start = &g_SaveGame.start[level_num];
+    START_INFO *const start = GF_GetResumeInfo(level);
 
     start->available = 1;
 
@@ -819,7 +819,7 @@ void CreateStartInfo(const int32_t level_num)
 
 void CreateSaveGameInfo(void)
 {
-    g_SaveGame.current_level = g_CurrentLevel;
+    g_SaveGame.current_level = g_CurrentLevel->num;
 
     CreateStartInfo(g_CurrentLevel);
 
@@ -870,7 +870,7 @@ void CreateSaveGameInfo(void)
 
 void ExtractSaveGameInfo(void)
 {
-    Lara_InitialiseInventory(&g_GameFlow.levels[g_CurrentLevel]);
+    Lara_InitialiseInventory(g_CurrentLevel);
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, g_SaveGame.num_pickup[0]);
     Inv_AddItemNTimes(O_PICKUP_ITEM_2, g_SaveGame.num_pickup[1]);
     Inv_AddItemNTimes(O_PUZZLE_ITEM_1, g_SaveGame.num_puzzle[0]);

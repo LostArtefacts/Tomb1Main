@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/game_flow/types.h"
 #include "global/types.h"
 
 #include <libtrx/game/camera/vars.h>
@@ -77,7 +78,7 @@ extern uint16_t g_SoundOptionLine;
 extern ASSAULT_STATS g_Assault;
 extern int32_t g_LevelItemCount;
 extern int32_t g_HealthBarTimer;
-extern int32_t g_CurrentLevel;
+extern GAME_FLOW_LEVEL *g_CurrentLevel;
 extern int32_t g_LevelComplete;
 extern RGB_888 g_GamePalette8[256];
 extern RGB_888 g_GamePalette16[256];

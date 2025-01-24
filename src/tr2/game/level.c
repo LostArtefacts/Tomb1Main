@@ -830,14 +830,14 @@ bool Level_Initialise(
         g_GymInvOpenEnabled = false;
     }
 
+    GAME_FLOW_LEVEL *const level =
+        M_GetFromNumberAndType(level_num, level_type);
     if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
-        g_CurrentLevel = level_num;
+        g_CurrentLevel = level;
     }
     InitialiseGameFlags();
     g_Lara.item_num = NO_ITEM;
 
-    const GAME_FLOW_LEVEL *level =
-        M_GetFromNumberAndType(level_num, level_type);
     if (level == NULL) {
         return false;
     }

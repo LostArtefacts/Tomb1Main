@@ -218,7 +218,7 @@ static GAME_FLOW_COMMAND M_Finish(
             } else {
                 // game mode - save game (or start the game if in Lara's
                 // Home)
-                if (g_CurrentLevel == LV_GYM) {
+                if (g_CurrentLevel != NULL && g_CurrentLevel->num == LV_GYM) {
                     if (apply_changes) {
                         InitialiseStartInfo();
                     }
@@ -338,7 +338,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
         }
     }
 
-    if (g_CurrentLevel != LV_GYM) {
+    if (g_CurrentLevel != NULL && g_CurrentLevel->num != LV_GYM) {
         Stats_UpdateTimer();
     }
 
@@ -835,7 +835,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     g_Inv_Mode = mode;
 
-    if (g_CurrentLevel != LV_GYM) {
+    if (g_CurrentLevel != NULL && g_CurrentLevel->num != LV_GYM) {
         Stats_StartTimer();
     }
 

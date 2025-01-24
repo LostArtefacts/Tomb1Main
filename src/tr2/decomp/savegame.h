@@ -1,12 +1,13 @@
 #pragma once
 
+#include "game/game_flow/types.h"
 #include "global/types.h"
 
 #include <stddef.h>
 
 void InitialiseStartInfo(void);
-void ModifyStartInfo(int32_t level_num);
-void CreateStartInfo(int32_t level_num);
+void ModifyStartInfo(const GAME_FLOW_LEVEL *level);
+void CreateStartInfo(const GAME_FLOW_LEVEL *level);
 void CreateSaveGameInfo(void);
 void ExtractSaveGameInfo(void);
 

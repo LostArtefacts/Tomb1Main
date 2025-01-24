@@ -621,7 +621,7 @@ void Lara_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         item->hit_points = -1;
-        if (g_CurrentLevel == LV_GYM) {
+        if (g_CurrentLevel != NULL && g_CurrentLevel->num == LV_GYM) {
             g_GymInvOpenEnabled = true;
         }
         if (!g_Lara.death_timer) {

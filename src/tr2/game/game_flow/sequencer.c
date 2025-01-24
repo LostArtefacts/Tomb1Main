@@ -159,7 +159,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_LEVEL_COMPLETE:
             if (type == GFL_NORMAL) {
-                START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
+                START_INFO *const start = GF_GetResumeInfo(g_CurrentLevel);
                 start->stats = g_SaveGame.current_stats;
 
                 if (g_GameFlow.level_complete_track != MX_INACTIVE) {
@@ -169,14 +169,16 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                     Phase_Stats_Create((PHASE_STATS_ARGS) {
                         .background_type = BK_OBJECT,
                         .show_final_stats = false,
-                        .level_num = g_CurrentLevel,
+                        .level_num = g_CurrentLevel->num,
                         .use_bare_style = false,
                     });
                 gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);
 
-                CreateStartInfo(g_CurrentLevel + 1);
-                g_SaveGame.current_level = g_CurrentLevel + 1;
+                GAME_FLOW_LEVEL *const next_level =
+                    &g_GameFlow.levels[g_CurrentLevel->num + 1];
+                CreateStartInfo(next_level);
+                g_SaveGame.current_level = next_level->num;
                 start->available = 0;
 
                 if (gf_cmd.action != GF_NOOP) {
@@ -184,7 +186,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 }
                 gf_cmd = (GAME_FLOW_COMMAND) {
                     .action = GF_START_GAME,
-                    .param = g_CurrentLevel + 1,
+                    .param = next_level->num,
                 };
             }
             break;
@@ -197,7 +199,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_GAME_COMPLETE:
             if (type == GFL_NORMAL) {
-                START_INFO *const start = &g_SaveGame.start[g_CurrentLevel];
+                START_INFO *const start = GF_GetResumeInfo(g_CurrentLevel);
                 start->stats = g_SaveGame.current_stats;
                 g_SaveGame.bonus_flag = true;
                 gf_cmd = DisplayCredits();

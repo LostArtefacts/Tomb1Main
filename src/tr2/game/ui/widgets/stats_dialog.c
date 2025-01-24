@@ -148,7 +148,8 @@ static void M_AddRowFromRole(
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
-    const STATS_COMMON *stats = self->args.level_num == g_CurrentLevel
+    const STATS_COMMON *stats =
+        g_CurrentLevel != NULL && self->args.level_num == g_CurrentLevel->num
         ? (STATS_COMMON *)&g_SaveGame.current_stats
         : (STATS_COMMON *)&g_SaveGame.start[self->args.level_num].stats;
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
