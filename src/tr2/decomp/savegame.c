@@ -645,8 +645,8 @@ void InitialiseStartInfo(void)
         return;
     }
 
-    for (int32_t i = 0; i < g_GameFlow.level_count; i++) {
-        ModifyStartInfo(&g_GameFlow.levels[i]);
+    for (int32_t i = 0; i < GF_GetLevelCount(); i++) {
+        ModifyStartInfo(GF_GetLevel(i, GFL_NORMAL));
         g_SaveGame.start[i].available = 0;
         g_SaveGame.start[i].stats.timer = 0;
         g_SaveGame.start[i].stats.ammo_used = 0;

@@ -3,6 +3,7 @@
 #include "game/game_flow/vars.h"
 #include "global/vars.h"
 
+#include <libtrx/log.h>
 #include <libtrx/memory.h>
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
@@ -48,14 +49,6 @@ static void M_FreeFMVs(GAME_FLOW *const gf)
     gf->fmv_count = 0;
 }
 
-const char *GF_GetTitleLevelPath(void)
-{
-    if (g_GameFlow.title_level == NULL) {
-        return NULL;
-    }
-    return g_GameFlow.title_level->path;
-}
-
 int32_t GF_GetLevelCount(void)
 {
     return g_GameFlow.level_count;
@@ -66,11 +59,6 @@ int32_t GF_GetDemoCount(void)
     return g_GameFlow.demo_count;
 }
 
-const char *GF_GetLevelPath(const int32_t level_num)
-{
-    return g_GameFlow.levels[level_num].path;
-}
-
 const char *GF_GetLevelTitle(const int32_t level_num)
 {
     return g_GameFlow.levels[level_num].title;
@@ -79,11 +67,6 @@ const char *GF_GetLevelTitle(const int32_t level_num)
 int32_t GF_GetCutsceneCount(void)
 {
     return g_GameFlow.cutscene_count;
-}
-
-const char *GF_GetCutscenePath(const int32_t cutscene_num)
-{
-    return g_GameFlow.cutscenes[cutscene_num].path;
 }
 
 void GF_SetLevelTitle(const int32_t level_num, const char *const title)
@@ -115,6 +98,41 @@ void GF_Shutdown(void)
     if (gf->title_level != NULL) {
         M_FreeLevel(gf->title_level);
         Memory_FreePointer(&gf->title_level);
+    }
+}
+
+GAME_FLOW_LEVEL *GF_GetLevel(
+    const int32_t num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    switch (level_type) {
+    case GFL_TITLE:
+        return g_GameFlow.title_level;
+
+    case GFL_CUTSCENE:
+        if (num < 0 || num >= GF_GetCutsceneCount()) {
+            LOG_ERROR("Invalid cutscene number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.cutscenes[num];
+
+    case GFL_DEMO:
+        if (num < 0 || num >= GF_GetDemoCount()) {
+            LOG_ERROR("Invalid demo number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.demos[num];
+
+    case GFL_NORMAL:
+    case GFL_SAVED:
+        if (num < 0 || num >= GF_GetLevelCount()) {
+            LOG_ERROR("Invalid level number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.levels[num];
+
+    default:
+        LOG_ERROR("Invalid level type: %d", level_type);
+        return NULL;
     }
 }
 

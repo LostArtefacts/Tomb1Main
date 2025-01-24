@@ -18,10 +18,11 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/log.h>
 
 typedef struct {
-    int32_t level_num;
+    GAME_FLOW_LEVEL *level;
     TEXTSTRING *text;
 
     struct {
@@ -53,7 +54,7 @@ static void M_RestoreConfig(M_PRIV *const p)
 
 static void M_PrepareStartInfo(M_PRIV *const p)
 {
-    START_INFO *const start = GF_GetResumeInfo(&g_GameFlow.demos[p->level_num]);
+    START_INFO *const start = GF_GetResumeInfo(p->level);
     p->old_start = *start;
     start->available = 1;
     start->has_pistols = 1;
@@ -64,7 +65,7 @@ static void M_PrepareStartInfo(M_PRIV *const p)
 
 static void M_RestoreStartInfo(M_PRIV *const p)
 {
-    START_INFO *const start = GF_GetResumeInfo(&g_GameFlow.demos[p->level_num]);
+    START_INFO *const start = GF_GetResumeInfo(p->level);
     *start = p->old_start;
 }
 
@@ -141,20 +142,21 @@ bool Demo_GetInput(void)
 bool Demo_Start(const int32_t level_num)
 {
     M_PRIV *const p = &m_Priv;
-    p->level_num = level_num;
+    p->level = GF_GetLevel(level_num, GFL_DEMO);
+    ASSERT(p->level != NULL);
 
     M_PrepareConfig(p);
     M_PrepareStartInfo(p);
 
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
-    if (!Level_Initialise(p->level_num, GFL_DEMO)) {
+    if (!Level_Initialise(level_num, GFL_DEMO)) {
         return false;
     }
 
     g_LevelComplete = false;
     if (!g_IsDemoLoaded) {
-        LOG_ERROR("Level '%s' has no demo data", GF_GetLevelPath(p->level_num));
+        LOG_ERROR("Level '%s' has no demo data", p->level->path);
         return false;
     }
 

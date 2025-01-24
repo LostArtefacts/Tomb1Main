@@ -8,6 +8,5 @@
 void GF_Shutdown(void);
 
 int32_t GF_GetCutsceneCount(void);
-const char *GF_GetCutscenePath(int32_t cutscene_num);
-const char *GF_GetTitleLevelPath(void);
+GAME_FLOW_LEVEL *GF_GetLevel(int32_t num, GAME_FLOW_LEVEL_TYPE level_type);
 START_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *level);

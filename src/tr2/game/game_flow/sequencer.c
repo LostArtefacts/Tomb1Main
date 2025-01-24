@@ -19,13 +19,14 @@ GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
     if (demo_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    return GF_InterpretSequence(&g_GameFlow.demos[demo_num].sequence, GFL_DEMO);
+    return GF_InterpretSequence(
+        &GF_GetLevel(demo_num, GFL_DEMO)->sequence, GFL_DEMO);
 }
 
 GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
 {
     return GF_InterpretSequence(
-        &g_GameFlow.cutscenes[cutscene_num].sequence, GFL_CUTSCENE);
+        &GF_GetLevel(cutscene_num, GFL_CUTSCENE)->sequence, GFL_CUTSCENE);
 }
 
 bool GF_DoFrontendSequence(void)
@@ -51,7 +52,7 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
 
         LOG_DEBUG("running sequence for level=%d type=%d", current_level, type);
         const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
-            &g_GameFlow.levels[current_level].sequence, type);
+            &GF_GetLevel(current_level, GFL_NORMAL)->sequence, type);
         LOG_DEBUG("sequence finished");
         current_level++;
 
@@ -175,13 +176,14 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 gf_cmd = PhaseExecutor_Run(stats_phase);
                 Phase_Stats_Destroy(stats_phase);
 
-                GAME_FLOW_LEVEL *const next_level =
-                    &g_GameFlow.levels[g_CurrentLevel->num + 1];
-                CreateStartInfo(next_level);
-                g_SaveGame.current_level = next_level->num;
                 start->available = 0;
-
-                if (gf_cmd.action != GF_NOOP) {
+                GAME_FLOW_LEVEL *const next_level =
+                    GF_GetLevel(g_CurrentLevel->num + 1, g_CurrentLevel->type);
+                if (next_level != NULL) {
+                    CreateStartInfo(next_level);
+                    g_SaveGame.current_level = next_level->num;
+                }
+                if (next_level == NULL || gf_cmd.action != GF_NOOP) {
                     return gf_cmd;
                 }
                 gf_cmd = (GAME_FLOW_COMMAND) {

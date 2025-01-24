@@ -25,11 +25,7 @@
 
 bool Game_Start(int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED) {
-        g_CurrentLevel = &g_GameFlow.levels[level_num];
-    } else if (level_type == GFL_DEMO) {
-        g_CurrentLevel = &g_GameFlow.demos[level_num];
-    }
+    g_CurrentLevel = GF_GetLevel(level_num, level_type);
     if (level_type != GFL_SAVED) {
         if (g_CurrentLevel != NULL) {
             ModifyStartInfo(g_CurrentLevel);
