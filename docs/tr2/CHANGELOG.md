@@ -22,6 +22,8 @@
 - fixed blood spawning on Lara from gunshots using incorrect positioning data (#2253)
 - fixed ghost meshes appearing near statics in custom levels (#2310)
 - fixed potential memory corruption when reading a custom level with more than 512 sprite textures (#2338)
+- fixed photo mode switching to the wrong flipmap rooms at times (#2362)
+- fixed the teleporting command sometimes putting Lara in invalid flipmap rooms (#2370)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed savegame incompatibility with OG (#2271, regression from 0.8)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)

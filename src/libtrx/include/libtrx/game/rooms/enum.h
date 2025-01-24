@@ -17,6 +17,12 @@ typedef enum {
 } ROOM_LIGHT_MODE;
 
 typedef enum {
+    RFS_NONE = 0,
+    RFS_UNFLIPPED = 1,
+    RFS_FLIPPED = 2,
+} ROOM_FLIP_STATUS;
+
+typedef enum {
     FT_FLOOR = 0,
     FT_DOOR = 1,
     FT_TILT = 2,

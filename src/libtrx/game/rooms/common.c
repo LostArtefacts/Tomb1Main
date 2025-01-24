@@ -96,6 +96,20 @@ static const int16_t *M_ReadTrigger(
     return data;
 }
 
+void Room_InitialiseFlipStatus(void)
+{
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+        ROOM *const room = Room_Get(i);
+        if (room->flipped_room == -1) {
+            room->flip_status = RFS_NONE;
+        } else if (room->flip_status != RFS_FLIPPED) {
+            ROOM *const flipped_room = Room_Get(room->flipped_room);
+            room->flip_status = RFS_UNFLIPPED;
+            flipped_room->flip_status = RFS_FLIPPED;
+        }
+    }
+}
+
 void Room_ParseFloorData(const int16_t *floor_data)
 {
     for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
@@ -200,6 +214,9 @@ int32_t Room_FindByPos(const int32_t x, const int32_t y, const int32_t z)
 {
     for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
         const ROOM *const room = Room_Get(i);
+        if (room->flip_status == RFS_FLIPPED) {
+            continue;
+        }
         const int32_t x1 = room->pos.x + WALL_L;
         const int32_t x2 = room->pos.x + (room->size.x - 1) * WALL_L;
         const int32_t y1 = room->max_ceiling;

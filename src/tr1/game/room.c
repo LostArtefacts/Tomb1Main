@@ -582,6 +582,8 @@ void Room_FlipMap(void)
 
         r->flipped_room = flipped->flipped_room;
         flipped->flipped_room = -1;
+        r->flip_status = RFS_UNFLIPPED;
+        flipped->flip_status = RFS_FLIPPED;
 
         // XXX: is this really necessary given the assignments above?
         r->item_num = flipped->item_num;

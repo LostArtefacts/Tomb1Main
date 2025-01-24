@@ -230,6 +230,7 @@ static void M_LoadRooms(VFILE *const file)
         r->effect_num = NO_EFFECT;
     }
 
+    Room_InitialiseFlipStatus();
     Level_ReadFloorData(file);
 
 finish:

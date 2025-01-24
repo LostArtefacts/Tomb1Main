@@ -257,6 +257,7 @@ static void M_LoadRooms(VFILE *file)
         r->effect_num = NO_EFFECT;
     }
 
+    Room_InitialiseFlipStatus();
     Level_ReadFloorData(file);
 
     Benchmark_End(benchmark, NULL);

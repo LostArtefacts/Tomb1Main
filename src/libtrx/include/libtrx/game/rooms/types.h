@@ -130,5 +130,6 @@ typedef struct {
     int16_t item_num;
     int16_t effect_num;
     int16_t flipped_room;
+    ROOM_FLIP_STATUS flip_status;
     uint16_t flags;
 } ROOM;
