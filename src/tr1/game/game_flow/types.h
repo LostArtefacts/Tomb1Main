@@ -53,6 +53,12 @@ typedef struct {
 } INJECTION_DATA;
 
 typedef struct {
+    RGB_F water_color;
+    float draw_distance_fade;
+    float draw_distance_max;
+} GAME_FLOW_LEVEL_SETTINGS;
+
+typedef struct {
     int32_t num;
     GAME_FLOW_LEVEL_TYPE type;
     char *path;
@@ -61,23 +67,9 @@ typedef struct {
     MUSIC_TRACK_ID music_track;
     GAME_FLOW_SEQUENCE sequence;
     INJECTION_DATA injections;
+    GAME_FLOW_LEVEL_SETTINGS settings;
 
     bool demo;
-
-    struct {
-        bool override;
-        RGB_F value;
-    } water_color;
-
-    struct {
-        bool override;
-        float value;
-    } draw_distance_fade;
-
-    struct {
-        bool override;
-        float value;
-    } draw_distance_max;
 
     struct {
         uint32_t pickups;
@@ -111,11 +103,9 @@ typedef struct {
     double demo_delay;
 
     // other data
-    RGB_F water_color;
-    float draw_distance_fade;
-    float draw_distance_max;
-
     INJECTION_DATA injections;
+    GAME_FLOW_LEVEL_SETTINGS settings;
+
     char *main_menu_background_path;
     bool enable_tr2_item_drops;
     bool convert_dropped_guns;

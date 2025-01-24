@@ -20,7 +20,15 @@ typedef struct {
     const int32_t val;
 } STRING_TO_ENUM_TYPE;
 
+static GAME_FLOW_LEVEL_SETTINGS m_DefaultSettings = {
+    .water_color = { .r = 0.6, .g = 0.7, .b = 1.0 },
+    .draw_distance_fade = 12.0f,
+    .draw_distance_max = 20.0f,
+};
+
 static bool M_IsLegacySequence(const char *type_str);
+static void M_LoadSettings(
+    JSON_OBJECT *obj, GAME_FLOW_LEVEL_SETTINGS *settings);
 static void M_LoadLevelSequence(
     JSON_OBJECT *obj, GAME_FLOW *gf, int32_t level_num);
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
@@ -30,6 +38,38 @@ static bool M_IsLegacySequence(const char *const type_str)
 {
     return strcmp(type_str, "fix_pyramid_secret") == 0
         || strcmp(type_str, "stop_cine") == 0;
+}
+
+static void M_LoadSettings(
+    JSON_OBJECT *const obj, GAME_FLOW_LEVEL_SETTINGS *const settings)
+{
+    {
+        const double value = JSON_ObjectGetDouble(
+            obj, "draw_distance_fade", JSON_INVALID_NUMBER);
+        if (value != JSON_INVALID_NUMBER) {
+            settings->draw_distance_fade = value;
+        }
+    }
+
+    {
+        const double value =
+            JSON_ObjectGetDouble(obj, "draw_distance_max", JSON_INVALID_NUMBER);
+        if (value != JSON_INVALID_NUMBER) {
+            settings->draw_distance_max = value;
+        }
+    }
+
+    {
+        JSON_ARRAY *const tmp_arr = JSON_ObjectGetArray(obj, "water_color");
+        if (tmp_arr != NULL) {
+            settings->water_color.r =
+                JSON_ArrayGetDouble(tmp_arr, 0, settings->water_color.r);
+            settings->water_color.g =
+                JSON_ArrayGetDouble(tmp_arr, 1, settings->water_color.g);
+            settings->water_color.b =
+                JSON_ArrayGetDouble(tmp_arr, 2, settings->water_color.b);
+        }
+    }
 }
 
 static void M_LoadLevelSequence(
@@ -369,41 +409,8 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
             level->demo = 0;
         }
 
-        {
-            double value = JSON_ObjectGetDouble(
-                jlvl_obj, "draw_distance_fade", JSON_INVALID_NUMBER);
-            if (value != JSON_INVALID_NUMBER) {
-                level->draw_distance_fade.override = true;
-                level->draw_distance_fade.value = value;
-            } else {
-                level->draw_distance_fade.override = false;
-            }
-        }
-
-        {
-            double value = JSON_ObjectGetDouble(
-                jlvl_obj, "draw_distance_max", JSON_INVALID_NUMBER);
-            if (value != JSON_INVALID_NUMBER) {
-                level->draw_distance_max.override = true;
-                level->draw_distance_max.value = value;
-            } else {
-                level->draw_distance_max.override = false;
-            }
-        }
-
-        tmp_arr = JSON_ObjectGetArray(jlvl_obj, "water_color");
-        if (tmp_arr) {
-            level->water_color.override = true;
-            level->water_color.value.r =
-                JSON_ArrayGetDouble(tmp_arr, 0, gf->water_color.r);
-            level->water_color.value.g =
-                JSON_ArrayGetDouble(tmp_arr, 1, gf->water_color.g);
-            level->water_color.value.b =
-                JSON_ArrayGetDouble(tmp_arr, 2, gf->water_color.b);
-        } else {
-            level->water_color.override = false;
-        }
-
+        level->settings = gf->settings;
+        M_LoadSettings(jlvl_obj, &level->settings);
         level->unobtainable.pickups =
             JSON_ObjectGetInt(jlvl_obj, "unobtainable_pickups", 0);
 
@@ -551,37 +558,8 @@ static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     }
     gf->demo_delay = tmp_d;
 
-    tmp_arr = JSON_ObjectGetArray(obj, "water_color");
-    gf->water_color.r = 0.6;
-    gf->water_color.g = 0.7;
-    gf->water_color.b = 1.0;
-    if (tmp_arr) {
-        gf->water_color.r = JSON_ArrayGetDouble(tmp_arr, 0, gf->water_color.r);
-        gf->water_color.g = JSON_ArrayGetDouble(tmp_arr, 1, gf->water_color.g);
-        gf->water_color.b = JSON_ArrayGetDouble(tmp_arr, 2, gf->water_color.b);
-    }
-
-    if (JSON_ObjectGetValue(obj, "draw_distance_fade")) {
-        double value = JSON_ObjectGetDouble(
-            obj, "draw_distance_fade", JSON_INVALID_NUMBER);
-        if (value == JSON_INVALID_NUMBER) {
-            Shell_ExitSystem("'draw_distance_fade' must be a number");
-        }
-        gf->draw_distance_fade = value;
-    } else {
-        gf->draw_distance_fade = 12.0f;
-    }
-
-    if (JSON_ObjectGetValue(obj, "draw_distance_max")) {
-        double value =
-            JSON_ObjectGetDouble(obj, "draw_distance_max", JSON_INVALID_NUMBER);
-        if (value == JSON_INVALID_NUMBER) {
-            Shell_ExitSystem("'draw_distance_max' must be a number");
-        }
-        gf->draw_distance_max = value;
-    } else {
-        gf->draw_distance_max = 20.0f;
-    }
+    gf->settings = m_DefaultSettings;
+    M_LoadSettings(obj, &gf->settings);
 
     tmp_arr = JSON_ObjectGetArray(obj, "injections");
     if (tmp_arr) {

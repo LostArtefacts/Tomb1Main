@@ -869,20 +869,9 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
 
     Inject_Cleanup();
 
-    Output_SetWaterColor(
-        level->water_color.override ? &level->water_color.value
-                                    : &g_GameFlow.water_color);
-
-    Output_SetDrawDistFade(
-        (level->draw_distance_fade.override ? level->draw_distance_fade.value
-                                            : g_GameFlow.draw_distance_fade)
-        * WALL_L);
-
-    Output_SetDrawDistMax(
-        (level->draw_distance_max.override ? level->draw_distance_max.value
-                                           : g_GameFlow.draw_distance_max)
-        * WALL_L);
-
+    Output_SetWaterColor(&level->settings.water_color);
+    Output_SetDrawDistFade(level->settings.draw_distance_fade * WALL_L);
+    Output_SetDrawDistMax(level->settings.draw_distance_max * WALL_L);
     Output_SetSkyboxEnabled(
         g_Config.visuals.enable_skybox && g_Objects[O_SKYBOX].loaded);
 
