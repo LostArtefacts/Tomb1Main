@@ -8,8 +8,6 @@ GAME_FLOW_COMMAND
 GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num);
 GAME_FLOW_COMMAND GF_DoCutsceneSequence(int32_t demo_num);
-GAME_FLOW_COMMAND
-GF_StorySoFar(const GAME_FLOW_SEQUENCE *sequence, int32_t savegame_level);
 GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num);
 
 GAME_FLOW_COMMAND GF_LoadLevel(

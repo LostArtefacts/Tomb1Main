@@ -161,7 +161,7 @@ bool Lara_Cheat_EnterFlyMode(void)
     g_Lara.death_timer = 0;
     g_Lara.mesh_effects = 0;
     g_LaraItem->enable_shadow = true;
-    Lara_InitialiseMeshes(&g_GameFlow.levels[g_CurrentLevel]);
+    Lara_InitialiseMeshes(GF_GetLevel(g_CurrentLevel, GFL_NORMAL));
     g_Camera.type = CAM_CHASE;
     Viewport_SetFOV(-1);
     Console_Log(GS(OSD_FLY_MODE_ON));

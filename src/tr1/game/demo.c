@@ -34,7 +34,7 @@
 
 typedef struct {
     uint32_t *demo_ptr;
-    int32_t level_num;
+    GAME_FLOW_LEVEL *level;
     CONFIG old_config;
     RESUME_INFO old_resume_info;
     TEXTSTRING *text;
@@ -67,7 +67,7 @@ static void M_RestoreConfig(M_PRIV *const p)
 
 static void M_PrepareResumeInfo(M_PRIV *const p)
 {
-    RESUME_INFO *const resume_info = &g_GameInfo.current[p->level_num];
+    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
     p->old_resume_info = *resume_info;
     resume_info->flags.available = 1;
     resume_info->flags.got_pistols = 1;
@@ -81,7 +81,8 @@ static void M_PrepareResumeInfo(M_PRIV *const p)
 
 static void M_RestoreResumeInfo(M_PRIV *const p)
 {
-    g_GameInfo.current[p->level_num] = p->old_resume_info;
+    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
+    *resume_info = p->old_resume_info;
 }
 
 static bool M_ProcessInput(M_PRIV *const p)
@@ -146,7 +147,7 @@ static bool M_ProcessInput(M_PRIV *const p)
 bool Demo_Start(const int32_t level_num)
 {
     M_PRIV *const p = &m_Priv;
-    p->level_num = level_num;
+    p->level = GF_GetLevel(level_num, GFL_DEMO);
 
     M_PrepareConfig(p);
     M_PrepareResumeInfo(p);
@@ -161,7 +162,7 @@ bool Demo_Start(const int32_t level_num)
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
 
-    if (!Level_Initialise(&g_GameFlow.levels[level_num])) {
+    if (!Level_Initialise(p->level)) {
         return false;
     }
     g_GameInfo.current_level_type = GFL_DEMO;
@@ -261,7 +262,7 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
     }
 
     // pick the next demo
-    int16_t level_num = p->level_num;
+    int16_t level_num = p->level != NULL ? p->level->num : -1;
     do {
         level_num++;
         if (level_num > g_GameFlow.last_level_num) {
@@ -294,7 +295,7 @@ GAME_FLOW_COMMAND Demo_Control(void)
     if (g_LevelComplete || g_InputDB.menu_confirm || g_InputDB.menu_back) {
         return (GAME_FLOW_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
-            .param = p->level_num,
+            .param = p->level->num,
         };
     }
     g_Input.any = 0;
@@ -303,7 +304,7 @@ GAME_FLOW_COMMAND Demo_Control(void)
     if (!M_ProcessInput(p)) {
         return (GAME_FLOW_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
-            .param = p->level_num,
+            .param = p->level->num,
         };
     }
     Lara_Cheat_Control();

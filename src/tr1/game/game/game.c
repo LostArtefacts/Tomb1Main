@@ -72,7 +72,7 @@ void Game_ProcessInput(void)
 bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 {
     g_GameInfo.current_level_type = level_type;
-    const GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[level_num];
+    const GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
 
     switch (level_type) {
     case GFL_SAVED:

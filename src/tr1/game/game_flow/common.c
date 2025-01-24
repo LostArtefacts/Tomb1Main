@@ -3,6 +3,7 @@
 #include "game/game_flow/vars.h"
 #include "global/vars.h"
 
+#include <libtrx/log.h>
 #include <libtrx/memory.h>
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
@@ -80,6 +81,22 @@ void GF_SetLevelTitle(const int32_t level_num, const char *const title)
 int32_t GF_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_level_num;
+}
+
+GAME_FLOW_LEVEL *GF_GetLevel(
+    const int32_t num, const GAME_FLOW_LEVEL_TYPE level_type)
+{
+    switch (level_type) {
+    case GFL_TITLE:
+        return &g_GameFlow.levels[g_GameFlow.title_level_num];
+
+    default:
+        if (num < 0 || num >= GF_GetLevelCount()) {
+            LOG_ERROR("Invalid level number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.levels[num];
+    }
 }
 
 RESUME_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *const level)
