@@ -132,10 +132,9 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         case GFS_TOTAL_STATS:
             if (g_Config.gameplay.enable_total_stats
                 && level_type != GFL_SAVED) {
-                const GAME_FLOW_DISPLAY_PICTURE_DATA *data = event->data;
                 PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                     .background_type = BK_IMAGE,
-                    .background_path = data->path,
+                    .background_path = event->data,
                     .level_num = level_num,
                     .show_final_stats = true,
                     .use_bare_style = false,

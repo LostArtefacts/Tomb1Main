@@ -15,15 +15,19 @@
 
 #include <string.h>
 
+typedef int32_t (*M_SEQUENCE_EVENT_HANDLER_FUNC)(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+
+typedef struct {
+    GAME_FLOW_SEQUENCE_EVENT_TYPE event_type;
+    M_SEQUENCE_EVENT_HANDLER_FUNC handler_func;
+    void *handler_func_arg;
+} M_SEQUENCE_EVENT_HANDLER;
+
 typedef void (*M_LOAD_ARRAY_FUNC)(
     JSON_OBJECT *source_elem, GAME_FLOW *gf, void *target_elem,
     size_t target_elem_idx, void *user_arg);
-
-static GAME_FLOW_LEVEL_SETTINGS m_DefaultSettings = {
-    .water_color = { .r = 0.6, .g = 0.7, .b = 1.0 },
-    .draw_distance_fade = 12.0f,
-    .draw_distance_max = 20.0f,
-};
 
 static void M_LoadArray(
     JSON_OBJECT *obj, const char *key, size_t element_size,
@@ -31,6 +35,21 @@ static void M_LoadArray(
     void **const elements, void *user_arg);
 
 static bool M_IsLegacySequence(const char *type_str);
+static int32_t M_HandleIntEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static int32_t M_HandlePictureEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static int32_t M_HandleTotalStatsEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static int32_t M_HandleAddItemEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
+static int32_t M_HandleMeshSwapEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg);
 static void M_LoadSettings(
     JSON_OBJECT *obj, GAME_FLOW_LEVEL_SETTINGS *settings);
 static void M_LoadLevelSequence(
@@ -44,11 +63,44 @@ static void M_LoadFMVs(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadRoot(JSON_OBJECT *obj, GAME_FLOW *gf);
 
-static bool M_IsLegacySequence(const char *const type_str)
-{
-    return strcmp(type_str, "fix_pyramid_secret") == 0
-        || strcmp(type_str, "stop_cine") == 0;
-}
+static GAME_FLOW_LEVEL_SETTINGS m_DefaultSettings = {
+    .water_color = { .r = 0.6, .g = 0.7, .b = 1.0 },
+    .draw_distance_fade = 12.0f,
+    .draw_distance_max = 20.0f,
+};
+
+static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
+    // clang-format off
+    // Events without arguments
+    { GFS_FLIP_MAP,         NULL, NULL },
+    { GFS_REMOVE_WEAPONS,   NULL, NULL },
+    { GFS_REMOVE_SCIONS,    NULL, NULL },
+    { GFS_REMOVE_AMMO,      NULL, NULL },
+    { GFS_REMOVE_MEDIPACKS, NULL, NULL },
+    { GFS_EXIT_TO_TITLE,    NULL, NULL },
+
+    // Events with integer arguments
+    { GFS_LOAD_LEVEL,       M_HandleIntEvent, "level_id" },
+    { GFS_PLAY_LEVEL,       M_HandleIntEvent, "level_id" },
+    { GFS_PLAY_FMV,         M_HandleIntEvent, "fmv_num" },
+    { GFS_LEVEL_STATS,         M_HandleIntEvent, "level_id" },
+    { GFS_EXIT_TO_LEVEL,       M_HandleIntEvent, "level_id" },
+    { GFS_EXIT_TO_CINE,        M_HandleIntEvent, "level_id" },
+    { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "value" },
+    { GFS_PLAY_SYNCED_AUDIO,   M_HandleIntEvent, "audio_id" },
+    { GFS_SETUP_BACON_LARA,    M_HandleIntEvent, "anchor_room" },
+
+    // Special cases with custom handlers
+    { GFS_LOADING_SCREEN,   M_HandlePictureEvent, NULL },
+    { GFS_DISPLAY_PICTURE,  M_HandlePictureEvent, NULL },
+    { GFS_TOTAL_STATS,      M_HandleTotalStatsEvent, NULL },
+    { GFS_ADD_ITEM,         M_HandleAddItemEvent, NULL },
+    { GFS_MESH_SWAP,        M_HandleMeshSwapEvent, NULL },
+
+    // Sentinel to mark the end of the table
+    { (GAME_FLOW_SEQUENCE_EVENT_TYPE)-1, NULL, NULL },
+    // clang-format on
+};
 
 static void M_LoadArray(
     JSON_OBJECT *const obj, const char *const key, const size_t element_size,
@@ -74,6 +126,118 @@ static void M_LoadArray(
 
         load_func(elem_obj, gf, element, i, user_arg);
     }
+}
+
+static bool M_IsLegacySequence(const char *const type_str)
+{
+    return strcmp(type_str, "fix_pyramid_secret") == 0
+        || strcmp(type_str, "stop_cine") == 0;
+}
+
+static int32_t M_HandleIntEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    if (event != NULL) {
+        event->data =
+            (void *)(intptr_t)JSON_ObjectGetInt(event_obj, user_arg, -1);
+    }
+    return 0;
+}
+
+static int32_t M_HandlePictureEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    const char *const path =
+        JSON_ObjectGetString(event_obj, "picture_path", NULL);
+    if (path == NULL) {
+        LOG_ERROR("Missing picture path");
+        return -1;
+    }
+    const float display_time =
+        JSON_ObjectGetDouble(event_obj, "display_time", -1.0);
+    if (display_time < 0.0) {
+        Shell_ExitSystemFmt("'display_time' must be a positive number");
+    }
+    if (event != NULL) {
+        GAME_FLOW_DISPLAY_PICTURE_DATA *const event_data = extra_data;
+        event_data->path =
+            (char *)extra_data + sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA);
+        event_data->display_time = display_time;
+        strcpy(event_data->path, path);
+        event->data = event_data;
+    }
+    return sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA) + strlen(path) + 1;
+}
+
+static int32_t M_HandleTotalStatsEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    const char *const path =
+        JSON_ObjectGetString(event_obj, "picture_path", NULL);
+    if (path == NULL) {
+        LOG_ERROR("Missing picture path");
+        return -1;
+    }
+    if (event != NULL) {
+        char *const event_data = extra_data;
+        strcpy(event_data, path);
+        event->data = event_data;
+    }
+    return strlen(path) + 1;
+}
+
+static int32_t M_HandleAddItemEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    const GAME_OBJECT_ID object_id =
+        JSON_ObjectGetInt(event_obj, "object_id", JSON_INVALID_NUMBER);
+    if (object_id == JSON_INVALID_NUMBER) {
+        LOG_ERROR("Invalid item: %s", object_id);
+        return -1;
+    }
+    if (event != NULL) {
+        GAME_FLOW_ADD_ITEM_DATA *const event_data = extra_data;
+        event_data->object_id = object_id;
+        event_data->quantity = JSON_ObjectGetInt(event_obj, "quantity", 1);
+        event->data = event_data;
+    }
+    return sizeof(GAME_FLOW_ADD_ITEM_DATA);
+}
+
+static int32_t M_HandleMeshSwapEvent(
+    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
+    void *user_arg)
+{
+    const GAME_OBJECT_ID object1_id =
+        JSON_ObjectGetInt(event_obj, "object1_id", JSON_INVALID_NUMBER);
+    if (object1_id == JSON_INVALID_NUMBER) {
+        Shell_ExitSystem("'object1_id' must be a number");
+    }
+
+    const GAME_OBJECT_ID object2_id =
+        JSON_ObjectGetInt(event_obj, "object2_id", JSON_INVALID_NUMBER);
+    if (object2_id == JSON_INVALID_NUMBER) {
+        Shell_ExitSystem("'object2_id' must be a number");
+    }
+
+    const int32_t mesh_num =
+        JSON_ObjectGetInt(event_obj, "mesh_id", JSON_INVALID_NUMBER);
+    if (mesh_num == JSON_INVALID_NUMBER) {
+        Shell_ExitSystem("'mesh_id' must be a number");
+    }
+
+    if (event != NULL) {
+        GAME_FLOW_MESH_SWAP_DATA *const swap_data = extra_data;
+        swap_data->object1_id = object1_id;
+        swap_data->object2_id = object2_id;
+        swap_data->mesh_num = mesh_num;
+        event->data = swap_data;
+    }
+    return sizeof(GAME_FLOW_MESH_SWAP_DATA);
 }
 
 static void M_LoadSettings(
@@ -108,6 +272,46 @@ static void M_LoadSettings(
     }
 }
 
+static size_t M_LoadSequenceEvent(
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data)
+{
+    const char *const type_str = JSON_ObjectGetString(event_obj, "type", "");
+    if (M_IsLegacySequence(type_str)) {
+        LOG_WARNING("legacy type '%s' ignored", type_str);
+        return -1;
+    }
+
+    const GAME_FLOW_SEQUENCE_EVENT_TYPE type =
+        ENUM_MAP_GET(GAME_FLOW_SEQUENCE_EVENT_TYPE, type_str, -1);
+
+    const M_SEQUENCE_EVENT_HANDLER *handler = m_SequenceEventHandlers;
+    while (handler->event_type != (GAME_FLOW_SEQUENCE_EVENT_TYPE)-1
+           && handler->event_type != type) {
+        handler++;
+    }
+    if (handler->event_type != type) {
+        LOG_ERROR("Unknown game flow sequence event type: '%s'", type);
+        return -1;
+    }
+
+    int32_t extra_data_size = 0;
+    if (handler->handler_func != NULL) {
+        extra_data_size = handler->handler_func(
+            event_obj, NULL, NULL, handler->handler_func_arg);
+    }
+    if (extra_data_size >= 0 && event != NULL) {
+        event->type = handler->event_type;
+        if (handler->handler_func != NULL) {
+            handler->handler_func(
+                event_obj, event, extra_data, handler->handler_func_arg);
+        } else {
+            event->data = NULL;
+        }
+    }
+    return extra_data_size;
+}
+
 static void M_LoadLevelSequence(
     JSON_OBJECT *const obj, GAME_FLOW *const gf, const int32_t level_num)
 {
@@ -116,234 +320,46 @@ static void M_LoadLevelSequence(
         Shell_ExitSystemFmt("level %d: 'sequence' must be a list", level_num);
     }
 
-    JSON_ARRAY_ELEMENT *jseq_elem = jseq_arr->start;
+    GAME_FLOW_SEQUENCE *const sequence = &gf->levels[level_num].sequence;
 
-    GAME_FLOW_SEQUENCE *sequence = &gf->levels[level_num].sequence;
-    sequence->length = jseq_arr->length;
-    sequence->events =
-        Memory_Alloc(sizeof(GAME_FLOW_SEQUENCE_EVENT) * jseq_arr->length);
-
-    GAME_FLOW_SEQUENCE_EVENT *event = sequence->events;
-    int32_t i = 0;
-    while (jseq_elem) {
-        JSON_OBJECT *jseq_obj = JSON_ValueAsObject(jseq_elem->value);
-        if (!jseq_obj) {
-            Shell_ExitSystemFmt(
-                "level %d: 'sequence' elements must be dictionaries");
+    sequence->length = 0;
+    size_t event_base_size = sizeof(GAME_FLOW_SEQUENCE_EVENT);
+    size_t total_data_size = 0;
+    for (size_t i = 0; i < jseq_arr->length; i++) {
+        JSON_OBJECT *jevent = JSON_ArrayGetObject(jseq_arr, i);
+        const int32_t event_extra_size =
+            M_LoadSequenceEvent(jevent, NULL, NULL);
+        if (event_extra_size < 0) {
+            // Parsing this event failed - discard it
+            continue;
         }
+        total_data_size += event_base_size;
+        total_data_size += event_extra_size;
+        sequence->length++;
+    }
 
-        const char *type_str =
-            JSON_ObjectGetString(jseq_obj, "type", JSON_INVALID_STRING);
-        if (type_str == JSON_INVALID_STRING) {
-            Shell_ExitSystemFmt(
-                "level %d: sequence 'type' must be a string", level_num);
+    char *const data = Memory_Alloc(total_data_size);
+    char *extra_data_ptr = data + event_base_size * sequence->length;
+    sequence->events = (GAME_FLOW_SEQUENCE_EVENT *)data;
+
+    int32_t j = 0;
+    for (int32_t i = 0; i < sequence->length; i++) {
+        JSON_OBJECT *const jevent = JSON_ArrayGetObject(jseq_arr, i);
+        const int32_t event_extra_size =
+            M_LoadSequenceEvent(jevent, &sequence->events[j++], extra_data_ptr);
+        if (event_extra_size < 0) {
+            // Parsing this event failed - discard it
+            continue;
         }
+        extra_data_ptr += event_extra_size;
+    }
 
-        event->type = ENUM_MAP_GET(GAME_FLOW_SEQUENCE_EVENT_TYPE, type_str, -1);
-
-        switch (event->type) {
-        case GFS_LOAD_LEVEL:
-        case GFS_PLAY_LEVEL:
-            event->data = (void *)(intptr_t)level_num;
-            break;
-
-        case GFS_PLAY_FMV: {
-            int32_t tmp =
-                JSON_ObjectGetInt(jseq_obj, "fmv_num", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'fmv_num' must be a number",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
+    for (int32_t i = 0; i < sequence->length; i++) {
+        if ((sequence->events[i].type == GFS_PLAY_LEVEL
+             || sequence->events[i].type == GFS_LOAD_LEVEL)
+            && (int32_t)(intptr_t)sequence->events[i].data == -1) {
+            sequence->events[i].data = (void *)(intptr_t)level_num;
         }
-
-        case GFS_LOADING_SCREEN:
-        case GFS_DISPLAY_PICTURE: {
-            GAME_FLOW_DISPLAY_PICTURE_DATA *data =
-                Memory_Alloc(sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA));
-
-            const char *tmp_s = JSON_ObjectGetString(
-                jseq_obj, "picture_path", JSON_INVALID_STRING);
-            if (tmp_s == JSON_INVALID_STRING) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'picture_path' must be a string",
-                    level_num, type_str);
-            }
-            data->path = Memory_DupStr(tmp_s);
-
-            double tmp_d = JSON_ObjectGetDouble(jseq_obj, "display_time", -1.0);
-            if (tmp_d < 0.0) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'display_time' must be a positive "
-                    "number",
-                    level_num, type_str);
-            }
-            data->display_time = tmp_d;
-            event->data = data;
-            break;
-        }
-
-        case GFS_LEVEL_STATS: {
-            int tmp =
-                JSON_ObjectGetInt(jseq_obj, "level_id", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'level_id' must be a number",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
-        }
-
-        case GFS_TOTAL_STATS: {
-            GAME_FLOW_DISPLAY_PICTURE_DATA *data =
-                Memory_Alloc(sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA));
-
-            const char *tmp_s = JSON_ObjectGetString(
-                jseq_obj, "picture_path", JSON_INVALID_STRING);
-            if (tmp_s == JSON_INVALID_STRING) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'picture_path' must be a string",
-                    level_num, type_str);
-            }
-            data->path = Memory_DupStr(tmp_s);
-            data->display_time = 0;
-            event->data = data;
-            break;
-        }
-
-        case GFS_EXIT_TO_TITLE:
-            break;
-
-        case GFS_EXIT_TO_LEVEL:
-        case GFS_EXIT_TO_CINE: {
-            int tmp =
-                JSON_ObjectGetInt(jseq_obj, "level_id", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'level_id' must be a number",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
-        }
-
-        case GFS_SET_CAMERA_ANGLE: {
-            int tmp = JSON_ObjectGetInt(jseq_obj, "value", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'value' must be a number",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
-        }
-
-        case GFS_FLIP_MAP:
-        case GFS_REMOVE_WEAPONS:
-        case GFS_REMOVE_SCIONS:
-        case GFS_REMOVE_AMMO:
-        case GFS_REMOVE_MEDIPACKS:
-            break;
-
-        case GFS_ADD_ITEM: {
-            GAME_FLOW_ADD_ITEM_DATA *add_item_data =
-                Memory_Alloc(sizeof(GAME_FLOW_ADD_ITEM_DATA));
-
-            add_item_data->object_id =
-                JSON_ObjectGetInt(jseq_obj, "object_id", JSON_INVALID_NUMBER);
-            if (add_item_data->object_id == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'object_id' must be a number",
-                    level_num, type_str);
-            }
-
-            add_item_data->quantity =
-                JSON_ObjectGetInt(jseq_obj, "quantity", 1);
-
-            event->data = add_item_data;
-            break;
-        }
-
-        case GFS_PLAY_SYNCED_AUDIO: {
-            int tmp =
-                JSON_ObjectGetInt(jseq_obj, "audio_id", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'audio_id' must be a number",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
-        }
-
-        case GFS_MESH_SWAP: {
-            GAME_FLOW_MESH_SWAP_DATA *swap_data =
-                Memory_Alloc(sizeof(GAME_FLOW_MESH_SWAP_DATA));
-
-            swap_data->object1_id =
-                JSON_ObjectGetInt(jseq_obj, "object1_id", JSON_INVALID_NUMBER);
-            if (swap_data->object1_id == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'object1_id' must be a number",
-                    level_num, type_str);
-            }
-
-            swap_data->object2_id =
-                JSON_ObjectGetInt(jseq_obj, "object2_id", JSON_INVALID_NUMBER);
-            if (swap_data->object2_id == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'object2_id' must be a number",
-                    level_num, type_str);
-            }
-
-            swap_data->mesh_num =
-                JSON_ObjectGetInt(jseq_obj, "mesh_id", JSON_INVALID_NUMBER);
-            if (swap_data->mesh_num == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'mesh_id' must be a number",
-                    level_num, type_str);
-            }
-
-            event->data = swap_data;
-            break;
-        }
-
-        case GFS_SETUP_BACON_LARA: {
-            int tmp =
-                JSON_ObjectGetInt(jseq_obj, "anchor_room", JSON_INVALID_NUMBER);
-            if (tmp == JSON_INVALID_NUMBER) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'anchor_room' must be a number",
-                    level_num, type_str);
-            }
-            if (tmp < 0) {
-                Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'anchor_room' must be >= 0",
-                    level_num, type_str);
-            }
-            event->data = (void *)(intptr_t)tmp;
-            break;
-        }
-
-        default:
-            if (M_IsLegacySequence(type_str)) {
-                event->type = GFS_LEGACY;
-                LOG_WARNING(
-                    "level %d, sequence %s: legacy type ignored", level_num,
-                    type_str);
-
-            } else {
-                Shell_ExitSystemFmt("unknown sequence type %s", type_str);
-            }
-            break;
-        }
-
-        jseq_elem = jseq_elem->next;
-        i++;
-        event++;
     }
 }
 

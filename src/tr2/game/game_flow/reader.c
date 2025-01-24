@@ -78,7 +78,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
 
     // Events with integer arguments
     { GFS_SET_NUM_SECRETS,     M_HandleIntEvent, "count" },
-    { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "anim" },
+    { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "angle" },
     { GFS_SET_START_ANIM,      M_HandleIntEvent, "anim" },
     { GFS_PLAY_LEVEL,          M_HandleIntEvent, "level_num" },
     { GFS_PLAY_CUTSCENE,       M_HandleIntEvent, "cutscene_num" },
@@ -145,7 +145,7 @@ static int32_t M_HandlePictureEvent(
         event_data->duration = JSON_ObjectGetDouble(event_obj, "duration", 6.0);
         event_data->path =
             (char *)extra_data + sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA);
-        memcpy(event_data->path, path, strlen(path) + 1);
+        strcpy(event_data->path, path);
         event->data = event_data;
     }
     return sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA) + strlen(path) + 1;
