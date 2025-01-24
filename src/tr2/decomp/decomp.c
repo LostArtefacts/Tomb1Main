@@ -6,6 +6,7 @@
 #include "game/lara/control.h"
 #include "game/lara/draw.h"
 #include "game/level.h"
+#include "game/music.h"
 #include "game/objects/vars.h"
 #include "game/output.h"
 #include "game/phase.h"

@@ -264,9 +264,6 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             }
             break;
         }
-
-        case GFS_LEGACY:
-            break;
         }
     }
 
@@ -294,7 +291,6 @@ static GAME_FLOW_COMMAND M_StorySoFar(
         case GFS_REMOVE_AMMO:
         case GFS_REMOVE_MEDIPACKS:
         case GFS_SETUP_BACON_LARA:
-        case GFS_LEGACY:
             break;
 
         case GFS_LOAD_LEVEL: {

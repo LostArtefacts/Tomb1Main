@@ -5,6 +5,7 @@
 #include "game/demo.h"
 #include "game/fmv.h"
 #include "game/game_flow.h"
+#include "game/music.h"
 #include "game/phase.h"
 #include "game/shell.h"
 #include "global/vars.h"

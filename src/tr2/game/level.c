@@ -9,6 +9,7 @@
 #include "game/items.h"
 #include "game/lara/control.h"
 #include "game/lot.h"
+#include "game/music.h"
 #include "game/objects/setup.h"
 #include "game/output.h"
 #include "game/overlay.h"
