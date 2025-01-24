@@ -187,6 +187,44 @@
         },
     ],
 
+    "demos": [
+        {
+            "title": "Venice",
+            "objects": {
+                "key_1": {"name": "Boathouse Key"},
+                "key_2": {"name": "Steel Key"},
+                "key_3": {"name": "Iron Key"},
+            },
+        },
+
+        {
+            "title": "Wreck of the Maria Doria",
+            "objects": {
+                 "key_1": {"name": "Rest Room Key"},
+                 "key_2": {"name": "Rusty Key"},
+                 "key_3": {"name": "Cabin Key"},
+                 "puzzle_1": {"name": "Circuit Breaker"},
+            },
+        },
+
+        {
+            "title": "Tibetan Foothills",
+            "objects": {
+                "tiger": {"name": "Snow Leopard"},
+                "key_1": {"name": "Drawbridge Key"},
+                "key_2": {"name": "Hut Key"},
+                "puzzle_4": {"name": "The Seraph"},
+            },
+        },
+    ],
+
+    "cutscenes": [
+        {"title": "Cutscene 1"},
+        {"title": "Cutscene 2"},
+        {"title": "Cutscene 3"},
+        {"title": "Cutscene 4"},
+    ],
+
     "objects": {
         "small_medipack":        {"name": "Small Medipack"},
         "large_medipack":        {"name": "Large Medipack"},

@@ -8,7 +8,9 @@
 #include "memory.h"
 
 static void M_LoadTableFromJSON(JSON_OBJECT *root_obj, GS_TABLE *out_table);
-static void M_LoadLevelsFromJSON(JSON_OBJECT *obj, GS_FILE *gs_file);
+static void M_LoadLevelsFromJSON(
+    JSON_OBJECT *obj, const char *key, GAME_FLOW_LEVEL_TYPE level_type,
+    GS_LEVEL_TABLE *gs_level_table);
 
 static void M_LoadTableFromJSON(
     JSON_OBJECT *const root_obj, GS_TABLE *const out_table)
@@ -76,27 +78,29 @@ static void M_LoadTableFromJSON(
     }
 }
 
-static void M_LoadLevelsFromJSON(JSON_OBJECT *const obj, GS_FILE *const gs_file)
+static void M_LoadLevelsFromJSON(
+    JSON_OBJECT *const obj, const char *const key,
+    const GAME_FLOW_LEVEL_TYPE level_type, GS_LEVEL_TABLE *const gs_level_table)
 {
-    JSON_ARRAY *const jlvl_arr = JSON_ObjectGetArray(obj, "levels");
+    JSON_ARRAY *const jlvl_arr = JSON_ObjectGetArray(obj, key);
     if (jlvl_arr == NULL) {
-        Shell_ExitSystem("'levels' must be a list");
+        Shell_ExitSystemFmt("'%s' must be a list", key);
         return;
     }
 
-    if (jlvl_arr->length != (size_t)GF_GetLevelCount(GFL_NORMAL)) {
+    if (jlvl_arr->length != (size_t)GF_GetLevelCount(level_type)) {
         Shell_ExitSystemFmt(
-            "'levels' length must match with the game flow level count (got: "
+            "'%s' length must match with the game flow level count (got: "
             "%d, expected: %d)",
-            jlvl_arr->length, GF_GetLevelCount(GFL_NORMAL));
+            key, jlvl_arr->length, GF_GetLevelCount(level_type));
     }
 
-    gs_file->level_count = jlvl_arr->length;
-    gs_file->levels = Memory_Alloc(sizeof(GS_LEVEL) * jlvl_arr->length);
+    gs_level_table->count = jlvl_arr->length;
+    gs_level_table->entries = Memory_Alloc(sizeof(GS_LEVEL) * jlvl_arr->length);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     for (size_t i = 0; i < jlvl_arr->length; i++, jlvl_elem = jlvl_elem->next) {
-        GS_LEVEL *const level = &gs_file->levels[i];
+        GS_LEVEL *const level = &gs_level_table->entries[i];
 
         JSON_OBJECT *const jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
         if (jlvl_obj == NULL) {
@@ -141,7 +145,13 @@ void GameStringTable_LoadFromFile(const char *const path)
     GS_FILE *const gs_file = &g_GST_File;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadTableFromJSON(root_obj, &gs_file->global);
-    M_LoadLevelsFromJSON(root_obj, gs_file);
+    M_LoadLevelsFromJSON(root_obj, "levels", GFL_NORMAL, &gs_file->levels);
+#if TR_VERSION == 2
+    // TODO: TR1 still has everything in a single linear sequence
+    M_LoadLevelsFromJSON(root_obj, "demos", GFL_DEMO, &gs_file->demos);
+    M_LoadLevelsFromJSON(
+        root_obj, "cutscenes", GFL_CUTSCENE, &gs_file->cutscenes);
+#endif
 
     if (root != NULL) {
         JSON_ValueFree(root);

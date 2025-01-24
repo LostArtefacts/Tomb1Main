@@ -927,7 +927,7 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
 
     Lara_InitialiseLoad(NO_ITEM);
     Level_Load(level);
-    GameStringTable_Apply(level_num);
+    GameStringTable_Apply(level);
 
     if (g_Lara.item_num != NO_ITEM) {
         Lara_Initialise(level);

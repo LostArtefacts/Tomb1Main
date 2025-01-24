@@ -24,9 +24,15 @@ typedef struct {
 } GS_LEVEL;
 
 typedef struct {
-    int32_t level_count;
+    int32_t count;
+    GS_LEVEL *entries;
+} GS_LEVEL_TABLE;
+
+typedef struct {
     GS_TABLE global;
-    GS_LEVEL *levels;
+    GS_LEVEL_TABLE levels;
+    GS_LEVEL_TABLE demos;
+    GS_LEVEL_TABLE cutscenes;
 } GS_FILE;
 
 extern GS_FILE g_GST_File;

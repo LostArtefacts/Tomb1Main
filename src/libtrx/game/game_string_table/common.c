@@ -81,24 +81,59 @@ static void M_Apply(const GS_TABLE *const table)
     }
 }
 
-void GameStringTable_Apply(const int32_t level_num)
+void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
 {
     const GS_FILE *const gs_file = &g_GST_File;
 
-    if (level_num < -1 || level_num >= gs_file->level_count) {
-        LOG_WARNING(
-            "Trying to apply unavailable strings for level %d", level_num);
-        return;
-    }
-
-    LOG_DEBUG("loading file %d", level_num);
     Object_ResetNames();
     M_Apply(&gs_file->global);
     for (int32_t i = 0; i < GF_GetLevelCount(GFL_NORMAL); i++) {
-        GF_SetLevelTitle(GF_GetLevel(i, GFL_NORMAL), gs_file->levels[i].title);
+        GF_SetLevelTitle(
+            GF_GetLevel(i, GFL_NORMAL), gs_file->levels.entries[i].title);
     }
-    if (level_num != -1) {
-        M_Apply(&gs_file->levels[level_num].table);
+
+#if TR_VERSION == 2
+    // TODO: TR1 still has everything in a single linear sequence
+    for (int32_t i = 0; i < GF_GetLevelCount(GFL_DEMO); i++) {
+        GF_SetLevelTitle(
+            GF_GetLevel(i, GFL_DEMO), gs_file->demos.entries[i].title);
+    }
+    for (int32_t i = 0; i < GF_GetLevelCount(GFL_CUTSCENE); i++) {
+        GF_SetLevelTitle(
+            GF_GetLevel(i, GFL_CUTSCENE), gs_file->cutscenes.entries[i].title);
+    }
+#endif
+
+    if (level != NULL) {
+#if TR_VERSION == 1
+        // TODO: TR1 still has everything in a single linear sequence
+        const GS_LEVEL_TABLE *const level_table = &gs_file->levels;
+#elif TR_VERSION == 2
+        const GS_LEVEL_TABLE *level_table = NULL;
+        switch (level->type) {
+        case GFL_NORMAL:
+        case GFL_SAVED:
+            level_table = &gs_file->levels;
+            break;
+        case GFL_DEMO:
+            level_table = &gs_file->demos;
+            break;
+        case GFL_CUTSCENE:
+            level_table = &gs_file->cutscenes;
+            break;
+        case GFL_TITLE:
+            level_table = NULL;
+            break;
+        default:
+            ASSERT_FAIL();
+        }
+#endif
+
+        if (level_table != NULL) {
+            ASSERT(level->num >= 0);
+            ASSERT(level->num < level_table->count);
+            M_Apply(&level_table->entries[level->num].table);
+        }
     }
     M_DoObjectAliases();
 }

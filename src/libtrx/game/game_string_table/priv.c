@@ -2,7 +2,7 @@
 
 #include "memory.h"
 
-void GS_Table_Free(GS_TABLE *const gs_table)
+static void M_FreeTable(GS_TABLE *const gs_table)
 {
     if (gs_table == NULL) {
         return;
@@ -31,18 +31,25 @@ void GS_Table_Free(GS_TABLE *const gs_table)
     }
 }
 
+static void M_FreeLevelsTable(GS_LEVEL_TABLE *const levels)
+{
+    if (levels->entries != NULL) {
+        for (int32_t i = 0; i < levels->count; i++) {
+            Memory_FreePointer(&levels->entries[i].title);
+            M_FreeTable(&levels->entries[i].table);
+        }
+    }
+    levels->count = 0;
+}
+
 void GS_File_Free(GS_FILE *const gs_file)
 {
     if (gs_file == NULL) {
         return;
     }
-    GS_Table_Free(&gs_file->global);
-    if (gs_file->levels != NULL) {
-        for (int32_t i = 0; i < gs_file->level_count; i++) {
-            Memory_FreePointer(&gs_file->levels[i].title);
-            GS_Table_Free(&gs_file->levels[i].table);
-        }
-    }
+    M_FreeTable(&gs_file->global);
+    M_FreeLevelsTable(&gs_file->levels);
+    M_FreeLevelsTable(&gs_file->demos);
+    M_FreeLevelsTable(&gs_file->cutscenes);
     Memory_FreePointer(&gs_file->levels);
-    gs_file->level_count = 0;
 }

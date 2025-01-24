@@ -33,7 +33,6 @@ GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
 
 bool GF_DoFrontendSequence(void)
 {
-    GameStringTable_Apply(-1);
     if (g_GameFlow.title_level == NULL) {
         return false;
     }
@@ -45,7 +44,6 @@ bool GF_DoFrontendSequence(void)
 GAME_FLOW_COMMAND GF_DoLevelSequence(
     const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
 {
-    GameStringTable_Apply(start_level);
     int32_t current_level = start_level;
     while (true) {
         if (current_level > GF_GetLevelCount(GFL_NORMAL) - 1) {

@@ -26,6 +26,7 @@
 #include <libtrx/engine/audio.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/game_buf.h>
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/game/level.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -811,6 +812,7 @@ bool Level_Initialise(
     if (!Level_Load(level)) {
         return false;
     }
+    GameStringTable_Apply(level);
 
     if (g_Lara.item_num != NO_ITEM) {
         Lara_Initialise(level);
