@@ -9,6 +9,7 @@
 
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
+#include <libtrx/game/objects/names.h>
 #include <libtrx/json.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
@@ -31,9 +32,10 @@ typedef void (*M_LOAD_ARRAY_FUNC)(
 
 static void M_LoadArray(
     JSON_OBJECT *obj, const char *key, size_t element_size,
-    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
-    void **const elements, void *user_arg);
+    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *gf, int32_t *count, void **elements,
+    void *user_arg);
 
+static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *value);
 static bool M_IsLegacySequence(const char *type_str);
 static int32_t M_HandleIntEvent(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
@@ -102,6 +104,23 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format on
 };
 
+static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *const value)
+{
+    int32_t object_id = JSON_ValueGetInt(value, JSON_INVALID_NUMBER);
+    if (object_id == JSON_INVALID_NUMBER) {
+        const char *const object_key =
+            JSON_ValueGetString(value, JSON_INVALID_STRING);
+        if (object_key == JSON_INVALID_STRING) {
+            return NO_OBJECT;
+        }
+        object_id = Object_IdFromKey(object_key);
+    }
+    if (object_id < 0 || object_id >= O_NUMBER_OF) {
+        return NO_OBJECT;
+    }
+    return object_id;
+}
+
 static void M_LoadArray(
     JSON_OBJECT *const obj, const char *const key, const size_t element_size,
     M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
@@ -135,8 +154,8 @@ static bool M_IsLegacySequence(const char *const type_str)
 }
 
 static int32_t M_HandleIntEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     if (event != NULL) {
         event->data =
@@ -146,12 +165,12 @@ static int32_t M_HandleIntEvent(
 }
 
 static int32_t M_HandlePictureEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     const char *const path = JSON_ObjectGetString(event_obj, "path", NULL);
     if (path == NULL) {
-        LOG_ERROR("Missing picture path");
+        Shell_ExitSystem("Missing picture path");
         return -1;
     }
     if (event != NULL) {
@@ -167,13 +186,13 @@ static int32_t M_HandlePictureEvent(
 }
 
 static int32_t M_HandleTotalStatsEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     const char *const path =
         JSON_ObjectGetString(event_obj, "background_path", NULL);
     if (path == NULL) {
-        LOG_ERROR("Missing picture path");
+        Shell_ExitSystem("Missing picture path");
         return -1;
     }
     if (event != NULL) {
@@ -185,13 +204,13 @@ static int32_t M_HandleTotalStatsEvent(
 }
 
 static int32_t M_HandleAddItemEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     const GAME_OBJECT_ID object_id =
-        JSON_ObjectGetInt(event_obj, "object_id", JSON_INVALID_NUMBER);
-    if (object_id == JSON_INVALID_NUMBER) {
-        LOG_ERROR("Invalid item: %s", object_id);
+        M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object_id"));
+    if (object_id == NO_OBJECT) {
+        Shell_ExitSystem("Invalid item");
         return -1;
     }
     if (event != NULL) {
@@ -204,19 +223,19 @@ static int32_t M_HandleAddItemEvent(
 }
 
 static int32_t M_HandleMeshSwapEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     const GAME_OBJECT_ID object1_id =
-        JSON_ObjectGetInt(event_obj, "object1_id", JSON_INVALID_NUMBER);
-    if (object1_id == JSON_INVALID_NUMBER) {
-        Shell_ExitSystem("'object1_id' must be a number");
+        M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object1_id"));
+    if (object1_id == NO_OBJECT) {
+        Shell_ExitSystem("'object1_id' is invalid");
     }
 
     const GAME_OBJECT_ID object2_id =
-        JSON_ObjectGetInt(event_obj, "object2_id", JSON_INVALID_NUMBER);
-    if (object2_id == JSON_INVALID_NUMBER) {
-        Shell_ExitSystem("'object2_id' must be a number");
+        M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object2_id"));
+    if (object2_id == NO_OBJECT) {
+        Shell_ExitSystem("'object2_id' is invalid");
     }
 
     const int32_t mesh_num =
@@ -286,8 +305,8 @@ static size_t M_LoadSequenceEvent(
         handler++;
     }
     if (handler->event_type != type) {
-        LOG_ERROR("Unknown game flow sequence event type: '%s'", type);
-        return -1;
+        Shell_ExitSystemFmt(
+            "Unknown game flow sequence event type: '%s'", type);
     }
 
     int32_t extra_data_size = 0;
@@ -371,7 +390,7 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     g_GameInfo.current = Memory_Alloc(sizeof(RESUME_INFO) * level_count);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
-    int level_num = 0;
+    int32_t level_num = 0;
 
     gf->has_demo = 0;
     gf->gym_level_num = -1;
@@ -477,9 +496,9 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
             level->injections.data_paths =
                 Memory_Alloc(sizeof(char *) * level->injections.count);
 
-            int inj_base_index = 0;
+            int32_t inj_base_index = 0;
             if (tmp_i) {
-                for (int i = 0; i < gf->injections.count; i++) {
+                for (int32_t i = 0; i < gf->injections.count; i++) {
                     level->injections.data_paths[i] =
                         Memory_DupStr(gf->injections.data_paths[i]);
                 }
@@ -495,7 +514,7 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
             level->injections.count = gf->injections.count;
             level->injections.data_paths =
                 Memory_Alloc(sizeof(char *) * level->injections.count);
-            for (int i = 0; i < gf->injections.count; i++) {
+            for (int32_t i = 0; i < gf->injections.count; i++) {
                 level->injections.data_paths[i] =
                     Memory_DupStr(gf->injections.data_paths[i]);
             }
@@ -503,13 +522,20 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
             level->injections.count = 0;
         }
 
-        tmp_i = JSON_ObjectGetInt(jlvl_obj, "lara_type", (int32_t)O_LARA);
-        if (tmp_i < 0 || tmp_i >= O_NUMBER_OF) {
-            Shell_ExitSystemFmt(
-                "level %d: 'lara_type' must be a valid game object id",
-                level_num);
+        {
+            JSON_VALUE *const tmp_v =
+                JSON_ObjectGetValue(jlvl_obj, "lara_type");
+            if (tmp_v == NULL) {
+                level->lara_type = O_LARA;
+            } else {
+                level->lara_type = M_GetObjectFromJSONValue(tmp_v);
+            }
+            if (level->lara_type == NO_OBJECT) {
+                Shell_ExitSystemFmt(
+                    "level %d: 'lara_type' must be a valid game object id",
+                    level_num);
+            }
         }
-        level->lara_type = (GAME_OBJECT_ID)tmp_i;
 
         tmp_arr = JSON_ObjectGetArray(jlvl_obj, "item_drops");
         level->item_drops.count = 0;
@@ -523,7 +549,7 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
             level->item_drops.data = Memory_Alloc(
                 sizeof(GAME_FLOW_DROP_ITEM_DATA) * (signed)tmp_arr->length);
 
-            for (int i = 0; i < level->item_drops.count; i++) {
+            for (int32_t i = 0; i < level->item_drops.count; i++) {
                 GAME_FLOW_DROP_ITEM_DATA *data = &level->item_drops.data[i];
                 JSON_OBJECT *jlvl_data = JSON_ArrayGetObject(tmp_arr, i);
 
@@ -545,9 +571,10 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 
                 data->count = (signed)object_arr->length;
                 data->object_ids = Memory_Alloc(sizeof(int16_t) * data->count);
-                for (int j = 0; j < data->count; j++) {
-                    int id = JSON_ArrayGetInt(object_arr, j, -1);
-                    if (id < 0 || id >= O_NUMBER_OF) {
+                for (int32_t j = 0; j < data->count; j++) {
+                    const GAME_OBJECT_ID id = M_GetObjectFromJSONValue(
+                        JSON_ArrayGetValue(object_arr, j));
+                    if (id == NO_OBJECT) {
                         Shell_ExitSystemFmt(
                             "level %d, item drop %d, index %d: 'object_id' "
                             "must be a valid object id",
@@ -594,7 +621,7 @@ static void M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     const char *tmp_s;
-    int tmp_i;
+    int32_t tmp_i;
     double tmp_d;
     JSON_ARRAY *tmp_arr;
 

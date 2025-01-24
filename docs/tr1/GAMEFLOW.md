@@ -336,7 +336,7 @@ Following are each of the properties available within a level.
     <td>
       <code>lara_type</code>
     </td>
-    <td>Integer</td>
+    <td>Integer / string</td>
     <td>No</td>
     <td colspan="2">
       Used only in cutscene levels to link the braid (if enabled) to the
@@ -562,7 +562,7 @@ default gameflow for examples.
     <td>
       <code>object_id</code>
     </td>
-    <td>Integer</td>
+    <td>Integer / String</td>
     <td rowspan="2">
       Adds the specified item and quantity to Lara's inventory. If used, this
       must appear <em>after</em> the <code>load_level</code> sequence.
@@ -929,7 +929,7 @@ This translates as follows.
     <td>
       <code>object_ids</code>
     </td>
-    <td>Integer array</td>
+    <td>Integer / string array</td>
     <td>
       A list of item <em>types</em> to drop. These items will spawn dynamically
       and do not need to be added to the level file. Duplicate IDs are permitted

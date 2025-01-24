@@ -28,8 +28,14 @@ typedef void (*M_LOAD_ARRAY_FUNC)(
     JSON_OBJECT *source_elem, GAME_FLOW *gf, void *target_elem,
     size_t target_elem_idx, void *user_arg);
 
+static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *value);
 static GAME_FLOW_COMMAND M_LoadCommand(
     JSON_OBJECT *jcmd, GAME_FLOW_COMMAND fallback);
+
+static void M_LoadArray(
+    JSON_OBJECT *obj, const char *key, size_t element_size,
+    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *gf, int32_t *count, void **elements,
+    void *user_arg);
 
 static int32_t M_HandleIntEvent(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
@@ -46,11 +52,6 @@ static void M_LoadSequence(JSON_ARRAY *jarr, GAME_FLOW_SEQUENCE *sequence);
 
 static void M_LoadGlobalInjections(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadRoot(JSON_OBJECT *obj, GAME_FLOW *gf);
-
-static void M_LoadArray(
-    JSON_OBJECT *obj, const char *key, size_t element_size,
-    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
-    void **const elements, void *user_arg);
 
 static void M_LoadLevel(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level, size_t idx,
@@ -95,6 +96,23 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format on
 };
 
+static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *const value)
+{
+    int32_t object_id = JSON_ValueGetInt(value, JSON_INVALID_NUMBER);
+    if (object_id == JSON_INVALID_NUMBER) {
+        const char *const object_key =
+            JSON_ValueGetString(value, JSON_INVALID_STRING);
+        if (object_key == JSON_INVALID_STRING) {
+            return NO_OBJECT;
+        }
+        object_id = Object_IdFromKey(object_key);
+    }
+    if (object_id < 0 || object_id >= O_NUMBER_OF) {
+        return NO_OBJECT;
+    }
+    return object_id;
+}
+
 static GAME_FLOW_COMMAND M_LoadCommand(
     JSON_OBJECT *const jcmd, const GAME_FLOW_COMMAND fallback)
 {
@@ -106,14 +124,14 @@ static GAME_FLOW_COMMAND M_LoadCommand(
         JSON_ObjectGetString(jcmd, "action", JSON_INVALID_STRING);
     const int32_t param = JSON_ObjectGetInt(jcmd, "param", -1);
     if (action_str == JSON_INVALID_STRING) {
-        LOG_ERROR("Unknown game flow action: %s", action_str);
+        Shell_ExitSystemFmt("Unknown game flow action: %s", action_str);
         return fallback;
     }
 
     const GAME_FLOW_ACTION action =
         ENUM_MAP_GET(GAME_FLOW_ACTION, action_str, (GAME_FLOW_ACTION)-1234);
     if (action == (GAME_FLOW_ACTION)-1234) {
-        LOG_ERROR("Unknown game flow action: %s", action_str);
+        Shell_ExitSystemFmt("Unknown game flow action: %s", action_str);
         return fallback;
     }
 
@@ -121,8 +139,8 @@ static GAME_FLOW_COMMAND M_LoadCommand(
 }
 
 static int32_t M_HandleIntEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     if (event != NULL) {
         event->data =
@@ -132,12 +150,12 @@ static int32_t M_HandleIntEvent(
 }
 
 static int32_t M_HandlePictureEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
     const char *const path = JSON_ObjectGetString(event_obj, "path", NULL);
     if (path == NULL) {
-        LOG_ERROR("Missing picture path");
+        Shell_ExitSystem("Missing picture path");
         return -1;
     }
     if (event != NULL) {
@@ -153,21 +171,21 @@ static int32_t M_HandlePictureEvent(
 }
 
 static int32_t M_HandleAddItemEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg)
+    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
+    void *const extra_data, void *const user_arg)
 {
+    const GAME_OBJECT_ID object_id =
+        M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object_id"));
+    if (object_id == NO_OBJECT) {
+        Shell_ExitSystem("Invalid item");
+        return -1;
+    }
     if (event != NULL) {
-        const char *const object_key =
-            JSON_ObjectGetString(event_obj, "item", JSON_INVALID_STRING);
-        const GAME_OBJECT_ID object_id = Object_IdFromKey(object_key);
-        if (object_id == NO_OBJECT) {
-            LOG_ERROR("Invalid item: %s", object_key);
-        }
         GAME_FLOW_ADD_ITEM_DATA *const event_data = extra_data;
         event_data->object_id = object_id;
+        event_data->qty = JSON_ObjectGetInt(event_obj, "quantity", 1);
         event_data->inv_type =
             event->type == GFS_ADD_ITEM ? GF_INV_REGULAR : GF_INV_SECRET;
-        event_data->qty = JSON_ObjectGetInt(event_obj, "qty", 1);
         event->data = event_data;
     }
     return sizeof(GAME_FLOW_ADD_ITEM_DATA);
@@ -188,7 +206,8 @@ static size_t M_LoadSequenceEvent(
     }
 
     if (handler->event_type != type) {
-        LOG_ERROR("Unknown game flow sequence event type: '%s'", type);
+        Shell_ExitSystemFmt(
+            "Unknown game flow sequence event type: '%s'", type);
         return -1;
     }
 
