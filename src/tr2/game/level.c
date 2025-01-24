@@ -798,6 +798,7 @@ bool Level_Initialise(
     if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
         g_CurrentLevel = level;
     }
+    GF_SetCurrentLevel(level);
     InitialiseGameFlags();
     g_Lara.item_num = NO_ITEM;
 

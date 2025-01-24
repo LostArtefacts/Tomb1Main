@@ -7,6 +7,8 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
+static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
+
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
 static void M_FreeLevel(GAME_FLOW_LEVEL *level);
 static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *level_count);
@@ -108,7 +110,12 @@ void GF_Shutdown(void)
 
 GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
 {
-    return g_CurrentLevel;
+    return m_CurrentLevel;
+}
+
+void GF_SetCurrentLevel(GAME_FLOW_LEVEL *const level)
+{
+    m_CurrentLevel = level;
 }
 
 GAME_FLOW_LEVEL *GF_GetLevel(
