@@ -3,6 +3,7 @@
 #include "decomp/skidoo.h"
 #include "game/camera.h"
 #include "game/creature.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
@@ -621,7 +622,7 @@ void Lara_Control(const int16_t item_num)
 
     if (item->hit_points <= 0) {
         item->hit_points = -1;
-        if (g_CurrentLevel != NULL && g_CurrentLevel->num == LV_GYM) {
+        if (Game_IsInGym()) {
             g_GymInvOpenEnabled = true;
         }
         if (!g_Lara.death_timer) {

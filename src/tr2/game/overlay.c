@@ -155,8 +155,7 @@ static void M_AnimatePickups(const int32_t frames)
 
 static void M_DrawAssaultTimer(void)
 {
-    if (g_CurrentLevel == NULL || g_CurrentLevel->num != LV_GYM
-        || !g_IsAssaultTimerDisplay) {
+    if (!Game_IsInGym() || !g_IsAssaultTimerDisplay) {
         return;
     }
 

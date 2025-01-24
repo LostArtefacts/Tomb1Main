@@ -1,5 +1,6 @@
 #include "game/lara/cheat_keys.h"
 
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/sound.h"
@@ -62,7 +63,7 @@ static void M_ExplodeLara(void)
 
 void Lara_Cheat_CheckKeys(void)
 {
-    if (g_CurrentLevel != NULL && g_CurrentLevel->num == LV_GYM) {
+    if (Game_IsInGym()) {
         return;
     }
 

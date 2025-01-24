@@ -70,7 +70,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         if (g_GameFlow.is_demo_version && g_GameFlow.single_level) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (g_CurrentLevel->num == LV_GYM) {
+        if (Game_IsInGym()) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
@@ -103,7 +103,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         if (demo_mode) {
             return g_GameFlow.cmd_death_demo_mode;
         }
-        if (g_CurrentLevel->num == LV_GYM) {
+        if (Game_IsInGym()) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_GameFlow.cmd_death_in_game.action != GF_NOOP) {
@@ -161,7 +161,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
     Output_AnimateTextures(1 * TICKS_PER_FRAME);
 
     g_HealthBarTimer--;
-    if (g_CurrentLevel->num != LV_GYM || g_IsAssaultTimerActive) {
+    if (!Game_IsInGym() || g_IsAssaultTimerActive) {
         Stats_UpdateTimer();
     }
 
@@ -204,6 +204,17 @@ bool Game_IsPlayable(void)
     }
 
     return true;
+}
+
+bool Game_IsInGym(void)
+{
+    if (g_CurrentLevel == NULL) {
+        return false;
+    }
+    if (g_CurrentLevel->type != GFL_NORMAL) {
+        return false;
+    }
+    return g_CurrentLevel->num == LV_GYM;
 }
 
 void Game_ProcessInput(void)
