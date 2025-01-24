@@ -102,12 +102,12 @@ GF_InterpretSequence(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             break;
 
         case GFS_PLAY_FMV: {
-            const int16_t fmv_num = (int16_t)(intptr_t)event->data;
+            const int16_t fmv_id = (int16_t)(intptr_t)event->data;
             if (level_type != GFL_SAVED) {
-                if (fmv_num < 0 || fmv_num >= g_GameFlow.fmv_count) {
-                    LOG_ERROR("Invalid FMV number: %d", fmv_num);
+                if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
+                    LOG_ERROR("Invalid FMV number: %d", fmv_id);
                 } else {
-                    FMV_Play(g_GameFlow.fmvs[fmv_num].path);
+                    FMV_Play(g_GameFlow.fmvs[fmv_id].path);
                 }
             }
             break;
@@ -320,11 +320,11 @@ GF_StorySoFar(const GAME_FLOW_SEQUENCE *const sequence, int32_t savegame_level)
         }
 
         case GFS_PLAY_FMV: {
-            const int16_t fmv_num = (int16_t)(intptr_t)event->data;
-            if (fmv_num < 0 || fmv_num >= g_GameFlow.fmv_count) {
-                LOG_ERROR("Invalid FMV number: %d", fmv_num);
+            const int16_t fmv_id = (int16_t)(intptr_t)event->data;
+            if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
+                LOG_ERROR("Invalid FMV number: %d", fmv_id);
             } else {
-                FMV_Play(g_GameFlow.fmvs[fmv_num].path);
+                FMV_Play(g_GameFlow.fmvs[fmv_id].path);
             }
             break;
         }

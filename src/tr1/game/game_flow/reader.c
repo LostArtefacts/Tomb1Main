@@ -82,7 +82,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // Events with integer arguments
     { GFS_LOAD_LEVEL,       M_HandleIntEvent, "level_id" },
     { GFS_PLAY_LEVEL,       M_HandleIntEvent, "level_id" },
-    { GFS_PLAY_FMV,         M_HandleIntEvent, "fmv_num" },
+    { GFS_PLAY_FMV,         M_HandleIntEvent, "fmv_id" },
     { GFS_LEVEL_STATS,         M_HandleIntEvent, "level_id" },
     { GFS_EXIT_TO_LEVEL,       M_HandleIntEvent, "level_id" },
     { GFS_EXIT_TO_CINE,        M_HandleIntEvent, "level_id" },
@@ -149,22 +149,17 @@ static int32_t M_HandlePictureEvent(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
     void *user_arg)
 {
-    const char *const path =
-        JSON_ObjectGetString(event_obj, "picture_path", NULL);
+    const char *const path = JSON_ObjectGetString(event_obj, "path", NULL);
     if (path == NULL) {
         LOG_ERROR("Missing picture path");
         return -1;
-    }
-    const float display_time =
-        JSON_ObjectGetDouble(event_obj, "display_time", -1.0);
-    if (display_time < 0.0) {
-        Shell_ExitSystemFmt("'display_time' must be a positive number");
     }
     if (event != NULL) {
         GAME_FLOW_DISPLAY_PICTURE_DATA *const event_data = extra_data;
         event_data->path =
             (char *)extra_data + sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA);
-        event_data->display_time = display_time;
+        event_data->display_time =
+            JSON_ObjectGetDouble(event_obj, "display_time", 5.0);
         strcpy(event_data->path, path);
         event->data = event_data;
     }
@@ -176,7 +171,7 @@ static int32_t M_HandleTotalStatsEvent(
     void *user_arg)
 {
     const char *const path =
-        JSON_ObjectGetString(event_obj, "picture_path", NULL);
+        JSON_ObjectGetString(event_obj, "background_path", NULL);
     if (path == NULL) {
         LOG_ERROR("Missing picture path");
         return -1;
@@ -396,14 +391,14 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
         int32_t tmp_i;
         JSON_ARRAY *tmp_arr;
 
-        tmp_i = JSON_ObjectGetInt(jlvl_obj, "music", JSON_INVALID_NUMBER);
+        tmp_i = JSON_ObjectGetInt(jlvl_obj, "music_track", JSON_INVALID_NUMBER);
         if (tmp_i == JSON_INVALID_NUMBER) {
             Shell_ExitSystemFmt(
-                "level %d: 'music' must be a number", level_num);
+                "level %d: 'music_track' must be a number", level_num);
         }
         level->music_track = tmp_i;
 
-        tmp_s = JSON_ObjectGetString(jlvl_obj, "file", JSON_INVALID_STRING);
+        tmp_s = JSON_ObjectGetString(jlvl_obj, "path", JSON_INVALID_STRING);
         if (tmp_s == JSON_INVALID_STRING) {
             Shell_ExitSystemFmt("level %d: 'file' must be a string", level_num);
         }

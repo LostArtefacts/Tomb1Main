@@ -27,8 +27,8 @@
         "music_track": 64,
         "sequence": [
             {"type": "display_picture", "path": "data/legal.pcx"},
-            {"type": "play_fmv", "fmv_num": 0},
-            {"type": "play_fmv", "fmv_num": 1},
+            {"type": "play_fmv", "fmv_id": 0},
+            {"type": "play_fmv", "fmv_id": 1},
         ],
     },
 
@@ -48,12 +48,12 @@
             "path": "data/wall.tr2",
             "music_track": 33,
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 2},
+                {"type": "play_fmv", "fmv_id": 2},
                 {"type": "add_secret_reward", "item": "grenade_launcher"},
                 {"type": "add_secret_reward", "item": "grenade_launcher_ammo", "qty": 2},
                 {"type": "add_secret_reward", "item": "small_medipack"},
                 {"type": "play_level"},
-                {"type": "play_cutscene", "cutscene_num": 0},
+                {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -92,7 +92,7 @@
                 {"type": "add_secret_reward", "item": "uzis"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
-                {"type": "play_cutscene", "cutscene_num": 1},
+                {"type": "play_cutscene", "cutscene_id": 1},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -106,7 +106,7 @@
             "path": "data/rig.tr2",
             "music_track": 58,
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 3},
+                {"type": "play_fmv", "fmv_id": 3},
                 {"type": "set_lara_start_anim", "anim": 8},
                 {"type": "remove_weapons"},
                 {"type": "add_secret_reward", "item": "uzis"},
@@ -126,7 +126,7 @@
             "sequence": [
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
-                {"type": "play_cutscene", "cutscene_num": 2},
+                {"type": "play_cutscene", "cutscene_id": 2},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -139,7 +139,7 @@
             "path": "data/unwater.tr2",
             "music_track": 34,
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 4},
+                {"type": "play_fmv", "fmv_id": 4},
                 {"type": "add_secret_reward", "item": "harpoon_gun_ammo", "qty": 4},
                 {"type": "play_level"},
                 {"type": "level_complete"},
@@ -192,7 +192,7 @@
             "path": "data/skidoo.tr2",
             "music_track": 33,
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 5},
+                {"type": "play_fmv", "fmv_id": 5},
                 {"type": "give_item", "item": "puzzle_4"},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 4},
                 {"type": "play_level"},
@@ -255,10 +255,10 @@
             "path": "data/emprtomb.tr2",
             "music_track": 59,
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 6},
+                {"type": "play_fmv", "fmv_id": 6},
                 {"type": "add_secret_reward", "item": "uzis_ammo", "qty": 8},
                 {"type": "play_level"},
-                {"type": "play_cutscene", "cutscene_num": 3},
+                {"type": "play_cutscene", "cutscene_id": 3},
                 {"type": "level_complete"},
             ],
             "injections": [
@@ -291,7 +291,7 @@
                 {"type": "set_secret_count", "count": 0},
                 {"type": "play_level"},
                 {"type": "level_complete"},
-                {"type": "play_fmv", "fmv_num": 7},
+                {"type": "play_fmv", "fmv_id": 7},
             ],
         },
 

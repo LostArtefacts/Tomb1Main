@@ -31,9 +31,9 @@
     "levels": [
         // Level 0: Return to Egypt
         {
-            "file": "data/egypt.phd",
+            "path": "data/egypt.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/egypt_cameras.bin",
                 "data/injections/egypt_fd.bin",
@@ -52,9 +52,9 @@
 
         // Level 1: Temple of the Cat
         {
-            "file": "data/cat.phd",
+            "path": "data/cat.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/cat_cameras.bin",
                 "data/injections/cat_fd.bin",
@@ -74,9 +74,9 @@
 
         // Level 2: Atlantean Stronghold
         {
-            "file": "data/end.phd",
+            "path": "data/end.phd",
             "type": "normal",
-            "music": 60,
+            "music_track": 60,
             "injections": [
                 "data/injections/stronghold_fd.bin",
                 "data/injections/stronghold_itemrots.bin",
@@ -93,9 +93,9 @@
 
         // Level 3: The Hive
         {
-            "file": "data/end2.phd",
+            "path": "data/end2.phd",
             "type": "normal",
-            "music": 60,
+            "music_track": 60,
             "injections": [
                 "data/injections/hive_fd.bin",
                 "data/injections/hive_itemrots.bin",
@@ -106,29 +106,29 @@
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 3},
                 {"type": "play_synced_audio", "audio_id": 19},
-                {"type": "display_picture", "picture_path": "data/images/end.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_ub.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_1.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_2.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_3.webp", "display_time": 7.5},
-                {"type": "total_stats", "picture_path": "data/images/install.webp"},
+                {"type": "display_picture", "path": "data/images/end.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_ub.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_1.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_2.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_3.webp", "display_time": 7.5},
+                {"type": "total_stats", "background_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
             ],
         },
 
         // Level 4: Title
         {
-            "file": "data/title.phd",
+            "path": "data/title.phd",
             "type": "title",
-            "music": 2,
+            "music_track": 2,
             "inherit_injections": false,
             "injections": [
                 "data/injections/pda_model.bin",
             ],
             "sequence": [
-                {"type": "display_picture", "picture_path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_num": 0},
-                {"type": "play_fmv", "fmv_num": 1},
+                {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
+                {"type": "play_fmv", "fmv_id": 0},
+                {"type": "play_fmv", "fmv_id": 1},
                 {"type": "exit_to_title"},
             ],
         },
@@ -136,9 +136,9 @@
         // Level 5: Current Position
         {
             "title": "Current Position",
-            "file": "data/current.phd",
+            "path": "data/current.phd",
             "type": "current",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "sequence": [{"type": "exit_to_title"}],
         },

@@ -80,9 +80,9 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_SET_NUM_SECRETS,     M_HandleIntEvent, "count" },
     { GFS_SET_CAMERA_ANGLE,    M_HandleIntEvent, "angle" },
     { GFS_SET_START_ANIM,      M_HandleIntEvent, "anim" },
-    { GFS_PLAY_LEVEL,          M_HandleIntEvent, "level_num" },
-    { GFS_PLAY_CUTSCENE,       M_HandleIntEvent, "cutscene_num" },
-    { GFS_PLAY_FMV,            M_HandleIntEvent, "fmv_num" },
+    { GFS_PLAY_LEVEL,          M_HandleIntEvent, "level_id" },
+    { GFS_PLAY_CUTSCENE,       M_HandleIntEvent, "cutscene_id" },
+    { GFS_PLAY_FMV,            M_HandleIntEvent, "fmv_id" },
     { GFS_DISABLE_FLOOR,       M_HandleIntEvent, "height" },
 
     // Special cases with custom handlers
@@ -142,9 +142,10 @@ static int32_t M_HandlePictureEvent(
     }
     if (event != NULL) {
         GAME_FLOW_DISPLAY_PICTURE_DATA *const event_data = extra_data;
-        event_data->duration = JSON_ObjectGetDouble(event_obj, "duration", 6.0);
         event_data->path =
             (char *)extra_data + sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA);
+        event_data->display_time =
+            JSON_ObjectGetDouble(event_obj, "display_time", 5.0);
         strcpy(event_data->path, path);
         event->data = event_data;
     }

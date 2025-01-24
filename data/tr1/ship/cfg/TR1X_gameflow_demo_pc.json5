@@ -28,15 +28,15 @@
     "levels": [
         // Level 2: City of Vilcabamba
         {
-            "file": "data_demo_pc/level2.phd",
+            "path": "data_demo_pc/level2.phd",
             "type": "level_demo_pc",
-            "music": 0,
+            "music_track": 0,
             "injections": [
                 "data/injections/vilcabamba_itemrots.bin",
                 "data/injections/vilcabamba_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
+                {"type": "loading_screen", "picture_path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 0},
@@ -47,9 +47,9 @@
 
         // Level 3: Title
         {
-            "file": "data_demo_pc/title.phd",
+            "path": "data_demo_pc/title.phd",
             "type": "title_demo_pc",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "injections": [
                 "data/injections/pda_model.bin",
@@ -61,9 +61,9 @@
 
         // Level 4: Current Position
         {
-            "file": "data/current.phd",
+            "path": "data/current.phd",
             "type": "current",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "sequence": [
                 {"type": "exit_to_title"},

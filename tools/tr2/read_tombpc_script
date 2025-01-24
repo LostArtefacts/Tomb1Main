@@ -219,23 +219,23 @@ def transform_script(script: list[int]):
                 pass
 
             case GameFlowEvent.PLAY_FMV:
-                fmv_num = script.pop(0)
-                yield {"type": "play_fmv", "fmv_num": fmv_num}
+                fmv_id = script.pop(0)
+                yield {"type": "play_fmv", "fmv_id": fmv_id}
 
             case GameFlowEvent.START_LEVEL:
-                level_num = script.pop(0)
-                yield {"type": "play_level", "level_num": level_num}
+                level_id = script.pop(0)
+                yield {"type": "play_level", "level_id": level_id}
 
             case GameFlowEvent.CUTSCENE:
-                cutscene_num = script.pop(0)
-                yield {"type": "play_level", "cutscene_num": cutscene_num}
+                cutscene_id = script.pop(0)
+                yield {"type": "play_level", "cutscene_id": cutscene_id}
 
             case GameFlowEvent.LEVEL_COMPLETE:
                 yield {"type": "level_complete"}
 
             case GameFlowEvent.DEMO_PLAY:
                 demo_num = script.pop(0)
-                yield {"type": "play_level", "level_num": demo_num}
+                yield {"type": "play_level", "level_id": demo_num}
 
             case GameFlowEvent.JUMP_TO_SEQ:
                 seq_num = script.pop(0)

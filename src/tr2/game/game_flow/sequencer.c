@@ -106,7 +106,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 (GAME_FLOW_DISPLAY_PICTURE_DATA *)event->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
-                .display_time = data->duration,
+                .display_time = data->display_time,
                 .fade_in_time = 1.0,
                 .fade_out_time = 1.0 / 3.0,
                 .display_time_includes_fades = true,
@@ -146,12 +146,12 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_PLAY_FMV: {
-            const int16_t fmv_num = (int16_t)(intptr_t)event->data;
+            const int16_t fmv_id = (int16_t)(intptr_t)event->data;
             if (type != GFL_SAVED) {
-                if (fmv_num < 0 || fmv_num >= g_GameFlow.fmv_count) {
-                    LOG_ERROR("Invalid FMV number: %d", fmv_num);
+                if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
+                    LOG_ERROR("Invalid FMV number: %d", fmv_id);
                 } else {
-                    FMV_Play(g_GameFlow.fmvs[fmv_num].path);
+                    FMV_Play(g_GameFlow.fmvs[fmv_id].path);
                 }
             }
             break;

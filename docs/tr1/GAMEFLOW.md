@@ -38,7 +38,7 @@ various pieces of global behaviour.
 },
 "levels": [
     {
-        "file": "data/gym.phd",
+        "path": "data/gym.phd",
         // etc
     },
 ],
@@ -221,9 +221,9 @@ Following are each of the properties available within a level.
 
 ```json5
 {
-    "file": "data/example.phd",
+    "path": "data/example.phd",
     "type": "normal",
-    "music": 57,
+    "music_track": 57,
     "lara_type": 0,
     "water_color": [0.7, 0.5, 0.85],
     "draw_distance_fade": 34.0,
@@ -242,7 +242,7 @@ Following are each of the properties available within a level.
         // etc
     ],
     "sequence": [
-        {"type": "play_fmv", "fmv_num": 0},
+        {"type": "play_fmv", "fmv_id": 0},
         {"type": "load_level"},
         // etc
     ],
@@ -345,7 +345,7 @@ Following are each of the properties available within a level.
   </tr>
   <tr valign="top">
     <td>
-      <code>music</code>
+      <code>music_track</code>
     </td>
     <td>Integer</td>
     <td>Yes</td>
@@ -489,11 +489,11 @@ default gameflow for examples.
       <code>display_picture</code>
     </td>
     <td>
-      <code>picture_path</code>
+      <code>path</code>
     </td>
     <td>String</td>
     <td rowspan="2">
-      Displays the specified picture for the given number of seconds.
+      Displays the specified picture for the given number of seconds (default: 5).
     </td>
   </tr>
   <tr valign="top">
@@ -507,11 +507,11 @@ default gameflow for examples.
       <code>loading_screen</code>
     </td>
     <td>
-      <code>picture_path</code>
+      <code>path</code>
     </td>
     <td>String</td>
     <td rowspan="2">
-      Displays the specified picture for the given number of seconds. Functions identically to display_picture except these pictures can be enabled/disabled by the user with the loading screen option in the config tool.
+      Displays the specified picture for the given number of seconds (default: 5). Functions identically to display_picture except these pictures can be enabled/disabled by the user with the loading screen option in the config tool.
     </td>
   </tr>
   <tr valign="top">
@@ -618,11 +618,11 @@ default gameflow for examples.
       <code>play_fmv</code>
     </td>
     <td>
-      <code>fmv_num</code>
+      <code>fmv_id</code>
     </td>
     <td>String</td>
     <td>
-      Plays the specified FMV. <code>fmv_num</code> must be a valid index into
+      Plays the specified FMV. <code>fmv_id</code> must be a valid index into
       the <code>fmvs</code> root key.
     </td>
   </tr>
@@ -746,7 +746,7 @@ default gameflow for examples.
       <code>total_stats</code>
     </td>
     <td>
-      <code>picture_path</code>
+      <code>path</code>
     </td>
     <td>String</td>
     <td>
@@ -779,9 +779,9 @@ game will exit to title.
 },
 
 {
-    "file": "data/level1.phd",
+    "path": "data/level1.phd",
     "type": "normal",
-    "music": 57,
+    "music_track": 57,
     "sequence": [
          {"type": "load_level"},
          {"type": "play_level"},
@@ -791,9 +791,9 @@ game will exit to title.
 },
 
 {
-    "file": "data/level2.phd",
+    "path": "data/level2.phd",
     "type": "normal",
-    "music": 57,
+    "music_track": 57,
     "sequence": [
          {"type": "load_level"},
          {"type": "play_level"},
@@ -803,27 +803,27 @@ game will exit to title.
 },
 
 {
-    "file": "data/level3.phd",
+    "path": "data/level3.phd",
     "type": "normal",
-    "music": 57,
+    "music_track": 57,
     "sequence": [
          {"type": "load_level"},
          {"type": "play_level"},
          {"type": "level_stats", "level_id": 3},
          {"type": "play_synced_audio", "audio_id": 19},
-         {"type": "display_picture", "picture_path": "data/end.pcx", "display_time": 7.5},
-         {"type": "display_picture", "picture_path": "data/cred1.pcx", "display_time": 7.5},
-         {"type": "display_picture", "picture_path": "data/cred2.pcx", "display_time": 7.5},
-         {"type": "display_picture", "picture_path": "data/cred3.pcx", "display_time": 7.5},
-         {"type": "total_stats", "picture_path": "data/install.pcx"},
+         {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
+         {"type": "display_picture", "path": "data/cred1.pcx", "display_time": 7.5},
+         {"type": "display_picture", "path": "data/cred2.pcx", "display_time": 7.5},
+         {"type": "display_picture", "path": "data/cred3.pcx", "display_time": 7.5},
+         {"type": "total_stats", "background_path": "data/install.pcx"},
          {"type": "exit_to_level", "level_id": 4},
     ],
 },
 
 {
-    "file": "data/bonus1.phd",
+    "path": "data/bonus1.phd",
     "type": "bonus",
-    "music": 57,
+    "music_track": 57,
     "sequence": [
          {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
          {"type": "load_level"},
@@ -833,23 +833,23 @@ game will exit to title.
 },
 
 {
-    "file": "data/bonus2.phd",
+    "path": "data/bonus2.phd",
     "type": "bonus",
-    "music": 57,
+    "music_track": 57,
     "sequence": [
          {"type": "load_level"},
          {"type": "play_level"},
          {"type": "level_stats", "level_id": 5},
          {"type": "play_synced_audio", "audio_id": 14},
-         {"type": "total_stats", "picture_path": "data/install.pcx"},
+         {"type": "total_stats", "background_path": "data/install.pcx"},
          {"type": "exit_to_title"},
     ],
 },
 
 {
-    "file": "data/bonuscut1.phd",
+    "path": "data/bonuscut1.phd",
     "type": "cutscene",
-    "music": 0,
+    "music_track": 0,
     "sequence": [
         {"type": "load_level"},
         {"type": "set_cam_x", "value": 36668},
@@ -887,9 +887,9 @@ the engine's overall item limit).
 
 ```json5
 {
-    "file": "data/example.phd",
+    "path": "data/example.phd",
     "type": "normal",
-    "music": 57,
+    "music_track": 57,
     "item_drops": [
         {"enemy_num": 17, "object_ids": [86]},
         {"enemy_num": 50, "object_ids": [87]},

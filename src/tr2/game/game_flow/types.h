@@ -22,7 +22,7 @@ typedef struct {
 
 typedef struct {
     char *path;
-    float duration;
+    float display_time;
 } GAME_FLOW_DISPLAY_PICTURE_DATA;
 
 typedef enum {

@@ -28,9 +28,9 @@
     "levels": [
         // Level 0: Lara's Home
         {
-            "file": "data/gym.phd",
+            "path": "data/gym.phd",
             "type": "gym",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "injections": [
                 "data/injections/lara_gym_guns.bin",
@@ -42,8 +42,8 @@
                 "data/injections/font.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 3},
-                {"type": "loading_screen", "picture_path": "data/images/gym.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 3},
+                {"type": "loading_screen", "path": "data/images/gym.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 0},
@@ -53,17 +53,17 @@
 
         // Level 1: Caves
         {
-            "file": "data/level1.phd",
+            "path": "data/level1.phd",
             "type": "normal",
-            "music": 57,
+            "music_track": 57,
             "injections": [
                 "data/injections/caves_fd.bin",
                 "data/injections/caves_itemrots.bin",
                 "data/injections/caves_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 4},
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 4},
+                {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 1},
@@ -73,15 +73,15 @@
 
         // Level 2: City of Vilcabamba
         {
-            "file": "data/level2.phd",
+            "path": "data/level2.phd",
             "type": "normal",
-            "music": 57,
+            "music_track": 57,
             "injections": [
                 "data/injections/vilcabamba_itemrots.bin",
                 "data/injections/vilcabamba_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 2},
@@ -92,9 +92,9 @@
 
         // Level 3: Lost Valley
         {
-            "file": "data/level3a.phd",
+            "path": "data/level3a.phd",
             "type": "normal",
-            "music": 57,
+            "music_track": 57,
             "injections": [
                 "data/injections/braid_valley.bin",
                 "data/injections/valley_itemrots.bin",
@@ -102,7 +102,7 @@
                 "data/injections/valley_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 3},
@@ -113,9 +113,9 @@
 
         // Level 4: Tomb of Qualopec
         {
-            "file": "data/level3b.phd",
+            "path": "data/level3b.phd",
             "type": "normal",
-            "music": 57,
+            "music_track": 57,
             "injections": [
                 "data/injections/larson_textures.bin",
                 "data/injections/qualopec_fd.bin",
@@ -123,7 +123,7 @@
                 "data/injections/qualopec_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "exit_to_cine", "level_id": 16},
@@ -132,17 +132,17 @@
 
         // Level 5: St. Francis' Folly
         {
-            "file": "data/level4.phd",
+            "path": "data/level4.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/folly_fd.bin",
                 "data/injections/folly_itemrots.bin",
                 "data/injections/folly_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 5},
-                {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 5},
+                {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 5},
@@ -152,9 +152,9 @@
 
         // Level 6: Colosseum
         {
-            "file": "data/level5.phd",
+            "path": "data/level5.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/colosseum_door.bin",
                 "data/injections/colosseum_fd.bin",
@@ -163,7 +163,7 @@
                 "data/injections/colosseum_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 6},
@@ -173,15 +173,15 @@
 
         // Level 7: Palace Midas
         {
-            "file": "data/level6.phd",
+            "path": "data/level6.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/midas_itemrots.bin",
                 "data/injections/midas_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 7},
@@ -192,9 +192,9 @@
 
         // Level 8: The Cistern
         {
-            "file": "data/level7a.phd",
+            "path": "data/level7a.phd",
             "type": "normal",
-            "music": 58,
+            "music_track": 58,
             "injections": [
                 "data/injections/cistern_fd.bin",
                 "data/injections/cistern_itemrots.bin",
@@ -202,7 +202,7 @@
                 "data/injections/cistern_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 8},
@@ -212,9 +212,9 @@
 
         // Level 9: Tomb of Tihocan
         {
-            "file": "data/level7b.phd",
+            "path": "data/level7b.phd",
             "type": "normal",
-            "music": 58,
+            "music_track": 58,
             "injections": [
                 "data/injections/cistern_plants.bin",
                 "data/injections/tihocan_fd.bin",
@@ -225,7 +225,7 @@
                 {"enemy_num": 82, "object_ids": [86, 144, 129]},
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "exit_to_cine", "level_id": 17},
@@ -234,17 +234,17 @@
 
         // Level 10: City of Khamoon
         {
-            "file": "data/level8a.phd",
+            "path": "data/level8a.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/khamoon_fd.bin",
                 "data/injections/khamoon_mummy.bin",
                 "data/injections/khamoon_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 6},
-                {"type": "loading_screen", "picture_path": "data/images/egypt.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 6},
+                {"type": "loading_screen", "path": "data/images/egypt.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 10},
@@ -254,9 +254,9 @@
 
         // Level 11: Obelisk of Khamoon
         {
-            "file": "data/level8b.phd",
+            "path": "data/level8b.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/obelisk_fd.bin",
                 "data/injections/obelisk_itemrots.bin",
@@ -265,7 +265,7 @@
                 "data/injections/obelisk_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/egypt.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/egypt.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 11},
@@ -275,16 +275,16 @@
 
         // Level 12: Sanctuary of the Scion
         {
-            "file": "data/level8c.phd",
+            "path": "data/level8c.phd",
             "type": "normal",
-            "music": 59,
+            "music_track": 59,
             "injections": [
                 "data/injections/sanctuary_fd.bin",
                 "data/injections/sanctuary_itemrots.bin",
                 "data/injections/sanctuary_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/egypt.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/egypt.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 12},
@@ -294,9 +294,9 @@
 
         // Level 13: Natla's Mines
         {
-            "file": "data/level10a.phd",
+            "path": "data/level10a.phd",
             "type": "normal",
-            "music": 58,
+            "music_track": 58,
             "injections": [
                 "data/injections/cowboy_textures.bin",
                 "data/injections/kold_textures.bin",
@@ -314,8 +314,8 @@
                 {"enemy_num": 75, "object_ids": [85]},
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 7},
-                {"type": "loading_screen", "picture_path": "data/images/atlantis.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 7},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
                 {"type": "remove_weapons"},
                 {"type": "remove_scions"},
                 {"type": "load_level"},
@@ -327,21 +327,21 @@
 
         // Level 14: Atlantis
         {
-            "file": "data/level10b.phd",
+            "path": "data/level10b.phd",
             "type": "normal",
-            "music": 60,
+            "music_track": 60,
             "injections": [
                 "data/injections/atlantis_fd.bin",
                 "data/injections/atlantis_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_num": 8},
-                {"type": "loading_screen", "picture_path": "data/images/atlantis.webp", "display_time": 5},
+                {"type": "play_fmv", "fmv_id": 8},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
                 {"type": "load_level"},
                 {"type": "give_item", "object_id": 84, "quantity": 1},
                 {"type": "setup_bacon_lara", "anchor_room": 10},
                 {"type": "play_level"},
-                {"type": "play_fmv", "fmv_num": 9},
+                {"type": "play_fmv", "fmv_id": 9},
                 {"type": "exit_to_cine", "level_id": 19},
             ],
             "unobtainable_pickups": 3,
@@ -349,35 +349,35 @@
 
         // Level 15: The Great Pyramid
         {
-            "file": "data/level10c.phd",
+            "path": "data/level10c.phd",
             "type": "normal",
-            "music": 60,
+            "music_track": 60,
             "injections": [
                 "data/injections/pyramid_fd.bin",
                 "data/injections/pyramid_textures.bin",
                 "data/injections/scion_collision.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/atlantis.webp", "display_time": 5},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 15},
-                {"type": "play_fmv", "fmv_num": 10},
+                {"type": "play_fmv", "fmv_id": 10},
                 {"type": "play_synced_audio", "audio_id": 19},
-                {"type": "display_picture", "picture_path": "data/images/end.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_1.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_2.webp", "display_time": 7.5},
-                {"type": "display_picture", "picture_path": "data/images/credits_3.webp", "display_time": 7.5},
-                {"type": "total_stats", "picture_path": "data/images/install.webp"},
+                {"type": "display_picture", "path": "data/images/end.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_1.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_2.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/credits_3.webp", "display_time": 7.5},
+                {"type": "total_stats", "background_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
             ],
         },
 
         // Level 16: Cut Scene 1
         {
-            "file": "data/cut1.phd",
+            "path": "data/cut1.phd",
             "type": "cutscene",
-            "music": 0,
+            "music_track": 0,
             "lara_type": 77,
             "inherit_injections": false,
             "injections": [
@@ -398,9 +398,9 @@
 
         // Level 17: Cut Scene 2
         {
-            "file": "data/cut2.phd",
+            "path": "data/cut2.phd",
             "type": "cutscene",
-            "music": 0,
+            "music_track": 0,
             "lara_type": 77,
             "inherit_injections": false,
             "injections": [
@@ -423,9 +423,9 @@
 
         // Level 18: Cut Scene 3
         {
-            "file": "data/cut3.phd",
+            "path": "data/cut3.phd",
             "type": "cutscene",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "injections": [
                 "data/injections/cut3_textures.bin",
@@ -444,9 +444,9 @@
 
         // Level 19: Cut Scene 4
         {
-            "file": "data/cut4.phd",
+            "path": "data/cut4.phd",
             "type": "cutscene",
-            "music": 0,
+            "music_track": 0,
             "draw_distance_fade": 12.0,
             "draw_distance_max": 18.0,
             "lara_type": 77,
@@ -472,19 +472,19 @@
 
         // Level 20: Title
         {
-            "file": "data/title.phd",
+            "path": "data/title.phd",
             "type": "title",
-            "music": 2,
+            "music_track": 2,
             "inherit_injections": false,
             "injections": [
                 "data/injections/pda_model.bin",
                 "data/injections/font.bin",
             ],
             "sequence": [
-                {"type": "display_picture", "picture_path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_num": 0},
-                {"type": "play_fmv", "fmv_num": 1},
-                {"type": "play_fmv", "fmv_num": 2},
+                {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
+                {"type": "play_fmv", "fmv_id": 0},
+                {"type": "play_fmv", "fmv_id": 1},
+                {"type": "play_fmv", "fmv_id": 2},
                 {"type": "exit_to_title"},
             ],
         },
@@ -496,9 +496,9 @@
         // expect the level count to match, otherwise the game will crash.
         // Hence this dummy level.
         {
-            "file": "data/current.phd",
+            "path": "data/current.phd",
             "type": "current",
-            "music": 0,
+            "music_track": 0,
             "inherit_injections": false,
             "sequence": [
                 {"type": "exit_to_title"},
