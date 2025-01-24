@@ -15,10 +15,9 @@
 
 #include <string.h>
 
-typedef struct {
-    const char *str;
-    const int32_t val;
-} STRING_TO_ENUM_TYPE;
+typedef void (*M_LOAD_ARRAY_FUNC)(
+    JSON_OBJECT *source_elem, GAME_FLOW *gf, void *target_elem,
+    size_t target_elem_idx, void *user_arg);
 
 static GAME_FLOW_LEVEL_SETTINGS m_DefaultSettings = {
     .water_color = { .r = 0.6, .g = 0.7, .b = 1.0 },
@@ -26,18 +25,55 @@ static GAME_FLOW_LEVEL_SETTINGS m_DefaultSettings = {
     .draw_distance_max = 20.0f,
 };
 
+static void M_LoadArray(
+    JSON_OBJECT *obj, const char *key, size_t element_size,
+    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
+    void **const elements, void *user_arg);
+
 static bool M_IsLegacySequence(const char *type_str);
 static void M_LoadSettings(
     JSON_OBJECT *obj, GAME_FLOW_LEVEL_SETTINGS *settings);
 static void M_LoadLevelSequence(
     JSON_OBJECT *obj, GAME_FLOW *gf, int32_t level_num);
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+
+static void M_LoadFMV(
+    JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *level, size_t idx,
+    void *user_arg);
+static void M_LoadFMVs(JSON_OBJECT *obj, GAME_FLOW *gf);
+
 static void M_LoadRoot(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static bool M_IsLegacySequence(const char *const type_str)
 {
     return strcmp(type_str, "fix_pyramid_secret") == 0
         || strcmp(type_str, "stop_cine") == 0;
+}
+
+static void M_LoadArray(
+    JSON_OBJECT *const obj, const char *const key, const size_t element_size,
+    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
+    void **const elements, void *const user_arg)
+{
+    JSON_ARRAY *const elem_arr = JSON_ObjectGetArray(obj, key);
+    if (elem_arr == NULL) {
+        Shell_ExitSystemFmt("'%s' must be a list", key);
+    }
+
+    *count = elem_arr->length;
+    *elements = Memory_Alloc(element_size * (*count));
+
+    JSON_ARRAY_ELEMENT *elem = elem_arr->start;
+    for (size_t i = 0; i < elem_arr->length; i++, elem = elem->next) {
+        void *const element = (char *)*elements + i * element_size;
+
+        JSON_OBJECT *const elem_obj = JSON_ValueAsObject(elem->value);
+        if (elem_obj == NULL) {
+            Shell_ExitSystemFmt("'%s' elements must be dictionaries", key);
+        }
+
+        load_func(elem_obj, gf, element, i, user_arg);
+    }
 }
 
 static void M_LoadSettings(
@@ -112,14 +148,14 @@ static void M_LoadLevelSequence(
             break;
 
         case GFS_PLAY_FMV: {
-            const char *tmp_s =
-                JSON_ObjectGetString(jseq_obj, "fmv_path", JSON_INVALID_STRING);
-            if (tmp_s == JSON_INVALID_STRING) {
+            int32_t tmp =
+                JSON_ObjectGetInt(jseq_obj, "fmv_num", JSON_INVALID_NUMBER);
+            if (tmp == JSON_INVALID_NUMBER) {
                 Shell_ExitSystemFmt(
-                    "level %d, sequence %s: 'fmv_path' must be a string",
+                    "level %d, sequence %s: 'fmv_num' must be a number",
                     level_num, type_str);
             }
-            event->data = Memory_DupStr(tmp_s);
+            event->data = (void *)(intptr_t)tmp;
             break;
         }
 
@@ -526,6 +562,24 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     }
 }
 
+static void M_LoadFMV(
+    JSON_OBJECT *const obj, const GAME_FLOW *const gf, GAME_FLOW_FMV *const fmv,
+    size_t idx, void *const user_arg)
+{
+    const char *const path = JSON_ObjectGetString(obj, "path", NULL);
+    if (path == NULL) {
+        Shell_ExitSystemFmt("Missing FMV path");
+    }
+    fmv->path = Memory_DupStr(path);
+}
+
+static void M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
+{
+    M_LoadArray(
+        obj, "fmvs", sizeof(GAME_FLOW_FMV), (M_LOAD_ARRAY_FUNC)M_LoadFMV, gf,
+        &gf->fmv_count, (void **)&gf->fmvs, NULL);
+}
+
 static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     const char *tmp_s;
@@ -606,6 +660,7 @@ void GF_Load(const char *const path)
     GAME_FLOW *const gf = &g_GameFlow;
     M_LoadRoot(root_obj, gf);
     M_LoadLevels(root_obj, gf);
+    M_LoadFMVs(root_obj, gf);
 
     if (root != NULL) {
         JSON_ValueFree(root);

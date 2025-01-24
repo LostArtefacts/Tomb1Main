@@ -40,8 +40,12 @@ various pieces of global behaviour.
     {
         "file": "data/gym.phd",
         // etc
-    }
+    },
 ],
+"fmvs": [
+    {"path": "data/snow.rpl"},
+    // etc
+},
 ```
 </details>
 
@@ -238,7 +242,7 @@ Following are each of the properties available within a level.
         // etc
     ],
     "sequence": [
-        {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
+        {"type": "play_fmv", "fmv_num": 0},
         {"type": "load_level"},
         // etc
     ],
@@ -614,10 +618,13 @@ default gameflow for examples.
       <code>play_fmv</code>
     </td>
     <td>
-      <code>fmv_path</code>
+      <code>fmv_num</code>
     </td>
     <td>String</td>
-    <td>Plays the specified FMV file.</td>
+    <td>
+      Plays the specified FMV. <code>fmv_num</code> must be a valid index into
+      the <code>fmvs</code> root key.
+    </td>
   </tr>
   <tr valign="top">
     <td>
@@ -1340,6 +1347,41 @@ provided with the game achieves.
       Increases the collision radius on the (targetable) Scion such that it can
       be shot with the shotgun.
     </td>
+  </tr>
+</table>
+
+## FMVs
+
+The FMVs section of the document defines how to play video content. This is an
+array of objects and can be defined in any order. The flow is controlled using
+the correct sequencing within each level itself.
+
+Following are each of the properties available within an FMV.
+
+<details>
+<summary>Show snippet</summary>
+
+```json5
+{
+    "path": "data/example.avi",
+}
+```
+<details>
+
+<table>
+  <tr valign="top" align="left">
+    <th>Property</th>
+    <th>Type</th>
+    <th>Required</th>
+    <th colspan="2">Description</th>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>path</code>
+    </td>
+    <td>String</td>
+    <td>Yes</td>
+    <td colspan="2">The path to the FMV's video file.</td>
   </tr>
 </table>
 

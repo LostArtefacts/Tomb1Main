@@ -47,10 +47,15 @@ typedef struct {
 // ----------------------------------------------------------------------------
 // Game flow structures
 // ----------------------------------------------------------------------------
+
 typedef struct {
     int32_t count;
     char **data_paths;
 } INJECTION_DATA;
+
+typedef struct {
+    const char *path;
+} GAME_FLOW_FMV;
 
 typedef struct {
     RGB_F water_color;
@@ -96,6 +101,12 @@ typedef struct {
     int32_t first_level_num;
     int32_t last_level_num;
     int32_t title_level_num;
+
+    // FMVs
+    struct {
+        int32_t fmv_count;
+        GAME_FLOW_FMV *fmvs;
+    };
 
     char *savegame_fmt_legacy;
     char *savegame_fmt_bson;

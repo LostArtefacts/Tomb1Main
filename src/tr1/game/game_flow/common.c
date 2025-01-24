@@ -20,11 +20,12 @@ static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
             Memory_FreePointer(&data);
             break;
         }
-        case GFS_PLAY_FMV:
         case GFS_MESH_SWAP:
         case GFS_ADD_ITEM:
             Memory_FreePointer(&event->data);
             break;
+
+        case GFS_PLAY_FMV:
         case GFS_LOAD_LEVEL:
         case GFS_PLAY_LEVEL:
         case GFS_LEVEL_STATS:

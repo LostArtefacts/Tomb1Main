@@ -127,8 +127,8 @@
             ],
             "sequence": [
                 {"type": "display_picture", "picture_path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_path": "fmv/core.avi"},
-                {"type": "play_fmv", "fmv_path": "fmv/escape.avi"},
+                {"type": "play_fmv", "fmv_num": 0},
+                {"type": "play_fmv", "fmv_num": 1},
                 {"type": "exit_to_title"},
             ],
         },
@@ -142,5 +142,10 @@
             "inherit_injections": false,
             "sequence": [{"type": "exit_to_title"}],
         },
+    ],
+
+    "fmvs": [
+        {"path": "fmv/core.avi"},
+        {"path": "fmv/escape.avi"},
     ],
 }

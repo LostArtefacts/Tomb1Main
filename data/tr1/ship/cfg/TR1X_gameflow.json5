@@ -42,7 +42,7 @@
                 "data/injections/font.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/mansion.avi"},
+                {"type": "play_fmv", "fmv_num": 3},
                 {"type": "loading_screen", "picture_path": "data/images/gym.webp", "display_time": 5},
                 {"type": "load_level"},
                 {"type": "play_level"},
@@ -62,7 +62,7 @@
                 "data/injections/caves_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
+                {"type": "play_fmv", "fmv_num": 4},
                 {"type": "loading_screen", "picture_path": "data/images/peru.webp", "display_time": 5},
                 {"type": "load_level"},
                 {"type": "play_level"},
@@ -141,7 +141,7 @@
                 "data/injections/folly_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/lift.avi"},
+                {"type": "play_fmv", "fmv_num": 5},
                 {"type": "loading_screen", "picture_path": "data/images/greece.webp", "display_time": 5},
                 {"type": "load_level"},
                 {"type": "play_level"},
@@ -243,7 +243,7 @@
                 "data/injections/khamoon_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/vision.avi"},
+                {"type": "play_fmv", "fmv_num": 6},
                 {"type": "loading_screen", "picture_path": "data/images/egypt.webp", "display_time": 5},
                 {"type": "load_level"},
                 {"type": "play_level"},
@@ -314,7 +314,7 @@
                 {"enemy_num": 75, "object_ids": [85]},
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/canyon.avi"},
+                {"type": "play_fmv", "fmv_num": 7},
                 {"type": "loading_screen", "picture_path": "data/images/atlantis.webp", "display_time": 5},
                 {"type": "remove_weapons"},
                 {"type": "remove_scions"},
@@ -335,13 +335,13 @@
                 "data/injections/atlantis_textures.bin",
             ],
             "sequence": [
-                {"type": "play_fmv", "fmv_path": "fmv/pyramid.avi"},
+                {"type": "play_fmv", "fmv_num": 8},
                 {"type": "loading_screen", "picture_path": "data/images/atlantis.webp", "display_time": 5},
                 {"type": "load_level"},
                 {"type": "give_item", "object_id": 84, "quantity": 1},
                 {"type": "setup_bacon_lara", "anchor_room": 10},
                 {"type": "play_level"},
-                {"type": "play_fmv", "fmv_path": "fmv/prison.avi"},
+                {"type": "play_fmv", "fmv_num": 9},
                 {"type": "exit_to_cine", "level_id": 19},
             ],
             "unobtainable_pickups": 3,
@@ -362,7 +362,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 15},
-                {"type": "play_fmv", "fmv_path": "fmv/end.avi"},
+                {"type": "play_fmv", "fmv_num": 10},
                 {"type": "play_synced_audio", "audio_id": 19},
                 {"type": "display_picture", "picture_path": "data/images/end.webp", "display_time": 7.5},
                 {"type": "display_picture", "picture_path": "data/images/credits_1.webp", "display_time": 7.5},
@@ -482,9 +482,9 @@
             ],
             "sequence": [
                 {"type": "display_picture", "picture_path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_path": "fmv/core.avi"},
-                {"type": "play_fmv", "fmv_path": "fmv/escape.avi"},
-                {"type": "play_fmv", "fmv_path": "fmv/cafe.avi"},
+                {"type": "play_fmv", "fmv_num": 0},
+                {"type": "play_fmv", "fmv_num": 1},
+                {"type": "play_fmv", "fmv_num": 2},
                 {"type": "exit_to_title"},
             ],
         },
@@ -504,5 +504,20 @@
                 {"type": "exit_to_title"},
             ],
         },
+    ],
+
+    // FMVs
+    "fmvs": [
+        {"path": "fmv/core.avi"},
+        {"path": "fmv/escape.avi"},
+        {"path": "fmv/cafe.avi"},
+        {"path": "fmv/mansion.avi"},
+        {"path": "fmv/snow.avi"},
+        {"path": "fmv/lift.avi"},
+        {"path": "fmv/vision.avi"},
+        {"path": "fmv/canyon.avi"},
+        {"path": "fmv/pyramid.avi"},
+        {"path": "fmv/prison.avi"},
+        {"path": "fmv/end.avi"},
     ],
 }
