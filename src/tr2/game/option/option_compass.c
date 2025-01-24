@@ -18,7 +18,7 @@ static void M_Init(void)
     m_Dialog = UI_StatsDialog_Create((UI_STATS_DIALOG_ARGS) {
         .mode = Game_IsInGym() ? UI_STATS_DIALOG_MODE_ASSAULT_COURSE
                                : UI_STATS_DIALOG_MODE_LEVEL,
-        .level_num = g_CurrentLevel->num,
+        .level_num = Game_GetCurrentLevel()->num,
         .style = UI_STATS_DIALOG_STYLE_BORDERED,
     });
 }

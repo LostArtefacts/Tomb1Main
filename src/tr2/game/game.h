@@ -4,3 +4,5 @@
 
 void Game_ProcessInput(void);
 bool Game_IsInGym(void);
+GAME_FLOW_LEVEL *Game_GetCurrentLevel(void);
+void Game_SetCurrentLevel(GAME_FLOW_LEVEL *level);

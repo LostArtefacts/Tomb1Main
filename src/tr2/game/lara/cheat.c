@@ -4,6 +4,7 @@
 #include "game/camera.h"
 #include "game/console/common.h"
 #include "game/creature.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/gun/gun.h"
@@ -36,7 +37,7 @@ static void M_ReinitialiseGunMeshes(void)
     const bool has_flare = Lara_GetMesh(LM_HAND_L)
         == Object_GetMesh(g_Objects[O_LARA_FLARE].mesh_idx + LM_HAND_L);
 
-    Lara_InitialiseMeshes(g_CurrentLevel);
+    Lara_InitialiseMeshes(Game_GetCurrentLevel());
     Gun_InitialiseNewWeapon();
     if (has_flare) {
         Flare_DrawMeshes();

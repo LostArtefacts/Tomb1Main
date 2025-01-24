@@ -80,7 +80,6 @@ uint16_t g_SoundOptionLine;
 ASSAULT_STATS g_Assault;
 int32_t g_LevelItemCount;
 int32_t g_HealthBarTimer;
-GAME_FLOW_LEVEL *g_CurrentLevel;
 int32_t g_LevelComplete;
 RGB_888 g_GamePalette8[256];
 RGB_888 g_GamePalette16[256];

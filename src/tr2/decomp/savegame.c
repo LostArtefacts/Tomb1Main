@@ -2,6 +2,7 @@
 
 #include "decomp/skidoo.h"
 #include "game/camera.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
@@ -819,9 +820,9 @@ void CreateStartInfo(const GAME_FLOW_LEVEL *const level)
 
 void CreateSaveGameInfo(void)
 {
-    g_SaveGame.current_level = g_CurrentLevel->num;
-
-    CreateStartInfo(g_CurrentLevel);
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    g_SaveGame.current_level = current_level->num;
+    CreateStartInfo(current_level);
 
     // TODO: refactor me!
     g_SaveGame.num_pickup[0] = Inv_RequestItem(O_PICKUP_ITEM_1);
@@ -870,7 +871,8 @@ void CreateSaveGameInfo(void)
 
 void ExtractSaveGameInfo(void)
 {
-    Lara_InitialiseInventory(g_CurrentLevel);
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    Lara_InitialiseInventory(current_level);
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, g_SaveGame.num_pickup[0]);
     Inv_AddItemNTimes(O_PICKUP_ITEM_2, g_SaveGame.num_pickup[1]);
     Inv_AddItemNTimes(O_PUZZLE_ITEM_1, g_SaveGame.num_puzzle[0]);

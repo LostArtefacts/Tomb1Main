@@ -4,6 +4,7 @@
 #include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/effects.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/inject.h"
 #include "game/items.h"
@@ -796,7 +797,7 @@ bool Level_Initialise(
 
     GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
     if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
-        g_CurrentLevel = level;
+        Game_SetCurrentLevel(level);
     }
     GF_SetCurrentLevel(level);
     InitialiseGameFlags();
@@ -827,7 +828,7 @@ bool Level_Initialise(
     if (level_type == GFL_SAVED) {
         ExtractSaveGameInfo();
     } else if (level_type == GFL_NORMAL) {
-        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_REGULAR);
+        GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_REGULAR);
     }
 
     if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {

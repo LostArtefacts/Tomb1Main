@@ -1,6 +1,7 @@
 #include "game/objects/general/pickup.h"
 
 #include "decomp/flares.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
@@ -82,7 +83,7 @@ static void M_DoPickup(const int16_t item_num)
                 + ((g_SaveGame.current_stats.secret_flags >> 1) & 1)
                 + ((g_SaveGame.current_stats.secret_flags >> 2) & 1)
             >= 3) {
-        GF_InventoryModifier_Apply(g_CurrentLevel, GF_INV_SECRET);
+        GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_SECRET);
     }
 
     item->status = IS_INVISIBLE;

@@ -1,5 +1,6 @@
 #include "game/ui/widgets/stats_dialog.h"
 
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/input.h"
@@ -148,8 +149,9 @@ static void M_AddRowFromRole(
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
     const STATS_COMMON *stats =
-        g_CurrentLevel != NULL && self->args.level_num == g_CurrentLevel->num
+        current_level != NULL && self->args.level_num == current_level->num
         ? (STATS_COMMON *)&g_SaveGame.current_stats
         : (STATS_COMMON *)&g_SaveGame.start[self->args.level_num].stats;
     M_AddRowFromRole(self, M_ROW_TIMER, stats);
