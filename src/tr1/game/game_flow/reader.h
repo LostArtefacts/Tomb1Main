@@ -1,3 +1,3 @@
 #pragma once
 
-bool GF_Load(const char *file_name);
+void GF_Load(const char *path);

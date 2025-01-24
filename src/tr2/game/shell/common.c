@@ -351,10 +351,7 @@ void Shell_Main(void)
     Viewport_Reset();
     Render_Reset(RENDER_RESET_PARAMS);
 
-    if (!GF_Load(m_CurrentGameFlowPath)) {
-        Shell_ExitSystem("Could not load the new script file.");
-        return;
-    }
+    GF_Load(m_CurrentGameFlowPath);
     GameStringTable_LoadFromFile(m_CurrentGameStringsPath);
 
     InitialiseStartInfo();

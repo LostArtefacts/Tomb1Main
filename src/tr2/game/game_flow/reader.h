@@ -1,4 +1,3 @@
 #pragma once
 
-bool GF_Load(const char *path);
-void GF_Shutdown(void);
+void GF_Load(const char *path);

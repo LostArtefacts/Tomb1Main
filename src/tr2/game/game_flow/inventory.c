@@ -9,11 +9,12 @@ static int8_t m_SecretInvItems[O_NUMBER_OF] = {};
 static int8_t m_Add2InvItems[O_NUMBER_OF] = {};
 
 static void M_ModifyInventory_GunOrAmmo(
-    START_INFO *start, GF_INV_TYPE type, LARA_GUN_TYPE gun_type);
-static void M_ModifyInventory_Item(GF_INV_TYPE type, GAME_OBJECT_ID object_id);
+    START_INFO *start, GAME_FLOW_INV_TYPE type, LARA_GUN_TYPE gun_type);
+static void M_ModifyInventory_Item(
+    GAME_FLOW_INV_TYPE type, GAME_OBJECT_ID object_id);
 
 static void M_ModifyInventory_GunOrAmmo(
-    START_INFO *const start, const GF_INV_TYPE type,
+    START_INFO *const start, const GAME_FLOW_INV_TYPE type,
     const LARA_GUN_TYPE gun_type)
 {
     const GAME_OBJECT_ID gun_item = Gun_GetGunObject(gun_type);
@@ -72,7 +73,7 @@ static void M_ModifyInventory_GunOrAmmo(
 }
 
 static void M_ModifyInventory_Item(
-    const GF_INV_TYPE type, const GAME_OBJECT_ID object_id)
+    const GAME_FLOW_INV_TYPE type, const GAME_OBJECT_ID object_id)
 {
     int32_t qty = 0;
     if (type == GF_INV_SECRET) {
@@ -98,7 +99,8 @@ void GF_InventoryModifier_Reset(void)
 }
 
 void GF_InventoryModifier_Add(
-    const GAME_OBJECT_ID object_id, const GF_INV_TYPE type, const int32_t qty)
+    const GAME_OBJECT_ID object_id, const GAME_FLOW_INV_TYPE type,
+    const int32_t qty)
 {
     if (object_id < 0 || object_id >= O_NUMBER_OF) {
         return;
@@ -110,7 +112,8 @@ void GF_InventoryModifier_Add(
     }
 }
 
-void GF_InventoryModifier_Apply(const int32_t level, const GF_INV_TYPE type)
+void GF_InventoryModifier_Apply(
+    const int32_t level, const GAME_FLOW_INV_TYPE type)
 {
     START_INFO *const start = &g_SaveGame.start[level];
 

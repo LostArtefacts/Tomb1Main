@@ -53,7 +53,7 @@ void GF_Shutdown(void)
     Memory_FreePointer(&g_GameFlow.savegame_fmt_bson);
     Memory_FreePointer(&g_GameInfo.current);
 
-    for (int i = 0; i < g_GameFlow.injections.length; i++) {
+    for (int i = 0; i < g_GameFlow.injections.count; i++) {
         Memory_FreePointer(&g_GameFlow.injections.data_paths[i]);
     }
     Memory_FreePointer(&g_GameFlow.injections.data_paths);
@@ -64,7 +64,7 @@ void GF_Shutdown(void)
             Memory_FreePointer(&level->path);
             Memory_FreePointer(&level->title);
 
-            for (int j = 0; j < level->injections.length; j++) {
+            for (int j = 0; j < level->injections.count; j++) {
                 Memory_FreePointer(&level->injections.data_paths[j]);
             }
             Memory_FreePointer(&level->injections.data_paths);

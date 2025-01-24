@@ -125,10 +125,7 @@ void Shell_Init(
     }
     Screen_Init();
 
-    if (!GF_Load(game_flow_path)) {
-        Shell_ExitSystemFmt("Unable to load gameflow file: %s", game_flow_path);
-        return;
-    }
+    GF_Load(game_flow_path);
     GameStringTable_LoadFromFile(game_strings_path);
 
     Savegame_Init();

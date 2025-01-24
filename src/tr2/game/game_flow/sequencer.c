@@ -102,8 +102,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         switch (event->type) {
         case GFS_DISPLAY_PICTURE: {
-            const GFS_DISPLAY_PICTURE_DATA *const data =
-                (GFS_DISPLAY_PICTURE_DATA *)event->data;
+            const GAME_FLOW_DISPLAY_PICTURE_DATA *const data =
+                (GAME_FLOW_DISPLAY_PICTURE_DATA *)event->data;
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
                 .display_time = data->duration,
@@ -223,8 +223,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_ADD_ITEM:
         case GFS_ADD_SECRET_REWARD:
-            const GFS_ADD_ITEM_DATA *const data =
-                (GFS_ADD_ITEM_DATA *)event->data;
+            const GAME_FLOW_ADD_ITEM_DATA *const data =
+                (GAME_FLOW_ADD_ITEM_DATA *)event->data;
             if (type != GFL_STORY && type != GFL_MID_STORY) {
                 GF_InventoryModifier_Add(
                     data->object_id, data->inv_type, data->qty);

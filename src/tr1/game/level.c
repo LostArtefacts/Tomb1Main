@@ -859,8 +859,7 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
 
     m_InjectionInfo = Memory_Alloc(sizeof(INJECTION_INFO));
     Inject_Init(
-        level->injections.length, level->injections.data_paths,
-        m_InjectionInfo);
+        level->injections.count, level->injections.data_paths, m_InjectionInfo);
 
     const bool is_demo =
         (level->type == GFL_TITLE_DEMO_PC) | (level->type == GFL_LEVEL_DEMO_PC);
@@ -957,8 +956,8 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
 
     const bool disable_music = level_num == g_GameFlow.title_level_num
         && !g_Config.audio.enable_music_in_menu;
-    if (level->music && !disable_music) {
-        Music_PlayLooped(level->music);
+    if (level->music_track >= 0 && !disable_music) {
+        Music_PlayLooped(level->music_track);
     }
 
     Viewport_SetFOV(-1);
