@@ -27,8 +27,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     // clang-format off
     Console_Log(
         GS(OSD_POS_GET),
-        Game_GetCurrentLevelNum(),
-        GF_GetLevelTitle(Game_GetCurrentLevelNum()),
+        GF_GetCurrentLevel()->num,
+        GF_GetCurrentLevel()->title,
         lara_item->room_num,
         lara_item->pos.x / (float)WALL_L,
         lara_item->pos.y / (float)WALL_L,

@@ -47,7 +47,7 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
     GameStringTable_Apply(start_level);
     int32_t current_level = start_level;
     while (true) {
-        if (current_level > GF_GetLevelCount() - 1) {
+        if (current_level > GF_GetLevelCount(GFL_NORMAL) - 1) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
 

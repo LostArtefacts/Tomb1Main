@@ -56,14 +56,13 @@ static char *M_CleanScreenshotTitle(const char *const source)
 
 static char *M_GetScreenshotTitle(void)
 {
-    const int32_t level_num = Game_GetCurrentLevelNum();
-    if (level_num < 0) {
+    const GAME_FLOW_LEVEL *const level = GF_GetCurrentLevel();
+    if (level == NULL) {
         return Memory_DupStr("Intro");
     }
 
-    const char *const level_title = GF_GetLevelTitle(level_num);
-    if (level_title != NULL && strlen(level_title) > 0) {
-        char *clean_level_title = M_CleanScreenshotTitle(level_title);
+    if (level->title != NULL && strlen(level->title) > 0) {
+        char *clean_level_title = M_CleanScreenshotTitle(level->title);
         if (clean_level_title != NULL && strlen(clean_level_title) > 0) {
             return clean_level_title;
         }
@@ -72,9 +71,9 @@ static char *M_GetScreenshotTitle(void)
 
     // If title totally invalid, name it based on level number
     const char *const fmt = "Level_%d";
-    const size_t result_size = snprintf(NULL, 0, fmt, level_num) + 1;
+    const size_t result_size = snprintf(NULL, 0, fmt, level->num) + 1;
     char *result = Memory_Alloc(result_size);
-    snprintf(result, result_size, fmt, level_num);
+    snprintf(result, result_size, fmt, level->num);
     return result;
 }
 

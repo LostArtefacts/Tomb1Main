@@ -21,9 +21,10 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 
     source = Vector_Create(sizeof(STRING_FUZZY_SOURCE));
-    for (int32_t level_num = 0; level_num < GF_GetLevelCount(); level_num++) {
+    for (int32_t level_num = 0; level_num < GF_GetLevelCount(GFL_NORMAL);
+         level_num++) {
         STRING_FUZZY_SOURCE source_item = {
-            .key = GF_GetLevelTitle(level_num),
+            .key = GF_GetLevel(level_num, GFL_NORMAL)->title,
             .value = (void *)(intptr_t)level_num,
             .weight = 1,
         };
@@ -54,12 +55,13 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 
 matched:
-    if (level_to_load >= 0 && level_to_load < GF_GetLevelCount()) {
+    if (level_to_load >= 0 && level_to_load < GF_GetLevelCount(GFL_NORMAL)) {
         GF_OverrideCommand((GAME_FLOW_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = level_to_load,
         });
-        Console_Log(GS(OSD_PLAY_LEVEL), GF_GetLevelTitle(level_to_load));
+        Console_Log(
+            GS(OSD_PLAY_LEVEL), GF_GetLevel(level_to_load, GFL_NORMAL)->title);
         result = CR_SUCCESS;
     } else {
         Console_Log(GS(OSD_INVALID_LEVEL));

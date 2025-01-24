@@ -645,7 +645,7 @@ void InitialiseStartInfo(void)
         return;
     }
 
-    for (int32_t i = 0; i < GF_GetLevelCount(); i++) {
+    for (int32_t i = 0; i < GF_GetLevelCount(GFL_NORMAL); i++) {
         ModifyStartInfo(GF_GetLevel(i, GFL_NORMAL));
         g_SaveGame.start[i].available = 0;
         g_SaveGame.start[i].stats.timer = 0;
@@ -1014,7 +1014,9 @@ int32_t S_SaveGame(const int32_t slot_num)
         return false;
     }
 
-    sprintf(file_name, "%s", GF_GetLevelTitle(g_SaveGame.current_level));
+    sprintf(
+        file_name, "%s",
+        GF_GetLevel(g_SaveGame.current_level, GFL_NORMAL)->title);
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
     for (int32_t i = 0; i < 24; i++) {

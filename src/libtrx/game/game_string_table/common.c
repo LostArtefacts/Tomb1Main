@@ -94,8 +94,8 @@ void GameStringTable_Apply(const int32_t level_num)
     LOG_DEBUG("loading file %d", level_num);
     Object_ResetNames();
     M_Apply(&gs_file->global);
-    for (int32_t i = 0; i < GF_GetLevelCount(); i++) {
-        GF_SetLevelTitle(i, gs_file->levels[i].title);
+    for (int32_t i = 0; i < GF_GetLevelCount(GFL_NORMAL); i++) {
+        GF_SetLevelTitle(GF_GetLevel(i, GFL_NORMAL), gs_file->levels[i].title);
     }
     if (level_num != -1) {
         M_Apply(&gs_file->levels[level_num].table);

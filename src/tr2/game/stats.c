@@ -36,7 +36,7 @@ FINAL_STATS Stats_ComputeFinalStats(void)
 {
     FINAL_STATS result = {};
 
-    const int32_t total_levels = GF_GetLevelCount();
+    const int32_t total_levels = GF_GetLevelCount(GFL_NORMAL);
     for (int32_t i = LV_FIRST; i < total_levels; i++) {
         result.timer += g_SaveGame.start[i].stats.timer;
         result.ammo_used += g_SaveGame.start[i].stats.ammo_used;

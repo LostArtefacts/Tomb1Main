@@ -49,9 +49,16 @@ void GF_Shutdown(void)
     }
 }
 
-int32_t GF_GetLevelCount(void)
+int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    return g_GameFlow.level_count;
+    switch (level_type) {
+    case GFL_TITLE:
+        return 1;
+    case GFL_GYM:
+        return 1;
+    default:
+        return g_GameFlow.level_count;
+    }
 }
 
 int32_t GF_GetDemoCount(void)
@@ -66,21 +73,20 @@ int32_t GF_GetDemoCount(void)
     return demo_count;
 }
 
-const char *GF_GetLevelTitle(const int32_t level_num)
+void GF_SetLevelTitle(GAME_FLOW_LEVEL *const level, const char *const title)
 {
-    return g_GameFlow.levels[level_num].title;
-}
-
-void GF_SetLevelTitle(const int32_t level_num, const char *const title)
-{
-    Memory_FreePointer(&g_GameFlow.levels[level_num].title);
-    g_GameFlow.levels[level_num].title =
-        title != NULL ? Memory_DupStr(title) : NULL;
+    Memory_FreePointer(&level->title);
+    level->title = title != NULL ? Memory_DupStr(title) : NULL;
 }
 
 int32_t GF_GetGymLevelNum(void)
 {
     return g_GameFlow.gym_level_num;
+}
+
+GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
+{
+    return GF_GetLevel(g_CurrentLevel, g_GameInfo.current_level_type);
 }
 
 GAME_FLOW_LEVEL *GF_GetLevel(
@@ -91,7 +97,7 @@ GAME_FLOW_LEVEL *GF_GetLevel(
         return &g_GameFlow.levels[g_GameFlow.title_level_num];
 
     default:
-        if (num < 0 || num >= GF_GetLevelCount()) {
+        if (num < 0 || num >= GF_GetLevelCount(level_type)) {
             LOG_ERROR("Invalid level number: %d", num);
             return NULL;
         }

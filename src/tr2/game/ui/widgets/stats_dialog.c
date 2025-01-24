@@ -305,7 +305,7 @@ UI_WIDGET *UI_StatsDialog_Create(UI_STATS_DIALOG_ARGS args)
     switch (args.mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
         UI_Requester_SetTitle(
-            self->requester, GF_GetLevelTitle(args.level_num));
+            self->requester, GF_GetLevel(args.level_num, GFL_NORMAL)->title);
         M_AddLevelStatsRows(self);
         break;
 

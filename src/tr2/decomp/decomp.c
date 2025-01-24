@@ -243,8 +243,8 @@ void DecreaseScreenSize(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    for (int32_t i = LV_FIRST; i < GF_GetLevelCount(); i++) {
-        Requester_AddItem(req, GF_GetLevelTitle(i), 0, NULL, 0);
+    for (int32_t i = LV_FIRST; i < GF_GetLevelCount(GFL_NORMAL); i++) {
+        Requester_AddItem(req, GF_GetLevel(i, GFL_NORMAL)->title, 0, NULL, 0);
     }
 }
 

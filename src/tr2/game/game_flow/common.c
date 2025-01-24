@@ -3,6 +3,7 @@
 #include "game/game_flow/vars.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
@@ -49,9 +50,19 @@ static void M_FreeFMVs(GAME_FLOW *const gf)
     gf->fmv_count = 0;
 }
 
-int32_t GF_GetLevelCount(void)
+int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
 {
-    return g_GameFlow.level_count;
+    switch (level_type) {
+    case GFL_NORMAL:
+    case GFL_SAVED:
+        return g_GameFlow.level_count;
+    case GFL_DEMO:
+        return g_GameFlow.demo_count;
+    case GFL_CUTSCENE:
+        return g_GameFlow.cutscene_count;
+    default:
+        ASSERT_FAIL();
+    }
 }
 
 int32_t GF_GetDemoCount(void)
@@ -59,21 +70,15 @@ int32_t GF_GetDemoCount(void)
     return g_GameFlow.demo_count;
 }
 
-const char *GF_GetLevelTitle(const int32_t level_num)
-{
-    return g_GameFlow.levels[level_num].title;
-}
-
 int32_t GF_GetCutsceneCount(void)
 {
     return g_GameFlow.cutscene_count;
 }
 
-void GF_SetLevelTitle(const int32_t level_num, const char *const title)
+void GF_SetLevelTitle(GAME_FLOW_LEVEL *const level, const char *const title)
 {
-    Memory_FreePointer(&g_GameFlow.levels[level_num].title);
-    g_GameFlow.levels[level_num].title =
-        title != NULL ? Memory_DupStr(title) : NULL;
+    Memory_FreePointer(&level->title);
+    level->title = title != NULL ? Memory_DupStr(title) : NULL;
 }
 
 int32_t GF_GetGymLevelNum(void)
@@ -101,6 +106,11 @@ void GF_Shutdown(void)
     }
 }
 
+GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
+{
+    return g_CurrentLevel;
+}
+
 GAME_FLOW_LEVEL *GF_GetLevel(
     const int32_t num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
@@ -124,7 +134,7 @@ GAME_FLOW_LEVEL *GF_GetLevel(
 
     case GFL_NORMAL:
     case GFL_SAVED:
-        if (num < 0 || num >= GF_GetLevelCount()) {
+        if (num < 0 || num >= GF_GetLevelCount(GFL_NORMAL)) {
             LOG_ERROR("Invalid level number: %d", num);
             return NULL;
         }

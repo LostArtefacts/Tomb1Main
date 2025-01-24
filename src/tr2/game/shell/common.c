@@ -381,7 +381,7 @@ void Shell_Main(void)
                 gf_cmd =
                     GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
             } else {
-                if (gf_cmd.param > GF_GetLevelCount()) {
+                if (gf_cmd.param > GF_GetLevelCount(GFL_NORMAL)) {
                     Shell_ExitSystemFmt(
                         "GameMain: STARTGAME with invalid level number (%d)",
                         gf_cmd.param);
@@ -393,7 +393,7 @@ void Shell_Main(void)
 
         case GF_START_SAVED_GAME:
             S_LoadGame(gf_cmd.param);
-            if (g_SaveGame.current_level > GF_GetLevelCount()) {
+            if (g_SaveGame.current_level > GF_GetLevelCount(GFL_NORMAL)) {
                 Shell_ExitSystemFmt(
                     "GameMain: STARTSAVEDGAME with invalid level number (%d)",
                     g_SaveGame.current_level);
