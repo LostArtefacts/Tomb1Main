@@ -38,10 +38,19 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef enum {
+    LEVEL_LAYOUT_UNKNOWN = -1,
+    LEVEL_LAYOUT_TR1,
+    LEVEL_LAYOUT_TR1_DEMO_PC,
+    LEVEL_LAYOUT_NUMBER_OF,
+} LEVEL_LAYOUT;
+
 static LEVEL_INFO m_LevelInfo = {};
 static INJECTION_INFO *m_InjectionInfo = NULL;
 
-static void M_LoadFromFile(const GAME_FLOW_LEVEL *level, bool is_demo);
+static bool M_TryLayout(VFILE *file, LEVEL_LAYOUT layout);
+static LEVEL_LAYOUT M_GuessLayout(VFILE *file);
+static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
 static void M_LoadTexturePages(VFILE *file);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
@@ -60,7 +69,7 @@ static void M_LoadSoundEffects(VFILE *file);
 static void M_LoadBoxes(VFILE *file);
 static void M_LoadAnimatedTextures(VFILE *file);
 static void M_LoadItems(VFILE *file);
-static void M_LoadDepthQ(VFILE *file);
+static void M_LoadLightTable(VFILE *file);
 static void M_LoadPalette(VFILE *file);
 static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
@@ -69,23 +78,136 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *level);
 static void M_MarkWaterEdgeVertices(void);
 static size_t M_CalculateMaxVertices(void);
 
-static void M_LoadFromFile(
-    const GAME_FLOW_LEVEL *const level, const bool is_demo)
+static bool M_TryLayout(VFILE *const file, const LEVEL_LAYOUT layout)
+{
+#define TRY_OR_FAIL(call)                                                      \
+    if (!call) {                                                               \
+        return false;                                                          \
+    }
+#define TRY_OR_FAIL_ARR_S32(size)                                              \
+    {                                                                          \
+        int32_t num;                                                           \
+        TRY_OR_FAIL(VFile_TryReadS32(file, &num));                             \
+        TRY_OR_FAIL(VFile_TrySkip(file, num *size));                           \
+    }
+#define TRY_OR_FAIL_ARR_U16(size)                                              \
+    {                                                                          \
+        uint16_t num;                                                          \
+        TRY_OR_FAIL(VFile_TryReadU16(file, &num));                             \
+        TRY_OR_FAIL(VFile_TrySkip(file, num *size));                           \
+    }
+
+    VFile_SetPos(file, 0);
+
+    int32_t version;
+    TRY_OR_FAIL(VFile_TryReadS32(file, &version));
+    if (version != 32) {
+        LOG_ERROR(
+            "Unknown level version identifier: %d, expected 32", version, 32);
+        return false;
+    }
+
+    TRY_OR_FAIL_ARR_S32(TEXTURE_PAGE_SIZE); // textures
+    TRY_OR_FAIL(VFile_TrySkip(file, 4));
+
+    uint16_t room_count;
+    TRY_OR_FAIL(VFile_TryReadU16(file, &room_count));
+    for (int32_t i = 0; i < room_count; i++) {
+        TRY_OR_FAIL(VFile_TrySkip(file, 16));
+        TRY_OR_FAIL_ARR_S32(2); // meshes
+        TRY_OR_FAIL_ARR_U16(32); // portals
+
+        int16_t size_z;
+        int16_t size_x;
+        TRY_OR_FAIL(VFile_TryReadS16(file, &size_z));
+        TRY_OR_FAIL(VFile_TryReadS16(file, &size_x));
+        TRY_OR_FAIL(VFile_TrySkip(file, size_z * size_x * 8));
+        TRY_OR_FAIL(VFile_TrySkip(file, 2));
+
+        TRY_OR_FAIL_ARR_U16(18); // lights
+        TRY_OR_FAIL_ARR_U16(18); // static meshes
+        TRY_OR_FAIL(VFile_TrySkip(file, 4));
+    }
+
+    TRY_OR_FAIL_ARR_S32(2); // floor data
+    TRY_OR_FAIL_ARR_S32(2); // object meshes
+    TRY_OR_FAIL_ARR_S32(4); // object mesh pointers
+    TRY_OR_FAIL_ARR_S32(32); // animations
+    TRY_OR_FAIL_ARR_S32(6); // animation changes
+    TRY_OR_FAIL_ARR_S32(8); // animation ranges
+    TRY_OR_FAIL_ARR_S32(2); // animation commands
+    TRY_OR_FAIL_ARR_S32(4); // animation bones
+    TRY_OR_FAIL_ARR_S32(2); // animation frames
+    TRY_OR_FAIL_ARR_S32(18); // objects
+    TRY_OR_FAIL_ARR_S32(32); // static objects
+    TRY_OR_FAIL_ARR_S32(20); // textures
+    TRY_OR_FAIL_ARR_S32(16); // sprites
+    TRY_OR_FAIL_ARR_S32(8); // sprites sequences
+
+    if (layout == LEVEL_LAYOUT_TR1_DEMO_PC) {
+        TRY_OR_FAIL(VFile_TrySkip(file, 768)); // palette
+    }
+
+    TRY_OR_FAIL_ARR_S32(16); // cameras
+    TRY_OR_FAIL_ARR_S32(16); // sound effects
+
+    int32_t box_count;
+    TRY_OR_FAIL(VFile_TryReadS32(file, &box_count));
+    TRY_OR_FAIL(VFile_TrySkip(file, box_count * 20));
+    TRY_OR_FAIL_ARR_S32(2); // overlaps
+    TRY_OR_FAIL(VFile_TrySkip(file, box_count * 12)); // zones
+
+    TRY_OR_FAIL_ARR_S32(2); // animated texture ranges
+    TRY_OR_FAIL_ARR_S32(22); // items
+
+    TRY_OR_FAIL(VFile_TrySkip(file, 32 * 256)); // light table
+
+    if (layout != LEVEL_LAYOUT_TR1_DEMO_PC) {
+        TRY_OR_FAIL(VFile_TrySkip(file, 768)); // palette
+    }
+
+    TRY_OR_FAIL_ARR_U16(16); // cinematic frames
+    TRY_OR_FAIL_ARR_U16(1); // demo data
+
+    TRY_OR_FAIL(VFile_TrySkip(file, 2 * MAX_SAMPLES)); // sample lut
+    TRY_OR_FAIL_ARR_S32(8); // sample infos
+    TRY_OR_FAIL_ARR_S32(1); // sample data
+    TRY_OR_FAIL_ARR_S32(4); // samples
+
+#undef TRY_OR_FAIL
+#undef TRY_OR_FAIL_ARR_U16
+#undef TRY_OR_FAIL_ARR_S32
+    return true;
+}
+
+static LEVEL_LAYOUT M_GuessLayout(VFILE *const file)
+{
+    LEVEL_LAYOUT result = LEVEL_LAYOUT_UNKNOWN;
+    BENCHMARK *const benchmark = Benchmark_Start();
+    for (LEVEL_LAYOUT layout = 0; layout < LEVEL_LAYOUT_NUMBER_OF; layout++) {
+        if (M_TryLayout(file, layout)) {
+            result = layout;
+            break;
+        }
+    }
+    Benchmark_End(benchmark, NULL);
+    return result;
+}
+
+static void M_LoadFromFile(const GAME_FLOW_LEVEL *const level)
 {
     GameBuf_Reset();
 
     VFILE *file = VFile_CreateFromPath(level->path);
     if (!file) {
-        Shell_ExitSystemFmt("M_LoadFromFile(): Could not open %s", level->path);
+        Shell_ExitSystemFmt("Could not open %s", level->path);
     }
 
-    const int32_t version = VFile_ReadS32(file);
-    if (version != 32) {
-        Shell_ExitSystemFmt(
-            "Level %d (%s) is version %d (this game code is version %d)",
-            level->num, level->path, version, 32);
+    const LEVEL_LAYOUT layout = M_GuessLayout(file);
+    if (layout == LEVEL_LAYOUT_UNKNOWN) {
+        Shell_ExitSystemFmt("Failed to load %s", level->path);
     }
-
+    VFile_SetPos(file, 4);
     M_LoadTexturePages(file);
 
     const int32_t file_level_num = VFile_ReadS32(file);
@@ -104,7 +226,7 @@ static void M_LoadFromFile(
     M_LoadTextures(file);
     M_LoadSprites(file);
 
-    if (is_demo) {
+    if (layout == LEVEL_LAYOUT_TR1_DEMO_PC) {
         M_LoadPalette(file);
     }
 
@@ -114,9 +236,9 @@ static void M_LoadFromFile(
     M_LoadAnimatedTextures(file);
     M_LoadItems(file);
     Stats_ObserveItemsLoad();
-    M_LoadDepthQ(file);
+    M_LoadLightTable(file);
 
-    if (!is_demo) {
+    if (layout != LEVEL_LAYOUT_TR1_DEMO_PC) {
         M_LoadPalette(file);
     }
 
@@ -565,7 +687,7 @@ static void M_LoadItems(VFILE *file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadDepthQ(VFILE *file)
+static void M_LoadLightTable(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     LOG_INFO("");
@@ -865,10 +987,7 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
     Inject_Init(
         level->injections.count, level->injections.data_paths, m_InjectionInfo);
 
-    const bool is_demo =
-        (level->type == GFL_TITLE_DEMO_PC) | (level->type == GFL_LEVEL_DEMO_PC);
-
-    M_LoadFromFile(level, is_demo);
+    M_LoadFromFile(level);
     M_CompleteSetup(level);
 
     Inject_Cleanup();

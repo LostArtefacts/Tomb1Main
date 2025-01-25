@@ -24,3 +24,12 @@ int32_t VFile_ReadS32(VFILE *file);
 uint8_t VFile_ReadU8(VFILE *file);
 uint16_t VFile_ReadU16(VFILE *file);
 uint32_t VFile_ReadU32(VFILE *file);
+
+bool VFile_TrySkip(VFILE *file, int32_t offset);
+bool VFile_TryRead(VFILE *file, void *target, size_t size);
+bool VFile_TryReadS8(VFILE *file, int8_t *dst);
+bool VFile_TryReadS16(VFILE *file, int16_t *dst);
+bool VFile_TryReadS32(VFILE *file, int32_t *dst);
+bool VFile_TryReadU8(VFILE *file, uint8_t *dst);
+bool VFile_TryReadU16(VFILE *file, uint16_t *dst);
+bool VFile_TryReadU32(VFILE *file, uint32_t *dst);

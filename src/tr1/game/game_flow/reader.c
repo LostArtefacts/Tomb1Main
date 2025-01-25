@@ -567,7 +567,6 @@ static void M_LoadLevel(
         gf->gym_level_num = level->num;
         break;
 
-    case GFL_LEVEL_DEMO_PC:
     case GFL_NORMAL:
         if (gf->first_level_num == -1) {
             gf->first_level_num = level->num;
@@ -576,7 +575,6 @@ static void M_LoadLevel(
         break;
 
     case GFL_TITLE:
-    case GFL_TITLE_DEMO_PC:
     case GFL_BONUS:
     case GFL_DEMO:
     case GFL_CUTSCENE:

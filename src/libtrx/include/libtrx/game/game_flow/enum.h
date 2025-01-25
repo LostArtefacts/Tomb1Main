@@ -12,8 +12,6 @@ typedef enum {
 #if TR_VERSION == 1
     GFL_GYM,
     GFL_BONUS,
-    GFL_TITLE_DEMO_PC,
-    GFL_LEVEL_DEMO_PC,
 #endif
 
 #if TR_VERSION == 1
