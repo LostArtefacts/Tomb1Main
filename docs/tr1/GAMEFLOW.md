@@ -42,6 +42,12 @@ various pieces of global behaviour.
         // etc
     },
 ],
+"demos": [
+    {
+        "path": "data/gym.phd",
+        // etc
+    },
+],
 "fmvs": [
     {"path": "data/snow.rpl"},
     // etc
@@ -228,7 +234,6 @@ Following are each of the properties available within a level.
     "water_color": [0.7, 0.5, 0.85],
     "draw_distance_fade": 34.0,
     "draw_distance_max": 50.0,
-    "demo": true,
     "unobtainable_pickups": 1,
     "unobtainable_kills": 1,
     "inherit_injections": false,
@@ -256,17 +261,6 @@ Following are each of the properties available within a level.
     <th>Type</th>
     <th>Required</th>
     <th colspan="2">Description</th>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>demo</code>
-    </td>
-    <td>Boolean</td>
-    <td>No</td>
-    <td colspan="2">
-      Flag to indicate that the level has available demo data to play out from
-      the title screen.
-    </td>
   </tr>
   <tr valign="top">
     <td>
@@ -755,6 +749,12 @@ default gameflow for examples.
     </td>
   </tr>
 </table>
+
+## Demos
+The `demos` section shows all the levels that can play a demo when the player
+leaves the main inventory screen idle for a while or by using the `/demo`
+command. For the demos to work, these levels need to have demo data built-in.
+Aside from this requirement, this section works just like the `levels` section.
 
 ## Bonus levels
 The gameflow supports bonus levels, which are unlocked only when the player

@@ -40,6 +40,7 @@ typedef struct {
     TEXTSTRING *text;
 } M_PRIV;
 
+static int32_t m_LastDemoNum = 0;
 static M_PRIV m_Priv;
 
 static void M_PrepareConfig(M_PRIV *const p);
@@ -70,8 +71,18 @@ static void M_PrepareResumeInfo(M_PRIV *const p)
     RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
     p->old_resume_info = *resume_info;
     resume_info->flags.available = 1;
+    resume_info->flags.costume = 0;
+    resume_info->num_medis = 0;
+    resume_info->num_big_medis = 0;
+    resume_info->num_scions = 0;
     resume_info->flags.got_pistols = 1;
+    resume_info->flags.got_shotgun = 0;
+    resume_info->flags.got_magnums = 0;
+    resume_info->flags.got_uzis = 0;
     resume_info->pistol_ammo = 1000;
+    resume_info->shotgun_ammo = 0;
+    resume_info->magnum_ammo = 0;
+    resume_info->uzi_ammo = 0;
     resume_info->gun_status = LGS_ARMLESS;
     resume_info->equipped_gun_type = LGT_PISTOLS;
     resume_info->holsters_gun_type = LGT_PISTOLS;
@@ -235,41 +246,13 @@ void Demo_Unpause(void)
 int32_t Demo_ChooseLevel(const int32_t demo_num)
 {
     M_PRIV *const p = &m_Priv;
-
-    bool any_demos = false;
-    for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
-         i++) {
-        if (g_GameFlow.levels[i].demo) {
-            any_demos = true;
-        }
-    }
-    if (!any_demos) {
+    if (GF_GetDemoCount() <= 0) {
         return -1;
+    } else if (demo_num < 0 || demo_num >= GF_GetDemoCount()) {
+        return (m_LastDemoNum++) % GF_GetDemoCount();
+    } else {
+        return demo_num;
     }
-
-    if (demo_num >= 0) {
-        int32_t j = 0;
-        for (int32_t i = g_GameFlow.first_level_num;
-             i <= g_GameFlow.last_level_num; i++) {
-            if (g_GameFlow.levels[i].demo) {
-                if (j == demo_num) {
-                    return i;
-                }
-                j++;
-            }
-        }
-        return -1;
-    }
-
-    // pick the next demo
-    int16_t level_num = p->level != NULL ? p->level->num : -1;
-    do {
-        level_num++;
-        if (level_num > g_GameFlow.last_level_num) {
-            level_num = g_GameFlow.first_level_num;
-        }
-    } while (!g_GameFlow.levels[level_num].demo);
-    return level_num;
 }
 
 GAME_FLOW_COMMAND Demo_Control(void)

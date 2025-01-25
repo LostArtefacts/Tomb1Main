@@ -162,6 +162,24 @@
         },
     ],
 
+    "demos": [
+        {
+            "title": "City of Vilcabamba",
+            "objects": {
+                "key_1": {"name": "Silver Key"},
+                "puzzle_1": {"name": "Gold Idol"},
+            },
+        },
+
+        {
+            "title": "Lost Valley",
+            "objects": {
+                "puzzle_1": {"name": "Machine Cog"},
+            },
+        },
+
+    ],
+
     "objects": {
         "small_medipack":    {"name": "Small Medi Pack"},
         "large_medipack":    {"name": "Large Medi Pack"},

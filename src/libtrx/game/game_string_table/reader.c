@@ -146,9 +146,9 @@ void GameStringTable_LoadFromFile(const char *const path)
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadTableFromJSON(root_obj, &gs_file->global);
     M_LoadLevelsFromJSON(root_obj, "levels", GFL_NORMAL, &gs_file->levels);
+    M_LoadLevelsFromJSON(root_obj, "demos", GFL_DEMO, &gs_file->demos);
 #if TR_VERSION == 2
     // TODO: TR1 still has everything in a single linear sequence
-    M_LoadLevelsFromJSON(root_obj, "demos", GFL_DEMO, &gs_file->demos);
     M_LoadLevelsFromJSON(
         root_obj, "cutscenes", GFL_CUTSCENE, &gs_file->cutscenes);
 #endif

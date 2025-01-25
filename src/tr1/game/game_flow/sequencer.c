@@ -403,9 +403,9 @@ GAME_FLOW_COMMAND GF_LoadLevel(
 
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
 {
-    const int32_t level_num = Demo_ChooseLevel(demo_num);
-    if (level_num < 0) {
+    demo_num = Demo_ChooseLevel(demo_num);
+    if (demo_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    return GF_InterpretSequence(level_num, GFL_DEMO);
+    return GF_InterpretSequence(demo_num, GFL_DEMO);
 }

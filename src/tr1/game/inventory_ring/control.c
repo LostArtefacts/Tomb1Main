@@ -815,7 +815,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
 static bool M_CheckDemoTimer(const INV_RING *const ring)
 {
-    if (!g_Config.gameplay.enable_demo || !g_GameFlow.has_demo) {
+    if (!g_Config.gameplay.enable_demo || GF_GetDemoCount() == 0) {
         return false;
     }
 

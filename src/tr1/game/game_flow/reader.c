@@ -524,17 +524,6 @@ static void M_LoadLevel(
         level->music_track = tmp;
     }
 
-    {
-        const int32_t tmp =
-            JSON_ObjectGetBool(jlvl_obj, "demo", JSON_INVALID_BOOL);
-        if (tmp != JSON_INVALID_BOOL) {
-            level->demo = tmp;
-            gf->has_demo |= tmp;
-        } else {
-            level->demo = false;
-        }
-    }
-
     level->settings = gf->settings;
     M_LoadSettings(jlvl_obj, &level->settings);
 
@@ -614,7 +603,6 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     int32_t level_num = 0;
 
-    gf->has_demo = 0;
     gf->gym_level_num = -1;
     gf->first_level_num = -1;
     gf->last_level_num = -1;
@@ -631,6 +619,13 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     if (gf->first_level_num == -1 || gf->last_level_num == -1) {
         Shell_ExitSystem("at least one level must be of normal type");
     }
+}
+
+static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    M_LoadArray(
+        obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
+        gf, &gf->demo_count, (void **)&gf->demos, (void *)(intptr_t)GFL_DEMO);
 }
 
 static void M_LoadFMV(
@@ -730,6 +725,7 @@ void GF_Load(const char *const path)
     GAME_FLOW *const gf = &g_GameFlow;
     M_LoadRoot(root_obj, gf);
     M_LoadLevels(root_obj, gf);
+    M_LoadDemos(root_obj, gf);
     M_LoadFMVs(root_obj, gf);
 
     if (root != NULL) {

@@ -56,6 +56,8 @@ int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
         return 1;
     case GFL_GYM:
         return 1;
+    case GFL_DEMO:
+        return g_GameFlow.demo_count;
     default:
         return g_GameFlow.level_count;
     }
@@ -63,14 +65,7 @@ int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
 
 int32_t GF_GetDemoCount(void)
 {
-    int32_t demo_count = 0;
-    for (int32_t i = g_GameFlow.first_level_num; i <= g_GameFlow.last_level_num;
-         i++) {
-        if (g_GameFlow.levels[i].demo) {
-            demo_count++;
-        }
-    }
-    return demo_count;
+    return g_GameFlow.demo_count;
 }
 
 void GF_SetLevelTitle(GAME_FLOW_LEVEL *const level, const char *const title)
@@ -95,6 +90,13 @@ GAME_FLOW_LEVEL *GF_GetLevel(
     switch (level_type) {
     case GFL_TITLE:
         return &g_GameFlow.levels[g_GameFlow.title_level_num];
+
+    case GFL_DEMO:
+        if (num < 0 || num >= GF_GetDemoCount()) {
+            LOG_ERROR("Invalid demo number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.demos[num];
 
     default:
         if (num < 0 || num >= GF_GetLevelCount(level_type)) {

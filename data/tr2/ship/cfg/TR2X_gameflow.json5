@@ -315,7 +315,7 @@
     ],
 
     "demos": [
-        // 0. Venice
+        // Demo 1: Venice
         {
             "path": "data/boat.tr2",
             "music_track": -1,
@@ -326,7 +326,7 @@
             ],
         },
 
-        // 1. Wreck of the Maria Doria
+        // Demo 2: Wreck of the Maria Doria
         {
             "path": "data/keel.tr2",
             "music_track": 31,
@@ -342,7 +342,7 @@
             ],
         },
 
-        // 2. Tibetan Foothills
+        // Demo 3: Tibetan Foothills
         {
             "path": "data/skidoo.tr2",
             "music_track": 33,

@@ -69,8 +69,6 @@ typedef struct {
 #if TR_VERSION == 1
     GAME_FLOW_LEVEL_SETTINGS settings;
 
-    bool demo;
-
     struct {
         uint32_t pickups;
         uint32_t kills;
@@ -110,13 +108,13 @@ typedef struct {
         int32_t cutscene_count;
         GAME_FLOW_LEVEL *cutscenes;
     };
+#endif
 
     // demos
     struct {
         int32_t demo_count;
         GAME_FLOW_LEVEL *demos;
     };
-#endif
 
     // FMVs
     struct {
@@ -134,7 +132,6 @@ typedef struct {
     // global settings
     struct {
         float demo_delay;
-        bool has_demo;
         char *main_menu_background_path;
         bool enable_tr2_item_drops;
         bool convert_dropped_guns;
