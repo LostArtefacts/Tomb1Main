@@ -241,8 +241,8 @@ static void M_BarGetLocation(
     if (g_GameInfo.showing_demo && bar_info->location == BL_BOTTOM_CENTER) {
         *y -= M_GetBarToTextScale() * (TEXT_HEIGHT + bar_spacing);
     } else if (
-        g_GameInfo.inv_ring_shown
-        && g_CurrentLevel == g_GameFlow.title_level_num
+        g_GameInfo.inv_ring_shown && GF_GetCurrentLevel() != NULL
+        && GF_GetCurrentLevel()->type == GFL_TITLE
         && (bar_info->location == BL_TOP_CENTER
             || bar_info->location == BL_BOTTOM_CENTER)) {
         *y = screen_margin_v + m_BarOffsetY[bar_info->location]

@@ -99,10 +99,8 @@ typedef struct {
     int32_t gym_level_num;
     int32_t first_level_num;
     int32_t last_level_num;
-    int32_t title_level_num;
-#elif TR_VERSION == 2
-    GAME_FLOW_LEVEL *title_level;
 #endif
+    GAME_FLOW_LEVEL *title_level;
 
     // cutscenes
     struct {

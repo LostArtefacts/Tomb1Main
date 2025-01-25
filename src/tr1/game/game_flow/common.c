@@ -113,7 +113,7 @@ GAME_FLOW_LEVEL *GF_GetLevel(
 {
     switch (level_type) {
     case GFL_TITLE:
-        return &g_GameFlow.levels[g_GameFlow.title_level_num];
+        return g_GameFlow.title_level;
 
     case GFL_CUTSCENE:
         if (num < 0 || num >= GF_GetLevelCount(level_type)) {

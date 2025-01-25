@@ -28,6 +28,22 @@
         "enable_save_crystals": false,
     },
 
+    "title": {
+        "path": "data/title.phd",
+        "type": "title",
+        "music_track": 2,
+        "inherit_injections": false,
+        "injections": [
+            "data/injections/pda_model.bin",
+        ],
+        "sequence": [
+            {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
+            {"type": "play_fmv", "fmv_id": 0},
+            {"type": "play_fmv", "fmv_id": 1},
+            {"type": "exit_to_title"},
+        ],
+    },
+
     "levels": [
         // Level 0: Return to Egypt
         {
@@ -116,22 +132,7 @@
             ],
         },
 
-        // Level 4: Title
-        {
-            "path": "data/title.phd",
-            "type": "title",
-            "music_track": 2,
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/pda_model.bin",
-            ],
-            "sequence": [
-                {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_id": 0},
-                {"type": "play_fmv", "fmv_id": 1},
-                {"type": "exit_to_title"},
-            ],
-        },
+        {"type": "dummy"},
 
         // Level 5: Current Position
         {

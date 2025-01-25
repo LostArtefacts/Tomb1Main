@@ -251,7 +251,7 @@ void Shell_Main(void)
         case GF_EXIT_TO_TITLE:
             g_GameInfo.current_save_slot = -1;
             if (!intro_played) {
-                GF_InterpretSequence(g_GameFlow.title_level_num, GFL_TITLE);
+                GF_InterpretSequence(0, GFL_TITLE);
                 intro_played = true;
             }
 

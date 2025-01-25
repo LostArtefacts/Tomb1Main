@@ -948,8 +948,8 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
     Music_SetVolume(g_Config.audio.music_volume);
     Sound_ResetEffects();
 
-    const bool disable_music = level_num == g_GameFlow.title_level_num
-        && !g_Config.audio.enable_music_in_menu;
+    const bool disable_music =
+        level->type == GFL_TITLE && !g_Config.audio.enable_music_in_menu;
     if (level->music_track >= 0 && !disable_music) {
         Music_PlayLooped(level->music_track);
     }

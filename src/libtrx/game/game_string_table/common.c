@@ -105,13 +105,14 @@ void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
         const GS_LEVEL_TABLE *level_table = NULL;
         switch (level->type) {
         case GFL_TITLE:
-            // TODO: TR1 still has some levels in a single linear sequence
 #if TR_VERSION == 1
-            level_table = &gs_file->levels;
-#elif TR_VERSION == 2
-            level_table = NULL;
+        case GFL_TITLE_DEMO_PC:
 #endif
+            level_table = NULL;
             break;
+#if TR_VERSION == 1
+        case GFL_LEVEL_DEMO_PC:
+#endif
         case GFL_NORMAL:
         case GFL_SAVED:
             level_table = &gs_file->levels;

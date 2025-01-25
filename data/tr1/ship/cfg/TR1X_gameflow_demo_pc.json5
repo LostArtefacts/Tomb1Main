@@ -25,6 +25,19 @@
     "convert_dropped_guns": false,
     "enable_killer_pushblocks": true,
 
+    "title": {
+        "path": "data_demo_pc/title.phd",
+        "type": "title_demo_pc",
+        "music_track": 0,
+        "inherit_injections": false,
+        "injections": [
+            "data/injections/pda_model.bin",
+        ],
+        "sequence": [
+            {"type": "exit_to_title"},
+        ],
+    },
+
     "levels": [
         // Level 2: City of Vilcabamba
         {
@@ -43,31 +56,6 @@
                 {"type": "exit_to_level", "level_id": 1},
             ],
             "demo": true,
-        },
-
-        // Level 3: Title
-        {
-            "path": "data_demo_pc/title.phd",
-            "type": "title_demo_pc",
-            "music_track": 0,
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/pda_model.bin",
-            ],
-            "sequence": [
-                {"type": "exit_to_title"},
-            ],
-        },
-
-        // Level 4: Current Position
-        {
-            "path": "data/current.phd",
-            "type": "current",
-            "music_track": 0,
-            "inherit_injections": false,
-            "sequence": [
-                {"type": "exit_to_title"},
-            ],
         },
     ],
 }

@@ -62,6 +62,7 @@ static void M_LoadLevel(
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadFMV(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *level, size_t idx,
@@ -482,18 +483,26 @@ static void M_LoadLevel(
 {
     level->num = idx;
 
-    if ((int32_t)(intptr_t)user_arg != -1) {
-        level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
-    } else {
-        const char *const tmp =
-            JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
-        if (tmp == JSON_INVALID_STRING) {
-            Shell_ExitSystemFmt(
-                "level %d: 'type' must be a string", level->num);
-        }
-        level->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
-        if (level->type == (GAME_FLOW_LEVEL_TYPE)-1) {
-            Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
+    {
+        const JSON_VALUE *const tmp_v = JSON_ObjectGetValue(jlvl_obj, "type");
+        if (tmp_v == NULL) {
+            if ((int32_t)(intptr_t)user_arg != -1) {
+                level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
+            } else {
+                Shell_ExitSystemFmt(
+                    "level %d: 'type' must be a string", level->num);
+            }
+        } else {
+            const char *const tmp =
+                JSON_ValueGetString(tmp_v, JSON_INVALID_STRING);
+            if (tmp == JSON_INVALID_STRING) {
+                Shell_ExitSystemFmt(
+                    "level %d: 'type' must be a string", level->num);
+            }
+            level->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
+            if (level->type == (GAME_FLOW_LEVEL_TYPE)-1) {
+                Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
+            }
         }
     }
 
@@ -550,15 +559,6 @@ static void M_LoadLevel(
     M_LoadLevelItemDrops(jlvl_obj, gf, level);
 
     switch (level->type) {
-    case GFL_TITLE:
-    case GFL_TITLE_DEMO_PC:
-        if (gf->title_level_num != -1) {
-            Shell_ExitSystemFmt(
-                "level %d: there can be only one title level", level->num);
-        }
-        gf->title_level_num = level->num;
-        break;
-
     case GFL_GYM:
         if (gf->gym_level_num != -1) {
             Shell_ExitSystemFmt(
@@ -575,6 +575,8 @@ static void M_LoadLevel(
         gf->last_level_num = level->num;
         break;
 
+    case GFL_TITLE:
+    case GFL_TITLE_DEMO_PC:
     case GFL_BONUS:
     case GFL_DEMO:
     case GFL_CUTSCENE:
@@ -604,19 +606,11 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     gf->gym_level_num = -1;
     gf->first_level_num = -1;
     gf->last_level_num = -1;
-    gf->title_level_num = -1;
     gf->level_count = jlvl_arr->length;
 
     M_LoadArray(
         obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
         gf, &gf->level_count, (void **)&gf->levels, (void *)(intptr_t)-1);
-
-    if (gf->title_level_num == -1) {
-        Shell_ExitSystem("at least one level must be of title type");
-    }
-    if (gf->first_level_num == -1 || gf->last_level_num == -1) {
-        Shell_ExitSystem("at least one level must be of normal type");
-    }
 }
 
 static void M_LoadCutscenes(JSON_OBJECT *const obj, GAME_FLOW *const gf)
@@ -632,6 +626,15 @@ static void M_LoadDemos(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     M_LoadArray(
         obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
         gf, &gf->demo_count, (void **)&gf->demos, (void *)(intptr_t)GFL_DEMO);
+}
+
+static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
+{
+    JSON_OBJECT *title_obj = JSON_ObjectGetObject(obj, "title");
+    if (title_obj != NULL) {
+        gf->title_level = Memory_Alloc(sizeof(GAME_FLOW_LEVEL));
+        M_LoadLevel(title_obj, gf, gf->title_level, 0, GFL_TITLE);
+    }
 }
 
 static void M_LoadFMV(
@@ -734,6 +737,14 @@ void GF_Load(const char *const path)
     M_LoadCutscenes(root_obj, gf);
     M_LoadDemos(root_obj, gf);
     M_LoadFMVs(root_obj, gf);
+    M_LoadTitleLevel(root_obj, gf);
+
+    if (gf->title_level == NULL) {
+        Shell_ExitSystem("missing title level");
+    }
+    if (gf->first_level_num == -1 || gf->last_level_num == -1) {
+        Shell_ExitSystem("at least one level must be of normal type");
+    }
 
     if (root != NULL) {
         JSON_ValueFree(root);

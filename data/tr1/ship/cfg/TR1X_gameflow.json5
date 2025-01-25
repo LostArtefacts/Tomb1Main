@@ -25,6 +25,23 @@
     "convert_dropped_guns": false,
     "enable_killer_pushblocks": true,
 
+    "title": {
+        "path": "data/title.phd",
+        "music_track": 2,
+        "inherit_injections": false,
+        "injections": [
+            "data/injections/pda_model.bin",
+            "data/injections/font.bin",
+        ],
+        "sequence": [
+            {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
+            {"type": "play_fmv", "fmv_id": 0},
+            {"type": "play_fmv", "fmv_id": 1},
+            {"type": "play_fmv", "fmv_id": 2},
+            {"type": "exit_to_title"},
+        ],
+    },
+
     "levels": [
         // Level 0: Lara's Home
         {
@@ -378,30 +395,12 @@
             ],
         },
 
-        // Level 16-19: Legacy savegame placeholders
+        // Level 16-20: Legacy savegame placeholders
         {"type": "dummy"},
         {"type": "dummy"},
         {"type": "dummy"},
         {"type": "dummy"},
-
-        // Level 20: Title
-        {
-            "path": "data/title.phd",
-            "type": "title",
-            "music_track": 2,
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/pda_model.bin",
-                "data/injections/font.bin",
-            ],
-            "sequence": [
-                {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
-                {"type": "play_fmv", "fmv_id": 0},
-                {"type": "play_fmv", "fmv_id": 1},
-                {"type": "play_fmv", "fmv_id": 2},
-                {"type": "exit_to_title"},
-            ],
-        },
+        {"type": "dummy"},
 
         // Level 21: Current Position
         // This level is necessary to read TombATI's save files!

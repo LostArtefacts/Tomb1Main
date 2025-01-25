@@ -8,15 +8,5 @@
                 "puzzle_1": {"name": "Gold Idol"},
             },
         },
-
-        // Level 3: Title
-        {
-            "title": "Title",
-        },
-
-        // Level 4: Current Position
-        {
-            "title": "Current Position",
-        },
     ],
 }
