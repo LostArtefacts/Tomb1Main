@@ -222,10 +222,17 @@ static GAME_FLOW_COMMAND M_Finish(
                     if (apply_changes) {
                         InitialiseStartInfo();
                     }
-                    return (GAME_FLOW_COMMAND) {
-                        .action = GF_START_GAME,
-                        .param = LV_FIRST,
-                    };
+                    if (g_GameFlow.play_any_level) {
+                        return (GAME_FLOW_COMMAND) {
+                            .action = GF_START_GAME,
+                            .param = g_Inv_ExtraData[1] + 1,
+                        };
+                    } else {
+                        return (GAME_FLOW_COMMAND) {
+                            .action = GF_START_GAME,
+                            .param = LV_FIRST,
+                        };
+                    }
                 } else {
                     if (apply_changes) {
                         Music_Unpause();
