@@ -22,6 +22,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/log.h>
 
 #define MODIFY_CONFIG()                                                        \
     PROCESS_CONFIG(gameplay.enable_enhanced_look, false);                      \
@@ -98,10 +99,6 @@ static void M_RestoreResumeInfo(M_PRIV *const p)
 
 static bool M_ProcessInput(M_PRIV *const p)
 {
-    if (p->demo_ptr >= &g_DemoData[DEMO_COUNT_MAX] || (int)*p->demo_ptr == -1) {
-        return false;
-    }
-
     union {
         uint32_t any;
         struct {
@@ -127,6 +124,10 @@ static bool M_ProcessInput(M_PRIV *const p)
             // clang-format on
         };
     } demo_input = { .any = *p->demo_ptr };
+
+    if ((int32_t)demo_input.any == -1) {
+        return false;
+    }
 
     // Translate demo inputs (that use TombATI key values) to TR1X inputs.
     g_Input = (INPUT_STATE) {
@@ -176,28 +177,33 @@ bool Demo_Start(const int32_t level_num)
     if (!Level_Initialise(p->level)) {
         return false;
     }
+    if (g_DemoData == NULL) {
+        LOG_ERROR("Level '%s' has no demo data", p->level->path);
+        return false;
+    }
     g_GameInfo.current_level_type = GFL_DEMO;
 
     g_OverlayFlag = 1;
     Camera_Initialise();
     p->demo_ptr = g_DemoData;
 
-    ITEM *item = g_LaraItem;
-    item->pos.x = *p->demo_ptr++;
-    item->pos.y = *p->demo_ptr++;
-    item->pos.z = *p->demo_ptr++;
-    item->rot.x = *p->demo_ptr++;
-    item->rot.y = *p->demo_ptr++;
-    item->rot.z = *p->demo_ptr++;
+    ITEM *const lara_item = Lara_GetItem();
+    lara_item->pos.x = *p->demo_ptr++;
+    lara_item->pos.y = *p->demo_ptr++;
+    lara_item->pos.z = *p->demo_ptr++;
+    lara_item->rot.x = *p->demo_ptr++;
+    lara_item->rot.y = *p->demo_ptr++;
+    lara_item->rot.z = *p->demo_ptr++;
     int16_t room_num = *p->demo_ptr++;
 
-    if (item->room_num != room_num) {
+    if (lara_item->room_num != room_num) {
         Item_NewRoom(g_Lara.item_num, room_num);
     }
 
-    const SECTOR *const sector =
-        Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
-    item->floor = Room_GetHeight(sector, item->pos.x, item->pos.y, item->pos.z);
+    const SECTOR *const sector = Room_GetSector(
+        lara_item->pos.x, lara_item->pos.y, lara_item->pos.z, &room_num);
+    lara_item->floor = Room_GetHeight(
+        sector, lara_item->pos.x, lara_item->pos.y, lara_item->pos.z);
 
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);

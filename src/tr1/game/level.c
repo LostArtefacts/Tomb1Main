@@ -622,12 +622,15 @@ static void M_LoadCinematic(VFILE *file)
 static void M_LoadDemo(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_DemoData =
-        GameBuf_Alloc(sizeof(uint32_t) * DEMO_COUNT_MAX, GBUF_DEMO_BUFFER);
-    const uint16_t size = VFile_ReadS16(file);
-    LOG_INFO("%d demo buffer size", size);
+    const uint16_t size = VFile_ReadU16(file);
+    LOG_INFO("demo buffer size: %d", size);
     if (size != 0) {
+        g_DemoData =
+            GameBuf_Alloc((size + 1) * sizeof(uint32_t), GBUF_DEMO_BUFFER);
         VFile_Read(file, g_DemoData, size);
+        g_DemoData[size] = -1;
+    } else {
+        g_DemoData = NULL;
     }
     Benchmark_End(benchmark, NULL);
 }
