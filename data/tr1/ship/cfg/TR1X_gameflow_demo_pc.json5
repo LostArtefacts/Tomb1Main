@@ -36,7 +36,7 @@
                 "data/injections/vilcabamba_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "picture_path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 0},
