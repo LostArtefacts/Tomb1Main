@@ -788,6 +788,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
         InvRing_InitInvItem(g_InvRing_Source[RT_MAIN].items[i]);
     }
     for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
+        g_InvRing_Source[RT_OPTION].qtys[i] = 1;
         InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
     }
 
