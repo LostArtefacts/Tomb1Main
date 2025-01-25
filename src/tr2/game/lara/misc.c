@@ -994,10 +994,10 @@ void Lara_GetJointAbsPosition_I(
 
 void Lara_TakeHit(ITEM *const lara_item, const COLL_INFO *const coll)
 {
-    const int32_t dx = g_Lara.spaz_effect->pos.x - lara_item->pos.x;
-    const int32_t dz = g_Lara.spaz_effect->pos.z - lara_item->pos.z;
+    const int32_t dx = g_Lara.hit_effect->pos.x - lara_item->pos.x;
+    const int32_t dz = g_Lara.hit_effect->pos.z - lara_item->pos.z;
     M_TakeHit(lara_item, dx, dz);
-    g_Lara.spaz_effect_count--;
+    g_Lara.hit_effect_count--;
 }
 
 void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
@@ -1054,7 +1054,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
         }
     }
 
-    if (g_Lara.spaz_effect_count) {
+    if (g_Lara.hit_effect_count) {
         Lara_TakeHit(lara_item, coll);
     }
 
@@ -1067,7 +1067,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
 
 void Lara_Push(
     const ITEM *const item, ITEM *const lara_item, COLL_INFO *const coll,
-    const bool spaz_on, const bool big_push)
+    const bool hit_on, const bool big_push)
 {
     int32_t dx = lara_item->pos.x - item->pos.x;
     int32_t dz = lara_item->pos.z - item->pos.z;
@@ -1116,7 +1116,7 @@ void Lara_Push(
     dx -= (c * rx + s * rz) >> W2V_SHIFT;
     dz -= (c * rz - s * rx) >> W2V_SHIFT;
 
-    if (spaz_on && bounds->max.y - bounds->min.y > STEP_L) {
+    if (hit_on && bounds->max.y - bounds->min.y > STEP_L) {
         M_TakeHit(lara_item, dx, dz);
     }
 

@@ -494,8 +494,8 @@ void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
     g_Lara.hit_direction = 0;
     g_Lara.death_timer = 0;
     g_Lara.target = NULL;
-    g_Lara.spaz_effect = NULL;
-    g_Lara.spaz_effect_count = 0;
+    g_Lara.hit_effect = NULL;
+    g_Lara.hit_effect_count = 0;
     g_Lara.turn_rate = 0;
     g_Lara.move_angle = 0;
     g_Lara.right_arm.flash_gun = 0;
@@ -710,7 +710,7 @@ bool Lara_MovePosition(ITEM *item, XYZ_32 *vec)
     return Item_MovePosition(g_LaraItem, item, vec, velocity);
 }
 
-void Lara_Push(ITEM *item, COLL_INFO *coll, bool spaz_on, bool big_push)
+void Lara_Push(ITEM *item, COLL_INFO *coll, bool hit_on, bool big_push)
 {
     ITEM *const lara_item = g_LaraItem;
     int32_t x = lara_item->pos.x - item->pos.x;
@@ -760,7 +760,7 @@ void Lara_Push(ITEM *item, COLL_INFO *coll, bool spaz_on, bool big_push)
         x -= (c * rx + s * rz) >> W2V_SHIFT;
         z -= (c * rz - s * rx) >> W2V_SHIFT;
 
-        if (spaz_on) {
+        if (hit_on) {
             PHD_ANGLE hitang = lara_item->rot.y - (DEG_180 + Math_Atan(z, x));
             g_Lara.hit_direction = (hitang + DEG_45) / DEG_90;
             if (!g_Lara.hit_frame) {

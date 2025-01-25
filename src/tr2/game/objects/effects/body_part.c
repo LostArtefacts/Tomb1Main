@@ -80,8 +80,8 @@ void BodyPart_Control(const int16_t effect_num)
             effect->object_id = O_EXPLOSION;
             effect->shade = HIGH_LIGHT;
             Sound_Effect(SFX_EXPLOSION_1, &effect->pos, SPM_NORMAL);
-            g_Lara.spaz_effect_count = 5;
-            g_Lara.spaz_effect = effect;
+            g_Lara.hit_effect_count = 5;
+            g_Lara.hit_effect = effect;
         } else {
             Effect_Kill(effect_num);
         }

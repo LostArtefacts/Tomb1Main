@@ -142,9 +142,9 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
         }
     }
 
-    if (g_Lara.spaz_effect_count && g_Lara.spaz_effect && coll->enable_spaz) {
-        int32_t x = g_Lara.spaz_effect->pos.x - lara_item->pos.x;
-        int32_t z = g_Lara.spaz_effect->pos.z - lara_item->pos.z;
+    if (g_Lara.hit_effect_count && g_Lara.hit_effect && coll->enable_hit) {
+        int32_t x = g_Lara.hit_effect->pos.x - lara_item->pos.x;
+        int32_t z = g_Lara.hit_effect->pos.z - lara_item->pos.z;
         PHD_ANGLE hitang = lara_item->rot.y - (DEG_180 + Math_Atan(z, x));
         g_Lara.hit_direction = (hitang + DEG_45) / DEG_90;
         if (!g_Lara.hit_frame) {
@@ -156,7 +156,7 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
             g_Lara.hit_frame = 34;
         }
 
-        g_Lara.spaz_effect_count--;
+        g_Lara.hit_effect_count--;
     }
 
     if (g_Lara.hit_direction == -1) {
@@ -184,7 +184,7 @@ void Lara_HandleAboveWater(ITEM *item, COLL_INFO *coll)
     coll->lava_is_pit = 0;
     coll->slopes_are_walls = 0;
     coll->slopes_are_pits = 0;
-    coll->enable_spaz = 1;
+    coll->enable_hit = 1;
     coll->enable_baddie_push = 1;
 
     if (g_Config.gameplay.enable_enhanced_look && item->hit_points > 0) {
@@ -257,7 +257,7 @@ void Lara_HandleSurface(ITEM *item, COLL_INFO *coll)
     coll->slopes_are_walls = 0;
     coll->slopes_are_pits = 0;
     coll->lava_is_pit = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
 
     g_LaraStateRoutines[item->current_anim_state](item, coll);
@@ -322,7 +322,7 @@ void Lara_HandleUnderwater(ITEM *item, COLL_INFO *coll)
     coll->slopes_are_walls = 0;
     coll->slopes_are_pits = 0;
     coll->lava_is_pit = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
 
     if (g_Config.gameplay.enable_enhanced_look && item->hit_points > 0) {

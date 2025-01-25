@@ -773,11 +773,11 @@ static bool M_LoadLara(
     lara->current_active =
         JSON_ObjectGetInt(lara_obj, "current_active", lara->current_active);
 
-    lara->spaz_effect_count = JSON_ObjectGetInt(
-        lara_obj, "spaz_effect_count", lara->spaz_effect_count);
-    int spaz_effect = JSON_ObjectGetInt(lara_obj, "spaz_effect", 0);
-    lara->spaz_effect = spaz_effect && g_Config.gameplay.enable_enhanced_saves
-        ? Effect_Get(spaz_effect)
+    lara->hit_effect_count =
+        JSON_ObjectGetInt(lara_obj, "hit_effect_count", lara->hit_effect_count);
+    const int32_t hit_effect = JSON_ObjectGetInt(lara_obj, "hit_effect", 0);
+    lara->hit_effect = hit_effect && g_Config.gameplay.enable_enhanced_saves
+        ? Effect_Get(hit_effect)
         : NULL;
 
     lara->mesh_effects =
@@ -1222,11 +1222,10 @@ static JSON_OBJECT *M_DumpLara(LARA_INFO *lara)
     JSON_ObjectAppendInt(lara_obj, "death_count", lara->death_timer);
     JSON_ObjectAppendInt(lara_obj, "current_active", lara->current_active);
 
+    JSON_ObjectAppendInt(lara_obj, "hit_effect_count", lara->hit_effect_count);
     JSON_ObjectAppendInt(
-        lara_obj, "spaz_effect_count", lara->spaz_effect_count);
-    JSON_ObjectAppendInt(
-        lara_obj, "spaz_effect",
-        lara->spaz_effect ? Effect_GetNum(lara->spaz_effect) : 0);
+        lara_obj, "hit_effect",
+        lara->hit_effect ? Effect_GetNum(lara->hit_effect) : 0);
 
     JSON_ObjectAppendInt(lara_obj, "mesh_effects", lara->mesh_effects);
     JSON_ARRAY *lara_meshes_arr = JSON_ArrayNew();

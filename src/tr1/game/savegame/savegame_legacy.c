@@ -235,11 +235,11 @@ static void M_WriteLara(LARA_INFO *lara)
     M_Write(&lara->dive_timer, sizeof(int16_t));
     M_Write(&lara->death_timer, sizeof(int16_t));
     M_Write(&lara->current_active, sizeof(int16_t));
-    M_Write(&lara->spaz_effect_count, sizeof(int16_t));
+    M_Write(&lara->hit_effect_count, sizeof(int16_t));
 
     // OG just writes the pointer address (!).
-    if (lara->spaz_effect) {
-        tmp32 = Effect_GetNum(lara->spaz_effect);
+    if (lara->hit_effect) {
+        tmp32 = Effect_GetNum(lara->hit_effect);
     }
     M_Write(&tmp32, sizeof(int32_t));
 
@@ -342,9 +342,9 @@ static void M_ReadLara(LARA_INFO *lara)
     M_Read(&lara->dive_timer, sizeof(int16_t));
     M_Read(&lara->death_timer, sizeof(int16_t));
     M_Read(&lara->current_active, sizeof(int16_t));
-    M_Read(&lara->spaz_effect_count, sizeof(int16_t));
+    M_Read(&lara->hit_effect_count, sizeof(int16_t));
 
-    lara->spaz_effect = NULL;
+    lara->hit_effect = NULL;
     M_Skip(4); // pointer to EFFECT
 
     M_Read(&lara->mesh_effects, sizeof(int32_t));

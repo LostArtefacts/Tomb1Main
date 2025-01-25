@@ -913,7 +913,7 @@ void Creature_Collision(
 
     if (coll->enable_baddie_push && g_Lara.water_status != LWS_UNDERWATER
         && g_Lara.water_status != LWS_SURFACE) {
-        Lara_Push(item, lara_item, coll, coll->enable_spaz, false);
+        Lara_Push(item, lara_item, coll, coll->enable_hit, false);
     }
 }
 

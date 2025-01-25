@@ -153,8 +153,8 @@ bool Lara_Cheat_EnterFlyMode(void)
         g_Lara.torso_rot.y = 0;
     }
     g_Lara.water_status = LWS_CHEAT;
-    g_Lara.spaz_effect_count = 0;
-    g_Lara.spaz_effect = NULL;
+    g_Lara.hit_effect_count = 0;
+    g_Lara.hit_effect = NULL;
     g_Lara.hit_frame = 0;
     g_Lara.hit_direction = -1;
     g_Lara.air = LARA_MAX_AIR;

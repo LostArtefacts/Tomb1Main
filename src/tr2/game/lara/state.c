@@ -310,7 +310,7 @@ void Lara_State_TurnLeft(ITEM *item, COLL_INFO *coll)
 void Lara_State_Death(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.look = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
 }
 
@@ -328,7 +328,7 @@ void Lara_State_Hang(ITEM *item, COLL_INFO *coll)
         Lara_LookUpDown();
     }
 
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_HANG_ANGLE;
     g_Camera.target_elevation = CAM_HANG_ELEVATION;
@@ -409,7 +409,7 @@ void Lara_State_Back(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Null(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
 }
 
@@ -547,7 +547,7 @@ void Lara_State_Fallback(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_HangLeft(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_HANG_ANGLE;
     g_Camera.target_elevation = CAM_HANG_ELEVATION;
@@ -558,7 +558,7 @@ void Lara_State_HangLeft(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_HangRight(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_HANG_ANGLE;
     g_Camera.target_elevation = CAM_HANG_ELEVATION;
@@ -577,7 +577,7 @@ void Lara_State_SlideBack(ITEM *item, COLL_INFO *coll)
 void Lara_State_PushBlock(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.look = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.flags = CF_FOLLOW_CENTRE;
     g_Camera.target_angle = CAM_PUSH_BLOCK_ANGLE;
@@ -586,7 +586,7 @@ void Lara_State_PushBlock(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_PPReady(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_PP_READY_ANGLE;
     if (!g_Input.action) {
@@ -597,7 +597,7 @@ void Lara_State_PPReady(ITEM *item, COLL_INFO *coll)
 void Lara_State_Pickup(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.look = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_PICKUP_ANGLE;
     g_Camera.target_elevation = CAM_PICKUP_ELEVATION;
@@ -618,7 +618,7 @@ void Lara_State_PickupFlare(ITEM *item, COLL_INFO *coll)
 void Lara_State_SwitchOn(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.look = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_SWITCH_ON_ANGLE;
     g_Camera.target_elevation = CAM_SWITCH_ON_ELEVATION;
@@ -629,7 +629,7 @@ void Lara_State_SwitchOn(ITEM *item, COLL_INFO *coll)
 void Lara_State_UseKey(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.look = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_USE_KEY_ANGLE;
     g_Camera.target_elevation = CAM_USE_KEY_ELEVATION;
@@ -645,7 +645,7 @@ void Lara_State_Special(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_SwanDive(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 1;
     if (item->fall_speed > LARA_FAST_FALL_SPEED
         && item->goal_anim_state != LS_DIVE) {
@@ -658,14 +658,14 @@ void Lara_State_FastDive(ITEM *item, COLL_INFO *coll)
     if (g_Input.roll && item->goal_anim_state == LS_FAST_DIVE) {
         item->goal_anim_state = LS_TWIST;
     }
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 1;
     item->speed = item->speed * 95 / 100;
 }
 
 void Lara_State_WaterOut(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.flags = CF_FOLLOW_CENTRE;
 }
@@ -838,7 +838,7 @@ void Lara_State_Extra_FinalAnim(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_ClimbLeft(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_CLIMB_LEFT_ANGLE;
     g_Camera.target_elevation = CAM_CLIMB_LEFT_ELEVATION;
@@ -849,7 +849,7 @@ void Lara_State_ClimbLeft(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_ClimbRight(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_angle = CAM_CLIMB_RIGHT_ANGLE;
     g_Camera.target_elevation = CAM_CLIMB_RIGHT_ELEVATION;
@@ -860,7 +860,7 @@ void Lara_State_ClimbRight(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_elevation = CAM_CLIMB_STANCE_ELEVATION;
 
@@ -881,14 +881,14 @@ void Lara_State_ClimbStance(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Climbing(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_elevation = CAM_CLIMBING_ELEVATION;
 }
 
 void Lara_State_ClimbEnd(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.flags = CF_FOLLOW_CENTRE;
     g_Camera.target_angle = CAM_CLIMB_END_ELEVATION;
@@ -896,7 +896,7 @@ void Lara_State_ClimbEnd(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_ClimbDown(ITEM *item, COLL_INFO *coll)
 {
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
     g_Camera.target_elevation = CAM_CLIMB_DOWN_ELEVATION;
 }

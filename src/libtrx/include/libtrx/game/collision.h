@@ -36,7 +36,7 @@ typedef struct {
     uint16_t slopes_are_pits : 1;
     uint16_t lava_is_pit : 1;
     uint16_t enable_baddie_push : 1;
-    uint16_t enable_spaz : 1;
+    uint16_t enable_hit : 1;
 } COLL_INFO;
 
 #elif TR_VERSION == 2
@@ -72,7 +72,7 @@ typedef struct {
     uint16_t slopes_are_pits:    1; // 0x02 2
     uint16_t lava_is_pit:        1; // 0x04 4
     uint16_t enable_baddie_push: 1; // 0x08 8
-    uint16_t enable_spaz:        1; // 0x10 16
+    uint16_t enable_hit:         1; // 0x10 16
     uint16_t hit_ceiling:        1; // 0x20 32
     uint16_t pad:                10;
     // clang-format on

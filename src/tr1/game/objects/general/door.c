@@ -239,7 +239,7 @@ void Door_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 
     if (coll->enable_baddie_push) {
         if (item->current_anim_state != item->goal_anim_state) {
-            Lara_Push(item, coll, coll->enable_spaz, true);
+            Lara_Push(item, coll, coll->enable_hit, true);
         } else {
             Lara_Push(item, coll, false, true);
         }

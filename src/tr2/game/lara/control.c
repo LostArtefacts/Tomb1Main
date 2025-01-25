@@ -218,7 +218,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
     coll->slopes_are_pits = 0;
     coll->lava_is_pit = 0;
     coll->enable_baddie_push = 1;
-    coll->enable_spaz = 1;
+    coll->enable_hit = 1;
 
     if (g_Input.look && !g_Lara.extra_anim && g_Lara.look) {
         Lara_LookLeftRight();
@@ -294,7 +294,7 @@ void Lara_HandleSurface(ITEM *const item, COLL_INFO *const coll)
     coll->slopes_are_pits = 0;
     coll->lava_is_pit = 0;
     coll->enable_baddie_push = 0;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
 
     if (g_Input.look && g_Lara.look) {
         Lara_LookLeftRight();
@@ -351,7 +351,7 @@ void Lara_HandleUnderwater(ITEM *const item, COLL_INFO *const coll)
     coll->slopes_are_pits = 0;
     coll->lava_is_pit = 0;
     coll->enable_baddie_push = 1;
-    coll->enable_spaz = 0;
+    coll->enable_hit = 0;
 
     if (g_Input.look && g_Lara.look) {
         Lara_LookLeftRight();
@@ -788,7 +788,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
     g_Lara.dive_count = 0;
     g_Lara.death_timer = 0;
     g_Lara.current_active = 0;
-    g_Lara.spaz_effect_count = 0;
+    g_Lara.hit_effect_count = 0;
     g_Lara.flare_age = 0;
     g_Lara.back_gun = 0;
     g_Lara.flare_frame = 0;
@@ -799,7 +799,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
     g_Lara.burn = 0;
     g_Lara.water_surface_dist = 100;
     g_Lara.last_pos = item->pos;
-    g_Lara.spaz_effect = NULL;
+    g_Lara.hit_effect = NULL;
     g_Lara.mesh_effects = 0;
     g_Lara.target = NULL;
     g_Lara.turn_rate = 0;

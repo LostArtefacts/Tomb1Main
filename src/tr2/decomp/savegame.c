@@ -308,7 +308,7 @@ static void M_ReadLara(LARA_INFO *const lara)
     lara->dive_count = M_ReadS16();
     lara->death_timer = M_ReadS16();
     lara->current_active = M_ReadS16();
-    lara->spaz_effect_count = M_ReadS16();
+    lara->hit_effect_count = M_ReadS16();
     lara->flare_age = M_ReadS16();
     lara->skidoo = M_ReadS16();
     lara->weapon_item = M_ReadS16();
@@ -329,7 +329,7 @@ static void M_ReadLara(LARA_INFO *const lara)
     lara->last_pos.y = M_ReadS32();
     lara->last_pos.z = M_ReadS32();
     M_Skip(4);
-    lara->spaz_effect = NULL;
+    lara->hit_effect = NULL;
     lara->mesh_effects = M_ReadU32();
 
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
@@ -539,7 +539,7 @@ static void M_WriteLara(const LARA_INFO *const lara)
     M_WriteS16(lara->dive_count);
     M_WriteS16(lara->death_timer);
     M_WriteS16(lara->current_active);
-    M_WriteS16(lara->spaz_effect_count);
+    M_WriteS16(lara->hit_effect_count);
     M_WriteS16(lara->flare_age);
     M_WriteS16(lara->skidoo);
     M_WriteS16(lara->weapon_item);

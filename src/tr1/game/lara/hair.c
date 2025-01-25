@@ -111,19 +111,19 @@ void Lara_Hair_Control(void)
         LARA_ANIMATION hit_anim;
         switch (g_Lara.hit_direction) {
         case DIR_NORTH:
-            hit_anim = LA_SPAZ_FORWARD;
+            hit_anim = LA_HIT_FRONT;
             break;
 
         case DIR_SOUTH:
-            hit_anim = LA_SPAZ_BACK;
+            hit_anim = LA_HIT_BACK;
             break;
 
         case DIR_EAST:
-            hit_anim = LA_SPAZ_RIGHT;
+            hit_anim = LA_HIT_RIGHT;
             break;
 
         default:
-            hit_anim = LA_SPAZ_LEFT;
+            hit_anim = LA_HIT_LEFT;
             break;
         }
 

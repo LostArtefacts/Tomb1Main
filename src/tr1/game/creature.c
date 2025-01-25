@@ -388,7 +388,7 @@ void Creature_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         if (item->hit_points <= 0) {
             Lara_Push(item, coll, 0, 0);
         } else {
-            Lara_Push(item, coll, coll->enable_spaz, 0);
+            Lara_Push(item, coll, coll->enable_hit, 0);
         }
     }
 }

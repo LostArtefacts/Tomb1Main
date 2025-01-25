@@ -46,8 +46,8 @@ typedef struct {
     int16_t death_timer;
     int16_t current_active;
     int32_t water_surface_dist;
-    int16_t spaz_effect_count;
-    EFFECT *spaz_effect;
+    int16_t hit_effect_count;
+    EFFECT *hit_effect;
     int32_t mesh_effects;
     OBJECT_MESH *mesh_ptrs[LM_NUMBER_OF];
     ITEM *target;
@@ -107,7 +107,7 @@ typedef struct {
     int16_t dive_count;
     int16_t death_timer;
     int16_t current_active;
-    int16_t spaz_effect_count;
+    int16_t hit_effect_count;
     int16_t flare_age;
     int16_t skidoo;
     int16_t weapon_item;
@@ -123,7 +123,7 @@ typedef struct {
     // clang-format on
     int32_t water_surface_dist;
     XYZ_32 last_pos;
-    EFFECT *spaz_effect;
+    EFFECT *hit_effect;
     uint32_t mesh_effects;
     OBJECT_MESH *mesh_ptrs[LM_NUMBER_OF];
     ITEM *target;
