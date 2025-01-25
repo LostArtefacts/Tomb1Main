@@ -610,6 +610,7 @@ static void M_Shift(
 
 void Camera_Initialise(void)
 {
+    Matrix_ResetStack();
     Camera_ResetPosition();
     Camera_Update();
 }
