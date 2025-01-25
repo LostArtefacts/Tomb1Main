@@ -123,7 +123,8 @@ static bool M_Play(const char *const file_path)
 
         Input_Update();
 
-        if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
+        if (g_InputDB.menu_confirm || g_InputDB.menu_back
+            || Shell_IsExiting()) {
             Video_Stop(video);
         }
     }
