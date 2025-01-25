@@ -21,14 +21,23 @@ GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
     if (demo_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    return GF_InterpretSequence(
-        &GF_GetLevel(demo_num, GFL_DEMO)->sequence, GFL_DEMO);
+    const GAME_FLOW_LEVEL *const level = GF_GetLevel(demo_num, GFL_DEMO);
+    if (level == NULL) {
+        LOG_ERROR("Missing demo: %d", demo_num);
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    }
+    return GF_InterpretSequence(&level->sequence, GFL_DEMO);
 }
 
 GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
 {
-    return GF_InterpretSequence(
-        &GF_GetLevel(cutscene_num, GFL_CUTSCENE)->sequence, GFL_CUTSCENE);
+    const GAME_FLOW_LEVEL *const level =
+        GF_GetLevel(cutscene_num, GFL_CUTSCENE);
+    if (level == NULL) {
+        LOG_ERROR("Missing cutscene: %d", cutscene_num);
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    }
+    return GF_InterpretSequence(&level->sequence, GFL_CUTSCENE);
 }
 
 bool GF_DoFrontendSequence(void)

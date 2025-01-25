@@ -332,6 +332,10 @@ static void M_LoadArray(
     M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
     void **const elements, void *const user_arg)
 {
+    if (!JSON_ObjectContainsKey(obj, key)) {
+        return;
+    }
+
     JSON_ARRAY *const elem_arr = JSON_ObjectGetArray(obj, key);
     if (elem_arr == NULL) {
         Shell_ExitSystemFmt("'%s' must be a list", key);

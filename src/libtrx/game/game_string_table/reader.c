@@ -82,6 +82,10 @@ static void M_LoadLevelsFromJSON(
     JSON_OBJECT *const obj, const char *const key,
     const GAME_FLOW_LEVEL_TYPE level_type, GS_LEVEL_TABLE *const gs_level_table)
 {
+    if (GF_GetLevelCount(level_type) == 0) {
+        return;
+    }
+
     JSON_ARRAY *const jlvl_arr = JSON_ObjectGetArray(obj, key);
     if (jlvl_arr == NULL) {
         Shell_ExitSystemFmt("'%s' must be a list", key);
