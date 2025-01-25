@@ -18,40 +18,6 @@
 #pragma pack(push, 1)
 
 typedef struct {
-    union {
-        uint8_t red;
-        uint8_t r;
-    };
-    union {
-        uint8_t green;
-        uint8_t g;
-    };
-    union {
-        uint8_t blue;
-        uint8_t b;
-    };
-} RGB_888;
-
-typedef struct {
-    union {
-        uint8_t red;
-        uint8_t r;
-    };
-    union {
-        uint8_t green;
-        uint8_t g;
-    };
-    union {
-        uint8_t blue;
-        uint8_t b;
-    };
-    union {
-        uint8_t alpha;
-        uint8_t a;
-    };
-} RGBA_8888;
-
-typedef struct {
     uint8_t index[256];
 } DEPTHQ_ENTRY;
 

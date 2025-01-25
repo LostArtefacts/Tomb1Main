@@ -775,7 +775,7 @@ static void M_InsertFlatRect_Sorted(
         GFX_3D_VERTEX *const vbuf_gl = &m_HWR_VertexPtr[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->red, color->green, color->blue, 0xFF);
+        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
     }
 
     m_HWR_VertexPtr += 4;
@@ -808,7 +808,7 @@ static void M_InsertLine_Sorted(
         GFX_3D_VERTEX *const vbuf_gl = &m_HWR_VertexPtr[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->red, color->green, color->blue, 0xFF);
+        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
     }
 
     m_HWR_VertexPtr += 2;
@@ -1350,7 +1350,7 @@ static void M_InsertFlatRect_ZBuffered(
         GFX_3D_VERTEX *const vbuf_gl = &m_VBufferGL[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->red, color->green, color->blue, 0xFF);
+        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
     }
 
     M_SelectTexture(renderer, -1);
@@ -1379,7 +1379,7 @@ static void M_InsertLine_ZBuffered(
         GFX_3D_VERTEX *const vbuf_gl = &m_VBufferGL[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->red, color->green, color->blue, 0xFF);
+        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
     }
 
     M_SelectTexture(renderer, -1);

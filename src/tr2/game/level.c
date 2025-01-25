@@ -415,14 +415,14 @@ static void M_LoadPalettes(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     VFile_Read(file, g_GamePalette8, sizeof(RGB_888) * 256);
-    g_GamePalette8[0].red = 0;
-    g_GamePalette8[0].green = 0;
-    g_GamePalette8[0].blue = 0;
+    g_GamePalette8[0].r = 0;
+    g_GamePalette8[0].g = 0;
+    g_GamePalette8[0].b = 0;
     for (int32_t i = 1; i < 256; i++) {
         RGB_888 *col = &g_GamePalette8[i];
-        col->red = (col->red << 2) | (col->red >> 4);
-        col->green = (col->green << 2) | (col->green >> 4);
-        col->blue = (col->blue << 2) | (col->blue >> 4);
+        col->r = (col->r << 2) | (col->r >> 4);
+        col->g = (col->g << 2) | (col->g >> 4);
+        col->b = (col->b << 2) | (col->b >> 4);
     }
 
     struct {
@@ -437,8 +437,8 @@ static void M_LoadPalettes(VFILE *const file)
 
     for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
         g_NamedColors[i].palette_index = Output_FindColor(
-            g_NamedColors[i].rgb.red, g_NamedColors[i].rgb.green,
-            g_NamedColors[i].rgb.blue);
+            g_NamedColors[i].rgb.r, g_NamedColors[i].rgb.g,
+            g_NamedColors[i].rgb.b);
     }
 
     Benchmark_End(benchmark, NULL);

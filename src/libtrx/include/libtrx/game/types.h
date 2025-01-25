@@ -47,9 +47,3 @@ typedef struct {
     uint16_t vertices[3];
     bool enable_reflections;
 } FACE3;
-
-typedef struct {
-    float r;
-    float g;
-    float b;
-} RGB_F;

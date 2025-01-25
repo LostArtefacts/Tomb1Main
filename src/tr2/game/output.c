@@ -725,9 +725,9 @@ int16_t Output_FindColor(
     int32_t best_idx = 0;
     int32_t best_diff = INT32_MAX;
     for (int32_t i = 0; i < 256; i++) {
-        const int32_t dr = red - g_GamePalette8[i].red;
-        const int32_t dg = green - g_GamePalette8[i].green;
-        const int32_t db = blue - g_GamePalette8[i].blue;
+        const int32_t dr = red - g_GamePalette8[i].r;
+        const int32_t dg = green - g_GamePalette8[i].g;
+        const int32_t db = blue - g_GamePalette8[i].b;
         const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
         if (diff < best_diff) {
             best_diff = diff;
