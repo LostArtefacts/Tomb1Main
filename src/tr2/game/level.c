@@ -578,21 +578,16 @@ finish:
 static void M_LoadDemo(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_DemoCount = 0;
-
-    // TODO: is the allocation necessary if there's no demo data?
-    // TODO: do not hardcode the allocation size
-    g_DemoPtr = GameBuf_Alloc(36000, GBUF_DEMO_BUFFER);
-
-    const int32_t demo_size = VFile_ReadU16(file);
-    LOG_DEBUG("demo input size: %d", demo_size);
-    if (!demo_size) {
-        g_IsDemoLoaded = false;
+    const uint16_t size = VFile_ReadU16(file);
+    LOG_DEBUG("demo buffer size: %d", size);
+    if (size != 0) {
+        g_DemoData =
+            GameBuf_Alloc((size + 1) * sizeof(uint32_t), GBUF_DEMO_BUFFER);
+        VFile_Read(file, g_DemoData, size);
+        g_DemoData[size] = -1;
     } else {
-        g_IsDemoLoaded = true;
-        VFile_Read(file, g_DemoPtr, demo_size);
+        g_DemoData = NULL;
     }
-
     Benchmark_End(benchmark, NULL);
 }
 

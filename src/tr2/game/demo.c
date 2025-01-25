@@ -7,6 +7,7 @@
 #include "game/input.h"
 #include "game/items.h"
 #include "game/lara/cheat.h"
+#include "game/lara/control.h"
 #include "game/level.h"
 #include "game/music.h"
 #include "game/overlay.h"
@@ -22,6 +23,7 @@
 #include <libtrx/log.h>
 
 typedef struct {
+    uint32_t *demo_ptr;
     GAME_FLOW_LEVEL *level;
     TEXTSTRING *text;
 
@@ -72,11 +74,8 @@ static void M_RestoreStartInfo(M_PRIV *const p)
 bool Demo_GetInput(void)
 {
     M_PRIV *const p = &m_Priv;
-    if (g_DemoCount == 0) {
+    if (p->demo_ptr == &g_DemoData[0]) {
         m_OldDemoInputDB = (INPUT_STATE) {};
-    }
-    if (g_DemoCount >= MAX_DEMO_SIZE) {
-        return false;
     }
 
     union {
@@ -104,7 +103,7 @@ bool Demo_GetInput(void)
             uint32_t load:         1;
             // clang-format on
         };
-    } demo_input = { .any = g_DemoPtr[g_DemoCount] };
+    } demo_input = { .any = *p->demo_ptr++ };
 
     if ((int32_t)demo_input.any == -1) {
         return false;
@@ -135,7 +134,6 @@ bool Demo_GetInput(void)
 
     g_InputDB.any = g_Input.any & ~m_OldDemoInputDB.any;
     m_OldDemoInputDB = g_Input;
-    g_DemoCount++;
     return true;
 }
 
@@ -150,40 +148,40 @@ bool Demo_Start(const int32_t level_num)
 
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
+
     if (!Level_Initialise(level_num, GFL_DEMO)) {
         return false;
     }
-
-    g_LevelComplete = false;
-    if (!g_IsDemoLoaded) {
+    if (g_DemoData == NULL) {
         LOG_ERROR("Level '%s' has no demo data", p->level->path);
         return false;
     }
 
-    g_LaraItem->pos.x = g_DemoPtr[0];
-    g_LaraItem->pos.y = g_DemoPtr[1];
-    g_LaraItem->pos.z = g_DemoPtr[2];
-    g_LaraItem->rot.x = g_DemoPtr[3];
-    g_LaraItem->rot.y = g_DemoPtr[4];
-    g_LaraItem->rot.z = g_DemoPtr[5];
-    int16_t room_num = g_DemoPtr[6];
-    if (g_LaraItem->room_num != room_num) {
+    p->demo_ptr = g_DemoData;
+
+    ITEM *const lara_item = Lara_GetItem();
+    lara_item->pos.x = *p->demo_ptr++;
+    lara_item->pos.y = *p->demo_ptr++;
+    lara_item->pos.z = *p->demo_ptr++;
+    lara_item->rot.x = *p->demo_ptr++;
+    lara_item->rot.y = *p->demo_ptr++;
+    lara_item->rot.z = *p->demo_ptr++;
+
+    int16_t room_num = *p->demo_ptr++;
+    if (lara_item->room_num != room_num) {
         Item_NewRoom(g_Lara.item_num, room_num);
     }
-
     const SECTOR *const sector = Room_GetSector(
-        g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z, &room_num);
-    g_LaraItem->floor = Room_GetHeight(
-        sector, g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
-    g_Lara.last_gun_type = g_DemoPtr[7];
+        lara_item->pos.x, lara_item->pos.y, lara_item->pos.z, &room_num);
+    lara_item->floor = Room_GetHeight(
+        sector, lara_item->pos.x, lara_item->pos.y, lara_item->pos.z);
 
-    g_DemoCount += 8;
+    g_Lara.last_gun_type = *p->demo_ptr++;
 
+    g_OverlayStatus = 1;
     Lara_Cheat_GetStuff();
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
-
-    g_OverlayStatus = 1;
     Camera_Initialise();
     Stats_StartTimer();
 
