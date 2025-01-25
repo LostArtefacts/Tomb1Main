@@ -22,7 +22,7 @@ static GAME_FLOW_COMMAND M_StorySoFar(
     const GAME_FLOW_LEVEL *level, int32_t savegame_level);
 
 GAME_FLOW_COMMAND
-GF_InterpretSequence(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE type)
+GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
 {
     LOG_DEBUG("running sequence for level=%d type=%d", level_num, type);
 
@@ -47,7 +47,6 @@ GF_InterpretSequence(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE type)
             switch (event->type) {
             case GFS_EXIT_TO_TITLE:
             case GFS_EXIT_TO_LEVEL:
-            case GFS_EXIT_TO_CINE:
             case GFS_PLAY_FMV:
             case GFS_LEVEL_STATS:
             case GFS_TOTAL_STATS:
@@ -101,6 +100,9 @@ GF_InterpretSequence(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE type)
                     Lara_RevertToPistolsIfNeeded();
                 }
                 gf_cmd = GF_RunGame(level_num, type);
+                if (type == GFL_SAVED) {
+                    type = GFL_NORMAL;
+                }
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;
@@ -199,11 +201,17 @@ GF_InterpretSequence(const int32_t level_num, const GAME_FLOW_LEVEL_TYPE type)
             };
         }
 
-        case GFS_EXIT_TO_CINE:
-            return (GAME_FLOW_COMMAND) {
-                .action = GF_START_CINE,
-                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
-            };
+        case GFS_PLAY_CUTSCENE: {
+            const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
+            if (type != GFL_SAVED) {
+                gf_cmd = GF_DoCutsceneSequence(cutscene_num);
+                if (gf_cmd.action != GF_NOOP
+                    && gf_cmd.action != GF_LEVEL_COMPLETE) {
+                    return gf_cmd;
+                }
+            }
+            break;
+        }
 
         case GFS_SET_CAMERA_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
@@ -341,7 +349,7 @@ static GAME_FLOW_COMMAND M_StorySoFar(
                 .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
             };
 
-        case GFS_EXIT_TO_CINE:
+        case GFS_PLAY_CUTSCENE:
             Music_Stop();
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_CINE,
@@ -402,11 +410,22 @@ GAME_FLOW_COMMAND GF_LoadLevel(
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
 }
 
+GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
+{
+    const GAME_FLOW_LEVEL *const level =
+        GF_GetLevel(cutscene_num, GFL_CUTSCENE);
+    if (level == NULL) {
+        LOG_ERROR("Missing cutscene: %d", cutscene_num);
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    }
+    return GF_InterpretSequence(cutscene_num, GFL_CUTSCENE);
+}
+
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
 {
     demo_num = Demo_ChooseLevel(demo_num);
     if (demo_num < 0) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     return GF_InterpretSequence(demo_num, GFL_DEMO);
 }

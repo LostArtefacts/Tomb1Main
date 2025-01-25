@@ -102,13 +102,13 @@ typedef struct {
     int32_t title_level_num;
 #elif TR_VERSION == 2
     GAME_FLOW_LEVEL *title_level;
+#endif
 
     // cutscenes
     struct {
         int32_t cutscene_count;
         GAME_FLOW_LEVEL *cutscenes;
     };
-#endif
 
     // demos
     struct {

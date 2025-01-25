@@ -65,6 +65,8 @@ static void M_LoadLevel(
     JSON_OBJECT *jlvl_obj, GAME_FLOW *gf, GAME_FLOW_LEVEL *level, size_t idx,
     void *user_arg);
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
+static void M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
+static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadFMV(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_FMV *level, size_t idx,
@@ -92,10 +94,10 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // Events with integer arguments
     { GFS_LOAD_LEVEL,        M_HandleIntEvent, "level_id" },
     { GFS_PLAY_LEVEL,        M_HandleIntEvent, "level_id" },
+    { GFS_PLAY_CUTSCENE,     M_HandleIntEvent, "cutscene_id" },
     { GFS_PLAY_FMV,          M_HandleIntEvent, "fmv_id" },
     { GFS_LEVEL_STATS,       M_HandleIntEvent, "level_id" },
     { GFS_EXIT_TO_LEVEL,     M_HandleIntEvent, "level_id" },
-    { GFS_EXIT_TO_CINE,      M_HandleIntEvent, "level_id" },
     { GFS_SET_CAMERA_ANGLE,  M_HandleIntEvent, "value" },
     { GFS_PLAY_SYNCED_AUDIO, M_HandleIntEvent, "audio_id" },
     { GFS_SETUP_BACON_LARA,  M_HandleIntEvent, "anchor_room" },
@@ -382,8 +384,8 @@ static void M_LoadLevelSequence(
     }
 
     for (int32_t i = 0; i < sequence->length; i++) {
-        if ((sequence->events[i].type == GFS_PLAY_LEVEL
-             || sequence->events[i].type == GFS_LOAD_LEVEL)
+        if ((sequence->events[i].type == GFS_LOAD_LEVEL
+             || sequence->events[i].type == GFS_PLAY_LEVEL)
             && (int32_t)(intptr_t)sequence->events[i].data == -1) {
             sequence->events[i].data = (void *)(intptr_t)level->num;
         }
@@ -495,7 +497,9 @@ static void M_LoadLevel(
 {
     level->num = idx;
 
-    {
+    if ((int32_t)(intptr_t)user_arg != -1) {
+        level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
+    } else {
         const char *const tmp =
             JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
         if (tmp == JSON_INVALID_STRING) {
@@ -506,6 +510,10 @@ static void M_LoadLevel(
         if (level->type == (GAME_FLOW_LEVEL_TYPE)-1) {
             Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
         }
+    }
+
+    if (level->type == GFL_DUMMY) {
+        return;
     }
 
     {
@@ -583,6 +591,7 @@ static void M_LoadLevel(
         break;
 
     case GFL_BONUS:
+    case GFL_DEMO:
     case GFL_CUTSCENE:
     case GFL_CURRENT:
         break;
@@ -615,7 +624,7 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 
     M_LoadArray(
         obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
-        gf, &gf->level_count, (void **)&gf->levels, NULL);
+        gf, &gf->level_count, (void **)&gf->levels, (void *)(intptr_t)-1);
 
     if (gf->title_level_num == -1) {
         Shell_ExitSystem("at least one level must be of title type");
@@ -625,7 +634,15 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     }
 }
 
-static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
+static void M_LoadCutscenes(JSON_OBJECT *const obj, GAME_FLOW *const gf)
+{
+    M_LoadArray(
+        obj, "cutscenes", sizeof(GAME_FLOW_LEVEL),
+        (M_LOAD_ARRAY_FUNC)M_LoadLevel, gf, &gf->cutscene_count,
+        (void **)&gf->cutscenes, (void *)(intptr_t)GFL_CUTSCENE);
+}
+
+static void M_LoadDemos(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     M_LoadArray(
         obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
@@ -729,6 +746,7 @@ void GF_Load(const char *const path)
     GAME_FLOW *const gf = &g_GameFlow;
     M_LoadRoot(root_obj, gf);
     M_LoadLevels(root_obj, gf);
+    M_LoadCutscenes(root_obj, gf);
     M_LoadDemos(root_obj, gf);
     M_LoadFMVs(root_obj, gf);
 

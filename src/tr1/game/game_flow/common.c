@@ -72,6 +72,7 @@ void GF_Shutdown(void)
     M_FreeInjections(&gf->injections);
     M_FreeLevels(&gf->levels, &gf->level_count);
     M_FreeLevels(&gf->demos, &gf->demo_count);
+    M_FreeLevels(&gf->cutscenes, &gf->cutscene_count);
     M_FreeFMVs(gf);
 }
 
@@ -82,6 +83,8 @@ int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
         return 1;
     case GFL_GYM:
         return 1;
+    case GFL_CUTSCENE:
+        return g_GameFlow.cutscene_count;
     case GFL_DEMO:
         return g_GameFlow.demo_count;
     default:
@@ -105,11 +108,6 @@ int32_t GF_GetGymLevelNum(void)
     return g_GameFlow.gym_level_num;
 }
 
-GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
-{
-    return GF_GetLevel(g_CurrentLevel, g_GameInfo.current_level_type);
-}
-
 GAME_FLOW_LEVEL *GF_GetLevel(
     const int32_t num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
@@ -117,8 +115,15 @@ GAME_FLOW_LEVEL *GF_GetLevel(
     case GFL_TITLE:
         return &g_GameFlow.levels[g_GameFlow.title_level_num];
 
+    case GFL_CUTSCENE:
+        if (num < 0 || num >= GF_GetLevelCount(level_type)) {
+            LOG_ERROR("Invalid cutscene number: %d", num);
+            return NULL;
+        }
+        return &g_GameFlow.cutscenes[num];
+
     case GFL_DEMO:
-        if (num < 0 || num >= GF_GetDemoCount()) {
+        if (num < 0 || num >= GF_GetLevelCount(level_type)) {
             LOG_ERROR("Invalid demo number: %d", num);
             return NULL;
         }

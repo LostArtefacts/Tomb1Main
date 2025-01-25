@@ -8,5 +8,4 @@
 void GF_Shutdown(void);
 
 int32_t GF_GetCutsceneCount(void);
-void GF_SetCurrentLevel(GAME_FLOW_LEVEL *level);
 START_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *level);

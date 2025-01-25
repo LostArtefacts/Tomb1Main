@@ -390,17 +390,13 @@ void Shell_Main(void)
             gf_cmd = GF_DoLevelSequence(g_SaveGame.current_level, GFL_SAVED);
             break;
 
-        case GF_START_CINE: {
-            PHASE *const cutscene_phase = Phase_Cutscene_Create(gf_cmd.param);
-            gf_cmd = PhaseExecutor_Run(cutscene_phase);
-            Phase_Cutscene_Destroy(cutscene_phase);
+        case GF_START_CINE:
+            gf_cmd = GF_DoCutsceneSequence(gf_cmd.param);
             break;
-        }
 
-        case GF_START_DEMO: {
+        case GF_START_DEMO:
             gf_cmd = GF_DoDemoSequence(gf_cmd.param);
             break;
-        }
 
         case GF_LEVEL_COMPLETE:
             gf_cmd = LevelCompleteSequence();

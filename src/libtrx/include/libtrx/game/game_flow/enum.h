@@ -1,26 +1,36 @@
 #pragma once
 
+// TODO: Split this enum, as it currently handles too many tasks. Apart from
+// level type identification, it's also used for controlling game flow (loading
+// a saved level, playing the story so far etc.).
 typedef enum {
-#if TR_VERSION == 2
-    GFL_NO_LEVEL = -1,
-#endif
-    GFL_TITLE = 0,
-    GFL_NORMAL = 1,
-    GFL_SAVED = 2,
-    GFL_DEMO = 3,
-    GFL_CUTSCENE = 4,
+    // Genuine level types
+    GFL_TITLE,
+    GFL_NORMAL,
+    GFL_CUTSCENE,
+    GFL_DEMO,
 #if TR_VERSION == 1
-    GFL_GYM = 5,
-    GFL_CURRENT = 6,
-    GFL_RESTART = 7,
-    GFL_SELECT = 8,
-    GFL_BONUS = 9,
-    GFL_TITLE_DEMO_PC = 10,
-    GFL_LEVEL_DEMO_PC = 11,
+    GFL_GYM,
+    GFL_BONUS,
+    GFL_TITLE_DEMO_PC,
+    GFL_LEVEL_DEMO_PC,
+#endif
+
+#if TR_VERSION == 1
+    // Legacy level types to maintain savegame backwards compatibility.
+    // TODO: get rid of these.
+    GFL_DUMMY,
+    GFL_CURRENT,
+#endif
+
+    // Game flow execution context-related types.
+    GFL_SAVED,
+#if TR_VERSION == 1
+    GFL_RESTART,
+    GFL_SELECT,
 #elif TR_VERSION == 2
-    GFL_STORY = 5,
-    GFL_QUIET = 6,
-    GFL_MID_STORY = 7,
+    GFL_STORY,
+    GFL_MID_STORY,
 #endif
 } GAME_FLOW_LEVEL_TYPE;
 
@@ -47,6 +57,7 @@ typedef enum {
 typedef enum {
     GFS_DISPLAY_PICTURE,
     GFS_PLAY_LEVEL,
+    GFS_PLAY_CUTSCENE,
     GFS_PLAY_FMV,
 #if TR_VERSION == 1
     GFS_LEVEL_STATS,
@@ -55,9 +66,7 @@ typedef enum {
     GFS_LOAD_LEVEL,
     GFS_EXIT_TO_TITLE,
     GFS_EXIT_TO_LEVEL,
-    GFS_EXIT_TO_CINE,
 #elif TR_VERSION == 2
-    GFS_PLAY_CUTSCENE,
     GFS_LEVEL_COMPLETE,
     GFS_GAME_COMPLETE,
 #endif

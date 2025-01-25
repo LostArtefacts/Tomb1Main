@@ -7,8 +7,6 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
-
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
 static void M_FreeInjections(INJECTION_DATA *injections);
 static void M_FreeLevel(GAME_FLOW_LEVEL *level);
@@ -62,10 +60,10 @@ int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
     case GFL_NORMAL:
     case GFL_SAVED:
         return g_GameFlow.level_count;
-    case GFL_DEMO:
-        return g_GameFlow.demo_count;
     case GFL_CUTSCENE:
         return g_GameFlow.cutscene_count;
+    case GFL_DEMO:
+        return g_GameFlow.demo_count;
     default:
         ASSERT_FAIL();
     }
@@ -110,16 +108,6 @@ void GF_Shutdown(void)
         M_FreeLevel(gf->title_level);
         Memory_FreePointer(&gf->title_level);
     }
-}
-
-GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
-{
-    return m_CurrentLevel;
-}
-
-void GF_SetCurrentLevel(GAME_FLOW_LEVEL *const level)
-{
-    m_CurrentLevel = level;
 }
 
 GAME_FLOW_LEVEL *GF_GetLevel(

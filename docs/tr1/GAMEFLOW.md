@@ -42,6 +42,12 @@ various pieces of global behaviour.
         // etc
     },
 ],
+"cutscenes": [
+    {
+        "path": "data/cut1.phd",
+        // etc
+    },
+],
 "demos": [
     {
         "path": "data/gym.phd",
@@ -396,9 +402,9 @@ Following are each of the properties available within a level.
   </tr>
   <tr valign="top">
     <td>
-      <code>cutscene</code>
+      <code>legacy</code>
     </td>
-    <td>A cutscene level.</td>
+    <td>A placeholder level necessary to read TombATI's save files.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -516,13 +522,13 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>exit_to_cine</code>
+      <code>play_cutscene</code>
     </td>
     <td>
-      <code>level_id</code>
+      <code>cutscene_id</code>
     </td>
     <td>Integer</td>
-    <td>Exits to the specified cinematic level.</td>
+    <td>Plays the specified cinematic level (from the `cutscenes`).</td>
   </tr>
   <tr valign="top">
     <td>
@@ -750,8 +756,13 @@ default gameflow for examples.
   </tr>
 </table>
 
+## Cutscenes
+The `cutscenes` section contains all the cinematic levels, used with the
+`play_cutscene` sequence. Its structure is identical to the `levels` section.
+
+
 ## Demos
-The `demos` section shows all the levels that can play a demo when the player
+The `demos` section contains all the levels that can play a demo when the player
 leaves the main inventory screen idle for a while or by using the `/demo`
 command. For the demos to work, these levels need to have demo data built-in.
 Aside from this requirement, this section works just like the `levels` section.
@@ -775,92 +786,97 @@ game will exit to title.
 
 ```json5
 {
-    // gym level definition
-},
+    "levels": [
+        {
+            // gym level definition
+        },
 
-{
-    "path": "data/level1.phd",
-    "type": "normal",
-    "music_track": 57,
-    "sequence": [
-         {"type": "load_level"},
-         {"type": "play_level"},
-         {"type": "level_stats", "level_id": 1},
-         {"type": "exit_to_level", "level_id": 2},
-    ],
-},
+        {
+            "path": "data/level1.phd",
+            "type": "normal",
+            "music_track": 57,
+            "sequence": [
+                 {"type": "load_level"},
+                 {"type": "play_level"},
+                 {"type": "level_stats", "level_id": 1},
+                 {"type": "exit_to_level", "level_id": 2},
+            ],
+        },
 
-{
-    "path": "data/level2.phd",
-    "type": "normal",
-    "music_track": 57,
-    "sequence": [
-         {"type": "load_level"},
-         {"type": "play_level"},
-         {"type": "level_stats", "level_id": 2},
-         {"type": "exit_to_level", "level_id": 3},
-    ],
-},
+        {
+            "path": "data/level2.phd",
+            "type": "normal",
+            "music_track": 57,
+            "sequence": [
+                 {"type": "load_level"},
+                 {"type": "play_level"},
+                 {"type": "level_stats", "level_id": 2},
+                 {"type": "exit_to_level", "level_id": 3},
+            ],
+        },
 
-{
-    "path": "data/level3.phd",
-    "type": "normal",
-    "music_track": 57,
-    "sequence": [
-         {"type": "load_level"},
-         {"type": "play_level"},
-         {"type": "level_stats", "level_id": 3},
-         {"type": "play_synced_audio", "audio_id": 19},
-         {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
-         {"type": "display_picture", "path": "data/cred1.pcx", "display_time": 7.5},
-         {"type": "display_picture", "path": "data/cred2.pcx", "display_time": 7.5},
-         {"type": "display_picture", "path": "data/cred3.pcx", "display_time": 7.5},
-         {"type": "total_stats", "background_path": "data/install.pcx"},
-         {"type": "exit_to_level", "level_id": 4},
-    ],
-},
+        {
+            "path": "data/level3.phd",
+            "type": "normal",
+            "music_track": 57,
+            "sequence": [
+                 {"type": "load_level"},
+                 {"type": "play_level"},
+                 {"type": "level_stats", "level_id": 3},
+                 {"type": "play_synced_audio", "audio_id": 19},
+                 {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
+                 {"type": "display_picture", "path": "data/cred1.pcx", "display_time": 7.5},
+                 {"type": "display_picture", "path": "data/cred2.pcx", "display_time": 7.5},
+                 {"type": "display_picture", "path": "data/cred3.pcx", "display_time": 7.5},
+                 {"type": "total_stats", "background_path": "data/install.pcx"},
+                 {"type": "exit_to_level", "level_id": 4},
+            ],
+        },
 
-{
-    "path": "data/bonus1.phd",
-    "type": "bonus",
-    "music_track": 57,
-    "sequence": [
-         {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
-         {"type": "load_level"},
-         {"type": "play_level"},
-         {"type": "exit_to_cine", "level_id": 6},
-    ],
-},
+        {
+            "path": "data/bonus1.phd",
+            "type": "bonus",
+            "music_track": 57,
+            "sequence": [
+                 {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
+                 {"type": "load_level"},
+                 {"type": "play_level"},
+                 {"type": "play_cutscene", "cutscene_id": 0},
+            ],
+        },
 
-{
-    "path": "data/bonus2.phd",
-    "type": "bonus",
-    "music_track": 57,
-    "sequence": [
-         {"type": "load_level"},
-         {"type": "play_level"},
-         {"type": "level_stats", "level_id": 5},
-         {"type": "play_synced_audio", "audio_id": 14},
-         {"type": "total_stats", "background_path": "data/install.pcx"},
-         {"type": "exit_to_title"},
+        {
+            "path": "data/bonus2.phd",
+            "type": "bonus",
+            "music_track": 57,
+            "sequence": [
+                 {"type": "load_level"},
+                 {"type": "play_level"},
+                 {"type": "level_stats", "level_id": 5},
+                 {"type": "play_synced_audio", "audio_id": 14},
+                 {"type": "total_stats", "background_path": "data/install.pcx"},
+                 {"type": "exit_to_title"},
+            ],
+        },
     ],
-},
 
-{
-    "path": "data/bonuscut1.phd",
-    "type": "cutscene",
-    "music_track": 0,
-    "sequence": [
-        {"type": "load_level"},
-        {"type": "set_cam_x", "value": 36668},
-        {"type": "set_cam_z", "value": 63180},
-        {"type": "set_cutscene_angle", "value": -23312},
-        {"type": "play_synced_audio", "audio_id": 23},
-        {"type": "play_level"},
-        {"type": "level_stats", "level_id": 4},
-        {"type": "exit_to_level", "level_id": 5},
+    "cutscenes": [
+        {
+            "path": "data/bonuscut1.phd",
+            "music_track": 0,
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "set_cam_x", "value": 36668},
+                {"type": "set_cam_z", "value": 63180},
+                {"type": "set_cutscene_angle", "value": -23312},
+                {"type": "play_synced_audio", "audio_id": 23},
+                {"type": "play_level"},
+                {"type": "level_stats", "level_id": 4},
+                {"type": "exit_to_level", "level_id": 5},
+            ],
+        },
     ],
-},
+}
 ```
 </details>
 

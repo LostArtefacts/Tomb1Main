@@ -368,6 +368,12 @@ extern int32_t Game_GetCurrentLevelNum(void)
     return g_CurrentLevel;
 }
 
+bool Game_IsInGym(void)
+{
+    GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    return current_level != NULL && current_level->type == GFL_GYM;
+}
+
 bool Game_IsPlayable(void)
 {
     if (g_GameInfo.current_level_type == GFL_TITLE

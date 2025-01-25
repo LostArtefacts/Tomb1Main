@@ -131,25 +131,11 @@
             "title": "The Great Pyramid",
         },
 
-        // Level 16: Cut Scene 1
-        {
-            "title": "Cut Scene 1",
-        },
-
-        // Level 17: Cut Scene 2
-        {
-            "title": "Cut Scene 2",
-        },
-
-        // Level 18: Cut Scene 3
-        {
-            "title": "Cut Scene 3",
-        },
-
-        // Level 19: Cut Scene 4
-        {
-            "title": "Cut Scene 4",
-        },
+        // Level 16-19: Legacy savegame placeholders
+        {"title": "Dummy"},
+        {"title": "Dummy"},
+        {"title": "Dummy"},
+        {"title": "Dummy"},
 
         // Level 20: Title
         {
@@ -160,6 +146,13 @@
         {
             "title": "Current Position",
         },
+    ],
+
+    "cutscenes": [
+        {"title": "Cut Scene 1"},
+        {"title": "Cut Scene 2"},
+        {"title": "Cut Scene 3"},
+        {"title": "Cut Scene 4"},
     ],
 
     "demos": [

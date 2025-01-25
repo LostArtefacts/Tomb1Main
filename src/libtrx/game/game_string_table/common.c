@@ -96,45 +96,40 @@ void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
             GF_GetLevel(i, GFL_DEMO), gs_file->demos.entries[i].title);
     }
 
-#if TR_VERSION == 2
-    // TODO: TR1 still has cutscene levels in a single linear sequence
     for (int32_t i = 0; i < GF_GetLevelCount(GFL_CUTSCENE); i++) {
         GF_SetLevelTitle(
             GF_GetLevel(i, GFL_CUTSCENE), gs_file->cutscenes.entries[i].title);
     }
-#endif
 
     if (level != NULL) {
         const GS_LEVEL_TABLE *level_table = NULL;
+        switch (level->type) {
+        case GFL_TITLE:
+            // TODO: TR1 still has some levels in a single linear sequence
 #if TR_VERSION == 1
-        // TODO: TR1 still has most levels in a single linear sequence
-        switch (level->type) {
-        default:
             level_table = &gs_file->levels;
-            break;
-        case GFL_DEMO:
-            level_table = &gs_file->demos;
-            break;
-        }
 #elif TR_VERSION == 2
-        switch (level->type) {
+            level_table = NULL;
+#endif
+            break;
         case GFL_NORMAL:
         case GFL_SAVED:
             level_table = &gs_file->levels;
             break;
-        case GFL_DEMO:
-            level_table = &gs_file->demos;
-            break;
         case GFL_CUTSCENE:
             level_table = &gs_file->cutscenes;
             break;
-        case GFL_TITLE:
-            level_table = NULL;
+        case GFL_DEMO:
+            level_table = &gs_file->demos;
             break;
+#if TR_VERSION == 1
+        case GFL_GYM:
+            level_table = &gs_file->levels;
+            break;
+#endif
         default:
             ASSERT_FAIL();
         }
-#endif
 
         if (level_table != NULL) {
             ASSERT(level->num >= 0);

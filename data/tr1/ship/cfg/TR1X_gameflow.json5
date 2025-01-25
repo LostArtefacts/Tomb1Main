@@ -124,7 +124,9 @@
                 {"type": "loading_screen", "path": "data/images/peru.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "exit_to_cine", "level_id": 16},
+                {"type": "play_cutscene", "cutscene_id": 0},
+                {"type": "level_stats", "level_id": 4},
+                {"type": "exit_to_level", "level_id": 5},
             ],
         },
 
@@ -226,7 +228,9 @@
                 {"type": "loading_screen", "path": "data/images/greece.webp"},
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "exit_to_cine", "level_id": 17},
+                {"type": "play_cutscene", "cutscene_id": 1},
+                {"type": "level_stats", "level_id": 9},
+                {"type": "exit_to_level", "level_id": 10},
             ],
         },
 
@@ -319,7 +323,8 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 13},
-                {"type": "exit_to_cine", "level_id": 18},
+                {"type": "play_cutscene", "cutscene_id": 2},
+                {"type": "exit_to_level", "level_id": 14},
             ],
         },
 
@@ -340,7 +345,9 @@
                 {"type": "setup_bacon_lara", "anchor_room": 10},
                 {"type": "play_level"},
                 {"type": "play_fmv", "fmv_id": 9},
-                {"type": "exit_to_cine", "level_id": 19},
+                {"type": "play_cutscene", "cutscene_id": 3},
+                {"type": "level_stats", "level_id": 14},
+                {"type": "exit_to_level", "level_id": 15},
             ],
             "unobtainable_pickups": 3,
         },
@@ -371,102 +378,11 @@
             ],
         },
 
-        // Level 16: Cut Scene 1
-        {
-            "path": "data/cut1.phd",
-            "type": "cutscene",
-            "music_track": 0,
-            "lara_type": "player_1",
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/backpack_cut.bin",
-                "data/injections/braid_cut1.bin",
-                "data/injections/photo.bin",
-                "data/injections/font.bin",
-            ],
-            "sequence": [
-                {"type": "load_level"},
-                {"type": "set_cutscene_angle", "value": -23312},
-                {"type": "play_synced_audio", "audio_id": 23},
-                {"type": "play_level"},
-                {"type": "level_stats", "level_id": 4},
-                {"type": "exit_to_level", "level_id": 5},
-            ],
-        },
-
-        // Level 17: Cut Scene 2
-        {
-            "path": "data/cut2.phd",
-            "type": "cutscene",
-            "music_track": 0,
-            "lara_type": "player_1",
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/backpack_cut.bin",
-                "data/injections/braid_cut2_cut4.bin",
-                "data/injections/font.bin",
-                "data/injections/photo.bin",
-            ],
-            "sequence": [
-                {"type": "load_level"},
-                {"type": "set_cutscene_angle", "value": 16380},
-                {"type": "play_synced_audio", "audio_id": 25},
-                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
-                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
-                {"type": "play_level"},
-                {"type": "level_stats", "level_id": 9},
-                {"type": "exit_to_level", "level_id": 10},
-            ],
-        },
-
-        // Level 18: Cut Scene 3
-        {
-            "path": "data/cut3.phd",
-            "type": "cutscene",
-            "music_track": 0,
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/cut3_textures.bin",
-                "data/injections/photo.bin",
-                "data/injections/font.bin",
-            ],
-            "sequence": [
-                {"type": "load_level"},
-                {"type": "flip_map"},
-                {"type": "set_cutscene_angle", "value": 16384},
-                {"type": "play_synced_audio", "audio_id": 24},
-                {"type": "play_level"},
-                {"type": "exit_to_level", "level_id": 14},
-            ],
-        },
-
-        // Level 19: Cut Scene 4
-        {
-            "path": "data/cut4.phd",
-            "type": "cutscene",
-            "music_track": 0,
-            "draw_distance_fade": 12.0,
-            "draw_distance_max": 18.0,
-            "lara_type": "player_1",
-            "inherit_injections": false,
-            "injections": [
-                "data/injections/backpack_cut.bin",
-                "data/injections/braid_cut2_cut4.bin",
-                "data/injections/cut4_textures.bin",
-                "data/injections/photo.bin",
-                "data/injections/font.bin",
-            ],
-            "sequence": [
-                {"type": "load_level"},
-                {"type": "set_cutscene_angle", "value": 16384},
-                {"type": "play_synced_audio", "audio_id": 22},
-                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
-                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
-                {"type": "play_level"},
-                {"type": "level_stats", "level_id": 14},
-                {"type": "exit_to_level", "level_id": 15},
-            ],
-        },
+        // Level 16-19: Legacy savegame placeholders
+        {"type": "dummy"},
+        {"type": "dummy"},
+        {"type": "dummy"},
+        {"type": "dummy"},
 
         // Level 20: Title
         {
@@ -508,7 +424,6 @@
         // Demo 1: City of Vilcabamba
         {
             "path": "data/level2.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/vilcabamba_itemrots.bin",
@@ -526,7 +441,6 @@
         // Demo 2: Lost Valley
         {
             "path": "data/level3a.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/braid_valley.bin",
@@ -543,6 +457,94 @@
             ],
         },
 
+    ],
+
+    "cutscenes": [
+        // Cut Scene 1
+        {
+            "path": "data/cut1.phd",
+            "music_track": 0,
+            "lara_type": "player_1",
+            "inherit_injections": false,
+            "injections": [
+                "data/injections/backpack_cut.bin",
+                "data/injections/braid_cut1.bin",
+                "data/injections/photo.bin",
+                "data/injections/font.bin",
+            ],
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "set_cutscene_angle", "value": -23312},
+                {"type": "play_synced_audio", "audio_id": 23},
+                {"type": "play_level"},
+            ],
+        },
+
+        // Cut Scene 2
+        {
+            "path": "data/cut2.phd",
+            "music_track": 0,
+            "lara_type": "player_1",
+            "inherit_injections": false,
+            "injections": [
+                "data/injections/backpack_cut.bin",
+                "data/injections/braid_cut2_cut4.bin",
+                "data/injections/font.bin",
+                "data/injections/photo.bin",
+            ],
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "set_cutscene_angle", "value": 16380},
+                {"type": "play_synced_audio", "audio_id": 25},
+                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
+                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
+                {"type": "play_level"},
+            ],
+        },
+
+        // Cut Scene 3
+        {
+            "path": "data/cut3.phd",
+            "music_track": 0,
+            "inherit_injections": false,
+            "injections": [
+                "data/injections/cut3_textures.bin",
+                "data/injections/photo.bin",
+                "data/injections/font.bin",
+            ],
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "flip_map"},
+                {"type": "set_cutscene_angle", "value": 16384},
+                {"type": "play_synced_audio", "audio_id": 24},
+                {"type": "play_level"},
+            ],
+        },
+
+        // Cut Scene 4
+        {
+            "path": "data/cut4.phd",
+            "music_track": 0,
+            "draw_distance_fade": 12.0,
+            "draw_distance_max": 18.0,
+            "lara_type": "player_1",
+            "inherit_injections": false,
+            "injections": [
+                "data/injections/backpack_cut.bin",
+                "data/injections/braid_cut2_cut4.bin",
+                "data/injections/cut4_textures.bin",
+                "data/injections/photo.bin",
+                "data/injections/font.bin",
+            ],
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "set_cutscene_angle", "value": 16384},
+                {"type": "play_synced_audio", "audio_id": 22},
+                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
+                {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
+                {"type": "play_level"},
+            ],
+        },
     ],
 
     // FMVs

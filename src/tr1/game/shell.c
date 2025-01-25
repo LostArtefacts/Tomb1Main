@@ -236,7 +236,7 @@ void Shell_Main(void)
         }
 
         case GF_START_CINE:
-            command = GF_InterpretSequence(command.param, GFL_CUTSCENE);
+            command = GF_DoCutsceneSequence(command.param);
             break;
 
         case GF_START_DEMO: {

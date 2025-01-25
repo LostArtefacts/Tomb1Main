@@ -12,5 +12,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
 bool GF_DoFrontendSequence(void);
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num);
+GAME_FLOW_COMMAND GF_DoCutsceneSequence(int32_t cutscene_num);
 GAME_FLOW_COMMAND GF_DoLevelSequence(
     int32_t start_level, GAME_FLOW_LEVEL_TYPE type);
