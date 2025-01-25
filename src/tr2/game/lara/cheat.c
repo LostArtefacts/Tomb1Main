@@ -124,7 +124,8 @@ bool Lara_Cheat_EnterFlyMode(void)
         M_ResetGunStatus();
     }
 
-    if (g_Lara.gun_status == LGS_HANDS_BUSY) {
+    if (g_Lara.gun_status == LGS_HANDS_BUSY
+        || (g_Lara.gun_status == LGS_UNDRAW && g_Lara.back_gun != O_LARA)) {
         g_Lara.gun_status = LGS_ARMLESS;
     }
 

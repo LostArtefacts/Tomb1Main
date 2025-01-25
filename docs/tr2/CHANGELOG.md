@@ -39,6 +39,7 @@
 - fixed Skidoo snow wake effects at slow speeds (#2324, regression from 0.6)
 - fixed software renderer skybox occlusion issues (#2343, regression from 0.7)
 - fixed gunflare from bandits in Tibetan levels spawning too far from their guns (#2365, regression from 0.8)
+- fixed guns sometimes appearing in Lara's hands when entering the fly cheat while undrawing weapons (#2376, regression from 0.3)
 - improved rendering to achieve a slight performance boost in big rooms (#2325)
 
 ## [0.8](https://github.com/LostArtefacts/TRX/compare/tr2-0.8...tr2-0.8) - 2025-01-01
