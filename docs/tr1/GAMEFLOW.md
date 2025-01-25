@@ -234,7 +234,6 @@ Following are each of the properties available within a level.
 ```json5
 {
     "path": "data/example.phd",
-    "type": "normal",
     "music_track": 57,
     "lara_type": 0,
     "water_color": [0.7, 0.5, 0.85],
@@ -367,9 +366,10 @@ Following are each of the properties available within a level.
       <code>type</code>
     </td>
     <td rowspan="8">String</td>
-    <td rowspan="8">Yes</td>
+    <td rowspan="8">No</td>
     <td colspan="2">
       The level type, which must be one of the following values.
+      Defaults to normal level.
     </td>
   </tr>
   <tr valign="top">
@@ -402,7 +402,7 @@ Following are each of the properties available within a level.
   </tr>
   <tr valign="top">
     <td>
-      <code>legacy</code>
+      <code>dummy</code>
     </td>
     <td>A placeholder level necessary to read TombATI's save files.</td>
   </tr>
@@ -421,12 +421,6 @@ Following are each of the properties available within a level.
       <code>normal</code>
     </td>
     <td>A standard level.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>title</code>
-    </td>
-    <td>The main menu level. One - and only one - of these must be defined.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -793,7 +787,6 @@ game will exit to title.
 
         {
             "path": "data/level1.phd",
-            "type": "normal",
             "music_track": 57,
             "sequence": [
                  {"type": "load_level"},
@@ -805,7 +798,6 @@ game will exit to title.
 
         {
             "path": "data/level2.phd",
-            "type": "normal",
             "music_track": 57,
             "sequence": [
                  {"type": "load_level"},
@@ -817,7 +809,6 @@ game will exit to title.
 
         {
             "path": "data/level3.phd",
-            "type": "normal",
             "music_track": 57,
             "sequence": [
                  {"type": "load_level"},
@@ -904,7 +895,6 @@ the engine's overall item limit).
 ```json5
 {
     "path": "data/example.phd",
-    "type": "normal",
     "music_track": 57,
     "item_drops": [
         {"enemy_num": 17, "object_ids": [86]},

@@ -484,25 +484,31 @@ static void M_LoadLevel(
     level->num = idx;
 
     {
+        level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
         const JSON_VALUE *const tmp_v = JSON_ObjectGetValue(jlvl_obj, "type");
-        if (tmp_v == NULL) {
-            if ((int32_t)(intptr_t)user_arg != -1) {
-                level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
-            } else {
-                Shell_ExitSystemFmt(
-                    "level %d: 'type' must be a string", level->num);
-            }
-        } else {
+        if (tmp_v != NULL) {
             const char *const tmp =
                 JSON_ValueGetString(tmp_v, JSON_INVALID_STRING);
             if (tmp == JSON_INVALID_STRING) {
                 Shell_ExitSystemFmt(
                     "level %d: 'type' must be a string", level->num);
             }
-            level->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
-            if (level->type == (GAME_FLOW_LEVEL_TYPE)-1) {
+            const GAME_FLOW_LEVEL_TYPE user_type =
+                ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
+            if (user_type == (GAME_FLOW_LEVEL_TYPE)-1) {
                 Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
             }
+
+            if (level->type != GFL_NORMAL
+                || (user_type != GFL_NORMAL && user_type != GFL_BONUS
+                    && user_type != GFL_GYM && user_type != GFL_CURRENT
+                    && user_type != GFL_DUMMY)) {
+                Shell_ExitSystemFmt(
+                    "cannot override level type=%s to %s",
+                    ENUM_MAP_TO_STRING(GAME_FLOW_LEVEL_TYPE, level->type),
+                    ENUM_MAP_TO_STRING(GAME_FLOW_LEVEL_TYPE, user_type));
+            }
+            level->type = user_type;
         }
     }
 
@@ -608,7 +614,8 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 
     M_LoadArray(
         obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
-        gf, &gf->level_count, (void **)&gf->levels, (void *)(intptr_t)-1);
+        gf, &gf->level_count, (void **)&gf->levels,
+        (void *)(intptr_t)GFL_NORMAL);
 }
 
 static void M_LoadCutscenes(JSON_OBJECT *const obj, GAME_FLOW *const gf)

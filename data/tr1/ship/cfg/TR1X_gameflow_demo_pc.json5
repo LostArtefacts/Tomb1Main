@@ -41,7 +41,6 @@
         // Level 2: City of Vilcabamba
         {
             "path": "data_demo_pc/level2.phd",
-            "type": "normal",
             "music_track": 0,
             "injections": [
                 "data/injections/vilcabamba_itemrots.bin",

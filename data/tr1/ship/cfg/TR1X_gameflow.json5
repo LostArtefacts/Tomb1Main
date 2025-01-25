@@ -71,7 +71,6 @@
         // Level 1: Caves
         {
             "path": "data/level1.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/caves_fd.bin",
@@ -91,7 +90,6 @@
         // Level 2: City of Vilcabamba
         {
             "path": "data/level2.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/vilcabamba_itemrots.bin",
@@ -109,7 +107,6 @@
         // Level 3: Lost Valley
         {
             "path": "data/level3a.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/braid_valley.bin",
@@ -129,7 +126,6 @@
         // Level 4: Tomb of Qualopec
         {
             "path": "data/level3b.phd",
-            "type": "normal",
             "music_track": 57,
             "injections": [
                 "data/injections/larson_textures.bin",
@@ -150,7 +146,6 @@
         // Level 5: St. Francis' Folly
         {
             "path": "data/level4.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/folly_fd.bin",
@@ -170,7 +165,6 @@
         // Level 6: Colosseum
         {
             "path": "data/level5.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/colosseum_door.bin",
@@ -191,7 +185,6 @@
         // Level 7: Palace Midas
         {
             "path": "data/level6.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/midas_itemrots.bin",
@@ -210,7 +203,6 @@
         // Level 8: The Cistern
         {
             "path": "data/level7a.phd",
-            "type": "normal",
             "music_track": 58,
             "injections": [
                 "data/injections/cistern_fd.bin",
@@ -230,7 +222,6 @@
         // Level 9: Tomb of Tihocan
         {
             "path": "data/level7b.phd",
-            "type": "normal",
             "music_track": 58,
             "injections": [
                 "data/injections/cistern_plants.bin",
@@ -254,7 +245,6 @@
         // Level 10: City of Khamoon
         {
             "path": "data/level8a.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/khamoon_fd.bin",
@@ -274,7 +264,6 @@
         // Level 11: Obelisk of Khamoon
         {
             "path": "data/level8b.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/obelisk_fd.bin",
@@ -295,7 +284,6 @@
         // Level 12: Sanctuary of the Scion
         {
             "path": "data/level8c.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/sanctuary_fd.bin",
@@ -314,7 +302,6 @@
         // Level 13: Natla's Mines
         {
             "path": "data/level10a.phd",
-            "type": "normal",
             "music_track": 58,
             "injections": [
                 "data/injections/cowboy_textures.bin",
@@ -348,7 +335,6 @@
         // Level 14: Atlantis
         {
             "path": "data/level10b.phd",
-            "type": "normal",
             "music_track": 60,
             "injections": [
                 "data/injections/atlantis_fd.bin",
@@ -372,7 +358,6 @@
         // Level 15: The Great Pyramid
         {
             "path": "data/level10c.phd",
-            "type": "normal",
             "music_track": 60,
             "injections": [
                 "data/injections/pyramid_fd.bin",

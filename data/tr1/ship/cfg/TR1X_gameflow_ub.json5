@@ -30,7 +30,6 @@
 
     "title": {
         "path": "data/title.phd",
-        "type": "title",
         "music_track": 2,
         "inherit_injections": false,
         "injections": [
@@ -48,7 +47,6 @@
         // Level 0: Return to Egypt
         {
             "path": "data/egypt.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/egypt_cameras.bin",
@@ -69,7 +67,6 @@
         // Level 1: Temple of the Cat
         {
             "path": "data/cat.phd",
-            "type": "normal",
             "music_track": 59,
             "injections": [
                 "data/injections/cat_cameras.bin",
@@ -91,7 +88,6 @@
         // Level 2: Atlantean Stronghold
         {
             "path": "data/end.phd",
-            "type": "normal",
             "music_track": 60,
             "injections": [
                 "data/injections/stronghold_fd.bin",
@@ -110,7 +106,6 @@
         // Level 3: The Hive
         {
             "path": "data/end2.phd",
-            "type": "normal",
             "music_track": 60,
             "injections": [
                 "data/injections/hive_fd.bin",
