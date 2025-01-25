@@ -17,10 +17,13 @@
 
 #include <string.h>
 
+#define DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(name)                              \
+    int32_t name(                                                              \
+        JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event,               \
+        void *extra_data, void *user_arg)
 typedef int32_t (*M_SEQUENCE_EVENT_HANDLER_FUNC)(
     JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
     void *user_arg);
-
 typedef struct {
     GAME_FLOW_SEQUENCE_EVENT_TYPE event_type;
     M_SEQUENCE_EVENT_HANDLER_FUNC handler_func;
@@ -31,28 +34,20 @@ typedef void (*M_LOAD_ARRAY_FUNC)(
     JSON_OBJECT *source_elem, GAME_FLOW *gf, void *target_elem,
     size_t target_elem_idx, void *user_arg);
 
+static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *value);
+
 static void M_LoadArray(
     JSON_OBJECT *obj, const char *key, size_t element_size,
     M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *gf, int32_t *count, void **elements,
     void *user_arg);
 
-static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *value);
 static bool M_IsLegacySequence(const char *type_str);
-static int32_t M_HandleIntEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg);
-static int32_t M_HandlePictureEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg);
-static int32_t M_HandleTotalStatsEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg);
-static int32_t M_HandleAddItemEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg);
-static int32_t M_HandleMeshSwapEvent(
-    JSON_OBJECT *event_obj, GAME_FLOW_SEQUENCE_EVENT *event, void *extra_data,
-    void *user_arg);
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleIntEvent);
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandlePictureEvent);
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent);
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleAddItemEvent);
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent);
+
 static void M_LoadSettings(
     JSON_OBJECT *obj, GAME_FLOW_LEVEL_SETTINGS *settings);
 static void M_LoadLevelSequence(
@@ -167,9 +162,7 @@ static bool M_IsLegacySequence(const char *const type_str)
         || strcmp(type_str, "stop_cine") == 0;
 }
 
-static int32_t M_HandleIntEvent(
-    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
-    void *const extra_data, void *const user_arg)
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleIntEvent)
 {
     if (event != NULL) {
         event->data =
@@ -178,9 +171,7 @@ static int32_t M_HandleIntEvent(
     return 0;
 }
 
-static int32_t M_HandlePictureEvent(
-    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
-    void *const extra_data, void *const user_arg)
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandlePictureEvent)
 {
     const char *const path = JSON_ObjectGetString(event_obj, "path", NULL);
     if (path == NULL) {
@@ -199,9 +190,7 @@ static int32_t M_HandlePictureEvent(
     return sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA) + strlen(path) + 1;
 }
 
-static int32_t M_HandleTotalStatsEvent(
-    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
-    void *const extra_data, void *const user_arg)
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent)
 {
     const char *const path =
         JSON_ObjectGetString(event_obj, "background_path", NULL);
@@ -217,9 +206,7 @@ static int32_t M_HandleTotalStatsEvent(
     return strlen(path) + 1;
 }
 
-static int32_t M_HandleAddItemEvent(
-    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
-    void *const extra_data, void *const user_arg)
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleAddItemEvent)
 {
     const GAME_OBJECT_ID object_id =
         M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object_id"));
@@ -236,9 +223,7 @@ static int32_t M_HandleAddItemEvent(
     return sizeof(GAME_FLOW_ADD_ITEM_DATA);
 }
 
-static int32_t M_HandleMeshSwapEvent(
-    JSON_OBJECT *const event_obj, GAME_FLOW_SEQUENCE_EVENT *const event,
-    void *const extra_data, void *const user_arg)
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent)
 {
     const GAME_OBJECT_ID object1_id =
         M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object1_id"));
