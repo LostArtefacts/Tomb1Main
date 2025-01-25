@@ -7,6 +7,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/objects/names.h>
@@ -55,7 +56,14 @@ static int32_t M_HandleMeshSwapEvent(
 static void M_LoadSettings(
     JSON_OBJECT *obj, GAME_FLOW_LEVEL_SETTINGS *settings);
 static void M_LoadLevelSequence(
-    JSON_OBJECT *obj, GAME_FLOW *gf, int32_t level_num);
+    JSON_OBJECT *obj, GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
+static void M_LoadLevelInjections(
+    JSON_OBJECT *obj, GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
+static void M_LoadLevelItemDrops(
+    JSON_OBJECT *obj, GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
+static void M_LoadLevel(
+    JSON_OBJECT *jlvl_obj, GAME_FLOW *gf, GAME_FLOW_LEVEL *level, size_t idx,
+    void *user_arg);
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
 
 static void M_LoadFMV(
@@ -327,14 +335,15 @@ static size_t M_LoadSequenceEvent(
 }
 
 static void M_LoadLevelSequence(
-    JSON_OBJECT *const obj, GAME_FLOW *const gf, const int32_t level_num)
+    JSON_OBJECT *const jlvl_obj, GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level)
 {
-    JSON_ARRAY *jseq_arr = JSON_ObjectGetArray(obj, "sequence");
+    JSON_ARRAY *jseq_arr = JSON_ObjectGetArray(jlvl_obj, "sequence");
     if (!jseq_arr) {
-        Shell_ExitSystemFmt("level %d: 'sequence' must be a list", level_num);
+        Shell_ExitSystemFmt("level %d: 'sequence' must be a list", level->num);
     }
 
-    GAME_FLOW_SEQUENCE *const sequence = &gf->levels[level_num].sequence;
+    GAME_FLOW_SEQUENCE *const sequence = &level->sequence;
 
     sequence->length = 0;
     size_t event_base_size = sizeof(GAME_FLOW_SEQUENCE_EVENT);
@@ -372,8 +381,222 @@ static void M_LoadLevelSequence(
         if ((sequence->events[i].type == GFS_PLAY_LEVEL
              || sequence->events[i].type == GFS_LOAD_LEVEL)
             && (int32_t)(intptr_t)sequence->events[i].data == -1) {
-            sequence->events[i].data = (void *)(intptr_t)level_num;
+            sequence->events[i].data = (void *)(intptr_t)level->num;
         }
+    }
+}
+
+static void M_LoadLevelInjections(
+    JSON_OBJECT *const jlvl_obj, GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level)
+{
+    const bool inherit =
+        JSON_ObjectGetBool(jlvl_obj, "inherit_injections", true);
+    JSON_ARRAY *const injections = JSON_ObjectGetArray(jlvl_obj, "injections");
+
+    level->injections.count = 0;
+    if (injections == NULL && !inherit) {
+        return;
+    }
+
+    if (inherit) {
+        level->injections.count += gf->injections.count;
+    }
+    if (injections != NULL) {
+        level->injections.count += injections->length;
+    }
+
+    level->injections.data_paths =
+        Memory_Alloc(sizeof(char *) * level->injections.count);
+    int32_t base_index = 0;
+
+    if (inherit) {
+        for (int32_t i = 0; i < gf->injections.count; i++) {
+            level->injections.data_paths[i] =
+                Memory_DupStr(gf->injections.data_paths[i]);
+        }
+        base_index = gf->injections.count;
+    }
+
+    if (injections == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < injections->length; i++) {
+        const char *const str = JSON_ArrayGetString(injections, i, NULL);
+        level->injections.data_paths[base_index + i] = Memory_DupStr(str);
+    }
+}
+
+static void M_LoadLevelItemDrops(
+    JSON_OBJECT *const jlvl_obj, GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level)
+{
+    JSON_ARRAY *const drops = JSON_ObjectGetArray(jlvl_obj, "item_drops");
+    level->item_drops.count = 0;
+
+    if (drops != NULL && gf->enable_tr2_item_drops) {
+        LOG_WARNING(
+            "TR2 item drops are enabled: gameflow-defined drops for level "
+            "%d will be ignored",
+            level->num);
+        return;
+    }
+    if (drops == NULL) {
+        return;
+    }
+
+    level->item_drops.count = (signed)drops->length;
+    level->item_drops.data =
+        Memory_Alloc(sizeof(GAME_FLOW_DROP_ITEM_DATA) * (signed)drops->length);
+
+    for (int32_t i = 0; i < level->item_drops.count; i++) {
+        GAME_FLOW_DROP_ITEM_DATA *data = &level->item_drops.data[i];
+        JSON_OBJECT *jlvl_data = JSON_ArrayGetObject(drops, i);
+
+        data->enemy_num =
+            JSON_ObjectGetInt(jlvl_data, "enemy_num", JSON_INVALID_NUMBER);
+        if (data->enemy_num == JSON_INVALID_NUMBER) {
+            Shell_ExitSystemFmt(
+                "level %d, item drop %d: 'enemy_num' must be a number",
+                level->num, i);
+        }
+
+        JSON_ARRAY *object_arr = JSON_ObjectGetArray(jlvl_data, "object_ids");
+        if (!object_arr) {
+            Shell_ExitSystemFmt(
+                "level %d, item drop %d: 'object_ids' must be an array",
+                level->num, i);
+        }
+
+        data->count = (signed)object_arr->length;
+        data->object_ids = Memory_Alloc(sizeof(int16_t) * data->count);
+        for (int32_t j = 0; j < data->count; j++) {
+            const GAME_OBJECT_ID id =
+                M_GetObjectFromJSONValue(JSON_ArrayGetValue(object_arr, j));
+            if (id == NO_OBJECT) {
+                Shell_ExitSystemFmt(
+                    "level %d, item drop %d, index %d: 'object_id' "
+                    "must be a valid object id",
+                    level->num, i, j);
+            }
+            data->object_ids[j] = (int16_t)id;
+        }
+    }
+}
+
+static void M_LoadLevel(
+    JSON_OBJECT *const jlvl_obj, GAME_FLOW *const gf,
+    GAME_FLOW_LEVEL *const level, const size_t idx, void *const user_arg)
+{
+    level->num = idx;
+
+    {
+        const char *const tmp =
+            JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
+        if (tmp == JSON_INVALID_STRING) {
+            Shell_ExitSystemFmt(
+                "level %d: 'type' must be a string", level->num);
+        }
+        level->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
+        if (level->type == (GAME_FLOW_LEVEL_TYPE)-1) {
+            Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
+        }
+    }
+
+    {
+        const char *const tmp =
+            JSON_ObjectGetString(jlvl_obj, "path", JSON_INVALID_STRING);
+        if (tmp == JSON_INVALID_STRING) {
+            Shell_ExitSystemFmt(
+                "level %d: 'file' must be a string", level->num);
+        }
+        level->path = Memory_DupStr(tmp);
+    }
+
+    {
+        const int32_t tmp =
+            JSON_ObjectGetInt(jlvl_obj, "music_track", JSON_INVALID_NUMBER);
+        if (tmp == JSON_INVALID_NUMBER) {
+            Shell_ExitSystemFmt(
+                "level %d: 'music_track' must be a number", level->num);
+        }
+        level->music_track = tmp;
+    }
+
+    {
+        const int32_t tmp =
+            JSON_ObjectGetBool(jlvl_obj, "demo", JSON_INVALID_BOOL);
+        if (tmp != JSON_INVALID_BOOL) {
+            level->demo = tmp;
+            gf->has_demo |= tmp;
+        } else {
+            level->demo = false;
+        }
+    }
+
+    level->settings = gf->settings;
+    M_LoadSettings(jlvl_obj, &level->settings);
+
+    level->unobtainable.pickups =
+        JSON_ObjectGetInt(jlvl_obj, "unobtainable_pickups", 0);
+    level->unobtainable.kills =
+        JSON_ObjectGetInt(jlvl_obj, "unobtainable_kills", 0);
+    level->unobtainable.secrets =
+        JSON_ObjectGetInt(jlvl_obj, "unobtainable_secrets", 0);
+
+    {
+        JSON_VALUE *const tmp = JSON_ObjectGetValue(jlvl_obj, "lara_type");
+        if (tmp == NULL) {
+            level->lara_type = O_LARA;
+        } else {
+            level->lara_type = M_GetObjectFromJSONValue(tmp);
+        }
+        if (level->lara_type == NO_OBJECT) {
+            Shell_ExitSystemFmt(
+                "level %d: 'lara_type' must be a valid game object id",
+                level->num);
+        }
+    }
+
+    M_LoadLevelSequence(jlvl_obj, gf, level);
+    M_LoadLevelInjections(jlvl_obj, gf, level);
+    M_LoadLevelItemDrops(jlvl_obj, gf, level);
+
+    switch (level->type) {
+    case GFL_TITLE:
+    case GFL_TITLE_DEMO_PC:
+        if (gf->title_level_num != -1) {
+            Shell_ExitSystemFmt(
+                "level %d: there can be only one title level", level->num);
+        }
+        gf->title_level_num = level->num;
+        break;
+
+    case GFL_GYM:
+        if (gf->gym_level_num != -1) {
+            Shell_ExitSystemFmt(
+                "level %d: there can be only one gym level", level->num);
+        }
+        gf->gym_level_num = level->num;
+        break;
+
+    case GFL_LEVEL_DEMO_PC:
+    case GFL_NORMAL:
+        if (gf->first_level_num == -1) {
+            gf->first_level_num = level->num;
+        }
+        gf->last_level_num = level->num;
+        break;
+
+    case GFL_BONUS:
+    case GFL_CUTSCENE:
+    case GFL_CURRENT:
+        break;
+
+    default:
+        ASSERT_FAIL();
+        break;
     }
 }
 
@@ -386,7 +609,6 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 
     int32_t level_count = jlvl_arr->length;
 
-    gf->levels = Memory_Alloc(sizeof(GAME_FLOW_LEVEL) * level_count);
     g_GameInfo.current = Memory_Alloc(sizeof(RESUME_INFO) * level_count);
 
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
@@ -399,198 +621,9 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     gf->title_level_num = -1;
     gf->level_count = jlvl_arr->length;
 
-    GAME_FLOW_LEVEL *level = &gf->levels[0];
-    while (jlvl_elem) {
-        JSON_OBJECT *jlvl_obj = JSON_ValueAsObject(jlvl_elem->value);
-        if (!jlvl_obj) {
-            Shell_ExitSystem("'levels' elements must be dictionaries");
-        }
-
-        const char *tmp_s;
-        int32_t tmp_i;
-        JSON_ARRAY *tmp_arr;
-
-        tmp_i = JSON_ObjectGetInt(jlvl_obj, "music_track", JSON_INVALID_NUMBER);
-        if (tmp_i == JSON_INVALID_NUMBER) {
-            Shell_ExitSystemFmt(
-                "level %d: 'music_track' must be a number", level_num);
-        }
-        level->music_track = tmp_i;
-
-        tmp_s = JSON_ObjectGetString(jlvl_obj, "path", JSON_INVALID_STRING);
-        if (tmp_s == JSON_INVALID_STRING) {
-            Shell_ExitSystemFmt("level %d: 'file' must be a string", level_num);
-        }
-        level->path = Memory_DupStr(tmp_s);
-
-        tmp_s = JSON_ObjectGetString(jlvl_obj, "type", JSON_INVALID_STRING);
-        if (tmp_s == JSON_INVALID_STRING) {
-            Shell_ExitSystemFmt("level %d: 'type' must be a string", level_num);
-        }
-
-        level->num = level - gf->levels;
-        level->type = ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp_s, -1);
-
-        switch (level->type) {
-        case GFL_TITLE:
-        case GFL_TITLE_DEMO_PC:
-            if (gf->title_level_num != -1) {
-                Shell_ExitSystemFmt(
-                    "level %d: there can be only one title level", level_num);
-            }
-            gf->title_level_num = level_num;
-            break;
-
-        case GFL_GYM:
-            if (gf->gym_level_num != -1) {
-                Shell_ExitSystemFmt(
-                    "level %d: there can be only one gym level", level_num);
-            }
-            gf->gym_level_num = level_num;
-            break;
-
-        case GFL_LEVEL_DEMO_PC:
-        case GFL_NORMAL:
-            if (gf->first_level_num == -1) {
-                gf->first_level_num = level_num;
-            }
-            gf->last_level_num = level_num;
-            break;
-
-        case GFL_BONUS:
-        case GFL_CUTSCENE:
-        case GFL_CURRENT:
-            break;
-
-        default:
-            Shell_ExitSystemFmt(
-                "level %d: unknown level type %s", level_num, tmp_s);
-        }
-
-        tmp_i = JSON_ObjectGetBool(jlvl_obj, "demo", JSON_INVALID_BOOL);
-        if (tmp_i != JSON_INVALID_BOOL) {
-            level->demo = tmp_i;
-            gf->has_demo |= tmp_i;
-        } else {
-            level->demo = 0;
-        }
-
-        level->settings = gf->settings;
-        M_LoadSettings(jlvl_obj, &level->settings);
-        level->unobtainable.pickups =
-            JSON_ObjectGetInt(jlvl_obj, "unobtainable_pickups", 0);
-
-        level->unobtainable.kills =
-            JSON_ObjectGetInt(jlvl_obj, "unobtainable_kills", 0);
-
-        level->unobtainable.secrets =
-            JSON_ObjectGetInt(jlvl_obj, "unobtainable_secrets", 0);
-
-        tmp_i = JSON_ObjectGetBool(jlvl_obj, "inherit_injections", 1);
-        tmp_arr = JSON_ObjectGetArray(jlvl_obj, "injections");
-        if (tmp_arr) {
-            level->injections.count = tmp_arr->length;
-            if (tmp_i) {
-                level->injections.count += gf->injections.count;
-            }
-            level->injections.data_paths =
-                Memory_Alloc(sizeof(char *) * level->injections.count);
-
-            int32_t inj_base_index = 0;
-            if (tmp_i) {
-                for (int32_t i = 0; i < gf->injections.count; i++) {
-                    level->injections.data_paths[i] =
-                        Memory_DupStr(gf->injections.data_paths[i]);
-                }
-                inj_base_index = gf->injections.count;
-            }
-
-            for (size_t i = 0; i < tmp_arr->length; i++) {
-                const char *const str = JSON_ArrayGetString(tmp_arr, i, NULL);
-                level->injections.data_paths[inj_base_index + i] =
-                    Memory_DupStr(str);
-            }
-        } else if (tmp_i) {
-            level->injections.count = gf->injections.count;
-            level->injections.data_paths =
-                Memory_Alloc(sizeof(char *) * level->injections.count);
-            for (int32_t i = 0; i < gf->injections.count; i++) {
-                level->injections.data_paths[i] =
-                    Memory_DupStr(gf->injections.data_paths[i]);
-            }
-        } else {
-            level->injections.count = 0;
-        }
-
-        {
-            JSON_VALUE *const tmp_v =
-                JSON_ObjectGetValue(jlvl_obj, "lara_type");
-            if (tmp_v == NULL) {
-                level->lara_type = O_LARA;
-            } else {
-                level->lara_type = M_GetObjectFromJSONValue(tmp_v);
-            }
-            if (level->lara_type == NO_OBJECT) {
-                Shell_ExitSystemFmt(
-                    "level %d: 'lara_type' must be a valid game object id",
-                    level_num);
-            }
-        }
-
-        tmp_arr = JSON_ObjectGetArray(jlvl_obj, "item_drops");
-        level->item_drops.count = 0;
-        if (tmp_arr && gf->enable_tr2_item_drops) {
-            LOG_WARNING(
-                "TR2 item drops are enabled: gameflow-defined drops for level "
-                "%d will be ignored",
-                level_num);
-        } else if (tmp_arr) {
-            level->item_drops.count = (signed)tmp_arr->length;
-            level->item_drops.data = Memory_Alloc(
-                sizeof(GAME_FLOW_DROP_ITEM_DATA) * (signed)tmp_arr->length);
-
-            for (int32_t i = 0; i < level->item_drops.count; i++) {
-                GAME_FLOW_DROP_ITEM_DATA *data = &level->item_drops.data[i];
-                JSON_OBJECT *jlvl_data = JSON_ArrayGetObject(tmp_arr, i);
-
-                data->enemy_num = JSON_ObjectGetInt(
-                    jlvl_data, "enemy_num", JSON_INVALID_NUMBER);
-                if (data->enemy_num == JSON_INVALID_NUMBER) {
-                    Shell_ExitSystemFmt(
-                        "level %d, item drop %d: 'enemy_num' must be a number",
-                        level_num, i);
-                }
-
-                JSON_ARRAY *object_arr =
-                    JSON_ObjectGetArray(jlvl_data, "object_ids");
-                if (!object_arr) {
-                    Shell_ExitSystemFmt(
-                        "level %d, item drop %d: 'object_ids' must be an array",
-                        level_num, i);
-                }
-
-                data->count = (signed)object_arr->length;
-                data->object_ids = Memory_Alloc(sizeof(int16_t) * data->count);
-                for (int32_t j = 0; j < data->count; j++) {
-                    const GAME_OBJECT_ID id = M_GetObjectFromJSONValue(
-                        JSON_ArrayGetValue(object_arr, j));
-                    if (id == NO_OBJECT) {
-                        Shell_ExitSystemFmt(
-                            "level %d, item drop %d, index %d: 'object_id' "
-                            "must be a valid object id",
-                            level_num, i, j);
-                    }
-                    data->object_ids[j] = (int16_t)id;
-                }
-            }
-        }
-
-        M_LoadLevelSequence(jlvl_obj, gf, level_num);
-
-        jlvl_elem = jlvl_elem->next;
-        level_num++;
-        level++;
-    }
+    M_LoadArray(
+        obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
+        gf, &gf->level_count, (void **)&gf->levels, NULL);
 
     if (gf->title_level_num == -1) {
         Shell_ExitSystem("at least one level must be of title type");
@@ -621,7 +654,6 @@ static void M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     const char *tmp_s;
-    int32_t tmp_i;
     double tmp_d;
     JSON_ARRAY *tmp_arr;
 
