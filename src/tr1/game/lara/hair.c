@@ -8,6 +8,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/lara/common.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
@@ -84,10 +85,7 @@ void Lara_Hair_Control(void)
         return;
     }
 
-    bool in_cutscene;
-    OBJECT *object;
     int32_t distance;
-    ANIM_FRAME *frame;
     const OBJECT_MESH *mesh;
     int16_t room_num;
     ANIM_FRAME *frmptr[2];
@@ -104,32 +102,11 @@ void Lara_Hair_Control(void)
     int32_t y;
     int32_t z;
 
-    in_cutscene = m_LaraType != O_LARA;
-    object = &g_Objects[m_LaraType];
-
-    if (!in_cutscene && g_Lara.hit_direction >= 0) {
-        LARA_ANIMATION hit_anim;
-        switch (g_Lara.hit_direction) {
-        case DIR_NORTH:
-            hit_anim = LA_HIT_FRONT;
-            break;
-
-        case DIR_SOUTH:
-            hit_anim = LA_HIT_BACK;
-            break;
-
-        case DIR_EAST:
-            hit_anim = LA_HIT_RIGHT;
-            break;
-
-        default:
-            hit_anim = LA_HIT_LEFT;
-            break;
-        }
-
-        frame = Object_GetAnim(object, hit_anim)->frame_ptr;
-        frame += g_Lara.hit_frame;
-
+    const bool in_cutscene = m_LaraType != O_LARA;
+    const ANIM_FRAME *const hit_frame = Lara_GetHitFrame(g_LaraItem);
+    const ANIM_FRAME *frame;
+    if (!in_cutscene && hit_frame != NULL) {
+        frame = hit_frame;
         frac = 0;
     } else {
         frame = Item_GetBestFrame(g_LaraItem);
@@ -141,6 +118,7 @@ void Lara_Hair_Control(void)
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
     Matrix_Rot16(g_LaraItem->rot);
 
+    const OBJECT *const object = Object_GetObject(m_LaraType);
     const ANIM_BONE *bone = Object_GetBone(object, 0);
     if (frac) {
         const XYZ_16 *const mesh_rots_1 = frmptr[0]->mesh_rots;

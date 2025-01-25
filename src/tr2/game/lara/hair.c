@@ -6,6 +6,7 @@
 #include "game/room.h"
 #include "global/vars.h"
 
+#include <libtrx/game/lara/common.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
@@ -215,32 +216,15 @@ void Lara_Hair_Control(const bool in_cutscene)
     const ANIM_FRAME *frame_2;
     int32_t frac;
     int32_t rate;
-    if (g_Lara.hit_direction < 0) {
+    const ANIM_FRAME *const hit_frame = Lara_GetHitFrame(g_LaraItem);
+    if (hit_frame != NULL) {
+        frame_1 = hit_frame;
+        frac = 0;
+    } else {
         ANIM_FRAME *frmptr[2];
         frac = Item_GetFrames(g_LaraItem, frmptr, &rate);
         frame_1 = frmptr[0];
         frame_2 = frmptr[1];
-    } else {
-        LARA_ANIMATION lara_anim;
-        switch (g_Lara.hit_direction) {
-        case DIR_EAST:
-            lara_anim = LA_HIT_LEFT;
-            break;
-        case DIR_SOUTH:
-            lara_anim = LA_HIT_BACK;
-            break;
-        case DIR_WEST:
-            lara_anim = LA_HIT_RIGHT;
-            break;
-        default:
-            lara_anim = LA_HIT_FRONT;
-            break;
-        }
-
-        const OBJECT *const object = Object_GetObject(g_LaraItem->object_id);
-        const ANIM *const anim = Object_GetAnim(object, lara_anim);
-        frame_1 = &anim->frame_ptr[g_Lara.hit_frame];
-        frac = 0;
     }
 
     Matrix_PushUnit();

@@ -25,8 +25,6 @@ static void M_DrawMesh(
 
 void Lara_Draw(ITEM *item)
 {
-    OBJECT *object;
-    ANIM_FRAME *frame;
     ANIM_FRAME *frmptr[2];
     MATRIX saved_matrix;
 
@@ -53,32 +51,13 @@ void Lara_Draw(ITEM *item)
         }
     }
 
-    object = &g_Objects[item->object_id];
-    if (g_Lara.hit_direction >= 0) {
-        switch (g_Lara.hit_direction) {
-        default:
-        case DIR_NORTH:
-            frame = Object_GetAnim(object, LA_HIT_FRONT)->frame_ptr;
-            break;
-        case DIR_EAST:
-            frame = Object_GetAnim(object, LA_HIT_RIGHT)->frame_ptr;
-            break;
-        case DIR_SOUTH:
-            frame = Object_GetAnim(object, LA_HIT_BACK)->frame_ptr;
-            break;
-        case DIR_WEST:
-            frame = Object_GetAnim(object, LA_HIT_LEFT)->frame_ptr;
-            break;
-        }
-
-        frame += g_Lara.hit_frame;
-    } else {
-        frame = frmptr[0];
-    }
+    const ANIM_FRAME *const hit_frame = Lara_GetHitFrame(item);
+    const ANIM_FRAME *const frame = hit_frame == NULL ? frmptr[0] : hit_frame;
 
     // save matrix for hair
     saved_matrix = *g_MatrixPtr;
 
+    const OBJECT *const object = Object_GetObject(item->object_id);
     Output_DrawShadow(object->shadow_size, &frame->bounds, item);
 
     Matrix_Push();

@@ -7,6 +7,7 @@
 #include "game/random.h"
 #include "global/vars.h"
 
+#include <libtrx/game/lara/common.h>
 #include <libtrx/game/matrix.h>
 
 static void M_DrawBodyPart(
@@ -30,7 +31,6 @@ static void M_DrawBodyPart(
 
 void Lara_Draw(const ITEM *const item)
 {
-    ANIM_FRAME *frame;
     MATRIX saved_matrix;
 
     const int32_t top = g_PhdWinTop;
@@ -53,23 +53,10 @@ void Lara_Draw(const ITEM *const item)
         }
     }
 
-    const OBJECT *const object = &g_Objects[item->object_id];
-    if (g_Lara.hit_direction < 0) {
-        frame = frames[0];
-    } else {
-        // clang-format off
-        LARA_ANIMATION anim_idx;
-        switch (g_Lara.hit_direction) {
-        case DIR_EAST:  anim_idx = LA_HIT_LEFT; break;
-        case DIR_SOUTH: anim_idx = LA_HIT_BACK; break;
-        case DIR_WEST:  anim_idx = LA_HIT_RIGHT; break;
-        default:        anim_idx = LA_HIT_FRONT; break;
-        }
-        // clang-format on
-        const ANIM *const anim = Object_GetAnim(object, anim_idx);
-        frame = &anim->frame_ptr[g_Lara.hit_frame];
-    }
+    const ANIM_FRAME *const hit_frame = Lara_GetHitFrame(item);
+    const ANIM_FRAME *const frame = hit_frame == NULL ? frames[0] : hit_frame;
 
+    const OBJECT *const object = Object_GetObject(item->object_id);
     if (g_Lara.skidoo == NO_ITEM) {
         Output_InsertShadow(object->shadow_size, &frame->bounds, item);
     }

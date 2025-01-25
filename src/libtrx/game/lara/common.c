@@ -4,6 +4,8 @@
 #include "game/item_actions.h"
 #include "game/rooms/const.h"
 
+#include <stddef.h>
+
 void Lara_Animate(ITEM *const item)
 {
     LARA_INFO *const lara = Lara_GetLaraInfo();
@@ -123,4 +125,26 @@ OBJECT_MESH *Lara_GetMesh(const LARA_MESH mesh)
 void Lara_SetMesh(const LARA_MESH mesh, OBJECT_MESH *const mesh_ptr)
 {
     Lara_GetLaraInfo()->mesh_ptrs[mesh] = mesh_ptr;
+}
+
+const ANIM_FRAME *Lara_GetHitFrame(const ITEM *const item)
+{
+    const LARA_INFO *const lara = Lara_GetLaraInfo();
+    if (lara->hit_direction < 0) {
+        return NULL;
+    }
+
+    // clang-format off
+    LARA_ANIMATION anim_idx;
+    switch (lara->hit_direction) {
+    case DIR_EAST:  anim_idx = LA_HIT_LEFT; break;
+    case DIR_SOUTH: anim_idx = LA_HIT_BACK; break;
+    case DIR_WEST:  anim_idx = LA_HIT_RIGHT; break;
+    default:        anim_idx = LA_HIT_FRONT; break;
+    }
+    // clang-format on
+
+    const OBJECT *const object = Object_GetObject(item->object_id);
+    const ANIM *const anim = Object_GetAnim(object, anim_idx);
+    return &anim->frame_ptr[lara->hit_frame];
 }

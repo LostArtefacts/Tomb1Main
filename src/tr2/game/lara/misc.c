@@ -835,29 +835,9 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
         }
     }
 
-    const ANIM_FRAME *frame_ptr = NULL;
-    const OBJECT *obj = &g_Objects[g_LaraItem->object_id];
-    if (g_Lara.hit_direction >= 0) {
-        LARA_ANIMATION anim_num;
-        switch (g_Lara.hit_direction) {
-        case DIR_EAST:
-            anim_num = LA_HIT_RIGHT;
-            break;
-        case DIR_SOUTH:
-            anim_num = LA_HIT_BACK;
-            break;
-        case DIR_WEST:
-            anim_num = LA_HIT_LEFT;
-            break;
-        default:
-            anim_num = LA_HIT_FRONT;
-            break;
-        }
-        const ANIM *anim = Object_GetAnim(obj, anim_num);
-        frame_ptr = &anim->frame_ptr[g_Lara.hit_frame];
-    } else {
-        frame_ptr = frmptr[0];
-    }
+    const ANIM_FRAME *const hit_frame = Lara_GetHitFrame(g_LaraItem);
+    const ANIM_FRAME *const frame_ptr =
+        hit_frame == NULL ? frmptr[0] : hit_frame;
 
     Matrix_PushUnit();
     g_MatrixPtr->_03 = 0;
@@ -866,6 +846,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     Matrix_Rot16(g_LaraItem->rot);
 
     const XYZ_16 *mesh_rots = frame_ptr->mesh_rots;
+    const OBJECT *const obj = Object_GetObject(g_LaraItem->object_id);
     const ANIM_BONE *bone = Object_GetBone(obj, 0);
 
     Matrix_TranslateRel16(frame_ptr->offset);
