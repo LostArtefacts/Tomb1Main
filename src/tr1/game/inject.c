@@ -378,7 +378,7 @@ static void M_LoadTexturePages(
 
     // Read in each page for this injection and realign the pixels
     // to the level's palette.
-    const size_t pixel_count = PAGE_SIZE * inj_info->texture_page_count;
+    const size_t pixel_count = TEXTURE_PAGE_SIZE * inj_info->texture_page_count;
     uint8_t *indices = Memory_Alloc(pixel_count);
     VFile_Read(fp, indices, pixel_count);
     uint8_t *input = indices;
@@ -909,12 +909,12 @@ static void M_TextureOverwrites(
 
         // Copy the source image pixels directly into the target page.
         RGBA_8888 *page =
-            level_info->texture_rgb_page_ptrs + target_page * PAGE_SIZE;
+            level_info->texture_rgb_page_ptrs + target_page * TEXTURE_PAGE_SIZE;
         for (int32_t y = 0; y < source_height; y++) {
             for (int32_t x = 0; x < source_width; x++) {
                 const uint8_t pal_idx = source_img[y * source_width + x];
                 const int32_t target_pixel =
-                    (y + target_y) * PAGE_WIDTH + x + target_x;
+                    (y + target_y) * TEXTURE_PAGE_WIDTH + x + target_x;
                 if (pal_idx == 0) {
                     (*(page + target_pixel)).a = 0;
                 } else {
@@ -1626,7 +1626,8 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
 
     uint16_t palette_map[256];
     RGBA_8888 *source_pages = Memory_Alloc(
-        m_Aggregate->texture_page_count * PAGE_SIZE * sizeof(RGBA_8888));
+        m_Aggregate->texture_page_count * TEXTURE_PAGE_SIZE
+        * sizeof(RGBA_8888));
     int32_t source_page_count = 0;
     int32_t tpage_base = level_info->texture_page_count;
 
@@ -1638,7 +1639,7 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
 
         M_LoadTexturePages(
             injection, level_info, palette_map,
-            source_pages + (source_page_count * PAGE_SIZE));
+            source_pages + (source_page_count * TEXTURE_PAGE_SIZE));
 
         M_TextureData(injection, level_info, tpage_base);
         M_MeshData(injection, level_info);

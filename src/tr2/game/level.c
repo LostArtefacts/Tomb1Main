@@ -62,9 +62,8 @@ static void M_LoadTexturePages(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    const int32_t texture_size = TEXTURE_PAGE_WIDTH * TEXTURE_PAGE_HEIGHT;
-    const int32_t texture_size_8_bit = texture_size * sizeof(uint8_t);
-    const int32_t texture_size_16_bit = texture_size * sizeof(uint16_t);
+    const int32_t texture_size_8_bit = TEXTURE_PAGE_SIZE * sizeof(uint8_t);
+    const int32_t texture_size_16_bit = TEXTURE_PAGE_SIZE * sizeof(uint16_t);
 
     const int32_t num_pages = VFile_ReadS32(file);
     LOG_INFO("texture pages: %d", num_pages);

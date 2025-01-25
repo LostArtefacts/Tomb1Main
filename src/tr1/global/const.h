@@ -10,7 +10,6 @@
 #define NUM_SLOTS 32
 #define MAX_FRAMES 10
 #define MAX_CD_TRACKS 64
-#define MAX_TEXTPAGES 128
 #define MAX_FLIP_MAPS 10
 #define MAX_ROOMS_TO_DRAW 100
 #define MAX_ITEMS 10240
@@ -144,10 +143,6 @@
 #define CAMERA_2_RING 598
 #define LOW_LIGHT 0x1400 // = 5120
 #define HIGH_LIGHT 0x1000 // = 4096
-
-#define PAGE_WIDTH 256
-#define PAGE_HEIGHT 256
-#define PAGE_SIZE (PAGE_WIDTH * PAGE_HEIGHT)
 
 #if _MSC_VER > 0x500
     #define strdup _strdup // fixes error about POSIX function

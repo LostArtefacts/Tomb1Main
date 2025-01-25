@@ -133,10 +133,10 @@ static void M_LoadTexturePages(VFILE *file)
     m_LevelInfo.texture_page_count = VFile_ReadS32(file);
     LOG_INFO("%d texture pages", m_LevelInfo.texture_page_count);
     m_LevelInfo.texture_palette_page_ptrs =
-        Memory_Alloc(m_LevelInfo.texture_page_count * PAGE_SIZE);
+        Memory_Alloc(m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE);
     VFile_Read(
         file, m_LevelInfo.texture_palette_page_ptrs,
-        PAGE_SIZE * m_LevelInfo.texture_page_count);
+        TEXTURE_PAGE_SIZE * m_LevelInfo.texture_page_count);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -692,11 +692,11 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 
     // Expand paletted texture data to RGB
     m_LevelInfo.texture_rgb_page_ptrs = Memory_Alloc(
-        m_LevelInfo.texture_page_count * PAGE_SIZE * sizeof(RGBA_8888));
+        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     RGBA_8888 *output = m_LevelInfo.texture_rgb_page_ptrs;
     const uint8_t *input = m_LevelInfo.texture_palette_page_ptrs;
     for (int32_t i = 0; i < m_LevelInfo.texture_page_count; i++) {
-        for (int32_t j = 0; j < PAGE_SIZE; j++) {
+        for (int32_t j = 0; j < TEXTURE_PAGE_SIZE; j++) {
             const uint8_t index = *input++;
             if (index == 0) {
                 output->r = 0;
@@ -753,13 +753,13 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 
     // Move the prepared texture pages into g_TexturePagePtrs.
     RGBA_8888 *final_texture_data = GameBuf_Alloc(
-        m_LevelInfo.texture_page_count * PAGE_SIZE * sizeof(RGBA_8888),
+        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888),
         GBUF_TEXTURE_PAGES);
     memcpy(
         final_texture_data, m_LevelInfo.texture_rgb_page_ptrs,
-        m_LevelInfo.texture_page_count * PAGE_SIZE * sizeof(RGBA_8888));
+        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     for (int i = 0; i < m_LevelInfo.texture_page_count; i++) {
-        g_TexturePagePtrs[i] = &final_texture_data[i * PAGE_SIZE];
+        g_TexturePagePtrs[i] = &final_texture_data[i * TEXTURE_PAGE_SIZE];
     }
     Output_DownloadTextures(m_LevelInfo.texture_page_count);
     Output_SetPalette(m_LevelInfo.palette, m_LevelInfo.palette_size);

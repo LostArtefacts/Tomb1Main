@@ -43,7 +43,7 @@ typedef struct {
 typedef struct {
     int32_t index;
     int32_t free_space;
-    RGBA_8888 data[PAGE_SIZE];
+    RGBA_8888 data[TEXTURE_PAGE_SIZE];
 } TEX_PAGE;
 
 static void M_AllocateNewPage(void);
@@ -81,7 +81,7 @@ bool Packer_Pack(PACKER_DATA *data)
     m_Data = data;
 
     m_StartPage = m_Data->level_page_count - 1;
-    m_EndPage = MAX_TEXTPAGES - m_StartPage;
+    m_EndPage = MAX_TEXTURE_PAGES - m_StartPage;
     m_UsedPageCount = 0;
     m_QueueSize = 0;
 
@@ -160,10 +160,10 @@ static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE *bounds)
     int x_end = bounds->x + bounds->w;
     for (int y = bounds->y; y < y_end; y++) {
         for (int x = bounds->x; x < x_end; x++) {
-            page->data[y * PAGE_WIDTH + x].r = 1;
-            page->data[y * PAGE_WIDTH + x].g = 1;
-            page->data[y * PAGE_WIDTH + x].b = 1;
-            page->data[y * PAGE_WIDTH + x].a = 255;
+            page->data[y * TEXTURE_PAGE_WIDTH + x].r = 1;
+            page->data[y * TEXTURE_PAGE_WIDTH + x].g = 1;
+            page->data[y * TEXTURE_PAGE_WIDTH + x].b = 1;
+            page->data[y * TEXTURE_PAGE_WIDTH + x].a = 255;
         }
     }
 
@@ -255,7 +255,7 @@ static RECTANGLE *M_GetSpriteBounds(const SPRITE_TEXTURE *const texture)
 static bool M_PackContainer(TEX_CONTAINER *container)
 {
     int size = container->bounds->w * container->bounds->h;
-    if (size > PAGE_SIZE) {
+    if (size > TEXTURE_PAGE_SIZE) {
         LOG_ERROR("Container is too large to pack");
         return false;
     }
@@ -271,8 +271,8 @@ static bool M_PackContainer(TEX_CONTAINER *container)
             continue;
         }
 
-        y_end = PAGE_HEIGHT - container->bounds->h;
-        x_end = PAGE_WIDTH - container->bounds->w;
+        y_end = TEXTURE_PAGE_HEIGHT - container->bounds->h;
+        x_end = TEXTURE_PAGE_WIDTH - container->bounds->w;
         for (y = 0; y <= y_end; y++) {
             for (x = 0; x <= x_end; x++) {
                 if (M_PackContainerAt(container, page, x, y)) {
@@ -292,16 +292,17 @@ static void M_AllocateNewPage(void)
         m_VirtualPages, sizeof(TEX_PAGE) * (m_UsedPageCount + 1));
     TEX_PAGE *page = &m_VirtualPages[m_UsedPageCount];
     page->index = m_StartPage + m_UsedPageCount;
-    page->free_space = PAGE_SIZE;
-    memset(page->data, 0, PAGE_SIZE * sizeof(RGBA_8888));
+    page->free_space = TEXTURE_PAGE_SIZE;
+    memset(page->data, 0, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
 
     if (m_UsedPageCount > 0) {
         int new_count = m_Data->level_page_count + m_UsedPageCount;
         m_Data->level_pages = Memory_Realloc(
-            m_Data->level_pages, PAGE_SIZE * new_count * sizeof(RGBA_8888));
+            m_Data->level_pages,
+            TEXTURE_PAGE_SIZE * new_count * sizeof(RGBA_8888));
         RGBA_8888 *level_page =
-            m_Data->level_pages + (new_count - 1) * PAGE_SIZE;
-        memset(level_page, 0, PAGE_SIZE * sizeof(RGBA_8888));
+            m_Data->level_pages + (new_count - 1) * TEXTURE_PAGE_SIZE;
+        memset(level_page, 0, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     }
 
     m_UsedPageCount++;
@@ -315,10 +316,10 @@ static bool M_PackContainerAt(
 
     for (int y = y_pos; y < y_end; y++) {
         for (int x = x_pos; x < x_end; x++) {
-            if (page->data[y * PAGE_WIDTH + x].r
-                || page->data[y * PAGE_WIDTH + x].g
-                || page->data[y * PAGE_WIDTH + x].b
-                || page->data[y * PAGE_WIDTH + x].a) {
+            if (page->data[y * TEXTURE_PAGE_WIDTH + x].r
+                || page->data[y * TEXTURE_PAGE_WIDTH + x].g
+                || page->data[y * TEXTURE_PAGE_WIDTH + x].b
+                || page->data[y * TEXTURE_PAGE_WIDTH + x].a) {
                 return false;
             }
         }
@@ -330,15 +331,16 @@ static bool M_PackContainerAt(
     int source_page_index =
         container->tex_infos->tpage - m_Data->level_page_count;
     RGBA_8888 *source_page =
-        m_Data->source_pages + source_page_index * PAGE_SIZE;
-    RGBA_8888 *level_page = m_Data->level_pages + page->index * PAGE_SIZE;
+        m_Data->source_pages + source_page_index * TEXTURE_PAGE_SIZE;
+    RGBA_8888 *level_page =
+        m_Data->level_pages + page->index * TEXTURE_PAGE_SIZE;
 
     int old_pixel, new_pixel;
     for (int y = 0; y < container->bounds->h; y++) {
         for (int x = 0; x < container->bounds->w; x++) {
-            old_pixel = (container->bounds->y + y) * PAGE_WIDTH
+            old_pixel = (container->bounds->y + y) * TEXTURE_PAGE_WIDTH
                 + container->bounds->x + x;
-            new_pixel = (y_pos + y) * PAGE_WIDTH + x_pos + x;
+            new_pixel = (y_pos + y) * TEXTURE_PAGE_WIDTH + x_pos + x;
             page->data[new_pixel].r = 1;
             page->data[new_pixel].g = 1;
             page->data[new_pixel].b = 1;
