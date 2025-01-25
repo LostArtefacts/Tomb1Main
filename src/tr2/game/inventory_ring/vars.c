@@ -11,8 +11,7 @@ INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {
     [RT_KEYS] = {
         .count = 0,
         .current = 0,
-        .qtys = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
-        },
+        .qtys = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
         .items = {
             &g_InvRing_Item_Puzzle1,
             &g_InvRing_Item_Puzzle2,
@@ -29,8 +28,7 @@ INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {
     [RT_MAIN] = {
         .count = 8,
         .current = 0,
-        .qtys = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
-        },
+        .qtys = { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
         .items = {
             &g_InvRing_Item_Stopwatch,
             &g_InvRing_Item_Flare,
@@ -48,7 +46,7 @@ INV_RING_SOURCE g_InvRing_Source[RT_NUMBER_OF] = {
     [RT_OPTION] = {
         .count = 4,
         .current = 0,
-        .qtys = {},
+        .qtys = { 1, 1, 1, 1 },
         .items = {
             &g_InvRing_Item_Passport,
             &g_InvRing_Item_Controls,
