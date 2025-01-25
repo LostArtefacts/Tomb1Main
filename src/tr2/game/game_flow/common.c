@@ -10,10 +10,9 @@
 static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
+static void M_FreeInjections(INJECTION_DATA *injections);
 static void M_FreeLevel(GAME_FLOW_LEVEL *level);
 static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *level_count);
-static void M_FreeDemos(GAME_FLOW *gf);
-static void M_FreeCutscenes(GAME_FLOW *gf);
 static void M_FreeFMVs(GAME_FLOW *gf);
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
@@ -21,15 +20,20 @@ static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
     Memory_Free(sequence->events);
 }
 
+static void M_FreeInjections(INJECTION_DATA *const injections)
+{
+    for (int32_t i = 0; i < injections->count; i++) {
+        Memory_FreePointer(&injections->data_paths[i]);
+    }
+    Memory_FreePointer(&injections->data_paths);
+}
+
 static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
 {
-    for (int32_t j = 0; j < level->injections.count; j++) {
-        Memory_FreePointer(&level->injections.data_paths[j]);
-    }
-    M_FreeSequence(&level->sequence);
-    Memory_FreePointer(&level->injections.data_paths);
     Memory_FreePointer(&level->path);
     Memory_FreePointer(&level->title);
+    M_FreeInjections(&level->injections);
+    M_FreeSequence(&level->sequence);
 }
 
 static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *const level_count)

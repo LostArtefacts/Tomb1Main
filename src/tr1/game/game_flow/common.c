@@ -7,46 +7,72 @@
 #include <libtrx/memory.h>
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
+static void M_FreeInjections(INJECTION_DATA *injections);
+static void M_FreeLevel(GAME_FLOW_LEVEL *level);
+static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *level_count);
+static void M_FreeFMVs(GAME_FLOW *gf);
 
 static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
 {
     Memory_Free(sequence->events);
 }
 
+static void M_FreeInjections(INJECTION_DATA *const injections)
+{
+    for (int32_t i = 0; i < injections->count; i++) {
+        Memory_FreePointer(&injections->data_paths[i]);
+    }
+    Memory_FreePointer(&injections->data_paths);
+}
+
+static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
+{
+    Memory_FreePointer(&level->path);
+    Memory_FreePointer(&level->title);
+    M_FreeInjections(&level->injections);
+    M_FreeSequence(&level->sequence);
+
+    if (level->item_drops.count > 0) {
+        for (int32_t i = 0; i < level->item_drops.count; i++) {
+            Memory_FreePointer(&level->item_drops.data[i].object_ids);
+        }
+        Memory_FreePointer(&level->item_drops.data);
+    }
+}
+
+static void M_FreeLevels(GAME_FLOW_LEVEL **levels, int32_t *const level_count)
+{
+    if (levels != NULL) {
+        for (int32_t i = 0; i < *level_count; i++) {
+            M_FreeLevel(&(*levels)[i]);
+        }
+        Memory_FreePointer(levels);
+    }
+    *level_count = 0;
+}
+
+static void M_FreeFMVs(GAME_FLOW *const gf)
+{
+    for (int32_t i = 0; i < gf->fmv_count; i++) {
+        Memory_FreePointer(&gf->fmvs[i].path);
+    }
+    Memory_FreePointer(&gf->fmvs);
+    gf->fmv_count = 0;
+}
+
 void GF_Shutdown(void)
 {
-    Memory_FreePointer(&g_GameFlow.main_menu_background_path);
-    Memory_FreePointer(&g_GameFlow.savegame_fmt_legacy);
-    Memory_FreePointer(&g_GameFlow.savegame_fmt_bson);
+    GAME_FLOW *const gf = &g_GameFlow;
+
+    Memory_FreePointer(&gf->main_menu_background_path);
+    Memory_FreePointer(&gf->savegame_fmt_legacy);
+    Memory_FreePointer(&gf->savegame_fmt_bson);
     Memory_FreePointer(&g_GameInfo.current);
 
-    for (int i = 0; i < g_GameFlow.injections.count; i++) {
-        Memory_FreePointer(&g_GameFlow.injections.data_paths[i]);
-    }
-    Memory_FreePointer(&g_GameFlow.injections.data_paths);
-
-    if (g_GameFlow.levels != NULL) {
-        for (int i = 0; i < g_GameFlow.level_count; i++) {
-            GAME_FLOW_LEVEL *const level = &g_GameFlow.levels[i];
-            Memory_FreePointer(&level->path);
-            Memory_FreePointer(&level->title);
-
-            for (int j = 0; j < level->injections.count; j++) {
-                Memory_FreePointer(&level->injections.data_paths[j]);
-            }
-            Memory_FreePointer(&level->injections.data_paths);
-
-            if (level->item_drops.count) {
-                for (int j = 0; j < level->item_drops.count; j++) {
-                    Memory_FreePointer(&level->item_drops.data[j].object_ids);
-                }
-                Memory_FreePointer(&level->item_drops.data);
-            }
-
-            M_FreeSequence(&level->sequence);
-        }
-        Memory_FreePointer(&g_GameFlow.levels);
-    }
+    M_FreeInjections(&gf->injections);
+    M_FreeLevels(&gf->levels, &gf->level_count);
+    M_FreeLevels(&gf->demos, &gf->demo_count);
+    M_FreeFMVs(gf);
 }
 
 int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
