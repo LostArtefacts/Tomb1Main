@@ -622,10 +622,10 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>play_synced_audio</code>
+      <code>play_music</code>
     </td>
     <td>
-      <code>audio_id</code>
+      <code>music_track</code>
     </td>
     <td>Integer</td>
     <td>Plays the given audio track.</td>
@@ -814,7 +814,7 @@ game will exit to title.
                  {"type": "load_level"},
                  {"type": "play_level"},
                  {"type": "level_stats", "level_id": 3},
-                 {"type": "play_synced_audio", "audio_id": 19},
+                 {"type": "play_music", "music_track": 19},
                  {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
                  {"type": "display_picture", "path": "data/cred1.pcx", "display_time": 7.5},
                  {"type": "display_picture", "path": "data/cred2.pcx", "display_time": 7.5},
@@ -844,7 +844,7 @@ game will exit to title.
                  {"type": "load_level"},
                  {"type": "play_level"},
                  {"type": "level_stats", "level_id": 5},
-                 {"type": "play_synced_audio", "audio_id": 14},
+                 {"type": "play_music", "music_track": 14},
                  {"type": "total_stats", "background_path": "data/install.pcx"},
                  {"type": "exit_to_title"},
             ],
@@ -860,7 +860,7 @@ game will exit to title.
                 {"type": "set_cam_x", "value": 36668},
                 {"type": "set_cam_z", "value": 63180},
                 {"type": "set_cutscene_angle", "value": -23312},
-                {"type": "play_synced_audio", "audio_id": 23},
+                {"type": "play_music", "music_track": 23},
                 {"type": "play_level"},
                 {"type": "level_stats", "level_id": 4},
                 {"type": "exit_to_level", "level_id": 5},

@@ -95,7 +95,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_LEVEL_STATS,       M_HandleIntEvent, "level_id" },
     { GFS_EXIT_TO_LEVEL,     M_HandleIntEvent, "level_id" },
     { GFS_SET_CAMERA_ANGLE,  M_HandleIntEvent, "value" },
-    { GFS_PLAY_SYNCED_AUDIO, M_HandleIntEvent, "audio_id" },
+    { GFS_PLAY_MUSIC,        M_HandleIntEvent, "music_track" },
     { GFS_SETUP_BACON_LARA,  M_HandleIntEvent, "anchor_room" },
 
     // Special cases with custom handlers

@@ -219,7 +219,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         case GFS_FLIP_MAP:
             Room_FlipMap();
             break;
-        case GFS_PLAY_SYNCED_AUDIO:
+        case GFS_PLAY_MUSIC:
             Music_Play((int32_t)(intptr_t)event->data);
             break;
 
@@ -362,7 +362,7 @@ static GAME_FLOW_COMMAND M_StorySoFar(
         case GFS_FLIP_MAP:
             Room_FlipMap();
             break;
-        case GFS_PLAY_SYNCED_AUDIO:
+        case GFS_PLAY_MUSIC:
             Music_Play((int32_t)(intptr_t)event->data);
             break;
 
