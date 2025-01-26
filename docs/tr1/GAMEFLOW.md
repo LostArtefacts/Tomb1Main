@@ -362,11 +362,11 @@ Following are each of the properties available within a level.
     </td>
   </tr>
   <tr valign="top">
-    <td rowspan="8">
+    <td rowspan="7">
       <code>type</code>
     </td>
-    <td rowspan="8">String</td>
-    <td rowspan="8">No</td>
+    <td rowspan="7">String</td>
+    <td rowspan="7">No</td>
     <td colspan="2">
       The level type, which must be one of the following values.
       Defaults to normal level.
