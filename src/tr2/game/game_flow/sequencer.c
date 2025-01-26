@@ -170,42 +170,49 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
         }
 
-        case GFS_LEVEL_COMPLETE:
-            if (type == GFL_NORMAL) {
-                const GAME_FLOW_LEVEL *const current_level =
-                    Game_GetCurrentLevel();
-                START_INFO *const start = GF_GetResumeInfo(current_level);
-                start->stats = g_SaveGame.current_stats;
-
-                if (g_GameFlow.level_complete_track != MX_INACTIVE) {
-                    Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
-                }
-                PHASE *const stats_phase =
-                    Phase_Stats_Create((PHASE_STATS_ARGS) {
-                        .background_type = BK_OBJECT,
-                        .show_final_stats = false,
-                        .level_num = current_level->num,
-                        .use_bare_style = false,
-                    });
-                gf_cmd = PhaseExecutor_Run(stats_phase);
-                Phase_Stats_Destroy(stats_phase);
-
-                start->available = 0;
-                GAME_FLOW_LEVEL *const next_level =
-                    GF_GetLevel(current_level->num + 1, current_level->type);
-                if (next_level != NULL) {
-                    CreateStartInfo(next_level);
-                    g_SaveGame.current_level = next_level->num;
-                }
-                if (next_level == NULL || gf_cmd.action != GF_NOOP) {
-                    return gf_cmd;
-                }
-                gf_cmd = (GAME_FLOW_COMMAND) {
-                    .action = GF_START_GAME,
-                    .param = next_level->num,
-                };
+        case GFS_LEVEL_STATS: {
+            if (type != GFL_NORMAL) {
+                break;
             }
+            const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+
+            if (g_GameFlow.level_complete_track != MX_INACTIVE) {
+                Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
+            }
+            PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                .background_type = BK_OBJECT,
+                .show_final_stats = false,
+                .level_num = current_level->num,
+                .use_bare_style = false,
+            });
+            gf_cmd = PhaseExecutor_Run(stats_phase);
+            Phase_Stats_Destroy(stats_phase);
             break;
+        }
+
+        case GFS_LEVEL_COMPLETE: {
+            if (type != GFL_NORMAL) {
+                break;
+            }
+            const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+            START_INFO *const start = GF_GetResumeInfo(current_level);
+            start->stats = g_SaveGame.current_stats;
+            start->available = 0;
+            GAME_FLOW_LEVEL *const next_level =
+                GF_GetLevel(current_level->num + 1, current_level->type);
+            if (next_level != NULL) {
+                CreateStartInfo(next_level);
+                g_SaveGame.current_level = next_level->num;
+            }
+            if (next_level == NULL || gf_cmd.action != GF_NOOP) {
+                return gf_cmd;
+            }
+            gf_cmd = (GAME_FLOW_COMMAND) {
+                .action = GF_START_GAME,
+                .param = next_level->num,
+            };
+            break;
+        }
 
         case GFS_ENABLE_SUNSET:
             if (type != GFL_STORY && type != GFL_MID_STORY) {

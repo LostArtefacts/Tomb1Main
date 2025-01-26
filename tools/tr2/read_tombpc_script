@@ -231,6 +231,7 @@ def transform_script(script: list[int]):
                 yield {"type": "play_level", "cutscene_id": cutscene_id}
 
             case GameFlowEvent.LEVEL_COMPLETE:
+                yield {"type": "level_stats"}
                 yield {"type": "level_complete"}
 
             case GameFlowEvent.DEMO_PLAY:

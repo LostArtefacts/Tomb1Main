@@ -72,6 +72,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_REMOVE_WEAPONS,      NULL, NULL },
     { GFS_REMOVE_AMMO,         NULL, NULL },
     { GFS_LEVEL_COMPLETE,      NULL, NULL },
+    { GFS_LEVEL_STATS,         NULL, NULL },
     { GFS_TOTAL_STATS,         NULL, NULL },
     { GFS_EXIT_TO_TITLE,       NULL, NULL },
 
