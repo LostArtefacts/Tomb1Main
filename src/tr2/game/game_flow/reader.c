@@ -73,6 +73,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_REMOVE_AMMO,         NULL, NULL },
     { GFS_LEVEL_COMPLETE,      NULL, NULL },
     { GFS_GAME_COMPLETE,       NULL, NULL },
+    { GFS_EXIT_TO_TITLE,       NULL, NULL },
 
     // Events with integer arguments
     { GFS_SET_NUM_SECRETS,     M_HandleIntEvent, "count" },

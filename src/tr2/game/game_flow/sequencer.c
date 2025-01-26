@@ -111,6 +111,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             event->type, event->data);
 
         switch (event->type) {
+        case GFS_EXIT_TO_TITLE:
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+
         case GFS_DISPLAY_PICTURE: {
             const GAME_FLOW_DISPLAY_PICTURE_DATA *const data =
                 (GAME_FLOW_DISPLAY_PICTURE_DATA *)event->data;
