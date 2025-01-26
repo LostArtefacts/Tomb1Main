@@ -1,12 +1,9 @@
 #include "game/packer.h"
 
-#include "global/const.h"
-#include "global/types.h"
-#include "global/vars.h"
-
-#include <libtrx/log.h>
-#include <libtrx/memory.h>
-#include <libtrx/utils.h>
+#include "game/output.h"
+#include "log.h"
+#include "memory.h"
+#include "utils.h"
 
 #include <stddef.h>
 #include <string.h>
@@ -75,43 +72,6 @@ static int32_t m_UsedPageCount = 0;
 static TEX_PAGE *m_VirtualPages = NULL;
 static int32_t m_QueueSize = 0;
 static TEX_CONTAINER *m_Queue = NULL;
-
-bool Packer_Pack(PACKER_DATA *data)
-{
-    m_Data = data;
-
-    m_StartPage = m_Data->level_page_count - 1;
-    m_EndPage = MAX_TEXTURE_PAGES - m_StartPage;
-    m_UsedPageCount = 0;
-    m_QueueSize = 0;
-
-    M_AllocateNewPage();
-
-    for (int i = 0; i < data->object_count; i++) {
-        M_PrepareObject(i);
-    }
-    for (int i = 0; i < data->sprite_count; i++) {
-        M_PrepareSprite(i);
-    }
-
-    bool result = true;
-    for (int i = 0; i < m_QueueSize; i++) {
-        TEX_CONTAINER *container = &m_Queue[i];
-        if (!M_PackContainer(container)) {
-            LOG_ERROR("Failed to pack container %d of %d", i, m_QueueSize);
-            result = false;
-            break;
-        }
-    }
-
-    M_Cleanup();
-    return result;
-}
-
-int32_t Packer_GetAddedPageCount(void)
-{
-    return m_UsedPageCount - 1;
-}
 
 static void M_PrepareObject(int object_index)
 {
@@ -422,4 +382,41 @@ static void M_Cleanup(void)
 
     Memory_FreePointer(&m_VirtualPages);
     Memory_FreePointer(&m_Queue);
+}
+
+bool Packer_Pack(PACKER_DATA *const data)
+{
+    m_Data = data;
+
+    m_StartPage = m_Data->level_page_count - 1;
+    m_EndPage = MAX_TEXTURE_PAGES - m_StartPage;
+    m_UsedPageCount = 0;
+    m_QueueSize = 0;
+
+    M_AllocateNewPage();
+
+    for (int i = 0; i < data->object_count; i++) {
+        M_PrepareObject(i);
+    }
+    for (int i = 0; i < data->sprite_count; i++) {
+        M_PrepareSprite(i);
+    }
+
+    bool result = true;
+    for (int i = 0; i < m_QueueSize; i++) {
+        TEX_CONTAINER *container = &m_Queue[i];
+        if (!M_PackContainer(container)) {
+            LOG_ERROR("Failed to pack container %d of %d", i, m_QueueSize);
+            result = false;
+            break;
+        }
+    }
+
+    M_Cleanup();
+    return result;
+}
+
+int32_t Packer_GetAddedPageCount(void)
+{
+    return m_UsedPageCount - 1;
 }

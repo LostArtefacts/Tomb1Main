@@ -134,6 +134,7 @@ sources = [
   'game/objects/names.c',
   'game/objects/vars.c',
   'game/output.c',
+  'game/packer.c',
   'game/phase/executor.c',
   'game/phase/phase_cutscene.c',
   'game/phase/phase_demo.c',

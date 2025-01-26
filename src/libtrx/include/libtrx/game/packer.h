@@ -1,6 +1,6 @@
 #pragma once
 
-#include "global/types.h"
+#include "./output/types.h"
 
 #include <stdint.h>
 

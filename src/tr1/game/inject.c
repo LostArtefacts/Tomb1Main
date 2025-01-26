@@ -2,7 +2,6 @@
 
 #include "game/camera.h"
 #include "game/output.h"
-#include "game/packer.h"
 #include "game/room.h"
 #include "global/const.h"
 #include "global/vars.h"
@@ -13,6 +12,7 @@
 #include <libtrx/debug.h>
 #include <libtrx/game/game_buf.h>
 #include <libtrx/game/level.h>
+#include <libtrx/game/packer.h>
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 #include <libtrx/utils.h>
