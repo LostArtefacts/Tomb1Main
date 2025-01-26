@@ -1000,20 +1000,22 @@ void Output_DrawUISprite(
     }
 }
 
-void Output_LoadBackgroundFromFile(const char *const file_name)
+bool Output_LoadBackgroundFromFile(const char *const path)
 {
-    ASSERT(file_name != NULL);
+    ASSERT(path != NULL);
     const char *old_path = m_BackdropImagePath;
-    m_BackdropImagePath = File_GuessExtension(file_name, m_ImageExtensions);
+    m_BackdropImagePath = File_GuessExtension(path, m_ImageExtensions);
     Memory_FreePointer(&old_path);
 
-    IMAGE *img = Image_CreateFromFileInto(
+    IMAGE *const img = Image_CreateFromFileInto(
         m_BackdropImagePath, Viewport_GetWidth(), Viewport_GetHeight(),
         IMAGE_FIT_SMART);
-    if (img != NULL) {
-        S_Output_DownloadBackdropSurface(img);
-        Image_Free(img);
+    if (img == NULL) {
+        return false;
     }
+    S_Output_DownloadBackdropSurface(img);
+    Image_Free(img);
+    return true;
 }
 
 void Output_LoadBackgroundFromObject(void)

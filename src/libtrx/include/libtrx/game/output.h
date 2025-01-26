@@ -17,7 +17,7 @@ extern bool Output_MakeScreenshot(const char *path);
 extern void Output_BeginScene(void);
 extern void Output_EndScene(void);
 
-extern void Output_LoadBackgroundFromFile(const char *file_name);
+extern bool Output_LoadBackgroundFromFile(const char *file_name);
 extern void Output_LoadBackgroundFromObject(void);
 extern void Output_UnloadBackground(void);
 

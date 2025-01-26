@@ -120,8 +120,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
                 .file_name = data->path,
                 .display_time = data->display_time,
-                .fade_in_time = 1.0,
-                .fade_out_time = 1.0 / 3.0,
+                .fade_in_time = data->fade_in_time,
+                .fade_out_time = data->fade_out_time,
                 .display_time_includes_fades = true,
             });
             PhaseExecutor_Run(phase);
@@ -213,14 +213,21 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             }
             break;
 
-        case GFS_GAME_COMPLETE:
+        case GFS_TOTAL_STATS:
             if (type == GFL_NORMAL) {
                 const GAME_FLOW_LEVEL *const current_level =
                     Game_GetCurrentLevel();
                 START_INFO *const start = GF_GetResumeInfo(current_level);
                 start->stats = g_SaveGame.current_stats;
                 g_SaveGame.bonus_flag = true;
-                gf_cmd = DisplayCredits();
+                PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+                    .background_type = BK_IMAGE,
+                    .background_path = "data/end.pcx",
+                    .show_final_stats = true,
+                    .use_bare_style = false,
+                });
+                gf_cmd = PhaseExecutor_Run(phase);
+                Phase_Stats_Destroy(phase);
             } else {
                 gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }

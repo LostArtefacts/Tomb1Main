@@ -399,7 +399,7 @@ void Shell_Main(void)
             break;
 
         case GF_LEVEL_COMPLETE:
-            gf_cmd = LevelCompleteSequence();
+            gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
         case GF_EXIT_TO_TITLE:

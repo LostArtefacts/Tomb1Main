@@ -617,11 +617,15 @@ void Output_EndScene(void)
     Shell_ProcessEvents();
 }
 
-void Output_LoadBackgroundFromFile(const char *const file_name)
+bool Output_LoadBackgroundFromFile(const char *const file_name)
 {
     IMAGE *const image = Image_CreateFromFile(file_name);
+    if (image == NULL) {
+        return false;
+    }
     Render_LoadBackgroundFromImage(image);
     Image_Free(image);
+    return true;
 }
 
 void Output_LoadBackgroundFromObject(void)

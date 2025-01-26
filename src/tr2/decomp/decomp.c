@@ -169,59 +169,6 @@ int32_t Misc_Move3DPosTo3DPos(
     // clang-format on
 }
 
-GAME_FLOW_COMMAND LevelCompleteSequence(void)
-{
-    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-}
-
-GAME_FLOW_COMMAND DisplayCredits(void)
-{
-    Level_Unload();
-    if (!Level_Initialise(0, GFL_TITLE)) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-    }
-
-    g_GymInvOpenEnabled = true;
-
-    Music_Play(g_GameFlow.game_complete_track, MPM_ALWAYS);
-
-    for (int32_t i = 0; i < 8; i++) {
-        char file_name[60];
-        sprintf(file_name, "data/credit0%d.pcx", i + 1);
-
-        PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
-            .file_name = file_name,
-            .display_time = 15.0,
-            .fade_in_time = 0.5,
-            .fade_out_time = 0.5,
-            .display_time_includes_fades = true,
-        });
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-        Phase_Picture_Destroy(phase);
-
-        if (gf_cmd.action != GF_NOOP) {
-            return gf_cmd;
-        }
-    }
-
-    {
-        PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
-            .background_type = BK_IMAGE,
-            .background_path = "data/end.pcx",
-            .show_final_stats = true,
-            .use_bare_style = false,
-        });
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
-
-        Phase_Stats_Destroy(phase);
-        if (gf_cmd.action != GF_NOOP) {
-            return gf_cmd;
-        }
-    }
-
-    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-}
-
 void IncreaseScreenSize(void)
 {
     if (g_Config.rendering.sizer < 1.0) {

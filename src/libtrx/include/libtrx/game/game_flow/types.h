@@ -164,7 +164,6 @@ typedef struct {
     struct {
         MUSIC_TRACK_ID secret_track;
         MUSIC_TRACK_ID level_complete_track;
-        MUSIC_TRACK_ID game_complete_track;
     };
 #endif
 

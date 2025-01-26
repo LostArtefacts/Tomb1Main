@@ -72,7 +72,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_REMOVE_WEAPONS,      NULL, NULL },
     { GFS_REMOVE_AMMO,         NULL, NULL },
     { GFS_LEVEL_COMPLETE,      NULL, NULL },
-    { GFS_GAME_COMPLETE,       NULL, NULL },
+    { GFS_TOTAL_STATS,         NULL, NULL },
     { GFS_EXIT_TO_TITLE,       NULL, NULL },
 
     // Events with integer arguments
@@ -159,6 +159,10 @@ static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandlePictureEvent)
             (char *)extra_data + sizeof(GAME_FLOW_DISPLAY_PICTURE_DATA);
         event_data->display_time =
             JSON_ObjectGetDouble(event_obj, "display_time", 5.0);
+        event_data->fade_in_time =
+            JSON_ObjectGetDouble(event_obj, "fade_in_time", 1.0);
+        event_data->fade_out_time =
+            JSON_ObjectGetDouble(event_obj, "fade_out_time", 1.0 / 3.0);
         strcpy(event_data->path, path);
         event->data = event_data;
     }
@@ -297,8 +301,6 @@ static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     gf->secret_track = JSON_ObjectGetInt(obj, "secret_track", MX_INACTIVE);
     gf->level_complete_track =
         JSON_ObjectGetInt(obj, "level_complete_track", MX_INACTIVE);
-    gf->game_complete_track =
-        JSON_ObjectGetInt(obj, "game_complete_track", MX_INACTIVE);
 
     M_LoadGlobalInjections(obj, gf);
 }

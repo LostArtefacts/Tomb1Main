@@ -9,6 +9,8 @@
 typedef struct {
     char *path;
     float display_time;
+    float fade_in_time;
+    float fade_out_time;
 } GAME_FLOW_DISPLAY_PICTURE_DATA;
 
 typedef enum {

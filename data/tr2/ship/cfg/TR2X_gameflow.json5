@@ -20,7 +20,6 @@
     "demo_delay": 30,
     "secret_track": 47,
     "level_complete_track": 41,
-    "game_complete_track": 52,
 
     "title": {
         "path": "data/title.tr2",
@@ -306,7 +305,17 @@
                 {"type": "remove_weapons"},
                 {"type": "remove_ammo"},
                 {"type": "play_level"},
-                {"type": "game_complete"},
+                {"type": "play_music", "music_track": 52},
+                {"type": "display_picture", "path": "data/credit01.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit02.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit03.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit04.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit05.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit06.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit07.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "display_picture", "path": "data/credit08.pcx", "display_time": 15, "fade_in_time": 0.5, "fade_out_time": 0.5},
+                {"type": "total_stats"},
+                {"type": "exit_to_title"},
             ],
             "injections": [
                 "data/injections/house_itemrots.bin",
