@@ -5,12 +5,12 @@
 #include <stdint.h>
 
 typedef struct {
-    int32_t level_page_count;
-    int32_t source_page_count;
+    struct {
+        int32_t page_count;
+        RGBA_8888 *pages;
+    } source, level;
     int32_t object_count;
     int32_t sprite_count;
-    RGBA_8888 *source_pages;
-    RGBA_8888 *level_pages;
 } PACKER_DATA;
 
 // Attempts to pack the provided source pages into the level pages. Packing

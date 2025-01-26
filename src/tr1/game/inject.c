@@ -1670,22 +1670,22 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
         tpage_base += inj_info->texture_page_count;
     }
 
-    if (source_page_count) {
-        PACKER_DATA *data = Memory_Alloc(sizeof(PACKER_DATA));
-        data->level_page_count = level_info->texture_page_count;
-        data->source_page_count = source_page_count;
-        data->source_pages = source_pages;
-        data->level_pages = level_info->texture_rgb_page_ptrs;
-        data->object_count = level_info->texture_count;
-        data->sprite_count = level_info->sprite_info_count;
+    if (source_page_count != 0) {
+        PACKER_DATA data = {
+            .level.page_count = level_info->texture_page_count,
+            .level.pages = level_info->texture_rgb_page_ptrs,
+            .source.page_count = source_page_count,
+            .source.pages = source_pages,
+            .object_count = level_info->texture_count,
+            .sprite_count = level_info->sprite_info_count,
+        };
 
-        if (Packer_Pack(data)) {
+        if (Packer_Pack(&data)) {
             level_info->texture_page_count += Packer_GetAddedPageCount();
-            level_info->texture_rgb_page_ptrs = data->level_pages;
+            level_info->texture_rgb_page_ptrs = data.level.pages;
         }
 
         Memory_FreePointer(&source_pages);
-        Memory_FreePointer(&data);
     }
 
     Benchmark_End(benchmark, NULL);

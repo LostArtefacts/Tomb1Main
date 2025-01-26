@@ -23,47 +23,48 @@ typedef struct {
 } RECTANGLE;
 
 typedef struct {
+    uint16_t page;
+    uint16_t x;
+    uint16_t y;
+} TEX_POS;
+
+typedef struct {
     uint16_t index;
-    uint16_t tpage;
-    RECTANGLE *bounds;
-    void (*move)(
-        int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
-        uint16_t new_y);
+    uint16_t page;
+    RECTANGLE bounds;
+    void (*move)(int32_t index, RECTANGLE old_bounds, TEX_POS new_pos);
 } TEX_INFO;
 
 typedef struct {
     int32_t size;
-    RECTANGLE *bounds;
+    RECTANGLE bounds;
     TEX_INFO *tex_infos;
 } TEX_CONTAINER;
 
 typedef struct {
     int32_t index;
     int32_t free_space;
-    RGBA_8888 data[TEXTURE_PAGE_SIZE];
+    uint8_t data[TEXTURE_PAGE_SIZE];
 } TEX_PAGE;
 
 static void M_AllocateNewPage(void);
-static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE *bounds);
+static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE bounds);
 static void M_Cleanup(void);
 
-static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2);
+static RECTANGLE_COMPARISON M_Compare(RECTANGLE r1, RECTANGLE r2);
 static bool M_EnqueueTexInfo(TEX_INFO *info);
-static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *texture);
-static RECTANGLE *M_GetSpriteBounds(const SPRITE_TEXTURE *texture);
-static void M_PrepareObject(int object_index);
-static void M_PrepareSprite(int sprite_index);
+static RECTANGLE M_GetObjectBounds(const OBJECT_TEXTURE *texture);
+static RECTANGLE M_GetSpriteBounds(const SPRITE_TEXTURE *texture);
+static void M_PrepareObject(int32_t object_index);
+static void M_PrepareSprite(int32_t sprite_index);
 
-static void M_MoveObject(
-    int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
-    uint16_t new_y);
-static void M_MoveSprite(
-    int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
-    uint16_t new_y);
+static void M_MoveObject(int32_t index, RECTANGLE old_bounds, TEX_POS new_pos);
+static void M_MoveSprite(int32_t index, RECTANGLE old_bounds, TEX_POS new_pos);
 
 static bool M_PackContainerAt(
-    TEX_CONTAINER *container, TEX_PAGE *page, int x_pos, int y_pos);
-static bool M_PackContainer(TEX_CONTAINER *container);
+    const TEX_CONTAINER *container, TEX_PAGE *page, int32_t x_pos,
+    int32_t y_pos);
+static bool M_PackContainer(const TEX_CONTAINER *container);
 
 static PACKER_DATA *m_Data = NULL;
 static int32_t m_StartPage = 0;
@@ -73,19 +74,17 @@ static TEX_PAGE *m_VirtualPages = NULL;
 static int32_t m_QueueSize = 0;
 static TEX_CONTAINER *m_Queue = NULL;
 
-static void M_PrepareObject(int object_index)
+static void M_PrepareObject(const int32_t object_index)
 {
     const OBJECT_TEXTURE *const object_texture =
         &g_ObjectTextures[object_index];
     if (object_texture->tex_page == m_StartPage) {
-        RECTANGLE *bounds = M_GetObjectBounds(object_texture);
+        const RECTANGLE bounds = M_GetObjectBounds(object_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
-        Memory_FreePointer(&bounds);
-
     } else if (object_texture->tex_page > m_StartPage) {
         TEX_INFO *info = Memory_Alloc(sizeof(TEX_INFO));
         info->index = object_index;
-        info->tpage = object_texture->tex_page;
+        info->page = object_texture->tex_page;
         info->bounds = M_GetObjectBounds(object_texture);
         info->move = M_MoveObject;
         if (!M_EnqueueTexInfo(info)) {
@@ -94,18 +93,17 @@ static void M_PrepareObject(int object_index)
     }
 }
 
-static void M_PrepareSprite(int sprite_index)
+static void M_PrepareSprite(const int32_t sprite_index)
 {
     const SPRITE_TEXTURE *const sprite_texture =
         &g_SpriteTextures[sprite_index];
     if (sprite_texture->tex_page == m_StartPage) {
-        RECTANGLE *bounds = M_GetSpriteBounds(sprite_texture);
+        const RECTANGLE bounds = M_GetSpriteBounds(sprite_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
-        Memory_FreePointer(&bounds);
     } else if (sprite_texture->tex_page > m_StartPage) {
         TEX_INFO *info = Memory_Alloc(sizeof(TEX_INFO));
         info->index = sprite_index;
-        info->tpage = sprite_texture->tex_page;
+        info->page = sprite_texture->tex_page;
         info->bounds = M_GetSpriteBounds(sprite_texture);
         info->move = M_MoveSprite;
         if (!M_EnqueueTexInfo(info)) {
@@ -114,34 +112,31 @@ static void M_PrepareSprite(int sprite_index)
     }
 }
 
-static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE *bounds)
+static void M_FillVirtualData(TEX_PAGE *const page, const RECTANGLE bounds)
 {
-    int y_end = bounds->y + bounds->h;
-    int x_end = bounds->x + bounds->w;
-    for (int y = bounds->y; y < y_end; y++) {
-        for (int x = bounds->x; x < x_end; x++) {
-            page->data[y * TEXTURE_PAGE_WIDTH + x].r = 1;
-            page->data[y * TEXTURE_PAGE_WIDTH + x].g = 1;
-            page->data[y * TEXTURE_PAGE_WIDTH + x].b = 1;
-            page->data[y * TEXTURE_PAGE_WIDTH + x].a = 255;
+    const int32_t y_end = bounds.y + bounds.h;
+    const int32_t x_end = bounds.x + bounds.w;
+    for (int32_t y = bounds.y; y < y_end; y++) {
+        for (int32_t x = bounds.x; x < x_end; x++) {
+            page->data[y * TEXTURE_PAGE_WIDTH + x] = 1;
         }
     }
 
-    page->free_space -= bounds->w * bounds->h;
+    page->free_space -= bounds.w * bounds.h;
 }
 
-static bool M_EnqueueTexInfo(TEX_INFO *info)
+static bool M_EnqueueTexInfo(TEX_INFO *const info)
 {
     // This may be a child of another, so try to find its
     // parent first and add it there.
-    if (m_Queue) {
-        for (int i = 0; i < m_QueueSize; i++) {
-            TEX_CONTAINER *container = &m_Queue[i];
-            if (container->tex_infos->tpage != info->tpage) {
+    if (m_Queue != NULL) {
+        for (int32_t i = 0; i < m_QueueSize; i++) {
+            TEX_CONTAINER *const container = &m_Queue[i];
+            if (container->tex_infos->page != info->page) {
                 continue;
             }
 
-            RECTANGLE_COMPARISON comparison =
+            const RECTANGLE_COMPARISON comparison =
                 M_Compare(container->bounds, info->bounds);
             if (comparison == RC_UNRELATED) {
                 continue;
@@ -164,77 +159,73 @@ static bool M_EnqueueTexInfo(TEX_INFO *info)
     // This doesn't have a parent, so make a new container.
     m_Queue =
         Memory_Realloc(m_Queue, sizeof(TEX_CONTAINER) * (m_QueueSize + 1));
-    TEX_CONTAINER *new_container = &m_Queue[m_QueueSize++];
+    TEX_CONTAINER *const new_container = &m_Queue[m_QueueSize++];
     new_container->size = 1;
     new_container->bounds = info->bounds;
     new_container->tex_infos = info;
     return true;
 }
 
-static RECTANGLE *M_GetObjectBounds(const OBJECT_TEXTURE *const texture)
+static RECTANGLE M_GetObjectBounds(const OBJECT_TEXTURE *const texture)
 {
-    RECTANGLE *rectangle = Memory_Alloc(sizeof(RECTANGLE));
+    int32_t min_u = 0xFF, min_v = 0xFF;
+    int32_t max_u = 0, max_v = 0;
 
-    int min_u = 0xFF, min_v = 0xFF;
-    int max_u = 0, max_v = 0;
-
-    for (int i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         if (texture->uv[i].u == 0 && texture->uv[i].v == 0) {
             // This is a dummy vertex for a triangle.
             continue;
         }
 
-        int u = (texture->uv[i].u & 0xFF00) >> 8;
-        int v = (texture->uv[i].v & 0xFF00) >> 8;
+        const int32_t u = (texture->uv[i].u & 0xFF00) >> 8;
+        const int32_t v = (texture->uv[i].v & 0xFF00) >> 8;
         min_u = MIN(min_u, u);
         max_u = MAX(max_u, u);
         min_v = MIN(min_v, v);
         max_v = MAX(max_v, v);
     }
 
-    rectangle->x = min_u;
-    rectangle->y = min_v;
-    rectangle->w = max_u - min_u + 1;
-    rectangle->h = max_v - min_v + 1;
-
-    return rectangle;
+    return (RECTANGLE) {
+        .x = min_u,
+        .y = min_v,
+        .w = max_u - min_u + 1,
+        .h = max_v - min_v + 1,
+    };
 }
 
-static RECTANGLE *M_GetSpriteBounds(const SPRITE_TEXTURE *const texture)
+static RECTANGLE M_GetSpriteBounds(const SPRITE_TEXTURE *const texture)
 {
-    RECTANGLE *rectangle = Memory_Alloc(sizeof(RECTANGLE));
-
-    rectangle->x = texture->offset & 0xFF;
-    rectangle->y = (texture->offset & 0xFF00) >> 8;
-    rectangle->w = (texture->width + 1) / 256;
-    rectangle->h = (texture->height + 1) / 256;
-
-    return rectangle;
+    return (RECTANGLE) {
+        .x = texture->offset & 0xFF,
+        .y = (texture->offset & 0xFF00) >> 8,
+        .w = (texture->width + 1) / TEXTURE_PAGE_WIDTH,
+        .h = (texture->height + 1) / TEXTURE_PAGE_HEIGHT,
+    };
 }
 
-static bool M_PackContainer(TEX_CONTAINER *container)
+static bool M_PackContainer(const TEX_CONTAINER *const container)
 {
-    int size = container->bounds->w * container->bounds->h;
+    const int32_t size = container->bounds.w * container->bounds.h;
     if (size > TEXTURE_PAGE_SIZE) {
         LOG_ERROR("Container is too large to pack");
         return false;
     }
 
-    int y, x, y_end, x_end;
-    for (int i = 0; i < m_EndPage; i++) {
+    const int32_t y_end = TEXTURE_PAGE_HEIGHT - container->bounds.h;
+    const int32_t x_end = TEXTURE_PAGE_WIDTH - container->bounds.w;
+
+    for (int32_t i = 0; i < m_EndPage; i++) {
         if (i == m_UsedPageCount) {
             M_AllocateNewPage();
         }
 
-        TEX_PAGE *page = &m_VirtualPages[i];
+        TEX_PAGE *const page = &m_VirtualPages[i];
         if (page->free_space < size) {
             continue;
         }
 
-        y_end = TEXTURE_PAGE_HEIGHT - container->bounds->h;
-        x_end = TEXTURE_PAGE_WIDTH - container->bounds->w;
-        for (y = 0; y <= y_end; y++) {
-            for (x = 0; x <= x_end; x++) {
+        for (int32_t y = 0; y <= y_end; y++) {
+            for (int32_t x = 0; x <= x_end; x++) {
                 if (M_PackContainerAt(container, page, x, y)) {
                     return true;
                 }
@@ -250,18 +241,18 @@ static void M_AllocateNewPage(void)
 {
     m_VirtualPages = Memory_Realloc(
         m_VirtualPages, sizeof(TEX_PAGE) * (m_UsedPageCount + 1));
-    TEX_PAGE *page = &m_VirtualPages[m_UsedPageCount];
+    TEX_PAGE *const page = &m_VirtualPages[m_UsedPageCount];
     page->index = m_StartPage + m_UsedPageCount;
     page->free_space = TEXTURE_PAGE_SIZE;
-    memset(page->data, 0, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
+    memset(page->data, 0, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
 
     if (m_UsedPageCount > 0) {
-        int new_count = m_Data->level_page_count + m_UsedPageCount;
-        m_Data->level_pages = Memory_Realloc(
-            m_Data->level_pages,
+        const int32_t new_count = m_Data->level.page_count + m_UsedPageCount;
+        m_Data->level.pages = Memory_Realloc(
+            m_Data->level.pages,
             TEXTURE_PAGE_SIZE * new_count * sizeof(RGBA_8888));
-        RGBA_8888 *level_page =
-            m_Data->level_pages + (new_count - 1) * TEXTURE_PAGE_SIZE;
+        RGBA_8888 *const level_page =
+            &m_Data->level.pages[(new_count - 1) * TEXTURE_PAGE_SIZE];
         memset(level_page, 0, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     }
 
@@ -269,17 +260,15 @@ static void M_AllocateNewPage(void)
 }
 
 static bool M_PackContainerAt(
-    TEX_CONTAINER *container, TEX_PAGE *page, int x_pos, int y_pos)
+    const TEX_CONTAINER *const container, TEX_PAGE *const page,
+    const int32_t x_pos, const int32_t y_pos)
 {
-    int y_end = y_pos + container->bounds->h;
-    int x_end = x_pos + container->bounds->w;
+    const int32_t y_end = y_pos + container->bounds.h;
+    const int32_t x_end = x_pos + container->bounds.w;
 
-    for (int y = y_pos; y < y_end; y++) {
-        for (int x = x_pos; x < x_end; x++) {
-            if (page->data[y * TEXTURE_PAGE_WIDTH + x].r
-                || page->data[y * TEXTURE_PAGE_WIDTH + x].g
-                || page->data[y * TEXTURE_PAGE_WIDTH + x].b
-                || page->data[y * TEXTURE_PAGE_WIDTH + x].a) {
+    for (int32_t y = y_pos; y < y_end; y++) {
+        for (int32_t x = x_pos; x < x_end; x++) {
+            if (page->data[y * TEXTURE_PAGE_WIDTH + x] != 0) {
                 return false;
             }
         }
@@ -288,48 +277,48 @@ static bool M_PackContainerAt(
     // There is adequate space at this position. Copy the pixel data from the
     // source texture page into the one identified, and fill the placeholder
     // data to avoid anything else taking this position.
-    int source_page_index =
-        container->tex_infos->tpage - m_Data->level_page_count;
-    RGBA_8888 *source_page =
-        m_Data->source_pages + source_page_index * TEXTURE_PAGE_SIZE;
-    RGBA_8888 *level_page =
-        m_Data->level_pages + page->index * TEXTURE_PAGE_SIZE;
+    const int32_t source_page_index =
+        container->tex_infos->page - m_Data->level.page_count;
+    const RGBA_8888 *const source_page =
+        &m_Data->source.pages[source_page_index * TEXTURE_PAGE_SIZE];
+    RGBA_8888 *const level_page =
+        &m_Data->level.pages[page->index * TEXTURE_PAGE_SIZE];
 
-    int old_pixel, new_pixel;
-    for (int y = 0; y < container->bounds->h; y++) {
-        for (int x = 0; x < container->bounds->w; x++) {
-            old_pixel = (container->bounds->y + y) * TEXTURE_PAGE_WIDTH
-                + container->bounds->x + x;
+    int32_t old_pixel, new_pixel;
+    for (int32_t y = 0; y < container->bounds.h; y++) {
+        for (int32_t x = 0; x < container->bounds.w; x++) {
+            old_pixel = (container->bounds.y + y) * TEXTURE_PAGE_WIDTH
+                + container->bounds.x + x;
             new_pixel = (y_pos + y) * TEXTURE_PAGE_WIDTH + x_pos + x;
-            page->data[new_pixel].r = 1;
-            page->data[new_pixel].g = 1;
-            page->data[new_pixel].b = 1;
-            page->data[new_pixel].a = 255;
+            page->data[new_pixel] = 1;
             level_page[new_pixel] = source_page[old_pixel];
         }
     }
 
     // Move each of the child tex_info coordinates accordingly.
-    for (int i = 0; i < container->size; i++) {
-        TEX_INFO *texture = &container->tex_infos[i];
-        texture->move(
-            texture->index, texture->bounds, page->index, x_pos, y_pos);
+    const TEX_POS new_pos = {
+        .page = page->index,
+        .x = x_pos,
+        .y = y_pos,
+    };
+    for (int32_t i = 0; i < container->size; i++) {
+        const TEX_INFO *const texture = &container->tex_infos[i];
+        texture->move(texture->index, texture->bounds, new_pos);
     }
 
     return true;
 }
 
 static void M_MoveObject(
-    int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
-    uint16_t new_y)
+    const int32_t index, const RECTANGLE old_bounds, const TEX_POS new_pos)
 {
     OBJECT_TEXTURE *const texture = &g_ObjectTextures[index];
-    texture->tex_page = tpage;
+    texture->tex_page = new_pos.page;
 
-    int x_diff = (new_x - old_bounds->x) << 8;
-    int y_diff = (new_y - old_bounds->y) << 8;
+    int32_t x_diff = (new_pos.x - old_bounds.x) << 8;
+    int32_t y_diff = (new_pos.y - old_bounds.y) << 8;
     uint16_t u, v;
-    for (int i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         u = texture->uv[i].u;
         v = texture->uv[i].v;
         if (u == 0 && v == 0) {
@@ -342,27 +331,26 @@ static void M_MoveObject(
 }
 
 static void M_MoveSprite(
-    int index, RECTANGLE *old_bounds, uint16_t tpage, uint16_t new_x,
-    uint16_t new_y)
+    const int32_t index, const RECTANGLE old_bounds, const TEX_POS new_pos)
 {
     SPRITE_TEXTURE *const texture = &g_SpriteTextures[index];
-    texture->tex_page = tpage;
-    texture->offset = (new_y << 8) | new_x;
+    texture->tex_page = new_pos.page;
+    texture->offset = (new_pos.y << 8) | new_pos.x;
 }
 
-static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2)
+static RECTANGLE_COMPARISON M_Compare(const RECTANGLE r1, const RECTANGLE r2)
 {
-    if (r1->x == r2->x && r1->w == r2->w && r1->y == r2->y && r1->h == r2->h) {
+    if (r1.x == r2.x && r1.w == r2.w && r1.y == r2.y && r1.h == r2.h) {
         return RC_EQUALS;
     }
 
-    if (r1->x <= r2->x && r2->x + r2->w <= r1->x + r1->w && r1->y <= r2->y
-        && r2->y + r2->h <= r1->y + r1->h) {
+    if (r1.x <= r2.x && r2.x + r2.w <= r1.x + r1.w && r1.y <= r2.y
+        && r2.y + r2.h <= r1.y + r1.h) {
         return RC_CONTAINS;
     }
 
-    if (r2->x <= r1->x && r1->x + r1->w <= r2->x + r2->w && r2->y <= r1->y
-        && r1->y + r1->h <= r2->y + r2->h) {
+    if (r2.x <= r1.x && r1.x + r1.w <= r2.x + r2.w && r2.y <= r1.y
+        && r1.y + r1.h <= r2.y + r2.h) {
         return RC_COVERS;
     }
 
@@ -371,12 +359,8 @@ static RECTANGLE_COMPARISON M_Compare(RECTANGLE *r1, RECTANGLE *r2)
 
 static void M_Cleanup(void)
 {
-    for (int i = 0; i < m_QueueSize; i++) {
+    for (int32_t i = 0; i < m_QueueSize; i++) {
         TEX_CONTAINER *container = &m_Queue[i];
-        for (int j = 0; j < container->size; j++) {
-            TEX_INFO *info = &container->tex_infos[j];
-            Memory_FreePointer(&info->bounds);
-        }
         Memory_FreePointer(&container->tex_infos);
     }
 
@@ -388,23 +372,23 @@ bool Packer_Pack(PACKER_DATA *const data)
 {
     m_Data = data;
 
-    m_StartPage = m_Data->level_page_count - 1;
+    m_StartPage = m_Data->level.page_count - 1;
     m_EndPage = MAX_TEXTURE_PAGES - m_StartPage;
     m_UsedPageCount = 0;
     m_QueueSize = 0;
 
     M_AllocateNewPage();
 
-    for (int i = 0; i < data->object_count; i++) {
+    for (int32_t i = 0; i < data->object_count; i++) {
         M_PrepareObject(i);
     }
-    for (int i = 0; i < data->sprite_count; i++) {
+    for (int32_t i = 0; i < data->sprite_count; i++) {
         M_PrepareSprite(i);
     }
 
     bool result = true;
-    for (int i = 0; i < m_QueueSize; i++) {
-        TEX_CONTAINER *container = &m_Queue[i];
+    for (int32_t i = 0; i < m_QueueSize; i++) {
+        const TEX_CONTAINER *const container = &m_Queue[i];
         if (!M_PackContainer(container)) {
             LOG_ERROR("Failed to pack container %d of %d", i, m_QueueSize);
             result = false;
