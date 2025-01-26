@@ -683,36 +683,6 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>set_cam_x</code>
-    </td>
-    <td>
-      <code>value</code>
-    </td>
-    <td>Integer</td>
-    <td>Sets the camera's X position.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>set_cam_y</code>
-    </td>
-    <td>
-      <code>value</code>
-    </td>
-    <td>Integer</td>
-    <td>Sets the camera's Y position.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>set_cam_z</code>
-    </td>
-    <td>
-      <code>value</code>
-    </td>
-    <td>Integer</td>
-    <td>Sets the camera's Z position.</td>
-  </tr>
-  <tr valign="top">
-    <td>
       <code>setup_bacon_lara</code>
     </td>
     <td>
@@ -856,8 +826,6 @@ game will exit to title.
             "music_track": 23,
             "sequence": [
                 {"type": "load_level"},
-                {"type": "set_cam_x", "value": 36668},
-                {"type": "set_cam_z", "value": 63180},
                 {"type": "set_cutscene_angle", "value": -23312},
                 {"type": "play_level"},
             ],
