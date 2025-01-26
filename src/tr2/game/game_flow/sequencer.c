@@ -55,21 +55,24 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
 {
     int32_t current_level = start_level;
     while (true) {
-        if (current_level > GF_GetLevelCount(GFL_NORMAL) - 1) {
+        if (current_level >= GF_GetLevelCount(type)) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
 
         LOG_DEBUG("running sequence for level=%d type=%d", current_level, type);
         const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
             &GF_GetLevel(current_level, GFL_NORMAL)->sequence, type);
-        LOG_DEBUG("sequence finished");
+        LOG_DEBUG("sequence finished: %d", gf_cmd.action);
         current_level++;
 
         if (g_GameFlow.single_level >= 0) {
             return gf_cmd;
         }
-        if (gf_cmd.action != GF_LEVEL_COMPLETE) {
+        if (gf_cmd.action != GF_NOOP && gf_cmd.action != GF_LEVEL_COMPLETE) {
             return gf_cmd;
+        }
+        if (Game_IsInGym()) {
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
     }
 }
@@ -139,7 +142,8 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 if (type == GFL_SAVED) {
                     type = GFL_NORMAL;
                 }
-                if (gf_cmd.action != GF_LEVEL_COMPLETE) {
+                if (gf_cmd.action != GF_NOOP
+                    && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;
                 }
             }
@@ -173,7 +177,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFS_LEVEL_STATS: {
             const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
             PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
-                .background_type = BK_OBJECT,
+                .background_type = Game_IsInGym() ? BK_TRANSPARENT : BK_OBJECT,
                 .level_num = current_level->num,
                 .show_final_stats = false,
                 .use_bare_style = false,
