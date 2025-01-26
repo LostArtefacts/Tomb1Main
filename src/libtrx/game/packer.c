@@ -1,5 +1,7 @@
 #include "game/packer.h"
 
+#include "benchmark.h"
+#include "debug.h"
 #include "game/output.h"
 #include "log.h"
 #include "memory.h"
@@ -47,6 +49,7 @@ typedef struct {
     uint8_t data[TEXTURE_PAGE_SIZE];
 } TEX_PAGE;
 
+static void M_PreparePaletteLUT(void);
 static void M_AllocateNewPage(void);
 static void M_FillVirtualData(TEX_PAGE *page, RECTANGLE bounds);
 static void M_Cleanup(void);
@@ -67,12 +70,42 @@ static bool M_PackContainerAt(
 static bool M_PackContainer(const TEX_CONTAINER *container);
 
 static PACKER_DATA *m_Data = NULL;
+static uint8_t m_PaletteLUT[256];
 static int32_t m_StartPage = 0;
 static int32_t m_EndPage = 0;
 static int32_t m_UsedPageCount = 0;
 static TEX_PAGE *m_VirtualPages = NULL;
 static int32_t m_QueueSize = 0;
 static TEX_CONTAINER *m_Queue = NULL;
+
+static void M_PreparePaletteLUT(void)
+{
+    if (m_Data->level.pages_24 == NULL) {
+        return;
+    }
+
+    ASSERT(m_Data->source.palette_24 != NULL);
+    ASSERT(m_Data->level.palette_24 != NULL);
+
+    m_PaletteLUT[0] = 0;
+    for (int32_t i = 1; i < 256; i++) {
+        const RGB_888 colour = m_Data->source.palette_24[i];
+        int32_t best_idx = 0;
+        int32_t best_diff = INT32_MAX;
+        for (int32_t j = 1; j < 256; j++) {
+            const int32_t dr = colour.r - m_Data->level.palette_24[j].r;
+            const int32_t dg = colour.g - m_Data->level.palette_24[j].g;
+            const int32_t db = colour.b - m_Data->level.palette_24[j].b;
+            const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
+            if (diff < best_diff) {
+                best_diff = diff;
+                best_idx = j;
+            }
+        }
+
+        m_PaletteLUT[i] = (uint8_t)best_idx;
+    }
+}
 
 static void M_PrepareObject(const int32_t object_index)
 {
@@ -239,24 +272,39 @@ static bool M_PackContainer(const TEX_CONTAINER *const container)
 
 static void M_AllocateNewPage(void)
 {
-    m_VirtualPages = Memory_Realloc(
-        m_VirtualPages, sizeof(TEX_PAGE) * (m_UsedPageCount + 1));
-    TEX_PAGE *const page = &m_VirtualPages[m_UsedPageCount];
-    page->index = m_StartPage + m_UsedPageCount;
+    const int32_t used_count = m_UsedPageCount;
+    m_UsedPageCount++;
+
+    m_VirtualPages =
+        Memory_Realloc(m_VirtualPages, sizeof(TEX_PAGE) * (used_count + 1));
+    TEX_PAGE *const page = &m_VirtualPages[used_count];
+    page->index = m_StartPage + used_count;
     page->free_space = TEXTURE_PAGE_SIZE;
     memset(page->data, 0, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
 
-    if (m_UsedPageCount > 0) {
-        const int32_t new_count = m_Data->level.page_count + m_UsedPageCount;
-        m_Data->level.pages = Memory_Realloc(
-            m_Data->level.pages,
+    if (used_count == 0) {
+        return;
+    }
+
+    const int32_t new_count = m_Data->level.page_count + used_count;
+
+    {
+        m_Data->level.pages_32 = Memory_Realloc(
+            m_Data->level.pages_32,
             TEXTURE_PAGE_SIZE * new_count * sizeof(RGBA_8888));
         RGBA_8888 *const level_page =
-            &m_Data->level.pages[(new_count - 1) * TEXTURE_PAGE_SIZE];
+            &m_Data->level.pages_32[(new_count - 1) * TEXTURE_PAGE_SIZE];
         memset(level_page, 0, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     }
 
-    m_UsedPageCount++;
+    if (m_Data->level.pages_24 != NULL) {
+        m_Data->level.pages_24 = Memory_Realloc(
+            m_Data->level.pages_24,
+            TEXTURE_PAGE_SIZE * new_count * sizeof(uint8_t));
+        uint8_t *const level_page =
+            &m_Data->level.pages_24[(new_count - 1) * TEXTURE_PAGE_SIZE];
+        memset(level_page, 0, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
+    }
 }
 
 static bool M_PackContainerAt(
@@ -279,10 +327,19 @@ static bool M_PackContainerAt(
     // data to avoid anything else taking this position.
     const int32_t source_page_index =
         container->tex_infos->page - m_Data->level.page_count;
-    const RGBA_8888 *const source_page =
-        &m_Data->source.pages[source_page_index * TEXTURE_PAGE_SIZE];
-    RGBA_8888 *const level_page =
-        &m_Data->level.pages[page->index * TEXTURE_PAGE_SIZE];
+    const RGBA_8888 *const source_page_32 =
+        &m_Data->source.pages_32[source_page_index * TEXTURE_PAGE_SIZE];
+    RGBA_8888 *const level_page_32 =
+        &m_Data->level.pages_32[page->index * TEXTURE_PAGE_SIZE];
+
+    const uint8_t *source_page_24 = NULL;
+    uint8_t *level_page_24 = NULL;
+    if (m_Data->level.pages_24 != NULL) {
+        source_page_24 =
+            &m_Data->source.pages_24[source_page_index * TEXTURE_PAGE_SIZE];
+        level_page_24 =
+            &m_Data->level.pages_24[page->index * TEXTURE_PAGE_SIZE];
+    }
 
     int32_t old_pixel, new_pixel;
     for (int32_t y = 0; y < container->bounds.h; y++) {
@@ -291,7 +348,11 @@ static bool M_PackContainerAt(
                 + container->bounds.x + x;
             new_pixel = (y_pos + y) * TEXTURE_PAGE_WIDTH + x_pos + x;
             page->data[new_pixel] = 1;
-            level_page[new_pixel] = source_page[old_pixel];
+            level_page_32[new_pixel] = source_page_32[old_pixel];
+            if (level_page_24 != NULL) {
+                level_page_24[new_pixel] =
+                    m_PaletteLUT[source_page_24[old_pixel]];
+            }
         }
     }
 
@@ -370,7 +431,9 @@ static void M_Cleanup(void)
 
 bool Packer_Pack(PACKER_DATA *const data)
 {
+    BENCHMARK *const benchmark = Benchmark_Start();
     m_Data = data;
+    M_PreparePaletteLUT();
 
     m_StartPage = m_Data->level.page_count - 1;
     m_EndPage = MAX_TEXTURE_PAGES - m_StartPage;
@@ -397,6 +460,7 @@ bool Packer_Pack(PACKER_DATA *const data)
     }
 
     M_Cleanup();
+    Benchmark_End(benchmark, NULL);
     return result;
 }
 

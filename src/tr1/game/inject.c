@@ -1673,16 +1673,20 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
     if (source_page_count != 0) {
         PACKER_DATA data = {
             .level.page_count = level_info->texture_page_count,
-            .level.pages = level_info->texture_rgb_page_ptrs,
+            .level.pages_32 = level_info->texture_rgb_page_ptrs,
+            .level.pages_24 = NULL,
+            .level.palette_24 = NULL,
             .source.page_count = source_page_count,
-            .source.pages = source_pages,
+            .source.pages_32 = source_pages,
+            .source.pages_24 = NULL,
+            .source.palette_24 = NULL,
             .object_count = level_info->texture_count,
             .sprite_count = level_info->sprite_info_count,
         };
 
         if (Packer_Pack(&data)) {
             level_info->texture_page_count += Packer_GetAddedPageCount();
-            level_info->texture_rgb_page_ptrs = data.level.pages;
+            level_info->texture_rgb_page_ptrs = data.level.pages_32;
         }
 
         Memory_FreePointer(&source_pages);
