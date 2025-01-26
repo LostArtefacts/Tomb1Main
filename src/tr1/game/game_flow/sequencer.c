@@ -206,6 +206,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         }
 
         case GFS_PLAY_CUTSCENE: {
+            Music_Stop();
             const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
             if (type != GFL_SAVED) {
                 gf_cmd = GF_DoCutsceneSequence(cutscene_num);
@@ -291,7 +292,10 @@ static GAME_FLOW_COMMAND M_StorySoFar(
     const GAME_FLOW_SEQUENCE *const sequence = &level->sequence;
     for (int32_t i = 0; i < sequence->length; i++) {
         const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
-        LOG_INFO("event %d %d", event->type, event->data);
+        LOG_DEBUG(
+            "event type=%s(%d) data=0x%x",
+            ENUM_MAP_TO_STRING(GAME_FLOW_SEQUENCE_EVENT_TYPE, event->type),
+            event->type, event->data);
 
         switch (event->type) {
         case GFS_LEVEL_STATS:
@@ -347,24 +351,22 @@ static GAME_FLOW_COMMAND M_StorySoFar(
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
         case GFS_LEVEL_COMPLETE: {
-            const GAME_FLOW_LEVEL *const next_level =
-                GF_GetLevel(level->num + 1, level->type);
-            if (next_level == NULL) {
-                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-            }
             Music_Stop();
             return (GAME_FLOW_COMMAND) {
-                .action = GF_START_GAME,
-                .param = next_level->num,
+                .action = GF_LEVEL_COMPLETE,
             };
         }
 
-        case GFS_PLAY_CUTSCENE:
+        case GFS_PLAY_CUTSCENE: {
             Music_Stop();
-            return (GAME_FLOW_COMMAND) {
-                .action = GF_START_CINE,
-                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
-            };
+            const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
+            gf_cmd = GF_DoCutsceneSequence(cutscene_num);
+            if (gf_cmd.action != GF_NOOP
+                && gf_cmd.action != GF_LEVEL_COMPLETE) {
+                return gf_cmd;
+            }
+            break;
+        }
 
         case GFS_SET_CAMERA_ANGLE:
             g_CinePosition.rot = (int32_t)(intptr_t)event->data;
@@ -391,21 +393,15 @@ static GAME_FLOW_COMMAND M_StorySoFar(
 
 GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num)
 {
-    GAME_FLOW_COMMAND gf_cmd = {
-        .action = GF_START_GAME,
-        .param = g_GameFlow.first_level_num,
-    };
-
     const int32_t savegame_level = Savegame_GetLevelNumber(slot_num);
-    while (1) {
-        gf_cmd =
-            M_StorySoFar(GF_GetLevel(gf_cmd.param, GFL_NORMAL), savegame_level);
+    for (int32_t i = g_GameFlow.first_level_num; i <= savegame_level; i++) {
+        const GAME_FLOW_COMMAND gf_cmd =
+            M_StorySoFar(GF_GetLevel(i, GFL_NORMAL), savegame_level);
         if (gf_cmd.action == GF_EXIT_TO_TITLE
             || gf_cmd.action == GF_EXIT_GAME) {
             break;
         }
     }
-
     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
