@@ -235,6 +235,10 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             }
             break;
 
+        case GFS_PLAY_MUSIC:
+            Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
+            break;
+
         case GFS_ADD_ITEM:
         case GFS_ADD_SECRET_REWARD:
             const GAME_FLOW_ADD_ITEM_DATA *const data =
