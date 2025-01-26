@@ -46,7 +46,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
             bool skip;
             switch (event->type) {
             case GFS_EXIT_TO_TITLE:
-            case GFS_EXIT_TO_LEVEL:
+            case GFS_LEVEL_COMPLETE:
             case GFS_PLAY_FMV:
             case GFS_LEVEL_STATS:
             case GFS_TOTAL_STATS:
@@ -188,16 +188,20 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         case GFS_EXIT_TO_TITLE:
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
-        case GFS_EXIT_TO_LEVEL: {
-            int32_t next_level =
-                (int32_t)(intptr_t)event->data & ((1 << 6) - 1);
-            if (g_GameFlow.levels[next_level].type == GFL_BONUS
+        case GFS_LEVEL_COMPLETE: {
+            const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+            const GAME_FLOW_LEVEL *const next_level =
+                GF_GetLevel(current_level->num + 1, current_level->type);
+            if (next_level == NULL) {
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            }
+            if (next_level->type == GFL_BONUS
                 && !g_GameInfo.bonus_level_unlock) {
                 return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
-                .param = next_level,
+                .param = next_level->num,
             };
         }
 
@@ -342,12 +346,18 @@ static GAME_FLOW_COMMAND M_StorySoFar(
             Music_Stop();
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
-        case GFS_EXIT_TO_LEVEL:
+        case GFS_LEVEL_COMPLETE: {
+            const GAME_FLOW_LEVEL *const next_level =
+                GF_GetLevel(level->num + 1, level->type);
+            if (next_level == NULL) {
+                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            }
             Music_Stop();
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
-                .param = (int32_t)(intptr_t)event->data & ((1 << 6) - 1),
+                .param = next_level->num,
             };
+        }
 
         case GFS_PLAY_CUTSCENE:
             Music_Stop();

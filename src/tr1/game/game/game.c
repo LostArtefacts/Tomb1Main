@@ -209,7 +209,7 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
 
     // carry info to the next level
     if (g_CurrentLevel + 1 < g_GameFlow.level_count) {
-        // TODO: this should be moved to GFS_EXIT_TO_LEVEL handler, probably
+        // TODO: this should be moved to GFS_LEVEL_COMPLETE handler, probably
         Savegame_CarryCurrentInfoToNextLevel(
             g_CurrentLevel, g_CurrentLevel + 1);
         Savegame_ApplyLogicToCurrentInfo(g_CurrentLevel + 1);

@@ -200,11 +200,9 @@ void Shell_Main(void)
 
         switch (command.action) {
         case GF_START_GAME: {
-            GAME_FLOW_LEVEL_TYPE level_type = GFL_NORMAL;
-            if (g_GameFlow.levels[command.param].type == GFL_BONUS) {
-                level_type = GFL_BONUS;
-            }
-            command = GF_InterpretSequence(command.param, level_type);
+            const int32_t level_num = command.param;
+            command = GF_InterpretSequence(
+                level_num, g_GameFlow.levels[level_num].type);
             break;
         }
 

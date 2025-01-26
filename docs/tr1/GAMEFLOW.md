@@ -789,7 +789,7 @@ game will exit to title.
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 2},
+                {"type": "level_complete"},
             ],
         },
 
@@ -800,7 +800,7 @@ game will exit to title.
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 3},
+                {"type": "level_complete"},
             ],
         },
 
@@ -817,7 +817,7 @@ game will exit to title.
                 {"type": "display_picture", "path": "data/cred2.pcx", "display_time": 7.5},
                 {"type": "display_picture", "path": "data/cred3.pcx", "display_time": 7.5},
                 {"type": "total_stats", "background_path": "data/install.pcx"},
-                {"type": "exit_to_level", "level_id": 4},
+                {"type": "level_complete"},
             ],
         },
 
@@ -831,7 +831,7 @@ game will exit to title.
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 5},
+                {"type": "level_complete"},
             ],
         },
 
@@ -903,7 +903,7 @@ the engine's overall item limit).
          {"type": "load_level"},
          {"type": "play_level"},
          {"type": "level_stats"},
-         {"type": "exit_to_level", "level_id": 2},
+         {"type": "level_complete"},
     ],
 },
 ```

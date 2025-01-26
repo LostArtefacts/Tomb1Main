@@ -51,7 +51,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 1},
+                {"type": "level_complete"},
             ],
             "demo": true,
         },

@@ -83,7 +83,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 2},
+                {"type": "level_complete"},
             ],
         },
 
@@ -100,7 +100,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 3},
+                {"type": "level_complete"},
             ],
         },
 
@@ -119,7 +119,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 4},
+                {"type": "level_complete"},
             ],
         },
 
@@ -139,7 +139,7 @@
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 5},
+                {"type": "level_complete"},
             ],
         },
 
@@ -158,7 +158,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 6},
+                {"type": "level_complete"},
             ],
         },
 
@@ -178,7 +178,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 7},
+                {"type": "level_complete"},
             ],
         },
 
@@ -195,7 +195,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 8},
+                {"type": "level_complete"},
             ],
             "unobtainable_pickups": 1,
         },
@@ -215,7 +215,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 9},
+                {"type": "level_complete"},
             ],
         },
 
@@ -238,7 +238,7 @@
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 1},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 10},
+                {"type": "level_complete"},
             ],
         },
 
@@ -257,7 +257,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 11},
+                {"type": "level_complete"},
             ],
         },
 
@@ -277,7 +277,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 12},
+                {"type": "level_complete"},
             ],
         },
 
@@ -295,7 +295,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 13},
+                {"type": "level_complete"},
             ],
         },
 
@@ -328,7 +328,7 @@
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "play_cutscene", "cutscene_id": 2},
-                {"type": "exit_to_level", "level_id": 14},
+                {"type": "level_complete"},
             ],
         },
 
@@ -350,7 +350,7 @@
                 {"type": "play_fmv", "fmv_id": 9},
                 {"type": "play_cutscene", "cutscene_id": 3},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 15},
+                {"type": "level_complete"},
             ],
             "unobtainable_pickups": 3,
         },
@@ -418,7 +418,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 3},
+                {"type": "level_complete"},
             ],
         },
 
@@ -437,7 +437,7 @@
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
-                {"type": "exit_to_level", "level_id": 4},
+                {"type": "level_complete"},
             ],
         },
 
