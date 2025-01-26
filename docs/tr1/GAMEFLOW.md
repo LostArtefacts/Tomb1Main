@@ -853,13 +853,12 @@ game will exit to title.
     "cutscenes": [
         {
             "path": "data/bonuscut1.phd",
-            "music_track": 0,
+            "music_track": 23,
             "sequence": [
                 {"type": "load_level"},
                 {"type": "set_cam_x", "value": 36668},
                 {"type": "set_cam_z", "value": 63180},
                 {"type": "set_cutscene_angle", "value": -23312},
-                {"type": "play_music", "music_track": 23},
                 {"type": "play_level"},
             ],
         },

@@ -131,7 +131,6 @@
 
         // Level 5: Current Position
         {
-            "title": "Current Position",
             "path": "data/current.phd",
             "type": "current",
             "music_track": 0,
