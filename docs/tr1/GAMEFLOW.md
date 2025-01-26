@@ -269,97 +269,11 @@ Following are each of the properties available within a level.
   </tr>
   <tr valign="top">
     <td>
-      <code>draw_distance_fade</code>
-    </td>
-    <td>Double</td>
-    <td>No</td>
-    <td colspan="2">
-      Can be customized per level. See <a href="#draw-distance-fade">above</a>
-      for details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>draw_distance_max</code>
-    </td>
-    <td>Double</td>
-    <td>No</td>
-    <td colspan="2">
-      Can be customized per level. See <a href="#draw-distance-max">above</a>
-      for details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>file</code>
+      <code>path</code>
     </td>
     <td>String</td>
     <td>Yes</td>
     <td colspan="2">The path to the level's data file.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>inherit_injections</code>
-    </td>
-    <td>Boolean</td>
-    <td>No</td>
-    <td colspan="2">
-      A flag to indicate whether or not the level should use the globally
-      defined injections. See <a href="#injections">Injections</a> for full
-      details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>injections</code>
-    </td>
-    <td>String array</td>
-    <td>No</td>
-    <td colspan="2">
-      Injection file paths. See <a href="#injections">Injections</a> for full
-      details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>item_drops</code>
-    </td>
-    <td>Object array</td>
-    <td>No</td>
-    <td colspan="2">
-      Instructions to allocate items to enemies who will drop those items when
-      killed. See <a href="#item-drops">Item drops</a> for full details.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>lara_type</code>
-    </td>
-    <td>Integer / string</td>
-    <td>No</td>
-    <td colspan="2">
-      Used only in cutscene levels to link the braid (if enabled) to the
-      relevant cutscene actor object ID.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>music_track</code>
-    </td>
-    <td>Integer</td>
-    <td>Yes</td>
-    <td colspan="2">The ambient music track ID.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>sequence</code>
-    </td>
-    <td>Object array</td>
-    <td>Yes</td>
-    <td colspan="2">
-      Instructions to define how a level plays out. See
-      <a href="#sequences">Sequences</a> for full details.
-    </td>
   </tr>
   <tr valign="top">
     <td rowspan="7">
@@ -378,6 +292,22 @@ Following are each of the properties available within a level.
     </td>
     <td>
       <strong>Description</strong>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>normal</code>
+    </td>
+    <td>A standard level.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>gym</code>
+    </td>
+    <td>
+      At most one of these can be defined. Accessed from the photo option
+      (object ID 73) on the title screen. If omitted, the photo option is not
+      displayed.
     </td>
   </tr>
   <tr valign="top">
@@ -408,19 +338,89 @@ Following are each of the properties available within a level.
   </tr>
   <tr valign="top">
     <td>
-      <code>gym</code>
+      <code>sequence</code>
     </td>
-    <td>
-      At most one of these can be defined. Accessed from the photo option
-      (object ID 73) on the title screen. If omitted, the photo option is not
-      displayed.
+    <td>Object array</td>
+    <td>Yes</td>
+    <td colspan="2">
+      Instructions to define how a level plays out. See
+      <a href="#sequences">Sequences</a> for full details.
     </td>
   </tr>
   <tr valign="top">
     <td>
-      <code>normal</code>
+      <code>music_track</code>
     </td>
-    <td>A standard level.</td>
+    <td>Integer</td>
+    <td>Yes</td>
+    <td colspan="2">The ambient music track ID.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>draw_distance_fade</code>
+    </td>
+    <td>Double</td>
+    <td>No</td>
+    <td colspan="2">
+      Can be customized per level. See <a href="#draw-distance-fade">above</a>
+      for details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>draw_distance_max</code>
+    </td>
+    <td>Double</td>
+    <td>No</td>
+    <td colspan="2">
+      Can be customized per level. See <a href="#draw-distance-max">above</a>
+      for details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>injections</code>
+    </td>
+    <td>String array</td>
+    <td>No</td>
+    <td colspan="2">
+      Injection file paths. See <a href="#injections">Injections</a> for full
+      details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>inherit_injections</code>
+    </td>
+    <td>Boolean</td>
+    <td>No</td>
+    <td colspan="2">
+      A flag to indicate whether or not the level should use the globally
+      defined injections. See <a href="#injections">Injections</a> for full
+      details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>item_drops</code>
+    </td>
+    <td>Object array</td>
+    <td>No</td>
+    <td colspan="2">
+      Instructions to allocate items to enemies who will drop those items when
+      killed. See <a href="#item-drops">Item drops</a> for full details.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>lara_type</code>
+    </td>
+    <td>Integer / string</td>
+    <td>No</td>
+    <td colspan="2">
+      Used only in cutscene levels to link the braid (if enabled) to the
+      relevant cutscene actor object ID.
+    </td>
   </tr>
   <tr valign="top">
     <td>
@@ -479,6 +479,57 @@ default gameflow for examples.
     <th>Description</th>
   </tr>
   <tr valign="top">
+    <td>
+      <code>load_level</code>
+    </td>
+    <td colspan="2" align="center">N/A</td>
+    <td>Loads a specific level or a cinematic, but does not play it yet.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>play_level</code>
+    </td>
+    <td colspan="2" align="center">N/A</td>
+    <td>Plays the main game loop.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>level_complete</code>
+    </td>
+    <td colspan="2" align="center">N/A</td>
+    <td>Ends the current level and plays the next one, if available.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>exit_to_title</code>
+    </td>
+    <td colspan="2" align="center">N/A</td>
+    <td>Returns to the title level.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>level_stats</code>
+    </td>
+    <td colspan="2" align="center">N/A</td>
+    <td>
+        Displays the end of level statistics for the current level. In a Gym
+        level, this fades the screen to black.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>total_stats</code>
+    </td>
+    <td>
+      <code>path</code>
+    </td>
+    <td>String</td>
+    <td>
+      Displays the end of game statistics with the given picture file shown as
+      a background.
+    </td>
+  </tr>
+  <tr valign="top">
     <td rowspan="2">
       <code>display_picture</code>
     </td>
@@ -526,17 +577,16 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>level_complete</code>
+      <code>play_fmv</code>
     </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Ends the current level and plays the next one, if available.</td>
-  </tr>
-  <tr valign="top">
     <td>
-      <code>exit_to_title</code>
+      <code>fmv_id</code>
     </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Returns to the title level.</td>
+    <td>String</td>
+    <td>
+      Plays the specified FMV. <code>fmv_id</code> must be a valid index into
+      the <code>fmvs</code> root key.
+    </td>
   </tr>
   <tr valign="top">
     <td>
@@ -566,23 +616,6 @@ default gameflow for examples.
     <td>Integer</td>
   </tr>
   <tr valign="top">
-    <td>
-      <code>level_stats</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>
-        Displays the end of level statistics for the current level. In a Gym
-        level, this fades the screen to black.
-    </td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>play_level</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Plays the main game loop.</td>
-  </tr>
-  <tr valign="top">
     <td rowspan="3">
       <code>mesh_swap</code>
     </td>
@@ -603,19 +636,6 @@ default gameflow for examples.
       <code>mesh_id</code>
     </td>
     <td>Integer</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>play_fmv</code>
-    </td>
-    <td>
-      <code>fmv_id</code>
-    </td>
-    <td>String</td>
-    <td>
-      Plays the specified FMV. <code>fmv_id</code> must be a valid index into
-      the <code>fmvs</code> root key.
-    </td>
   </tr>
   <tr valign="top">
     <td>
@@ -692,27 +712,6 @@ default gameflow for examples.
     <td>
       Sets the room number in which Bacon Lara will be anchored to enable
       correct mirroring behaviour with Lara.
-    </td>
-  </tr>
-
-  <tr valign="top">
-    <td>
-      <code>load_level</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Loads a specific level or a cinematic, but does not play it yet.</td>
-  </tr>
-  <tr valign="top">
-    <td>
-      <code>total_stats</code>
-    </td>
-    <td>
-      <code>path</code>
-    </td>
-    <td>String</td>
-    <td>
-      Displays the end of game statistics with the given picture file shown as
-      a background.
     </td>
   </tr>
 </table>
