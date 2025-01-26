@@ -231,6 +231,7 @@ def transform_script(script: list[int]):
                 yield {"type": "play_level", "cutscene_id": cutscene_id}
 
             case GameFlowEvent.LEVEL_COMPLETE:
+                yield {"type": "play_music", "music_track": 41}
                 yield {"type": "level_stats"}
                 yield {"type": "level_complete"}
 
@@ -329,7 +330,6 @@ def create_trx_game_flow(game_script: GameScript):
         "demo_delay": game_script.demo_time / 30,
         "title_track": game_script.title_sound,
         "secret_track": game_script.secret_sound,
-        "level_complete_track": 41,
         **(
             {
                 "title": {

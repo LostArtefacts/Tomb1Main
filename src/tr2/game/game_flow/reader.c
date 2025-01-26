@@ -300,8 +300,6 @@ static void M_LoadRoot(JSON_OBJECT *const obj, GAME_FLOW *const gf)
     // clang-format on
 
     gf->secret_track = JSON_ObjectGetInt(obj, "secret_track", MX_INACTIVE);
-    gf->level_complete_track =
-        JSON_ObjectGetInt(obj, "level_complete_track", MX_INACTIVE);
 
     M_LoadGlobalInjections(obj, gf);
 }

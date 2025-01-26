@@ -175,10 +175,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
                 break;
             }
             const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-
-            if (g_GameFlow.level_complete_track != MX_INACTIVE) {
-                Music_Play(g_GameFlow.level_complete_track, MPM_ALWAYS);
-            }
             PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                 .background_type = BK_OBJECT,
                 .show_final_stats = false,
