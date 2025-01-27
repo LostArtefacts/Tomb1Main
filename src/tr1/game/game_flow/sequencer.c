@@ -123,10 +123,10 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         }
 
         case GFS_LEVEL_STATS: {
+            const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
             PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                 .background_type = BK_TRANSPARENT,
-                .background_path = NULL,
-                .level_num = (int32_t)(intptr_t)event->data,
+                .level_num = current_level->num,
                 .show_final_stats = false,
                 .use_bare_style = true,
             });

@@ -5,6 +5,9 @@
 void Game_SetIsPlaying(bool is_playing);
 bool Game_IsPlaying(void);
 
+GAME_FLOW_LEVEL *Game_GetCurrentLevel(void);
+void Game_SetCurrentLevel(GAME_FLOW_LEVEL *level);
+
 extern bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
 extern void Game_End(void);
 extern void Game_Suspend(void);

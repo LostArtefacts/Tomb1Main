@@ -526,13 +526,10 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>exit_to_level</code>
+      <code>level_complete</code>
     </td>
-    <td>
-      <code>level_id</code>
-    </td>
-    <td>Integer</td>
-    <td>Exits to the specified level.</td>
+    <td colspan="2" align="center">N/A</td>
+    <td>Ends the current level and plays the next one, if available.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -572,11 +569,11 @@ default gameflow for examples.
     <td>
       <code>level_stats</code>
     </td>
+    <td colspan="2" align="center">N/A</td>
     <td>
-      <code>level_id</code>
+        Displays the end of level statistics for the current level. In a Gym
+        level, this fades the screen to black.
     </td>
-    <td>Integer</td>
-    <td>Displays the end of level statistics for the given level number.</td>
   </tr>
   <tr valign="top">
     <td>
@@ -791,7 +788,7 @@ game will exit to title.
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "level_stats", "level_id": 1},
+                {"type": "level_stats"},
                 {"type": "exit_to_level", "level_id": 2},
             ],
         },
@@ -802,7 +799,7 @@ game will exit to title.
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "level_stats", "level_id": 2},
+                {"type": "level_stats"},
                 {"type": "exit_to_level", "level_id": 3},
             ],
         },
@@ -813,7 +810,7 @@ game will exit to title.
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "level_stats", "level_id": 3},
+                {"type": "level_stats"},
                 {"type": "play_music", "music_track": 19},
                 {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
                 {"type": "display_picture", "path": "data/cred1.pcx", "display_time": 7.5},
@@ -833,7 +830,7 @@ game will exit to title.
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 0},
-                {"type": "level_stats", "level_id": 4},
+                {"type": "level_stats"},
                 {"type": "exit_to_level", "level_id": 5},
             ],
         },
@@ -845,7 +842,7 @@ game will exit to title.
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
-                {"type": "level_stats", "level_id": 5},
+                {"type": "level_stats"},
                 {"type": "play_music", "music_track": 14},
                 {"type": "total_stats", "background_path": "data/install.pcx"},
                 {"type": "exit_to_title"},
@@ -905,7 +902,7 @@ the engine's overall item limit).
     "sequence": [
          {"type": "load_level"},
          {"type": "play_level"},
-         {"type": "level_stats", "level_id": 1},
+         {"type": "level_stats"},
          {"type": "exit_to_level", "level_id": 2},
     ],
 },

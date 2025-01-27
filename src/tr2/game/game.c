@@ -23,8 +23,6 @@
 
 #include <libtrx/config.h>
 
-static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
-
 bool Game_Start(int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
 {
     GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
@@ -191,19 +189,10 @@ GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
     return g_GameInfo.current_level.type;
 }
 
-GAME_FLOW_LEVEL *Game_GetCurrentLevel(void)
-{
-    return m_CurrentLevel;
-}
-
-void Game_SetCurrentLevel(GAME_FLOW_LEVEL *const level)
-{
-    m_CurrentLevel = level;
-}
-
 int32_t Game_GetCurrentLevelNum(void)
 {
-    return m_CurrentLevel != NULL ? m_CurrentLevel->num : -1;
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    return current_level != NULL ? current_level->num : -1;
 }
 
 bool Game_IsPlayable(void)
@@ -223,13 +212,14 @@ bool Game_IsPlayable(void)
 
 bool Game_IsInGym(void)
 {
-    if (m_CurrentLevel == NULL) {
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    if (current_level == NULL) {
         return false;
     }
-    if (m_CurrentLevel->type != GFL_NORMAL) {
+    if (current_level->type != GFL_NORMAL) {
         return false;
     }
-    return m_CurrentLevel->num == LV_GYM;
+    return current_level->num == LV_GYM;
 }
 
 void Game_ProcessInput(void)

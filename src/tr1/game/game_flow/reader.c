@@ -86,6 +86,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_REMOVE_AMMO,       NULL, NULL },
     { GFS_REMOVE_MEDIPACKS,  NULL, NULL },
     { GFS_EXIT_TO_TITLE,     NULL, NULL },
+    { GFS_LEVEL_STATS,       NULL, NULL },
 
     // Events with integer arguments
     { GFS_LOAD_LEVEL,        M_HandleIntEvent, "level_id" },
@@ -93,7 +94,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_PLAY_CUTSCENE,     M_HandleIntEvent, "cutscene_id" },
     { GFS_PLAY_FMV,          M_HandleIntEvent, "fmv_id" },
     { GFS_PLAY_MUSIC,        M_HandleIntEvent, "music_track" },
-    { GFS_LEVEL_STATS,       M_HandleIntEvent, "level_id" },
     { GFS_EXIT_TO_LEVEL,     M_HandleIntEvent, "level_id" },
     { GFS_SET_CAMERA_ANGLE,  M_HandleIntEvent, "value" },
     { GFS_SETUP_BACON_LARA,  M_HandleIntEvent, "anchor_room" },

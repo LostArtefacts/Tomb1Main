@@ -3,6 +3,7 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/inject.h"
 #include "game/inventory_ring/vars.h"
@@ -1023,6 +1024,9 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
 
     g_LevelComplete = false;
     g_CurrentLevel = level_num;
+    if (level->type != GFL_TITLE && level->type != GFL_CUTSCENE) {
+        Game_SetCurrentLevel((GAME_FLOW_LEVEL *)level);
+    }
     GF_SetCurrentLevel((GAME_FLOW_LEVEL *)level);
     g_FlipEffect = -1;
 

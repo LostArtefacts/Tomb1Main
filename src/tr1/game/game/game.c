@@ -81,6 +81,8 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         Savegame_InitCurrentInfo();
 
         if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
             return false;
         }
         if (!Savegame_Load(g_GameInfo.current_save_slot)) {
@@ -99,6 +101,8 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
             Savegame_ApplyLogicToCurrentInfo(level_num);
         }
         if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
             return false;
         }
         break;
@@ -254,6 +258,9 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
 
 bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
 {
+    GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
+    Game_SetCurrentLevel(level);
+
     Interpolation_Remember();
     Stats_StartTimer();
     return true;

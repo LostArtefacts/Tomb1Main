@@ -38,6 +38,7 @@
             "sequence": [
                 {"type": "set_secret_count", "count": 0},
                 {"type": "play_level"},
+                {"type": "level_stats"},
             ],
         },
 
