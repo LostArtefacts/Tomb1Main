@@ -68,6 +68,7 @@ typedef enum {
     LA_SIDE_STEP_RIGHT      = 67,
     LA_LAND_FAR             = 24,
     LA_GRAB_LEDGE           = 96,
+    LA_SWIM_FORWARD         = 86,
     LA_SWIM_GLIDE           = 87,
     LA_FALL_BACK            = 93,
     LA_HANG                 = 96,

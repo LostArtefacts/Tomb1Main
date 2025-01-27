@@ -8,6 +8,7 @@
 #include "game/inventory_ring/vars.h"
 #include "game/items.h"
 #include "game/lara/common.h"
+#include "game/lara/state.h"
 #include "game/lot.h"
 #include "game/music.h"
 #include "game/objects/creatures/mutant.h"
@@ -865,6 +866,8 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
     for (int i = 0; i < m_LevelInfo.item_count; i++) {
         Item_Initialise(i);
     }
+
+    Lara_State_Initialise();
 
     // Configure enemies who carry and drop items
     Carrier_InitialiseLevel(level);

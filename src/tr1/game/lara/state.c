@@ -45,8 +45,11 @@ void (*g_LaraStateRoutines[])(ITEM *item, COLL_INFO *coll) = {
 };
 
 static bool m_JumpPermitted = true;
+static bool m_HasResponsiveJumping = false;
+static bool m_HasResponsiveSwimming = false;
 
 static int16_t M_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist);
+static bool M_HasResponsiveState(LARA_ANIMATION anim_idx);
 
 static int16_t M_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist)
 {
@@ -60,6 +63,30 @@ static int16_t M_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist)
         height -= item->pos.y;
     }
     return height;
+}
+
+static bool M_HasResponsiveState(const LARA_ANIMATION anim_idx)
+{
+    const OBJECT *const object = Object_GetObject(O_LARA);
+    if (!object->loaded) {
+        return false;
+    }
+
+    const ANIM *const anim = Object_GetAnim(object, anim_idx);
+    for (int32_t i = 0; i < anim->num_changes; i++) {
+        const ANIM_CHANGE *const change = Anim_GetChange(anim->change_idx + i);
+        if (change->goal_anim_state == LS_RESPONSIVE) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Lara_State_Initialise(void)
+{
+    m_HasResponsiveJumping = M_HasResponsiveState(LA_RUN);
+    m_HasResponsiveSwimming = M_HasResponsiveState(LA_SWIM_FORWARD);
 }
 
 void Lara_State_Walk(ITEM *item, COLL_INFO *coll)
@@ -140,7 +167,8 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Input.jump && m_JumpPermitted && !item->gravity) {
-        item->goal_anim_state = g_Config.gameplay.enable_tr2_jumping
+        item->goal_anim_state =
+            g_Config.gameplay.enable_tr2_jumping && m_HasResponsiveJumping
             ? LS_RESPONSIVE
             : LS_JUMP_FORWARD;
     } else if (g_Input.forward) {
@@ -1101,7 +1129,9 @@ void Lara_State_Swim(ITEM *item, COLL_INFO *coll)
 
     if (!g_Input.jump) {
         item->goal_anim_state =
-            g_Config.gameplay.enable_tr2_swim_cancel ? LS_RESPONSIVE : LS_GLIDE;
+            g_Config.gameplay.enable_tr2_swim_cancel && m_HasResponsiveSwimming
+            ? LS_RESPONSIVE
+            : LS_GLIDE;
     }
 }
 
