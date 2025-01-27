@@ -1081,8 +1081,8 @@ void Output_AnimateTextures(const int32_t num_frames)
     m_WibbleOffset = (m_WibbleOffset + num_frames) % WIBBLE_SIZE;
     m_AnimatedTexturesOffset += num_frames;
     while (m_AnimatedTexturesOffset > 5) {
-        const TEXTURE_RANGE *range = g_AnimTextureRanges;
-        while (range) {
+        const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
+        while (range != NULL) {
             int32_t i = 0;
             const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
             for (; i < range->num_textures - 1; i++) {

@@ -52,7 +52,7 @@ extern uint16_t *g_Overlap;
 extern int16_t *g_GroundZone[2];
 extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
-extern TEXTURE_RANGE *g_AnimTextureRanges;
+extern ANIMATED_TEXTURE_RANGE *g_AnimTextureRanges;
 extern int16_t g_NumCineFrames;
 extern int16_t g_CineFrame;
 extern CINE_CAMERA *g_CineCamera;

@@ -166,12 +166,6 @@ typedef struct {
     int16_t v;
 } PHD_VBUF;
 
-typedef struct TEXTURE_RANGE {
-    int16_t num_textures;
-    int16_t *textures;
-    struct TEXTURE_RANGE *next_range;
-} TEXTURE_RANGE;
-
 typedef struct {
     SECTOR *sector;
     SECTOR old_sector;
@@ -362,7 +356,6 @@ typedef struct {
     int32_t texture_page_count;
     uint8_t *texture_palette_page_ptrs;
     RGBA_8888 *texture_rgb_page_ptrs;
-    int32_t anim_texture_range_count;
     int32_t item_count;
     int32_t sprite_info_count;
     int32_t overlap_count;

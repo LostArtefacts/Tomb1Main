@@ -543,7 +543,7 @@ static void M_LoadAnimatedTextures(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_ranges = VFile_ReadS32(file);
     g_AnimTextureRanges = GameBuf_Alloc(
-        sizeof(int16_t) * num_ranges, GBUF_ANIMATING_TEXTURE_RANGES);
+        sizeof(int16_t) * num_ranges, GBUF_ANIMATED_TEXTURE_RANGES);
     VFile_Read(file, g_AnimTextureRanges, sizeof(int16_t) * num_ranges);
     Benchmark_End(benchmark, NULL);
 }
