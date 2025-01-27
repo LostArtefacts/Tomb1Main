@@ -46,7 +46,6 @@ uint16_t *g_Overlap = NULL;
 int16_t *g_GroundZone[2] = { NULL };
 int16_t *g_GroundZone2[2] = { NULL };
 int16_t *g_FlyZone[2] = { NULL };
-ANIMATED_TEXTURE_RANGE *g_AnimTextureRanges = NULL;
 int16_t g_NumCineFrames = 0;
 int16_t g_CineFrame = -1;
 CINE_CAMERA *g_CineCamera = NULL;

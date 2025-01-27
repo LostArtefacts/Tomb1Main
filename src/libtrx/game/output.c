@@ -13,6 +13,7 @@ typedef struct {
     int32_t shade;
 } COMMON_LIGHT;
 
+static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
 
@@ -105,16 +106,21 @@ static int32_t M_CalculateDynamicLight(
 
 void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
 {
-    g_AnimTextureRanges = num_ranges == 0
+    m_AnimTextureRanges = num_ranges == 0
         ? NULL
         : GameBuf_Alloc(
               sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
               GBUF_ANIMATED_TEXTURE_RANGES);
 }
 
+ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(const int32_t range_idx)
+{
+    return &m_AnimTextureRanges[range_idx];
+}
+
 void Output_CycleAnimatedTextures(void)
 {
-    const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
+    const ANIMATED_TEXTURE_RANGE *range = m_AnimTextureRanges;
     for (; range != NULL; range = range->next_range) {
         int32_t i = 0;
         const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];

@@ -444,9 +444,9 @@ void Level_ReadAnimatedTextureRanges(
     const int32_t num_ranges, VFILE *const file)
 {
     for (int32_t i = 0; i < num_ranges; i++) {
-        ANIMATED_TEXTURE_RANGE *const range = &g_AnimTextureRanges[i];
+        ANIMATED_TEXTURE_RANGE *const range = Output_GetAnimatedTextureRange(i);
         range->next_range =
-            i == num_ranges - 1 ? NULL : &g_AnimTextureRanges[i + 1];
+            i == num_ranges - 1 ? NULL : Output_GetAnimatedTextureRange(i + 1);
 
         // Level data is tied to the original logic in Output_AnimateTextures
         // and hence stores one less than the actual count here.
