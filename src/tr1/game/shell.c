@@ -202,7 +202,7 @@ void Shell_Main(void)
         case GF_START_GAME: {
             const int32_t level_num = command.param;
             command = GF_InterpretSequence(
-                GF_GetLevel(level_num, GFL_NORMAL), GFSC_NORMAL);
+                GF_GetLevel(level_num, GFL_NORMAL), GFSC_NORMAL, NULL);
             break;
         }
 
@@ -214,19 +214,19 @@ void Shell_Main(void)
             } else {
                 g_GameInfo.current_save_slot = command.param;
                 command = GF_InterpretSequence(
-                    GF_GetLevel(level_num, GFL_NORMAL), GFSC_SAVED);
+                    GF_GetLevel(level_num, GFL_NORMAL), GFSC_SAVED, NULL);
             }
             break;
         }
 
         case GF_RESTART_GAME:
             command = GF_InterpretSequence(
-                GF_GetLevel(command.param, GFL_NORMAL), GFSC_RESTART);
+                GF_GetLevel(command.param, GFL_NORMAL), GFSC_RESTART, NULL);
             break;
 
         case GF_SELECT_GAME:
             command = GF_InterpretSequence(
-                GF_GetLevel(command.param, GFL_NORMAL), GFSC_SELECT);
+                GF_GetLevel(command.param, GFL_NORMAL), GFSC_SELECT, NULL);
             break;
 
         case GF_STORY_SO_FAR: {
@@ -250,7 +250,7 @@ void Shell_Main(void)
             const GAME_FLOW_LEVEL *const level = GF_GetLevel(0, GFL_TITLE);
             g_GameInfo.current_save_slot = -1;
             if (!intro_played) {
-                GF_InterpretSequence(level, GFSC_NORMAL);
+                GF_InterpretSequence(level, GFSC_NORMAL, NULL);
                 intro_played = true;
             }
 
@@ -270,7 +270,7 @@ void Shell_Main(void)
 
         case GF_START_GYM:
             command = GF_InterpretSequence(
-                GF_GetLevel(command.param, GFL_GYM), GFSC_NORMAL);
+                GF_GetLevel(command.param, GFL_GYM), GFSC_NORMAL, NULL);
             break;
 
         default:

@@ -139,9 +139,6 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_PLAY_LEVEL: {
             if (seq_ctx != GFSC_STORY) {
-                if (seq_ctx == GFSC_MID_STORY) {
-                    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-                }
                 gf_cmd = GF_RunLevel(level, seq_ctx);
                 if (seq_ctx == GFSC_SAVED) {
                     seq_ctx = GFSC_NORMAL;
@@ -166,6 +163,10 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
         }
 
+        case GFS_PLAY_MUSIC:
+            Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
+            break;
+
         case GFS_PLAY_FMV: {
             const int16_t fmv_id = (int16_t)(intptr_t)event->data;
             if (seq_ctx != GFSC_SAVED) {
@@ -179,6 +180,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_LEVEL_STATS: {
+            if (seq_ctx != GFSC_NORMAL) {
+                break;
+            }
             const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
             PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                 .background_type = Game_IsInGym() ? BK_TRANSPARENT : BK_OBJECT,
@@ -216,7 +220,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_ENABLE_SUNSET:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
                 g_GF_SunsetEnabled = true;
             }
             break;
@@ -248,54 +252,48 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
 
         case GFS_DISABLE_FLOOR:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
                 g_GF_NoFloor = (int16_t)(intptr_t)event->data;
             }
-            break;
-
-        case GFS_PLAY_MUSIC:
-            Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
             break;
 
         case GFS_ADD_ITEM:
         case GFS_ADD_SECRET_REWARD:
             const GAME_FLOW_ADD_ITEM_DATA *const data =
                 (GAME_FLOW_ADD_ITEM_DATA *)event->data;
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
                 GF_InventoryModifier_Add(
                     data->object_id, data->inv_type, data->qty);
             }
             break;
 
         case GFS_REMOVE_WEAPONS:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY
-                && seq_ctx != GFSC_SAVED) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_SAVED) {
                 g_GF_RemoveWeapons = true;
             }
             break;
 
         case GFS_REMOVE_AMMO:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY
-                && seq_ctx != GFSC_SAVED) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_SAVED) {
                 g_GF_RemoveAmmo = true;
             }
             break;
 
         case GFS_SET_START_ANIM:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
                 g_GF_LaraStartAnim = (int16_t)(intptr_t)event->data;
             }
             break;
 
         case GFS_SET_NUM_SECRETS:
-            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
                 g_GF_NumSecrets = (int16_t)(intptr_t)event->data;
             }
             break;
         }
     }
 
-    if (seq_ctx == GFSC_STORY || seq_ctx == GFSC_MID_STORY) {
+    if (seq_ctx == GFSC_STORY) {
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     return gf_cmd;

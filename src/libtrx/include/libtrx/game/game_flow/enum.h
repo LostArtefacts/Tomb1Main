@@ -26,9 +26,9 @@ typedef enum {
     GFSC_RESTART,
     GFSC_SELECT,
 #elif TR_VERSION == 2
-    GFSC_STORY,
     GFSC_MID_STORY,
 #endif
+    GFSC_STORY,
 } GAME_FLOW_SEQUENCE_CONTEXT;
 
 typedef enum {
