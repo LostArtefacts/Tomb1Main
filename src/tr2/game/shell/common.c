@@ -373,7 +373,9 @@ void Shell_Main(void)
     GAME_FLOW_COMMAND gf_cmd = g_GameFlow.cmd_init;
     bool is_loop_continued = true;
     while (is_loop_continued) {
-        LOG_DEBUG("action=%d param=%x", gf_cmd.action, gf_cmd.param);
+        LOG_DEBUG(
+            "action=%s param=%d",
+            ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, gf_cmd.action), gf_cmd.param);
         switch (gf_cmd.action) {
         case GF_START_GAME:
         case GF_SELECT_GAME:

@@ -324,8 +324,8 @@
                 {"type": "play_level"},
                 {"type": "play_music", "music_track": 41},
                 {"type": "level_stats"},
-                {"type": "level_complete"},
                 {"type": "play_fmv", "fmv_id": 7},
+                {"type": "level_complete"},
             ],
         },
 
