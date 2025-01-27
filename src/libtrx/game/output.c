@@ -102,6 +102,15 @@ static int32_t M_CalculateDynamicLight(
     return adder;
 }
 
+void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
+{
+    g_AnimTextureRanges = num_ranges == 0
+        ? NULL
+        : GameBuf_Alloc(
+              sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
+              GBUF_ANIMATED_TEXTURE_RANGES);
+}
+
 void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 {
     const ROOM *const room = Room_Get(room_num);
@@ -146,15 +155,6 @@ void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)
 
     Output_SetLightAdder(global_adder);
     Output_SetLightDivider(global_divider);
-}
-
-void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
-{
-    g_AnimTextureRanges = num_ranges == 0
-        ? NULL
-        : GameBuf_Alloc(
-              sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
-              GBUF_ANIMATED_TEXTURE_RANGES);
 }
 
 void Output_CalculateStaticLight(const int16_t adder)
