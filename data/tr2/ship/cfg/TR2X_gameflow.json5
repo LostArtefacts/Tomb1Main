@@ -27,6 +27,7 @@
             {"type": "display_picture", "path": "data/legal.pcx"},
             {"type": "play_fmv", "fmv_id": 0},
             {"type": "play_fmv", "fmv_id": 1},
+            {"type": "exit_to_title"},
         ],
     },
 

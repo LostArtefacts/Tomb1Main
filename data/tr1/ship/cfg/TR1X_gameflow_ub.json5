@@ -48,19 +48,18 @@
         {
             "path": "data/egypt.phd",
             "music_track": 59,
-            "injections": [
-                "data/injections/egypt_cameras.bin",
-                "data/injections/egypt_fd.bin",
-                "data/injections/egypt_meshfixes.bin",
-                "data/injections/egypt_textures.bin",
-            ],
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
-            "strings": {"key1": "Gold Key"},
+            "injections": [
+                "data/injections/egypt_cameras.bin",
+                "data/injections/egypt_fd.bin",
+                "data/injections/egypt_meshfixes.bin",
+                "data/injections/egypt_textures.bin",
+            ],
             "unobtainable_kills": 1,
         },
 
@@ -68,6 +67,12 @@
         {
             "path": "data/cat.phd",
             "music_track": 59,
+            "sequence": [
+                {"type": "load_level"},
+                {"type": "play_level"},
+                {"type": "level_stats"},
+                {"type": "level_complete"},
+            ],
             "injections": [
                 "data/injections/cat_cameras.bin",
                 "data/injections/cat_fd.bin",
@@ -75,13 +80,6 @@
                 "data/injections/cat_meshfixes.bin",
                 "data/injections/cat_textures.bin",
             ],
-            "sequence": [
-                {"type": "load_level"},
-                {"type": "play_level"},
-                {"type": "level_stats"},
-                {"type": "level_complete"},
-            ],
-            "strings": {"key1": "Ornate Key"},
             "unobtainable_pickups": 1,
         },
 
@@ -89,16 +87,16 @@
         {
             "path": "data/end.phd",
             "music_track": 60,
-            "injections": [
-                "data/injections/stronghold_fd.bin",
-                "data/injections/stronghold_itemrots.bin",
-                "data/injections/stronghold_textures.bin",
-            ],
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
+            ],
+            "injections": [
+                "data/injections/stronghold_fd.bin",
+                "data/injections/stronghold_itemrots.bin",
+                "data/injections/stronghold_textures.bin",
             ],
             "unobtainable_kills": 1,
         },
@@ -107,11 +105,6 @@
         {
             "path": "data/end2.phd",
             "music_track": 60,
-            "injections": [
-                "data/injections/hive_fd.bin",
-                "data/injections/hive_itemrots.bin",
-                "data/injections/hive_textures.bin",
-            ],
             "sequence": [
                 {"type": "load_level"},
                 {"type": "play_level"},
@@ -124,6 +117,11 @@
                 {"type": "display_picture", "path": "data/images/credits_3.webp", "display_time": 7.5},
                 {"type": "total_stats", "background_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
+            ],
+            "injections": [
+                "data/injections/hive_fd.bin",
+                "data/injections/hive_itemrots.bin",
+                "data/injections/hive_textures.bin",
             ],
         },
 
