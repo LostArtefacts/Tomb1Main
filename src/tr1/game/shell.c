@@ -196,7 +196,10 @@ void Shell_Main(void)
     g_GameInfo.current_save_slot = -1;
     bool loop_continue = true;
     while (loop_continue) {
-        LOG_INFO("action=%d param=%d", command.action, command.param);
+        LOG_INFO(
+            "action=%s param=%d",
+            ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, command.action),
+            command.param);
 
         switch (command.action) {
         case GF_START_GAME: {
