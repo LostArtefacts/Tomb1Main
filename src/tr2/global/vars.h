@@ -114,7 +114,6 @@ extern int32_t g_TexturePageCount;
 extern int32_t g_ObjectTextureCount;
 extern uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 extern int32_t g_NumCameras;
-extern ANIMATED_TEXTURE_RANGE *g_AnimTextureRanges;
 extern uint32_t *g_DemoData;
 extern char g_LevelFileName[256];
 extern uint16_t g_MusicTrackFlags[64];

@@ -439,3 +439,22 @@ void Level_ReadSpriteSequences(const int32_t num_sequences, VFILE *const file)
         }
     }
 }
+
+void Level_ReadAnimatedTextureRanges(
+    const int32_t num_ranges, VFILE *const file)
+{
+    for (int32_t i = 0; i < num_ranges; i++) {
+        ANIMATED_TEXTURE_RANGE *const range = &g_AnimTextureRanges[i];
+        range->next_range =
+            i == num_ranges - 1 ? NULL : &g_AnimTextureRanges[i + 1];
+
+        // Level data is tied to the original logic in Output_AnimateTextures
+        // and hence stores one less than the actual count here.
+        range->num_textures = VFile_ReadS16(file) + 1;
+        range->textures = GameBuf_Alloc(
+            sizeof(int16_t) * range->num_textures,
+            GBUF_ANIMATED_TEXTURE_RANGES);
+        VFile_Read(
+            file, range->textures, sizeof(int16_t) * range->num_textures);
+    }
+}

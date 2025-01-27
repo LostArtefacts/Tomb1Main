@@ -36,6 +36,8 @@ extern int32_t Output_CalcFogShade(int32_t depth);
 extern int32_t Output_GetRoomLightShade(ROOM_LIGHT_MODE mode);
 extern void Output_LightRoomVertices(const ROOM *room);
 
+void Output_InitialiseAnimatedTextures(int32_t num_ranges);
+
 void Output_CalculateLight(XYZ_32 pos, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);
 void Output_CalculateStaticMeshLight(XYZ_32 pos, SHADE shade, const ROOM *room);
