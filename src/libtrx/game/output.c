@@ -3,6 +3,7 @@
 #include "game/const.h"
 #include "game/game_buf.h"
 #include "game/matrix.h"
+#include "game/objects/common.h"
 #include "utils.h"
 
 #define MAX_DYNAMIC_LIGHTS 10
@@ -109,6 +110,35 @@ void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
         : GameBuf_Alloc(
               sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
               GBUF_ANIMATED_TEXTURE_RANGES);
+}
+
+void Output_CycleAnimatedTextures(void)
+{
+    const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
+    for (; range != NULL; range = range->next_range) {
+        int32_t i = 0;
+        const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
+        for (; i < range->num_textures - 1; i++) {
+            g_ObjectTextures[range->textures[i]] =
+                g_ObjectTextures[range->textures[i + 1]];
+        }
+        g_ObjectTextures[range->textures[i]] = temp;
+    }
+
+    for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
+        const STATIC_OBJECT_2D *const object = Object_GetStaticObject2D(i);
+        if (!object->loaded || object->frame_count == 1) {
+            continue;
+        }
+
+        const int16_t frame_count = object->frame_count;
+        const SPRITE_TEXTURE temp = g_SpriteTextures[object->texture_idx];
+        for (int32_t j = 0; j < frame_count - 1; j++) {
+            g_SpriteTextures[object->texture_idx + j] =
+                g_SpriteTextures[object->texture_idx + j + 1];
+        }
+        g_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
+    }
 }
 
 void Output_CalculateLight(const XYZ_32 pos, const int16_t room_num)

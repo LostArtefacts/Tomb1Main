@@ -1081,32 +1081,7 @@ void Output_AnimateTextures(const int32_t num_frames)
     m_WibbleOffset = (m_WibbleOffset + num_frames) % WIBBLE_SIZE;
     m_AnimatedTexturesOffset += num_frames;
     while (m_AnimatedTexturesOffset > 5) {
-        const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
-        while (range != NULL) {
-            int32_t i = 0;
-            const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
-            for (; i < range->num_textures - 1; i++) {
-                g_ObjectTextures[range->textures[i]] =
-                    g_ObjectTextures[range->textures[i + 1]];
-            }
-            g_ObjectTextures[range->textures[i]] = temp;
-            range = range->next_range;
-        }
-
-        for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-            const STATIC_OBJECT_2D *const object = Object_GetStaticObject2D(i);
-            if (!object->loaded || object->frame_count == 1) {
-                continue;
-            }
-
-            const int16_t frame_count = object->frame_count;
-            const SPRITE_TEXTURE temp = g_SpriteTextures[object->texture_idx];
-            for (int32_t j = 0; j < frame_count - 1; j++) {
-                g_SpriteTextures[object->texture_idx + j] =
-                    g_SpriteTextures[object->texture_idx + j + 1];
-            }
-            g_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
-        }
+        Output_CycleAnimatedTextures();
         m_AnimatedTexturesOffset -= 5;
     }
 }

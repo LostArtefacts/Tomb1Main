@@ -37,6 +37,7 @@ extern int32_t Output_GetRoomLightShade(ROOM_LIGHT_MODE mode);
 extern void Output_LightRoomVertices(const ROOM *room);
 
 void Output_InitialiseAnimatedTextures(int32_t num_ranges);
+void Output_CycleAnimatedTextures(void);
 
 void Output_CalculateLight(XYZ_32 pos, int16_t room_num);
 void Output_CalculateStaticLight(int16_t adder);

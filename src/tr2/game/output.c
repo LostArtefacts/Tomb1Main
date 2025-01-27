@@ -742,40 +742,6 @@ int16_t Output_FindColor(
     return best_idx;
 }
 
-void Output_DoAnimateTextures(const int32_t ticks)
-{
-    m_TickComp += ticks;
-    while (m_TickComp > TICKS_PER_FRAME * 5) {
-        const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
-        while (range != NULL) {
-            int32_t i = 0;
-            const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
-            for (; i < range->num_textures - 1; i++) {
-                g_ObjectTextures[range->textures[i]] =
-                    g_ObjectTextures[range->textures[i + 1]];
-            }
-            g_ObjectTextures[range->textures[i]] = temp;
-            range = range->next_range;
-        }
-
-        for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-            const STATIC_OBJECT_2D *const object = Object_GetStaticObject2D(i);
-            if (!object->loaded || object->frame_count == 1) {
-                continue;
-            }
-
-            const int16_t frame_count = object->frame_count;
-            const SPRITE_TEXTURE temp = g_SpriteTextures[object->texture_idx];
-            for (int32_t j = 0; j < frame_count - 1; j++) {
-                g_SpriteTextures[object->texture_idx + j] =
-                    g_SpriteTextures[object->texture_idx + j + 1];
-            }
-            g_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
-        }
-        m_TickComp -= TICKS_PER_FRAME * 5;
-    }
-}
-
 void Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item)
 {
@@ -933,7 +899,11 @@ void Output_AnimateTextures(const int32_t ticks)
             g_SunsetTimer * (WIBBLE_SIZE - 1) / SUNSET_TIMEOUT;
     }
 
-    Output_DoAnimateTextures(ticks);
+    m_TickComp += ticks;
+    while (m_TickComp > TICKS_PER_FRAME * 5) {
+        Output_CycleAnimatedTextures();
+        m_TickComp -= TICKS_PER_FRAME * 5;
+    }
 }
 
 void Output_SetLightAdder(const int32_t adder)
