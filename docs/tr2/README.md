@@ -107,6 +107,7 @@ game with new enhancements and features.
 - added ability to toggle between the software/hardware renderer at runtime
 - added optional fade effects to the hardware renderer
 - added text information when changing rendering options at runtime
+- added support for animated sprites
 - changed the hardware renderer to always use 16-bit textures
 - changed the software renderer to use the picture's palette for the background pictures
 - changed fullscreen behavior to use windowed desktop mode

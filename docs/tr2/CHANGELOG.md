@@ -7,6 +7,7 @@
 - added the ability to hold left/right to move through menus more quickly (#2298)
 - added the ability to disable exit fade effects alone (#2348)
 - added a fade-out effect when completing Lara's Home
+- added support for animated sprites (#2401)
 - changed default input bindings to let the photo mode binding be compatible with TR1X:
     | Key                           | Old binding | New binding  |
     | ----------------------------- | ----------- | ------------ |

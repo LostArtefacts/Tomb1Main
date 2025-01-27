@@ -757,6 +757,21 @@ void Output_DoAnimateTextures(const int32_t ticks)
             g_ObjectTextures[range->textures[i]] = temp;
             range = range->next_range;
         }
+
+        for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
+            const STATIC_OBJECT_2D *const object = Object_GetStaticObject2D(i);
+            if (!object->loaded || object->frame_count == 1) {
+                continue;
+            }
+
+            const int16_t frame_count = object->frame_count;
+            const SPRITE_TEXTURE temp = g_SpriteTextures[object->texture_idx];
+            for (int32_t j = 0; j < frame_count - 1; j++) {
+                g_SpriteTextures[object->texture_idx + j] =
+                    g_SpriteTextures[object->texture_idx + j + 1];
+            }
+            g_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
+        }
         m_TickComp -= TICKS_PER_FRAME * 5;
     }
 }
