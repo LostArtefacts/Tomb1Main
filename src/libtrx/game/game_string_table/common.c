@@ -108,7 +108,6 @@ void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
             level_table = NULL;
             break;
         case GFL_NORMAL:
-        case GFL_SAVED:
             level_table = &gs_file->levels;
             break;
         case GFL_CUTSCENE:

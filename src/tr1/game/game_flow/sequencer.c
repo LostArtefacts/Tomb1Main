@@ -22,9 +22,12 @@ static GAME_FLOW_COMMAND M_StorySoFar(
     const GAME_FLOW_LEVEL *level, int32_t savegame_level);
 
 GAME_FLOW_COMMAND
-GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
+GF_InterpretSequence(
+    const GAME_FLOW_LEVEL *const level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    LOG_DEBUG("running sequence for level=%d type=%d", level_num, type);
+    LOG_DEBUG(
+        "running sequence for level=%d type=%d seq_ctx=%d", level->num,
+        level->type, seq_ctx);
 
     g_GameInfo.remove_guns = false;
     g_GameInfo.remove_scions = false;
@@ -33,7 +36,6 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
 
     GAME_FLOW_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
 
-    const GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, type);
     const GAME_FLOW_SEQUENCE *const sequence = &level->sequence;
     for (int32_t i = 0; i < sequence->length; i++) {
         const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
@@ -64,17 +66,17 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         switch (event->type) {
         case GFS_LOAD_LEVEL: {
             const int32_t num = (int32_t)(intptr_t)event->data;
-            if (type == GFL_DEMO) {
+            if (level->type == GFL_DEMO) {
                 break;
             }
             if (level->type == GFL_CUTSCENE) {
-                gf_cmd = GF_LoadLevel(level_num, GFL_CUTSCENE);
+                gf_cmd = GF_LoadLevel(level->num, GFL_CUTSCENE);
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
                     return gf_cmd;
                 }
             } else {
-                const bool result = Game_Start_Legacy(num, type);
+                const bool result = Game_Start_Legacy(level, seq_ctx);
                 if (!result) {
                     g_CurrentLevel = -1;
                     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
@@ -85,23 +87,23 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
 
         case GFS_PLAY_LEVEL:
             if (level->type == GFL_CUTSCENE) {
-                if (type != GFL_SAVED) {
+                if (seq_ctx != GFSC_SAVED) {
                     gf_cmd = GF_RunCutscene((int32_t)(intptr_t)event->data);
                     if (gf_cmd.action != GF_NOOP
                         && gf_cmd.action != GF_LEVEL_COMPLETE) {
                         return gf_cmd;
                     }
                 }
-            } else if (type == GFL_DEMO) {
-                return GF_RunDemo(level_num);
+            } else if (level->type == GFL_DEMO) {
+                return GF_RunDemo(level->num);
             } else {
-                if (type != GFL_SAVED
-                    && level_num != g_GameFlow.first_level_num) {
+                if (seq_ctx != GFSC_SAVED
+                    && level->num != g_GameFlow.first_level_num) {
                     Lara_RevertToPistolsIfNeeded();
                 }
-                gf_cmd = GF_RunGame(level_num, type);
-                if (type == GFL_SAVED) {
-                    type = GFL_NORMAL;
+                gf_cmd = GF_RunGame(level, seq_ctx);
+                if (seq_ctx == GFSC_SAVED) {
+                    seq_ctx = GFSC_NORMAL;
                 }
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
@@ -112,7 +114,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
 
         case GFS_PLAY_FMV: {
             const int16_t fmv_id = (int16_t)(intptr_t)event->data;
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
                     LOG_ERROR("Invalid FMV number: %d", fmv_id);
                 } else {
@@ -139,11 +141,11 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         }
 
         case GFS_TOTAL_STATS:
-            if (g_Config.gameplay.enable_total_stats && type != GFL_SAVED) {
+            if (g_Config.gameplay.enable_total_stats && seq_ctx != GFSC_SAVED) {
                 PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
                     .background_type = BK_IMAGE,
                     .background_path = event->data,
-                    .level_num = level_num,
+                    .level_num = level->num,
                     .show_final_stats = true,
                     .use_bare_style = false,
                 });
@@ -162,7 +164,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
                 break;
             }
 
-            if (type == GFL_SAVED) {
+            if (seq_ctx == GFSC_SAVED) {
                 break;
             }
 
@@ -208,7 +210,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
         case GFS_PLAY_CUTSCENE: {
             Music_Stop();
             const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 gf_cmd = GF_DoCutsceneSequence(cutscene_num);
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
@@ -229,7 +231,7 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
             break;
 
         case GFS_ADD_ITEM:
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 const GAME_FLOW_ADD_ITEM_DATA *add_item_data =
                     (const GAME_FLOW_ADD_ITEM_DATA *)event->data;
                 Inv_AddItemNTimes(
@@ -238,25 +240,27 @@ GF_InterpretSequence(const int32_t level_num, GAME_FLOW_LEVEL_TYPE type)
             break;
 
         case GFS_REMOVE_WEAPONS:
-            if (type != GFL_SAVED && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+            if (seq_ctx != GFSC_SAVED
+                && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
                 g_GameInfo.remove_guns = true;
             }
             break;
 
         case GFS_REMOVE_SCIONS:
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 g_GameInfo.remove_scions = true;
             }
             break;
 
         case GFS_REMOVE_AMMO:
-            if (type != GFL_SAVED && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
+            if (seq_ctx != GFSC_SAVED
+                && !(g_GameInfo.bonus_flag & GBF_NGPLUS)) {
                 g_GameInfo.remove_ammo = true;
             }
             break;
 
         case GFS_REMOVE_MEDIPACKS:
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 g_GameInfo.remove_medipacks = true;
             }
             break;
@@ -424,7 +428,8 @@ GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
         LOG_ERROR("Missing cutscene: %d", cutscene_num);
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
-    return GF_InterpretSequence(cutscene_num, GFL_CUTSCENE);
+    return GF_InterpretSequence(
+        GF_GetLevel(cutscene_num, GFL_CUTSCENE), GFSC_NORMAL);
 }
 
 GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
@@ -433,5 +438,5 @@ GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
     if (demo_num < 0) {
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
-    return GF_InterpretSequence(demo_num, GFL_DEMO);
+    return GF_InterpretSequence(GF_GetLevel(demo_num, GFL_DEMO), GFSC_NORMAL);
 }

@@ -5,8 +5,8 @@
 #include "memory.h"
 
 typedef struct {
-    int32_t level_num;
-    GAME_FLOW_LEVEL_TYPE level_type;
+    const GAME_FLOW_LEVEL *level;
+    GAME_FLOW_SEQUENCE_CONTEXT seq_ctx;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -18,7 +18,7 @@ static void M_Draw(PHASE *phase);
 static PHASE_CONTROL M_Start(PHASE *const phase)
 {
     M_PRIV *const p = phase->priv;
-    if (!Game_Start(p->level_num, p->level_type)) {
+    if (!Game_Start(p->level, p->seq_ctx)) {
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = { .action = GF_EXIT_TO_TITLE },
@@ -68,12 +68,13 @@ static void M_Draw(PHASE *const phase)
 }
 
 PHASE *Phase_Game_Create(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
     PHASE *const phase = Memory_Alloc(sizeof(PHASE));
     M_PRIV *const p = Memory_Alloc(sizeof(M_PRIV));
-    p->level_num = level_num;
-    p->level_type = level_type;
+    p->level = level;
+    p->seq_ctx = seq_ctx;
     phase->priv = p;
     phase->start = M_Start;
     phase->end = M_End;

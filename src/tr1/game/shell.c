@@ -202,31 +202,32 @@ void Shell_Main(void)
         case GF_START_GAME: {
             const int32_t level_num = command.param;
             command = GF_InterpretSequence(
-                level_num, g_GameFlow.levels[level_num].type);
+                GF_GetLevel(level_num, GFL_NORMAL), GFSC_NORMAL);
             break;
         }
 
         case GF_START_SAVED_GAME: {
-            int16_t level_num = Savegame_GetLevelNumber(command.param);
+            const int16_t level_num = Savegame_GetLevelNumber(command.param);
             if (level_num < 0) {
                 LOG_ERROR("Corrupt save file!");
                 command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 g_GameInfo.current_save_slot = command.param;
-                command = GF_InterpretSequence(level_num, GFL_SAVED);
+                command = GF_InterpretSequence(
+                    GF_GetLevel(level_num, GFL_NORMAL), GFSC_SAVED);
             }
             break;
         }
 
-        case GF_RESTART_GAME: {
-            command = GF_InterpretSequence(command.param, GFL_RESTART);
+        case GF_RESTART_GAME:
+            command = GF_InterpretSequence(
+                GF_GetLevel(command.param, GFL_NORMAL), GFSC_RESTART);
             break;
-        }
 
-        case GF_SELECT_GAME: {
-            command = GF_InterpretSequence(command.param, GFL_SELECT);
+        case GF_SELECT_GAME:
+            command = GF_InterpretSequence(
+                GF_GetLevel(command.param, GFL_NORMAL), GFSC_SELECT);
             break;
-        }
 
         case GF_STORY_SO_FAR: {
             command = GF_PlayAvailableStory(command.param);
@@ -237,23 +238,23 @@ void Shell_Main(void)
             command = GF_DoCutsceneSequence(command.param);
             break;
 
-        case GF_START_DEMO: {
+        case GF_START_DEMO:
             command = GF_DoDemoSequence(command.param);
             break;
-        }
 
         case GF_LEVEL_COMPLETE:
             command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
-        case GF_EXIT_TO_TITLE:
+        case GF_EXIT_TO_TITLE: {
+            const GAME_FLOW_LEVEL *const level = GF_GetLevel(0, GFL_TITLE);
             g_GameInfo.current_save_slot = -1;
             if (!intro_played) {
-                GF_InterpretSequence(0, GFL_TITLE);
+                GF_InterpretSequence(level, GFSC_NORMAL);
                 intro_played = true;
             }
 
-            if (!Level_Initialise(GF_GetLevel(0, GFL_TITLE))) {
+            if (!Level_Initialise(level)) {
                 command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
                 break;
             }
@@ -261,13 +262,15 @@ void Shell_Main(void)
 
             command = GF_ShowInventory(INV_TITLE_MODE);
             break;
+        }
 
         case GF_EXIT_GAME:
             loop_continue = false;
             break;
 
         case GF_START_GYM:
-            command = GF_InterpretSequence(command.param, GFL_GYM);
+            command = GF_InterpretSequence(
+                GF_GetLevel(command.param, GFL_GYM), GFSC_NORMAL);
             break;
 
         default:

@@ -7,8 +7,8 @@ bool GF_IsGymEnabled(void);
 void GF_OverrideCommand(GAME_FLOW_COMMAND action);
 GAME_FLOW_COMMAND GF_GetOverrideCommand(void);
 
-GAME_FLOW_LEVEL *GF_GetCurrentLevel(void);
-void GF_SetCurrentLevel(GAME_FLOW_LEVEL *level);
+const GAME_FLOW_LEVEL *GF_GetCurrentLevel(void);
+void GF_SetCurrentLevel(const GAME_FLOW_LEVEL *level);
 
 extern int32_t GF_GetLevelCount(GAME_FLOW_LEVEL_TYPE level_type);
 extern int32_t GF_GetDemoCount(void);

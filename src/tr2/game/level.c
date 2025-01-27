@@ -766,18 +766,18 @@ bool Level_Load(const GAME_FLOW_LEVEL *const level)
 }
 
 bool Level_Initialise(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    LOG_DEBUG("num=%d type=%d", level_num, level_type);
-    g_GameInfo.current_level.num = level_num;
-    g_GameInfo.current_level.type = level_type;
+    LOG_DEBUG("num=%d type=%d seq_ctx=%d", level->num, level->type, seq_ctx);
+    g_GameInfo.current_level.num = level->num;
+    g_GameInfo.current_level.type = level->type;
 
-    if (level_type != GFL_TITLE && level_type != GFL_DEMO) {
+    if (level->type != GFL_TITLE && level->type != GFL_DEMO) {
         g_GymInvOpenEnabled = false;
     }
 
-    GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
-    if (level_type != GFL_TITLE && level_type != GFL_CUTSCENE) {
+    if (level->type != GFL_TITLE && level->type != GFL_CUTSCENE) {
         Game_SetCurrentLevel(level);
     }
     GF_SetCurrentLevel(level);
@@ -797,8 +797,8 @@ bool Level_Initialise(
     if (g_Lara.item_num != NO_ITEM) {
         Lara_Initialise(level);
     }
-    if (level_type == GFL_NORMAL || level_type == GFL_SAVED
-        || level_type == GFL_DEMO) {
+    if (level->type == GFL_NORMAL || level->type == GFL_DEMO
+        || seq_ctx == GFSC_SAVED) {
         GetCarriedItems();
     }
 
@@ -807,9 +807,9 @@ bool Level_Initialise(
     Overlay_Reset();
     g_HealthBarTimer = 100;
     Sound_StopAll();
-    if (level_type == GFL_SAVED) {
+    if (seq_ctx == GFSC_SAVED) {
         ExtractSaveGameInfo();
-    } else if (level_type == GFL_NORMAL) {
+    } else if (level->type == GFL_NORMAL) {
         GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_REGULAR);
     }
 
@@ -820,7 +820,7 @@ bool Level_Initialise(
     if (level->music_track != MX_INACTIVE) {
         Music_Play(
             level->music_track,
-            level_type == GFL_CUTSCENE ? MPM_ALWAYS : MPM_LOOPED);
+            level->type == GFL_CUTSCENE ? MPM_ALWAYS : MPM_LOOPED);
     }
 
     g_IsAssaultTimerActive = false;

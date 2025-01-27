@@ -378,16 +378,19 @@ void Shell_Main(void)
         case GF_START_GAME:
         case GF_SELECT_GAME:
             if (g_GameFlow.single_level >= 0) {
-                gf_cmd =
-                    GF_DoLevelSequence(g_GameFlow.single_level, GFL_NORMAL);
+                gf_cmd = GF_DoLevelSequence(
+                    GF_GetLevel(g_GameFlow.single_level, GFL_NORMAL),
+                    GFSC_NORMAL);
             } else {
-                gf_cmd = GF_DoLevelSequence(gf_cmd.param, GFL_NORMAL);
+                gf_cmd = GF_DoLevelSequence(
+                    GF_GetLevel(gf_cmd.param, GFL_NORMAL), GFSC_NORMAL);
             }
             break;
 
         case GF_START_SAVED_GAME:
             S_LoadGame(gf_cmd.param);
-            gf_cmd = GF_DoLevelSequence(g_SaveGame.current_level, GFL_SAVED);
+            gf_cmd = GF_DoLevelSequence(
+                GF_GetLevel(g_SaveGame.current_level, GFL_NORMAL), GFSC_SAVED);
             break;
 
         case GF_START_CINE:

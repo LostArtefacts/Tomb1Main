@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 static bool m_IsPlaying = false;
-static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
+static const GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
 
 void Game_SetIsPlaying(const bool is_playing)
 {
@@ -18,12 +18,12 @@ bool Game_IsPlaying(void)
     return m_IsPlaying;
 }
 
-GAME_FLOW_LEVEL *Game_GetCurrentLevel(void)
+const GAME_FLOW_LEVEL *Game_GetCurrentLevel(void)
 {
     return m_CurrentLevel;
 }
 
-void Game_SetCurrentLevel(GAME_FLOW_LEVEL *const level)
+void Game_SetCurrentLevel(const GAME_FLOW_LEVEL *const level)
 {
     m_CurrentLevel = level;
 }

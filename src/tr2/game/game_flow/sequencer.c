@@ -26,7 +26,7 @@ GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
         LOG_ERROR("Missing demo: %d", demo_num);
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
-    return GF_InterpretSequence(&level->sequence, GFL_DEMO);
+    return GF_InterpretSequence(level, GFSC_NORMAL);
 }
 
 GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
@@ -37,7 +37,7 @@ GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
         LOG_ERROR("Missing cutscene: %d", cutscene_num);
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
-    return GF_InterpretSequence(&level->sequence, GFL_CUTSCENE);
+    return GF_InterpretSequence(level, GFSC_NORMAL);
 }
 
 bool GF_DoFrontendSequence(void)
@@ -46,24 +46,23 @@ bool GF_DoFrontendSequence(void)
         return false;
     }
     const GAME_FLOW_COMMAND gf_cmd =
-        GF_InterpretSequence(&g_GameFlow.title_level->sequence, GFL_NORMAL);
+        GF_InterpretSequence(g_GameFlow.title_level, GFSC_NORMAL);
     return gf_cmd.action == GF_EXIT_GAME;
 }
 
 GAME_FLOW_COMMAND GF_DoLevelSequence(
-    const int32_t start_level, const GAME_FLOW_LEVEL_TYPE type)
+    const GAME_FLOW_LEVEL *const start_level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    int32_t current_level = start_level;
+    const GAME_FLOW_LEVEL *current_level = start_level;
+    const int32_t level_count = GF_GetLevelCount(current_level->type);
     while (true) {
-        if (current_level >= GF_GetLevelCount(type)) {
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
-
-        LOG_DEBUG("running sequence for level=%d type=%d", current_level, type);
-        const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
-            &GF_GetLevel(current_level, GFL_NORMAL)->sequence, type);
+        LOG_DEBUG(
+            "running sequence for level=%d type=%d seq_ctx=%d",
+            current_level->num, current_level->type, seq_ctx);
+        const GAME_FLOW_COMMAND gf_cmd =
+            GF_InterpretSequence(current_level, seq_ctx);
         LOG_DEBUG("sequence finished: %d", gf_cmd.action);
-        current_level++;
 
         if (g_GameFlow.single_level >= 0) {
             return gf_cmd;
@@ -74,23 +73,28 @@ GAME_FLOW_COMMAND GF_DoLevelSequence(
         if (Game_IsInGym()) {
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
+        if (current_level->num >= level_count - 1) {
+            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        current_level++;
     }
 }
 
 GAME_FLOW_COMMAND GF_RunLevel(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    if (level_type == GFL_DEMO) {
-        return GF_RunDemo(level_num);
-    } else if (level_type == GFL_CUTSCENE) {
-        return GF_RunCutscene(level_num);
+    if (level->type == GFL_DEMO) {
+        return GF_RunDemo(level->num);
+    } else if (level->type == GFL_CUTSCENE) {
+        return GF_RunCutscene(level->num);
     } else {
-        return GF_RunGame(level_num, level_type);
+        return GF_RunGame(level, seq_ctx);
     }
 }
 
 GAME_FLOW_COMMAND GF_InterpretSequence(
-    const GAME_FLOW_SEQUENCE *sequence, GAME_FLOW_LEVEL_TYPE type)
+    const GAME_FLOW_LEVEL *const level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
     g_GF_NoFloor = 0;
     g_GF_SunsetEnabled = false;
@@ -106,6 +110,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     int32_t ntracks = 0;
     GAME_FLOW_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
 
+    const GAME_FLOW_SEQUENCE *const sequence = &level->sequence;
     for (int32_t i = 0; i < sequence->length; i++) {
         const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
         LOG_DEBUG(
@@ -133,14 +138,13 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_PLAY_LEVEL: {
-            const int16_t level_num = (int16_t)(intptr_t)event->data;
-            if (type != GFL_STORY) {
-                if (type == GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY) {
+                if (seq_ctx == GFSC_MID_STORY) {
                     return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
                 }
-                gf_cmd = GF_RunLevel(level_num, type);
-                if (type == GFL_SAVED) {
-                    type = GFL_NORMAL;
+                gf_cmd = GF_RunLevel(level, seq_ctx);
+                if (seq_ctx == GFSC_SAVED) {
+                    seq_ctx = GFSC_NORMAL;
                 }
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
@@ -152,7 +156,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_PLAY_CUTSCENE: {
             const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 gf_cmd = GF_DoCutsceneSequence(cutscene_num);
                 if (gf_cmd.action != GF_NOOP
                     && gf_cmd.action != GF_LEVEL_COMPLETE) {
@@ -164,7 +168,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
 
         case GFS_PLAY_FMV: {
             const int16_t fmv_id = (int16_t)(intptr_t)event->data;
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
                     LOG_ERROR("Invalid FMV number: %d", fmv_id);
                 } else {
@@ -188,7 +192,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_LEVEL_COMPLETE: {
-            if (type != GFL_NORMAL) {
+            if (seq_ctx != GFSC_NORMAL) {
                 break;
             }
             const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
@@ -212,13 +216,13 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         }
 
         case GFS_ENABLE_SUNSET:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
                 g_GF_SunsetEnabled = true;
             }
             break;
 
         case GFS_TOTAL_STATS:
-            if (type == GFL_NORMAL) {
+            if (seq_ctx == GFSC_NORMAL) {
                 const GAME_FLOW_LEVEL *const current_level =
                     Game_GetCurrentLevel();
                 START_INFO *const start = GF_GetResumeInfo(current_level);
@@ -238,13 +242,13 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             break;
 
         case GFS_SET_CAMERA_ANGLE:
-            if (type != GFL_SAVED) {
+            if (seq_ctx != GFSC_SAVED) {
                 g_CineTargetAngle = (int16_t)(intptr_t)event->data;
             }
             break;
 
         case GFS_DISABLE_FLOOR:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
                 g_GF_NoFloor = (int16_t)(intptr_t)event->data;
             }
             break;
@@ -257,41 +261,41 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         case GFS_ADD_SECRET_REWARD:
             const GAME_FLOW_ADD_ITEM_DATA *const data =
                 (GAME_FLOW_ADD_ITEM_DATA *)event->data;
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
                 GF_InventoryModifier_Add(
                     data->object_id, data->inv_type, data->qty);
             }
             break;
 
         case GFS_REMOVE_WEAPONS:
-            if (type != GFL_STORY && type != GFL_MID_STORY
-                && type != GFL_SAVED) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY
+                && seq_ctx != GFSC_SAVED) {
                 g_GF_RemoveWeapons = true;
             }
             break;
 
         case GFS_REMOVE_AMMO:
-            if (type != GFL_STORY && type != GFL_MID_STORY
-                && type != GFL_SAVED) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY
+                && seq_ctx != GFSC_SAVED) {
                 g_GF_RemoveAmmo = true;
             }
             break;
 
         case GFS_SET_START_ANIM:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
                 g_GF_LaraStartAnim = (int16_t)(intptr_t)event->data;
             }
             break;
 
         case GFS_SET_NUM_SECRETS:
-            if (type != GFL_STORY && type != GFL_MID_STORY) {
+            if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_MID_STORY) {
                 g_GF_NumSecrets = (int16_t)(intptr_t)event->data;
             }
             break;
         }
     }
 
-    if (type == GFL_STORY || type == GFL_MID_STORY) {
+    if (seq_ctx == GFSC_STORY || seq_ctx == GFSC_MID_STORY) {
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     return gf_cmd;

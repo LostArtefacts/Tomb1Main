@@ -58,7 +58,6 @@ int32_t GF_GetLevelCount(const GAME_FLOW_LEVEL_TYPE level_type)
 {
     switch (level_type) {
     case GFL_NORMAL:
-    case GFL_SAVED:
         return g_GameFlow.level_count;
     case GFL_CUTSCENE:
         return g_GameFlow.cutscene_count;
@@ -132,7 +131,6 @@ GAME_FLOW_LEVEL *GF_GetLevel(
         return &g_GameFlow.demos[num];
 
     case GFL_NORMAL:
-    case GFL_SAVED:
         if (num < 0 || num >= GF_GetLevelCount(GFL_NORMAL)) {
             LOG_ERROR("Invalid level number: %d", num);
             return NULL;

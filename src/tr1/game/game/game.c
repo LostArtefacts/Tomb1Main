@@ -69,13 +69,14 @@ void Game_ProcessInput(void)
     }
 }
 
-bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
+bool Game_Start_Legacy(
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    g_GameInfo.current_level_type = level_type;
-    const GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
+    g_GameInfo.current_level_type = level->type;
 
-    switch (level_type) {
-    case GFL_SAVED:
+    switch (seq_ctx) {
+    case GFSC_SAVED:
         // reset current info to the defaults so that we do not do
         // Item_GlobalReplace in the inventory initialization routines too early
         Savegame_InitCurrentInfo();
@@ -91,14 +92,14 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
         break;
 
-    case GFL_RESTART:
-        if (level_num <= g_GameFlow.first_level_num) {
+    case GFSC_RESTART:
+        if (level->num <= g_GameFlow.first_level_num) {
             Savegame_InitCurrentInfo();
         } else {
-            Savegame_ResetCurrentInfo(level_num);
+            Savegame_ResetCurrentInfo(level->num);
             // Use previous level's ending info to start current level.
-            Savegame_CarryCurrentInfoToNextLevel(level_num - 1, level_num);
-            Savegame_ApplyLogicToCurrentInfo(level_num);
+            Savegame_CarryCurrentInfoToNextLevel(level->num - 1, level->num);
+            Savegame_ApplyLogicToCurrentInfo(level->num);
         }
         if (!Level_Initialise(level)) {
             Game_SetCurrentLevel(NULL);
@@ -107,24 +108,25 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
         break;
 
-    case GFL_SELECT:
+    case GFSC_SELECT:
         if (g_GameInfo.current_save_slot != -1) {
             // select level feature
             Savegame_InitCurrentInfo();
-            if (level_num > g_GameFlow.first_level_num) {
+            if (level->num > g_GameFlow.first_level_num) {
                 Savegame_LoadOnlyResumeInfo(
                     g_GameInfo.current_save_slot, &g_GameInfo);
-                for (int i = level_num; i < g_GameFlow.level_count; i++) {
+                for (int i = level->num; i < g_GameFlow.level_count; i++) {
                     Savegame_ResetCurrentInfo(i);
                 }
                 // Use previous level's ending info to start current level.
-                Savegame_CarryCurrentInfoToNextLevel(level_num - 1, level_num);
-                Savegame_ApplyLogicToCurrentInfo(level_num);
+                Savegame_CarryCurrentInfoToNextLevel(
+                    level->num - 1, level->num);
+                Savegame_ApplyLogicToCurrentInfo(level->num);
             }
         } else {
             // console /play level feature
             Savegame_InitCurrentInfo();
-            for (int i = g_GameFlow.first_level_num + 1; i <= level_num; i++) {
+            for (int i = g_GameFlow.first_level_num + 1; i <= level->num; i++) {
                 Savegame_CarryCurrentInfoToNextLevel(i - 1, i);
                 Savegame_ApplyLogicToCurrentInfo(i);
             }
@@ -134,23 +136,14 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         }
         break;
 
-    case GFL_GYM:
-        Savegame_ResetCurrentInfo(level_num);
-        Savegame_ApplyLogicToCurrentInfo(level_num);
-        if (!Level_Initialise(level)) {
-            return false;
-        }
-        break;
-
-    case GFL_BONUS:
-        Savegame_CarryCurrentInfoToNextLevel(level_num - 1, level_num);
-        Savegame_ApplyLogicToCurrentInfo(level_num);
-        if (!Level_Initialise(level)) {
-            return false;
-        }
-        break;
-
     default:
+        if (level->type == GFL_GYM) {
+            Savegame_ResetCurrentInfo(level->num);
+            Savegame_ApplyLogicToCurrentInfo(level->num);
+        } else if (level->type == GFL_BONUS) {
+            Savegame_CarryCurrentInfoToNextLevel(level->num - 1, level->num);
+            Savegame_ApplyLogicToCurrentInfo(level->num);
+        }
         if (!Level_Initialise(level)) {
             return false;
         }
@@ -174,7 +167,7 @@ bool Game_Start_Legacy(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
         Stats_GetSecrets();
 
     g_GameInfo.ask_for_save = g_Config.gameplay.enable_save_crystals
-        && (level_type == GFL_NORMAL || level_type == GFL_BONUS)
+        && (level->type == GFL_NORMAL || level->type == GFL_BONUS)
         && g_CurrentLevel != g_GameFlow.first_level_num
         && g_CurrentLevel != g_GameFlow.gym_level_num;
 
@@ -256,11 +249,11 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
     }
 }
 
-bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type)
+bool Game_Start(
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
     Game_SetCurrentLevel(level);
-
     Interpolation_Remember();
     Stats_StartTimer();
     return true;
@@ -377,7 +370,7 @@ extern int32_t Game_GetCurrentLevelNum(void)
 
 bool Game_IsInGym(void)
 {
-    GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
     return current_level != NULL && current_level->type == GFL_GYM;
 }
 

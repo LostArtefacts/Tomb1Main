@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-static GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
+static const GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
 static GAME_FLOW_COMMAND m_OverrideCommand = { .action = GF_NOOP };
 
 bool GF_IsGymEnabled(void)
@@ -20,12 +20,12 @@ GAME_FLOW_COMMAND GF_GetOverrideCommand(void)
     return m_OverrideCommand;
 }
 
-GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
+const GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
 {
     return m_CurrentLevel;
 }
 
-void GF_SetCurrentLevel(GAME_FLOW_LEVEL *const level)
+void GF_SetCurrentLevel(const GAME_FLOW_LEVEL *const level)
 {
     m_CurrentLevel = level;
 }

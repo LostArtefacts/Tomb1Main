@@ -56,9 +56,10 @@ GAME_FLOW_COMMAND GF_RunCutscene(const int32_t cutscene_num)
 }
 
 GAME_FLOW_COMMAND GF_RunGame(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    PHASE *const phase = Phase_Game_Create(level_num, level_type);
+    PHASE *const phase = Phase_Game_Create(level, seq_ctx);
     const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(phase);
     Phase_Game_Destroy(phase);
     return gf_cmd;

@@ -1,8 +1,5 @@
 #pragma once
 
-// TODO: Split this enum, as it currently handles too many tasks. Apart from
-// level type identification, it's also used for controlling game flow (loading
-// a saved level, playing the story so far etc.).
 typedef enum {
     // Genuine level types
     GFL_TITLE,
@@ -20,17 +17,19 @@ typedef enum {
     GFL_DUMMY,
     GFL_CURRENT,
 #endif
-
-    // Game flow execution context-related types.
-    GFL_SAVED,
-#if TR_VERSION == 1
-    GFL_RESTART,
-    GFL_SELECT,
-#elif TR_VERSION == 2
-    GFL_STORY,
-    GFL_MID_STORY,
-#endif
 } GAME_FLOW_LEVEL_TYPE;
+
+typedef enum {
+    GFSC_NORMAL,
+    GFSC_SAVED,
+#if TR_VERSION == 1
+    GFSC_RESTART,
+    GFSC_SELECT,
+#elif TR_VERSION == 2
+    GFSC_STORY,
+    GFSC_MID_STORY,
+#endif
+} GAME_FLOW_SEQUENCE_CONTEXT;
 
 typedef enum {
     GF_NOOP = -1,

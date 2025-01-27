@@ -36,7 +36,7 @@ static CAMERA_INFO m_LocalCamera = {};
 GAME_FLOW_COMMAND TitleSequence(void)
 {
     GameStringTable_Apply(NULL);
-    if (!Level_Initialise(0, GFL_TITLE)) {
+    if (!Level_Initialise(GF_GetLevel(0, GFL_TITLE), GFSC_NORMAL)) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 

@@ -149,7 +149,7 @@ bool Demo_Start(const int32_t level_num)
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
 
-    if (!Level_Initialise(level_num, GFL_DEMO)) {
+    if (!Level_Initialise(GF_GetLevel(level_num, GFL_DEMO), GFSC_NORMAL)) {
         return false;
     }
     if (g_DemoData == NULL) {

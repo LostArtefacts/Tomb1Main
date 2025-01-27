@@ -5,10 +5,11 @@
 void Game_SetIsPlaying(bool is_playing);
 bool Game_IsPlaying(void);
 
-GAME_FLOW_LEVEL *Game_GetCurrentLevel(void);
-void Game_SetCurrentLevel(GAME_FLOW_LEVEL *level);
+const GAME_FLOW_LEVEL *Game_GetCurrentLevel(void);
+void Game_SetCurrentLevel(const GAME_FLOW_LEVEL *level);
 
-extern bool Game_Start(int32_t level_num, GAME_FLOW_LEVEL_TYPE level_type);
+extern bool Game_Start(
+    const GAME_FLOW_LEVEL *level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx);
 extern void Game_End(void);
 extern void Game_Suspend(void);
 extern void Game_Resume(void);

@@ -23,18 +23,19 @@
 
 #include <libtrx/config.h>
 
-bool Game_Start(int32_t level_num, const GAME_FLOW_LEVEL_TYPE level_type)
+bool Game_Start(
+    const GAME_FLOW_LEVEL *const level,
+    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, level_type);
     Game_SetCurrentLevel(level);
     GF_SetCurrentLevel(level);
-    if (level_type != GFL_SAVED) {
+    if (seq_ctx != GFSC_SAVED) {
         if (level != NULL) {
             ModifyStartInfo(level);
         }
         InitialiseLevelFlags();
     }
-    if (!Level_Initialise(level_num, level_type)) {
+    if (!Level_Initialise(level, seq_ctx)) {
         Game_SetCurrentLevel(NULL);
         GF_SetCurrentLevel(NULL);
         return false;
