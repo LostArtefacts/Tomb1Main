@@ -117,7 +117,7 @@ int32_t g_TexturePageCount;
 int32_t g_ObjectTextureCount;
 uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 int32_t g_NumCameras;
-int16_t *g_AnimTextureRanges = NULL;
+ANIMATED_TEXTURE_RANGE *g_AnimTextureRanges = NULL;
 uint32_t *g_DemoData = NULL;
 char g_LevelFileName[256];
 uint16_t g_MusicTrackFlags[64];

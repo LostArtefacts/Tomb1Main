@@ -746,15 +746,16 @@ void Output_DoAnimateTextures(const int32_t ticks)
 {
     m_TickComp += ticks;
     while (m_TickComp > TICKS_PER_FRAME * 5) {
-        const int16_t *ptr = g_AnimTextureRanges;
-        int16_t i = *(ptr++);
-        for (; i > 0; --i, ++ptr) {
-            int16_t j = *(ptr++);
-            const OBJECT_TEXTURE temp = g_ObjectTextures[*ptr];
-            for (; j > 0; --j, ++ptr) {
-                g_ObjectTextures[ptr[0]] = g_ObjectTextures[ptr[1]];
+        const ANIMATED_TEXTURE_RANGE *range = g_AnimTextureRanges;
+        while (range != NULL) {
+            int32_t i = 0;
+            const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
+            for (; i < range->num_textures - 1; i++) {
+                g_ObjectTextures[range->textures[i]] =
+                    g_ObjectTextures[range->textures[i + 1]];
             }
-            g_ObjectTextures[*ptr] = temp;
+            g_ObjectTextures[range->textures[i]] = temp;
+            range = range->next_range;
         }
         m_TickComp -= TICKS_PER_FRAME * 5;
     }

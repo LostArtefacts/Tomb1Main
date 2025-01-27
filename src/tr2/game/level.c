@@ -538,14 +538,45 @@ static void M_LoadBoxes(VFILE *const file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadAnimatedTextures(VFILE *const file)
+static void M_LoadAnimatedTextures(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_ranges = VFile_ReadS32(file);
+    const int32_t data_size = VFile_ReadS32(file);
+    size_t end_position = VFile_GetPos(file) + data_size * sizeof(int16_t);
+
+    const int16_t num_ranges = VFile_ReadS16(file);
+    LOG_INFO("%d animated texture ranges", num_ranges);
+    if (num_ranges == 0) {
+        g_AnimTextureRanges = NULL;
+        goto cleanup;
+    }
+
     g_AnimTextureRanges = GameBuf_Alloc(
-        sizeof(int16_t) * num_ranges, GBUF_ANIMATED_TEXTURE_RANGES);
-    VFile_Read(file, g_AnimTextureRanges, sizeof(int16_t) * num_ranges);
+        sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
+        GBUF_ANIMATED_TEXTURE_RANGES);
+    for (int32_t i = 0; i < num_ranges; i++) {
+        ANIMATED_TEXTURE_RANGE *range = &g_AnimTextureRanges[i];
+        range->next_range =
+            i == num_ranges - 1 ? NULL : &g_AnimTextureRanges[i + 1];
+
+        // Level data is tied to the original logic in Output_AnimateTextures
+        // and hence stores one less than the actual count here.
+        range->num_textures = VFile_ReadS16(file);
+        range->num_textures++;
+
+        range->textures = GameBuf_Alloc(
+            sizeof(int16_t) * range->num_textures,
+            GBUF_ANIMATED_TEXTURE_RANGES);
+        VFile_Read(
+            file, range->textures, sizeof(int16_t) * range->num_textures);
+    }
+
+cleanup: {
+    // Ensure to read everything intended by the level compiler, even if it
+    // does not wholly contain accurate texture data.
+    VFile_SetPos(file, end_position);
     Benchmark_End(benchmark, NULL);
+}
 }
 
 static void M_LoadCinematic(VFILE *const file)
