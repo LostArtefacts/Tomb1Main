@@ -119,15 +119,13 @@ static void M_IncludeKillableItem(int16_t item_num)
     m_LevelPickups += Carrier_GetItemCount(item_num);
 }
 
-void Stats_ComputeFinal(
-    GAME_FLOW_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
+void Stats_ComputeFinal(GF_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
 {
     memset(final_stats, 0, sizeof(FINAL_STATS));
 
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type != level_type) {
             continue;
         }
@@ -198,7 +196,7 @@ void Stats_CalculateStats(void)
     // Check triggers for special pickups / killables
     M_TraverseFloor();
 
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     m_LevelPickups -= current_level->unobtainable.pickups;
     m_LevelKillables -= current_level->unobtainable.kills;
     m_LevelSecrets -= current_level->unobtainable.secrets;
@@ -219,7 +217,7 @@ int32_t Stats_GetSecrets(void)
     return m_LevelSecrets;
 }
 
-bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type)
+bool Stats_CheckAllSecretsCollected(GF_LEVEL_TYPE level_type)
 {
     FINAL_STATS final_stats = {};
     Stats_ComputeFinal(level_type, &final_stats);

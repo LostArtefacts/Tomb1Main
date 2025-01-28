@@ -8,5 +8,5 @@ void Demo_Pause(void);
 void Demo_Unpause(void);
 void Demo_StopFlashing(void);
 
-GAME_FLOW_COMMAND Demo_Control(void);
+GF_COMMAND Demo_Control(void);
 int32_t Demo_ChooseLevel(int32_t demo_num);

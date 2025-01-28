@@ -10,7 +10,7 @@
 static void M_LoadTableFromJSON(JSON_OBJECT *root_obj, GS_TABLE *out_table);
 static void M_LoadLevelsFromJSON(
     JSON_OBJECT *obj, GS_FILE *gs_file, const char *key,
-    GAME_FLOW_LEVEL_TABLE_TYPE level_table_type);
+    GF_LEVEL_TABLE_TYPE level_table_type);
 
 static void M_LoadTableFromJSON(
     JSON_OBJECT *const root_obj, GS_TABLE *const out_table)
@@ -80,9 +80,9 @@ static void M_LoadTableFromJSON(
 
 static void M_LoadLevelsFromJSON(
     JSON_OBJECT *const obj, GS_FILE *const gs_file, const char *const key,
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type)
+    const GF_LEVEL_TABLE_TYPE level_table_type)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
+    const GF_LEVEL_TABLE *const level_table =
         GF_GetLevelTable(level_table_type);
     GS_LEVEL_TABLE *const gs_level_table =
         &gs_file->level_tables[level_table_type];

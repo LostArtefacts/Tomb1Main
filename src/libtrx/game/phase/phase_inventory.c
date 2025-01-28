@@ -34,7 +34,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
     ASSERT(p->ring != NULL);
-    const GAME_FLOW_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
+    const GF_COMMAND gf_cmd = InvRing_Control(p->ring, num_frames);
     return (PHASE_CONTROL) {
         .action = p->ring->motion.status == RNG_DONE ? PHASE_ACTION_END
                                                      : PHASE_ACTION_CONTINUE,

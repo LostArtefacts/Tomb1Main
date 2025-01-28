@@ -33,12 +33,12 @@ typedef enum {
 
 static CAMERA_INFO m_LocalCamera = {};
 
-GAME_FLOW_COMMAND TitleSequence(void)
+GF_COMMAND TitleSequence(void)
 {
     GameStringTable_Apply(NULL);
-    const GAME_FLOW_LEVEL *const title_level = GF_GetTitleLevel();
+    const GF_LEVEL *const title_level = GF_GetTitleLevel();
     if (!Level_Initialise(title_level, GFSC_NORMAL)) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        return (GF_COMMAND) { .action = GF_EXIT_GAME };
     }
 
     return GF_ShowInventory(INV_TITLE_MODE);
@@ -191,10 +191,9 @@ void DecreaseScreenSize(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type != GFL_GYM) {
             Requester_AddItem(req, level->title, 0, NULL, 0);
         }

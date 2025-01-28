@@ -640,7 +640,7 @@ static void M_WriteFlares(void)
     }
 }
 
-void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_ResetCurrentInfo(const GF_LEVEL *const level)
 {
     START_INFO *const current = GF_GetResumeInfo(level);
     memset(current, 0, sizeof(START_INFO));
@@ -652,10 +652,9 @@ void Savegame_InitCurrentInfo(void)
         return;
     }
 
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         Savegame_ResetCurrentInfo(level);
         Savegame_ApplyLogicToCurrentInfo(level);
         GF_GetResumeInfo(level)->available = 0;
@@ -670,7 +669,7 @@ void Savegame_InitCurrentInfo(void)
     g_SaveGame.bonus_flag = 0;
 }
 
-void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 {
     START_INFO *start = GF_GetResumeInfo(level);
     start->has_pistols = 1;
@@ -747,7 +746,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
     }
 }
 
-void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
 {
     START_INFO *const start = GF_GetResumeInfo(level);
 
@@ -827,7 +826,7 @@ void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *const level)
 
 void CreateSaveGameInfo(void)
 {
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     g_SaveGame.current_level = current_level->num;
     Savegame_PersistGameToCurrentInfo(current_level);
 
@@ -878,7 +877,7 @@ void CreateSaveGameInfo(void)
 
 void ExtractSaveGameInfo(void)
 {
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     Lara_InitialiseInventory(current_level);
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, g_SaveGame.num_pickup[0]);
     Inv_AddItemNTimes(O_PICKUP_ITEM_2, g_SaveGame.num_pickup[1]);
@@ -1023,7 +1022,7 @@ int32_t S_SaveGame(const int32_t slot_num)
         return false;
     }
 
-    const GAME_FLOW_LEVEL *const current_level =
+    const GF_LEVEL *const current_level =
         GF_GetLevel(GFLT_MAIN, g_SaveGame.current_level);
 
     sprintf(file_name, "%s", current_level->title);

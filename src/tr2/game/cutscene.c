@@ -34,7 +34,7 @@ static void M_FixAudioDrift(void)
 
 bool Cutscene_Start(const int32_t level_num)
 {
-    const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
+    const GF_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
     if (!Level_Initialise(level, GFSC_NORMAL)) {
         return false;
     }
@@ -55,21 +55,21 @@ void Cutscene_End(void)
     Sound_StopAll();
 }
 
-GAME_FLOW_COMMAND Cutscene_Control(void)
+GF_COMMAND Cutscene_Control(void)
 {
     M_FixAudioDrift();
 
     Input_Update();
     Shell_ProcessInput();
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     } else if (g_InputDB.pause) {
-        const GAME_FLOW_COMMAND gf_cmd = GF_PauseGame();
+        const GF_COMMAND gf_cmd = GF_PauseGame();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }
     } else if (g_InputDB.toggle_photo_mode) {
-        const GAME_FLOW_COMMAND gf_cmd = GF_EnterPhotoMode();
+        const GF_COMMAND gf_cmd = GF_EnterPhotoMode();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }
@@ -85,10 +85,10 @@ GAME_FLOW_COMMAND Cutscene_Control(void)
 
     g_CineFrameIdx++;
     if (g_CineFrameIdx >= g_NumCineFrames) {
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 void Cutscene_Draw(void)

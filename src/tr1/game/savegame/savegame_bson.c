@@ -393,7 +393,7 @@ static bool M_LoadInventory(JSON_OBJECT *inv_obj)
         LOG_ERROR("Malformed save: invalid or missing inventory info");
         return false;
     }
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     Lara_InitialiseInventory(current_level);
     Inv_AddItemNTimes(
         O_PICKUP_ITEM_1, JSON_ObjectGetInt(inv_obj, "pickup1", 0));
@@ -1453,7 +1453,7 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
 {
     ASSERT(game_info != NULL);
 
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     JSON_OBJECT *root_obj = JSON_ObjectNew();
 
     JSON_ObjectAppendString(root_obj, "level_title", current_level->title);

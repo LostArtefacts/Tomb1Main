@@ -24,7 +24,7 @@
 
 typedef struct {
     uint32_t *demo_ptr;
-    const GAME_FLOW_LEVEL *level;
+    const GF_LEVEL *level;
     TEXTSTRING *text;
 
     struct {
@@ -234,7 +234,7 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
     }
 }
 
-GAME_FLOW_COMMAND Demo_Control(void)
+GF_COMMAND Demo_Control(void)
 {
     return Game_Control(true);
 }

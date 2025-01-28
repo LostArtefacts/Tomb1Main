@@ -36,10 +36,9 @@ FINAL_STATS Stats_ComputeFinalStats(void)
 {
     FINAL_STATS result = {};
 
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_GYM) {
             continue;
         }

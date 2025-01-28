@@ -37,7 +37,7 @@ typedef struct {
 typedef struct {
     UI_WIDGET_VTABLE vtable;
     UI_STATS_DIALOG_ARGS args;
-    GAME_FLOW_LEVEL_TYPE level_type;
+    GF_LEVEL_TYPE level_type;
     int32_t listener;
 
     int32_t row_count;

@@ -7,7 +7,7 @@
 #include <stddef.h>
 
 static bool m_IsPlaying = false;
-static const GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
+static const GF_LEVEL *m_CurrentLevel = NULL;
 
 void Game_SetIsPlaying(const bool is_playing)
 {
@@ -20,25 +20,25 @@ bool Game_IsPlaying(void)
     return m_IsPlaying;
 }
 
-const GAME_FLOW_LEVEL *Game_GetCurrentLevel(void)
+const GF_LEVEL *Game_GetCurrentLevel(void)
 {
     return m_CurrentLevel;
 }
 
-void Game_SetCurrentLevel(const GAME_FLOW_LEVEL *const level)
+void Game_SetCurrentLevel(const GF_LEVEL *const level)
 {
     m_CurrentLevel = level;
 }
 
 bool Game_IsInGym(void)
 {
-    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    const GF_LEVEL *const current_level = GF_GetCurrentLevel();
     return current_level != NULL && current_level->type == GFL_GYM;
 }
 
 bool Game_IsPlayable(void)
 {
-    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    const GF_LEVEL *const current_level = GF_GetCurrentLevel();
     if (current_level == NULL || current_level->type == GFL_TITLE
         || current_level->type == GFL_DEMO
         || current_level->type == GFL_CUTSCENE) {

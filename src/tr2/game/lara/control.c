@@ -769,7 +769,7 @@ void Lara_InitialiseLoad(const int16_t item_num)
     g_LaraItem = &g_Items[item_num];
 }
 
-void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
+void Lara_Initialise(const GF_LEVEL *const level)
 {
     ITEM *const item = g_LaraItem;
 
@@ -854,7 +854,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
     }
 }
 
-void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *const level)
+void Lara_InitialiseInventory(const GF_LEVEL *const level)
 {
     Inv_RemoveAllItems();
 
@@ -963,7 +963,7 @@ void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *const level)
     Gun_InitialiseNewWeapon();
 }
 
-void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *const level)
+void Lara_InitialiseMeshes(const GF_LEVEL *const level)
 {
     for (int32_t i = 0; i < LM_NUMBER_OF; i++) {
         Lara_SwapSingleMesh(i, O_LARA);

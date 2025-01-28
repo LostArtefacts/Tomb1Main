@@ -4,11 +4,10 @@
 
 #include <libtrx/game/game_flow/sequencer.h>
 
-GAME_FLOW_COMMAND
+GF_COMMAND
 GF_InterpretSequence(
-    const GAME_FLOW_LEVEL *level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx,
-    void *seq_ctx_arg);
+    const GF_LEVEL *level, GF_SEQUENCE_CONTEXT seq_ctx, void *seq_ctx_arg);
 
-GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num);
-GAME_FLOW_COMMAND GF_DoCutsceneSequence(int32_t cutscene_num);
-GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num);
+GF_COMMAND GF_DoDemoSequence(int32_t demo_num);
+GF_COMMAND GF_DoCutsceneSequence(int32_t cutscene_num);
+GF_COMMAND GF_PlayAvailableStory(int32_t slot_num);

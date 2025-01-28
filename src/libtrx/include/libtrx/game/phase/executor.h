@@ -2,4 +2,4 @@
 
 #include "./types.h"
 
-GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *phase);
+GF_COMMAND PhaseExecutor_Run(PHASE *phase);

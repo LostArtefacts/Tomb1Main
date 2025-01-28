@@ -370,23 +370,23 @@ void Shell_Main(void)
         return;
     }
 
-    GAME_FLOW_COMMAND gf_cmd = g_GameFlow.cmd_init;
+    GF_COMMAND gf_cmd = g_GameFlow.cmd_init;
     bool is_loop_continued = true;
     while (is_loop_continued) {
         LOG_DEBUG(
-            "action=%s param=%d",
-            ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, gf_cmd.action), gf_cmd.param);
+            "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action),
+            gf_cmd.param);
         switch (gf_cmd.action) {
         case GF_START_GAME:
         case GF_SELECT_GAME:
             if (g_GameFlow.single_level >= 0) {
-                const GAME_FLOW_LEVEL *const level =
+                const GF_LEVEL *const level =
                     GF_GetLevel(GFLT_MAIN, g_GameFlow.single_level);
                 if (level != NULL) {
                     gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
                 }
             } else {
-                const GAME_FLOW_LEVEL *const level =
+                const GF_LEVEL *const level =
                     GF_GetLevel(GFLT_MAIN, gf_cmd.param);
                 if (level != NULL) {
                     gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
@@ -396,7 +396,7 @@ void Shell_Main(void)
 
         case GF_START_SAVED_GAME: {
             S_LoadGame(gf_cmd.param);
-            const GAME_FLOW_LEVEL *const level =
+            const GF_LEVEL *const level =
                 GF_GetLevel(GFLT_MAIN, g_SaveGame.current_level);
             if (level != NULL) {
                 gf_cmd = GF_DoLevelSequence(level, GFSC_SAVED);
@@ -413,7 +413,7 @@ void Shell_Main(void)
             break;
 
         case GF_LEVEL_COMPLETE:
-            gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
         case GF_EXIT_TO_TITLE:

@@ -32,7 +32,7 @@ typedef struct {
     bool is_ui_ready;
     UI_WIDGET *ui;
     TEXTSTRING *mode_text;
-    GAME_FLOW_ACTION action;
+    GF_ACTION action;
     FADER back_fader;
 } M_PRIV;
 

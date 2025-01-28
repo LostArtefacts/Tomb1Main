@@ -29,7 +29,7 @@ static struct {
 
 static void M_Apply(const GS_TABLE *table);
 static void M_ApplyLevelTitles(
-    const GS_FILE *gs_file, GAME_FLOW_LEVEL_TABLE_TYPE level_table_type);
+    const GS_FILE *gs_file, GF_LEVEL_TABLE_TYPE level_table_type);
 
 static void M_DoObjectAliases(void)
 {
@@ -84,10 +84,9 @@ static void M_Apply(const GS_TABLE *const table)
 }
 
 static void M_ApplyLevelTitles(
-    const GS_FILE *const gs_file,
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type)
+    const GS_FILE *const gs_file, const GF_LEVEL_TABLE_TYPE level_table_type)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
+    const GF_LEVEL_TABLE *const level_table =
         GF_GetLevelTable(level_table_type);
     const GS_LEVEL_TABLE *const gs_level_table =
         &gs_file->level_tables[level_table_type];
@@ -97,7 +96,7 @@ static void M_ApplyLevelTitles(
     }
 }
 
-void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
+void GameStringTable_Apply(const GF_LEVEL *const level)
 {
     const GS_FILE *const gs_file = &g_GST_File;
 
@@ -115,7 +114,7 @@ void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
             gs_level_table = NULL;
             break;
         default: {
-            const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type =
+            const GF_LEVEL_TABLE_TYPE level_table_type =
                 GF_GetLevelTableType(level->type);
             gs_level_table = &gs_file->level_tables[level_table_type];
         }

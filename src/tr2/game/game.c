@@ -23,9 +23,7 @@
 
 #include <libtrx/config.h>
 
-bool Game_Start(
-    const GAME_FLOW_LEVEL *const level,
-    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
+bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     Game_SetCurrentLevel(level);
     GF_SetCurrentLevel(level);
@@ -64,7 +62,7 @@ void Game_Resume(void)
     Stats_StartTimer();
 }
 
-GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
+GF_COMMAND Game_Control(const bool demo_mode)
 {
     if (g_GameFlow.cheat_keys) {
         Lara_Cheat_CheckKeys();
@@ -72,9 +70,9 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
 
     if (g_LevelComplete) {
         if (g_GameFlow.is_demo_version && g_GameFlow.single_level) {
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
     Input_Update();
@@ -105,14 +103,14 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
             return g_GameFlow.cmd_death_demo_mode;
         }
         if (Game_IsInGym()) {
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         if (g_GameFlow.cmd_death_in_game.action != GF_NOOP) {
             return g_GameFlow.cmd_death_in_game;
         }
         if (g_OverlayStatus == 2) {
             g_OverlayStatus = 1;
-            const GAME_FLOW_COMMAND gf_cmd = GF_ShowInventory(INV_DEATH_MODE);
+            const GF_COMMAND gf_cmd = GF_ShowInventory(INV_DEATH_MODE);
             if (gf_cmd.action != GF_NOOP) {
                 return gf_cmd;
             }
@@ -133,7 +131,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
                 g_OverlayStatus = g_Input.save ? -2 : 0;
             }
         } else {
-            GAME_FLOW_COMMAND gf_cmd;
+            GF_COMMAND gf_cmd;
             if (g_OverlayStatus == -1) {
                 gf_cmd = GF_ShowInventory(INV_LOAD_MODE);
             } else if (g_OverlayStatus == -2) {
@@ -166,7 +164,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         Stats_UpdateTimer();
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 void Game_Draw(bool draw_overlay)

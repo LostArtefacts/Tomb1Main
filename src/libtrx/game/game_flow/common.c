@@ -4,16 +4,16 @@
 #include "game/game_flow/vars.h"
 #include "memory.h"
 
-static const GAME_FLOW_LEVEL *m_CurrentLevel = NULL;
-static GAME_FLOW_COMMAND m_OverrideCommand = { .action = GF_NOOP };
+static const GF_LEVEL *m_CurrentLevel = NULL;
+static GF_COMMAND m_OverrideCommand = { .action = GF_NOOP };
 
-static void M_FreeSequence(GAME_FLOW_SEQUENCE *sequence);
+static void M_FreeSequence(GF_SEQUENCE *sequence);
 static void M_FreeInjections(INJECTION_DATA *injections);
-static void M_FreeLevel(GAME_FLOW_LEVEL *level);
-static void M_FreeLevelTable(GAME_FLOW_LEVEL_TABLE *level_table);
+static void M_FreeLevel(GF_LEVEL *level);
+static void M_FreeLevelTable(GF_LEVEL_TABLE *level_table);
 static void M_FreeFMVs(GAME_FLOW *gf);
 
-static void M_FreeSequence(GAME_FLOW_SEQUENCE *const sequence)
+static void M_FreeSequence(GF_SEQUENCE *const sequence)
 {
     Memory_Free(sequence->events);
 }
@@ -26,7 +26,7 @@ static void M_FreeInjections(INJECTION_DATA *const injections)
     Memory_FreePointer(&injections->data_paths);
 }
 
-static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
+static void M_FreeLevel(GF_LEVEL *const level)
 {
     Memory_FreePointer(&level->path);
     Memory_FreePointer(&level->title);
@@ -43,7 +43,7 @@ static void M_FreeLevel(GAME_FLOW_LEVEL *const level)
 #endif
 }
 
-static void M_FreeLevelTable(GAME_FLOW_LEVEL_TABLE *const level_table)
+static void M_FreeLevelTable(GF_LEVEL_TABLE *const level_table)
 {
     if (level_table != NULL) {
         for (int32_t i = 0; i < level_table->count; i++) {
@@ -85,18 +85,17 @@ void GF_Shutdown(void)
 #endif
 }
 
-void GF_OverrideCommand(const GAME_FLOW_COMMAND command)
+void GF_OverrideCommand(const GF_COMMAND command)
 {
     m_OverrideCommand = command;
 }
 
-GAME_FLOW_COMMAND GF_GetOverrideCommand(void)
+GF_COMMAND GF_GetOverrideCommand(void)
 {
     return m_OverrideCommand;
 }
 
-GAME_FLOW_LEVEL_TABLE_TYPE GF_GetLevelTableType(
-    const GAME_FLOW_LEVEL_TYPE level_type)
+GF_LEVEL_TABLE_TYPE GF_GetLevelTableType(const GF_LEVEL_TYPE level_type)
 {
     switch (level_type) {
     case GFL_GYM:
@@ -122,28 +121,27 @@ GAME_FLOW_LEVEL_TABLE_TYPE GF_GetLevelTableType(
     ASSERT_FAIL();
 }
 
-const GAME_FLOW_LEVEL_TABLE *GF_GetLevelTable(
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type)
+const GF_LEVEL_TABLE *GF_GetLevelTable(
+    const GF_LEVEL_TABLE_TYPE level_table_type)
 {
     return &g_GameFlow.level_tables[level_table_type];
 }
 
-const GAME_FLOW_LEVEL *GF_GetCurrentLevel(void)
+const GF_LEVEL *GF_GetCurrentLevel(void)
 {
     return m_CurrentLevel;
 }
 
-const GAME_FLOW_LEVEL *GF_GetTitleLevel(void)
+const GF_LEVEL *GF_GetTitleLevel(void)
 {
     return g_GameFlow.title_level;
 }
 
-const GAME_FLOW_LEVEL *GF_GetGymLevel(void)
+const GF_LEVEL *GF_GetGymLevel(void)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_GYM) {
             return level;
         }
@@ -151,12 +149,11 @@ const GAME_FLOW_LEVEL *GF_GetGymLevel(void)
     return NULL;
 }
 
-const GAME_FLOW_LEVEL *GF_GetFirstLevel(void)
+const GF_LEVEL *GF_GetFirstLevel(void)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_GYM) {
             continue;
         }
@@ -165,13 +162,12 @@ const GAME_FLOW_LEVEL *GF_GetFirstLevel(void)
     return NULL;
 }
 
-const GAME_FLOW_LEVEL *GF_GetLastLevel(void)
+const GF_LEVEL *GF_GetLastLevel(void)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
-    const GAME_FLOW_LEVEL *result = NULL;
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL *result = NULL;
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_GYM) {
             continue;
         }
@@ -185,10 +181,10 @@ const GAME_FLOW_LEVEL *GF_GetLastLevel(void)
     return result;
 }
 
-const GAME_FLOW_LEVEL *GF_GetLevel(
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type, const int32_t num)
+const GF_LEVEL *GF_GetLevel(
+    const GF_LEVEL_TABLE_TYPE level_table_type, const int32_t num)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
+    const GF_LEVEL_TABLE *const level_table =
         GF_GetLevelTable(level_table_type);
     ASSERT(level_table != NULL);
     if (num < 0 || num >= level_table->count) {
@@ -198,32 +194,32 @@ const GAME_FLOW_LEVEL *GF_GetLevel(
     return &level_table->levels[num];
 }
 
-const GAME_FLOW_LEVEL *GF_GetLevelAfter(const GAME_FLOW_LEVEL *const level)
+const GF_LEVEL *GF_GetLevelAfter(const GF_LEVEL *const level)
 {
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type =
+    const GF_LEVEL_TABLE_TYPE level_table_type =
         GF_GetLevelTableType(level->type);
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
+    const GF_LEVEL_TABLE *const level_table =
         GF_GetLevelTable(level_table_type);
     return level->num + 1 < level_table->count
         ? &level_table->levels[level->num + 1]
         : NULL;
 }
 
-const GAME_FLOW_LEVEL *GF_GetLevelBefore(const GAME_FLOW_LEVEL *const level)
+const GF_LEVEL *GF_GetLevelBefore(const GF_LEVEL *const level)
 {
-    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type =
+    const GF_LEVEL_TABLE_TYPE level_table_type =
         GF_GetLevelTableType(level->type);
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
+    const GF_LEVEL_TABLE *const level_table =
         GF_GetLevelTable(level_table_type);
     return level->num - 1 >= 0 ? &level_table->levels[level->num - 1] : NULL;
 }
 
-void GF_SetCurrentLevel(const GAME_FLOW_LEVEL *const level)
+void GF_SetCurrentLevel(const GF_LEVEL *const level)
 {
     m_CurrentLevel = level;
 }
 
-void GF_SetLevelTitle(GAME_FLOW_LEVEL *const level, const char *const title)
+void GF_SetLevelTitle(GF_LEVEL *const level, const char *const title)
 {
     Memory_FreePointer(&level->title);
     level->title = title != NULL ? Memory_DupStr(title) : NULL;

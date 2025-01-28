@@ -35,7 +35,7 @@
 
 typedef struct {
     uint32_t *demo_ptr;
-    const GAME_FLOW_LEVEL *level;
+    const GF_LEVEL *level;
     CONFIG old_config;
     RESUME_INFO old_resume_info;
     TEXTSTRING *text;
@@ -261,7 +261,7 @@ int32_t Demo_ChooseLevel(const int32_t demo_num)
     }
 }
 
-GAME_FLOW_COMMAND Demo_Control(void)
+GF_COMMAND Demo_Control(void)
 {
     Interpolation_Remember();
     M_PRIV *const p = &m_Priv;
@@ -271,18 +271,18 @@ GAME_FLOW_COMMAND Demo_Control(void)
 
     if (g_InputDB.pause) {
         PHASE *const subphase = Phase_Pause_Create();
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+        const GF_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
         Phase_Pause_Destroy(subphase);
         return gf_cmd;
     } else if (g_InputDB.toggle_photo_mode) {
         PHASE *const subphase = Phase_PhotoMode_Create();
-        const GAME_FLOW_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+        const GF_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
         Phase_PhotoMode_Destroy(subphase);
         return gf_cmd;
     }
 
     if (g_LevelComplete || g_InputDB.menu_confirm || g_InputDB.menu_back) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
             .param = p->level->num,
         };
@@ -291,7 +291,7 @@ GAME_FLOW_COMMAND Demo_Control(void)
     g_InputDB.any = 0;
 
     if (!M_ProcessInput(p)) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
             .param = p->level->num,
         };
@@ -315,7 +315,7 @@ GAME_FLOW_COMMAND Demo_Control(void)
     Overlay_BarHealthTimerTick();
     Output_AnimateTextures(1);
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 void Demo_StopFlashing(void)

@@ -15,8 +15,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     VECTOR *source = NULL;
     VECTOR *matches = NULL;
     int32_t level_to_load = -1;
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
 
     if (String_ParseInteger(ctx->args, &level_to_load)) {
         goto matched;
@@ -32,7 +31,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         Vector_Add(source, &source_item);
     }
 
-    const GAME_FLOW_LEVEL *const gym_level = GF_GetGymLevel();
+    const GF_LEVEL *const gym_level = GF_GetGymLevel();
     if (gym_level != NULL) {
         STRING_FUZZY_SOURCE source_item = {
             .key = "gym",
@@ -57,9 +56,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
 
 matched:
     if (level_to_load >= 0 && level_to_load < level_table->count) {
-        const GAME_FLOW_LEVEL *const level =
-            &level_table->levels[level_to_load];
-        GF_OverrideCommand((GAME_FLOW_COMMAND) {
+        const GF_LEVEL *const level = &level_table->levels[level_to_load];
+        GF_OverrideCommand((GF_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = level_to_load,
         });

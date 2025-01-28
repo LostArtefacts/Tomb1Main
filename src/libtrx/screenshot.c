@@ -56,7 +56,7 @@ static char *M_CleanScreenshotTitle(const char *const source)
 
 static char *M_GetScreenshotTitle(void)
 {
-    const GAME_FLOW_LEVEL *const level = GF_GetCurrentLevel();
+    const GF_LEVEL *const level = GF_GetCurrentLevel();
     if (level == NULL) {
         return Memory_DupStr("Intro");
     }

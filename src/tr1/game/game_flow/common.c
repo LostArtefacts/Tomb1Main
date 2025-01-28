@@ -7,7 +7,7 @@
 #include <libtrx/log.h>
 #include <libtrx/memory.h>
 
-RESUME_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *const level)
+RESUME_INFO *GF_GetResumeInfo(const GF_LEVEL *const level)
 {
     ASSERT(level != NULL);
     if (GF_GetLevelTableType(level->type) == GFLT_MAIN) {
@@ -17,6 +17,6 @@ RESUME_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *const level)
     }
     LOG_WARNING(
         "Warning: unable to get resume info for level %d (type=%s)", level->num,
-        ENUM_MAP_TO_STRING(GAME_FLOW_LEVEL_TYPE, level->type));
+        ENUM_MAP_TO_STRING(GF_LEVEL_TYPE, level->type));
     return NULL;
 }

@@ -46,8 +46,8 @@ static void M_RingActive(void);
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
-static GAME_FLOW_COMMAND M_Finish(INV_RING *ring, bool apply_changes);
-static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
+static GF_COMMAND M_Finish(INV_RING *ring, bool apply_changes);
+static GF_COMMAND M_Control(INV_RING *ring);
 
 static void M_ShowAmmoQuantity(const char *const fmt, const int32_t qty)
 {
@@ -167,22 +167,21 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
     return true;
 }
 
-static GAME_FLOW_COMMAND M_Finish(
-    INV_RING *const ring, const bool apply_changes)
+static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
 {
     // TODO: Make this function not have any side effects.
     // Consider adding new GF_ constants, but research other solutions first.
 
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
 
     if (Shell_IsExiting()) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        return (GF_COMMAND) { .action = GF_EXIT_GAME };
     } else if (GF_GetOverrideCommand().action != GF_NOOP) {
         return GF_GetOverrideCommand();
     } else if (ring->is_demo_needed) {
-        return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
+        return (GF_COMMAND) { .action = GF_START_DEMO, .param = -1 };
     } else if (g_Inv_Chosen == NO_OBJECT) {
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
 
     switch (g_Inv_Chosen) {
@@ -193,7 +192,7 @@ static GAME_FLOW_COMMAND M_Finish(
                 Inv_RemoveAllItems();
                 S_LoadGame(g_Inv_ExtraData[1]);
             }
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_START_SAVED_GAME,
                 .param = g_Inv_ExtraData[1],
             };
@@ -202,7 +201,7 @@ static GAME_FLOW_COMMAND M_Finish(
             if (ring->mode == INV_TITLE_MODE) {
                 // title mode - new game or select level.
                 if (g_GameFlow.play_any_level) {
-                    return (GAME_FLOW_COMMAND) {
+                    return (GF_COMMAND) {
                         .action = GF_START_GAME,
                         .param = g_Inv_ExtraData[1] + 1,
                     };
@@ -210,7 +209,7 @@ static GAME_FLOW_COMMAND M_Finish(
                     if (apply_changes) {
                         Savegame_InitCurrentInfo();
                     }
-                    return (GAME_FLOW_COMMAND) {
+                    return (GF_COMMAND) {
                         .action = GF_START_GAME,
                         .param = GF_GetFirstLevel()->num,
                     };
@@ -223,12 +222,12 @@ static GAME_FLOW_COMMAND M_Finish(
                         Savegame_InitCurrentInfo();
                     }
                     if (g_GameFlow.play_any_level) {
-                        return (GAME_FLOW_COMMAND) {
+                        return (GF_COMMAND) {
                             .action = GF_START_GAME,
                             .param = g_Inv_ExtraData[1] + 1,
                         };
                     } else {
-                        return (GAME_FLOW_COMMAND) {
+                        return (GF_COMMAND) {
                             .action = GF_START_GAME,
                             .param = GF_GetFirstLevel()->num,
                         };
@@ -239,24 +238,24 @@ static GAME_FLOW_COMMAND M_Finish(
                         CreateSaveGameInfo();
                         S_SaveGame(g_Inv_ExtraData[1]);
                     }
-                    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+                    return (GF_COMMAND) { .action = GF_NOOP };
                 }
             }
         } else {
             // third passport page:
             if (ring->mode == INV_TITLE_MODE) {
                 // title mode - exit the game
-                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                return (GF_COMMAND) { .action = GF_EXIT_GAME };
             } else {
                 // game mode - exit to title
-                return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
         }
         break;
 
     case O_PHOTO_OPTION:
         if (GF_GetGymLevel() != NULL) {
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_START_GAME,
                 .param = GF_GetGymLevel()->num,
             };
@@ -282,16 +281,16 @@ static GAME_FLOW_COMMAND M_Finish(
         break;
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
-static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
+static GF_COMMAND M_Control(INV_RING *const ring)
 {
     if (ring->motion.status == RNG_OPENING) {
         if (ring->mode == INV_TITLE_MODE
             && (Fader_IsActive(&ring->top_fader)
                 || Fader_IsActive(&ring->back_fader))) {
-            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+            return (GF_COMMAND) { .action = GF_NOOP };
         }
 
         if (!ring->has_spun_out) {
@@ -315,13 +314,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
         if (Fader_IsActive(&ring->top_fader)
             || Fader_IsActive(&ring->back_fader)) {
-            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+            return (GF_COMMAND) { .action = GF_NOOP };
         }
         ring->motion.status = RNG_DONE;
     }
 
     if (ring->motion.status == RNG_DONE) {
-        const GAME_FLOW_COMMAND gf_cmd = M_Finish(ring, true);
+        const GF_COMMAND gf_cmd = M_Finish(ring, true);
         // Returning to game – resume music
         if (gf_cmd.action == GF_NOOP) {
             Music_Unpause();
@@ -352,7 +351,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (Shell_IsExiting()) {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+        return (GF_COMMAND) { .action = GF_EXIT_GAME };
     }
 
     if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_LOAD_MODE
@@ -363,7 +362,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (ring->rotating) {
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
 
     switch (ring->motion.status) {
@@ -746,7 +745,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     Sound_EndScene();
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 void InvRing_RemoveAllText(void)
@@ -895,10 +894,9 @@ void InvRing_Close(INV_RING *const ring)
     Memory_Free(ring);
 }
 
-GAME_FLOW_COMMAND InvRing_Control(
-    INV_RING *const ring, const int32_t num_frames)
+GF_COMMAND InvRing_Control(INV_RING *const ring, const int32_t num_frames)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     for (int32_t i = 0; i < num_frames; i++) {
         gf_cmd = M_Control(ring);
         if (gf_cmd.action != GF_NOOP) {

@@ -5,11 +5,11 @@
 
 #include <stddef.h>
 
-void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
 
 void Savegame_InitCurrentInfo(void);
-void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *level);
-void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *level);
+void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *level);
 void CreateSaveGameInfo(void);
 void ExtractSaveGameInfo(void);
 

@@ -4,4 +4,4 @@
 
 #include <libtrx/game/game_flow/common.h>
 
-RESUME_INFO *GF_GetResumeInfo(const GAME_FLOW_LEVEL *level);
+RESUME_INFO *GF_GetResumeInfo(const GF_LEVEL *level);

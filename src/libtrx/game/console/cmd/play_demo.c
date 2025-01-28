@@ -13,7 +13,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         demo_to_load--;
         if (demo_to_load >= 0
             && demo_to_load < GF_GetLevelTable(GFLT_DEMOS)->count) {
-            GF_OverrideCommand((GAME_FLOW_COMMAND) {
+            GF_OverrideCommand((GF_COMMAND) {
                 .action = GF_START_DEMO,
                 .param = demo_to_load,
             });
@@ -24,7 +24,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         }
     } else if (String_IsEmpty(ctx->args)) {
         GF_OverrideCommand(
-            (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 });
+            (GF_COMMAND) { .action = GF_START_DEMO, .param = -1 });
         return CR_SUCCESS;
     } else {
         return CR_BAD_INVOCATION;

@@ -4,23 +4,20 @@
 
 void GF_Shutdown(void);
 
-void GF_OverrideCommand(GAME_FLOW_COMMAND action);
-GAME_FLOW_COMMAND GF_GetOverrideCommand(void);
+void GF_OverrideCommand(GF_COMMAND action);
+GF_COMMAND GF_GetOverrideCommand(void);
 
-GAME_FLOW_LEVEL_TABLE_TYPE GF_GetLevelTableType(
-    const GAME_FLOW_LEVEL_TYPE level_type);
-const GAME_FLOW_LEVEL_TABLE *GF_GetLevelTable(
-    GAME_FLOW_LEVEL_TABLE_TYPE level_type);
+GF_LEVEL_TABLE_TYPE GF_GetLevelTableType(const GF_LEVEL_TYPE level_type);
+const GF_LEVEL_TABLE *GF_GetLevelTable(GF_LEVEL_TABLE_TYPE level_type);
 
-const GAME_FLOW_LEVEL *GF_GetCurrentLevel(void);
-const GAME_FLOW_LEVEL *GF_GetTitleLevel(void);
-const GAME_FLOW_LEVEL *GF_GetGymLevel(void);
-const GAME_FLOW_LEVEL *GF_GetFirstLevel(void);
-const GAME_FLOW_LEVEL *GF_GetLastLevel(void);
-const GAME_FLOW_LEVEL *GF_GetLevel(
-    GAME_FLOW_LEVEL_TABLE_TYPE level_table_type, int32_t num);
-const GAME_FLOW_LEVEL *GF_GetLevelAfter(const GAME_FLOW_LEVEL *level);
-const GAME_FLOW_LEVEL *GF_GetLevelBefore(const GAME_FLOW_LEVEL *level);
+const GF_LEVEL *GF_GetCurrentLevel(void);
+const GF_LEVEL *GF_GetTitleLevel(void);
+const GF_LEVEL *GF_GetGymLevel(void);
+const GF_LEVEL *GF_GetFirstLevel(void);
+const GF_LEVEL *GF_GetLastLevel(void);
+const GF_LEVEL *GF_GetLevel(GF_LEVEL_TABLE_TYPE level_table_type, int32_t num);
+const GF_LEVEL *GF_GetLevelAfter(const GF_LEVEL *level);
+const GF_LEVEL *GF_GetLevelBefore(const GF_LEVEL *level);
 
-void GF_SetCurrentLevel(const GAME_FLOW_LEVEL *level);
-void GF_SetLevelTitle(GAME_FLOW_LEVEL *level, const char *title);
+void GF_SetCurrentLevel(const GF_LEVEL *level);
+void GF_SetLevelTitle(GF_LEVEL *level, const char *title);

@@ -17,10 +17,9 @@
 #include <libtrx/log.h>
 
 #define DECLARE_EVENT_HANDLER(name)                                            \
-    GAME_FLOW_COMMAND name(                                                    \
-        const GAME_FLOW_LEVEL *const level,                                    \
-        const GAME_FLOW_SEQUENCE_EVENT *const event,                           \
-        GAME_FLOW_SEQUENCE_CONTEXT seq_ctx, void *const seq_ctx_arg)
+    GF_COMMAND name(                                                           \
+        const GF_LEVEL *const level, const GF_SEQUENCE_EVENT *const event,     \
+        GF_SEQUENCE_CONTEXT seq_ctx, void *const seq_ctx_arg)
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle);
 static DECLARE_EVENT_HANDLER(M_HandlePicture);
@@ -66,16 +65,16 @@ static DECLARE_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle)
 {
-    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+    return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
 }
 
 static DECLARE_EVENT_HANDLER(M_HandlePicture)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_SAVED) {
         return gf_cmd;
     }
-    const GAME_FLOW_DISPLAY_PICTURE_DATA *const data = event->data;
+    const GF_DISPLAY_PICTURE_DATA *const data = event->data;
     PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
         .file_name = data->path,
         .display_time = data->display_time,
@@ -90,7 +89,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture)
 
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
         if (level->type == GFL_DEMO) {
             gf_cmd = GF_RunDemo(level->num);
@@ -108,7 +107,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
 
 static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
     if (seq_ctx != GFSC_SAVED) {
         gf_cmd = GF_DoCutsceneSequence(cutscene_num);
@@ -122,12 +121,12 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene)
 static DECLARE_EVENT_HANDLER(M_HandlePlayMusic)
 {
     Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     const int16_t fmv_id = (int16_t)(intptr_t)event->data;
     if (seq_ctx != GFSC_SAVED) {
         if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
@@ -141,12 +140,12 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
 
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_NORMAL) {
         return gf_cmd;
     }
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    const GAME_FLOW_LEVEL *const next_level = GF_GetLevelAfter(current_level);
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
     START_INFO *const start = GF_GetResumeInfo(current_level);
     start->stats = g_SaveGame.current_stats;
     start->available = 0;
@@ -157,7 +156,7 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
     if (next_level == NULL || gf_cmd.action != GF_NOOP) {
         return gf_cmd;
     }
-    gf_cmd = (GAME_FLOW_COMMAND) {
+    gf_cmd = (GF_COMMAND) {
         .action = GF_START_GAME,
         .param = next_level->num,
     };
@@ -166,9 +165,9 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
 
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_NORMAL) {
-        const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+        const GF_LEVEL *const current_level = Game_GetCurrentLevel();
         PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
             .background_type = Game_IsInGym() ? BK_TRANSPARENT : BK_OBJECT,
             .level_num = current_level->num,
@@ -183,9 +182,9 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
 
 static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_NORMAL) {
-        const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+        const GF_LEVEL *const current_level = Game_GetCurrentLevel();
         START_INFO *const start = GF_GetResumeInfo(current_level);
         start->stats = g_SaveGame.current_stats;
         g_SaveGame.bonus_flag = true;
@@ -198,14 +197,14 @@ static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
         gf_cmd = PhaseExecutor_Run(phase);
         Phase_Stats_Destroy(phase);
     } else {
-        gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleEnableSunset)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
         g_GF_SunsetEnabled = true;
     }
@@ -214,7 +213,7 @@ static DECLARE_EVENT_HANDLER(M_HandleEnableSunset)
 
 static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_SAVED) {
         g_CineTargetAngle = (int16_t)(intptr_t)event->data;
     }
@@ -223,7 +222,7 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 
 static DECLARE_EVENT_HANDLER(M_HandleDisableFloor)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
         g_GF_NoFloor = (int16_t)(intptr_t)event->data;
     }
@@ -232,10 +231,10 @@ static DECLARE_EVENT_HANDLER(M_HandleDisableFloor)
 
 static DECLARE_EVENT_HANDLER(M_HandleAddItem)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
-        const GAME_FLOW_ADD_ITEM_DATA *const data =
-            (const GAME_FLOW_ADD_ITEM_DATA *)event->data;
+        const GF_ADD_ITEM_DATA *const data =
+            (const GF_ADD_ITEM_DATA *)event->data;
         GF_InventoryModifier_Add(data->object_id, data->inv_type, data->qty);
     }
     return gf_cmd;
@@ -248,7 +247,7 @@ static DECLARE_EVENT_HANDLER(M_HandleAddSecretReward)
 
 static DECLARE_EVENT_HANDLER(M_HandleRemoveWeapons)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_SAVED) {
         g_GF_RemoveWeapons = true;
     }
@@ -257,7 +256,7 @@ static DECLARE_EVENT_HANDLER(M_HandleRemoveWeapons)
 
 static DECLARE_EVENT_HANDLER(M_HandleRemoveAmmo)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY && seq_ctx != GFSC_SAVED) {
         g_GF_RemoveAmmo = true;
     }
@@ -266,7 +265,7 @@ static DECLARE_EVENT_HANDLER(M_HandleRemoveAmmo)
 
 static DECLARE_EVENT_HANDLER(M_HandleSetStartAnim)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
         g_GF_LaraStartAnim = (int16_t)(intptr_t)event->data;
     }
@@ -275,15 +274,15 @@ static DECLARE_EVENT_HANDLER(M_HandleSetStartAnim)
 
 static DECLARE_EVENT_HANDLER(M_HandleSetNumSecrets)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_STORY) {
         g_GF_NumSecrets = (int16_t)(intptr_t)event->data;
     }
     return gf_cmd;
 }
 
-GAME_FLOW_COMMAND GF_InterpretSequence(
-    const GAME_FLOW_LEVEL *const level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx,
+GF_COMMAND GF_InterpretSequence(
+    const GF_LEVEL *const level, GF_SEQUENCE_CONTEXT seq_ctx,
     void *const seq_ctx_arg)
 {
     ASSERT(level != NULL);
@@ -301,14 +300,14 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     g_GF_NumSecrets = 3;
     GF_InventoryModifier_Reset();
 
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
+    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
 
-    const GAME_FLOW_SEQUENCE *const sequence = &level->sequence;
+    const GF_SEQUENCE *const sequence = &level->sequence;
     for (int32_t i = 0; i < sequence->length; i++) {
-        const GAME_FLOW_SEQUENCE_EVENT *const event = &sequence->events[i];
+        const GF_SEQUENCE_EVENT *const event = &sequence->events[i];
         LOG_DEBUG(
             "event type=%s(%d) data=0x%x",
-            ENUM_MAP_TO_STRING(GAME_FLOW_SEQUENCE_EVENT_TYPE, event->type),
+            ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
             event->type, event->data);
 
         // TODO: implement cine skipping
@@ -321,10 +320,9 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
             LOG_DEBUG(
                 "event type=%s(%d) data=0x%x finished, result: action=%s, "
                 "param=%d",
-                ENUM_MAP_TO_STRING(GAME_FLOW_SEQUENCE_EVENT_TYPE, event->type),
+                ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
                 event->type, event->data,
-                ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, gf_cmd.action),
-                gf_cmd.param);
+                ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
             if (gf_cmd.action != GF_NOOP) {
                 return gf_cmd;
             }
@@ -337,11 +335,11 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     }
 
     if (seq_ctx == GFSC_STORY) {
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
 
     LOG_DEBUG(
         "sequence finished: action=%s param=%d",
-        ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, gf_cmd.action), gf_cmd.param);
+        ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
     return gf_cmd;
 }

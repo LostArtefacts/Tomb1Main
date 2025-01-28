@@ -34,7 +34,7 @@
 
 static LEVEL_INFO m_LevelInfo = {};
 
-static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
+static void M_LoadFromFile(const GF_LEVEL *level);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
 static void M_LoadAnims(VFILE *file);
@@ -664,7 +664,7 @@ finish:
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_LoadFromFile(const GAME_FLOW_LEVEL *const level)
+static void M_LoadFromFile(const GF_LEVEL *const level)
 {
     LOG_DEBUG("%s (num=%d)", level->title, level->num);
     GameBuf_Reset();
@@ -741,7 +741,7 @@ static void M_CompleteSetup(void)
     Benchmark_End(benchmark, NULL);
 }
 
-bool Level_Load(const GAME_FLOW_LEVEL *const level)
+bool Level_Load(const GF_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -766,8 +766,7 @@ bool Level_Load(const GAME_FLOW_LEVEL *const level)
 }
 
 bool Level_Initialise(
-    const GAME_FLOW_LEVEL *const level,
-    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
+    const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     LOG_DEBUG("num=%d type=%d seq_ctx=%d", level->num, level->type, seq_ctx);
     if (level->type != GFL_TITLE && level->type != GFL_DEMO) {

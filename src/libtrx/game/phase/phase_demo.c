@@ -21,7 +21,7 @@ typedef struct {
     STATE state;
     int32_t level_num;
     FADER top_fader;
-    GAME_FLOW_COMMAND exit_gf_cmd;
+    GF_COMMAND exit_gf_cmd;
 } M_PRIV;
 
 static PHASE_CONTROL M_Start(PHASE *phase);
@@ -79,7 +79,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
     switch (p->state) {
     case STATE_RUN:
         for (int32_t i = 0; i < num_frames; i++) {
-            const GAME_FLOW_COMMAND gf_cmd = Demo_Control();
+            const GF_COMMAND gf_cmd = Demo_Control();
             if (gf_cmd.action != GF_NOOP) {
                 p->state = STATE_FADE_OUT;
                 p->exit_gf_cmd = gf_cmd;
@@ -103,7 +103,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
         return (PHASE_CONTROL) {
             .action = PHASE_ACTION_END,
             .gf_cmd = Shell_IsExiting()
-                ? (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME }
+                ? (GF_COMMAND) { .action = GF_EXIT_GAME }
                 : p->exit_gf_cmd,
         };
     }

@@ -52,7 +52,7 @@ static INJECTION_INFO *m_InjectionInfo = NULL;
 
 static bool M_TryLayout(VFILE *file, LEVEL_LAYOUT layout);
 static LEVEL_LAYOUT M_GuessLayout(VFILE *file);
-static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
+static void M_LoadFromFile(const GF_LEVEL *level);
 static void M_LoadTexturePages(VFILE *file);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
@@ -76,7 +76,7 @@ static void M_LoadPalette(VFILE *file);
 static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
-static void M_CompleteSetup(const GAME_FLOW_LEVEL *level);
+static void M_CompleteSetup(const GF_LEVEL *level);
 static void M_MarkWaterEdgeVertices(void);
 static size_t M_CalculateMaxVertices(void);
 
@@ -196,7 +196,7 @@ static LEVEL_LAYOUT M_GuessLayout(VFILE *const file)
     return result;
 }
 
-static void M_LoadFromFile(const GAME_FLOW_LEVEL *const level)
+static void M_LoadFromFile(const GF_LEVEL *const level)
 {
     GameBuf_Reset();
 
@@ -781,7 +781,7 @@ static void M_LoadSamples(VFILE *file)
     Benchmark_End(benchmark, NULL);
 }
 
-static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
+static void M_CompleteSetup(const GF_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -945,7 +945,7 @@ static size_t M_CalculateMaxVertices(void)
     return max_vertices;
 }
 
-void Level_Load(const GAME_FLOW_LEVEL *const level)
+void Level_Load(const GF_LEVEL *const level)
 {
     LOG_INFO("%d (%s)", level->num, level->path);
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -969,7 +969,7 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
     Benchmark_End(benchmark, NULL);
 }
 
-bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
+bool Level_Initialise(const GF_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     LOG_DEBUG("num=%d (%s)", level->num, level->path);
@@ -991,9 +991,9 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
 
     g_LevelComplete = false;
     if (level->type != GFL_TITLE && level->type != GFL_CUTSCENE) {
-        Game_SetCurrentLevel((GAME_FLOW_LEVEL *)level);
+        Game_SetCurrentLevel((GF_LEVEL *)level);
     }
-    GF_SetCurrentLevel((GAME_FLOW_LEVEL *)level);
+    GF_SetCurrentLevel((GF_LEVEL *)level);
     g_FlipEffect = -1;
 
     Overlay_HideGameInfo();

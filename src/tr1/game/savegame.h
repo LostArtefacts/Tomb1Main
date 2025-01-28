@@ -63,14 +63,14 @@ void Savegame_ScanAvailableLevels(REQUEST_INFO *req);
 void Savegame_HighlightNewestSlot(void);
 bool Savegame_RestartAvailable(int32_t slot_num);
 
-void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *level);
-void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *level);
+void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
 void Savegame_CarryCurrentInfoToNextLevel(
-    const GAME_FLOW_LEVEL *src_level, const GAME_FLOW_LEVEL *dst_level);
+    const GF_LEVEL *src_level, const GF_LEVEL *dst_level);
 
 // Persist Lara's inventory to the current info.
 // Used to carry over Lara's inventory between levels.
-void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *level);
 
 void Savegame_ProcessItemsBeforeLoad(void);
 void Savegame_ProcessItemsBeforeSave(void);

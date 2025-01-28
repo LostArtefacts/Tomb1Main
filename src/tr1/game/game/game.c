@@ -70,10 +70,9 @@ void Game_ProcessInput(void)
 }
 
 bool Game_Start_Legacy(
-    const GAME_FLOW_LEVEL *const level,
-    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
+    const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
-    const GAME_FLOW_LEVEL *const prev_level = GF_GetLevelBefore(level);
+    const GF_LEVEL *const prev_level = GF_GetLevelBefore(level);
     switch (seq_ctx) {
     case GFSC_SAVED:
         // reset current info to the defaults so that we do not do
@@ -114,7 +113,7 @@ bool Game_Start_Legacy(
             if (level->num > GF_GetFirstLevel()->num) {
                 Savegame_LoadOnlyResumeInfo(
                     g_GameInfo.current_save_slot, &g_GameInfo);
-                const GAME_FLOW_LEVEL *tmp_level = level;
+                const GF_LEVEL *tmp_level = level;
                 while (tmp_level != NULL) {
                     Savegame_ResetCurrentInfo(tmp_level);
                     tmp_level = GF_GetLevelAfter(tmp_level);
@@ -127,8 +126,7 @@ bool Game_Start_Legacy(
         } else {
             // console /play level feature
             Savegame_InitCurrentInfo();
-            const GAME_FLOW_LEVEL *tmp_level =
-                GF_GetLevelAfter(GF_GetFirstLevel());
+            const GF_LEVEL *tmp_level = GF_GetLevelAfter(GF_GetFirstLevel());
             while (tmp_level != NULL) {
                 Savegame_CarryCurrentInfoToNextLevel(
                     GF_GetLevelBefore(tmp_level), tmp_level);
@@ -180,12 +178,12 @@ bool Game_Start_Legacy(
     return true;
 }
 
-GAME_FLOW_COMMAND Game_Stop_Legacy(void)
+GF_COMMAND Game_Stop_Legacy(void)
 {
     Sound_StopAll();
     Music_Stop();
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    const GAME_FLOW_LEVEL *const next_level = GF_GetLevelAfter(current_level);
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
     Savegame_PersistGameToCurrentInfo(current_level);
 
     if (current_level == GF_GetLastLevel()) {
@@ -202,7 +200,7 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
                 current_level,
                 GF_GetLevel(GFLT_MAIN, g_GameInfo.select_level_num));
         }
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = g_GameInfo.select_level_num,
         };
@@ -219,46 +217,44 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
     if (g_LevelComplete) {
         // TODO: why is this made unavailable?
         GF_GetResumeInfo(current_level)->flags.available = 0;
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
             .param = g_GameInfo.select_level_num,
         };
     }
 
     if (g_GameInfo.passport_selection == PASSPORT_MODE_LOAD_GAME) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_START_SAVED_GAME,
             .param = g_GameInfo.current_save_slot,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_SELECT_LEVEL) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = g_GameInfo.select_level_num,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_STORY_SO_FAR) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_STORY_SO_FAR,
             .param = g_GameInfo.current_save_slot,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_RESTART) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_RESTART_GAME,
             .param = current_level->num,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_NEW_GAME) {
         Savegame_InitCurrentInfo();
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_START_GAME,
             .param = GF_GetFirstLevel()->num,
         };
     } else {
-        return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
 }
 
-bool Game_Start(
-    const GAME_FLOW_LEVEL *const level,
-    const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
+bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     Game_SetCurrentLevel(level);
     Interpolation_Remember();
@@ -278,14 +274,13 @@ void Game_Resume(void)
 {
 }
 
-GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
+GF_COMMAND Game_Control(const bool demo_mode)
 {
     ASSERT(!demo_mode);
 
     if (g_GameInfo.ask_for_save) {
         // ask for a save at the start of a level for the save crystals mode
-        const GAME_FLOW_COMMAND gf_cmd =
-            GF_ShowInventory(INV_SAVE_CRYSTAL_MODE);
+        const GF_COMMAND gf_cmd = GF_ShowInventory(INV_SAVE_CRYSTAL_MODE);
         g_GameInfo.ask_for_save = false;
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
@@ -329,7 +324,7 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
                 g_OverlayFlag = 0;
             }
         } else {
-            GAME_FLOW_COMMAND gf_cmd;
+            GF_COMMAND gf_cmd;
             if (g_OverlayFlag == -1) {
                 gf_cmd = GF_ShowInventory(INV_LOAD_MODE);
             } else if (g_OverlayFlag == -2) {
@@ -362,5 +357,5 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         Overlay_BarHealthTimerTick();
         Output_AnimateTextures(1);
     }
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }

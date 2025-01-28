@@ -469,7 +469,7 @@ void Lara_InitialiseLoad(int16_t item_num)
     }
 }
 
-void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
+void Lara_Initialise(const GF_LEVEL *const level)
 {
     RESUME_INFO *const resume = GF_GetResumeInfo(level);
 
@@ -530,7 +530,7 @@ void Lara_Initialise(const GAME_FLOW_LEVEL *const level)
     Lara_InitialiseInventory(level);
 }
 
-void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *const level)
+void Lara_InitialiseInventory(const GF_LEVEL *const level)
 {
     Inv_RemoveAllItems();
 
@@ -651,7 +651,7 @@ void Lara_RevertToPistolsIfNeeded(void)
     Gun_SetLaraBackMesh(g_Lara.back_gun_type);
 }
 
-void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *const level)
+void Lara_InitialiseMeshes(const GF_LEVEL *const level)
 {
     const RESUME_INFO *const resume = GF_GetResumeInfo(level);
 

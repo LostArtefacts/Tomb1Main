@@ -27,5 +27,5 @@ typedef enum {
 //    should be set to the phase to switch to.
 typedef struct {
     PHASE_ACTION action;
-    GAME_FLOW_COMMAND gf_cmd;
+    GF_COMMAND gf_cmd;
 } PHASE_CONTROL;

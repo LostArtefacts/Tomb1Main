@@ -23,10 +23,10 @@ static int32_t M_Wait(PHASE *phase);
 
 static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
 {
-    const GAME_FLOW_COMMAND gf_override_cmd = GF_GetOverrideCommand();
+    const GF_COMMAND gf_override_cmd = GF_GetOverrideCommand();
     if (gf_override_cmd.action != GF_NOOP) {
-        const GAME_FLOW_COMMAND gf_cmd = gf_override_cmd;
-        GF_OverrideCommand((GAME_FLOW_COMMAND) { .action = GF_NOOP });
+        const GF_COMMAND gf_cmd = gf_override_cmd;
+        GF_OverrideCommand((GF_COMMAND) { .action = GF_NOOP });
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
 
@@ -75,9 +75,9 @@ static int32_t M_Wait(PHASE *const phase)
     }
 }
 
-GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
+GF_COMMAND PhaseExecutor_Run(PHASE *const phase)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
 
     PHASE *const prev_phase =
         m_PhaseStackSize > 0 ? m_PhaseStack[m_PhaseStackSize - 1] : NULL;
@@ -90,7 +90,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
         Clock_SyncTick();
         const PHASE_CONTROL control = phase->start(phase);
         if (Shell_IsExiting()) {
-            gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
             goto finish;
         } else if (control.action == PHASE_ACTION_END) {
             gf_cmd = control.gf_cmd;
@@ -104,7 +104,7 @@ GAME_FLOW_COMMAND PhaseExecutor_Run(PHASE *const phase)
 
         if (control.action == PHASE_ACTION_END) {
             if (Shell_IsExiting()) {
-                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
             } else {
                 gf_cmd = control.gf_cmd;
             }

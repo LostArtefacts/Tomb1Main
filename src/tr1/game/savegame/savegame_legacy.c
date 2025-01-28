@@ -421,11 +421,10 @@ static void M_ReadLOT(LOT_INFO *lot)
 
 static void M_SetCurrentPosition(const int32_t level_num)
 {
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_CURRENT) {
             g_GameInfo.current[current_level->num] = g_GameInfo.current[i];
         }
@@ -435,10 +434,9 @@ static void M_SetCurrentPosition(const int32_t level_num)
 static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
 {
     ASSERT(game_info->current != NULL);
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         RESUME_INFO *current = GF_GetResumeInfo(level);
         M_Read(&current->pistol_ammo, sizeof(uint16_t));
         M_Read(&current->magnum_ammo, sizeof(uint16_t));
@@ -696,7 +694,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     M_Reset(buffer);
     memset(m_SGBufPtr, 0, SAVEGAME_LEGACY_MAX_BUFFER_SIZE);
 
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
 
     char title[SAVEGAME_LEGACY_TITLE_SIZE];
     snprintf(title, SAVEGAME_LEGACY_TITLE_SIZE, "%s", current_level->title);

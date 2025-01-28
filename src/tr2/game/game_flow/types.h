@@ -11,15 +11,15 @@ typedef struct {
     float display_time;
     float fade_in_time;
     float fade_out_time;
-} GAME_FLOW_DISPLAY_PICTURE_DATA;
+} GF_DISPLAY_PICTURE_DATA;
 
 typedef enum {
     GF_INV_REGULAR,
     GF_INV_SECRET,
-} GAME_FLOW_INV_TYPE;
+} GF_INV_TYPE;
 
 typedef struct {
     GAME_OBJECT_ID object_id;
-    GAME_FLOW_INV_TYPE inv_type;
+    GF_INV_TYPE inv_type;
     int32_t qty;
-} GAME_FLOW_ADD_ITEM_DATA;
+} GF_ADD_ITEM_DATA;

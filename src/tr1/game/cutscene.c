@@ -23,9 +23,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-static void M_InitialiseLara(const GAME_FLOW_LEVEL *level);
+static void M_InitialiseLara(const GF_LEVEL *level);
 
-static void M_InitialiseLara(const GAME_FLOW_LEVEL *const level)
+static void M_InitialiseLara(const GF_LEVEL *const level)
 {
     const GAME_OBJECT_ID lara_type = level->lara_type;
     Lara_Hair_SetLaraType(lara_type);
@@ -60,7 +60,7 @@ static void M_InitialiseLara(const GAME_FLOW_LEVEL *const level)
 
 bool Cutscene_Start(const int32_t level_num)
 {
-    const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
+    const GF_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
     if (GF_GetCurrentLevel()->num != level_num) {
         if (!Level_Initialise(level)) {
             return false;
@@ -94,21 +94,21 @@ void Cutscene_End(void)
     Sound_StopAll();
 }
 
-GAME_FLOW_COMMAND Cutscene_Control(void)
+GF_COMMAND Cutscene_Control(void)
 {
     Interpolation_Remember();
 
     Input_Update();
     Shell_ProcessInput();
     if (g_InputDB.menu_confirm || g_InputDB.menu_back) {
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     } else if (g_InputDB.pause) {
-        const GAME_FLOW_COMMAND gf_cmd = GF_PauseGame();
+        const GF_COMMAND gf_cmd = GF_PauseGame();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }
     } else if (g_InputDB.toggle_photo_mode) {
-        const GAME_FLOW_COMMAND gf_cmd = GF_EnterPhotoMode();
+        const GF_COMMAND gf_cmd = GF_EnterPhotoMode();
         if (gf_cmd.action != GF_NOOP) {
             return gf_cmd;
         }
@@ -125,10 +125,10 @@ GAME_FLOW_COMMAND Cutscene_Control(void)
     g_CineFrame++;
     if (g_CineFrame >= g_NumCineFrames - 1) {
         g_CineFrame = g_NumCineFrames - 2;
-        return (GAME_FLOW_COMMAND) { .action = GF_LEVEL_COMPLETE };
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 void Cutscene_Draw(void)

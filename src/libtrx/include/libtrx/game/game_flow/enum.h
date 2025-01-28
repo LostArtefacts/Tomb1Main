@@ -6,7 +6,7 @@ typedef enum {
     GFLT_CUTSCENES,
     GFLT_DEMOS,
     GFLT_NUMBER_OF,
-} GAME_FLOW_LEVEL_TABLE_TYPE;
+} GF_LEVEL_TABLE_TYPE;
 
 typedef enum {
     // Genuine level types
@@ -23,7 +23,7 @@ typedef enum {
     GFL_DUMMY,
     GFL_CURRENT,
 #endif
-} GAME_FLOW_LEVEL_TYPE;
+} GF_LEVEL_TYPE;
 
 typedef enum {
     GFSC_NORMAL,
@@ -33,7 +33,7 @@ typedef enum {
     GFSC_SELECT,
 #endif
     GFSC_STORY,
-} GAME_FLOW_SEQUENCE_CONTEXT;
+} GF_SEQUENCE_CONTEXT;
 
 typedef enum {
     GF_NOOP = -1,
@@ -53,7 +53,7 @@ typedef enum {
     GF_START_GYM,
     GF_STORY_SO_FAR,
 #endif
-} GAME_FLOW_ACTION;
+} GF_ACTION;
 
 typedef enum {
     GFS_DISPLAY_PICTURE,
@@ -87,4 +87,4 @@ typedef enum {
     GFS_ADD_SECRET_REWARD,
 #endif
     GFS_NUMBER_OF,
-} GAME_FLOW_SEQUENCE_EVENT_TYPE;
+} GF_SEQUENCE_EVENT_TYPE;

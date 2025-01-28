@@ -50,7 +50,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t num_frames)
 {
     M_PRIV *const p = phase->priv;
     for (int32_t i = 0; i < num_frames; i++) {
-        const GAME_FLOW_COMMAND gf_cmd = Cutscene_Control();
+        const GF_COMMAND gf_cmd = Cutscene_Control();
         if (gf_cmd.action != GF_NOOP) {
             return (PHASE_CONTROL) {
                 .action = PHASE_ACTION_END,

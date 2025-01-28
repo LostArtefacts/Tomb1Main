@@ -18,11 +18,11 @@ void Lara_UseItem(GAME_OBJECT_ID object_id);
 
 void Lara_InitialiseLoad(int16_t item_num);
 
-void Lara_Initialise(const GAME_FLOW_LEVEL *level);
+void Lara_Initialise(const GF_LEVEL *level);
 
-void Lara_InitialiseInventory(const GAME_FLOW_LEVEL *level);
+void Lara_InitialiseInventory(const GF_LEVEL *level);
 
-void Lara_InitialiseMeshes(const GAME_FLOW_LEVEL *level);
+void Lara_InitialiseMeshes(const GF_LEVEL *level);
 
 void Lara_GetOffVehicle(void);
 

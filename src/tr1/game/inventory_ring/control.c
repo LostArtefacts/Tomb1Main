@@ -50,8 +50,8 @@ static void M_RingActive(INV_RING *ring);
 
 static bool M_AnimateInventoryItem(INVENTORY_ITEM *inv_item);
 
-static GAME_FLOW_COMMAND M_Finish(INV_RING *ring, bool apply_changes);
-static GAME_FLOW_COMMAND M_Control(INV_RING *ring);
+static GF_COMMAND M_Finish(INV_RING *ring, bool apply_changes);
+static GF_COMMAND M_Control(INV_RING *ring);
 static bool M_CheckDemoTimer(const INV_RING *ring);
 
 static TEXTSTRING *M_InitExamineText(
@@ -228,40 +228,39 @@ static bool M_AnimateInventoryItem(INVENTORY_ITEM *const inv_item)
     return true;
 }
 
-static GAME_FLOW_COMMAND M_Finish(
-    INV_RING *const ring, const bool apply_changes)
+static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
 {
     // TODO: Make this function not have any side effects.
     // Consider adding new GF_ constants, but research other solutions first.
 
     if (m_StartLevel != -1) {
-        return (GAME_FLOW_COMMAND) {
+        return (GF_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = m_StartLevel,
         };
     }
 
     if (ring->is_demo_needed) {
-        return (GAME_FLOW_COMMAND) { .action = GF_START_DEMO, .param = -1 };
+        return (GF_COMMAND) { .action = GF_START_DEMO, .param = -1 };
     }
 
     switch (m_InvChosen) {
     case O_PASSPORT_OPTION:
         switch (g_GameInfo.passport_selection) {
         case PASSPORT_MODE_LOAD_GAME:
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_START_SAVED_GAME,
                 .param = g_GameInfo.current_save_slot,
             };
 
         case PASSPORT_MODE_SELECT_LEVEL:
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_SELECT_GAME,
                 .param = g_GameInfo.select_level_num,
             };
 
         case PASSPORT_MODE_STORY_SO_FAR:
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_STORY_SO_FAR,
                 .param = g_GameInfo.current_save_slot,
             };
@@ -270,7 +269,7 @@ static GAME_FLOW_COMMAND M_Finish(
             if (apply_changes) {
                 Savegame_InitCurrentInfo();
             }
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_START_GAME,
                 .param = GF_GetFirstLevel()->num,
             };
@@ -279,24 +278,24 @@ static GAME_FLOW_COMMAND M_Finish(
             if (apply_changes) {
                 Savegame_Save(g_GameInfo.current_save_slot);
             }
-            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+            return (GF_COMMAND) { .action = GF_NOOP };
 
         case PASSPORT_MODE_RESTART:
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_RESTART_GAME,
                 .param = Game_GetCurrentLevel()->num,
             };
 
         case PASSPORT_MODE_EXIT_TITLE:
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
 
         case PASSPORT_MODE_EXIT_GAME:
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+            return (GF_COMMAND) { .action = GF_EXIT_GAME };
 
         case PASSPORT_MODE_BROWSE:
         case PASSPORT_MODE_UNAVAILABLE:
         default:
-            return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
 
     case O_PHOTO_OPTION:
@@ -304,7 +303,7 @@ static GAME_FLOW_COMMAND M_Finish(
             g_GameInfo.current_save_slot = -1;
         }
         if (GF_GetGymLevel() != NULL) {
-            return (GAME_FLOW_COMMAND) {
+            return (GF_COMMAND) {
                 .action = GF_START_GYM,
                 .param = GF_GetGymLevel()->num,
             };
@@ -336,16 +335,16 @@ static GAME_FLOW_COMMAND M_Finish(
         break;
     }
 
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
-static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
+static GF_COMMAND M_Control(INV_RING *const ring)
 {
     if (ring->motion.status == RNG_OPENING) {
         if (ring->mode == INV_TITLE_MODE
             && (Fader_IsActive(&ring->top_fader)
                 || Fader_IsActive(&ring->back_fader))) {
-            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+            return (GF_COMMAND) { .action = GF_NOOP };
         }
 
         ClockTimer_Sync(&m_DemoTimer);
@@ -370,13 +369,13 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
         if (Fader_IsActive(&ring->top_fader)
             || Fader_IsActive(&ring->back_fader)) {
-            return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+            return (GF_COMMAND) { .action = GF_NOOP };
         }
         ring->motion.status = RNG_DONE;
     }
 
     if (ring->motion.status == RNG_DONE) {
-        const GAME_FLOW_COMMAND gf_cmd = M_Finish(ring, true);
+        const GF_COMMAND gf_cmd = M_Finish(ring, true);
         // Returning to game – resume music
         if (gf_cmd.action == GF_NOOP) {
             Music_Unpause();
@@ -406,7 +405,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     if (ring->rotating) {
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
 
     if ((ring->mode == INV_SAVE_MODE || ring->mode == INV_SAVE_CRYSTAL_MODE
@@ -813,7 +812,7 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
     }
 
     Interpolation_Remember();
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 static bool M_CheckDemoTimer(const INV_RING *const ring)
@@ -980,10 +979,9 @@ void InvRing_Close(INV_RING *const ring)
     Memory_Free(ring);
 }
 
-GAME_FLOW_COMMAND InvRing_Control(
-    INV_RING *const ring, const int32_t num_frames)
+GF_COMMAND InvRing_Control(INV_RING *const ring, const int32_t num_frames)
 {
-    GAME_FLOW_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     for (int32_t i = 0; i < num_frames; i++) {
         gf_cmd = M_Control(ring);
         if (gf_cmd.action != GF_NOOP) {

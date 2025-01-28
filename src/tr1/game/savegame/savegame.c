@@ -226,10 +226,9 @@ void Savegame_ProcessItemsBeforeSave(void)
 
 void Savegame_InitCurrentInfo(void)
 {
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         Savegame_ResetCurrentInfo(level);
         Savegame_ApplyLogicToCurrentInfo(level);
         GF_GetResumeInfo(level)->flags.available = 0;
@@ -242,7 +241,7 @@ void Savegame_InitCurrentInfo(void)
     }
 }
 
-void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 {
     RESUME_INFO *const current = GF_GetResumeInfo(level);
     LOG_INFO("Applying game logic to level #%d", level->num);
@@ -339,7 +338,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
     }
 }
 
-void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_ResetCurrentInfo(const GF_LEVEL *const level)
 {
     LOG_INFO("Resetting resume info for level #%d", level->num);
     RESUME_INFO *const current = GF_GetResumeInfo(level);
@@ -347,8 +346,7 @@ void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *const level)
 }
 
 void Savegame_CarryCurrentInfoToNextLevel(
-    const GAME_FLOW_LEVEL *const src_level,
-    const GAME_FLOW_LEVEL *const dst_level)
+    const GF_LEVEL *const src_level, const GF_LEVEL *const dst_level)
 {
     LOG_INFO(
         "Copying resume info from level #%d to level #%d", src_level->num,
@@ -358,7 +356,7 @@ void Savegame_CarryCurrentInfoToNextLevel(
         sizeof(RESUME_INFO));
 }
 
-void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
 {
     ASSERT(level != NULL);
     RESUME_INFO *current = GF_GetResumeInfo(level);
@@ -467,13 +465,12 @@ bool Savegame_Save(const int32_t slot_num)
 
     File_CreateDirectory(SAVES_DIR);
 
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     Savegame_PersistGameToCurrentInfo(current_level);
 
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
-        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        const GF_LEVEL *const level = &level_table->levels[i];
         if (level->type == GFL_CURRENT) {
             game_info->current[i] = game_info->current[current_level->num];
         }
@@ -658,11 +655,10 @@ void Savegame_ScanAvailableLevels(REQUEST_INFO *req)
         return;
     }
 
-    const GAME_FLOW_LEVEL_TABLE *const level_table =
-        GF_GetLevelTable(GFLT_MAIN);
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i <= MIN(savegame_info->level_num, level_table->count);
          i++) {
-        const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_MAIN, i);
+        const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, i);
         if (level->type != GFL_GYM) {
             Requester_AddItem(req, false, "%s", level->title);
         }

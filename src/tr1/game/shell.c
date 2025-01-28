@@ -190,22 +190,20 @@ void Shell_Main(void)
         m_ModPaths[m_ActiveMod].game_flow_path,
         m_ModPaths[m_ActiveMod].game_strings_path);
 
-    GAME_FLOW_COMMAND command = { .action = GF_EXIT_TO_TITLE };
+    GF_COMMAND command = { .action = GF_EXIT_TO_TITLE };
     bool intro_played = false;
 
     g_GameInfo.current_save_slot = -1;
     bool loop_continue = true;
     while (loop_continue) {
         LOG_INFO(
-            "action=%s param=%d",
-            ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, command.action),
+            "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, command.action),
             command.param);
 
         switch (command.action) {
         case GF_START_GAME: {
             const int32_t level_num = command.param;
-            const GAME_FLOW_LEVEL *const level =
-                GF_GetLevel(GFLT_MAIN, level_num);
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
             command = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
             break;
         }
@@ -215,26 +213,23 @@ void Shell_Main(void)
             const int16_t level_num = Savegame_GetLevelNumber(slot_num);
             if (level_num < 0) {
                 LOG_ERROR("Corrupt save file!");
-                command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 g_GameInfo.current_save_slot = slot_num;
-                const GAME_FLOW_LEVEL *const level =
-                    GF_GetLevel(GFLT_MAIN, level_num);
+                const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
                 command = GF_InterpretSequence(level, GFSC_SAVED, NULL);
             }
             break;
         }
 
         case GF_RESTART_GAME: {
-            const GAME_FLOW_LEVEL *const level =
-                GF_GetLevel(GFLT_MAIN, command.param);
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, command.param);
             command = GF_InterpretSequence(level, GFSC_RESTART, NULL);
             break;
         }
 
         case GF_SELECT_GAME: {
-            const GAME_FLOW_LEVEL *const level =
-                GF_GetLevel(GFLT_MAIN, command.param);
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, command.param);
             command = GF_InterpretSequence(level, GFSC_SELECT, NULL);
             break;
         }
@@ -252,11 +247,11 @@ void Shell_Main(void)
             break;
 
         case GF_LEVEL_COMPLETE:
-            command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
         case GF_EXIT_TO_TITLE: {
-            const GAME_FLOW_LEVEL *const level = GF_GetTitleLevel();
+            const GF_LEVEL *const level = GF_GetTitleLevel();
             g_GameInfo.current_save_slot = -1;
             if (!intro_played) {
                 GF_InterpretSequence(level, GFSC_NORMAL, NULL);
@@ -264,7 +259,7 @@ void Shell_Main(void)
             }
 
             if (!Level_Initialise(level)) {
-                command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+                command = (GF_COMMAND) { .action = GF_EXIT_GAME };
                 break;
             }
 
@@ -277,9 +272,9 @@ void Shell_Main(void)
             break;
 
         case GF_START_GYM: {
-            const GAME_FLOW_LEVEL *const level = GF_GetGymLevel();
+            const GF_LEVEL *const level = GF_GetGymLevel();
             if (level == NULL) {
-                command = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 command = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
             }
