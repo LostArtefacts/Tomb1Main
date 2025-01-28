@@ -6,6 +6,7 @@
 #include <libtrx/utils.h>
 
 bool g_DiscardTransparent = false;
+static uint8_t m_LabTextureUVFlag[MAX_OBJECT_TEXTURES] = {};
 
 static void M_QuickSort(int32_t left, int32_t right);
 static inline void M_ClipG(
@@ -114,6 +115,28 @@ int32_t Render_GetUVAdjustment(void)
     return g_Config.rendering.nearest_adjustment;
 }
 
+void Render_ResetTextureUVs(void)
+{
+    for (int32_t i = 0; i < Output_GetObjectTextureCount(); i++) {
+        OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
+        uint16_t *const uv = &texture->uv[0].u;
+        uint8_t byte = 0;
+        for (int32_t j = 0; j < 8; j++) {
+            if ((uv[j] & 0x80) != 0) {
+                uv[j] |= 0xFF;
+                byte |= 1 << j;
+            } else {
+                uv[j] &= 0xFF00;
+            }
+        }
+        m_LabTextureUVFlag[i] = byte;
+
+        for (int32_t j = 0; j < 4; j++) {
+            texture->uv_backup[j] = texture->uv[j];
+        }
+    }
+}
+
 void Render_AdjustTextureUVs(const bool reset_uv_add)
 {
     const int32_t num_textures = Output_GetObjectTextureCount();
@@ -126,7 +149,7 @@ void Render_AdjustTextureUVs(const bool reset_uv_add)
         OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
         TEXTURE_UV *const uv = texture->uv;
         const TEXTURE_UV *const uv_backup = texture->uv_backup;
-        int32_t uv_flags = g_LabTextureUVFlag[i];
+        int32_t uv_flags = m_LabTextureUVFlag[i];
         for (int32_t j = 0; j < 4; j++) {
             uv[j].u = uv_backup[j].u + ((uv_flags & 1) ? -offset : offset);
             uv[j].v = uv_backup[j].v + ((uv_flags & 2) ? -offset : offset);

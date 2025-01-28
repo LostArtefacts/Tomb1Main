@@ -173,6 +173,9 @@ void Render_Reset(const RENDER_RESET_FLAGS reset_flags)
 
     r->Reset(r, reset_flags);
 
+    if (reset_flags & (RENDER_RESET_PARAMS | RENDER_RESET_UVS)) {
+        Render_ResetTextureUVs();
+    }
     if (reset_flags & (RENDER_RESET_PARAMS | RENDER_RESET_TEXTURES)) {
         Render_AdjustTextureUVs(reset_flags & RENDER_RESET_TEXTURES);
         M_ReuploadBackground();

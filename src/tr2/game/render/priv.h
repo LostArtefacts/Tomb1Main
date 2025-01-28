@@ -71,6 +71,7 @@ double Render_CalculatePolyZ(
 
 void Render_SortPolyList(void);
 int32_t Render_GetUVAdjustment(void);
+void Render_ResetTextureUVs(void);
 void Render_AdjustTextureUVs(bool reset_uv_add);
 
 int32_t Render_VisibleZClip(

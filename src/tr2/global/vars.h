@@ -110,7 +110,6 @@ extern int32_t g_FlipMaps[MAX_FLIP_MAPS];
 extern bool g_CameraUnderwater;
 extern int32_t g_BoxCount;
 extern int32_t g_TexturePageCount;
-extern uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 extern int32_t g_NumCameras;
 extern uint32_t *g_DemoData;
 extern char g_LevelFileName[256];

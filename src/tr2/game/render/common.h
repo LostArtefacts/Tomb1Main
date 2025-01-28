@@ -19,6 +19,7 @@ typedef enum {
     RENDER_RESET_PALETTE  = 1 << 1,
     RENDER_RESET_TEXTURES = 1 << 2,
     RENDER_RESET_PARAMS   = 1 << 3,
+    RENDER_RESET_UVS      = 1 << 4,
     RENDER_RESET_ALL      = INT32_MAX,
     // clang-format on
 } RENDER_RESET_FLAGS;

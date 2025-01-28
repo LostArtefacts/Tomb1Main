@@ -312,27 +312,6 @@ static void M_LoadTextures(VFILE *const file)
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_INFO("object textures: %d", num_textures);
     Level_ReadObjectTextures(0, 0, num_textures, file);
-
-    // TODO: handle this post-injection/packing
-    for (int32_t i = 0; i < num_textures; i++) {
-        OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
-        uint16_t *const uv = &texture->uv[0].u;
-        uint8_t byte = 0;
-        for (int32_t j = 0; j < 8; j++) {
-            if ((uv[j] & 0x80) != 0) {
-                uv[j] |= 0xFF;
-                byte |= 1 << j;
-            } else {
-                uv[j] &= 0xFF00;
-            }
-        }
-        g_LabTextureUVFlag[i] = byte;
-
-        for (int32_t j = 0; j < 4; j++) {
-            texture->uv_backup[j] = texture->uv[j];
-        }
-    }
-
     Benchmark_End(benchmark, NULL);
 }
 
@@ -757,7 +736,8 @@ static void M_CompleteSetup(void)
         Item_Initialise(i);
     }
 
-    Render_Reset(RENDER_RESET_PALETTE | RENDER_RESET_TEXTURES);
+    Render_Reset(
+        RENDER_RESET_PALETTE | RENDER_RESET_TEXTURES | RENDER_RESET_UVS);
 
     Benchmark_End(benchmark, NULL);
 }
