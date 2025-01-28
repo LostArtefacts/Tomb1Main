@@ -506,6 +506,8 @@ static void M_LoadTextures(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.texture_count = VFile_ReadS32(file);
     LOG_INFO("%d object textures", m_LevelInfo.texture_count);
+    Output_InitialiseObjectTextures(
+        m_LevelInfo.texture_count + m_InjectionInfo->texture_count);
     Level_ReadObjectTextures(0, 0, m_LevelInfo.texture_count, file);
     Benchmark_End(benchmark, NULL);
 }
@@ -515,6 +517,8 @@ static void M_LoadSprites(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.sprite_info_count = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", m_LevelInfo.sprite_info_count);
+    Output_InitialiseSpriteTextures(
+        m_LevelInfo.sprite_info_count + m_InjectionInfo->sprite_info_count);
     Level_ReadSpriteTextures(0, 0, m_LevelInfo.sprite_info_count, file);
 
     const int32_t num_sequences = VFile_ReadS32(file);
