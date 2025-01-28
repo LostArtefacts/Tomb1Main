@@ -285,7 +285,6 @@ static void M_WriteLara(LARA_INFO *lara)
 
 static void M_WriteArm(LARA_ARM *arm)
 {
-    const LEVEL_INFO *const level_info = Level_GetInfo();
     // frame_base is not required
     const int32_t frame_base = 0;
     M_Write(&frame_base, sizeof(int32_t));

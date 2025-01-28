@@ -1,8 +1,7 @@
 #pragma once
 
-#include "global/types.h"
-
 #include <libtrx/game/inject.h>
+#include <libtrx/game/level.h>
 
 typedef struct {
     int32_t texture_page_count;

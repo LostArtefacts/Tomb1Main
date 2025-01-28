@@ -1062,8 +1062,3 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
     Benchmark_End(benchmark, NULL);
     return true;
 }
-
-const LEVEL_INFO *Level_GetInfo(void)
-{
-    return &m_LevelInfo;
-}
