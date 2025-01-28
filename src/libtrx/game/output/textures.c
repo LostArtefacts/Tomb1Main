@@ -11,13 +11,6 @@ static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 
 void Output_InitialiseObjectTextures(const int32_t num_textures)
 {
-    if (num_textures > MAX_OBJECT_TEXTURES) {
-        Shell_ExitSystemFmt(
-            "Too many object textures: %d (max=%d)", num_textures,
-            MAX_OBJECT_TEXTURES);
-        return;
-    }
-
     m_ObjectTextureCount = num_textures;
     m_ObjectTextures = num_textures == 0
         ? NULL
@@ -27,13 +20,6 @@ void Output_InitialiseObjectTextures(const int32_t num_textures)
 
 void Output_InitialiseSpriteTextures(const int32_t num_textures)
 {
-    if (num_textures > MAX_SPRITE_TEXTURES) {
-        Shell_ExitSystemFmt(
-            "Too many sprite textures: %d (max=%d)", num_textures,
-            MAX_SPRITE_TEXTURES);
-        return;
-    }
-
     m_SpriteTextures = num_textures == 0
         ? NULL
         : GameBuf_Alloc(

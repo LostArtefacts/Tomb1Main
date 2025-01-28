@@ -147,6 +147,9 @@ game with new enhancements and features.
 - added ability to skip FMVs with both the Action key
 - added ability to skip end credits with the Action and Escape keys
 - expanded internal game memory limit from 7.5 MB to 128 MB
+- expanded maximum object textures from 2048 to unlimited (within game's overall memory cap)
+- expanded maximum sprite textures from 512 to unlimited (within game's overall memory cap)
+- expanded maximum texture pages from 32 to 128
 - ported audio decoding library to ffmpeg
 - ported video decoding library to ffmpeg
 - ported input backend to SDL

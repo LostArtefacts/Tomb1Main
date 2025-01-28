@@ -607,7 +607,8 @@ Not all options are turned on by default. Refer to `TR1X_ConfigTool.exe` for det
 - added ability to make freshly triggered (runaway) Pierre replace an already existing (runaway) Pierre
 - expanded internal game memory limit from 3.5 MB to 128 MB
 - expanded moveable limit from 256 to 10240
-- expanded maximum textures from 2048 to 8192
+- expanded maximum object textures from 2048 to unlimited (within game's overall memory cap)
+- expanded maximum sprite textures from 512 to unlimited (within game's overall memory cap)
 - expanded maximum texture pages from 32 to 128
 - expanded maximum vertices of a single drawable object from 1500 to unlimited
 - expanded the number of visible enemies from 8 to 32

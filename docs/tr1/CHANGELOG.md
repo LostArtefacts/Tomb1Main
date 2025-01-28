@@ -11,7 +11,8 @@
 - added exit fade-out effects (#2348)
 - added optional dynamic lighting for gun flashes and explosions, similar to TR2+ (#2357)
 - ⚠️ changed the game data to use a separate strings file for text information, removing it from the game flow file
-- changed the sprite limit from 512 to 1024
+- changed the sprite texture limit from 2048 to unlimited (within game's overall memory cap)
+- changed the sprite texture limit from 512 to unlimited (within game's overall memory cap)
 - changed demo to be interrupted only by esc or action keys
 - changed the turbo cheat to also affect ingame timer (#2167)
 - changed the pause screen to wait before yielding control during fade out effect

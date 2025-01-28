@@ -3,10 +3,11 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/game/game_buf.h>
 #include <libtrx/utils.h>
 
 bool g_DiscardTransparent = false;
-static uint8_t m_LabTextureUVFlag[MAX_OBJECT_TEXTURES] = {};
+static uint8_t *m_LabTextureUVFlag = NULL;
 
 static void M_QuickSort(int32_t left, int32_t right);
 static inline void M_ClipG(
@@ -117,7 +118,14 @@ int32_t Render_GetUVAdjustment(void)
 
 void Render_ResetTextureUVs(void)
 {
-    for (int32_t i = 0; i < Output_GetObjectTextureCount(); i++) {
+    const int32_t num_textures = Output_GetObjectTextureCount();
+    if (num_textures == 0) {
+        m_LabTextureUVFlag = NULL;
+        return;
+    }
+
+    m_LabTextureUVFlag = GameBuf_Alloc(num_textures, GBUF_OBJECT_TEXTURES);
+    for (int32_t i = 0; i < num_textures; i++) {
         OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
         uint16_t *const uv = &texture->uv[0].u;
         uint8_t byte = 0;

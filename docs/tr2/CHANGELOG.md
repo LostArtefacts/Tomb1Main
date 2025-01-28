@@ -8,6 +8,9 @@
 - added the ability to disable exit fade effects alone (#2348)
 - added a fade-out effect when completing Lara's Home
 - added support for animated sprites (#2401)
+- changed the object texture limit from 2048 to unlimited (within game's overall memory cap) (#1795)
+- changed the sprite texture limit from 512 to unlimited (within game's overall memory cap) (#1795)
+- changed the texture page limit from 32 to 128 (#1796)
 - changed default input bindings to let the photo mode binding be compatible with TR1X:
     | Key                           | Old binding | New binding  |
     | ----------------------------- | ----------- | ------------ |
