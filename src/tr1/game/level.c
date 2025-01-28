@@ -737,17 +737,17 @@ static void M_LoadSamples(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     VFile_Read(file, g_SampleLUT, sizeof(int16_t) * MAX_SAMPLES);
-    m_LevelInfo.sample_info_count = VFile_ReadS32(file);
-    LOG_INFO("%d sample infos", m_LevelInfo.sample_info_count);
-    if (!m_LevelInfo.sample_info_count) {
+    const int32_t num_sample_infos = VFile_ReadS32(file);
+    m_LevelInfo.samples.info_count = num_sample_infos;
+    LOG_INFO("%d sample infos", num_sample_infos);
+    if (num_sample_infos == 0) {
         Shell_ExitSystem("No Sample Infos");
     }
 
     g_SampleInfos = GameBuf_Alloc(
-        sizeof(SAMPLE_INFO)
-            * (m_LevelInfo.sample_info_count + m_InjectionInfo->sfx_count),
+        sizeof(SAMPLE_INFO) * (num_sample_infos + m_InjectionInfo->sfx_count),
         GBUF_SAMPLE_INFOS);
-    for (int32_t i = 0; i < m_LevelInfo.sample_info_count; i++) {
+    for (int32_t i = 0; i < num_sample_infos; i++) {
         SAMPLE_INFO *sample_info = &g_SampleInfos[i];
         sample_info->number = VFile_ReadS16(file);
         sample_info->volume = VFile_ReadS16(file);
@@ -755,31 +755,28 @@ static void M_LoadSamples(VFILE *file)
         sample_info->flags = VFile_ReadS16(file);
     }
 
-    m_LevelInfo.sample_data_size = VFile_ReadS32(file);
-    LOG_INFO("%d sample data size", m_LevelInfo.sample_data_size);
-    if (!m_LevelInfo.sample_data_size) {
+    const int32_t data_size = VFile_ReadS32(file);
+    m_LevelInfo.samples.data_size = data_size;
+    LOG_INFO("%d sample data size", data_size);
+    if (data_size == 0) {
         Shell_ExitSystem("No Sample Data");
     }
 
-    m_LevelInfo.sample_data = GameBuf_Alloc(
-        m_LevelInfo.sample_data_size + m_InjectionInfo->sfx_data_size,
-        GBUF_SAMPLES);
-    VFile_Read(
-        file, m_LevelInfo.sample_data,
-        sizeof(char) * m_LevelInfo.sample_data_size);
+    m_LevelInfo.samples.data =
+        GameBuf_Alloc(data_size + m_InjectionInfo->sfx_data_size, GBUF_SAMPLES);
+    VFile_Read(file, m_LevelInfo.samples.data, sizeof(char) * data_size);
 
-    m_LevelInfo.sample_count = VFile_ReadS32(file);
-    LOG_INFO("%d samples", m_LevelInfo.sample_count);
-    if (!m_LevelInfo.sample_count) {
+    const int32_t num_offsets = VFile_ReadS32(file);
+    m_LevelInfo.samples.offset_count = num_offsets;
+    LOG_INFO("%d samples", num_offsets);
+    if (num_offsets == 0) {
         Shell_ExitSystem("No Samples");
     }
 
-    m_LevelInfo.sample_offsets = Memory_Alloc(
-        sizeof(int32_t)
-        * (m_LevelInfo.sample_count + m_InjectionInfo->sample_count));
+    m_LevelInfo.samples.offsets = Memory_Alloc(
+        sizeof(int32_t) * (num_offsets + m_InjectionInfo->sample_count));
     VFile_Read(
-        file, m_LevelInfo.sample_offsets,
-        sizeof(int32_t) * m_LevelInfo.sample_count);
+        file, m_LevelInfo.samples.offsets, sizeof(int32_t) * num_offsets);
 
     Benchmark_End(benchmark, NULL);
 }
@@ -869,28 +866,29 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
     Memory_FreePointer(&m_LevelInfo.palette.data_24);
 
     // Initialise the sound effects.
-    size_t *sample_sizes =
-        Memory_Alloc(sizeof(size_t) * m_LevelInfo.sample_count);
-    const char **sample_pointers =
-        Memory_Alloc(sizeof(char *) * m_LevelInfo.sample_count);
-    for (int i = 0; i < m_LevelInfo.sample_count; i++) {
+    const int32_t sample_count = m_LevelInfo.samples.offset_count;
+    size_t *sample_sizes = Memory_Alloc(sizeof(size_t) * sample_count);
+    const char **sample_pointers = Memory_Alloc(sizeof(char *) * sample_count);
+    for (int i = 0; i < sample_count; i++) {
         sample_pointers[i] =
-            m_LevelInfo.sample_data + m_LevelInfo.sample_offsets[i];
+            m_LevelInfo.samples.data + m_LevelInfo.samples.offsets[i];
     }
 
     // NOTE: this assumes that sample pointers are sorted
-    for (int i = 0; i < m_LevelInfo.sample_count; i++) {
-        int current_offset = m_LevelInfo.sample_offsets[i];
-        int next_offset = i + 1 >= m_LevelInfo.sample_count
-            ? m_LevelInfo.sample_data_size
-            : m_LevelInfo.sample_offsets[i + 1];
+    for (int i = 0; i < sample_count; i++) {
+        int current_offset = m_LevelInfo.samples.offsets[i];
+        int next_offset = i + 1 >= sample_count
+            ? m_LevelInfo.samples.data_size
+            : m_LevelInfo.samples.offsets[i + 1];
         sample_sizes[i] = next_offset - current_offset;
     }
 
-    Sound_LoadSamples(m_LevelInfo.sample_count, sample_pointers, sample_sizes);
+    Sound_LoadSamples(sample_count, sample_pointers, sample_sizes);
 
     Memory_FreePointer(&sample_pointers);
     Memory_FreePointer(&sample_sizes);
+    Memory_FreePointer(&m_LevelInfo.samples.offsets);
+    Memory_FreePointer(&m_LevelInfo.samples.data);
 
     Benchmark_End(benchmark, NULL);
 }
@@ -958,10 +956,6 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
     LOG_INFO("%d (%s)", level->num, level->path);
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    // clean previous level data
-    Memory_FreePointer(&m_LevelInfo.sample_offsets);
-    Memory_FreePointer(&m_InjectionInfo);
-
     m_InjectionInfo = Memory_Alloc(sizeof(INJECTION_INFO));
     Inject_Init(
         level->injections.count, level->injections.data_paths, m_InjectionInfo);
@@ -970,6 +964,7 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
     M_CompleteSetup(level);
 
     Inject_Cleanup();
+    Memory_FreePointer(&m_InjectionInfo);
 
     Output_SetWaterColor(&level->settings.water_color);
     Output_SetDrawDistFade(level->settings.draw_distance_fade * WALL_L);

@@ -629,29 +629,29 @@ static void M_SFXData(INJECTION *injection, LEVEL_INFO *level_info)
 
     for (int32_t i = 0; i < inj_info->sfx_count; i++) {
         const int16_t sfx_id = VFile_ReadS16(fp);
-        g_SampleLUT[sfx_id] = level_info->sample_info_count;
+        g_SampleLUT[sfx_id] = level_info->samples.info_count;
 
         SAMPLE_INFO *sample_info =
-            &g_SampleInfos[level_info->sample_info_count];
+            &g_SampleInfos[level_info->samples.info_count];
         sample_info->volume = VFile_ReadS16(fp);
         sample_info->randomness = VFile_ReadS16(fp);
         sample_info->flags = VFile_ReadS16(fp);
-        sample_info->number = level_info->sample_count;
+        sample_info->number = level_info->samples.offset_count;
 
         int16_t num_samples = (sample_info->flags >> 2) & 15;
         for (int32_t j = 0; j < num_samples; j++) {
             const int32_t sample_length = VFile_ReadS32(fp);
             VFile_Read(
-                fp, level_info->sample_data + level_info->sample_data_size,
+                fp, level_info->samples.data + level_info->samples.data_size,
                 sizeof(char) * sample_length);
 
-            level_info->sample_offsets[level_info->sample_count] =
-                level_info->sample_data_size;
-            level_info->sample_data_size += sample_length;
-            level_info->sample_count++;
+            level_info->samples.offsets[level_info->samples.offset_count] =
+                level_info->samples.data_size;
+            level_info->samples.data_size += sample_length;
+            level_info->samples.offset_count++;
         }
 
-        level_info->sample_info_count++;
+        level_info->samples.info_count++;
     }
 
     Benchmark_End(benchmark, NULL);

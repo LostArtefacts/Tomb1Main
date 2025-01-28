@@ -25,11 +25,17 @@ typedef struct {
         int32_t size;
         RGB_888 *data_24;
     } palette;
+
+    struct {
+        int32_t info_count;
+        int32_t offset_count;
+        int32_t *offsets;
+#if TR_VERSION == 1
+        int32_t data_size;
+        char *data;
+#endif
+    } samples;
+
     int32_t mesh_ptr_count;
     int32_t item_count;
-    int32_t sample_info_count;
-    int32_t sample_count;
-    int32_t *sample_offsets;
-    int32_t sample_data_size;
-    char *sample_data;
 } LEVEL_INFO;
