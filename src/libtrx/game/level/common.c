@@ -404,7 +404,7 @@ void Level_ReadSpriteTextures(
     }
 
     for (int32_t i = 0; i < num_textures; i++) {
-        SPRITE_TEXTURE *const sprite = &g_SpriteTextures[base_idx + i];
+        SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(base_idx + i);
         sprite->tex_page = VFile_ReadU16(file) + base_page_idx;
         sprite->offset = VFile_ReadU16(file);
         sprite->width = VFile_ReadU16(file);

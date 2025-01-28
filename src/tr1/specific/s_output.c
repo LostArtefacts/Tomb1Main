@@ -527,7 +527,7 @@ void S_Output_DrawSprite(
 
     float multiplier = g_Config.visuals.brightness / 16.0f;
 
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     float vshade = (8192.0f - shade) * multiplier;
     if (vshade >= 256.0f) {
         vshade = 255.0f;

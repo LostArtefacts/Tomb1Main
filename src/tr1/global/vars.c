@@ -18,8 +18,6 @@ int32_t g_PhdTop = 0;
 float g_FltResZ;
 float g_FltResZBuf;
 
-SPRITE_TEXTURE g_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
-
 LARA_INFO g_Lara = {};
 ITEM *g_LaraItem = NULL;
 GAME_INFO g_GameInfo = {};

@@ -141,7 +141,7 @@ void Object_DrawPickupItem(ITEM *item)
         // First get the sprite that was to be used,
 
         int16_t spr_num = g_Objects[item->object_id].mesh_idx - item->frame_num;
-        const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[spr_num];
+        const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(spr_num);
 
         // and get the animation bounding box, which is not the mesh one.
         int16_t min_y = frame->bounds.min.y;

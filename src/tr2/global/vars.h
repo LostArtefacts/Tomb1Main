@@ -4,7 +4,6 @@
 #include "global/types.h"
 
 #include <libtrx/game/camera/vars.h>
-#include <libtrx/game/output/vars.h>
 #include <libtrx/gfx/context.h>
 
 #include <SDL2/SDL.h>

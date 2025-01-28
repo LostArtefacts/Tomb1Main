@@ -14,6 +14,7 @@ typedef struct {
 } COMMON_LIGHT;
 
 static OBJECT_TEXTURE m_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
+static SPRITE_TEXTURE m_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
@@ -124,6 +125,11 @@ OBJECT_TEXTURE *Output_GetObjectTexture(const int32_t texture_idx)
     return &m_ObjectTextures[texture_idx];
 }
 
+SPRITE_TEXTURE *Output_GetSpriteTexture(const int32_t texture_idx)
+{
+    return &m_SpriteTextures[texture_idx];
+}
+
 void Output_CycleAnimatedTextures(void)
 {
     const ANIMATED_TEXTURE_RANGE *range = m_AnimTextureRanges;
@@ -144,12 +150,12 @@ void Output_CycleAnimatedTextures(void)
         }
 
         const int16_t frame_count = object->frame_count;
-        const SPRITE_TEXTURE temp = g_SpriteTextures[object->texture_idx];
+        const SPRITE_TEXTURE temp = m_SpriteTextures[object->texture_idx];
         for (int32_t j = 0; j < frame_count - 1; j++) {
-            g_SpriteTextures[object->texture_idx + j] =
-                g_SpriteTextures[object->texture_idx + j + 1];
+            m_SpriteTextures[object->texture_idx + j] =
+                m_SpriteTextures[object->texture_idx + j + 1];
         }
-        g_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
+        m_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
     }
 }
 

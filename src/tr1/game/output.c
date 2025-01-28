@@ -220,7 +220,7 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
 
         const int32_t zv = vbuf->zv;
         const SPRITE_TEXTURE *const sprite =
-            &g_SpriteTextures[room_sprite->texture];
+            Output_GetSpriteTexture(room_sprite->texture);
         const int32_t zp = (zv / g_PhdPersp);
         const int32_t x0 =
             Viewport_GetCenterX() + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / zp;
@@ -841,7 +841,7 @@ void Output_DrawSprite(
         g_W2VMatrix._10 * x + g_W2VMatrix._11 * y + g_W2VMatrix._12 * z;
     int32_t zp = zv / g_PhdPersp;
 
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     const int32_t x0 =
         Viewport_GetCenterX() + (xv + (sprite->x0 << W2V_SHIFT)) / zp;
     const int32_t y0 =
@@ -925,7 +925,7 @@ void Output_DrawScreenSprite(
     int32_t sx, int32_t sy, int32_t z, int32_t scale_h, int32_t scale_v,
     int16_t sprnum, int16_t shade, uint16_t flags)
 {
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     const int32_t x0 = sx + (scale_h * (sprite->x0 >> 3) / PHD_ONE);
     const int32_t x1 = sx + (scale_h * (sprite->x1 >> 3) / PHD_ONE);
     const int32_t y0 = sy + (scale_v * (sprite->y0 >> 3) / PHD_ONE);
@@ -941,7 +941,7 @@ void Output_DrawScreenSprite2D(
     int32_t sx, int32_t sy, int32_t z, int32_t scale_h, int32_t scale_v,
     int32_t sprnum, int16_t shade, uint16_t flags, int32_t page)
 {
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     const int32_t x0 = sx + (scale_h * sprite->x0 / PHD_ONE);
     const int32_t x1 = sx + (scale_h * sprite->x1 / PHD_ONE);
     const int32_t y0 = sy + (scale_v * sprite->y0 / PHD_ONE);
@@ -967,7 +967,7 @@ void Output_DrawSpriteRel(
         + g_MatrixPtr->_12 * z + g_MatrixPtr->_13;
     int32_t zp = zv / g_PhdPersp;
 
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     const int32_t x0 =
         Viewport_GetCenterX() + (xv + (sprite->x0 << W2V_SHIFT)) / zp;
     const int32_t y0 =
@@ -988,7 +988,7 @@ void Output_DrawSpriteRel(
 void Output_DrawUISprite(
     int32_t x, int32_t y, int32_t scale, int16_t sprnum, int16_t shade)
 {
-    const SPRITE_TEXTURE *const sprite = &g_SpriteTextures[sprnum];
+    const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprnum);
     const int32_t x0 = x + (scale * sprite->x0 >> 16);
     const int32_t x1 = x + (scale * sprite->x1 >> 16);
     const int32_t y0 = y + (scale * sprite->y0 >> 16);

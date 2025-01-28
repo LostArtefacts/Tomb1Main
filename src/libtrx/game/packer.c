@@ -129,7 +129,7 @@ static void M_PrepareObject(const int32_t object_index)
 static void M_PrepareSprite(const int32_t sprite_index)
 {
     const SPRITE_TEXTURE *const sprite_texture =
-        &g_SpriteTextures[sprite_index];
+        Output_GetSpriteTexture(sprite_index);
     if (sprite_texture->tex_page == m_StartPage) {
         const RECTANGLE bounds = M_GetSpriteBounds(sprite_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
@@ -394,7 +394,7 @@ static void M_MoveObject(
 static void M_MoveSprite(
     const int32_t index, const RECTANGLE old_bounds, const TEX_POS new_pos)
 {
-    SPRITE_TEXTURE *const texture = &g_SpriteTextures[index];
+    SPRITE_TEXTURE *const texture = Output_GetSpriteTexture(index);
     texture->tex_page = new_pos.page;
     texture->offset = (new_pos.y << 8) | new_pos.x;
 }
