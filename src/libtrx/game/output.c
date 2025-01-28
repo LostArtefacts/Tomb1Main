@@ -4,6 +4,7 @@
 #include "game/game_buf.h"
 #include "game/matrix.h"
 #include "game/objects/common.h"
+#include "game/shell.h"
 #include "utils.h"
 
 #define MAX_DYNAMIC_LIGHTS 10
@@ -14,7 +15,7 @@ typedef struct {
 } COMMON_LIGHT;
 
 static int32_t m_ObjectTextureCount = 0;
-static OBJECT_TEXTURE m_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
+static OBJECT_TEXTURE *m_ObjectTextures = NULL;
 static SPRITE_TEXTURE m_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 static int32_t m_DynamicLightCount = 0;
@@ -121,9 +122,20 @@ ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(const int32_t range_idx)
     return &m_AnimTextureRanges[range_idx];
 }
 
-void Output_SetObjectTextureCount(const int32_t num_textures)
+void Output_InitialiseObjectTextures(const int32_t num_textures)
 {
+    if (num_textures > MAX_OBJECT_TEXTURES) {
+        Shell_ExitSystemFmt(
+            "Too many object textures: %d (max=%d)", num_textures,
+            MAX_OBJECT_TEXTURES);
+        return;
+    }
+
     m_ObjectTextureCount = num_textures;
+    m_ObjectTextures = num_textures == 0
+        ? NULL
+        : GameBuf_Alloc(
+              sizeof(OBJECT_TEXTURE) * num_textures, GBUF_OBJECT_TEXTURES);
 }
 
 int32_t Output_GetObjectTextureCount(void)

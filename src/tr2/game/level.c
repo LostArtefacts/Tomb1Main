@@ -311,6 +311,7 @@ static void M_LoadTextures(VFILE *const file)
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t num_textures = VFile_ReadS32(file);
     LOG_INFO("object textures: %d", num_textures);
+    Output_InitialiseObjectTextures(num_textures);
     Level_ReadObjectTextures(0, 0, num_textures, file);
     Benchmark_End(benchmark, NULL);
 }
@@ -835,5 +836,5 @@ void Level_Unload(void)
     strcpy(g_LevelFileName, "");
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
-    Output_SetObjectTextureCount(0);
+    Output_InitialiseObjectTextures(0);
 }

@@ -12,6 +12,7 @@
 typedef enum {
     // clang-format off
     GBUF_TEXTURE_PAGES,
+    GBUF_OBJECT_TEXTURES,
     GBUF_MESH_POINTERS,
     GBUF_MESHES,
     GBUF_ANIMS,

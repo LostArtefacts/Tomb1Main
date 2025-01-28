@@ -506,6 +506,8 @@ static void M_LoadTextures(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.texture_count = VFile_ReadS32(file);
     LOG_INFO("%d object textures", m_LevelInfo.texture_count);
+    Output_InitialiseObjectTextures(
+        m_LevelInfo.texture_count + m_InjectionInfo->texture_count);
     Level_ReadObjectTextures(0, 0, m_LevelInfo.texture_count, file);
     Benchmark_End(benchmark, NULL);
 }

@@ -374,13 +374,6 @@ void Level_ReadObjectTextures(
     const int32_t base_idx, const int16_t base_page_idx,
     const int32_t num_textures, VFILE *const file)
 {
-    if ((base_idx + num_textures) > MAX_OBJECT_TEXTURES) {
-        Shell_ExitSystemFmt(
-            "Too many object textures: %d (max=%d)", base_idx + num_textures,
-            MAX_OBJECT_TEXTURES);
-        return;
-    }
-
     for (int32_t i = 0; i < num_textures; i++) {
         OBJECT_TEXTURE *const texture = Output_GetObjectTexture(base_idx + i);
         texture->draw_type = VFile_ReadU16(file);
@@ -390,8 +383,6 @@ void Level_ReadObjectTextures(
             texture->uv[j].v = VFile_ReadU16(file);
         }
     }
-
-    Output_SetObjectTextureCount(base_idx + num_textures);
 }
 
 void Level_ReadSpriteTextures(
