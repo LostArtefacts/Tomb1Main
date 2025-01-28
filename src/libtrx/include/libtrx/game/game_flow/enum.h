@@ -50,7 +50,6 @@ typedef enum {
 #endif
     GF_SELECT_GAME,
 #if TR_VERSION == 1
-    GF_START_GYM,
     GF_STORY_SO_FAR,
 #endif
 } GF_ACTION;

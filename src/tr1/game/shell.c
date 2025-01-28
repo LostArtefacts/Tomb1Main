@@ -190,64 +190,66 @@ void Shell_Main(void)
         m_ModPaths[m_ActiveMod].game_flow_path,
         m_ModPaths[m_ActiveMod].game_strings_path);
 
-    GF_COMMAND command = { .action = GF_EXIT_TO_TITLE };
-    bool intro_played = false;
-
     g_GameInfo.current_save_slot = -1;
+
+    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
+    bool intro_played = false;
     bool loop_continue = true;
     while (loop_continue) {
         LOG_INFO(
-            "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, command.action),
-            command.param);
+            "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action),
+            gf_cmd.param);
 
-        switch (command.action) {
+        switch (gf_cmd.action) {
         case GF_START_GAME: {
-            const int32_t level_num = command.param;
+            const int32_t level_num = gf_cmd.param;
             const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
-            command = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
+            if (level != NULL) {
+                gf_cmd = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
+            }
             break;
         }
 
         case GF_START_SAVED_GAME: {
-            const int16_t slot_num = command.param;
+            const int16_t slot_num = gf_cmd.param;
             const int16_t level_num = Savegame_GetLevelNumber(slot_num);
             if (level_num < 0) {
                 LOG_ERROR("Corrupt save file!");
-                command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
                 g_GameInfo.current_save_slot = slot_num;
                 const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
-                command = GF_InterpretSequence(level, GFSC_SAVED, NULL);
+                gf_cmd = GF_InterpretSequence(level, GFSC_SAVED, NULL);
             }
             break;
         }
 
         case GF_RESTART_GAME: {
-            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, command.param);
-            command = GF_InterpretSequence(level, GFSC_RESTART, NULL);
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
+            gf_cmd = GF_InterpretSequence(level, GFSC_RESTART, NULL);
             break;
         }
 
         case GF_SELECT_GAME: {
-            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, command.param);
-            command = GF_InterpretSequence(level, GFSC_SELECT, NULL);
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
+            gf_cmd = GF_InterpretSequence(level, GFSC_SELECT, NULL);
             break;
         }
 
         case GF_STORY_SO_FAR:
-            command = GF_PlayAvailableStory(command.param);
+            gf_cmd = GF_PlayAvailableStory(gf_cmd.param);
             break;
 
         case GF_START_CINE:
-            command = GF_DoCutsceneSequence(command.param);
+            gf_cmd = GF_DoCutsceneSequence(gf_cmd.param);
             break;
 
         case GF_START_DEMO:
-            command = GF_DoDemoSequence(command.param);
+            gf_cmd = GF_DoDemoSequence(gf_cmd.param);
             break;
 
         case GF_LEVEL_COMPLETE:
-            command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
         case GF_EXIT_TO_TITLE: {
@@ -259,11 +261,11 @@ void Shell_Main(void)
             }
 
             if (!Level_Initialise(level)) {
-                command = (GF_COMMAND) { .action = GF_EXIT_GAME };
+                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
                 break;
             }
 
-            command = GF_ShowInventory(INV_TITLE_MODE);
+            gf_cmd = GF_ShowInventory(INV_TITLE_MODE);
             break;
         }
 
@@ -271,19 +273,9 @@ void Shell_Main(void)
             loop_continue = false;
             break;
 
-        case GF_START_GYM: {
-            const GF_LEVEL *const level = GF_GetGymLevel();
-            if (level == NULL) {
-                command = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-            } else {
-                command = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
-            }
-            break;
-        }
-
         default:
             Shell_ExitSystemFmt(
-                "MAIN: Unknown action %x %d", command.action, command.param);
+                "MAIN: Unknown action %x %d", gf_cmd.action, gf_cmd.param);
             return;
         }
     }

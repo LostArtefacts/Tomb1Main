@@ -304,7 +304,7 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
         }
         if (GF_GetGymLevel() != NULL) {
             return (GF_COMMAND) {
-                .action = GF_START_GYM,
+                .action = GF_START_GAME,
                 .param = GF_GetGymLevel()->num,
             };
         }
