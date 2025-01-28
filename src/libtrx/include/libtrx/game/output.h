@@ -40,6 +40,7 @@ ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(int32_t range_idx);
 void Output_InitialiseObjectTextures(int32_t num_textures);
 int32_t Output_GetObjectTextureCount(void);
 OBJECT_TEXTURE *Output_GetObjectTexture(int32_t texture_idx);
+void Output_InitialiseSpriteTextures(int32_t num_textures);
 SPRITE_TEXTURE *Output_GetSpriteTexture(int32_t texture_idx);
 void Output_CycleAnimatedTextures(void);
 

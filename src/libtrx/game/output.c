@@ -16,7 +16,7 @@ typedef struct {
 
 static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE *m_ObjectTextures = NULL;
-static SPRITE_TEXTURE m_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
+static SPRITE_TEXTURE *m_SpriteTextures = NULL;
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
@@ -146,6 +146,21 @@ int32_t Output_GetObjectTextureCount(void)
 OBJECT_TEXTURE *Output_GetObjectTexture(const int32_t texture_idx)
 {
     return &m_ObjectTextures[texture_idx];
+}
+
+void Output_InitialiseSpriteTextures(const int32_t num_textures)
+{
+    if (num_textures > MAX_SPRITE_TEXTURES) {
+        Shell_ExitSystemFmt(
+            "Too many sprite textures: %d (max=%d)", num_textures,
+            MAX_SPRITE_TEXTURES);
+        return;
+    }
+
+    m_SpriteTextures = num_textures == 0
+        ? NULL
+        : GameBuf_Alloc(
+              sizeof(SPRITE_TEXTURE) * num_textures, GBUF_SPRITE_TEXTURES);
 }
 
 SPRITE_TEXTURE *Output_GetSpriteTexture(const int32_t texture_idx)

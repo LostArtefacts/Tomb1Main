@@ -389,13 +389,6 @@ void Level_ReadSpriteTextures(
     const int32_t base_idx, const int16_t base_page_idx,
     const int32_t num_textures, VFILE *const file)
 {
-    if ((base_idx + num_textures) > MAX_SPRITE_TEXTURES) {
-        Shell_ExitSystemFmt(
-            "Too many sprite textures: %d (max=%d)", base_idx + num_textures,
-            MAX_SPRITE_TEXTURES);
-        return;
-    }
-
     for (int32_t i = 0; i < num_textures; i++) {
         SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(base_idx + i);
         sprite->tex_page = VFile_ReadU16(file) + base_page_idx;

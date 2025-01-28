@@ -517,6 +517,8 @@ static void M_LoadSprites(VFILE *file)
     BENCHMARK *const benchmark = Benchmark_Start();
     m_LevelInfo.sprite_info_count = VFile_ReadS32(file);
     LOG_DEBUG("sprite textures: %d", m_LevelInfo.sprite_info_count);
+    Output_InitialiseSpriteTextures(
+        m_LevelInfo.sprite_info_count + m_InjectionInfo->sprite_info_count);
     Level_ReadSpriteTextures(0, 0, m_LevelInfo.sprite_info_count, file);
 
     const int32_t num_sequences = VFile_ReadS32(file);
