@@ -13,7 +13,6 @@ int16_t g_RoomsToDrawCount = 0;
 
 const float g_RhwFactor = 0x14000000.p0;
 uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES] = {};
-OBJECT_TEXTURE g_ObjectTextures[MAX_OBJECT_TEXTURES];
 
 SDL_Window *g_SDLWindow = NULL;
 

@@ -316,7 +316,8 @@ static void M_LoadTextures(VFILE *const file)
     // TODO: handle this post-injection/packing
     g_ObjectTextureCount = num_textures;
     for (int32_t i = 0; i < num_textures; i++) {
-        uint16_t *const uv = &g_ObjectTextures[i].uv[0].u;
+        OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
+        uint16_t *const uv = &texture->uv[0].u;
         uint8_t byte = 0;
         for (int32_t j = 0; j < 8; j++) {
             if ((uv[j] & 0x80) != 0) {
@@ -329,7 +330,7 @@ static void M_LoadTextures(VFILE *const file)
         g_LabTextureUVFlag[i] = byte;
 
         for (int32_t j = 0; j < 4; j++) {
-            g_ObjectTextures[i].uv_backup[j] = g_ObjectTextures[i].uv[j];
+            texture->uv_backup[j] = texture->uv[j];
         }
     }
 

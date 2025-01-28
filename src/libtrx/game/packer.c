@@ -110,7 +110,7 @@ static void M_PreparePaletteLUT(void)
 static void M_PrepareObject(const int32_t object_index)
 {
     const OBJECT_TEXTURE *const object_texture =
-        &g_ObjectTextures[object_index];
+        Output_GetObjectTexture(object_index);
     if (object_texture->tex_page == m_StartPage) {
         const RECTANGLE bounds = M_GetObjectBounds(object_texture);
         M_FillVirtualData(m_VirtualPages, bounds);
@@ -373,7 +373,7 @@ static bool M_PackContainerAt(
 static void M_MoveObject(
     const int32_t index, const RECTANGLE old_bounds, const TEX_POS new_pos)
 {
-    OBJECT_TEXTURE *const texture = &g_ObjectTextures[index];
+    OBJECT_TEXTURE *const texture = Output_GetObjectTexture(index);
     texture->tex_page = new_pos.page;
 
     int32_t x_diff = (new_pos.x - old_bounds.x) << 8;

@@ -140,7 +140,7 @@ static void M_DrawTexturedFace3s(const FACE3 *const faces, const int32_t count)
             &m_VBuf[face->vertices[2]],
         };
 
-        OBJECT_TEXTURE *const tex = &g_ObjectTextures[face->texture_idx];
+        OBJECT_TEXTURE *const tex = Output_GetObjectTexture(face->texture_idx);
         S_Output_DrawTexturedTriangle(
             vns[0], vns[1], vns[2], tex->tex_page, &tex->uv[0], &tex->uv[1],
             &tex->uv[2], tex->draw_type);
@@ -160,7 +160,7 @@ static void M_DrawTexturedFace4s(const FACE4 *const faces, const int32_t count)
             &m_VBuf[face->vertices[3]],
         };
 
-        OBJECT_TEXTURE *const tex = &g_ObjectTextures[face->texture_idx];
+        OBJECT_TEXTURE *const tex = Output_GetObjectTexture(face->texture_idx);
         S_Output_DrawTexturedQuad(
             vns[0], vns[1], vns[2], vns[3], tex->tex_page, &tex->uv[0],
             &tex->uv[1], &tex->uv[2], &tex->uv[3], tex->draw_type);

@@ -38,6 +38,7 @@ extern void Output_LightRoomVertices(const ROOM *room);
 
 void Output_InitialiseAnimatedTextures(int32_t num_ranges);
 ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(int32_t range_idx);
+OBJECT_TEXTURE *Output_GetObjectTexture(int32_t texture_idx);
 void Output_CycleAnimatedTextures(void);
 
 void Output_CalculateLight(XYZ_32 pos, int16_t room_num);

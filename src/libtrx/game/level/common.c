@@ -382,7 +382,7 @@ void Level_ReadObjectTextures(
     }
 
     for (int32_t i = 0; i < num_textures; i++) {
-        OBJECT_TEXTURE *const texture = &g_ObjectTextures[base_idx + i];
+        OBJECT_TEXTURE *const texture = Output_GetObjectTexture(base_idx + i);
         texture->draw_type = VFile_ReadU16(file);
         texture->tex_page = VFile_ReadU16(file) + base_page_idx;
         for (int32_t j = 0; j < 4; j++) {

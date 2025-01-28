@@ -695,7 +695,7 @@ static void M_InsertTexturedFace3s_Sorted(
         };
 
         const OBJECT_TEXTURE *const texture =
-            &g_ObjectTextures[face->texture_idx];
+            Output_GetObjectTexture(face->texture_idx);
         const TEXTURE_UV *const uv = texture->uv;
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
@@ -726,7 +726,7 @@ static void M_InsertTexturedFace4s_Sorted(
         };
 
         const OBJECT_TEXTURE *const texture =
-            &g_ObjectTextures[face->texture_idx];
+            Output_GetObjectTexture(face->texture_idx);
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
         }
@@ -1269,7 +1269,7 @@ static void M_InsertTexturedFace3s_ZBuffered(
             &g_PhdVBuf[face->vertices[2]],
         };
         const OBJECT_TEXTURE *const texture =
-            &g_ObjectTextures[face->texture_idx];
+            Output_GetObjectTexture(face->texture_idx);
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;
@@ -1302,7 +1302,7 @@ static void M_InsertTexturedFace4s_ZBuffered(
 
         };
         const OBJECT_TEXTURE *const texture =
-            &g_ObjectTextures[face->texture_idx];
+            Output_GetObjectTexture(face->texture_idx);
 
         if (texture->draw_type != DRAW_OPAQUE && g_DiscardTransparent) {
             continue;

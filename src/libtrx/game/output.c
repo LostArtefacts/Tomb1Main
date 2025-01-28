@@ -13,6 +13,7 @@ typedef struct {
     int32_t shade;
 } COMMON_LIGHT;
 
+static OBJECT_TEXTURE m_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
 static int32_t m_DynamicLightCount = 0;
 static LIGHT m_DynamicLights[MAX_DYNAMIC_LIGHTS] = {};
@@ -118,17 +119,22 @@ ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(const int32_t range_idx)
     return &m_AnimTextureRanges[range_idx];
 }
 
+OBJECT_TEXTURE *Output_GetObjectTexture(const int32_t texture_idx)
+{
+    return &m_ObjectTextures[texture_idx];
+}
+
 void Output_CycleAnimatedTextures(void)
 {
     const ANIMATED_TEXTURE_RANGE *range = m_AnimTextureRanges;
     for (; range != NULL; range = range->next_range) {
         int32_t i = 0;
-        const OBJECT_TEXTURE temp = g_ObjectTextures[range->textures[i]];
+        const OBJECT_TEXTURE temp = m_ObjectTextures[range->textures[i]];
         for (; i < range->num_textures - 1; i++) {
-            g_ObjectTextures[range->textures[i]] =
-                g_ObjectTextures[range->textures[i + 1]];
+            m_ObjectTextures[range->textures[i]] =
+                m_ObjectTextures[range->textures[i + 1]];
         }
-        g_ObjectTextures[range->textures[i]] = temp;
+        m_ObjectTextures[range->textures[i]] = temp;
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
