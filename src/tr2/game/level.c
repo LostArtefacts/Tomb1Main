@@ -770,9 +770,6 @@ bool Level_Initialise(
     const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
     LOG_DEBUG("num=%d type=%d seq_ctx=%d", level->num, level->type, seq_ctx);
-    g_GameInfo.current_level.num = level->num;
-    g_GameInfo.current_level.type = level->type;
-
     if (level->type != GFL_TITLE && level->type != GFL_DEMO) {
         g_GymInvOpenEnabled = false;
     }

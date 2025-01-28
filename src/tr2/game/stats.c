@@ -36,8 +36,13 @@ FINAL_STATS Stats_ComputeFinalStats(void)
 {
     FINAL_STATS result = {};
 
-    const int32_t total_levels = GF_GetLevelCount(GFL_NORMAL);
-    for (int32_t i = LV_FIRST; i < total_levels; i++) {
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        if (level->type == GFL_GYM) {
+            continue;
+        }
         result.timer += g_SaveGame.start[i].stats.timer;
         result.ammo_used += g_SaveGame.start[i].stats.ammo_used;
         result.ammo_hits += g_SaveGame.start[i].stats.ammo_hits;
@@ -46,7 +51,7 @@ FINAL_STATS Stats_ComputeFinalStats(void)
         result.medipacks += g_SaveGame.start[i].stats.medipacks;
 
         // TODO: #170, consult GFE_NUM_SECRETS rather than hardcoding this
-        if (i < total_levels - 2) {
+        if (i < level_table->count - 2) {
             for (int32_t j = 0; j < 3; j++) {
                 if (g_SaveGame.start[i].stats.secret_flags & (1 << j)) {
                     result.found_secrets++;

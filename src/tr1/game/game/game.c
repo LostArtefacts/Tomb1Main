@@ -73,8 +73,7 @@ bool Game_Start_Legacy(
     const GAME_FLOW_LEVEL *const level,
     const GAME_FLOW_SEQUENCE_CONTEXT seq_ctx)
 {
-    g_GameInfo.current_level_type = level->type;
-
+    const GAME_FLOW_LEVEL *const prev_level = GF_GetLevelBefore(level);
     switch (seq_ctx) {
     case GFSC_SAVED:
         // reset current info to the defaults so that we do not do
@@ -93,13 +92,13 @@ bool Game_Start_Legacy(
         break;
 
     case GFSC_RESTART:
-        if (level->num <= g_GameFlow.first_level_num) {
+        if (level <= GF_GetGymLevel() || level == GF_GetFirstLevel()) {
             Savegame_InitCurrentInfo();
         } else {
-            Savegame_ResetCurrentInfo(level->num);
+            Savegame_ResetCurrentInfo(level);
             // Use previous level's ending info to start current level.
-            Savegame_CarryCurrentInfoToNextLevel(level->num - 1, level->num);
-            Savegame_ApplyLogicToCurrentInfo(level->num);
+            Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
+            Savegame_ApplyLogicToCurrentInfo(level);
         }
         if (!Level_Initialise(level)) {
             Game_SetCurrentLevel(NULL);
@@ -112,23 +111,32 @@ bool Game_Start_Legacy(
         if (g_GameInfo.current_save_slot != -1) {
             // select level feature
             Savegame_InitCurrentInfo();
-            if (level->num > g_GameFlow.first_level_num) {
+            if (level->num > GF_GetFirstLevel()->num) {
                 Savegame_LoadOnlyResumeInfo(
                     g_GameInfo.current_save_slot, &g_GameInfo);
-                for (int i = level->num; i < g_GameFlow.level_count; i++) {
-                    Savegame_ResetCurrentInfo(i);
+                const GAME_FLOW_LEVEL *tmp_level = level;
+                while (tmp_level != NULL) {
+                    Savegame_ResetCurrentInfo(tmp_level);
+                    tmp_level = GF_GetLevelAfter(tmp_level);
                 }
                 // Use previous level's ending info to start current level.
                 Savegame_CarryCurrentInfoToNextLevel(
-                    level->num - 1, level->num);
-                Savegame_ApplyLogicToCurrentInfo(level->num);
+                    GF_GetLevelBefore(level), level);
+                Savegame_ApplyLogicToCurrentInfo(level);
             }
         } else {
             // console /play level feature
             Savegame_InitCurrentInfo();
-            for (int i = g_GameFlow.first_level_num + 1; i <= level->num; i++) {
-                Savegame_CarryCurrentInfoToNextLevel(i - 1, i);
-                Savegame_ApplyLogicToCurrentInfo(i);
+            const GAME_FLOW_LEVEL *tmp_level =
+                GF_GetLevelAfter(GF_GetFirstLevel());
+            while (tmp_level != NULL) {
+                Savegame_CarryCurrentInfoToNextLevel(
+                    GF_GetLevelBefore(tmp_level), tmp_level);
+                Savegame_ApplyLogicToCurrentInfo(tmp_level);
+                if (tmp_level == level) {
+                    break;
+                }
+                tmp_level = GF_GetLevelAfter(tmp_level);
             }
         }
         if (!Level_Initialise(level)) {
@@ -138,11 +146,12 @@ bool Game_Start_Legacy(
 
     default:
         if (level->type == GFL_GYM) {
-            Savegame_ResetCurrentInfo(level->num);
-            Savegame_ApplyLogicToCurrentInfo(level->num);
+            Savegame_ResetCurrentInfo(level);
+            Savegame_ApplyLogicToCurrentInfo(level);
         } else if (level->type == GFL_BONUS) {
-            Savegame_CarryCurrentInfoToNextLevel(level->num - 1, level->num);
-            Savegame_ApplyLogicToCurrentInfo(level->num);
+            Savegame_CarryCurrentInfoToNextLevel(
+                GF_GetLevelBefore(level), level);
+            Savegame_ApplyLogicToCurrentInfo(level);
         }
         if (!Level_Initialise(level)) {
             return false;
@@ -159,17 +168,13 @@ bool Game_Start_Legacy(
     Camera_Initialise();
 
     Stats_CalculateStats();
-    g_GameInfo.current[g_CurrentLevel].stats.max_pickup_count =
-        Stats_GetPickups();
-    g_GameInfo.current[g_CurrentLevel].stats.max_kill_count =
-        Stats_GetKillables();
-    g_GameInfo.current[g_CurrentLevel].stats.max_secret_count =
-        Stats_GetSecrets();
+    GF_GetResumeInfo(level)->stats.max_pickup_count = Stats_GetPickups();
+    GF_GetResumeInfo(level)->stats.max_kill_count = Stats_GetKillables();
+    GF_GetResumeInfo(level)->stats.max_secret_count = Stats_GetSecrets();
 
     g_GameInfo.ask_for_save = g_Config.gameplay.enable_save_crystals
         && (level->type == GFL_NORMAL || level->type == GFL_BONUS)
-        && g_CurrentLevel != g_GameFlow.first_level_num
-        && g_CurrentLevel != g_GameFlow.gym_level_num;
+        && level != GF_GetFirstLevel() && level != GF_GetGymLevel();
 
     Interpolation_Remember();
     return true;
@@ -179,9 +184,11 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
 {
     Sound_StopAll();
     Music_Stop();
-    Savegame_PersistGameToCurrentInfo(g_CurrentLevel);
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GAME_FLOW_LEVEL *const next_level = GF_GetLevelAfter(current_level);
+    Savegame_PersistGameToCurrentInfo(current_level);
 
-    if (g_CurrentLevel == g_GameFlow.last_level_num) {
+    if (current_level == GF_GetLastLevel()) {
         g_Config.profile.new_game_plus_unlock = true;
         Config_Write();
         g_GameInfo.bonus_level_unlock =
@@ -190,9 +197,10 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
 
     // play specific level
     if (g_LevelComplete && g_GameInfo.select_level_num != -1) {
-        if (g_CurrentLevel != -1) {
+        if (current_level != NULL) {
             Savegame_CarryCurrentInfoToNextLevel(
-                g_CurrentLevel, g_GameInfo.select_level_num);
+                current_level,
+                GF_GetLevel(GFLT_MAIN, g_GameInfo.select_level_num));
         }
         return (GAME_FLOW_COMMAND) {
             .action = GF_SELECT_GAME,
@@ -201,17 +209,16 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
     }
 
     // carry info to the next level
-    if (g_CurrentLevel + 1 < g_GameFlow.level_count) {
+    if (next_level != NULL) {
         // TODO: this should be moved to GFS_LEVEL_COMPLETE handler, probably
-        Savegame_CarryCurrentInfoToNextLevel(
-            g_CurrentLevel, g_CurrentLevel + 1);
-        Savegame_ApplyLogicToCurrentInfo(g_CurrentLevel + 1);
+        Savegame_CarryCurrentInfoToNextLevel(current_level, next_level);
+        Savegame_ApplyLogicToCurrentInfo(next_level);
     }
 
     // normal level completion
     if (g_LevelComplete) {
         // TODO: why is this made unavailable?
-        g_GameInfo.current[g_CurrentLevel].flags.available = 0;
+        GF_GetResumeInfo(current_level)->flags.available = 0;
         return (GAME_FLOW_COMMAND) {
             .action = GF_LEVEL_COMPLETE,
             .param = g_GameInfo.select_level_num,
@@ -236,13 +243,13 @@ GAME_FLOW_COMMAND Game_Stop_Legacy(void)
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_RESTART) {
         return (GAME_FLOW_COMMAND) {
             .action = GF_RESTART_GAME,
-            .param = g_CurrentLevel,
+            .param = current_level->num,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_NEW_GAME) {
         Savegame_InitCurrentInfo();
         return (GAME_FLOW_COMMAND) {
             .action = GF_START_GAME,
-            .param = g_GameFlow.first_level_num,
+            .param = GF_GetFirstLevel()->num,
         };
     } else {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
@@ -356,35 +363,4 @@ GAME_FLOW_COMMAND Game_Control(const bool demo_mode)
         Output_AnimateTextures(1);
     }
     return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-}
-
-GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
-{
-    return g_GameInfo.current_level_type;
-}
-
-extern int32_t Game_GetCurrentLevelNum(void)
-{
-    return g_CurrentLevel;
-}
-
-bool Game_IsInGym(void)
-{
-    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
-    return current_level != NULL && current_level->type == GFL_GYM;
-}
-
-bool Game_IsPlayable(void)
-{
-    if (g_GameInfo.current_level_type == GFL_TITLE
-        || g_GameInfo.current_level_type == GFL_DEMO
-        || g_GameInfo.current_level_type == GFL_CUTSCENE) {
-        return false;
-    }
-
-    if (!g_Objects[O_LARA].loaded || g_LaraItem == NULL) {
-        return false;
-    }
-
-    return true;
 }

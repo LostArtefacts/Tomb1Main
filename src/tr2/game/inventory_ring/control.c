@@ -208,11 +208,11 @@ static GAME_FLOW_COMMAND M_Finish(
                     };
                 } else {
                     if (apply_changes) {
-                        InitialiseStartInfo();
+                        Savegame_InitCurrentInfo();
                     }
                     return (GAME_FLOW_COMMAND) {
                         .action = GF_START_GAME,
-                        .param = LV_FIRST,
+                        .param = GF_GetFirstLevel()->num,
                     };
                 }
             } else {
@@ -220,7 +220,7 @@ static GAME_FLOW_COMMAND M_Finish(
                 // Home)
                 if (Game_IsInGym()) {
                     if (apply_changes) {
-                        InitialiseStartInfo();
+                        Savegame_InitCurrentInfo();
                     }
                     if (g_GameFlow.play_any_level) {
                         return (GAME_FLOW_COMMAND) {
@@ -230,7 +230,7 @@ static GAME_FLOW_COMMAND M_Finish(
                     } else {
                         return (GAME_FLOW_COMMAND) {
                             .action = GF_START_GAME,
-                            .param = LV_FIRST,
+                            .param = GF_GetFirstLevel()->num,
                         };
                     }
                 } else {
@@ -255,10 +255,10 @@ static GAME_FLOW_COMMAND M_Finish(
         break;
 
     case O_PHOTO_OPTION:
-        if (GF_IsGymEnabled()) {
+        if (GF_GetGymLevel() != NULL) {
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
-                .param = LV_GYM,
+                .param = GF_GetGymLevel()->num,
             };
         }
         break;
@@ -338,7 +338,9 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
     if (ring->mode != INV_TITLE_MODE || g_Input.any || g_InputDB.any) {
         m_NoInputCounter = 0;
-    } else if (GF_GetDemoCount() > 0 && ring->motion.status == RNG_OPEN) {
+    } else if (
+        GF_GetLevelTable(GFLT_DEMOS)->count > 0
+        && ring->motion.status == RNG_OPEN) {
         m_NoInputCounter++;
         if (m_NoInputCounter > g_GameFlow.demo_delay * LOGIC_FPS) {
             ring->is_demo_needed = true;
@@ -770,7 +772,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
 
     if (mode == INV_TITLE_MODE) {
         g_InvRing_Source[RT_OPTION].count = TITLE_RING_OBJECTS;
-        if (GF_IsGymEnabled()) {
+        if (GF_GetGymLevel() != NULL) {
             g_InvRing_Source[RT_OPTION].count++;
         }
         InvRing_ShowVersionText();
@@ -793,7 +795,8 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
     }
 
     g_InvRing_Source[RT_OPTION].current = 0;
-    if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE && GF_IsGymEnabled()) {
+    if (g_GymInvOpenEnabled && mode == INV_TITLE_MODE
+        && GF_GetGymLevel() != NULL) {
         for (int32_t i = 0; i < g_InvRing_Source[RT_OPTION].count; i++) {
             if (g_InvRing_Source[RT_OPTION].items[i]->object_id
                 == O_PHOTO_OPTION) {

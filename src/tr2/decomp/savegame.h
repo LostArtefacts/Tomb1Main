@@ -5,9 +5,11 @@
 
 #include <stddef.h>
 
-void InitialiseStartInfo(void);
-void ModifyStartInfo(const GAME_FLOW_LEVEL *level);
-void CreateStartInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *level);
+
+void Savegame_InitCurrentInfo(void);
+void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *level);
+void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *level);
 void CreateSaveGameInfo(void);
 void ExtractSaveGameInfo(void);
 

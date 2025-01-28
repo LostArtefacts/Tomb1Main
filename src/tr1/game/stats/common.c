@@ -1,5 +1,6 @@
 #include "game/carrier.h"
 #include "game/clock.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/items.h"
 #include "game/objects/common.h"
@@ -123,8 +124,11 @@ void Stats_ComputeFinal(
 {
     memset(final_stats, 0, sizeof(FINAL_STATS));
 
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].type != level_type) {
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        if (level->type != level_type) {
             continue;
         }
         const LEVEL_STATS *level_stats = &g_GameInfo.current[i].stats;
@@ -194,9 +198,10 @@ void Stats_CalculateStats(void)
     // Check triggers for special pickups / killables
     M_TraverseFloor();
 
-    m_LevelPickups -= g_GameFlow.levels[g_CurrentLevel].unobtainable.pickups;
-    m_LevelKillables -= g_GameFlow.levels[g_CurrentLevel].unobtainable.kills;
-    m_LevelSecrets -= g_GameFlow.levels[g_CurrentLevel].unobtainable.secrets;
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    m_LevelPickups -= current_level->unobtainable.pickups;
+    m_LevelKillables -= current_level->unobtainable.kills;
+    m_LevelSecrets -= current_level->unobtainable.secrets;
 }
 
 int32_t Stats_GetPickups(void)
@@ -225,14 +230,18 @@ bool Stats_CheckAllSecretsCollected(GAME_FLOW_LEVEL_TYPE level_type)
 void Stats_StartTimer(void)
 {
     ClockTimer_Sync(&m_StatsTimer.timer);
-    m_StatsTimer.start_timer = g_GameInfo.current[g_CurrentLevel].stats.timer;
+    m_StatsTimer.start_timer =
+        GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer;
 }
 
 void Stats_UpdateTimer(void)
 {
+    if (Game_GetCurrentLevel() == NULL) {
+        return;
+    }
     const double elapsed =
         ClockTimer_PeekElapsed(&m_StatsTimer.timer) * LOGIC_FPS;
-    g_GameInfo.current[g_CurrentLevel].stats.timer =
+    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer =
         m_StatsTimer.start_timer + elapsed;
 }
 #else
@@ -242,7 +251,10 @@ void Stats_StartTimer(void)
 
 void Stats_UpdateTimer(void)
 {
-    g_GameInfo.current[g_CurrentLevel].stats.timer++;
+    if (Game_GetCurrentLevel() == NULL) {
+        return;
+    }
+    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer++;
 }
 #endif
 

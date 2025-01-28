@@ -173,7 +173,7 @@ void Item_Initialise(const int16_t item_num)
     const SECTOR *const sector = &room->sectors[dx * room->size.z + dz];
     item->floor = sector->floor.height;
 
-    if (g_SaveGame.bonus_flag && g_GameInfo.current_level.type != GFL_DEMO) {
+    if (g_SaveGame.bonus_flag && GF_GetCurrentLevel()->type != GFL_DEMO) {
         item->hit_points *= 2;
     }
 

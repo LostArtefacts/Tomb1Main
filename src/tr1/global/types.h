@@ -224,7 +224,6 @@ typedef struct {
     PASSPORT_MODE passport_selection;
     int32_t select_level_num;
     bool death_counter_supported;
-    GAME_FLOW_LEVEL_TYPE current_level_type;
     bool remove_guns;
     bool remove_scions;
     bool remove_ammo;

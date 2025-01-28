@@ -23,7 +23,6 @@ ITEM *g_LaraItem = NULL;
 GAME_INFO g_GameInfo = {};
 int32_t g_SavedGamesCount = 0;
 int32_t g_SaveCounter = 0;
-int16_t g_CurrentLevel = -1;
 uint32_t *g_DemoData = NULL;
 bool g_LevelComplete = false;
 bool g_ChunkyFlag = false;

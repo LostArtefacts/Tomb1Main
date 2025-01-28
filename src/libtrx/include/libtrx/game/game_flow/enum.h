@@ -1,15 +1,21 @@
 #pragma once
 
 typedef enum {
+    GFLT_UNKNOWN = -1,
+    GFLT_MAIN,
+    GFLT_CUTSCENES,
+    GFLT_DEMOS,
+    GFLT_NUMBER_OF,
+} GAME_FLOW_LEVEL_TABLE_TYPE;
+
+typedef enum {
     // Genuine level types
     GFL_TITLE,
     GFL_NORMAL,
     GFL_CUTSCENE,
     GFL_DEMO,
-#if TR_VERSION == 1
     GFL_GYM,
     GFL_BONUS,
-#endif
 
 #if TR_VERSION == 1
     // Legacy level types to maintain savegame backwards compatibility.

@@ -15,27 +15,28 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     VECTOR *source = NULL;
     VECTOR *matches = NULL;
     int32_t level_to_load = -1;
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
 
     if (String_ParseInteger(ctx->args, &level_to_load)) {
         goto matched;
     }
 
     source = Vector_Create(sizeof(STRING_FUZZY_SOURCE));
-    for (int32_t level_num = 0; level_num < GF_GetLevelCount(GFL_NORMAL);
-         level_num++) {
+    for (int32_t i = 0; i < level_table->count; i++) {
         STRING_FUZZY_SOURCE source_item = {
-            .key = GF_GetLevel(level_num, GFL_NORMAL)->title,
-            .value = (void *)(intptr_t)level_num,
+            .key = level_table->levels[i].title,
+            .value = (void *)(intptr_t)i,
             .weight = 1,
         };
         Vector_Add(source, &source_item);
     }
 
-    const int32_t gym_level_num = GF_GetGymLevelNum();
-    if (gym_level_num != -1) {
+    const GAME_FLOW_LEVEL *const gym_level = GF_GetGymLevel();
+    if (gym_level != NULL) {
         STRING_FUZZY_SOURCE source_item = {
             .key = "gym",
-            .value = (void *)(intptr_t)gym_level_num,
+            .value = (void *)(intptr_t)gym_level->num,
             .weight = 1,
         };
         Vector_Add(source, &source_item);
@@ -55,13 +56,14 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 
 matched:
-    if (level_to_load >= 0 && level_to_load < GF_GetLevelCount(GFL_NORMAL)) {
+    if (level_to_load >= 0 && level_to_load < level_table->count) {
+        const GAME_FLOW_LEVEL *const level =
+            &level_table->levels[level_to_load];
         GF_OverrideCommand((GAME_FLOW_COMMAND) {
             .action = GF_SELECT_GAME,
             .param = level_to_load,
         });
-        Console_Log(
-            GS(OSD_PLAY_LEVEL), GF_GetLevel(level_to_load, GFL_NORMAL)->title);
+        Console_Log(GS(OSD_PLAY_LEVEL), level->title);
         result = CR_SUCCESS;
     } else {
         Console_Log(GS(OSD_INVALID_LEVEL));

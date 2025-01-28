@@ -990,7 +990,6 @@ bool Level_Initialise(const GAME_FLOW_LEVEL *const level)
     }
 
     g_LevelComplete = false;
-    g_CurrentLevel = level_num;
     if (level->type != GFL_TITLE && level->type != GFL_CUTSCENE) {
         Game_SetCurrentLevel((GAME_FLOW_LEVEL *)level);
     }

@@ -84,35 +84,18 @@ typedef struct {
 #endif
 } GAME_FLOW_LEVEL;
 
+typedef struct {
+    int32_t count;
+    GAME_FLOW_LEVEL *levels;
+} GAME_FLOW_LEVEL_TABLE;
+
 // ----------------------------------------------------------------------------
 // Game flow structures
 // ----------------------------------------------------------------------------
 
 typedef struct {
-    // levels
-    struct {
-        int32_t level_count;
-        GAME_FLOW_LEVEL *levels;
-    };
-
-#if TR_VERSION == 1
-    int32_t gym_level_num;
-    int32_t first_level_num;
-    int32_t last_level_num;
-#endif
     GAME_FLOW_LEVEL *title_level;
-
-    // cutscenes
-    struct {
-        int32_t cutscene_count;
-        GAME_FLOW_LEVEL *cutscenes;
-    };
-
-    // demos
-    struct {
-        int32_t demo_count;
-        GAME_FLOW_LEVEL *demos;
-    };
+    GAME_FLOW_LEVEL_TABLE level_tables[GFLT_NUMBER_OF];
 
     // FMVs
     struct {

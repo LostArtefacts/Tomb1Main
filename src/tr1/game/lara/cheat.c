@@ -3,6 +3,7 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/console/common.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
@@ -31,7 +32,7 @@ void Lara_Cheat_Control(void)
     static int16_t cheat_angle = 0;
     static int32_t cheat_turn = 0;
 
-    if (g_CurrentLevel == g_GameFlow.gym_level_num) {
+    if (Game_GetCurrentLevel() == GF_GetGymLevel()) {
         return;
     }
 
@@ -161,7 +162,7 @@ bool Lara_Cheat_EnterFlyMode(void)
     g_Lara.death_timer = 0;
     g_Lara.mesh_effects = 0;
     g_LaraItem->enable_shadow = true;
-    Lara_InitialiseMeshes(GF_GetLevel(g_CurrentLevel, GFL_NORMAL));
+    Lara_InitialiseMeshes(Game_GetCurrentLevel());
     g_Camera.type = CAM_CHASE;
     Viewport_SetFOV(-1);
     Console_Log(GS(OSD_FLY_MODE_ON));

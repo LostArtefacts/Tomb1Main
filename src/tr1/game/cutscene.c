@@ -60,13 +60,12 @@ static void M_InitialiseLara(const GAME_FLOW_LEVEL *const level)
 
 bool Cutscene_Start(const int32_t level_num)
 {
-    const GAME_FLOW_LEVEL *const level = GF_GetLevel(level_num, GFL_CUTSCENE);
-    if (g_CurrentLevel != level_num) {
+    const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
+    if (GF_GetCurrentLevel()->num != level_num) {
         if (!Level_Initialise(level)) {
             return false;
         }
     }
-    g_GameInfo.current_level_type = GFL_CUTSCENE;
 
     M_InitialiseLara(level);
 

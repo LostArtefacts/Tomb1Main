@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/game_flow/enum.h"
+
 #include <stdint.h>
 
 typedef struct {
@@ -30,9 +32,7 @@ typedef struct {
 
 typedef struct {
     GS_TABLE global;
-    GS_LEVEL_TABLE levels;
-    GS_LEVEL_TABLE demos;
-    GS_LEVEL_TABLE cutscenes;
+    GS_LEVEL_TABLE level_tables[GFLT_NUMBER_OF];
 } GS_FILE;
 
 extern GS_FILE g_GST_File;

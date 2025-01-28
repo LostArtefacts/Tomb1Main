@@ -11,7 +11,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     int32_t demo_to_load = -1;
     if (String_ParseInteger(ctx->args, &demo_to_load)) {
         demo_to_load--;
-        if (demo_to_load >= 0 && demo_to_load < GF_GetDemoCount()) {
+        if (demo_to_load >= 0
+            && demo_to_load < GF_GetLevelTable(GFLT_DEMOS)->count) {
             GF_OverrideCommand((GAME_FLOW_COMMAND) {
                 .action = GF_START_DEMO,
                 .param = demo_to_load,

@@ -12,6 +12,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/phase.h>
 #include <libtrx/log.h>
@@ -92,7 +93,7 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
     } else {
         const bool result = Game_Start_Legacy(level, seq_ctx);
         if (!result) {
-            g_CurrentLevel = -1;
+            Game_SetCurrentLevel(NULL);
             return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
     }
@@ -117,7 +118,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
     } else if (level->type == GFL_DEMO) {
         return GF_RunDemo(level->num);
     } else {
-        if (seq_ctx != GFSC_SAVED && level->num != g_GameFlow.first_level_num) {
+        if (seq_ctx != GFSC_SAVED && level != GF_GetFirstLevel()) {
             Lara_RevertToPistolsIfNeeded();
         }
         gf_cmd = GF_RunGame(level, seq_ctx);
@@ -172,7 +173,8 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture)
     if (seq_ctx == GFSC_SAVED) {
         return gf_cmd;
     }
-    if (g_CurrentLevel == -1 && !g_Config.gameplay.enable_eidos_logo) {
+    if (Game_GetCurrentLevel() == NULL
+        && !g_Config.gameplay.enable_eidos_logo) {
         return gf_cmd;
     }
 
@@ -195,8 +197,7 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
         return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
     }
     const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    const GAME_FLOW_LEVEL *const next_level =
-        GF_GetLevel(current_level->num + 1, current_level->type);
+    const GAME_FLOW_LEVEL *const next_level = GF_GetLevelAfter(current_level);
     if (next_level == NULL) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
@@ -328,6 +329,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     const GAME_FLOW_LEVEL *const level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx,
     void *const seq_ctx_arg)
 {
+    ASSERT(level != NULL);
     LOG_DEBUG(
         "running sequence for level=%d type=%d seq_ctx=%d", level->num,
         level->type, seq_ctx);

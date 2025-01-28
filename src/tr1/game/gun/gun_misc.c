@@ -1,6 +1,8 @@
 #include "game/gun/gun_misc.h"
 
 #include "game/collide.h"
+#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -490,7 +492,7 @@ int32_t Gun_FireWeapon(
 void Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int16_t damage)
 {
     if (item->hit_points > 0 && item->hit_points <= damage) {
-        g_GameInfo.current[g_CurrentLevel].stats.kill_count++;
+        GF_GetResumeInfo(Game_GetCurrentLevel())->stats.kill_count++;
         if (g_Config.gameplay.target_mode == TLM_SEMI) {
             g_Lara.target = NULL;
         }

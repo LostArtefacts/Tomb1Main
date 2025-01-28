@@ -1,5 +1,6 @@
 #include "game/option/option_passport.h"
 
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/input.h"
@@ -123,7 +124,8 @@ void M_InitRequesters(void)
     Requester_Shutdown(&m_NewGameRequester);
     Requester_Shutdown(&g_SavegameRequester);
     Requester_Init(&g_SavegameRequester, Savegame_GetSlotCount());
-    Requester_Init(&m_SelectLevelRequester, g_GameFlow.level_count + 1);
+    Requester_Init(
+        &m_SelectLevelRequester, g_GameFlow.level_tables[GFLT_MAIN].count + 1);
     Requester_Init(&m_NewGameRequester, MAX_GAME_MODES);
 }
 
@@ -202,7 +204,7 @@ static void M_DeterminePages(void)
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_LOAD_GAME;
         m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_SAVE_GAME;
         m_PassportStatus.page_role[PAGE_3] = PASSPORT_MODE_EXIT_TITLE;
-        if (g_CurrentLevel == g_GameFlow.gym_level_num
+        if (Game_GetCurrentLevel() == GF_GetGymLevel()
             || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
         } else if (g_Config.gameplay.enable_save_crystals) {
@@ -235,7 +237,7 @@ static void M_DeterminePages(void)
         m_PassportStatus.page_role[PAGE_1] = PASSPORT_MODE_UNAVAILABLE;
         m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_SAVE_GAME;
         m_PassportStatus.page_role[PAGE_3] = PASSPORT_MODE_UNAVAILABLE;
-        if (g_CurrentLevel == g_GameFlow.gym_level_num
+        if (Game_GetCurrentLevel() == GF_GetGymLevel()
             || Savegame_GetSlotCount() <= 0) {
             m_PassportStatus.mode = PASSPORT_MODE_BROWSE;
             m_PassportStatus.page_role[PAGE_2] = PASSPORT_MODE_NEW_GAME;
@@ -397,12 +399,11 @@ static void M_ShowSelectLevel(void)
 {
     int32_t select = Requester_Display(&m_SelectLevelRequester);
     if (select) {
-        if (select - 1 + g_GameFlow.first_level_num
+        if (select - 1 + GF_GetFirstLevel()->num
             == Savegame_GetLevelNumber(g_GameInfo.current_save_slot) + 1) {
             g_GameInfo.passport_selection = PASSPORT_MODE_STORY_SO_FAR;
         } else if (select > 0) {
-            g_GameInfo.select_level_num =
-                select - 1 + g_GameFlow.first_level_num;
+            g_GameInfo.select_level_num = select - 1 + GF_GetFirstLevel()->num;
             g_GameInfo.passport_selection = PASSPORT_MODE_SELECT_LEVEL;
         } else if (
             g_InvMode != INV_SAVE_MODE && g_InvMode != INV_SAVE_CRYSTAL_MODE

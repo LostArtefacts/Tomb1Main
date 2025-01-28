@@ -89,7 +89,7 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
             .style = p->args.use_bare_style ? UI_STATS_DIALOG_STYLE_BARE
                                             : UI_STATS_DIALOG_STYLE_BORDERED,
             .level_num = p->args.level_num != -1 ? p->args.level_num
-                                                 : Game_GetCurrentLevelNum(),
+                                                 : Game_GetCurrentLevel()->num,
         });
     }
 

@@ -1,5 +1,6 @@
 #include "game/option/option_compass.h"
 
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/input.h"
@@ -24,7 +25,7 @@ static void M_Init(void)
     m_Dialog = UI_StatsDialog_Create((UI_STATS_DIALOG_ARGS) {
         .mode = UI_STATS_DIALOG_MODE_LEVEL,
         .style = UI_STATS_DIALOG_STYLE_BORDERED,
-        .level_num = g_CurrentLevel,
+        .level_num = Game_GetCurrentLevel()->num,
     });
 }
 

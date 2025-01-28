@@ -2,6 +2,8 @@
 
 #include "game/carrier.h"
 #include "game/creature.h"
+#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "global/const.h"
@@ -67,7 +69,7 @@ void Mummy_Control(int16_t item_num)
     if (item->status == IS_DEACTIVATED) {
         // Count kill if Lara touches mummy and it falls.
         if (item->hit_points > 0) {
-            g_GameInfo.current[g_CurrentLevel].stats.kill_count++;
+            GF_GetResumeInfo(Game_GetCurrentLevel())->stats.kill_count++;
         }
         Item_RemoveActive(item_num);
         if (item->hit_points != DONT_TARGET) {

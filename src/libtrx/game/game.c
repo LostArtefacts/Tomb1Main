@@ -1,5 +1,7 @@
 #include "game/game.h"
 
+#include "game/game_flow.h"
+#include "game/lara/common.h"
 #include "game/random.h"
 
 #include <stddef.h>
@@ -26,4 +28,26 @@ const GAME_FLOW_LEVEL *Game_GetCurrentLevel(void)
 void Game_SetCurrentLevel(const GAME_FLOW_LEVEL *const level)
 {
     m_CurrentLevel = level;
+}
+
+bool Game_IsInGym(void)
+{
+    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    return current_level != NULL && current_level->type == GFL_GYM;
+}
+
+bool Game_IsPlayable(void)
+{
+    const GAME_FLOW_LEVEL *const current_level = GF_GetCurrentLevel();
+    if (current_level == NULL || current_level->type == GFL_TITLE
+        || current_level->type == GFL_DEMO
+        || current_level->type == GFL_CUTSCENE) {
+        return false;
+    }
+
+    if (!Object_GetObject(O_LARA)->loaded || Lara_GetItem() == NULL) {
+        return false;
+    }
+
+    return true;
 }

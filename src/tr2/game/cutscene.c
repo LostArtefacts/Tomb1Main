@@ -34,7 +34,8 @@ static void M_FixAudioDrift(void)
 
 bool Cutscene_Start(const int32_t level_num)
 {
-    if (!Level_Initialise(GF_GetLevel(level_num, GFL_CUTSCENE), GFSC_NORMAL)) {
+    const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
+    if (!Level_Initialise(level, GFSC_NORMAL)) {
         return false;
     }
 

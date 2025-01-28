@@ -85,7 +85,7 @@ static const char *M_GetDialogTitle(UI_STATS_DIALOG *const self)
 {
     switch (self->args.mode) {
     case UI_STATS_DIALOG_MODE_LEVEL:
-        return GF_GetLevel(self->args.level_num, GFL_NORMAL)->title;
+        return GF_GetLevel(GFLT_MAIN, self->args.level_num)->title;
 
     case UI_STATS_DIALOG_MODE_FINAL:
         return self->level_type == GFL_BONUS ? GS(STATS_BONUS_STATISTICS)
@@ -293,7 +293,7 @@ UI_WIDGET *UI_StatsDialog_Create(const UI_STATS_DIALOG_ARGS args)
     };
 
     self->args = args;
-    self->level_type = g_GameFlow.levels[self->args.level_num].type;
+    self->level_type = GF_GetLevel(GFLT_MAIN, self->args.level_num)->type;
 
     self->row_count = 0;
     self->rows = NULL;

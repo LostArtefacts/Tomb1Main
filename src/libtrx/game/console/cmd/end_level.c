@@ -1,6 +1,6 @@
 #include "game/console/cmd/end_level.h"
 
-#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/lara/cheat.h"
 #include "strings.h"
 
@@ -12,7 +12,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         return CR_BAD_INVOCATION;
     }
 
-    if (Game_GetCurrentLevelType() == GFL_TITLE) {
+    if (GF_GetCurrentLevel() == NULL
+        || GF_GetCurrentLevel()->type == GFL_TITLE) {
         return CR_UNAVAILABLE;
     }
 

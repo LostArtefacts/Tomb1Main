@@ -1,6 +1,6 @@
 #include "game/console/cmd/flipmap.h"
 
-#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/rooms.h"
 #include "strings.h"
@@ -9,7 +9,8 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
 {
-    if (Game_GetCurrentLevelType() == GFL_TITLE) {
+    if (GF_GetCurrentLevel() == NULL
+        || GF_GetCurrentLevel()->type == GFL_TITLE) {
         return CR_UNAVAILABLE;
     }
 

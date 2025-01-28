@@ -31,7 +31,7 @@ bool Game_Start(
     GF_SetCurrentLevel(level);
     if (seq_ctx != GFSC_SAVED) {
         if (level != NULL) {
-            ModifyStartInfo(level);
+            Savegame_ApplyLogicToCurrentInfo(level);
         }
         InitialiseLevelFlags();
     }
@@ -182,47 +182,9 @@ void Game_Draw(bool draw_overlay)
     }
 }
 
-GAME_FLOW_LEVEL_TYPE Game_GetCurrentLevelType(void)
-{
-    return g_GameInfo.current_level.type;
-}
-
-int32_t Game_GetCurrentLevelNum(void)
-{
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    return current_level != NULL ? current_level->num : -1;
-}
-
-bool Game_IsPlayable(void)
-{
-    if (g_GameInfo.current_level.type == GFL_TITLE
-        || g_GameInfo.current_level.type == GFL_DEMO
-        || g_GameInfo.current_level.type == GFL_CUTSCENE) {
-        return false;
-    }
-
-    if (!g_Objects[O_LARA].loaded || g_LaraItem == NULL) {
-        return false;
-    }
-
-    return true;
-}
-
-bool Game_IsInGym(void)
-{
-    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
-    if (current_level == NULL) {
-        return false;
-    }
-    if (current_level->type != GFL_NORMAL) {
-        return false;
-    }
-    return current_level->num == LV_GYM;
-}
-
 void Game_ProcessInput(void)
 {
-    if (g_GameInfo.current_level.type == GFL_DEMO) {
+    if (GF_GetCurrentLevel()->type == GFL_DEMO) {
         return;
     }
 

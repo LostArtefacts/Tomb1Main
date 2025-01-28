@@ -28,6 +28,8 @@ static struct {
 };
 
 static void M_Apply(const GS_TABLE *table);
+static void M_ApplyLevelTitles(
+    const GS_FILE *gs_file, GAME_FLOW_LEVEL_TABLE_TYPE level_table_type);
 
 static void M_DoObjectAliases(void)
 {
@@ -81,54 +83,48 @@ static void M_Apply(const GS_TABLE *const table)
     }
 }
 
+static void M_ApplyLevelTitles(
+    const GS_FILE *const gs_file,
+    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type)
+{
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(level_table_type);
+    const GS_LEVEL_TABLE *const gs_level_table =
+        &gs_file->level_tables[level_table_type];
+    for (int32_t i = 0; i < level_table->count; i++) {
+        GF_SetLevelTitle(
+            &level_table->levels[i], gs_level_table->entries[i].title);
+    }
+}
+
 void GameStringTable_Apply(const GAME_FLOW_LEVEL *const level)
 {
     const GS_FILE *const gs_file = &g_GST_File;
 
     Object_ResetNames();
     M_Apply(&gs_file->global);
-    for (int32_t i = 0; i < GF_GetLevelCount(GFL_NORMAL); i++) {
-        GF_SetLevelTitle(
-            GF_GetLevel(i, GFL_NORMAL), gs_file->levels.entries[i].title);
-    }
-    for (int32_t i = 0; i < GF_GetLevelCount(GFL_DEMO); i++) {
-        GF_SetLevelTitle(
-            GF_GetLevel(i, GFL_DEMO), gs_file->demos.entries[i].title);
-    }
 
-    for (int32_t i = 0; i < GF_GetLevelCount(GFL_CUTSCENE); i++) {
-        GF_SetLevelTitle(
-            GF_GetLevel(i, GFL_CUTSCENE), gs_file->cutscenes.entries[i].title);
+    for (int32_t i = 0; i < GFLT_NUMBER_OF; i++) {
+        M_ApplyLevelTitles(gs_file, GFLT_MAIN);
     }
 
     if (level != NULL) {
-        const GS_LEVEL_TABLE *level_table = NULL;
+        const GS_LEVEL_TABLE *gs_level_table = NULL;
         switch (level->type) {
         case GFL_TITLE:
-            level_table = NULL;
+            gs_level_table = NULL;
             break;
-        case GFL_NORMAL:
-            level_table = &gs_file->levels;
-            break;
-        case GFL_CUTSCENE:
-            level_table = &gs_file->cutscenes;
-            break;
-        case GFL_DEMO:
-            level_table = &gs_file->demos;
-            break;
-#if TR_VERSION == 1
-        case GFL_GYM:
-            level_table = &gs_file->levels;
-            break;
-#endif
-        default:
-            ASSERT_FAIL();
+        default: {
+            const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type =
+                GF_GetLevelTableType(level->type);
+            gs_level_table = &gs_file->level_tables[level_table_type];
+        }
         }
 
-        if (level_table != NULL) {
+        if (gs_level_table != NULL) {
             ASSERT(level->num >= 0);
-            ASSERT(level->num < level_table->count);
-            M_Apply(&level_table->entries[level->num].table);
+            ASSERT(level->num < gs_level_table->count);
+            M_Apply(&gs_level_table->entries[level->num].table);
         }
     }
     M_DoObjectAliases();

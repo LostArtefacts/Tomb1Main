@@ -1,6 +1,8 @@
 #include "game/objects/general/scion1.h"
 
 #include "game/camera.h"
+#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -61,7 +63,7 @@ void Scion1_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             Inv_AddItem(item->object_id);
             item->status = IS_INVISIBLE;
             Item_RemoveDrawn(item_num);
-            g_GameInfo.current[g_CurrentLevel].stats.pickup_count++;
+            GF_GetResumeInfo(Game_GetCurrentLevel())->stats.pickup_count++;
         }
     } else if (
         g_Input.action && g_Lara.gun_status == LGS_ARMLESS

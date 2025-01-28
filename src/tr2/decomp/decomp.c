@@ -36,7 +36,8 @@ static CAMERA_INFO m_LocalCamera = {};
 GAME_FLOW_COMMAND TitleSequence(void)
 {
     GameStringTable_Apply(NULL);
-    if (!Level_Initialise(GF_GetLevel(0, GFL_TITLE), GFSC_NORMAL)) {
+    const GAME_FLOW_LEVEL *const title_level = GF_GetTitleLevel();
+    if (!Level_Initialise(title_level, GFSC_NORMAL)) {
         return (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
     }
 
@@ -190,8 +191,13 @@ void DecreaseScreenSize(void)
 void GetValidLevelsList(REQUEST_INFO *const req)
 {
     Requester_RemoveAllItems(req);
-    for (int32_t i = LV_FIRST; i < GF_GetLevelCount(GFL_NORMAL); i++) {
-        Requester_AddItem(req, GF_GetLevel(i, GFL_NORMAL)->title, 0, NULL, 0);
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        if (level->type != GFL_GYM) {
+            Requester_AddItem(req, level->title, 0, NULL, 0);
+        }
     }
 }
 

@@ -23,14 +23,3 @@ typedef struct {
     GAME_FLOW_INV_TYPE inv_type;
     int32_t qty;
 } GAME_FLOW_ADD_ITEM_DATA;
-
-// ----------------------------------------------------------------------------
-// Game information
-// ----------------------------------------------------------------------------
-
-typedef struct {
-    struct {
-        GAME_FLOW_LEVEL_TYPE type;
-        int32_t num;
-    } current_level;
-} GAME_INFO;

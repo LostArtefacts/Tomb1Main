@@ -28,7 +28,7 @@ typedef struct {
 } M_SEQUENCE_EVENT_HANDLER;
 
 typedef void (*M_LOAD_ARRAY_FUNC)(
-    JSON_OBJECT *source_elem, GAME_FLOW *gf, void *target_elem,
+    JSON_OBJECT *source_elem, const GAME_FLOW *gf, void *target_elem,
     size_t target_elem_idx, void *user_arg);
 
 static GAME_OBJECT_ID M_GetObjectFromJSONValue(const JSON_VALUE *value);
@@ -36,9 +36,9 @@ static GAME_FLOW_COMMAND M_LoadCommand(
     JSON_OBJECT *jcmd, GAME_FLOW_COMMAND fallback);
 
 static void M_LoadArray(
-    JSON_OBJECT *obj, const char *key, size_t element_size,
-    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *gf, int32_t *count, void **elements,
-    void *user_arg);
+    JSON_OBJECT *obj, const GAME_FLOW *gf, const char *key, int32_t *count,
+    void **elements, size_t element_size, M_LOAD_ARRAY_FUNC load_func,
+    void *load_func_arg);
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleIntEvent);
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandlePictureEvent);
@@ -55,6 +55,10 @@ static void M_LoadLevel(
     void *user_arg);
 static void M_LoadLevelInjections(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GAME_FLOW_LEVEL *level);
+static void M_LoadLevelTable(
+    JSON_OBJECT *obj, const GAME_FLOW *gf, const char *key,
+    GAME_FLOW_LEVEL_TABLE *level_table,
+    GAME_FLOW_LEVEL_TYPE default_level_type);
 static void M_LoadLevels(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *gf);
 static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *gf);
@@ -322,9 +326,9 @@ static void M_LoadGlobalInjections(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 }
 
 static void M_LoadArray(
-    JSON_OBJECT *const obj, const char *const key, const size_t element_size,
-    M_LOAD_ARRAY_FUNC load_func, GAME_FLOW *const gf, int32_t *const count,
-    void **const elements, void *const user_arg)
+    JSON_OBJECT *const obj, const GAME_FLOW *const gf, const char *const key,
+    int32_t *const count, void **const elements, const size_t element_size,
+    const M_LOAD_ARRAY_FUNC load_func, void *const load_func_arg)
 {
     if (!JSON_ObjectContainsKey(obj, key)) {
         return;
@@ -347,7 +351,7 @@ static void M_LoadArray(
             Shell_ExitSystemFmt("'%s' elements must be dictionaries", key);
         }
 
-        load_func(elem_obj, gf, element, i, user_arg);
+        load_func(elem_obj, gf, element, i, load_func_arg);
     }
 }
 
@@ -363,22 +367,54 @@ static void M_LoadLevelSequence(
 }
 
 static void M_LoadLevel(
-    JSON_OBJECT *const obj, const GAME_FLOW *const gf,
+    JSON_OBJECT *const jlvl_obj, const GAME_FLOW *const gf,
     GAME_FLOW_LEVEL *const level, const size_t idx, void *const user_arg)
 {
     level->num = idx;
-    level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
 
-    const char *const path = JSON_ObjectGetString(obj, "path", NULL);
-    if (path == NULL) {
-        Shell_ExitSystemFmt("Missing level path");
+    {
+        level->type = (GAME_FLOW_LEVEL_TYPE)(intptr_t)user_arg;
+        const JSON_VALUE *const tmp_v = JSON_ObjectGetValue(jlvl_obj, "type");
+        if (tmp_v != NULL) {
+            const char *const tmp =
+                JSON_ValueGetString(tmp_v, JSON_INVALID_STRING);
+            if (tmp == JSON_INVALID_STRING) {
+                Shell_ExitSystemFmt(
+                    "level %d: 'type' must be a string", level->num);
+            }
+            const GAME_FLOW_LEVEL_TYPE user_type =
+                ENUM_MAP_GET(GAME_FLOW_LEVEL_TYPE, tmp, -1);
+            if (user_type == (GAME_FLOW_LEVEL_TYPE)-1) {
+                Shell_ExitSystemFmt("unrecognized type '%s'", tmp);
+            }
+
+            if (level->type != GFL_NORMAL
+                || (user_type != GFL_NORMAL && user_type != GFL_BONUS
+                    && user_type != GFL_GYM)) {
+                Shell_ExitSystemFmt(
+                    "cannot override level type=%s to %s",
+                    ENUM_MAP_TO_STRING(GAME_FLOW_LEVEL_TYPE, level->type),
+                    ENUM_MAP_TO_STRING(GAME_FLOW_LEVEL_TYPE, user_type));
+            }
+            level->type = user_type;
+        }
     }
-    level->path = Memory_DupStr(path);
 
-    level->music_track = JSON_ObjectGetInt(obj, "music_track", MX_INACTIVE);
+    {
+        const char *const tmp =
+            JSON_ObjectGetString(jlvl_obj, "path", JSON_INVALID_STRING);
+        if (tmp == JSON_INVALID_STRING) {
+            Shell_ExitSystemFmt(
+                "level %d: 'file' must be a string", level->num);
+        }
+        level->path = Memory_DupStr(tmp);
+    }
 
-    M_LoadLevelSequence(obj, level);
-    M_LoadLevelInjections(obj, gf, level);
+    level->music_track =
+        JSON_ObjectGetInt(jlvl_obj, "music_track", MX_INACTIVE);
+
+    M_LoadLevelSequence(jlvl_obj, level);
+    M_LoadLevelInjections(jlvl_obj, gf, level);
 
     for (int32_t i = 0; i < level->sequence.length; i++) {
         if (level->sequence.events[i].type == GFS_PLAY_LEVEL
@@ -429,27 +465,32 @@ static void M_LoadLevelInjections(
     }
 }
 
-static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
+static void M_LoadLevelTable(
+    JSON_OBJECT *const obj, const GAME_FLOW *const gf, const char *const key,
+    GAME_FLOW_LEVEL_TABLE *const level_table,
+    const GAME_FLOW_LEVEL_TYPE default_level_type)
 {
     M_LoadArray(
-        obj, "levels", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
-        gf, &gf->level_count, (void **)&gf->levels,
-        (void *)(intptr_t)GFL_NORMAL);
+        obj, gf, key, &level_table->count, (void **)&level_table->levels,
+        sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
+        (void *)(intptr_t)default_level_type);
+}
+
+static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
+{
+    M_LoadLevelTable(
+        obj, gf, "levels", &gf->level_tables[GFLT_MAIN], GFL_NORMAL);
 }
 
 static void M_LoadCutscenes(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
-    M_LoadArray(
-        obj, "cutscenes", sizeof(GAME_FLOW_LEVEL),
-        (M_LOAD_ARRAY_FUNC)M_LoadLevel, gf, &gf->cutscene_count,
-        (void **)&gf->cutscenes, (void *)(intptr_t)GFL_CUTSCENE);
+    M_LoadLevelTable(
+        obj, gf, "cutscenes", &gf->level_tables[GFLT_CUTSCENES], GFL_CUTSCENE);
 }
 
 static void M_LoadDemos(JSON_OBJECT *obj, GAME_FLOW *const gf)
 {
-    M_LoadArray(
-        obj, "demos", sizeof(GAME_FLOW_LEVEL), (M_LOAD_ARRAY_FUNC)M_LoadLevel,
-        gf, &gf->demo_count, (void **)&gf->demos, (void *)(intptr_t)GFL_DEMO);
+    M_LoadLevelTable(obj, gf, "demos", &gf->level_tables[GFLT_DEMOS], GFL_DEMO);
 }
 
 static void M_LoadTitleLevel(JSON_OBJECT *obj, GAME_FLOW *const gf)
@@ -475,8 +516,8 @@ static void M_LoadFMV(
 static void M_LoadFMVs(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 {
     M_LoadArray(
-        obj, "fmvs", sizeof(GAME_FLOW_FMV), (M_LOAD_ARRAY_FUNC)M_LoadFMV, gf,
-        &gf->fmv_count, (void **)&gf->fmvs, NULL);
+        obj, gf, "fmvs", &gf->fmv_count, (void **)&gf->fmvs,
+        sizeof(GAME_FLOW_FMV), (M_LOAD_ARRAY_FUNC)M_LoadFMV, NULL);
 }
 
 void GF_Load(const char *const path)

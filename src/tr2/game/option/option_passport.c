@@ -162,7 +162,7 @@ void Option_Passport_Control(INVENTORY_ITEM *const item)
                 g_Input = (INPUT_STATE) {};
                 g_InputDB = (INPUT_STATE) {};
             } else if (g_InputDB.menu_confirm) {
-                g_Inv_ExtraData[1] = LV_FIRST;
+                g_Inv_ExtraData[1] = GF_GetFirstLevel()->num;
             }
         }
         break;

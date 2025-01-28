@@ -640,37 +640,44 @@ static void M_WriteFlares(void)
     }
 }
 
-void InitialiseStartInfo(void)
+void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *const level)
+{
+    START_INFO *const current = GF_GetResumeInfo(level);
+    memset(current, 0, sizeof(START_INFO));
+}
+
+void Savegame_InitCurrentInfo(void)
 {
     if (g_SaveGame.bonus_flag) {
         return;
     }
 
-    for (int32_t i = 0; i < GF_GetLevelCount(GFL_NORMAL); i++) {
-        ModifyStartInfo(GF_GetLevel(i, GFL_NORMAL));
-        g_SaveGame.start[i].available = 0;
-        g_SaveGame.start[i].stats.timer = 0;
-        g_SaveGame.start[i].stats.ammo_used = 0;
-        g_SaveGame.start[i].stats.ammo_hits = 0;
-        g_SaveGame.start[i].stats.distance = 0;
-        g_SaveGame.start[i].stats.kills = 0;
-        g_SaveGame.start[i].stats.medipacks = 0;
-        g_SaveGame.start[i].stats.secret_flags = 0;
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        Savegame_ResetCurrentInfo(level);
+        Savegame_ApplyLogicToCurrentInfo(level);
+        GF_GetResumeInfo(level)->available = 0;
     }
 
-    g_SaveGame.start[LV_GYM].available = 1;
-    g_SaveGame.start[LV_FIRST].available = 1;
+    if (GF_GetGymLevel() != NULL) {
+        GF_GetResumeInfo(GF_GetGymLevel())->available = 1;
+    }
+    if (GF_GetFirstLevel() != NULL) {
+        GF_GetResumeInfo(GF_GetFirstLevel())->available = 1;
+    }
     g_SaveGame.bonus_flag = 0;
 }
 
-void ModifyStartInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
 {
     START_INFO *start = GF_GetResumeInfo(level);
     start->has_pistols = 1;
     start->gun_type = LGT_PISTOLS;
     start->pistol_ammo = 1000;
 
-    if (level->num == LV_GYM) {
+    if (level == GF_GetGymLevel()) {
         start->available = 1;
 
         start->has_pistols = 0;
@@ -694,7 +701,7 @@ void ModifyStartInfo(const GAME_FLOW_LEVEL *const level)
         start->small_medipacks = 0;
         start->gun_type = LGT_UNARMED;
         start->gun_status = LGS_ARMLESS;
-    } else if (level->num == LV_FIRST) {
+    } else if (level == GF_GetFirstLevel()) {
         start->available = 1;
 
         start->has_pistols = 1;
@@ -718,7 +725,7 @@ void ModifyStartInfo(const GAME_FLOW_LEVEL *const level)
         start->gun_status = LGS_ARMLESS;
     }
 
-    if (g_SaveGame.bonus_flag && level->num != LV_GYM) {
+    if (g_SaveGame.bonus_flag && level != GF_GetGymLevel()) {
         start->has_pistols = 1;
         start->has_shotgun = 1;
         start->has_magnums = 1;
@@ -740,7 +747,7 @@ void ModifyStartInfo(const GAME_FLOW_LEVEL *const level)
     }
 }
 
-void CreateStartInfo(const GAME_FLOW_LEVEL *const level)
+void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *const level)
 {
     START_INFO *const start = GF_GetResumeInfo(level);
 
@@ -822,7 +829,7 @@ void CreateSaveGameInfo(void)
 {
     const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
     g_SaveGame.current_level = current_level->num;
-    CreateStartInfo(current_level);
+    Savegame_PersistGameToCurrentInfo(current_level);
 
     // TODO: refactor me!
     g_SaveGame.num_pickup[0] = Inv_RequestItem(O_PICKUP_ITEM_1);
@@ -1016,9 +1023,10 @@ int32_t S_SaveGame(const int32_t slot_num)
         return false;
     }
 
-    sprintf(
-        file_name, "%s",
-        GF_GetLevel(g_SaveGame.current_level, GFL_NORMAL)->title);
+    const GAME_FLOW_LEVEL *const current_level =
+        GF_GetLevel(GFLT_MAIN, g_SaveGame.current_level);
+
+    sprintf(file_name, "%s", current_level->title);
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
     for (int32_t i = 0; i < 24; i++) {

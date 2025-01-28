@@ -272,7 +272,7 @@ static GAME_FLOW_COMMAND M_Finish(
             }
             return (GAME_FLOW_COMMAND) {
                 .action = GF_START_GAME,
-                .param = g_GameFlow.first_level_num,
+                .param = GF_GetFirstLevel()->num,
             };
 
         case PASSPORT_MODE_SAVE_GAME:
@@ -284,7 +284,7 @@ static GAME_FLOW_COMMAND M_Finish(
         case PASSPORT_MODE_RESTART:
             return (GAME_FLOW_COMMAND) {
                 .action = GF_RESTART_GAME,
-                .param = g_CurrentLevel,
+                .param = Game_GetCurrentLevel()->num,
             };
 
         case PASSPORT_MODE_EXIT_TITLE:
@@ -303,10 +303,13 @@ static GAME_FLOW_COMMAND M_Finish(
         if (apply_changes) {
             g_GameInfo.current_save_slot = -1;
         }
-        return (GAME_FLOW_COMMAND) {
-            .action = GF_START_GYM,
-            .param = g_GameFlow.gym_level_num,
-        };
+        if (GF_GetGymLevel() != NULL) {
+            return (GAME_FLOW_COMMAND) {
+                .action = GF_START_GYM,
+                .param = GF_GetGymLevel()->num,
+            };
+        }
+        break;
 
     case O_PISTOL_OPTION:
     case O_SHOTGUN_OPTION:
@@ -815,7 +818,8 @@ static GAME_FLOW_COMMAND M_Control(INV_RING *const ring)
 
 static bool M_CheckDemoTimer(const INV_RING *const ring)
 {
-    if (!g_Config.gameplay.enable_demo || GF_GetDemoCount() == 0) {
+    if (!g_Config.gameplay.enable_demo
+        || GF_GetLevelTable(GFLT_DEMOS)->count == 0) {
         return false;
     }
 
@@ -875,7 +879,7 @@ INV_RING *InvRing_Open(const INVENTORY_MODE mode)
         g_InvRing_Source[RT_OPTION].qtys[i] = 1;
         InvRing_InitInvItem(g_InvRing_Source[RT_OPTION].items[i]);
     }
-    if (g_GameFlow.gym_level_num == -1) {
+    if (GF_GetGymLevel() == NULL) {
         Inv_RemoveItem(O_PHOTO_OPTION);
     }
 

@@ -38,6 +38,7 @@ static void M_FreeLevelsTable(GS_LEVEL_TABLE *const levels)
             Memory_FreePointer(&levels->entries[i].title);
             M_FreeTable(&levels->entries[i].table);
         }
+        Memory_FreePointer(&levels->entries);
     }
     levels->count = 0;
 }
@@ -48,8 +49,7 @@ void GS_File_Free(GS_FILE *const gs_file)
         return;
     }
     M_FreeTable(&gs_file->global);
-    M_FreeLevelsTable(&gs_file->levels);
-    M_FreeLevelsTable(&gs_file->demos);
-    M_FreeLevelsTable(&gs_file->cutscenes);
-    Memory_FreePointer(&gs_file->levels);
+    for (int32_t i = 0; i < GFLT_NUMBER_OF; i++) {
+        M_FreeLevelsTable(&gs_file->level_tables[i]);
+    }
 }

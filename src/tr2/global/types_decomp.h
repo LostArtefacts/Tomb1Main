@@ -229,11 +229,6 @@ typedef struct {
 } BOX_INFO;
 
 typedef enum {
-    LV_GYM   = 0,
-    LV_FIRST = 1,
-} LEVEL_TYPE;
-
-typedef enum {
     COLOR_BLACK      = 0,
     COLOR_GRAY       = 1,
     COLOR_WHITE      = 2,

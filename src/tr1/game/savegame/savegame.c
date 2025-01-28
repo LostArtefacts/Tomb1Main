@@ -1,5 +1,6 @@
 #include "game/savegame.h"
 
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
@@ -175,7 +176,7 @@ static void M_LoadPostprocess(void)
 void Savegame_Init(void)
 {
     g_GameInfo.current =
-        Memory_Alloc(sizeof(RESUME_INFO) * GF_GetLevelCount(GFL_NORMAL));
+        Memory_Alloc(sizeof(RESUME_INFO) * GF_GetLevelTable(GFLT_MAIN)->count);
     m_SaveSlots = g_Config.gameplay.maximum_save_slots;
     m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
 }
@@ -225,28 +226,33 @@ void Savegame_ProcessItemsBeforeSave(void)
 
 void Savegame_InitCurrentInfo(void)
 {
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
-        Savegame_ResetCurrentInfo(i);
-        Savegame_ApplyLogicToCurrentInfo(i);
-        g_GameInfo.current[i].flags.available = 0;
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        Savegame_ResetCurrentInfo(level);
+        Savegame_ApplyLogicToCurrentInfo(level);
+        GF_GetResumeInfo(level)->flags.available = 0;
     }
-    if (g_GameFlow.gym_level_num != -1) {
-        g_GameInfo.current[g_GameFlow.gym_level_num].flags.available = 1;
+    if (GF_GetGymLevel() != NULL) {
+        GF_GetResumeInfo(GF_GetGymLevel())->flags.available = 1;
     }
-    g_GameInfo.current[g_GameFlow.first_level_num].flags.available = 1;
+    if (GF_GetFirstLevel() != NULL) {
+        GF_GetResumeInfo(GF_GetFirstLevel())->flags.available = 1;
+    }
 }
 
-void Savegame_ApplyLogicToCurrentInfo(int level_num)
+void Savegame_ApplyLogicToCurrentInfo(const GAME_FLOW_LEVEL *const level)
 {
-    RESUME_INFO *current = &g_GameInfo.current[level_num];
+    RESUME_INFO *const current = GF_GetResumeInfo(level);
+    LOG_INFO("Applying game logic to level #%d", level->num);
 
     if (!g_Config.gameplay.disable_healing_between_levels
-        || level_num == g_GameFlow.gym_level_num
-        || level_num == g_GameFlow.first_level_num) {
+        || level == GF_GetGymLevel() || level == GF_GetFirstLevel()) {
         current->lara_hitpoints = g_Config.gameplay.start_lara_hitpoints;
     }
 
-    if (level_num == g_GameFlow.gym_level_num) {
+    if (level == GF_GetGymLevel()) {
         current->flags.available = 1;
         current->flags.costume = 1;
         current->num_medis = 0;
@@ -266,7 +272,7 @@ void Savegame_ApplyLogicToCurrentInfo(int level_num)
         current->gun_status = LGS_ARMLESS;
     }
 
-    if (level_num == g_GameFlow.first_level_num) {
+    if (level == GF_GetFirstLevel()) {
         current->flags.available = 1;
         current->flags.costume = 0;
         current->num_medis = 0;
@@ -286,8 +292,7 @@ void Savegame_ApplyLogicToCurrentInfo(int level_num)
         current->gun_status = LGS_ARMLESS;
     }
 
-    if ((g_GameInfo.bonus_flag & GBF_NGPLUS)
-        && level_num != g_GameFlow.gym_level_num) {
+    if ((g_GameInfo.bonus_flag & GBF_NGPLUS) && level != GF_GetGymLevel()) {
         current->flags.got_pistols = 1;
         current->flags.got_shotgun = 1;
         current->flags.got_magnums = 1;
@@ -334,24 +339,29 @@ void Savegame_ApplyLogicToCurrentInfo(int level_num)
     }
 }
 
-void Savegame_ResetCurrentInfo(int level_num)
+void Savegame_ResetCurrentInfo(const GAME_FLOW_LEVEL *const level)
 {
-    RESUME_INFO *current = &g_GameInfo.current[level_num];
+    LOG_INFO("Resetting resume info for level #%d", level->num);
+    RESUME_INFO *const current = GF_GetResumeInfo(level);
     memset(current, 0, sizeof(RESUME_INFO));
 }
 
-void Savegame_CarryCurrentInfoToNextLevel(int32_t src_level, int32_t dst_level)
+void Savegame_CarryCurrentInfoToNextLevel(
+    const GAME_FLOW_LEVEL *const src_level,
+    const GAME_FLOW_LEVEL *const dst_level)
 {
+    LOG_INFO(
+        "Copying resume info from level #%d to level #%d", src_level->num,
+        dst_level->num);
     memcpy(
-        &g_GameInfo.current[dst_level], &g_GameInfo.current[src_level],
+        GF_GetResumeInfo(dst_level), GF_GetResumeInfo(src_level),
         sizeof(RESUME_INFO));
 }
 
-void Savegame_PersistGameToCurrentInfo(int level_num)
+void Savegame_PersistGameToCurrentInfo(const GAME_FLOW_LEVEL *const level)
 {
-    // Persist Lara's inventory to the current info.
-    // Used to carry over Lara's inventory between levels.
-    RESUME_INFO *current = &g_GameInfo.current[level_num];
+    ASSERT(level != NULL);
+    RESUME_INFO *current = GF_GetResumeInfo(level);
 
     current->lara_hitpoints = g_LaraItem->hit_points;
     current->flags.available = 1;
@@ -457,11 +467,15 @@ bool Savegame_Save(const int32_t slot_num)
 
     File_CreateDirectory(SAVES_DIR);
 
-    Savegame_PersistGameToCurrentInfo(g_CurrentLevel);
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    Savegame_PersistGameToCurrentInfo(current_level);
 
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].type == GFL_CURRENT) {
-            game_info->current[i] = game_info->current[g_CurrentLevel];
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        if (level->type == GFL_CURRENT) {
+            game_info->current[i] = game_info->current[current_level->num];
         }
     }
 
@@ -481,7 +495,7 @@ bool Savegame_Save(const int32_t slot_num)
                 Memory_FreePointer(&savegame_info->full_path);
                 savegame_info->full_path = Memory_DupStr(File_GetPath(fp));
                 savegame_info->counter = g_SaveCounter;
-                savegame_info->level_num = g_CurrentLevel;
+                savegame_info->level_num = current_level->num;
                 File_Close(fp);
             } else {
                 ret = false;
@@ -496,8 +510,7 @@ bool Savegame_Save(const int32_t slot_num)
     if (ret) {
         REQUEST_INFO *req = &g_SavegameRequester;
         Requester_ChangeItem(
-            req, slot_num, false, "%s %d",
-            g_GameFlow.levels[g_CurrentLevel].title, g_SaveCounter);
+            req, slot_num, false, "%s %d", current_level->title, g_SaveCounter);
     }
 
     Savegame_ScanSavedGames();
@@ -645,9 +658,14 @@ void Savegame_ScanAvailableLevels(REQUEST_INFO *req)
         return;
     }
 
-    for (int i = g_GameFlow.first_level_num; i <= savegame_info->level_num;
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i <= MIN(savegame_info->level_num, level_table->count);
          i++) {
-        Requester_AddItem(req, false, "%s", g_GameFlow.levels[i].title);
+        const GAME_FLOW_LEVEL *const level = GF_GetLevel(GFLT_MAIN, i);
+        if (level->type != GFL_GYM) {
+            Requester_AddItem(req, false, "%s", level->title);
+        }
     }
 
     if (g_InvMode == INV_TITLE_MODE) {

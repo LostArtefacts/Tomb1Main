@@ -141,4 +141,3 @@ extern XYZ_32 g_InteractPosition;
 extern bool g_DetonateAllMines;
 extern int32_t g_SunsetTimer;
 extern NAMED_COLOR g_NamedColors[];
-extern GAME_INFO g_GameInfo;

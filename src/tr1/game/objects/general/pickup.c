@@ -1,6 +1,8 @@
 #include "game/objects/general/pickup.h"
 
 #include "game/effects.h"
+#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -141,7 +143,7 @@ static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item)
     item->status = IS_INVISIBLE;
     Item_RemoveDrawn(item_num);
     Item_RemoveActive(item_num);
-    g_GameInfo.current[g_CurrentLevel].stats.pickup_count++;
+    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.pickup_count++;
     g_Lara.interact_target.is_moving = false;
 }
 

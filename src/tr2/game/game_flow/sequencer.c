@@ -11,6 +11,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
@@ -145,13 +146,12 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
         return gf_cmd;
     }
     const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GAME_FLOW_LEVEL *const next_level = GF_GetLevelAfter(current_level);
     START_INFO *const start = GF_GetResumeInfo(current_level);
     start->stats = g_SaveGame.current_stats;
     start->available = 0;
-    const GAME_FLOW_LEVEL *const next_level =
-        GF_GetLevel(current_level->num + 1, current_level->type);
     if (next_level != NULL) {
-        CreateStartInfo(next_level);
+        Savegame_PersistGameToCurrentInfo(next_level);
         g_SaveGame.current_level = next_level->num;
     }
     if (next_level == NULL || gf_cmd.action != GF_NOOP) {
@@ -286,6 +286,7 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
     const GAME_FLOW_LEVEL *const level, GAME_FLOW_SEQUENCE_CONTEXT seq_ctx,
     void *const seq_ctx_arg)
 {
+    ASSERT(level != NULL);
     LOG_DEBUG(
         "running sequence for level=%d type=%d seq_ctx=%d", level->num,
         level->type, seq_ctx);

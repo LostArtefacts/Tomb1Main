@@ -354,7 +354,7 @@ void Shell_Main(void)
     GF_Load(m_CurrentGameFlowPath);
     GameStringTable_LoadFromFile(m_CurrentGameStringsPath);
 
-    InitialiseStartInfo();
+    Savegame_InitCurrentInfo();
     S_FrontEndCheck();
 
     GameBuf_Init(GAMEBUF_MEM_CAP);
@@ -380,20 +380,29 @@ void Shell_Main(void)
         case GF_START_GAME:
         case GF_SELECT_GAME:
             if (g_GameFlow.single_level >= 0) {
-                gf_cmd = GF_DoLevelSequence(
-                    GF_GetLevel(g_GameFlow.single_level, GFL_NORMAL),
-                    GFSC_NORMAL);
+                const GAME_FLOW_LEVEL *const level =
+                    GF_GetLevel(GFLT_MAIN, g_GameFlow.single_level);
+                if (level != NULL) {
+                    gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
+                }
             } else {
-                gf_cmd = GF_DoLevelSequence(
-                    GF_GetLevel(gf_cmd.param, GFL_NORMAL), GFSC_NORMAL);
+                const GAME_FLOW_LEVEL *const level =
+                    GF_GetLevel(GFLT_MAIN, gf_cmd.param);
+                if (level != NULL) {
+                    gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
+                }
             }
             break;
 
-        case GF_START_SAVED_GAME:
+        case GF_START_SAVED_GAME: {
             S_LoadGame(gf_cmd.param);
-            gf_cmd = GF_DoLevelSequence(
-                GF_GetLevel(g_SaveGame.current_level, GFL_NORMAL), GFSC_SAVED);
+            const GAME_FLOW_LEVEL *const level =
+                GF_GetLevel(GFLT_MAIN, g_SaveGame.current_level);
+            if (level != NULL) {
+                gf_cmd = GF_DoLevelSequence(level, GFSC_SAVED);
+            }
             break;
+        }
 
         case GF_START_CINE:
             gf_cmd = GF_DoCutsceneSequence(gf_cmd.param);

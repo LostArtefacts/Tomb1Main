@@ -9,8 +9,8 @@
 
 static void M_LoadTableFromJSON(JSON_OBJECT *root_obj, GS_TABLE *out_table);
 static void M_LoadLevelsFromJSON(
-    JSON_OBJECT *obj, const char *key, GAME_FLOW_LEVEL_TYPE level_type,
-    GS_LEVEL_TABLE *gs_level_table);
+    JSON_OBJECT *obj, GS_FILE *gs_file, const char *key,
+    GAME_FLOW_LEVEL_TABLE_TYPE level_table_type);
 
 static void M_LoadTableFromJSON(
     JSON_OBJECT *const root_obj, GS_TABLE *const out_table)
@@ -79,10 +79,14 @@ static void M_LoadTableFromJSON(
 }
 
 static void M_LoadLevelsFromJSON(
-    JSON_OBJECT *const obj, const char *const key,
-    const GAME_FLOW_LEVEL_TYPE level_type, GS_LEVEL_TABLE *const gs_level_table)
+    JSON_OBJECT *const obj, GS_FILE *const gs_file, const char *const key,
+    const GAME_FLOW_LEVEL_TABLE_TYPE level_table_type)
 {
-    if (GF_GetLevelCount(level_type) == 0) {
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(level_table_type);
+    GS_LEVEL_TABLE *const gs_level_table =
+        &gs_file->level_tables[level_table_type];
+    if (level_table->count == 0) {
         return;
     }
 
@@ -92,11 +96,11 @@ static void M_LoadLevelsFromJSON(
         return;
     }
 
-    if (jlvl_arr->length != (size_t)GF_GetLevelCount(level_type)) {
+    if (jlvl_arr->length != (size_t)level_table->count) {
         Shell_ExitSystemFmt(
             "'%s' length must match with the game flow level count (got: "
             "%d, expected: %d)",
-            key, jlvl_arr->length, GF_GetLevelCount(level_type));
+            key, jlvl_arr->length, level_table->count);
     }
 
     gs_level_table->count = jlvl_arr->length;
@@ -149,10 +153,9 @@ void GameStringTable_LoadFromFile(const char *const path)
     GS_FILE *const gs_file = &g_GST_File;
     JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
     M_LoadTableFromJSON(root_obj, &gs_file->global);
-    M_LoadLevelsFromJSON(root_obj, "levels", GFL_NORMAL, &gs_file->levels);
-    M_LoadLevelsFromJSON(root_obj, "demos", GFL_DEMO, &gs_file->demos);
-    M_LoadLevelsFromJSON(
-        root_obj, "cutscenes", GFL_CUTSCENE, &gs_file->cutscenes);
+    M_LoadLevelsFromJSON(root_obj, gs_file, "levels", GFLT_MAIN);
+    M_LoadLevelsFromJSON(root_obj, gs_file, "demos", GFLT_DEMOS);
+    M_LoadLevelsFromJSON(root_obj, gs_file, "cutscenes", GFLT_CUTSCENES);
 
     if (root != NULL) {
         JSON_ValueFree(root);

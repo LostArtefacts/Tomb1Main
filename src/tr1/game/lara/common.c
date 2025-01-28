@@ -2,6 +2,7 @@
 
 #include "game/camera.h"
 #include "game/collide.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/gun.h"
 #include "game/input.h"
@@ -272,7 +273,7 @@ void Lara_Control(void)
         item->hit_points = -1;
         if (!g_Lara.death_timer) {
             Music_Stop();
-            g_GameInfo.current[g_CurrentLevel].stats.death_count++;
+            GF_GetResumeInfo(Game_GetCurrentLevel())->stats.death_count++;
             if (g_GameInfo.current_save_slot != -1) {
                 Savegame_UpdateDeathCounters(
                     g_GameInfo.current_save_slot, &g_GameInfo);

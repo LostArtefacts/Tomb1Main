@@ -24,7 +24,7 @@
 
 typedef struct {
     uint32_t *demo_ptr;
-    GAME_FLOW_LEVEL *level;
+    const GAME_FLOW_LEVEL *level;
     TEXTSTRING *text;
 
     struct {
@@ -140,7 +140,7 @@ bool Demo_GetInput(void)
 bool Demo_Start(const int32_t level_num)
 {
     M_PRIV *const p = &m_Priv;
-    p->level = GF_GetLevel(level_num, GFL_DEMO);
+    p->level = GF_GetLevel(GFLT_DEMOS, level_num);
     ASSERT(p->level != NULL);
 
     M_PrepareConfig(p);
@@ -149,7 +149,7 @@ bool Demo_Start(const int32_t level_num)
     Random_SeedDraw(0xD371F947);
     Random_SeedControl(0xD371F947);
 
-    if (!Level_Initialise(GF_GetLevel(level_num, GFL_DEMO), GFSC_NORMAL)) {
+    if (!Level_Initialise(p->level, GFSC_NORMAL)) {
         return false;
     }
     if (g_DemoData == NULL) {
@@ -224,10 +224,11 @@ void Demo_Unpause(void)
 int32_t Demo_ChooseLevel(const int32_t demo_num)
 {
     M_PRIV *const p = &m_Priv;
-    if (GF_GetDemoCount() <= 0) {
+    const int32_t demo_count = GF_GetLevelTable(GFLT_DEMOS)->count;
+    if (demo_count <= 0) {
         return -1;
-    } else if (demo_num < 0 || demo_num >= GF_GetDemoCount()) {
-        return (m_LastDemoNum++) % GF_GetDemoCount();
+    } else if (demo_num < 0 || demo_num >= demo_count) {
+        return (m_LastDemoNum++) % demo_count;
     } else {
         return demo_num;
     }

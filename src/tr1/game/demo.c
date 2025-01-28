@@ -35,7 +35,7 @@
 
 typedef struct {
     uint32_t *demo_ptr;
-    GAME_FLOW_LEVEL *level;
+    const GAME_FLOW_LEVEL *level;
     CONFIG old_config;
     RESUME_INFO old_resume_info;
     TEXTSTRING *text;
@@ -159,7 +159,7 @@ static bool M_ProcessInput(M_PRIV *const p)
 bool Demo_Start(const int32_t level_num)
 {
     M_PRIV *const p = &m_Priv;
-    p->level = GF_GetLevel(level_num, GFL_DEMO);
+    p->level = GF_GetLevel(GFLT_DEMOS, level_num);
 
     M_PrepareConfig(p);
     M_PrepareResumeInfo(p);
@@ -181,7 +181,6 @@ bool Demo_Start(const int32_t level_num)
         LOG_ERROR("Level '%s' has no demo data", p->level->path);
         return false;
     }
-    g_GameInfo.current_level_type = GFL_DEMO;
 
     g_OverlayFlag = 1;
     Camera_Initialise();
@@ -252,10 +251,11 @@ void Demo_Unpause(void)
 int32_t Demo_ChooseLevel(const int32_t demo_num)
 {
     M_PRIV *const p = &m_Priv;
-    if (GF_GetDemoCount() <= 0) {
+    const int32_t demo_count = GF_GetLevelTable(GFLT_DEMOS)->count;
+    if (demo_count <= 0) {
         return -1;
-    } else if (demo_num < 0 || demo_num >= GF_GetDemoCount()) {
-        return (m_LastDemoNum++) % GF_GetDemoCount();
+    } else if (demo_num < 0 || demo_num >= demo_count) {
+        return (m_LastDemoNum++) % demo_count;
     } else {
         return demo_num;
     }

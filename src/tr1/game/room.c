@@ -1,6 +1,8 @@
 #include "game/room.h"
 
 #include "game/camera.h"
+#include "game/game.h"
+#include "game/game_flow.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/lot.h"
@@ -880,12 +882,12 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
 
         case TO_SECRET: {
             const int16_t secret_num = 1 << (int16_t)(intptr_t)cmd->parameter;
-            if (g_GameInfo.current[g_CurrentLevel].stats.secret_flags
-                & secret_num) {
+            RESUME_INFO *resume_info = GF_GetResumeInfo(Game_GetCurrentLevel());
+            if (resume_info->stats.secret_flags & secret_num) {
                 break;
             }
-            g_GameInfo.current[g_CurrentLevel].stats.secret_flags |= secret_num;
-            g_GameInfo.current[g_CurrentLevel].stats.secret_count++;
+            resume_info->stats.secret_flags |= secret_num;
+            resume_info->stats.secret_count++;
             Music_Play(MX_SECRET);
             break;
         }

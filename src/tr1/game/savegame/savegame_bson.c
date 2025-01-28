@@ -3,6 +3,7 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -211,10 +212,10 @@ static bool M_LoadResumeInfo(JSON_ARRAY *resume_arr, RESUME_INFO *resume_info)
         LOG_ERROR("Malformed save: invalid or missing resume array");
         return false;
     }
-    if ((signed)resume_arr->length != g_GameFlow.level_count) {
+    if ((signed)resume_arr->length != GF_GetLevelTable(GFLT_MAIN)->count) {
         LOG_ERROR(
             "Malformed save: expected %d resume info elements, got %d",
-            g_GameFlow.level_count, resume_arr->length);
+            GF_GetLevelTable(GFLT_MAIN)->count, resume_arr->length);
         return false;
     }
     for (int i = 0; i < (signed)resume_arr->length; i++) {
@@ -286,10 +287,10 @@ static bool M_LoadDiscontinuedStartInfo(
             "Malformed save: invalid or missing discontinued start array");
         return false;
     }
-    if ((signed)start_arr->length != g_GameFlow.level_count) {
+    if ((signed)start_arr->length != GF_GetLevelTable(GFLT_MAIN)->count) {
         LOG_ERROR(
             "Malformed save: expected %d start info elements, got %d",
-            g_GameFlow.level_count, start_arr->length);
+            GF_GetLevelTable(GFLT_MAIN)->count, start_arr->length);
         return false;
     }
     for (int i = 0; i < (signed)start_arr->length; i++) {
@@ -337,10 +338,10 @@ static bool M_LoadDiscontinuedEndInfo(JSON_ARRAY *end_arr, GAME_INFO *game_info)
         LOG_ERROR("Malformed save: invalid or missing resume info array");
         return false;
     }
-    if ((signed)end_arr->length != g_GameFlow.level_count) {
+    if ((signed)end_arr->length != GF_GetLevelTable(GFLT_MAIN)->count) {
         LOG_ERROR(
             "Malformed save: expected %d resume info elements, got %d",
-            g_GameFlow.level_count, end_arr->length);
+            GF_GetLevelTable(GFLT_MAIN)->count, end_arr->length);
         return false;
     }
     for (int i = 0; i < (signed)end_arr->length; i++) {
@@ -392,7 +393,8 @@ static bool M_LoadInventory(JSON_OBJECT *inv_obj)
         LOG_ERROR("Malformed save: invalid or missing inventory info");
         return false;
     }
-    Lara_InitialiseInventory(GF_GetLevel(g_CurrentLevel, GFL_NORMAL));
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    Lara_InitialiseInventory(current_level);
     Inv_AddItemNTimes(
         O_PICKUP_ITEM_1, JSON_ObjectGetInt(inv_obj, "pickup1", 0));
     Inv_AddItemNTimes(
@@ -937,7 +939,7 @@ static JSON_ARRAY *M_DumpResumeInfo(RESUME_INFO *resume_info)
 {
     JSON_ARRAY *resume_arr = JSON_ArrayNew();
     ASSERT(resume_info != NULL);
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
+    for (int i = 0; i < GF_GetLevelTable(GFLT_MAIN)->count; i++) {
         RESUME_INFO *resume = &resume_info[i];
         JSON_OBJECT *resume_obj = JSON_ObjectNew();
         JSON_ObjectAppendInt(
@@ -1341,12 +1343,6 @@ bool Savegame_BSON_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
         goto cleanup;
     }
 
-    g_CurrentLevel = JSON_ObjectGetInt(root_obj, "level_num", -1);
-    if (g_CurrentLevel < 0 || g_CurrentLevel >= g_GameFlow.level_count) {
-        LOG_ERROR("Malformed save: invalid or missing level number");
-        goto cleanup;
-    }
-
     if (!M_LoadResumeInfo(
             JSON_ObjectGetArray(root_obj, "current_info"),
             game_info->current)) {
@@ -1457,12 +1453,12 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
 {
     ASSERT(game_info != NULL);
 
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
     JSON_OBJECT *root_obj = JSON_ObjectNew();
 
-    JSON_ObjectAppendString(
-        root_obj, "level_title", g_GameFlow.levels[g_CurrentLevel].title);
+    JSON_ObjectAppendString(root_obj, "level_title", current_level->title);
     JSON_ObjectAppendInt(root_obj, "save_counter", g_SaveCounter);
-    JSON_ObjectAppendInt(root_obj, "level_num", g_CurrentLevel);
+    JSON_ObjectAppendInt(root_obj, "level_num", current_level->num);
 
     JSON_ObjectAppendObject(root_obj, "misc", M_DumpMisc(game_info));
     JSON_ObjectAppendArray(
@@ -1501,10 +1497,10 @@ bool Savegame_BSON_UpdateDeathCounters(MYFILE *fp, GAME_INFO *game_info)
             goto cleanup;
         }
     }
-    if ((signed)current_arr->length != g_GameFlow.level_count) {
+    if ((signed)current_arr->length != GF_GetLevelTable(GFLT_MAIN)->count) {
         LOG_ERROR(
             "Malformed save: expected %d current info elements, got %d",
-            g_GameFlow.level_count, current_arr->length);
+            GF_GetLevelTable(GFLT_MAIN)->count, current_arr->length);
         goto cleanup;
     }
     for (int i = 0; i < (signed)current_arr->length; i++) {

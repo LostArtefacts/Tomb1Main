@@ -34,6 +34,7 @@
     "levels": [
         // 0. Lara's Home
         {
+            "type": "gym",
             "path": "data/assault.tr2",
             "music_track": -1,
             "sequence": [

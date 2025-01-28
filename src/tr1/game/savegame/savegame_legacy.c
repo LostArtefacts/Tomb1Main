@@ -3,6 +3,7 @@
 #include "game/camera.h"
 #include "game/carrier.h"
 #include "game/effects.h"
+#include "game/game.h"
 #include "game/game_flow.h"
 #include "game/inventory.h"
 #include "game/items.h"
@@ -59,7 +60,7 @@ static void M_Read(void *pointer, int size);
 static void M_ReadArm(LARA_ARM *arm);
 static void M_ReadLara(LARA_INFO *lara);
 static void M_ReadLOT(LOT_INFO *lot);
-static void M_SetCurrentPosition(int level_num);
+static void M_SetCurrentPosition(int32_t level_num);
 static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info);
 
 static void M_Write(const void *pointer, int size);
@@ -113,14 +114,14 @@ static bool M_NeedsBaconLaraFix(char *buffer)
     ASSERT(buffer != NULL);
 
     bool result = false;
-    if (g_CurrentLevel != 14) {
+    if (Game_GetCurrentLevel()->num != 14) {
         return result;
     }
 
     M_Reset(buffer);
     M_Skip(SAVEGAME_LEGACY_TITLE_SIZE); // level title
     M_Skip(sizeof(int32_t)); // save counter
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
+    for (int i = 0; i < GF_GetLevelTable(GFLT_MAIN)->count; i++) {
         M_Skip(sizeof(uint16_t)); // pistol ammo
         M_Skip(sizeof(uint16_t)); // magnum ammo
         M_Skip(sizeof(uint16_t)); // uzi ammo
@@ -418,11 +419,15 @@ static void M_ReadLOT(LOT_INFO *lot)
     M_Read(&lot->target.z, sizeof(int32_t));
 }
 
-static void M_SetCurrentPosition(int level_num)
+static void M_SetCurrentPosition(const int32_t level_num)
 {
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
-        if (g_GameFlow.levels[i].type == GFL_CURRENT) {
-            g_GameInfo.current[g_CurrentLevel] = g_GameInfo.current[i];
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        if (level->type == GFL_CURRENT) {
+            g_GameInfo.current[current_level->num] = g_GameInfo.current[i];
         }
     }
 }
@@ -430,8 +435,11 @@ static void M_SetCurrentPosition(int level_num)
 static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
 {
     ASSERT(game_info->current != NULL);
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
-        RESUME_INFO *current = &game_info->current[i];
+    const GAME_FLOW_LEVEL_TABLE *const level_table =
+        GF_GetLevelTable(GFLT_MAIN);
+    for (int i = 0; i < level_table->count; i++) {
+        const GAME_FLOW_LEVEL *const level = &level_table->levels[i];
+        RESUME_INFO *current = GF_GetResumeInfo(level);
         M_Read(&current->pistol_ammo, sizeof(uint16_t));
         M_Read(&current->magnum_ammo, sizeof(uint16_t));
         M_Read(&current->uzi_ammo, sizeof(uint16_t));
@@ -452,26 +460,26 @@ static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
         current->flags.got_shotgun = flags & 16 ? 1 : 0;
         current->flags.costume = flags & 32 ? 1 : 0;
         // Gym and first level have special starting items.
-        if (i <= g_GameFlow.first_level_num) {
-            Savegame_ApplyLogicToCurrentInfo(i);
+        if (level == GF_GetFirstLevel() || level == GF_GetGymLevel()) {
+            Savegame_ApplyLogicToCurrentInfo(level);
         }
     }
 
     uint32_t temp_timer = 0;
     uint32_t temp_kill_count = 0;
     uint16_t temp_secret_flags = 0;
+    uint16_t current_level;
     M_Read(&temp_timer, sizeof(uint32_t));
     M_Read(&temp_kill_count, sizeof(uint32_t));
     M_Read(&temp_secret_flags, sizeof(uint16_t));
-    M_Read(&g_CurrentLevel, sizeof(uint16_t));
-    M_SetCurrentPosition(g_CurrentLevel);
-    game_info->current[g_CurrentLevel].stats.timer = temp_timer;
-    game_info->current[g_CurrentLevel].stats.kill_count = temp_kill_count;
-    game_info->current[g_CurrentLevel].stats.secret_flags = temp_secret_flags;
-    Stats_UpdateSecrets(&game_info->current[g_CurrentLevel].stats);
-    M_Read(
-        &game_info->current[g_CurrentLevel].stats.pickup_count,
-        sizeof(uint8_t));
+    M_Read(&current_level, sizeof(uint16_t));
+    M_SetCurrentPosition(current_level);
+    RESUME_INFO *const resume_info = GF_GetResumeInfo(Game_GetCurrentLevel());
+    resume_info->stats.timer = temp_timer;
+    resume_info->stats.kill_count = temp_kill_count;
+    resume_info->stats.secret_flags = temp_secret_flags;
+    Stats_UpdateSecrets(&resume_info->stats);
+    M_Read(&resume_info->stats.pickup_count, sizeof(uint8_t));
     M_Read(&game_info->bonus_flag, sizeof(uint8_t));
     game_info->death_counter_supported = false;
 }
@@ -497,7 +505,7 @@ bool Savegame_Legacy_FillInfo(MYFILE *fp, SAVEGAME_INFO *info)
     counter = File_ReadS32(fp);
     info->counter = counter;
 
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
+    for (int i = 0; i < GF_GetLevelTable(GFLT_MAIN)->count; i++) {
         File_Skip(fp, sizeof(uint16_t)); // pistol ammo
         File_Skip(fp, sizeof(uint16_t)); // magnum ammo
         File_Skip(fp, sizeof(uint16_t)); // uzi ammo
@@ -548,7 +556,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     g_Lara.holsters_gun_type = LGT_UNKNOWN;
     g_Lara.back_gun_type = LGT_UNKNOWN;
 
-    Lara_InitialiseInventory(&g_GameFlow.levels[g_CurrentLevel]);
+    Lara_InitialiseInventory(Game_GetCurrentLevel());
     SAVEGAME_LEGACY_ITEM_STATS item_stats = {};
     M_Read(&item_stats, sizeof(SAVEGAME_LEGACY_ITEM_STATS));
     Inv_AddItemNTimes(O_PICKUP_ITEM_1, item_stats.num_pickup1);
@@ -688,15 +696,15 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     M_Reset(buffer);
     memset(m_SGBufPtr, 0, SAVEGAME_LEGACY_MAX_BUFFER_SIZE);
 
+    const GAME_FLOW_LEVEL *const current_level = Game_GetCurrentLevel();
+
     char title[SAVEGAME_LEGACY_TITLE_SIZE];
-    snprintf(
-        title, SAVEGAME_LEGACY_TITLE_SIZE, "%s",
-        g_GameFlow.levels[g_CurrentLevel].title);
+    snprintf(title, SAVEGAME_LEGACY_TITLE_SIZE, "%s", current_level->title);
     M_Write(title, SAVEGAME_LEGACY_TITLE_SIZE);
     M_Write(&g_SaveCounter, sizeof(int32_t));
 
     ASSERT(game_info->current != NULL);
-    for (int i = 0; i < g_GameFlow.level_count; i++) {
+    for (int i = 0; i < GF_GetLevelTable(GFLT_MAIN)->count; i++) {
         RESUME_INFO *current = &game_info->current[i];
         M_Write(&current->pistol_ammo, sizeof(uint16_t));
         M_Write(&current->magnum_ammo, sizeof(uint16_t));
@@ -717,15 +725,17 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
         M_Write(&flags, sizeof(uint16_t));
     }
 
-    M_Write(&game_info->current[g_CurrentLevel].stats.timer, sizeof(uint32_t));
     M_Write(
-        &game_info->current[g_CurrentLevel].stats.kill_count, sizeof(uint32_t));
+        &game_info->current[current_level->num].stats.timer, sizeof(uint32_t));
     M_Write(
-        &game_info->current[g_CurrentLevel].stats.secret_flags,
+        &game_info->current[current_level->num].stats.kill_count,
+        sizeof(uint32_t));
+    M_Write(
+        &game_info->current[current_level->num].stats.secret_flags,
         sizeof(uint16_t));
-    M_Write(&g_CurrentLevel, sizeof(uint16_t));
+    M_Write(&current_level->num, sizeof(uint16_t));
     M_Write(
-        &game_info->current[g_CurrentLevel].stats.pickup_count,
+        &game_info->current[current_level->num].stats.pickup_count,
         sizeof(uint8_t));
     M_Write(&game_info->bonus_flag, sizeof(uint8_t));
 
