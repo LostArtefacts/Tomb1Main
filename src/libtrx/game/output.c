@@ -13,6 +13,7 @@ typedef struct {
     int32_t shade;
 } COMMON_LIGHT;
 
+static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE m_ObjectTextures[MAX_OBJECT_TEXTURES] = {};
 static SPRITE_TEXTURE m_SpriteTextures[MAX_SPRITE_TEXTURES] = {};
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = NULL;
@@ -118,6 +119,16 @@ void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
 ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(const int32_t range_idx)
 {
     return &m_AnimTextureRanges[range_idx];
+}
+
+void Output_SetObjectTextureCount(const int32_t num_textures)
+{
+    m_ObjectTextureCount = num_textures;
+}
+
+int32_t Output_GetObjectTextureCount(void)
+{
+    return m_ObjectTextureCount;
 }
 
 OBJECT_TEXTURE *Output_GetObjectTexture(const int32_t texture_idx)

@@ -314,7 +314,6 @@ static void M_LoadTextures(VFILE *const file)
     Level_ReadObjectTextures(0, 0, num_textures, file);
 
     // TODO: handle this post-injection/packing
-    g_ObjectTextureCount = num_textures;
     for (int32_t i = 0; i < num_textures; i++) {
         OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
         uint16_t *const uv = &texture->uv[0].u;
@@ -856,5 +855,5 @@ void Level_Unload(void)
     strcpy(g_LevelFileName, "");
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
-    g_ObjectTextureCount = 0;
+    Output_SetObjectTextureCount(0);
 }

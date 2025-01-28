@@ -112,7 +112,6 @@ int32_t g_FlipMaps[MAX_FLIP_MAPS];
 bool g_CameraUnderwater;
 int32_t g_BoxCount;
 int32_t g_TexturePageCount;
-int32_t g_ObjectTextureCount;
 uint8_t g_LabTextureUVFlag[MAX_OBJECT_TEXTURES];
 int32_t g_NumCameras;
 uint32_t *g_DemoData = NULL;

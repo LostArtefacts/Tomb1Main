@@ -116,12 +116,13 @@ int32_t Render_GetUVAdjustment(void)
 
 void Render_AdjustTextureUVs(const bool reset_uv_add)
 {
-    if (g_ObjectTextureCount <= 0) {
+    const int32_t num_textures = Output_GetObjectTextureCount();
+    if (num_textures <= 0) {
         return;
     }
 
     const int32_t offset = Render_GetUVAdjustment();
-    for (int32_t i = 0; i < g_ObjectTextureCount; i++) {
+    for (int32_t i = 0; i < num_textures; i++) {
         OBJECT_TEXTURE *const texture = Output_GetObjectTexture(i);
         TEXTURE_UV *const uv = texture->uv;
         const TEXTURE_UV *const uv_backup = texture->uv_backup;

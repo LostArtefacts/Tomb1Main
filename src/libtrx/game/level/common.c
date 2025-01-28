@@ -390,6 +390,8 @@ void Level_ReadObjectTextures(
             texture->uv[j].v = VFile_ReadU16(file);
         }
     }
+
+    Output_SetObjectTextureCount(base_idx + num_textures);
 }
 
 void Level_ReadSpriteTextures(
