@@ -32,8 +32,7 @@
 #include <libtrx/memory.h>
 #include <libtrx/virtual_file.h>
 
-static int16_t *m_AnimFrameData = NULL;
-static int32_t m_AnimFrameDataLength = 0;
+static LEVEL_INFO m_LevelInfo = {};
 
 static void M_LoadFromFile(const GAME_FLOW_LEVEL *level);
 static void M_LoadRooms(VFILE *file);
@@ -281,10 +280,12 @@ static void M_LoadAnimBones(VFILE *const file)
 static void M_LoadAnimFrames(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_AnimFrameDataLength = VFile_ReadS32(file);
-    LOG_INFO("anim frame data size: %d", m_AnimFrameDataLength);
-    m_AnimFrameData = Memory_Alloc(sizeof(int16_t) * m_AnimFrameDataLength);
-    VFile_Read(file, m_AnimFrameData, sizeof(int16_t) * m_AnimFrameDataLength);
+    const int32_t raw_data_count = VFile_ReadS32(file);
+    m_LevelInfo.anims.frame_count = raw_data_count;
+    LOG_INFO("anim frame data size: %d", raw_data_count);
+    m_LevelInfo.anims.frames = Memory_Alloc(sizeof(int16_t) * raw_data_count);
+    VFile_Read(
+        file, m_LevelInfo.anims.frames, sizeof(int16_t) * raw_data_count);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -724,11 +725,7 @@ static void M_CompleteSetup(void)
 
     Inject_AllInjections();
 
-    const int32_t frame_count = Anim_GetTotalFrameCount(m_AnimFrameDataLength);
-    Anim_InitialiseFrames(frame_count);
-    Anim_LoadFrames(m_AnimFrameData, m_AnimFrameDataLength);
-    Memory_FreePointer(&m_AnimFrameData);
-
+    Level_LoadAnimFrames(&m_LevelInfo);
     Level_LoadAnimCommands();
 
     // Must be called after Setup_AllObjects using the cached item

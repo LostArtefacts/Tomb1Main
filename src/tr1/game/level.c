@@ -817,12 +817,7 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 
     Inject_AllInjections(&m_LevelInfo);
 
-    const int32_t frame_count =
-        Anim_GetTotalFrameCount(m_LevelInfo.anims.frame_count);
-    Anim_InitialiseFrames(frame_count);
-    Anim_LoadFrames(m_LevelInfo.anims.frames, m_LevelInfo.anims.frame_count);
-    Memory_FreePointer(&m_LevelInfo.anims.frames);
-
+    Level_LoadAnimFrames(&m_LevelInfo);
     Level_LoadAnimCommands();
 
     M_MarkWaterEdgeVertices();

@@ -326,6 +326,15 @@ void Level_ReadAnimBones(
     }
 }
 
+void Level_LoadAnimFrames(LEVEL_INFO *const info)
+{
+    const int32_t frame_count =
+        Anim_GetTotalFrameCount(info->anims.frame_count);
+    Anim_InitialiseFrames(frame_count);
+    Anim_LoadFrames(info->anims.frames, info->anims.frame_count);
+    Memory_FreePointer(&info->anims.frames);
+}
+
 void Level_ReadObjects(const int32_t num_objects, VFILE *const file)
 {
     for (int32_t i = 0; i < num_objects; i++) {
