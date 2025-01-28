@@ -449,10 +449,8 @@ static void M_MeshData(const INJECTION *injection, LEVEL_INFO *const level_info)
     const INJECTION_INFO *const inj_info = injection->info;
     VFILE *const fp = injection->fp;
 
-    const int32_t mesh_base = level_info->mesh_count;
     const size_t data_start_pos = VFile_GetPos(fp);
     VFile_Skip(fp, inj_info->mesh_count * sizeof(int16_t));
-    level_info->mesh_count += inj_info->mesh_count;
 
     const int32_t alloc_size = inj_info->mesh_ptr_count * sizeof(int32_t);
     int32_t *mesh_indices = Memory_Alloc(alloc_size);
@@ -477,41 +475,41 @@ static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info)
     VFILE *const fp = injection->fp;
 
     Level_ReadAnimChanges(
-        level_info->anim_change_count, inj_info->anim_change_count, fp);
+        level_info->anims.change_count, inj_info->anim_change_count, fp);
     Level_ReadAnimRanges(
-        level_info->anim_range_count, inj_info->anim_range_count, fp);
+        level_info->anims.range_count, inj_info->anim_range_count, fp);
     Level_ReadAnimCommands(
-        level_info->anim_command_count, inj_info->anim_cmd_count, fp);
+        level_info->anims.command_count, inj_info->anim_cmd_count, fp);
     Level_ReadAnimBones(
-        level_info->anim_bone_count, inj_info->anim_bone_count, fp);
+        level_info->anims.bone_count, inj_info->anim_bone_count, fp);
 
     VFile_Read(
-        fp, level_info->anim_frame_data + level_info->anim_frame_data_count,
+        fp, level_info->anims.frames + level_info->anims.frame_count,
         inj_info->anim_frame_data_count * sizeof(int16_t));
 
-    Level_ReadAnims(level_info->anim_count, inj_info->anim_count, fp);
+    Level_ReadAnims(level_info->anims.anim_count, inj_info->anim_count, fp);
     for (int32_t i = 0; i < inj_info->anim_count; i++) {
-        ANIM *const anim = Anim_GetAnim(level_info->anim_count + i);
+        ANIM *const anim = Anim_GetAnim(level_info->anims.anim_count + i);
 
         // Re-align to the level.
-        anim->jump_anim_num += level_info->anim_count;
-        anim->frame_ofs += level_info->anim_frame_data_count * 2;
-        anim->change_idx += level_info->anim_change_count;
-        anim->command_idx += level_info->anim_command_count;
+        anim->jump_anim_num += level_info->anims.anim_count;
+        anim->frame_ofs += level_info->anims.frame_count * 2;
+        anim->change_idx += level_info->anims.change_count;
+        anim->command_idx += level_info->anims.command_count;
     }
 
     // Re-align to the level.
     for (int32_t i = 0; i < inj_info->anim_change_count; i++) {
         ANIM_CHANGE *const change =
-            Anim_GetChange(level_info->anim_change_count);
-        change->range_idx += level_info->anim_range_count;
-        level_info->anim_change_count++;
+            Anim_GetChange(level_info->anims.change_count);
+        change->range_idx += level_info->anims.range_count;
+        level_info->anims.change_count++;
     }
 
     for (int32_t i = 0; i < inj_info->anim_range_count; i++) {
-        ANIM_RANGE *const range = Anim_GetRange(level_info->anim_range_count);
-        range->link_anim_num += level_info->anim_count;
-        level_info->anim_range_count++;
+        ANIM_RANGE *const range = Anim_GetRange(level_info->anims.range_count);
+        range->link_anim_num += level_info->anims.anim_count;
+        level_info->anims.range_count++;
     }
 
     Benchmark_End(benchmark, NULL);
@@ -601,14 +599,14 @@ static void M_ObjectData(
         if (!object->loaded || num_meshes != 0) {
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->mesh_ptr_count;
-            object->bone_idx = bone_idx + level_info->anim_bone_count;
+            object->bone_idx = bone_idx + level_info->anims.bone_count;
         }
 
         object->frame_ofs = VFile_ReadU32(fp);
         object->frame_base = NULL;
         object->anim_idx = VFile_ReadS16(fp);
         if (object->anim_idx != -1) {
-            object->anim_idx += level_info->anim_count;
+            object->anim_idx += level_info->anims.anim_count;
         }
         object->loaded = true;
 
@@ -1558,7 +1556,7 @@ static void M_FrameEdits(
 
         const ANIM *const anim = Object_GetAnim(obj, anim_idx);
         int16_t *data_ptr =
-            &level_info->anim_frame_data[anim->frame_ofs / sizeof(int16_t)];
+            &level_info->anims.frames[anim->frame_ofs / sizeof(int16_t)];
         data_ptr += 10;
         memcpy(data_ptr, &packed_rot, sizeof(int32_t));
     }
@@ -1660,10 +1658,10 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
 
         // Realign base indices for the next injection.
         INJECTION_INFO *inj_info = injection->info;
-        level_info->anim_command_count += inj_info->anim_cmd_count;
-        level_info->anim_bone_count += inj_info->anim_bone_count;
-        level_info->anim_frame_data_count += inj_info->anim_frame_data_count;
-        level_info->anim_count += inj_info->anim_count;
+        level_info->anims.command_count += inj_info->anim_cmd_count;
+        level_info->anims.bone_count += inj_info->anim_bone_count;
+        level_info->anims.frame_count += inj_info->anim_frame_data_count;
+        level_info->anims.anim_count += inj_info->anim_count;
         level_info->mesh_ptr_count += inj_info->mesh_ptr_count;
         level_info->texture_count += inj_info->texture_count;
         source_page_count += inj_info->texture_page_count;

@@ -390,11 +390,11 @@ static void M_LoadRooms(VFILE *file)
 static void M_LoadObjectMeshes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.mesh_count = VFile_ReadS32(file);
-    LOG_INFO("%d object mesh data", m_LevelInfo.mesh_count);
+    const int32_t num_meshes = VFile_ReadS32(file);
+    LOG_INFO("%d object mesh data", num_meshes);
 
     const size_t data_start_pos = VFile_GetPos(file);
-    VFile_Skip(file, m_LevelInfo.mesh_count * sizeof(int16_t));
+    VFile_Skip(file, num_meshes * sizeof(int16_t));
 
     m_LevelInfo.mesh_ptr_count = VFile_ReadS32(file);
     LOG_INFO("%d object mesh indices", m_LevelInfo.mesh_ptr_count);
@@ -418,54 +418,57 @@ static void M_LoadObjectMeshes(VFILE *const file)
 static void M_LoadAnims(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_count = VFile_ReadS32(file);
-    LOG_INFO("%d anims", m_LevelInfo.anim_count);
-    Anim_InitialiseAnims(m_LevelInfo.anim_count + m_InjectionInfo->anim_count);
-    Level_ReadAnims(0, m_LevelInfo.anim_count, file);
+    const int32_t num_anims = VFile_ReadS32(file);
+    m_LevelInfo.anims.anim_count = num_anims;
+    LOG_INFO("%d anims", num_anims);
+    Anim_InitialiseAnims(num_anims + m_InjectionInfo->anim_count);
+    Level_ReadAnims(0, num_anims, file);
     Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadAnimChanges(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_change_count = VFile_ReadS32(file);
-    LOG_INFO("%d anim changes", m_LevelInfo.anim_change_count);
+    const int32_t num_anim_changes = VFile_ReadS32(file);
+    m_LevelInfo.anims.change_count = num_anim_changes;
+    LOG_INFO("%d anim changes", num_anim_changes);
     Anim_InitialiseChanges(
-        m_LevelInfo.anim_change_count + m_InjectionInfo->anim_change_count);
-    Level_ReadAnimChanges(0, m_LevelInfo.anim_change_count, file);
+        num_anim_changes + m_InjectionInfo->anim_change_count);
+    Level_ReadAnimChanges(0, num_anim_changes, file);
     Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadAnimRanges(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_range_count = VFile_ReadS32(file);
-    LOG_INFO("%d anim ranges", m_LevelInfo.anim_range_count);
-    Anim_InitialiseRanges(
-        m_LevelInfo.anim_range_count + m_InjectionInfo->anim_range_count);
-    Level_ReadAnimRanges(0, m_LevelInfo.anim_range_count, file);
+    const int32_t num_anim_ranges = VFile_ReadS32(file);
+    m_LevelInfo.anims.range_count = num_anim_ranges;
+    LOG_INFO("%d anim ranges", num_anim_ranges);
+    Anim_InitialiseRanges(num_anim_ranges + m_InjectionInfo->anim_range_count);
+    Level_ReadAnimRanges(0, num_anim_ranges, file);
     Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadAnimCommands(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_command_count = VFile_ReadS32(file);
-    LOG_INFO("%d anim commands", m_LevelInfo.anim_command_count);
+    const int32_t num_anim_commands = VFile_ReadS32(file);
+    m_LevelInfo.anims.command_count = num_anim_commands;
+    LOG_INFO("%d anim commands", num_anim_commands);
     Level_InitialiseAnimCommands(
-        m_LevelInfo.anim_command_count + m_InjectionInfo->anim_cmd_count);
-    Level_ReadAnimCommands(0, m_LevelInfo.anim_command_count, file);
+        num_anim_commands + m_InjectionInfo->anim_cmd_count);
+    Level_ReadAnimCommands(0, num_anim_commands, file);
     Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadAnimBones(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.anim_bone_count = VFile_ReadS32(file) / ANIM_BONE_SIZE;
-    LOG_INFO("%d anim bones", m_LevelInfo.anim_bone_count);
-    Anim_InitialiseBones(
-        m_LevelInfo.anim_bone_count + m_InjectionInfo->anim_bone_count);
-    Level_ReadAnimBones(0, m_LevelInfo.anim_bone_count, file);
+    const int32_t num_anim_bones = VFile_ReadS32(file) / ANIM_BONE_SIZE;
+    m_LevelInfo.anims.bone_count = num_anim_bones;
+    LOG_INFO("%d anim bones", num_anim_bones);
+    Anim_InitialiseBones(num_anim_bones + m_InjectionInfo->anim_bone_count);
+    Level_ReadAnimBones(0, num_anim_bones, file);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -473,13 +476,13 @@ static void M_LoadAnimFrames(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     const int32_t raw_data_count = VFile_ReadS32(file);
-    m_LevelInfo.anim_frame_data_count = raw_data_count;
-    LOG_INFO("%d raw anim frames", m_LevelInfo.anim_frame_data_count);
-    m_LevelInfo.anim_frame_data = Memory_Alloc(
+    m_LevelInfo.anims.frame_count = raw_data_count;
+    LOG_INFO("%d raw anim frames", raw_data_count);
+    m_LevelInfo.anims.frames = Memory_Alloc(
         sizeof(int16_t)
         * (raw_data_count + m_InjectionInfo->anim_frame_data_count));
     VFile_Read(
-        file, m_LevelInfo.anim_frame_data, sizeof(int16_t) * raw_data_count);
+        file, m_LevelInfo.anims.frames, sizeof(int16_t) * raw_data_count);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -589,10 +592,9 @@ static void M_LoadBoxes(VFILE *file)
         box->overlap_index = VFile_ReadS16(file);
     }
 
-    m_LevelInfo.overlap_count = VFile_ReadS32(file);
-    g_Overlap = GameBuf_Alloc(
-        sizeof(uint16_t) * m_LevelInfo.overlap_count, GBUF_OVERLAPS);
-    VFile_Read(file, g_Overlap, sizeof(uint16_t) * m_LevelInfo.overlap_count);
+    const int32_t num_overlaps = VFile_ReadS32(file);
+    g_Overlap = GameBuf_Alloc(sizeof(uint16_t) * num_overlaps, GBUF_OVERLAPS);
+    VFile_Read(file, g_Overlap, sizeof(uint16_t) * num_overlaps);
 
     for (int i = 0; i < 2; i++) {
         g_GroundZone[i] =
@@ -822,11 +824,10 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
     Inject_AllInjections(&m_LevelInfo);
 
     const int32_t frame_count =
-        Anim_GetTotalFrameCount(m_LevelInfo.anim_frame_data_count);
+        Anim_GetTotalFrameCount(m_LevelInfo.anims.frame_count);
     Anim_InitialiseFrames(frame_count);
-    Anim_LoadFrames(
-        m_LevelInfo.anim_frame_data, m_LevelInfo.anim_frame_data_count);
-    Memory_FreePointer(&m_LevelInfo.anim_frame_data);
+    Anim_LoadFrames(m_LevelInfo.anims.frames, m_LevelInfo.anims.frame_count);
+    Memory_FreePointer(&m_LevelInfo.anims.frames);
 
     Level_LoadAnimCommands();
 
