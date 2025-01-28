@@ -1,6 +1,5 @@
 #include "game/game_flow/sequencer.h"
 
-#include "game/demo.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow/common.h"
@@ -10,7 +9,6 @@
 #include "game/level.h"
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
-#include "game/savegame.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
@@ -84,9 +82,12 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
         }
     } else if (level->type == GFL_DEMO) {
     } else if (level->type == GFL_CUTSCENE) {
-        gf_cmd = GF_LoadLevel(level->num, GFL_CUTSCENE);
-        if (gf_cmd.action == GF_LEVEL_COMPLETE) {
-            gf_cmd.action = GF_NOOP;
+        if (!Level_Initialise(level)) {
+            if (level->type == GFL_TITLE) {
+                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_GAME };
+            } else {
+                gf_cmd = (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            }
         }
     } else {
         const bool result = Game_Start_Legacy(level, seq_ctx);
@@ -396,52 +397,4 @@ GAME_FLOW_COMMAND GF_InterpretSequence(
         "sequence finished: action=%s param=%d",
         ENUM_MAP_TO_STRING(GAME_FLOW_ACTION, gf_cmd.action), gf_cmd.param);
     return gf_cmd;
-}
-
-GAME_FLOW_COMMAND GF_PlayAvailableStory(int32_t slot_num)
-{
-    const int32_t savegame_level = Savegame_GetLevelNumber(slot_num);
-    for (int32_t i = g_GameFlow.first_level_num; i <= savegame_level; i++) {
-        const GAME_FLOW_COMMAND gf_cmd = GF_InterpretSequence(
-            GF_GetLevel(i, GFL_NORMAL), GFSC_STORY,
-            (void *)(intptr_t)savegame_level);
-        if (gf_cmd.action == GF_EXIT_TO_TITLE
-            || gf_cmd.action == GF_EXIT_GAME) {
-            break;
-        }
-    }
-    return (GAME_FLOW_COMMAND) { .action = GF_EXIT_TO_TITLE };
-}
-
-GAME_FLOW_COMMAND GF_LoadLevel(
-    const int32_t level_num, const GAME_FLOW_LEVEL_TYPE type)
-{
-    if (!Level_Initialise(GF_GetLevel(level_num, type))) {
-        return (GAME_FLOW_COMMAND) { .action = type == GFL_TITLE
-                                         ? GF_EXIT_GAME
-                                         : GF_EXIT_TO_TITLE };
-    }
-    return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-}
-
-GAME_FLOW_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
-{
-    const GAME_FLOW_LEVEL *const level =
-        GF_GetLevel(cutscene_num, GFL_CUTSCENE);
-    if (level == NULL) {
-        LOG_ERROR("Missing cutscene: %d", cutscene_num);
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-    }
-    return GF_InterpretSequence(
-        GF_GetLevel(cutscene_num, GFL_CUTSCENE), GFSC_NORMAL, NULL);
-}
-
-GAME_FLOW_COMMAND GF_DoDemoSequence(int32_t demo_num)
-{
-    demo_num = Demo_ChooseLevel(demo_num);
-    if (demo_num < 0) {
-        return (GAME_FLOW_COMMAND) { .action = GF_NOOP };
-    }
-    return GF_InterpretSequence(
-        GF_GetLevel(demo_num, GFL_DEMO), GFSC_NORMAL, NULL);
 }

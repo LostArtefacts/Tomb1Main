@@ -1,5 +1,6 @@
 #include "game/game_flow/common.h"
 
+#include "game/game_flow/sequencer.h"
 #include "game/game_flow/vars.h"
 #include "global/vars.h"
 
