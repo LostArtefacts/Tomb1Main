@@ -838,4 +838,8 @@ void Level_Unload(void)
     memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
     memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
     Output_InitialiseObjectTextures(0);
+
+    if (Output_GetBackgroundType() == BK_OBJECT) {
+        Output_UnloadBackground();
+    }
 }

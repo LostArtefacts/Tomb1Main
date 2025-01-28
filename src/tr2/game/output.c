@@ -21,6 +21,7 @@ static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
 static float m_WibbleTable[32];
 static int16_t m_ShadesTable[32];
 static int32_t m_RandomTable[32];
+static BACKGROUND_TYPE m_BackgroundType = BK_TRANSPARENT;
 
 static void M_CalcRoomVertices(const ROOM_MESH *mesh, int32_t far_clip);
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *mesh);
@@ -617,6 +618,11 @@ void Output_EndScene(void)
     Shell_ProcessEvents();
 }
 
+BACKGROUND_TYPE Output_GetBackgroundType(void)
+{
+    return m_BackgroundType;
+}
+
 bool Output_LoadBackgroundFromFile(const char *const file_name)
 {
     IMAGE *const image = Image_CreateFromFile(file_name);
@@ -625,6 +631,7 @@ bool Output_LoadBackgroundFromFile(const char *const file_name)
     }
     Render_LoadBackgroundFromImage(image);
     Image_Free(image);
+    m_BackgroundType = BK_IMAGE;
     return true;
 }
 
@@ -643,12 +650,14 @@ void Output_LoadBackgroundFromObject(void)
     const int32_t texture_idx = mesh->tex_face4s[0].texture_idx;
     const OBJECT_TEXTURE *const texture = Output_GetObjectTexture(texture_idx);
     Render_LoadBackgroundFromTexture(texture, 8, 6);
+    m_BackgroundType = BK_OBJECT;
     return;
 }
 
 void Output_UnloadBackground(void)
 {
     Render_UnloadBackground();
+    m_BackgroundType = BK_TRANSPARENT;
 }
 
 void Output_InsertBackPolygon(

@@ -71,6 +71,7 @@ void Output_DrawScreenFBox(
 void Output_DrawHealthBar(int32_t percent);
 void Output_DrawAirBar(int32_t percent);
 
+BACKGROUND_TYPE Output_GetBackgroundType(void);
 void Output_LoadBackgroundFromObject(void);
 
 int16_t Output_FindColor(int32_t red, int32_t green, int32_t blue);
