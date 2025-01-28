@@ -602,8 +602,6 @@ static void M_LoadLevels(JSON_OBJECT *const obj, GAME_FLOW *const gf)
 
     int32_t level_count = jlvl_arr->length;
 
-    g_GameInfo.current = Memory_Alloc(sizeof(RESUME_INFO) * level_count);
-
     JSON_ARRAY_ELEMENT *jlvl_elem = jlvl_arr->start;
     int32_t level_num = 0;
 

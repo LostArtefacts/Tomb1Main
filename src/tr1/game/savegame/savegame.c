@@ -174,6 +174,8 @@ static void M_LoadPostprocess(void)
 
 void Savegame_Init(void)
 {
+    g_GameInfo.current =
+        Memory_Alloc(sizeof(RESUME_INFO) * GF_GetLevelCount(GFL_NORMAL));
     m_SaveSlots = g_Config.gameplay.maximum_save_slots;
     m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
 }
@@ -182,6 +184,7 @@ void Savegame_Shutdown(void)
 {
     M_Clear();
     Memory_FreePointer(&m_SavegameInfo);
+    Memory_FreePointer(&g_GameInfo.current);
 }
 
 bool Savegame_IsInitialised(void)
