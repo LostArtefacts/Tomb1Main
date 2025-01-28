@@ -50,7 +50,8 @@ static void M_ReadFace3(FACE3 *const face, VFILE *const file)
 static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
 {
     M_ReadVertex(&mesh->center, file);
-    mesh->radius = VFile_ReadS32(file);
+    mesh->radius = VFile_ReadS16(file);
+    VFile_Skip(file, sizeof(int16_t));
 
     mesh->enable_reflections = false;
 
