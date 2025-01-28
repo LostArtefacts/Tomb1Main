@@ -410,10 +410,11 @@ static void M_TextureData(
 
     // Read the tex_infos and align them to the end of the page list.
     Level_ReadObjectTextures(
-        level_info->texture_count, page_base, inj_info->texture_count, fp);
-    Level_ReadSpriteTextures(
-        level_info->sprite_info_count, page_base, inj_info->sprite_info_count,
+        level_info->textures.object_count, page_base, inj_info->texture_count,
         fp);
+    Level_ReadSpriteTextures(
+        level_info->textures.sprite_count, page_base,
+        inj_info->sprite_info_count, fp);
 
     for (int32_t i = 0; i < inj_info->sprite_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
@@ -423,16 +424,16 @@ static void M_TextureData(
         if (object_id < O_NUMBER_OF) {
             OBJECT *const object = Object_GetObject(object_id);
             object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx + level_info->sprite_info_count;
+            object->mesh_idx = mesh_idx + level_info->textures.sprite_count;
             object->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_OBJECT_2D *const object =
                 Object_GetStaticObject2D(object_id - O_NUMBER_OF);
             object->frame_count = ABS(num_meshes);
-            object->texture_idx = mesh_idx + level_info->sprite_info_count;
+            object->texture_idx = mesh_idx + level_info->textures.sprite_count;
             object->loaded = true;
         }
-        level_info->sprite_info_count += ABS(num_meshes);
+        level_info->textures.sprite_count += ABS(num_meshes);
     }
 
     Benchmark_End(benchmark, NULL);
@@ -612,7 +613,7 @@ static void M_ObjectData(
 
         if (num_meshes != 0) {
             M_AlignTextureReferences(
-                object, palette_map, level_info->texture_count);
+                object, palette_map, level_info->textures.object_count);
         }
     }
 
@@ -685,19 +686,20 @@ static void M_AlignTextureReferences(
 static uint16_t M_RemapRGB(LEVEL_INFO *level_info, RGB_888 rgb)
 {
     // Find the index of the exact match to the given RGB
-    for (int32_t i = 0; i < level_info->palette_size; i++) {
-        const RGB_888 test_rgb = level_info->palette[i];
+    for (int32_t i = 0; i < level_info->palette.size; i++) {
+        const RGB_888 test_rgb = level_info->palette.data_24[i];
         if (rgb.r == test_rgb.r && rgb.g == test_rgb.g && rgb.b == test_rgb.b) {
             return i;
         }
     }
 
     // Match not found - expand the game palette
-    level_info->palette_size++;
-    level_info->palette = Memory_Realloc(
-        level_info->palette, level_info->palette_size * sizeof(RGB_888));
-    level_info->palette[level_info->palette_size - 1] = rgb;
-    return level_info->palette_size - 1;
+    level_info->palette.size++;
+    level_info->palette.data_24 = Memory_Realloc(
+        level_info->palette.data_24,
+        level_info->palette.size * sizeof(RGB_888));
+    level_info->palette.data_24[level_info->palette.size - 1] = rgb;
+    return level_info->palette.size - 1;
 }
 
 static void M_MeshEdits(INJECTION *injection, uint16_t *palette_map)
@@ -907,7 +909,7 @@ static void M_TextureOverwrites(
 
         // Copy the source image pixels directly into the target page.
         RGBA_8888 *page =
-            level_info->texture_rgb_page_ptrs + target_page * TEXTURE_PAGE_SIZE;
+            level_info->textures.pages_32 + target_page * TEXTURE_PAGE_SIZE;
         for (int32_t y = 0; y < source_height; y++) {
             for (int32_t x = 0; x < source_width; x++) {
                 const uint8_t pal_idx = source_img[y * source_width + x];
@@ -917,7 +919,7 @@ static void M_TextureOverwrites(
                     (*(page + target_pixel)).a = 0;
                 } else {
                     const RGB_888 pix =
-                        level_info->palette[palette_map[pal_idx]];
+                        level_info->palette.data_24[palette_map[pal_idx]];
                     (*(page + target_pixel)).r = pix.r;
                     (*(page + target_pixel)).g = pix.g;
                     (*(page + target_pixel)).b = pix.b;
@@ -1627,7 +1629,7 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
         m_Aggregate->texture_page_count * TEXTURE_PAGE_SIZE
         * sizeof(RGBA_8888));
     int32_t source_page_count = 0;
-    int32_t tpage_base = level_info->texture_page_count;
+    int32_t tpage_base = level_info->textures.page_count;
 
     for (int32_t i = 0; i < m_NumInjections; i++) {
         INJECTION *injection = &m_Injections[i];
@@ -1663,28 +1665,28 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
         level_info->anims.frame_count += inj_info->anim_frame_data_count;
         level_info->anims.anim_count += inj_info->anim_count;
         level_info->mesh_ptr_count += inj_info->mesh_ptr_count;
-        level_info->texture_count += inj_info->texture_count;
+        level_info->textures.object_count += inj_info->texture_count;
         source_page_count += inj_info->texture_page_count;
         tpage_base += inj_info->texture_page_count;
     }
 
     if (source_page_count != 0) {
         PACKER_DATA data = {
-            .level.page_count = level_info->texture_page_count,
-            .level.pages_32 = level_info->texture_rgb_page_ptrs,
+            .level.page_count = level_info->textures.page_count,
+            .level.pages_32 = level_info->textures.pages_32,
             .level.pages_24 = NULL,
             .level.palette_24 = NULL,
             .source.page_count = source_page_count,
             .source.pages_32 = source_pages,
             .source.pages_24 = NULL,
             .source.palette_24 = NULL,
-            .object_count = level_info->texture_count,
-            .sprite_count = level_info->sprite_info_count,
+            .object_count = level_info->textures.object_count,
+            .sprite_count = level_info->textures.sprite_count,
         };
 
         if (Packer_Pack(&data)) {
-            level_info->texture_page_count += Packer_GetAddedPageCount();
-            level_info->texture_rgb_page_ptrs = data.level.pages_32;
+            level_info->textures.page_count += Packer_GetAddedPageCount();
+            level_info->textures.pages_32 = data.level.pages_32;
         }
 
         Memory_FreePointer(&source_pages);

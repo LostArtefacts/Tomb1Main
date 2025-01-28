@@ -254,13 +254,12 @@ static void M_LoadFromFile(const GAME_FLOW_LEVEL *const level)
 static void M_LoadTexturePages(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.texture_page_count = VFile_ReadS32(file);
-    LOG_INFO("%d texture pages", m_LevelInfo.texture_page_count);
-    m_LevelInfo.texture_palette_page_ptrs =
-        Memory_Alloc(m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE);
+    const int32_t num_pages = VFile_ReadS32(file);
+    m_LevelInfo.textures.page_count = num_pages;
+    LOG_INFO("%d texture pages", num_pages);
+    m_LevelInfo.textures.pages_24 = Memory_Alloc(num_pages * TEXTURE_PAGE_SIZE);
     VFile_Read(
-        file, m_LevelInfo.texture_palette_page_ptrs,
-        TEXTURE_PAGE_SIZE * m_LevelInfo.texture_page_count);
+        file, m_LevelInfo.textures.pages_24, num_pages * TEXTURE_PAGE_SIZE);
     Benchmark_End(benchmark, NULL);
 }
 
@@ -507,22 +506,24 @@ static void M_LoadStaticObjects(VFILE *file)
 static void M_LoadTextures(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.texture_count = VFile_ReadS32(file);
-    LOG_INFO("%d object textures", m_LevelInfo.texture_count);
+    const int32_t num_textures = VFile_ReadS32(file);
+    m_LevelInfo.textures.object_count = num_textures;
+    LOG_INFO("%d object textures", num_textures);
     Output_InitialiseObjectTextures(
-        m_LevelInfo.texture_count + m_InjectionInfo->texture_count);
-    Level_ReadObjectTextures(0, 0, m_LevelInfo.texture_count, file);
+        num_textures + m_InjectionInfo->texture_count);
+    Level_ReadObjectTextures(0, 0, num_textures, file);
     Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadSprites(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    m_LevelInfo.sprite_info_count = VFile_ReadS32(file);
-    LOG_DEBUG("sprite textures: %d", m_LevelInfo.sprite_info_count);
+    const int32_t num_textures = VFile_ReadS32(file);
+    m_LevelInfo.textures.sprite_count = num_textures;
+    LOG_DEBUG("sprite textures: %d", num_textures);
     Output_InitialiseSpriteTextures(
-        m_LevelInfo.sprite_info_count + m_InjectionInfo->sprite_info_count);
-    Level_ReadSpriteTextures(0, 0, m_LevelInfo.sprite_info_count, file);
+        num_textures + m_InjectionInfo->sprite_info_count);
+    Level_ReadSpriteTextures(0, 0, num_textures, file);
 
     const int32_t num_sequences = VFile_ReadS32(file);
     LOG_DEBUG("sprite sequences: %d", num_sequences);
@@ -679,22 +680,17 @@ static void M_LoadPalette(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     LOG_INFO("");
-    m_LevelInfo.palette_size = 256;
-    m_LevelInfo.palette =
-        Memory_Alloc(sizeof(RGB_888) * m_LevelInfo.palette_size);
+    m_LevelInfo.palette.size = 256;
+    m_LevelInfo.palette.data_24 =
+        Memory_Alloc(sizeof(RGB_888) * m_LevelInfo.palette.size);
     for (int32_t i = 0; i < 256; i++) {
-        m_LevelInfo.palette[i].r = VFile_ReadU8(file);
-        m_LevelInfo.palette[i].g = VFile_ReadU8(file);
-        m_LevelInfo.palette[i].b = VFile_ReadU8(file);
+        m_LevelInfo.palette.data_24[i].r = VFile_ReadU8(file) * 4;
+        m_LevelInfo.palette.data_24[i].g = VFile_ReadU8(file) * 4;
+        m_LevelInfo.palette.data_24[i].b = VFile_ReadU8(file) * 4;
     }
-    m_LevelInfo.palette[0].r = 0;
-    m_LevelInfo.palette[0].g = 0;
-    m_LevelInfo.palette[0].b = 0;
-    for (int i = 1; i < 256; i++) {
-        m_LevelInfo.palette[i].r *= 4;
-        m_LevelInfo.palette[i].g *= 4;
-        m_LevelInfo.palette[i].b *= 4;
-    }
+    m_LevelInfo.palette.data_24[0].r = 0;
+    m_LevelInfo.palette.data_24[0].g = 0;
+    m_LevelInfo.palette.data_24[0].b = 0;
     Benchmark_End(benchmark, NULL);
 }
 
@@ -793,11 +789,12 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // Expand paletted texture data to RGB
-    m_LevelInfo.texture_rgb_page_ptrs = Memory_Alloc(
-        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
-    RGBA_8888 *output = m_LevelInfo.texture_rgb_page_ptrs;
-    const uint8_t *input = m_LevelInfo.texture_palette_page_ptrs;
-    for (int32_t i = 0; i < m_LevelInfo.texture_page_count; i++) {
+    m_LevelInfo.textures.pages_32 = Memory_Alloc(
+        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE
+        * sizeof(RGBA_8888));
+    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
+    const uint8_t *input = m_LevelInfo.textures.pages_24;
+    for (int32_t i = 0; i < m_LevelInfo.textures.page_count; i++) {
         for (int32_t j = 0; j < TEXTURE_PAGE_SIZE; j++) {
             const uint8_t index = *input++;
             if (index == 0) {
@@ -806,7 +803,7 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
                 output->b = 0;
                 output->a = 0;
             } else {
-                RGB_888 pix = m_LevelInfo.palette[index];
+                RGB_888 pix = m_LevelInfo.palette.data_24[index];
                 output->r = pix.r;
                 output->g = pix.g;
                 output->b = pix.b;
@@ -856,16 +853,20 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 
     // Move the prepared texture pages into g_TexturePagePtrs.
     RGBA_8888 *final_texture_data = GameBuf_Alloc(
-        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888),
+        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888),
         GBUF_TEXTURE_PAGES);
     memcpy(
-        final_texture_data, m_LevelInfo.texture_rgb_page_ptrs,
-        m_LevelInfo.texture_page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
-    for (int i = 0; i < m_LevelInfo.texture_page_count; i++) {
+        final_texture_data, m_LevelInfo.textures.pages_32,
+        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE
+            * sizeof(RGBA_8888));
+    for (int i = 0; i < m_LevelInfo.textures.page_count; i++) {
         g_TexturePagePtrs[i] = &final_texture_data[i * TEXTURE_PAGE_SIZE];
     }
-    Output_DownloadTextures(m_LevelInfo.texture_page_count);
-    Output_SetPalette(m_LevelInfo.palette, m_LevelInfo.palette_size);
+    Output_DownloadTextures(m_LevelInfo.textures.page_count);
+    Output_SetPalette(m_LevelInfo.palette.data_24, m_LevelInfo.palette.size);
+    Memory_FreePointer(&m_LevelInfo.textures.pages_24);
+    Memory_FreePointer(&m_LevelInfo.textures.pages_32);
+    Memory_FreePointer(&m_LevelInfo.palette.data_24);
 
     // Initialise the sound effects.
     size_t *sample_sizes =
@@ -958,10 +959,7 @@ void Level_Load(const GAME_FLOW_LEVEL *const level)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     // clean previous level data
-    Memory_FreePointer(&m_LevelInfo.texture_palette_page_ptrs);
-    Memory_FreePointer(&m_LevelInfo.texture_rgb_page_ptrs);
     Memory_FreePointer(&m_LevelInfo.sample_offsets);
-    Memory_FreePointer(&m_LevelInfo.palette);
     Memory_FreePointer(&m_InjectionInfo);
 
     m_InjectionInfo = Memory_Alloc(sizeof(INJECTION_INFO));
