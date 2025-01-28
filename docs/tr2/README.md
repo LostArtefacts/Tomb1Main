@@ -146,6 +146,7 @@ game with new enhancements and features.
 - added .jpeg/.png screenshots
 - added ability to skip FMVs with both the Action key
 - added ability to skip end credits with the Action and Escape keys
+- expanded internal game memory limit from 7.5 MB to 128 MB
 - ported audio decoding library to ffmpeg
 - ported video decoding library to ffmpeg
 - ported input backend to SDL

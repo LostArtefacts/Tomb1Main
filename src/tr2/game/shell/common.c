@@ -34,7 +34,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#define GAMEBUF_MEM_CAP 0x780000
+#define GAMEBUF_MEM_CAP 0x8000000
 
 static Uint64 m_UpdateDebounce = 0;
 static const char *m_CurrentGameFlowPath = "cfg/TR2X_gameflow.json5";
