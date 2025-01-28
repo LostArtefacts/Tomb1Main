@@ -1,5 +1,3 @@
 #pragma once
 
-#include "./types.h"
-
-extern GAME_FLOW g_GameFlow;
+#include <libtrx/game/game_flow/vars.h>

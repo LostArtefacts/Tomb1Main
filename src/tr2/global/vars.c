@@ -348,3 +348,5 @@ NAMED_COLOR g_NamedColors[COLOR_NUMBER_OF] = {
     [COLOR_MAGENTA]    = {.rgb = {.r = 0xFF, .g = 0x00, .b = 0xFF}},
     // clang-format on
 };
+
+GAME_INFO g_GameInfo;
