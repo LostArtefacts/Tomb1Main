@@ -2,6 +2,12 @@
 
 #include <stdint.h>
 
+typedef enum {
+    BK_TRANSPARENT,
+    BK_OBJECT,
+    BK_IMAGE,
+} BACKGROUND_TYPE;
+
 typedef struct {
     int16_t value_1;
     int16_t value_2;
