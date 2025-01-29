@@ -479,7 +479,7 @@ static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
     Stats_UpdateSecrets(&resume_info->stats);
     M_Read(&resume_info->stats.pickup_count, sizeof(uint8_t));
     M_Read(&game_info->bonus_flag, sizeof(uint8_t));
-    game_info->death_counter_supported = false;
+    game_info->death_count = -1;
 }
 
 char *Savegame_Legacy_GetSaveFileName(int32_t slot)

@@ -117,7 +117,7 @@ GF_COMMAND Game_Stop_Legacy(void)
     if (g_GameInfo.passport_selection == PASSPORT_MODE_LOAD_GAME) {
         return (GF_COMMAND) {
             .action = GF_START_SAVED_GAME,
-            .param = g_GameInfo.current_save_slot,
+            .param = g_GameInfo.select_save_slot,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_SELECT_LEVEL) {
         return (GF_COMMAND) {
@@ -127,7 +127,7 @@ GF_COMMAND Game_Stop_Legacy(void)
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_STORY_SO_FAR) {
         return (GF_COMMAND) {
             .action = GF_STORY_SO_FAR,
-            .param = g_GameInfo.current_save_slot,
+            .param = g_GameInfo.select_save_slot,
         };
     } else if (g_GameInfo.passport_selection == PASSPORT_MODE_RESTART) {
         return (GF_COMMAND) {

@@ -273,10 +273,10 @@ void Lara_Control(void)
         item->hit_points = -1;
         if (!g_Lara.death_timer) {
             Music_Stop();
-            GF_GetResumeInfo(Game_GetCurrentLevel())->stats.death_count++;
-            if (g_GameInfo.current_save_slot != -1) {
+            g_GameInfo.death_count++;
+            if (Savegame_GetBoundSlot() != -1) {
                 Savegame_UpdateDeathCounters(
-                    g_GameInfo.current_save_slot, &g_GameInfo);
+                    Savegame_GetBoundSlot(), &g_GameInfo);
             }
         }
         g_Lara.death_timer++;

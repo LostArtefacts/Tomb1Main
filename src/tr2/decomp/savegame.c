@@ -1093,7 +1093,3 @@ int32_t S_LoadGame(const int32_t slot_num)
     File_Close(fp);
     return true;
 }
-
-void Savegame_ClearCurrentSlot(void)
-{
-}

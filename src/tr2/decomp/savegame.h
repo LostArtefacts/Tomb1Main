@@ -3,6 +3,8 @@
 #include "game/game_flow/types.h"
 #include "global/types.h"
 
+#include <libtrx/game/savegame.h>
+
 #include <stddef.h>
 
 void Savegame_ResetCurrentInfo(const GF_LEVEL *level);

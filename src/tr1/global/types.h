@@ -217,13 +217,14 @@ typedef struct {
 
 typedef struct {
     RESUME_INFO *current;
+    int32_t death_count;
+
     uint8_t bonus_flag;
     bool bonus_level_unlock;
-    int32_t current_save_slot;
     int16_t save_initial_version;
     PASSPORT_MODE passport_selection;
+    int32_t select_save_slot;
     int32_t select_level_num;
-    bool death_counter_supported;
     bool remove_guns;
     bool remove_scions;
     bool remove_ammo;

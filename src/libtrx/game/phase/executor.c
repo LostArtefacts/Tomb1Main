@@ -31,7 +31,7 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
 
         // A change in the game flow is not natural. Force features like death
         // counter to break from the currently active savegame file.
-        Savegame_ClearCurrentSlot();
+        Savegame_UnbindSlot();
 
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }

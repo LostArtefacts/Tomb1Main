@@ -226,6 +226,7 @@ void Savegame_ProcessItemsBeforeSave(void)
 
 void Savegame_InitCurrentInfo(void)
 {
+    g_GameInfo.death_count = 0;
     const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int32_t i = 0; i < level_table->count; i++) {
         const GF_LEVEL *const level = &level_table->levels[i];
@@ -351,9 +352,9 @@ void Savegame_CarryCurrentInfoToNextLevel(
     LOG_INFO(
         "Copying resume info from level #%d to level #%d", src_level->num,
         dst_level->num);
-    memcpy(
-        GF_GetResumeInfo(dst_level), GF_GetResumeInfo(src_level),
-        sizeof(RESUME_INFO));
+    RESUME_INFO *const src_resume = GF_GetResumeInfo(src_level);
+    RESUME_INFO *const dst_resume = GF_GetResumeInfo(dst_level);
+    memcpy(dst_resume, src_resume, sizeof(RESUME_INFO));
 }
 
 void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
@@ -462,6 +463,7 @@ bool Savegame_Save(const int32_t slot_num)
 {
     GAME_INFO *const game_info = &g_GameInfo;
     bool ret = true;
+    Savegame_BindSlot(slot_num);
 
     File_CreateDirectory(SAVES_DIR);
 
@@ -644,9 +646,12 @@ void Savegame_ScanSavedGames(void)
 
 void Savegame_ScanAvailableLevels(REQUEST_INFO *req)
 {
-    SAVEGAME_INFO *savegame_info =
-        &m_SavegameInfo[g_GameInfo.current_save_slot];
+    const int32_t slot_num = g_GameInfo.select_save_slot;
+    if (slot_num == -1) {
+        return;
+    }
 
+    const SAVEGAME_INFO *const savegame_info = &m_SavegameInfo[slot_num];
     if (!savegame_info->features.select_level) {
         Requester_AddItem(req, true, "%s", GS(PASSPORT_LEGACY_SELECT_LEVEL_1));
         Requester_AddItem(req, true, "%s", GS(PASSPORT_LEGACY_SELECT_LEVEL_2));
@@ -685,9 +690,4 @@ bool Savegame_RestartAvailable(int32_t slot_num)
 
     SAVEGAME_INFO *savegame_info = &m_SavegameInfo[slot_num];
     return savegame_info->features.restart;
-}
-
-void Savegame_ClearCurrentSlot(void)
-{
-    g_GameInfo.current_save_slot = -1;
 }

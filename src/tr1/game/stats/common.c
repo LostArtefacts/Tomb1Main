@@ -129,13 +129,12 @@ void Stats_ComputeFinal(GF_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
         if (level->type != level_type) {
             continue;
         }
-        const LEVEL_STATS *level_stats = &g_GameInfo.current[i].stats;
+        const LEVEL_STATS *level_stats = &GF_GetResumeInfo(level)->stats;
 
         final_stats->kill_count += level_stats->kill_count;
         final_stats->pickup_count += level_stats->pickup_count;
         final_stats->secret_count += level_stats->secret_count;
         final_stats->timer += level_stats->timer;
-        final_stats->death_count += level_stats->death_count;
         final_stats->max_kill_count += level_stats->max_kill_count;
         final_stats->max_secret_count += level_stats->max_secret_count;
         final_stats->max_pickup_count += level_stats->max_pickup_count;

@@ -10,6 +10,7 @@
 
 GF_COMMAND GF_TitleSequence(void)
 {
+    Savegame_UnbindSlot();
     GameStringTable_Apply(nullptr);
     const GF_LEVEL *const title_level = GF_GetTitleLevel();
     if (!Level_Initialise(title_level)) {

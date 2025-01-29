@@ -974,9 +974,6 @@ bool Level_Initialise(const GF_LEVEL *const level)
     BENCHMARK *const benchmark = Benchmark_Start();
     LOG_DEBUG("num=%d (%s)", level->num, level->path);
 
-    // loading a save can override it to false
-    g_GameInfo.death_counter_supported = true;
-
     g_GameInfo.select_level_num = -1;
     const int32_t level_num = level->num;
     RESUME_INFO *const resume = GF_GetResumeInfo(level);
@@ -986,7 +983,6 @@ bool Level_Initialise(const GF_LEVEL *const level)
         resume->stats.secret_count = 0;
         resume->stats.pickup_count = 0;
         resume->stats.kill_count = 0;
-        resume->stats.death_count = 0;
     }
 
     g_LevelComplete = false;

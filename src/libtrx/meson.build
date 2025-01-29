@@ -150,6 +150,7 @@ sources = [
   'game/phase/phase_stats.c',
   'game/random.c',
   'game/rooms/common.c',
+  'game/savegame.c',
   'game/shell/common.c',
   'game/sound.c',
   'game/text.c',

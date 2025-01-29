@@ -89,13 +89,14 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
         // reset current info to the defaults so that we do not do
         // Item_GlobalReplace in the inventory initialization routines too early
         Savegame_InitCurrentInfo();
+        const int16_t slot_num = Savegame_GetBoundSlot();
 
         if (!Level_Initialise(level)) {
             Game_SetCurrentLevel(NULL);
             GF_SetCurrentLevel(NULL);
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (!Savegame_Load(g_GameInfo.current_save_slot)) {
+        if (!Savegame_Load(slot_num)) {
             LOG_ERROR("Failed to load save file!");
             Game_SetCurrentLevel(NULL);
             GF_SetCurrentLevel(NULL);
@@ -119,12 +120,12 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
         break;
 
     case GFSC_SELECT:
-        if (g_GameInfo.current_save_slot != -1) {
+        if (Savegame_GetBoundSlot() != -1) {
             // select level feature
             Savegame_InitCurrentInfo();
             if (level->num > GF_GetFirstLevel()->num) {
                 Savegame_LoadOnlyResumeInfo(
-                    g_GameInfo.current_save_slot, &g_GameInfo);
+                    Savegame_GetBoundSlot(), &g_GameInfo);
                 const GF_LEVEL *tmp_level = level;
                 while (tmp_level != NULL) {
                     Savegame_ResetCurrentInfo(tmp_level);

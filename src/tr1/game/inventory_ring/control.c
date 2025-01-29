@@ -250,7 +250,7 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
         case PASSPORT_MODE_LOAD_GAME:
             return (GF_COMMAND) {
                 .action = GF_START_SAVED_GAME,
-                .param = g_GameInfo.current_save_slot,
+                .param = g_GameInfo.select_save_slot,
             };
 
         case PASSPORT_MODE_SELECT_LEVEL:
@@ -262,12 +262,13 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
         case PASSPORT_MODE_STORY_SO_FAR:
             return (GF_COMMAND) {
                 .action = GF_STORY_SO_FAR,
-                .param = g_GameInfo.current_save_slot,
+                .param = g_GameInfo.select_save_slot,
             };
 
         case PASSPORT_MODE_NEW_GAME:
             if (apply_changes) {
                 Savegame_InitCurrentInfo();
+                Savegame_UnbindSlot();
             }
             return (GF_COMMAND) {
                 .action = GF_START_GAME,
@@ -276,7 +277,7 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
 
         case PASSPORT_MODE_SAVE_GAME:
             if (apply_changes) {
-                Savegame_Save(g_GameInfo.current_save_slot);
+                Savegame_Save(g_GameInfo.select_save_slot);
             }
             return (GF_COMMAND) { .action = GF_NOOP };
 
@@ -300,7 +301,7 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
 
     case O_PHOTO_OPTION:
         if (apply_changes) {
-            Savegame_ClearCurrentSlot();
+            Savegame_UnbindSlot();
         }
         if (GF_GetGymLevel() != NULL) {
             return (GF_COMMAND) {

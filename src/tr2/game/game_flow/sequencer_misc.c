@@ -1,4 +1,4 @@
-#include "game/demo.h"
+#include "decomp/savegame.h"
 #include "game/game.h"
 #include "game/game_flow/common.h"
 #include "game/game_flow/sequencer.h"
@@ -12,6 +12,7 @@
 
 GF_COMMAND GF_TitleSequence(void)
 {
+    Savegame_UnbindSlot();
     GameStringTable_Apply(NULL);
     const GF_LEVEL *const title_level = GF_GetTitleLevel();
     if (!Level_Initialise(title_level, GFSC_NORMAL)) {

@@ -263,8 +263,6 @@ static bool M_LoadResumeInfo(JSON_ARRAY *resume_arr, RESUME_INFO *resume_info)
             JSON_ObjectGetInt(resume_obj, "kills", resume->stats.kill_count);
         resume->stats.pickup_count = JSON_ObjectGetInt(
             resume_obj, "pickups", resume->stats.pickup_count);
-        resume->stats.death_count =
-            JSON_ObjectGetInt(resume_obj, "deaths", resume->stats.death_count);
         resume->stats.max_secret_count = JSON_ObjectGetInt(
             resume_obj, "max_secrets", resume->stats.max_secret_count);
         resume->stats.max_kill_count = JSON_ObjectGetInt(
@@ -358,8 +356,6 @@ static bool M_LoadDiscontinuedEndInfo(JSON_ARRAY *end_arr, GAME_INFO *game_info)
         end->kill_count = JSON_ObjectGetInt(end_obj, "kills", end->kill_count);
         end->pickup_count =
             JSON_ObjectGetInt(end_obj, "pickups", end->pickup_count);
-        end->death_count =
-            JSON_ObjectGetInt(end_obj, "deaths", end->death_count);
         end->max_secret_count =
             JSON_ObjectGetInt(end_obj, "max_secrets", end->max_secret_count);
         end->max_kill_count =
@@ -367,7 +363,6 @@ static bool M_LoadDiscontinuedEndInfo(JSON_ARRAY *end_arr, GAME_INFO *game_info)
         end->max_pickup_count =
             JSON_ObjectGetInt(end_obj, "max_pickups", end->max_pickup_count);
     }
-    game_info->death_counter_supported = true;
     return true;
 }
 
@@ -383,6 +378,7 @@ static bool M_LoadMisc(
     if (header_version >= VERSION_4) {
         game_info->bonus_level_unlock =
             JSON_ObjectGetBool(misc_obj, "bonus_level_unlock", 0);
+        game_info->death_count = JSON_ObjectGetInt(misc_obj, "death_count", -1);
     }
     return true;
 }
@@ -971,7 +967,6 @@ static JSON_ARRAY *M_DumpResumeInfo(RESUME_INFO *resume_info)
         JSON_ObjectAppendInt(resume_obj, "kills", resume->stats.kill_count);
         JSON_ObjectAppendInt(resume_obj, "secrets", resume->stats.secret_flags);
         JSON_ObjectAppendInt(resume_obj, "pickups", resume->stats.pickup_count);
-        JSON_ObjectAppendInt(resume_obj, "deaths", resume->stats.death_count);
         JSON_ObjectAppendInt(
             resume_obj, "max_kills", resume->stats.max_kill_count);
         JSON_ObjectAppendInt(
@@ -990,6 +985,7 @@ static JSON_OBJECT *M_DumpMisc(GAME_INFO *game_info)
     JSON_ObjectAppendInt(misc_obj, "bonus_flag", game_info->bonus_flag);
     JSON_ObjectAppendBool(
         misc_obj, "bonus_level_unlock", game_info->bonus_level_unlock);
+    JSON_ObjectAppendInt(misc_obj, "death_count", game_info->death_count);
     return misc_obj;
 }
 
@@ -1480,45 +1476,28 @@ void Savegame_BSON_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
 
 bool Savegame_BSON_UpdateDeathCounters(MYFILE *fp, GAME_INFO *game_info)
 {
-    bool ret = false;
+    bool result = false;
     int32_t version;
-    JSON_VALUE *root = M_ParseFromFile(fp, &version);
-    JSON_OBJECT *root_obj = JSON_ValueAsObject(root);
-    if (!root_obj) {
+    JSON_VALUE *const root = M_ParseFromFile(fp, &version);
+    JSON_OBJECT *const root_obj = JSON_ValueAsObject(root);
+    if (root_obj == nullptr) {
         LOG_ERROR("Cannot find the root object");
         goto cleanup;
     }
 
-    JSON_ARRAY *current_arr = JSON_ObjectGetArray(root_obj, "current_info");
-    if (!current_arr) {
-        current_arr = JSON_ObjectGetArray(root_obj, "end_info");
-        if (!current_arr) {
-            LOG_ERROR("Malformed save: invalid or missing current info array");
-            goto cleanup;
-        }
-    }
-    if ((signed)current_arr->length != GF_GetLevelTable(GFLT_MAIN)->count) {
-        LOG_ERROR(
-            "Malformed save: expected %d current info elements, got %d",
-            GF_GetLevelTable(GFLT_MAIN)->count, current_arr->length);
+    JSON_OBJECT *const misc_obj = JSON_ObjectGetObject(root_obj, "misc");
+    if (misc_obj == nullptr) {
+        LOG_ERROR("Cannot find the misc object");
         goto cleanup;
     }
-    for (int i = 0; i < (signed)current_arr->length; i++) {
-        JSON_OBJECT *cur_obj = JSON_ArrayGetObject(current_arr, i);
-        if (!cur_obj) {
-            LOG_ERROR("Malformed save: invalid current info");
-            goto cleanup;
-        }
-        RESUME_INFO *current = &game_info->current[i];
-        JSON_ObjectEvictKey(cur_obj, "deaths");
-        JSON_ObjectAppendInt(cur_obj, "deaths", current->stats.death_count);
-    }
+    JSON_ObjectEvictKey(misc_obj, "death_count");
+    JSON_ObjectAppendInt(misc_obj, "death_count", game_info->death_count);
 
     File_Seek(fp, 0, FILE_SEEK_SET);
     M_SaveRaw(fp, root, version);
-    ret = true;
+    result = true;
 
 cleanup:
     JSON_ValueFree(root);
-    return ret;
+    return result;
 }

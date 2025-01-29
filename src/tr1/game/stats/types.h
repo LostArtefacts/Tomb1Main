@@ -4,7 +4,6 @@
 
 typedef struct STATS_COMMON {
     uint32_t timer;
-    uint32_t death_count;
     uint32_t kill_count;
     uint16_t secret_count;
     uint16_t pickup_count;

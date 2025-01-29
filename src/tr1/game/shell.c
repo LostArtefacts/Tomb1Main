@@ -220,7 +220,7 @@ void Shell_Main(void)
                 LOG_ERROR("Corrupt save file!");
                 gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             } else {
-                g_GameInfo.current_save_slot = slot_num;
+                Savegame_BindSlot(slot_num);
                 const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
                 gf_cmd = GF_InterpretSequence(level, GFSC_SAVED, NULL);
             }

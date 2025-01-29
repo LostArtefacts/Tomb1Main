@@ -53,8 +53,11 @@ static const char *M_GetDialogTitle(UI_STATS_DIALOG *self);
 static void M_AddRow(
     UI_STATS_DIALOG *self, M_ROW_ROLE role, const char *key, const char *value);
 static void M_AddRowFromRole(
-    UI_STATS_DIALOG *self, M_ROW_ROLE role, const STATS_COMMON *stats);
-static void M_AddCommonRows(UI_STATS_DIALOG *self, const STATS_COMMON *stats);
+    UI_STATS_DIALOG *self, M_ROW_ROLE role, const STATS_COMMON *stats,
+    const GAME_INFO *game_info);
+static void M_AddCommonRows(
+    UI_STATS_DIALOG *self, const STATS_COMMON *stats,
+    const GAME_INFO *game_info);
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *self);
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *self);
 static void M_UpdateTimerRow(UI_STATS_DIALOG *self);
@@ -134,7 +137,7 @@ static void M_AddRow(
 
 static void M_AddRowFromRole(
     UI_STATS_DIALOG *const self, const M_ROW_ROLE role,
-    const STATS_COMMON *const stats)
+    const STATS_COMMON *const stats, const GAME_INFO *const game_info)
 {
     char buf[50];
     const char *const num_fmt = g_Config.gameplay.enable_detailed_stats
@@ -160,7 +163,7 @@ static void M_AddRowFromRole(
         break;
 
     case M_ROW_DEATHS:
-        sprintf(buf, "%d", stats->death_count);
+        sprintf(buf, "%d", game_info->death_count);
         M_AddRow(self, role, GS(STATS_DEATHS), buf);
         break;
 
@@ -175,30 +178,35 @@ static void M_AddRowFromRole(
 }
 
 static void M_AddCommonRows(
-    UI_STATS_DIALOG *const self, const STATS_COMMON *const stats)
+    UI_STATS_DIALOG *const self, const STATS_COMMON *const stats,
+    const GAME_INFO *const game_info)
 {
-    M_AddRowFromRole(self, M_ROW_KILLS, stats);
-    M_AddRowFromRole(self, M_ROW_PICKUPS, stats);
-    M_AddRowFromRole(self, M_ROW_SECRETS, stats);
+    M_AddRowFromRole(self, M_ROW_KILLS, stats, game_info);
+    M_AddRowFromRole(self, M_ROW_PICKUPS, stats, game_info);
+    M_AddRowFromRole(self, M_ROW_SECRETS, stats, game_info);
     if (g_Config.gameplay.enable_deaths_counter
-        && g_GameInfo.death_counter_supported) {
-        M_AddRowFromRole(self, M_ROW_DEATHS, stats);
+        && game_info->death_count >= 0) {
+        // Always use sum of all levels for the deaths.
+        // Deaths get stored in the resume info for the level they happen on,
+        // so if the player dies in Vilcabamba and reloads Caves, they should
+        // still see an incremented death counter.
+        M_AddRowFromRole(self, M_ROW_DEATHS, stats, game_info);
     }
-    M_AddRowFromRole(self, M_ROW_TIMER, stats);
+    M_AddRowFromRole(self, M_ROW_TIMER, stats, game_info);
 }
 
 static void M_AddLevelStatsRows(UI_STATS_DIALOG *const self)
 {
     const STATS_COMMON *stats =
         (STATS_COMMON *)&g_GameInfo.current[self->args.level_num].stats;
-    M_AddCommonRows(self, stats);
+    M_AddCommonRows(self, stats, &g_GameInfo);
 }
 
 static void M_AddFinalStatsRows(UI_STATS_DIALOG *const self)
 {
     FINAL_STATS final_stats;
     Stats_ComputeFinal(self->level_type, &final_stats);
-    M_AddCommonRows(self, (STATS_COMMON *)&final_stats);
+    M_AddCommonRows(self, (STATS_COMMON *)&final_stats, &g_GameInfo);
 }
 
 static void M_UpdateTimerRow(UI_STATS_DIALOG *const self)
