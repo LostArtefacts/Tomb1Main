@@ -40,6 +40,10 @@ runs:
         sudo port select --set pip pip312
         sudo port select --set pip3 pip312
 
+        # Install Clang to get better C23 support.
+        sudo port -N install clang-16
+        sudo port select --set clang mp-clang-16
+
         # Install the rest.
         sudo port -N install create-dmg meson ninja pkgconfig
         sudo pip3 install pyjson5
@@ -169,8 +173,8 @@ runs:
         sudo find ${{ inputs.CACHE_SRC_DIR }} -type l ! -exec test -e {} \; -exec rm {} \;
 
         # Trying to cache the source directory directly leads to permission errors,
-        # so copy it to an intermediate temporary directory. Also, expands all the symlinks to hard copies.
-        sudo rsync -arvqL ${{ inputs.CACHE_SRC_DIR }}/ ${{ inputs.CACHE_DIR }}
+        # so copy it to an intermediate temporary directory.
+        sudo rsync -arvq ${{ inputs.CACHE_SRC_DIR }}/ ${{ inputs.CACHE_DIR }}
 
     - name: "Save dependencies to cache"
       if: steps.restore-cache.outputs.cache-hit != 'true'
