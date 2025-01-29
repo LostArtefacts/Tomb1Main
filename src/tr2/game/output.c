@@ -10,6 +10,7 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/log.h>
@@ -285,6 +286,7 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
 
         const SPRITE_TEXTURE *const sprite =
             Output_GetSpriteTexture(room_sprite->texture);
+        ASSERT(sprite != nullptr);
         const double persp = (double)(vbuf->zv / g_PhdPersp);
         const double x0 =
             g_PhdWinCenterX + (vbuf->xv + (sprite->x0 << W2V_SHIFT)) / persp;
@@ -498,6 +500,7 @@ void Output_DrawSprite(
     }
 
     const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprite_idx);
+    ASSERT(sprite != nullptr);
     int32_t x0 = sprite->x0;
     int32_t y0 = sprite->y0;
     int32_t x1 = sprite->x1;
@@ -557,6 +560,7 @@ void Output_DrawPickup(
     const int16_t sprite_idx, const int16_t shade)
 {
     const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprite_idx);
+    ASSERT(sprite != nullptr);
     const int32_t x0 = sx + ((sprite->x0 * scale) / PHD_ONE);
     const int32_t y0 = sy + ((sprite->y0 * scale) / PHD_ONE);
     const int32_t x1 = sx + ((sprite->x1 * scale) / PHD_ONE);
@@ -572,6 +576,7 @@ void Output_DrawScreenSprite2D(
     const uint16_t flags)
 {
     const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprite_idx);
+    ASSERT(sprite != nullptr);
     const int32_t x0 = sx + ((sprite->x0 * scale_h) / PHD_ONE);
     const int32_t y0 = sy + ((sprite->y0 * scale_v) / PHD_ONE);
     const int32_t x1 = sx + ((sprite->x1 * scale_h) / PHD_ONE);
@@ -588,6 +593,7 @@ void Output_DrawScreenSprite(
     const uint16_t flags)
 {
     const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprite_idx);
+    ASSERT(sprite != nullptr);
     const int32_t x0 = sx + (((sprite->x0 / 8) * scale_h) / PHD_ONE);
     const int32_t x1 = sx + (((sprite->x1 / 8) * scale_h) / PHD_ONE);
     const int32_t y0 = sy + (((sprite->y0 / 8) * scale_v) / PHD_ONE);
@@ -649,6 +655,7 @@ void Output_LoadBackgroundFromObject(void)
 
     const int32_t texture_idx = mesh->tex_face4s[0].texture_idx;
     const OBJECT_TEXTURE *const texture = Output_GetObjectTexture(texture_idx);
+    ASSERT(texture != nullptr);
     Render_LoadBackgroundFromTexture(texture, 8, 6);
     m_BackgroundType = BK_OBJECT;
     return;

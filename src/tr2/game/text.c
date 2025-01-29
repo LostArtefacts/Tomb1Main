@@ -58,6 +58,11 @@ void Text_DrawText(TEXTSTRING *const text)
         return;
     }
 
+    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
+    if (!obj->loaded) {
+        return;
+    }
+
     int32_t box_w = 0;
     int32_t box_h = 0;
     const int32_t scale_h = M_Scale(text->scale.h);
@@ -128,8 +133,7 @@ void Text_DrawText(TEXTSTRING *const text)
         if (x >= 0 && x < g_PhdWinWidth && y >= 0 && y < g_PhdWinHeight) {
             Output_DrawScreenSprite2D(
                 x, y, z, scale_h, scale_v,
-                g_Objects[O_ALPHABET].mesh_idx + (*glyph_ptr)->mesh_idx, 4096,
-                0);
+                obj->mesh_idx + (*glyph_ptr)->mesh_idx, 4096, 0);
         }
 
         if ((*glyph_ptr)->role != GLYPH_COMBINING) {

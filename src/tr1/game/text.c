@@ -124,6 +124,11 @@ void Text_DrawText(TEXTSTRING *const text)
         return;
     }
 
+    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
+    if (!obj->loaded) {
+        return;
+    }
+
     if (text->flags.flash) {
         text->flash.count -= Clock_GetFrameAdvance();
         if (text->flash.count <= -text->flash.rate) {
@@ -159,7 +164,6 @@ void Text_DrawText(TEXTSTRING *const text)
     int32_t sv;
     const int32_t start_x = x;
 
-    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
     const GLYPH_INFO **glyph_ptr = text->glyphs;
     while (*glyph_ptr != NULL) {
         const GLYPH_INFO *glyph = *glyph_ptr;
