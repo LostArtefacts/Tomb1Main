@@ -300,7 +300,7 @@ static GF_COMMAND M_Finish(INV_RING *const ring, const bool apply_changes)
 
     case O_PHOTO_OPTION:
         if (apply_changes) {
-            g_GameInfo.current_save_slot = -1;
+            Savegame_ClearCurrentSlot();
         }
         if (GF_GetGymLevel() != NULL) {
             return (GF_COMMAND) {

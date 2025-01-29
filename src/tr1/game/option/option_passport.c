@@ -534,7 +534,7 @@ static void M_NewGame(void)
         } else {
             g_GameInfo.save_initial_version = SAVEGAME_CURRENT_VERSION;
             g_GameInfo.bonus_level_unlock = false;
-            g_GameInfo.current_save_slot = -1;
+            Savegame_ClearCurrentSlot();
             g_GameInfo.passport_selection = PASSPORT_MODE_NEW_GAME;
         }
     } else if (m_PassportStatus.mode == PASSPORT_MODE_NEW_GAME) {
@@ -559,7 +559,7 @@ static void M_NewGame(void)
                     break;
                 }
                 g_GameInfo.bonus_level_unlock = false;
-                g_GameInfo.current_save_slot = -1;
+                Savegame_ClearCurrentSlot();
                 g_GameInfo.passport_selection = PASSPORT_MODE_NEW_GAME;
                 g_GameInfo.save_initial_version = SAVEGAME_CURRENT_VERSION;
             } else if (

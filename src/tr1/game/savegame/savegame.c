@@ -686,3 +686,8 @@ bool Savegame_RestartAvailable(int32_t slot_num)
     SAVEGAME_INFO *savegame_info = &m_SavegameInfo[slot_num];
     return savegame_info->features.restart;
 }
+
+void Savegame_ClearCurrentSlot(void)
+{
+    g_GameInfo.current_save_slot = -1;
+}

@@ -7,6 +7,7 @@
 #include "game/game_flow.h"
 #include "game/interpolation.h"
 #include "game/output.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/text.h"
 
@@ -27,6 +28,11 @@ static PHASE_CONTROL M_Control(PHASE *const phase, const int32_t nframes)
     if (gf_override_cmd.action != GF_NOOP) {
         const GF_COMMAND gf_cmd = gf_override_cmd;
         GF_OverrideCommand((GF_COMMAND) { .action = GF_NOOP });
+
+        // A change in the game flow is not natural. Force features like death
+        // counter to break from the currently active savegame file.
+        Savegame_ClearCurrentSlot();
+
         return (PHASE_CONTROL) { .action = PHASE_ACTION_END, .gf_cmd = gf_cmd };
     }
 

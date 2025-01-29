@@ -190,8 +190,6 @@ void Shell_Main(void)
         m_ModPaths[m_ActiveMod].game_flow_path,
         m_ModPaths[m_ActiveMod].game_strings_path);
 
-    g_GameInfo.current_save_slot = -1;
-
     GF_COMMAND gf_cmd = GF_DoFrontendSequence();
     bool loop_continue = !Shell_IsExiting();
     while (loop_continue) {

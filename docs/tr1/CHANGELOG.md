@@ -43,6 +43,7 @@
 - fixed health bar continuing to show when the inventory ring rotates (#1991, regression from 4.0)
 - fixed header and arrows disappearing when the inventory ring rotates (#2352, regression from 4.4)
 - fixed Story So Far feature not playing opening FMVs from the current level (#2360, regression from 4.2)
+- fixed `/play` command crashing the game when used after loading a level (#2411, regression)
 - fixed `/demo` command crashing the game if no demos are present (regression from 4.1)
 - fixed Lara not being able to jump or stop swimming if the related responsive config options are enabled, but enhanced animations are not present (#2397, regression from 4.6)
 - improved pause screen compatibility with PS1 (#2248)
