@@ -69,9 +69,6 @@ GF_COMMAND Game_Control(const bool demo_mode)
     }
 
     if (g_LevelComplete) {
-        if (g_GameFlow.is_demo_version && g_GameFlow.single_level) {
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
         return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 

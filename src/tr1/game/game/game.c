@@ -69,82 +69,6 @@ void Game_ProcessInput(void)
     }
 }
 
-GF_COMMAND Game_Stop_Legacy(void)
-{
-    Sound_StopAll();
-    Music_Stop();
-    const GF_LEVEL *const current_level = Game_GetCurrentLevel();
-    const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
-    Savegame_PersistGameToCurrentInfo(current_level);
-
-    if (current_level == GF_GetLastLevel()) {
-        g_Config.profile.new_game_plus_unlock = true;
-        Config_Write();
-        g_GameInfo.bonus_level_unlock =
-            Stats_CheckAllSecretsCollected(GFL_NORMAL);
-    }
-
-    // play specific level
-    if (g_LevelComplete && g_GameInfo.select_level_num != -1) {
-        if (current_level != nullptr) {
-            Savegame_CarryCurrentInfoToNextLevel(
-                current_level,
-                GF_GetLevel(GFLT_MAIN, g_GameInfo.select_level_num));
-        }
-        return (GF_COMMAND) {
-            .action = GF_SELECT_GAME,
-            .param = g_GameInfo.select_level_num,
-        };
-    }
-
-    // carry info to the next level
-    if (next_level != nullptr) {
-        // TODO: this should be moved to GFS_LEVEL_COMPLETE handler, probably
-        Savegame_CarryCurrentInfoToNextLevel(current_level, next_level);
-        Savegame_ApplyLogicToCurrentInfo(next_level);
-    }
-
-    // normal level completion
-    if (g_LevelComplete) {
-        // TODO: why is this made unavailable?
-        GF_GetResumeInfo(current_level)->flags.available = 0;
-        return (GF_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
-            .param = g_GameInfo.select_level_num,
-        };
-    }
-
-    if (g_GameInfo.passport_selection == PASSPORT_MODE_LOAD_GAME) {
-        return (GF_COMMAND) {
-            .action = GF_START_SAVED_GAME,
-            .param = g_GameInfo.select_save_slot,
-        };
-    } else if (g_GameInfo.passport_selection == PASSPORT_MODE_SELECT_LEVEL) {
-        return (GF_COMMAND) {
-            .action = GF_SELECT_GAME,
-            .param = g_GameInfo.select_level_num,
-        };
-    } else if (g_GameInfo.passport_selection == PASSPORT_MODE_STORY_SO_FAR) {
-        return (GF_COMMAND) {
-            .action = GF_STORY_SO_FAR,
-            .param = g_GameInfo.select_save_slot,
-        };
-    } else if (g_GameInfo.passport_selection == PASSPORT_MODE_RESTART) {
-        return (GF_COMMAND) {
-            .action = GF_RESTART_GAME,
-            .param = current_level->num,
-        };
-    } else if (g_GameInfo.passport_selection == PASSPORT_MODE_NEW_GAME) {
-        Savegame_InitCurrentInfo();
-        return (GF_COMMAND) {
-            .action = GF_START_GAME,
-            .param = GF_GetFirstLevel()->num,
-        };
-    } else {
-        return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-    }
-}
-
 bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     Game_SetCurrentLevel(level);
@@ -162,6 +86,7 @@ bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 
 void Game_End(void)
 {
+    Savegame_PersistGameToCurrentInfo(Game_GetCurrentLevel());
 }
 
 void Game_Suspend(void)
@@ -190,7 +115,9 @@ GF_COMMAND Game_Control(const bool demo_mode)
 
     Lara_Cheat_Control();
     if (g_LevelComplete) {
-        return Game_Stop_Legacy();
+        Sound_StopAll();
+        Music_Stop();
+        return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
     Input_Update();

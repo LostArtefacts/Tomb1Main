@@ -38,10 +38,13 @@ GF_COMMAND GF_DoLevelSequence(
         if (gf_cmd.action != GF_NOOP && gf_cmd.action != GF_LEVEL_COMPLETE) {
             return gf_cmd;
         }
+        if (g_GameFlow.is_demo_version && g_GameFlow.single_level) {
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
         if (Game_IsInGym()) {
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (current_level->num >= level_count - 1) {
+        if (current_level->num + 1 >= level_count) {
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         current_level++;

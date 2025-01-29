@@ -284,14 +284,42 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture)
 
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
 {
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_NORMAL) {
-        return (GF_COMMAND) { .action = GF_NOOP };
+        return gf_cmd;
     }
     const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
+
+    if (current_level == GF_GetLastLevel()) {
+        g_Config.profile.new_game_plus_unlock = true;
+        Config_Write();
+        g_GameInfo.bonus_level_unlock =
+            Stats_CheckAllSecretsCollected(GFL_NORMAL);
+    }
+
+    // play specific level
+    if (g_GameInfo.select_level_num != -1) {
+        const GF_LEVEL *const select_level =
+            GF_GetLevel(GFLT_MAIN, g_GameInfo.select_level_num);
+        if (current_level != nullptr && select_level != nullptr) {
+            Savegame_CarryCurrentInfoToNextLevel(current_level, select_level);
+        }
+        return (GF_COMMAND) {
+            .action = GF_SELECT_GAME,
+            .param = g_GameInfo.select_level_num,
+        };
+    }
+
+    // missing level
     if (next_level == nullptr) {
         return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
+
+    // carry info to the next level
+    Savegame_CarryCurrentInfoToNextLevel(current_level, next_level);
+    Savegame_ApplyLogicToCurrentInfo(next_level);
+
     if (next_level->type == GFL_BONUS && !g_GameInfo.bonus_level_unlock) {
         return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
