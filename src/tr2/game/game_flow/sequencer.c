@@ -1,19 +1,13 @@
 #include "game/game_flow/sequencer.h"
 
-#include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow.h"
 #include "game/music.h"
 #include "game/phase.h"
-#include "game/shell.h"
 #include "global/vars.h"
 
-#include <libtrx/config.h>
-#include <libtrx/debug.h>
-#include <libtrx/enum_map.h>
-#include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
 
 #define DECLARE_EVENT_HANDLER(name)                                            \
@@ -282,16 +276,8 @@ static DECLARE_EVENT_HANDLER(M_HandleSetNumSecrets)
     return gf_cmd;
 }
 
-GF_COMMAND GF_InterpretSequence(
-    const GF_LEVEL *const level, GF_SEQUENCE_CONTEXT seq_ctx,
-    void *const seq_ctx_arg)
+void GF_PreSequenceHook(void)
 {
-    ASSERT(level != NULL);
-    LOG_DEBUG(
-        "running sequence for level=%d type=%d seq_ctx=%d", level->num,
-        level->type, seq_ctx);
-
-    // Initialize global variables
     g_GF_NoFloor = 0;
     g_GF_SunsetEnabled = false;
     g_GF_LaraStartAnim = 0;
@@ -300,47 +286,26 @@ GF_COMMAND GF_InterpretSequence(
     g_CineTargetAngle = DEG_90;
     g_GF_NumSecrets = 3;
     GF_InventoryModifier_Reset();
+}
 
-    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
-
-    const GF_SEQUENCE *const sequence = &level->sequence;
-    for (int32_t i = 0; i < sequence->length; i++) {
-        const GF_SEQUENCE_EVENT *const event = &sequence->events[i];
-        LOG_DEBUG(
-            "event type=%s(%d) data=0x%x",
-            ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
-            event->type, event->data);
-
-        // TODO: implement cine skipping
-
-        // Handle the event
-        if (event->type < GFS_NUMBER_OF
-            && m_EventHandlers[event->type] != NULL) {
-            gf_cmd = m_EventHandlers[event->type](
-                level, event, seq_ctx, seq_ctx_arg);
-            LOG_DEBUG(
-                "event type=%s(%d) data=0x%x finished, result: action=%s, "
-                "param=%d",
-                ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
-                event->type, event->data,
-                ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
-            if (gf_cmd.action != GF_NOOP) {
-                return gf_cmd;
-            }
-        }
-
-        // Update sequence context if necessary
-        if (event->type == GFS_PLAY_LEVEL && seq_ctx == GFSC_SAVED) {
-            seq_ctx = GFSC_NORMAL;
-        }
+GF_SEQUENCE_CONTEXT GF_SwitchSequenceContext(
+    const GF_SEQUENCE_EVENT *const event, const GF_SEQUENCE_CONTEXT seq_ctx)
+{
+    // Update sequence context if necessary
+    if (event->type == GFS_PLAY_LEVEL && seq_ctx == GFSC_SAVED) {
+        return GFSC_NORMAL;
     }
+    return seq_ctx;
+}
 
-    if (seq_ctx == GFSC_STORY) {
-        return (GF_COMMAND) { .action = GF_NOOP };
-    }
+bool GF_ShouldSkipSequenceEvent(
+    const GF_LEVEL *const level, const GF_SEQUENCE_EVENT *const event)
+{
+    return false;
+}
 
-    LOG_DEBUG(
-        "sequence finished: action=%s param=%d",
-        ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
-    return gf_cmd;
+GF_COMMAND(*GF_GetSequenceEventHandler(GF_SEQUENCE_EVENT_TYPE event_type))
+(const GF_LEVEL *, const GF_SEQUENCE_EVENT *, GF_SEQUENCE_CONTEXT, void *)
+{
+    return m_EventHandlers[event_type];
 }

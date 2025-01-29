@@ -21,12 +21,12 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/game/game_buf.h>
 #include <libtrx/game/game_string_table.h>
 #include <libtrx/game/shell.h>
 #include <libtrx/game/ui/common.h>
-#include <libtrx/log.h>
 #include <libtrx/memory.h>
 
 #include <SDL2/SDL.h>
@@ -358,23 +358,13 @@ void Shell_Main(void)
 
     GameBuf_Init(GAMEBUF_MEM_CAP);
 
-    const bool is_frontend_fail = GF_DoFrontendSequence();
-    if (Shell_IsExiting()) {
-        Config_Write();
-        return;
-    }
-
-    if (is_frontend_fail) {
-        Shell_ExitSystem("GameMain: failed in GF_DoFrontendSequence()");
-        return;
-    }
-
-    GF_COMMAND gf_cmd = g_GameFlow.cmd_init;
-    bool is_loop_continued = true;
-    while (is_loop_continued) {
-        LOG_DEBUG(
+    GF_COMMAND gf_cmd = GF_DoFrontendSequence();
+    bool loop_continue = !Shell_IsExiting();
+    while (loop_continue) {
+        LOG_INFO(
             "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action),
             gf_cmd.param);
+
         switch (gf_cmd.action) {
         case GF_START_GAME:
         case GF_SELECT_GAME:
@@ -424,13 +414,16 @@ void Shell_Main(void)
                     return;
                 }
             } else {
-                gf_cmd = TitleSequence();
+                gf_cmd = GF_TitleSequence();
             }
             break;
 
-        default:
-            is_loop_continued = false;
+        case GF_EXIT_GAME:
+            loop_continue = false;
             break;
+
+        default:
+            ASSERT_FAIL();
         }
     }
 

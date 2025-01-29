@@ -12,8 +12,6 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
-#include <libtrx/debug.h>
-#include <libtrx/enum_map.h>
 #include <libtrx/game/phase.h>
 #include <libtrx/log.h>
 
@@ -324,77 +322,51 @@ static DECLARE_EVENT_HANDLER(M_HandleSetupBaconLara)
     return (GF_COMMAND) { .action = GF_NOOP };
 }
 
-GF_COMMAND GF_InterpretSequence(
-    const GF_LEVEL *const level, GF_SEQUENCE_CONTEXT seq_ctx,
-    void *const seq_ctx_arg)
+void GF_PreSequenceHook(void)
 {
-    ASSERT(level != NULL);
-    LOG_DEBUG(
-        "running sequence for level=%d type=%d seq_ctx=%d", level->num,
-        level->type, seq_ctx);
-
     g_GameInfo.remove_guns = false;
     g_GameInfo.remove_scions = false;
     g_GameInfo.remove_ammo = false;
     g_GameInfo.remove_medipacks = false;
+}
 
-    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
+GF_SEQUENCE_CONTEXT GF_SwitchSequenceContext(
+    const GF_SEQUENCE_EVENT *const event, const GF_SEQUENCE_CONTEXT seq_ctx)
+{
+    if (event->type != GFS_LOAD_LEVEL && event->type != GFS_PLAY_LEVEL) {
+        return seq_ctx;
+    }
+    switch (seq_ctx) {
+    case GFSC_SAVED:
+    case GFSC_RESTART:
+    case GFSC_SELECT:
+        return GFSC_NORMAL;
+    default:
+        return seq_ctx;
+    }
+}
 
-    const GF_SEQUENCE *const sequence = &level->sequence;
-    for (int32_t i = 0; i < sequence->length; i++) {
-        const GF_SEQUENCE_EVENT *const event = &sequence->events[i];
-        LOG_DEBUG(
-            "event type=%s(%d) data=0x%x",
-            ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
-            event->type, event->data);
-
-        // Skip cinematic levels
-        if (!g_Config.gameplay.enable_cine && level->type == GFL_CUTSCENE) {
-            bool skip;
-            switch (event->type) {
-            case GFS_EXIT_TO_TITLE:
-            case GFS_LEVEL_COMPLETE:
-            case GFS_PLAY_FMV:
-            case GFS_LEVEL_STATS:
-            case GFS_TOTAL_STATS:
-                skip = false;
-                break;
-            default:
-                skip = true;
-                break;
-            }
-            if (skip) {
-                continue;
-            }
-        }
-
-        // Handle the event
-        if (event->type < GFS_NUMBER_OF
-            && m_EventHandlers[event->type] != NULL) {
-            gf_cmd = m_EventHandlers[event->type](
-                level, event, seq_ctx, seq_ctx_arg);
-            LOG_DEBUG(
-                "event type=%s(%d) data=0x%x finished, result: action=%s, "
-                "param=%d",
-                ENUM_MAP_TO_STRING(GF_SEQUENCE_EVENT_TYPE, event->type),
-                event->type, event->data,
-                ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
-            if (gf_cmd.action != GF_NOOP) {
-                return gf_cmd;
-            }
-        }
-
-        // Update sequence context if necessary
-        if (event->type == GFS_LOAD_LEVEL || event->type == GFS_PLAY_LEVEL) {
-            if (seq_ctx == GFSC_SAVED || seq_ctx == GFSC_RESTART
-                || seq_ctx == GFSC_SELECT) {
-                seq_ctx = GFSC_NORMAL;
-            }
+bool GF_ShouldSkipSequenceEvent(
+    const GF_LEVEL *const level, const GF_SEQUENCE_EVENT *const event)
+{
+    // Skip cinematic levels
+    if (!g_Config.gameplay.enable_cine && level->type == GFL_CUTSCENE) {
+        switch (event->type) {
+        case GFS_EXIT_TO_TITLE:
+        case GFS_LEVEL_COMPLETE:
+        case GFS_PLAY_FMV:
+        case GFS_LEVEL_STATS:
+        case GFS_TOTAL_STATS:
+            return false;
+        default:
+            return true;
         }
     }
+    return false;
+}
 
-    LOG_DEBUG(
-        "sequence finished: action=%s param=%d",
-        ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
-    return gf_cmd;
+GF_COMMAND(*GF_GetSequenceEventHandler(GF_SEQUENCE_EVENT_TYPE event_type))
+(const GF_LEVEL *, const GF_SEQUENCE_EVENT *, GF_SEQUENCE_CONTEXT, void *)
+{
+    return m_EventHandlers[event_type];
 }

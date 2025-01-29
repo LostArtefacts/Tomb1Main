@@ -530,15 +530,57 @@ default gameflow for examples.
     </td>
   </tr>
   <tr valign="top">
-    <td rowspan="2">
+    <td rowspan="4">
       <code>display_picture</code>
     </td>
     <td>
       <code>path</code>
     </td>
     <td>String</td>
-    <td rowspan="2">
-      Displays the specified picture for the given number of seconds (default: 5).
+    <td>
+      Displays the specified picture for a fixed time.
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>display_time</code>
+    </td>
+    <td>Double</td>
+    <td>
+      Number of seconds to display the picture for (default: 5).
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>fade_in_time</code>
+    </td>
+    <td>Double</td>
+    <td>
+      Number of seconds to do the fade-in animation, if enabled (default: 1).
+    </td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code>fade_out_time</code>
+    </td>
+    <td>Double</td>
+    <td>
+      Number of seconds to do the fade-out animation, if enabled (default: 0.33).
+    </td>
+  </tr>
+  <tr valign="top">
+    <td rowspan="4">
+      <code>loading_screen</code>
+    </td>
+    <td>
+      <code>path</code>
+    </td>
+    <td>String</td>
+    <td rowspan="4">
+      Shows a picture prior to loading a level. Functions identically to
+      <code>display_picture</code>, except these pictures can be
+      enabled/disabled by the user with the loading screen option in the config
+      tool.
     </td>
   </tr>
   <tr valign="top">
@@ -548,20 +590,14 @@ default gameflow for examples.
     <td>Double</td>
   </tr>
   <tr valign="top">
-    <td rowspan="2">
-      <code>loading_screen</code>
-    </td>
     <td>
-      <code>path</code>
+      <code>fade_in_time</code>
     </td>
-    <td>String</td>
-    <td rowspan="2">
-      Displays the specified picture for the given number of seconds (default: 5). Functions identically to display_picture except these pictures can be enabled/disabled by the user with the loading screen option in the config tool.
-    </td>
+    <td>Double</td>
   </tr>
   <tr valign="top">
     <td>
-      <code>display_time</code>
+      <code>fade_out_time</code>
     </td>
     <td>Double</td>
   </tr>

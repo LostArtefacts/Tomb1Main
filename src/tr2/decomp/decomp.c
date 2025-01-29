@@ -33,17 +33,6 @@ typedef enum {
 
 static CAMERA_INFO m_LocalCamera = {};
 
-GF_COMMAND TitleSequence(void)
-{
-    GameStringTable_Apply(NULL);
-    const GF_LEVEL *const title_level = GF_GetTitleLevel();
-    if (!Level_Initialise(title_level, GFSC_NORMAL)) {
-        return (GF_COMMAND) { .action = GF_EXIT_GAME };
-    }
-
-    return GF_ShowInventory(INV_TITLE_MODE);
-}
-
 void CutscenePlayer_Control(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];

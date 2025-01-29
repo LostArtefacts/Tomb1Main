@@ -30,7 +30,7 @@
         "music_track": 2,
         "inherit_injections": false,
         "sequence": [
-            {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1},
+            {"type": "display_picture", "path": "data/images/eidos.webp", "display_time": 1, "fade_in_time": 1.0, "fade_out_time": 1.0},
             {"type": "play_fmv", "fmv_id": 0},
             {"type": "play_fmv", "fmv_id": 1},
             {"type": "play_fmv", "fmv_id": 2},
@@ -51,7 +51,7 @@
             "inherit_injections": false,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 3},
-                {"type": "loading_screen", "path": "data/images/gym.webp"},
+                {"type": "loading_screen", "path": "data/images/gym.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -74,7 +74,7 @@
             "music_track": 57,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 4},
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -92,7 +92,7 @@
             "path": "data/level2.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -109,7 +109,7 @@
             "path": "data/level3a.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -128,7 +128,7 @@
             "path": "data/level3b.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 0},
@@ -149,7 +149,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 5},
-                {"type": "loading_screen", "path": "data/images/greece.webp"},
+                {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -167,7 +167,7 @@
             "path": "data/level5.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/greece.webp"},
+                {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -187,7 +187,7 @@
             "path": "data/level6.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/greece.webp"},
+                {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -205,7 +205,7 @@
             "path": "data/level7a.phd",
             "music_track": 58,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/greece.webp"},
+                {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -224,7 +224,7 @@
             "path": "data/level7b.phd",
             "music_track": 58,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/greece.webp"},
+                {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 1},
@@ -248,7 +248,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 6},
-                {"type": "loading_screen", "path": "data/images/egypt.webp"},
+                {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -266,7 +266,7 @@
             "path": "data/level8b.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/egypt.webp"},
+                {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -286,7 +286,7 @@
             "path": "data/level8c.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/egypt.webp"},
+                {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -305,7 +305,7 @@
             "music_track": 58,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 7},
-                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "remove_weapons"},
                 {"type": "remove_scions"},
                 {"type": "load_level"},
@@ -338,7 +338,7 @@
             "music_track": 60,
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 8},
-                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "give_item", "object_id": "pistols", "quantity": 1},
                 {"type": "setup_bacon_lara", "anchor_room": 10},
@@ -360,16 +360,16 @@
             "path": "data/level10c.phd",
             "music_track": 60,
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/atlantis.webp"},
+                {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "play_fmv", "fmv_id": 10},
                 {"type": "play_music", "music_track": 19},
-                {"type": "display_picture", "path": "data/images/end.webp", "display_time": 7.5},
-                {"type": "display_picture", "path": "data/images/credits_1.webp", "display_time": 7.5},
-                {"type": "display_picture", "path": "data/images/credits_2.webp", "display_time": 7.5},
-                {"type": "display_picture", "path": "data/images/credits_3.webp", "display_time": 7.5},
+                {"type": "display_picture", "path": "data/images/end.webp", "display_time": 7.5, "fade_in_time": 1.0, "fade_out_time": 1.0},
+                {"type": "display_picture", "path": "data/images/credits_1.webp", "display_time": 7.5, "fade_in_time": 1.0, "fade_out_time": 1.0},
+                {"type": "display_picture", "path": "data/images/credits_2.webp", "display_time": 7.5, "fade_in_time": 1.0, "fade_out_time": 1.0},
+                {"type": "display_picture", "path": "data/images/credits_3.webp", "display_time": 7.5, "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "total_stats", "background_path": "data/images/install.webp"},
                 {"type": "exit_to_title"},
             ],
@@ -414,7 +414,7 @@
                 "data/injections/vilcabamba_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
@@ -433,7 +433,7 @@
                 "data/injections/valley_textures.bin",
             ],
             "sequence": [
-                {"type": "loading_screen", "path": "data/images/peru.webp"},
+                {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},

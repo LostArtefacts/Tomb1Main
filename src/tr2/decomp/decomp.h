@@ -9,7 +9,6 @@
 // they'll need to be properly modularized. The same applies to all files
 // within the decomp/ directory which are scheduled for extensive refactoring.
 
-GF_COMMAND TitleSequence(void);
 void Game_SetCutsceneTrack(int32_t track);
 void CutscenePlayer_Control(int16_t item_num);
 void Lara_Control_Cutscene(int16_t item_num);

@@ -21,12 +21,12 @@
 #include "specific/s_shell.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/game/game_buf.h>
 #include <libtrx/game/game_string_table.h>
 #include <libtrx/game/ui/common.h>
-#include <libtrx/log.h>
 #include <libtrx/memory.h>
 
 #include <stdarg.h>
@@ -192,9 +192,8 @@ void Shell_Main(void)
 
     g_GameInfo.current_save_slot = -1;
 
-    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
-    bool intro_played = false;
-    bool loop_continue = true;
+    GF_COMMAND gf_cmd = GF_DoFrontendSequence();
+    bool loop_continue = !Shell_IsExiting();
     while (loop_continue) {
         LOG_INFO(
             "action=%s param=%d", ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action),
@@ -207,6 +206,12 @@ void Shell_Main(void)
             if (level != NULL) {
                 gf_cmd = GF_InterpretSequence(level, GFSC_NORMAL, NULL);
             }
+            break;
+        }
+
+        case GF_SELECT_GAME: {
+            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
+            gf_cmd = GF_InterpretSequence(level, GFSC_SELECT, NULL);
             break;
         }
 
@@ -230,12 +235,6 @@ void Shell_Main(void)
             break;
         }
 
-        case GF_SELECT_GAME: {
-            const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
-            gf_cmd = GF_InterpretSequence(level, GFSC_SELECT, NULL);
-            break;
-        }
-
         case GF_STORY_SO_FAR:
             gf_cmd = GF_PlayAvailableStory(gf_cmd.param);
             break;
@@ -252,31 +251,20 @@ void Shell_Main(void)
             gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
 
-        case GF_EXIT_TO_TITLE: {
-            const GF_LEVEL *const level = GF_GetTitleLevel();
-            g_GameInfo.current_save_slot = -1;
-            if (!intro_played) {
-                GF_InterpretSequence(level, GFSC_NORMAL, NULL);
-                intro_played = true;
+        case GF_EXIT_TO_TITLE:
+            if (g_GameFlow.title_level == NULL) {
+                Shell_ExitSystem("Title disabled");
+            } else {
+                gf_cmd = GF_TitleSequence();
             }
-
-            if (!Level_Initialise(level)) {
-                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
-                break;
-            }
-
-            gf_cmd = GF_ShowInventory(INV_TITLE_MODE);
             break;
-        }
 
         case GF_EXIT_GAME:
             loop_continue = false;
             break;
 
         default:
-            Shell_ExitSystemFmt(
-                "MAIN: Unknown action %x %d", gf_cmd.action, gf_cmd.param);
-            return;
+            ASSERT_FAIL();
         }
     }
 

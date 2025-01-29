@@ -3,43 +3,21 @@
 #include "game/game_flow/common.h"
 #include "game/game_flow/sequencer.h"
 #include "game/game_flow/vars.h"
+#include "game/level.h"
 
+#include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
 
 #include <stddef.h>
 
-GF_COMMAND GF_DoDemoSequence(int32_t demo_num)
+GF_COMMAND GF_TitleSequence(void)
 {
-    demo_num = Demo_ChooseLevel(demo_num);
-    if (demo_num < 0) {
-        return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+    GameStringTable_Apply(NULL);
+    const GF_LEVEL *const title_level = GF_GetTitleLevel();
+    if (!Level_Initialise(title_level, GFSC_NORMAL)) {
+        return (GF_COMMAND) { .action = GF_EXIT_GAME };
     }
-    const GF_LEVEL *const level = GF_GetLevel(GFLT_DEMOS, demo_num);
-    if (level == NULL) {
-        LOG_ERROR("Missing demo: %d", demo_num);
-        return (GF_COMMAND) { .action = GF_NOOP };
-    }
-    return GF_InterpretSequence(level, GFSC_NORMAL, NULL);
-}
-
-GF_COMMAND GF_DoCutsceneSequence(const int32_t cutscene_num)
-{
-    const GF_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, cutscene_num);
-    if (level == NULL) {
-        LOG_ERROR("Missing cutscene: %d", cutscene_num);
-        return (GF_COMMAND) { .action = GF_NOOP };
-    }
-    return GF_InterpretSequence(level, GFSC_NORMAL, NULL);
-}
-
-bool GF_DoFrontendSequence(void)
-{
-    if (g_GameFlow.title_level == NULL) {
-        return false;
-    }
-    const GF_COMMAND gf_cmd =
-        GF_InterpretSequence(g_GameFlow.title_level, GFSC_NORMAL, NULL);
-    return gf_cmd.action == GF_EXIT_GAME;
+    return GF_ShowInventory(INV_TITLE_MODE);
 }
 
 GF_COMMAND GF_DoLevelSequence(
