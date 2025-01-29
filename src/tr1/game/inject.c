@@ -124,10 +124,8 @@ static void M_AlignTextureReferences(
     const OBJECT *object, const uint16_t *palette_map, int32_t tex_info_base);
 
 static void M_LoadTexturePages(
-    INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map,
-    RGBA_8888 *page_ptr);
-static void M_TextureData(
-    INJECTION *injection, LEVEL_INFO *level_info, int32_t page_base);
+    const INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map);
+static void M_TextureData(const INJECTION *injection, LEVEL_INFO *level_info);
 static void M_MeshData(const INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimData(INJECTION *injection, LEVEL_INFO *level_info);
 static void M_AnimRangeEdits(INJECTION *injection);
@@ -352,8 +350,8 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename)
 }
 
 static void M_LoadTexturePages(
-    INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map,
-    RGBA_8888 *page_ptr)
+    const INJECTION *const injection, LEVEL_INFO *const level_info,
+    uint16_t *const palette_map)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -382,7 +380,9 @@ static void M_LoadTexturePages(
     uint8_t *indices = Memory_Alloc(pixel_count);
     VFile_Read(fp, indices, pixel_count);
     uint8_t *input = indices;
-    RGBA_8888 *output = page_ptr;
+    RGBA_8888 *output =
+        &level_info->textures
+             .pages_32[TEXTURE_PAGE_SIZE * level_info->textures.page_count];
     for (size_t i = 0; i < pixel_count; i++) {
         const uint8_t index = *input++;
         if (index == 0) {
@@ -401,7 +401,7 @@ static void M_LoadTexturePages(
 }
 
 static void M_TextureData(
-    INJECTION *injection, LEVEL_INFO *level_info, int32_t page_base)
+    const INJECTION *const injection, LEVEL_INFO *const level_info)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
@@ -409,6 +409,7 @@ static void M_TextureData(
     VFILE *const fp = injection->fp;
 
     // Read the tex_infos and align them to the end of the page list.
+    const int32_t page_base = level_info->textures.page_count;
     Level_ReadObjectTextures(
         level_info->textures.object_count, page_base, inj_info->texture_count,
         fp);
@@ -1625,23 +1626,16 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     uint16_t palette_map[256];
-    RGBA_8888 *source_pages = Memory_Alloc(
-        m_Aggregate->texture_page_count * TEXTURE_PAGE_SIZE
-        * sizeof(RGBA_8888));
-    int32_t source_page_count = 0;
-    int32_t tpage_base = level_info->textures.page_count;
-
     for (int32_t i = 0; i < m_NumInjections; i++) {
         INJECTION *injection = &m_Injections[i];
         if (!injection->relevant) {
             continue;
         }
 
-        M_LoadTexturePages(
-            injection, level_info, palette_map,
-            source_pages + (source_page_count * TEXTURE_PAGE_SIZE));
+        // TODO: use texture packing for unoptimized pages.
+        M_LoadTexturePages(injection, level_info, palette_map);
 
-        M_TextureData(injection, level_info, tpage_base);
+        M_TextureData(injection, level_info);
         M_MeshData(injection, level_info);
         M_AnimData(injection, level_info);
         M_ObjectData(injection, level_info, palette_map);
@@ -1666,30 +1660,7 @@ void Inject_AllInjections(LEVEL_INFO *level_info)
         level_info->anims.anim_count += inj_info->anim_count;
         level_info->mesh_ptr_count += inj_info->mesh_ptr_count;
         level_info->textures.object_count += inj_info->texture_count;
-        source_page_count += inj_info->texture_page_count;
-        tpage_base += inj_info->texture_page_count;
-    }
-
-    if (source_page_count != 0) {
-        PACKER_DATA data = {
-            .level.page_count = level_info->textures.page_count,
-            .level.pages_32 = level_info->textures.pages_32,
-            .level.pages_24 = NULL,
-            .level.palette_24 = NULL,
-            .source.page_count = source_page_count,
-            .source.pages_32 = source_pages,
-            .source.pages_24 = NULL,
-            .source.palette_24 = NULL,
-            .object_count = level_info->textures.object_count,
-            .sprite_count = level_info->textures.sprite_count,
-        };
-
-        if (Packer_Pack(&data)) {
-            level_info->textures.page_count += Packer_GetAddedPageCount();
-            level_info->textures.pages_32 = data.level.pages_32;
-        }
-
-        Memory_FreePointer(&source_pages);
+        level_info->textures.page_count += inj_info->texture_page_count;
     }
 
     Benchmark_End(benchmark, NULL);

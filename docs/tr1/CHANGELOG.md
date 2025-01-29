@@ -46,6 +46,7 @@
 - fixed `/demo` command crashing the game if no demos are present (regression from 4.1)
 - fixed Lara not being able to jump or stop swimming if the related responsive config options are enabled, but enhanced animations are not present (#2397, regression from 4.6)
 - improved pause screen compatibility with PS1 (#2248)
+- improved level loading times with respect to injection processing
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21
 - changed the inventory examine UI to auto-hide if the item description is empty (#2097)

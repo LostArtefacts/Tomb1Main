@@ -787,8 +787,8 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
 
     // Expand paletted texture data to RGB
     m_LevelInfo.textures.pages_32 = Memory_Alloc(
-        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE
-        * sizeof(RGBA_8888));
+        (m_LevelInfo.textures.page_count + m_InjectionInfo->texture_page_count)
+        * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
     RGBA_8888 *output = m_LevelInfo.textures.pages_32;
     const uint8_t *input = m_LevelInfo.textures.pages_24;
     for (int32_t i = 0; i < m_LevelInfo.textures.page_count; i++) {
@@ -843,22 +843,23 @@ static void M_CompleteSetup(const GAME_FLOW_LEVEL *const level)
     LOG_INFO("Maximum vertices: %d", max_vertices);
     Output_ReserveVertexBuffer(max_vertices);
 
-    // Move the prepared texture pages into g_TexturePagePtrs.
-    RGBA_8888 *final_texture_data = GameBuf_Alloc(
-        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888),
-        GBUF_TEXTURE_PAGES);
-    memcpy(
-        final_texture_data, m_LevelInfo.textures.pages_32,
-        m_LevelInfo.textures.page_count * TEXTURE_PAGE_SIZE
-            * sizeof(RGBA_8888));
-    for (int i = 0; i < m_LevelInfo.textures.page_count; i++) {
-        g_TexturePagePtrs[i] = &final_texture_data[i * TEXTURE_PAGE_SIZE];
+    {
+        // Move the prepared texture pages into g_TexturePagePtrs.
+        const int32_t num_pages = m_LevelInfo.textures.page_count;
+        const int32_t page_size = TEXTURE_PAGE_SIZE * sizeof(RGBA_8888);
+        RGBA_8888 *const pages =
+            GameBuf_Alloc(num_pages * page_size, GBUF_TEXTURE_PAGES);
+        memcpy(pages, m_LevelInfo.textures.pages_32, num_pages * page_size);
+        for (int32_t i = 0; i < num_pages; i++) {
+            g_TexturePagePtrs[i] = &pages[i * TEXTURE_PAGE_SIZE];
+        }
+        Output_DownloadTextures(m_LevelInfo.textures.page_count);
+        Output_SetPalette(
+            m_LevelInfo.palette.data_24, m_LevelInfo.palette.size);
+        Memory_FreePointer(&m_LevelInfo.textures.pages_24);
+        Memory_FreePointer(&m_LevelInfo.textures.pages_32);
+        Memory_FreePointer(&m_LevelInfo.palette.data_24);
     }
-    Output_DownloadTextures(m_LevelInfo.textures.page_count);
-    Output_SetPalette(m_LevelInfo.palette.data_24, m_LevelInfo.palette.size);
-    Memory_FreePointer(&m_LevelInfo.textures.pages_24);
-    Memory_FreePointer(&m_LevelInfo.textures.pages_32);
-    Memory_FreePointer(&m_LevelInfo.palette.data_24);
 
     // Initialise the sound effects.
     const int32_t sample_count = m_LevelInfo.samples.offset_count;
