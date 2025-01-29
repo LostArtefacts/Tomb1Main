@@ -197,9 +197,11 @@ void Stats_CalculateStats(void)
     M_TraverseFloor();
 
     const GF_LEVEL *const current_level = Game_GetCurrentLevel();
-    m_LevelPickups -= current_level->unobtainable.pickups;
-    m_LevelKillables -= current_level->unobtainable.kills;
-    m_LevelSecrets -= current_level->unobtainable.secrets;
+    if (current_level != nullptr) {
+        m_LevelPickups -= current_level->unobtainable.pickups;
+        m_LevelKillables -= current_level->unobtainable.kills;
+        m_LevelSecrets -= current_level->unobtainable.secrets;
+    }
 }
 
 int32_t Stats_GetPickups(void)

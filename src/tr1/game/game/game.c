@@ -69,115 +69,6 @@ void Game_ProcessInput(void)
     }
 }
 
-bool Game_Start_Legacy(
-    const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
-{
-    const GF_LEVEL *const prev_level = GF_GetLevelBefore(level);
-    switch (seq_ctx) {
-    case GFSC_SAVED:
-        // reset current info to the defaults so that we do not do
-        // Item_GlobalReplace in the inventory initialization routines too early
-        Savegame_InitCurrentInfo();
-
-        if (!Level_Initialise(level)) {
-            Game_SetCurrentLevel(NULL);
-            GF_SetCurrentLevel(NULL);
-            return false;
-        }
-        if (!Savegame_Load(g_GameInfo.current_save_slot)) {
-            LOG_ERROR("Failed to load save file!");
-            return false;
-        }
-        break;
-
-    case GFSC_RESTART:
-        if (level <= GF_GetGymLevel() || level == GF_GetFirstLevel()) {
-            Savegame_InitCurrentInfo();
-        } else {
-            Savegame_ResetCurrentInfo(level);
-            // Use previous level's ending info to start current level.
-            Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
-            Savegame_ApplyLogicToCurrentInfo(level);
-        }
-        if (!Level_Initialise(level)) {
-            Game_SetCurrentLevel(NULL);
-            GF_SetCurrentLevel(NULL);
-            return false;
-        }
-        break;
-
-    case GFSC_SELECT:
-        if (g_GameInfo.current_save_slot != -1) {
-            // select level feature
-            Savegame_InitCurrentInfo();
-            if (level->num > GF_GetFirstLevel()->num) {
-                Savegame_LoadOnlyResumeInfo(
-                    g_GameInfo.current_save_slot, &g_GameInfo);
-                const GF_LEVEL *tmp_level = level;
-                while (tmp_level != NULL) {
-                    Savegame_ResetCurrentInfo(tmp_level);
-                    tmp_level = GF_GetLevelAfter(tmp_level);
-                }
-                // Use previous level's ending info to start current level.
-                Savegame_CarryCurrentInfoToNextLevel(
-                    GF_GetLevelBefore(level), level);
-                Savegame_ApplyLogicToCurrentInfo(level);
-            }
-        } else {
-            // console /play level feature
-            Savegame_InitCurrentInfo();
-            const GF_LEVEL *tmp_level = GF_GetLevelAfter(GF_GetFirstLevel());
-            while (tmp_level != NULL) {
-                Savegame_CarryCurrentInfoToNextLevel(
-                    GF_GetLevelBefore(tmp_level), tmp_level);
-                Savegame_ApplyLogicToCurrentInfo(tmp_level);
-                if (tmp_level == level) {
-                    break;
-                }
-                tmp_level = GF_GetLevelAfter(tmp_level);
-            }
-        }
-        if (!Level_Initialise(level)) {
-            return false;
-        }
-        break;
-
-    default:
-        if (level->type == GFL_GYM) {
-            Savegame_ResetCurrentInfo(level);
-            Savegame_ApplyLogicToCurrentInfo(level);
-        } else if (level->type == GFL_BONUS) {
-            Savegame_CarryCurrentInfoToNextLevel(
-                GF_GetLevelBefore(level), level);
-            Savegame_ApplyLogicToCurrentInfo(level);
-        }
-        if (!Level_Initialise(level)) {
-            return false;
-        }
-        break;
-    }
-
-    // LaraGun() expects request_gun_type to be set only when it
-    // really is needed, not at all times.
-    // https://github.com/LostArtefacts/TRX/issues/36
-    g_Lara.request_gun_type = LGT_UNARMED;
-
-    g_OverlayFlag = 1;
-    Camera_Initialise();
-
-    Stats_CalculateStats();
-    GF_GetResumeInfo(level)->stats.max_pickup_count = Stats_GetPickups();
-    GF_GetResumeInfo(level)->stats.max_kill_count = Stats_GetKillables();
-    GF_GetResumeInfo(level)->stats.max_secret_count = Stats_GetSecrets();
-
-    g_GameInfo.ask_for_save = g_Config.gameplay.enable_save_crystals
-        && (level->type == GFL_NORMAL || level->type == GFL_BONUS)
-        && level != GF_GetFirstLevel() && level != GF_GetGymLevel();
-
-    Interpolation_Remember();
-    return true;
-}
-
 GF_COMMAND Game_Stop_Legacy(void)
 {
     Sound_StopAll();
@@ -257,6 +148,13 @@ GF_COMMAND Game_Stop_Legacy(void)
 bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     Game_SetCurrentLevel(level);
+
+    // LaraGun() expects request_gun_type to be set only when it
+    // really is needed, not at all times.
+    // https://github.com/LostArtefacts/TRX/issues/36
+    g_Lara.request_gun_type = LGT_UNARMED;
+    g_OverlayFlag = 1;
+    Camera_Initialise();
     Interpolation_Remember();
     Stats_StartTimer();
     return true;

@@ -9,6 +9,8 @@
 #include "game/level.h"
 #include "game/music.h"
 #include "game/objects/creatures/bacon_lara.h"
+#include "game/savegame.h"
+#include "game/stats.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
@@ -73,27 +75,118 @@ static DECLARE_EVENT_HANDLER(M_HandleExitToTitle)
 static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    if (seq_ctx == GFSC_STORY) {
+    const GF_LEVEL *const prev_level = GF_GetLevelBefore(level);
+
+    switch (seq_ctx) {
+    case GFSC_STORY:
         const int32_t savegame_level_num = (int32_t)(intptr_t)seq_ctx_arg;
         if (savegame_level_num == level->num) {
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        break;
+
+    case GFSC_SAVED:
+        // reset current info to the defaults so that we do not do
+        // Item_GlobalReplace in the inventory initialization routines too early
+        Savegame_InitCurrentInfo();
+
+        if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-    } else if (level->type == GFL_DEMO) {
-    } else if (level->type == GFL_CUTSCENE) {
+        if (!Savegame_Load(g_GameInfo.current_save_slot)) {
+            LOG_ERROR("Failed to load save file!");
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        break;
+
+    case GFSC_RESTART:
+        if (level == GF_GetGymLevel() || level == GF_GetFirstLevel()) {
+            Savegame_InitCurrentInfo();
+        } else {
+            Savegame_ResetCurrentInfo(level);
+            Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
+            Savegame_ApplyLogicToCurrentInfo(level);
+        }
         if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        break;
+
+    case GFSC_SELECT:
+        if (g_GameInfo.current_save_slot != -1) {
+            // select level feature
+            Savegame_InitCurrentInfo();
+            if (level->num > GF_GetFirstLevel()->num) {
+                Savegame_LoadOnlyResumeInfo(
+                    g_GameInfo.current_save_slot, &g_GameInfo);
+                const GF_LEVEL *tmp_level = level;
+                while (tmp_level != NULL) {
+                    Savegame_ResetCurrentInfo(tmp_level);
+                    tmp_level = GF_GetLevelAfter(tmp_level);
+                }
+                Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
+                Savegame_ApplyLogicToCurrentInfo(level);
+            }
+        } else {
+            // console /play level feature
+            Savegame_InitCurrentInfo();
+            const GF_LEVEL *tmp_level = GF_GetLevelAfter(GF_GetFirstLevel());
+            while (tmp_level != NULL) {
+                Savegame_CarryCurrentInfoToNextLevel(
+                    GF_GetLevelBefore(tmp_level), tmp_level);
+                Savegame_ApplyLogicToCurrentInfo(tmp_level);
+                if (tmp_level == level) {
+                    break;
+                }
+                tmp_level = GF_GetLevelAfter(tmp_level);
+            }
+        }
+        if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        break;
+
+    default:
+        if (level->type == GFL_GYM) {
+            Savegame_ResetCurrentInfo(level);
+            Savegame_ApplyLogicToCurrentInfo(level);
+        } else if (level->type == GFL_BONUS) {
+            Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
+            Savegame_ApplyLogicToCurrentInfo(level);
+        }
+
+        if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(NULL);
+            GF_SetCurrentLevel(NULL);
             if (level->type == GFL_TITLE) {
                 gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
             } else {
                 gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             }
         }
-    } else {
-        const bool result = Game_Start_Legacy(level, seq_ctx);
-        if (!result) {
-            Game_SetCurrentLevel(NULL);
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
+        break;
     }
+
+    Stats_CalculateStats();
+    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    if (resume != NULL) {
+        resume->stats.max_pickup_count = Stats_GetPickups();
+        resume->stats.max_kill_count = Stats_GetKillables();
+        resume->stats.max_secret_count = Stats_GetSecrets();
+    }
+
+    g_GameInfo.ask_for_save = g_Config.gameplay.enable_save_crystals
+        && (level->type == GFL_NORMAL || level->type == GFL_BONUS)
+        && level != GF_GetFirstLevel() && level != GF_GetGymLevel();
+
     return gf_cmd;
 }
 
