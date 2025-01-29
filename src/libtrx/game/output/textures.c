@@ -4,10 +4,31 @@
 #include "game/output.h"
 #include "game/shell.h"
 
+static int32_t m_TexturePageCount = 0;
+static uint8_t *m_TexturePages8 = nullptr;
+static RGBA_8888 *m_TexturePages32 = nullptr;
+
 static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE *m_ObjectTextures = nullptr;
 static SPRITE_TEXTURE *m_SpriteTextures = nullptr;
 static ANIMATED_TEXTURE_RANGE *m_AnimTextureRanges = nullptr;
+
+void Output_InitialiseTexturePages(const int32_t num_pages, const bool use_8bit)
+{
+    m_TexturePageCount = num_pages;
+    if (num_pages == 0) {
+        m_TexturePages32 = nullptr;
+        m_TexturePages8 = nullptr;
+        return;
+    }
+
+    const int32_t page_size = num_pages * TEXTURE_PAGE_SIZE;
+    m_TexturePages32 =
+        GameBuf_Alloc(sizeof(RGBA_8888) * page_size, GBUF_TEXTURE_PAGES);
+    m_TexturePages8 = use_8bit
+        ? GameBuf_Alloc(sizeof(uint8_t) * page_size, GBUF_TEXTURE_PAGES)
+        : nullptr;
+}
 
 void Output_InitialiseObjectTextures(const int32_t num_textures)
 {
@@ -33,6 +54,27 @@ void Output_InitialiseAnimatedTextures(const int32_t num_ranges)
         : GameBuf_Alloc(
               sizeof(ANIMATED_TEXTURE_RANGE) * num_ranges,
               GBUF_ANIMATED_TEXTURE_RANGES);
+}
+
+int32_t Output_GetTexturePageCount(void)
+{
+    return m_TexturePageCount;
+}
+
+uint8_t *Output_GetTexturePage8(const int32_t page_idx)
+{
+    if (m_TexturePages8 == nullptr) {
+        return nullptr;
+    }
+    return &m_TexturePages8[page_idx * TEXTURE_PAGE_SIZE];
+}
+
+RGBA_8888 *Output_GetTexturePage32(const int32_t page_idx)
+{
+    if (m_TexturePages32 == nullptr) {
+        return nullptr;
+    }
+    return &m_TexturePages32[page_idx * TEXTURE_PAGE_SIZE];
 }
 
 int32_t Output_GetObjectTextureCount(void)
