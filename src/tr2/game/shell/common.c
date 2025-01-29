@@ -8,7 +8,6 @@
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow.h"
-#include "game/game_flow/reader.h"
 #include "game/game_string.h"
 #include "game/input.h"
 #include "game/music.h"

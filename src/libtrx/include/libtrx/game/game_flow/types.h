@@ -25,6 +25,38 @@ typedef struct {
     GF_SEQUENCE_EVENT *events;
 } GF_SEQUENCE;
 
+// Concrete events data
+
+typedef struct {
+    char *path;
+    float display_time;
+    float fade_in_time;
+    float fade_out_time;
+} GF_DISPLAY_PICTURE_DATA;
+
+#if TR_VERSION == 2
+typedef enum {
+    GF_INV_REGULAR,
+    GF_INV_SECRET,
+} GF_INV_TYPE;
+#endif
+
+typedef struct {
+    GAME_OBJECT_ID object_id;
+#if TR_VERSION == 2
+    GF_INV_TYPE inv_type;
+#endif
+    int32_t quantity;
+} GF_ADD_ITEM_DATA;
+
+#if TR_VERSION == 1
+typedef struct {
+    GAME_OBJECT_ID object1_id;
+    GAME_OBJECT_ID object2_id;
+    int32_t mesh_num;
+} GF_MESH_SWAP_DATA;
+#endif
+
 // ----------------------------------------------------------------------------
 // Game flow level structures
 // ----------------------------------------------------------------------------
@@ -38,13 +70,17 @@ typedef struct {
     const char *path;
 } GF_FMV;
 
-#if TR_VERSION == 1
 typedef struct {
+#if TR_VERSION == 1
     RGB_F water_color;
     float draw_distance_fade;
     float draw_distance_max;
+#elif TR_VERSION == 2
+    int32_t dummy; // silence warnings, keep the logic
+#endif
 } GF_LEVEL_SETTINGS;
 
+#if TR_VERSION == 1
 typedef struct {
     int32_t enemy_num;
     int32_t count;
@@ -66,9 +102,9 @@ typedef struct {
     GF_SEQUENCE sequence;
     INJECTION_DATA injections;
 
-#if TR_VERSION == 1
     GF_LEVEL_SETTINGS settings;
 
+#if TR_VERSION == 1
     struct {
         uint32_t pickups;
         uint32_t kills;
@@ -118,8 +154,6 @@ typedef struct {
         bool convert_dropped_guns;
         bool enable_killer_pushblocks;
     };
-
-    GF_LEVEL_SETTINGS settings;
 #elif TR_VERSION == 2
     // flow commands
     struct {
@@ -150,5 +184,6 @@ typedef struct {
 #endif
 
     // other data
+    GF_LEVEL_SETTINGS settings;
     INJECTION_DATA injections;
 } GAME_FLOW;

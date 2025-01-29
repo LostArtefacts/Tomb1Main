@@ -181,8 +181,8 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture)
     PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
         .file_name = data->path,
         .display_time = data->display_time,
-        .fade_in_time = 1.0,
-        .fade_out_time = 1.0,
+        .fade_in_time = data->fade_in_time,
+        .fade_out_time = data->fade_out_time,
         .display_time_includes_fades = false,
     });
     gf_cmd = PhaseExecutor_Run(phase);

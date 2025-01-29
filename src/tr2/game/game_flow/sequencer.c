@@ -235,7 +235,8 @@ static DECLARE_EVENT_HANDLER(M_HandleAddItem)
     if (seq_ctx != GFSC_STORY) {
         const GF_ADD_ITEM_DATA *const data =
             (const GF_ADD_ITEM_DATA *)event->data;
-        GF_InventoryModifier_Add(data->object_id, data->inv_type, data->qty);
+        GF_InventoryModifier_Add(
+            data->object_id, data->inv_type, data->quantity);
     }
     return gf_cmd;
 }
