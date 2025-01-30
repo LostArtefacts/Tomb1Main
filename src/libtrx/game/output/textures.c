@@ -1,3 +1,4 @@
+#include "debug.h"
 #include "game/const.h"
 #include "game/game_buf.h"
 #include "game/objects/common.h"
@@ -7,6 +8,10 @@
 static int32_t m_TexturePageCount = 0;
 static uint8_t *m_TexturePages8 = nullptr;
 static RGBA_8888 *m_TexturePages32 = nullptr;
+
+static int32_t m_PaletteSize = 0;
+static RGB_888 *m_Palette8 = nullptr;
+static RGB_888 *m_Palette16 = nullptr;
 
 static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE *m_ObjectTextures = nullptr;
@@ -28,6 +33,26 @@ void Output_InitialiseTexturePages(const int32_t num_pages, const bool use_8bit)
     m_TexturePages8 = use_8bit
         ? GameBuf_Alloc(sizeof(uint8_t) * page_size, GBUF_TEXTURE_PAGES)
         : nullptr;
+}
+
+void Output_InitialisePalettes(
+    const int32_t palette_size, const RGB_888 *const palette_8,
+    const RGB_888 *const palette_16)
+{
+    ASSERT(palette_size != 0);
+    ASSERT(palette_8 != nullptr);
+    m_PaletteSize = palette_size;
+
+    m_Palette8 = GameBuf_Alloc(sizeof(RGB_888) * palette_size, GBUF_PALETTES);
+    memcpy(m_Palette8, palette_8, sizeof(RGB_888) * palette_size);
+
+    if (palette_16 != nullptr) {
+        m_Palette16 =
+            GameBuf_Alloc(sizeof(RGB_888) * palette_size, GBUF_PALETTES);
+        memcpy(m_Palette16, palette_16, sizeof(RGB_888) * palette_size);
+    } else {
+        m_Palette16 = nullptr;
+    }
 }
 
 void Output_InitialiseObjectTextures(const int32_t num_textures)
@@ -75,6 +100,27 @@ RGBA_8888 *Output_GetTexturePage32(const int32_t page_idx)
         return nullptr;
     }
     return &m_TexturePages32[page_idx * TEXTURE_PAGE_SIZE];
+}
+
+int32_t Output_GetPaletteSize(void)
+{
+    return m_PaletteSize;
+}
+
+RGB_888 Output_GetPaletteColor8(const uint16_t idx)
+{
+    if (m_Palette8 == nullptr) {
+        return (RGB_888) { 0, 0, 0 };
+    }
+    return m_Palette8[idx];
+}
+
+RGB_888 Output_GetPaletteColor16(const uint16_t idx)
+{
+    if (m_Palette16 == nullptr) {
+        return (RGB_888) { 0, 0, 0 };
+    }
+    return m_Palette16[idx];
 }
 
 int32_t Output_GetObjectTextureCount(void)
