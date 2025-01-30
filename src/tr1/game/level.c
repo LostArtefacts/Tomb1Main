@@ -844,14 +844,14 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
     Output_ReserveVertexBuffer(max_vertices);
 
     {
-        // Move the prepared texture pages into g_TexturePagePtrs.
+        // Move the prepared texture pages into game storage.
         const int32_t num_pages = m_LevelInfo.textures.page_count;
-        const int32_t page_size = TEXTURE_PAGE_SIZE * sizeof(RGBA_8888);
-        RGBA_8888 *const pages =
-            GameBuf_Alloc(num_pages * page_size, GBUF_TEXTURE_PAGES);
-        memcpy(pages, m_LevelInfo.textures.pages_32, num_pages * page_size);
+        Output_InitialiseTexturePages(num_pages, false);
         for (int32_t i = 0; i < num_pages; i++) {
-            g_TexturePagePtrs[i] = &pages[i * TEXTURE_PAGE_SIZE];
+            RGBA_8888 *const target = Output_GetTexturePage32(i);
+            const RGBA_8888 *const source =
+                &m_LevelInfo.textures.pages_32[i * TEXTURE_PAGE_SIZE];
+            memcpy(target, source, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
         }
         Output_DownloadTextures(m_LevelInfo.textures.page_count);
         Output_SetPalette(

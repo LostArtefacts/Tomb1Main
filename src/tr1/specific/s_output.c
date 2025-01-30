@@ -1249,17 +1249,17 @@ void S_Output_DownloadTextures(int32_t pages)
 
     M_ReleaseTextures();
 
-    for (int i = 0; i < pages; i++) {
+    for (int32_t i = 0; i < pages; i++) {
         if (m_TextureSurfaces[i] == nullptr) {
             const GFX_2D_SURFACE_DESC surface_desc = {
-                .width = 256,
-                .height = 256,
+                .width = TEXTURE_PAGE_WIDTH,
+                .height = TEXTURE_PAGE_HEIGHT,
             };
             m_TextureSurfaces[i] = GFX_2D_Surface_Create(&surface_desc);
         }
         GFX_2D_SURFACE *const surface = m_TextureSurfaces[i];
-        RGBA_8888 *output_ptr = (RGBA_8888 *)surface->buffer;
-        RGBA_8888 *input_ptr = g_TexturePagePtrs[i];
+        RGBA_8888 *const output_ptr = (RGBA_8888 *)surface->buffer;
+        const RGBA_8888 *const input_ptr = Output_GetTexturePage32(i);
         memcpy(
             output_ptr, input_ptr,
             surface->desc.width * surface->desc.height * sizeof(RGBA_8888));

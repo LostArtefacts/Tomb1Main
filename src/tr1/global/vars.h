@@ -40,7 +40,6 @@ extern ROOM *g_RoomInfo;
 extern OBJECT g_Objects[O_NUMBER_OF];
 extern STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
 extern STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS];
-extern RGBA_8888 *g_TexturePagePtrs[MAX_TEXTURE_PAGES];
 extern int16_t g_RoomCount;
 extern int32_t g_LevelItemCount;
 extern int32_t g_NumberBoxes;
