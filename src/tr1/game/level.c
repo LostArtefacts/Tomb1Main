@@ -210,7 +210,12 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
         Shell_ExitSystemFmt("Failed to load %s", level->path);
     }
     VFile_SetPos(file, 4);
-    M_LoadTexturePages(file);
+
+    {
+        // Read texture pages once the palette is available.
+        const int32_t num_pages = VFile_ReadS32(file);
+        VFile_Skip(file, num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t));
+    }
 
     const int32_t file_level_num = VFile_ReadS32(file);
     LOG_INFO("file level num: %d", file_level_num);
@@ -248,6 +253,9 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadDemo(file);
     M_LoadSamples(file);
 
+    VFile_SetPos(file, 4);
+    M_LoadTexturePages(file);
+
     VFile_Close(file);
 }
 
@@ -257,9 +265,28 @@ static void M_LoadTexturePages(VFILE *file)
     const int32_t num_pages = VFile_ReadS32(file);
     m_LevelInfo.textures.page_count = num_pages;
     LOG_INFO("%d texture pages", num_pages);
-    m_LevelInfo.textures.pages_24 = Memory_Alloc(num_pages * TEXTURE_PAGE_SIZE);
-    VFile_Read(
-        file, m_LevelInfo.textures.pages_24, num_pages * TEXTURE_PAGE_SIZE);
+
+    const int32_t texture_size_8_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t);
+    m_LevelInfo.textures.pages_24 = Memory_Alloc(texture_size_8_bit);
+    VFile_Read(file, m_LevelInfo.textures.pages_24, texture_size_8_bit);
+
+    const int32_t texture_size_32_bit =
+        (num_pages + m_InjectionInfo->texture_page_count) * TEXTURE_PAGE_SIZE
+        * sizeof(RGBA_8888);
+    m_LevelInfo.textures.pages_32 = Memory_Alloc(texture_size_32_bit);
+    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
+    const uint8_t *input = m_LevelInfo.textures.pages_24;
+    for (int32_t i = 0; i < texture_size_8_bit; i++) {
+        const uint8_t index = *input++;
+        const RGB_888 pix = m_LevelInfo.palette.data_24[index];
+        output->r = pix.r;
+        output->g = pix.g;
+        output->b = pix.b;
+        output->a = index == 0 ? 0 : 0xFF;
+        output++;
+    }
+
     Benchmark_End(benchmark, nullptr);
 }
 
@@ -784,31 +811,6 @@ static void M_LoadSamples(VFILE *file)
 static void M_CompleteSetup(const GF_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-
-    // Expand paletted texture data to RGB
-    m_LevelInfo.textures.pages_32 = Memory_Alloc(
-        (m_LevelInfo.textures.page_count + m_InjectionInfo->texture_page_count)
-        * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
-    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
-    const uint8_t *input = m_LevelInfo.textures.pages_24;
-    for (int32_t i = 0; i < m_LevelInfo.textures.page_count; i++) {
-        for (int32_t j = 0; j < TEXTURE_PAGE_SIZE; j++) {
-            const uint8_t index = *input++;
-            if (index == 0) {
-                output->r = 0;
-                output->g = 0;
-                output->b = 0;
-                output->a = 0;
-            } else {
-                RGB_888 pix = m_LevelInfo.palette.data_24[index];
-                output->r = pix.r;
-                output->g = pix.g;
-                output->b = pix.b;
-                output->a = 255;
-            }
-            output++;
-        }
-    }
 
     // We inject explosions sprites and sounds, although in the original game,
     // some levels lack them, resulting in no audio or visual effects when
