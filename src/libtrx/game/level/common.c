@@ -455,3 +455,33 @@ void Level_ReadAnimatedTextureRanges(
             file, range->textures, sizeof(int16_t) * range->num_textures);
     }
 }
+
+void Level_LoadTexturePages(LEVEL_INFO *const info)
+{
+    const int32_t num_pages = info->textures.page_count;
+    Output_InitialiseTexturePages(num_pages, TR_VERSION == 2);
+    for (int32_t i = 0; i < num_pages; i++) {
+#if TR_VERSION == 2
+        uint8_t *const target_8 = Output_GetTexturePage8(i);
+        const uint8_t *const source_8 =
+            &info->textures.pages_24[i * TEXTURE_PAGE_SIZE];
+        memcpy(target_8, source_8, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
+#endif
+
+        RGBA_8888 *const target_32 = Output_GetTexturePage32(i);
+        const RGBA_8888 *const source_32 =
+            &info->textures.pages_32[i * TEXTURE_PAGE_SIZE];
+        memcpy(target_32, source_32, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
+    }
+
+    Memory_FreePointer(&info->textures.pages_24);
+    Memory_FreePointer(&info->textures.pages_32);
+}
+
+void Level_LoadPalettes(LEVEL_INFO *const info)
+{
+    Output_InitialisePalettes(
+        info->palette.size, info->palette.data_24, info->palette.data_32);
+    Memory_FreePointer(&info->palette.data_24);
+    Memory_FreePointer(&info->palette.data_32);
+}

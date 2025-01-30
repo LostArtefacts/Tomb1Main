@@ -734,32 +734,9 @@ static void M_CompleteSetup(void)
         Item_Initialise(i);
     }
 
-    {
-        // Move the prepared texture pages into game storage.
-        const int32_t num_pages = m_LevelInfo.textures.page_count;
-        Output_InitialiseTexturePages(num_pages, true);
-        for (int32_t i = 0; i < num_pages; i++) {
-            uint8_t *const target_8 = Output_GetTexturePage8(i);
-            const uint8_t *const source_8 =
-                &m_LevelInfo.textures.pages_24[i * TEXTURE_PAGE_SIZE];
-            memcpy(target_8, source_8, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
-
-            RGBA_8888 *const target_32 = Output_GetTexturePage32(i);
-            const RGBA_8888 *const source_32 =
-                &m_LevelInfo.textures.pages_32[i * TEXTURE_PAGE_SIZE];
-            memcpy(target_32, source_32, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
-        }
-
-        Output_InitialisePalettes(
-            m_LevelInfo.palette.size, m_LevelInfo.palette.data_24,
-            m_LevelInfo.palette.data_32);
-        Output_InitialiseNamedColors();
-
-        Memory_FreePointer(&m_LevelInfo.textures.pages_24);
-        Memory_FreePointer(&m_LevelInfo.textures.pages_32);
-        Memory_FreePointer(&m_LevelInfo.palette.data_24);
-        Memory_FreePointer(&m_LevelInfo.palette.data_32);
-    }
+    Level_LoadTexturePages(&m_LevelInfo);
+    Level_LoadPalettes(&m_LevelInfo);
+    Output_InitialiseNamedColors();
 
     Render_Reset(
         RENDER_RESET_PALETTE | RENDER_RESET_TEXTURES | RENDER_RESET_UVS);

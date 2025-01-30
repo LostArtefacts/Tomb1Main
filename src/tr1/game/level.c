@@ -847,24 +847,9 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
     LOG_INFO("Maximum vertices: %d", max_vertices);
     Output_ReserveVertexBuffer(max_vertices);
 
-    {
-        // Move the prepared texture pages into game storage.
-        const int32_t num_pages = m_LevelInfo.textures.page_count;
-        Output_InitialiseTexturePages(num_pages, false);
-        for (int32_t i = 0; i < num_pages; i++) {
-            RGBA_8888 *const target = Output_GetTexturePage32(i);
-            const RGBA_8888 *const source =
-                &m_LevelInfo.textures.pages_32[i * TEXTURE_PAGE_SIZE];
-            memcpy(target, source, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
-        }
-        Output_DownloadTextures(m_LevelInfo.textures.page_count);
-        Output_InitialisePalettes(
-            m_LevelInfo.palette.size, m_LevelInfo.palette.data_24,
-            m_LevelInfo.palette.data_32);
-        Memory_FreePointer(&m_LevelInfo.textures.pages_24);
-        Memory_FreePointer(&m_LevelInfo.textures.pages_32);
-        Memory_FreePointer(&m_LevelInfo.palette.data_24);
-    }
+    Level_LoadTexturePages(&m_LevelInfo);
+    Level_LoadPalettes(&m_LevelInfo);
+    Output_DownloadTextures(m_LevelInfo.textures.page_count);
 
     // Initialise the sound effects.
     const int32_t sample_count = m_LevelInfo.samples.offset_count;
