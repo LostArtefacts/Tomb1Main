@@ -16,11 +16,11 @@
         GF_SEQUENCE_CONTEXT seq_ctx, void *const seq_ctx_arg)
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle);
-static DECLARE_EVENT_HANDLER(M_HandlePicture);
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel);
 static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene);
 static DECLARE_EVENT_HANDLER(M_HandlePlayMusic);
 static DECLARE_EVENT_HANDLER(M_HandlePlayFMV);
+static DECLARE_EVENT_HANDLER(M_HandlePicture);
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete);
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats);
 static DECLARE_EVENT_HANDLER(M_HandleEnableSunset);
@@ -36,49 +36,30 @@ static DECLARE_EVENT_HANDLER(M_HandleSetNumSecrets);
 
 static DECLARE_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     // clang-format off
-    [GFS_EXIT_TO_TITLE]        = M_HandleExitToTitle,
-    [GFS_DISPLAY_PICTURE]      = M_HandlePicture,
-    [GFS_PLAY_LEVEL]           = M_HandlePlayLevel,
-    [GFS_PLAY_CUTSCENE]        = M_HandlePlayCutscene,
-    [GFS_PLAY_MUSIC]           = M_HandlePlayMusic,
-    [GFS_PLAY_FMV]             = M_HandlePlayFMV,
-    [GFS_LEVEL_COMPLETE]       = M_HandleLevelComplete,
-    [GFS_LEVEL_STATS]          = M_HandleLevelStats,
-    [GFS_TOTAL_STATS]          = M_HandleTotalStats,
-    [GFS_ENABLE_SUNSET]        = M_HandleEnableSunset,
-    [GFS_SET_CAMERA_ANGLE]     = M_HandleSetCameraAngle,
-    [GFS_DISABLE_FLOOR]        = M_HandleDisableFloor,
-    [GFS_ADD_ITEM]             = M_HandleAddItem,
-    [GFS_ADD_SECRET_REWARD]    = M_HandleAddSecretReward,
-    [GFS_REMOVE_WEAPONS]       = M_HandleRemoveWeapons,
-    [GFS_REMOVE_AMMO]          = M_HandleRemoveAmmo,
-    [GFS_SET_START_ANIM]       = M_HandleSetStartAnim,
-    [GFS_SET_NUM_SECRETS]      = M_HandleSetNumSecrets,
+    [GFS_EXIT_TO_TITLE]     = M_HandleExitToTitle,
+    [GFS_PLAY_LEVEL]        = M_HandlePlayLevel,
+    [GFS_PLAY_CUTSCENE]     = M_HandlePlayCutscene,
+    [GFS_PLAY_MUSIC]        = M_HandlePlayMusic,
+    [GFS_PLAY_FMV]          = M_HandlePlayFMV,
+    [GFS_DISPLAY_PICTURE]   = M_HandlePicture,
+    [GFS_LEVEL_COMPLETE]    = M_HandleLevelComplete,
+    [GFS_LEVEL_STATS]       = M_HandleLevelStats,
+    [GFS_TOTAL_STATS]       = M_HandleTotalStats,
+    [GFS_ENABLE_SUNSET]     = M_HandleEnableSunset,
+    [GFS_SET_CAMERA_ANGLE]  = M_HandleSetCameraAngle,
+    [GFS_DISABLE_FLOOR]     = M_HandleDisableFloor,
+    [GFS_ADD_ITEM]          = M_HandleAddItem,
+    [GFS_ADD_SECRET_REWARD] = M_HandleAddSecretReward,
+    [GFS_REMOVE_WEAPONS]    = M_HandleRemoveWeapons,
+    [GFS_REMOVE_AMMO]       = M_HandleRemoveAmmo,
+    [GFS_SET_START_ANIM]    = M_HandleSetStartAnim,
+    [GFS_SET_NUM_SECRETS]   = M_HandleSetNumSecrets,
     // clang-format on
 };
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle)
 {
     return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-}
-
-static DECLARE_EVENT_HANDLER(M_HandlePicture)
-{
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    if (seq_ctx == GFSC_SAVED) {
-        return gf_cmd;
-    }
-    const GF_DISPLAY_PICTURE_DATA *const data = event->data;
-    PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
-        .file_name = data->path,
-        .display_time = data->display_time,
-        .fade_in_time = data->fade_in_time,
-        .fade_out_time = data->fade_out_time,
-        .display_time_includes_fades = true,
-    });
-    gf_cmd = PhaseExecutor_Run(phase);
-    Phase_Picture_Destroy(phase);
-    return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
@@ -112,12 +93,6 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene)
     return gf_cmd;
 }
 
-static DECLARE_EVENT_HANDLER(M_HandlePlayMusic)
-{
-    Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
-    return (GF_COMMAND) { .action = GF_NOOP };
-}
-
 static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
@@ -132,11 +107,35 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
     return gf_cmd;
 }
 
-static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
+static DECLARE_EVENT_HANDLER(M_HandlePlayMusic)
+{
+    Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
+    return (GF_COMMAND) { .action = GF_NOOP };
+}
+
+static DECLARE_EVENT_HANDLER(M_HandlePicture)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    if (seq_ctx != GFSC_NORMAL) {
+    if (seq_ctx == GFSC_SAVED) {
         return gf_cmd;
+    }
+    const GF_DISPLAY_PICTURE_DATA *const data = event->data;
+    PHASE *const phase = Phase_Picture_Create((PHASE_PICTURE_ARGS) {
+        .file_name = data->path,
+        .display_time = data->display_time,
+        .fade_in_time = data->fade_in_time,
+        .fade_out_time = data->fade_out_time,
+        .display_time_includes_fades = true,
+    });
+    gf_cmd = PhaseExecutor_Run(phase);
+    Phase_Picture_Destroy(phase);
+    return gf_cmd;
+}
+
+static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
+{
+    if (seq_ctx != GFSC_NORMAL) {
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
     const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
@@ -147,14 +146,13 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
         Savegame_PersistGameToCurrentInfo(next_level);
         g_SaveGame.current_level = next_level->num;
     }
-    if (next_level == nullptr || gf_cmd.action != GF_NOOP) {
-        return gf_cmd;
+    if (next_level == nullptr) {
+        return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    gf_cmd = (GF_COMMAND) {
+    return (GF_COMMAND) {
         .action = GF_START_GAME,
         .param = next_level->num,
     };
-    return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
@@ -162,23 +160,24 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_NORMAL) {
         const GF_LEVEL *const current_level = Game_GetCurrentLevel();
-        PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+        PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
             .background_type = Game_IsInGym() ? BK_TRANSPARENT : BK_OBJECT,
             .level_num = current_level->num,
             .show_final_stats = false,
             .use_bare_style = false,
         });
-        gf_cmd = PhaseExecutor_Run(stats_phase);
-        Phase_Stats_Destroy(stats_phase);
+        gf_cmd = PhaseExecutor_Run(phase);
+        Phase_Stats_Destroy(phase);
     }
     return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
 {
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
     if (seq_ctx == GFSC_NORMAL) {
         const GF_LEVEL *const current_level = Game_GetCurrentLevel();
+        // TODO: move me out
         START_INFO *const start = GF_GetResumeInfo(current_level);
         start->stats = g_SaveGame.current_stats;
         g_SaveGame.bonus_flag = true;
@@ -190,8 +189,6 @@ static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
         });
         gf_cmd = PhaseExecutor_Run(phase);
         Phase_Stats_Destroy(phase);
-    } else {
-        gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     return gf_cmd;
 }

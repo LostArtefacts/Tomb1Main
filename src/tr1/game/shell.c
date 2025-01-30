@@ -253,7 +253,7 @@ void Shell_Main(void)
             if (g_GameFlow.title_level == nullptr) {
                 Shell_ExitSystem("Title disabled");
             } else {
-                gf_cmd = GF_TitleSequence();
+                gf_cmd = GF_RunTitle();
             }
             break;
 

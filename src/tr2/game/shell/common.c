@@ -414,7 +414,7 @@ void Shell_Main(void)
                     return;
                 }
             } else {
-                gf_cmd = GF_TitleSequence();
+                gf_cmd = GF_RunTitle();
             }
             break;
 

@@ -8,7 +8,7 @@
 #include <libtrx/game/game_string_table.h>
 #include <libtrx/log.h>
 
-GF_COMMAND GF_TitleSequence(void)
+GF_COMMAND GF_RunTitle(void)
 {
     Savegame_UnbindSlot();
     GameStringTable_Apply(nullptr);

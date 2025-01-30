@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-GF_COMMAND GF_TitleSequence(void)
+GF_COMMAND GF_RunTitle(void)
 {
     Savegame_UnbindSlot();
     GameStringTable_Apply(nullptr);
