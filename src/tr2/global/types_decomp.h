@@ -229,26 +229,6 @@ typedef struct {
 } BOX_INFO;
 
 typedef enum {
-    COLOR_BLACK      = 0,
-    COLOR_GRAY       = 1,
-    COLOR_WHITE      = 2,
-    COLOR_RED        = 3,
-    COLOR_ORANGE     = 4,
-    COLOR_YELLOW     = 5,
-    COLOR_DARK_GREEN = 12,
-    COLOR_GREEN      = 13,
-    COLOR_CYAN       = 14,
-    COLOR_BLUE       = 15,
-    COLOR_MAGENTA    = 16,
-    COLOR_NUMBER_OF  = 17,
-} COLOR_NAME;
-
-typedef struct {
-    RGB_888 rgb;
-    uint8_t palette_index;
-} NAMED_COLOR;
-
-typedef enum {
     TRAP_SET      = 0,
     TRAP_ACTIVATE = 1,
     TRAP_WORKING  = 2,

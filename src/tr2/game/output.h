@@ -74,6 +74,7 @@ void Output_DrawAirBar(int32_t percent);
 BACKGROUND_TYPE Output_GetBackgroundType(void);
 void Output_LoadBackgroundFromObject(void);
 
+void Output_InitialiseNamedColors(void);
 void Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item);
 

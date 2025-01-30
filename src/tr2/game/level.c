@@ -753,12 +753,7 @@ static void M_CompleteSetup(void)
         Output_InitialisePalettes(
             m_LevelInfo.palette.size, m_LevelInfo.palette.data_24,
             m_LevelInfo.palette.data_32);
-        // TODO: remove global, store in output
-        for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
-            g_NamedColors[i].palette_index = Output_FindColor8(
-                g_NamedColors[i].rgb.r, g_NamedColors[i].rgb.g,
-                g_NamedColors[i].rgb.b);
-        }
+        Output_InitialiseNamedColors();
 
         Memory_FreePointer(&m_LevelInfo.textures.pages_24);
         Memory_FreePointer(&m_LevelInfo.textures.pages_32);

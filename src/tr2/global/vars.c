@@ -327,19 +327,3 @@ int16_t g_SavedLevels[MAX_LEVELS] = { -1, 0 };
 XYZ_32 g_InteractPosition = { .x = 0, .y = 0, .z = 0 };
 bool g_DetonateAllMines = false;
 int32_t g_SunsetTimer = 0;
-
-NAMED_COLOR g_NamedColors[COLOR_NUMBER_OF] = {
-    // clang-format off
-    [COLOR_BLACK]      = {.rgb = {.r = 0x00, .g = 0x00, .b = 0x00}},
-    [COLOR_GRAY]       = {.rgb = {.r = 0x40, .g = 0x40, .b = 0x40}},
-    [COLOR_WHITE]      = {.rgb = {.r = 0xFF, .g = 0xFF, .b = 0xFF}},
-    [COLOR_RED]        = {.rgb = {.r = 0xFF, .g = 0x00, .b = 0x00}},
-    [COLOR_ORANGE]     = {.rgb = {.r = 0xFF, .g = 0x80, .b = 0x00}},
-    [COLOR_YELLOW]     = {.rgb = {.r = 0xFF, .g = 0xFF, .b = 0x00}},
-    [COLOR_DARK_GREEN] = {.rgb = {.r = 0x00, .g = 0x80, .b = 0x00}},
-    [COLOR_GREEN]      = {.rgb = {.r = 0x00, .g = 0xFF, .b = 0x00}},
-    [COLOR_CYAN]       = {.rgb = {.r = 0x00, .g = 0xFF, .b = 0xFF}},
-    [COLOR_BLUE]       = {.rgb = {.r = 0x00, .g = 0x00, .b = 0xFF}},
-    [COLOR_MAGENTA]    = {.rgb = {.r = 0xFF, .g = 0x00, .b = 0xFF}},
-    // clang-format on
-};

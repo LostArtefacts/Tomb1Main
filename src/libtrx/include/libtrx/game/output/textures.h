@@ -21,5 +21,5 @@ SPRITE_TEXTURE *Output_GetSpriteTexture(int32_t texture_idx);
 ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(int32_t range_idx);
 
 RGBA_8888 Output_RGB2RGBA(RGB_888 color);
-int16_t Output_FindColor8(int32_t red, int32_t green, int32_t blue);
+int16_t Output_FindColor8(RGB_888 color);
 void Output_CycleAnimatedTextures(void);

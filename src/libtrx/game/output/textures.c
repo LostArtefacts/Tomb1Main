@@ -159,15 +159,18 @@ RGBA_8888 Output_RGB2RGBA(const RGB_888 color)
     return ret;
 }
 
-int16_t Output_FindColor8(
-    const int32_t red, const int32_t green, const int32_t blue)
+int16_t Output_FindColor8(const RGB_888 color)
 {
+    if (m_Palette8 == nullptr) {
+        return -1;
+    }
+
     int32_t best_idx = 0;
     int32_t best_diff = INT32_MAX;
     for (int32_t i = 0; i < m_PaletteSize; i++) {
-        const int32_t dr = red - m_Palette8[i].r;
-        const int32_t dg = green - m_Palette8[i].g;
-        const int32_t db = blue - m_Palette8[i].b;
+        const int32_t dr = color.r - m_Palette8[i].r;
+        const int32_t dg = color.g - m_Palette8[i].g;
+        const int32_t db = color.b - m_Palette8[i].b;
         const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
         if (diff < best_diff) {
             best_diff = diff;

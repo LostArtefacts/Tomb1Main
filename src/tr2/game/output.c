@@ -16,6 +16,42 @@
 #include <libtrx/log.h>
 #include <libtrx/utils.h>
 
+typedef enum {
+    COLOR_BLACK = 0,
+    COLOR_GRAY = 1,
+    COLOR_WHITE = 2,
+    COLOR_RED = 3,
+    COLOR_ORANGE = 4,
+    COLOR_YELLOW = 5,
+    COLOR_DARK_GREEN = 12,
+    COLOR_GREEN = 13,
+    COLOR_CYAN = 14,
+    COLOR_BLUE = 15,
+    COLOR_MAGENTA = 16,
+    COLOR_NUMBER_OF = 17,
+} COLOR_NAME;
+
+typedef struct {
+    RGB_888 rgb;
+    uint8_t palette_index;
+} NAMED_COLOR;
+
+static NAMED_COLOR m_NamedColors[COLOR_NUMBER_OF] = {
+    // clang-format off
+    [COLOR_BLACK]      = {.rgb = {.r = 0x00, .g = 0x00, .b = 0x00}},
+    [COLOR_GRAY]       = {.rgb = {.r = 0x40, .g = 0x40, .b = 0x40}},
+    [COLOR_WHITE]      = {.rgb = {.r = 0xFF, .g = 0xFF, .b = 0xFF}},
+    [COLOR_RED]        = {.rgb = {.r = 0xFF, .g = 0x00, .b = 0x00}},
+    [COLOR_ORANGE]     = {.rgb = {.r = 0xFF, .g = 0x80, .b = 0x00}},
+    [COLOR_YELLOW]     = {.rgb = {.r = 0xFF, .g = 0xFF, .b = 0x00}},
+    [COLOR_DARK_GREEN] = {.rgb = {.r = 0x00, .g = 0x80, .b = 0x00}},
+    [COLOR_GREEN]      = {.rgb = {.r = 0x00, .g = 0xFF, .b = 0x00}},
+    [COLOR_CYAN]       = {.rgb = {.r = 0x00, .g = 0xFF, .b = 0xFF}},
+    [COLOR_BLUE]       = {.rgb = {.r = 0x00, .g = 0x00, .b = 0xFF}},
+    [COLOR_MAGENTA]    = {.rgb = {.r = 0xFF, .g = 0x00, .b = 0xFF}},
+    // clang-format on
+};
+
 static int32_t m_TickComp = 0;
 static int32_t m_RoomLightShades[RLM_NUMBER_OF] = {};
 static ROOM_LIGHT_TABLE m_RoomLightTables[WIBBLE_SIZE] = {};
@@ -69,7 +105,7 @@ static void M_InsertBar(
             x_offset + Scaler_Calc(rects[i].x2, SCALER_TARGET_BAR),
             y_offset + Scaler_Calc(rects[i].y2, SCALER_TARGET_BAR),
             g_PhdNearZ + z_offset * (5 - i),
-            g_NamedColors[rects[i].color].palette_index);
+            m_NamedColors[rects[i].color].palette_index);
     }
 }
 
@@ -672,7 +708,7 @@ void Output_InsertBackPolygon(
 {
     Render_InsertFlatRect(
         x0, y0, x1, y1, g_PhdFarZ + 1,
-        g_NamedColors[COLOR_BLACK].palette_index);
+        m_NamedColors[COLOR_BLACK].palette_index);
 }
 
 void Output_DrawBlackRectangle(int32_t opacity)
@@ -940,5 +976,13 @@ void Output_LightRoomVertices(const ROOM *const room)
         const int32_t wibble =
             light_table->table[vtx->light_table_value % WIBBLE_SIZE];
         vtx->light_adder = vtx->light_base + wibble;
+    }
+}
+
+void Output_InitialiseNamedColors(void)
+{
+    for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
+        m_NamedColors[i].palette_index =
+            Output_FindColor8(m_NamedColors[i].rgb);
     }
 }
