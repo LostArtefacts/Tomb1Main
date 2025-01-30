@@ -152,6 +152,12 @@ ANIMATED_TEXTURE_RANGE *Output_GetAnimatedTextureRange(const int32_t range_idx)
     return &m_AnimTextureRanges[range_idx];
 }
 
+RGBA_8888 Output_RGB2RGBA(const RGB_888 color)
+{
+    RGBA_8888 ret = { .r = color.r, .g = color.g, .b = color.b, .a = 255 };
+    return ret;
+}
+
 void Output_CycleAnimatedTextures(void)
 {
     const ANIMATED_TEXTURE_RANGE *range = m_AnimTextureRanges;

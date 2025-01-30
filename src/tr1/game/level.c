@@ -718,6 +718,8 @@ static void M_LoadPalette(VFILE *file)
     m_LevelInfo.palette.data_24[0].r = 0;
     m_LevelInfo.palette.data_24[0].g = 0;
     m_LevelInfo.palette.data_24[0].b = 0;
+
+    m_LevelInfo.palette.data_32 = nullptr;
     Benchmark_End(benchmark, nullptr);
 }
 
@@ -856,8 +858,9 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
             memcpy(target, source, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
         }
         Output_DownloadTextures(m_LevelInfo.textures.page_count);
-        Output_SetPalette(
-            m_LevelInfo.palette.data_24, m_LevelInfo.palette.size);
+        Output_InitialisePalettes(
+            m_LevelInfo.palette.size, m_LevelInfo.palette.data_24,
+            m_LevelInfo.palette.data_32);
         Memory_FreePointer(&m_LevelInfo.textures.pages_24);
         Memory_FreePointer(&m_LevelInfo.textures.pages_32);
         Memory_FreePointer(&m_LevelInfo.palette.data_24);

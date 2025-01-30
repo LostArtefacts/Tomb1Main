@@ -24,6 +24,7 @@ typedef struct {
     struct {
         int32_t size;
         RGB_888 *data_24;
+        RGB_888 *data_32;
     } palette;
 
     struct {

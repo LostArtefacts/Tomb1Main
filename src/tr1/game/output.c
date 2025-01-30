@@ -50,7 +50,6 @@ static int m_OverlayCurAlpha = 0;
 static int m_OverlayDstAlpha = 0;
 static int m_BackdropCurAlpha = 0;
 static int m_BackdropDstAlpha = 0;
-static RGB_888 *m_ColorPalette = nullptr;
 
 static int32_t m_WibbleOffset = 0;
 static int32_t m_AnimatedTexturesOffset = 0;
@@ -103,7 +102,7 @@ static void M_DrawFlatFace3s(const FACE3 *const faces, const int32_t count)
             &m_VBuf[face->vertices[2]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor(face->palette_idx);
+        const RGB_888 color = Output_GetPaletteColor8(face->palette_idx);
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
     }
 }
@@ -121,7 +120,7 @@ static void M_DrawFlatFace4s(const FACE4 *const faces, const int32_t count)
             &m_VBuf[face->vertices[3]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor(face->palette_idx);
+        const RGB_888 color = Output_GetPaletteColor8(face->palette_idx);
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
         S_Output_DrawFlatTriangle(vns[2], vns[3], vns[0], color);
     }
@@ -536,7 +535,6 @@ void Output_Shutdown(void)
 {
     S_Output_Shutdown();
     Memory_FreePointer(&m_BackdropImagePath);
-    Memory_FreePointer(&m_ColorPalette);
 }
 
 void Output_ReserveVertexBuffer(const size_t size)
@@ -561,12 +559,6 @@ void Output_ApplyRenderSettings(void)
 void Output_DownloadTextures(int page_count)
 {
     S_Output_DownloadTextures(page_count);
-}
-
-RGBA_8888 Output_RGB2RGBA(const RGB_888 color)
-{
-    RGBA_8888 ret = { .r = color.r, .g = color.g, .b = color.b, .a = 255 };
-    return ret;
 }
 
 void Output_DrawBlack(void)
@@ -1262,21 +1254,6 @@ int Output_GetObjectBounds(const BOUNDS_16 *const bounds)
     }
 
     return 1; // fully on screen
-}
-
-void Output_SetPalette(const RGB_888 *palette, const size_t palette_size)
-{
-    m_ColorPalette =
-        Memory_Realloc(m_ColorPalette, sizeof(RGB_888) * palette_size);
-    memcpy(m_ColorPalette, palette, sizeof(RGB_888) * palette_size);
-}
-
-RGB_888 Output_GetPaletteColor(uint16_t idx)
-{
-    if (m_ColorPalette == nullptr) {
-        return (RGB_888) { 0, 0, 0 };
-    }
-    return m_ColorPalette[idx];
 }
 
 int32_t Output_CalcFogShade(const int32_t depth)

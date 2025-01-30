@@ -112,7 +112,7 @@ static void M_DrawItem(
                     Output_DrawScreenLine(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->param1,
                         sprite->param2,
-                        Output_RGB2RGBA(Output_GetPaletteColor(
+                        Output_RGB2RGBA(Output_GetPaletteColor8(
                             (uint8_t)sprite->sprite_num)));
                     break;
                 case SHAPE_BOX: {
