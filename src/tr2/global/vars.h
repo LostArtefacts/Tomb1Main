@@ -12,7 +12,6 @@ extern int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW];
 extern int16_t g_RoomsToDrawCount;
 
 extern const float g_RhwFactor;
-extern uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES];
 
 extern SDL_Window *g_SDLWindow;
 
@@ -57,7 +56,6 @@ extern int32_t g_PhdViewDistance;
 extern DEPTHQ_ENTRY g_DepthQTable[32];
 extern int32_t g_LsDivider;
 extern PHD_VBUF g_PhdVBuf[];
-extern uint8_t *g_TexturePageBuffer8[MAX_TEXTURE_PAGES];
 extern float g_FltWinRight;
 extern XYZ_32 g_LsVectorView;
 extern int32_t g_PhdWinRight;
@@ -109,7 +107,6 @@ extern int32_t g_HeightType;
 extern int32_t g_FlipMaps[MAX_FLIP_MAPS];
 extern bool g_CameraUnderwater;
 extern int32_t g_BoxCount;
-extern int32_t g_TexturePageCount;
 extern int32_t g_NumCameras;
 extern uint32_t *g_DemoData;
 extern char g_LevelFileName[256];

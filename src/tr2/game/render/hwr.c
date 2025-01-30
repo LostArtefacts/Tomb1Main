@@ -49,8 +49,7 @@ static void M_ShadeLightColor(
     uint32_t green, uint32_t blue, uint8_t alpha);
 
 static void M_ReleaseTextures(RENDERER *renderer);
-static void M_LoadTexturePages(
-    RENDERER *renderer, int32_t pages_count, uint16_t *const *pages_buffer);
+static void M_LoadTexturePages(RENDERER *renderer);
 static void M_SelectTexture(RENDERER *renderer, int32_t tex_source);
 static void M_EnableColorKey(RENDERER *renderer, bool state);
 static bool M_VertexBufferFull(void);
@@ -204,24 +203,19 @@ static void M_ReleaseTextures(RENDERER *const renderer)
     }
 }
 
-static void M_LoadTexturePages(
-    RENDERER *renderer, const int32_t pages_count,
-    uint16_t *const *pages_buffer)
+static void M_LoadTexturePages(RENDERER *renderer)
 {
     M_PRIV *const priv = renderer->priv;
     int32_t page_idx = -1;
 
     M_ReleaseTextures(renderer);
 
+    const int32_t pages_count = Output_GetTexturePageCount();
     for (int32_t i = 0; i < pages_count; i++) {
         GFX_2D_SURFACE *const surface = priv->surface_tex[i];
-        const uint16_t *input_ptr = pages_buffer[i];
+        const RGBA_8888 *input_ptr = Output_GetTexturePage32(i);
         RGBA_8888 *output_ptr = (RGBA_8888 *)surface->buffer;
-        for (int32_t y = 0; y < TEXTURE_PAGE_HEIGHT; y++) {
-            for (int32_t x = 0; x < TEXTURE_PAGE_WIDTH; x++) {
-                *output_ptr++ = Render_ARGB1555To8888(*input_ptr++);
-            }
-        }
+        memcpy(output_ptr, input_ptr, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
 
         priv->texture_map[i] = GFX_3D_Renderer_RegisterTexturePage(
             priv->renderer_3d, surface->buffer, surface->desc.width,
@@ -1478,7 +1472,7 @@ static void M_Open(RENDERER *const renderer)
         }
     }
 
-    M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
+    M_LoadTexturePages(renderer);
     renderer->open = true;
 }
 
@@ -1528,7 +1522,7 @@ static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
     }
     if (flags & (RENDER_RESET_TEXTURES | RENDER_RESET_PALETTE)) {
         LOG_DEBUG("Reloading textures");
-        M_LoadTexturePages(renderer, g_TexturePageCount, g_TexturePageBuffer16);
+        M_LoadTexturePages(renderer);
     }
     if (flags & RENDER_RESET_PARAMS) {
         M_ResetParams(renderer);

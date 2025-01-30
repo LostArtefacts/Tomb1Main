@@ -12,7 +12,6 @@ int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW] = {};
 int16_t g_RoomsToDrawCount = 0;
 
 const float g_RhwFactor = 0x14000000.p0;
-uint16_t *g_TexturePageBuffer16[MAX_TEXTURE_PAGES] = {};
 
 SDL_Window *g_SDLWindow = nullptr;
 
@@ -58,7 +57,6 @@ int32_t g_PhdViewDistance;
 DEPTHQ_ENTRY g_DepthQTable[32];
 int32_t g_LsDivider;
 PHD_VBUF g_PhdVBuf[1500];
-uint8_t *g_TexturePageBuffer8[MAX_TEXTURE_PAGES] = {};
 float g_FltWinRight;
 XYZ_32 g_LsVectorView;
 int32_t g_PhdWinRight;
@@ -111,7 +109,6 @@ int32_t g_HeightType;
 int32_t g_FlipMaps[MAX_FLIP_MAPS];
 bool g_CameraUnderwater;
 int32_t g_BoxCount;
-int32_t g_TexturePageCount;
 int32_t g_NumCameras;
 uint32_t *g_DemoData = nullptr;
 char g_LevelFileName[256];

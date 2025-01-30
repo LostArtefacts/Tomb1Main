@@ -940,8 +940,6 @@ static bool M_XGenXGUV(const int16_t *obj_ptr)
 
 static bool M_XGenXGUVPerspFP(const int16_t *obj_ptr)
 {
-    const uint8_t *const old = g_TexturePageBuffer8[5];
-
     int32_t pt_count = *obj_ptr++;
     const XGEN_XGUVP *pt2 = (const XGEN_XGUVP *)obj_ptr;
     const XGEN_XGUVP *pt1 = pt2 + (pt_count - 1);
@@ -1080,7 +1078,7 @@ static void M_DrawPolyGTMap(
     if (M_XGenXGUV(obj_ptr + 1)) {
         M_GTMapA(
             alpha_surface, target_surface, m_XGenY1, m_XGenY2,
-            g_TexturePageBuffer8[*obj_ptr]);
+            Output_GetTexturePage8(*obj_ptr));
     }
 }
 
@@ -1091,7 +1089,7 @@ static void M_DrawPolyWGTMap(
     if (M_XGenXGUV(obj_ptr + 1)) {
         M_WGTMapA(
             alpha_surface, target_surface, m_XGenY1, m_XGenY2,
-            g_TexturePageBuffer8[*obj_ptr]);
+            Output_GetTexturePage8(*obj_ptr));
     }
 }
 
@@ -1102,7 +1100,7 @@ static void M_DrawPolyGTMapPersp(
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
         M_GTMapPersp32FP(
             alpha_surface, target_surface, m_XGenY1, m_XGenY2,
-            g_TexturePageBuffer8[*obj_ptr]);
+            Output_GetTexturePage8(*obj_ptr));
     }
 }
 
@@ -1113,7 +1111,7 @@ static void M_DrawPolyWGTMapPersp(
     if (M_XGenXGUVPerspFP(obj_ptr + 1)) {
         M_WGTMapPersp32FP(
             alpha_surface, target_surface, m_XGenY1, m_XGenY2,
-            g_TexturePageBuffer8[*obj_ptr]);
+            Output_GetTexturePage8(*obj_ptr));
     }
 }
 
@@ -1266,8 +1264,8 @@ static void M_DrawScaledSpriteC(
     const int32_t width = x1 - x0;
     const int32_t height = y1 - y0;
 
-    const uint8_t *const src_base =
-        &g_TexturePageBuffer8[sprite->tex_page][sprite->offset];
+    const uint8_t *const page = Output_GetTexturePage8(sprite->tex_page);
+    const uint8_t *const src_base = &page[sprite->offset];
     PIX_FMT *target_ptr = &target_surface->buffer[y0 * target_stride + x0];
     ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[y0 * target_stride + x0];
     const int32_t dst_add = target_stride - width;

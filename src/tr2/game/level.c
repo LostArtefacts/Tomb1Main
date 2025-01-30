@@ -15,6 +15,7 @@
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/render/common.h"
+#include "game/render/util.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -61,32 +62,32 @@ static void M_LoadTexturePages(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    const int32_t texture_size_8_bit = TEXTURE_PAGE_SIZE * sizeof(uint8_t);
-    const int32_t texture_size_16_bit = TEXTURE_PAGE_SIZE * sizeof(uint16_t);
-
     const int32_t num_pages = VFile_ReadS32(file);
+    m_LevelInfo.textures.page_count = num_pages;
     LOG_INFO("texture pages: %d", num_pages);
 
-    for (int32_t i = 0; i < num_pages; i++) {
-        if (g_TexturePageBuffer8[i] == nullptr) {
-            g_TexturePageBuffer8[i] =
-                GameBuf_Alloc(texture_size_8_bit, GBUF_TEXTURE_PAGES);
-        }
-        VFile_Read(file, g_TexturePageBuffer8[i], texture_size_8_bit);
-    }
-    for (int32_t i = 0; i < num_pages; i++) {
-        if (g_TexturePageBuffer16[i] == nullptr) {
-            g_TexturePageBuffer16[i] =
-                GameBuf_Alloc(texture_size_16_bit, GBUF_TEXTURE_PAGES);
-        }
-        VFile_Read(file, g_TexturePageBuffer16[i], texture_size_16_bit);
-        LOG_DEBUG("%d", g_TexturePageBuffer16[0][0]);
+    const int32_t texture_size_8_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t);
+    const int32_t texture_size_16_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint16_t);
+    const int32_t texture_size_32_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888);
+
+    m_LevelInfo.textures.pages_24 = Memory_Alloc(texture_size_8_bit);
+    VFile_Read(file, m_LevelInfo.textures.pages_24, texture_size_8_bit);
+
+    m_LevelInfo.textures.pages_32 = Memory_Alloc(texture_size_32_bit);
+
+    uint16_t *input = Memory_Alloc(texture_size_16_bit);
+    VFile_Read(file, input, texture_size_16_bit);
+    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
+    for (int32_t i = 0; i < num_pages * TEXTURE_PAGE_SIZE; i++) {
+        *output++ = Render_ARGB1555To8888(*input++);
     }
 
-    g_TexturePageCount = num_pages;
+    Memory_FreePointer(&input);
 
-finish:
-    Benchmark_End(benchmark, nullptr);
+    Benchmark_End(benchmark, NULL);
 }
 
 static void M_LoadRooms(VFILE *const file)
@@ -735,6 +736,26 @@ static void M_CompleteSetup(void)
         Item_Initialise(i);
     }
 
+    {
+        // Move the prepared texture pages into game storage.
+        const int32_t num_pages = m_LevelInfo.textures.page_count;
+        Output_InitialiseTexturePages(num_pages, true);
+        for (int32_t i = 0; i < num_pages; i++) {
+            uint8_t *const target_8 = Output_GetTexturePage8(i);
+            const uint8_t *const source_8 =
+                &m_LevelInfo.textures.pages_24[i * TEXTURE_PAGE_SIZE];
+            memcpy(target_8, source_8, TEXTURE_PAGE_SIZE * sizeof(uint8_t));
+
+            RGBA_8888 *const target_32 = Output_GetTexturePage32(i);
+            const RGBA_8888 *const source_32 =
+                &m_LevelInfo.textures.pages_32[i * TEXTURE_PAGE_SIZE];
+            memcpy(target_32, source_32, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
+        }
+
+        Memory_FreePointer(&m_LevelInfo.textures.pages_24);
+        Memory_FreePointer(&m_LevelInfo.textures.pages_32);
+    }
+
     Render_Reset(
         RENDER_RESET_PALETTE | RENDER_RESET_TEXTURES | RENDER_RESET_UVS);
 
@@ -828,8 +849,7 @@ bool Level_Initialise(
 void Level_Unload(void)
 {
     strcpy(g_LevelFileName, "");
-    memset(g_TexturePageBuffer8, 0, sizeof(uint8_t *) * MAX_TEXTURE_PAGES);
-    memset(g_TexturePageBuffer16, 0, sizeof(uint16_t *) * MAX_TEXTURE_PAGES);
+    Output_InitialiseTexturePages(0, true);
     Output_InitialiseObjectTextures(0);
 
     if (Output_GetBackgroundType() == BK_OBJECT) {

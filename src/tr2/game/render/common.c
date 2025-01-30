@@ -219,7 +219,8 @@ void Render_LoadBackgroundFromTexture(
     const OBJECT_TEXTURE *const texture, const int32_t repeat_x,
     const int32_t repeat_y)
 {
-    if (g_TexturePageBuffer16[texture->tex_page] == nullptr) {
+    const RGBA_8888 *const page = Output_GetTexturePage32(texture->tex_page);
+    if (page == nullptr) {
         return;
     }
 
@@ -236,9 +237,9 @@ void Render_LoadBackgroundFromTexture(
     GFX_2D_SURFACE_DESC desc = {
         .width = TEXTURE_PAGE_WIDTH,
         .height = TEXTURE_PAGE_HEIGHT,
-        .bit_count = 16,
-        .tex_format = GL_BGRA,
-        .tex_type = GL_UNSIGNED_SHORT_1_5_5_5_REV,
+        .bit_count = 32,
+        .tex_format = GL_RGBA,
+        .tex_type = GL_UNSIGNED_INT_8_8_8_8_REV,
         .uv = {
             {
                 texture->uv[0].u / 256.0f / TEXTURE_PAGE_WIDTH,
@@ -255,9 +256,7 @@ void Render_LoadBackgroundFromTexture(
         },
         .pitch = TEXTURE_PAGE_WIDTH * 2,
     };
-    GFX_2D_Renderer_Upload(
-        m_BackgroundRenderer, &desc,
-        (uint8_t *)g_TexturePageBuffer16[texture->tex_page]);
+    GFX_2D_Renderer_Upload(m_BackgroundRenderer, &desc, (uint8_t *)page);
     GFX_2D_Renderer_SetRepeat(m_BackgroundRenderer, repeat_x, repeat_y);
     GFX_2D_Renderer_SetEffect(m_BackgroundRenderer, GFX_2D_EFFECT_VIGNETTE);
 }
