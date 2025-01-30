@@ -1383,9 +1383,10 @@ static void M_Reset(RENDERER *const renderer, const RENDER_RESET_FLAGS flags)
 
     if (flags & RENDER_RESET_PALETTE) {
         for (int32_t i = 0; i < 256; i++) {
-            priv->palette[i].r = g_GamePalette8[i].r;
-            priv->palette[i].g = g_GamePalette8[i].g;
-            priv->palette[i].b = g_GamePalette8[i].b;
+            const RGB_888 color = Output_GetPaletteColor8(i);
+            priv->palette[i].r = color.r;
+            priv->palette[i].g = color.g;
+            priv->palette[i].b = color.b;
         }
         GFX_2D_Renderer_SetPalette(priv->renderer_2d, priv->palette);
     }

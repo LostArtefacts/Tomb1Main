@@ -397,31 +397,29 @@ static void M_LoadPalettes(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    VFile_Read(file, g_GamePalette8, sizeof(RGB_888) * 256);
-    g_GamePalette8[0].r = 0;
-    g_GamePalette8[0].g = 0;
-    g_GamePalette8[0].b = 0;
-    for (int32_t i = 1; i < 256; i++) {
-        RGB_888 *col = &g_GamePalette8[i];
+    const int32_t palette_size = 256;
+    m_LevelInfo.palette.size = palette_size;
+    m_LevelInfo.palette.data_24 = Memory_Alloc(sizeof(RGB_888) * palette_size);
+    m_LevelInfo.palette.data_32 = Memory_Alloc(sizeof(RGB_888) * palette_size);
+
+    VFile_Read(
+        file, m_LevelInfo.palette.data_24, sizeof(RGB_888) * palette_size);
+    m_LevelInfo.palette.data_24[0].r = 0;
+    m_LevelInfo.palette.data_24[0].g = 0;
+    m_LevelInfo.palette.data_24[0].b = 0;
+    for (int32_t i = 1; i < palette_size; i++) {
+        RGB_888 *const col = &m_LevelInfo.palette.data_24[i];
         col->r = (col->r << 2) | (col->r >> 4);
         col->g = (col->g << 2) | (col->g >> 4);
         col->b = (col->b << 2) | (col->b >> 4);
     }
 
-    struct {
-        uint8_t r, g, b, flags;
-    } palette_16[256];
-    VFile_Read(file, palette_16, 4 * 256);
-    for (int32_t i = 0; i < 256; i++) {
-        g_GamePalette16[i].r = palette_16[i].r;
-        g_GamePalette16[i].g = palette_16[i].g;
-        g_GamePalette16[i].b = palette_16[i].b;
-    }
-
-    for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
-        g_NamedColors[i].palette_index = Output_FindColor(
-            g_NamedColors[i].rgb.r, g_NamedColors[i].rgb.g,
-            g_NamedColors[i].rgb.b);
+    RGBA_8888 palette_16[palette_size];
+    VFile_Read(file, palette_16, sizeof(RGBA_8888) * palette_size);
+    for (int32_t i = 0; i < palette_size; i++) {
+        m_LevelInfo.palette.data_32[i].r = palette_16[i].r;
+        m_LevelInfo.palette.data_32[i].g = palette_16[i].g;
+        m_LevelInfo.palette.data_32[i].b = palette_16[i].b;
     }
 
     Benchmark_End(benchmark, nullptr);
@@ -752,8 +750,20 @@ static void M_CompleteSetup(void)
             memcpy(target_32, source_32, TEXTURE_PAGE_SIZE * sizeof(RGBA_8888));
         }
 
+        Output_InitialisePalettes(
+            m_LevelInfo.palette.size, m_LevelInfo.palette.data_24,
+            m_LevelInfo.palette.data_32);
+        // TODO: remove global, store in output
+        for (int32_t i = 0; i < COLOR_NUMBER_OF; i++) {
+            g_NamedColors[i].palette_index = Output_FindColor8(
+                g_NamedColors[i].rgb.r, g_NamedColors[i].rgb.g,
+                g_NamedColors[i].rgb.b);
+        }
+
         Memory_FreePointer(&m_LevelInfo.textures.pages_24);
         Memory_FreePointer(&m_LevelInfo.textures.pages_32);
+        Memory_FreePointer(&m_LevelInfo.palette.data_24);
+        Memory_FreePointer(&m_LevelInfo.palette.data_32);
     }
 
     Render_Reset(

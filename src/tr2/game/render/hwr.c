@@ -587,11 +587,11 @@ static void M_InsertFlatFace3s_Sorted(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
+        const RGB_888 color = Output_GetPaletteColor16(face->palette_idx >> 8);
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, -1.0);
         M_InsertPolyFlat(
-            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
+            num_points, zv, color.r, color.g, color.b, POLY_HWR_GOURAUD);
     }
 }
 
@@ -664,11 +664,11 @@ static void M_InsertFlatFace4s_Sorted(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
+        const RGB_888 color = Output_GetPaletteColor16(face->palette_idx >> 8);
         const double zv = Render_CalculatePolyZ(
             sort_type, vtx[0]->zv, vtx[1]->zv, vtx[2]->zv, vtx[3]->zv);
         M_InsertPolyFlat(
-            num_points, zv, color->r, color->g, color->b, POLY_HWR_GOURAUD);
+            num_points, zv, color.r, color.g, color.b, POLY_HWR_GOURAUD);
     }
 }
 
@@ -752,7 +752,7 @@ static void M_InsertFlatRect_Sorted(
     *(GFX_3D_VERTEX **)g_Info3DPtr = m_HWR_VertexPtr;
     g_Info3DPtr += sizeof(GFX_3D_VERTEX *) / sizeof(int16_t);
 
-    const RGB_888 *const color = &g_GamePalette8[color_idx];
+    const RGB_888 color = Output_GetPaletteColor8(color_idx);
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
 
@@ -769,7 +769,7 @@ static void M_InsertFlatRect_Sorted(
         GFX_3D_VERTEX *const vbuf_gl = &m_HWR_VertexPtr[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
+        M_ShadeColor(vbuf_gl, color.r, color.g, color.b, 0xFF);
     }
 
     m_HWR_VertexPtr += 4;
@@ -780,7 +780,7 @@ static void M_InsertLine_Sorted(
     RENDERER *const renderer, const int32_t x1, const int32_t y1,
     const int32_t x2, const int32_t y2, int32_t z, const uint8_t color_idx)
 {
-    const RGB_888 *const color = &g_GamePalette8[color_idx];
+    const RGB_888 color = Output_GetPaletteColor8(color_idx);
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
 
@@ -802,7 +802,7 @@ static void M_InsertLine_Sorted(
         GFX_3D_VERTEX *const vbuf_gl = &m_HWR_VertexPtr[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
+        M_ShadeColor(vbuf_gl, color.r, color.g, color.b, 0xFF);
     }
 
     m_HWR_VertexPtr += 2;
@@ -1170,8 +1170,8 @@ static void M_InsertFlatFace3s_ZBuffered(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
-        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
+        const RGB_888 color = Output_GetPaletteColor16(face->palette_idx >> 8);
+        M_DrawPolyFlat(renderer, num_points, color.r, color.g, color.b);
     }
 }
 
@@ -1246,8 +1246,8 @@ static void M_InsertFlatFace4s_ZBuffered(
             continue;
         }
 
-        const RGB_888 *const color = &g_GamePalette16[face->palette_idx >> 8];
-        M_DrawPolyFlat(renderer, num_points, color->r, color->g, color->b);
+        const RGB_888 color = Output_GetPaletteColor16(face->palette_idx >> 8);
+        M_DrawPolyFlat(renderer, num_points, color.r, color.g, color.b);
     }
 }
 
@@ -1330,7 +1330,7 @@ static void M_InsertFlatRect_ZBuffered(
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
 
-    const RGB_888 *const color = &g_GamePalette8[color_idx];
+    const RGB_888 color = Output_GetPaletteColor8(color_idx);
 
     m_VBufferGL[0].x = x1;
     m_VBufferGL[0].y = y1;
@@ -1344,7 +1344,7 @@ static void M_InsertFlatRect_ZBuffered(
         GFX_3D_VERTEX *const vbuf_gl = &m_VBufferGL[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
+        M_ShadeColor(vbuf_gl, color.r, color.g, color.b, 0xFF);
     }
 
     M_SelectTexture(renderer, -1);
@@ -1363,7 +1363,7 @@ static void M_InsertLine_ZBuffered(
 
     const double rhw = g_RhwFactor / (double)z;
     const double sz = MAKE_DEPTH_FROM_RHW(rhw);
-    const RGB_888 *const color = &g_GamePalette8[color_idx];
+    const RGB_888 color = Output_GetPaletteColor8(color_idx);
 
     m_VBufferGL[0].x = x1;
     m_VBufferGL[0].y = y1;
@@ -1373,7 +1373,7 @@ static void M_InsertLine_ZBuffered(
         GFX_3D_VERTEX *const vbuf_gl = &m_VBufferGL[i];
         vbuf_gl->z = sz;
         vbuf_gl->w = rhw;
-        M_ShadeColor(vbuf_gl, color->r, color->g, color->b, 0xFF);
+        M_ShadeColor(vbuf_gl, color.r, color.g, color.b, 0xFF);
     }
 
     M_SelectTexture(renderer, -1);

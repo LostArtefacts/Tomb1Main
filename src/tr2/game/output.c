@@ -741,25 +741,6 @@ void Output_DrawAirBar(const int32_t percent)
     M_InsertBar(-8, 8, 105, 9, percent, COLOR_BLUE, COLOR_WHITE);
 }
 
-int16_t Output_FindColor(
-    const int32_t red, const int32_t green, const int32_t blue)
-{
-    int32_t best_idx = 0;
-    int32_t best_diff = INT32_MAX;
-    for (int32_t i = 0; i < 256; i++) {
-        const int32_t dr = red - g_GamePalette8[i].r;
-        const int32_t dg = green - g_GamePalette8[i].g;
-        const int32_t db = blue - g_GamePalette8[i].b;
-        const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
-        if (diff < best_diff) {
-            best_diff = diff;
-            best_idx = i;
-        }
-    }
-
-    return best_idx;
-}
-
 void Output_InsertShadow(
     int16_t radius, const BOUNDS_16 *bounds, const ITEM *item)
 {

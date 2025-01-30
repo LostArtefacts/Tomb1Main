@@ -77,8 +77,6 @@ ASSAULT_STATS g_Assault;
 int32_t g_LevelItemCount;
 int32_t g_HealthBarTimer;
 int32_t g_LevelComplete;
-RGB_888 g_GamePalette8[256];
-RGB_888 g_GamePalette16[256];
 SAVEGAME_INFO g_SaveGame;
 LARA_INFO g_Lara;
 ITEM *g_LaraItem = nullptr;

@@ -4,6 +4,7 @@
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/shell.h"
+#include "utils.h"
 
 static int32_t m_TexturePageCount = 0;
 static uint8_t *m_TexturePages8 = nullptr;
@@ -156,6 +157,25 @@ RGBA_8888 Output_RGB2RGBA(const RGB_888 color)
 {
     RGBA_8888 ret = { .r = color.r, .g = color.g, .b = color.b, .a = 255 };
     return ret;
+}
+
+int16_t Output_FindColor8(
+    const int32_t red, const int32_t green, const int32_t blue)
+{
+    int32_t best_idx = 0;
+    int32_t best_diff = INT32_MAX;
+    for (int32_t i = 0; i < m_PaletteSize; i++) {
+        const int32_t dr = red - m_Palette8[i].r;
+        const int32_t dg = green - m_Palette8[i].g;
+        const int32_t db = blue - m_Palette8[i].b;
+        const int32_t diff = SQUARE(dr) + SQUARE(dg) + SQUARE(db);
+        if (diff < best_diff) {
+            best_diff = diff;
+            best_idx = i;
+        }
+    }
+
+    return best_idx;
 }
 
 void Output_CycleAnimatedTextures(void)
