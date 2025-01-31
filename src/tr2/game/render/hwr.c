@@ -3,7 +3,6 @@
 #include "decomp/decomp.h"
 #include "game/output.h"
 #include "game/render/priv.h"
-#include "game/render/util.h"
 #include "game/shell.h"
 #include "global/vars.h"
 

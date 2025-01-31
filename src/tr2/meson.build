@@ -264,7 +264,6 @@ sources = [
   'game/render/hwr.c',
   'game/render/priv.c',
   'game/render/swr.c',
-  'game/render/util.c',
   'game/requester.c',
   'game/room.c',
   'game/room_draw.c',

@@ -261,33 +261,8 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
 
 static void M_LoadTexturePages(VFILE *file)
 {
-    BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_pages = VFile_ReadS32(file);
-    m_LevelInfo.textures.page_count = num_pages;
-    LOG_INFO("%d texture pages", num_pages);
-
-    const int32_t texture_size_8_bit =
-        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t);
-    m_LevelInfo.textures.pages_24 = Memory_Alloc(texture_size_8_bit);
-    VFile_Read(file, m_LevelInfo.textures.pages_24, texture_size_8_bit);
-
-    const int32_t texture_size_32_bit =
-        (num_pages + m_InjectionInfo->texture_page_count) * TEXTURE_PAGE_SIZE
-        * sizeof(RGBA_8888);
-    m_LevelInfo.textures.pages_32 = Memory_Alloc(texture_size_32_bit);
-    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
-    const uint8_t *input = m_LevelInfo.textures.pages_24;
-    for (int32_t i = 0; i < texture_size_8_bit; i++) {
-        const uint8_t index = *input++;
-        const RGB_888 pix = m_LevelInfo.palette.data_24[index];
-        output->r = pix.r;
-        output->g = pix.g;
-        output->b = pix.b;
-        output->a = index == 0 ? 0 : 0xFF;
-        output++;
-    }
-
-    Benchmark_End(benchmark, nullptr);
+    Level_ReadTexturePages(
+        &m_LevelInfo, m_InjectionInfo->texture_page_count, file);
 }
 
 static void M_LoadRooms(VFILE *file)
@@ -705,22 +680,7 @@ static void M_LoadLightTable(VFILE *file)
 
 static void M_LoadPalette(VFILE *file)
 {
-    BENCHMARK *const benchmark = Benchmark_Start();
-    LOG_INFO("");
-    m_LevelInfo.palette.size = 256;
-    m_LevelInfo.palette.data_24 =
-        Memory_Alloc(sizeof(RGB_888) * m_LevelInfo.palette.size);
-    for (int32_t i = 0; i < 256; i++) {
-        m_LevelInfo.palette.data_24[i].r = VFile_ReadU8(file) * 4;
-        m_LevelInfo.palette.data_24[i].g = VFile_ReadU8(file) * 4;
-        m_LevelInfo.palette.data_24[i].b = VFile_ReadU8(file) * 4;
-    }
-    m_LevelInfo.palette.data_24[0].r = 0;
-    m_LevelInfo.palette.data_24[0].g = 0;
-    m_LevelInfo.palette.data_24[0].b = 0;
-
-    m_LevelInfo.palette.data_32 = nullptr;
-    Benchmark_End(benchmark, nullptr);
+    Level_ReadPalette(&m_LevelInfo, file);
 }
 
 static void M_LoadCinematic(VFILE *file)

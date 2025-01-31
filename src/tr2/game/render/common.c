@@ -4,7 +4,6 @@
 #include "game/render/hwr.h"
 #include "game/render/priv.h"
 #include "game/render/swr.h"
-#include "game/render/util.h"
 #include "game/shell.h"
 #include "global/vars.h"
 

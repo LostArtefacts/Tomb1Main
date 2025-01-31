@@ -1,5 +1,6 @@
 #include "game/level/common.h"
 
+#include "benchmark.h"
 #include "debug.h"
 #include "game/anims.h"
 #include "game/const.h"
@@ -16,11 +17,34 @@
 
 static int16_t *m_AnimCommands = nullptr;
 
+static RGBA_8888 M_ARGB1555To8888(uint16_t argb1555);
 static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
 static void M_ReadFace3(FACE3 *face, VFILE *file);
 static void M_ReadObjectMesh(OBJECT_MESH *mesh, VFILE *file);
 static void M_ReadBounds16(BOUNDS_16 *bounds, VFILE *file);
+
+static RGBA_8888 M_ARGB1555To8888(const uint16_t argb1555)
+{
+    // Extract 5-bit values for each ARGB component
+    uint8_t a1 = (argb1555 >> 15) & 0x01;
+    uint8_t r5 = (argb1555 >> 10) & 0x1F;
+    uint8_t g5 = (argb1555 >> 5) & 0x1F;
+    uint8_t b5 = argb1555 & 0x1F;
+
+    // Expand 5-bit color components to 8-bit
+    uint8_t a8 = a1 * 255; // 1-bit alpha (either 0 or 255)
+    uint8_t r8 = (r5 << 3) | (r5 >> 2);
+    uint8_t g8 = (g5 << 3) | (g5 >> 2);
+    uint8_t b8 = (b5 << 3) | (b5 >> 2);
+
+    return (RGBA_8888) {
+        .r = r8,
+        .g = g8,
+        .b = b8,
+        .a = a8,
+    };
+}
 
 static void M_ReadVertex(XYZ_16 *const vertex, VFILE *const file)
 {
@@ -126,6 +150,87 @@ static void M_ReadBounds16(BOUNDS_16 *const bounds, VFILE *const file)
     bounds->max.y = VFile_ReadS16(file);
     bounds->min.z = VFile_ReadS16(file);
     bounds->max.z = VFile_ReadS16(file);
+}
+
+void Level_ReadPalette(LEVEL_INFO *const info, VFILE *const file)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    const int32_t palette_size = 256;
+    info->palette.size = palette_size;
+
+    info->palette.data_24 = Memory_Alloc(sizeof(RGB_888) * palette_size);
+    VFile_Read(file, info->palette.data_24, sizeof(RGB_888) * palette_size);
+    info->palette.data_24[0].r = 0;
+    info->palette.data_24[0].g = 0;
+    info->palette.data_24[0].b = 0;
+    for (int32_t i = 1; i < palette_size; i++) {
+        RGB_888 *const col = &info->palette.data_24[i];
+        col->r = (col->r << 2) | (col->r >> 4);
+        col->g = (col->g << 2) | (col->g >> 4);
+        col->b = (col->b << 2) | (col->b >> 4);
+    }
+
+#if TR_VERSION == 1
+    info->palette.data_32 = nullptr;
+#else
+    RGBA_8888 palette_16[palette_size];
+    info->palette.data_32 = Memory_Alloc(sizeof(RGB_888) * palette_size);
+    VFile_Read(file, palette_16, sizeof(RGBA_8888) * palette_size);
+    for (int32_t i = 0; i < palette_size; i++) {
+        info->palette.data_32[i].r = palette_16[i].r;
+        info->palette.data_32[i].g = palette_16[i].g;
+        info->palette.data_32[i].b = palette_16[i].b;
+    }
+#endif
+
+    Benchmark_End(benchmark, nullptr);
+}
+
+// TODO: replace extra_pages with value from injection interface
+void Level_ReadTexturePages(
+    LEVEL_INFO *const info, const int32_t extra_pages, VFILE *const file)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    const int32_t num_pages = VFile_ReadS32(file);
+    info->textures.page_count = num_pages;
+    LOG_INFO("texture pages: %d", num_pages);
+
+    const int32_t texture_size_8_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t);
+    const int32_t texture_size_32_bit =
+        (num_pages + extra_pages) * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888);
+
+    info->textures.pages_24 = Memory_Alloc(texture_size_8_bit);
+    VFile_Read(file, info->textures.pages_24, texture_size_8_bit);
+
+    info->textures.pages_32 = Memory_Alloc(texture_size_32_bit);
+    RGBA_8888 *output = info->textures.pages_32;
+
+#if TR_VERSION == 1
+    const uint8_t *input = info->textures.pages_24;
+    for (int32_t i = 0; i < texture_size_8_bit; i++) {
+        const uint8_t index = *input++;
+        const RGB_888 pix = info->palette.data_24[index];
+        output->r = pix.r;
+        output->g = pix.g;
+        output->b = pix.b;
+        output->a = index == 0 ? 0 : 0xFF;
+        output++;
+    }
+#else
+    const int32_t texture_size_16_bit =
+        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint16_t);
+    uint16_t *input = Memory_Alloc(texture_size_16_bit);
+    VFile_Read(file, input, texture_size_16_bit);
+    for (int32_t i = 0; i < num_pages * TEXTURE_PAGE_SIZE; i++) {
+        *output++ = M_ARGB1555To8888(*input++);
+    }
+    Memory_FreePointer(&input);
+#endif
+
+    Benchmark_End(benchmark, NULL);
 }
 
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)

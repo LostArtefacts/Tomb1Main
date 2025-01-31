@@ -15,7 +15,6 @@
 #include "game/output.h"
 #include "game/overlay.h"
 #include "game/render/common.h"
-#include "game/render/util.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -60,34 +59,7 @@ static void M_CompleteSetup(void);
 
 static void M_LoadTexturePages(VFILE *const file)
 {
-    BENCHMARK *const benchmark = Benchmark_Start();
-
-    const int32_t num_pages = VFile_ReadS32(file);
-    m_LevelInfo.textures.page_count = num_pages;
-    LOG_INFO("texture pages: %d", num_pages);
-
-    const int32_t texture_size_8_bit =
-        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint8_t);
-    const int32_t texture_size_16_bit =
-        num_pages * TEXTURE_PAGE_SIZE * sizeof(uint16_t);
-    const int32_t texture_size_32_bit =
-        num_pages * TEXTURE_PAGE_SIZE * sizeof(RGBA_8888);
-
-    m_LevelInfo.textures.pages_24 = Memory_Alloc(texture_size_8_bit);
-    VFile_Read(file, m_LevelInfo.textures.pages_24, texture_size_8_bit);
-
-    m_LevelInfo.textures.pages_32 = Memory_Alloc(texture_size_32_bit);
-
-    uint16_t *input = Memory_Alloc(texture_size_16_bit);
-    VFile_Read(file, input, texture_size_16_bit);
-    RGBA_8888 *output = m_LevelInfo.textures.pages_32;
-    for (int32_t i = 0; i < num_pages * TEXTURE_PAGE_SIZE; i++) {
-        *output++ = Render_ARGB1555To8888(*input++);
-    }
-
-    Memory_FreePointer(&input);
-
-    Benchmark_End(benchmark, NULL);
+    Level_ReadTexturePages(&m_LevelInfo, 0, file);
 }
 
 static void M_LoadRooms(VFILE *const file)
@@ -395,34 +367,7 @@ static void M_LoadDepthQ(VFILE *const file)
 
 static void M_LoadPalettes(VFILE *const file)
 {
-    BENCHMARK *const benchmark = Benchmark_Start();
-
-    const int32_t palette_size = 256;
-    m_LevelInfo.palette.size = palette_size;
-    m_LevelInfo.palette.data_24 = Memory_Alloc(sizeof(RGB_888) * palette_size);
-    m_LevelInfo.palette.data_32 = Memory_Alloc(sizeof(RGB_888) * palette_size);
-
-    VFile_Read(
-        file, m_LevelInfo.palette.data_24, sizeof(RGB_888) * palette_size);
-    m_LevelInfo.palette.data_24[0].r = 0;
-    m_LevelInfo.palette.data_24[0].g = 0;
-    m_LevelInfo.palette.data_24[0].b = 0;
-    for (int32_t i = 1; i < palette_size; i++) {
-        RGB_888 *const col = &m_LevelInfo.palette.data_24[i];
-        col->r = (col->r << 2) | (col->r >> 4);
-        col->g = (col->g << 2) | (col->g >> 4);
-        col->b = (col->b << 2) | (col->b >> 4);
-    }
-
-    RGBA_8888 palette_16[palette_size];
-    VFile_Read(file, palette_16, sizeof(RGBA_8888) * palette_size);
-    for (int32_t i = 0; i < palette_size; i++) {
-        m_LevelInfo.palette.data_32[i].r = palette_16[i].r;
-        m_LevelInfo.palette.data_32[i].g = palette_16[i].g;
-        m_LevelInfo.palette.data_32[i].b = palette_16[i].b;
-    }
-
-    Benchmark_End(benchmark, nullptr);
+    Level_ReadPalette(&m_LevelInfo, file);
 }
 
 static void M_LoadCameras(VFILE *const file)
