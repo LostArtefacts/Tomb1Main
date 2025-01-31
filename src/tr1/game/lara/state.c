@@ -1241,6 +1241,9 @@ void Lara_State_Tread(ITEM *item, COLL_INFO *coll)
     if (item->fall_speed < 0) {
         item->fall_speed = 0;
     }
+    if (g_Lara.gun_status == LGS_HANDS_BUSY) {
+        g_Lara.gun_status = LGS_ARMLESS;
+    }
 }
 
 void Lara_State_Dive(ITEM *item, COLL_INFO *coll)

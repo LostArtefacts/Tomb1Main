@@ -47,6 +47,7 @@
 - fixed various death counter problems (existing saves will have the count reset) (#2412, regression from 2.6)
 - fixed `/demo` command crashing the game if no demos are present (regression from 4.1)
 - fixed Lara not being able to jump or stop swimming if the related responsive config options are enabled, but enhanced animations are not present (#2397, regression from 4.6)
+- fixed Lara being unable to climb or use guns after using an underwater lever and then entering the wading state (#2416, regression from 4.6)
 - improved pause screen compatibility with PS1 (#2248)
 - improved level loading times with respect to injection processing
 
