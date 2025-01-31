@@ -2,13 +2,13 @@
 
 #include "game/camera.h"
 #include "game/game.h"
-#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
 #include "game/overlay.h"
+#include "game/savegame.h"
 #include "global/vars.h"
 
 #define EXTRA_ANIM_PEDESTAL_SCION 0
@@ -63,7 +63,8 @@ void Scion1_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             Inv_AddItem(item->object_id);
             item->status = IS_INVISIBLE;
             Item_RemoveDrawn(item_num);
-            GF_GetResumeInfo(Game_GetCurrentLevel())->stats.pickup_count++;
+            Savegame_GetCurrentInfo(Game_GetCurrentLevel())
+                ->stats.pickup_count++;
         }
     } else if (
         g_Input.action && g_Lara.gun_status == LGS_ARMLESS

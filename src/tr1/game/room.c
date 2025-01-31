@@ -2,7 +2,6 @@
 
 #include "game/camera.h"
 #include "game/game.h"
-#include "game/game_flow.h"
 #include "game/items.h"
 #include "game/lara/misc.h"
 #include "game/lot.h"
@@ -11,6 +10,7 @@
 #include "game/objects/general/keyhole.h"
 #include "game/objects/general/pickup.h"
 #include "game/objects/general/switch.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/const.h"
@@ -880,7 +880,8 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
 
         case TO_SECRET: {
             const int16_t secret_num = 1 << (int16_t)(intptr_t)cmd->parameter;
-            RESUME_INFO *resume_info = GF_GetResumeInfo(Game_GetCurrentLevel());
+            RESUME_INFO *resume_info =
+                Savegame_GetCurrentInfo(Game_GetCurrentLevel());
             if (resume_info->stats.secret_flags & secret_num) {
                 break;
             }

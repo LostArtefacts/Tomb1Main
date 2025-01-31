@@ -1,6 +1,6 @@
 #include "game/game_flow/inventory.h"
 
-#include "game/game_flow/common.h"
+#include "decomp/savegame.h"
 #include "game/gun/gun.h"
 #include "game/inventory.h"
 #include "game/overlay.h"
@@ -114,7 +114,7 @@ void GF_InventoryModifier_Add(
 void GF_InventoryModifier_Apply(
     const GF_LEVEL *const level, const GF_INV_TYPE type)
 {
-    START_INFO *const start = GF_GetResumeInfo(level);
+    START_INFO *const start = Savegame_GetCurrentInfo(level);
 
     if (!start->has_pistols && m_Add2InvItems[O_PISTOL_ITEM]) {
         start->has_pistols = 1;

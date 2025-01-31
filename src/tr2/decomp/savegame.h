@@ -10,6 +10,7 @@
 void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
 
 void Savegame_InitCurrentInfo(void);
+START_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *level);
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *level);
 void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *level);
 void CreateSaveGameInfo(void);

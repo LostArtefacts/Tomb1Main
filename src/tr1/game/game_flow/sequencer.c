@@ -177,7 +177,7 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
     }
 
     Stats_CalculateStats();
-    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    RESUME_INFO *const resume = Savegame_GetCurrentInfo(level);
     if (resume != nullptr) {
         resume->stats.max_pickup_count = Stats_GetPickups();
         resume->stats.max_kill_count = Stats_GetKillables();

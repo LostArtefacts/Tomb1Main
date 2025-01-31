@@ -23,6 +23,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
+#include <libtrx/enum_map.h>
 #include <libtrx/filesystem.h>
 #include <libtrx/memory.h>
 
@@ -181,6 +182,20 @@ void Savegame_Init(void)
     m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
 }
 
+RESUME_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *const level)
+{
+    ASSERT(level != nullptr);
+    if (GF_GetLevelTableType(level->type) == GFLT_MAIN) {
+        return &g_GameInfo.current[level->num];
+    } else if (level->type == GFL_DEMO) {
+        return &g_GameInfo.current[0];
+    }
+    LOG_WARNING(
+        "Warning: unable to get resume info for level %d (type=%s)", level->num,
+        ENUM_MAP_TO_STRING(GF_LEVEL_TYPE, level->type));
+    return nullptr;
+}
+
 void Savegame_Shutdown(void)
 {
     M_Clear();
@@ -232,19 +247,19 @@ void Savegame_InitCurrentInfo(void)
         const GF_LEVEL *const level = &level_table->levels[i];
         Savegame_ResetCurrentInfo(level);
         Savegame_ApplyLogicToCurrentInfo(level);
-        GF_GetResumeInfo(level)->flags.available = 0;
+        Savegame_GetCurrentInfo(level)->flags.available = 0;
     }
     if (GF_GetGymLevel() != nullptr) {
-        GF_GetResumeInfo(GF_GetGymLevel())->flags.available = 1;
+        Savegame_GetCurrentInfo(GF_GetGymLevel())->flags.available = 1;
     }
     if (GF_GetFirstLevel() != nullptr) {
-        GF_GetResumeInfo(GF_GetFirstLevel())->flags.available = 1;
+        Savegame_GetCurrentInfo(GF_GetFirstLevel())->flags.available = 1;
     }
 }
 
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 {
-    RESUME_INFO *const current = GF_GetResumeInfo(level);
+    RESUME_INFO *const current = Savegame_GetCurrentInfo(level);
     LOG_INFO("Applying game logic to level #%d", level->num);
 
     if (!g_Config.gameplay.disable_healing_between_levels
@@ -342,7 +357,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 void Savegame_ResetCurrentInfo(const GF_LEVEL *const level)
 {
     LOG_INFO("Resetting resume info for level #%d", level->num);
-    RESUME_INFO *const current = GF_GetResumeInfo(level);
+    RESUME_INFO *const current = Savegame_GetCurrentInfo(level);
     memset(current, 0, sizeof(RESUME_INFO));
 }
 
@@ -352,15 +367,15 @@ void Savegame_CarryCurrentInfoToNextLevel(
     LOG_INFO(
         "Copying resume info from level #%d to level #%d", src_level->num,
         dst_level->num);
-    RESUME_INFO *const src_resume = GF_GetResumeInfo(src_level);
-    RESUME_INFO *const dst_resume = GF_GetResumeInfo(dst_level);
+    RESUME_INFO *const src_resume = Savegame_GetCurrentInfo(src_level);
+    RESUME_INFO *const dst_resume = Savegame_GetCurrentInfo(dst_level);
     memcpy(dst_resume, src_resume, sizeof(RESUME_INFO));
 }
 
 void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
 {
     ASSERT(level != nullptr);
-    RESUME_INFO *current = GF_GetResumeInfo(level);
+    RESUME_INFO *current = Savegame_GetCurrentInfo(level);
 
     current->lara_hitpoints = g_LaraItem->hit_points;
     current->flags.available = 1;

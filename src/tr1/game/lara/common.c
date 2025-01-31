@@ -469,7 +469,7 @@ void Lara_InitialiseLoad(int16_t item_num)
 
 void Lara_Initialise(const GF_LEVEL *const level)
 {
-    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    RESUME_INFO *const resume = Savegame_GetCurrentInfo(level);
 
     g_LaraItem->collidable = 0;
     g_LaraItem->data = &g_Lara;
@@ -532,7 +532,7 @@ void Lara_InitialiseInventory(const GF_LEVEL *const level)
 {
     Inv_RemoveAllItems();
 
-    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    RESUME_INFO *const resume = Savegame_GetCurrentInfo(level);
 
     g_Lara.pistols.ammo = 1000;
 
@@ -651,7 +651,7 @@ void Lara_RevertToPistolsIfNeeded(void)
 
 void Lara_InitialiseMeshes(const GF_LEVEL *const level)
 {
-    const RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    const RESUME_INFO *const resume = Savegame_GetCurrentInfo(level);
 
     if (resume != nullptr && resume->flags.costume) {
         for (LARA_MESH mesh = LM_FIRST; mesh < LM_NUMBER_OF; mesh++) {

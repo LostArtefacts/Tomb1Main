@@ -17,6 +17,7 @@
 #include "game/phase.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/vars.h"
@@ -69,7 +70,7 @@ static void M_RestoreConfig(M_PRIV *const p)
 
 static void M_PrepareResumeInfo(M_PRIV *const p)
 {
-    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
+    RESUME_INFO *const resume_info = Savegame_GetCurrentInfo(p->level);
     p->old_resume_info = *resume_info;
     resume_info->flags.available = 1;
     resume_info->flags.costume = 0;
@@ -93,7 +94,7 @@ static void M_PrepareResumeInfo(M_PRIV *const p)
 
 static void M_RestoreResumeInfo(M_PRIV *const p)
 {
-    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
+    RESUME_INFO *const resume_info = Savegame_GetCurrentInfo(p->level);
     *resume_info = p->old_resume_info;
 }
 

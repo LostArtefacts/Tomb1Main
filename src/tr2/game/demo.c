@@ -1,5 +1,6 @@
 #include "game/demo.h"
 
+#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/game.h"
 #include "game/game_flow.h"
@@ -56,7 +57,7 @@ static void M_RestoreConfig(M_PRIV *const p)
 
 static void M_PrepareStartInfo(M_PRIV *const p)
 {
-    START_INFO *const start = GF_GetResumeInfo(p->level);
+    START_INFO *const start = Savegame_GetCurrentInfo(p->level);
     p->old_start = *start;
     start->available = 1;
     start->has_pistols = 1;
@@ -67,7 +68,7 @@ static void M_PrepareStartInfo(M_PRIV *const p)
 
 static void M_RestoreStartInfo(M_PRIV *const p)
 {
-    START_INFO *const start = GF_GetResumeInfo(p->level);
+    START_INFO *const start = Savegame_GetCurrentInfo(p->level);
     *start = p->old_start;
 }
 

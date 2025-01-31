@@ -5,6 +5,7 @@
 #include "game/items.h"
 #include "game/objects/common.h"
 #include "game/objects/vars.h"
+#include "game/savegame.h"
 #include "game/stats.h"
 #include "global/const.h"
 #include "global/types.h"
@@ -129,7 +130,7 @@ void Stats_ComputeFinal(GF_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
         if (level->type != level_type) {
             continue;
         }
-        const LEVEL_STATS *level_stats = &GF_GetResumeInfo(level)->stats;
+        const LEVEL_STATS *level_stats = &Savegame_GetCurrentInfo(level)->stats;
 
         final_stats->kill_count += level_stats->kill_count;
         final_stats->pickup_count += level_stats->pickup_count;
@@ -230,7 +231,7 @@ void Stats_StartTimer(void)
 {
     ClockTimer_Sync(&m_StatsTimer.timer);
     m_StatsTimer.start_timer =
-        GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer;
+        Savegame_GetCurrentInfo(Game_GetCurrentLevel())->stats.timer;
 }
 
 void Stats_UpdateTimer(void)
@@ -240,7 +241,7 @@ void Stats_UpdateTimer(void)
     }
     const double elapsed =
         ClockTimer_PeekElapsed(&m_StatsTimer.timer) * LOGIC_FPS;
-    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer =
+    Savegame_GetCurrentInfo(Game_GetCurrentLevel())->stats.timer =
         m_StatsTimer.start_timer + elapsed;
 }
 #else
@@ -253,7 +254,7 @@ void Stats_UpdateTimer(void)
     if (Game_GetCurrentLevel() == nullptr) {
         return;
     }
-    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.timer++;
+    Savegame_GetCurrentInfo(Game_GetCurrentLevel())->stats.timer++;
 }
 #endif
 

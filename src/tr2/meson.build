@@ -103,7 +103,6 @@ sources = [
   'game/fmv.c',
   'game/game.c',
   'game/game_string.c',
-  'game/game_flow/common.c',
   'game/game_flow/inventory.c',
   'game/game_flow/sequencer.c',
   'game/game_flow/sequencer_misc.c',

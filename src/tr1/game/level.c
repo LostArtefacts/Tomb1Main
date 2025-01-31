@@ -19,6 +19,7 @@
 #include "game/overlay.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "game/stats.h"
@@ -932,7 +933,7 @@ bool Level_Initialise(const GF_LEVEL *const level)
 
     g_GameInfo.select_level_num = -1;
 
-    RESUME_INFO *const resume = GF_GetResumeInfo(level);
+    RESUME_INFO *const resume = Savegame_GetCurrentInfo(level);
     if (resume != nullptr) {
         resume->stats.timer = 0;
         resume->stats.secret_flags = 0;

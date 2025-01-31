@@ -139,7 +139,7 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
     }
     const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
-    START_INFO *const start = GF_GetResumeInfo(current_level);
+    START_INFO *const start = Savegame_GetCurrentInfo(current_level);
     start->stats = g_SaveGame.current_stats;
     start->available = 0;
     if (next_level != nullptr) {
@@ -178,7 +178,7 @@ static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
     if (seq_ctx == GFSC_NORMAL) {
         const GF_LEVEL *const current_level = Game_GetCurrentLevel();
         // TODO: move me out
-        START_INFO *const start = GF_GetResumeInfo(current_level);
+        START_INFO *const start = Savegame_GetCurrentInfo(current_level);
         start->stats = g_SaveGame.current_stats;
         g_SaveGame.bonus_flag = true;
         PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
