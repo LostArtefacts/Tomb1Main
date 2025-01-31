@@ -70,12 +70,12 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
     if (seq_ctx == GFSC_STORY) {
         return gf_cmd;
     } else if (level->type == GFL_DEMO) {
-        if (!Level_Initialise(level, seq_ctx)) {
+        if (!Level_Initialise(level)) {
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         gf_cmd = GF_RunDemo(level->num);
     } else if (level->type == GFL_CUTSCENE) {
-        if (!Level_Initialise(level, seq_ctx)) {
+        if (!Level_Initialise(level)) {
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         gf_cmd = GF_RunCutscene(level->num);
@@ -86,10 +86,15 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
             }
             InitialiseLevelFlags();
         }
-        if (!Level_Initialise(level, seq_ctx)) {
+        if (!Level_Initialise(level)) {
             Game_SetCurrentLevel(nullptr);
             GF_SetCurrentLevel(nullptr);
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        if (seq_ctx == GFSC_SAVED) {
+            ExtractSaveGameInfo();
+        } else if (level->type == GFL_NORMAL) {
+            GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_REGULAR);
         }
         gf_cmd = GF_RunGame(level, seq_ctx);
     }

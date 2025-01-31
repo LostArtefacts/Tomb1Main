@@ -714,10 +714,9 @@ bool Level_Load(const GF_LEVEL *const level)
     return true;
 }
 
-bool Level_Initialise(
-    const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
+bool Level_Initialise(const GF_LEVEL *const level)
 {
-    LOG_DEBUG("num=%d type=%d seq_ctx=%d", level->num, level->type, seq_ctx);
+    LOG_DEBUG("num=%d type=%d", level->num, level->type);
     if (level->type == GFL_DEMO) {
         Random_SeedDraw(0xD371F947);
         Random_SeedControl(0xD371F947);
@@ -747,21 +746,13 @@ bool Level_Initialise(
     if (g_Lara.item_num != NO_ITEM) {
         Lara_Initialise(level);
     }
-    if (level->type == GFL_NORMAL || level->type == GFL_DEMO
-        || seq_ctx == GFSC_SAVED) {
-        GetCarriedItems();
-    }
+    GetCarriedItems();
 
     Effect_InitialiseArray();
     LOT_InitialiseArray();
     Overlay_Reset();
     g_HealthBarTimer = 100;
     Sound_StopAll();
-    if (seq_ctx == GFSC_SAVED) {
-        ExtractSaveGameInfo();
-    } else if (level->type == GFL_NORMAL) {
-        GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_REGULAR);
-    }
 
     if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {
         InitialiseFinalLevel();
