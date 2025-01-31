@@ -6,6 +6,7 @@
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/lara/common.h"
+#include "game/level.h"
 #include "game/objects/common.h"
 #include "game/overlay.h"
 #include "game/savegame.h"

@@ -22,6 +22,7 @@
 #include "global/const.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/filesystem.h>
 
 #include <stdio.h>
@@ -50,6 +51,7 @@ static void M_Read(void *ptr, size_t size);
 SPECIAL_READ_WRITES
 static void M_Skip(size_t size);
 static void M_ReadStartInfo(MYFILE *fp, START_INFO *start);
+static void M_ReadStartInfos(MYFILE *fp);
 static void M_ReadStats(MYFILE *fp, LEVEL_STATS *const stats);
 static void M_ReadItems(void);
 static void M_ReadLara(LARA_INFO *lara);
@@ -62,6 +64,7 @@ static void M_Write(const void *ptr, size_t size);
 #define SPECIAL_READ_WRITE(name, type) static void M_Write##name(type value);
 SPECIAL_READ_WRITES
 static void M_WriteStartInfo(MYFILE *fp, const START_INFO *start);
+static void M_WriteStartInfos(MYFILE *fp);
 static void M_WriteStats(MYFILE *fp, const LEVEL_STATS *stats);
 static void M_WriteItems(void);
 static void M_WriteLara(const LARA_INFO *lara);
@@ -128,6 +131,20 @@ static void M_ReadStartInfo(MYFILE *const fp, START_INFO *const start)
 
     File_ReadU16(fp);
     M_ReadStats(fp, &start->stats);
+}
+
+static void M_ReadStartInfos(MYFILE *const fp)
+{
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < 24; i++) {
+        if (i < level_table->count) {
+            const GF_LEVEL *const level = &level_table->levels[i];
+            M_ReadStartInfo(fp, Savegame_GetCurrentInfo(level));
+        } else {
+            START_INFO dummy_resume_info;
+            M_ReadStartInfo(fp, &dummy_resume_info);
+        }
+    }
 }
 
 static void M_ReadStats(MYFILE *const fp, LEVEL_STATS *const stats)
@@ -413,6 +430,7 @@ static void M_Write(const void *ptr, const size_t size)
 
 static void M_WriteStartInfo(MYFILE *const fp, const START_INFO *const start)
 {
+    ASSERT(start != nullptr);
     File_WriteU16(fp, start->pistol_ammo);
     File_WriteU16(fp, start->magnum_ammo);
     File_WriteU16(fp, start->uzi_ammo);
@@ -442,6 +460,20 @@ static void M_WriteStartInfo(MYFILE *const fp, const START_INFO *const start)
 
     File_WriteU16(fp, 0);
     M_WriteStats(fp, &start->stats);
+}
+
+static void M_WriteStartInfos(MYFILE *const fp)
+{
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
+    for (int32_t i = 0; i < 24; i++) {
+        if (i < level_table->count) {
+            const GF_LEVEL *const level = &level_table->levels[i];
+            M_WriteStartInfo(fp, Savegame_GetCurrentInfo(level));
+        } else {
+            const START_INFO null_resume_info = {};
+            M_WriteStartInfo(fp, &null_resume_info);
+        }
+    }
 }
 
 static void M_WriteStats(MYFILE *const fp, const LEVEL_STATS *const stats)
@@ -1028,9 +1060,7 @@ int32_t S_SaveGame(const int32_t slot_num)
     sprintf(file_name, "%s", current_level->title);
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
-    for (int32_t i = 0; i < 24; i++) {
-        M_WriteStartInfo(fp, &g_SaveGame.start[i]);
-    }
+    M_WriteStartInfos(fp);
     M_WriteStats(fp, &g_SaveGame.current_stats);
     File_WriteS16(fp, g_SaveGame.current_level);
     File_WriteU8(fp, g_SaveGame.bonus_flag);
@@ -1073,9 +1103,7 @@ int32_t S_LoadGame(const int32_t slot_num)
     }
     File_Skip(fp, 75);
     File_Skip(fp, 4);
-    for (int32_t i = 0; i < 24; i++) {
-        M_ReadStartInfo(fp, &g_SaveGame.start[i]);
-    }
+    M_ReadStartInfos(fp);
     M_ReadStats(fp, &g_SaveGame.current_stats);
     g_SaveGame.current_level = File_ReadS16(fp);
     g_SaveGame.bonus_flag = File_ReadU8(fp);

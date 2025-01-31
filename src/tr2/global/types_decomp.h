@@ -141,7 +141,7 @@ typedef struct {
 } START_INFO;
 
 typedef struct {
-    START_INFO start[24];
+    START_INFO *start;
     LEVEL_STATS current_stats;
     int16_t current_level;
     bool bonus_flag;

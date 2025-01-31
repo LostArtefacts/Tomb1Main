@@ -14,8 +14,8 @@
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/game/phase.h>
-#include <libtrx/log.h>
 
 #define DECLARE_EVENT_HANDLER(name)                                            \
     GF_COMMAND name(                                                           \
@@ -200,6 +200,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
             return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
     } else if (level->type == GFL_DEMO) {
+        ASSERT(GF_GetCurrentLevel() == level);
         gf_cmd = GF_RunDemo(level->num);
     } else if (level->type == GFL_CUTSCENE) {
         gf_cmd = GF_RunCutscene(level->num);

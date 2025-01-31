@@ -176,10 +176,36 @@ static void M_LoadPostprocess(void)
 
 void Savegame_Init(void)
 {
-    g_GameInfo.current =
-        Memory_Alloc(sizeof(RESUME_INFO) * GF_GetLevelTable(GFLT_MAIN)->count);
+    g_GameInfo.current = Memory_Alloc(
+        sizeof(RESUME_INFO)
+        * (GF_GetLevelTable(GFLT_MAIN)->count
+           + (GF_GetLevelTable(GFLT_DEMOS)->count >= 0 ? 1 : 0)));
     m_SaveSlots = g_Config.gameplay.maximum_save_slots;
     m_SavegameInfo = Memory_Alloc(sizeof(SAVEGAME_INFO) * m_SaveSlots);
+
+    const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_DEMOS);
+    for (int32_t i = 0; i < level_table->count; i++) {
+        RESUME_INFO *const resume_info =
+            Savegame_GetCurrentInfo(&level_table->levels[i]);
+        resume_info->flags.available = 1;
+        resume_info->flags.costume = 0;
+        resume_info->num_medis = 0;
+        resume_info->num_big_medis = 0;
+        resume_info->num_scions = 0;
+        resume_info->flags.got_pistols = 1;
+        resume_info->flags.got_shotgun = 0;
+        resume_info->flags.got_magnums = 0;
+        resume_info->flags.got_uzis = 0;
+        resume_info->pistol_ammo = 1000;
+        resume_info->shotgun_ammo = 0;
+        resume_info->magnum_ammo = 0;
+        resume_info->uzi_ammo = 0;
+        resume_info->gun_status = LGS_ARMLESS;
+        resume_info->equipped_gun_type = LGT_PISTOLS;
+        resume_info->holsters_gun_type = LGT_PISTOLS;
+        resume_info->back_gun_type = LGT_UNARMED;
+        resume_info->lara_hitpoints = LARA_MAX_HITPOINTS;
+    }
 }
 
 RESUME_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *const level)
@@ -188,7 +214,7 @@ RESUME_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *const level)
     if (GF_GetLevelTableType(level->type) == GFLT_MAIN) {
         return &g_GameInfo.current[level->num];
     } else if (level->type == GFL_DEMO) {
-        return &g_GameInfo.current[0];
+        return &g_GameInfo.current[GF_GetLevelTable(GFLT_MAIN)->count];
     }
     LOG_WARNING(
         "Warning: unable to get resume info for level %d (type=%s)", level->num,
