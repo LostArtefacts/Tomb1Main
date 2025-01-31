@@ -171,9 +171,6 @@ bool Demo_Start(const int32_t level_num)
 
     Interpolation_Remember();
 
-    Random_SeedDraw(0xD371F947);
-    Random_SeedControl(0xD371F947);
-
     if (!Level_Initialise(p->level)) {
         return false;
     }

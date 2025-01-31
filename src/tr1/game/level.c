@@ -17,6 +17,7 @@
 #include "game/objects/setup.h"
 #include "game/output.h"
 #include "game/overlay.h"
+#include "game/random.h"
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
@@ -924,9 +925,13 @@ bool Level_Initialise(const GF_LEVEL *const level)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     LOG_DEBUG("num=%d (%s)", level->num, level->path);
+    if (level->type == GFL_DEMO) {
+        Random_SeedDraw(0xD371F947);
+        Random_SeedControl(0xD371F947);
+    }
 
     g_GameInfo.select_level_num = -1;
-    const int32_t level_num = level->num;
+
     RESUME_INFO *const resume = GF_GetResumeInfo(level);
     if (resume != nullptr) {
         resume->stats.timer = 0;

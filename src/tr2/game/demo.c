@@ -146,9 +146,6 @@ bool Demo_Start(const int32_t level_num)
     M_PrepareConfig(p);
     M_PrepareStartInfo(p);
 
-    Random_SeedDraw(0xD371F947);
-    Random_SeedControl(0xD371F947);
-
     if (!Level_Initialise(p->level, GFSC_NORMAL)) {
         return false;
     }

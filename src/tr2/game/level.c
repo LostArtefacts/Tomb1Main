@@ -14,6 +14,7 @@
 #include "game/objects/setup.h"
 #include "game/output.h"
 #include "game/overlay.h"
+#include "game/random.h"
 #include "game/render/common.h"
 #include "game/room.h"
 #include "game/shell.h"
@@ -717,6 +718,11 @@ bool Level_Initialise(
     const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     LOG_DEBUG("num=%d type=%d seq_ctx=%d", level->num, level->type, seq_ctx);
+    if (level->type == GFL_DEMO) {
+        Random_SeedDraw(0xD371F947);
+        Random_SeedControl(0xD371F947);
+    }
+
     if (level->type != GFL_TITLE && level->type != GFL_DEMO) {
         g_GymInvOpenEnabled = false;
     }
