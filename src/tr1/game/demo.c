@@ -283,7 +283,7 @@ GF_COMMAND Demo_Control(void)
 
     if (g_LevelComplete || g_InputDB.menu_confirm || g_InputDB.menu_back) {
         return (GF_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
+            .action = GF_EXIT_TO_TITLE,
             .param = p->level->num,
         };
     }
@@ -292,7 +292,7 @@ GF_COMMAND Demo_Control(void)
 
     if (!M_ProcessInput(p)) {
         return (GF_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
+            .action = GF_EXIT_TO_TITLE,
             .param = p->level->num,
         };
     }
