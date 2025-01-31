@@ -26,18 +26,6 @@
 bool Game_Start(const GF_LEVEL *const level, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     Game_SetCurrentLevel(level);
-    GF_SetCurrentLevel(level);
-    if (seq_ctx != GFSC_SAVED) {
-        if (level != nullptr) {
-            Savegame_ApplyLogicToCurrentInfo(level);
-        }
-        InitialiseLevelFlags();
-    }
-    if (!Level_Initialise(level, seq_ctx)) {
-        Game_SetCurrentLevel(nullptr);
-        GF_SetCurrentLevel(nullptr);
-        return false;
-    }
 
     g_OverlayStatus = 1;
     Camera_Initialise();

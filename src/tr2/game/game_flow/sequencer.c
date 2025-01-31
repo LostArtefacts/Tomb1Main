@@ -1,5 +1,6 @@
 #include "game/game_flow/sequencer.h"
 
+#include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/fmv.h"
 #include "game/game.h"
@@ -79,6 +80,17 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
         }
         gf_cmd = GF_RunCutscene(level->num);
     } else {
+        if (seq_ctx != GFSC_SAVED) {
+            if (level != nullptr) {
+                Savegame_ApplyLogicToCurrentInfo(level);
+            }
+            InitialiseLevelFlags();
+        }
+        if (!Level_Initialise(level, seq_ctx)) {
+            Game_SetCurrentLevel(nullptr);
+            GF_SetCurrentLevel(nullptr);
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
         gf_cmd = GF_RunGame(level, seq_ctx);
     }
     if (gf_cmd.action == GF_LEVEL_COMPLETE) {
