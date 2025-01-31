@@ -7,9 +7,12 @@
 
 #include <stddef.h>
 
-void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
+void Savegame_Init(void);
+void Savegame_Shutdown(void);
 
 void Savegame_InitCurrentInfo(void);
+
+void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
 START_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *level);
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *level);
 void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *level);

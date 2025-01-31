@@ -4,6 +4,7 @@
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/phase.h"
 #include "global/vars.h"
@@ -65,17 +66,20 @@ static DECLARE_EVENT_HANDLER(M_HandleExitToTitle)
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    if (seq_ctx != GFSC_STORY) {
-        if (level->type == GFL_DEMO) {
-            gf_cmd = GF_RunDemo(level->num);
-        } else if (level->type == GFL_CUTSCENE) {
-            gf_cmd = GF_RunCutscene(level->num);
-        } else {
-            gf_cmd = GF_RunGame(level, seq_ctx);
+    if (seq_ctx == GFSC_STORY) {
+        return gf_cmd;
+    } else if (level->type == GFL_DEMO) {
+        if (!Level_Initialise(level, seq_ctx)) {
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
-        if (gf_cmd.action == GF_LEVEL_COMPLETE) {
-            gf_cmd.action = GF_NOOP;
-        }
+        gf_cmd = GF_RunDemo(level->num);
+    } else if (level->type == GFL_CUTSCENE) {
+        gf_cmd = GF_RunCutscene(level->num);
+    } else {
+        gf_cmd = GF_RunGame(level, seq_ctx);
+    }
+    if (gf_cmd.action == GF_LEVEL_COMPLETE) {
+        gf_cmd.action = GF_NOOP;
     }
     return gf_cmd;
 }
