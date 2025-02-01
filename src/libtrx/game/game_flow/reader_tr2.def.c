@@ -18,7 +18,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_REMOVE_AMMO,         nullptr, nullptr },
     { GFS_LEVEL_COMPLETE,      nullptr, nullptr },
     { GFS_LEVEL_STATS,         nullptr, nullptr },
-    { GFS_TOTAL_STATS,         nullptr, nullptr },
     { GFS_EXIT_TO_TITLE,       nullptr, nullptr },
 
     // Events with integer arguments
@@ -33,6 +32,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
 
     // Special cases with custom handlers
     { GFS_DISPLAY_PICTURE,     M_HandlePictureEvent, nullptr },
+    { GFS_TOTAL_STATS,       M_HandleTotalStatsEvent, nullptr },
     { GFS_ADD_ITEM,            M_HandleAddItemEvent, nullptr },
     { GFS_ADD_SECRET_REWARD,   M_HandleAddItemEvent, nullptr },
 

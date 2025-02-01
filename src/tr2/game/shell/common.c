@@ -350,6 +350,7 @@ void Shell_Main(void)
     Viewport_Reset();
     Render_Reset(RENDER_RESET_PARAMS);
 
+    GF_Init();
     GF_Load(m_CurrentGameFlowPath);
     GameStringTable_LoadFromFile(m_CurrentGameStringsPath);
 

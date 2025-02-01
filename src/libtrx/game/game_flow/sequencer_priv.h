@@ -11,5 +11,5 @@ extern bool GF_ShouldSkipSequenceEvent(
 extern GF_EVENT_QUEUE_TYPE GF_ShouldDeferSequenceEvent(
     GF_SEQUENCE_EVENT_TYPE event_type);
 
-extern GF_SEQUENCE_EVENT_HANDLER GF_GetSequenceEventHandler(
+GF_SEQUENCE_EVENT_HANDLER GF_GetSequenceEventHandler(
     GF_SEQUENCE_EVENT_TYPE event_type);

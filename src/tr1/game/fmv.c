@@ -161,8 +161,8 @@ bool FMV_Play(const char *path)
 
     m_IsPlaying = true;
     char *final_path = File_GuessExtension(path, m_Extensions);
-    bool ret = M_Play(final_path);
+    const bool result = M_Play(final_path);
     Memory_FreePointer(&final_path);
     m_IsPlaying = false;
-    return ret;
+    return result;
 }

@@ -703,6 +703,10 @@ void Savegame_InitCurrentInfo(void)
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 {
     START_INFO *start = Savegame_GetCurrentInfo(level);
+    if (start == nullptr) {
+        return;
+    }
+
     start->has_pistols = 1;
     start->gun_type = LGT_PISTOLS;
     start->pistol_ammo = 1000;

@@ -2,7 +2,6 @@
 // This is to avoid exposing symbols.
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleSetCameraPosEvent);
-static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent);
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent);
 
 static void M_LoadLevelItemDrops(
@@ -69,22 +68,6 @@ static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleSetCameraPosEvent)
         event->data = event_data;
     }
     return sizeof(GF_SET_CAMERA_POS_DATA);
-}
-
-static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent)
-{
-    const char *const path =
-        JSON_ObjectGetString(event_obj, "background_path", nullptr);
-    if (path == nullptr) {
-        Shell_ExitSystem("Missing picture path");
-        return -1;
-    }
-    if (event != nullptr) {
-        char *const event_data = extra_data;
-        strcpy(event_data, path);
-        event->data = event_data;
-    }
-    return strlen(path) + 1;
 }
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent)

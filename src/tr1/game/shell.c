@@ -125,6 +125,7 @@ void Shell_Init(
     }
     Screen_Init();
 
+    GF_Init();
     GF_Load(game_flow_path);
     GameStringTable_LoadFromFile(game_strings_path);
 

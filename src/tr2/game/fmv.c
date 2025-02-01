@@ -28,7 +28,7 @@ static void *M_LockSurface(void *surface, void *user_data);
 static void M_UnlockSurface(void *surface, void *user_data);
 static void M_UploadSurface(void *surface, void *user_data);
 
-static void M_Play(const char *file_name);
+static bool M_Play(const char *file_name);
 
 static void *M_AllocateSurface(
     const int32_t width, const int32_t height, void *const user_data)
@@ -86,11 +86,11 @@ static void M_UploadSurface(void *const surface, void *const user_data)
     GFX_2D_Renderer_Render(renderer_2d);
 }
 
-static void M_Play(const char *const file_name)
+static bool M_Play(const char *const file_name)
 {
     VIDEO *const video = Video_Open(file_name);
     if (video == nullptr) {
-        return;
+        return true;
     }
 
     m_IsFMVPlaying = true;
@@ -149,20 +149,21 @@ static void M_Play(const char *const file_name)
 
     GFX_2D_Renderer_Destroy(renderer_2d);
     m_IsFMVPlaying = false;
+    return true;
 }
 
-void FMV_Play(const char *const file_name)
+bool FMV_Play(const char *const file_name)
 {
     Music_Stop();
     if (!g_Config.gameplay.enable_fmv) {
-        return;
+        return false;
     }
 
-    M_Play(file_name);
-
+    const bool result = M_Play(file_name);
     if (!Shell_IsExiting()) {
         Render_Reset(RENDER_RESET_ALL);
     }
+    return result;
 }
 
 bool FMV_IsPlaying(void)

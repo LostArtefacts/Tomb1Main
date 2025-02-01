@@ -114,6 +114,7 @@ sources = [
   'game/game_flow/common.c',
   'game/game_flow/reader.c',
   'game/game_flow/sequencer.c',
+  'game/game_flow/sequencer_events.c',
   'game/game_flow/sequencer_misc.c',
   'game/game_flow/vars.c',
   'game/game_string.c',

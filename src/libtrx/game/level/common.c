@@ -232,7 +232,7 @@ void Level_ReadTexturePages(
     Memory_FreePointer(&input);
 #endif
 
-    Benchmark_End(benchmark, NULL);
+    Benchmark_End(benchmark, nullptr);
 }
 
 void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
