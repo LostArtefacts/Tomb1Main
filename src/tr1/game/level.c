@@ -55,7 +55,6 @@ static INJECTION_INFO *m_InjectionInfo = nullptr;
 static bool M_TryLayout(VFILE *file, LEVEL_LAYOUT layout);
 static LEVEL_LAYOUT M_GuessLayout(VFILE *file);
 static void M_LoadFromFile(const GF_LEVEL *level);
-static void M_LoadTexturePages(VFILE *file);
 static void M_LoadRooms(VFILE *file);
 static void M_LoadObjectMeshes(VFILE *file);
 static void M_LoadAnims(VFILE *file);
@@ -73,7 +72,6 @@ static void M_LoadSoundEffects(VFILE *file);
 static void M_LoadBoxes(VFILE *file);
 static void M_LoadAnimatedTextures(VFILE *file);
 static void M_LoadItems(VFILE *file);
-static void M_LoadPalette(VFILE *file);
 static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
@@ -235,7 +233,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadSprites(file);
 
     if (layout == LEVEL_LAYOUT_TR1_DEMO_PC) {
-        M_LoadPalette(file);
+        Level_ReadPalettes(&m_LevelInfo, file);
     }
 
     M_LoadCameras(file);
@@ -247,7 +245,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     Level_ReadDepthQ(file);
 
     if (layout != LEVEL_LAYOUT_TR1_DEMO_PC) {
-        M_LoadPalette(file);
+        Level_ReadPalettes(&m_LevelInfo, file);
     }
 
     M_LoadCinematic(file);
@@ -255,15 +253,10 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadSamples(file);
 
     VFile_SetPos(file, 4);
-    M_LoadTexturePages(file);
-
-    VFile_Close(file);
-}
-
-static void M_LoadTexturePages(VFILE *file)
-{
     Level_ReadTexturePages(
         &m_LevelInfo, m_InjectionInfo->texture_page_count, file);
+
+    VFile_Close(file);
 }
 
 static void M_LoadRooms(VFILE *file)
@@ -669,11 +662,6 @@ static void M_LoadItems(VFILE *file)
     }
 
     Benchmark_End(benchmark, nullptr);
-}
-
-static void M_LoadPalette(VFILE *file)
-{
-    Level_ReadPalette(&m_LevelInfo, file);
 }
 
 static void M_LoadCinematic(VFILE *file)

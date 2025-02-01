@@ -5,7 +5,7 @@
 
 #define ANIM_BONE_SIZE 4
 
-void Level_ReadPalette(LEVEL_INFO *info, VFILE *file);
+void Level_ReadPalettes(LEVEL_INFO *info, VFILE *file);
 void Level_ReadTexturePages(LEVEL_INFO *info, int32_t extra_pages, VFILE *file);
 void Level_ReadRoomMesh(int32_t room_num, VFILE *file);
 void Level_ReadFloorData(VFILE *file);

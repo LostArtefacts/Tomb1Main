@@ -58,11 +58,6 @@ static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
 static void M_CompleteSetup(void);
 
-static void M_LoadTexturePages(VFILE *const file)
-{
-    Level_ReadTexturePages(&m_LevelInfo, 0, file);
-}
-
 static void M_LoadRooms(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -349,11 +344,6 @@ finish:
     Benchmark_End(benchmark, nullptr);
 }
 
-static void M_LoadPalettes(VFILE *const file)
-{
-    Level_ReadPalette(&m_LevelInfo, file);
-}
-
 static void M_LoadCameras(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -611,8 +601,8 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
             45, level->path);
     }
 
-    M_LoadPalettes(file);
-    M_LoadTexturePages(file);
+    Level_ReadPalettes(&m_LevelInfo, file);
+    Level_ReadTexturePages(&m_LevelInfo, 0, file);
     VFile_Skip(file, 4);
     M_LoadRooms(file);
 

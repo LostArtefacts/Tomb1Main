@@ -152,7 +152,7 @@ static void M_ReadBounds16(BOUNDS_16 *const bounds, VFILE *const file)
     bounds->max.z = VFile_ReadS16(file);
 }
 
-void Level_ReadPalette(LEVEL_INFO *const info, VFILE *const file)
+void Level_ReadPalettes(LEVEL_INFO *const info, VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
