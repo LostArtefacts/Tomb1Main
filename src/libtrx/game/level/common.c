@@ -3,6 +3,7 @@
 #include "benchmark.h"
 #include "debug.h"
 #include "game/anims.h"
+#include "game/camera.h"
 #include "game/const.h"
 #include "game/game_buf.h"
 #include "game/inject.h"
@@ -577,6 +578,27 @@ void Level_ReadLightMap(VFILE *const file)
             SHADE_MAP *const shade_map = Output_GetShadeMap(j);
             shade_map->index[i] = light_map->index[j];
         }
+    }
+
+    Benchmark_End(benchmark, nullptr);
+}
+
+void Level_ReadCinematicFrames(VFILE *const file)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+    const int16_t num_frames = VFile_ReadS16(file);
+    LOG_INFO("cinematic frames: %d", num_frames);
+    Camera_InitialiseCineFrames(num_frames);
+    for (int32_t i = 0; i < num_frames; i++) {
+        CINE_FRAME *const frame = Camera_GetCineFrame(i);
+        frame->tx = VFile_ReadS16(file);
+        frame->ty = VFile_ReadS16(file);
+        frame->tz = VFile_ReadS16(file);
+        frame->cx = VFile_ReadS16(file);
+        frame->cy = VFile_ReadS16(file);
+        frame->cz = VFile_ReadS16(file);
+        frame->fov = VFile_ReadS16(file);
+        frame->roll = VFile_ReadS16(file);
     }
 
     Benchmark_End(benchmark, nullptr);

@@ -72,7 +72,6 @@ static void M_LoadSoundEffects(VFILE *file);
 static void M_LoadBoxes(VFILE *file);
 static void M_LoadAnimatedTextures(VFILE *file);
 static void M_LoadItems(VFILE *file);
-static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
 static void M_LoadSamples(VFILE *file);
 static void M_CompleteSetup(const GF_LEVEL *level);
@@ -248,7 +247,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
         Level_ReadPalettes(&m_LevelInfo, file);
     }
 
-    M_LoadCinematic(file);
+    Level_ReadCinematicFrames(file);
     M_LoadDemo(file);
     M_LoadSamples(file);
 
@@ -661,26 +660,6 @@ static void M_LoadItems(VFILE *file)
         }
     }
 
-    Benchmark_End(benchmark, nullptr);
-}
-
-static void M_LoadCinematic(VFILE *file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    const int16_t num_frames = VFile_ReadS16(file);
-    LOG_INFO("%d cinematic frames", num_frames);
-    Camera_InitialiseCineFrames(num_frames);
-    for (int32_t i = 0; i < num_frames; i++) {
-        CINE_FRAME *const frame = Camera_GetCineFrame(i);
-        frame->tx = VFile_ReadS16(file);
-        frame->ty = VFile_ReadS16(file);
-        frame->tz = VFile_ReadS16(file);
-        frame->cx = VFile_ReadS16(file);
-        frame->cy = VFile_ReadS16(file);
-        frame->cz = VFile_ReadS16(file);
-        frame->fov = VFile_ReadS16(file);
-        frame->roll = VFile_ReadS16(file);
-    }
     Benchmark_End(benchmark, nullptr);
 }
 
