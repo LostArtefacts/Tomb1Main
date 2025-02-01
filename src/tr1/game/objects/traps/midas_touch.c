@@ -95,7 +95,7 @@ void MidasTouch_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
         g_Camera.type = CAM_CINEMATIC;
         g_CineFrame = 0;
         g_CinePosition.pos = lara_item->pos;
-        g_CinePosition.rot = lara_item->rot.y;
+        g_CinePosition.rot.y = lara_item->rot.y;
         return;
     }
 

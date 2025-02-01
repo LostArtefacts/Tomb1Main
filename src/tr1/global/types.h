@@ -172,11 +172,6 @@ typedef struct {
 } DOORPOS_DATA;
 
 typedef struct {
-    XYZ_32 pos;
-    int16_t rot;
-} CINE_POSITION;
-
-typedef struct {
     int32_t lara_hitpoints;
     uint16_t pistol_ammo;
     uint16_t magnum_ammo;

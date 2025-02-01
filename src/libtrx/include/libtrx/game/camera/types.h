@@ -59,3 +59,8 @@ typedef struct {
     int16_t fov;
     int16_t roll;
 } CINE_FRAME;
+
+typedef struct {
+    XYZ_32 pos;
+    XYZ_16 rot;
+} CINE_POSITION;

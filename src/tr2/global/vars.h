@@ -87,7 +87,7 @@ extern int32_t g_FlipStatus;
 extern ITEM *g_Items;
 extern int16_t g_NumCineFrames;
 extern CINE_FRAME *g_CineData;
-extern PHD_3DPOS g_CinePos;
+extern CINE_POSITION g_CinePos;
 extern int16_t g_CineFrameIdx;
 extern BOX_INFO *g_Boxes;
 extern int16_t *g_FlyZone[2];

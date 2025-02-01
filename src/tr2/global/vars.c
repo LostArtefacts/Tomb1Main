@@ -88,7 +88,7 @@ int32_t g_FlipStatus;
 ITEM *g_Items = nullptr;
 int16_t g_NumCineFrames;
 CINE_FRAME *g_CineData = nullptr;
-PHD_3DPOS g_CinePos;
+CINE_POSITION g_CinePos;
 int16_t g_CineFrameIdx;
 BOX_INFO *g_Boxes = nullptr;
 int16_t *g_FlyZone[2] = {};

@@ -820,8 +820,8 @@ void Camera_UpdateCutscene(void)
     }
     const CINE_FRAME *const ref = &g_CineCamera[g_CineFrame];
 
-    const int32_t c = Math_Cos(g_CinePosition.rot);
-    const int32_t s = Math_Sin(g_CinePosition.rot);
+    const int32_t c = Math_Cos(g_CinePosition.rot.y);
+    const int32_t s = Math_Sin(g_CinePosition.rot.y);
     const XYZ_32 *const pos = &g_CinePosition.pos;
     g_Camera.target.x = pos->x + ((c * ref->tx + s * ref->tz) >> W2V_SHIFT);
     g_Camera.target.y = pos->y + ref->ty;
