@@ -450,7 +450,7 @@ void GF_PreSequenceHook(void)
 GF_SEQUENCE_CONTEXT GF_SwitchSequenceContext(
     const GF_SEQUENCE_EVENT *const event, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
-    if (event->type != GFS_LOAD_LEVEL && event->type != GFS_PLAY_LEVEL) {
+    if (event->type != GFS_PLAY_LEVEL) {
         return seq_ctx;
     }
     switch (seq_ctx) {
