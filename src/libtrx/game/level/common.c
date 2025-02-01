@@ -223,9 +223,10 @@ void Level_ReadTexturePages(
     const int32_t texture_size_16_bit =
         num_pages * TEXTURE_PAGE_SIZE * sizeof(uint16_t);
     uint16_t *input = Memory_Alloc(texture_size_16_bit);
+    uint16_t *input_ptr = input;
     VFile_Read(file, input, texture_size_16_bit);
     for (int32_t i = 0; i < num_pages * TEXTURE_PAGE_SIZE; i++) {
-        *output++ = M_ARGB1555To8888(*input++);
+        *output++ = M_ARGB1555To8888(*input_ptr++);
     }
     Memory_FreePointer(&input);
 #endif
