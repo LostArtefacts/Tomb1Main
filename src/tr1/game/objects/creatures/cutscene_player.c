@@ -18,8 +18,9 @@ void CutscenePlayer_Initialise(int16_t item_num)
     ITEM *const item = &g_Items[item_num];
     if (item->object_id == O_PLAYER_1) {
         g_Camera.pos.room_num = item->room_num;
-        g_CineData.position.pos = item->pos;
-        g_CineData.position.rot.y = 0;
+        CINE_DATA *const cine_data = Camera_GetCineData();
+        cine_data->position.pos = item->pos;
+        cine_data->position.rot.y = 0;
     }
     item->rot.y = 0;
 }
@@ -28,8 +29,9 @@ void CutscenePlayer_Control(int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
     if (item->object_id != O_PLAYER_4) {
-        item->rot.y = g_CineData.position.rot.y;
-        item->pos = g_CineData.position.pos;
+        CINE_DATA *const cine_data = Camera_GetCineData();
+        item->rot.y = cine_data->position.rot.y;
+        item->pos = cine_data->position.pos;
     }
     Item_Animate(item);
 }

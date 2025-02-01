@@ -24,7 +24,7 @@ static void M_FixAudioDrift(void);
 static void M_FixAudioDrift(void)
 {
     const int32_t audio_frame_idx = Music_GetTimestamp() * FRAMES_PER_SECOND;
-    const int32_t game_frame_idx = g_CineData.frame_idx;
+    const int32_t game_frame_idx = Camera_GetCineData()->frame_idx;
     const int32_t audio_drift = ABS(audio_frame_idx - game_frame_idx);
     if (audio_drift >= FRAMES_PER_SECOND * 0.2) {
         LOG_DEBUG("Detected audio drift: %d frames", audio_drift);
@@ -39,10 +39,11 @@ bool Cutscene_Start(const int32_t level_num)
 
     Room_InitCinematic();
     CutscenePlayer1_Initialise(g_Lara.item_num);
-    g_Camera.target_angle = g_CineData.position.target_angle;
+    CINE_DATA *const cine_data = Camera_GetCineData();
+    g_Camera.target_angle = cine_data->position.target_angle;
 
     Music_SetVolume(10);
-    g_CineData.frame_idx = 0;
+    cine_data->frame_idx = 0;
     return true;
 }
 
@@ -81,8 +82,9 @@ GF_COMMAND Cutscene_Control(void)
     Camera_UpdateCutscene();
     Output_AnimateTextures(1);
 
-    g_CineData.frame_idx++;
-    if (g_CineData.frame_idx >= g_CineData.frame_count) {
+    CINE_DATA *const cine_data = Camera_GetCineData();
+    cine_data->frame_idx++;
+    if (cine_data->frame_idx >= cine_data->frame_count) {
         return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 

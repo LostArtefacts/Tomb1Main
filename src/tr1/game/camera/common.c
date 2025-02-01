@@ -12,10 +12,7 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
-#include <libtrx/game/camera/common.h>
-#include <libtrx/game/camera/const.h>
-#include <libtrx/game/camera/photo_mode.h>
-#include <libtrx/game/camera/vars.h>
+#include <libtrx/game/camera.h>
 #include <libtrx/game/math.h>
 #include <libtrx/game/matrix.h>
 
@@ -199,9 +196,10 @@ static void M_Fixed(void)
 
 static void M_LoadCutsceneFrame(void)
 {
-    g_CineData.frame_idx++;
-    if (g_CineData.frame_idx >= g_CineData.frame_count) {
-        g_CineData.frame_idx = g_CineData.frame_count - 1;
+    CINE_DATA *const cine_data = Camera_GetCineData();
+    cine_data->frame_idx++;
+    if (cine_data->frame_idx >= cine_data->frame_count) {
+        cine_data->frame_idx = cine_data->frame_count - 1;
     }
 
     Camera_UpdateCutscene();
@@ -815,14 +813,15 @@ void Camera_Update(void)
 
 void Camera_UpdateCutscene(void)
 {
-    if (g_CineData.frame_count == 0) {
+    const CINE_DATA *const cine_data = Camera_GetCineData();
+    if (cine_data->frame_count == 0) {
         return;
     }
 
     const CINE_FRAME *const ref = Camera_GetCurrentCineFrame();
-    const int32_t c = Math_Cos(g_CineData.position.rot.y);
-    const int32_t s = Math_Sin(g_CineData.position.rot.y);
-    const XYZ_32 *const pos = &g_CineData.position.pos;
+    const int32_t c = Math_Cos(cine_data->position.rot.y);
+    const int32_t s = Math_Sin(cine_data->position.rot.y);
+    const XYZ_32 *const pos = &cine_data->position.pos;
     g_Camera.target.x = pos->x + ((c * ref->tx + s * ref->tz) >> W2V_SHIFT);
     g_Camera.target.y = pos->y + ref->ty;
     g_Camera.target.z = pos->z + ((c * ref->tz - s * ref->tx) >> W2V_SHIFT);

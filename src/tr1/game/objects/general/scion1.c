@@ -77,9 +77,10 @@ void Scion1_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             lara_item, EXTRA_ANIM_PEDESTAL_SCION, 0, O_LARA_EXTRA);
         g_Lara.gun_status = LGS_HANDS_BUSY;
         g_Camera.type = CAM_CINEMATIC;
-        g_CineData.frame_idx = 0;
-        g_CineData.position.pos = lara_item->pos;
-        g_CineData.position.rot.y = lara_item->rot.y;
+        CINE_DATA *const cine_data = Camera_GetCineData();
+        cine_data->frame_idx = 0;
+        cine_data->position.pos = lara_item->pos;
+        cine_data->position.rot.y = lara_item->rot.y;
     }
 cleanup:
     item->rot.x = rotx;

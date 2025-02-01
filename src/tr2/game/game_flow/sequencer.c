@@ -2,6 +2,7 @@
 
 #include "decomp/decomp.h"
 #include "decomp/savegame.h"
+#include "game/camera.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow.h"
@@ -230,7 +231,8 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_SAVED) {
-        g_CineData.position.target_angle = (int16_t)(intptr_t)event->data;
+        Camera_GetCineData()->position.target_angle =
+            (int16_t)(intptr_t)event->data;
     }
     return gf_cmd;
 }
@@ -304,7 +306,7 @@ void GF_PreSequenceHook(void)
     g_GF_LaraStartAnim = 0;
     g_GF_RemoveAmmo = false;
     g_GF_RemoveWeapons = false;
-    g_CineData.position.target_angle = DEG_90;
+    Camera_GetCineData()->position.target_angle = DEG_90;
     g_GF_NumSecrets = 3;
     GF_InventoryModifier_Reset();
 }

@@ -1,5 +1,6 @@
 #include "decomp/decomp.h"
 
+#include "game/camera.h"
 #include "game/collide.h"
 #include "game/game_flow.h"
 #include "game/items.h"
@@ -90,7 +91,7 @@ void CutscenePlayer1_Initialise(const int16_t item_num)
     m_LocalCamera.pos.pos.x = item->pos.x;
     m_LocalCamera.pos.pos.y = item->pos.y;
     m_LocalCamera.pos.pos.z = item->pos.z;
-    m_LocalCamera.target_angle = g_CineData.position.target_angle;
+    m_LocalCamera.target_angle = Camera_GetCineData()->position.target_angle;
     m_LocalCamera.pos.room_num = item->room_num;
 
     item->rot.y = 0;

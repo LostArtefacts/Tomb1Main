@@ -1,5 +1,6 @@
 #include "game/game_flow/sequencer.h"
 
+#include "game/camera.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow/common.h"
@@ -380,7 +381,7 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraPos)
 static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 {
     if (seq_ctx != GFSC_STORY) {
-        g_CineData.position.rot.y = (int32_t)(intptr_t)event->data;
+        Camera_GetCineData()->position.rot.y = (int32_t)(intptr_t)event->data;
     }
     return (GF_COMMAND) { .action = GF_NOOP };
 }
