@@ -18,9 +18,8 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/debug.h>
 #include <libtrx/memory.h>
-
-#include <stdint.h>
 
 static void M_InitialiseLara(const GF_LEVEL *level);
 
@@ -60,11 +59,7 @@ static void M_InitialiseLara(const GF_LEVEL *const level)
 bool Cutscene_Start(const int32_t level_num)
 {
     const GF_LEVEL *const level = GF_GetLevel(GFLT_CUTSCENES, level_num);
-    if (GF_GetCurrentLevel()->num != level_num) {
-        if (!Level_Initialise(level)) {
-            return false;
-        }
-    }
+    ASSERT(GF_GetCurrentLevel() == level);
 
     M_InitialiseLara(level);
 

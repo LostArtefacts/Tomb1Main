@@ -203,6 +203,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
         ASSERT(GF_GetCurrentLevel() == level);
         gf_cmd = GF_RunDemo(level->num);
     } else if (level->type == GFL_CUTSCENE) {
+        ASSERT(GF_GetCurrentLevel() == level);
         gf_cmd = GF_RunCutscene(level->num);
     } else {
         if (seq_ctx != GFSC_SAVED && level != GF_GetFirstLevel()) {
