@@ -28,7 +28,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_SG_BUFFER_SIZE 6272
 #define SAVE_CREATURE (1 << 7)
 
 #define SPECIAL_READ_WRITES                                                    \
@@ -875,7 +874,7 @@ void CreateSaveGameInfo(void)
     g_SaveGame.num_key[3] = Inv_RequestItem(O_KEY_ITEM_4);
 
     ResetSG();
-    memset(g_SaveGame.buffer, 0, sizeof(g_SaveGame.buffer));
+    memset(g_SaveGame.buffer, 0, MAX_SG_BUFFER_SIZE);
 
     M_WriteS32(g_FlipStatus);
     for (int32_t i = 0; i < MAX_FLIP_MAPS; i++) {
@@ -1057,7 +1056,8 @@ int32_t S_SaveGame(const int32_t slot_num)
     const GF_LEVEL *const current_level =
         GF_GetLevel(GFLT_MAIN, g_SaveGame.current_level);
 
-    sprintf(file_name, "%s", current_level->title);
+    memset(file_name, 0, 75);
+    snprintf(file_name, 75, "%s", current_level->title);
     File_WriteData(fp, file_name, 75);
     File_WriteS32(fp, g_SaveCounter);
     M_WriteStartInfos(fp);

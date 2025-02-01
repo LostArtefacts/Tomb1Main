@@ -433,6 +433,8 @@ void Shell_Main(void)
 
 void Shell_Shutdown(void)
 {
+    SDL_DestroyWindow(g_SDLWindow);
+
     GF_Shutdown();
     GameString_Shutdown();
     Console_Shutdown();
@@ -442,6 +444,8 @@ void Shell_Shutdown(void)
     GameBuf_Shutdown();
     Config_Shutdown();
     EnumMap_Shutdown();
+
+    SDL_Quit();
 }
 
 const char *Shell_GetConfigPath(void)

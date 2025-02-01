@@ -149,7 +149,7 @@ typedef struct {
     uint8_t num_puzzle[4];
     uint8_t num_key[4];
     uint16_t reserved;
-    char buffer[6272]; // MAX_SG_BUFFER_SIZE
+    char buffer[MAX_SG_BUFFER_SIZE];
 } SAVEGAME_INFO;
 
 typedef struct {

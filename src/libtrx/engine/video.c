@@ -267,7 +267,7 @@ typedef struct {
 } M_STATE;
 
 static int64_t m_AudioCallbackTime;
-static SDL_AudioDeviceID m_AudioDevice;
+static SDL_AudioDeviceID m_AudioDevice = 0;
 
 static int M_PacketQueuePutPrivate(M_PACKET_QUEUE *q, AVPacket *pkt)
 {
@@ -778,10 +778,13 @@ static void M_StreamComponentClose(M_STATE *is, int stream_index)
     switch (codecpar->codec_type) {
     case AVMEDIA_TYPE_AUDIO:
         M_DecoderAbort(&is->auddec, &is->sampq);
-        SDL_CloseAudioDevice(m_AudioDevice);
         M_DecoderShutdown(&is->auddec);
         swr_free(&is->swr_ctx);
         av_freep(&is->audio_buf1);
+        if (m_AudioDevice > 0) {
+            SDL_CloseAudioDevice(m_AudioDevice);
+            m_AudioDevice = 0;
+        }
         is->audio_buf1_size = 0;
         is->audio_buf = nullptr;
 
