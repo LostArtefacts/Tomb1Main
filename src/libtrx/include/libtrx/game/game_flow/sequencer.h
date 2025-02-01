@@ -18,3 +18,7 @@ GF_COMMAND GF_DoCutsceneSequence(int32_t cutscene_num);
 
 extern GF_COMMAND GF_InterpretSequence(
     const GF_LEVEL *level, GF_SEQUENCE_CONTEXT seq_ctx, void *seq_ctx_arg);
+
+GF_COMMAND GF_RunSequencerQueue(
+    GF_EVENT_QUEUE_TYPE queue_type, const GF_LEVEL *level,
+    GF_SEQUENCE_CONTEXT seq_ctx, void *seq_ctx_arg);

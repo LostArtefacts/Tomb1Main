@@ -327,8 +327,14 @@ bool GF_ShouldSkipSequenceEvent(
     return false;
 }
 
-GF_COMMAND(*GF_GetSequenceEventHandler(GF_SEQUENCE_EVENT_TYPE event_type))
-(const GF_LEVEL *, const GF_SEQUENCE_EVENT *, GF_SEQUENCE_CONTEXT, void *)
+GF_EVENT_QUEUE_TYPE GF_ShouldDeferSequenceEvent(
+    const GF_SEQUENCE_EVENT_TYPE event_type)
+{
+    return GF_EVENT_QUEUE_NONE;
+}
+
+GF_SEQUENCE_EVENT_HANDLER GF_GetSequenceEventHandler(
+    const GF_SEQUENCE_EVENT_TYPE event_type)
 {
     return m_EventHandlers[event_type];
 }

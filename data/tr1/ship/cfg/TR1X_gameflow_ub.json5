@@ -49,7 +49,6 @@
             "path": "data/egypt.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -68,7 +67,6 @@
             "path": "data/cat.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -88,7 +86,6 @@
             "path": "data/end.phd",
             "music_track": 60,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -106,7 +103,6 @@
             "path": "data/end2.phd",
             "music_track": 60,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 19},

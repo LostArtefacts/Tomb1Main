@@ -26,7 +26,6 @@ typedef struct {
 } M_SEQUENCE_EVENT_HANDLER;
 
 static M_SEQUENCE_EVENT_HANDLER *M_GetSequenceEventHandlers(void);
-static GF_SEQUENCE_EVENT_TYPE *M_GetLevelArgSequenceEvents(void);
 
 typedef void (*M_LOAD_ARRAY_FUNC)(
     JSON_OBJECT *source_elem, const GAME_FLOW *gf, void *target_elem,
@@ -304,18 +303,7 @@ static void M_LoadLevelSequence(
 
     for (int32_t i = 0; i < level->sequence.length; i++) {
         GF_SEQUENCE_EVENT *const event = &level->sequence.events[i];
-
-        bool should_fix = false;
-        const GF_SEQUENCE_EVENT_TYPE *ptr = M_GetLevelArgSequenceEvents();
-        while (*ptr != (GF_SEQUENCE_EVENT_TYPE)-1) {
-            if (event->type == *ptr) {
-                should_fix = true;
-                break;
-            }
-            ptr++;
-        }
-
-        if (should_fix && (int32_t)(intptr_t)event->data == -1) {
+        if (event->type == GFS_PLAY_LEVEL) {
             event->data = (void *)(intptr_t)level->num;
         }
     }

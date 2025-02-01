@@ -194,3 +194,6 @@ typedef struct {
     GF_LEVEL_SETTINGS settings;
     INJECTION_DATA injections;
 } GAME_FLOW;
+
+typedef GF_COMMAND (*GF_SEQUENCE_EVENT_HANDLER)(
+    const GF_LEVEL *, const GF_SEQUENCE_EVENT *, GF_SEQUENCE_CONTEXT, void *);

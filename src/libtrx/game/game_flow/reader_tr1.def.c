@@ -8,12 +8,6 @@ static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent);
 static void M_LoadLevelItemDrops(
     JSON_OBJECT *obj, const GAME_FLOW *gf, GF_LEVEL *level);
 
-static GF_SEQUENCE_EVENT_TYPE m_LevelArgSequenceEvents[] = {
-    GFS_LOAD_LEVEL,
-    GFS_PLAY_LEVEL,
-    (GF_SEQUENCE_EVENT_TYPE)-1,
-};
-
 static GF_LEVEL_SETTINGS m_DefaultSettings = {
     .water_color = { .r = 0.6, .g = 0.7, .b = 1.0 },
     .draw_distance_fade = 12.0f,
@@ -33,7 +27,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { GFS_LEVEL_COMPLETE,    nullptr, nullptr },
 
     // Events with integer arguments
-    { GFS_LOAD_LEVEL,        M_HandleIntEvent, "level_id" },
     { GFS_PLAY_LEVEL,        M_HandleIntEvent, "level_id" },
     { GFS_PLAY_CUTSCENE,     M_HandleIntEvent, "cutscene_id" },
     { GFS_PLAY_FMV,          M_HandleIntEvent, "fmv_id" },
@@ -92,11 +85,6 @@ static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent)
         event->data = event_data;
     }
     return strlen(path) + 1;
-}
-
-GF_SEQUENCE_EVENT_TYPE *M_GetLevelArgSequenceEvents(void)
-{
-    return m_LevelArgSequenceEvents;
 }
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent)

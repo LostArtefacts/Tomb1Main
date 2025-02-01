@@ -44,7 +44,6 @@
             "music_track": 0,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp"},
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},

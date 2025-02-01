@@ -209,7 +209,7 @@ void Shell_Main(void)
 
         case GF_SELECT_GAME: {
             const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
-            gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
+            gf_cmd = GF_DoLevelSequence(level, GFSC_SELECT);
             break;
         }
 

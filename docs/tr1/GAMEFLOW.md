@@ -253,7 +253,6 @@ Following are each of the properties available within a level.
     ],
     "sequence": [
         {"type": "play_fmv", "fmv_id": 0},
-        {"type": "load_level"},
         // etc
     ],
 },
@@ -480,13 +479,6 @@ default gameflow for examples.
   </tr>
   <tr valign="top">
     <td>
-      <code>load_level</code>
-    </td>
-    <td colspan="2" align="center">N/A</td>
-    <td>Loads a specific level or a cinematic, but does not play it yet.</td>
-  </tr>
-  <tr valign="top">
-    <td>
       <code>play_level</code>
     </td>
     <td colspan="2" align="center">N/A</td>
@@ -641,8 +633,7 @@ default gameflow for examples.
     </td>
     <td>Integer / String</td>
     <td rowspan="2">
-      Adds the specified item and quantity to Lara's inventory. If used, this
-      must appear <em>after</em> the <code>load_level</code> sequence.
+      Adds the specified item and quantity to Lara's inventory.
     </td>
   </tr>
   <tr valign="top">
@@ -689,13 +680,9 @@ default gameflow for examples.
     </td>
     <td colspan="2" align="center">N/A</td>
     <td rowspan="4">
-      Any combination of these four sequences can be used to modify Lara's
+      Any combination of these sequences can be used to modify Lara's
       inventory at the start of a level. There are a few simple points to note:
       <ul>
-        <li>
-          If they are specified, they must appear <em>before</em> the
-          <code>load_level</code> sequence.
-        </li>
         <li>
           <code>remove_weapons</code> does not remove the ammo for those guns, and
           equally <code>remove_ammo</code> does not remove the guns. Each works
@@ -813,7 +800,6 @@ game will exit to title.
             "path": "data/level1.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -824,7 +810,6 @@ game will exit to title.
             "path": "data/level2.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -835,7 +820,6 @@ game will exit to title.
             "path": "data/level3.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 19},
@@ -854,7 +838,6 @@ game will exit to title.
             "music_track": 57,
             "sequence": [
                 {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_stats"},
@@ -867,7 +850,6 @@ game will exit to title.
             "type": "bonus",
             "music_track": 57,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "play_level"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 14},
@@ -882,7 +864,6 @@ game will exit to title.
             "path": "data/bonuscut1.phd",
             "music_track": 23,
             "sequence": [
-                {"type": "load_level"},
                 {"type": "set_cutscene_angle", "value": -23312},
                 {"type": "play_level"},
             ],
@@ -924,7 +905,6 @@ the engine's overall item limit).
         {"enemy_num": 47, "object_ids": [111]},
     ],
     "sequence": [
-         {"type": "load_level"},
          {"type": "play_level"},
          {"type": "level_stats"},
          {"type": "level_complete"},

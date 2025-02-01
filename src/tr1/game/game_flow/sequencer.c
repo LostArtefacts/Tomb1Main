@@ -47,7 +47,6 @@ static DECLARE_EVENT_HANDLER(M_HandleSetupBaconLara);
 static DECLARE_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     // clang-format off
     [GFS_EXIT_TO_TITLE]    = M_HandleExitToTitle,
-    [GFS_LOAD_LEVEL]       = M_HandleLoadLevel,
     [GFS_PLAY_LEVEL]       = M_HandlePlayLevel,
     [GFS_PLAY_CUTSCENE]    = M_HandlePlayCutscene,
     [GFS_PLAY_FMV]         = M_HandlePlayFMV,
@@ -80,11 +79,12 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     const GF_LEVEL *const prev_level = GF_GetLevelBefore(level);
 
+    // before load
     switch (seq_ctx) {
     case GFSC_STORY:
         const int32_t savegame_level_num = (int32_t)(intptr_t)seq_ctx_arg;
         if (savegame_level_num == level->num) {
-            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         break;
 
@@ -92,19 +92,6 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
         // reset current info to the defaults so that we do not do
         // Item_GlobalReplace in the inventory initialization routines too early
         Savegame_InitCurrentInfo();
-        const int16_t slot_num = Savegame_GetBoundSlot();
-
-        if (!Level_Initialise(level)) {
-            Game_SetCurrentLevel(nullptr);
-            GF_SetCurrentLevel(nullptr);
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
-        if (!Savegame_Load(slot_num)) {
-            LOG_ERROR("Failed to load save file!");
-            Game_SetCurrentLevel(nullptr);
-            GF_SetCurrentLevel(nullptr);
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
         break;
 
     case GFSC_RESTART:
@@ -114,11 +101,6 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
             Savegame_ResetCurrentInfo(level);
             Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
             Savegame_ApplyLogicToCurrentInfo(level);
-        }
-        if (!Level_Initialise(level)) {
-            Game_SetCurrentLevel(nullptr);
-            GF_SetCurrentLevel(nullptr);
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
         break;
 
@@ -151,11 +133,6 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
                 tmp_level = GF_GetLevelAfter(tmp_level);
             }
         }
-        if (!Level_Initialise(level)) {
-            Game_SetCurrentLevel(nullptr);
-            GF_SetCurrentLevel(nullptr);
-            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-        }
         break;
 
     default:
@@ -166,16 +143,45 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
             Savegame_CarryCurrentInfoToNextLevel(prev_level, level);
             Savegame_ApplyLogicToCurrentInfo(level);
         }
+    }
 
-        if (!Level_Initialise(level)) {
+    gf_cmd = GF_RunSequencerQueue(
+        GF_EVENT_QUEUE_BEFORE_LEVEL_INIT, level, seq_ctx, seq_ctx_arg);
+    if (gf_cmd.action != GF_NOOP) {
+        return gf_cmd;
+    }
+
+    // load the level
+    if (!Level_Initialise(level)) {
+        Game_SetCurrentLevel(nullptr);
+        GF_SetCurrentLevel(nullptr);
+        if (level->type == GFL_TITLE) {
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
+        } else {
+            gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+    }
+
+    gf_cmd = GF_RunSequencerQueue(
+        GF_EVENT_QUEUE_AFTER_LEVEL_INIT, level, seq_ctx, seq_ctx_arg);
+    if (gf_cmd.action != GF_NOOP) {
+        return gf_cmd;
+    }
+
+    // post load
+    switch (seq_ctx) {
+    case GFSC_SAVED: {
+        const int16_t slot_num = Savegame_GetBoundSlot();
+        if (!Savegame_Load(slot_num)) {
+            LOG_ERROR("Failed to load save file!");
             Game_SetCurrentLevel(nullptr);
             GF_SetCurrentLevel(nullptr);
-            if (level->type == GFL_TITLE) {
-                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
-            } else {
-                gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
-            }
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
         }
+        break;
+    }
+
+    default:
         break;
     }
 
@@ -196,6 +202,14 @@ static DECLARE_EVENT_HANDLER(M_HandleLoadLevel)
 
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
 {
+    {
+        GF_COMMAND gf_cmd =
+            M_HandleLoadLevel(level, event, seq_ctx, seq_ctx_arg);
+        if (gf_cmd.action != GF_NOOP) {
+            return gf_cmd;
+        }
+    }
+
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_STORY) {
         const int32_t savegame_level_num = (int32_t)(intptr_t)seq_ctx_arg;
@@ -503,8 +517,31 @@ bool GF_ShouldSkipSequenceEvent(
     return false;
 }
 
-GF_COMMAND(*GF_GetSequenceEventHandler(GF_SEQUENCE_EVENT_TYPE event_type))
-(const GF_LEVEL *, const GF_SEQUENCE_EVENT *, GF_SEQUENCE_CONTEXT, void *)
+GF_EVENT_QUEUE_TYPE GF_ShouldDeferSequenceEvent(
+    const GF_SEQUENCE_EVENT_TYPE event_type)
+{
+    switch (event_type) {
+    case GFS_SET_CAMERA_POS:
+    case GFS_SET_CAMERA_ANGLE:
+    case GFS_FLIP_MAP:
+    case GFS_ADD_ITEM:
+    case GFS_MESH_SWAP:
+    case GFS_SETUP_BACON_LARA:
+        return GF_EVENT_QUEUE_AFTER_LEVEL_INIT;
+
+    case GFS_REMOVE_WEAPONS:
+    case GFS_REMOVE_SCIONS:
+    case GFS_REMOVE_AMMO:
+    case GFS_REMOVE_MEDIPACKS:
+        return GF_EVENT_QUEUE_BEFORE_LEVEL_INIT;
+
+    default:
+        return GF_EVENT_QUEUE_NONE;
+    };
+}
+
+GF_SEQUENCE_EVENT_HANDLER GF_GetSequenceEventHandler(
+    const GF_SEQUENCE_EVENT_TYPE event_type)
 {
     return m_EventHandlers[event_type];
 }

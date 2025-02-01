@@ -41,11 +41,6 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format on
 };
 
-GF_SEQUENCE_EVENT_TYPE *M_GetLevelArgSequenceEvents(void)
-{
-    return m_LevelArgSequenceEvents;
-}
-
 static void M_LoadSettings(
     JSON_OBJECT *const obj, GF_LEVEL_SETTINGS *const settings)
 {
