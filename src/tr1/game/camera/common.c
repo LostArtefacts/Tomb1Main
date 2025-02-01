@@ -818,7 +818,7 @@ void Camera_UpdateCutscene(void)
     if (g_CineCamera == nullptr) {
         return;
     }
-    const CINE_CAMERA *const ref = &g_CineCamera[g_CineFrame];
+    const CINE_FRAME *const ref = &g_CineCamera[g_CineFrame];
 
     const int32_t c = Math_Cos(g_CinePosition.rot);
     const int32_t s = Math_Sin(g_CinePosition.rot);

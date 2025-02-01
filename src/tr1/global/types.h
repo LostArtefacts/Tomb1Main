@@ -172,17 +172,6 @@ typedef struct {
 } DOORPOS_DATA;
 
 typedef struct {
-    int16_t tx;
-    int16_t ty;
-    int16_t tz;
-    int16_t cx;
-    int16_t cy;
-    int16_t cz;
-    int16_t fov;
-    int16_t roll;
-} CINE_CAMERA;
-
-typedef struct {
     XYZ_32 pos;
     int16_t rot;
 } CINE_POSITION;

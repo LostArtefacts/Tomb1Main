@@ -50,7 +50,7 @@ extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
 extern int16_t g_NumCineFrames;
 extern int16_t g_CineFrame;
-extern CINE_CAMERA *g_CineCamera;
+extern CINE_FRAME *g_CineCamera;
 extern CINE_POSITION g_CinePosition;
 extern int32_t g_NumberCameras;
 extern int32_t g_NumberSoundEffects;

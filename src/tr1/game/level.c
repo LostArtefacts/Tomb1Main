@@ -671,17 +671,17 @@ static void M_LoadCinematic(VFILE *file)
     LOG_INFO("%d cinematic frames", g_NumCineFrames);
     if (g_NumCineFrames != 0) {
         g_CineCamera = GameBuf_Alloc(
-            sizeof(CINE_CAMERA) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
+            sizeof(CINE_FRAME) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
         for (int32_t i = 0; i < g_NumCineFrames; i++) {
-            CINE_CAMERA *camera = &g_CineCamera[i];
-            camera->tx = VFile_ReadS16(file);
-            camera->ty = VFile_ReadS16(file);
-            camera->tz = VFile_ReadS16(file);
-            camera->cx = VFile_ReadS16(file);
-            camera->cy = VFile_ReadS16(file);
-            camera->cz = VFile_ReadS16(file);
-            camera->fov = VFile_ReadS16(file);
-            camera->roll = VFile_ReadS16(file);
+            CINE_FRAME *const frame = &g_CineCamera[i];
+            frame->tx = VFile_ReadS16(file);
+            frame->ty = VFile_ReadS16(file);
+            frame->tz = VFile_ReadS16(file);
+            frame->cx = VFile_ReadS16(file);
+            frame->cy = VFile_ReadS16(file);
+            frame->cz = VFile_ReadS16(file);
+            frame->fov = VFile_ReadS16(file);
+            frame->roll = VFile_ReadS16(file);
         }
     }
     Benchmark_End(benchmark, nullptr);
