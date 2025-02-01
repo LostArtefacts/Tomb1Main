@@ -202,14 +202,14 @@ void Shell_Main(void)
             const int32_t level_num = gf_cmd.param;
             const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
             if (level != nullptr) {
-                gf_cmd = GF_InterpretSequence(level, GFSC_NORMAL, nullptr);
+                gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
             }
             break;
         }
 
         case GF_SELECT_GAME: {
             const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, gf_cmd.param);
-            gf_cmd = GF_InterpretSequence(level, GFSC_SELECT, nullptr);
+            gf_cmd = GF_DoLevelSequence(level, GFSC_NORMAL);
             break;
         }
 
@@ -222,7 +222,7 @@ void Shell_Main(void)
             } else {
                 Savegame_BindSlot(slot_num);
                 const GF_LEVEL *const level = GF_GetLevel(GFLT_MAIN, level_num);
-                gf_cmd = GF_InterpretSequence(level, GFSC_SAVED, nullptr);
+                gf_cmd = GF_DoLevelSequence(level, GFSC_SAVED);
             }
             break;
         }
