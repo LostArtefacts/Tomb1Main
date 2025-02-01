@@ -82,6 +82,7 @@ RUN apt-get install -y \
     libwayland-egl1 \
     automake \
     gcc \
+    libxrandr-dev \
     libxext-dev
 RUN cd SDL \
     && aclocal -I acinclude \
@@ -90,6 +91,7 @@ RUN cd SDL \
     && cd sdl_build \
     && ../configure \
         --prefix=/ext/ \
+        --enable-video-x11-xrandr \
         --enable-shared \
         --enable-static \
     && make -j 4 \
