@@ -119,7 +119,7 @@ static void M_PullDagger(ITEM *const lara_item, ITEM *const dragon_back_item)
     Lara_SwapSingleMesh(LM_HAND_R, O_LARA_EXTRA);
 
     g_Camera.type = CAM_CINEMATIC;
-    g_CineFrameIdx = 0;
+    g_CineData.frame_idx = 0;
     g_CinePos.pos = lara_item->pos;
     g_CinePos.rot = lara_item->rot;
 

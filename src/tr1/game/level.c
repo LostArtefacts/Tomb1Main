@@ -667,13 +667,13 @@ static void M_LoadItems(VFILE *file)
 static void M_LoadCinematic(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_NumCineFrames = VFile_ReadS16(file);
-    LOG_INFO("%d cinematic frames", g_NumCineFrames);
-    if (g_NumCineFrames != 0) {
-        g_CineCamera = GameBuf_Alloc(
-            sizeof(CINE_FRAME) * g_NumCineFrames, GBUF_CINEMATIC_FRAMES);
-        for (int32_t i = 0; i < g_NumCineFrames; i++) {
-            CINE_FRAME *const frame = &g_CineCamera[i];
+    g_CineData.frame_count = VFile_ReadS16(file);
+    LOG_INFO("%d cinematic frames", g_CineData.frame_count);
+    if (g_CineData.frame_count != 0) {
+        g_CineData.frames = GameBuf_Alloc(
+            sizeof(CINE_FRAME) * g_CineData.frame_count, GBUF_CINEMATIC_FRAMES);
+        for (int32_t i = 0; i < g_CineData.frame_count; i++) {
+            CINE_FRAME *const frame = &g_CineData.frames[i];
             frame->tx = VFile_ReadS16(file);
             frame->ty = VFile_ReadS16(file);
             frame->tz = VFile_ReadS16(file);

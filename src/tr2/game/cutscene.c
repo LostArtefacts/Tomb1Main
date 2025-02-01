@@ -24,7 +24,7 @@ static void M_FixAudioDrift(void);
 static void M_FixAudioDrift(void)
 {
     const int32_t audio_frame_idx = Music_GetTimestamp() * FRAMES_PER_SECOND;
-    const int32_t game_frame_idx = g_CineFrameIdx;
+    const int32_t game_frame_idx = g_CineData.frame_idx;
     const int32_t audio_drift = ABS(audio_frame_idx - game_frame_idx);
     if (audio_drift >= FRAMES_PER_SECOND * 0.2) {
         LOG_DEBUG("Detected audio drift: %d frames", audio_drift);
@@ -42,7 +42,7 @@ bool Cutscene_Start(const int32_t level_num)
     g_Camera.target_angle = g_CinePos.target_angle;
 
     Music_SetVolume(10);
-    g_CineFrameIdx = 0;
+    g_CineData.frame_idx = 0;
     return true;
 }
 
@@ -81,8 +81,8 @@ GF_COMMAND Cutscene_Control(void)
     Camera_UpdateCutscene();
     Output_AnimateTextures(1);
 
-    g_CineFrameIdx++;
-    if (g_CineFrameIdx >= g_NumCineFrames) {
+    g_CineData.frame_idx++;
+    if (g_CineData.frame_idx >= g_CineData.frame_count) {
         return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 

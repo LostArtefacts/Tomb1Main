@@ -78,7 +78,7 @@ bool Cutscene_Start(const int32_t level_num)
         }
     }
 
-    g_CineFrame = 0;
+    g_CineData.frame_idx = 0;
     return true;
 }
 
@@ -116,9 +116,9 @@ GF_COMMAND Cutscene_Control(void)
     Camera_UpdateCutscene();
     Output_AnimateTextures(1);
 
-    g_CineFrame++;
-    if (g_CineFrame >= g_NumCineFrames - 1) {
-        g_CineFrame = g_NumCineFrames - 2;
+    g_CineData.frame_idx++;
+    if (g_CineData.frame_idx >= g_CineData.frame_count - 1) {
+        g_CineData.frame_idx = g_CineData.frame_count - 2;
         return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 

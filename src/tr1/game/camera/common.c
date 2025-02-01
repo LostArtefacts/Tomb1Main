@@ -199,9 +199,9 @@ static void M_Fixed(void)
 
 static void M_LoadCutsceneFrame(void)
 {
-    g_CineFrame++;
-    if (g_CineFrame >= g_NumCineFrames) {
-        g_CineFrame = g_NumCineFrames - 1;
+    g_CineData.frame_idx++;
+    if (g_CineData.frame_idx >= g_CineData.frame_count) {
+        g_CineData.frame_idx = g_CineData.frame_count - 1;
     }
 
     Camera_UpdateCutscene();
@@ -815,10 +815,10 @@ void Camera_Update(void)
 
 void Camera_UpdateCutscene(void)
 {
-    if (g_CineCamera == nullptr) {
+    if (g_CineData.frames == nullptr) {
         return;
     }
-    const CINE_FRAME *const ref = &g_CineCamera[g_CineFrame];
+    const CINE_FRAME *const ref = &g_CineData.frames[g_CineData.frame_idx];
 
     const int32_t c = Math_Cos(g_CinePosition.rot.y);
     const int32_t s = Math_Sin(g_CinePosition.rot.y);

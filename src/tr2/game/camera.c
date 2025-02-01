@@ -857,12 +857,12 @@ void Camera_Update(void)
 
 void Camera_LoadCutsceneFrame(void)
 {
-    g_CineFrameIdx++;
-    if (g_CineFrameIdx >= g_NumCineFrames) {
-        g_CineFrameIdx = g_NumCineFrames - 1;
+    g_CineData.frame_idx++;
+    if (g_CineData.frame_idx >= g_CineData.frame_count) {
+        g_CineData.frame_idx = g_CineData.frame_count - 1;
     }
 
-    const CINE_FRAME *frame = &g_CineData[g_CineFrameIdx];
+    const CINE_FRAME *frame = &g_CineData.frames[g_CineData.frame_idx];
     int32_t tx = frame->tx;
     int32_t ty = frame->ty;
     int32_t tz = frame->tz;
@@ -908,7 +908,7 @@ void Camera_LoadCutsceneFrame(void)
 
 void Camera_UpdateCutscene(void)
 {
-    const CINE_FRAME *const frame = &g_CineData[g_CineFrameIdx];
+    const CINE_FRAME *const frame = &g_CineData.frames[g_CineData.frame_idx];
     int32_t tx = frame->tx;
     int32_t ty = frame->ty;
     int32_t tz = frame->tz;

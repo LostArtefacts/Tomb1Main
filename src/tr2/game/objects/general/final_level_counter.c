@@ -79,7 +79,7 @@ static void M_PrepareCutscene(const int16_t item_num)
     Creature_Kill(item, 0, 0, LA_EXTRA_FINAL_ANIM);
 
     g_Camera.type = CAM_CINEMATIC;
-    g_CineFrameIdx = 428;
+    g_CineData.frame_idx = 428;
     g_CinePos.pos = item->pos;
     g_CinePos.rot = item->rot;
 }
