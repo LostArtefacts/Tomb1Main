@@ -39,7 +39,7 @@ bool Cutscene_Start(const int32_t level_num)
 
     Room_InitCinematic();
     CutscenePlayer1_Initialise(g_Lara.item_num);
-    g_Camera.target_angle = g_CineTargetAngle;
+    g_Camera.target_angle = g_CinePos.target_angle;
 
     Music_SetVolume(10);
     g_CineFrameIdx = 0;

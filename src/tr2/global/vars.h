@@ -17,7 +17,6 @@ extern SDL_Window *g_SDLWindow;
 
 extern uint32_t g_PerspectiveDistance;
 extern uint32_t g_AssaultBestTime;
-extern int16_t g_CineTargetAngle;
 extern int32_t g_OverlayStatus;
 extern bool g_GymInvOpenEnabled;
 extern int32_t g_MidSort;
