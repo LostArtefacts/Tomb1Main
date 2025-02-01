@@ -73,7 +73,6 @@ static void M_LoadSoundEffects(VFILE *file);
 static void M_LoadBoxes(VFILE *file);
 static void M_LoadAnimatedTextures(VFILE *file);
 static void M_LoadItems(VFILE *file);
-static void M_LoadLightTable(VFILE *file);
 static void M_LoadPalette(VFILE *file);
 static void M_LoadCinematic(VFILE *file);
 static void M_LoadDemo(VFILE *file);
@@ -245,7 +244,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadAnimatedTextures(file);
     M_LoadItems(file);
     Stats_ObserveItemsLoad();
-    M_LoadLightTable(file);
+    Level_ReadDepthQ(file);
 
     if (layout != LEVEL_LAYOUT_TR1_DEMO_PC) {
         M_LoadPalette(file);
@@ -669,14 +668,6 @@ static void M_LoadItems(VFILE *file)
         }
     }
 
-    Benchmark_End(benchmark, nullptr);
-}
-
-static void M_LoadLightTable(VFILE *file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    LOG_INFO("");
-    VFile_Skip(file, sizeof(uint8_t) * 32 * 256);
     Benchmark_End(benchmark, nullptr);
 }
 

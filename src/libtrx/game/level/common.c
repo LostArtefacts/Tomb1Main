@@ -562,6 +562,26 @@ void Level_ReadAnimatedTextureRanges(
     }
 }
 
+void Level_ReadDepthQ(VFILE *const file)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+    for (int32_t i = 0; i < 32; i++) {
+        DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
+        VFile_Read(file, depth->index, sizeof(uint8_t) * 256);
+        depth->index[0] = 0;
+    }
+
+    for (int32_t i = 0; i < 32; i++) {
+        const DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
+        for (int32_t j = 0; j < 256; j++) {
+            GOURAUD_ENTRY *const gouraud = Output_GetGouraud(j);
+            gouraud->index[i] = depth->index[j];
+        }
+    }
+
+    Benchmark_End(benchmark, nullptr);
+}
+
 void Level_LoadTexturePages(LEVEL_INFO *const info)
 {
     const int32_t num_pages = info->textures.page_count;

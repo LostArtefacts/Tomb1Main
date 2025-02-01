@@ -349,26 +349,6 @@ finish:
     Benchmark_End(benchmark, nullptr);
 }
 
-static void M_LoadDepthQ(VFILE *const file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    for (int32_t i = 0; i < 32; i++) {
-        DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
-        VFile_Read(file, depth->index, sizeof(uint8_t) * 256);
-        depth->index[0] = 0;
-    }
-
-    for (int32_t i = 0; i < 32; i++) {
-        const DEPTHQ_ENTRY *depth = Output_GetDepthQ(i);
-        for (int32_t j = 0; j < 256; j++) {
-            GOURAUD_ENTRY *const gouraud = Output_GetGouraud(j);
-            gouraud->index[i] = depth->index[j];
-        }
-    }
-
-    Benchmark_End(benchmark, nullptr);
-}
-
 static void M_LoadPalettes(VFILE *const file)
 {
     Level_ReadPalette(&m_LevelInfo, file);
@@ -658,7 +638,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadAnimatedTextures(file);
     M_LoadItems(file);
 
-    M_LoadDepthQ(file);
+    Level_ReadDepthQ(file);
     M_LoadCinematic(file);
     M_LoadDemo(file);
     M_LoadSamples(file);
