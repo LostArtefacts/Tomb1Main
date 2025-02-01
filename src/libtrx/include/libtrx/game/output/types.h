@@ -67,3 +67,7 @@ typedef struct {
     uint8_t b;
     uint8_t a;
 } RGBA_8888;
+
+typedef struct {
+    uint8_t index[256];
+} DEPTHQ_ENTRY;

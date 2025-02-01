@@ -54,7 +54,6 @@ float g_FltPersp;
 int16_t *g_Info3DPtr = nullptr;
 int32_t g_PhdWinWidth;
 int32_t g_PhdViewDistance;
-DEPTHQ_ENTRY g_DepthQTable[32];
 int32_t g_LsDivider;
 PHD_VBUF g_PhdVBuf[1500];
 float g_FltWinRight;

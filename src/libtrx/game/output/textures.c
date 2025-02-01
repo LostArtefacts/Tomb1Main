@@ -14,6 +14,8 @@ static int32_t m_PaletteSize = 0;
 static RGB_888 *m_Palette8 = nullptr;
 static RGB_888 *m_Palette16 = nullptr;
 
+static DEPTHQ_ENTRY m_DepthQTable[32];
+
 static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE *m_ObjectTextures = nullptr;
 static SPRITE_TEXTURE *m_SpriteTextures = nullptr;
@@ -122,6 +124,11 @@ RGB_888 Output_GetPaletteColor16(const uint16_t idx)
         return (RGB_888) { 0, 0, 0 };
     }
     return m_Palette16[idx];
+}
+
+DEPTHQ_ENTRY *Output_GetDepthQ(const uint8_t idx)
+{
+    return &m_DepthQTable[idx];
 }
 
 int32_t Output_GetObjectTextureCount(void)

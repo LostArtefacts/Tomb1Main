@@ -246,7 +246,7 @@ static void M_TransA(
     const int32_t alpha_stride = alpha_surface->desc.pitch;
     PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
-    const DEPTHQ_ENTRY *qt = g_DepthQTable + depth;
+    const DEPTHQ_ENTRY *qt = Output_GetDepthQ(depth);
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;
@@ -349,7 +349,7 @@ static void M_GTMapA(
         while (x_size > 0) {
             uint8_t color_idx = tex_page[MAKE_TEX_ID(v, u)];
             *target_line_ptr++ =
-                MAKE_PAL_IDX(g_DepthQTable[MAKE_Q_ID(g)].index[color_idx]);
+                MAKE_PAL_IDX(Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx]);
             *alpha_line_ptr++ = 255;
             g += g_add;
             u += u_add;
@@ -399,8 +399,8 @@ static void M_WGTMapA(
         while (x_size > 0) {
             const uint8_t color_idx = tex_page[MAKE_TEX_ID(v, u)];
             if (color_idx != 0) {
-                *target_line_ptr =
-                    MAKE_PAL_IDX(g_DepthQTable[MAKE_Q_ID(g)].index[color_idx]);
+                *target_line_ptr = MAKE_PAL_IDX(
+                    Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx]);
                 *alpha_line_ptr = 255;
             }
             target_line_ptr++;
@@ -479,7 +479,7 @@ static void M_GTMapPersp32FP(
                     while (batch_counter--) {
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         const uint8_t color =
-                            g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                         *target_line_ptr++ = MAKE_PAL_IDX(color);
                         *target_line_ptr++ = MAKE_PAL_IDX(color);
                         *alpha_line_ptr++ = 255;
@@ -493,7 +493,7 @@ static void M_GTMapPersp32FP(
                     while (batch_counter--) {
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         const uint8_t color =
-                            g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                         *target_line_ptr++ = MAKE_PAL_IDX(color);
                         *alpha_line_ptr++ = 255;
                         g += g_add;
@@ -522,7 +522,7 @@ static void M_GTMapPersp32FP(
                 while (batch_counter--) {
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     const uint8_t color =
-                        g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                        Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                     *target_line_ptr++ = MAKE_PAL_IDX(color);
                     *target_line_ptr++ = MAKE_PAL_IDX(color);
                     *alpha_line_ptr++ = 255;
@@ -536,7 +536,7 @@ static void M_GTMapPersp32FP(
                 while (batch_counter--) {
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     const uint8_t color =
-                        g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                        Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                     *target_line_ptr++ = MAKE_PAL_IDX(color);
                     *alpha_line_ptr++ = 255;
                     g += g_add;
@@ -548,7 +548,8 @@ static void M_GTMapPersp32FP(
 
         if (x_size == 1) {
             const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
-            const uint8_t color = g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+            const uint8_t color =
+                Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
             *target_line_ptr = MAKE_PAL_IDX(color);
             *alpha_line_ptr = 255;
         }
@@ -621,8 +622,8 @@ static void M_WGTMapPersp32FP(
                     while (batch_counter--) {
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         if (color_idx != 0) {
-                            const uint8_t color =
-                                g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            const uint8_t color = Output_GetDepthQ(MAKE_Q_ID(g))
+                                                      ->index[color_idx];
                             target_line_ptr[0] = MAKE_PAL_IDX(color);
                             target_line_ptr[1] = MAKE_PAL_IDX(color);
                             alpha_line_ptr[0] = 255;
@@ -639,8 +640,8 @@ static void M_WGTMapPersp32FP(
                     while (batch_counter--) {
                         const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                         if (color_idx != 0) {
-                            const uint8_t color =
-                                g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            const uint8_t color = Output_GetDepthQ(MAKE_Q_ID(g))
+                                                      ->index[color_idx];
                             *target_line_ptr = MAKE_PAL_IDX(color);
                             *alpha_line_ptr = 255;
                         }
@@ -673,7 +674,7 @@ static void M_WGTMapPersp32FP(
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     if (color_idx != 0) {
                         const uint8_t color =
-                            g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                         target_line_ptr[0] = MAKE_PAL_IDX(color);
                         target_line_ptr[1] = MAKE_PAL_IDX(color);
                         alpha_line_ptr[0] = 255;
@@ -691,7 +692,7 @@ static void M_WGTMapPersp32FP(
                     const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
                     if (color_idx != 0) {
                         const uint8_t color =
-                            g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                            Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                         *target_line_ptr = MAKE_PAL_IDX(color);
                         *alpha_line_ptr = 255;
                     }
@@ -708,7 +709,7 @@ static void M_WGTMapPersp32FP(
             const uint8_t color_idx = tex_page[MAKE_TEX_ID(v0, u0)];
             if (color_idx != 0) {
                 const uint8_t color =
-                    g_DepthQTable[MAKE_Q_ID(g)].index[color_idx];
+                    Output_GetDepthQ(MAKE_Q_ID(g))->index[color_idx];
                 *target_line_ptr = MAKE_PAL_IDX(color);
                 *alpha_line_ptr = 255;
             }
@@ -1241,7 +1242,7 @@ static void M_DrawScaledSpriteC(
         return;
     }
 
-    const DEPTHQ_ENTRY *const depth = &g_DepthQTable[shade >> 8];
+    const DEPTHQ_ENTRY *const depth = Output_GetDepthQ(shade >> 8);
     const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(sprite_idx);
 
     int32_t u_base = 0x4000;
@@ -1270,7 +1271,7 @@ static void M_DrawScaledSpriteC(
     ALPHA_FMT *alpha_ptr = &alpha_surface->buffer[y0 * target_stride + x0];
     const int32_t dst_add = target_stride - width;
 
-    const bool is_depth_q = depth != &g_DepthQTable[16];
+    const bool is_depth_q = depth != Output_GetDepthQ(16);
 
     for (int32_t i = 0; i < height; i++) {
         int32_t u = u_base;

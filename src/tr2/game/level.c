@@ -353,13 +353,15 @@ static void M_LoadDepthQ(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     for (int32_t i = 0; i < 32; i++) {
-        VFile_Read(file, g_DepthQTable[i].index, sizeof(uint8_t) * 256);
-        g_DepthQTable[i].index[0] = 0;
+        DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
+        VFile_Read(file, depth->index, sizeof(uint8_t) * 256);
+        depth->index[0] = 0;
     }
 
     for (int32_t i = 0; i < 32; i++) {
+        const DEPTHQ_ENTRY *depth = Output_GetDepthQ(i);
         for (int32_t j = 0; j < 256; j++) {
-            g_GouraudTable[j].index[i] = g_DepthQTable[i].index[j];
+            g_GouraudTable[j].index[i] = depth->index[j];
         }
     }
 

@@ -53,7 +53,6 @@ extern float g_FltPersp;
 extern int16_t *g_Info3DPtr;
 extern int32_t g_PhdWinWidth;
 extern int32_t g_PhdViewDistance;
-extern DEPTHQ_ENTRY g_DepthQTable[32];
 extern int32_t g_LsDivider;
 extern PHD_VBUF g_PhdVBuf[];
 extern float g_FltWinRight;
