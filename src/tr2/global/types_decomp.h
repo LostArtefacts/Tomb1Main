@@ -18,10 +18,6 @@
 #pragma pack(push, 1)
 
 typedef struct {
-    uint8_t index[32];
-} GOURAUD_ENTRY;
-
-typedef struct {
     XYZ_32 pos;
     XYZ_16 rot;
 } PHD_3DPOS;

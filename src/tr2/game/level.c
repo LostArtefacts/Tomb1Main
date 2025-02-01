@@ -361,7 +361,8 @@ static void M_LoadDepthQ(VFILE *const file)
     for (int32_t i = 0; i < 32; i++) {
         const DEPTHQ_ENTRY *depth = Output_GetDepthQ(i);
         for (int32_t j = 0; j < 256; j++) {
-            g_GouraudTable[j].index[i] = depth->index[j];
+            GOURAUD_ENTRY *const gouraud = Output_GetGouraud(j);
+            gouraud->index[i] = depth->index[j];
         }
     }
 

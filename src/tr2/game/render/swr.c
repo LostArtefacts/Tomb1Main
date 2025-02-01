@@ -286,7 +286,7 @@ static void M_GourA(
     const int32_t alpha_stride = alpha_surface->desc.pitch;
     PIX_FMT *target_ptr = target_surface->buffer + y1 * target_stride;
     ALPHA_FMT *alpha_ptr = alpha_surface->buffer + y1 * alpha_stride;
-    const GOURAUD_ENTRY *gt = g_GouraudTable + color_idx;
+    const GOURAUD_ENTRY *gt = Output_GetGouraud(color_idx);
 
     while (y_size > 0) {
         const int32_t x = xbuf->x1 / PHD_ONE;

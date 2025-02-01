@@ -21,7 +21,6 @@ extern int16_t g_CineTargetAngle;
 extern int32_t g_OverlayStatus;
 extern bool g_GymInvOpenEnabled;
 extern int32_t g_MidSort;
-extern GOURAUD_ENTRY g_GouraudTable[256];
 extern int32_t g_PhdWinTop;
 extern int32_t g_LsAdder;
 extern float g_FltWinBottom;

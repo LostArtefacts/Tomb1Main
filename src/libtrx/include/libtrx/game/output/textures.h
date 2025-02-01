@@ -16,6 +16,7 @@ int32_t Output_GetPaletteSize(void);
 RGB_888 Output_GetPaletteColor8(uint16_t idx);
 RGB_888 Output_GetPaletteColor16(uint16_t idx);
 DEPTHQ_ENTRY *Output_GetDepthQ(uint8_t idx);
+GOURAUD_ENTRY *Output_GetGouraud(uint8_t idx);
 int32_t Output_GetObjectTextureCount(void);
 OBJECT_TEXTURE *Output_GetObjectTexture(int32_t texture_idx);
 SPRITE_TEXTURE *Output_GetSpriteTexture(int32_t texture_idx);

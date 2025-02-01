@@ -15,6 +15,7 @@ static RGB_888 *m_Palette8 = nullptr;
 static RGB_888 *m_Palette16 = nullptr;
 
 static DEPTHQ_ENTRY m_DepthQTable[32];
+static GOURAUD_ENTRY m_GouraudTable[256];
 
 static int32_t m_ObjectTextureCount = 0;
 static OBJECT_TEXTURE *m_ObjectTextures = nullptr;
@@ -129,6 +130,11 @@ RGB_888 Output_GetPaletteColor16(const uint16_t idx)
 DEPTHQ_ENTRY *Output_GetDepthQ(const uint8_t idx)
 {
     return &m_DepthQTable[idx];
+}
+
+GOURAUD_ENTRY *Output_GetGouraud(const uint8_t idx)
+{
+    return &m_GouraudTable[idx];
 }
 
 int32_t Output_GetObjectTextureCount(void)
