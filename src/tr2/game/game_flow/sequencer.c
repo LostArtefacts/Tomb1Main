@@ -74,6 +74,9 @@ static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
         }
         gf_cmd = GF_RunDemo(level->num);
     } else if (level->type == GFL_CUTSCENE) {
+        if (!Level_Initialise(level, seq_ctx)) {
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
         gf_cmd = GF_RunCutscene(level->num);
     } else {
         gf_cmd = GF_RunGame(level, seq_ctx);
