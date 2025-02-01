@@ -30,6 +30,7 @@
 - fixed potential memory corruption when reading a custom level with more than 512 sprite textures (#2338)
 - fixed the teleporting command sometimes putting Lara in invalid flipmap rooms (#2370)
 - fixed teleporting to an item on a ledge sometimes pushing Lara to the room below (#2372)
+- fixed the game crashing if a cinematic is triggered but the level contains no cinematic frames (#2413)
 - fixed Lara activating triggers one frame too early (#2205, regression from 0.7)
 - fixed savegame incompatibility with OG (#2271, regression from 0.8)
 - fixed stopwatch showing wrong UI in some circumstances (#2221, regression from 0.8)

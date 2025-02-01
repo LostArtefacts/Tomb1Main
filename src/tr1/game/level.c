@@ -667,22 +667,19 @@ static void M_LoadItems(VFILE *file)
 static void M_LoadCinematic(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_CineData.frame_count = VFile_ReadS16(file);
-    LOG_INFO("%d cinematic frames", g_CineData.frame_count);
-    if (g_CineData.frame_count != 0) {
-        g_CineData.frames = GameBuf_Alloc(
-            sizeof(CINE_FRAME) * g_CineData.frame_count, GBUF_CINEMATIC_FRAMES);
-        for (int32_t i = 0; i < g_CineData.frame_count; i++) {
-            CINE_FRAME *const frame = &g_CineData.frames[i];
-            frame->tx = VFile_ReadS16(file);
-            frame->ty = VFile_ReadS16(file);
-            frame->tz = VFile_ReadS16(file);
-            frame->cx = VFile_ReadS16(file);
-            frame->cy = VFile_ReadS16(file);
-            frame->cz = VFile_ReadS16(file);
-            frame->fov = VFile_ReadS16(file);
-            frame->roll = VFile_ReadS16(file);
-        }
+    const int16_t num_frames = VFile_ReadS16(file);
+    LOG_INFO("%d cinematic frames", num_frames);
+    Camera_InitialiseCineFrames(num_frames);
+    for (int32_t i = 0; i < num_frames; i++) {
+        CINE_FRAME *const frame = Camera_GetCineFrame(i);
+        frame->tx = VFile_ReadS16(file);
+        frame->ty = VFile_ReadS16(file);
+        frame->tz = VFile_ReadS16(file);
+        frame->cx = VFile_ReadS16(file);
+        frame->cy = VFile_ReadS16(file);
+        frame->cz = VFile_ReadS16(file);
+        frame->fov = VFile_ReadS16(file);
+        frame->roll = VFile_ReadS16(file);
     }
     Benchmark_End(benchmark, nullptr);
 }

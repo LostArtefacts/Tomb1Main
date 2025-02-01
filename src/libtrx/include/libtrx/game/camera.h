@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./camera/cinematic.h"
 #include "./camera/common.h"
 #include "./camera/const.h"
 #include "./camera/enum.h"

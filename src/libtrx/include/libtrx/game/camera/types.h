@@ -63,7 +63,6 @@ typedef struct {
 typedef struct {
     int16_t frame_idx;
     int16_t frame_count;
-    CINE_FRAME *frames;
     struct {
         XYZ_32 pos;
         XYZ_16 rot;

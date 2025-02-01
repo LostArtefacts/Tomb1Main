@@ -815,11 +815,11 @@ void Camera_Update(void)
 
 void Camera_UpdateCutscene(void)
 {
-    if (g_CineData.frames == nullptr) {
+    if (g_CineData.frame_count == 0) {
         return;
     }
-    const CINE_FRAME *const ref = &g_CineData.frames[g_CineData.frame_idx];
 
+    const CINE_FRAME *const ref = Camera_GetCurrentCineFrame();
     const int32_t c = Math_Cos(g_CineData.position.rot.y);
     const int32_t s = Math_Sin(g_CineData.position.rot.y);
     const XYZ_32 *const pos = &g_CineData.position.pos;
