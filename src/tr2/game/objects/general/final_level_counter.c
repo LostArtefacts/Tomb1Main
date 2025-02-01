@@ -80,8 +80,8 @@ static void M_PrepareCutscene(const int16_t item_num)
 
     g_Camera.type = CAM_CINEMATIC;
     g_CineData.frame_idx = 428;
-    g_CinePos.pos = item->pos;
-    g_CinePos.rot = item->rot;
+    g_CineData.position.pos = item->pos;
+    g_CineData.position.rot = item->rot;
 }
 
 void FinalLevelCounter_Setup(void)

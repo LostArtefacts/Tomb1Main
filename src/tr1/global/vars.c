@@ -39,7 +39,6 @@ uint16_t *g_Overlap = nullptr;
 int16_t *g_GroundZone[2] = { nullptr };
 int16_t *g_GroundZone2[2] = { nullptr };
 int16_t *g_FlyZone[2] = { nullptr };
-CINE_POSITION g_CinePosition = {};
 int32_t g_NumberCameras = 0;
 int32_t g_NumberSoundEffects = 0;
 OBJECT_VECTOR *g_SoundEffectsTable = nullptr;

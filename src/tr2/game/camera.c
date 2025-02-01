@@ -871,15 +871,19 @@ void Camera_LoadCutsceneFrame(void)
     int32_t cz = frame->cz;
     int32_t fov = frame->fov;
     int32_t roll = frame->roll;
-    int32_t c = Math_Cos(g_CinePos.rot.y);
-    int32_t s = Math_Sin(g_CinePos.rot.y);
+    int32_t c = Math_Cos(g_CineData.position.rot.y);
+    int32_t s = Math_Sin(g_CineData.position.rot.y);
 
-    g_Camera.target.x = g_CinePos.pos.x + ((tx * c + tz * s) >> W2V_SHIFT);
-    g_Camera.target.y = g_CinePos.pos.y + ty;
-    g_Camera.target.z = g_CinePos.pos.z + ((tz * c - tx * s) >> W2V_SHIFT);
-    g_Camera.pos.x = g_CinePos.pos.x + ((cx * c + cz * s) >> W2V_SHIFT);
-    g_Camera.pos.y = g_CinePos.pos.y + cy;
-    g_Camera.pos.z = g_CinePos.pos.z + ((cz * c - cx * s) >> W2V_SHIFT);
+    g_Camera.target.x =
+        g_CineData.position.pos.x + ((tx * c + tz * s) >> W2V_SHIFT);
+    g_Camera.target.y = g_CineData.position.pos.y + ty;
+    g_Camera.target.z =
+        g_CineData.position.pos.z + ((tz * c - tx * s) >> W2V_SHIFT);
+    g_Camera.pos.x =
+        g_CineData.position.pos.x + ((cx * c + cz * s) >> W2V_SHIFT);
+    g_Camera.pos.y = g_CineData.position.pos.y + cy;
+    g_Camera.pos.z =
+        g_CineData.position.pos.z + ((cz * c - cx * s) >> W2V_SHIFT);
     g_Camera.roll = roll;
     g_Camera.shift = 0;
 

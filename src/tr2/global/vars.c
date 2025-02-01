@@ -85,7 +85,6 @@ int32_t g_RoomCount;
 ROOM *g_Rooms = nullptr;
 int32_t g_FlipStatus;
 ITEM *g_Items = nullptr;
-CINE_POSITION g_CinePos;
 BOX_INFO *g_Boxes = nullptr;
 int16_t *g_FlyZone[2] = {};
 int16_t *g_GroundZone[4][2] = {};

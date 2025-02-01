@@ -120,8 +120,8 @@ static void M_PullDagger(ITEM *const lara_item, ITEM *const dragon_back_item)
 
     g_Camera.type = CAM_CINEMATIC;
     g_CineData.frame_idx = 0;
-    g_CinePos.pos = lara_item->pos;
-    g_CinePos.rot = lara_item->rot;
+    g_CineData.position.pos = lara_item->pos;
+    g_CineData.position.rot = lara_item->rot;
 
     M_MarkDragonDead(dragon_back_item);
 }

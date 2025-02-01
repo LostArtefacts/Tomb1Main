@@ -363,14 +363,15 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraPos)
 {
     if (seq_ctx != GFSC_STORY) {
         GF_SET_CAMERA_POS_DATA *const data = event->data;
+        CINE_DATA *const cine_data = Camera_GetCineData();
         if (data->x.set) {
-            g_CinePosition.pos.x = (int32_t)(intptr_t)data->x.value;
+            cine_data->position.pos.x = (int32_t)(intptr_t)data->x.value;
         }
         if (data->y.set) {
-            g_CinePosition.pos.y = (int32_t)(intptr_t)data->y.value;
+            cine_data->position.pos.y = (int32_t)(intptr_t)data->y.value;
         }
         if (data->z.set) {
-            g_CinePosition.pos.z = (int32_t)(intptr_t)data->z.value;
+            cine_data->position.pos.z = (int32_t)(intptr_t)data->z.value;
         }
     }
     return (GF_COMMAND) { .action = GF_NOOP };
@@ -379,7 +380,7 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraPos)
 static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 {
     if (seq_ctx != GFSC_STORY) {
-        g_CinePosition.rot.y = (int32_t)(intptr_t)event->data;
+        g_CineData.position.rot.y = (int32_t)(intptr_t)event->data;
     }
     return (GF_COMMAND) { .action = GF_NOOP };
 }

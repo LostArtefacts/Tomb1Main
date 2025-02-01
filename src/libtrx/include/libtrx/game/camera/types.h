@@ -61,15 +61,14 @@ typedef struct {
 } CINE_FRAME;
 
 typedef struct {
-    XYZ_32 pos;
-    XYZ_16 rot;
-#if TR_VERSION == 2
-    int16_t target_angle;
-#endif
-} CINE_POSITION;
-
-typedef struct {
     int16_t frame_idx;
     int16_t frame_count;
     CINE_FRAME *frames;
+    struct {
+        XYZ_32 pos;
+        XYZ_16 rot;
+#if TR_VERSION == 2
+        int16_t target_angle;
+#endif
+    } position;
 } CINE_DATA;

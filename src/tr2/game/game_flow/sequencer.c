@@ -230,7 +230,7 @@ static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
 {
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_SAVED) {
-        g_CinePos.target_angle = (int16_t)(intptr_t)event->data;
+        g_CineData.position.target_angle = (int16_t)(intptr_t)event->data;
     }
     return gf_cmd;
 }
@@ -304,7 +304,7 @@ void GF_PreSequenceHook(void)
     g_GF_LaraStartAnim = 0;
     g_GF_RemoveAmmo = false;
     g_GF_RemoveWeapons = false;
-    g_CinePos.target_angle = DEG_90;
+    g_CineData.position.target_angle = DEG_90;
     g_GF_NumSecrets = 3;
     GF_InventoryModifier_Reset();
 }

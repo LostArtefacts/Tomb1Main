@@ -48,7 +48,6 @@ extern uint16_t *g_Overlap;
 extern int16_t *g_GroundZone[2];
 extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
-extern CINE_POSITION g_CinePosition;
 extern int32_t g_NumberCameras;
 extern int32_t g_NumberSoundEffects;
 extern OBJECT_VECTOR *g_SoundEffectsTable;

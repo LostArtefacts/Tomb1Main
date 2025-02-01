@@ -84,7 +84,6 @@ extern int32_t g_RoomCount;
 extern ROOM *g_Rooms;
 extern int32_t g_FlipStatus;
 extern ITEM *g_Items;
-extern CINE_POSITION g_CinePos;
 extern BOX_INFO *g_Boxes;
 extern int16_t *g_FlyZone[2];
 extern int16_t *g_GroundZone[][2];
