@@ -14,6 +14,6 @@ int main(int argc, char **argv)
 
     Shell_Setup();
     Shell_Main();
-    Shell_Shutdown();
+    Shell_Terminate(0);
     return 0;
 }
