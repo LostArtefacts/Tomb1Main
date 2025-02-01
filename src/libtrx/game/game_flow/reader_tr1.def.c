@@ -1,6 +1,7 @@
 // NOTE: this is an included file, not a compile unit on its own.
 // This is to avoid exposing symbols.
 
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleSetCameraPosEvent);
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent);
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleMeshSwapEvent);
 
@@ -43,6 +44,7 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // Special cases with custom handlers
     { GFS_LOADING_SCREEN,    M_HandlePictureEvent, nullptr },
     { GFS_DISPLAY_PICTURE,   M_HandlePictureEvent, nullptr },
+    { GFS_SET_CAMERA_POS,    M_HandleSetCameraPosEvent, nullptr },
     { GFS_TOTAL_STATS,       M_HandleTotalStatsEvent, nullptr },
     { GFS_ADD_ITEM,          M_HandleAddItemEvent, nullptr },
     { GFS_MESH_SWAP,         M_HandleMeshSwapEvent, nullptr },
@@ -51,6 +53,30 @@ static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     { (GF_SEQUENCE_EVENT_TYPE)-1, nullptr, nullptr },
     // clang-format on
 };
+
+static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleSetCameraPosEvent)
+{
+    if (event != nullptr) {
+        GF_SET_CAMERA_POS_DATA *const event_data = extra_data;
+        event_data->x.set = false;
+        event_data->y.set = false;
+        event_data->z.set = false;
+        if (JSON_ObjectContainsKey(event_obj, "x")) {
+            event_data->x.set = true;
+            event_data->x.value = JSON_ObjectGetInt(event_obj, "x", 0);
+        }
+        if (JSON_ObjectContainsKey(event_obj, "y")) {
+            event_data->y.set = true;
+            event_data->y.value = JSON_ObjectGetInt(event_obj, "y", 0);
+        }
+        if (JSON_ObjectContainsKey(event_obj, "z")) {
+            event_data->z.set = true;
+            event_data->z.value = JSON_ObjectGetInt(event_obj, "z", 0);
+        }
+        event->data = event_data;
+    }
+    return sizeof(GF_SET_CAMERA_POS_DATA);
+}
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent)
 {

@@ -728,6 +728,28 @@ default gameflow for examples.
     <td colspan="2" align="center">N/A</td>
   </tr>
   <tr valign="top">
+    <td rowspan="3">
+      <code>set_cutscene_pos</code>
+    </td>
+    <td>
+      <code><code>x</code></code>
+    </td>
+    <td>Integer</td>
+    <td colspan="3">Sets the camera's position.</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code><code>y</code></code>
+    </td>
+    <td>Integer</td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <code><code>z</code></code>
+    </td>
+    <td>Integer</td>
+  </tr>
+  <tr valign="top">
     <td>
       <code>set_cutscene_angle</code>
     </td>

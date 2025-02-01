@@ -67,6 +67,7 @@ typedef enum {
 #if TR_VERSION == 1
     GFS_LOADING_SCREEN,
     GFS_LOAD_LEVEL,
+    GFS_SET_CAMERA_POS,
 #endif
     GFS_SET_CAMERA_ANGLE,
     GFS_ADD_ITEM,

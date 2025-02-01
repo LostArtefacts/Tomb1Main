@@ -34,6 +34,13 @@ typedef struct {
     float fade_out_time;
 } GF_DISPLAY_PICTURE_DATA;
 
+typedef struct {
+    struct {
+        bool set;
+        int32_t value;
+    } x, y, z;
+} GF_SET_CAMERA_POS_DATA;
+
 #if TR_VERSION == 2
 typedef enum {
     GF_INV_REGULAR,

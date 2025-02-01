@@ -32,6 +32,7 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture);
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete);
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats);
 static DECLARE_EVENT_HANDLER(M_HandleTotalStats);
+static DECLARE_EVENT_HANDLER(M_HandleSetCameraPos);
 static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle);
 static DECLARE_EVENT_HANDLER(M_HandleFlipMap);
 static DECLARE_EVENT_HANDLER(M_HandleAddItem);
@@ -55,6 +56,7 @@ static DECLARE_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     [GFS_LEVEL_COMPLETE]   = M_HandleLevelComplete,
     [GFS_LEVEL_STATS]      = M_HandleLevelStats,
     [GFS_TOTAL_STATS]      = M_HandleTotalStats,
+    [GFS_SET_CAMERA_POS]   = M_HandleSetCameraPos,
     [GFS_SET_CAMERA_ANGLE] = M_HandleSetCameraAngle,
     [GFS_FLIP_MAP]         = M_HandleFlipMap,
     [GFS_ADD_ITEM]         = M_HandleAddItem,
@@ -355,6 +357,23 @@ static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
         Phase_Stats_Destroy(phase);
     }
     return gf_cmd;
+}
+
+static DECLARE_EVENT_HANDLER(M_HandleSetCameraPos)
+{
+    if (seq_ctx != GFSC_STORY) {
+        GF_SET_CAMERA_POS_DATA *const data = event->data;
+        if (data->x.set) {
+            g_CinePosition.pos.x = (int32_t)(intptr_t)data->x.value;
+        }
+        if (data->y.set) {
+            g_CinePosition.pos.y = (int32_t)(intptr_t)data->y.value;
+        }
+        if (data->z.set) {
+            g_CinePosition.pos.z = (int32_t)(intptr_t)data->z.value;
+        }
+    }
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleSetCameraAngle)
