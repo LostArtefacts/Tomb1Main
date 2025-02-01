@@ -824,11 +824,7 @@ void Lara_Initialise(const GF_LEVEL *const level)
         item->goal_anim_state = g_GF_LaraStartAnim;
         Lara_Animate(item);
         g_Lara.extra_anim = 1;
-        g_Camera.type = CAM_CINEMATIC;
-        CINE_DATA *const cine_data = Camera_GetCineData();
-        cine_data->frame_idx = 0;
-        cine_data->position.pos = item->pos;
-        cine_data->position.rot = item->rot;
+        Camera_InvokeCinematic(item, 0, 0);
     } else if ((g_Rooms[item->room_num].flags & RF_UNDERWATER)) {
         g_Lara.water_status = LWS_UNDERWATER;
         item->fall_speed = 0;

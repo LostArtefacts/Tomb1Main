@@ -1,4 +1,5 @@
 #include "game/camera/types.h"
+#include "game/camera/vars.h"
 #include "game/game_buf.h"
 
 static CINE_FRAME *m_CineFrames = NULL;
@@ -29,4 +30,14 @@ CINE_FRAME *Camera_GetCurrentCineFrame(void)
 CINE_DATA *Camera_GetCineData(void)
 {
     return &m_CineData;
+}
+
+void Camera_InvokeCinematic(
+    const ITEM *const item, const int32_t frame_idx, const int16_t extra_y_rot)
+{
+    g_Camera.type = CAM_CINEMATIC;
+    m_CineData.frame_idx = frame_idx;
+    m_CineData.position.pos = item->pos;
+    m_CineData.position.rot = item->rot;
+    m_CineData.position.rot.y += extra_y_rot;
 }

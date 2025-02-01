@@ -78,11 +78,7 @@ static void M_PrepareCutscene(const int16_t item_num)
     ITEM *const item = &g_Items[item_num];
     Creature_Kill(item, 0, 0, LA_EXTRA_FINAL_ANIM);
 
-    g_Camera.type = CAM_CINEMATIC;
-    CINE_DATA *const cine_data = Camera_GetCineData();
-    cine_data->frame_idx = 428;
-    cine_data->position.pos = item->pos;
-    cine_data->position.rot = item->rot;
+    Camera_InvokeCinematic(item, 428, 0);
 }
 
 void FinalLevelCounter_Setup(void)
