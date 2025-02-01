@@ -27,6 +27,6 @@ void Level_ReadSpriteTextures(
     int32_t base_idx, int16_t base_page_idx, int32_t num_textures, VFILE *file);
 void Level_ReadSpriteSequences(int32_t num_sequences, VFILE *file);
 void Level_ReadAnimatedTextureRanges(int32_t num_ranges, VFILE *file);
-void Level_ReadDepthQ(VFILE *file);
+void Level_ReadLightMap(VFILE *file);
 void Level_LoadTexturePages(LEVEL_INFO *info);
 void Level_LoadPalettes(LEVEL_INFO *info);

@@ -628,7 +628,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadAnimatedTextures(file);
     M_LoadItems(file);
 
-    Level_ReadDepthQ(file);
+    Level_ReadLightMap(file);
     M_LoadCinematic(file);
     M_LoadDemo(file);
     M_LoadSamples(file);

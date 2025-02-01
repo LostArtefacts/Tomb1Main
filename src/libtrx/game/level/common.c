@@ -562,20 +562,20 @@ void Level_ReadAnimatedTextureRanges(
     }
 }
 
-void Level_ReadDepthQ(VFILE *const file)
+void Level_ReadLightMap(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
     for (int32_t i = 0; i < 32; i++) {
-        DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
-        VFile_Read(file, depth->index, sizeof(uint8_t) * 256);
-        depth->index[0] = 0;
+        LIGHT_MAP *const light_map = Output_GetLightMap(i);
+        VFile_Read(file, light_map->index, sizeof(uint8_t) * 256);
+        light_map->index[0] = 0;
     }
 
     for (int32_t i = 0; i < 32; i++) {
-        const DEPTHQ_ENTRY *const depth = Output_GetDepthQ(i);
+        const LIGHT_MAP *const light_map = Output_GetLightMap(i);
         for (int32_t j = 0; j < 256; j++) {
-            GOURAUD_ENTRY *const gouraud = Output_GetGouraud(j);
-            gouraud->index[i] = depth->index[j];
+            SHADE_MAP *const shade_map = Output_GetShadeMap(j);
+            shade_map->index[i] = light_map->index[j];
         }
     }
 

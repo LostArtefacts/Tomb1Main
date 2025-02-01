@@ -242,7 +242,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadAnimatedTextures(file);
     M_LoadItems(file);
     Stats_ObserveItemsLoad();
-    Level_ReadDepthQ(file);
+    Level_ReadLightMap(file);
 
     if (layout != LEVEL_LAYOUT_TR1_DEMO_PC) {
         Level_ReadPalettes(&m_LevelInfo, file);
