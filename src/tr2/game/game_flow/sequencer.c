@@ -1,9 +1,11 @@
 #include "game/game_flow/sequencer.h"
 
+#include "decomp/decomp.h"
 #include "decomp/savegame.h"
 #include "game/fmv.h"
 #include "game/game.h"
 #include "game/game_flow.h"
+#include "game/level.h"
 #include "game/music.h"
 #include "game/phase.h"
 #include "global/vars.h"
@@ -16,11 +18,11 @@
         GF_SEQUENCE_CONTEXT seq_ctx, void *const seq_ctx_arg)
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle);
-static DECLARE_EVENT_HANDLER(M_HandlePicture);
 static DECLARE_EVENT_HANDLER(M_HandlePlayLevel);
 static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene);
 static DECLARE_EVENT_HANDLER(M_HandlePlayMusic);
 static DECLARE_EVENT_HANDLER(M_HandlePlayFMV);
+static DECLARE_EVENT_HANDLER(M_HandlePicture);
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete);
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats);
 static DECLARE_EVENT_HANDLER(M_HandleEnableSunset);
@@ -36,30 +38,103 @@ static DECLARE_EVENT_HANDLER(M_HandleSetNumSecrets);
 
 static DECLARE_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     // clang-format off
-    [GFS_EXIT_TO_TITLE]        = M_HandleExitToTitle,
-    [GFS_DISPLAY_PICTURE]      = M_HandlePicture,
-    [GFS_PLAY_LEVEL]           = M_HandlePlayLevel,
-    [GFS_PLAY_CUTSCENE]        = M_HandlePlayCutscene,
-    [GFS_PLAY_MUSIC]           = M_HandlePlayMusic,
-    [GFS_PLAY_FMV]             = M_HandlePlayFMV,
-    [GFS_LEVEL_COMPLETE]       = M_HandleLevelComplete,
-    [GFS_LEVEL_STATS]          = M_HandleLevelStats,
-    [GFS_TOTAL_STATS]          = M_HandleTotalStats,
-    [GFS_ENABLE_SUNSET]        = M_HandleEnableSunset,
-    [GFS_SET_CAMERA_ANGLE]     = M_HandleSetCameraAngle,
-    [GFS_DISABLE_FLOOR]        = M_HandleDisableFloor,
-    [GFS_ADD_ITEM]             = M_HandleAddItem,
-    [GFS_ADD_SECRET_REWARD]    = M_HandleAddSecretReward,
-    [GFS_REMOVE_WEAPONS]       = M_HandleRemoveWeapons,
-    [GFS_REMOVE_AMMO]          = M_HandleRemoveAmmo,
-    [GFS_SET_START_ANIM]       = M_HandleSetStartAnim,
-    [GFS_SET_NUM_SECRETS]      = M_HandleSetNumSecrets,
+    [GFS_EXIT_TO_TITLE]     = M_HandleExitToTitle,
+    [GFS_PLAY_LEVEL]        = M_HandlePlayLevel,
+    [GFS_PLAY_CUTSCENE]     = M_HandlePlayCutscene,
+    [GFS_PLAY_MUSIC]        = M_HandlePlayMusic,
+    [GFS_PLAY_FMV]          = M_HandlePlayFMV,
+    [GFS_DISPLAY_PICTURE]   = M_HandlePicture,
+    [GFS_LEVEL_COMPLETE]    = M_HandleLevelComplete,
+    [GFS_LEVEL_STATS]       = M_HandleLevelStats,
+    [GFS_TOTAL_STATS]       = M_HandleTotalStats,
+    [GFS_ENABLE_SUNSET]     = M_HandleEnableSunset,
+    [GFS_SET_CAMERA_ANGLE]  = M_HandleSetCameraAngle,
+    [GFS_DISABLE_FLOOR]     = M_HandleDisableFloor,
+    [GFS_ADD_ITEM]          = M_HandleAddItem,
+    [GFS_ADD_SECRET_REWARD] = M_HandleAddSecretReward,
+    [GFS_REMOVE_WEAPONS]    = M_HandleRemoveWeapons,
+    [GFS_REMOVE_AMMO]       = M_HandleRemoveAmmo,
+    [GFS_SET_START_ANIM]    = M_HandleSetStartAnim,
+    [GFS_SET_NUM_SECRETS]   = M_HandleSetNumSecrets,
     // clang-format on
 };
 
 static DECLARE_EVENT_HANDLER(M_HandleExitToTitle)
 {
     return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+}
+
+static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
+{
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
+    if (seq_ctx == GFSC_STORY) {
+        return gf_cmd;
+    } else if (level->type == GFL_DEMO) {
+        if (!Level_Initialise(level)) {
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        gf_cmd = GF_RunDemo(level->num);
+    } else if (level->type == GFL_CUTSCENE) {
+        if (!Level_Initialise(level)) {
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        gf_cmd = GF_RunCutscene(level->num);
+    } else {
+        if (seq_ctx != GFSC_SAVED) {
+            if (level != nullptr) {
+                Savegame_ApplyLogicToCurrentInfo(level);
+            }
+            InitialiseLevelFlags();
+        }
+        if (!Level_Initialise(level)) {
+            Game_SetCurrentLevel(nullptr);
+            GF_SetCurrentLevel(nullptr);
+            return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
+        }
+        if (seq_ctx == GFSC_SAVED) {
+            ExtractSaveGameInfo();
+        } else if (level->type == GFL_NORMAL) {
+            GF_InventoryModifier_Apply(Game_GetCurrentLevel(), GF_INV_REGULAR);
+        }
+        gf_cmd = GF_RunGame(level, seq_ctx);
+    }
+    if (gf_cmd.action == GF_LEVEL_COMPLETE) {
+        gf_cmd.action = GF_NOOP;
+    }
+    return gf_cmd;
+}
+
+static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene)
+{
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
+    const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
+    if (seq_ctx != GFSC_SAVED) {
+        gf_cmd = GF_DoCutsceneSequence(cutscene_num);
+        if (gf_cmd.action == GF_LEVEL_COMPLETE) {
+            gf_cmd.action = GF_NOOP;
+        }
+    }
+    return gf_cmd;
+}
+
+static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
+{
+    GF_COMMAND gf_cmd = { .action = GF_NOOP };
+    const int16_t fmv_id = (int16_t)(intptr_t)event->data;
+    if (seq_ctx != GFSC_SAVED) {
+        if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
+            LOG_ERROR("Invalid FMV number: %d", fmv_id);
+        } else {
+            FMV_Play(g_GameFlow.fmvs[fmv_id].path);
+        }
+    }
+    return gf_cmd;
+}
+
+static DECLARE_EVENT_HANDLER(M_HandlePlayMusic)
+{
+    Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
+    return (GF_COMMAND) { .action = GF_NOOP };
 }
 
 static DECLARE_EVENT_HANDLER(M_HandlePicture)
@@ -81,80 +156,27 @@ static DECLARE_EVENT_HANDLER(M_HandlePicture)
     return gf_cmd;
 }
 
-static DECLARE_EVENT_HANDLER(M_HandlePlayLevel)
-{
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    if (seq_ctx != GFSC_STORY) {
-        if (level->type == GFL_DEMO) {
-            gf_cmd = GF_RunDemo(level->num);
-        } else if (level->type == GFL_CUTSCENE) {
-            gf_cmd = GF_RunCutscene(level->num);
-        } else {
-            gf_cmd = GF_RunGame(level, seq_ctx);
-        }
-        if (gf_cmd.action == GF_LEVEL_COMPLETE) {
-            gf_cmd.action = GF_NOOP;
-        }
-    }
-    return gf_cmd;
-}
-
-static DECLARE_EVENT_HANDLER(M_HandlePlayCutscene)
-{
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    const int16_t cutscene_num = (int16_t)(intptr_t)event->data;
-    if (seq_ctx != GFSC_SAVED) {
-        gf_cmd = GF_DoCutsceneSequence(cutscene_num);
-        if (gf_cmd.action == GF_LEVEL_COMPLETE) {
-            gf_cmd.action = GF_NOOP;
-        }
-    }
-    return gf_cmd;
-}
-
-static DECLARE_EVENT_HANDLER(M_HandlePlayMusic)
-{
-    Music_Play((int32_t)(intptr_t)event->data, MPM_ALWAYS);
-    return (GF_COMMAND) { .action = GF_NOOP };
-}
-
-static DECLARE_EVENT_HANDLER(M_HandlePlayFMV)
-{
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
-    const int16_t fmv_id = (int16_t)(intptr_t)event->data;
-    if (seq_ctx != GFSC_SAVED) {
-        if (fmv_id < 0 || fmv_id >= g_GameFlow.fmv_count) {
-            LOG_ERROR("Invalid FMV number: %d", fmv_id);
-        } else {
-            FMV_Play(g_GameFlow.fmvs[fmv_id].path);
-        }
-    }
-    return gf_cmd;
-}
-
 static DECLARE_EVENT_HANDLER(M_HandleLevelComplete)
 {
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx != GFSC_NORMAL) {
-        return gf_cmd;
+        return (GF_COMMAND) { .action = GF_NOOP };
     }
     const GF_LEVEL *const current_level = Game_GetCurrentLevel();
     const GF_LEVEL *const next_level = GF_GetLevelAfter(current_level);
-    START_INFO *const start = GF_GetResumeInfo(current_level);
+    START_INFO *const start = Savegame_GetCurrentInfo(current_level);
     start->stats = g_SaveGame.current_stats;
     start->available = 0;
     if (next_level != nullptr) {
         Savegame_PersistGameToCurrentInfo(next_level);
         g_SaveGame.current_level = next_level->num;
     }
-    if (next_level == nullptr || gf_cmd.action != GF_NOOP) {
-        return gf_cmd;
+    if (next_level == nullptr) {
+        return (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
-    gf_cmd = (GF_COMMAND) {
+    return (GF_COMMAND) {
         .action = GF_START_GAME,
         .param = next_level->num,
     };
-    return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
@@ -162,24 +184,25 @@ static DECLARE_EVENT_HANDLER(M_HandleLevelStats)
     GF_COMMAND gf_cmd = { .action = GF_NOOP };
     if (seq_ctx == GFSC_NORMAL) {
         const GF_LEVEL *const current_level = Game_GetCurrentLevel();
-        PHASE *const stats_phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
+        PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
             .background_type = Game_IsInGym() ? BK_TRANSPARENT : BK_OBJECT,
             .level_num = current_level->num,
             .show_final_stats = false,
             .use_bare_style = false,
         });
-        gf_cmd = PhaseExecutor_Run(stats_phase);
-        Phase_Stats_Destroy(stats_phase);
+        gf_cmd = PhaseExecutor_Run(phase);
+        Phase_Stats_Destroy(phase);
     }
     return gf_cmd;
 }
 
 static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
 {
-    GF_COMMAND gf_cmd = { .action = GF_NOOP };
+    GF_COMMAND gf_cmd = { .action = GF_EXIT_TO_TITLE };
     if (seq_ctx == GFSC_NORMAL) {
         const GF_LEVEL *const current_level = Game_GetCurrentLevel();
-        START_INFO *const start = GF_GetResumeInfo(current_level);
+        // TODO: move me out
+        START_INFO *const start = Savegame_GetCurrentInfo(current_level);
         start->stats = g_SaveGame.current_stats;
         g_SaveGame.bonus_flag = true;
         PHASE *const phase = Phase_Stats_Create((PHASE_STATS_ARGS) {
@@ -190,8 +213,6 @@ static DECLARE_EVENT_HANDLER(M_HandleTotalStats)
         });
         gf_cmd = PhaseExecutor_Run(phase);
         Phase_Stats_Destroy(phase);
-    } else {
-        gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
     }
     return gf_cmd;
 }

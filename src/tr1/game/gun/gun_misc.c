@@ -2,12 +2,12 @@
 
 #include "game/collide.h"
 #include "game/game.h"
-#include "game/game_flow.h"
 #include "game/input.h"
 #include "game/inventory.h"
 #include "game/items.h"
 #include "game/los.h"
 #include "game/random.h"
+#include "game/savegame.h"
 #include "game/sound.h"
 #include "game/spawn.h"
 #include "global/const.h"
@@ -490,7 +490,7 @@ int32_t Gun_FireWeapon(
 void Gun_HitTarget(ITEM *item, GAME_VECTOR *hitpos, int16_t damage)
 {
     if (item->hit_points > 0 && item->hit_points <= damage) {
-        GF_GetResumeInfo(Game_GetCurrentLevel())->stats.kill_count++;
+        Savegame_GetCurrentInfo(Game_GetCurrentLevel())->stats.kill_count++;
         if (g_Config.gameplay.target_mode == TLM_SEMI) {
             g_Lara.target = nullptr;
         }

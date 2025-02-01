@@ -1,5 +1,6 @@
 #include "game/demo.h"
 
+#include "decomp/savegame.h"
 #include "game/camera.h"
 #include "game/game.h"
 #include "game/game_flow.h"
@@ -30,7 +31,6 @@ typedef struct {
     struct {
         bool bonus_flag;
     } old_config;
-    START_INFO old_start;
 } M_PRIV;
 
 static int32_t m_LastDemoNum = 0;
@@ -40,8 +40,6 @@ static INPUT_STATE m_OldDemoInputDB = {};
 
 static void M_PrepareConfig(M_PRIV *p);
 static void M_RestoreConfig(M_PRIV *p);
-static void M_PrepareStartInfo(M_PRIV *p);
-static void M_RestoreStartInfo(M_PRIV *p);
 
 static void M_PrepareConfig(M_PRIV *const p)
 {
@@ -52,23 +50,6 @@ static void M_PrepareConfig(M_PRIV *const p)
 static void M_RestoreConfig(M_PRIV *const p)
 {
     g_SaveGame.bonus_flag = p->old_config.bonus_flag;
-}
-
-static void M_PrepareStartInfo(M_PRIV *const p)
-{
-    START_INFO *const start = GF_GetResumeInfo(p->level);
-    p->old_start = *start;
-    start->available = 1;
-    start->has_pistols = 1;
-    start->pistol_ammo = 1000;
-    start->gun_status = LGS_ARMLESS;
-    start->gun_type = LGT_PISTOLS;
-}
-
-static void M_RestoreStartInfo(M_PRIV *const p)
-{
-    START_INFO *const start = GF_GetResumeInfo(p->level);
-    *start = p->old_start;
 }
 
 bool Demo_GetInput(void)
@@ -142,20 +123,7 @@ bool Demo_Start(const int32_t level_num)
     M_PRIV *const p = &m_Priv;
     p->level = GF_GetLevel(GFLT_DEMOS, level_num);
     ASSERT(p->level != nullptr);
-
-    M_PrepareConfig(p);
-    M_PrepareStartInfo(p);
-
-    Random_SeedDraw(0xD371F947);
-    Random_SeedControl(0xD371F947);
-
-    if (!Level_Initialise(p->level, GFSC_NORMAL)) {
-        return false;
-    }
-    if (g_DemoData == nullptr) {
-        LOG_ERROR("Level '%s' has no demo data", p->level->path);
-        return false;
-    }
+    ASSERT(GF_GetCurrentLevel() == p->level);
 
     p->demo_ptr = g_DemoData;
 
@@ -197,7 +165,6 @@ void Demo_End(void)
 {
     M_PRIV *const p = &m_Priv;
     M_RestoreConfig(p);
-    M_RestoreStartInfo(p);
     Text_Remove(p->text);
     Overlay_HideGameInfo();
     Sound_StopAll();
@@ -210,14 +177,12 @@ void Demo_Pause(void)
 {
     M_PRIV *const p = &m_Priv;
     M_RestoreConfig(p);
-    M_RestoreStartInfo(p);
 }
 
 void Demo_Unpause(void)
 {
     M_PRIV *const p = &m_Priv;
     M_PrepareConfig(p);
-    M_PrepareStartInfo(p);
     Stats_StartTimer();
 }
 

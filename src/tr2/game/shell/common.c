@@ -353,6 +353,7 @@ void Shell_Main(void)
     GF_Load(m_CurrentGameFlowPath);
     GameStringTable_LoadFromFile(m_CurrentGameStringsPath);
 
+    Savegame_Init();
     Savegame_InitCurrentInfo();
     S_FrontEndCheck();
 
@@ -414,7 +415,7 @@ void Shell_Main(void)
                     return;
                 }
             } else {
-                gf_cmd = GF_TitleSequence();
+                gf_cmd = GF_RunTitle();
             }
             break;
 

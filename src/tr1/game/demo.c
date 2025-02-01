@@ -17,11 +17,13 @@
 #include "game/phase.h"
 #include "game/random.h"
 #include "game/room.h"
+#include "game/savegame.h"
 #include "game/shell.h"
 #include "game/sound.h"
 #include "global/vars.h"
 
 #include <libtrx/config.h>
+#include <libtrx/debug.h>
 #include <libtrx/log.h>
 
 #define MODIFY_CONFIG()                                                        \
@@ -37,7 +39,6 @@ typedef struct {
     uint32_t *demo_ptr;
     const GF_LEVEL *level;
     CONFIG old_config;
-    RESUME_INFO old_resume_info;
     TEXTSTRING *text;
 } M_PRIV;
 
@@ -46,8 +47,6 @@ static M_PRIV m_Priv;
 
 static void M_PrepareConfig(M_PRIV *const p);
 static void M_RestoreConfig(M_PRIV *const p);
-static void M_PrepareResumeInfo(M_PRIV *const p);
-static void M_RestoreResumeInfo(M_PRIV *const p);
 static bool M_ProcessInput(M_PRIV *const p);
 
 static void M_PrepareConfig(M_PRIV *const p)
@@ -65,36 +64,6 @@ static void M_RestoreConfig(M_PRIV *const p)
 #undef PROCESS_CONFIG
 #define PROCESS_CONFIG(var, value) g_Config.var = p->old_config.var;
     MODIFY_CONFIG();
-}
-
-static void M_PrepareResumeInfo(M_PRIV *const p)
-{
-    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
-    p->old_resume_info = *resume_info;
-    resume_info->flags.available = 1;
-    resume_info->flags.costume = 0;
-    resume_info->num_medis = 0;
-    resume_info->num_big_medis = 0;
-    resume_info->num_scions = 0;
-    resume_info->flags.got_pistols = 1;
-    resume_info->flags.got_shotgun = 0;
-    resume_info->flags.got_magnums = 0;
-    resume_info->flags.got_uzis = 0;
-    resume_info->pistol_ammo = 1000;
-    resume_info->shotgun_ammo = 0;
-    resume_info->magnum_ammo = 0;
-    resume_info->uzi_ammo = 0;
-    resume_info->gun_status = LGS_ARMLESS;
-    resume_info->equipped_gun_type = LGT_PISTOLS;
-    resume_info->holsters_gun_type = LGT_PISTOLS;
-    resume_info->back_gun_type = LGT_UNARMED;
-    resume_info->lara_hitpoints = LARA_MAX_HITPOINTS;
-}
-
-static void M_RestoreResumeInfo(M_PRIV *const p)
-{
-    RESUME_INFO *const resume_info = GF_GetResumeInfo(p->level);
-    *resume_info = p->old_resume_info;
 }
 
 static bool M_ProcessInput(M_PRIV *const p)
@@ -160,9 +129,10 @@ bool Demo_Start(const int32_t level_num)
 {
     M_PRIV *const p = &m_Priv;
     p->level = GF_GetLevel(GFLT_DEMOS, level_num);
+    ASSERT(p->level != nullptr);
+    ASSERT(GF_GetCurrentLevel() == p->level);
 
     M_PrepareConfig(p);
-    M_PrepareResumeInfo(p);
 
     // Remember old inputs in case the demo was forcefully started with some
     // keys pressed. In that case, it should only be stopped if the user
@@ -171,12 +141,6 @@ bool Demo_Start(const int32_t level_num)
 
     Interpolation_Remember();
 
-    Random_SeedDraw(0xD371F947);
-    Random_SeedControl(0xD371F947);
-
-    if (!Level_Initialise(p->level)) {
-        return false;
-    }
     if (g_DemoData == nullptr) {
         LOG_ERROR("Level '%s' has no demo data", p->level->path);
         return false;
@@ -224,7 +188,6 @@ void Demo_End(void)
 {
     M_PRIV *const p = &m_Priv;
     M_RestoreConfig(p);
-    M_RestoreResumeInfo(p);
     Text_Remove(p->text);
     p->text = nullptr;
     g_GameInfo.showing_demo = false;
@@ -234,7 +197,6 @@ void Demo_Pause(void)
 {
     M_PRIV *const p = &m_Priv;
     M_RestoreConfig(p);
-    M_RestoreResumeInfo(p);
     Text_Hide(p->text, true);
     g_GameInfo.showing_demo = false;
 }
@@ -243,7 +205,6 @@ void Demo_Unpause(void)
 {
     M_PRIV *const p = &m_Priv;
     M_PrepareConfig(p);
-    M_PrepareResumeInfo(p);
     Text_Hide(p->text, false);
     g_GameInfo.showing_demo = true;
 }
@@ -283,7 +244,7 @@ GF_COMMAND Demo_Control(void)
 
     if (g_LevelComplete || g_InputDB.menu_confirm || g_InputDB.menu_back) {
         return (GF_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
+            .action = GF_EXIT_TO_TITLE,
             .param = p->level->num,
         };
     }
@@ -292,7 +253,7 @@ GF_COMMAND Demo_Control(void)
 
     if (!M_ProcessInput(p)) {
         return (GF_COMMAND) {
-            .action = GF_LEVEL_COMPLETE,
+            .action = GF_EXIT_TO_TITLE,
             .param = p->level->num,
         };
     }

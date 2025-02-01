@@ -2,7 +2,6 @@
 
 #include "game/effects.h"
 #include "game/game.h"
-#include "game/game_flow.h"
 #include "game/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -11,6 +10,7 @@
 #include "game/objects/common.h"
 #include "game/overlay.h"
 #include "game/random.h"
+#include "game/savegame.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -143,7 +143,7 @@ static void M_GetItem(int16_t item_num, ITEM *item, ITEM *lara_item)
     item->status = IS_INVISIBLE;
     Item_RemoveDrawn(item_num);
     Item_RemoveActive(item_num);
-    GF_GetResumeInfo(Game_GetCurrentLevel())->stats.pickup_count++;
+    Savegame_GetCurrentInfo(Game_GetCurrentLevel())->stats.pickup_count++;
     g_Lara.interact_target.is_moving = false;
 }
 

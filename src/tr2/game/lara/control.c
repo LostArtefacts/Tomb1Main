@@ -1,10 +1,10 @@
 #include "game/lara/control.h"
 
+#include "decomp/savegame.h"
 #include "decomp/skidoo.h"
 #include "game/camera.h"
 #include "game/creature.h"
 #include "game/game.h"
-#include "game/game_flow.h"
 #include "game/gun/gun.h"
 #include "game/input.h"
 #include "game/inventory.h"
@@ -860,7 +860,7 @@ void Lara_InitialiseInventory(const GF_LEVEL *const level)
 
     Inv_AddItem(O_COMPASS_ITEM);
 
-    START_INFO *const start = GF_GetResumeInfo(level);
+    START_INFO *const start = Savegame_GetCurrentInfo(level);
     if (start != nullptr) {
         if (g_GF_RemoveWeapons) {
             start->has_pistols = 0;
@@ -969,7 +969,7 @@ void Lara_InitialiseMeshes(const GF_LEVEL *const level)
         Lara_SwapSingleMesh(i, O_LARA);
     }
 
-    const START_INFO *const start = GF_GetResumeInfo(level);
+    const START_INFO *const start = Savegame_GetCurrentInfo(level);
     if (start == nullptr) {
         return;
     }

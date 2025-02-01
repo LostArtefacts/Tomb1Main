@@ -642,7 +642,7 @@ static void M_WriteFlares(void)
 
 void Savegame_ResetCurrentInfo(const GF_LEVEL *const level)
 {
-    START_INFO *const current = GF_GetResumeInfo(level);
+    START_INFO *const current = Savegame_GetCurrentInfo(level);
     memset(current, 0, sizeof(START_INFO));
 }
 
@@ -657,21 +657,21 @@ void Savegame_InitCurrentInfo(void)
         const GF_LEVEL *const level = &level_table->levels[i];
         Savegame_ResetCurrentInfo(level);
         Savegame_ApplyLogicToCurrentInfo(level);
-        GF_GetResumeInfo(level)->available = 0;
+        Savegame_GetCurrentInfo(level)->available = 0;
     }
 
     if (GF_GetGymLevel() != nullptr) {
-        GF_GetResumeInfo(GF_GetGymLevel())->available = 1;
+        Savegame_GetCurrentInfo(GF_GetGymLevel())->available = 1;
     }
     if (GF_GetFirstLevel() != nullptr) {
-        GF_GetResumeInfo(GF_GetFirstLevel())->available = 1;
+        Savegame_GetCurrentInfo(GF_GetFirstLevel())->available = 1;
     }
     g_SaveGame.bonus_flag = 0;
 }
 
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 {
-    START_INFO *start = GF_GetResumeInfo(level);
+    START_INFO *start = Savegame_GetCurrentInfo(level);
     start->has_pistols = 1;
     start->gun_type = LGT_PISTOLS;
     start->pistol_ammo = 1000;
@@ -748,7 +748,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
 
 void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
 {
-    START_INFO *const start = GF_GetResumeInfo(level);
+    START_INFO *const start = Savegame_GetCurrentInfo(level);
 
     start->available = 1;
 

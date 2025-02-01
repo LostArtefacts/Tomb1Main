@@ -63,6 +63,8 @@ void Savegame_ScanAvailableLevels(REQUEST_INFO *req);
 void Savegame_HighlightNewestSlot(void);
 bool Savegame_RestartAvailable(int32_t slot_num);
 
+RESUME_INFO *Savegame_GetCurrentInfo(const GF_LEVEL *level);
+
 void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *level);
 void Savegame_ResetCurrentInfo(const GF_LEVEL *level);
 void Savegame_CarryCurrentInfoToNextLevel(

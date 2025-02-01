@@ -437,7 +437,7 @@ static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
     const GF_LEVEL_TABLE *const level_table = GF_GetLevelTable(GFLT_MAIN);
     for (int i = 0; i < level_table->count; i++) {
         const GF_LEVEL *const level = &level_table->levels[i];
-        RESUME_INFO *current = GF_GetResumeInfo(level);
+        RESUME_INFO *current = Savegame_GetCurrentInfo(level);
         M_Read(&current->pistol_ammo, sizeof(uint16_t));
         M_Read(&current->magnum_ammo, sizeof(uint16_t));
         M_Read(&current->uzi_ammo, sizeof(uint16_t));
@@ -472,7 +472,8 @@ static void M_ReadResumeInfo(MYFILE *fp, GAME_INFO *game_info)
     M_Read(&temp_secret_flags, sizeof(uint16_t));
     M_Read(&current_level, sizeof(uint16_t));
     M_SetCurrentPosition(current_level);
-    RESUME_INFO *const resume_info = GF_GetResumeInfo(Game_GetCurrentLevel());
+    RESUME_INFO *const resume_info =
+        Savegame_GetCurrentInfo(Game_GetCurrentLevel());
     resume_info->stats.timer = temp_timer;
     resume_info->stats.kill_count = temp_kill_count;
     resume_info->stats.secret_flags = temp_secret_flags;
