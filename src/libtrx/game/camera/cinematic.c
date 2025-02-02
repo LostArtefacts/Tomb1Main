@@ -2,7 +2,7 @@
 #include "game/camera/vars.h"
 #include "game/game_buf.h"
 
-static CINE_FRAME *m_CineFrames = NULL;
+static CINE_FRAME *m_CineFrames = nullptr;
 static CINE_DATA m_CineData = {};
 
 void Camera_InitialiseCineFrames(const int32_t num_frames)
