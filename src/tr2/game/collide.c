@@ -311,7 +311,7 @@ int32_t Collide_CollideStaticObjects(
         for (int32_t j = 0; j < room->num_static_meshes; j++) {
             const STATIC_MESH *const mesh = &room->static_meshes[j];
             const STATIC_OBJECT_3D *const sinfo =
-                Object_GetStaticObject3D(mesh->static_num);
+                Object_Get3DStatic(mesh->static_num);
 
             if (!sinfo->collidable) {
                 continue;

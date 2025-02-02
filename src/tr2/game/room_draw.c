@@ -422,7 +422,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
     for (int32_t i = 0; i < r->num_static_meshes; i++) {
         const STATIC_MESH *const mesh = &r->static_meshes[i];
         const STATIC_OBJECT_3D *const static_obj =
-            Object_GetStaticObject3D(mesh->static_num);
+            Object_Get3DStatic(mesh->static_num);
         if (!static_obj->visible) {
             continue;
         }

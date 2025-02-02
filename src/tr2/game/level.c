@@ -595,8 +595,8 @@ bool Level_Load(const GF_LEVEL *const level)
         Object_Get(i)->loaded = false;
     }
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        Object_GetStaticObject2D(i)->loaded = false;
-        Object_GetStaticObject3D(i)->loaded = false;
+        Object_Get2DStatic(i)->loaded = false;
+        Object_Get3DStatic(i)->loaded = false;
     }
 
     Inject_Init(level->injections.count, level->injections.data_paths);

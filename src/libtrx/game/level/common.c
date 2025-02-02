@@ -481,8 +481,7 @@ void Level_ReadStaticObjects(VFILE *const file)
                 MAX_STATIC_OBJECTS);
         }
 
-        STATIC_OBJECT_3D *const static_obj =
-            Object_GetStaticObject3D(static_id);
+        STATIC_OBJECT_3D *const static_obj = Object_Get3DStatic(static_id);
         static_obj->mesh_idx = VFile_ReadS16(file);
         static_obj->loaded = true;
 
@@ -546,7 +545,7 @@ void Level_ReadSpriteSequences(VFILE *const file)
             object->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_OBJECT_2D *const object =
-                Object_GetStaticObject2D(object_id - O_NUMBER_OF);
+                Object_Get2DStatic(object_id - O_NUMBER_OF);
             object->frame_count = ABS(num_meshes);
             object->texture_idx = mesh_idx;
             object->loaded = true;

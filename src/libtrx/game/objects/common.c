@@ -15,12 +15,12 @@ OBJECT *Object_Get(const GAME_OBJECT_ID object_id)
     return &m_Objects[object_id];
 }
 
-STATIC_OBJECT_3D *Object_GetStaticObject3D(const int32_t static_id)
+STATIC_OBJECT_3D *Object_Get3DStatic(const int32_t static_id)
 {
     return &m_StaticObjects3D[static_id];
 }
 
-STATIC_OBJECT_2D *Object_GetStaticObject2D(const int32_t static_id)
+STATIC_OBJECT_2D *Object_Get2DStatic(const int32_t static_id)
 {
     return &m_StaticObjects2D[static_id];
 }

@@ -427,7 +427,7 @@ static void M_TextureData(
             object->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_OBJECT_2D *const object =
-                Object_GetStaticObject2D(object_id - O_NUMBER_OF);
+                Object_Get2DStatic(object_id - O_NUMBER_OF);
             object->frame_count = ABS(num_meshes);
             object->texture_idx = mesh_idx + level_info->textures.sprite_count;
             object->loaded = true;
@@ -784,7 +784,7 @@ static void M_ApplyMeshEdit(
         mesh = Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
     } else if (mesh_edit->object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
         const STATIC_OBJECT_3D *const info =
-            Object_GetStaticObject3D(mesh_edit->object_id - O_NUMBER_OF);
+            Object_Get3DStatic(mesh_edit->object_id - O_NUMBER_OF);
         mesh = Object_GetMesh(info->mesh_idx);
     } else {
         LOG_WARNING("Invalid object ID %d", mesh_edit->object_id);

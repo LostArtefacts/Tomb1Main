@@ -208,7 +208,7 @@ void Output_CycleAnimatedTextures(void)
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        const STATIC_OBJECT_2D *const object = Object_GetStaticObject2D(i);
+        const STATIC_OBJECT_2D *const object = Object_Get2DStatic(i);
         if (!object->loaded || object->frame_count == 1) {
             continue;
         }
