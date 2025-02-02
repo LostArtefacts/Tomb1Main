@@ -3,6 +3,7 @@
 #include "config.h"
 #include "debug.h"
 #include "enum_map.h"
+#include "game/console/registry.h"
 #include "game/game_string.h"
 #include "memory.h"
 #include "strings.h"
@@ -272,7 +273,4 @@ cleanup:
     return result;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Config = {
-    .prefix = "set",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("set", M_Entrypoint)

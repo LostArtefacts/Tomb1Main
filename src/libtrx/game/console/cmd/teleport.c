@@ -1,5 +1,5 @@
-#include "game/console/cmd/teleport.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/const.h"
 #include "game/game.h"
 #include "game/game_string.h"
@@ -253,7 +253,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return M_TeleportToObject(ctx->args);
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Teleport = {
-    .prefix = "tp",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("tp", M_Entrypoint)

@@ -1,6 +1,5 @@
-#include "game/console/cmd/sfx.h"
-
 #include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_string.h"
 #include "game/sound.h"
 #include "memory.h"
@@ -78,7 +77,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_SFX = {
-    .prefix = "sfx",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("sfx", M_Entrypoint)

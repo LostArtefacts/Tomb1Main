@@ -1,5 +1,4 @@
-#include "game/console/cmd/die.h"
-
+#include "game/console/registry.h"
 #include "game/items.h"
 #include "game/lara/common.h"
 #include "game/objects/common.h"
@@ -34,7 +33,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Die = {
-    .prefix = "abortion|natla-?s(uc|tin)ks",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("abortion|natla-?s(uc|tin)ks", M_Entrypoint)

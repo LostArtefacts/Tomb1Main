@@ -1,5 +1,5 @@
-#include "game/console/cmd/play_cutscene.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_flow/common.h"
 #include "game/game_string.h"
 #include "strings.h"
@@ -31,7 +31,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     }
 }
 
-CONSOLE_COMMAND g_Console_Cmd_PlayCutscene = {
-    .prefix = "cut(scene)?",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("cut(scene)?", M_Entrypoint)

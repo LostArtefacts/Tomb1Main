@@ -1,5 +1,5 @@
-#include "game/console/cmd/give_item.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/inventory.h"
@@ -81,7 +81,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_GiveItem = {
-    .prefix = "give",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("give", M_Entrypoint)

@@ -1,6 +1,6 @@
-#include "game/console/cmd/load_game.h"
-
 #include "config.h"
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_flow/common.h"
 #include "game/game_string.h"
 #include "game/savegame.h"
@@ -35,7 +35,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_LoadGame = {
-    .prefix = "load",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("load", M_Entrypoint)

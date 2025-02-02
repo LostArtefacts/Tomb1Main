@@ -1,5 +1,5 @@
-#include "game/console/cmd/flipmap.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_flow.h"
 #include "game/game_string.h"
 #include "game/rooms.h"
@@ -33,7 +33,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_FlipMap = {
-    .prefix = "flip|flipmap",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("flip|flipmap", M_Entrypoint)

@@ -1,6 +1,5 @@
-#include "game/console/cmd/pos.h"
-
 #include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/const.h"
 #include "game/game.h"
 #include "game/game_flow/common.h"
@@ -41,7 +40,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Pos = {
-    .prefix = "pos",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("pos", M_Entrypoint)

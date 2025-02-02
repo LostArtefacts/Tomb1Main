@@ -1,26 +1,8 @@
 #pragma once
 
-#include "../types.h"
+#include "./types.h"
 
 #include <stdint.h>
-
-typedef enum {
-    CR_SUCCESS,
-    CR_FAILURE,
-    CR_UNAVAILABLE,
-    CR_BAD_INVOCATION,
-} COMMAND_RESULT;
-
-typedef struct {
-    const struct CONSOLE_COMMAND *cmd;
-    const char *prefix;
-    const char *args;
-} COMMAND_CONTEXT;
-
-typedef struct CONSOLE_COMMAND {
-    const char *prefix;
-    COMMAND_RESULT (*proc)(const COMMAND_CONTEXT *ctx);
-} CONSOLE_COMMAND;
 
 void Console_Init(void);
 void Console_Shutdown(void);

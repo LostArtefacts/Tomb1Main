@@ -1,6 +1,6 @@
-#include "game/console/cmd/save_game.h"
-
 #include "config.h"
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game.h"
 #include "game/game_flow/common.h"
 #include "game/game_string.h"
@@ -31,7 +31,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_SaveGame = {
-    .prefix = "save",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("save", M_Entrypoint)

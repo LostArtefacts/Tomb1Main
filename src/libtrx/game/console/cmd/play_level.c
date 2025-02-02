@@ -1,5 +1,5 @@
-#include "game/console/cmd/play_level.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_flow/common.h"
 #include "game/game_string.h"
 #include "strings.h"
@@ -81,7 +81,4 @@ cleanup:
     return result;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_PlayLevel = {
-    .prefix = "play|level",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("play|level", M_Entrypoint)

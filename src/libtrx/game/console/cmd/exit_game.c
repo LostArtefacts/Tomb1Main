@@ -1,5 +1,4 @@
-#include "game/console/cmd/exit_game.h"
-
+#include "game/console/registry.h"
 #include "game/game_flow/common.h"
 #include "strings.h"
 
@@ -15,7 +14,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_ExitGame = {
-    .prefix = "exit|quit",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("exit|quit", M_Entrypoint)

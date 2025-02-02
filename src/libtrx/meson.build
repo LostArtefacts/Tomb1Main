@@ -112,6 +112,7 @@ sources = [
   'game/console/cmd/teleport.c',
   'game/console/common.c',
   'game/console/history.c',
+  'game/console/registry.c',
   'game/fader.c',
   'game/game.c',
   'game/game_buf.c',

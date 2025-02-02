@@ -1,7 +1,6 @@
-#include "game/console/cmd/easy_config.h"
-
 #include <libtrx/config.h>
 #include <libtrx/game/console/cmd/config.h>
+#include <libtrx/game/console/registry.h>
 #include <libtrx/strings.h>
 
 typedef struct {
@@ -35,7 +34,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_FAILURE;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_EasyConfig = {
-    .prefix = "braid|cheats|fps|vsync|wireframe",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("braid|cheats|fps|vsync|wireframe", M_Entrypoint)

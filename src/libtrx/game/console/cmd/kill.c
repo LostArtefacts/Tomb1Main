@@ -1,5 +1,5 @@
-#include "game/console/cmd/kill.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/const.h"
 #include "game/creature.h"
 #include "game/game_string.h"
@@ -168,7 +168,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return M_KillEnemyType(ctx->args);
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Kill = {
-    .prefix = "kill",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("kill", M_Entrypoint)

@@ -1,5 +1,5 @@
-#include "game/console/cmd/heal.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/lara/common.h"
@@ -31,7 +31,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Heal = {
-    .prefix = "heal",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("heal", M_Entrypoint)

@@ -2,7 +2,7 @@
 
 #include "./internal.h"
 #include "debug.h"
-#include "game/console/extern.h"
+#include "game/console/registry.h"
 #include "game/game_string.h"
 #include "game/ui/widgets/console.h"
 #include "log.h"
@@ -30,6 +30,7 @@ void Console_Shutdown(void)
     }
 
     Console_History_Shutdown();
+    Console_Registry_Shutdown();
 
     m_IsOpened = false;
 }
@@ -93,18 +94,7 @@ COMMAND_RESULT Console_Eval(const char *const cmdline)
 {
     LOG_INFO("executing command: %s", cmdline);
 
-    const CONSOLE_COMMAND *matching_cmd = nullptr;
-    CONSOLE_COMMAND **cmd = Console_GetCommands();
-    while (*cmd != nullptr) {
-        char regex[strlen((*cmd)->prefix) + 13];
-        sprintf(regex, "^(%s)(\\s+.*)?$", (*cmd)->prefix);
-        if (String_Match(cmdline, regex)) {
-            matching_cmd = *cmd;
-            break;
-        }
-        *cmd++;
-    }
-
+    const CONSOLE_COMMAND *const matching_cmd = Console_Registry_Get(cmdline);
     if (matching_cmd == nullptr) {
         Console_Log(GS(OSD_UNKNOWN_COMMAND), cmdline);
         return CR_BAD_INVOCATION;

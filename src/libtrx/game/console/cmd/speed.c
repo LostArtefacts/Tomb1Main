@@ -1,6 +1,6 @@
-#include "game/console/cmd/speed.h"
-
 #include "game/clock.h"
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game_string.h"
 #include "strings.h"
 
@@ -22,7 +22,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_BAD_INVOCATION;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_Speed = {
-    .prefix = "speed",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("speed", M_Entrypoint)

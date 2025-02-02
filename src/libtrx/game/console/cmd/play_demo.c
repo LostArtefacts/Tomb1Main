@@ -1,5 +1,5 @@
-#include "game/console/cmd/play_demo.h"
-
+#include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/demo.h"
 #include "game/game_flow/common.h"
 #include "game/game_string.h"
@@ -32,7 +32,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_PlayDemo = {
-    .prefix = "demo",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("demo", M_Entrypoint)

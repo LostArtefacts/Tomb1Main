@@ -1,6 +1,5 @@
-
-#include "game/console/cmd/pos.h"
 #include "game/console/common.h"
+#include "game/console/registry.h"
 #include "game/game.h"
 #include "game/game_string.h"
 #include "game/lara/common.h"
@@ -34,7 +33,4 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
     return CR_SUCCESS;
 }
 
-CONSOLE_COMMAND g_Console_Cmd_SetHealth = {
-    .prefix = "hp",
-    .proc = M_Entrypoint,
-};
+REGISTER_CONSOLE_COMMAND("hp", M_Entrypoint)
