@@ -27,7 +27,6 @@ typedef struct {
     int16_t roll;
     ITEM *item;
     ITEM *last_item;
-    OBJECT_VECTOR *fixed;
 
     int32_t debuff;
 

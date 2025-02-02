@@ -581,7 +581,8 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     }
 
     for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
-        M_Read(&g_Camera.fixed[i].flags, sizeof(int16_t));
+        OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        M_Read(&object->flags, sizeof(int16_t));
     }
 
     Savegame_ProcessItemsBeforeLoad();
@@ -762,7 +763,8 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     }
 
     for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
-        M_Write(&g_Camera.fixed[i].flags, sizeof(int16_t));
+        const OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        M_Write(&object->flags, sizeof(int16_t));
     }
 
     Savegame_ProcessItemsBeforeSave();

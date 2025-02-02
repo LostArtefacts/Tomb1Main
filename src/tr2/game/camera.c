@@ -687,7 +687,7 @@ void Camera_Look(const ITEM *item)
 
 void Camera_Fixed(void)
 {
-    const OBJECT_VECTOR *fixed = &g_Camera.fixed[g_Camera.num];
+    const OBJECT_VECTOR *const fixed = Camera_GetFixedObject(g_Camera.num);
     GAME_VECTOR target = {
         .x = fixed->x,
         .y = fixed->y,

@@ -296,7 +296,9 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
         case TO_CAMERA: {
             const TRIGGER_CAMERA_DATA *const cam_data =
                 (TRIGGER_CAMERA_DATA *)cmd->parameter;
-            if (g_Camera.fixed[cam_data->camera_num].flags & IF_ONE_SHOT) {
+            OBJECT_VECTOR *const camera =
+                Camera_GetFixedObject(cam_data->camera_num);
+            if (camera->flags & IF_ONE_SHOT) {
                 break;
             }
 
@@ -321,7 +323,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             g_Camera.timer = FRAMES_PER_SECOND * cam_data->timer;
 
             if (cam_data->one_shot) {
-                g_Camera.fixed[g_Camera.num].flags |= IF_ONE_SHOT;
+                camera->flags |= IF_ONE_SHOT;
             }
 
             g_Camera.speed = cam_data->glide + 1;
@@ -330,18 +332,16 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
         }
 
         case TO_SINK: {
-            const OBJECT_VECTOR *const object_vector =
-                &g_Camera.fixed[(int16_t)(intptr_t)cmd->parameter];
+            const OBJECT_VECTOR *const sink =
+                Camera_GetFixedObject((int16_t)(intptr_t)cmd->parameter);
 
             if (!g_Lara.creature) {
                 LOT_EnableBaddieAI(g_Lara.item_num, true);
             }
 
-            g_Lara.creature->lot.target.x = object_vector->x;
-            g_Lara.creature->lot.target.y = object_vector->y;
-            g_Lara.creature->lot.target.z = object_vector->z;
-            g_Lara.creature->lot.required_box = object_vector->flags;
-            g_Lara.current_active = object_vector->data * 6;
+            g_Lara.creature->lot.target = sink->pos;
+            g_Lara.creature->lot.required_box = sink->flags;
+            g_Lara.current_active = sink->data * 6;
             break;
         }
 

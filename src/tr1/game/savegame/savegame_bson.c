@@ -457,7 +457,8 @@ static bool M_LoadCameras(JSON_ARRAY *cameras_arr)
         return false;
     }
     for (int32_t i = 0; i < num_cameras; i++) {
-        g_Camera.fixed[i].flags = JSON_ArrayGetInt(cameras_arr, i, 0);
+        OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        object->flags = JSON_ArrayGetInt(cameras_arr, i, 0);
     }
     return true;
 }
@@ -1025,7 +1026,8 @@ static JSON_ARRAY *M_DumpCameras(void)
 {
     JSON_ARRAY *cameras_arr = JSON_ArrayNew();
     for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
-        JSON_ArrayAppendInt(cameras_arr, g_Camera.fixed[i].flags);
+        const OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        JSON_ArrayAppendInt(cameras_arr, object->flags);
     }
     return cameras_arr;
 }

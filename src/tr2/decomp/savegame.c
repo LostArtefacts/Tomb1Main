@@ -884,7 +884,8 @@ void CreateSaveGameInfo(void)
 
     M_Write(g_MusicTrackFlags, MAX_CD_TRACKS * sizeof(uint16_t));
     for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
-        M_WriteS16(g_Camera.fixed[i].flags);
+        const OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        M_WriteS16(object->flags);
     }
 
     M_WriteItems();
@@ -936,7 +937,8 @@ void ExtractSaveGameInfo(void)
     }
 
     for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
-        g_Camera.fixed[i].flags = M_ReadS16();
+        OBJECT_VECTOR *const object = Camera_GetFixedObject(i);
+        object->flags = M_ReadS16();
     }
 
     M_ReadItems();

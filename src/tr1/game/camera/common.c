@@ -174,7 +174,7 @@ static void M_Look(const ITEM *const item)
 
 static void M_Fixed(void)
 {
-    const OBJECT_VECTOR *const fixed = &g_Camera.fixed[g_Camera.num];
+    const OBJECT_VECTOR *const fixed = Camera_GetFixedObject(g_Camera.num);
     GAME_VECTOR ideal = {
         .x = fixed->x,
         .y = fixed->y,

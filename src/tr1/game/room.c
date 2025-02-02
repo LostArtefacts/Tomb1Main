@@ -767,7 +767,9 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
         case TO_CAMERA: {
             const TRIGGER_CAMERA_DATA *const cam_data =
                 (TRIGGER_CAMERA_DATA *)cmd->parameter;
-            if (g_Camera.fixed[cam_data->camera_num].flags & IF_ONE_SHOT) {
+            OBJECT_VECTOR *const camera =
+                Camera_GetFixedObject(cam_data->camera_num);
+            if (camera->flags & IF_ONE_SHOT) {
                 break;
             }
 
@@ -795,7 +797,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             }
 
             if (cam_data->one_shot) {
-                g_Camera.fixed[g_Camera.num].flags |= IF_ONE_SHOT;
+                camera->flags |= IF_ONE_SHOT;
             }
 
             g_Camera.speed = cam_data->glide + 1;
@@ -808,17 +810,15 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             break;
 
         case TO_SINK: {
-            const OBJECT_VECTOR *const obvector =
-                &g_Camera.fixed[(int16_t)(intptr_t)cmd->parameter];
+            const OBJECT_VECTOR *const sink =
+                Camera_GetFixedObject((int16_t)(intptr_t)cmd->parameter);
 
-            if (g_Lara.lot.required_box != obvector->flags) {
-                g_Lara.lot.target.x = obvector->x;
-                g_Lara.lot.target.y = obvector->y;
-                g_Lara.lot.target.z = obvector->z;
-                g_Lara.lot.required_box = obvector->flags;
+            if (g_Lara.lot.required_box != sink->flags) {
+                g_Lara.lot.target = sink->pos;
+                g_Lara.lot.required_box = sink->flags;
             }
 
-            g_Lara.current_active = obvector->data * 6;
+            g_Lara.current_active = sink->data * 6;
             break;
         }
 

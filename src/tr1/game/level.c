@@ -534,7 +534,7 @@ static void M_LoadCameras(VFILE *file)
     LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
     Camera_InitialiseFixedObjects(num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
-        OBJECT_VECTOR *const camera = &g_Camera.fixed[i];
+        OBJECT_VECTOR *const camera = Camera_GetFixedObject(i);
         camera->x = VFile_ReadS32(file);
         camera->y = VFile_ReadS32(file);
         camera->z = VFile_ReadS32(file);

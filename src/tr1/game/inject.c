@@ -1586,7 +1586,7 @@ static void M_CameraEdits(const INJECTION *const injection)
             continue;
         }
 
-        OBJECT_VECTOR *const camera = &g_Camera.fixed[camera_num];
+        OBJECT_VECTOR *const camera = Camera_GetFixedObject(camera_num);
         camera->pos = pos;
         camera->data = room_num;
         camera->flags = flags;
