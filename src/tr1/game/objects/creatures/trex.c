@@ -203,7 +203,7 @@ void TRex_LaraDeath(ITEM *item)
     g_Lara.gun_status = LGS_HANDS_BUSY;
     g_Lara.gun_type = LGT_UNARMED;
 
-    g_Camera.flags = FOLLOW_CENTRE;
+    g_Camera.flags = CF_FOLLOW_CENTRE;
     g_Camera.target_angle = 170 * DEG_1;
     g_Camera.target_elevation = -25 * DEG_1;
 }

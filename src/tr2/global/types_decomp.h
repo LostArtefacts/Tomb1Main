@@ -227,13 +227,6 @@ typedef enum {
     TRAP_FINISHED = 3,
 } TRAP_ANIM;
 
-typedef enum {
-    CF_NORMAL        = 0,
-    CF_FOLLOW_CENTRE = 1,
-    CF_NO_CHUNKY     = 2,
-    CF_CHASE_OBJECT  = 3,
-} CAMERA_FLAGS;
-
 typedef struct {
     uint16_t key[14]; // INPUT_ROLE_NUMBER_OF
 } CONTROL_LAYOUT;

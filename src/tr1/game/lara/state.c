@@ -559,7 +559,7 @@ void Lara_State_StepLeft(ITEM *item, COLL_INFO *coll)
 
 void Lara_State_Slide(ITEM *item, COLL_INFO *coll)
 {
-    g_Camera.flags = NO_CHUNKY;
+    g_Camera.flags = CF_NO_CHUNKY;
     g_Camera.target_elevation = -45 * DEG_1;
     if (g_Input.jump
         && (!g_Config.gameplay.enable_jump_twists || !g_Input.back)) {
@@ -648,7 +648,7 @@ void Lara_State_PushBlock(ITEM *item, COLL_INFO *coll)
 {
     coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
-    g_Camera.flags = FOLLOW_CENTRE;
+    g_Camera.flags = CF_FOLLOW_CENTRE;
     g_Camera.target_angle = 35 * DEG_1;
     g_Camera.target_elevation = -25 * DEG_1;
 }
@@ -657,7 +657,7 @@ void Lara_State_PullBlock(ITEM *item, COLL_INFO *coll)
 {
     coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
-    g_Camera.flags = FOLLOW_CENTRE;
+    g_Camera.flags = CF_FOLLOW_CENTRE;
     g_Camera.target_angle = 35 * DEG_1;
     g_Camera.target_elevation = -25 * DEG_1;
 }
@@ -736,13 +736,13 @@ void Lara_State_Special(ITEM *item, COLL_INFO *coll)
     ITEM *const target_item = Lara_GetDeathCameraTarget();
     if (target_item != nullptr) {
         g_Camera.item = target_item;
-        g_Camera.flags = CHASE_OBJECT;
+        g_Camera.flags = CF_CHASE_OBJECT;
         g_Camera.type = CAM_FIXED;
         g_Camera.target_angle = item->rot.y;
         g_Camera.target_distance = WALL_L * 2;
         g_Camera.target_elevation = -25 * DEG_1;
     } else {
-        g_Camera.flags = FOLLOW_CENTRE;
+        g_Camera.flags = CF_FOLLOW_CENTRE;
         g_Camera.target_angle = 170 * DEG_1;
         g_Camera.target_elevation = -25 * DEG_1;
     }
@@ -887,7 +887,7 @@ void Lara_State_WaterOut(ITEM *item, COLL_INFO *coll)
 {
     coll->enable_hit = 0;
     coll->enable_baddie_push = 0;
-    g_Camera.flags = FOLLOW_CENTRE;
+    g_Camera.flags = CF_FOLLOW_CENTRE;
 }
 
 void Lara_State_SurfSwim(ITEM *item, COLL_INFO *coll)

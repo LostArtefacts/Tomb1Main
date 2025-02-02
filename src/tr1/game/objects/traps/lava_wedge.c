@@ -68,7 +68,7 @@ void LavaWedge_Control(int16_t item_num)
         }
 
         g_Camera.item = item;
-        g_Camera.flags = CHASE_OBJECT;
+        g_Camera.flags = CF_CHASE_OBJECT;
         g_Camera.type = CAM_FIXED;
         g_Camera.target_angle = -DEG_180;
         g_Camera.target_distance = WALL_L * 3;

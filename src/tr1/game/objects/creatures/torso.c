@@ -225,13 +225,13 @@ void Torso_Control(int16_t item_num)
                 g_Lara.gun_type = LGT_UNARMED;
 
                 g_Camera.target_distance = WALL_L * 2;
-                g_Camera.flags = FOLLOW_CENTRE;
+                g_Camera.flags = CF_FOLLOW_CENTRE;
             }
             break;
 
         case TORSO_STATE_KILL:
             g_Camera.target_distance = WALL_L * 2;
-            g_Camera.flags = FOLLOW_CENTRE;
+            g_Camera.flags = CF_FOLLOW_CENTRE;
             break;
         }
     }

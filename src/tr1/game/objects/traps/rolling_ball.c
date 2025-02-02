@@ -161,7 +161,7 @@ void RollingBall_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
             lara_item->goal_anim_state = LS_SPECIAL;
             Item_SwitchToAnim(lara_item, LA_ROLLING_BALL_DEATH, 0);
 
-            g_Camera.flags = FOLLOW_CENTRE;
+            g_Camera.flags = CF_FOLLOW_CENTRE;
             g_Camera.target_angle = 170 * DEG_1;
             g_Camera.target_elevation = -25 * DEG_1;
             for (int i = 0; i < 15; i++) {

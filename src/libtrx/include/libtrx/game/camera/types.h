@@ -9,7 +9,7 @@ typedef struct {
     CAMERA_TYPE type;
 
     int32_t shift;
-    uint32_t flags;
+    CAMERA_FLAGS flags;
     bool fixed_camera;
     int32_t bounce;
     bool underwater;

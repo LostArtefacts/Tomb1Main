@@ -637,7 +637,7 @@ void Camera_ResetPosition(void)
     g_Camera.item = nullptr;
 
     g_Camera.type = CAM_CHASE;
-    g_Camera.flags = 0;
+    g_Camera.flags = CF_NORMAL;
     g_Camera.bounce = 0;
     g_Camera.num = NO_CAMERA;
     g_Camera.additional_angle = 0;
@@ -656,7 +656,7 @@ void Camera_Update(void)
         return;
     }
 
-    if (g_Camera.flags != NO_CHUNKY) {
+    if (g_Camera.flags != CF_NO_CHUNKY) {
         Camera_SetChunky(true);
     }
 
@@ -747,7 +747,7 @@ void Camera_Update(void)
             g_Camera.target.z = item->pos.z;
         }
 
-        if (g_Camera.flags == FOLLOW_CENTRE) {
+        if (g_Camera.flags == CF_FOLLOW_CENTRE) {
             const int16_t shift = (bounds->min.z + bounds->max.z) / 2;
             g_Camera.target.z += Math_Cos(item->rot.y) * shift >> W2V_SHIFT;
             g_Camera.target.x += Math_Sin(item->rot.y) * shift >> W2V_SHIFT;
@@ -773,7 +773,7 @@ void Camera_Update(void)
             Camera_SetChunky(false);
         }
 
-        if (g_Camera.type == CAM_CHASE || g_Camera.flags == CHASE_OBJECT) {
+        if (g_Camera.type == CAM_CHASE || g_Camera.flags == CF_CHASE_OBJECT) {
             M_Chase(item);
         } else {
             M_Fixed();
@@ -805,7 +805,7 @@ void Camera_Update(void)
         g_Camera.target_angle = g_Camera.additional_angle;
         g_Camera.target_elevation = g_Camera.additional_elevation;
         g_Camera.target_distance = CAMERA_DEFAULT_DISTANCE;
-        g_Camera.flags = 0;
+        g_Camera.flags = CF_NORMAL;
     }
 
     Camera_SetChunky(false);

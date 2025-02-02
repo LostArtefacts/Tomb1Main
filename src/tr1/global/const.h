@@ -82,9 +82,6 @@
 #define CAM_A_HANG 0
 #define CAM_E_HANG (-60 * DEG_1) // = -10920
 #define CAM_WADE_ELEVATION (-22 * DEG_1) // = -4004
-#define FOLLOW_CENTRE 1
-#define NO_CHUNKY 2
-#define CHASE_OBJECT 3
 #define LOOK_SPEED 4
 #define COMBAT_SPEED 8
 #define CHASE_SPEED 12
