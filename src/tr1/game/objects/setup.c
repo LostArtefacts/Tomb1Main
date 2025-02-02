@@ -91,6 +91,7 @@
 static void M_SetupCreatures(void);
 static void M_SetupTraps(void);
 static void M_SetupMiscObjects(void);
+static void M_DisableObject(GAME_OBJECT_ID object_id);
 
 static void M_SetupCreatures(void)
 {
@@ -257,6 +258,17 @@ static void M_SetupMiscObjects(void)
     GunShot_Setup(&g_Objects[O_GUN_FLASH]);
 }
 
+static void M_DisableObject(const GAME_OBJECT_ID object_id)
+{
+    OBJECT *const object = Object_GetObject(object_id);
+    object->initialise = nullptr;
+    object->collision = nullptr;
+    object->control = nullptr;
+    object->draw_routine = Object_DrawDummyItem;
+    object->floor_height_func = nullptr;
+    object->ceiling_height_func = nullptr;
+}
+
 void Object_SetupAllObjects(void)
 {
     for (int i = 0; i < O_NUMBER_OF; i++) {
@@ -286,66 +298,22 @@ void Object_SetupAllObjects(void)
     Lara_Hair_Initialise();
 
     if (g_Config.gameplay.disable_medpacks) {
-        g_Objects[O_MEDI_ITEM].initialise = nullptr;
-        g_Objects[O_MEDI_ITEM].collision = nullptr;
-        g_Objects[O_MEDI_ITEM].control = nullptr;
-        g_Objects[O_MEDI_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_MEDI_ITEM].floor_height_func = nullptr;
-        g_Objects[O_MEDI_ITEM].ceiling_height_func = nullptr;
-
-        g_Objects[O_BIGMEDI_ITEM].initialise = nullptr;
-        g_Objects[O_BIGMEDI_ITEM].collision = nullptr;
-        g_Objects[O_BIGMEDI_ITEM].control = nullptr;
-        g_Objects[O_BIGMEDI_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_BIGMEDI_ITEM].floor_height_func = nullptr;
-        g_Objects[O_BIGMEDI_ITEM].ceiling_height_func = nullptr;
+        M_DisableObject(O_MEDI_ITEM);
+        M_DisableObject(O_BIGMEDI_ITEM);
     }
 
     if (g_Config.gameplay.disable_magnums) {
-        g_Objects[O_MAGNUM_ITEM].initialise = nullptr;
-        g_Objects[O_MAGNUM_ITEM].collision = nullptr;
-        g_Objects[O_MAGNUM_ITEM].control = nullptr;
-        g_Objects[O_MAGNUM_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_MAGNUM_ITEM].floor_height_func = nullptr;
-        g_Objects[O_MAGNUM_ITEM].ceiling_height_func = nullptr;
-
-        g_Objects[O_MAG_AMMO_ITEM].initialise = nullptr;
-        g_Objects[O_MAG_AMMO_ITEM].collision = nullptr;
-        g_Objects[O_MAG_AMMO_ITEM].control = nullptr;
-        g_Objects[O_MAG_AMMO_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_MAG_AMMO_ITEM].floor_height_func = nullptr;
-        g_Objects[O_MAG_AMMO_ITEM].ceiling_height_func = nullptr;
+        M_DisableObject(O_MAGNUM_ITEM);
+        M_DisableObject(O_MAG_AMMO_ITEM);
     }
 
     if (g_Config.gameplay.disable_uzis) {
-        g_Objects[O_UZI_ITEM].initialise = nullptr;
-        g_Objects[O_UZI_ITEM].collision = nullptr;
-        g_Objects[O_UZI_ITEM].control = nullptr;
-        g_Objects[O_UZI_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_UZI_ITEM].floor_height_func = nullptr;
-        g_Objects[O_UZI_ITEM].ceiling_height_func = nullptr;
-
-        g_Objects[O_UZI_AMMO_ITEM].initialise = nullptr;
-        g_Objects[O_UZI_AMMO_ITEM].collision = nullptr;
-        g_Objects[O_UZI_AMMO_ITEM].control = nullptr;
-        g_Objects[O_UZI_AMMO_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_UZI_AMMO_ITEM].floor_height_func = nullptr;
-        g_Objects[O_UZI_AMMO_ITEM].ceiling_height_func = nullptr;
+        M_DisableObject(O_UZI_ITEM);
+        M_DisableObject(O_UZI_AMMO_ITEM);
     }
 
     if (g_Config.gameplay.disable_shotgun) {
-        g_Objects[O_SHOTGUN_ITEM].initialise = nullptr;
-        g_Objects[O_SHOTGUN_ITEM].collision = nullptr;
-        g_Objects[O_SHOTGUN_ITEM].control = nullptr;
-        g_Objects[O_SHOTGUN_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_SHOTGUN_ITEM].floor_height_func = nullptr;
-        g_Objects[O_SHOTGUN_ITEM].ceiling_height_func = nullptr;
-
-        g_Objects[O_SG_AMMO_ITEM].initialise = nullptr;
-        g_Objects[O_SG_AMMO_ITEM].collision = nullptr;
-        g_Objects[O_SG_AMMO_ITEM].control = nullptr;
-        g_Objects[O_SG_AMMO_ITEM].draw_routine = Object_DrawDummyItem;
-        g_Objects[O_SG_AMMO_ITEM].floor_height_func = nullptr;
-        g_Objects[O_SG_AMMO_ITEM].ceiling_height_func = nullptr;
+        M_DisableObject(O_SHOTGUN_ITEM);
+        M_DisableObject(O_SG_AMMO_ITEM);
     }
 }
