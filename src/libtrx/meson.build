@@ -81,6 +81,7 @@ sources = [
   'game/anims/commands.c',
   'game/anims/common.c',
   'game/anims/frames.c',
+  'game/camera/common.c',
   'game/camera/cinematic.c',
   'game/camera/photo_mode.c',
   'game/camera/vars.c',

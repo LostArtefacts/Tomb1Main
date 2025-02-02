@@ -42,7 +42,7 @@ static int16_t M_GetFloorTiltHeight(
 
     const HEIGHT_TYPE slope_type =
         (ABS(z_off) > 2 || ABS(x_off) > 2) ? HT_BIG_SLOPE : HT_SMALL_SLOPE;
-    if (g_IsChunkyCamera && slope_type == HT_BIG_SLOPE) {
+    if (Camera_IsChunky() && slope_type == HT_BIG_SLOPE) {
         return height;
     }
 
@@ -74,7 +74,7 @@ static int16_t M_GetCeilingTiltHeight(
     const int32_t z_off = sector->ceiling.tilt >> 8;
     const int32_t x_off = (int8_t)sector->ceiling.tilt;
 
-    if (g_IsChunkyCamera && (ABS(z_off) > 2 || ABS(x_off) > 2)) {
+    if (Camera_IsChunky() && (ABS(z_off) > 2 || ABS(x_off) > 2)) {
         return height;
     }
 

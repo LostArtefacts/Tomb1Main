@@ -32,7 +32,6 @@ extern int32_t g_SavedGamesCount;
 extern int32_t g_SaveCounter;
 extern uint32_t *g_DemoData;
 extern bool g_LevelComplete;
-extern bool g_ChunkyFlag;
 extern int32_t g_OverlayFlag;
 extern int32_t g_HeightType;
 

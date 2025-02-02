@@ -293,7 +293,7 @@ static void M_Move(const GAME_VECTOR *const ideal, const int32_t speed)
     g_Camera.pos.y += (ideal->y - g_Camera.pos.y) / speed;
     g_Camera.pos.room_num = ideal->room_num;
 
-    g_ChunkyFlag = false;
+    Camera_SetChunky(false);
 
     const SECTOR *sector = Room_GetSector(
         g_Camera.pos.x, g_Camera.pos.y, g_Camera.pos.z, &g_Camera.pos.room_num);
@@ -657,7 +657,7 @@ void Camera_Update(void)
     }
 
     if (g_Camera.flags != NO_CHUNKY) {
-        g_ChunkyFlag = true;
+        Camera_SetChunky(true);
     }
 
     const bool fixed_camera = g_Camera.item
@@ -770,7 +770,7 @@ void Camera_Update(void)
         if (g_Camera.target.y > Room_GetHeight(
                 sector, g_Camera.target.x, g_Camera.target.y,
                 g_Camera.target.z)) {
-            g_ChunkyFlag = false;
+            Camera_SetChunky(false);
         }
 
         if (g_Camera.type == CAM_CHASE || g_Camera.flags == CHASE_OBJECT) {
@@ -808,7 +808,7 @@ void Camera_Update(void)
         g_Camera.flags = 0;
     }
 
-    g_ChunkyFlag = false;
+    Camera_SetChunky(false);
 }
 
 void Camera_UpdateCutscene(void)
