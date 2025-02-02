@@ -118,7 +118,7 @@ void Camera_ResetPosition(void)
     g_Camera.flags = CF_NORMAL;
     g_Camera.bounce = 0;
     g_Camera.num = NO_CAMERA;
-    g_Camera.fixed_camera = 0;
+    g_Camera.fixed_camera = false;
 }
 
 void Camera_Move(const GAME_VECTOR *target, int32_t speed)
@@ -698,7 +698,7 @@ void Camera_Fixed(void)
         Camera_ShiftClamp(&target, STEP_L);
     }
 
-    g_Camera.fixed_camera = 1;
+    g_Camera.fixed_camera = true;
     Camera_Move(&target, g_Camera.speed);
 
     if (g_Camera.timer) {
@@ -725,7 +725,7 @@ void Camera_Update(void)
         g_IsChunkyCamera = 1;
     }
 
-    const int32_t fixed_camera = g_Camera.item != nullptr
+    const bool fixed_camera = g_Camera.item != nullptr
         && (g_Camera.type == CAM_FIXED || g_Camera.type == CAM_HEAVY);
     const ITEM *const item = fixed_camera ? g_Camera.item : g_LaraItem;
 
@@ -790,7 +790,7 @@ void Camera_Update(void)
             g_Camera.speed =
                 g_Camera.type == CAM_LOOK ? LOOK_SPEED : COMBAT_SPEED;
         }
-        g_Camera.fixed_camera = 0;
+        g_Camera.fixed_camera = false;
         if (g_Camera.type == CAM_LOOK) {
             Camera_Look(item);
         } else {
@@ -816,10 +816,10 @@ void Camera_Update(void)
         g_Camera.target.room_num = item->room_num;
         if (g_Camera.fixed_camera != fixed_camera) {
             g_Camera.target.y = y;
-            g_Camera.fixed_camera = 1;
+            g_Camera.fixed_camera = true;
             g_Camera.speed = 1;
         } else {
-            g_Camera.fixed_camera = 0;
+            g_Camera.fixed_camera = false;
             g_Camera.target.y += (y - g_Camera.target.y) / 4;
         }
 

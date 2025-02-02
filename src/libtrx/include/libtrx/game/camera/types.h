@@ -10,7 +10,7 @@ typedef struct {
 
     int32_t shift;
     uint32_t flags;
-    int32_t fixed_camera;
+    bool fixed_camera;
     int32_t bounce;
     bool underwater;
     int32_t target_distance;

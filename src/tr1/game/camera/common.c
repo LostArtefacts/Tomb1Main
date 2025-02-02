@@ -182,7 +182,7 @@ static void M_Fixed(void)
         .room_num = fixed->data,
     };
 
-    g_Camera.fixed_camera = 1;
+    g_Camera.fixed_camera = true;
 
     M_Move(&ideal, g_Camera.speed);
 
@@ -729,7 +729,7 @@ void Camera_Update(void)
                 g_Camera.type == CAM_LOOK ? LOOK_SPEED : COMBAT_SPEED;
         }
 
-        g_Camera.fixed_camera = 0;
+        g_Camera.fixed_camera = false;
 
         if (g_Camera.type == CAM_LOOK) {
             M_Look(item);
@@ -757,11 +757,11 @@ void Camera_Update(void)
 
         if (g_Camera.fixed_camera != fixed_camera) {
             g_Camera.target.y = y;
-            g_Camera.fixed_camera = 1;
+            g_Camera.fixed_camera = true;
             g_Camera.speed = 1;
         } else {
             g_Camera.target.y += (y - g_Camera.target.y) / 4;
-            g_Camera.fixed_camera = 0;
+            g_Camera.fixed_camera = false;
         }
 
         const SECTOR *const sector = Room_GetSector(
