@@ -111,7 +111,7 @@ static void M_TriggerMusicTrack(int16_t track, const TRIGGER *const trigger)
         if (trigger->one_shot) {
             g_MusicTrackFlags[track] |= IF_ONE_SHOT;
         }
-        Music_Play(track);
+        Music_Play(track, MPM_TRACKED);
     } else {
         Music_StopTrack(track);
     }
@@ -887,7 +887,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             }
             resume_info->stats.secret_flags |= secret_num;
             resume_info->stats.secret_count++;
-            Music_Play(MX_SECRET);
+            Music_Play(MX_SECRET, MPM_ALWAYS);
             break;
         }
         }

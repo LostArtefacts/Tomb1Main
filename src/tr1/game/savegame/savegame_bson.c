@@ -894,9 +894,9 @@ static bool M_LoadCurrentMusic(JSON_OBJECT *music_obj)
             if (g_Config.audio.music_load_condition == MUSIC_LOAD_NON_AMBIENT) {
                 return true;
             }
-            Music_PlayLooped(current_track);
+            Music_Play(current_track, MPM_LOOPED);
         } else {
-            Music_Play(current_track);
+            Music_Play(current_track, MPM_ALWAYS);
         }
 
         if (!Music_SeekTimestamp(timestamp)) {

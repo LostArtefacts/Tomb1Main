@@ -900,7 +900,7 @@ bool Level_Initialise(const GF_LEVEL *const level)
     const bool disable_music =
         level->type == GFL_TITLE && !g_Config.audio.enable_music_in_menu;
     if (level->music_track >= 0 && !disable_music) {
-        Music_PlayLooped(level->music_track);
+        Music_Play(level->music_track, MPM_LOOPED);
     }
 
     Viewport_SetFOV(-1);

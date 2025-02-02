@@ -4,16 +4,8 @@
 
 #include <libtrx/game/music.h>
 
-typedef enum {
-    MPM_ALWAYS,
-    MPM_LOOPED,
-    MPM_DELAYED,
-    MPM_TRACKED,
-} MUSIC_PLAY_MODE;
-
 bool Music_Init(void);
 void Music_Shutdown(void);
-void Music_Play(MUSIC_TRACK_ID track_id, MUSIC_PLAY_MODE mode);
 void Music_Stop(void);
 bool Music_PlaySynced(int16_t track_id);
 double Music_GetTimestamp(void);

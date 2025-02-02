@@ -114,19 +114,19 @@ void Music_Shutdown(void)
     Audio_Stream_Close(m_AudioStreamID);
 }
 
-void Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
+bool Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 {
-    if (track_id == m_TrackCurrent && mode != MPM_ALWAYS) {
-        return;
+    if (mode != MPM_ALWAYS && track_id == m_TrackCurrent) {
+        return false;
     }
 
     if (mode == MPM_TRACKED && track_id == m_TrackLastPlayed) {
-        return;
+        return false;
     }
 
     if (mode == MPM_DELAYED) {
         m_TrackDelayed = track_id;
-        return;
+        return false;
     }
 
     M_StopActiveStream();
@@ -159,6 +159,7 @@ finish:
         m_TrackCurrent = track_id;
         m_TrackLastPlayed = track_id;
     }
+    return true;
 }
 
 void Music_Stop(void)

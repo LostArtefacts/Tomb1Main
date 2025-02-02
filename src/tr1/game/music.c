@@ -12,14 +12,16 @@
 
 #include <stdio.h>
 
-static const char *m_Extensions[] = { ".flac", ".ogg", ".mp3", ".wav",
-                                      nullptr };
+static const char *m_Extensions[] = {
+    ".flac", ".ogg", ".mp3", ".wav", nullptr,
+};
 
 static bool m_Muted = false;
 static int16_t m_Volume = 0;
 static int m_AudioStreamID = -1;
 static MUSIC_TRACK_ID m_TrackCurrent = MX_INACTIVE;
 static MUSIC_TRACK_ID m_TrackLastPlayed = MX_INACTIVE;
+static MUSIC_TRACK_ID m_TrackDelayed = MX_INACTIVE;
 static MUSIC_TRACK_ID m_TrackLooped = MX_INACTIVE;
 
 static void M_SyncVolume(const int32_t audio_stream_id);
@@ -71,7 +73,7 @@ static void M_StreamFinished(int stream_id, void *user_data)
         m_AudioStreamID = -1;
         m_TrackCurrent = MX_INACTIVE;
         if (m_TrackLooped >= 0) {
-            Music_PlayLooped(m_TrackLooped);
+            Music_Play(m_TrackLooped, MPM_LOOPED);
         }
     }
 }
@@ -86,55 +88,38 @@ void Music_Shutdown(void)
     Audio_Shutdown();
 }
 
-bool Music_Play(MUSIC_TRACK_ID track)
+bool Music_Play(const MUSIC_TRACK_ID track_id, const MUSIC_PLAY_MODE mode)
 {
-    if (track == m_TrackCurrent || track == m_TrackLastPlayed
-        || M_IsBrokenTrack(track)) {
+    if (M_IsBrokenTrack(track_id)) {
         return false;
     }
 
-    if (g_Config.audio.fix_secrets_killing_music && track == MX_SECRET) {
+    if (mode != MPM_ALWAYS && track_id == m_TrackCurrent) {
+        return false;
+    }
+
+    if (mode == MPM_TRACKED && track_id == m_TrackLastPlayed) {
+        return false;
+    }
+
+    if (mode == MPM_DELAYED) {
+        m_TrackDelayed = track_id;
+        return false;
+    }
+
+    if (g_Config.audio.fix_secrets_killing_music && track_id == MX_SECRET) {
         return Sound_Effect(SFX_SECRET, nullptr, SPM_ALWAYS);
     }
 
-    if (g_Config.audio.fix_speeches_killing_music && track >= MX_BALDY_SPEECH
-        && track <= MX_SKATEKID_SPEECH) {
+    if (g_Config.audio.fix_speeches_killing_music && track_id >= MX_BALDY_SPEECH
+        && track_id <= MX_SKATEKID_SPEECH) {
         return Sound_Effect(
-            SFX_BALDY_SPEECH + track - MX_BALDY_SPEECH, nullptr, SPM_ALWAYS);
+            SFX_BALDY_SPEECH + track_id - MX_BALDY_SPEECH, nullptr, SPM_ALWAYS);
     }
 
     M_StopActiveStream();
 
-    char *file_path = M_GetTrackFileName(track);
-    m_AudioStreamID = Audio_Stream_CreateFromFile(file_path);
-    Memory_FreePointer(&file_path);
-
-    if (m_AudioStreamID < 0) {
-        LOG_ERROR("All music streams are busy");
-        return false;
-    }
-
-    m_TrackCurrent = track;
-    if (track != MX_SECRET) {
-        m_TrackLastPlayed = track;
-    }
-
-    M_SyncVolume(m_AudioStreamID);
-    Audio_Stream_SetFinishCallback(m_AudioStreamID, M_StreamFinished, nullptr);
-
-    return true;
-}
-
-bool Music_PlayLooped(MUSIC_TRACK_ID track)
-{
-    if (track == m_TrackCurrent || track == m_TrackLastPlayed
-        || M_IsBrokenTrack(track)) {
-        return false;
-    }
-
-    M_StopActiveStream();
-
-    char *file_path = M_GetTrackFileName(track);
+    char *file_path = M_GetTrackFileName(track_id);
     m_AudioStreamID = Audio_Stream_CreateFromFile(file_path);
     Memory_FreePointer(&file_path);
 
@@ -144,10 +129,16 @@ bool Music_PlayLooped(MUSIC_TRACK_ID track)
     }
 
     M_SyncVolume(m_AudioStreamID);
+    Audio_Stream_SetIsLooped(m_AudioStreamID, mode == MPM_LOOPED);
     Audio_Stream_SetFinishCallback(m_AudioStreamID, M_StreamFinished, nullptr);
-    Audio_Stream_SetIsLooped(m_AudioStreamID, true);
 
-    m_TrackLooped = track;
+    m_TrackDelayed = MX_INACTIVE;
+    if (mode == MPM_LOOPED) {
+        m_TrackLooped = track_id;
+    } else {
+        m_TrackCurrent = track_id;
+        m_TrackLastPlayed = track_id;
+    }
 
     return true;
 }
@@ -156,6 +147,7 @@ void Music_Stop(void)
 {
     m_TrackCurrent = MX_INACTIVE;
     m_TrackLastPlayed = MX_INACTIVE;
+    m_TrackDelayed = MX_INACTIVE;
     m_TrackLooped = MX_INACTIVE;
     M_StopActiveStream();
 }
@@ -170,7 +162,7 @@ void Music_StopTrack(MUSIC_TRACK_ID track)
     m_TrackCurrent = MX_INACTIVE;
 
     if (m_TrackLooped >= 0) {
-        Music_PlayLooped(m_TrackLooped);
+        Music_Play(m_TrackLooped, MPM_LOOPED);
     }
 }
 
@@ -225,14 +217,9 @@ void Music_Unpause(void)
     Audio_Stream_Unpause(m_AudioStreamID);
 }
 
-MUSIC_TRACK_ID Music_GetCurrentTrack(void)
+MUSIC_TRACK_ID Music_GetCurrentPlayingTrack(void)
 {
-    return m_TrackCurrent;
-}
-
-MUSIC_TRACK_ID Music_GetLastPlayedTrack(void)
-{
-    return m_TrackLastPlayed;
+    return m_TrackCurrent == MX_INACTIVE ? m_TrackLooped : m_TrackCurrent;
 }
 
 MUSIC_TRACK_ID Music_GetCurrentLoopedTrack(void)
@@ -240,9 +227,14 @@ MUSIC_TRACK_ID Music_GetCurrentLoopedTrack(void)
     return m_TrackLooped;
 }
 
-MUSIC_TRACK_ID Music_GetCurrentPlayingTrack(void)
+MUSIC_TRACK_ID Music_GetLastPlayedTrack(void)
 {
-    return m_TrackCurrent == MX_INACTIVE ? m_TrackLooped : m_TrackCurrent;
+    return m_TrackLastPlayed;
+}
+
+MUSIC_TRACK_ID Music_GetDelayedTrack(void)
+{
+    return m_TrackDelayed;
 }
 
 double Music_GetDuration(void)

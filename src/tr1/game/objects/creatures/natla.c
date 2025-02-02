@@ -166,7 +166,7 @@ void Natla_Control(int16_t item_num)
                 natla->flags = 0;
                 timer = 0;
                 item->hit_points = NATLA_NEAR_DEATH;
-                Music_Play(MX_NATLA_SPEECH);
+                Music_Play(MX_NATLA_SPEECH, MPM_TRACKED);
             } else {
                 if (g_Config.gameplay.target_mode == TLM_SEMI
                     || g_Config.gameplay.target_mode == TLM_NONE) {
