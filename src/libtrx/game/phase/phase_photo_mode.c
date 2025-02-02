@@ -35,7 +35,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     g_Config.rendering.enable_fps_counter = false;
 #endif
 
-    g_OldInputDB = g_Input;
     Camera_EnterPhotoMode();
     Overlay_HideGameInfo();
     Music_Pause();
@@ -63,7 +62,6 @@ static void M_End(PHASE *const phase)
 #if TR_VERSION == 1
     g_Config.rendering.enable_fps_counter = p->show_fps_counter;
 #endif
-    g_Input = g_OldInputDB;
     Music_Unpause();
     Sound_UnpauseAll();
 }

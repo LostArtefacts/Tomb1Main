@@ -3,7 +3,6 @@
 #include "game/demo.h"
 #include "game/fader.h"
 #include "game/game.h"
-#include "game/input.h"
 #include "game/interpolation.h"
 #include "game/inventory_ring.h"
 #include "game/output.h"
@@ -49,7 +48,6 @@ static PHASE_CONTROL M_Start(PHASE *const phase)
     }
 
     p->state = STATE_RUN;
-    g_OldInputDB = g_Input;
     Game_SetIsPlaying(true);
 
     return (PHASE_CONTROL) { .action = PHASE_ACTION_CONTINUE };

@@ -5,6 +5,7 @@
 #include "game/console/common.h"
 #include "game/fader.h"
 #include "game/game_flow.h"
+#include "game/input.h"
 #include "game/interpolation.h"
 #include "game/output.h"
 #include "game/savegame.h"
@@ -94,6 +95,7 @@ GF_COMMAND PhaseExecutor_Run(PHASE *const phase)
 
     if (phase->start != nullptr) {
         Clock_SyncTick();
+        g_OldInputDB = g_Input;
         const PHASE_CONTROL control = phase->start(phase);
         if (Shell_IsExiting()) {
             gf_cmd = (GF_COMMAND) { .action = GF_EXIT_GAME };
