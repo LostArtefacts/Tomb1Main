@@ -67,7 +67,6 @@ static void M_LoadObjects(VFILE *file);
 static void M_LoadStaticObjects(VFILE *file);
 static void M_LoadTextures(VFILE *file);
 static void M_LoadSprites(VFILE *file);
-static void M_LoadCameras(VFILE *file);
 static void M_LoadSoundEffects(VFILE *file);
 static void M_LoadBoxes(VFILE *file);
 static void M_LoadAnimatedTextures(VFILE *file);
@@ -235,7 +234,7 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
         Level_ReadPalettes(&m_LevelInfo, file);
     }
 
-    M_LoadCameras(file);
+    Level_ReadCamerasAndSinks(file);
     M_LoadSoundEffects(file);
     M_LoadBoxes(file);
     M_LoadAnimatedTextures(file);
@@ -523,24 +522,6 @@ static void M_LoadSprites(VFILE *file)
     const int32_t num_sequences = VFile_ReadS32(file);
     LOG_DEBUG("sprite sequences: %d", num_sequences);
     Level_ReadSpriteSequences(num_sequences, file);
-
-    Benchmark_End(benchmark, nullptr);
-}
-
-static void M_LoadCameras(VFILE *file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_objects = VFile_ReadS32(file);
-    LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
-    Camera_InitialiseFixedObjects(num_objects);
-    for (int32_t i = 0; i < num_objects; i++) {
-        OBJECT_VECTOR *const camera = Camera_GetFixedObject(i);
-        camera->x = VFile_ReadS32(file);
-        camera->y = VFile_ReadS32(file);
-        camera->z = VFile_ReadS32(file);
-        camera->data = VFile_ReadS16(file);
-        camera->flags = VFile_ReadS16(file);
-    }
 
     Benchmark_End(benchmark, nullptr);
 }

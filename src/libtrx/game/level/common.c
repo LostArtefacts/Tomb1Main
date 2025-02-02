@@ -604,6 +604,24 @@ void Level_ReadCinematicFrames(VFILE *const file)
     Benchmark_End(benchmark, nullptr);
 }
 
+void Level_ReadCamerasAndSinks(VFILE *const file)
+{
+    BENCHMARK *const benchmark = Benchmark_Start();
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
+    Camera_InitialiseFixedObjects(num_objects);
+    for (int32_t i = 0; i < num_objects; i++) {
+        OBJECT_VECTOR *const camera = Camera_GetFixedObject(i);
+        camera->x = VFile_ReadS32(file);
+        camera->y = VFile_ReadS32(file);
+        camera->z = VFile_ReadS32(file);
+        camera->data = VFile_ReadS16(file);
+        camera->flags = VFile_ReadS16(file);
+    }
+
+    Benchmark_End(benchmark, nullptr);
+}
+
 void Level_LoadTexturePages(LEVEL_INFO *const info)
 {
     const int32_t num_pages = info->textures.page_count;
