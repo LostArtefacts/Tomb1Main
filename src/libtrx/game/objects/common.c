@@ -1,10 +1,29 @@
 #include "game/objects/common.h"
 
 #include "game/anims.h"
+#include "game/const.h"
 #include "game/game_buf.h"
 
+static OBJECT m_Objects[O_NUMBER_OF] = {};
+static STATIC_OBJECT_3D m_StaticObjects3D[MAX_STATIC_OBJECTS] = {};
+static STATIC_OBJECT_2D m_StaticObjects2D[MAX_STATIC_OBJECTS] = {};
 static OBJECT_MESH **m_MeshPointers = nullptr;
 static int32_t m_MeshCount = 0;
+
+OBJECT *Object_GetObject(const GAME_OBJECT_ID object_id)
+{
+    return &m_Objects[object_id];
+}
+
+STATIC_OBJECT_3D *Object_GetStaticObject3D(const int32_t static_id)
+{
+    return &m_StaticObjects3D[static_id];
+}
+
+STATIC_OBJECT_2D *Object_GetStaticObject2D(const int32_t static_id)
+{
+    return &m_StaticObjects2D[static_id];
+}
 
 bool Object_IsObjectType(
     GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr)

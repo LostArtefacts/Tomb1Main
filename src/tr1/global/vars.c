@@ -27,9 +27,6 @@ int32_t g_OverlayFlag = 0;
 int32_t g_HeightType = 0;
 
 ROOM *g_RoomInfo = nullptr;
-OBJECT g_Objects[O_NUMBER_OF] = {};
-STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS] = {};
-STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS] = {};
 int16_t g_RoomCount = 0;
 int32_t g_LevelItemCount = 0;
 int32_t g_NumberBoxes = 0;

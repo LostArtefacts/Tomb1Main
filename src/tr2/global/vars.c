@@ -79,7 +79,6 @@ ITEM *g_LaraItem = nullptr;
 int16_t g_NextItemActive;
 int16_t g_PrevItemActive;
 int32_t g_SoundEffectCount;
-OBJECT g_Objects[265] = {};
 int32_t g_RoomCount;
 ROOM *g_Rooms = nullptr;
 int32_t g_FlipStatus;
@@ -90,8 +89,6 @@ int16_t *g_GroundZone[4][2] = {};
 uint16_t *g_Overlap = nullptr;
 CREATURE *g_BaddieSlots = nullptr;
 
-STATIC_OBJECT_3D g_StaticObjects3D[MAX_STATIC_OBJECTS];
-STATIC_OBJECT_2D g_StaticObjects2D[MAX_STATIC_OBJECTS];
 OBJECT_VECTOR *g_SoundEffects = nullptr;
 int16_t g_SampleLUT[SFX_NUMBER_OF];
 SAMPLE_INFO *g_SampleInfos = nullptr;
