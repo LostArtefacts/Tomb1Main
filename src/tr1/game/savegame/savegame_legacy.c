@@ -142,7 +142,7 @@ static bool M_NeedsBaconLaraFix(char *buffer)
     M_Skip(sizeof(SAVEGAME_LEGACY_ITEM_STATS)); // item stats
     M_Skip(sizeof(int32_t)); // flipmap status
     M_Skip(MAX_FLIP_MAPS * sizeof(int8_t)); // flipmap table
-    M_Skip(g_NumberCameras * sizeof(int16_t)); // cameras
+    M_Skip(Camera_GetFixedObjectCount() * sizeof(int16_t)); // cameras
 
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
@@ -580,7 +580,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
         g_FlipMapTable[i] = tmp8 << 8;
     }
 
-    for (int i = 0; i < g_NumberCameras; i++) {
+    for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
         M_Read(&g_Camera.fixed[i].flags, sizeof(int16_t));
     }
 
@@ -761,7 +761,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
         M_Write(&flag, sizeof(int8_t));
     }
 
-    for (int i = 0; i < g_NumberCameras; i++) {
+    for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
         M_Write(&g_Camera.fixed[i].flags, sizeof(int16_t));
     }
 

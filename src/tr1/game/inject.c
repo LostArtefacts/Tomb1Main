@@ -1580,7 +1580,7 @@ static void M_CameraEdits(const INJECTION *const injection)
         const int16_t room_num = VFile_ReadS16(fp);
         const int16_t flags = VFile_ReadS16(fp);
 
-        if (camera_num < 0 || camera_num >= g_NumberCameras) {
+        if (camera_num < 0 || camera_num >= Camera_GetFixedObjectCount()) {
             LOG_WARNING(
                 "Camera number %d is out of level camera range", camera_num);
             continue;

@@ -449,13 +449,14 @@ static bool M_LoadCameras(JSON_ARRAY *cameras_arr)
         LOG_ERROR("Malformed save: invalid or missing cameras array");
         return false;
     }
-    if ((signed)cameras_arr->length != g_NumberCameras) {
+    const int32_t num_cameras = Camera_GetFixedObjectCount();
+    if ((signed)cameras_arr->length != num_cameras) {
         LOG_ERROR(
-            "Malformed save: expected %d cameras, got %d", g_NumberCameras,
+            "Malformed save: expected %d cameras, got %d", num_cameras,
             cameras_arr->length);
         return false;
     }
-    for (int i = 0; i < (signed)cameras_arr->length; i++) {
+    for (int32_t i = 0; i < num_cameras; i++) {
         g_Camera.fixed[i].flags = JSON_ArrayGetInt(cameras_arr, i, 0);
     }
     return true;
@@ -1023,7 +1024,7 @@ static JSON_OBJECT *M_DumpFlipmaps(void)
 static JSON_ARRAY *M_DumpCameras(void)
 {
     JSON_ARRAY *cameras_arr = JSON_ArrayNew();
-    for (int i = 0; i < g_NumberCameras; i++) {
+    for (int32_t i = 0; i < Camera_GetFixedObjectCount(); i++) {
         JSON_ArrayAppendInt(cameras_arr, g_Camera.fixed[i].flags);
     }
     return cameras_arr;

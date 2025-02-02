@@ -346,15 +346,10 @@ finish:
 static void M_LoadCameras(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_NumCameras = VFile_ReadS32(file);
-    LOG_DEBUG("fixed cameras: %d", g_NumCameras);
-    if (!g_NumCameras) {
-        goto finish;
-    }
-
-    g_Camera.fixed =
-        GameBuf_Alloc(sizeof(OBJECT_VECTOR) * g_NumCameras, GBUF_CAMERAS);
-    for (int32_t i = 0; i < g_NumCameras; i++) {
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
+    Camera_InitialiseFixedObjects(num_objects);
+    for (int32_t i = 0; i < num_objects; i++) {
         OBJECT_VECTOR *const camera = &g_Camera.fixed[i];
         camera->x = VFile_ReadS32(file);
         camera->y = VFile_ReadS32(file);
@@ -363,7 +358,6 @@ static void M_LoadCameras(VFILE *const file)
         camera->flags = VFile_ReadS16(file);
     }
 
-finish:
     Benchmark_End(benchmark, nullptr);
 }
 

@@ -530,23 +530,18 @@ static void M_LoadSprites(VFILE *file)
 static void M_LoadCameras(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_NumberCameras = VFile_ReadS32(file);
-    LOG_INFO("%d cameras", g_NumberCameras);
-    if (g_NumberCameras != 0) {
-        g_Camera.fixed = GameBuf_Alloc(
-            sizeof(OBJECT_VECTOR) * g_NumberCameras, GBUF_CAMERAS);
-        if (!g_Camera.fixed) {
-            Shell_ExitSystem("Error allocating the fixed cameras.");
-        }
-        for (int32_t i = 0; i < g_NumberCameras; i++) {
-            OBJECT_VECTOR *camera = &g_Camera.fixed[i];
-            camera->x = VFile_ReadS32(file);
-            camera->y = VFile_ReadS32(file);
-            camera->z = VFile_ReadS32(file);
-            camera->data = VFile_ReadS16(file);
-            camera->flags = VFile_ReadS16(file);
-        }
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
+    Camera_InitialiseFixedObjects(num_objects);
+    for (int32_t i = 0; i < num_objects; i++) {
+        OBJECT_VECTOR *const camera = &g_Camera.fixed[i];
+        camera->x = VFile_ReadS32(file);
+        camera->y = VFile_ReadS32(file);
+        camera->z = VFile_ReadS32(file);
+        camera->data = VFile_ReadS16(file);
+        camera->flags = VFile_ReadS16(file);
     }
+
     Benchmark_End(benchmark, nullptr);
 }
 
