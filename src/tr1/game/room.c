@@ -340,7 +340,7 @@ int16_t Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
         }
 
         const ITEM *const item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
-        const OBJECT *const object = &g_Objects[item->object_id];
+        const OBJECT *const object = Object_GetObject(item->object_id);
         if (object->ceiling_height_func) {
             height = object->ceiling_height_func(item, x, y, z, height);
         }
@@ -367,7 +367,7 @@ int16_t Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
         }
 
         const ITEM *const item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
-        const OBJECT *const object = &g_Objects[item->object_id];
+        const OBJECT *const object = Object_GetObject(item->object_id);
         if (object->floor_height_func) {
             height = object->floor_height_func(item, x, y, z, height);
         }
@@ -740,7 +740,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
             }
 
             if (!item->active) {
-                if (g_Objects[item->object_id].intelligent) {
+                if (Object_GetObject(item->object_id)->intelligent) {
                     if (item->status == IS_INACTIVE) {
                         item->touch_bits = 0;
                         item->status = IS_ACTIVE;
@@ -926,7 +926,7 @@ bool Room_IsOnWalkable(
 
         const int16_t item_num = (int16_t)(intptr_t)cmd->parameter;
         const ITEM *const item = &g_Items[item_num];
-        const OBJECT *const object = &g_Objects[item->object_id];
+        const OBJECT *const object = Object_GetObject(item->object_id);
         if (object->floor_height_func) {
             height = object->floor_height_func(item, x, y, z, height);
             object_found = true;

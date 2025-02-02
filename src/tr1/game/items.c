@@ -54,7 +54,7 @@ void Item_Control(void)
     int16_t item_num = g_NextItemActive;
     while (item_num != NO_ITEM) {
         ITEM *item = &g_Items[item_num];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
         if (obj->control) {
             obj->control(item_num);
         }
@@ -102,7 +102,7 @@ int16_t Item_Create(void)
 void Item_Initialise(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
-    OBJECT *object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
 
     Item_SwitchToAnim(item, 0, 0);
     item->current_anim_state = Item_GetAnim(item)->current_anim_state;
@@ -205,7 +205,7 @@ void Item_AddActive(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
 
-    if (!g_Objects[item->object_id].control) {
+    if (Object_GetObject(item->object_id)->control == nullptr) {
         item->status = IS_INACTIVE;
         return;
     }

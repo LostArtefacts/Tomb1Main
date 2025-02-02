@@ -30,8 +30,10 @@ void BaconLara_Setup(OBJECT *obj)
 
 void BaconLara_Initialise(int16_t item_num)
 {
-    g_Objects[O_BACON_LARA].anim_idx = g_Objects[O_LARA].anim_idx;
-    g_Objects[O_BACON_LARA].frame_base = g_Objects[O_LARA].frame_base;
+    const OBJECT *const lara_object = Object_GetObject(O_LARA);
+    OBJECT *const bacon_object = Object_GetObject(O_BACON_LARA);
+    bacon_object->anim_idx = lara_object->anim_idx;
+    bacon_object->frame_base = lara_object->frame_base;
     g_Items[item_num].data = nullptr;
 }
 
@@ -77,8 +79,9 @@ void BaconLara_Control(int16_t item_num)
         int32_t lh = Room_GetHeight(
             sector, g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
 
-        int16_t relative_anim =
-            g_LaraItem->anim_num - g_Objects[g_LaraItem->object_id].anim_idx;
+        // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
+        int16_t relative_anim = g_LaraItem->anim_num
+            - Object_GetObject(g_LaraItem->object_id)->anim_idx;
         int16_t relative_frame =
             g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
         Item_SwitchToObjAnim(item, relative_anim, relative_frame, O_LARA);

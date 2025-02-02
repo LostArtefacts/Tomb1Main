@@ -104,7 +104,7 @@ static void M_LoadPostprocess(void)
 {
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (obj->save_position && obj->shadow_size) {
             int16_t room_num = item->room_num;
@@ -238,7 +238,7 @@ void Savegame_ProcessItemsBeforeLoad(void)
 {
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (obj->control == MovableBlock_Control && item->status != IS_INVISIBLE
             && item->pos.y >= Item_GetHeight(item)) {
@@ -254,7 +254,7 @@ void Savegame_ProcessItemsBeforeSave(void)
 {
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (obj->control == SaveCrystal_Control && item->data) {
             // need to reset the crystal status

@@ -20,7 +20,8 @@ void Blood_Control(int16_t effect_num)
     if (effect->counter == 4) {
         effect->counter = 0;
         effect->frame_num--;
-        if (effect->frame_num <= g_Objects[effect->object_id].mesh_count) {
+        if (effect->frame_num
+            <= Object_GetObject(effect->object_id)->mesh_count) {
             Effect_Kill(effect_num);
         }
     }

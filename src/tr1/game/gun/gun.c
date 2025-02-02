@@ -200,8 +200,9 @@ void Gun_InitialiseNewWeapon(void)
     g_Lara.target = nullptr;
 
     const GAME_OBJECT_ID anim_type = Gun_GetLaraAnim(g_Lara.gun_type);
-    g_Lara.right_arm.frame_base = g_Objects[anim_type].frame_base;
-    g_Lara.left_arm.frame_base = g_Objects[anim_type].frame_base;
+    const OBJECT *const object = Object_GetObject(anim_type);
+    g_Lara.right_arm.frame_base = object->frame_base;
+    g_Lara.left_arm.frame_base = object->frame_base;
 
     if (g_Lara.gun_status != LGS_ARMLESS) {
         if (anim_type == O_SHOTGUN_ANIM) {

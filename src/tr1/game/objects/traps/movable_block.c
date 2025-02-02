@@ -333,7 +333,7 @@ void MovableBlock_Control(int16_t item_num)
 void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = &g_Objects[item->object_id];
+    const OBJECT *const obj = Object_GetObject(item->object_id);
 
     if (M_TestDeathCollision(item, lara_item)) {
         M_KillLara(item, lara_item);

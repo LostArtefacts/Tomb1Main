@@ -48,7 +48,7 @@ typedef struct {
 static int m_SGBufPos = 0;
 static char *m_SGBufPtr = nullptr;
 
-static bool M_ItemHasSaveFlags(OBJECT *obj, ITEM *item);
+static bool M_ItemHasSaveFlags(const OBJECT *obj, ITEM *item);
 static bool M_ItemHasSaveAnim(const ITEM *item);
 static bool M_ItemHasHitPoints(const ITEM *item);
 static bool M_NeedsBaconLaraFix(char *buffer);
@@ -68,7 +68,7 @@ static void M_WriteArm(LARA_ARM *arm);
 static void M_WriteLara(LARA_INFO *lara);
 static void M_WriteLOT(LOT_INFO *lot);
 
-static bool M_ItemHasSaveFlags(OBJECT *obj, ITEM *item)
+static bool M_ItemHasSaveFlags(const OBJECT *const obj, ITEM *const item)
 {
     // TR1X savegame files are enhanced to store more information by having
     // changed the save_flags bit for certain item types. However, legacy
@@ -87,13 +87,13 @@ static bool M_ItemHasSaveFlags(OBJECT *obj, ITEM *item)
 
 static bool M_ItemHasSaveAnim(const ITEM *const item)
 {
-    const OBJECT *const obj = &g_Objects[item->object_id];
+    const OBJECT *const obj = Object_GetObject(item->object_id);
     return obj->save_anim && item->object_id != O_BACON_LARA;
 }
 
 static bool M_ItemHasHitPoints(const ITEM *const item)
 {
-    const OBJECT *const obj = &g_Objects[item->object_id];
+    const OBJECT *const obj = Object_GetObject(item->object_id);
     return obj->save_hitpoints && item->object_id != O_SCION_ITEM_3;
 }
 
@@ -146,7 +146,7 @@ static bool M_NeedsBaconLaraFix(char *buffer)
 
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         ITEM tmp_item;
 
@@ -589,7 +589,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
 
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (obj->save_position) {
             M_Read(&item->pos.x, sizeof(int32_t));
@@ -771,7 +771,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
 
     for (int i = 0; i < g_LevelItemCount; i++) {
         ITEM *item = &g_Items[i];
-        OBJECT *obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (obj->save_position) {
             M_Write(&item->pos.x, sizeof(int32_t));

@@ -919,9 +919,10 @@ void Lara_CatchFire(void)
         const int16_t effect_num = Effect_Create(g_LaraItem->room_num);
         if (effect_num != NO_EFFECT) {
             EFFECT *const effect = Effect_Get(effect_num);
+            const OBJECT *const object = Object_GetObject(O_FLAME);
             effect->object_id = O_FLAME;
             effect->frame_num =
-                (g_Objects[O_FLAME].mesh_count * Random_GetControl()) / 0x7FFF;
+                (object->mesh_count * Random_GetControl()) / 0x7FFF;
             effect->counter = -1 - Random_GetControl() * 24 / 0x7FFF;
         }
     }

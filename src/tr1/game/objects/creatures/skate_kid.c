@@ -60,7 +60,7 @@ void SkateKid_Setup(OBJECT *obj)
 
     Object_GetBone(obj, 0)->rot_y = true;
 
-    if (!g_Objects[O_SKATEBOARD].loaded) {
+    if (!Object_GetObject(O_SKATEBOARD)->loaded) {
         LOG_WARNING(
             "Skateboard object (%d) is not loaded and so will not be drawn.",
             O_SKATEBOARD);
@@ -176,12 +176,13 @@ void SkateKid_Control(int16_t item_num)
 void SkateKid_Draw(ITEM *item)
 {
     Object_DrawAnimatingItem(item);
-    if (!g_Objects[O_SKATEBOARD].loaded) {
+    if (!Object_GetObject(O_SKATEBOARD)->loaded) {
         return;
     }
 
+    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
     int16_t relative_anim =
-        item->anim_num - g_Objects[item->object_id].anim_idx;
+        item->anim_num - Object_GetObject(item->object_id)->anim_idx;
     int16_t relative_frame = item->frame_num - Item_GetAnim(item)->frame_base;
     item->object_id = O_SKATEBOARD;
     Item_SwitchToAnim(item, relative_anim, relative_frame);

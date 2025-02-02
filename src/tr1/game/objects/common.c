@@ -38,7 +38,7 @@ int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id)
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *item = &g_Items[item_num];
         if (item->object_id == receptacle_to_check) {
-            const OBJECT *const obj = &g_Objects[item->object_id];
+            const OBJECT *const obj = Object_GetObject(item->object_id);
             if (obj->is_usable != nullptr && !obj->is_usable(item_num)) {
                 continue;
             }
@@ -89,7 +89,7 @@ void Object_DrawSpriteItem(ITEM *item)
     Output_DrawSprite(
         item->interp.result.pos.x, item->interp.result.pos.y,
         item->interp.result.pos.z,
-        g_Objects[item->object_id].mesh_idx - item->frame_num,
+        Object_GetObject(item->object_id)->mesh_idx - item->frame_num,
         item->shade.value_1);
 }
 
@@ -138,7 +138,8 @@ void Object_DrawPickupItem(ITEM *item)
         // No, now we need to move it a bit.
         // First get the sprite that was to be used,
 
-        int16_t spr_num = g_Objects[item->object_id].mesh_idx - item->frame_num;
+        const OBJECT *const object = Object_GetObject(item->object_id);
+        const int16_t spr_num = object->mesh_idx - item->frame_num;
         const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(spr_num);
 
         // and get the animation bounding box, which is not the mesh one.
@@ -341,7 +342,7 @@ void Object_DrawAnimatingItem(ITEM *item)
     ANIM_FRAME *frmptr[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
-    OBJECT *object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
 
     if (object->shadow_size) {
         Output_DrawShadow(object->shadow_size, &frmptr[0]->bounds, item);
@@ -355,8 +356,8 @@ void Object_DrawAnimatingItem(ITEM *item)
     const int16_t *extra_rotation = item->data ? item->data : nullptr;
 
     Object_DrawInterpolatedObject(
-        &g_Objects[item->object_id], item->mesh_bits, extra_rotation, frmptr[0],
-        frmptr[1], frac, rate);
+        object, item->mesh_bits, extra_rotation, frmptr[0], frmptr[1], frac,
+        rate);
     Matrix_Pop();
 }
 

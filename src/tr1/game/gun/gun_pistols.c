@@ -104,8 +104,10 @@ void Gun_Pistols_Ready(const LARA_GUN_TYPE weapon_type)
     g_Lara.torso_rot.x = 0;
     g_Lara.torso_rot.y = 0;
     g_Lara.target = nullptr;
-    g_Lara.right_arm.frame_base = g_Objects[O_PISTOL_ANIM].frame_base;
-    g_Lara.left_arm.frame_base = g_Objects[O_PISTOL_ANIM].frame_base;
+
+    const OBJECT *const object = Object_GetObject(O_PISTOL_ANIM);
+    g_Lara.right_arm.frame_base = object->frame_base;
+    g_Lara.left_arm.frame_base = object->frame_base;
 }
 
 void Gun_Pistols_DrawMeshes(const LARA_GUN_TYPE weapon_type)

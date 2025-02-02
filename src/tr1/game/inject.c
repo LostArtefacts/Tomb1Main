@@ -537,7 +537,7 @@ static void M_AnimRangeEdits(INJECTION *injection)
             continue;
         }
 
-        OBJECT *object = &g_Objects[object_id];
+        const OBJECT *const object = Object_GetObject(object_id);
         if (!object->loaded) {
             LOG_WARNING("Object %d is not loaded", object_id);
             VFile_Skip(fp, edit_count * sizeof(int16_t) * 4);

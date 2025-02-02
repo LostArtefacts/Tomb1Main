@@ -20,7 +20,7 @@ void Game_Draw(bool draw_overlay)
     Interpolation_Commit();
     Camera_Apply();
 
-    if (g_Objects[O_LARA].loaded) {
+    if (Object_GetObject(O_LARA)->loaded) {
         Room_DrawAllRooms(g_Camera.interp.room_num, g_Camera.target.room_num);
 
         if (g_Config.visuals.enable_reflections) {

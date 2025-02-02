@@ -28,7 +28,7 @@ static bool M_IsUsable(int16_t item_num);
 static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = &g_Objects[item->object_id];
+    const OBJECT *const obj = Object_GetObject(item->object_id);
 
     if (g_Lara.interact_target.is_moving
         && g_Lara.interact_target.item_num == item_num) {

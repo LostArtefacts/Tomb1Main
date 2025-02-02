@@ -87,6 +87,7 @@
 
 #include <libtrx/config.h>
 
+// TODO: refactor similar to TR2
 static void M_SetupCreatures(void);
 static void M_SetupTraps(void);
 static void M_SetupMiscObjects(void);
@@ -259,7 +260,7 @@ static void M_SetupMiscObjects(void)
 void Object_SetupAllObjects(void)
 {
     for (int i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *obj = &g_Objects[i];
+        OBJECT *const obj = Object_GetObject(i);
         obj->intelligent = 0;
         obj->save_position = 0;
         obj->save_hitpoints = 0;

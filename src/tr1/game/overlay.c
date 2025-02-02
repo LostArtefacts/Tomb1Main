@@ -388,7 +388,8 @@ static void M_DrawPickup3D(DISPLAY_PICKUP *pu)
     Output_SetLightAdder(LOW_LIGHT);
     Output_RotateLight(0, 0);
 
-    OBJECT *obj = &g_Objects[Inv_GetItemOption(pu->object_id)];
+    const OBJECT *const obj =
+        Object_GetObject(Inv_GetItemOption(pu->object_id));
     const ANIM_FRAME *const frame = Object_GetAnim(obj, 0)->frame_ptr;
 
     Matrix_Push();
@@ -495,7 +496,7 @@ static void M_DrawPickupsSprites(void)
         const int32_t y =
             Viewport_GetHeight() - sprite_height - sprite_height * pu->grid_y;
         const int32_t scale = Screen_GetRenderScaleGLRage(12288);
-        const int16_t sprite_num = g_Objects[pu->object_id].mesh_idx;
+        const int16_t sprite_num = Object_GetObject(pu->object_id)->mesh_idx;
         Output_DrawUISprite(x, y, scale, sprite_num, 4096);
     }
 }
@@ -577,9 +578,10 @@ static void M_BarDrawEnemy(void)
         return;
     }
 
+    const OBJECT *const object = Object_GetObject(g_Lara.target->object_id);
     m_EnemyBar.value = g_Lara.target->hit_points;
-    m_EnemyBar.max_value = g_Objects[g_Lara.target->object_id].hit_points
-        * ((g_GameInfo.bonus_flag & GBF_NGPLUS) ? 2 : 1);
+    m_EnemyBar.max_value =
+        object->hit_points * ((g_GameInfo.bonus_flag & GBF_NGPLUS) ? 2 : 1);
     CLAMP(m_EnemyBar.value, 0, m_EnemyBar.max_value);
 
     Overlay_BarDraw(&m_EnemyBar, RSR_BAR);

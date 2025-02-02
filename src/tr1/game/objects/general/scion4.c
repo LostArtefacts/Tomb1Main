@@ -44,7 +44,7 @@ void Scion4_Control(int16_t item_num)
 void Scion4_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = &g_Objects[item->object_id];
+    const OBJECT *const obj = Object_GetObject(item->object_id);
     int16_t rotx = item->rot.x;
     int16_t roty = item->rot.y;
     int16_t rotz = item->rot.z;

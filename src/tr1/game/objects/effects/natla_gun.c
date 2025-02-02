@@ -14,7 +14,7 @@ void NatlaGun_Setup(OBJECT *obj)
 void NatlaGun_Control(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    OBJECT *object = &g_Objects[effect->object_id];
+    const OBJECT *const object = Object_GetObject(effect->object_id);
 
     effect->frame_num--;
     if (effect->frame_num <= object->mesh_count) {

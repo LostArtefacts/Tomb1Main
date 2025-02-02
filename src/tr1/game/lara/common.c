@@ -333,7 +333,7 @@ void Lara_Control(void)
 
 void Lara_SwapMeshExtra(void)
 {
-    if (!g_Objects[O_LARA_EXTRA].loaded) {
+    if (!Object_GetObject(O_LARA_EXTRA)->loaded) {
         return;
     }
     for (LARA_MESH mesh = LM_FIRST; mesh < LM_NUMBER_OF; mesh++) {

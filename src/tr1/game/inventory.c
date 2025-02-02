@@ -23,7 +23,7 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     }
 
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-    if (!g_Objects[inv_object_id].loaded) {
+    if (!Object_GetObject(inv_object_id)->loaded) {
         return false;
     }
 

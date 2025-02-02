@@ -312,7 +312,7 @@ void Lara_Draw_I(
 {
     MATRIX saved_matrix;
 
-    OBJECT *object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     saved_matrix = *g_MatrixPtr;

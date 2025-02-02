@@ -710,7 +710,7 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
     // We inject explosions sprites and sounds, although in the original game,
     // some levels lack them, resulting in no audio or visual effects when
     // killing mutants. This is to maintain that feature.
-    Mutant_ToggleExplosions(g_Objects[O_EXPLOSION_1].loaded);
+    Mutant_ToggleExplosions(Object_GetObject(O_EXPLOSION_1)->loaded);
 
     Inject_AllInjections(&m_LevelInfo);
 
@@ -848,7 +848,7 @@ void Level_Load(const GF_LEVEL *const level)
     Output_SetDrawDistFade(level->settings.draw_distance_fade * WALL_L);
     Output_SetDrawDistMax(level->settings.draw_distance_max * WALL_L);
     Output_SetSkyboxEnabled(
-        g_Config.visuals.enable_skybox && g_Objects[O_SKYBOX].loaded);
+        g_Config.visuals.enable_skybox && Object_GetObject(O_SKYBOX)->loaded);
 
     Benchmark_End(benchmark, nullptr);
 }

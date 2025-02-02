@@ -514,7 +514,7 @@ int32_t Collide_GetSpheres(ITEM *item, SPHERE *ptr, int32_t world_space)
     Matrix_TranslateRel16(frame->offset);
     Matrix_Rot16(frame->mesh_rots[0]);
 
-    OBJECT *object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
     const OBJECT_MESH *mesh = Object_GetMesh(object->mesh_idx);
 
     Matrix_Push();
@@ -605,7 +605,7 @@ int32_t Collide_TestCollision(ITEM *item, ITEM *lara_item)
 
 void Collide_GetJointAbsPosition(ITEM *item, XYZ_32 *vec, int32_t joint)
 {
-    OBJECT *object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
 
     Matrix_PushUnit();
     Matrix_Rot16(item->rot);
