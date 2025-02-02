@@ -403,6 +403,7 @@ void Shell_Main(void)
             gf_cmd = GF_DoDemoSequence(gf_cmd.param);
             break;
 
+        case GF_NOOP:
         case GF_LEVEL_COMPLETE:
             gf_cmd = (GF_COMMAND) { .action = GF_EXIT_TO_TITLE };
             break;
@@ -425,7 +426,9 @@ void Shell_Main(void)
             break;
 
         default:
-            ASSERT_FAIL();
+            ASSERT_FAIL_FMT(
+                "invalid action (action=%s, param=%d)",
+                ENUM_MAP_TO_STRING(GF_ACTION, gf_cmd.action), gf_cmd.param);
         }
     }
 

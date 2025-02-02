@@ -45,6 +45,10 @@ Currently supported commands:
   `/play {name}`  
   Plays the specified level.
 
+- `/cut {num}`  
+  `/cutscene {num}`  
+  Plays the specified cutscene.
+
 - `/load {slot_num}`  
   Loads the specified savegame slot.
 

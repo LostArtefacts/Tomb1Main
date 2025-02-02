@@ -100,6 +100,7 @@ sources = [
   'game/console/cmd/heal.c',
   'game/console/cmd/kill.c',
   'game/console/cmd/load_game.c',
+  'game/console/cmd/play_cutscene.c',
   'game/console/cmd/play_demo.c',
   'game/console/cmd/play_level.c',
   'game/console/cmd/pos.c',

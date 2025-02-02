@@ -11,6 +11,7 @@
 #include <libtrx/game/console/cmd/heal.h>
 #include <libtrx/game/console/cmd/kill.h>
 #include <libtrx/game/console/cmd/load_game.h>
+#include <libtrx/game/console/cmd/play_cutscene.h>
 #include <libtrx/game/console/cmd/play_demo.h>
 #include <libtrx/game/console/cmd/play_level.h>
 #include <libtrx/game/console/cmd/pos.h>
@@ -29,6 +30,7 @@ CONSOLE_COMMAND *g_ConsoleCommands[] = {
     &g_Console_Cmd_Kill,
     &g_Console_Cmd_EndLevel,
     &g_Console_Cmd_PlayLevel,
+    &g_Console_Cmd_PlayCutscene,
     &g_Console_Cmd_LoadGame,
     &g_Console_Cmd_SaveGame,
     &g_Console_Cmd_PlayDemo,
