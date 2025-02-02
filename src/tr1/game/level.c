@@ -63,8 +63,6 @@ static void M_LoadAnimRanges(VFILE *file);
 static void M_LoadAnimCommands(VFILE *file);
 static void M_LoadAnimBones(VFILE *file);
 static void M_LoadAnimFrames(VFILE *file);
-static void M_LoadObjects(VFILE *file);
-static void M_LoadStaticObjects(VFILE *file);
 static void M_LoadTextures(VFILE *file);
 static void M_LoadSprites(VFILE *file);
 static void M_LoadSoundEffects(VFILE *file);
@@ -225,10 +223,11 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
     M_LoadAnimCommands(file);
     M_LoadAnimBones(file);
     M_LoadAnimFrames(file);
-    M_LoadObjects(file);
-    M_LoadStaticObjects(file);
+    Level_ReadObjects(file);
+    Level_ReadStaticObjects(file);
     M_LoadTextures(file);
     M_LoadSprites(file);
+    Level_ReadSpriteSequences(file);
 
     if (layout == LEVEL_LAYOUT_TR1_DEMO_PC) {
         Level_ReadPalettes(&m_LevelInfo, file);
@@ -479,24 +478,6 @@ static void M_LoadAnimFrames(VFILE *file)
     Benchmark_End(benchmark, nullptr);
 }
 
-static void M_LoadObjects(VFILE *file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_objects = VFile_ReadS32(file);
-    LOG_INFO("%d objects", num_objects);
-    Level_ReadObjects(num_objects, file);
-    Benchmark_End(benchmark, nullptr);
-}
-
-static void M_LoadStaticObjects(VFILE *file)
-{
-    BENCHMARK *const benchmark = Benchmark_Start();
-    const int32_t num_static_objects = VFile_ReadS32(file);
-    LOG_INFO("%d static objects", num_static_objects);
-    Level_ReadStaticObjects(num_static_objects, file);
-    Benchmark_End(benchmark, nullptr);
-}
-
 static void M_LoadTextures(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -518,11 +499,6 @@ static void M_LoadSprites(VFILE *file)
     Output_InitialiseSpriteTextures(
         num_textures + m_InjectionInfo->sprite_info_count);
     Level_ReadSpriteTextures(0, 0, num_textures, file);
-
-    const int32_t num_sequences = VFile_ReadS32(file);
-    LOG_DEBUG("sprite sequences: %d", num_sequences);
-    Level_ReadSpriteSequences(num_sequences, file);
-
     Benchmark_End(benchmark, nullptr);
 }
 

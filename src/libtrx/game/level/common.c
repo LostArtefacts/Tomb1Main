@@ -443,8 +443,11 @@ void Level_LoadAnimFrames(LEVEL_INFO *const info)
     Memory_FreePointer(&info->anims.frames);
 }
 
-void Level_ReadObjects(const int32_t num_objects, VFILE *const file)
+void Level_ReadObjects(VFILE *const file)
 {
+    BENCHMARK *const benchmark = Benchmark_Start();
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_INFO("objects: %d", num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
         if (object_id < 0 || object_id >= O_NUMBER_OF) {
@@ -461,10 +464,15 @@ void Level_ReadObjects(const int32_t num_objects, VFILE *const file)
         object->anim_idx = VFile_ReadS16(file);
         object->loaded = true;
     }
+
+    Benchmark_End(benchmark, nullptr);
 }
 
-void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
+void Level_ReadStaticObjects(VFILE *const file)
 {
+    BENCHMARK *const benchmark = Benchmark_Start();
+    const int32_t num_objects = VFile_ReadS32(file);
+    LOG_INFO("static objects: %d", num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
         const int32_t static_id = VFile_ReadS32(file);
         if (static_id < 0 || static_id >= MAX_STATIC_OBJECTS) {
@@ -485,6 +493,8 @@ void Level_ReadStaticObjects(const int32_t num_objects, VFILE *const file)
         static_obj->collidable = (flags & 1) == 0;
         static_obj->visible = (flags & 2) != 0;
     }
+
+    Benchmark_End(benchmark, nullptr);
 }
 
 void Level_ReadObjectTextures(
@@ -519,8 +529,11 @@ void Level_ReadSpriteTextures(
     }
 }
 
-void Level_ReadSpriteSequences(const int32_t num_sequences, VFILE *const file)
+void Level_ReadSpriteSequences(VFILE *const file)
 {
+    BENCHMARK *const benchmark = Benchmark_Start();
+    const int32_t num_sequences = VFile_ReadS32(file);
+    LOG_DEBUG("sprite sequences: %d", num_sequences);
     for (int32_t i = 0; i < num_sequences; i++) {
         const int32_t object_id = VFile_ReadS32(file);
         const int16_t num_meshes = VFile_ReadS16(file);
@@ -541,6 +554,8 @@ void Level_ReadSpriteSequences(const int32_t num_sequences, VFILE *const file)
             Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }
     }
+
+    Benchmark_End(benchmark, nullptr);
 }
 
 void Level_ReadAnimatedTextureRanges(

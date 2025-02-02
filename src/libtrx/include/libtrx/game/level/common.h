@@ -19,13 +19,13 @@ void Level_ReadAnimCommands(int32_t base_idx, int32_t num_cmds, VFILE *file);
 void Level_LoadAnimCommands(void);
 void Level_ReadAnimBones(int32_t base_idx, int32_t num_bones, VFILE *file);
 void Level_LoadAnimFrames(LEVEL_INFO *info);
-void Level_ReadObjects(int32_t num_objects, VFILE *file);
-void Level_ReadStaticObjects(int32_t num_objects, VFILE *file);
+void Level_ReadObjects(VFILE *file);
+void Level_ReadStaticObjects(VFILE *file);
 void Level_ReadObjectTextures(
     int32_t base_idx, int16_t base_page_idx, int32_t num_textures, VFILE *file);
 void Level_ReadSpriteTextures(
     int32_t base_idx, int16_t base_page_idx, int32_t num_textures, VFILE *file);
-void Level_ReadSpriteSequences(int32_t num_sequences, VFILE *file);
+void Level_ReadSpriteSequences(VFILE *file);
 void Level_ReadAnimatedTextureRanges(int32_t num_ranges, VFILE *file);
 void Level_ReadLightMap(VFILE *file);
 void Level_ReadCinematicFrames(VFILE *file);
