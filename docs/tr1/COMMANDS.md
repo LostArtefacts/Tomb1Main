@@ -99,6 +99,9 @@ Currently supported commands:
 - `/set {option} {value}`  
   Retrieves or assigns a new value to the given configuration option. Some options need a game re-launch to apply. The option names use `-` rather than `_`.
 
+- `/music {track_id}`  
+  Plays a given music track. It uses internal game IDs that for historic reasons don't align with the music folder's file names.
+
 - `/sfx`  
 - `/sfx {sound}`  
   Plays a given sound sample.
