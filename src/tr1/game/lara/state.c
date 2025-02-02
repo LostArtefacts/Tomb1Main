@@ -67,7 +67,7 @@ static int16_t M_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist)
 
 static bool M_HasResponsiveState(const LARA_ANIMATION anim_idx)
 {
-    const OBJECT *const object = Object_GetObject(O_LARA);
+    const OBJECT *const object = Object_Get(O_LARA);
     if (!object->loaded) {
         return false;
     }
@@ -158,8 +158,7 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
 
     if (g_Config.gameplay.enable_tr2_jumping) {
         // TODO: Item_GetRelativeAnim
-        int16_t anim =
-            item->anim_num - Object_GetObject(item->object_id)->anim_idx;
+        int16_t anim = item->anim_num - Object_Get(item->object_id)->anim_idx;
         if (anim == LA_RUN_START) {
             m_JumpPermitted = false;
         } else if (

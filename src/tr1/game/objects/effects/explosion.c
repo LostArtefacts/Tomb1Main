@@ -14,7 +14,7 @@ void Explosion_Setup(OBJECT *obj)
 void Explosion_Control(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
     effect->counter++;
     if (effect->counter == 2) {
         effect->counter = 0;

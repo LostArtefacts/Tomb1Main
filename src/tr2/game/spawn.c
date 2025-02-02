@@ -32,14 +32,14 @@ int16_t Spawn_FireStream(
     effect->room_num = room_num;
     effect->speed = 200;
     effect->frame_num =
-        ((Object_GetObject(O_MISSILE_FLAME)->mesh_count + 1) * Random_GetDraw())
+        ((Object_Get(O_MISSILE_FLAME)->mesh_count + 1) * Random_GetDraw())
         >> 15;
     effect->object_id = O_MISSILE_FLAME;
     effect->shade = 14 * 256;
 
     Missile_ShootAtLara(effect);
 
-    if (Object_GetObject(O_DRAGON_FRONT)->loaded) {
+    if (Object_Get(O_DRAGON_FRONT)->loaded) {
         effect->counter = 0x4000;
     } else {
         effect->counter = 20;

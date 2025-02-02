@@ -229,7 +229,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
 
     if (g_Lara.skidoo != NO_ITEM) {
         if (g_Items[g_Lara.skidoo].object_id == O_SKIDOO_FAST) {
-            // TODO: make this Object_GetObject(O_SKIDOO_FAST)->control
+            // TODO: make this Object_Get(O_SKIDOO_FAST)->control
             if (Skidoo_Control()) {
                 return;
             }

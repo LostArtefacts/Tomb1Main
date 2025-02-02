@@ -51,7 +51,7 @@ static const BITE m_Bandit2Gun = {
 
 void Bandit2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BANDIT_2);
+    OBJECT *const obj = Object_Get(O_BANDIT_2);
     if (!obj->loaded) {
         return;
     }
@@ -76,12 +76,12 @@ void Bandit2_Setup(void)
 
 void Bandit2B_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BANDIT_2B);
+    OBJECT *const obj = Object_Get(O_BANDIT_2B);
     if (!obj->loaded) {
         return;
     }
 
-    const OBJECT *const ref_obj = Object_GetObject(O_BANDIT_2);
+    const OBJECT *const ref_obj = Object_Get(O_BANDIT_2);
     ASSERT(ref_obj->loaded);
     obj->anim_idx = ref_obj->anim_idx;
     obj->frame_base = ref_obj->frame_base;

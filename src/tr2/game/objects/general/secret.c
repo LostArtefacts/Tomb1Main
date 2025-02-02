@@ -13,7 +13,7 @@ void Secret2_Control(int16_t item_num)
 
 void Secret2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SECRET_2);
+    OBJECT *const obj = Object_Get(O_SECRET_2);
     Pickup_Setup(obj);
     // TODO: why is it so special?
     obj->control = Secret2_Control;

@@ -10,7 +10,7 @@ typedef enum {
 
 void Drawbridge_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DRAWBRIDGE);
+    OBJECT *const obj = Object_Get(O_DRAWBRIDGE);
     if (!obj->loaded) {
         return;
     }

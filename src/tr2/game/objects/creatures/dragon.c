@@ -125,12 +125,12 @@ static void M_PullDagger(ITEM *const lara_item, ITEM *const dragon_back_item)
 
 void Dragon_SetupFront(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DRAGON_FRONT);
+    OBJECT *const obj = Object_Get(O_DRAGON_FRONT);
     if (!obj->loaded) {
         return;
     }
 
-    ASSERT(Object_GetObject(O_DRAGON_BACK)->loaded);
+    ASSERT(Object_Get(O_DRAGON_BACK)->loaded);
     obj->control = Dragon_Control;
     obj->collision = Dragon_Collision;
 
@@ -149,7 +149,7 @@ void Dragon_SetupFront(void)
 
 void Dragon_SetupBack(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DRAGON_BACK);
+    OBJECT *const obj = Object_Get(O_DRAGON_BACK);
     if (!obj->loaded) {
         return;
     }
@@ -261,7 +261,7 @@ void Dragon_Control(const int16_t item_num)
     int16_t angle = 0;
     int16_t head = 0;
     CREATURE *const creature = dragon_front_item->data;
-    const OBJECT *const front_object = Object_GetObject(O_DRAGON_FRONT);
+    const OBJECT *const front_object = Object_Get(O_DRAGON_FRONT);
 
     if (dragon_front_item->hit_points <= 0) {
         if (dragon_front_item->current_anim_state != DRAGON_STATE_DEATH) {

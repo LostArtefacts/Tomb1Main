@@ -52,7 +52,7 @@ static const BITE m_Cultist3RightGun = {
 
 void Cultist3_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CULT_3);
+    OBJECT *const obj = Object_Get(O_CULT_3);
     if (!obj->loaded) {
         return;
     }
@@ -274,7 +274,7 @@ void Cultist3_Control(const int16_t item_num)
 
     Creature_Tilt(item, tilt);
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     Object_GetBone(object, 0)->rot_y = body != 0;
     Object_GetBone(object, 2)->rot_y = left != 0;
     Object_GetBone(object, 6)->rot_y = right != 0;

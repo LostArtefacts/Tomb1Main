@@ -28,7 +28,7 @@ static int32_t M_GetFrames(
     ANIM_FRAME **const out_frame1, ANIM_FRAME **const out_frame2,
     int32_t *const out_rate)
 {
-    const OBJECT *const obj = Object_GetObject(inv_item->object_id);
+    const OBJECT *const obj = Object_Get(inv_item->object_id);
     const INVENTORY_ITEM *const cur_inv_item = ring->list[ring->current_object];
     if (inv_item != cur_inv_item
         || (ring->motion.status != RNG_SELECTED
@@ -79,7 +79,7 @@ static void M_DrawItem(
     Matrix_RotY(inv_item->y_rot);
     Matrix_RotX(inv_item->x_rot);
 
-    OBJECT *const obj = Object_GetObject(inv_item->object_id);
+    OBJECT *const obj = Object_Get(inv_item->object_id);
     if (obj->mesh_count < 0) {
         Output_DrawSpriteRel(0, 0, 0, obj->mesh_idx, 4096);
         return;
@@ -104,8 +104,7 @@ static void M_DrawItem(
                     Output_DrawScreenSprite(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
                         sprite->param1, sprite->param2,
-                        Object_GetObject(O_ALPHABET)->mesh_idx
-                            + sprite->sprite_num,
+                        Object_Get(O_ALPHABET)->mesh_idx + sprite->sprite_num,
                         4096, 0);
                     break;
                 case SHAPE_LINE:

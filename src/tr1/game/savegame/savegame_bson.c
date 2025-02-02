@@ -485,7 +485,7 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
         }
 
         ITEM *item = &g_Items[i];
-        const OBJECT *const obj = Object_GetObject(item->object_id);
+        const OBJECT *const obj = Object_Get(item->object_id);
 
         const GAME_OBJECT_ID object_id =
             JSON_ObjectGetInt(item_obj, "obj_num", -1);
@@ -1043,7 +1043,7 @@ static JSON_ARRAY *M_DumpItems(void)
     for (int i = 0; i < g_LevelItemCount; i++) {
         JSON_OBJECT *item_obj = JSON_ObjectNew();
         ITEM *item = &g_Items[i];
-        const OBJECT *const obj = Object_GetObject(item->object_id);
+        const OBJECT *const obj = Object_Get(item->object_id);
 
         JSON_ObjectAppendInt(item_obj, "obj_num", item->object_id);
 

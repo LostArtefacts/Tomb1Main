@@ -98,7 +98,7 @@ static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector)
                 if (item->data != nullptr) {
                     const int16_t bug_item_num = *(int16_t *)item->data;
                     const ITEM *const bug_item = &g_Items[bug_item_num];
-                    if (Object_GetObject(bug_item->object_id)->loaded) {
+                    if (Object_Get(bug_item->object_id)->loaded) {
                         M_IncludeKillableItem(item_num);
                     }
                 }

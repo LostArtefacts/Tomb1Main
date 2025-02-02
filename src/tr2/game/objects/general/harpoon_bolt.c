@@ -11,7 +11,7 @@
 
 void HarpoonBolt_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_HARPOON_BOLT);
+    OBJECT *const obj = Object_Get(O_HARPOON_BOLT);
     obj->control = HarpoonBolt_Control;
     obj->save_position = 1;
 }
@@ -44,8 +44,7 @@ void HarpoonBolt_Control(const int16_t item_num)
     for (int16_t target_num = Room_Get(item->room_num)->item_num;
          target_num != NO_ITEM; target_num = Item_Get(target_num)->next_item) {
         ITEM *const target_item = Item_Get(target_num);
-        const OBJECT *const target_obj =
-            Object_GetObject(target_item->object_id);
+        const OBJECT *const target_obj = Object_Get(target_item->object_id);
 
         if (target_item == g_LaraItem) {
             continue;

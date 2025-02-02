@@ -37,7 +37,7 @@ void ClockChimes_Control(const int16_t item_num)
 
 void ClockChimes_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CLOCK_CHIMES);
+    OBJECT *const obj = Object_Get(O_CLOCK_CHIMES);
     obj->control = ClockChimes_Control;
     obj->draw_routine = Object_DrawDummyItem;
     obj->save_flags = 1;

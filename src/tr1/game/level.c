@@ -686,7 +686,7 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
     // We inject explosions sprites and sounds, although in the original game,
     // some levels lack them, resulting in no audio or visual effects when
     // killing mutants. This is to maintain that feature.
-    Mutant_ToggleExplosions(Object_GetObject(O_EXPLOSION_1)->loaded);
+    Mutant_ToggleExplosions(Object_Get(O_EXPLOSION_1)->loaded);
 
     Inject_AllInjections(&m_LevelInfo);
 
@@ -774,7 +774,7 @@ static size_t M_CalculateMaxVertices(void)
     BENCHMARK *const benchmark = Benchmark_Start();
     int32_t max_vertices = 0;
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        const OBJECT *const object = Object_GetObject(i);
+        const OBJECT *const object = Object_Get(i);
         if (!object->loaded) {
             continue;
         }
@@ -824,7 +824,7 @@ void Level_Load(const GF_LEVEL *const level)
     Output_SetDrawDistFade(level->settings.draw_distance_fade * WALL_L);
     Output_SetDrawDistMax(level->settings.draw_distance_max * WALL_L);
     Output_SetSkyboxEnabled(
-        g_Config.visuals.enable_skybox && Object_GetObject(O_SKYBOX)->loaded);
+        g_Config.visuals.enable_skybox && Object_Get(O_SKYBOX)->loaded);
 
     Benchmark_End(benchmark, nullptr);
 }
@@ -869,7 +869,7 @@ bool Level_Initialise(const GF_LEVEL *const level)
 
     /* Clear Object Loaded flags */
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        Object_GetObject(i)->loaded = false;
+        Object_Get(i)->loaded = false;
     }
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
         Object_GetStaticObject2D(i)->loaded = false;

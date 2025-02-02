@@ -58,7 +58,7 @@ void SaveCrystal_Control(int16_t item_num)
 void SaveCrystal_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     Object_Collision(item_num, lara_item, coll);
 

@@ -35,7 +35,7 @@ static void M_ReinitialiseGunMeshes(void)
     // TODO: consider refactoring flare check once more is known about overall
     // flare control.
     const bool has_flare = Lara_GetMesh(LM_HAND_L)
-        == Object_GetMesh(Object_GetObject(O_LARA_FLARE)->mesh_idx + LM_HAND_L);
+        == Object_GetMesh(Object_Get(O_LARA_FLARE)->mesh_idx + LM_HAND_L);
 
     Lara_InitialiseMeshes(Game_GetCurrentLevel());
     Gun_InitialiseNewWeapon();
@@ -85,7 +85,7 @@ static void M_GiveAllKeysImpl(void)
 static void M_ResetGunStatus(void)
 {
     const bool has_flare = Lara_GetMesh(LM_HAND_L)
-        == Object_GetMesh(Object_GetObject(O_LARA_FLARE)->mesh_idx + LM_HAND_L);
+        == Object_GetMesh(Object_Get(O_LARA_FLARE)->mesh_idx + LM_HAND_L);
     if (has_flare) {
         g_Lara.gun_type = LGT_FLARE;
         return;

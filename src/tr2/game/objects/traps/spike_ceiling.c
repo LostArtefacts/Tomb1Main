@@ -60,7 +60,7 @@ void SpikeCeiling_Control(const int16_t item_num)
 
 void SpikeCeiling_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CEILING_SPIKES);
+    OBJECT *const obj = Object_Get(O_CEILING_SPIKES);
     obj->control = SpikeCeiling_Control;
     obj->collision = Object_Collision_Trap;
     obj->save_position = 1;

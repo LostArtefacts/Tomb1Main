@@ -41,7 +41,7 @@ static const BITE m_CrowBite = {
 
 void Bird_SetupEagle(void)
 {
-    OBJECT *const obj = Object_GetObject(O_EAGLE);
+    OBJECT *const obj = Object_Get(O_EAGLE);
     if (!obj->loaded) {
         return;
     }
@@ -64,7 +64,7 @@ void Bird_SetupEagle(void)
 
 void Bird_SetupCrow(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CROW);
+    OBJECT *const obj = Object_Get(O_CROW);
     if (!obj->loaded) {
         return;
     }

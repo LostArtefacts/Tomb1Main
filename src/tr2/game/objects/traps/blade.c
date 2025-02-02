@@ -30,7 +30,7 @@ typedef enum {
 
 void Blade_Initialise(const int16_t item_num)
 {
-    const OBJECT *const obj = Object_GetObject(O_BLADE);
+    const OBJECT *const obj = Object_Get(O_BLADE);
     ITEM *const item = Item_Get(item_num);
     Item_SwitchToAnim(item, BLADE_ANIM_SET, 0);
     item->current_anim_state = BLADE_STATE_STOP;
@@ -60,7 +60,7 @@ void Blade_Control(const int16_t item_num)
 
 void Blade_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BLADE);
+    OBJECT *const obj = Object_Get(O_BLADE);
     obj->initialise = Blade_Initialise;
     obj->control = Blade_Control;
     obj->collision = Object_Collision_Trap;

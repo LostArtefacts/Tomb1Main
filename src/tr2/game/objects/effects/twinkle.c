@@ -47,7 +47,7 @@ static bool M_ShouldDisappear(
 
 void Twinkle_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_TWINKLE);
+    OBJECT *const obj = Object_Get(O_TWINKLE);
     obj->control = Twinkle_Control;
 }
 
@@ -55,7 +55,7 @@ void Twinkle_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
     effect->frame_num--;
-    if (effect->frame_num <= Object_GetObject(effect->object_id)->mesh_count) {
+    if (effect->frame_num <= Object_Get(effect->object_id)->mesh_count) {
         effect->frame_num = 0;
     }
 

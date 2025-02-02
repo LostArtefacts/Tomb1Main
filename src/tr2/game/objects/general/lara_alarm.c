@@ -13,7 +13,7 @@ void LaraAlarm_Control(const int16_t item_num)
 
 void LaraAlarm_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_LARA_ALARM);
+    OBJECT *const obj = Object_Get(O_LARA_ALARM);
     obj->control = LaraAlarm_Control;
     obj->draw_routine = Object_DrawDummyItem;
     obj->save_flags = 1;

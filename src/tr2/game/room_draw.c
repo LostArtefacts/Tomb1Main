@@ -447,7 +447,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
     while (item_num != NO_ITEM) {
         ITEM *const item = &g_Items[item_num];
         if (item->status != IS_INVISIBLE) {
-            const OBJECT *const object = Object_GetObject(item->object_id);
+            const OBJECT *const object = Object_Get(item->object_id);
             object->draw_routine(item);
         }
         item_num = item->next_item;
@@ -511,7 +511,7 @@ void Room_DrawAllRooms(const int16_t current_room)
         g_PhdWinBottom = m_OutsideBottom;
         g_PhdWinTop = m_OutsideTop;
 
-        const OBJECT *const skybox = Object_GetObject(O_SKYBOX);
+        const OBJECT *const skybox = Object_Get(O_SKYBOX);
         if (skybox->loaded) {
             Output_SetupAboveWater(g_CameraUnderwater);
             Matrix_Push();
@@ -526,8 +526,7 @@ void Room_DrawAllRooms(const int16_t current_room)
         }
     }
 
-    if (Object_GetObject(O_LARA)->loaded
-        && !(g_LaraItem->flags & IF_ONE_SHOT)) {
+    if (Object_Get(O_LARA)->loaded && !(g_LaraItem->flags & IF_ONE_SHOT)) {
         if (g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) {
             Output_SetupBelowWater(g_CameraUnderwater);
         } else {

@@ -67,7 +67,7 @@ static const BITE m_Worker3Hit = {
 
 void Worker3_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WORKER_3);
+    OBJECT *const obj = Object_Get(O_WORKER_3);
     if (!obj->loaded) {
         return;
     }
@@ -92,7 +92,7 @@ void Worker3_Setup(void)
 
 void Worker4_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WORKER_4);
+    OBJECT *const obj = Object_Get(O_WORKER_4);
     if (!obj->loaded) {
         return;
     }

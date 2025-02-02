@@ -47,7 +47,7 @@ void LightningEmitter_Initialise(int16_t item_num)
     LIGHTNING *l = GameBuf_Alloc(sizeof(LIGHTNING), GBUF_ITEM_DATA);
     g_Items[item_num].data = l;
 
-    if (Object_GetObject(g_Items[item_num].object_id)->mesh_count > 1) {
+    if (Object_Get(g_Items[item_num].object_id)->mesh_count > 1) {
         g_Items[item_num].mesh_bits = 1;
         l->no_target = false;
     } else {
@@ -187,7 +187,7 @@ void LightningEmitter_Draw(ITEM *item)
     int32_t y1 = g_MatrixPtr->_13;
     int32_t z1 = g_MatrixPtr->_23;
 
-    const OBJECT *const object = Object_GetObject(O_LIGHTNING_EMITTER);
+    const OBJECT *const object = Object_Get(O_LIGHTNING_EMITTER);
     Object_DrawMesh(object->mesh_idx, clip, false);
 
     Matrix_Pop();

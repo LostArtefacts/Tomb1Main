@@ -13,7 +13,7 @@ void XianWarrior_Draw(const ITEM *item)
     ANIM_FRAME *frames[2];
     int32_t rate;
     const int32_t frac = Item_GetFrames(item, frames, &rate);
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     if (obj->shadow_size != 0) {
         Output_InsertShadow(obj->shadow_size, &frames[0]->bounds, item);
@@ -33,9 +33,9 @@ void XianWarrior_Draw(const ITEM *item)
 
     const OBJECT *jade_obj;
     if (item->object_id == O_XIAN_SPEARMAN) {
-        jade_obj = Object_GetObject(O_XIAN_SPEARMAN_STATUE);
+        jade_obj = Object_Get(O_XIAN_SPEARMAN_STATUE);
     } else {
-        jade_obj = Object_GetObject(O_XIAN_KNIGHT_STATUE);
+        jade_obj = Object_Get(O_XIAN_KNIGHT_STATUE);
     }
 
     const int16_t *extra_rotation = item->data;

@@ -8,7 +8,7 @@
 
 void Bubble_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BUBBLE);
+    OBJECT *const obj = Object_Get(O_BUBBLE);
     obj->control = Bubble_Control;
 }
 

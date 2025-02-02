@@ -33,7 +33,7 @@ typedef enum {
 void M_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     Item_SwitchToAnim(item, SPINNING_BLADE_ANIM_STOP, 0);
     item->current_anim_state = SPINNING_BLADE_STATE_STOP;
 }
@@ -100,7 +100,7 @@ void SpinningBlade_Control(const int16_t item_num)
 
 void SpinningBlade_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SPINNING_BLADE);
+    OBJECT *const obj = Object_Get(O_SPINNING_BLADE);
     obj->initialise = M_Initialise;
     obj->control = SpinningBlade_Control;
     obj->collision = Object_Collision;

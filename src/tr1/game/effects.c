@@ -31,7 +31,7 @@ void Effect_Control(void)
     int16_t effect_num = m_NextEffectActive;
     while (effect_num != NO_EFFECT) {
         EFFECT *effect = Effect_Get(effect_num);
-        const OBJECT *const obj = Object_GetObject(effect->object_id);
+        const OBJECT *const obj = Object_Get(effect->object_id);
         if (obj->control) {
             obj->control(effect_num);
         }
@@ -138,7 +138,7 @@ void Effect_NewRoom(int16_t effect_num, int16_t room_num)
 void Effect_Draw(const int16_t effect_num)
 {
     const EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_GetObject(effect->object_id);
+    const OBJECT *const object = Object_Get(effect->object_id);
     if (!object->loaded) {
         return;
     }

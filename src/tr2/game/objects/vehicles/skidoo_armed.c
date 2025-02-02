@@ -13,7 +13,7 @@
 
 void SkidooArmed_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SKIDOO_ARMED);
+    OBJECT *const obj = Object_Get(O_SKIDOO_ARMED);
     if (!obj->loaded) {
         return;
     }

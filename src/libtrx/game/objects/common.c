@@ -10,7 +10,7 @@ static STATIC_OBJECT_2D m_StaticObjects2D[MAX_STATIC_OBJECTS] = {};
 static OBJECT_MESH **m_MeshPointers = nullptr;
 static int32_t m_MeshCount = 0;
 
-OBJECT *Object_GetObject(const GAME_OBJECT_ID object_id)
+OBJECT *Object_Get(const GAME_OBJECT_ID object_id)
 {
     return &m_Objects[object_id];
 }
@@ -108,8 +108,8 @@ void Object_SwapMesh(
     const GAME_OBJECT_ID object1_id, const GAME_OBJECT_ID object2_id,
     const int32_t mesh_num)
 {
-    const OBJECT *const obj1 = Object_GetObject(object1_id);
-    const OBJECT *const obj2 = Object_GetObject(object2_id);
+    const OBJECT *const obj1 = Object_Get(object1_id);
+    const OBJECT *const obj2 = Object_Get(object2_id);
 
     OBJECT_MESH *const temp = m_MeshPointers[obj1->mesh_idx + mesh_num];
     m_MeshPointers[obj1->mesh_idx + mesh_num] =

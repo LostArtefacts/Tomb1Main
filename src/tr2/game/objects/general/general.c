@@ -42,7 +42,7 @@ void General_Control(const int16_t item_num)
 
 void General_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_GENERAL);
+    OBJECT *const obj = Object_Get(O_GENERAL);
     obj->control = General_Control;
     obj->collision = Object_Collision;
     obj->save_flags = 1;

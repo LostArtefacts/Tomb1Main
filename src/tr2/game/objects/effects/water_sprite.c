@@ -8,7 +8,7 @@
 void WaterSprite_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
 
     effect->counter--;
     if (effect->counter % 4 == 0) {
@@ -33,7 +33,7 @@ void WaterSprite_Control(const int16_t effect_num)
 
 void WaterSprite_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WATER_SPRITE);
+    OBJECT *const obj = Object_Get(O_WATER_SPRITE);
     obj->control = WaterSprite_Control;
     obj->semi_transparent = 1;
 }

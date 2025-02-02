@@ -19,7 +19,7 @@ void Text_DrawBorder(
     const int32_t x, const int32_t y, const int32_t z, const int32_t width,
     const int32_t height)
 {
-    const int32_t mesh_idx = Object_GetObject(O_TEXT_BOX)->mesh_idx;
+    const int32_t mesh_idx = Object_Get(O_TEXT_BOX)->mesh_idx;
 
     const int32_t offset = 4;
     const int32_t x0 = x + offset;
@@ -58,7 +58,7 @@ void Text_DrawText(TEXTSTRING *const text)
         return;
     }
 
-    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
+    const OBJECT *const obj = Object_Get(O_ALPHABET);
     if (!obj->loaded) {
         return;
     }
@@ -124,7 +124,7 @@ void Text_DrawText(TEXTSTRING *const text)
         if ((*glyph_ptr)->role == GLYPH_SECRET) {
             Output_DrawPickup(
                 x + 10, y, 7144,
-                Object_GetObject(O_SECRET_1 + (*glyph_ptr)->mesh_idx)->mesh_idx,
+                Object_Get(O_SECRET_1 + (*glyph_ptr)->mesh_idx)->mesh_idx,
                 4096);
             x += (*glyph_ptr)->width * scale_h / TEXT_BASE_SCALE;
             glyph_ptr++;

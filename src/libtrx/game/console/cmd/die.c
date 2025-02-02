@@ -14,7 +14,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         return CR_BAD_INVOCATION;
     }
 
-    if (!Object_GetObject(O_LARA)->loaded) {
+    if (!Object_Get(O_LARA)->loaded) {
         return CR_UNAVAILABLE;
     }
 

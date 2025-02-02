@@ -26,7 +26,7 @@ typedef enum {
 
 void Jelly_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_JELLY);
+    OBJECT *const obj = Object_Get(O_JELLY);
     if (!obj->loaded) {
         return;
     }

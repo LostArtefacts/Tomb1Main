@@ -35,7 +35,7 @@ static void M_Explode(int16_t grenade_item_num, const XYZ_32 pos)
 
 void Grenade_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_GRENADE);
+    OBJECT *const obj = Object_Get(O_GRENADE);
     obj->control = Grenade_Control;
     obj->save_position = 1;
 }
@@ -78,8 +78,7 @@ void Grenade_Control(int16_t item_num)
          target_item_num != NO_ITEM;
          target_item_num = Item_Get(target_item_num)->next_item) {
         ITEM *const target_item = Item_Get(target_item_num);
-        const OBJECT *const target_obj =
-            Object_GetObject(target_item->object_id);
+        const OBJECT *const target_obj = Object_Get(target_item->object_id);
         if (target_item == g_LaraItem) {
             continue;
         }

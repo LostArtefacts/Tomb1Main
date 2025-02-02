@@ -9,7 +9,7 @@
 void HotLiquid_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
+    OBJECT *const obj = Object_Get(O_HOT_LIQUID);
 
     effect->frame_num--;
     if (effect->frame_num <= obj->mesh_count) {
@@ -43,7 +43,7 @@ void HotLiquid_Control(const int16_t effect_num)
 
 void HotLiquid_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
+    OBJECT *const obj = Object_Get(O_HOT_LIQUID);
     obj->control = HotLiquid_Control;
     obj->semi_transparent = 1;
 }

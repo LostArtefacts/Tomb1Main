@@ -9,7 +9,7 @@
 void Blood_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
     effect->pos.x += (effect->speed * Math_Sin(effect->rot.y)) >> W2V_SHIFT;
     effect->pos.z += (effect->speed * Math_Cos(effect->rot.y)) >> W2V_SHIFT;
     effect->counter++;
@@ -24,7 +24,7 @@ void Blood_Control(const int16_t effect_num)
 
 void Blood_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BLOOD);
+    OBJECT *const obj = Object_Get(O_BLOOD);
     obj->control = Blood_Control;
     obj->semi_transparent = 1;
 }

@@ -50,8 +50,7 @@ static bool M_CanTargetObject(const GAME_OBJECT_ID object_id)
     return !Object_IsObjectType(object_id, g_NullObjects)
         && !Object_IsObjectType(object_id, g_AnimObjects)
         && !Object_IsObjectType(object_id, g_InvObjects)
-        && Object_GetObject(object_id)->loaded
-        && M_ObjectCanBePickedUp(object_id);
+        && Object_Get(object_id)->loaded && M_ObjectCanBePickedUp(object_id);
 }
 
 static bool M_CanTargetItem(

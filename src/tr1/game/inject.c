@@ -421,7 +421,7 @@ static void M_TextureData(
         const int16_t mesh_idx = VFile_ReadS16(fp);
 
         if (object_id < O_NUMBER_OF) {
-            OBJECT *const object = Object_GetObject(object_id);
+            OBJECT *const object = Object_Get(object_id);
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx + level_info->textures.sprite_count;
             object->loaded = true;
@@ -537,7 +537,7 @@ static void M_AnimRangeEdits(INJECTION *injection)
             continue;
         }
 
-        const OBJECT *const object = Object_GetObject(object_id);
+        const OBJECT *const object = Object_Get(object_id);
         if (!object->loaded) {
             LOG_WARNING("Object %d is not loaded", object_id);
             VFile_Skip(fp, edit_count * sizeof(int16_t) * 4);
@@ -588,7 +588,7 @@ static void M_ObjectData(
 
     for (int32_t i = 0; i < inj_info->object_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
-        OBJECT *const object = Object_GetObject(object_id);
+        OBJECT *const object = Object_Get(object_id);
 
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
@@ -776,7 +776,7 @@ static void M_ApplyMeshEdit(
 {
     OBJECT_MESH *mesh;
     if (mesh_edit->object_id < O_NUMBER_OF) {
-        const OBJECT *const object = Object_GetObject(mesh_edit->object_id);
+        const OBJECT *const object = Object_Get(mesh_edit->object_id);
         if (!object->loaded) {
             return;
         }
@@ -857,7 +857,7 @@ static void M_ApplyFace3Edit(
 
 static uint16_t *M_GetMeshTexture(const FACE_EDIT *const face_edit)
 {
-    const OBJECT *const object = Object_GetObject(face_edit->object_id);
+    const OBJECT *const object = Object_Get(face_edit->object_id);
     if (!object->loaded) {
         return nullptr;
     }
@@ -1550,7 +1550,7 @@ static void M_FrameEdits(
         const int32_t anim_idx = VFile_ReadS32(fp);
         const int32_t packed_rot = VFile_ReadS32(fp);
 
-        const OBJECT *const obj = Object_GetObject(object_id);
+        const OBJECT *const obj = Object_Get(object_id);
         if (!obj->loaded) {
             continue;
         }

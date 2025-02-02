@@ -58,7 +58,7 @@ void Lara_Draw(ITEM *item)
     // save matrix for hair
     saved_matrix = *g_MatrixPtr;
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     Output_DrawShadow(object->shadow_size, &frame->bounds, item);
 
     Matrix_Push();
@@ -312,7 +312,7 @@ void Lara_Draw_I(
 {
     MATRIX saved_matrix;
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     saved_matrix = *g_MatrixPtr;

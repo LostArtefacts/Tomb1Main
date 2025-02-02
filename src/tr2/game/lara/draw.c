@@ -57,7 +57,7 @@ void Lara_Draw(const ITEM *const item)
     const ANIM_FRAME *const frame =
         hit_frame == nullptr ? frames[0] : hit_frame;
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     if (g_Lara.skidoo == NO_ITEM) {
         Output_InsertShadow(object->shadow_size, &frame->bounds, item);
     }
@@ -125,7 +125,7 @@ void Lara_Draw(const ITEM *const item)
 
     if (g_Lara.back_gun) {
         Matrix_Push();
-        const OBJECT *const back_object = Object_GetObject(g_Lara.back_gun);
+        const OBJECT *const back_object = Object_Get(g_Lara.back_gun);
         const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
         Matrix_TranslateRel32(bone_c[13].pos);
         mesh_rots_c = back_object->frame_base->mesh_rots;
@@ -289,7 +289,7 @@ void Lara_Draw_I(
     const ITEM *const item, const ANIM_FRAME *const frame1,
     const ANIM_FRAME *const frame2, const int32_t frac, const int32_t rate)
 {
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     if (g_Lara.skidoo == NO_ITEM) {
@@ -365,7 +365,7 @@ void Lara_Draw_I(
 
     if (g_Lara.back_gun) {
         Matrix_Push_I();
-        const OBJECT *const back_object = Object_GetObject(g_Lara.back_gun);
+        const OBJECT *const back_object = Object_Get(g_Lara.back_gun);
         const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
         Matrix_TranslateRel32_I(bone_c[13].pos);
         mesh_rots_1_c = back_object->frame_base->mesh_rots;
@@ -412,8 +412,7 @@ void Lara_Draw_I(
             Matrix_RotX_I(-90 * DEG_1);
             Matrix_RotY_I(2 * Random_GetDraw());
             Output_CalculateStaticLight(2048);
-            Object_DrawMesh(
-                Object_GetObject(O_FLARE_FIRE)->mesh_idx, clip, true);
+            Object_DrawMesh(Object_Get(O_FLARE_FIRE)->mesh_idx, clip, true);
         }
         Matrix_Pop();
         break;

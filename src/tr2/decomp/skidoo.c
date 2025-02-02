@@ -123,7 +123,7 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
         return false;
     }
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const bool is_availanche = item->object_id == O_ROLLING_BALL_2;
     if (object->collision == nullptr
         || (!object->intelligent && !is_availanche)) {
@@ -915,7 +915,7 @@ int32_t Skidoo_Control(void)
     } else {
         // TODO: Item_GetRelativeAnim
         const int16_t lara_anim_num =
-            g_LaraItem->anim_num - Object_GetObject(O_LARA_SKIDOO)->anim_idx;
+            g_LaraItem->anim_num - Object_Get(O_LARA_SKIDOO)->anim_idx;
         const int16_t lara_frame_num =
             g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
         Item_SwitchToObjAnim(
@@ -940,12 +940,12 @@ void Skidoo_Draw(const ITEM *const item)
         track_mesh_status = skidoo_data->track_mesh;
     }
 
-    const OBJECT *obj = Object_GetObject(item->object_id);
+    const OBJECT *obj = Object_Get(item->object_id);
     if ((track_mesh_status & SKIDOO_GUN_MESH) != 0) {
-        obj = Object_GetObject(O_SKIDOO_ARMED);
+        obj = Object_Get(O_SKIDOO_ARMED);
     }
 
-    const OBJECT *const track_obj = Object_GetObject(O_SKIDOO_TRACK);
+    const OBJECT *const track_obj = Object_Get(O_SKIDOO_TRACK);
     const OBJECT_MESH *track_mesh = nullptr;
     if ((track_mesh_status & 3) == 1) {
         track_mesh = Object_GetMesh(track_obj->mesh_idx + 1);

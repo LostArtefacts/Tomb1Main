@@ -251,7 +251,7 @@ static void M_KillLara(const ITEM *const item, ITEM *const lara)
         Spawn_Blood(x, y, z, item->speed * 2, d, lara->room_num);
     }
 
-    if (!Object_GetObject(O_CAMERA_TARGET)->loaded) {
+    if (!Object_Get(O_CAMERA_TARGET)->loaded) {
         return;
     }
 
@@ -333,7 +333,7 @@ void MovableBlock_Control(int16_t item_num)
 void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     if (M_TestDeathCollision(item, lara_item)) {
         M_KillLara(item, lara_item);

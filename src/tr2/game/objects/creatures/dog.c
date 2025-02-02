@@ -58,7 +58,7 @@ static const BITE m_DogBite = {
 
 void Dog_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DOG);
+    OBJECT *const obj = Object_Get(O_DOG);
     if (!obj->loaded) {
         return;
     }

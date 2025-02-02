@@ -8,8 +8,8 @@
 bool Inv_AddItem(const GAME_OBJECT_ID object_id)
 {
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-    const OBJECT *const object = Object_GetObject(
-        inv_object_id == NO_OBJECT ? object_id : inv_object_id);
+    const OBJECT *const object =
+        Object_Get(inv_object_id == NO_OBJECT ? object_id : inv_object_id);
     if (!object->loaded) {
         return false;
     }

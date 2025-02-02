@@ -455,7 +455,7 @@ void Level_ReadObjects(VFILE *const file)
                 "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
         }
 
-        OBJECT *const object = Object_GetObject(object_id);
+        OBJECT *const object = Object_Get(object_id);
         object->mesh_count = VFile_ReadS16(file);
         object->mesh_idx = VFile_ReadS16(file);
         object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
@@ -540,7 +540,7 @@ void Level_ReadSpriteSequences(VFILE *const file)
         const int16_t mesh_idx = VFile_ReadS16(file);
 
         if (object_id >= 0 && object_id < O_NUMBER_OF) {
-            OBJECT *const object = Object_GetObject(object_id);
+            OBJECT *const object = Object_Get(object_id);
             object->mesh_count = num_meshes;
             object->mesh_idx = mesh_idx;
             object->loaded = true;

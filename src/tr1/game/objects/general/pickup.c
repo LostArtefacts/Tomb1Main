@@ -87,7 +87,7 @@ static void M_Control(int16_t item_num)
 
     const ITEM *const lara = Lara_GetItem();
     if (!g_Config.gameplay.enable_pickup_aids || item->fall_speed != 0
-        || lara == nullptr || !Object_GetObject(O_PICKUP_AID)->loaded) {
+        || lara == nullptr || !Object_Get(O_PICKUP_AID)->loaded) {
         return;
     }
 
@@ -112,7 +112,7 @@ static void M_SpawnPickupAid(const ITEM *const item)
 {
     const GAME_OBJECT_ID obj_id =
         Object_GetCognate(item->object_id, g_ItemToInvObjectMap);
-    const OBJECT *const object = Object_GetObject(obj_id);
+    const OBJECT *const object = Object_Get(obj_id);
     const ANIM_FRAME *const frame = object->frame_base;
 
     const GAME_VECTOR pos = {
@@ -153,7 +153,7 @@ static void M_GetAllAtLaraPos(ITEM *item, ITEM *lara_item)
     while (pickup_num != NO_ITEM) {
         ITEM *check_item = &g_Items[pickup_num];
         if (check_item->pos.x == item->pos.x && check_item->pos.z == item->pos.z
-            && Object_GetObject(check_item->object_id)->collision
+            && Object_Get(check_item->object_id)->collision
                 == Pickup_Collision) {
             M_GetItem(pickup_num, check_item, lara_item);
         }
@@ -190,7 +190,7 @@ void Pickup_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
     }
 
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     int16_t rotx = item->rot.x;
     int16_t roty = item->rot.y;
     int16_t rotz = item->rot.z;
@@ -254,7 +254,7 @@ void Pickup_CollisionControlled(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     if (item->status == IS_INVISIBLE) {
         return;

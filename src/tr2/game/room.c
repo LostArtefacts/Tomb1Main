@@ -268,7 +268,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
                 break;
             }
 
-            const OBJECT *const obj = Object_GetObject(trig_item->object_id);
+            const OBJECT *const obj = Object_Get(trig_item->object_id);
             if (obj->intelligent) {
                 if (trig_item->status == IS_INACTIVE) {
                     trig_item->touch_bits = 0;
@@ -666,7 +666,7 @@ int32_t Room_GetHeight(
         }
 
         const ITEM *const item = Item_Get((int16_t)(intptr_t)cmd->parameter);
-        const OBJECT *const object = Object_GetObject(item->object_id);
+        const OBJECT *const object = Object_Get(item->object_id);
         if (object->floor) {
             object->floor(item, x, y, z, &height);
         }
@@ -708,7 +708,7 @@ int32_t Room_GetCeiling(
         }
 
         const ITEM *const item = Item_Get((int16_t)(intptr_t)cmd->parameter);
-        const OBJECT *const object = Object_GetObject(item->object_id);
+        const OBJECT *const object = Object_Get(item->object_id);
         if (object->ceiling) {
             object->ceiling(item, x, y, z, &height);
         }
@@ -806,7 +806,7 @@ void Room_RemoveFlipItems(const ROOM *const r)
         }
 
         if (item->flags & IF_ONE_SHOT
-            && Object_GetObject(item->object_id)->intelligent
+            && Object_Get(item->object_id)->intelligent
             && item->hit_points <= 0) {
             Item_RemoveDrawn(item_num);
             item->flags |= IF_KILLED;

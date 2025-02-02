@@ -124,7 +124,7 @@ void Text_DrawText(TEXTSTRING *const text)
         return;
     }
 
-    const OBJECT *const obj = Object_GetObject(O_ALPHABET);
+    const OBJECT *const obj = Object_Get(O_ALPHABET);
     if (!obj->loaded) {
         return;
     }

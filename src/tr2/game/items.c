@@ -73,7 +73,7 @@ void Item_Control(void)
     while (item_num != NO_ITEM) {
         const ITEM *const item = Item_Get(item_num);
         const int16_t next = item->next_active;
-        const OBJECT *object = Object_GetObject(item->object_id);
+        const OBJECT *object = Object_Get(item->object_id);
         if (!(item->flags & IF_KILLED) && object->control != nullptr) {
             object->control(item_num);
         }
@@ -123,7 +123,7 @@ void Item_Kill(const int16_t item_num)
 void Item_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
 
     Item_SwitchToAnim(item, 0, 0);
     item->goal_anim_state = Item_GetAnim(item)->current_anim_state;
@@ -233,7 +233,7 @@ void Item_RemoveDrawn(const int16_t item_num)
 void Item_AddActive(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    if (Object_GetObject(item->object_id)->control == nullptr) {
+    if (Object_Get(item->object_id)->control == nullptr) {
         item->status = IS_INACTIVE;
         return;
     }
@@ -574,7 +574,7 @@ int32_t Item_Explode(
     const int16_t item_num, const int32_t mesh_bits, const int16_t damage)
 {
     ITEM *const item = &g_Items[item_num];
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
 
     Output_CalculateLight(item->pos, item->room_num);
 

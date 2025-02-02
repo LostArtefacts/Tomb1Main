@@ -70,7 +70,7 @@ void Effect_Control(void)
     int16_t effect_num = Effect_GetActiveNum();
     while (effect_num != NO_EFFECT) {
         const EFFECT *const effect = Effect_Get(effect_num);
-        const OBJECT *const object = Object_GetObject(effect->object_id);
+        const OBJECT *const object = Object_Get(effect->object_id);
         const int16_t next = effect->next_active;
         if (object->control != nullptr) {
             object->control(effect_num);
@@ -154,7 +154,7 @@ void Effect_NewRoom(const int16_t effect_num, const int16_t room_num)
 void Effect_Draw(const int16_t effect_num)
 {
     const EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_GetObject(effect->object_id);
+    const OBJECT *const object = Object_Get(effect->object_id);
     if (!object->loaded) {
         return;
     }
@@ -162,7 +162,7 @@ void Effect_Draw(const int16_t effect_num)
     if (effect->object_id == O_GLOW) {
         Output_DrawSprite(
             (effect->rot.y << 16) | (uint16_t)effect->rot.x, effect->pos.x,
-            effect->pos.y, effect->pos.z, Object_GetObject(O_GLOW)->mesh_idx,
+            effect->pos.y, effect->pos.z, Object_Get(O_GLOW)->mesh_idx,
             effect->shade, effect->frame_num);
         return;
     }

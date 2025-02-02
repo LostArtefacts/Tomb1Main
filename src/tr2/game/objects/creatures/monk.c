@@ -55,7 +55,7 @@ static const BITE m_MonkHit = {
 
 void Monk1_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_MONK_1);
+    OBJECT *const obj = Object_Get(O_MONK_1);
     if (!obj->loaded) {
         return;
     }
@@ -79,7 +79,7 @@ void Monk1_Setup(void)
 
 void Monk2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_MONK_2);
+    OBJECT *const obj = Object_Get(O_MONK_2);
     if (!obj->loaded) {
         return;
     }

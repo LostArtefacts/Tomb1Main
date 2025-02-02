@@ -43,7 +43,7 @@ static const BITE m_BigEelBite = {
 
 void BigEel_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BIG_EEL);
+    OBJECT *const obj = Object_Get(O_BIG_EEL);
     if (!obj->loaded) {
         return;
     }

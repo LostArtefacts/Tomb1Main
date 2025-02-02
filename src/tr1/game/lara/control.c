@@ -125,7 +125,7 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
         while (item_num != NO_ITEM) {
             ITEM *item = &g_Items[item_num];
             if (item->collidable && item->status != IS_INVISIBLE) {
-                const OBJECT *const object = Object_GetObject(item->object_id);
+                const OBJECT *const object = Object_Get(item->object_id);
                 if (object->collision != nullptr) {
                     int32_t x = lara_item->pos.x - item->pos.x;
                     int32_t y = lara_item->pos.y - item->pos.y;

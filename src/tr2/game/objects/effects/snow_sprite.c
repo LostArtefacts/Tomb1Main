@@ -8,7 +8,7 @@
 void SnowSprite_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
 
     effect->frame_num--;
     if (effect->frame_num <= obj->mesh_count) {
@@ -26,6 +26,6 @@ void SnowSprite_Control(const int16_t effect_num)
 
 void SnowSprite_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SNOW_SPRITE);
+    OBJECT *const obj = Object_Get(O_SNOW_SPRITE);
     obj->control = SnowSprite_Control;
 }

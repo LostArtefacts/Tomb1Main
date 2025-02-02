@@ -47,7 +47,7 @@ static ITEM *M_GetCarrier(const int16_t item_num)
         item = Item_Get(child_item_num);
     }
 
-    const OBJECT *object = Object_GetObject(item->object_id);
+    const OBJECT *object = Object_Get(item->object_id);
     if (!object->loaded) {
         return nullptr;
     }

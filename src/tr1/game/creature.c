@@ -71,7 +71,7 @@ void Creature_AIInfo(ITEM *item, AI_INFO *info)
         info->enemy_zone |= BLOCKED;
     }
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     int32_t z = g_LaraItem->pos.z
         - ((Math_Cos(item->rot.y) * object->pivot_length) >> W2V_SHIFT)
         - item->pos.z;
@@ -186,8 +186,7 @@ void Creature_Mood(ITEM *item, AI_INFO *info, bool violent)
 
     switch (creature->mood) {
     case MOOD_ATTACK:
-        if (Random_GetControl()
-            < Object_GetObject(item->object_id)->smartness) {
+        if (Random_GetControl() < Object_Get(item->object_id)->smartness) {
             lot->target.x = g_LaraItem->pos.x;
             lot->target.y = g_LaraItem->pos.y;
             lot->target.z = g_LaraItem->pos.z;
@@ -347,7 +346,7 @@ bool Creature_CheckBaddieOverlap(int16_t item_num)
     int32_t x = item->pos.x;
     int32_t y = item->pos.y;
     int32_t z = item->pos.z;
-    const int32_t radius = SQUARE(Object_GetObject(item->object_id)->radius);
+    const int32_t radius = SQUARE(Object_Get(item->object_id)->radius);
 
     int16_t link = g_RoomInfo[item->room_num].item_num;
     do {
@@ -484,7 +483,7 @@ bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
     shift_x = 0;
     shift_z = 0;
 
-    const int32_t radius = Object_GetObject(item->object_id)->radius;
+    const int32_t radius = Object_Get(item->object_id)->radius;
 
     if (pos_z < radius) {
         if (Box_BadFloor(
@@ -807,7 +806,7 @@ static bool M_SwitchToLand(
 static bool M_TestSwitchOrKill(
     const int16_t item_num, const GAME_OBJECT_ID target_id)
 {
-    if (Object_GetObject(target_id)->loaded) {
+    if (Object_Get(target_id)->loaded) {
         return true;
     }
 

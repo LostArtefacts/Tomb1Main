@@ -8,7 +8,7 @@
 
 void Spawn_Splash_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SPLASH);
+    OBJECT *const obj = Object_Get(O_SPLASH);
     obj->control = Spawn_Splash_Control;
     obj->semi_transparent = 1;
 }
@@ -16,7 +16,7 @@ void Spawn_Splash_Setup(void)
 void Spawn_Splash_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_GetObject(effect->object_id);
+    const OBJECT *const object = Object_Get(effect->object_id);
 
     effect->frame_num--;
     if (effect->frame_num <= object->mesh_count) {

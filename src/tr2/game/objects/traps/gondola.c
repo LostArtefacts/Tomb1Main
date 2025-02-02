@@ -44,7 +44,7 @@ void Gondola_Control(const int16_t item_num)
 
 void Gondola_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_GONDOLA);
+    OBJECT *const obj = Object_Get(O_GONDOLA);
     obj->control = Gondola_Control;
     obj->collision = Object_Collision;
     obj->save_flags = 1;

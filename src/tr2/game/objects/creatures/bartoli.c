@@ -65,7 +65,7 @@ static bool M_CheckLaraProximity(const ITEM *const origin_item)
 
 void Bartoli_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BARTOLI);
+    OBJECT *const obj = Object_Get(O_BARTOLI);
     if (!obj->loaded) {
         return;
     }

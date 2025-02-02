@@ -20,7 +20,7 @@ void Object_DrawAnimatingItem(const ITEM *item)
     ANIM_FRAME *frames[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frames, &rate);
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     if (obj->shadow_size != 0) {
         Output_InsertShadow(obj->shadow_size, &frames[0]->bounds, item);
@@ -136,7 +136,7 @@ void Object_DrawSpriteItem(const ITEM *const item)
     Output_CalculateStaticMeshLight(
         item->pos, item->shade, Room_Get(item->room_num));
 
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     Output_DrawSprite(
         SPRITE_ABS | (obj->semi_transparent ? SPRITE_SEMI_TRANS : 0)

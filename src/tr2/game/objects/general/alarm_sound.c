@@ -25,7 +25,7 @@ void AlarmSound_Control(int16_t item_num)
 
 void AlarmSound_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_ALARM_SOUND);
+    OBJECT *const obj = Object_Get(O_ALARM_SOUND);
     obj->control = AlarmSound_Control;
     obj->save_flags = 1;
 }

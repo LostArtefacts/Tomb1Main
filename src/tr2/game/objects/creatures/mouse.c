@@ -44,7 +44,7 @@ static const BITE m_MouseBite = {
 
 void Mouse_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_MOUSE);
+    OBJECT *const obj = Object_Get(O_MOUSE);
     if (!obj->loaded) {
         return;
     }

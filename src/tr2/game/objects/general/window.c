@@ -13,7 +13,7 @@
 
 void Window_1_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WINDOW_1);
+    OBJECT *const obj = Object_Get(O_WINDOW_1);
     obj->initialise = Window_Initialise;
     obj->collision = Object_Collision;
     obj->control = Window_1_Control;
@@ -23,7 +23,7 @@ void Window_1_Setup(void)
 
 void Window_2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WINDOW_2);
+    OBJECT *const obj = Object_Get(O_WINDOW_2);
     obj->initialise = Window_Initialise;
     obj->collision = Object_Collision;
     obj->control = Window_2_Control;

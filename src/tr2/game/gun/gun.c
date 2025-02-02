@@ -251,7 +251,7 @@ void Gun_InitialiseNewWeapon(void)
     case LGT_PISTOLS:
     case LGT_MAGNUMS:
     case LGT_UZIS: {
-        const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
+        const OBJECT *const object = Object_Get(O_LARA_PISTOLS);
         g_Lara.left_arm.frame_base = object->frame_base;
         g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {
@@ -265,7 +265,7 @@ void Gun_InitialiseNewWeapon(void)
     case LGT_GRENADE:
     case LGT_HARPOON: {
         const OBJECT *const object =
-            Object_GetObject(Gun_GetWeaponAnim(g_Lara.gun_type));
+            Object_Get(Gun_GetWeaponAnim(g_Lara.gun_type));
         g_Lara.left_arm.frame_base = object->frame_base;
         g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {
@@ -275,7 +275,7 @@ void Gun_InitialiseNewWeapon(void)
     }
 
     case LGT_FLARE: {
-        const OBJECT *const object = Object_GetObject(O_LARA_FLARE);
+        const OBJECT *const object = Object_Get(O_LARA_FLARE);
         g_Lara.left_arm.frame_base = object->frame_base;
         g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {

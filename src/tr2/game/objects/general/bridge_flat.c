@@ -2,7 +2,7 @@
 
 void BridgeFlat_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BRIDGE_FLAT);
+    OBJECT *const obj = Object_Get(O_BRIDGE_FLAT);
     obj->ceiling = BridgeFlat_Ceiling;
     obj->floor = BridgeFlat_Floor;
 }

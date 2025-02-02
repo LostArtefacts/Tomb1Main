@@ -231,14 +231,14 @@ void Pickup_Draw(const ITEM *const item)
         return;
     }
 
-    if (!Object_GetObject(item->object_id)->loaded) {
+    if (!Object_Get(item->object_id)->loaded) {
         Object_DrawSpriteItem(item);
         return;
     }
 
     // Convert item to menu display item.
     const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(item->object_id);
-    const OBJECT *const obj = Object_GetObject(inv_object_id);
+    const OBJECT *const obj = Object_Get(inv_object_id);
     if (!obj->loaded || obj->mesh_count < 0) {
         Object_DrawSpriteItem(item);
         return;

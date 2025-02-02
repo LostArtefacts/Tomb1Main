@@ -25,7 +25,7 @@ typedef enum {
 
 void Winston_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WINSTON);
+    OBJECT *const obj = Object_Get(O_WINSTON);
     if (!obj->loaded) {
         return;
     }

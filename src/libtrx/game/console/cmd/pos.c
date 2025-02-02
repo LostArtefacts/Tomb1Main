@@ -16,7 +16,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *const ctx)
         return CR_BAD_INVOCATION;
     }
 
-    const OBJECT *const object = Object_GetObject(O_LARA);
+    const OBJECT *const object = Object_Get(O_LARA);
     if (!object->loaded) {
         return CR_UNAVAILABLE;
     }

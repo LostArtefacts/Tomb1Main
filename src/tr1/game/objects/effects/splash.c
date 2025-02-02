@@ -13,7 +13,7 @@ void Splash_Setup(OBJECT *obj)
 void Splash_Control(int16_t effect_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_GetObject(effect->object_id);
+    const OBJECT *const object = Object_Get(effect->object_id);
 
     effect->frame_num--;
     if (effect->frame_num <= object->mesh_count) {

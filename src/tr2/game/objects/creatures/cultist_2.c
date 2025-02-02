@@ -49,7 +49,7 @@ static const BITE m_Cultist2RightHand = {
 
 void Cultist2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CULT_2);
+    OBJECT *const obj = Object_Get(O_CULT_2);
     if (!obj->loaded) {
         return;
     }

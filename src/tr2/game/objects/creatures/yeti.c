@@ -72,7 +72,7 @@ static const BITE m_YetiBiteR = {
 
 void Yeti_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_YETI);
+    OBJECT *const obj = Object_Get(O_YETI);
     if (!obj->loaded) {
         return;
     }

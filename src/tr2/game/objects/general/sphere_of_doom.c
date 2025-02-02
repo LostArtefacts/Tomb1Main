@@ -93,8 +93,7 @@ void SphereOfDoom_Draw(const ITEM *const item)
     const int32_t clip = Output_GetObjectBounds(&frame_ptr->bounds);
     if (clip) {
         Output_CalculateObjectLighting(item, &frame_ptr->bounds);
-        Object_DrawMesh(
-            Object_GetObject(item->object_id)->mesh_idx, clip, false);
+        Object_DrawMesh(Object_Get(item->object_id)->mesh_idx, clip, false);
     }
 
     Matrix_Pop();

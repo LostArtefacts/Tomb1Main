@@ -25,7 +25,7 @@ void DyingMonk_Initialise(const int16_t item_num)
     int16_t test_item_num = Room_Get(item->room_num)->item_num;
     while (test_item_num != NO_ITEM) {
         const ITEM *const test_item = Item_Get(test_item_num);
-        const OBJECT *const test_obj = Object_GetObject(test_item->object_id);
+        const OBJECT *const test_obj = Object_Get(test_item->object_id);
         if (test_obj->intelligent) {
             roomies[roomie_count++] = test_item_num;
             if (roomie_count >= MAX_ROOMIES) {
@@ -64,7 +64,7 @@ void DyingMonk_Control(const int16_t item_num)
 
 void DyingMonk_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DYING_MONK);
+    OBJECT *const obj = Object_Get(O_DYING_MONK);
     obj->initialise = DyingMonk_Initialise;
     obj->control = DyingMonk_Control;
     obj->collision = Object_Collision;

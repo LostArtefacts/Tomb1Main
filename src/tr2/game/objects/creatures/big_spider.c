@@ -37,7 +37,7 @@ static const BITE m_SpiderBite = {
 
 void BigSpider_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BIG_SPIDER);
+    OBJECT *const obj = Object_Get(O_BIG_SPIDER);
     if (!obj->loaded) {
         return;
     }

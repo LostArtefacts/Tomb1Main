@@ -19,6 +19,6 @@ void Glow_Control(const int16_t effect_num)
 
 void Glow_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_GLOW);
+    OBJECT *const obj = Object_Get(O_GLOW);
     obj->control = Glow_Control;
 }

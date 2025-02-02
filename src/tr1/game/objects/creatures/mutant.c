@@ -92,7 +92,7 @@ void Mutant_Setup2(OBJECT *obj)
     if (!obj->loaded) {
         return;
     }
-    *obj = *Object_GetObject(O_WARRIOR_1);
+    *obj = *Object_Get(O_WARRIOR_1);
     obj->initialise = Mutant_Initialise2;
     obj->smartness = WARRIOR2_SMARTNESS;
 }
@@ -102,7 +102,7 @@ void Mutant_Setup3(OBJECT *obj)
     if (!obj->loaded) {
         return;
     }
-    *obj = *Object_GetObject(O_WARRIOR_1);
+    *obj = *Object_Get(O_WARRIOR_1);
     obj->initialise = Mutant_Initialise2;
 }
 

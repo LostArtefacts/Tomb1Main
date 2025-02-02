@@ -124,7 +124,7 @@ static void M_SetupLaraExtra(void);
 
 static void M_SetupLara(void)
 {
-    OBJECT *const obj = Object_GetObject(O_LARA);
+    OBJECT *const obj = Object_Get(O_LARA);
     obj->initialise = Lara_InitialiseLoad;
 
     obj->shadow_size = (UNIT_SHADOW / 16) * 10;
@@ -139,7 +139,7 @@ static void M_SetupLara(void)
 
 static void M_SetupLaraExtra(void)
 {
-    OBJECT *const obj = Object_GetObject(O_LARA_EXTRA);
+    OBJECT *const obj = Object_Get(O_LARA_EXTRA);
     obj->control = Lara_ControlExtra;
 }
 
@@ -195,9 +195,9 @@ void Object_SetupTrapObjects(void)
     Dart_Setup();
     DyingMonk_Setup();
     EmberEmitter_Setup();
-    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_1));
-    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_2));
-    FallingBlock_Setup(Object_GetObject(O_FALLING_BLOCK_3));
+    FallingBlock_Setup(Object_Get(O_FALLING_BLOCK_1));
+    FallingBlock_Setup(Object_Get(O_FALLING_BLOCK_2));
+    FallingBlock_Setup(Object_Get(O_FALLING_BLOCK_3));
     FallingCeiling_Setup();
     FlameEmitter_Setup();
     General_Setup();
@@ -206,15 +206,15 @@ void Object_SetupTrapObjects(void)
     Icicle_Setup();
     KillerStatue_Setup();
     Mine_Setup();
-    Pendulum_Setup(Object_GetObject(O_PENDULUM_1));
-    Pendulum_Setup(Object_GetObject(O_PENDULUM_2));
+    Pendulum_Setup(Object_Get(O_PENDULUM_1));
+    Pendulum_Setup(Object_Get(O_PENDULUM_2));
     PowerSaw_Setup();
-    Propeller_Setup(Object_GetObject(O_PROPELLER_1));
-    Propeller_Setup(Object_GetObject(O_PROPELLER_2));
-    Propeller_Setup(Object_GetObject(O_PROPELLER_3));
-    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_1));
-    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_2));
-    RollingBall_Setup(Object_GetObject(O_ROLLING_BALL_3));
+    Propeller_Setup(Object_Get(O_PROPELLER_1));
+    Propeller_Setup(Object_Get(O_PROPELLER_2));
+    Propeller_Setup(Object_Get(O_PROPELLER_3));
+    RollingBall_Setup(Object_Get(O_ROLLING_BALL_1));
+    RollingBall_Setup(Object_Get(O_ROLLING_BALL_2));
+    RollingBall_Setup(Object_Get(O_ROLLING_BALL_3));
     SpikeCeiling_Setup();
     SpikeWall_Setup();
     Spikes_Setup();
@@ -240,8 +240,8 @@ void Object_SetupGeneralObjects(void)
 
     // misc non-interactive objects
     AlarmSound_Setup();
-    BirdTweeter_Setup(Object_GetObject(O_BIRD_TWEETER_1));
-    BirdTweeter_Setup(Object_GetObject(O_BIRD_TWEETER_2));
+    BirdTweeter_Setup(Object_Get(O_BIRD_TWEETER_1));
+    BirdTweeter_Setup(Object_Get(O_BIRD_TWEETER_2));
     CameraTarget_Setup();
     ClockChimes_Setup();
     DingDong_Setup();
@@ -255,10 +255,10 @@ void Object_SetupGeneralObjects(void)
     MiniCopter_Setup();
 
     // push blocks
-    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_1));
-    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_2));
-    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_3));
-    MovableBlock_Setup(Object_GetObject(O_MOVABLE_BLOCK_4));
+    MovableBlock_Setup(Object_Get(O_MOVABLE_BLOCK_1));
+    MovableBlock_Setup(Object_Get(O_MOVABLE_BLOCK_2));
+    MovableBlock_Setup(Object_Get(O_MOVABLE_BLOCK_3));
+    MovableBlock_Setup(Object_Get(O_MOVABLE_BLOCK_4));
 
     // projectiles
     Grenade_Setup();
@@ -266,9 +266,9 @@ void Object_SetupGeneralObjects(void)
     MissileFlame_Setup();
     MissileHarpoon_Setup();
     MissileSpawn_Knife_Setup();
-    SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_1), true);
-    SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_2), true);
-    SphereOfDoom_Setup(Object_GetObject(O_SPHERE_OF_DOOM_3), false);
+    SphereOfDoom_Setup(Object_Get(O_SPHERE_OF_DOOM_1), true);
+    SphereOfDoom_Setup(Object_Get(O_SPHERE_OF_DOOM_2), true);
+    SphereOfDoom_Setup(Object_Get(O_SPHERE_OF_DOOM_3), false);
 
     // effects
     Blood_Setup();
@@ -296,80 +296,80 @@ void Object_SetupGeneralObjects(void)
     Window_2_Setup();
 
     // doors
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_1));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_2));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_3));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_4));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_5));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_6));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_7));
-    Door_Setup(Object_GetObject(O_DOOR_TYPE_8));
-    Trapdoor_Setup(Object_GetObject(O_TRAPDOOR_TYPE_1));
-    Trapdoor_Setup(Object_GetObject(O_TRAPDOOR_TYPE_2));
+    Door_Setup(Object_Get(O_DOOR_TYPE_1));
+    Door_Setup(Object_Get(O_DOOR_TYPE_2));
+    Door_Setup(Object_Get(O_DOOR_TYPE_3));
+    Door_Setup(Object_Get(O_DOOR_TYPE_4));
+    Door_Setup(Object_Get(O_DOOR_TYPE_5));
+    Door_Setup(Object_Get(O_DOOR_TYPE_6));
+    Door_Setup(Object_Get(O_DOOR_TYPE_7));
+    Door_Setup(Object_Get(O_DOOR_TYPE_8));
+    Trapdoor_Setup(Object_Get(O_TRAPDOOR_TYPE_1));
+    Trapdoor_Setup(Object_Get(O_TRAPDOOR_TYPE_2));
 
     // keys and puzzles
-    Keyhole_Setup(Object_GetObject(O_KEY_HOLE_1));
-    Keyhole_Setup(Object_GetObject(O_KEY_HOLE_2));
-    Keyhole_Setup(Object_GetObject(O_KEY_HOLE_3));
-    Keyhole_Setup(Object_GetObject(O_KEY_HOLE_4));
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_DONE_1), true);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_DONE_2), true);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_DONE_3), true);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_DONE_4), true);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_HOLE_1), false);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_HOLE_2), false);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_HOLE_3), false);
-    PuzzleHole_Setup(Object_GetObject(O_PUZZLE_HOLE_4), false);
+    Keyhole_Setup(Object_Get(O_KEY_HOLE_1));
+    Keyhole_Setup(Object_Get(O_KEY_HOLE_2));
+    Keyhole_Setup(Object_Get(O_KEY_HOLE_3));
+    Keyhole_Setup(Object_Get(O_KEY_HOLE_4));
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_DONE_1), true);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_DONE_2), true);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_DONE_3), true);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_DONE_4), true);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_HOLE_1), false);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_HOLE_2), false);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_HOLE_3), false);
+    PuzzleHole_Setup(Object_Get(O_PUZZLE_HOLE_4), false);
 
     // switches
-    Switch_Setup(Object_GetObject(O_SWITCH_TYPE_AIRLOCK), false);
-    Switch_Setup(Object_GetObject(O_SWITCH_TYPE_BUTTON), false);
-    Switch_Setup(Object_GetObject(O_SWITCH_TYPE_NORMAL), false);
-    Switch_Setup(Object_GetObject(O_SWITCH_TYPE_SMALL), false);
-    Switch_Setup(Object_GetObject(O_SWITCH_TYPE_UW), true);
+    Switch_Setup(Object_Get(O_SWITCH_TYPE_AIRLOCK), false);
+    Switch_Setup(Object_Get(O_SWITCH_TYPE_BUTTON), false);
+    Switch_Setup(Object_Get(O_SWITCH_TYPE_NORMAL), false);
+    Switch_Setup(Object_Get(O_SWITCH_TYPE_SMALL), false);
+    Switch_Setup(Object_Get(O_SWITCH_TYPE_UW), true);
 
     // cutscene players
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_1));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_2));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_3));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_4));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_5));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_6));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_7));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_8));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_9));
-    CutscenePlayer_Setup(Object_GetObject(O_PLAYER_10));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_1));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_2));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_3));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_4));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_5));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_6));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_7));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_8));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_9));
+    CutscenePlayer_Setup(Object_Get(O_PLAYER_10));
 
     // pickups
-    Pickup_Setup(Object_GetObject(O_FLARES_ITEM));
-    Pickup_Setup(Object_GetObject(O_GRENADE_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_GRENADE_ITEM));
-    Pickup_Setup(Object_GetObject(O_HARPOON_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_HARPOON_ITEM));
-    Pickup_Setup(Object_GetObject(O_KEY_ITEM_1));
-    Pickup_Setup(Object_GetObject(O_KEY_ITEM_2));
-    Pickup_Setup(Object_GetObject(O_KEY_ITEM_3));
-    Pickup_Setup(Object_GetObject(O_KEY_ITEM_4));
-    Pickup_Setup(Object_GetObject(O_LARGE_MEDIPACK_ITEM));
-    Pickup_Setup(Object_GetObject(O_M16_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_M16_ITEM));
-    Pickup_Setup(Object_GetObject(O_MAGNUM_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_MAGNUM_ITEM));
-    Pickup_Setup(Object_GetObject(O_PICKUP_ITEM_1));
-    Pickup_Setup(Object_GetObject(O_PICKUP_ITEM_2));
-    Pickup_Setup(Object_GetObject(O_PISTOL_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_PISTOL_ITEM));
-    Pickup_Setup(Object_GetObject(O_PUZZLE_ITEM_1));
-    Pickup_Setup(Object_GetObject(O_PUZZLE_ITEM_2));
-    Pickup_Setup(Object_GetObject(O_PUZZLE_ITEM_3));
-    Pickup_Setup(Object_GetObject(O_PUZZLE_ITEM_4));
-    Pickup_Setup(Object_GetObject(O_SECRET_1));
-    Pickup_Setup(Object_GetObject(O_SECRET_3));
-    Pickup_Setup(Object_GetObject(O_SHOTGUN_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_SHOTGUN_ITEM));
-    Pickup_Setup(Object_GetObject(O_SMALL_MEDIPACK_ITEM));
-    Pickup_Setup(Object_GetObject(O_UZI_AMMO_ITEM));
-    Pickup_Setup(Object_GetObject(O_UZI_ITEM));
+    Pickup_Setup(Object_Get(O_FLARES_ITEM));
+    Pickup_Setup(Object_Get(O_GRENADE_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_GRENADE_ITEM));
+    Pickup_Setup(Object_Get(O_HARPOON_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_HARPOON_ITEM));
+    Pickup_Setup(Object_Get(O_KEY_ITEM_1));
+    Pickup_Setup(Object_Get(O_KEY_ITEM_2));
+    Pickup_Setup(Object_Get(O_KEY_ITEM_3));
+    Pickup_Setup(Object_Get(O_KEY_ITEM_4));
+    Pickup_Setup(Object_Get(O_LARGE_MEDIPACK_ITEM));
+    Pickup_Setup(Object_Get(O_M16_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_M16_ITEM));
+    Pickup_Setup(Object_Get(O_MAGNUM_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_MAGNUM_ITEM));
+    Pickup_Setup(Object_Get(O_PICKUP_ITEM_1));
+    Pickup_Setup(Object_Get(O_PICKUP_ITEM_2));
+    Pickup_Setup(Object_Get(O_PISTOL_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_PISTOL_ITEM));
+    Pickup_Setup(Object_Get(O_PUZZLE_ITEM_1));
+    Pickup_Setup(Object_Get(O_PUZZLE_ITEM_2));
+    Pickup_Setup(Object_Get(O_PUZZLE_ITEM_3));
+    Pickup_Setup(Object_Get(O_PUZZLE_ITEM_4));
+    Pickup_Setup(Object_Get(O_SECRET_1));
+    Pickup_Setup(Object_Get(O_SECRET_3));
+    Pickup_Setup(Object_Get(O_SHOTGUN_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_SHOTGUN_ITEM));
+    Pickup_Setup(Object_Get(O_SMALL_MEDIPACK_ITEM));
+    Pickup_Setup(Object_Get(O_UZI_AMMO_ITEM));
+    Pickup_Setup(Object_Get(O_UZI_ITEM));
 
     Secret2_Setup();
 }
@@ -377,7 +377,7 @@ void Object_SetupGeneralObjects(void)
 void Object_SetupAllObjects(void)
 {
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *const object = Object_GetObject(i);
+        OBJECT *const object = Object_Get(i);
         object->initialise = nullptr;
         object->control = nullptr;
         object->floor = nullptr;

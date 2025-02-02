@@ -18,7 +18,7 @@ typedef enum {
 
 void Lift_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_LIFT);
+    OBJECT *const obj = Object_Get(O_LIFT);
     obj->initialise = Lift_Initialise;
     obj->control = Lift_Control;
     obj->ceiling = Lift_Ceiling;

@@ -50,7 +50,7 @@ static const BITE m_SharkBite = {
 
 void Shark_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SHARK);
+    OBJECT *const obj = Object_Get(O_SHARK);
     if (!obj->loaded) {
         return;
     }

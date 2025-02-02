@@ -67,7 +67,7 @@ void SpikeWall_Control(const int16_t item_num)
 
 void SpikeWall_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SPIKE_WALL);
+    OBJECT *const obj = Object_Get(O_SPIKE_WALL);
     obj->control = SpikeWall_Control;
     obj->collision = Object_Collision;
     obj->save_position = 1;

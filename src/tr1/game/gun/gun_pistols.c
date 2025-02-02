@@ -105,7 +105,7 @@ void Gun_Pistols_Ready(const LARA_GUN_TYPE weapon_type)
     g_Lara.torso_rot.y = 0;
     g_Lara.target = nullptr;
 
-    const OBJECT *const object = Object_GetObject(O_PISTOL_ANIM);
+    const OBJECT *const object = Object_Get(O_PISTOL_ANIM);
     g_Lara.right_arm.frame_base = object->frame_base;
     g_Lara.left_arm.frame_base = object->frame_base;
 }

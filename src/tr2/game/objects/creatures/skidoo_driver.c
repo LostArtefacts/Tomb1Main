@@ -167,7 +167,7 @@ static int16_t M_ControlAlive(ITEM *const driver_item, ITEM *const skidoo_item)
 
 void SkidooDriver_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SKIDOO_DRIVER);
+    OBJECT *const obj = Object_Get(O_SKIDOO_DRIVER);
     if (!obj->loaded) {
         return;
     }
@@ -256,7 +256,7 @@ void SkidooDriver_Control(const int16_t driver_item_num)
             Item_NewRoom(driver_item_num, room_num);
         }
         const int16_t anim_num =
-            skidoo_item->anim_num - Object_GetObject(O_SKIDOO_ARMED)->anim_idx;
+            skidoo_item->anim_num - Object_Get(O_SKIDOO_ARMED)->anim_idx;
         const int16_t frame_num =
             skidoo_item->frame_num - Item_GetAnim(skidoo_item)->frame_base;
         Item_SwitchToAnim(driver_item, anim_num, frame_num);

@@ -55,7 +55,7 @@ static const BITE m_BirdGuardianBiteR = {
 
 void BirdGuardian_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BIRD_GUARDIAN);
+    OBJECT *const obj = Object_Get(O_BIRD_GUARDIAN);
     if (!obj->loaded) {
         return;
     }

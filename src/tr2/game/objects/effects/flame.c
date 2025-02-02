@@ -16,7 +16,7 @@ void Flame_Control(const int16_t effect_num)
     EFFECT *const effect = Effect_Get(effect_num);
 
     effect->frame_num--;
-    if (effect->frame_num <= Object_GetObject(O_FLAME)->mesh_count) {
+    if (effect->frame_num <= Object_Get(O_FLAME)->mesh_count) {
         effect->frame_num = 0;
     }
 
@@ -67,7 +67,7 @@ void Flame_Control(const int16_t effect_num)
 
 void Flame_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_FLAME);
+    OBJECT *const obj = Object_Get(O_FLAME);
     obj->control = Flame_Control;
     obj->semi_transparent = 1;
 }

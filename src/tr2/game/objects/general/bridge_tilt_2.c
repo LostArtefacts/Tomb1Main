@@ -4,7 +4,7 @@
 
 void BridgeTilt2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BRIDGE_TILT_2);
+    OBJECT *const obj = Object_Get(O_BRIDGE_TILT_2);
     obj->ceiling = BridgeTilt2_Ceiling;
     obj->floor = BridgeTilt2_Floor;
 }

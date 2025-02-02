@@ -383,7 +383,7 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
         Matrix_RotX(-85 * DEG_1);
         Matrix_RotZ(((2 * Random_GetDraw()) & 0x4000) + 0x2000);
         Output_CalculateStaticLight(2560);
-        Object_DrawMesh(Object_GetObject(O_M16_FLASH)->mesh_idx, clip, false);
+        Object_DrawMesh(Object_Get(O_M16_FLASH)->mesh_idx, clip, false);
         return;
 
     case LGT_FLARE:
@@ -391,7 +391,7 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
         Matrix_RotX(-DEG_90);
         Matrix_RotY(2 * Random_GetDraw());
         Output_CalculateStaticLight(2048);
-        Object_DrawMesh(Object_GetObject(O_FLARE_FIRE)->mesh_idx, clip, false);
+        Object_DrawMesh(Object_Get(O_FLARE_FIRE)->mesh_idx, clip, false);
         return;
 
     default:
@@ -405,6 +405,6 @@ void Gun_DrawFlash(const LARA_GUN_TYPE weapon_type, const int32_t clip)
     Matrix_RotX(-DEG_90);
     Matrix_RotZ(2 * Random_GetDraw());
     Output_CalculateStaticLight(shade);
-    Object_DrawMesh(Object_GetObject(O_GUN_FLASH)->mesh_idx, clip, false);
+    Object_DrawMesh(Object_Get(O_GUN_FLASH)->mesh_idx, clip, false);
     return;
 }

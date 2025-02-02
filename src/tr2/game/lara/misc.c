@@ -846,7 +846,7 @@ void Lara_GetJointAbsPosition(XYZ_32 *vec, int32_t joint)
     Matrix_Rot16(g_LaraItem->rot);
 
     const XYZ_16 *mesh_rots = frame_ptr->mesh_rots;
-    const OBJECT *const obj = Object_GetObject(g_LaraItem->object_id);
+    const OBJECT *const obj = Object_Get(g_LaraItem->object_id);
     const ANIM_BONE *bone = Object_GetBone(obj, 0);
 
     Matrix_TranslateRel16(frame_ptr->offset);
@@ -905,7 +905,7 @@ void Lara_GetJointAbsPosition_I(
     ITEM *item, XYZ_32 *vec, ANIM_FRAME *frame1, ANIM_FRAME *frame2,
     int32_t frac, int32_t rate)
 {
-    const OBJECT *obj = Object_GetObject(item->object_id);
+    const OBJECT *obj = Object_Get(item->object_id);
 
     Matrix_PushUnit();
     g_MatrixPtr->_03 = 0;
@@ -1014,7 +1014,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
             const int16_t next_item_num = item->next_item;
 
             if (item->collidable && item->status != IS_INVISIBLE) {
-                const OBJECT *const object = Object_GetObject(item->object_id);
+                const OBJECT *const object = Object_Get(item->object_id);
                 if (object->collision) {
                     // clang-format off
                     const XYZ_32 d = {
@@ -1774,7 +1774,7 @@ void Lara_TouchLava(ITEM *const item)
     item->hit_points = -1;
     item->hit_status = 1;
 
-    const OBJECT *const object = Object_GetObject(O_FLAME);
+    const OBJECT *const object = Object_Get(O_FLAME);
     for (int32_t i = 0; i < 10; i++) {
         const int16_t effect_num = Effect_Create(item->room_num);
         if (effect_num != NO_EFFECT) {

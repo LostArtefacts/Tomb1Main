@@ -43,7 +43,7 @@ static const BITE m_EelBite = {
 
 void Eel_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_EEL);
+    OBJECT *const obj = Object_Get(O_EEL);
     if (!obj->loaded) {
         return;
     }

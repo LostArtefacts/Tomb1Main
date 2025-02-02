@@ -679,7 +679,7 @@ bool Output_LoadBackgroundFromFile(const char *const file_name)
 
 void Output_LoadBackgroundFromObject(void)
 {
-    const OBJECT *const obj = Object_GetObject(O_INV_BACKGROUND);
+    const OBJECT *const obj = Object_Get(O_INV_BACKGROUND);
     if (!obj->loaded) {
         return;
     }

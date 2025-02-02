@@ -144,14 +144,13 @@ void Flare_DrawInAir(const ITEM *const item)
     const int32_t clip = Output_GetObjectBounds(&frames[0]->bounds);
     if (clip != 0) {
         Output_CalculateObjectLighting(item, &frames[0]->bounds);
-        Object_DrawMesh(Object_GetObject(O_FLARE_ITEM)->mesh_idx, clip, false);
+        Object_DrawMesh(Object_Get(O_FLARE_ITEM)->mesh_idx, clip, false);
         if (((int32_t)(intptr_t)item->data) & 0x8000) {
             Matrix_TranslateRel(-6, 6, 80);
             Matrix_RotX(-90 * DEG_1);
             Matrix_RotY((int16_t)(2 * Random_GetDraw()));
             Output_CalculateStaticLight(8 * 256);
-            Object_DrawMesh(
-                Object_GetObject(O_FLARE_FIRE)->mesh_idx, clip, false);
+            Object_DrawMesh(Object_Get(O_FLARE_FIRE)->mesh_idx, clip, false);
         }
     }
     Matrix_Pop();
@@ -234,7 +233,7 @@ void Flare_SetArm(const int32_t frame)
         anim_idx = LA_FLARES_IDLE;
     }
 
-    const OBJECT *const object = Object_GetObject(O_LARA_FLARE);
+    const OBJECT *const object = Object_Get(O_LARA_FLARE);
     const ANIM *const anim = Object_GetAnim(object, anim_idx);
     g_Lara.left_arm.anim_num = object->anim_idx + anim_idx;
     g_Lara.left_arm.frame_base = anim->frame_ptr;

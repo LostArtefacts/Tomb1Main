@@ -14,7 +14,7 @@ void DingDong_Control(const int16_t item_num)
 
 void DingDong_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DING_DONG);
+    OBJECT *const obj = Object_Get(O_DING_DONG);
     obj->control = DingDong_Control;
     obj->draw_routine = Object_DrawDummyItem;
 }

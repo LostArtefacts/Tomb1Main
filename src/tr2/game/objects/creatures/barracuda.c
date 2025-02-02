@@ -42,7 +42,7 @@ static const BITE m_BarracudaBite = {
 
 void Barracuda_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BARRACUDA);
+    OBJECT *const obj = Object_Get(O_BARRACUDA);
     if (!obj->loaded) {
         return;
     }

@@ -16,7 +16,7 @@ void FinalCutscene_Control(const int16_t item_num)
 
 void FinalCutscene_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CUT_SHOTGUN);
+    OBJECT *const obj = Object_Get(O_CUT_SHOTGUN);
     obj->control = FinalCutscene_Control;
     obj->save_flags = 1;
     obj->save_anim = 1;

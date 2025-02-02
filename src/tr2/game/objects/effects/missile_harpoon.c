@@ -5,7 +5,7 @@
 
 void MissileHarpoon_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_MISSILE_HARPOON);
+    OBJECT *const obj = Object_Get(O_MISSILE_HARPOON);
     obj->control = Missile_Control;
     obj->save_position = 1;
 }

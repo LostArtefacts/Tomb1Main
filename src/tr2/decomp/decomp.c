@@ -82,7 +82,7 @@ void Lara_Control_Cutscene(const int16_t item_num)
 
 void CutscenePlayer1_Initialise(const int16_t item_num)
 {
-    OBJECT *const obj = Object_GetObject(O_LARA);
+    OBJECT *const obj = Object_Get(O_LARA);
     obj->draw_routine = Lara_Draw;
     obj->control = Lara_Control_Cutscene;
 
@@ -196,7 +196,7 @@ void InitialiseGameFlags(void)
         g_MusicTrackFlags[i] = 0;
     }
     for (GAME_OBJECT_ID object_id = 0; object_id < O_NUMBER_OF; object_id++) {
-        Object_GetObject(object_id)->loaded = 0;
+        Object_Get(object_id)->loaded = 0;
     }
 
     g_FlipStatus = false;
@@ -226,7 +226,7 @@ void GetCarriedItems(void)
 {
     for (int32_t item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *const item = Item_Get(item_num);
-        if (!Object_GetObject(item->object_id)->intelligent) {
+        if (!Object_Get(item->object_id)->intelligent) {
             continue;
         }
         item->carried_item = NO_ITEM;

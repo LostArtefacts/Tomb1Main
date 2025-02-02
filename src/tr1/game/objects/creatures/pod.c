@@ -103,7 +103,7 @@ void Pod_Control(int16_t item_num)
 
             int16_t bug_item_num = *(int16_t *)item->data;
             ITEM *bug = &g_Items[bug_item_num];
-            if (Object_GetObject(bug->object_id)->loaded) {
+            if (Object_Get(bug->object_id)->loaded) {
                 bug->touch_bits = 0;
                 Item_AddActive(bug_item_num);
                 if (LOT_EnableBaddieAI(bug_item_num, 0)) {

@@ -49,7 +49,7 @@ static const BITE m_Cultist1Gun = {
 
 void Cultist1_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CULT_1);
+    OBJECT *const obj = Object_Get(O_CULT_1);
     if (!obj->loaded) {
         return;
     }
@@ -74,12 +74,12 @@ void Cultist1_Setup(void)
 
 void Cultist1A_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CULT_1A);
+    OBJECT *const obj = Object_Get(O_CULT_1A);
     if (!obj->loaded) {
         return;
     }
 
-    const OBJECT *const cult_1_obj = Object_GetObject(O_CULT_1);
+    const OBJECT *const cult_1_obj = Object_Get(O_CULT_1);
     ASSERT(cult_1_obj->loaded);
     obj->frame_base = cult_1_obj->frame_base;
     obj->anim_idx = cult_1_obj->anim_idx;
@@ -104,12 +104,12 @@ void Cultist1A_Setup(void)
 
 void Cultist1B_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_CULT_1B);
+    OBJECT *const obj = Object_Get(O_CULT_1B);
     if (!obj->loaded) {
         return;
     }
 
-    const OBJECT *const cult_1_obj = Object_GetObject(O_CULT_1);
+    const OBJECT *const cult_1_obj = Object_Get(O_CULT_1);
     ASSERT(cult_1_obj->loaded);
     obj->frame_base = cult_1_obj->frame_base;
     obj->anim_idx = cult_1_obj->anim_idx;

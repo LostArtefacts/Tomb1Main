@@ -45,7 +45,7 @@ void Waterfall_Control(const int16_t item_num)
 
 void Waterfall_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WATERFALL);
+    OBJECT *const obj = Object_Get(O_WATERFALL);
     obj->control = Waterfall_Control;
     obj->draw_routine = Object_DrawDummyItem;
 }

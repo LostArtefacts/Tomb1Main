@@ -77,7 +77,7 @@ void Boat_Initialise(const int16_t item_num)
 
 void Boat_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BOAT);
+    OBJECT *const obj = Object_Get(O_BOAT);
     obj->initialise = Boat_Initialise;
     obj->control = Boat_Control;
     obj->collision = Boat_Collision;
@@ -291,7 +291,7 @@ void Boat_DoWakeEffect(const ITEM *const boat)
     Output_CalculateLight(boat->pos, boat->room_num);
 
     const int16_t frame =
-        (Random_GetDraw() * Object_GetObject(O_WATER_SPRITE)->mesh_count) >> 15;
+        (Random_GetDraw() * Object_Get(O_WATER_SPRITE)->mesh_count) >> 15;
 
     for (int32_t i = 0; i < 3; i++) {
         const int16_t effect_num = Effect_Create(boat->room_num);
@@ -737,7 +737,7 @@ void Boat_Control(const int16_t item_num)
         if (lara->hit_points > 0) {
             // TODO: Item_GetRelativeAnim
             const int16_t lara_anim_num =
-                lara->anim_num - Object_GetObject(O_LARA_BOAT)->anim_idx;
+                lara->anim_num - Object_Get(O_LARA_BOAT)->anim_idx;
             const int16_t lara_frame_num =
                 lara->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
             Item_SwitchToAnim(boat, lara_anim_num, lara_frame_num);

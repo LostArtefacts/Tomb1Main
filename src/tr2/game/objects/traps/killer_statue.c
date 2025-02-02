@@ -33,7 +33,7 @@ typedef enum {
 void KillerStatue_Initialise(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
-    const OBJECT *const obj = Object_GetObject(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     Item_SwitchToAnim(item, KILLER_STATUE_ANIM_SET, 0);
     item->current_anim_state = KILLER_STATUE_STATE_STOP;
 }
@@ -68,7 +68,7 @@ void KillerStatue_Control(const int16_t item_num)
 
 void KillerStatue_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_KILLER_STATUE);
+    OBJECT *const obj = Object_Get(O_KILLER_STATUE);
     obj->initialise = KillerStatue_Initialise;
     obj->control = KillerStatue_Control;
     obj->collision = Object_Collision_Trap;

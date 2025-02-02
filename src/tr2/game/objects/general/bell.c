@@ -12,7 +12,7 @@ typedef enum {
 
 void Bell_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BELL);
+    OBJECT *const obj = Object_Get(O_BELL);
     obj->control = Bell_Control;
     obj->collision = Object_Collision;
     obj->save_flags = 1;

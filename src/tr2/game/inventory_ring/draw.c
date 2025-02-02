@@ -42,7 +42,7 @@ static void M_DrawItem(
     Matrix_TranslateRel(0, inv_item->y_trans, inv_item->z_trans);
     Matrix_RotY(inv_item->y_rot);
     Matrix_RotX(inv_item->x_rot);
-    const OBJECT *const obj = Object_GetObject(inv_item->object_id);
+    const OBJECT *const obj = Object_Get(inv_item->object_id);
     if ((obj->flags & 1) == 0) {
         return;
     }
@@ -71,8 +71,7 @@ static void M_DrawItem(
                     Output_DrawScreenSprite(
                         sx + sprite->pos.x, sy + sprite->pos.y, sprite->pos.z,
                         sprite->param1, sprite->param2,
-                        Object_GetObject(O_ALPHABET)->mesh_idx
-                            + sprite->sprite_num,
+                        Object_Get(O_ALPHABET)->mesh_idx + sprite->sprite_num,
                         4096, 0);
                     break;
 

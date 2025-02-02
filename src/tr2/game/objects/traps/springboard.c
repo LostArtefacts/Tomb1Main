@@ -47,7 +47,7 @@ void Springboard_Control(const int16_t item_num)
 
 void Springboard_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_SPRINGBOARD);
+    OBJECT *const obj = Object_Get(O_SPRINGBOARD);
     obj->control = Springboard_Control;
     obj->save_flags = 1;
     obj->save_anim = 1;

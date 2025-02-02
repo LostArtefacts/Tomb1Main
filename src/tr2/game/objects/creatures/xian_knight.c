@@ -77,12 +77,12 @@ void XianKnight_SparkleTrail(const ITEM *const item)
 
 void XianKnight_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_XIAN_KNIGHT);
+    OBJECT *const obj = Object_Get(O_XIAN_KNIGHT);
     if (!obj->loaded) {
         return;
     }
 
-    ASSERT(Object_GetObject(O_XIAN_KNIGHT_STATUE)->loaded);
+    ASSERT(Object_Get(O_XIAN_KNIGHT_STATUE)->loaded);
 
     obj->initialise = M_Initialise;
     obj->draw_routine = XianWarrior_Draw;

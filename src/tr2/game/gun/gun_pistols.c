@@ -37,7 +37,7 @@ void Gun_Pistols_SetArmInfo(LARA_ARM *const arm, const int32_t frame)
         return;
     }
 
-    const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
+    const OBJECT *const object = Object_Get(O_LARA_PISTOLS);
     const ANIM *const anim = Object_GetAnim(object, anim_idx);
     arm->anim_num = object->anim_idx + anim_idx;
     arm->frame_num = frame;
@@ -130,7 +130,7 @@ void Gun_Pistols_Ready(const LARA_GUN_TYPE weapon_type)
     g_Lara.gun_status = LGS_READY;
     g_Lara.target = nullptr;
 
-    const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
+    const OBJECT *const object = Object_Get(O_LARA_PISTOLS);
     g_Lara.left_arm.frame_base = object->frame_base;
     g_Lara.left_arm.frame_num = LF_G_AIM_START;
     g_Lara.left_arm.lock = 0;

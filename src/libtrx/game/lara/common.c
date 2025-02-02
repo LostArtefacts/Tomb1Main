@@ -111,7 +111,7 @@ void Lara_Animate(ITEM *const item)
 
 void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID object_id)
 {
-    const OBJECT *const object = Object_GetObject(object_id);
+    const OBJECT *const object = Object_Get(object_id);
     Lara_SetMesh(mesh, Object_GetMesh(object->mesh_idx + mesh));
 }
 
@@ -142,7 +142,7 @@ const ANIM_FRAME *Lara_GetHitFrame(const ITEM *const item)
     }
     // clang-format on
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const ANIM *const anim = Object_GetAnim(object, anim_idx);
     return &anim->frame_ptr[lara->hit_frame];
 }

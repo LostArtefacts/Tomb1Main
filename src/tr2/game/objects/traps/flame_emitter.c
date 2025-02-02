@@ -32,7 +32,7 @@ void FlameEmitter_Control(const int16_t item_num)
 
 void FlameEmitter_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_FLAME_EMITTER);
+    OBJECT *const obj = Object_Get(O_FLAME_EMITTER);
     obj->control = FlameEmitter_Control;
     obj->draw_routine = Object_DrawDummyItem;
     obj->save_flags = 1;

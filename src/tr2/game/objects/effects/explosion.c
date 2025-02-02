@@ -10,7 +10,7 @@
 void Explosion_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
     effect->counter++;
     if (effect->counter == 2) {
         effect->frame_num--;
@@ -28,7 +28,7 @@ void Explosion_Control(const int16_t effect_num)
 
 void Explosion_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_EXPLOSION);
+    OBJECT *const obj = Object_Get(O_EXPLOSION);
     obj->control = Explosion_Control;
     obj->semi_transparent = 1;
 }

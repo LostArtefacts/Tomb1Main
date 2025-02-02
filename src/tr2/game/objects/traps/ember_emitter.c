@@ -26,7 +26,7 @@ void EmberEmitter_Control(const int16_t item_num)
 
 void EmberEmitter_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_EMBER_EMITTER);
+    OBJECT *const obj = Object_Get(O_EMBER_EMITTER);
     obj->control = EmberEmitter_Control;
     obj->collision = Object_Collision;
     obj->draw_routine = Object_DrawDummyItem;

@@ -69,7 +69,7 @@ static void M_ShootAtLara(
 
 void Worker2_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WORKER_2);
+    OBJECT *const obj = Object_Get(O_WORKER_2);
     if (!obj->loaded) {
         return;
     }
@@ -94,7 +94,7 @@ void Worker2_Setup(void)
 
 void Worker5_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_WORKER_5);
+    OBJECT *const obj = Object_Get(O_WORKER_5);
     if (!obj->loaded) {
         return;
     }

@@ -49,8 +49,7 @@ static void M_FixEmbeddedPosition(int16_t item_num)
     // one to properly measure them. Save it so it can be restored
     // after.
     // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    int16_t old_anim =
-        item->anim_num - Object_GetObject(item->object_id)->anim_idx;
+    int16_t old_anim = item->anim_num - Object_Get(item->object_id)->anim_idx;
     int16_t old_frame = item->frame_num - Item_GetAnim(item)->frame_base;
 
     Item_SwitchToAnim(item, 0, 0);

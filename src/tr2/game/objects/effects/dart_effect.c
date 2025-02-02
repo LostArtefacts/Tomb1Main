@@ -7,7 +7,7 @@
 void DartEffect_Control(int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const obj = Object_GetObject(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
 
     effect->counter++;
     if (effect->counter >= 3) {
@@ -21,7 +21,7 @@ void DartEffect_Control(int16_t effect_num)
 
 void DartEffect_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_DART_EFFECT);
+    OBJECT *const obj = Object_Get(O_DART_EFFECT);
     obj->control = DartEffect_Control;
     obj->draw_routine = Object_DrawSpriteItem;
     obj->semi_transparent = 1;

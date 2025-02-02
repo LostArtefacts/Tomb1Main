@@ -21,7 +21,7 @@ void Flame_Control(int16_t effect_num)
     EFFECT *effect = Effect_Get(effect_num);
 
     effect->frame_num--;
-    if (effect->frame_num <= Object_GetObject(O_FLAME)->mesh_count) {
+    if (effect->frame_num <= Object_Get(O_FLAME)->mesh_count) {
         effect->frame_num = 0;
     }
 

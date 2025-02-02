@@ -47,7 +47,7 @@ static int32_t M_GetAnimFrameCount(
 static OBJECT *M_GetAnimObject(const int32_t anim_idx)
 {
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *const object = Object_GetObject(i);
+        OBJECT *const object = Object_Get(i);
         if (object->loaded && object->mesh_count >= 0
             && object->anim_idx == anim_idx) {
             return object;
@@ -199,7 +199,7 @@ void Anim_LoadFrames(const int16_t *data, const int32_t data_length)
     // Some OG data contains objects that point to the previous object's frames,
     // so ensure everything that's loaded is configured as such.
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *const object = Object_GetObject(i);
+        OBJECT *const object = Object_Get(i);
         if (object->loaded && object->mesh_count >= 0 && object->anim_idx == -1
             && object->frame_base == nullptr) {
             object->frame_base = M_FindFrameBase(object->frame_ofs);

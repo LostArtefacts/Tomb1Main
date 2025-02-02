@@ -23,7 +23,7 @@ int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id)
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *item = &g_Items[item_num];
         if (item->object_id == receptacle_to_check) {
-            const OBJECT *const obj = Object_GetObject(item->object_id);
+            const OBJECT *const obj = Object_Get(item->object_id);
             if (obj->is_usable != nullptr && !obj->is_usable(item_num)) {
                 continue;
             }
@@ -74,7 +74,7 @@ void Object_DrawSpriteItem(ITEM *item)
     Output_DrawSprite(
         item->interp.result.pos.x, item->interp.result.pos.y,
         item->interp.result.pos.z,
-        Object_GetObject(item->object_id)->mesh_idx - item->frame_num,
+        Object_Get(item->object_id)->mesh_idx - item->frame_num,
         item->shade.value_1);
 }
 
@@ -92,7 +92,7 @@ void Object_DrawPickupItem(ITEM *item)
     // Modify item to be the anim for inv item and animation 0.
     Item_SwitchToObjAnim(item, 0, 0, item_num_option);
 
-    const OBJECT *const object = Object_GetObject(item_num_option);
+    const OBJECT *const object = Object_Get(item_num_option);
     const ANIM_FRAME *frame = Item_GetAnim(item)->frame_ptr;
 
     // Restore the old frame number in case we need to get the sprite again.
@@ -123,7 +123,7 @@ void Object_DrawPickupItem(ITEM *item)
         // No, now we need to move it a bit.
         // First get the sprite that was to be used,
 
-        const OBJECT *const object = Object_GetObject(item->object_id);
+        const OBJECT *const object = Object_Get(item->object_id);
         const int16_t spr_num = object->mesh_idx - item->frame_num;
         const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(spr_num);
 
@@ -327,7 +327,7 @@ void Object_DrawAnimatingItem(ITEM *item)
     ANIM_FRAME *frmptr[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
 
     if (object->shadow_size) {
         Output_DrawShadow(object->shadow_size, &frmptr[0]->bounds, item);
@@ -369,7 +369,7 @@ void Object_DrawUnclippedItem(ITEM *item)
 void Object_SetMeshReflective(
     const GAME_OBJECT_ID object_id, const int32_t mesh_idx, const bool enabled)
 {
-    const OBJECT *const object = Object_GetObject(object_id);
+    const OBJECT *const object = Object_Get(object_id);
     if (!object->loaded) {
         return;
     }
@@ -396,7 +396,7 @@ void Object_SetMeshReflective(
 
 void Object_SetReflective(const GAME_OBJECT_ID object_id, const bool enabled)
 {
-    const OBJECT *const object = Object_GetObject(object_id);
+    const OBJECT *const object = Object_Get(object_id);
     for (int32_t i = 0; i < object->mesh_count; i++) {
         Object_SetMeshReflective(object_id, i, enabled);
     }

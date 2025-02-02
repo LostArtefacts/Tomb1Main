@@ -19,7 +19,7 @@ static void M_CreateHotLiquid(const ITEM *bowl_item);
 static void M_CreateHotLiquid(const ITEM *const bowl_item)
 {
     const int16_t effect_num = Effect_Create(bowl_item->room_num);
-    const OBJECT *const obj = Object_GetObject(O_HOT_LIQUID);
+    const OBJECT *const obj = Object_Get(O_HOT_LIQUID);
     if (effect_num != NO_EFFECT) {
         EFFECT *const effect = Effect_Get(effect_num);
         effect->object_id = O_HOT_LIQUID;
@@ -57,7 +57,7 @@ void BigBowl_Control(const int16_t item_num)
 
 void BigBowl_Setup(void)
 {
-    OBJECT *const obj = Object_GetObject(O_BIG_BOWL);
+    OBJECT *const obj = Object_Get(O_BIG_BOWL);
     obj->control = BigBowl_Control;
     obj->save_flags = 1;
     obj->save_anim = 1;

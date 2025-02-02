@@ -253,7 +253,7 @@ static void M_DrawSkybox(void)
     g_MatrixPtr->_13 = 0;
     g_MatrixPtr->_23 = 0;
 
-    const OBJECT *const skybox = Object_GetObject(O_SKYBOX);
+    const OBJECT *const skybox = Object_Get(O_SKYBOX);
     Matrix_Rot16(skybox->frame_base->mesh_rots[0]);
     Output_DrawSkybox(Object_GetMesh(skybox->mesh_idx));
 
@@ -288,7 +288,7 @@ void Room_DrawSingleRoom(int16_t room_num)
     for (int i = r->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
         ITEM *item = &g_Items[i];
         if (item->status != IS_INVISIBLE) {
-            Object_GetObject(item->object_id)->draw_routine(item);
+            Object_Get(item->object_id)->draw_routine(item);
         }
     }
 

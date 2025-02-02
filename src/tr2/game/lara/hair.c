@@ -44,7 +44,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
     m_HairSpheres[0].r = mesh->radius;
     Matrix_Pop();
 
-    const ANIM_BONE *bone = Object_GetBone(Object_GetObject(O_LARA), 0);
+    const ANIM_BONE *bone = Object_GetBone(Object_Get(O_LARA), 0);
     Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
@@ -124,7 +124,7 @@ static void M_CalculateSpheres_I(
     m_HairSpheres[0].r = mesh->radius;
     Matrix_Pop_I();
 
-    const ANIM_BONE *bone = Object_GetBone(Object_GetObject(O_LARA), 0);
+    const ANIM_BONE *bone = Object_GetBone(Object_Get(O_LARA), 0);
     Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
@@ -194,7 +194,7 @@ static void M_CalculateSpheres_I(
 
 void Lara_Hair_Initialise(void)
 {
-    const OBJECT *const object = Object_GetObject(O_LARA_HAIR);
+    const OBJECT *const object = Object_Get(O_LARA_HAIR);
     m_IsFirstHair = true;
     m_HairSegments[0].rot.x = -DEG_90;
     m_HairSegments[0].rot.y = 0;
@@ -246,7 +246,7 @@ void Lara_Hair_Control(const bool in_cutscene)
     };
     Matrix_Pop();
 
-    const OBJECT *const object = Object_GetObject(O_LARA_HAIR);
+    const OBJECT *const object = Object_Get(O_LARA_HAIR);
 
     HAIR_SEGMENT *const fs = &m_HairSegments[0];
     fs->pos.x = pos.x;
@@ -394,7 +394,7 @@ void Lara_Hair_Control(const bool in_cutscene)
 
 void Lara_Hair_Draw(void)
 {
-    const OBJECT *const object = Object_GetObject(O_LARA_HAIR);
+    const OBJECT *const object = Object_Get(O_LARA_HAIR);
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
         const HAIR_SEGMENT *const s = &m_HairSegments[i];
         Matrix_Push();

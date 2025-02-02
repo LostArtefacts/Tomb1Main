@@ -207,7 +207,7 @@ static void M_DrawAssaultTimer(void)
             glyph_info[glyph_type].offset, SCALER_TARGET_ASSAULT_DIGITS);
         Output_DrawScreenSprite2D(
             x, y, 0, scale_h, scale_v,
-            Object_GetObject(O_ASSAULT_DIGITS)->mesh_idx + mesh_num, 0x1000, 0);
+            Object_Get(O_ASSAULT_DIGITS)->mesh_idx + mesh_num, 0x1000, 0);
         x += Scaler_Calc(
             glyph_info[glyph_type].width, SCALER_TARGET_ASSAULT_DIGITS);
     }
@@ -554,9 +554,9 @@ void Overlay_AddDisplayPickup(const GAME_OBJECT_ID object_id)
     for (int32_t i = 0; i < MAX_PICKUPS; i++) {
         DISPLAY_PICKUP *const pickup = &m_Pickups[i];
         if (pickup->phase == DPP_DEAD) {
-            pickup->object = Object_GetObject(object_id);
+            pickup->object = Object_Get(object_id);
             pickup->inv_object = inv_object_id != NO_OBJECT
-                ? Object_GetObject(inv_object_id)
+                ? Object_Get(inv_object_id)
                 : nullptr;
             pickup->duration = 0;
             pickup->grid_x = grid_x;

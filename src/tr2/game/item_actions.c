@@ -247,7 +247,7 @@ void M_LaraDrawLeftGun(ITEM *const item)
 
 void M_SwapMeshesWithMeshSwap1(ITEM *const item)
 {
-    const OBJECT *const obj_1 = Object_GetObject(item->object_id);
+    const OBJECT *const obj_1 = Object_Get(item->object_id);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
         Object_SwapMesh(item->object_id, O_MESH_SWAP_1, mesh_idx);
     }
@@ -255,7 +255,7 @@ void M_SwapMeshesWithMeshSwap1(ITEM *const item)
 
 void M_SwapMeshesWithMeshSwap2(ITEM *const item)
 {
-    const OBJECT *const obj_1 = Object_GetObject(item->object_id);
+    const OBJECT *const obj_1 = Object_Get(item->object_id);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
         Object_SwapMesh(item->object_id, O_MESH_SWAP_2, mesh_idx);
     }
@@ -263,7 +263,7 @@ void M_SwapMeshesWithMeshSwap2(ITEM *const item)
 
 void M_SwapMeshesWithMeshSwap3(ITEM *const item)
 {
-    const OBJECT *const obj_1 = Object_GetObject(item->object_id);
+    const OBJECT *const obj_1 = Object_Get(item->object_id);
     for (int32_t mesh_idx = 0; mesh_idx < obj_1->mesh_count; mesh_idx++) {
         Object_SwapMesh(item->object_id, O_LARA_SWAP, mesh_idx);
         if (item == g_LaraItem) {

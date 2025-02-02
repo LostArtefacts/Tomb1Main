@@ -364,10 +364,10 @@ static void M_LoadBoxes(VFILE *const file)
     for (int32_t i = 0; i < 2; i++) {
         for (int32_t j = 0; j < 4; j++) {
             const bool skip = j == 2
-                || (j == 1 && !Object_GetObject(O_SPIDER)->loaded
-                    && !Object_GetObject(O_SKIDOO_ARMED)->loaded)
-                || (j == 3 && !Object_GetObject(O_YETI)->loaded
-                    && !Object_GetObject(O_WORKER_3)->loaded);
+                || (j == 1 && !Object_Get(O_SPIDER)->loaded
+                    && !Object_Get(O_SKIDOO_ARMED)->loaded)
+                || (j == 3 && !Object_Get(O_YETI)->loaded
+                    && !Object_Get(O_WORKER_3)->loaded);
 
             if (skip) {
                 VFile_Skip(file, sizeof(int16_t) * g_BoxCount);
@@ -592,7 +592,7 @@ bool Level_Load(const GF_LEVEL *const level)
     BENCHMARK *const benchmark = Benchmark_Start();
 
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        Object_GetObject(i)->loaded = false;
+        Object_Get(i)->loaded = false;
     }
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
         Object_GetStaticObject2D(i)->loaded = false;
@@ -651,7 +651,7 @@ bool Level_Initialise(const GF_LEVEL *const level)
     g_HealthBarTimer = 100;
     Sound_StopAll();
 
-    if (Object_GetObject(O_FINAL_LEVEL_COUNTER)->loaded) {
+    if (Object_Get(O_FINAL_LEVEL_COUNTER)->loaded) {
         InitialiseFinalLevel();
     }
 

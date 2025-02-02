@@ -512,7 +512,7 @@ int32_t Collide_GetSpheres(
     Matrix_TranslateRel16(frame->offset);
     Matrix_Rot16(frame->mesh_rots[0]);
 
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const OBJECT_MESH *mesh = Object_GetMesh(object->mesh_idx);
     Matrix_Push();
     Matrix_TranslateRel16(mesh->center);
@@ -565,7 +565,7 @@ int32_t Collide_GetSpheres(
 void Collide_GetJointAbsPosition(
     const ITEM *const item, XYZ_32 *const out_vec, const int32_t joint)
 {
-    const OBJECT *const object = Object_GetObject(item->object_id);
+    const OBJECT *const object = Object_Get(item->object_id);
     const ANIM_FRAME *const frame = Item_GetBestFrame(item);
 
     Matrix_PushUnit();
