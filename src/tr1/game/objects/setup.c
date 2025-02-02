@@ -88,23 +88,36 @@
 #include <libtrx/config.h>
 
 // TODO: refactor similar to TR2
+static void M_SetupLara(void);
+static void M_SetupLaraExtra(void);
 static void M_SetupCreatures(void);
 static void M_SetupTraps(void);
 static void M_SetupMiscObjects(void);
 static void M_DisableObject(GAME_OBJECT_ID object_id);
 
+static void M_SetupLara(void)
+{
+    OBJECT *const object = Object_GetObject(O_LARA);
+    object->initialise = Lara_InitialiseLoad;
+    object->draw_routine = Object_DrawDummyItem;
+    object->hit_points = g_Config.gameplay.start_lara_hitpoints;
+    object->shadow_size = (UNIT_SHADOW * 10) / 16;
+    object->save_position = 1;
+    object->save_hitpoints = 1;
+    object->save_anim = 1;
+    object->save_flags = 1;
+}
+
+static void M_SetupLaraExtra(void)
+{
+    OBJECT *const object = Object_GetObject(O_LARA_EXTRA);
+    object->control = Lara_ControlExtra;
+}
+
 static void M_SetupCreatures(void)
 {
-    g_Objects[O_LARA].initialise = Lara_InitialiseLoad;
-    g_Objects[O_LARA].draw_routine = Object_DrawDummyItem;
-    g_Objects[O_LARA].hit_points = g_Config.gameplay.start_lara_hitpoints;
-    g_Objects[O_LARA].shadow_size = (UNIT_SHADOW * 10) / 16;
-    g_Objects[O_LARA].save_position = 1;
-    g_Objects[O_LARA].save_hitpoints = 1;
-    g_Objects[O_LARA].save_anim = 1;
-    g_Objects[O_LARA].save_flags = 1;
-
-    g_Objects[O_LARA_EXTRA].control = Lara_ControlExtra;
+    M_SetupLara();
+    M_SetupLaraExtra();
 
     BaconLara_Setup(&g_Objects[O_BACON_LARA]);
     Wolf_Setup(&g_Objects[O_WOLF]);
