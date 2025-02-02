@@ -102,6 +102,7 @@ sources = [
   'game/console/cmd/load_game.c',
   'game/console/cmd/play_cutscene.c',
   'game/console/cmd/play_demo.c',
+  'game/console/cmd/play_gym.c',
   'game/console/cmd/play_level.c',
   'game/console/cmd/pos.c',
   'game/console/cmd/save_game.c',

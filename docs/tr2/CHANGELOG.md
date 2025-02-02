@@ -8,7 +8,8 @@
 - added the ability to disable exit fade effects alone (#2348)
 - added a fade-out effect when completing Lara's Home
 - added support for animated sprites (#2401)
-- added a `/cut` console command for playing cutscenes
+- added a `/cut` (alias: `/cutscene`) console command for playing cutscenes
+- added a `/gym` (alias: `/home`) console command for playing Lara's Home
 - added a console log when using the `/demo` command
 - changed the object texture limit from 2048 to unlimited (within game's overall memory cap) (#1795)
 - changed the sprite texture limit from 512 to unlimited (within game's overall memory cap) (#1795)

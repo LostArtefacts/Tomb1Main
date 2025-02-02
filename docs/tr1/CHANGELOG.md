@@ -10,7 +10,8 @@
 - added a fade-out effect when exiting the pause screen to the inventory
 - added exit fade-out effects (#2348)
 - added optional dynamic lighting for gun flashes and explosions, similar to TR2+ (#2357)
-- added a `/cut` console command for playing cutscenes
+- added a `/cut` (alias: `/cutscene`) console command for playing cutscenes
+- added a `/gym` (alias: `/home`) console command for playing Lara's Home
 - added a console log when using the `/demo` command
 - ⚠️ changed the game data to use a separate strings file for text information, removing it from the game flow file
 - changed the object texture limit from 2048 to unlimited (within game's overall memory cap)

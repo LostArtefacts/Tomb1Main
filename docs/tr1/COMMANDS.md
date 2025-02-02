@@ -63,6 +63,10 @@ Currently supported commands:
   `/cutscene {num}`  
   Plays the specified cutscene.
 
+- `/gym`  
+  `/home`  
+  Plays Lara's Home, if available. Alias of `/play 0`.
+
 - `/load {slot_num}`  
   Loads the specified savegame slot.
 
