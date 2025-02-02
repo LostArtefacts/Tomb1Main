@@ -805,7 +805,8 @@ void Room_RemoveFlipItems(const ROOM *const r)
             break;
         }
 
-        if (item->flags & IF_ONE_SHOT && g_Objects[item->object_id].intelligent
+        if (item->flags & IF_ONE_SHOT
+            && Object_GetObject(item->object_id)->intelligent
             && item->hit_points <= 0) {
             Item_RemoveDrawn(item_num);
             item->flags |= IF_KILLED;

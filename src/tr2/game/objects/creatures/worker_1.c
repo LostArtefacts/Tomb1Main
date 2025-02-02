@@ -46,7 +46,7 @@ static const BITE m_Worker1Gun = {
 
 void Worker1_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_WORKER_1];
+    OBJECT *const obj = Object_GetObject(O_WORKER_1);
     if (!obj->loaded) {
         return;
     }

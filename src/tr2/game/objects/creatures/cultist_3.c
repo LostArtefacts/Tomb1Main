@@ -52,7 +52,7 @@ static const BITE m_Cultist3RightGun = {
 
 void Cultist3_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_CULT_3];
+    OBJECT *const obj = Object_GetObject(O_CULT_3);
     if (!obj->loaded) {
         return;
     }

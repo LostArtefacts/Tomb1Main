@@ -207,7 +207,7 @@ static void M_DrawAssaultTimer(void)
             glyph_info[glyph_type].offset, SCALER_TARGET_ASSAULT_DIGITS);
         Output_DrawScreenSprite2D(
             x, y, 0, scale_h, scale_v,
-            g_Objects[O_ASSAULT_DIGITS].mesh_idx + mesh_num, 0x1000, 0);
+            Object_GetObject(O_ASSAULT_DIGITS)->mesh_idx + mesh_num, 0x1000, 0);
         x += Scaler_Calc(
             glyph_info[glyph_type].width, SCALER_TARGET_ASSAULT_DIGITS);
     }

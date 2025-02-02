@@ -124,7 +124,7 @@ static void M_SetupLaraExtra(void);
 
 static void M_SetupLara(void)
 {
-    OBJECT *const obj = &g_Objects[O_LARA];
+    OBJECT *const obj = Object_GetObject(O_LARA);
     obj->initialise = Lara_InitialiseLoad;
 
     obj->shadow_size = (UNIT_SHADOW / 16) * 10;
@@ -139,7 +139,7 @@ static void M_SetupLara(void)
 
 static void M_SetupLaraExtra(void)
 {
-    OBJECT *const obj = &g_Objects[O_LARA_EXTRA];
+    OBJECT *const obj = Object_GetObject(O_LARA_EXTRA);
     obj->control = Lara_ControlExtra;
 }
 

@@ -49,7 +49,7 @@ static const BITE m_TigerBite = {
 
 void Tiger_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_TIGER];
+    OBJECT *const obj = Object_GetObject(O_TIGER);
     if (!obj->loaded) {
         return;
     }

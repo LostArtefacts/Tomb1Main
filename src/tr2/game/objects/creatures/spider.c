@@ -46,7 +46,7 @@ static const BITE m_SpiderBite = {
 
 void Spider_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_SPIDER];
+    OBJECT *const obj = Object_GetObject(O_SPIDER);
     if (!obj->loaded) {
         return;
     }

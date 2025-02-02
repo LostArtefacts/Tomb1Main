@@ -125,12 +125,12 @@ static void M_PullDagger(ITEM *const lara_item, ITEM *const dragon_back_item)
 
 void Dragon_SetupFront(void)
 {
-    OBJECT *const obj = &g_Objects[O_DRAGON_FRONT];
+    OBJECT *const obj = Object_GetObject(O_DRAGON_FRONT);
     if (!obj->loaded) {
         return;
     }
 
-    ASSERT(g_Objects[O_DRAGON_BACK].loaded);
+    ASSERT(Object_GetObject(O_DRAGON_BACK)->loaded);
     obj->control = Dragon_Control;
     obj->collision = Dragon_Collision;
 
@@ -149,7 +149,7 @@ void Dragon_SetupFront(void)
 
 void Dragon_SetupBack(void)
 {
-    OBJECT *const obj = &g_Objects[O_DRAGON_BACK];
+    OBJECT *const obj = Object_GetObject(O_DRAGON_BACK);
     if (!obj->loaded) {
         return;
     }
@@ -261,6 +261,7 @@ void Dragon_Control(const int16_t item_num)
     int16_t angle = 0;
     int16_t head = 0;
     CREATURE *const creature = dragon_front_item->data;
+    const OBJECT *const front_object = Object_GetObject(O_DRAGON_FRONT);
 
     if (dragon_front_item->hit_points <= 0) {
         if (dragon_front_item->current_anim_state != DRAGON_STATE_DEATH) {
@@ -275,8 +276,7 @@ void Dragon_Control(const int16_t item_num)
                 dragon_front_item->goal_anim_state = DRAGON_STATE_STOP;
             }
             if (creature->flags > DRAGON_LIVE_TIME + DRAGON_ALMOST_LIVE) {
-                dragon_front_item->hit_points =
-                    g_Objects[O_DRAGON_FRONT].hit_points / 2;
+                dragon_front_item->hit_points = front_object->hit_points / 2;
             }
         } else {
             if (creature->flags > -20) {
@@ -444,8 +444,9 @@ void Dragon_Control(const int16_t item_num)
     Creature_Animate(dragon_front_item_num, angle, 0);
     dragon_back_item->current_anim_state =
         dragon_front_item->current_anim_state;
+    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
     const int16_t anim_num =
-        dragon_front_item->anim_num - g_Objects[O_DRAGON_FRONT].anim_idx;
+        dragon_front_item->anim_num - front_object->anim_idx;
     const int16_t frame_num = dragon_front_item->frame_num
         - Item_GetAnim(dragon_front_item)->frame_base;
     Item_SwitchToAnim(dragon_back_item, anim_num, frame_num);

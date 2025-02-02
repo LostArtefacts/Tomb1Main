@@ -116,7 +116,7 @@ void Creature_AIInfo(ITEM *const item, AI_INFO *const info)
         info->enemy_zone_num |= BOX_BLOCKED;
     }
 
-    const OBJECT *const object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
     const int32_t z = enemy->pos.z
         - ((object->pivot_length * Math_Cos(item->rot.y)) >> W2V_SHIFT)
         - item->pos.z;
@@ -307,7 +307,7 @@ int32_t Creature_CheckBaddieOverlap(const int16_t item_num)
     const int32_t x = item->pos.x;
     const int32_t y = item->pos.y;
     const int32_t z = item->pos.z;
-    const int32_t radius = SQUARE(g_Objects[item->object_id].radius);
+    const int32_t radius = SQUARE(Object_GetObject(item->object_id)->radius);
 
     int16_t link = g_Rooms[item->room_num].item_num;
     while (link != NO_ITEM && link != item_num) {
@@ -357,7 +357,8 @@ void Creature_Die(const int16_t item_num, const bool explode)
         Item_RemoveActive(item_num);
     }
 
-    if (g_Objects[item->object_id].intelligent) {
+    const OBJECT *const object = Object_GetObject(item->object_id);
+    if (object->intelligent) {
         LOT_DisableBaddieAI(item_num);
     }
     item->flags |= IF_ONE_SHOT;
@@ -367,7 +368,7 @@ void Creature_Die(const int16_t item_num, const bool explode)
         g_PrevItemActive = item_num;
     }
 
-    if (g_Objects[item->object_id].intelligent) {
+    if (object->intelligent) {
         int16_t pickup_num = item->carried_item;
         while (pickup_num != NO_ITEM) {
             ITEM *const pickup = &g_Items[pickup_num];
@@ -383,7 +384,7 @@ int32_t Creature_Animate(
 {
     ITEM *const item = &g_Items[item_num];
     const CREATURE *const creature = item->data;
-    const OBJECT *const object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
     if (creature == nullptr) {
         return false;
     }

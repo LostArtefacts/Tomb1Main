@@ -123,6 +123,8 @@ void Item_Kill(const int16_t item_num)
 void Item_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
+    const OBJECT *const object = Object_GetObject(item->object_id);
+
     Item_SwitchToAnim(item, 0, 0);
     item->goal_anim_state = Item_GetAnim(item)->current_anim_state;
     item->current_anim_state = item->goal_anim_state;
@@ -131,7 +133,7 @@ void Item_Initialise(const int16_t item_num)
     item->rot.z = 0;
     item->speed = 0;
     item->fall_speed = 0;
-    item->hit_points = g_Objects[item->object_id].hit_points;
+    item->hit_points = object->hit_points;
     item->timer = 0;
     item->mesh_bits = 0xFFFFFFFF;
     item->touch_bits = 0;
@@ -148,7 +150,7 @@ void Item_Initialise(const int16_t item_num)
     if ((item->flags & IF_INVISIBLE) != 0) {
         item->status = IS_INVISIBLE;
         item->flags &= ~IF_INVISIBLE;
-    } else if (g_Objects[item->object_id].intelligent) {
+    } else if (object->intelligent) {
         item->status = IS_INVISIBLE;
     }
 
@@ -177,8 +179,8 @@ void Item_Initialise(const int16_t item_num)
         item->hit_points *= 2;
     }
 
-    if (g_Objects[item->object_id].initialise != nullptr) {
-        g_Objects[item->object_id].initialise(item_num);
+    if (object->initialise != nullptr) {
+        object->initialise(item_num);
     }
 }
 
@@ -231,7 +233,7 @@ void Item_RemoveDrawn(const int16_t item_num)
 void Item_AddActive(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    if (g_Objects[item->object_id].control == nullptr) {
+    if (Object_GetObject(item->object_id)->control == nullptr) {
         item->status = IS_INACTIVE;
         return;
     }
@@ -572,7 +574,7 @@ int32_t Item_Explode(
     const int16_t item_num, const int32_t mesh_bits, const int16_t damage)
 {
     ITEM *const item = &g_Items[item_num];
-    const OBJECT *const object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
 
     Output_CalculateLight(item->pos, item->room_num);
 

@@ -250,34 +250,39 @@ void Gun_InitialiseNewWeapon(void)
     switch (g_Lara.gun_type) {
     case LGT_PISTOLS:
     case LGT_MAGNUMS:
-    case LGT_UZIS:
-        g_Lara.left_arm.frame_base = g_Objects[O_LARA_PISTOLS].frame_base;
-        g_Lara.right_arm.frame_base = g_Objects[O_LARA_PISTOLS].frame_base;
+    case LGT_UZIS: {
+        const OBJECT *const object = Object_GetObject(O_LARA_PISTOLS);
+        g_Lara.left_arm.frame_base = object->frame_base;
+        g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {
             Gun_Pistols_DrawMeshes(g_Lara.gun_type);
         }
         break;
+    }
 
     case LGT_SHOTGUN:
     case LGT_M16:
     case LGT_GRENADE:
-    case LGT_HARPOON:
-        g_Lara.left_arm.frame_base =
-            g_Objects[Gun_GetWeaponAnim(g_Lara.gun_type)].frame_base;
-        g_Lara.right_arm.frame_base =
-            g_Objects[Gun_GetWeaponAnim(g_Lara.gun_type)].frame_base;
+    case LGT_HARPOON: {
+        const OBJECT *const object =
+            Object_GetObject(Gun_GetWeaponAnim(g_Lara.gun_type));
+        g_Lara.left_arm.frame_base = object->frame_base;
+        g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {
             Gun_Rifle_DrawMeshes(g_Lara.gun_type);
         }
         break;
+    }
 
-    case LGT_FLARE:
-        g_Lara.left_arm.frame_base = g_Objects[O_LARA_FLARE].frame_base;
-        g_Lara.right_arm.frame_base = g_Objects[O_LARA_FLARE].frame_base;
+    case LGT_FLARE: {
+        const OBJECT *const object = Object_GetObject(O_LARA_FLARE);
+        g_Lara.left_arm.frame_base = object->frame_base;
+        g_Lara.right_arm.frame_base = object->frame_base;
         if (g_Lara.gun_status != LGS_ARMLESS) {
             Flare_DrawMeshes();
         }
         break;
+    }
 
     default:
         const ANIM *const anim = Item_GetAnim(g_LaraItem);

@@ -231,7 +231,7 @@ void Pickup_Draw(const ITEM *const item)
         return;
     }
 
-    if (!g_Objects[item->object_id].loaded) {
+    if (!Object_GetObject(item->object_id)->loaded) {
         Object_DrawSpriteItem(item);
         return;
     }

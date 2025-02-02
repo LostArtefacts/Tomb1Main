@@ -125,13 +125,12 @@ void Lara_Draw(const ITEM *const item)
 
     if (g_Lara.back_gun) {
         Matrix_Push();
-        const ANIM_BONE *const bone_c =
-            Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
+        const OBJECT *const back_object = Object_GetObject(g_Lara.back_gun);
+        const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
         Matrix_TranslateRel32(bone_c[13].pos);
-        mesh_rots_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
+        mesh_rots_c = back_object->frame_base->mesh_rots;
         Matrix_Rot16(mesh_rots_c[LM_HEAD]);
-        Object_DrawMesh(
-            g_Objects[g_Lara.back_gun].mesh_idx + LM_HEAD, clip, false);
+        Object_DrawMesh(back_object->mesh_idx + LM_HEAD, clip, false);
         Matrix_Pop();
     }
 
@@ -290,7 +289,7 @@ void Lara_Draw_I(
     const ITEM *const item, const ANIM_FRAME *const frame1,
     const ANIM_FRAME *const frame2, const int32_t frac, const int32_t rate)
 {
-    const OBJECT *const object = &g_Objects[item->object_id];
+    const OBJECT *const object = Object_GetObject(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     if (g_Lara.skidoo == NO_ITEM) {
@@ -366,14 +365,13 @@ void Lara_Draw_I(
 
     if (g_Lara.back_gun) {
         Matrix_Push_I();
-        const ANIM_BONE *const bone_c =
-            Object_GetBone(&g_Objects[g_Lara.back_gun], 0);
+        const OBJECT *const back_object = Object_GetObject(g_Lara.back_gun);
+        const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
         Matrix_TranslateRel32_I(bone_c[13].pos);
-        mesh_rots_1_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
-        mesh_rots_2_c = g_Objects[g_Lara.back_gun].frame_base->mesh_rots;
+        mesh_rots_1_c = back_object->frame_base->mesh_rots;
+        mesh_rots_2_c = back_object->frame_base->mesh_rots;
         Matrix_Rot16_ID(mesh_rots_1_c[LM_HEAD], mesh_rots_2_c[LM_HEAD]);
-        Object_DrawMesh(
-            g_Objects[g_Lara.back_gun].mesh_idx + LM_HEAD, clip, true);
+        Object_DrawMesh(back_object->mesh_idx + LM_HEAD, clip, true);
         Matrix_Pop_I();
     }
 
@@ -414,7 +412,8 @@ void Lara_Draw_I(
             Matrix_RotX_I(-90 * DEG_1);
             Matrix_RotY_I(2 * Random_GetDraw());
             Output_CalculateStaticLight(2048);
-            Object_DrawMesh(g_Objects[O_FLARE_FIRE].mesh_idx, clip, true);
+            Object_DrawMesh(
+                Object_GetObject(O_FLARE_FIRE)->mesh_idx, clip, true);
         }
         Matrix_Pop();
         break;

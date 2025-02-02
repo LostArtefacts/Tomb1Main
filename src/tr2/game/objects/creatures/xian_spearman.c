@@ -94,12 +94,12 @@ static void M_Initialise(const int16_t item_num)
 
 void XianSpearman_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_XIAN_SPEARMAN];
+    OBJECT *const obj = Object_GetObject(O_XIAN_SPEARMAN);
     if (!obj->loaded) {
         return;
     }
 
-    ASSERT(g_Objects[O_XIAN_SPEARMAN_STATUE].loaded);
+    ASSERT(Object_GetObject(O_XIAN_SPEARMAN_STATUE)->loaded);
     obj->initialise = M_Initialise;
     obj->draw_routine = XianWarrior_Draw;
     obj->control = XianSpearman_Control;

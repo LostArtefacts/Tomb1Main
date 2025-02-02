@@ -78,7 +78,7 @@ int32_t Diver_GetWaterSurface(
 
 void Diver_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_DIVER];
+    OBJECT *const obj = Object_GetObject(O_DIVER);
     if (!obj->loaded) {
         return;
     }

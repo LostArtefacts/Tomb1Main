@@ -913,8 +913,9 @@ int32_t Skidoo_Control(void)
     if (dead) {
         Item_SwitchToObjAnim(skidoo, LA_SKIDOO_DEAD, 0, O_SKIDOO_FAST);
     } else {
+        // TODO: Item_GetRelativeAnim
         const int16_t lara_anim_num =
-            g_LaraItem->anim_num - g_Objects[O_LARA_SKIDOO].anim_idx;
+            g_LaraItem->anim_num - Object_GetObject(O_LARA_SKIDOO)->anim_idx;
         const int16_t lara_frame_num =
             g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
         Item_SwitchToObjAnim(
@@ -939,9 +940,9 @@ void Skidoo_Draw(const ITEM *const item)
         track_mesh_status = skidoo_data->track_mesh;
     }
 
-    OBJECT *obj = &g_Objects[item->object_id];
+    const OBJECT *obj = Object_GetObject(item->object_id);
     if ((track_mesh_status & SKIDOO_GUN_MESH) != 0) {
-        obj = &g_Objects[O_SKIDOO_ARMED];
+        obj = Object_GetObject(O_SKIDOO_ARMED);
     }
 
     const OBJECT *const track_obj = Object_GetObject(O_SKIDOO_TRACK);

@@ -389,10 +389,10 @@ static void M_LoadBoxes(VFILE *const file)
     for (int32_t i = 0; i < 2; i++) {
         for (int32_t j = 0; j < 4; j++) {
             const bool skip = j == 2
-                || (j == 1 && !g_Objects[O_SPIDER].loaded
-                    && !g_Objects[O_SKIDOO_ARMED].loaded)
-                || (j == 3 && !g_Objects[O_YETI].loaded
-                    && !g_Objects[O_WORKER_3].loaded);
+                || (j == 1 && !Object_GetObject(O_SPIDER)->loaded
+                    && !Object_GetObject(O_SKIDOO_ARMED)->loaded)
+                || (j == 3 && !Object_GetObject(O_YETI)->loaded
+                    && !Object_GetObject(O_WORKER_3)->loaded);
 
             if (skip) {
                 VFile_Skip(file, sizeof(int16_t) * g_BoxCount);
@@ -675,7 +675,7 @@ bool Level_Initialise(const GF_LEVEL *const level)
     g_HealthBarTimer = 100;
     Sound_StopAll();
 
-    if (g_Objects[O_FINAL_LEVEL_COUNTER].loaded) {
+    if (Object_GetObject(O_FINAL_LEVEL_COUNTER)->loaded) {
         InitialiseFinalLevel();
     }
 

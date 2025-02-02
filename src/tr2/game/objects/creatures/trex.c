@@ -44,7 +44,7 @@ typedef enum {
 
 void TRex_Setup(void)
 {
-    OBJECT *const obj = &g_Objects[O_DINO];
+    OBJECT *const obj = Object_GetObject(O_DINO);
     if (!obj->loaded) {
         return;
     }

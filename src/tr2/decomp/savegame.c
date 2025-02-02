@@ -161,7 +161,7 @@ static void M_ReadItems(void)
 {
     for (int32_t item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *const item = Item_Get(item_num);
-        OBJECT *const obj = &g_Objects[item->object_id];
+        const OBJECT *const obj = Object_GetObject(item->object_id);
 
         if (Object_IsObjectType(item->object_id, g_MovableBlockObjects)) {
             Room_AlterFloorHeight(item, WALL_L);

@@ -144,13 +144,14 @@ void Flare_DrawInAir(const ITEM *const item)
     const int32_t clip = Output_GetObjectBounds(&frames[0]->bounds);
     if (clip != 0) {
         Output_CalculateObjectLighting(item, &frames[0]->bounds);
-        Object_DrawMesh(g_Objects[O_FLARE_ITEM].mesh_idx, clip, false);
+        Object_DrawMesh(Object_GetObject(O_FLARE_ITEM)->mesh_idx, clip, false);
         if (((int32_t)(intptr_t)item->data) & 0x8000) {
             Matrix_TranslateRel(-6, 6, 80);
             Matrix_RotX(-90 * DEG_1);
             Matrix_RotY((int16_t)(2 * Random_GetDraw()));
             Output_CalculateStaticLight(8 * 256);
-            Object_DrawMesh(g_Objects[O_FLARE_FIRE].mesh_idx, clip, false);
+            Object_DrawMesh(
+                Object_GetObject(O_FLARE_FIRE)->mesh_idx, clip, false);
         }
     }
     Matrix_Pop();
