@@ -31,7 +31,7 @@ void S_Output_DownloadBackdropSurface(const IMAGE *image);
 void S_Output_DrawBackdropSurface(void);
 
 void S_Output_DrawFlatTriangle(
-    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, RGB_888 color);
+    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, RGBA_8888 color);
 void S_Output_DrawEnvMapTriangle(
     const PHD_VBUF *vn1, const PHD_VBUF *vn2, const PHD_VBUF *vn3,
     const TEXTURE_UV *uv1, const TEXTURE_UV *uv2, const TEXTURE_UV *uv3);

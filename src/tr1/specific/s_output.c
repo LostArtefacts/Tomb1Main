@@ -873,7 +873,7 @@ void S_Output_Shutdown(void)
 }
 
 void S_Output_DrawFlatTriangle(
-    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, RGB_888 color)
+    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, RGBA_8888 color)
 {
     int vertex_count = 3;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
@@ -896,6 +896,7 @@ void S_Output_DrawFlatTriangle(
         vertices[i].r = color.r * light;
         vertices[i].g = color.g * light;
         vertices[i].b = color.b * light;
+        vertices[i].a = color.a;
 
         Output_ApplyTint(&vertices[i].r, &vertices[i].g, &vertices[i].b);
     }
@@ -932,6 +933,7 @@ void S_Output_DrawFlatTriangle(
             vertices[i].r *= color.r / 255.0f;
             vertices[i].g *= color.g / 255.0f;
             vertices[i].b *= color.b / 255.0f;
+            vertices[i].a = color.a;
         }
 
         vertex_count = M_ClipVertices(

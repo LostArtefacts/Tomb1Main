@@ -82,6 +82,8 @@ static void M_DrawTexturedFace4s(const FACE4 *faces, int32_t count);
 static void M_DrawObjectFace3EnvMap(const FACE3 *faces, int32_t count);
 static void M_DrawObjectFace4EnvMap(const FACE4 *faces, int32_t count);
 static void M_DrawRoomSprites(const ROOM_MESH *mesh);
+static uint16_t M_CalcVertex(PHD_VBUF *vbuf, const XYZ_16 pos);
+static void M_CalcVertexWibble(PHD_VBUF *vbuf);
 static bool M_CalcObjectVertices(const XYZ_16 *vertices, int16_t count);
 static void M_CalcVerticeLight(const OBJECT_MESH *mesh);
 static bool M_CalcVerticeEnvMap(const OBJECT_MESH *mesh);
@@ -102,7 +104,8 @@ static void M_DrawFlatFace3s(const FACE3 *const faces, const int32_t count)
             &m_VBuf[face->vertices[2]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor8(face->palette_idx);
+        const RGBA_8888 color =
+            Output_RGB2RGBA(Output_GetPaletteColor8(face->palette_idx));
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
     }
 }
@@ -120,7 +123,8 @@ static void M_DrawFlatFace4s(const FACE4 *const faces, const int32_t count)
             &m_VBuf[face->vertices[3]],
         };
 
-        const RGB_888 color = Output_GetPaletteColor8(face->palette_idx);
+        const RGBA_8888 color =
+            Output_RGB2RGBA(Output_GetPaletteColor8(face->palette_idx));
         S_Output_DrawFlatTriangle(vns[0], vns[1], vns[2], color);
         S_Output_DrawFlatTriangle(vns[2], vns[3], vns[0], color);
     }
@@ -236,62 +240,90 @@ static void M_DrawRoomSprites(const ROOM_MESH *const mesh)
     }
 }
 
+static uint16_t M_CalcVertex(PHD_VBUF *const vbuf, const XYZ_16 pos)
+{
+    // clang-format off
+    double xv =
+        g_MatrixPtr->_00 * pos.x +
+        g_MatrixPtr->_01 * pos.y +
+        g_MatrixPtr->_02 * pos.z +
+        g_MatrixPtr->_03;
+    double yv =
+        g_MatrixPtr->_10 * pos.x +
+        g_MatrixPtr->_11 * pos.y +
+        g_MatrixPtr->_12 * pos.z +
+        g_MatrixPtr->_13;
+    double zv =
+        g_MatrixPtr->_20 * pos.x +
+        g_MatrixPtr->_21 * pos.y +
+        g_MatrixPtr->_22 * pos.z +
+        g_MatrixPtr->_23;
+    // clang-format on
+
+    vbuf->xv = xv;
+    vbuf->yv = yv;
+    vbuf->zv = zv;
+
+    uint16_t clip_flags;
+    if (zv < Output_GetNearZ()) {
+        clip_flags = 0x8000;
+    } else {
+        clip_flags = 0;
+
+        double persp = g_PhdPersp / zv;
+        double xs = Viewport_GetCenterX() + xv * persp;
+        double ys = Viewport_GetCenterY() + yv * persp;
+
+        if (xs < g_PhdLeft) {
+            clip_flags |= 1;
+        } else if (xs > g_PhdRight) {
+            clip_flags |= 2;
+        }
+
+        if (ys < g_PhdTop) {
+            clip_flags |= 4;
+        } else if (ys > g_PhdBottom) {
+            clip_flags |= 8;
+        }
+
+        vbuf->xs = xs;
+        vbuf->ys = ys;
+    }
+    vbuf->clip = clip_flags;
+    return clip_flags;
+}
+
+static void M_CalcVertexWibble(PHD_VBUF *const vbuf)
+{
+    double xs = vbuf->xs;
+    double ys = vbuf->ys;
+    xs += m_WibbleTable[(m_WibbleOffset + (int)ys) & (WIBBLE_SIZE - 1)];
+    ys += m_WibbleTable[(m_WibbleOffset + (int)xs) & (WIBBLE_SIZE - 1)];
+
+    int16_t clip_flags = vbuf->clip & ~15;
+    if (xs < g_PhdLeft) {
+        clip_flags |= 1;
+    } else if (xs > g_PhdRight) {
+        clip_flags |= 2;
+    }
+
+    if (ys < g_PhdTop) {
+        clip_flags |= 4;
+    } else if (ys > g_PhdBottom) {
+        clip_flags |= 8;
+    }
+
+    vbuf->xs = xs;
+    vbuf->ys = ys;
+    vbuf->clip = clip_flags;
+}
+
 static bool M_CalcObjectVertices(
     const XYZ_16 *const vertices, const int16_t count)
 {
     uint16_t total_clip = 0xFFFF;
     for (int i = 0; i < count; i++) {
-        const XYZ_16 *const vertex = &vertices[i];
-        // clang-format off
-        double xv =
-            g_MatrixPtr->_00 * vertex->x +
-            g_MatrixPtr->_01 * vertex->y +
-            g_MatrixPtr->_02 * vertex->z +
-            g_MatrixPtr->_03;
-        double yv =
-            g_MatrixPtr->_10 * vertex->x +
-            g_MatrixPtr->_11 * vertex->y +
-            g_MatrixPtr->_12 * vertex->z +
-            g_MatrixPtr->_13;
-        double zv =
-            g_MatrixPtr->_20 * vertex->x +
-            g_MatrixPtr->_21 * vertex->y +
-            g_MatrixPtr->_22 * vertex->z +
-            g_MatrixPtr->_23;
-        // clang-format on
-
-        m_VBuf[i].xv = xv;
-        m_VBuf[i].yv = yv;
-        m_VBuf[i].zv = zv;
-
-        uint16_t clip_flags;
-        if (zv < Output_GetNearZ()) {
-            clip_flags = 0x8000;
-        } else {
-            clip_flags = 0;
-
-            double persp = g_PhdPersp / zv;
-            double xs = Viewport_GetCenterX() + xv * persp;
-            double ys = Viewport_GetCenterY() + yv * persp;
-
-            if (xs < g_PhdLeft) {
-                clip_flags |= 1;
-            } else if (xs > g_PhdRight) {
-                clip_flags |= 2;
-            }
-
-            if (ys < g_PhdTop) {
-                clip_flags |= 4;
-            } else if (ys > g_PhdBottom) {
-                clip_flags |= 8;
-            }
-
-            m_VBuf[i].xs = xs;
-            m_VBuf[i].ys = ys;
-        }
-
-        m_VBuf[i].clip = clip_flags;
-        total_clip &= clip_flags;
+        total_clip &= M_CalcVertex(&m_VBuf[i], vertices[i]);
     }
 
     return total_clip == 0;
@@ -406,78 +438,30 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
         PHD_VBUF *const vbuf = &m_VBuf[i];
         const ROOM_VERTEX *const vertex = &mesh->vertices[i];
 
-        // clang-format off
-        const double xv = (
-            g_MatrixPtr->_00 * vertex->pos.x +
-            g_MatrixPtr->_01 * vertex->pos.y +
-            g_MatrixPtr->_02 * vertex->pos.z +
-            g_MatrixPtr->_03
-        );
-        const double yv = (
-            g_MatrixPtr->_10 * vertex->pos.x +
-            g_MatrixPtr->_11 * vertex->pos.y +
-            g_MatrixPtr->_12 * vertex->pos.z +
-            g_MatrixPtr->_13
-        );
-        const int32_t zv_int = (
-            g_MatrixPtr->_20 * vertex->pos.x +
-            g_MatrixPtr->_21 * vertex->pos.y +
-            g_MatrixPtr->_22 * vertex->pos.z +
-            g_MatrixPtr->_23
-        );
-        const double zv = zv_int;
-        // clang-format on
+        M_CalcVertex(vbuf, vertex->pos);
 
-        vbuf->xv = xv;
-        vbuf->yv = yv;
-        vbuf->zv = zv;
         vbuf->g = vertex->light_adder;
-
-        if (zv < Output_GetNearZ()) {
-            vbuf->clip = (int16_t)0x8000;
-        } else {
-            int16_t clip_flags = 0;
-            const int32_t depth = zv_int >> W2V_SHIFT;
+        if (vbuf->zv >= Output_GetNearZ()) {
+            const int32_t depth = ((int32_t)vbuf->zv) >> W2V_SHIFT;
             if (depth > Output_GetDrawDistMax()) {
                 vbuf->g = MAX_LIGHTING;
                 if (!m_IsSkyboxEnabled) {
-                    clip_flags |= 16;
+                    vbuf->clip |= 16;
                 }
-            } else if (depth) {
+            } else {
                 vbuf->g += Output_CalcFogShade(depth);
                 if (!m_IsWaterEffect) {
                     CLAMPG(vbuf->g, MAX_LIGHTING);
                 }
             }
+        }
 
-            const double persp = g_PhdPersp / (double)zv;
-            const double xs = Viewport_GetCenterX() + xv * persp;
-            const double ys = Viewport_GetCenterY() + yv * persp;
-
-            if (xs < g_PhdLeft) {
-                clip_flags |= 1;
-            } else if (xs > g_PhdRight) {
-                clip_flags |= 2;
-            }
-
-            if (ys < g_PhdTop) {
-                clip_flags |= 4;
-            } else if (ys > g_PhdBottom) {
-                clip_flags |= 8;
-            }
-
-            if (m_IsWaterEffect) {
-                vbuf->g += m_ShadeTable[(
-                    ((uint8_t)m_WibbleOffset
-                     + (uint8_t)
-                         m_RandTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
-                    % WIBBLE_SIZE)];
-                CLAMP(vbuf->g, 0, 0x1FFF);
-            }
-
-            vbuf->xs = xs;
-            vbuf->ys = ys;
-            vbuf->clip = clip_flags;
+        if (m_IsWaterEffect) {
+            vbuf->g += m_ShadeTable[(
+                ((uint8_t)m_WibbleOffset
+                 + (uint8_t)m_RandTable[(mesh->num_vertices - i) % WIBBLE_SIZE])
+                % WIBBLE_SIZE)];
+            CLAMP(vbuf->g, 0, 0x1FFF);
         }
     }
 }
@@ -485,33 +469,10 @@ static void M_CalcRoomVertices(const ROOM_MESH *const mesh)
 static void M_CalcRoomVerticesWibble(const ROOM_MESH *const mesh)
 {
     for (int32_t i = 0; i < mesh->num_vertices; i++) {
-        const ROOM_VERTEX *const vertex = &mesh->vertices[i];
-        if (vertex->flags & NO_VERT_MOVE) {
+        if (mesh->vertices[i].flags & NO_VERT_MOVE) {
             continue;
         }
-
-        PHD_VBUF *const vbuf = &m_VBuf[i];
-        double xs = vbuf->xs;
-        double ys = vbuf->ys;
-        xs += m_WibbleTable[(m_WibbleOffset + (int)ys) & (WIBBLE_SIZE - 1)];
-        ys += m_WibbleTable[(m_WibbleOffset + (int)xs) & (WIBBLE_SIZE - 1)];
-
-        int16_t clip_flags = vbuf->clip & ~15;
-        if (xs < g_PhdLeft) {
-            clip_flags |= 1;
-        } else if (xs > g_PhdRight) {
-            clip_flags |= 2;
-        }
-
-        if (ys < g_PhdTop) {
-            clip_flags |= 4;
-        } else if (ys > g_PhdBottom) {
-            clip_flags |= 8;
-        }
-
-        vbuf->xs = xs;
-        vbuf->ys = ys;
-        vbuf->clip = clip_flags;
+        M_CalcVertexWibble(&m_VBuf[i]);
     }
 }
 
