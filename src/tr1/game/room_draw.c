@@ -294,19 +294,19 @@ void Room_DrawSingleRoom(int16_t room_num)
 
     for (int i = 0; i < r->num_static_meshes; i++) {
         const STATIC_MESH *const mesh = &r->static_meshes[i];
-        const STATIC_OBJECT_3D *const info =
+        const STATIC_OBJECT_3D *const obj =
             Object_Get3DStatic(mesh->static_num);
-        if (!info->visible) {
+        if (!obj->visible) {
             continue;
         }
 
         Matrix_Push();
         Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
-        int32_t clip = Output_GetObjectBounds(&info->draw_bounds);
+        int32_t clip = Output_GetObjectBounds(&obj->draw_bounds);
         if (clip != 0) {
             Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, r);
-            Object_DrawMesh(info->mesh_idx, clip, false);
+            Object_DrawMesh(obj->mesh_idx, clip, false);
         }
         Matrix_Pop();
     }

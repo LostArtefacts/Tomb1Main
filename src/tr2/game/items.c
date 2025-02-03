@@ -73,9 +73,9 @@ void Item_Control(void)
     while (item_num != NO_ITEM) {
         const ITEM *const item = Item_Get(item_num);
         const int16_t next = item->next_active;
-        const OBJECT *object = Object_Get(item->object_id);
-        if (!(item->flags & IF_KILLED) && object->control != nullptr) {
-            object->control(item_num);
+        const OBJECT *obj = Object_Get(item->object_id);
+        if (!(item->flags & IF_KILLED) && obj->control != nullptr) {
+            obj->control(item_num);
         }
         item_num = next;
     }
@@ -123,7 +123,7 @@ void Item_Kill(const int16_t item_num)
 void Item_Initialise(const int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     Item_SwitchToAnim(item, 0, 0);
     item->goal_anim_state = Item_GetAnim(item)->current_anim_state;
@@ -133,7 +133,7 @@ void Item_Initialise(const int16_t item_num)
     item->rot.z = 0;
     item->speed = 0;
     item->fall_speed = 0;
-    item->hit_points = object->hit_points;
+    item->hit_points = obj->hit_points;
     item->timer = 0;
     item->mesh_bits = 0xFFFFFFFF;
     item->touch_bits = 0;
@@ -150,7 +150,7 @@ void Item_Initialise(const int16_t item_num)
     if ((item->flags & IF_INVISIBLE) != 0) {
         item->status = IS_INVISIBLE;
         item->flags &= ~IF_INVISIBLE;
-    } else if (object->intelligent) {
+    } else if (obj->intelligent) {
         item->status = IS_INVISIBLE;
     }
 
@@ -179,8 +179,8 @@ void Item_Initialise(const int16_t item_num)
         item->hit_points *= 2;
     }
 
-    if (object->initialise != nullptr) {
-        object->initialise(item_num);
+    if (obj->initialise != nullptr) {
+        obj->initialise(item_num);
     }
 }
 
@@ -574,7 +574,7 @@ int32_t Item_Explode(
     const int16_t item_num, const int32_t mesh_bits, const int16_t damage)
 {
     ITEM *const item = &g_Items[item_num];
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     Output_CalculateLight(item->pos, item->room_num);
 
@@ -605,7 +605,7 @@ int32_t Item_Explode(
             effect->fall_speed = -Random_GetControl() >> 8;
             effect->counter = damage;
             effect->object_id = O_BODY_PART;
-            effect->frame_num = object->mesh_idx;
+            effect->frame_num = obj->mesh_idx;
             effect->shade = g_LsAdder - 0x300;
         }
         item->mesh_bits &= ~bit;
@@ -613,8 +613,8 @@ int32_t Item_Explode(
 
     // additional meshes
     const int16_t *extra_rotation = (int16_t *)item->data;
-    for (int32_t i = 1; i < object->mesh_count; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+    for (int32_t i = 1; i < obj->mesh_count; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }
@@ -651,7 +651,7 @@ int32_t Item_Explode(
                 effect->fall_speed = -Random_GetControl() >> 8;
                 effect->counter = damage;
                 effect->object_id = O_BODY_PART;
-                effect->frame_num = object->mesh_idx + i;
+                effect->frame_num = obj->mesh_idx + i;
                 effect->shade = g_LsAdder - 0x300;
             }
             item->mesh_bits &= ~bit;
@@ -660,5 +660,5 @@ int32_t Item_Explode(
 
     Matrix_Pop();
 
-    return !(item->mesh_bits & (INT32_MAX >> (31 - object->mesh_count)));
+    return !(item->mesh_bits & (INT32_MAX >> (31 - obj->mesh_count)));
 }

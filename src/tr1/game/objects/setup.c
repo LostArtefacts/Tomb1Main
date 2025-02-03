@@ -97,21 +97,21 @@ static void M_DisableObject(GAME_OBJECT_ID object_id);
 
 static void M_SetupLara(void)
 {
-    OBJECT *const object = Object_Get(O_LARA);
-    object->initialise = Lara_InitialiseLoad;
-    object->draw_routine = Object_DrawDummyItem;
-    object->hit_points = g_Config.gameplay.start_lara_hitpoints;
-    object->shadow_size = (UNIT_SHADOW * 10) / 16;
-    object->save_position = 1;
-    object->save_hitpoints = 1;
-    object->save_anim = 1;
-    object->save_flags = 1;
+    OBJECT *const obj = Object_Get(O_LARA);
+    obj->initialise = Lara_InitialiseLoad;
+    obj->draw_routine = Object_DrawDummyItem;
+    obj->hit_points = g_Config.gameplay.start_lara_hitpoints;
+    obj->shadow_size = (UNIT_SHADOW * 10) / 16;
+    obj->save_position = 1;
+    obj->save_hitpoints = 1;
+    obj->save_anim = 1;
+    obj->save_flags = 1;
 }
 
 static void M_SetupLaraExtra(void)
 {
-    OBJECT *const object = Object_Get(O_LARA_EXTRA);
-    object->control = Lara_ControlExtra;
+    OBJECT *const obj = Object_Get(O_LARA_EXTRA);
+    obj->control = Lara_ControlExtra;
 }
 
 static void M_SetupCreatures(void)
@@ -273,13 +273,13 @@ static void M_SetupMiscObjects(void)
 
 static void M_DisableObject(const GAME_OBJECT_ID object_id)
 {
-    OBJECT *const object = Object_Get(object_id);
-    object->initialise = nullptr;
-    object->collision = nullptr;
-    object->control = nullptr;
-    object->draw_routine = Object_DrawDummyItem;
-    object->floor_height_func = nullptr;
-    object->ceiling_height_func = nullptr;
+    OBJECT *const obj = Object_Get(object_id);
+    obj->initialise = nullptr;
+    obj->collision = nullptr;
+    obj->control = nullptr;
+    obj->draw_routine = Object_DrawDummyItem;
+    obj->floor_height_func = nullptr;
+    obj->ceiling_height_func = nullptr;
 }
 
 void Object_SetupAllObjects(void)

@@ -208,17 +208,17 @@ void Output_CycleAnimatedTextures(void)
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        const STATIC_OBJECT_2D *const object = Object_Get2DStatic(i);
-        if (!object->loaded || object->frame_count == 1) {
+        const STATIC_OBJECT_2D *const obj = Object_Get2DStatic(i);
+        if (!obj->loaded || obj->frame_count == 1) {
             continue;
         }
 
-        const int16_t frame_count = object->frame_count;
-        const SPRITE_TEXTURE temp = m_SpriteTextures[object->texture_idx];
+        const int16_t frame_count = obj->frame_count;
+        const SPRITE_TEXTURE temp = m_SpriteTextures[obj->texture_idx];
         for (int32_t j = 0; j < frame_count - 1; j++) {
-            m_SpriteTextures[object->texture_idx + j] =
-                m_SpriteTextures[object->texture_idx + j + 1];
+            m_SpriteTextures[obj->texture_idx + j] =
+                m_SpriteTextures[obj->texture_idx + j + 1];
         }
-        m_SpriteTextures[object->texture_idx + frame_count - 1] = temp;
+        m_SpriteTextures[obj->texture_idx + frame_count - 1] = temp;
     }
 }

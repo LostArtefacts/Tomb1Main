@@ -377,23 +377,23 @@ void Object_SetupGeneralObjects(void)
 void Object_SetupAllObjects(void)
 {
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        OBJECT *const object = Object_Get(i);
-        object->initialise = nullptr;
-        object->control = nullptr;
-        object->floor = nullptr;
-        object->ceiling = nullptr;
-        object->draw_routine = Object_DrawAnimatingItem;
-        object->collision = nullptr;
-        object->hit_points = DONT_TARGET;
-        object->pivot_length = 0;
-        object->radius = DEFAULT_RADIUS;
-        object->shadow_size = 0;
+        OBJECT *const obj = Object_Get(i);
+        obj->initialise = nullptr;
+        obj->control = nullptr;
+        obj->floor = nullptr;
+        obj->ceiling = nullptr;
+        obj->draw_routine = Object_DrawAnimatingItem;
+        obj->collision = nullptr;
+        obj->hit_points = DONT_TARGET;
+        obj->pivot_length = 0;
+        obj->radius = DEFAULT_RADIUS;
+        obj->shadow_size = 0;
 
-        object->save_position = 0;
-        object->save_hitpoints = 0;
-        object->save_flags = 0;
-        object->save_anim = 0;
-        object->intelligent = 0;
+        obj->save_position = 0;
+        obj->save_hitpoints = 0;
+        obj->save_flags = 0;
+        obj->save_anim = 0;
+        obj->intelligent = 0;
     }
 
     Object_SetupBaddyObjects();

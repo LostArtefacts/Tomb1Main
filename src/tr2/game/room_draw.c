@@ -421,19 +421,19 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
 
     for (int32_t i = 0; i < r->num_static_meshes; i++) {
         const STATIC_MESH *const mesh = &r->static_meshes[i];
-        const STATIC_OBJECT_3D *const static_obj =
+        const STATIC_OBJECT_3D *const obj =
             Object_Get3DStatic(mesh->static_num);
-        if (!static_obj->visible) {
+        if (!obj->visible) {
             continue;
         }
 
         Matrix_Push();
         Matrix_TranslateAbs32(mesh->pos);
         Matrix_RotY(mesh->rot.y);
-        const int16_t clip = Output_GetObjectBounds(&static_obj->draw_bounds);
+        const int16_t clip = Output_GetObjectBounds(&obj->draw_bounds);
         if (clip != 0) {
             Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, r);
-            Object_DrawMesh(static_obj->mesh_idx, clip, false);
+            Object_DrawMesh(obj->mesh_idx, clip, false);
         }
         Matrix_Pop();
     }
@@ -447,8 +447,8 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
     while (item_num != NO_ITEM) {
         ITEM *const item = &g_Items[item_num];
         if (item->status != IS_INVISIBLE) {
-            const OBJECT *const object = Object_Get(item->object_id);
-            object->draw_routine(item);
+            const OBJECT *const obj = Object_Get(item->object_id);
+            obj->draw_routine(item);
         }
         item_num = item->next_item;
     }

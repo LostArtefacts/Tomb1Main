@@ -116,12 +116,12 @@ void Creature_AIInfo(ITEM *const item, AI_INFO *const info)
         info->enemy_zone_num |= BOX_BLOCKED;
     }
 
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     const int32_t z = enemy->pos.z
-        - ((object->pivot_length * Math_Cos(item->rot.y)) >> W2V_SHIFT)
+        - ((obj->pivot_length * Math_Cos(item->rot.y)) >> W2V_SHIFT)
         - item->pos.z;
     const int32_t x = enemy->pos.x
-        - ((object->pivot_length * Math_Sin(item->rot.y)) >> W2V_SHIFT)
+        - ((obj->pivot_length * Math_Sin(item->rot.y)) >> W2V_SHIFT)
         - item->pos.x;
     int16_t angle = Math_Atan(z, x);
     if (creature->enemy != nullptr) {
@@ -357,8 +357,8 @@ void Creature_Die(const int16_t item_num, const bool explode)
         Item_RemoveActive(item_num);
     }
 
-    const OBJECT *const object = Object_Get(item->object_id);
-    if (object->intelligent) {
+    const OBJECT *const obj = Object_Get(item->object_id);
+    if (obj->intelligent) {
         LOT_DisableBaddieAI(item_num);
     }
     item->flags |= IF_ONE_SHOT;
@@ -368,7 +368,7 @@ void Creature_Die(const int16_t item_num, const bool explode)
         g_PrevItemActive = item_num;
     }
 
-    if (object->intelligent) {
+    if (obj->intelligent) {
         int16_t pickup_num = item->carried_item;
         while (pickup_num != NO_ITEM) {
             ITEM *const pickup = &g_Items[pickup_num];
@@ -384,7 +384,7 @@ int32_t Creature_Animate(
 {
     ITEM *const item = &g_Items[item_num];
     const CREATURE *const creature = item->data;
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     if (creature == nullptr) {
         return false;
     }
@@ -456,7 +456,7 @@ int32_t Creature_Animate(
     const int32_t pos_z = z & (WALL_L - 1);
     int32_t shift_x = 0;
     int32_t shift_z = 0;
-    const int32_t radius = object->radius;
+    const int32_t radius = obj->radius;
 
     if (pos_z < radius) {
         if (Box_BadFloor(

@@ -261,7 +261,7 @@ void Dragon_Control(const int16_t item_num)
     int16_t angle = 0;
     int16_t head = 0;
     CREATURE *const creature = dragon_front_item->data;
-    const OBJECT *const front_object = Object_Get(O_DRAGON_FRONT);
+    const OBJECT *const front_obj = Object_Get(O_DRAGON_FRONT);
 
     if (dragon_front_item->hit_points <= 0) {
         if (dragon_front_item->current_anim_state != DRAGON_STATE_DEATH) {
@@ -276,7 +276,7 @@ void Dragon_Control(const int16_t item_num)
                 dragon_front_item->goal_anim_state = DRAGON_STATE_STOP;
             }
             if (creature->flags > DRAGON_LIVE_TIME + DRAGON_ALMOST_LIVE) {
-                dragon_front_item->hit_points = front_object->hit_points / 2;
+                dragon_front_item->hit_points = front_obj->hit_points / 2;
             }
         } else {
             if (creature->flags > -20) {
@@ -445,8 +445,7 @@ void Dragon_Control(const int16_t item_num)
     dragon_back_item->current_anim_state =
         dragon_front_item->current_anim_state;
     // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    const int16_t anim_num =
-        dragon_front_item->anim_num - front_object->anim_idx;
+    const int16_t anim_num = dragon_front_item->anim_num - front_obj->anim_idx;
     const int16_t frame_num = dragon_front_item->frame_num
         - Item_GetAnim(dragon_front_item)->frame_base;
     Item_SwitchToAnim(dragon_back_item, anim_num, frame_num);

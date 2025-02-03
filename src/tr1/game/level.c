@@ -774,25 +774,24 @@ static size_t M_CalculateMaxVertices(void)
     BENCHMARK *const benchmark = Benchmark_Start();
     int32_t max_vertices = 0;
     for (int32_t i = 0; i < O_NUMBER_OF; i++) {
-        const OBJECT *const object = Object_Get(i);
-        if (!object->loaded) {
+        const OBJECT *const obj = Object_Get(i);
+        if (!obj->loaded) {
             continue;
         }
 
-        for (int32_t j = 0; j < object->mesh_count; j++) {
-            const OBJECT_MESH *const mesh =
-                Object_GetMesh(object->mesh_idx + j);
+        for (int32_t j = 0; j < obj->mesh_count; j++) {
+            const OBJECT_MESH *const mesh = Object_GetMesh(obj->mesh_idx + j);
             max_vertices = MAX(max_vertices, mesh->num_vertices);
         }
     }
 
     for (int32_t i = 0; i < MAX_STATIC_OBJECTS; i++) {
-        const STATIC_OBJECT_3D *static_info = Object_Get3DStatic(i);
-        if (!static_info->loaded) {
+        const STATIC_OBJECT_3D *obj = Object_Get3DStatic(i);
+        if (!obj->loaded) {
             continue;
         }
 
-        const OBJECT_MESH *const mesh = Object_GetMesh(static_info->mesh_idx);
+        const OBJECT_MESH *const mesh = Object_GetMesh(obj->mesh_idx);
         max_vertices = MAX(max_vertices, mesh->num_vertices);
     }
 

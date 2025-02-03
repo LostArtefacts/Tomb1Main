@@ -30,10 +30,10 @@ void BaconLara_Setup(OBJECT *obj)
 
 void BaconLara_Initialise(int16_t item_num)
 {
-    const OBJECT *const lara_object = Object_Get(O_LARA);
-    OBJECT *const bacon_object = Object_Get(O_BACON_LARA);
-    bacon_object->anim_idx = lara_object->anim_idx;
-    bacon_object->frame_base = lara_object->frame_base;
+    const OBJECT *const lara_obj = Object_Get(O_LARA);
+    OBJECT *const bacon_obj = Object_Get(O_BACON_LARA);
+    bacon_obj->anim_idx = lara_obj->anim_idx;
+    bacon_obj->frame_base = lara_obj->frame_base;
     g_Items[item_num].data = nullptr;
 }
 

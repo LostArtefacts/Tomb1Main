@@ -1014,8 +1014,8 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
             const int16_t next_item_num = item->next_item;
 
             if (item->collidable && item->status != IS_INVISIBLE) {
-                const OBJECT *const object = Object_Get(item->object_id);
-                if (object->collision) {
+                const OBJECT *const obj = Object_Get(item->object_id);
+                if (obj->collision != nullptr) {
                     // clang-format off
                     const XYZ_32 d = {
                         .x = lara_item->pos.x - item->pos.x,
@@ -1025,7 +1025,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
                     if (d.x > -TARGET_DIST && d.x < TARGET_DIST &&
                         d.y > -TARGET_DIST && d.y < TARGET_DIST &&
                         d.z > -TARGET_DIST && d.z < TARGET_DIST) {
-                        object->collision(item_num, lara_item, coll);
+                        obj->collision(item_num, lara_item, coll);
                     }
                     // clang-format on
                 }
@@ -1774,14 +1774,13 @@ void Lara_TouchLava(ITEM *const item)
     item->hit_points = -1;
     item->hit_status = 1;
 
-    const OBJECT *const object = Object_Get(O_FLAME);
+    const OBJECT *const obj = Object_Get(O_FLAME);
     for (int32_t i = 0; i < 10; i++) {
         const int16_t effect_num = Effect_Create(item->room_num);
         if (effect_num != NO_EFFECT) {
             EFFECT *const effect = Effect_Get(effect_num);
             effect->object_id = O_FLAME;
-            effect->frame_num =
-                object->mesh_count * Random_GetControl() / 0x7FFF;
+            effect->frame_num = obj->mesh_count * Random_GetControl() / 0x7FFF;
             effect->counter = -1 - 24 * Random_GetControl() / 0x7FFF;
         }
     }

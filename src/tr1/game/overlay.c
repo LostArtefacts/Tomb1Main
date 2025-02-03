@@ -577,10 +577,10 @@ static void M_BarDrawEnemy(void)
         return;
     }
 
-    const OBJECT *const object = Object_Get(g_Lara.target->object_id);
+    const OBJECT *const obj = Object_Get(g_Lara.target->object_id);
     m_EnemyBar.value = g_Lara.target->hit_points;
     m_EnemyBar.max_value =
-        object->hit_points * ((g_GameInfo.bonus_flag & GBF_NGPLUS) ? 2 : 1);
+        obj->hit_points * ((g_GameInfo.bonus_flag & GBF_NGPLUS) ? 2 : 1);
     CLAMP(m_EnemyBar.value, 0, m_EnemyBar.max_value);
 
     Overlay_BarDraw(&m_EnemyBar, RSR_BAR);

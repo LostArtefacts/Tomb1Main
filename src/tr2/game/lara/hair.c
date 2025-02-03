@@ -194,12 +194,12 @@ static void M_CalculateSpheres_I(
 
 void Lara_Hair_Initialise(void)
 {
-    const OBJECT *const object = Object_Get(O_LARA_HAIR);
+    const OBJECT *const obj = Object_Get(O_LARA_HAIR);
     m_IsFirstHair = true;
     m_HairSegments[0].rot.x = -DEG_90;
     m_HairSegments[0].rot.y = 0;
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i);
+        const ANIM_BONE *const bone = Object_GetBone(obj, i);
         m_HairSegments[i + 1].pos = bone->pos;
         m_HairSegments[i + 1].rot.x = -DEG_90;
         m_HairSegments[i + 1].rot.y = 0;
@@ -246,7 +246,7 @@ void Lara_Hair_Control(const bool in_cutscene)
     };
     Matrix_Pop();
 
-    const OBJECT *const object = Object_Get(O_LARA_HAIR);
+    const OBJECT *const obj = Object_Get(O_LARA_HAIR);
 
     HAIR_SEGMENT *const fs = &m_HairSegments[0];
     fs->pos.x = pos.x;
@@ -256,7 +256,7 @@ void Lara_Hair_Control(const bool in_cutscene)
     if (m_IsFirstHair) {
         m_IsFirstHair = false;
         for (int32_t i = 1; i <= HAIR_SEGMENTS; i++) {
-            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+            const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
             const HAIR_SEGMENT *const ps = &m_HairSegments[i - 1];
             HAIR_SEGMENT *const s = &m_HairSegments[i];
 
@@ -315,7 +315,7 @@ void Lara_Hair_Control(const bool in_cutscene)
     }
 
     for (int32_t i = 1; i <= HAIR_SEGMENTS; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+        const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         HAIR_SEGMENT *const ps = &m_HairSegments[i - 1];
         HAIR_SEGMENT *const s = &m_HairSegments[i];
 
@@ -394,14 +394,14 @@ void Lara_Hair_Control(const bool in_cutscene)
 
 void Lara_Hair_Draw(void)
 {
-    const OBJECT *const object = Object_Get(O_LARA_HAIR);
+    const OBJECT *const obj = Object_Get(O_LARA_HAIR);
     for (int32_t i = 0; i < HAIR_SEGMENTS; i++) {
         const HAIR_SEGMENT *const s = &m_HairSegments[i];
         Matrix_Push();
         Matrix_TranslateAbs32(s->pos);
         Matrix_RotY(s->rot.y);
         Matrix_RotX(s->rot.x);
-        Object_DrawMesh(object->mesh_idx + i, 1, false);
+        Object_DrawMesh(obj->mesh_idx + i, 1, false);
         Matrix_Pop();
     }
 }

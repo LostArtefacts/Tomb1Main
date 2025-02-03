@@ -51,15 +51,15 @@ void Gun_Rifle_Ready(const LARA_GUN_TYPE weapon_type)
     g_Lara.gun_status = LGS_READY;
     g_Lara.target = nullptr;
 
-    const OBJECT *const object = Object_Get(Gun_GetWeaponAnim(weapon_type));
-    g_Lara.left_arm.frame_base = object->frame_base;
+    const OBJECT *const obj = Object_Get(Gun_GetWeaponAnim(weapon_type));
+    g_Lara.left_arm.frame_base = obj->frame_base;
     g_Lara.left_arm.frame_num = LF_G_AIM_START;
     g_Lara.left_arm.lock = 0;
     g_Lara.left_arm.rot.x = 0;
     g_Lara.left_arm.rot.y = 0;
     g_Lara.left_arm.rot.z = 0;
 
-    g_Lara.right_arm.frame_base = object->frame_base;
+    g_Lara.right_arm.frame_base = obj->frame_base;
     g_Lara.right_arm.frame_num = LF_G_AIM_START;
     g_Lara.right_arm.lock = 0;
     g_Lara.right_arm.rot.x = 0;
@@ -258,9 +258,9 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
         item->current_anim_state = LA_G_DRAW;
         item->status = IS_ACTIVE;
         item->room_num = NO_ROOM;
-        const OBJECT *const object = Object_Get(item->object_id);
-        g_Lara.right_arm.frame_base = object->frame_base;
-        g_Lara.left_arm.frame_base = object->frame_base;
+        const OBJECT *const obj = Object_Get(item->object_id);
+        g_Lara.right_arm.frame_base = obj->frame_base;
+        g_Lara.left_arm.frame_base = obj->frame_base;
     }
     M_AnimateGun(item);
 

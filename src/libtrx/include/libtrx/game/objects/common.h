@@ -36,7 +36,7 @@ OBJECT_MESH *Object_GetMesh(int32_t index);
 void Object_SwapMesh(
     GAME_OBJECT_ID object1_id, GAME_OBJECT_ID object2_id, int32_t mesh_num);
 
-ANIM *Object_GetAnim(const OBJECT *object, int32_t anim_idx);
-ANIM_BONE *Object_GetBone(const OBJECT *object, int32_t bone_idx);
+ANIM *Object_GetAnim(const OBJECT *obj, int32_t anim_idx);
+ANIM_BONE *Object_GetBone(const OBJECT *obj, int32_t bone_idx);
 
 extern void Object_DrawMesh(int32_t mesh_idx, int32_t clip, bool interpolated);

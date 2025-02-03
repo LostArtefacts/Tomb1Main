@@ -92,14 +92,14 @@ void Object_DrawPickupItem(ITEM *item)
     // Modify item to be the anim for inv item and animation 0.
     Item_SwitchToObjAnim(item, 0, 0, item_num_option);
 
-    const OBJECT *const object = Object_Get(item_num_option);
+    const OBJECT *const obj = Object_Get(item_num_option);
     const ANIM_FRAME *frame = Item_GetAnim(item)->frame_ptr;
 
     // Restore the old frame number in case we need to get the sprite again.
     item->frame_num = old_frame_num;
 
     // Fall back to normal sprite rendering if not found.
-    if (object->mesh_count < 0) {
+    if (obj->mesh_count < 0) {
         Object_DrawSpriteItem(item);
         return;
     }
@@ -123,8 +123,8 @@ void Object_DrawPickupItem(ITEM *item)
         // No, now we need to move it a bit.
         // First get the sprite that was to be used,
 
-        const OBJECT *const object = Object_Get(item->object_id);
-        const int16_t spr_num = object->mesh_idx - item->frame_num;
+        const OBJECT *const spr_obj = Object_Get(item->object_id);
+        const int16_t spr_num = spr_obj->mesh_idx - item->frame_num;
         const SPRITE_TEXTURE *const sprite = Output_GetSpriteTexture(spr_num);
 
         // and get the animation bounding box, which is not the mesh one.
@@ -184,7 +184,7 @@ void Object_DrawPickupItem(ITEM *item)
 
     Output_CalculateLight(item->pos, item->room_num);
 
-    frame = object->frame_base;
+    frame = obj->frame_base;
     int32_t clip = Output_GetObjectBounds(&frame->bounds);
     if (clip) {
         // From this point on the function is a slightly customised version
@@ -196,11 +196,11 @@ void Object_DrawPickupItem(ITEM *item)
         Matrix_Rot16(frame->mesh_rots[0]);
 
         if (item->mesh_bits & bit) {
-            Object_DrawMesh(object->mesh_idx, clip, false);
+            Object_DrawMesh(obj->mesh_idx, clip, false);
         }
 
-        for (int i = 1; i < object->mesh_count; i++) {
-            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+        for (int i = 1; i < obj->mesh_count; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -216,7 +216,7 @@ void Object_DrawPickupItem(ITEM *item)
 
             bit <<= 1;
             if (item->mesh_bits & bit) {
-                Object_DrawMesh(object->mesh_idx + i, clip, false);
+                Object_DrawMesh(obj->mesh_idx + i, clip, false);
             }
         }
     }
@@ -225,7 +225,7 @@ void Object_DrawPickupItem(ITEM *item)
 }
 
 void Object_DrawInterpolatedObject(
-    const OBJECT *const object, uint32_t meshes, const int16_t *extra_rotation,
+    const OBJECT *const obj, uint32_t meshes, const int16_t *extra_rotation,
     const ANIM_FRAME *const frame1, const ANIM_FRAME *const frame2,
     const int32_t frac, const int32_t rate)
 {
@@ -244,11 +244,11 @@ void Object_DrawInterpolatedObject(
         Matrix_Rot16(frame1->mesh_rots[0]);
 
         if (meshes & mesh_num) {
-            Object_DrawMesh(object->mesh_idx, clip, false);
+            Object_DrawMesh(obj->mesh_idx, clip, false);
         }
 
-        for (int i = 1; i < object->mesh_count; i++) {
-            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+        for (int i = 1; i < obj->mesh_count; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop();
             }
@@ -274,7 +274,7 @@ void Object_DrawInterpolatedObject(
 
             mesh_num <<= 1;
             if (meshes & mesh_num) {
-                Object_DrawMesh(object->mesh_idx + i, clip, false);
+                Object_DrawMesh(obj->mesh_idx + i, clip, false);
             }
         }
     } else {
@@ -284,11 +284,11 @@ void Object_DrawInterpolatedObject(
         Matrix_Rot16_ID(frame1->mesh_rots[0], frame2->mesh_rots[0]);
 
         if (meshes & mesh_num) {
-            Object_DrawMesh(object->mesh_idx, clip, true);
+            Object_DrawMesh(obj->mesh_idx, clip, true);
         }
 
-        for (int i = 1; i < object->mesh_count; i++) {
-            const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+        for (int i = 1; i < obj->mesh_count; i++) {
+            const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
             if (bone->matrix_pop) {
                 Matrix_Pop_I();
             }
@@ -314,7 +314,7 @@ void Object_DrawInterpolatedObject(
 
             mesh_num <<= 1;
             if (meshes & mesh_num) {
-                Object_DrawMesh(object->mesh_idx + i, clip, true);
+                Object_DrawMesh(obj->mesh_idx + i, clip, true);
             }
         }
     }
@@ -327,10 +327,10 @@ void Object_DrawAnimatingItem(ITEM *item)
     ANIM_FRAME *frmptr[2];
     int32_t rate;
     int32_t frac = Item_GetFrames(item, frmptr, &rate);
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
-    if (object->shadow_size) {
-        Output_DrawShadow(object->shadow_size, &frmptr[0]->bounds, item);
+    if (obj->shadow_size) {
+        Output_DrawShadow(obj->shadow_size, &frmptr[0]->bounds, item);
     }
 
     Matrix_Push();
@@ -341,8 +341,7 @@ void Object_DrawAnimatingItem(ITEM *item)
     const int16_t *extra_rotation = item->data ? item->data : nullptr;
 
     Object_DrawInterpolatedObject(
-        object, item->mesh_bits, extra_rotation, frmptr[0], frmptr[1], frac,
-        rate);
+        obj, item->mesh_bits, extra_rotation, frmptr[0], frmptr[1], frac, rate);
     Matrix_Pop();
 }
 
@@ -369,12 +368,12 @@ void Object_DrawUnclippedItem(ITEM *item)
 void Object_SetMeshReflective(
     const GAME_OBJECT_ID object_id, const int32_t mesh_idx, const bool enabled)
 {
-    const OBJECT *const object = Object_Get(object_id);
-    if (!object->loaded) {
+    const OBJECT *const obj = Object_Get(object_id);
+    if (!obj->loaded) {
         return;
     }
 
-    OBJECT_MESH *const mesh = Object_GetMesh(object->mesh_idx + mesh_idx);
+    OBJECT_MESH *const mesh = Object_GetMesh(obj->mesh_idx + mesh_idx);
     mesh->enable_reflections = enabled;
 
     for (int32_t i = 0; i < mesh->num_tex_face4s; i++) {
@@ -396,8 +395,8 @@ void Object_SetMeshReflective(
 
 void Object_SetReflective(const GAME_OBJECT_ID object_id, const bool enabled)
 {
-    const OBJECT *const object = Object_Get(object_id);
-    for (int32_t i = 0; i < object->mesh_count; i++) {
+    const OBJECT *const obj = Object_Get(object_id);
+    for (int32_t i = 0; i < obj->mesh_count; i++) {
         Object_SetMeshReflective(object_id, i, enabled);
     }
 }

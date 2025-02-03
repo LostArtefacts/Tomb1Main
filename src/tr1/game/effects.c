@@ -138,15 +138,15 @@ void Effect_NewRoom(int16_t effect_num, int16_t room_num)
 void Effect_Draw(const int16_t effect_num)
 {
     const EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_Get(effect->object_id);
-    if (!object->loaded) {
+    const OBJECT *const obj = Object_Get(effect->object_id);
+    if (!obj->loaded) {
         return;
     }
 
-    if (object->mesh_count < 0) {
+    if (obj->mesh_count < 0) {
         Output_DrawSprite(
             effect->interp.result.pos.x, effect->interp.result.pos.y,
-            effect->interp.result.pos.z, object->mesh_idx - effect->frame_num,
+            effect->interp.result.pos.z, obj->mesh_idx - effect->frame_num,
             4096);
     } else {
         Matrix_Push();
@@ -154,9 +154,9 @@ void Effect_Draw(const int16_t effect_num)
         if (g_MatrixPtr->_23 > Output_GetNearZ()
             && g_MatrixPtr->_23 < Output_GetFarZ()) {
             Matrix_Rot16(effect->interp.result.rot);
-            if (object->mesh_count) {
+            if (obj->mesh_count) {
                 Output_CalculateStaticLight(effect->shade);
-                Object_DrawMesh(object->mesh_idx, -1, false);
+                Object_DrawMesh(obj->mesh_idx, -1, false);
             } else {
                 Output_CalculateLight(
                     effect->interp.result.pos, effect->room_num);

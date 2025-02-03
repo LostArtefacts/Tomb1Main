@@ -455,14 +455,14 @@ void Level_ReadObjects(VFILE *const file)
                 "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
         }
 
-        OBJECT *const object = Object_Get(object_id);
-        object->mesh_count = VFile_ReadS16(file);
-        object->mesh_idx = VFile_ReadS16(file);
-        object->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
-        object->frame_ofs = VFile_ReadU32(file);
-        object->frame_base = nullptr;
-        object->anim_idx = VFile_ReadS16(file);
-        object->loaded = true;
+        OBJECT *const obj = Object_Get(object_id);
+        obj->mesh_count = VFile_ReadS16(file);
+        obj->mesh_idx = VFile_ReadS16(file);
+        obj->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;
+        obj->frame_ofs = VFile_ReadU32(file);
+        obj->frame_base = nullptr;
+        obj->anim_idx = VFile_ReadS16(file);
+        obj->loaded = true;
     }
 
     Benchmark_End(benchmark, nullptr);
@@ -481,16 +481,16 @@ void Level_ReadStaticObjects(VFILE *const file)
                 MAX_STATIC_OBJECTS);
         }
 
-        STATIC_OBJECT_3D *const static_obj = Object_Get3DStatic(static_id);
-        static_obj->mesh_idx = VFile_ReadS16(file);
-        static_obj->loaded = true;
+        STATIC_OBJECT_3D *const obj = Object_Get3DStatic(static_id);
+        obj->mesh_idx = VFile_ReadS16(file);
+        obj->loaded = true;
 
-        M_ReadBounds16(&static_obj->draw_bounds, file);
-        M_ReadBounds16(&static_obj->collision_bounds, file);
+        M_ReadBounds16(&obj->draw_bounds, file);
+        M_ReadBounds16(&obj->collision_bounds, file);
 
         const uint16_t flags = VFile_ReadU16(file);
-        static_obj->collidable = (flags & 1) == 0;
-        static_obj->visible = (flags & 2) != 0;
+        obj->collidable = (flags & 1) == 0;
+        obj->visible = (flags & 2) != 0;
     }
 
     Benchmark_End(benchmark, nullptr);
@@ -539,16 +539,16 @@ void Level_ReadSpriteSequences(VFILE *const file)
         const int16_t mesh_idx = VFile_ReadS16(file);
 
         if (object_id >= 0 && object_id < O_NUMBER_OF) {
-            OBJECT *const object = Object_Get(object_id);
-            object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx;
-            object->loaded = true;
+            OBJECT *const obj = Object_Get(object_id);
+            obj->mesh_count = num_meshes;
+            obj->mesh_idx = mesh_idx;
+            obj->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_2D *const object =
+            STATIC_OBJECT_2D *const obj =
                 Object_Get2DStatic(object_id - O_NUMBER_OF);
-            object->frame_count = ABS(num_meshes);
-            object->texture_idx = mesh_idx;
-            object->loaded = true;
+            obj->frame_count = ABS(num_meshes);
+            obj->texture_idx = mesh_idx;
+            obj->loaded = true;
         } else {
             Shell_ExitSystemFmt("Invalid sprite slot (%d)", object_id);
         }

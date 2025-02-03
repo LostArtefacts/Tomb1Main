@@ -70,10 +70,10 @@ void Effect_Control(void)
     int16_t effect_num = Effect_GetActiveNum();
     while (effect_num != NO_EFFECT) {
         const EFFECT *const effect = Effect_Get(effect_num);
-        const OBJECT *const object = Object_Get(effect->object_id);
+        const OBJECT *const obj = Object_Get(effect->object_id);
         const int16_t next = effect->next_active;
-        if (object->control != nullptr) {
-            object->control(effect_num);
+        if (obj->control != nullptr) {
+            obj->control(effect_num);
         }
         effect_num = next;
     }
@@ -154,8 +154,8 @@ void Effect_NewRoom(const int16_t effect_num, const int16_t room_num)
 void Effect_Draw(const int16_t effect_num)
 {
     const EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_Get(effect->object_id);
-    if (!object->loaded) {
+    const OBJECT *const obj = Object_Get(effect->object_id);
+    if (!obj->loaded) {
         return;
     }
 
@@ -167,12 +167,12 @@ void Effect_Draw(const int16_t effect_num)
         return;
     }
 
-    if (object->mesh_count < 0) {
+    if (obj->mesh_count < 0) {
         Output_DrawSprite(
-            SPRITE_ABS | (object->semi_transparent ? SPRITE_SEMI_TRANS : 0)
+            SPRITE_ABS | (obj->semi_transparent ? SPRITE_SEMI_TRANS : 0)
                 | SPRITE_SHADE,
             effect->pos.x, effect->pos.y, effect->pos.z,
-            object->mesh_idx - effect->frame_num, effect->shade, 0);
+            obj->mesh_idx - effect->frame_num, effect->shade, 0);
         return;
     }
 
@@ -180,9 +180,9 @@ void Effect_Draw(const int16_t effect_num)
     Matrix_TranslateAbs32(effect->pos);
     if (g_MatrixPtr->_23 > g_PhdNearZ && g_MatrixPtr->_23 < g_PhdFarZ) {
         Matrix_Rot16(effect->rot);
-        if (object->mesh_count) {
+        if (obj->mesh_count) {
             Output_CalculateStaticLight(effect->shade);
-            Object_DrawMesh(object->mesh_idx, -1, false);
+            Object_DrawMesh(obj->mesh_idx, -1, false);
         } else {
             Output_CalculateStaticLight(effect->shade);
             Object_DrawMesh(effect->frame_num, -1, false);

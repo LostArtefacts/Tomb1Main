@@ -71,12 +71,12 @@ void Creature_AIInfo(ITEM *item, AI_INFO *info)
         info->enemy_zone |= BLOCKED;
     }
 
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     int32_t z = g_LaraItem->pos.z
-        - ((Math_Cos(item->rot.y) * object->pivot_length) >> W2V_SHIFT)
+        - ((Math_Cos(item->rot.y) * obj->pivot_length) >> W2V_SHIFT)
         - item->pos.z;
     int32_t x = g_LaraItem->pos.x
-        - ((Math_Sin(item->rot.y) * object->pivot_length) >> W2V_SHIFT)
+        - ((Math_Sin(item->rot.y) * obj->pivot_length) >> W2V_SHIFT)
         - item->pos.x;
 
     PHD_ANGLE angle = Math_Atan(z, x);

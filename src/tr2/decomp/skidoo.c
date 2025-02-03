@@ -123,10 +123,9 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
         return false;
     }
 
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     const bool is_availanche = item->object_id == O_ROLLING_BALL_2;
-    if (object->collision == nullptr
-        || (!object->intelligent && !is_availanche)) {
+    if (obj->collision == nullptr || (!obj->intelligent && !is_availanche)) {
         return false;
     }
 
@@ -144,7 +143,7 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
         if (item->current_anim_state == TRAP_ACTIVATE) {
             Lara_TakeDamage(100, true);
         }
-    } else if (object->intelligent && item->status == IS_ACTIVE) {
+    } else if (obj->intelligent && item->status == IS_ACTIVE) {
         Spawn_BloodBath(
             item->pos.x, skidoo->pos.y - STEP_L, item->pos.z, skidoo->speed,
             skidoo->rot.y, item->room_num, 3);

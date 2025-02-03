@@ -16,10 +16,10 @@ void Spawn_Splash_Setup(void)
 void Spawn_Splash_Control(const int16_t effect_num)
 {
     EFFECT *const effect = Effect_Get(effect_num);
-    const OBJECT *const object = Object_Get(effect->object_id);
+    const OBJECT *const obj = Object_Get(effect->object_id);
 
     effect->frame_num--;
-    if (effect->frame_num <= object->mesh_count) {
+    if (effect->frame_num <= obj->mesh_count) {
         Effect_Kill(effect_num);
         return;
     }

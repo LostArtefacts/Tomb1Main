@@ -310,10 +310,10 @@ int32_t Collide_CollideStaticObjects(
 
         for (int32_t j = 0; j < room->num_static_meshes; j++) {
             const STATIC_MESH *const mesh = &room->static_meshes[j];
-            const STATIC_OBJECT_3D *const sinfo =
+            const STATIC_OBJECT_3D *const obj =
                 Object_Get3DStatic(mesh->static_num);
 
-            if (!sinfo->collidable) {
+            if (!obj->collidable) {
                 continue;
             }
 
@@ -321,35 +321,35 @@ int32_t Collide_CollideStaticObjects(
             int32_t x_max;
             int32_t z_min;
             int32_t z_max;
-            const int32_t y_min = mesh->pos.y + sinfo->collision_bounds.min.y;
-            const int32_t y_max = mesh->pos.y + sinfo->collision_bounds.max.y;
+            const int32_t y_min = mesh->pos.y + obj->collision_bounds.min.y;
+            const int32_t y_max = mesh->pos.y + obj->collision_bounds.max.y;
             switch (mesh->rot.y) {
             case DEG_90:
-                x_min = mesh->pos.x + sinfo->collision_bounds.min.z;
-                x_max = mesh->pos.x + sinfo->collision_bounds.max.z;
-                z_min = mesh->pos.z - sinfo->collision_bounds.max.x;
-                z_max = mesh->pos.z - sinfo->collision_bounds.min.x;
+                x_min = mesh->pos.x + obj->collision_bounds.min.z;
+                x_max = mesh->pos.x + obj->collision_bounds.max.z;
+                z_min = mesh->pos.z - obj->collision_bounds.max.x;
+                z_max = mesh->pos.z - obj->collision_bounds.min.x;
                 break;
 
             case -DEG_180:
-                x_min = mesh->pos.x - sinfo->collision_bounds.max.x;
-                x_max = mesh->pos.x - sinfo->collision_bounds.min.x;
-                z_min = mesh->pos.z - sinfo->collision_bounds.max.z;
-                z_max = mesh->pos.z - sinfo->collision_bounds.min.z;
+                x_min = mesh->pos.x - obj->collision_bounds.max.x;
+                x_max = mesh->pos.x - obj->collision_bounds.min.x;
+                z_min = mesh->pos.z - obj->collision_bounds.max.z;
+                z_max = mesh->pos.z - obj->collision_bounds.min.z;
                 break;
 
             case -DEG_90:
-                x_min = mesh->pos.x - sinfo->collision_bounds.max.z;
-                x_max = mesh->pos.x - sinfo->collision_bounds.min.z;
-                z_min = mesh->pos.z + sinfo->collision_bounds.min.x;
-                z_max = mesh->pos.z + sinfo->collision_bounds.max.x;
+                x_min = mesh->pos.x - obj->collision_bounds.max.z;
+                x_max = mesh->pos.x - obj->collision_bounds.min.z;
+                z_min = mesh->pos.z + obj->collision_bounds.min.x;
+                z_max = mesh->pos.z + obj->collision_bounds.max.x;
                 break;
 
             default:
-                x_min = mesh->pos.x + sinfo->collision_bounds.min.x;
-                x_max = mesh->pos.x + sinfo->collision_bounds.max.x;
-                z_min = mesh->pos.z + sinfo->collision_bounds.min.z;
-                z_max = mesh->pos.z + sinfo->collision_bounds.max.z;
+                x_min = mesh->pos.x + obj->collision_bounds.min.x;
+                x_max = mesh->pos.x + obj->collision_bounds.max.x;
+                z_min = mesh->pos.z + obj->collision_bounds.min.z;
+                z_max = mesh->pos.z + obj->collision_bounds.max.z;
                 break;
             }
 
@@ -512,8 +512,8 @@ int32_t Collide_GetSpheres(
     Matrix_TranslateRel16(frame->offset);
     Matrix_Rot16(frame->mesh_rots[0]);
 
-    const OBJECT *const object = Object_Get(item->object_id);
-    const OBJECT_MESH *mesh = Object_GetMesh(object->mesh_idx);
+    const OBJECT *const obj = Object_Get(item->object_id);
+    const OBJECT_MESH *mesh = Object_GetMesh(obj->mesh_idx);
     Matrix_Push();
     Matrix_TranslateRel16(mesh->center);
     spheres[0].x = pos.x + (g_MatrixPtr->_03 >> W2V_SHIFT);
@@ -523,8 +523,8 @@ int32_t Collide_GetSpheres(
     Matrix_Pop();
 
     const int16_t *extra_rotation = (int16_t *)item->data;
-    for (int32_t i = 1; i < object->mesh_count; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+    for (int32_t i = 1; i < obj->mesh_count; i++) {
+        const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }
@@ -547,7 +547,7 @@ int32_t Collide_GetSpheres(
             }
         }
 
-        mesh = Object_GetMesh(object->mesh_idx + i);
+        mesh = Object_GetMesh(obj->mesh_idx + i);
         Matrix_Push();
         Matrix_TranslateRel16(mesh->center);
         SPHERE *const sphere = &spheres[i];
@@ -559,13 +559,13 @@ int32_t Collide_GetSpheres(
     }
 
     Matrix_Pop();
-    return object->mesh_count;
+    return obj->mesh_count;
 }
 
 void Collide_GetJointAbsPosition(
     const ITEM *const item, XYZ_32 *const out_vec, const int32_t joint)
 {
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     const ANIM_FRAME *const frame = Item_GetBestFrame(item);
 
     Matrix_PushUnit();
@@ -575,9 +575,9 @@ void Collide_GetJointAbsPosition(
     Matrix_Rot16(frame->mesh_rots[0]);
 
     const int16_t *extra_rotation = item->data;
-    const int32_t abs_joint = MIN(object->mesh_count, joint);
+    const int32_t abs_joint = MIN(obj->mesh_count, joint);
     for (int32_t i = 0; i < abs_joint; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i);
+        const ANIM_BONE *const bone = Object_GetBone(obj, i);
         if (bone->matrix_pop) {
             Matrix_Pop();
         }

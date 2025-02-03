@@ -102,7 +102,7 @@ int16_t Item_Create(void)
 void Item_Initialise(int16_t item_num)
 {
     ITEM *item = &g_Items[item_num];
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
 
     Item_SwitchToAnim(item, 0, 0);
     item->current_anim_state = Item_GetAnim(item)->current_anim_state;
@@ -118,7 +118,7 @@ void Item_Initialise(int16_t item_num)
     item->hit_status = 0;
     item->looked_at = 0;
     item->collidable = 1;
-    item->hit_points = object->hit_points;
+    item->hit_points = obj->hit_points;
     item->timer = 0;
     item->mesh_bits = -1;
     item->touch_bits = 0;
@@ -150,8 +150,8 @@ void Item_Initialise(int16_t item_num)
     if (g_GameInfo.bonus_flag & GBF_NGPLUS) {
         item->hit_points *= 2;
     }
-    if (object->initialise) {
-        object->initialise(item_num);
+    if (obj->initialise) {
+        obj->initialise(item_num);
     }
 
     Interpolation_RememberItem(item);

@@ -45,8 +45,8 @@ ANIM *Item_GetAnim(const ITEM *const item)
 
 bool Item_TestAnimEqual(const ITEM *const item, const int16_t anim_idx)
 {
-    const OBJECT *const object = Object_Get(item->object_id);
-    return item->anim_num == object->anim_idx + anim_idx;
+    const OBJECT *const obj = Object_Get(item->object_id);
+    return item->anim_num == obj->anim_idx + anim_idx;
 }
 
 void Item_SwitchToAnim(
@@ -59,8 +59,8 @@ void Item_SwitchToObjAnim(
     ITEM *const item, const int16_t anim_idx, const int16_t frame,
     const GAME_OBJECT_ID object_id)
 {
-    const OBJECT *const object = Object_Get(object_id);
-    item->anim_num = object->anim_idx + anim_idx;
+    const OBJECT *const obj = Object_Get(object_id);
+    item->anim_num = obj->anim_idx + anim_idx;
 
     const ANIM *const anim = Item_GetAnim(item);
     if (frame < 0) {

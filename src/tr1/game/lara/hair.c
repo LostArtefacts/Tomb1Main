@@ -57,13 +57,13 @@ void Lara_Hair_Initialise(void)
     m_FirstHair = true;
     Lara_Hair_SetLaraType(O_LARA);
 
-    const OBJECT *const object = Object_Get(O_HAIR);
+    const OBJECT *const obj = Object_Get(O_HAIR);
 
     m_Hair[0].rot.y = 0;
     m_Hair[0].rot.x = -DEG_90;
 
     for (int32_t i = 1; i < HAIR_SEGMENTS + 1; i++) {
-        const ANIM_BONE *const bone = Object_GetBone(object, i - 1);
+        const ANIM_BONE *const bone = Object_GetBone(obj, i - 1);
         m_Hair[i].pos = bone->pos;
         m_Hair[i].rot.x = -DEG_90;
         m_Hair[i].rot.y = 0;
@@ -118,8 +118,8 @@ void Lara_Hair_Control(void)
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
     Matrix_Rot16(g_LaraItem->rot);
 
-    const OBJECT *const object = Object_Get(m_LaraType);
-    const ANIM_BONE *bone = Object_GetBone(object, 0);
+    const OBJECT *const obj = Object_Get(m_LaraType);
+    const ANIM_BONE *bone = Object_GetBone(obj, 0);
     if (frac) {
         const XYZ_16 *const mesh_rots_1 = frmptr[0]->mesh_rots;
         const XYZ_16 *const mesh_rots_2 = frmptr[1]->mesh_rots;
@@ -130,7 +130,7 @@ void Lara_Hair_Control(void)
 
         // hips
         Matrix_Push_I();
-        mesh = Object_GetMesh(object->mesh_idx + LM_HIPS);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_HIPS);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
         sphere[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -144,7 +144,7 @@ void Lara_Hair_Control(void)
         Matrix_Rot16_ID(mesh_rots_1[LM_TORSO], mesh_rots_2[LM_TORSO]);
         Matrix_Rot16_I(g_Lara.interp.result.torso_rot);
         Matrix_Push_I();
-        mesh = Object_GetMesh(object->mesh_idx + LM_TORSO);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_TORSO);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
         sphere[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -157,7 +157,7 @@ void Lara_Hair_Control(void)
         Matrix_Push_I();
         Matrix_TranslateRel32_I(bone[LM_UARM_R - 1].pos);
         Matrix_Rot16_ID(mesh_rots_1[LM_UARM_R], mesh_rots_2[LM_UARM_R]);
-        mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_UARM_R);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
         sphere[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -170,7 +170,7 @@ void Lara_Hair_Control(void)
         Matrix_Push_I();
         Matrix_TranslateRel32_I(bone[LM_UARM_L - 1].pos);
         Matrix_Rot16_ID(mesh_rots_1[LM_UARM_L], mesh_rots_2[LM_UARM_L]);
-        mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_UARM_L);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
         sphere[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -184,7 +184,7 @@ void Lara_Hair_Control(void)
         Matrix_Rot16_ID(mesh_rots_1[LM_HEAD], mesh_rots_2[LM_HEAD]);
         Matrix_Rot16_I(g_Lara.interp.result.head_rot);
         Matrix_Push_I();
-        mesh = Object_GetMesh(object->mesh_idx + LM_HEAD);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_HEAD);
         Matrix_TranslateRel16_I(mesh->center);
         Matrix_Interpolate();
         sphere[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
@@ -203,7 +203,7 @@ void Lara_Hair_Control(void)
 
         // hips
         Matrix_Push();
-        mesh = Object_GetMesh(object->mesh_idx + LM_HIPS);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_HIPS);
         Matrix_TranslateRel16(mesh->center);
         sphere[0].x = g_MatrixPtr->_03 >> W2V_SHIFT;
         sphere[0].y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -216,7 +216,7 @@ void Lara_Hair_Control(void)
         Matrix_Rot16(mesh_rots[LM_TORSO]);
         Matrix_Rot16(g_Lara.interp.result.torso_rot);
         Matrix_Push();
-        mesh = Object_GetMesh(object->mesh_idx + LM_TORSO);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_TORSO);
         Matrix_TranslateRel16(mesh->center);
         sphere[1].x = g_MatrixPtr->_03 >> W2V_SHIFT;
         sphere[1].y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -228,7 +228,7 @@ void Lara_Hair_Control(void)
         Matrix_Push();
         Matrix_TranslateRel32(bone[LM_UARM_R - 1].pos);
         Matrix_Rot16(mesh_rots[LM_UARM_R]);
-        mesh = Object_GetMesh(object->mesh_idx + LM_UARM_R);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_UARM_R);
         Matrix_TranslateRel16(mesh->center);
         sphere[3].x = g_MatrixPtr->_03 >> W2V_SHIFT;
         sphere[3].y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -240,7 +240,7 @@ void Lara_Hair_Control(void)
         Matrix_Push();
         Matrix_TranslateRel32(bone[LM_UARM_L - 1].pos);
         Matrix_Rot16(mesh_rots[LM_UARM_L]);
-        mesh = Object_GetMesh(object->mesh_idx + LM_UARM_L);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_UARM_L);
         Matrix_TranslateRel16(mesh->center);
         sphere[4].x = g_MatrixPtr->_03 >> W2V_SHIFT;
         sphere[4].y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -253,7 +253,7 @@ void Lara_Hair_Control(void)
         Matrix_Rot16(mesh_rots[LM_HEAD]);
         Matrix_Rot16(g_Lara.interp.result.head_rot);
         Matrix_Push();
-        mesh = Object_GetMesh(object->mesh_idx + LM_HEAD);
+        mesh = Object_GetMesh(obj->mesh_idx + LM_HEAD);
         Matrix_TranslateRel16(mesh->center);
         sphere[2].x = g_MatrixPtr->_03 >> W2V_SHIFT;
         sphere[2].y = g_MatrixPtr->_13 >> W2V_SHIFT;
@@ -269,7 +269,7 @@ void Lara_Hair_Control(void)
     pos.z = g_MatrixPtr->_23 >> W2V_SHIFT;
     Matrix_Pop();
 
-    const OBJECT *const hair_object = Object_Get(O_HAIR);
+    const OBJECT *const hair_obj = Object_Get(O_HAIR);
 
     m_Hair[0].pos = pos;
 
@@ -277,7 +277,7 @@ void Lara_Hair_Control(void)
         m_FirstHair = false;
 
         for (i = 0; i < HAIR_SEGMENTS; i++) {
-            const ANIM_BONE *const hair_bone = Object_GetBone(hair_object, i);
+            const ANIM_BONE *const hair_bone = Object_GetBone(hair_obj, i);
             Matrix_PushUnit();
             Matrix_TranslateSet(
                 m_Hair[i].pos.x, m_Hair[i].pos.y, m_Hair[i].pos.z);
@@ -307,8 +307,7 @@ void Lara_Hair_Control(void)
         }
 
         for (i = 1; i < HAIR_SEGMENTS + 1; i++) {
-            const ANIM_BONE *const hair_bone =
-                Object_GetBone(hair_object, i - 1);
+            const ANIM_BONE *const hair_bone = Object_GetBone(hair_obj, i - 1);
             m_HVel[0] = m_Hair[i].pos;
 
             sector = Room_GetSector(
@@ -406,10 +405,10 @@ void Lara_Hair_Draw(void)
         return;
     }
 
-    const OBJECT *const object = Object_Get(O_HAIR);
-    int16_t mesh_idx = object->mesh_idx;
+    const OBJECT *const obj = Object_Get(O_HAIR);
+    int16_t mesh_idx = obj->mesh_idx;
     if ((g_Lara.mesh_effects & (1 << LM_HEAD))
-        && object->mesh_count >= HAIR_SEGMENTS * 2) {
+        && obj->mesh_count >= HAIR_SEGMENTS * 2) {
         mesh_idx += HAIR_SEGMENTS;
     }
 

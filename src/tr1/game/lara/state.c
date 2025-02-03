@@ -67,12 +67,12 @@ static int16_t M_FloorFront(ITEM *item, PHD_ANGLE ang, int32_t dist)
 
 static bool M_HasResponsiveState(const LARA_ANIMATION anim_idx)
 {
-    const OBJECT *const object = Object_Get(O_LARA);
-    if (!object->loaded) {
+    const OBJECT *const obj = Object_Get(O_LARA);
+    if (!obj->loaded) {
         return false;
     }
 
-    const ANIM *const anim = Object_GetAnim(object, anim_idx);
+    const ANIM *const anim = Object_GetAnim(obj, anim_idx);
     for (int32_t i = 0; i < anim->num_changes; i++) {
         const ANIM_CHANGE *const change = Anim_GetChange(anim->change_idx + i);
         if (change->goal_anim_state == LS_RESPONSIVE) {

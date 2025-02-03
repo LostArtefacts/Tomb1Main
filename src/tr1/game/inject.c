@@ -119,7 +119,7 @@ static void M_LoadFromFile(INJECTION *injection, const char *filename);
 
 static uint16_t M_RemapRGB(LEVEL_INFO *level_info, RGB_888 rgb);
 static void M_AlignTextureReferences(
-    const OBJECT *object, const uint16_t *palette_map, int32_t tex_info_base);
+    const OBJECT *obj, const uint16_t *palette_map, int32_t tex_info_base);
 
 static void M_LoadTexturePages(
     const INJECTION *injection, LEVEL_INFO *level_info, uint16_t *palette_map);
@@ -421,16 +421,16 @@ static void M_TextureData(
         const int16_t mesh_idx = VFile_ReadS16(fp);
 
         if (object_id < O_NUMBER_OF) {
-            OBJECT *const object = Object_Get(object_id);
-            object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx + level_info->textures.sprite_count;
-            object->loaded = true;
+            OBJECT *const obj = Object_Get(object_id);
+            obj->mesh_count = num_meshes;
+            obj->mesh_idx = mesh_idx + level_info->textures.sprite_count;
+            obj->loaded = true;
         } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-            STATIC_OBJECT_2D *const object =
+            STATIC_OBJECT_2D *const obj =
                 Object_Get2DStatic(object_id - O_NUMBER_OF);
-            object->frame_count = ABS(num_meshes);
-            object->texture_idx = mesh_idx + level_info->textures.sprite_count;
-            object->loaded = true;
+            obj->frame_count = ABS(num_meshes);
+            obj->texture_idx = mesh_idx + level_info->textures.sprite_count;
+            obj->loaded = true;
         }
         level_info->textures.sprite_count += ABS(num_meshes);
     }
@@ -537,14 +537,14 @@ static void M_AnimRangeEdits(INJECTION *injection)
             continue;
         }
 
-        const OBJECT *const object = Object_Get(object_id);
-        if (!object->loaded) {
+        const OBJECT *const obj = Object_Get(object_id);
+        if (!obj->loaded) {
             LOG_WARNING("Object %d is not loaded", object_id);
             VFile_Skip(fp, edit_count * sizeof(int16_t) * 4);
             continue;
         }
 
-        const ANIM *const anim = Object_GetAnim(object, anim_idx);
+        const ANIM *const anim = Object_GetAnim(obj, anim_idx);
         for (int32_t j = 0; j < edit_count; j++) {
             const int16_t change_idx = VFile_ReadS16(fp);
             const int16_t range_idx = VFile_ReadS16(fp);
@@ -588,7 +588,7 @@ static void M_ObjectData(
 
     for (int32_t i = 0; i < inj_info->object_count; i++) {
         const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
-        OBJECT *const object = Object_Get(object_id);
+        OBJECT *const obj = Object_Get(object_id);
 
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
@@ -596,23 +596,23 @@ static void M_ObjectData(
 
         // Omitted mesh data indicates that we wish to retain what's already
         // defined in level data to avoid duplicate texture packing.
-        if (!object->loaded || num_meshes != 0) {
-            object->mesh_count = num_meshes;
-            object->mesh_idx = mesh_idx + level_info->mesh_ptr_count;
-            object->bone_idx = bone_idx + level_info->anims.bone_count;
+        if (!obj->loaded || num_meshes != 0) {
+            obj->mesh_count = num_meshes;
+            obj->mesh_idx = mesh_idx + level_info->mesh_ptr_count;
+            obj->bone_idx = bone_idx + level_info->anims.bone_count;
         }
 
-        object->frame_ofs = VFile_ReadU32(fp);
-        object->frame_base = nullptr;
-        object->anim_idx = VFile_ReadS16(fp);
-        if (object->anim_idx != -1) {
-            object->anim_idx += level_info->anims.anim_count;
+        obj->frame_ofs = VFile_ReadU32(fp);
+        obj->frame_base = nullptr;
+        obj->anim_idx = VFile_ReadS16(fp);
+        if (obj->anim_idx != -1) {
+            obj->anim_idx += level_info->anims.anim_count;
         }
-        object->loaded = true;
+        obj->loaded = true;
 
         if (num_meshes != 0) {
             M_AlignTextureReferences(
-                object, palette_map, level_info->textures.object_count);
+                obj, palette_map, level_info->textures.object_count);
         }
     }
 
@@ -657,11 +657,11 @@ static void M_SFXData(INJECTION *injection, LEVEL_INFO *level_info)
 }
 
 static void M_AlignTextureReferences(
-    const OBJECT *const object, const uint16_t *const palette_map,
+    const OBJECT *const obj, const uint16_t *const palette_map,
     const int32_t tex_info_base)
 {
-    for (int32_t i = 0; i < object->mesh_count; i++) {
-        OBJECT_MESH *const mesh = Object_GetMesh(object->mesh_idx + i);
+    for (int32_t i = 0; i < obj->mesh_count; i++) {
+        OBJECT_MESH *const mesh = Object_GetMesh(obj->mesh_idx + i);
         for (int32_t j = 0; j < mesh->num_tex_face4s; j++) {
             mesh->tex_face4s[j].texture_idx += tex_info_base;
         }
@@ -776,16 +776,16 @@ static void M_ApplyMeshEdit(
 {
     OBJECT_MESH *mesh;
     if (mesh_edit->object_id < O_NUMBER_OF) {
-        const OBJECT *const object = Object_Get(mesh_edit->object_id);
-        if (!object->loaded) {
+        const OBJECT *const obj = Object_Get(mesh_edit->object_id);
+        if (!obj->loaded) {
             return;
         }
 
-        mesh = Object_GetMesh(object->mesh_idx + mesh_edit->mesh_idx);
+        mesh = Object_GetMesh(obj->mesh_idx + mesh_edit->mesh_idx);
     } else if (mesh_edit->object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
-        const STATIC_OBJECT_3D *const info =
+        const STATIC_OBJECT_3D *const obj =
             Object_Get3DStatic(mesh_edit->object_id - O_NUMBER_OF);
-        mesh = Object_GetMesh(info->mesh_idx);
+        mesh = Object_GetMesh(obj->mesh_idx);
     } else {
         LOG_WARNING("Invalid object ID %d", mesh_edit->object_id);
         return;
@@ -857,13 +857,13 @@ static void M_ApplyFace3Edit(
 
 static uint16_t *M_GetMeshTexture(const FACE_EDIT *const face_edit)
 {
-    const OBJECT *const object = Object_Get(face_edit->object_id);
-    if (!object->loaded) {
+    const OBJECT *const obj = Object_Get(face_edit->object_id);
+    if (!obj->loaded) {
         return nullptr;
     }
 
     const OBJECT_MESH *const mesh =
-        Object_GetMesh(object->mesh_idx + face_edit->source_identifier);
+        Object_GetMesh(obj->mesh_idx + face_edit->source_identifier);
 
     if (face_edit->face_type == FT_TEXTURED_QUAD) {
         FACE4 *const face = &mesh->tex_face4s[face_edit->face_index];

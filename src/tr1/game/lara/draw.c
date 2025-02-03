@@ -58,8 +58,8 @@ void Lara_Draw(ITEM *item)
     // save matrix for hair
     saved_matrix = *g_MatrixPtr;
 
-    const OBJECT *const object = Object_Get(item->object_id);
-    Output_DrawShadow(object->shadow_size, &frame->bounds, item);
+    const OBJECT *const obj = Object_Get(item->object_id);
+    Output_DrawShadow(obj->shadow_size, &frame->bounds, item);
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->interp.result.pos);
@@ -75,7 +75,7 @@ void Lara_Draw(ITEM *item)
 
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    const ANIM_BONE *const bone = Object_GetBone(object, 0);
+    const ANIM_BONE *const bone = Object_GetBone(obj, 0);
     const XYZ_16 *mesh_rots = frame->mesh_rots;
 
     Matrix_TranslateRel16(frame->offset);
@@ -312,12 +312,12 @@ void Lara_Draw_I(
 {
     MATRIX saved_matrix;
 
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     saved_matrix = *g_MatrixPtr;
 
-    Output_DrawShadow(object->shadow_size, bounds, item);
+    Output_DrawShadow(obj->shadow_size, bounds, item);
 
     Matrix_Push();
     Matrix_TranslateAbs32(item->interp.result.pos);
@@ -333,7 +333,7 @@ void Lara_Draw_I(
 
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    const ANIM_BONE *const bone = Object_GetBone(object, 0);
+    const ANIM_BONE *const bone = Object_GetBone(obj, 0);
     const XYZ_16 *mesh_rots_1 = frame1->mesh_rots;
     const XYZ_16 *mesh_rots_2 = frame2->mesh_rots;
 

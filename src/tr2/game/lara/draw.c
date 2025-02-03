@@ -57,9 +57,9 @@ void Lara_Draw(const ITEM *const item)
     const ANIM_FRAME *const frame =
         hit_frame == nullptr ? frames[0] : hit_frame;
 
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     if (g_Lara.skidoo == NO_ITEM) {
-        Output_InsertShadow(object->shadow_size, &frame->bounds, item);
+        Output_InsertShadow(obj->shadow_size, &frame->bounds, item);
     }
 
     saved_matrix = *g_MatrixPtr;
@@ -77,7 +77,7 @@ void Lara_Draw(const ITEM *const item)
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame->bounds);
 
-    const ANIM_BONE *const bone = Object_GetBone(object, 0);
+    const ANIM_BONE *const bone = Object_GetBone(obj, 0);
     const XYZ_16 *mesh_rots = frame->mesh_rots;
     const XYZ_16 *mesh_rots_c;
 
@@ -125,12 +125,12 @@ void Lara_Draw(const ITEM *const item)
 
     if (g_Lara.back_gun) {
         Matrix_Push();
-        const OBJECT *const back_object = Object_Get(g_Lara.back_gun);
-        const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
+        const OBJECT *const back_obj = Object_Get(g_Lara.back_gun);
+        const ANIM_BONE *const bone_c = Object_GetBone(back_obj, 0);
         Matrix_TranslateRel32(bone_c[13].pos);
-        mesh_rots_c = back_object->frame_base->mesh_rots;
+        mesh_rots_c = back_obj->frame_base->mesh_rots;
         Matrix_Rot16(mesh_rots_c[LM_HEAD]);
-        Object_DrawMesh(back_object->mesh_idx + LM_HEAD, clip, false);
+        Object_DrawMesh(back_obj->mesh_idx + LM_HEAD, clip, false);
         Matrix_Pop();
     }
 
@@ -289,11 +289,11 @@ void Lara_Draw_I(
     const ITEM *const item, const ANIM_FRAME *const frame1,
     const ANIM_FRAME *const frame2, const int32_t frac, const int32_t rate)
 {
-    const OBJECT *const object = Object_Get(item->object_id);
+    const OBJECT *const obj = Object_Get(item->object_id);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);
 
     if (g_Lara.skidoo == NO_ITEM) {
-        Output_InsertShadow(object->shadow_size, bounds, item);
+        Output_InsertShadow(obj->shadow_size, bounds, item);
     }
 
     MATRIX saved_matrix = *g_MatrixPtr;
@@ -312,7 +312,7 @@ void Lara_Draw_I(
     Matrix_Push();
     Output_CalculateObjectLighting(item, &frame1->bounds);
 
-    const ANIM_BONE *const bone = Object_GetBone(object, 0);
+    const ANIM_BONE *const bone = Object_GetBone(obj, 0);
     const XYZ_16 *mesh_rots_1 = frame1->mesh_rots;
     const XYZ_16 *mesh_rots_2 = frame2->mesh_rots;
     const XYZ_16 *mesh_rots_1_c;
@@ -365,13 +365,13 @@ void Lara_Draw_I(
 
     if (g_Lara.back_gun) {
         Matrix_Push_I();
-        const OBJECT *const back_object = Object_Get(g_Lara.back_gun);
-        const ANIM_BONE *const bone_c = Object_GetBone(back_object, 0);
+        const OBJECT *const back_obj = Object_Get(g_Lara.back_gun);
+        const ANIM_BONE *const bone_c = Object_GetBone(back_obj, 0);
         Matrix_TranslateRel32_I(bone_c[13].pos);
-        mesh_rots_1_c = back_object->frame_base->mesh_rots;
-        mesh_rots_2_c = back_object->frame_base->mesh_rots;
+        mesh_rots_1_c = back_obj->frame_base->mesh_rots;
+        mesh_rots_2_c = back_obj->frame_base->mesh_rots;
         Matrix_Rot16_ID(mesh_rots_1_c[LM_HEAD], mesh_rots_2_c[LM_HEAD]);
-        Object_DrawMesh(back_object->mesh_idx + LM_HEAD, clip, true);
+        Object_DrawMesh(back_obj->mesh_idx + LM_HEAD, clip, true);
         Matrix_Pop_I();
     }
 

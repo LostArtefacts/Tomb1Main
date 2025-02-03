@@ -200,9 +200,9 @@ void Gun_InitialiseNewWeapon(void)
     g_Lara.target = nullptr;
 
     const GAME_OBJECT_ID anim_type = Gun_GetLaraAnim(g_Lara.gun_type);
-    const OBJECT *const object = Object_Get(anim_type);
-    g_Lara.right_arm.frame_base = object->frame_base;
-    g_Lara.left_arm.frame_base = object->frame_base;
+    const OBJECT *const obj = Object_Get(anim_type);
+    g_Lara.right_arm.frame_base = obj->frame_base;
+    g_Lara.left_arm.frame_base = obj->frame_base;
 
     if (g_Lara.gun_status != LGS_ARMLESS) {
         if (anim_type == O_SHOTGUN_ANIM) {
@@ -298,9 +298,9 @@ void Gun_DrawFlash(LARA_GUN_TYPE weapon_type, int32_t clip)
     Matrix_RotX(-90 * DEG_1);
     Matrix_RotZ((int16_t)(Random_GetDraw() * 2));
     Output_CalculateStaticLight(light);
-    const OBJECT *const object = Object_Get(O_GUN_FLASH);
-    if (object->loaded) {
-        Object_DrawMesh(object->mesh_idx, clip, false);
+    const OBJECT *const obj = Object_Get(O_GUN_FLASH);
+    if (obj->loaded) {
+        Object_DrawMesh(obj->mesh_idx, clip, false);
     }
 }
 

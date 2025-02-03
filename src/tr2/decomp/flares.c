@@ -233,9 +233,9 @@ void Flare_SetArm(const int32_t frame)
         anim_idx = LA_FLARES_IDLE;
     }
 
-    const OBJECT *const object = Object_Get(O_LARA_FLARE);
-    const ANIM *const anim = Object_GetAnim(object, anim_idx);
-    g_Lara.left_arm.anim_num = object->anim_idx + anim_idx;
+    const OBJECT *const obj = Object_Get(O_LARA_FLARE);
+    const ANIM *const anim = Object_GetAnim(obj, anim_idx);
+    g_Lara.left_arm.anim_num = obj->anim_idx + anim_idx;
     g_Lara.left_arm.frame_base = anim->frame_ptr;
 }
 
