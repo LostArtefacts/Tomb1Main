@@ -8,6 +8,11 @@
 #include <stdint.h>
 
 typedef struct {
+    const GAME_OBJECT_ID key_id;
+    const GAME_OBJECT_ID value_id;
+} GAME_OBJECT_PAIR;
+
+typedef struct {
     void *priv;
     XYZ_16 center;
     int32_t radius;

@@ -7,11 +7,6 @@
 #include "ids.h"
 #include "types.h"
 
-typedef struct {
-    const GAME_OBJECT_ID key_id;
-    const GAME_OBJECT_ID value_id;
-} GAME_OBJECT_PAIR;
-
 OBJECT *Object_Get(GAME_OBJECT_ID object_id);
 STATIC_OBJECT_3D *Object_Get3DStatic(int32_t static_id);
 STATIC_OBJECT_2D *Object_Get2DStatic(int32_t static_id);
