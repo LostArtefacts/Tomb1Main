@@ -3,6 +3,7 @@
 #include "game/clock.h"
 #include "game/overlay.h"
 #include "game/random.h"
+#include "game/room.h"
 #include "game/shell.h"
 #include "game/viewport.h"
 #include "global/const.h"
@@ -643,6 +644,70 @@ void Output_DrawRoom(const ROOM_MESH *const mesh)
     M_DrawTexturedFace4s(mesh->face4s, mesh->num_face4s);
     M_DrawTexturedFace3s(mesh->face3s, mesh->num_face3s);
     M_DrawRoomSprites(mesh);
+}
+
+void Output_DrawRoomTriggers(const ROOM *const r)
+{
+#define DRAW_TRI(a, b, c, color)                                               \
+    do {                                                                       \
+        S_Output_DrawFlatTriangle(a, b, c, color);                             \
+        S_Output_DrawFlatTriangle(c, b, a, color);                             \
+    } while (0)
+#define DRAW_QUAD(a, b, c, d, color)                                           \
+    do {                                                                       \
+        DRAW_TRI(a, b, d, color);                                              \
+        DRAW_TRI(b, c, d, color);                                              \
+    } while (0)
+
+    const RGBA_8888 color = { .r = 255, .g = 0, .b = 255, .a = 128 };
+    const XZ_16 offsets[4] = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 } };
+
+    m_IsWaterEffect = false;
+    m_IsShadeEffect = false;
+    S_Output_DisableTextureMode();
+    S_Output_DisableDepthWrites();
+    S_Output_SetBlendingMode(GFX_BLEND_MODE_NORMAL);
+    for (int32_t z = 0; z < r->size.z; z++) {
+        for (int32_t x = 0; x < r->size.x; x++) {
+            const SECTOR *sector = &r->sectors[z + x * r->size.z];
+            if (sector->trigger == nullptr) {
+                continue;
+            }
+            PHD_VBUF vns[4];
+            for (int32_t i = 0; i < 4; i++) {
+                XYZ_16 vertex_pos = {
+                    .x = (x + offsets[i].x) * WALL_L,
+                    .z = (z + offsets[i].z) * WALL_L,
+                };
+                XYZ_32 world_pos = {
+                    .x = r->pos.x + x * WALL_L + offsets[i].x * (WALL_L - 1),
+                    .z = r->pos.z + z * WALL_L + offsets[i].z * (WALL_L - 1),
+                    .y = r->pos.y,
+                };
+
+                int16_t room_num = r - g_RoomInfo;
+                sector = Room_GetSector(
+                    world_pos.x, world_pos.y, world_pos.z, &room_num);
+                vertex_pos.y =
+                    Room_GetHeight(
+                        sector, world_pos.x, world_pos.y, world_pos.z)
+                    + (m_IsWaterEffect ? -16 : -2);
+
+                M_CalcVertex(&vns[i], vertex_pos);
+                vns[i].g = HIGH_LIGHT;
+                vns[i].zv -=
+                    (double)((1 << W2V_SHIFT) / 2); // reduce z fighting
+            }
+
+            DRAW_QUAD(&vns[0], &vns[1], &vns[2], &vns[3], color);
+        }
+    }
+
+    S_Output_SetBlendingMode(GFX_BLEND_MODE_OFF);
+    S_Output_EnableDepthWrites();
+
+#undef DRAW_TRI
+#undef DRAW_QUAD
 }
 
 void Output_DrawShadow(

@@ -9,7 +9,6 @@
 
 #include <libtrx/config.h>
 #include <libtrx/debug.h>
-#include <libtrx/gfx/context.h>
 #include <libtrx/log.h>
 
 #include <string.h>
@@ -421,6 +420,11 @@ void S_Output_DisableTextureMode(void)
 
     m_IsTextureMode = false;
     GFX_3D_Renderer_SetTexturingEnabled(m_Renderer3D, m_IsTextureMode);
+}
+
+void S_Output_SetBlendingMode(const GFX_BLEND_MODE blend_mode)
+{
+    GFX_3D_Renderer_SetBlendingMode(m_Renderer3D, blend_mode);
 }
 
 void S_Output_EnableDepthWrites(void)

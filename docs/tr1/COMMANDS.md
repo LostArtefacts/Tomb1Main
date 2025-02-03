@@ -49,6 +49,10 @@ Currently supported commands:
   `/wireframe off`  
   Enables or disables the wireframe mode. Enter the debugging realm!
 
+- `/debug on`  
+  `/debug off`  
+  Enables or disables the debug mode. Draws all room triggers.
+
 - `/endlevel`  
   `/nextlevel`  
   Ends the current level. Ideal for speedruns.

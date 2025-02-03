@@ -11,6 +11,7 @@
 #include "global/types.h"
 #include "global/vars.h"
 
+#include <libtrx/config.h>
 #include <libtrx/game/matrix.h>
 #include <libtrx/log.h>
 
@@ -315,6 +316,9 @@ void Room_DrawSingleRoom(int16_t room_num)
         Effect_Draw(i);
     }
 
+    if (g_Config.rendering.enable_debug) {
+        Output_DrawRoomTriggers(r);
+    }
     Matrix_Pop();
 
     r->bound_left = Viewport_GetMaxX();

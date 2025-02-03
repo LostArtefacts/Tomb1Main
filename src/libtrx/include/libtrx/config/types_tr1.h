@@ -201,6 +201,7 @@ typedef struct {
         bool enable_perspective_filter;
         GFX_TEXTURE_FILTER texture_filter;
         GFX_TEXTURE_FILTER fbo_filter;
+        bool enable_debug;
         bool enable_wireframe;
         double wireframe_width;
         bool enable_vsync;

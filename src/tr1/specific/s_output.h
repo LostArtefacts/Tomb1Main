@@ -3,6 +3,7 @@
 #include "global/types.h"
 
 #include <libtrx/engine/image.h>
+#include <libtrx/gfx/context.h>
 
 #include <stdint.h>
 
@@ -11,6 +12,7 @@ void S_Output_Shutdown(void);
 
 void S_Output_EnableTextureMode(void);
 void S_Output_DisableTextureMode(void);
+void S_Output_SetBlendingMode(GFX_BLEND_MODE blend_mode);
 void S_Output_EnableDepthWrites(void);
 void S_Output_DisableDepthWrites(void);
 void S_Output_EnableDepthTest(void);
