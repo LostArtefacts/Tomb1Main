@@ -276,7 +276,7 @@ void Item_NewRoom(const int16_t item_num, const int16_t room_num)
 }
 
 int32_t Item_GlobalReplace(
-    const GAME_OBJECT_ID src_object_id, const GAME_OBJECT_ID dst_object_id)
+    const GAME_OBJECT_ID src_obj_id, const GAME_OBJECT_ID dst_obj_id)
 {
     int32_t changed = 0;
 
@@ -284,8 +284,8 @@ int32_t Item_GlobalReplace(
         int16_t j = g_Rooms[i].item_num;
         while (j != NO_ITEM) {
             ITEM *const item = &g_Items[j];
-            if (item->object_id == src_object_id) {
-                item->object_id = dst_object_id;
+            if (item->object_id == src_obj_id) {
+                item->object_id = dst_obj_id;
                 changed++;
             }
             j = item->next_item;

@@ -416,18 +416,18 @@ static void M_TextureData(
         inj_info->sprite_info_count, fp);
 
     for (int32_t i = 0; i < inj_info->sprite_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
+        const GAME_OBJECT_ID obj_id = VFile_ReadS32(fp);
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
 
-        if (object_id < O_NUMBER_OF) {
-            OBJECT *const obj = Object_Get(object_id);
+        if (obj_id < O_NUMBER_OF) {
+            OBJECT *const obj = Object_Get(obj_id);
             obj->mesh_count = num_meshes;
             obj->mesh_idx = mesh_idx + level_info->textures.sprite_count;
             obj->loaded = true;
-        } else if (object_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
+        } else if (obj_id - O_NUMBER_OF < MAX_STATIC_OBJECTS) {
             STATIC_OBJECT_2D *const obj =
-                Object_Get2DStatic(object_id - O_NUMBER_OF);
+                Object_Get2DStatic(obj_id - O_NUMBER_OF);
             obj->frame_count = ABS(num_meshes);
             obj->texture_idx = mesh_idx + level_info->textures.sprite_count;
             obj->loaded = true;
@@ -527,19 +527,19 @@ static void M_AnimRangeEdits(INJECTION *injection)
     VFILE *const fp = injection->fp;
 
     for (int32_t i = 0; i < inj_info->anim_range_edit_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
+        const GAME_OBJECT_ID obj_id = VFile_ReadS32(fp);
         const int16_t anim_idx = VFile_ReadS16(fp);
         const int32_t edit_count = VFile_ReadS32(fp);
 
-        if (object_id < 0 || object_id >= O_NUMBER_OF) {
-            LOG_WARNING("Object %d is not recognised", object_id);
+        if (obj_id < 0 || obj_id >= O_NUMBER_OF) {
+            LOG_WARNING("Object %d is not recognised", obj_id);
             VFile_Skip(fp, edit_count * sizeof(int16_t) * 4);
             continue;
         }
 
-        const OBJECT *const obj = Object_Get(object_id);
+        const OBJECT *const obj = Object_Get(obj_id);
         if (!obj->loaded) {
-            LOG_WARNING("Object %d is not loaded", object_id);
+            LOG_WARNING("Object %d is not loaded", obj_id);
             VFile_Skip(fp, edit_count * sizeof(int16_t) * 4);
             continue;
         }
@@ -587,8 +587,8 @@ static void M_ObjectData(
     VFILE *const fp = injection->fp;
 
     for (int32_t i = 0; i < inj_info->object_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
-        OBJECT *const obj = Object_Get(object_id);
+        const GAME_OBJECT_ID obj_id = VFile_ReadS32(fp);
+        OBJECT *const obj = Object_Get(obj_id);
 
         const int16_t num_meshes = VFile_ReadS16(fp);
         const int16_t mesh_idx = VFile_ReadS16(fp);
@@ -1546,11 +1546,11 @@ static void M_FrameEdits(
 
     VFILE *const fp = injection->fp;
     for (int32_t i = 0; i < injection->info->frame_edit_count; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(fp);
+        const GAME_OBJECT_ID obj_id = VFile_ReadS32(fp);
         const int32_t anim_idx = VFile_ReadS32(fp);
         const int32_t packed_rot = VFile_ReadS32(fp);
 
-        const OBJECT *const obj = Object_Get(object_id);
+        const OBJECT *const obj = Object_Get(obj_id);
         if (!obj->loaded) {
             continue;
         }

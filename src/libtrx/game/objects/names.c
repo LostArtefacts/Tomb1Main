@@ -33,39 +33,39 @@ static void M_ClearNames(void);
 
 static void M_ClearNames(void)
 {
-    for (GAME_OBJECT_ID object_id = 0; object_id < O_NUMBER_OF; object_id++) {
-        M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    for (GAME_OBJECT_ID obj_id = 0; obj_id < O_NUMBER_OF; obj_id++) {
+        M_NAME_ENTRY *const entry = &m_NamesTable[obj_id];
         Memory_FreePointer(&entry->name);
         Memory_FreePointer(&entry->description);
     }
 }
 
-void Object_SetName(const GAME_OBJECT_ID object_id, const char *const name)
+void Object_SetName(const GAME_OBJECT_ID obj_id, const char *const name)
 {
-    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    M_NAME_ENTRY *const entry = &m_NamesTable[obj_id];
     Memory_FreePointer(&entry->name);
     ASSERT(name != nullptr);
     entry->name = Memory_DupStr(name);
 }
 
 void Object_SetDescription(
-    const GAME_OBJECT_ID object_id, const char *const description)
+    const GAME_OBJECT_ID obj_id, const char *const description)
 {
-    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    M_NAME_ENTRY *const entry = &m_NamesTable[obj_id];
     Memory_FreePointer(&entry->description);
     ASSERT(description != nullptr);
     entry->description = Memory_DupStr(description);
 }
 
-const char *Object_GetName(const GAME_OBJECT_ID object_id)
+const char *Object_GetName(const GAME_OBJECT_ID obj_id)
 {
-    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    M_NAME_ENTRY *const entry = &m_NamesTable[obj_id];
     return entry != nullptr ? entry->name : nullptr;
 }
 
-const char *Object_GetDescription(GAME_OBJECT_ID object_id)
+const char *Object_GetDescription(GAME_OBJECT_ID obj_id)
 {
-    M_NAME_ENTRY *const entry = &m_NamesTable[object_id];
+    M_NAME_ENTRY *const entry = &m_NamesTable[obj_id];
     return entry != nullptr ? entry->description : nullptr;
 }
 
@@ -95,15 +95,15 @@ GAME_OBJECT_ID *Object_IdsFromName(
 {
     VECTOR *source = Vector_Create(sizeof(STRING_FUZZY_SOURCE));
 
-    for (GAME_OBJECT_ID object_id = 0; object_id < O_NUMBER_OF; object_id++) {
-        if (filter != nullptr && !filter(object_id)) {
+    for (GAME_OBJECT_ID obj_id = 0; obj_id < O_NUMBER_OF; obj_id++) {
+        if (filter != nullptr && !filter(obj_id)) {
             continue;
         }
 
         {
             STRING_FUZZY_SOURCE source_item = {
-                .key = Object_GetName(object_id),
-                .value = (void *)(intptr_t)object_id,
+                .key = Object_GetName(obj_id),
+                .value = (void *)(intptr_t)obj_id,
                 .weight = 2,
             };
             if (source_item.key != nullptr) {
@@ -111,10 +111,10 @@ GAME_OBJECT_ID *Object_IdsFromName(
             }
         }
 
-        if (Object_IsType(object_id, g_PickupObjects)) {
+        if (Object_IsType(obj_id, g_PickupObjects)) {
             STRING_FUZZY_SOURCE source_item = {
                 .key = "pickup",
-                .value = (void *)(intptr_t)object_id,
+                .value = (void *)(intptr_t)obj_id,
                 .weight = 1,
             };
             Vector_Add(source, &source_item);

@@ -520,10 +520,9 @@ static void M_DrawPickups(void)
     }
 }
 
-void Overlay_AddDisplayPickup(const GAME_OBJECT_ID object_id)
+void Overlay_AddDisplayPickup(const GAME_OBJECT_ID obj_id)
 {
-    if (object_id == O_SECRET_1 || object_id == O_SECRET_2
-        || object_id == O_SECRET_3) {
+    if (obj_id == O_SECRET_1 || obj_id == O_SECRET_2 || obj_id == O_SECRET_3) {
         Music_Play(g_GameFlow.secret_track, MPM_ALWAYS);
     }
 
@@ -550,14 +549,13 @@ void Overlay_AddDisplayPickup(const GAME_OBJECT_ID object_id)
         }
     }
 
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(obj_id);
     for (int32_t i = 0; i < MAX_PICKUPS; i++) {
         DISPLAY_PICKUP *const pickup = &m_Pickups[i];
         if (pickup->phase == DPP_DEAD) {
-            pickup->object = Object_Get(object_id);
-            pickup->inv_object = inv_object_id != NO_OBJECT
-                ? Object_Get(inv_object_id)
-                : nullptr;
+            pickup->object = Object_Get(obj_id);
+            pickup->inv_object =
+                inv_obj_id != NO_OBJECT ? Object_Get(inv_obj_id) : nullptr;
             pickup->duration = 0;
             pickup->grid_x = grid_x;
             pickup->grid_y = grid_y;

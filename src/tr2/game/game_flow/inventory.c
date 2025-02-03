@@ -11,7 +11,7 @@ static int8_t m_Add2InvItems[O_NUMBER_OF] = {};
 
 static void M_ModifyInventory_GunOrAmmo(
     START_INFO *start, GF_INV_TYPE type, LARA_GUN_TYPE gun_type);
-static void M_ModifyInventory_Item(GF_INV_TYPE type, GAME_OBJECT_ID object_id);
+static void M_ModifyInventory_Item(GF_INV_TYPE type, GAME_OBJECT_ID obj_id);
 
 static void M_ModifyInventory_GunOrAmmo(
     START_INFO *const start, const GF_INV_TYPE type,
@@ -73,19 +73,19 @@ static void M_ModifyInventory_GunOrAmmo(
 }
 
 static void M_ModifyInventory_Item(
-    const GF_INV_TYPE type, const GAME_OBJECT_ID object_id)
+    const GF_INV_TYPE type, const GAME_OBJECT_ID obj_id)
 {
     int32_t qty = 0;
     if (type == GF_INV_SECRET) {
-        qty = m_SecretInvItems[object_id];
+        qty = m_SecretInvItems[obj_id];
     } else if (type == GF_INV_REGULAR) {
-        qty = m_Add2InvItems[object_id];
+        qty = m_Add2InvItems[obj_id];
     }
 
     for (int32_t i = 0; i < qty; i++) {
-        Inv_AddItem(object_id);
+        Inv_AddItem(obj_id);
         if (type == GF_INV_SECRET) {
-            Overlay_AddDisplayPickup(object_id);
+            Overlay_AddDisplayPickup(obj_id);
         }
     }
 }
@@ -99,15 +99,15 @@ void GF_InventoryModifier_Reset(void)
 }
 
 void GF_InventoryModifier_Add(
-    const GAME_OBJECT_ID object_id, const GF_INV_TYPE type, const int32_t qty)
+    const GAME_OBJECT_ID obj_id, const GF_INV_TYPE type, const int32_t qty)
 {
-    if (object_id < 0 || object_id >= O_NUMBER_OF) {
+    if (obj_id < 0 || obj_id >= O_NUMBER_OF) {
         return;
     }
     if (type == GF_INV_SECRET) {
-        m_SecretInvItems[object_id] += qty;
+        m_SecretInvItems[obj_id] += qty;
     } else if (type == GF_INV_REGULAR) {
-        m_Add2InvItems[object_id] += qty;
+        m_Add2InvItems[obj_id] += qty;
     }
 }
 

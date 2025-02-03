@@ -3,21 +3,21 @@
 #include "game/inventory_ring/vars.h"
 #include "game/objects/vars.h"
 
-bool Inv_AddItemNTimes(const GAME_OBJECT_ID object_id, const int32_t qty)
+bool Inv_AddItemNTimes(const GAME_OBJECT_ID obj_id, const int32_t qty)
 {
     bool result = false;
     for (int32_t i = 0; i < qty; i++) {
-        result |= Inv_AddItem(object_id);
+        result |= Inv_AddItem(obj_id);
     }
     return result;
 }
 
-GAME_OBJECT_ID Inv_GetItemOption(const GAME_OBJECT_ID object_id)
+GAME_OBJECT_ID Inv_GetItemOption(const GAME_OBJECT_ID obj_id)
 {
-    if (Object_IsType(object_id, g_InvObjects)) {
-        return object_id;
+    if (Object_IsType(obj_id, g_InvObjects)) {
+        return obj_id;
     }
-    return Object_GetCognate(object_id, g_ItemToInvObjectMap);
+    return Object_GetCognate(obj_id, g_ItemToInvObjectMap);
 }
 
 void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
@@ -41,13 +41,13 @@ void Inv_InsertItem(INVENTORY_ITEM *const inv_item)
     source->count++;
 }
 
-bool Inv_RemoveItem(const GAME_OBJECT_ID object_id)
+bool Inv_RemoveItem(const GAME_OBJECT_ID obj_id)
 {
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(obj_id);
     for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
         INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
         for (int32_t i = 0; i < source->count; i++) {
-            if (source->items[i]->object_id == inv_object_id) {
+            if (source->items[i]->object_id == inv_obj_id) {
                 source->qtys[i]--;
                 if (source->qtys[i] == 0) {
                     source->count--;
@@ -63,13 +63,13 @@ bool Inv_RemoveItem(const GAME_OBJECT_ID object_id)
     return false;
 }
 
-int32_t Inv_RequestItem(const GAME_OBJECT_ID object_id)
+int32_t Inv_RequestItem(const GAME_OBJECT_ID obj_id)
 {
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(obj_id);
     for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
         INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
         for (int32_t i = 0; i < source->count; i++) {
-            if (source->items[i]->object_id == inv_object_id) {
+            if (source->items[i]->object_id == inv_obj_id) {
                 return source->qtys[i];
             }
         }

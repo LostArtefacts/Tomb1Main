@@ -27,12 +27,12 @@ void Earthquake_Control(const int16_t item_num)
         g_Camera.bounce = -200;
     }
 
-    GAME_OBJECT_ID object_id_to_activate;
+    GAME_OBJECT_ID obj_id_to_activate;
     const int32_t random = Random_GetControl();
     if (random < 512) {
-        object_id_to_activate = O_FLAME_EMITTER;
+        obj_id_to_activate = O_FLAME_EMITTER;
     } else if (random < 1024) {
-        object_id_to_activate = O_FALLING_CEILING;
+        obj_id_to_activate = O_FALLING_CEILING;
     } else {
         return;
     }
@@ -40,7 +40,7 @@ void Earthquake_Control(const int16_t item_num)
     int16_t earth_item_num = Room_Get(item->room_num)->item_num;
     while (earth_item_num != NO_ITEM) {
         const ITEM *const earth_item = Item_Get(earth_item_num);
-        if (earth_item->object_id == object_id_to_activate
+        if (earth_item->object_id == obj_id_to_activate
             && earth_item->status != IS_ACTIVE
             && earth_item->status != IS_DEACTIVATED) {
             M_Activate(earth_item_num);

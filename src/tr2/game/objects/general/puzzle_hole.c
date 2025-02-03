@@ -38,7 +38,7 @@ static int16_t m_PuzzleHoleBounds[12] = {
 
 static void M_Refuse(const ITEM *lara_item);
 static void M_Consume(
-    ITEM *lara_item, ITEM *puzzle_hole_item, GAME_OBJECT_ID puzzle_object_id);
+    ITEM *lara_item, ITEM *puzzle_hole_item, GAME_OBJECT_ID puzzle_obj_id);
 static void M_MarkDone(ITEM *puzzle_hole_item);
 
 static void M_Refuse(const ITEM *const lara_item)
@@ -53,9 +53,9 @@ static void M_Refuse(const ITEM *const lara_item)
 
 static void M_Consume(
     ITEM *const lara_item, ITEM *const puzzle_hole_item,
-    const GAME_OBJECT_ID puzzle_object_id)
+    const GAME_OBJECT_ID puzzle_obj_id)
 {
-    Inv_RemoveItem(puzzle_object_id);
+    Inv_RemoveItem(puzzle_obj_id);
     Item_AlignPosition(&m_PuzzleHolePosition, puzzle_hole_item, lara_item);
     lara_item->goal_anim_state = LS_USE_PUZZLE;
     do {
@@ -69,10 +69,10 @@ static void M_Consume(
 
 static void M_MarkDone(ITEM *const puzzle_hole_item)
 {
-    const GAME_OBJECT_ID done_object_id = Object_GetCognate(
+    const GAME_OBJECT_ID done_obj_id = Object_GetCognate(
         puzzle_hole_item->object_id, g_ReceptacleToReceptacleDoneMap);
-    if (done_object_id != NO_OBJECT) {
-        puzzle_hole_item->object_id = done_object_id;
+    if (done_obj_id != NO_OBJECT) {
+        puzzle_hole_item->object_id = done_obj_id;
     }
 }
 
@@ -124,13 +124,13 @@ void PuzzleHole_Collision(
         g_InteractPosition.y = lara_item->pos.y - 1;
     }
 
-    const GAME_OBJECT_ID puzzle_object_id =
+    const GAME_OBJECT_ID puzzle_obj_id =
         Object_GetCognateInverse(item->object_id, g_KeyItemToReceptacleMap);
-    const bool correct = g_Inv_Chosen == puzzle_object_id;
+    const bool correct = g_Inv_Chosen == puzzle_obj_id;
     g_Inv_Chosen = NO_OBJECT;
 
     if (correct) {
-        M_Consume(lara_item, item, puzzle_object_id);
+        M_Consume(lara_item, item, puzzle_obj_id);
     } else {
         M_Refuse(lara_item);
     }

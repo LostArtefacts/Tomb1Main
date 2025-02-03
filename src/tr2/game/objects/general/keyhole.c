@@ -35,7 +35,7 @@ static int16_t m_KeyholeBounds[12] = {
 };
 
 static void M_Consume(
-    ITEM *lara_item, ITEM *keyhole_item, GAME_OBJECT_ID key_object_id);
+    ITEM *lara_item, ITEM *keyhole_item, GAME_OBJECT_ID key_obj_id);
 static void M_Refuse(const ITEM *lara_item);
 
 static void M_Refuse(const ITEM *const lara_item)
@@ -52,9 +52,9 @@ static void M_Refuse(const ITEM *const lara_item)
 
 static void M_Consume(
     ITEM *const lara_item, ITEM *const keyhole_item,
-    const GAME_OBJECT_ID key_object_id)
+    const GAME_OBJECT_ID key_obj_id)
 {
-    Inv_RemoveItem(key_object_id);
+    Inv_RemoveItem(key_obj_id);
     Item_AlignPosition(&m_KeyholePosition, keyhole_item, lara_item);
     lara_item->goal_anim_state = LS_USE_KEY;
     do {
@@ -104,13 +104,13 @@ void Keyhole_Collision(
         g_InteractPosition.y = lara_item->pos.y - 1;
     }
 
-    const GAME_OBJECT_ID key_object_id =
+    const GAME_OBJECT_ID key_obj_id =
         Object_GetCognateInverse(item->object_id, g_KeyItemToReceptacleMap);
-    const bool correct = g_Inv_Chosen == key_object_id;
+    const bool correct = g_Inv_Chosen == key_obj_id;
     g_Inv_Chosen = NO_OBJECT;
 
     if (correct) {
-        M_Consume(lara_item, item, key_object_id);
+        M_Consume(lara_item, item, key_obj_id);
     } else {
         M_Refuse(lara_item);
     }

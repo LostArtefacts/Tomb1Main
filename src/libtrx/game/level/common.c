@@ -449,13 +449,13 @@ void Level_ReadObjects(VFILE *const file)
     const int32_t num_objects = VFile_ReadS32(file);
     LOG_INFO("objects: %d", num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
-        const GAME_OBJECT_ID object_id = VFile_ReadS32(file);
-        if (object_id < 0 || object_id >= O_NUMBER_OF) {
+        const GAME_OBJECT_ID obj_id = VFile_ReadS32(file);
+        if (obj_id < 0 || obj_id >= O_NUMBER_OF) {
             Shell_ExitSystemFmt(
-                "Invalid object ID: %d (max=%d)", object_id, O_NUMBER_OF);
+                "Invalid object ID: %d (max=%d)", obj_id, O_NUMBER_OF);
         }
 
-        OBJECT *const obj = Object_Get(object_id);
+        OBJECT *const obj = Object_Get(obj_id);
         obj->mesh_count = VFile_ReadS16(file);
         obj->mesh_idx = VFile_ReadS16(file);
         obj->bone_idx = VFile_ReadS32(file) / ANIM_BONE_SIZE;

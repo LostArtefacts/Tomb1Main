@@ -279,12 +279,12 @@ int16_t Item_GetWaterHeight(ITEM *item)
     return height;
 }
 
-int16_t Item_Spawn(const ITEM *const item, const GAME_OBJECT_ID object_id)
+int16_t Item_Spawn(const ITEM *const item, const GAME_OBJECT_ID obj_id)
 {
     int16_t spawn_num = Item_Create();
     if (spawn_num != NO_ITEM) {
         ITEM *spawn = &g_Items[spawn_num];
-        spawn->object_id = object_id;
+        spawn->object_id = obj_id;
         spawn->room_num = item->room_num;
         spawn->pos = item->pos;
         spawn->rot = item->rot;
@@ -296,15 +296,15 @@ int16_t Item_Spawn(const ITEM *const item, const GAME_OBJECT_ID object_id)
 }
 
 int32_t Item_GlobalReplace(
-    const GAME_OBJECT_ID src_object_id, const GAME_OBJECT_ID dst_object_id)
+    const GAME_OBJECT_ID src_obj_id, const GAME_OBJECT_ID dst_obj_id)
 {
     int32_t changed = 0;
     for (int i = 0; i < g_RoomCount; i++) {
         ROOM *r = &g_RoomInfo[i];
         for (int16_t item_num = r->item_num; item_num != NO_ITEM;
              item_num = g_Items[item_num].next_item) {
-            if (g_Items[item_num].object_id == src_object_id) {
-                g_Items[item_num].object_id = dst_object_id;
+            if (g_Items[item_num].object_id == src_obj_id) {
+                g_Items[item_num].object_id = dst_obj_id;
                 changed++;
             }
         }

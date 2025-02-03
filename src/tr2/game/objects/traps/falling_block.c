@@ -4,9 +4,9 @@
 #include "game/room.h"
 #include "global/vars.h"
 
-static int32_t M_GetOrigin(const GAME_OBJECT_ID object_id)
+static int32_t M_GetOrigin(const GAME_OBJECT_ID obj_id)
 {
-    return object_id == O_FALLING_BLOCK_3 ? WALL_L : STEP_L * 2;
+    return obj_id == O_FALLING_BLOCK_3 ? WALL_L : STEP_L * 2;
 }
 
 void FallingBlock_Control(const int16_t item_num)

@@ -849,10 +849,10 @@ void Creature_GetBaddieTarget(const int16_t item_num, const int32_t goody)
         }
 
         ITEM *target = &g_Items[target_item_num];
-        const GAME_OBJECT_ID object_id = target->object_id;
-        if (goody && object_id != O_BANDIT_1 && object_id != O_BANDIT_2) {
+        const GAME_OBJECT_ID obj_id = target->object_id;
+        if (goody && obj_id != O_BANDIT_1 && obj_id != O_BANDIT_2) {
             continue;
-        } else if (!goody && object_id != O_MONK_1 && object_id != O_MONK_2) {
+        } else if (!goody && obj_id != O_MONK_1 && obj_id != O_MONK_2) {
             continue;
         }
 

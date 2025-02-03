@@ -126,15 +126,15 @@ static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleTotalStatsEvent)
 
 static DECLARE_SEQUENCE_EVENT_HANDLER_FUNC(M_HandleAddItemEvent)
 {
-    const GAME_OBJECT_ID object_id =
+    const GAME_OBJECT_ID obj_id =
         M_GetObjectFromJSONValue(JSON_ObjectGetValue(event_obj, "object_id"));
-    if (object_id == NO_OBJECT) {
+    if (obj_id == NO_OBJECT) {
         Shell_ExitSystem("Invalid item");
         return -1;
     }
     if (event != nullptr) {
         GF_ADD_ITEM_DATA *const event_data = extra_data;
-        event_data->object_id = object_id;
+        event_data->object_id = obj_id;
         event_data->quantity = JSON_ObjectGetInt(event_obj, "quantity", 1);
 #if TR_VERSION == 2
         event_data->inv_type =

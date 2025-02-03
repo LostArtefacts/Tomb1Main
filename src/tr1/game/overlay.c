@@ -804,7 +804,7 @@ void Overlay_DrawFPSInfo(void)
     }
 }
 
-void Overlay_AddPickup(const GAME_OBJECT_ID object_id)
+void Overlay_AddPickup(const GAME_OBJECT_ID obj_id)
 {
     int32_t grid_x = -1;
     int32_t grid_y = -1;
@@ -831,7 +831,7 @@ void Overlay_AddPickup(const GAME_OBJECT_ID object_id)
 
     for (int i = 0; i < MAX_PICKUPS; i++) {
         if (m_Pickups[i].phase == DPP_DEAD) {
-            m_Pickups[i].object_id = object_id;
+            m_Pickups[i].object_id = obj_id;
             m_Pickups[i].elapsed = 0.0;
             m_Pickups[i].grid_x = grid_x;
             m_Pickups[i].grid_y = grid_y;

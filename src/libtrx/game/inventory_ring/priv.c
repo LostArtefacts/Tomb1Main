@@ -60,9 +60,9 @@ static void M_HandleRequestedObject(INV_RING *const ring)
     m_RequestedObjectID = NO_OBJECT;
 }
 
-void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID object_id)
+void InvRing_SetRequestedObjectID(const GAME_OBJECT_ID obj_id)
 {
-    m_RequestedObjectID = object_id;
+    m_RequestedObjectID = obj_id;
 }
 
 void InvRing_InitRing(

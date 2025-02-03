@@ -18,9 +18,9 @@ static void M_End(void)
     m_PaginatorUI = nullptr;
 }
 
-bool Option_Examine_CanExamine(const GAME_OBJECT_ID object_id)
+bool Option_Examine_CanExamine(const GAME_OBJECT_ID obj_id)
 {
-    return Object_GetDescription(object_id) != nullptr;
+    return Object_GetDescription(obj_id) != nullptr;
 }
 
 bool Option_Examine_IsActive(void)
@@ -28,12 +28,11 @@ bool Option_Examine_IsActive(void)
     return m_PaginatorUI != nullptr;
 }
 
-void Option_Examine_Control(const GAME_OBJECT_ID object_id)
+void Option_Examine_Control(const GAME_OBJECT_ID obj_id)
 {
     if (m_PaginatorUI == nullptr) {
         m_PaginatorUI = UI_Paginator_Create(
-            Object_GetName(object_id), Object_GetDescription(object_id),
-            MAX_LINES);
+            Object_GetName(obj_id), Object_GetDescription(obj_id), MAX_LINES);
     }
 
     m_PaginatorUI->control(m_PaginatorUI);

@@ -35,9 +35,9 @@ GF_COMMAND GF_ShowInventory(const INVENTORY_MODE mode)
 GF_COMMAND GF_ShowInventoryKeys(const GAME_OBJECT_ID receptacle_type_id)
 {
     if (g_Config.gameplay.enable_auto_item_selection) {
-        const GAME_OBJECT_ID object_id = Object_GetCognateInverse(
+        const GAME_OBJECT_ID obj_id = Object_GetCognateInverse(
             receptacle_type_id, g_KeyItemToReceptacleMap);
-        InvRing_SetRequestedObjectID(object_id);
+        InvRing_SetRequestedObjectID(obj_id);
     }
     return GF_ShowInventory(INV_KEYS_MODE);
 }

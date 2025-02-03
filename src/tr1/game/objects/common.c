@@ -16,10 +16,10 @@
 #include <libtrx/game/matrix.h>
 #include <libtrx/utils.h>
 
-int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id)
+int16_t Object_FindReceptacle(const GAME_OBJECT_ID obj_id)
 {
     GAME_OBJECT_ID receptacle_to_check =
-        Object_GetCognate(object_id, g_KeyItemToReceptacleMap);
+        Object_GetCognate(obj_id, g_KeyItemToReceptacleMap);
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *item = &g_Items[item_num];
         if (item->object_id == receptacle_to_check) {
@@ -366,9 +366,9 @@ void Object_DrawUnclippedItem(ITEM *item)
 }
 
 void Object_SetMeshReflective(
-    const GAME_OBJECT_ID object_id, const int32_t mesh_idx, const bool enabled)
+    const GAME_OBJECT_ID obj_id, const int32_t mesh_idx, const bool enabled)
 {
-    const OBJECT *const obj = Object_Get(object_id);
+    const OBJECT *const obj = Object_Get(obj_id);
     if (!obj->loaded) {
         return;
     }
@@ -393,11 +393,11 @@ void Object_SetMeshReflective(
     }
 }
 
-void Object_SetReflective(const GAME_OBJECT_ID object_id, const bool enabled)
+void Object_SetReflective(const GAME_OBJECT_ID obj_id, const bool enabled)
 {
-    const OBJECT *const obj = Object_Get(object_id);
+    const OBJECT *const obj = Object_Get(obj_id);
     for (int32_t i = 0; i < obj->mesh_count; i++) {
-        Object_SetMeshReflective(object_id, i, enabled);
+        Object_SetMeshReflective(obj_id, i, enabled);
     }
 }
 

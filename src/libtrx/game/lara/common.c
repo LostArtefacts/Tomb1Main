@@ -109,9 +109,9 @@ void Lara_Animate(ITEM *const item)
     item->pos.z += (item->speed * Math_Cos(lara->move_angle)) >> W2V_SHIFT;
 }
 
-void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID object_id)
+void Lara_SwapSingleMesh(const LARA_MESH mesh, const GAME_OBJECT_ID obj_id)
 {
-    const OBJECT *const obj = Object_Get(object_id);
+    const OBJECT *const obj = Object_Get(obj_id);
     Lara_SetMesh(mesh, Object_GetMesh(obj->mesh_idx + mesh));
 }
 

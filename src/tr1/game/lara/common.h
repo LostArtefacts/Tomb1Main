@@ -24,7 +24,7 @@ void Lara_InitialiseMeshes(const GF_LEVEL *level);
 
 void Lara_SwapMeshExtra(void);
 bool Lara_IsNearItem(const XYZ_32 *pos, int32_t distance);
-void Lara_UseItem(GAME_OBJECT_ID object_id);
+void Lara_UseItem(GAME_OBJECT_ID obj_id);
 
 bool Lara_TestBoundsCollide(ITEM *item, int32_t radius);
 bool Lara_TestPosition(const ITEM *item, const OBJECT_BOUNDS *bounds);

@@ -237,8 +237,8 @@ void Pickup_Draw(const ITEM *const item)
     }
 
     // Convert item to menu display item.
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(item->object_id);
-    const OBJECT *const obj = Object_Get(inv_object_id);
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(item->object_id);
+    const OBJECT *const obj = Object_Get(inv_obj_id);
     if (!obj->loaded || obj->mesh_count < 0) {
         Object_DrawSpriteItem(item);
         return;

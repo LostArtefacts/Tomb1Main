@@ -20,9 +20,9 @@ void Item_NewRoom(int16_t item_num, int16_t room_num);
 void Item_UpdateRoom(ITEM *item, int32_t height);
 int16_t Item_GetHeight(ITEM *item);
 int16_t Item_GetWaterHeight(ITEM *item);
-int16_t Item_Spawn(const ITEM *item, GAME_OBJECT_ID object_id);
+int16_t Item_Spawn(const ITEM *item, GAME_OBJECT_ID obj_id);
 int32_t Item_GlobalReplace(
-    GAME_OBJECT_ID src_object_id, GAME_OBJECT_ID dst_object_id);
+    GAME_OBJECT_ID src_obj_id, GAME_OBJECT_ID dst_obj_id);
 
 bool Item_IsNearItem(const ITEM *item, const XYZ_32 *pos, int32_t distance);
 bool Item_Test3DRange(int32_t x, int32_t y, int32_t z, int32_t range);

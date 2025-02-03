@@ -349,10 +349,10 @@ void Lara_AnimateUntil(ITEM *lara_item, int32_t goal)
     } while (lara_item->current_anim_state != goal);
 }
 
-void Lara_UseItem(GAME_OBJECT_ID object_id)
+void Lara_UseItem(const GAME_OBJECT_ID obj_id)
 {
-    LOG_INFO("%d", object_id);
-    switch (object_id) {
+    LOG_INFO("%d", obj_id);
+    switch (obj_id) {
     case O_PISTOL_ITEM:
     case O_PISTOL_OPTION:
         g_Lara.request_gun_type = LGT_PISTOLS;
@@ -435,7 +435,7 @@ void Lara_UseItem(GAME_OBJECT_ID object_id)
     case O_SCION_ITEM_3:
     case O_SCION_ITEM_4:
     case O_SCION_OPTION: {
-        int16_t receptacle_item_num = Object_FindReceptacle(object_id);
+        int16_t receptacle_item_num = Object_FindReceptacle(obj_id);
         if (receptacle_item_num == NO_OBJECT) {
             Sound_Effect(SFX_LARA_NO, nullptr, SPM_NORMAL);
             return;
@@ -443,7 +443,7 @@ void Lara_UseItem(GAME_OBJECT_ID object_id)
         g_Lara.interact_target.item_num = receptacle_item_num;
         g_Lara.interact_target.is_moving = true;
         g_Lara.interact_target.move_count = 0;
-        Inv_RemoveItem(object_id);
+        Inv_RemoveItem(obj_id);
         break;
     }
 

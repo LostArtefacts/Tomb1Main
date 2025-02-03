@@ -692,11 +692,11 @@ void Lara_ControlExtra(const int16_t item_num)
     Item_Animate(&g_Items[item_num]);
 }
 
-void Lara_UseItem(const GAME_OBJECT_ID object_id)
+void Lara_UseItem(const GAME_OBJECT_ID obj_id)
 {
     ITEM *const item = g_LaraItem;
 
-    switch (object_id) {
+    switch (obj_id) {
     case O_PISTOL_ITEM:
     case O_PISTOL_OPTION:
         g_Lara.request_gun_type = LGT_PISTOLS;
@@ -971,20 +971,20 @@ void Lara_InitialiseMeshes(const GF_LEVEL *const level)
         return;
     }
 
-    GAME_OBJECT_ID holster_object_id = NO_OBJECT;
+    GAME_OBJECT_ID holster_obj_id = NO_OBJECT;
     if (start->gun_type != LGT_UNARMED) {
         if (start->gun_type == LGT_MAGNUMS) {
-            holster_object_id = O_LARA_MAGNUMS;
+            holster_obj_id = O_LARA_MAGNUMS;
         } else if (start->gun_type == LGT_UZIS) {
-            holster_object_id = O_LARA_UZIS;
+            holster_obj_id = O_LARA_UZIS;
         } else {
-            holster_object_id = O_LARA_PISTOLS;
+            holster_obj_id = O_LARA_PISTOLS;
         }
     }
 
-    if (holster_object_id != NO_OBJECT) {
-        Lara_SwapSingleMesh(LM_THIGH_L, holster_object_id);
-        Lara_SwapSingleMesh(LM_THIGH_R, holster_object_id);
+    if (holster_obj_id != NO_OBJECT) {
+        Lara_SwapSingleMesh(LM_THIGH_L, holster_obj_id);
+        Lara_SwapSingleMesh(LM_THIGH_R, holster_obj_id);
     }
 
     if (start->gun_type == LGT_FLARE) {

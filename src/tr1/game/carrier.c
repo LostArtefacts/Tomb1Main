@@ -292,16 +292,16 @@ void Carrier_TestItemDrops(const int16_t item_num)
             continue;
         }
 
-        GAME_OBJECT_ID object_id = item->object_id;
+        GAME_OBJECT_ID obj_id = item->object_id;
         if (g_GameFlow.convert_dropped_guns
-            && Object_IsType(object_id, g_GunObjects)
-            && Inv_RequestItem(object_id) && object_id != O_PISTOL_ITEM) {
-            object_id = Object_GetCognate(object_id, g_GunAmmoObjectMap);
+            && Object_IsType(obj_id, g_GunObjects) && Inv_RequestItem(obj_id)
+            && obj_id != O_PISTOL_ITEM) {
+            obj_id = Object_GetCognate(obj_id, g_GunAmmoObjectMap);
         }
 
         if (item->spawn_num == NO_ITEM) {
             // This is a gameflow-defined drop, so a spawn number is required.
-            item->spawn_num = Item_Spawn(carrier, object_id);
+            item->spawn_num = Item_Spawn(carrier, obj_id);
         } else {
             // TR2-style item drops will already have a spawn number.
             Item_NewRoom(item->spawn_num, carrier->room_num);

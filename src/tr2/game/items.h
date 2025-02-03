@@ -13,7 +13,7 @@ void Item_RemoveDrawn(int16_t item_num);
 void Item_AddActive(int16_t item_num);
 void Item_NewRoom(int16_t item_num, int16_t room_num);
 int32_t Item_GlobalReplace(
-    GAME_OBJECT_ID src_object_id, GAME_OBJECT_ID dst_object_id);
+    GAME_OBJECT_ID src_obj_id, GAME_OBJECT_ID dst_obj_id);
 void Item_ClearKilled(void);
 void Item_ShiftCol(ITEM *item, COLL_INFO *coll);
 void Item_UpdateRoom(ITEM *item, int32_t height);

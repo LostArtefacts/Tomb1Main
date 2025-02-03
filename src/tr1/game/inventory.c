@@ -11,33 +11,33 @@
 
 #include <stdint.h>
 
-bool Inv_AddItem(const GAME_OBJECT_ID object_id)
+bool Inv_AddItem(const GAME_OBJECT_ID obj_id)
 {
-    if (Object_IsType(object_id, g_GunObjects)) {
-        Gun_UpdateLaraMeshes(object_id);
+    if (Object_IsType(obj_id, g_GunObjects)) {
+        Gun_UpdateLaraMeshes(obj_id);
         if (g_Lara.gun_type == LGT_UNARMED) {
-            g_Lara.gun_type = Gun_GetType(object_id);
+            g_Lara.gun_type = Gun_GetType(obj_id);
             g_Lara.gun_status = LGS_ARMLESS;
             Gun_InitialiseNewWeapon();
         }
     }
 
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
-    if (!Object_Get(inv_object_id)->loaded) {
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(obj_id);
+    if (!Object_Get(inv_obj_id)->loaded) {
         return false;
     }
 
     for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
         INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
         for (int32_t i = 0; i < source->count; i++) {
-            if (source->items[i]->object_id == inv_object_id) {
+            if (source->items[i]->object_id == inv_obj_id) {
                 source->qtys[i]++;
                 return true;
             }
         }
     }
 
-    switch (object_id) {
+    switch (obj_id) {
     case O_PISTOL_ITEM:
     case O_PISTOL_OPTION:
         Inv_InsertItem(&g_InvRing_Item_Pistols);

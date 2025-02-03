@@ -26,11 +26,11 @@ void Item_TakeDamage(
     }
 }
 
-ITEM *Item_Find(const GAME_OBJECT_ID object_id)
+ITEM *Item_Find(const GAME_OBJECT_ID obj_id)
 {
     for (int32_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         ITEM *const item = Item_Get(item_num);
-        if (item->object_id == object_id) {
+        if (item->object_id == obj_id) {
             return item;
         }
     }
@@ -57,9 +57,9 @@ void Item_SwitchToAnim(
 
 void Item_SwitchToObjAnim(
     ITEM *const item, const int16_t anim_idx, const int16_t frame,
-    const GAME_OBJECT_ID object_id)
+    const GAME_OBJECT_ID obj_id)
 {
-    const OBJECT *const obj = Object_Get(object_id);
+    const OBJECT *const obj = Object_Get(obj_id);
     item->anim_num = obj->anim_idx + anim_idx;
 
     const ANIM *const anim = Item_GetAnim(item);

@@ -65,17 +65,17 @@ static void M_Apply(const GS_TABLE *const table)
     {
         const GS_OBJECT_ENTRY *cur = table->objects;
         while (cur != nullptr && cur->key != nullptr) {
-            const GAME_OBJECT_ID object_id = Object_IdFromKey(cur->key);
-            if (object_id == NO_OBJECT) {
+            const GAME_OBJECT_ID obj_id = Object_IdFromKey(cur->key);
+            if (obj_id == NO_OBJECT) {
                 LOG_ERROR("Invalid object id: %s", cur->key);
             } else {
                 if (cur->name == nullptr) {
                     LOG_ERROR("Invalid object name: %s", cur->key);
                 } else {
-                    Object_SetName(object_id, cur->name);
+                    Object_SetName(obj_id, cur->name);
                 }
                 if (cur->description != nullptr) {
-                    Object_SetDescription(object_id, cur->description);
+                    Object_SetDescription(obj_id, cur->description);
                 }
             }
             cur++;

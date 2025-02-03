@@ -35,4 +35,4 @@ void Overlay_HideGameInfo(void);
 void Overlay_DrawGameInfo(void);
 void Overlay_DrawFPSInfo(void);
 
-void Overlay_AddPickup(GAME_OBJECT_ID object_id);
+void Overlay_AddPickup(GAME_OBJECT_ID obj_id);

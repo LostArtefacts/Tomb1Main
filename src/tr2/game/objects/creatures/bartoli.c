@@ -12,12 +12,12 @@
 #define BOOM_TIME 130
 #define BARTOLI_RANGE (WALL_L * 5) // = 5120
 
-static void M_CreateBoom(GAME_OBJECT_ID object_id, const ITEM *origin_item);
+static void M_CreateBoom(GAME_OBJECT_ID obj_id, const ITEM *origin_item);
 static void M_ConvertBartoliToDragon(const int16_t item_num);
 static bool M_CheckLaraProximity(const ITEM *origin_item);
 
 static void M_CreateBoom(
-    const GAME_OBJECT_ID object_id, const ITEM *const origin_item)
+    const GAME_OBJECT_ID obj_id, const ITEM *const origin_item)
 {
     const int16_t item_num = Item_Create();
     if (item_num == NO_ITEM) {
@@ -25,7 +25,7 @@ static void M_CreateBoom(
     }
 
     ITEM *const sphere_item = Item_Get(item_num);
-    sphere_item->object_id = object_id;
+    sphere_item->object_id = obj_id;
     sphere_item->pos.x = origin_item->pos.x;
     sphere_item->pos.y = origin_item->pos.y + 256;
     sphere_item->pos.z = origin_item->pos.z;

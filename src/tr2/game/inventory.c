@@ -5,11 +5,11 @@
 #include "game/objects/vars.h"
 #include "global/vars.h"
 
-bool Inv_AddItem(const GAME_OBJECT_ID object_id)
+bool Inv_AddItem(const GAME_OBJECT_ID obj_id)
 {
-    const GAME_OBJECT_ID inv_object_id = Inv_GetItemOption(object_id);
+    const GAME_OBJECT_ID inv_obj_id = Inv_GetItemOption(obj_id);
     const OBJECT *const object =
-        Object_Get(inv_object_id == NO_OBJECT ? object_id : inv_object_id);
+        Object_Get(inv_obj_id == NO_OBJECT ? obj_id : inv_obj_id);
     if (!object->loaded) {
         return false;
     }
@@ -17,14 +17,14 @@ bool Inv_AddItem(const GAME_OBJECT_ID object_id)
     for (RING_TYPE ring_type = 0; ring_type < RT_NUMBER_OF; ring_type++) {
         INV_RING_SOURCE *const source = &g_InvRing_Source[ring_type];
         for (int32_t i = 0; i < source->count; i++) {
-            if (source->items[i]->object_id == inv_object_id) {
+            if (source->items[i]->object_id == inv_obj_id) {
                 source->qtys[i]++;
                 return true;
             }
         }
     }
 
-    switch (object_id) {
+    switch (obj_id) {
     case O_COMPASS_OPTION:
     case O_COMPASS_ITEM:
         Inv_InsertItem(&g_InvRing_Item_Stopwatch);

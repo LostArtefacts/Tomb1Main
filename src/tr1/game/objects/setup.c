@@ -93,7 +93,7 @@ static void M_SetupLaraExtra(void);
 static void M_SetupCreatures(void);
 static void M_SetupTraps(void);
 static void M_SetupMiscObjects(void);
-static void M_DisableObject(GAME_OBJECT_ID object_id);
+static void M_DisableObject(GAME_OBJECT_ID obj_id);
 
 static void M_SetupLara(void)
 {
@@ -271,9 +271,9 @@ static void M_SetupMiscObjects(void)
     GunShot_Setup(Object_Get(O_GUN_FLASH));
 }
 
-static void M_DisableObject(const GAME_OBJECT_ID object_id)
+static void M_DisableObject(const GAME_OBJECT_ID obj_id)
 {
-    OBJECT *const obj = Object_Get(object_id);
+    OBJECT *const obj = Object_Get(obj_id);
     obj->initialise = nullptr;
     obj->collision = nullptr;
     obj->control = nullptr;

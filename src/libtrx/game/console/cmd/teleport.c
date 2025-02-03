@@ -19,7 +19,7 @@
 
 static int16_t m_LastTeleportedItemNum = NO_ITEM;
 
-static bool M_CanTargetObject(GAME_OBJECT_ID object_id);
+static bool M_CanTargetObject(GAME_OBJECT_ID obj_id);
 static bool M_CanTargetItem(
     const ITEM *item, const GAME_OBJECT_ID *matching_objs, int32_t match_count);
 static const ITEM *M_GetItemToTeleporTo(const char *user_input);
@@ -31,26 +31,26 @@ static COMMAND_RESULT M_TeleportToObject(const char *user_input);
 
 static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 
-static bool M_ObjectCanBePickedUp(const GAME_OBJECT_ID object_id)
+static bool M_ObjectCanBePickedUp(const GAME_OBJECT_ID obj_id)
 {
-    if (!Object_IsType(object_id, g_PickupObjects)) {
+    if (!Object_IsType(obj_id, g_PickupObjects)) {
         return true;
     }
     for (int32_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
         const ITEM *const item = Item_Get(item_num);
-        if (item->object_id == object_id && item->status != IS_INVISIBLE) {
+        if (item->object_id == obj_id && item->status != IS_INVISIBLE) {
             return true;
         }
     }
     return false;
 }
 
-static bool M_CanTargetObject(const GAME_OBJECT_ID object_id)
+static bool M_CanTargetObject(const GAME_OBJECT_ID obj_id)
 {
-    return !Object_IsType(object_id, g_NullObjects)
-        && !Object_IsType(object_id, g_AnimObjects)
-        && !Object_IsType(object_id, g_InvObjects)
-        && Object_Get(object_id)->loaded && M_ObjectCanBePickedUp(object_id);
+    return !Object_IsType(obj_id, g_NullObjects)
+        && !Object_IsType(obj_id, g_AnimObjects)
+        && !Object_IsType(obj_id, g_InvObjects) && Object_Get(obj_id)->loaded
+        && M_ObjectCanBePickedUp(obj_id);
 }
 
 static bool M_CanTargetItem(

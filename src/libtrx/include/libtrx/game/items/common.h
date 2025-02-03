@@ -4,7 +4,7 @@
 #include "./types.h"
 
 ITEM *Item_Get(int16_t num);
-ITEM *Item_Find(GAME_OBJECT_ID object_id);
+ITEM *Item_Find(GAME_OBJECT_ID obj_id);
 int32_t Item_GetTotalCount(void);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 void Item_TakeDamage(ITEM *item, int16_t damage, bool hit_status);
@@ -20,7 +20,7 @@ ANIM *Item_GetAnim(const ITEM *item);
 bool Item_TestAnimEqual(const ITEM *item, int16_t anim_idx);
 void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame);
 void Item_SwitchToObjAnim(
-    ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID object_id);
+    ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID obj_id);
 bool Item_TestFrameEqual(const ITEM *item, int16_t frame);
 bool Item_TestFrameRange(const ITEM *item, int16_t start, int16_t end);
 bool Item_GetAnimChange(ITEM *item, const ANIM *anim);

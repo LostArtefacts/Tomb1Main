@@ -85,7 +85,7 @@ static JSON_ARRAY *M_DumpMusicTrackFlags(void);
 
 static void M_GetFXOrder(SAVEGAME_BSON_FX_ORDER *order);
 static bool M_IsValidItemObject(
-    GAME_OBJECT_ID saved_object_id, GAME_OBJECT_ID current_object_id);
+    GAME_OBJECT_ID saved_obj_id, GAME_OBJECT_ID current_obj_id);
 
 static void M_SaveRaw(MYFILE *fp, JSON_VALUE *root, int32_t version)
 {
@@ -132,30 +132,29 @@ static void M_GetFXOrder(SAVEGAME_BSON_FX_ORDER *order)
 }
 
 static bool M_IsValidItemObject(
-    const GAME_OBJECT_ID saved_object_id,
-    const GAME_OBJECT_ID initial_object_id)
+    const GAME_OBJECT_ID saved_obj_id, const GAME_OBJECT_ID initial_obj_id)
 {
-    if (saved_object_id == initial_object_id) {
+    if (saved_obj_id == initial_obj_id) {
         return true;
     }
 
     // clang-format off
-    switch (saved_object_id) {
+    switch (saved_obj_id) {
         // used keyholes
-        case O_PUZZLE_DONE_1: return initial_object_id == O_PUZZLE_HOLE_1;
-        case O_PUZZLE_DONE_2: return initial_object_id == O_PUZZLE_HOLE_2;
-        case O_PUZZLE_DONE_3: return initial_object_id == O_PUZZLE_HOLE_3;
-        case O_PUZZLE_DONE_4: return initial_object_id == O_PUZZLE_HOLE_4;
+        case O_PUZZLE_DONE_1: return initial_obj_id == O_PUZZLE_HOLE_1;
+        case O_PUZZLE_DONE_2: return initial_obj_id == O_PUZZLE_HOLE_2;
+        case O_PUZZLE_DONE_3: return initial_obj_id == O_PUZZLE_HOLE_3;
+        case O_PUZZLE_DONE_4: return initial_obj_id == O_PUZZLE_HOLE_4;
         // pickups
-        case O_PISTOL_AMMO_ITEM: return initial_object_id == O_PISTOL_ANIM;
-        case O_SG_AMMO_ITEM: return initial_object_id == O_SHOTGUN_ITEM;
-        case O_MAG_AMMO_ITEM: return initial_object_id == O_MAGNUM_ITEM;
-        case O_UZI_AMMO_ITEM: return initial_object_id == O_UZI_ITEM;
+        case O_PISTOL_AMMO_ITEM: return initial_obj_id == O_PISTOL_ANIM;
+        case O_SG_AMMO_ITEM: return initial_obj_id == O_SHOTGUN_ITEM;
+        case O_MAG_AMMO_ITEM: return initial_obj_id == O_MAGNUM_ITEM;
+        case O_UZI_AMMO_ITEM: return initial_obj_id == O_UZI_ITEM;
         // dual-state animals
-        case O_ALLIGATOR: return initial_object_id == O_CROCODILE;
-        case O_CROCODILE: return initial_object_id == O_ALLIGATOR;
-        case O_RAT: return initial_object_id == O_VOLE;
-        case O_VOLE: return initial_object_id == O_RAT;
+        case O_ALLIGATOR: return initial_obj_id == O_CROCODILE;
+        case O_CROCODILE: return initial_obj_id == O_ALLIGATOR;
+        case O_RAT: return initial_obj_id == O_VOLE;
+        case O_VOLE: return initial_obj_id == O_RAT;
         // default
         default: return false;
     }
@@ -487,12 +486,12 @@ static bool M_LoadItems(JSON_ARRAY *items_arr, uint16_t header_version)
         ITEM *item = &g_Items[i];
         const OBJECT *const obj = Object_Get(item->object_id);
 
-        const GAME_OBJECT_ID object_id =
+        const GAME_OBJECT_ID obj_id =
             JSON_ObjectGetInt(item_obj, "obj_num", -1);
-        if (!M_IsValidItemObject(object_id, item->object_id)) {
+        if (!M_IsValidItemObject(obj_id, item->object_id)) {
             LOG_ERROR(
                 "Malformed save: expected object %d, got %d", item->object_id,
-                object_id);
+                obj_id);
             return false;
         }
 
@@ -659,8 +658,7 @@ static bool M_LoadEffects(JSON_ARRAY *fx_arr)
         int32_t y = JSON_ObjectGetInt(fx_obj, "y", 0);
         int32_t z = JSON_ObjectGetInt(fx_obj, "z", 0);
         int16_t room_num = JSON_ObjectGetInt(fx_obj, "room_number", 0);
-        GAME_OBJECT_ID object_id =
-            JSON_ObjectGetInt(fx_obj, "object_number", 0);
+        GAME_OBJECT_ID obj_id = JSON_ObjectGetInt(fx_obj, "object_number", 0);
         int16_t speed = JSON_ObjectGetInt(fx_obj, "speed", 0);
         int16_t fall_speed = JSON_ObjectGetInt(fx_obj, "fall_speed", 0);
         int16_t frame_num = JSON_ObjectGetInt(fx_obj, "frame_number", 0);
@@ -673,7 +671,7 @@ static bool M_LoadEffects(JSON_ARRAY *fx_arr)
             effect->pos.x = x;
             effect->pos.y = y;
             effect->pos.z = z;
-            effect->object_id = object_id;
+            effect->object_id = obj_id;
             effect->speed = speed;
             effect->fall_speed = fall_speed;
             effect->frame_num = frame_num;
