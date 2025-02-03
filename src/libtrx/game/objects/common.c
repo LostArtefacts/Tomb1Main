@@ -25,10 +25,10 @@ STATIC_OBJECT_2D *Object_Get2DStatic(const int32_t static_id)
     return &m_StaticObjects2D[static_id];
 }
 
-bool Object_IsObjectType(
-    GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr)
+bool Object_IsType(
+    const GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr)
 {
-    for (int i = 0; test_arr[i] != NO_OBJECT; i++) {
+    for (int32_t i = 0; test_arr[i] != NO_OBJECT; i++) {
         if (test_arr[i] == object_id) {
             return true;
         }

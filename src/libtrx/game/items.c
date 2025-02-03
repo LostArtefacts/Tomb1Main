@@ -253,7 +253,7 @@ void Item_PlayAnimSFX(
     if (item == lara_item) {
         play_mode = SPM_ALWAYS;
     } else if (
-        Object_IsObjectType(item->object_id, g_WaterObjects)
+        Object_IsType(item->object_id, g_WaterObjects)
         || (TR_VERSION == 1 && item_underwater)) {
         play_mode = SPM_UNDERWATER;
     }

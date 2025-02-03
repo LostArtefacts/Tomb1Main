@@ -239,8 +239,7 @@ void GetCarriedItems(void)
             if (pickup_item->pos.x == item->pos.x
                 && pickup_item->pos.y == item->pos.y
                 && pickup_item->pos.z == item->pos.z
-                && Object_IsObjectType(
-                    pickup_item->object_id, g_PickupObjects)) {
+                && Object_IsType(pickup_item->object_id, g_PickupObjects)) {
                 pickup_item->carried_item = item->carried_item;
                 item->carried_item = pickup_item_num;
                 Item_RemoveDrawn(pickup_item_num);

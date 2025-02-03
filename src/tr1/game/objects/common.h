@@ -5,8 +5,6 @@
 #include "global/types.h"
 
 int16_t Object_FindReceptacle(GAME_OBJECT_ID object_id);
-bool Object_IsObjectType(
-    GAME_OBJECT_ID object_id, const GAME_OBJECT_ID *test_arr);
 void Object_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 void Object_CollisionTrap(int16_t item_num, ITEM *lara_item, COLL_INFO *coll);
 

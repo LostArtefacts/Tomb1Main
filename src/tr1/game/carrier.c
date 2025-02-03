@@ -42,7 +42,7 @@ static ITEM *M_GetCarrier(const int16_t item_num)
     // Allow carried items to be allocated to holder objects (pods/statues),
     // but then have those items dropped by the actual creatures within.
     ITEM *item = Item_Get(item_num);
-    if (Object_IsObjectType(item->object_id, g_PlaceholderObjects)) {
+    if (Object_IsType(item->object_id, g_PlaceholderObjects)) {
         const int16_t child_item_num = *(int16_t *)item->data;
         item = Item_Get(child_item_num);
     }
@@ -122,7 +122,7 @@ static void M_InitialiseDataDrops(void)
     for (int32_t i = 0; i < g_LevelItemCount; i++) {
         ITEM *const carrier = M_GetCarrier(i);
         if (carrier == nullptr
-            || !Object_IsObjectType(carrier->object_id, g_EnemyObjects)) {
+            || !Object_IsType(carrier->object_id, g_EnemyObjects)) {
             continue;
         }
 
@@ -130,7 +130,7 @@ static void M_InitialiseDataDrops(void)
         int16_t pickup_num = room->item_num;
         do {
             ITEM *const pickup = Item_Get(pickup_num);
-            if (Object_IsObjectType(pickup->object_id, g_PickupObjects)
+            if (Object_IsType(pickup->object_id, g_PickupObjects)
                 && XYZ_32_AreEquivalent(&pickup->pos, &carrier->pos)) {
                 Vector_Add(pickups, (void *)&pickup_num);
                 Item_RemoveDrawn(pickup_num);
@@ -189,7 +189,7 @@ static void M_InitialiseGameFlowDrops(const GF_LEVEL *const level)
             continue;
         }
 
-        if (!Object_IsObjectType(item->object_id, g_EnemyObjects)) {
+        if (!Object_IsType(item->object_id, g_EnemyObjects)) {
             LOG_WARNING(
                 "Item %d of type %d cannot carry items", data->enemy_num,
                 item->object_id);
@@ -205,7 +205,7 @@ static void M_InitialiseGameFlowDrops(const GF_LEVEL *const level)
             drop->room_num = NO_ROOM;
             drop->fall_speed = 0;
 
-            if (Object_IsObjectType(drop->object_id, g_PickupObjects)) {
+            if (Object_IsType(drop->object_id, g_PickupObjects)) {
                 drop->status = DS_CARRIED;
                 total_item_count++;
             } else {
@@ -294,7 +294,7 @@ void Carrier_TestItemDrops(const int16_t item_num)
 
         GAME_OBJECT_ID object_id = item->object_id;
         if (g_GameFlow.convert_dropped_guns
-            && Object_IsObjectType(object_id, g_GunObjects)
+            && Object_IsType(object_id, g_GunObjects)
             && Inv_RequestItem(object_id) && object_id != O_PISTOL_ITEM) {
             object_id = Object_GetCognate(object_id, g_GunAmmoObjectMap);
         }

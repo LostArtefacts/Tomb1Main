@@ -13,7 +13,7 @@
 
 bool Inv_AddItem(const GAME_OBJECT_ID object_id)
 {
-    if (Object_IsObjectType(object_id, g_GunObjects)) {
+    if (Object_IsType(object_id, g_GunObjects)) {
         Gun_UpdateLaraMeshes(object_id);
         if (g_Lara.gun_type == LGT_UNARMED) {
             g_Lara.gun_type = Gun_GetType(object_id);

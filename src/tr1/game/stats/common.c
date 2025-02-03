@@ -106,7 +106,7 @@ static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector)
             }
 
             // Add killable if object triggered
-            if (Object_IsObjectType(item->object_id, g_EnemyObjects)) {
+            if (Object_IsType(item->object_id, g_EnemyObjects)) {
                 M_IncludeKillableItem(item_num);
             }
         }
@@ -186,7 +186,7 @@ void Stats_CalculateStats(void)
                 continue;
             }
 
-            if (Object_IsObjectType(item->object_id, g_PickupObjects)
+            if (Object_IsType(item->object_id, g_PickupObjects)
                 && !Carrier_IsItemCarried(i)) {
                 m_LevelPickups++;
             }

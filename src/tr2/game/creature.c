@@ -399,7 +399,7 @@ int32_t Creature_Animate(
         zone = g_GroundZone[BOX_ZONE(lot->step)][g_FlipStatus];
     }
 
-    if (!Object_IsObjectType(item->object_id, g_WaterObjects)) {
+    if (!Object_IsType(item->object_id, g_WaterObjects)) {
         int16_t room_num = item->room_num;
         Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);
         if (room_num != item->room_num) {
@@ -618,7 +618,7 @@ int32_t Creature_Animate(
         item->rot.x = 0;
     }
 
-    if (!Object_IsObjectType(item->object_id, g_WaterObjects)) {
+    if (!Object_IsType(item->object_id, g_WaterObjects)) {
         Room_GetSector(
             item->pos.x, item->pos.y - (STEP_L * 2), item->pos.z, &room_num);
         if (g_Rooms[room_num].flags & RF_UNDERWATER) {
@@ -945,14 +945,14 @@ int32_t Creature_CanTargetEnemy(
 
 bool Creature_IsHostile(const ITEM *const item)
 {
-    return Object_IsObjectType(item->object_id, g_EnemyObjects)
+    return Object_IsType(item->object_id, g_EnemyObjects)
         || (g_IsMonkAngry
             && (item->object_id == O_MONK_1 || item->object_id == O_MONK_2));
 }
 
 bool Creature_IsAlly(const ITEM *const item)
 {
-    return Object_IsObjectType(item->object_id, g_AllyObjects);
+    return Object_IsType(item->object_id, g_AllyObjects);
 }
 
 int32_t Creature_ShootAtLara(

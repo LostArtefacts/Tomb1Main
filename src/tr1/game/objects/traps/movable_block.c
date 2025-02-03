@@ -58,7 +58,7 @@ static bool M_TestDoor(ITEM *lara_item, COLL_INFO *coll)
     const int32_t max_dist = SQUARE((WALL_L * 2) >> shift);
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
         ITEM *const item = &g_Items[item_num];
-        if (!Object_IsObjectType(item->object_id, g_DoorObjects)) {
+        if (!Object_IsType(item->object_id, g_DoorObjects)) {
             continue;
         }
 

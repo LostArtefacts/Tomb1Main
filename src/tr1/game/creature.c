@@ -727,7 +727,7 @@ bool Creature_EnsureHabitat(
 bool Creature_IsBoss(const int16_t item_num)
 {
     const ITEM *const item = &g_Items[item_num];
-    return Object_IsObjectType(item->object_id, g_BossObjects);
+    return Object_IsType(item->object_id, g_BossObjects);
 }
 
 static bool M_SwitchToWater(
@@ -819,10 +819,10 @@ static bool M_TestSwitchOrKill(
 
 bool Creature_IsHostile(const ITEM *const item)
 {
-    return Object_IsObjectType(item->object_id, g_EnemyObjects);
+    return Object_IsType(item->object_id, g_EnemyObjects);
 }
 
 bool Creature_IsAlly(const ITEM *const item)
 {
-    return Object_IsObjectType(item->object_id, g_AllyObjects);
+    return Object_IsType(item->object_id, g_AllyObjects);
 }

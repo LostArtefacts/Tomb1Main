@@ -33,7 +33,7 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 
 static bool M_ObjectCanBePickedUp(const GAME_OBJECT_ID object_id)
 {
-    if (!Object_IsObjectType(object_id, g_PickupObjects)) {
+    if (!Object_IsType(object_id, g_PickupObjects)) {
         return true;
     }
     for (int32_t item_num = 0; item_num < Item_GetTotalCount(); item_num++) {
@@ -47,9 +47,9 @@ static bool M_ObjectCanBePickedUp(const GAME_OBJECT_ID object_id)
 
 static bool M_CanTargetObject(const GAME_OBJECT_ID object_id)
 {
-    return !Object_IsObjectType(object_id, g_NullObjects)
-        && !Object_IsObjectType(object_id, g_AnimObjects)
-        && !Object_IsObjectType(object_id, g_InvObjects)
+    return !Object_IsType(object_id, g_NullObjects)
+        && !Object_IsType(object_id, g_AnimObjects)
+        && !Object_IsType(object_id, g_InvObjects)
         && Object_Get(object_id)->loaded && M_ObjectCanBePickedUp(object_id);
 }
 
@@ -58,7 +58,7 @@ static bool M_CanTargetItem(
     const int32_t match_count)
 {
     // Collected pickups
-    if (Object_IsObjectType(item->object_id, g_PickupObjects)
+    if (Object_IsType(item->object_id, g_PickupObjects)
         && (item->status == IS_INVISIBLE || item->status == IS_DEACTIVATED
             || item->room_num == NO_ROOM)) {
         return false;

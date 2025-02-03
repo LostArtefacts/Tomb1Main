@@ -18,9 +18,9 @@ static COMMAND_RESULT M_Entrypoint(const COMMAND_CONTEXT *ctx);
 
 static bool M_CanTargetObjectPickup(const GAME_OBJECT_ID object_id)
 {
-    return Object_IsObjectType(object_id, g_InvObjects)
+    return Object_IsType(object_id, g_InvObjects)
         && Object_Get(object_id)->loaded
-        && Object_IsObjectType(
+        && Object_IsType(
                Object_GetCognateInverse(object_id, g_ItemToInvObjectMap),
                g_PickupObjects);
 }

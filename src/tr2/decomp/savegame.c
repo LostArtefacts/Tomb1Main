@@ -163,7 +163,7 @@ static void M_ReadItems(void)
         ITEM *const item = Item_Get(item_num);
         const OBJECT *const obj = Object_Get(item->object_id);
 
-        if (Object_IsObjectType(item->object_id, g_MovableBlockObjects)) {
+        if (Object_IsType(item->object_id, g_MovableBlockObjects)) {
             Room_AlterFloorHeight(item, WALL_L);
         }
 
@@ -250,13 +250,13 @@ static void M_ReadItems(void)
 
             item->flags &= 0xFF00;
 
-            if (Object_IsObjectType(item->object_id, g_PuzzleHoleObjects)
+            if (Object_IsType(item->object_id, g_PuzzleHoleObjects)
                 && (item->status == IS_DEACTIVATED
                     || item->status == IS_ACTIVE)) {
                 item->object_id += O_PUZZLE_DONE_1 - O_PUZZLE_HOLE_1;
             }
 
-            if (Object_IsObjectType(item->object_id, g_PickupObjects)
+            if (Object_IsType(item->object_id, g_PickupObjects)
                 && item->status == IS_DEACTIVATED) {
                 Item_RemoveDrawn(item_num);
             }
@@ -271,7 +271,7 @@ static void M_ReadItems(void)
             }
         }
 
-        if (Object_IsObjectType(item->object_id, g_MovableBlockObjects)
+        if (Object_IsType(item->object_id, g_MovableBlockObjects)
             && item->status == IS_INACTIVE) {
             Room_AlterFloorHeight(item, -WALL_L);
         }

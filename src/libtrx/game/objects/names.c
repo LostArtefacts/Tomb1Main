@@ -111,7 +111,7 @@ GAME_OBJECT_ID *Object_IdsFromName(
             }
         }
 
-        if (Object_IsObjectType(object_id, g_PickupObjects)) {
+        if (Object_IsType(object_id, g_PickupObjects)) {
             STRING_FUZZY_SOURCE source_item = {
                 .key = "pickup",
                 .value = (void *)(intptr_t)object_id,

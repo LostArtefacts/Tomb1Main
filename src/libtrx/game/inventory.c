@@ -14,7 +14,7 @@ bool Inv_AddItemNTimes(const GAME_OBJECT_ID object_id, const int32_t qty)
 
 GAME_OBJECT_ID Inv_GetItemOption(const GAME_OBJECT_ID object_id)
 {
-    if (Object_IsObjectType(object_id, g_InvObjects)) {
+    if (Object_IsType(object_id, g_InvObjects)) {
         return object_id;
     }
     return Object_GetCognate(object_id, g_ItemToInvObjectMap);
