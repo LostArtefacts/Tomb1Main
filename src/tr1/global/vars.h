@@ -36,7 +36,6 @@ extern int32_t g_OverlayFlag;
 extern int32_t g_HeightType;
 
 extern ROOM *g_RoomInfo;
-extern int16_t g_RoomCount;
 extern int32_t g_LevelItemCount;
 extern int32_t g_NumberBoxes;
 extern BOX_INFO *g_Boxes;

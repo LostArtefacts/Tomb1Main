@@ -3,7 +3,8 @@
 #include "../math/types.h"
 #include "./types.h"
 
-extern int32_t Room_GetTotalCount(void);
+void Room_InitialiseRooms(int32_t num_rooms);
+int32_t Room_GetTotalCount(void);
 extern ROOM *Room_Get(int32_t room_num);
 
 void Room_InitialiseFlipStatus(void);

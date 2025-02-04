@@ -300,7 +300,7 @@ int32_t Item_GlobalReplace(
     const GAME_OBJECT_ID src_obj_id, const GAME_OBJECT_ID dst_obj_id)
 {
     int32_t changed = 0;
-    for (int i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
         const ROOM *const room = Room_Get(i);
         for (int16_t item_num = room->item_num; item_num != NO_ITEM;
              item_num = g_Items[item_num].next_item) {

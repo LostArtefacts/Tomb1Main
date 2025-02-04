@@ -79,7 +79,6 @@ ITEM *g_LaraItem = nullptr;
 int16_t g_NextItemActive;
 int16_t g_PrevItemActive;
 int32_t g_SoundEffectCount;
-int32_t g_RoomCount;
 ROOM *g_Rooms = nullptr;
 int32_t g_FlipStatus;
 ITEM *g_Items = nullptr;

@@ -567,7 +567,7 @@ void Room_FlipMap(void)
 {
     Sound_StopAmbientSounds();
 
-    for (int i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room < 0) {
             continue;
@@ -934,11 +934,6 @@ bool Room_IsOnWalkable(
     }
 
     return object_found && room_height == height;
-}
-
-int32_t Room_GetTotalCount(void)
-{
-    return g_RoomCount;
 }
 
 ROOM *Room_Get(const int32_t room_num)

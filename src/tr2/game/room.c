@@ -758,7 +758,7 @@ bool Room_GetFlipStatus(void)
 
 void Room_FlipMap(void)
 {
-    for (int32_t i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room == NO_ROOM_NEG) {
             continue;
@@ -844,11 +844,6 @@ void Room_Legacy_TriggerMusicTrack(
     ASSERT_FAIL();
 }
 
-int32_t Room_GetTotalCount(void)
-{
-    return g_RoomCount;
-}
-
 ROOM *Room_Get(const int32_t room_num)
 {
     return &g_Rooms[room_num];
@@ -856,7 +851,8 @@ ROOM *Room_Get(const int32_t room_num)
 
 void Room_InitCinematic(void)
 {
-    for (int32_t i = 0; i < g_RoomCount; i++) {
+    const int32_t room_count = Room_GetTotalCount();
+    for (int32_t i = 0; i < room_count; i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room != NO_ROOM_NEG) {
             Room_Get(room->flipped_room)->bound_active = 1;
@@ -865,7 +861,7 @@ void Room_InitCinematic(void)
     }
 
     g_RoomsToDrawCount = 0;
-    for (int32_t i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < room_count; i++) {
         if (!Room_Get(i)->bound_active) {
             Room_MarkToBeDrawn(i);
         }

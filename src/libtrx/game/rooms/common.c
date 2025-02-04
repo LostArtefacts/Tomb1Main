@@ -24,6 +24,8 @@
     #define FD_LADDER_TYPE(t) ((t & 0x7F00) >> 8)
 #endif
 
+static int32_t m_RoomCount = 0;
+
 static const int16_t *M_ReadTrigger(
     const int16_t *data, int16_t fd_entry, SECTOR *sector);
 
@@ -94,6 +96,16 @@ static const int16_t *M_ReadTrigger(
     }
 
     return data;
+}
+
+void Room_InitialiseRooms(const int32_t num_rooms)
+{
+    m_RoomCount = num_rooms;
+}
+
+int32_t Room_GetTotalCount(void)
+{
+    return m_RoomCount;
 }
 
 void Room_InitialiseFlipStatus(void)

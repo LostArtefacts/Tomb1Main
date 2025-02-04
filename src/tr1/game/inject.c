@@ -950,7 +950,7 @@ static void M_FloorDataEdits(INJECTION *injection, LEVEL_INFO *level_info)
         // Individual FD functions must check that sector is actually set.
         ROOM *room = nullptr;
         SECTOR *sector = nullptr;
-        if (room_num < 0 || room_num >= g_RoomCount) {
+        if (room_num < 0 || room_num >= Room_GetTotalCount()) {
             LOG_WARNING("Room index %d is invalid", room_num);
         } else {
             room = Room_Get(room_num);
@@ -1239,7 +1239,7 @@ static void M_AlterRoomVertex(const INJECTION *const injection)
         shade_change = VFile_ReadS16(fp);
     }
 
-    if (target_room < 0 || target_room >= g_RoomCount) {
+    if (target_room < 0 || target_room >= Room_GetTotalCount()) {
         LOG_WARNING("Room index %d is invalid", target_room);
         return;
     }
@@ -1310,7 +1310,7 @@ static void M_AddRoomFace(const INJECTION *const injection)
         return;
     }
 
-    if (target_room < 0 || target_room >= g_RoomCount) {
+    if (target_room < 0 || target_room >= Room_GetTotalCount()) {
         LOG_WARNING("Room index %d is invalid", target_room);
         return;
     }
@@ -1455,7 +1455,7 @@ static void M_RoomDoorEdits(INJECTION *injection)
             door_index = VFile_ReadS16(fp);
         }
 
-        if (base_room < 0 || base_room >= g_RoomCount) {
+        if (base_room < 0 || base_room >= Room_GetTotalCount()) {
             VFile_Skip(fp, sizeof(int16_t) * 12);
             LOG_WARNING("Room index %d is invalid", base_room);
             continue;

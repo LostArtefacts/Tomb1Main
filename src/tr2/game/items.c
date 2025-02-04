@@ -281,7 +281,7 @@ int32_t Item_GlobalReplace(
 {
     int32_t changed = 0;
 
-    for (int32_t i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
         int16_t j = Room_Get(i)->item_num;
         while (j != NO_ITEM) {
             ITEM *const item = &g_Items[j];

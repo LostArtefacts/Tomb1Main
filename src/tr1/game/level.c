@@ -259,12 +259,13 @@ static void M_LoadFromFile(const GF_LEVEL *const level)
 static void M_LoadRooms(VFILE *file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
-    g_RoomCount = VFile_ReadU16(file);
-    LOG_INFO("%d rooms", g_RoomCount);
+    const int32_t num_rooms = VFile_ReadU16(file);
+    LOG_INFO("%d rooms", num_rooms);
 
-    g_RoomInfo = GameBuf_Alloc(sizeof(ROOM) * g_RoomCount, GBUF_ROOMS);
+    Room_InitialiseRooms(num_rooms);
+    g_RoomInfo = GameBuf_Alloc(sizeof(ROOM) * num_rooms, GBUF_ROOMS);
     int i = 0;
-    for (ROOM *r = g_RoomInfo; i < g_RoomCount; i++, r++) {
+    for (ROOM *r = g_RoomInfo; i < num_rooms; i++, r++) {
         // Room position
         r->pos.x = VFile_ReadS32(file);
         r->pos.y = 0;

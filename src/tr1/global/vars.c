@@ -27,7 +27,6 @@ int32_t g_OverlayFlag = 0;
 int32_t g_HeightType = 0;
 
 ROOM *g_RoomInfo = nullptr;
-int16_t g_RoomCount = 0;
 int32_t g_LevelItemCount = 0;
 int32_t g_NumberBoxes = 0;
 BOX_INFO *g_Boxes = nullptr;

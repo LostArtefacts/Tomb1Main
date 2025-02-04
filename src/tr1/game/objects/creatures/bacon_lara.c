@@ -37,9 +37,9 @@ void BaconLara_Initialise(int16_t item_num)
     g_Items[item_num].data = nullptr;
 }
 
-bool BaconLara_InitialiseAnchor(int32_t room_index)
+bool BaconLara_InitialiseAnchor(const int32_t room_index)
 {
-    if (room_index >= g_RoomCount) {
+    if (room_index >= Room_GetTotalCount()) {
         return false;
     }
 

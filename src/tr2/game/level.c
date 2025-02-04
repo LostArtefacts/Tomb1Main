@@ -58,17 +58,18 @@ static void M_LoadRooms(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
 
-    g_RoomCount = VFile_ReadS16(file);
-    LOG_INFO("rooms: %d", g_RoomCount);
-    if (g_RoomCount > MAX_ROOMS) {
+    const int32_t num_rooms = VFile_ReadS16(file);
+    LOG_INFO("rooms: %d", num_rooms);
+    if (num_rooms > MAX_ROOMS) {
         Shell_ExitSystem("Too many rooms");
         goto finish;
     }
 
-    g_Rooms = GameBuf_Alloc(sizeof(ROOM) * g_RoomCount, GBUF_ROOMS);
+    Room_InitialiseRooms(num_rooms);
+    g_Rooms = GameBuf_Alloc(sizeof(ROOM) * num_rooms, GBUF_ROOMS);
     ASSERT(g_Rooms != nullptr);
 
-    for (int32_t i = 0; i < g_RoomCount; i++) {
+    for (int32_t i = 0; i < num_rooms; i++) {
         ROOM *const r = &g_Rooms[i];
 
         r->pos.x = VFile_ReadS32(file);
