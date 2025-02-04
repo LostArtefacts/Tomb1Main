@@ -27,7 +27,7 @@ static DECLARE_GF_EVENT_HANDLER(M_HandleSetNumSecrets);
 
 static DECLARE_GF_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     // clang-format off
-    [GFS_PLAY_LEVEL]        = M_HandlePlayLevel,
+    [GFS_LOOP_GAME]        = M_HandlePlayLevel,
     [GFS_PLAY_MUSIC]        = M_HandlePlayMusic,
     [GFS_LEVEL_COMPLETE]    = M_HandleLevelComplete,
     [GFS_ENABLE_SUNSET]     = M_HandleEnableSunset,
@@ -241,7 +241,7 @@ GF_SEQUENCE_CONTEXT GF_SwitchSequenceContext(
     const GF_SEQUENCE_EVENT *const event, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
     // Update sequence context if necessary
-    if (event->type == GFS_PLAY_LEVEL && seq_ctx == GFSC_SAVED) {
+    if (event->type == GFS_LOOP_GAME && seq_ctx == GFSC_SAVED) {
         return GFSC_NORMAL;
     }
     return seq_ctx;

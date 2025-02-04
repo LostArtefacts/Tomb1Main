@@ -52,7 +52,7 @@
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 3},
                 {"type": "loading_screen", "path": "data/images/gym.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "exit_to_title"},
             ],
@@ -74,7 +74,7 @@
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 4},
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -91,7 +91,7 @@
             "music_track": 57,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -107,7 +107,7 @@
             "music_track": 57,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -125,7 +125,7 @@
             "music_track": 57,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -145,7 +145,7 @@
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 5},
                 {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -162,7 +162,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -181,7 +181,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -198,7 +198,7 @@
             "music_track": 58,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -216,7 +216,7 @@
             "music_track": 58,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/greece.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "play_cutscene", "cutscene_id": 1},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -239,7 +239,7 @@
             "sequence": [
                 {"type": "play_fmv", "fmv_id": 6},
                 {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -256,7 +256,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -275,7 +275,7 @@
             "music_track": 59,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/egypt.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -295,7 +295,7 @@
                 {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "remove_weapons"},
                 {"type": "remove_scions"},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "play_cutscene", "cutscene_id": 2},
                 {"type": "level_complete"},
@@ -327,7 +327,7 @@
                 {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
                 {"type": "give_item", "object_id": "pistols", "quantity": 1},
                 {"type": "setup_bacon_lara", "anchor_room": 10},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "play_fmv", "fmv_id": 9},
                 {"type": "play_cutscene", "cutscene_id": 3},
                 {"type": "level_stats"},
@@ -346,7 +346,7 @@
             "music_track": 60,
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/atlantis.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "play_fmv", "fmv_id": 10},
                 {"type": "play_music", "music_track": 19},
@@ -399,7 +399,7 @@
             ],
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_complete"},
             ],
         },
@@ -416,7 +416,7 @@
             ],
             "sequence": [
                 {"type": "loading_screen", "path": "data/images/peru.webp", "fade_in_time": 1.0, "fade_out_time": 1.0},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_complete"},
             ],
         },
@@ -439,7 +439,7 @@
             "sequence": [
                 {"type": "set_cutscene_pos", "x": 36668, "z": 63180},
                 {"type": "set_cutscene_angle", "value": -23312},
-                {"type": "play_level"},
+                {"type": "loop_game"},
             ],
         },
 
@@ -460,7 +460,7 @@
                 {"type": "set_cutscene_angle", "value": 16380},
                 {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
                 {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
-                {"type": "play_level"},
+                {"type": "loop_game"},
             ],
         },
 
@@ -477,7 +477,7 @@
             "sequence": [
                 {"type": "flip_map"},
                 {"type": "set_cutscene_angle", "value": 16384},
-                {"type": "play_level"},
+                {"type": "loop_game"},
             ],
         },
 
@@ -500,7 +500,7 @@
                 {"type": "set_cutscene_angle", "value": 16384},
                 {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 1},
                 {"type": "mesh_swap", "object1_id": "player_1", "object2_id": "pistol_anim", "mesh_id": 4},
-                {"type": "play_level"},
+                {"type": "loop_game"},
             ],
         },
     ],

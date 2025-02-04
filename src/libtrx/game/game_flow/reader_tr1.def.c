@@ -16,30 +16,30 @@ static GF_LEVEL_SETTINGS m_DefaultSettings = {
 static M_SEQUENCE_EVENT_HANDLER m_SequenceEventHandlers[] = {
     // clang-format off
     // Events without arguments
-    { GFS_FLIP_MAP,          nullptr, nullptr },
-    { GFS_REMOVE_WEAPONS,    nullptr, nullptr },
-    { GFS_REMOVE_SCIONS,     nullptr, nullptr },
-    { GFS_REMOVE_AMMO,       nullptr, nullptr },
-    { GFS_REMOVE_MEDIPACKS,  nullptr, nullptr },
-    { GFS_EXIT_TO_TITLE,     nullptr, nullptr },
-    { GFS_LEVEL_STATS,       nullptr, nullptr },
-    { GFS_LEVEL_COMPLETE,    nullptr, nullptr },
+    { GFS_FLIP_MAP,         nullptr, nullptr },
+    { GFS_REMOVE_WEAPONS,   nullptr, nullptr },
+    { GFS_REMOVE_SCIONS,    nullptr, nullptr },
+    { GFS_REMOVE_AMMO,      nullptr, nullptr },
+    { GFS_REMOVE_MEDIPACKS, nullptr, nullptr },
+    { GFS_EXIT_TO_TITLE,    nullptr, nullptr },
+    { GFS_LEVEL_STATS,      nullptr, nullptr },
+    { GFS_LEVEL_COMPLETE,   nullptr, nullptr },
 
     // Events with integer arguments
-    { GFS_PLAY_LEVEL,        M_HandleIntEvent, "level_id" },
-    { GFS_PLAY_CUTSCENE,     M_HandleIntEvent, "cutscene_id" },
-    { GFS_PLAY_FMV,          M_HandleIntEvent, "fmv_id" },
-    { GFS_PLAY_MUSIC,        M_HandleIntEvent, "music_track" },
-    { GFS_SET_CAMERA_ANGLE,  M_HandleIntEvent, "value" },
-    { GFS_SETUP_BACON_LARA,  M_HandleIntEvent, "anchor_room" },
+    { GFS_LOOP_GAME,        M_HandleIntEvent, "level_id" },
+    { GFS_PLAY_CUTSCENE,    M_HandleIntEvent, "cutscene_id" },
+    { GFS_PLAY_FMV,         M_HandleIntEvent, "fmv_id" },
+    { GFS_PLAY_MUSIC,       M_HandleIntEvent, "music_track" },
+    { GFS_SET_CAMERA_ANGLE, M_HandleIntEvent, "value" },
+    { GFS_SETUP_BACON_LARA, M_HandleIntEvent, "anchor_room" },
 
     // Special cases with custom handlers
-    { GFS_LOADING_SCREEN,    M_HandlePictureEvent, nullptr },
-    { GFS_DISPLAY_PICTURE,   M_HandlePictureEvent, nullptr },
-    { GFS_SET_CAMERA_POS,    M_HandleSetCameraPosEvent, nullptr },
-    { GFS_TOTAL_STATS,       M_HandleTotalStatsEvent, nullptr },
-    { GFS_ADD_ITEM,          M_HandleAddItemEvent, nullptr },
-    { GFS_MESH_SWAP,         M_HandleMeshSwapEvent, nullptr },
+    { GFS_LOADING_SCREEN,   M_HandlePictureEvent, nullptr },
+    { GFS_DISPLAY_PICTURE,  M_HandlePictureEvent, nullptr },
+    { GFS_SET_CAMERA_POS,   M_HandleSetCameraPosEvent, nullptr },
+    { GFS_TOTAL_STATS,      M_HandleTotalStatsEvent, nullptr },
+    { GFS_ADD_ITEM,         M_HandleAddItemEvent, nullptr },
+    { GFS_MESH_SWAP,        M_HandleMeshSwapEvent, nullptr },
 
     // Sentinel to mark the end of the table
     { (GF_SEQUENCE_EVENT_TYPE)-1, nullptr, nullptr },

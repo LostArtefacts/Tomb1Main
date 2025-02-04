@@ -56,7 +56,7 @@ typedef enum {
 
 typedef enum {
     GFS_DISPLAY_PICTURE,
-    GFS_PLAY_LEVEL,
+    GFS_LOOP_GAME,
     GFS_PLAY_CUTSCENE,
     GFS_PLAY_FMV,
     GFS_PLAY_MUSIC,

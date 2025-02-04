@@ -33,7 +33,7 @@ static DECLARE_GF_EVENT_HANDLER(M_HandleSetupBaconLara);
 
 static DECLARE_GF_EVENT_HANDLER((*m_EventHandlers[GFS_NUMBER_OF])) = {
     // clang-format off
-    [GFS_PLAY_LEVEL]       = M_HandlePlayLevel,
+    [GFS_LOOP_GAME]       = M_HandlePlayLevel,
     [GFS_PLAY_MUSIC]       = M_HandlePlayMusic,
     [GFS_LEVEL_COMPLETE]   = M_HandleLevelComplete,
     [GFS_SET_CAMERA_POS]   = M_HandleSetCameraPos,
@@ -356,7 +356,7 @@ void GF_PreSequenceHook(void)
 GF_SEQUENCE_CONTEXT GF_SwitchSequenceContext(
     const GF_SEQUENCE_EVENT *const event, const GF_SEQUENCE_CONTEXT seq_ctx)
 {
-    if (event->type != GFS_PLAY_LEVEL) {
+    if (event->type != GFS_LOOP_GAME) {
         return seq_ctx;
     }
     switch (seq_ctx) {

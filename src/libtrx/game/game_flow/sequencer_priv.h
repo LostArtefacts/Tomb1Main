@@ -7,7 +7,7 @@ extern bool GF_ShouldSkipSequenceEvent(
     const GF_LEVEL *level, const GF_SEQUENCE_EVENT *event);
 
 // Defer execution of certain events to run it at various stages of
-// GFS_PLAY_LEVEL.
+// GFS_LOOP_GAME.
 extern GF_EVENT_QUEUE_TYPE GF_ShouldDeferSequenceEvent(
     GF_SEQUENCE_EVENT_TYPE event_type);
 

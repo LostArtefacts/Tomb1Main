@@ -17,7 +17,6 @@
 
 3. **Update individual level sequences**  
    - `start_game` should be removed.
-   - `loop_game` should be replaced with `play_level`.
    - `exit_to_cine` should be removed.
    - `exit_to_level` should be replaced with `level_complete`. No parameter needed.
    - `display_picture` no longer takes a `picture_path` argument and instead just takes a `path`.

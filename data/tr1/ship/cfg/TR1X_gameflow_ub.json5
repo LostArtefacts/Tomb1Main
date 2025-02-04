@@ -49,7 +49,7 @@
             "path": "data/egypt.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -67,7 +67,7 @@
             "path": "data/cat.phd",
             "music_track": 59,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -86,7 +86,7 @@
             "path": "data/end.phd",
             "music_track": 60,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -103,7 +103,7 @@
             "path": "data/end2.phd",
             "music_track": 60,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 19},
                 {"type": "display_picture", "path": "data/images/end.webp", "display_time": 7.5, "fade_in_time": 1.0, "fade_out_time": 1.0},

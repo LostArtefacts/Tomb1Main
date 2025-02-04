@@ -320,7 +320,7 @@ static void M_LoadLevelSequence(
 
     for (int32_t i = 0; i < level->sequence.length; i++) {
         GF_SEQUENCE_EVENT *const event = &level->sequence.events[i];
-        if (event->type == GFS_PLAY_LEVEL) {
+        if (event->type == GFS_LOOP_GAME) {
             event->data = (void *)(intptr_t)level->num;
         }
     }

@@ -596,7 +596,7 @@ default game flow for examples.
     <th>Description</th>
   </tr>
   <tr valign="top">
-    <td><code>play_level</code></td>
+    <td><code>loop_game</code></td>
     <td colspan="2" align="center">N/A</td>
     <td>Plays the main game loop.</td>
   </tr>
@@ -892,7 +892,7 @@ game will exit to title.
             "path": "data/level1.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -902,7 +902,7 @@ game will exit to title.
             "path": "data/level2.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
             ],
@@ -912,7 +912,7 @@ game will exit to title.
             "path": "data/level3.phd",
             "music_track": 57,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 19},
                 {"type": "display_picture", "path": "data/end.pcx", "display_time": 7.5},
@@ -930,7 +930,7 @@ game will exit to title.
             "music_track": 57,
             "sequence": [
                 {"type": "play_fmv", "fmv_path": "fmv/snow.avi"},
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "play_cutscene", "cutscene_id": 0},
                 {"type": "level_stats"},
                 {"type": "level_complete"},
@@ -942,7 +942,7 @@ game will exit to title.
             "type": "bonus",
             "music_track": 57,
             "sequence": [
-                {"type": "play_level"},
+                {"type": "loop_game"},
                 {"type": "level_stats"},
                 {"type": "play_music", "music_track": 14},
                 {"type": "total_stats", "background_path": "data/install.pcx"},
@@ -957,7 +957,7 @@ game will exit to title.
             "music_track": 23,
             "sequence": [
                 {"type": "set_cutscene_angle", "value": -23312},
-                {"type": "play_level"},
+                {"type": "loop_game"},
             ],
         },
     ],
@@ -997,7 +997,7 @@ the engine's overall item limit).
         {"enemy_num": 47, "object_ids": [111]},
     ],
     "sequence": [
-         {"type": "play_level"},
+         {"type": "loop_game"},
          {"type": "level_stats"},
          {"type": "level_complete"},
     ],
