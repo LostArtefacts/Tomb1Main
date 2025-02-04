@@ -342,10 +342,10 @@ bool Collide_CollideStaticObjects(
 
     for (int i = 0; i < g_RoomsToDrawCount; i++) {
         int16_t room_num = g_RoomsToDraw[i];
-        ROOM *r = &g_RoomInfo[room_num];
+        const ROOM *const room = Room_Get(room_num);
 
-        for (int j = 0; j < r->num_static_meshes; j++) {
-            const STATIC_MESH *const mesh = &r->static_meshes[j];
+        for (int32_t j = 0; j < room->num_static_meshes; j++) {
+            const STATIC_MESH *const mesh = &room->static_meshes[j];
             const STATIC_OBJECT_3D *const obj =
                 Object_Get3DStatic(mesh->static_num);
             if (!obj->collidable) {

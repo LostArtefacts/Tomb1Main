@@ -277,7 +277,7 @@ bool Sound_Effect(
 
     if (flags != SPM_ALWAYS
         && (flags & SPM_UNDERWATER)
-            != (g_RoomInfo[g_Camera.pos.room_num].flags & RF_UNDERWATER)) {
+            != (Room_Get(g_Camera.pos.room_num)->flags & RF_UNDERWATER)) {
         return false;
     }
 

@@ -27,7 +27,7 @@ void Game_Draw(bool draw_overlay)
             Output_FillEnvironmentMap();
         }
 
-        if (g_RoomInfo[g_LaraItem->room_num].flags & RF_UNDERWATER) {
+        if (Room_Get(g_LaraItem->room_num)->flags & RF_UNDERWATER) {
             Output_SetupBelowWater(g_Camera.underwater);
         } else {
             Output_SetupAboveWater(g_Camera.underwater);
@@ -46,11 +46,11 @@ void Game_Draw(bool draw_overlay)
         // cinematic scene
         for (int i = 0; i < g_RoomsToDrawCount; i++) {
             int16_t room_num = g_RoomsToDraw[i];
-            ROOM *r = &g_RoomInfo[room_num];
-            r->bound_top = 0;
-            r->bound_left = 0;
-            r->bound_right = Viewport_GetMaxX();
-            r->bound_bottom = Viewport_GetMaxY();
+            ROOM *const room = Room_Get(room_num);
+            room->bound_top = 0;
+            room->bound_left = 0;
+            room->bound_right = Viewport_GetMaxX();
+            room->bound_bottom = Viewport_GetMaxY();
             Room_DrawSingleRoom(room_num);
         }
 

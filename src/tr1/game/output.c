@@ -646,7 +646,7 @@ void Output_DrawRoom(const ROOM_MESH *const mesh)
     M_DrawRoomSprites(mesh);
 }
 
-void Output_DrawRoomTriggers(const ROOM *const r)
+void Output_DrawRoomTriggers(const ROOM *const room)
 {
 #define DRAW_TRI(a, b, c, color)                                               \
     do {                                                                       \
@@ -667,9 +667,9 @@ void Output_DrawRoomTriggers(const ROOM *const r)
     S_Output_DisableTextureMode();
     S_Output_DisableDepthWrites();
     S_Output_SetBlendingMode(GFX_BLEND_MODE_NORMAL);
-    for (int32_t z = 0; z < r->size.z; z++) {
-        for (int32_t x = 0; x < r->size.x; x++) {
-            const SECTOR *sector = &r->sectors[z + x * r->size.z];
+    for (int32_t z = 0; z < room->size.z; z++) {
+        for (int32_t x = 0; x < room->size.x; x++) {
+            const SECTOR *sector = &room->sectors[z + x * room->size.z];
             if (sector->trigger == nullptr) {
                 continue;
             }
@@ -680,12 +680,12 @@ void Output_DrawRoomTriggers(const ROOM *const r)
                     .z = (z + offsets[i].z) * WALL_L,
                 };
                 XYZ_32 world_pos = {
-                    .x = r->pos.x + x * WALL_L + offsets[i].x * (WALL_L - 1),
-                    .z = r->pos.z + z * WALL_L + offsets[i].z * (WALL_L - 1),
-                    .y = r->pos.y,
+                    .x = room->pos.x + x * WALL_L + offsets[i].x * (WALL_L - 1),
+                    .z = room->pos.z + z * WALL_L + offsets[i].z * (WALL_L - 1),
+                    .y = room->pos.y,
                 };
 
-                int16_t room_num = r - g_RoomInfo;
+                int16_t room_num = room - Room_Get(0);
                 sector = Room_GetSector(
                     world_pos.x, world_pos.y, world_pos.z, &room_num);
                 vertex_pos.y =

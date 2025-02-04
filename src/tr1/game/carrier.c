@@ -83,7 +83,7 @@ static void M_AnimateDrop(CARRIED_ITEM *const item)
         pickup->pos.x, pickup->pos.y - 10, pickup->pos.z, &room_num);
     const int16_t height =
         Room_GetHeight(sector, pickup->pos.x, pickup->pos.y, pickup->pos.z);
-    const bool in_water = g_RoomInfo[pickup->room_num].flags & RF_UNDERWATER;
+    const bool in_water = Room_Get(pickup->room_num)->flags & RF_UNDERWATER;
 
     if (sector->portal_room.pit == NO_ROOM && pickup->pos.y >= height) {
         item->status = DS_DROPPED;

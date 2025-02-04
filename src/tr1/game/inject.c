@@ -941,24 +941,24 @@ static void M_FloorDataEdits(INJECTION *injection, LEVEL_INFO *level_info)
     VFILE *const fp = injection->fp;
 
     for (int32_t i = 0; i < inj_info->floor_edit_count; i++) {
-        const int16_t room = VFile_ReadS16(fp);
+        const int16_t room_num = VFile_ReadS16(fp);
         const uint16_t x = VFile_ReadU16(fp);
         const uint16_t z = VFile_ReadU16(fp);
         const int32_t fd_edit_count = VFile_ReadS32(fp);
 
         // Verify that the given room and coordinates are accurate.
         // Individual FD functions must check that sector is actually set.
-        ROOM *r = nullptr;
+        ROOM *room = nullptr;
         SECTOR *sector = nullptr;
-        if (room < 0 || room >= g_RoomCount) {
-            LOG_WARNING("Room index %d is invalid", room);
+        if (room_num < 0 || room_num >= g_RoomCount) {
+            LOG_WARNING("Room index %d is invalid", room_num);
         } else {
-            r = &g_RoomInfo[room];
-            if (x >= r->size.x || z >= r->size.z) {
+            room = Room_Get(room_num);
+            if (x >= room->size.x || z >= room->size.z) {
                 LOG_WARNING(
-                    "Sector [%d,%d] is invalid for room %d", x, z, room);
+                    "Sector [%d,%d] is invalid for room %d", x, z, room_num);
             } else {
-                sector = &r->sectors[r->size.z * x + z];
+                sector = &room->sectors[room->size.z * x + z];
             }
         }
 
@@ -975,7 +975,7 @@ static void M_FloorDataEdits(INJECTION *injection, LEVEL_INFO *level_info)
                 M_InsertFloorData(injection, sector, level_info);
                 break;
             case FET_ROOM_SHIFT:
-                M_RoomShift(injection, room);
+                M_RoomShift(injection, room_num);
                 break;
             case FET_TRIGGER_ITEM:
                 M_TriggeredItem(injection, level_info);
@@ -1461,13 +1461,13 @@ static void M_RoomDoorEdits(INJECTION *injection)
             continue;
         }
 
-        ROOM *r = &g_RoomInfo[base_room];
+        const ROOM *const room = Room_Get(base_room);
         PORTAL *portal = nullptr;
-        for (int32_t j = 0; j < r->portals->count; j++) {
-            PORTAL d = r->portals->portal[j];
+        for (int32_t j = 0; j < room->portals->count; j++) {
+            PORTAL d = room->portals->portal[j];
             if (d.room_num == link_room
                 && (j == door_index || door_index == -1)) {
-                portal = &r->portals->portal[j];
+                portal = &room->portals->portal[j];
                 break;
             }
         }

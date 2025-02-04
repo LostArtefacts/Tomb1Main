@@ -33,11 +33,11 @@ static void M_WaterCurrent(COLL_INFO *coll)
     XYZ_32 target;
 
     ITEM *const item = g_LaraItem;
-    const ROOM *const r = &g_RoomInfo[item->room_num];
+    const ROOM *const room = Room_Get(item->room_num);
     const SECTOR *const sector =
-        &r->sectors
-             [((item->pos.z - r->pos.z) >> WALL_SHIFT)
-              + ((item->pos.x - r->pos.x) >> WALL_SHIFT) * r->size.z];
+        &room->sectors
+             [((item->pos.z - room->pos.z) >> WALL_SHIFT)
+              + ((item->pos.x - room->pos.x) >> WALL_SHIFT) * room->size.z];
     item->box_num = sector->box;
 
     if (Box_CalculateTarget(&target, item, &g_Lara.lot) == TARGET_NONE) {
@@ -121,7 +121,7 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
         Room_GetAdjoiningRooms(lara_item->room_num, roomies, 12);
 
     for (int32_t i = 0; i < roomies_count; i++) {
-        int16_t item_num = g_RoomInfo[roomies[i]].item_num;
+        int16_t item_num = Room_Get(roomies[i])->item_num;
         while (item_num != NO_ITEM) {
             ITEM *item = &g_Items[item_num];
             if (item->collidable && item->status != IS_INVISIBLE) {

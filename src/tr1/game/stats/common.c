@@ -37,33 +37,36 @@ static struct {
 #endif
 
 static void M_TraverseFloor(void);
-static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector);
+static void M_CheckTriggers(
+    const ROOM *room, int32_t room_num, int32_t z_sector, int32_t x_sector);
 static void M_IncludeKillableItem(int16_t item_num);
 
 static void M_TraverseFloor(void)
 {
     uint32_t secrets = 0;
 
-    for (int i = 0; i < g_RoomCount; i++) {
-        ROOM *r = &g_RoomInfo[i];
-        for (int z_sector = 0; z_sector < r->size.z; z_sector++) {
-            for (int x_sector = 0; x_sector < r->size.x; x_sector++) {
-                M_CheckTriggers(r, i, z_sector, x_sector);
+    for (int32_t i = 0; i < g_RoomCount; i++) {
+        const ROOM *const room = Room_Get(i);
+        for (int32_t z_sector = 0; z_sector < room->size.z; z_sector++) {
+            for (int32_t x_sector = 0; x_sector < room->size.x; x_sector++) {
+                M_CheckTriggers(room, i, z_sector, x_sector);
             }
         }
     }
 }
 
-static void M_CheckTriggers(ROOM *r, int room_num, int z_sector, int x_sector)
+static void M_CheckTriggers(
+    const ROOM *const room, const int32_t room_num, const int32_t z_sector,
+    const int32_t x_sector)
 {
-    if (z_sector == 0 || z_sector == r->size.z - 1) {
-        if (x_sector == 0 || x_sector == r->size.x - 1) {
+    if (z_sector == 0 || z_sector == room->size.z - 1) {
+        if (x_sector == 0 || x_sector == room->size.x - 1) {
             return;
         }
     }
 
     const SECTOR *const sector =
-        &m_CachedSectorArray[room_num][z_sector + x_sector * r->size.z];
+        &m_CachedSectorArray[room_num][z_sector + x_sector * room->size.z];
 
     if (sector->trigger == nullptr) {
         return;
@@ -147,14 +150,11 @@ void Stats_ObserveRoomsLoad(void)
     m_CachedSectorArray =
         GameBuf_Alloc(g_RoomCount * sizeof(SECTOR *), GBUF_ROOM_SECTORS);
     for (int i = 0; i < g_RoomCount; i++) {
-        const ROOM *current_room_info = &g_RoomInfo[i];
-        const int32_t count =
-            current_room_info->size.x * current_room_info->size.z;
+        const ROOM *const room = Room_Get(i);
+        const int32_t count = room->size.x * room->size.z;
         m_CachedSectorArray[i] =
             GameBuf_Alloc(count * sizeof(SECTOR), GBUF_ROOM_SECTORS);
-        memcpy(
-            m_CachedSectorArray[i], current_room_info->sectors,
-            count * sizeof(SECTOR));
+        memcpy(m_CachedSectorArray[i], room->sectors, count * sizeof(SECTOR));
     }
 }
 

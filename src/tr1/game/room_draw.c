@@ -149,42 +149,42 @@ static bool M_SetBounds(const PORTAL *portal, const ROOM *parent)
         return false;
     }
 
-    ROOM *r = &g_RoomInfo[portal->room_num];
-    if (left < r->bound_left) {
-        r->bound_left = left;
+    ROOM *const room = Room_Get(portal->room_num);
+    if (left < room->bound_left) {
+        room->bound_left = left;
     }
-    if (top < r->bound_top) {
-        r->bound_top = top;
+    if (top < room->bound_top) {
+        room->bound_top = top;
     }
-    if (right > r->bound_right) {
-        r->bound_right = right;
+    if (right > room->bound_right) {
+        room->bound_right = right;
     }
-    if (bottom > r->bound_bottom) {
-        r->bound_bottom = bottom;
+    if (bottom > room->bound_bottom) {
+        room->bound_bottom = bottom;
     }
 
-    if (!r->bound_active) {
+    if (!room->bound_active) {
         if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
             g_RoomsToDraw[g_RoomsToDrawCount++] = portal->room_num;
         }
-        r->bound_active = 1;
+        room->bound_active = 1;
     }
     return true;
 }
 
 static void M_GetBounds(int16_t room_num)
 {
-    ROOM *r = &g_RoomInfo[room_num];
+    const ROOM *const room = Room_Get(room_num);
     if (!Matrix_Push()) {
         M_PrintDrawStack();
         Shell_ExitSystem("Matrix stack overflow.");
     }
     m_RoomNumStack[m_RoomNumStackIdx++] = room_num;
-    Matrix_TranslateAbs32(r->pos);
-    if (r->portals != nullptr) {
-        for (int i = 0; i < r->portals->count; i++) {
-            const PORTAL *portal = &r->portals->portal[i];
-            if (M_SetBounds(portal, r)) {
+    Matrix_TranslateAbs32(room->pos);
+    if (room->portals != nullptr) {
+        for (int32_t i = 0; i < room->portals->count; i++) {
+            const PORTAL *portal = &room->portals->portal[i];
+            if (M_SetBounds(portal, room)) {
                 M_GetBounds(portal->room_num);
             }
         }
@@ -214,27 +214,27 @@ void Room_DrawAllRooms(int16_t base_room, int16_t target_room)
 
 static void M_PrepareToDraw(int16_t room_num)
 {
-    ROOM *r = &g_RoomInfo[room_num];
-    if (r->bound_active) {
+    ROOM *const room = Room_Get(room_num);
+    if (room->bound_active) {
         return;
     }
 
-    r->bound_left = g_PhdLeft;
-    r->bound_top = g_PhdTop;
-    r->bound_right = g_PhdRight;
-    r->bound_bottom = g_PhdBottom;
-    r->bound_active = 1;
+    room->bound_left = g_PhdLeft;
+    room->bound_top = g_PhdTop;
+    room->bound_right = g_PhdRight;
+    room->bound_bottom = g_PhdBottom;
+    room->bound_active = 1;
 
     if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
         g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
     }
 
     Matrix_Push();
-    Matrix_TranslateAbs32(r->pos);
-    if (r->portals != nullptr) {
-        for (int i = 0; i < r->portals->count; i++) {
-            const PORTAL *portal = &r->portals->portal[i];
-            if (M_SetBounds(portal, r)) {
+    Matrix_TranslateAbs32(room->pos);
+    if (room->portals != nullptr) {
+        for (int32_t i = 0; i < room->portals->count; i++) {
+            const PORTAL *portal = &room->portals->portal[i];
+            if (M_SetBounds(portal, room)) {
                 M_GetBounds(portal->room_num);
             }
         }
@@ -264,37 +264,37 @@ static void M_DrawSkybox(void)
 void Room_DrawSingleRoom(int16_t room_num)
 {
     bool camera_underwater =
-        g_RoomInfo[g_Camera.pos.room_num].flags & RF_UNDERWATER;
+        Room_Get(g_Camera.pos.room_num)->flags & RF_UNDERWATER;
 
-    ROOM *r = &g_RoomInfo[room_num];
-    if (r->flags & RF_UNDERWATER) {
+    ROOM *const room = Room_Get(room_num);
+    if (room->flags & RF_UNDERWATER) {
         Output_SetupBelowWater(camera_underwater);
     } else {
         Output_SetupAboveWater(camera_underwater);
     }
 
-    r->bound_active = 0;
+    room->bound_active = 0;
 
     Matrix_Push();
-    Matrix_TranslateAbs32(r->pos);
+    Matrix_TranslateAbs32(room->pos);
 
-    g_PhdLeft = r->bound_left;
-    g_PhdRight = r->bound_right;
-    g_PhdTop = r->bound_top;
-    g_PhdBottom = r->bound_bottom;
+    g_PhdLeft = room->bound_left;
+    g_PhdRight = room->bound_right;
+    g_PhdTop = room->bound_top;
+    g_PhdBottom = room->bound_bottom;
 
-    Output_LightRoom(r);
-    Output_DrawRoom(&r->mesh);
+    Output_LightRoom(room);
+    Output_DrawRoom(&room->mesh);
 
-    for (int i = r->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
+    for (int32_t i = room->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
         ITEM *item = &g_Items[i];
         if (item->status != IS_INVISIBLE) {
             Object_Get(item->object_id)->draw_routine(item);
         }
     }
 
-    for (int i = 0; i < r->num_static_meshes; i++) {
-        const STATIC_MESH *const mesh = &r->static_meshes[i];
+    for (int32_t i = 0; i < room->num_static_meshes; i++) {
+        const STATIC_MESH *const mesh = &room->static_meshes[i];
         const STATIC_OBJECT_3D *const obj =
             Object_Get3DStatic(mesh->static_num);
         if (!obj->visible) {
@@ -306,23 +306,24 @@ void Room_DrawSingleRoom(int16_t room_num)
         Matrix_RotY(mesh->rot.y);
         int32_t clip = Output_GetObjectBounds(&obj->draw_bounds);
         if (clip != 0) {
-            Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, r);
+            Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, room);
             Object_DrawMesh(obj->mesh_idx, clip, false);
         }
         Matrix_Pop();
     }
 
-    for (int i = r->effect_num; i != NO_EFFECT; i = Effect_Get(i)->next_draw) {
+    for (int32_t i = room->effect_num; i != NO_EFFECT;
+         i = Effect_Get(i)->next_draw) {
         Effect_Draw(i);
     }
 
     if (g_Config.rendering.enable_debug) {
-        Output_DrawRoomTriggers(r);
+        Output_DrawRoomTriggers(room);
     }
     Matrix_Pop();
 
-    r->bound_left = Viewport_GetMaxX();
-    r->bound_bottom = 0;
-    r->bound_right = 0;
-    r->bound_top = Viewport_GetMaxY();
+    room->bound_left = Viewport_GetMaxX();
+    room->bound_bottom = 0;
+    room->bound_right = 0;
+    room->bound_top = Viewport_GetMaxY();
 }

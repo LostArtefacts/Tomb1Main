@@ -139,12 +139,13 @@ void Item_Initialise(int16_t item_num)
         item->status = IS_ACTIVE;
     }
 
-    ROOM *const r = &g_RoomInfo[item->room_num];
-    item->next_item = r->item_num;
-    r->item_num = item_num;
-    const int32_t z_sector = (item->pos.z - r->pos.z) >> WALL_SHIFT;
-    const int32_t x_sector = (item->pos.x - r->pos.x) >> WALL_SHIFT;
-    const SECTOR *const sector = &r->sectors[z_sector + x_sector * r->size.z];
+    ROOM *const room = Room_Get(item->room_num);
+    item->next_item = room->item_num;
+    room->item_num = item_num;
+    const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
+    const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
+    const SECTOR *const sector =
+        &room->sectors[z_sector + x_sector * room->size.z];
     item->floor = sector->floor.height;
 
     if (g_GameInfo.bonus_flag & GBF_NGPLUS) {
@@ -184,11 +185,11 @@ void Item_RemoveActive(int16_t item_num)
 void Item_RemoveDrawn(int16_t item_num)
 {
     ITEM *const item = &g_Items[item_num];
-    ROOM *const r = &g_RoomInfo[item->room_num];
+    ROOM *const room = Room_Get(item->room_num);
 
-    int16_t link_num = r->item_num;
+    int16_t link_num = room->item_num;
     if (link_num == item_num) {
-        r->item_num = item->next_item;
+        room->item_num = item->next_item;
         return;
     }
 
@@ -222,12 +223,12 @@ void Item_AddActive(int16_t item_num)
 void Item_NewRoom(int16_t item_num, int16_t room_num)
 {
     ITEM *item = &g_Items[item_num];
-    ROOM *r = &g_RoomInfo[item->room_num];
+    ROOM *room = Room_Get(item->room_num);
 
     if (item->room_num != NO_ROOM) {
-        int16_t linknum = r->item_num;
+        int16_t linknum = room->item_num;
         if (linknum == item_num) {
-            r->item_num = item->next_item;
+            room->item_num = item->next_item;
         } else {
             for (; linknum != NO_ITEM; linknum = g_Items[linknum].next_item) {
                 if (g_Items[linknum].next_item == item_num) {
@@ -238,10 +239,10 @@ void Item_NewRoom(int16_t item_num, int16_t room_num)
         }
     }
 
-    r = &g_RoomInfo[room_num];
+    room = Room_Get(room_num);
     item->room_num = room_num;
-    item->next_item = r->item_num;
-    r->item_num = item_num;
+    item->next_item = room->item_num;
+    room->item_num = item_num;
 }
 
 void Item_UpdateRoom(ITEM *item, int32_t height)
@@ -300,8 +301,8 @@ int32_t Item_GlobalReplace(
 {
     int32_t changed = 0;
     for (int i = 0; i < g_RoomCount; i++) {
-        ROOM *r = &g_RoomInfo[i];
-        for (int16_t item_num = r->item_num; item_num != NO_ITEM;
+        const ROOM *const room = Room_Get(i);
+        for (int16_t item_num = room->item_num; item_num != NO_ITEM;
              item_num = g_Items[item_num].next_item) {
             if (g_Items[item_num].object_id == src_obj_id) {
                 g_Items[item_num].object_id = dst_obj_id;

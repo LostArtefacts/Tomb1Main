@@ -64,14 +64,15 @@ bool Cutscene_Start(const int32_t level_num)
     M_InitialiseLara(level);
 
     for (int16_t room_num = 0; room_num < g_RoomCount; room_num++) {
-        if (g_RoomInfo[room_num].flipped_room >= 0) {
-            g_RoomInfo[g_RoomInfo[room_num].flipped_room].bound_active = 1;
+        const ROOM *const room = Room_Get(room_num);
+        if (room->flipped_room >= 0) {
+            Room_Get(room->flipped_room)->bound_active = 1;
         }
     }
 
     g_RoomsToDrawCount = 0;
     for (int16_t room_num = 0; room_num < g_RoomCount; room_num++) {
-        if (!g_RoomInfo[room_num].bound_active) {
+        if (!Room_Get(room_num)->bound_active) {
             if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
                 g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
             }

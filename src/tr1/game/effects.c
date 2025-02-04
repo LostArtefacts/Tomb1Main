@@ -64,10 +64,10 @@ int16_t Effect_Create(int16_t room_num)
     EFFECT *effect = Effect_Get(effect_num);
     m_NextEffectFree = effect->next_free;
 
-    ROOM *r = &g_RoomInfo[room_num];
+    ROOM *const room = Room_Get(room_num);
     effect->room_num = room_num;
-    effect->next_draw = r->effect_num;
-    r->effect_num = effect_num;
+    effect->next_draw = room->effect_num;
+    room->effect_num = effect_num;
 
     effect->next_active = m_NextEffectActive;
     m_NextEffectActive = effect_num;
@@ -92,11 +92,11 @@ void Effect_Kill(int16_t effect_num)
         }
     }
 
-    ROOM *r = &g_RoomInfo[effect->room_num];
-    if (r->effect_num == effect_num) {
-        r->effect_num = effect->next_draw;
+    ROOM *const room = Room_Get(effect->room_num);
+    if (room->effect_num == effect_num) {
+        room->effect_num = effect->next_draw;
     } else {
-        int16_t link_num = r->effect_num;
+        int16_t link_num = room->effect_num;
         while (link_num != NO_EFFECT) {
             EFFECT *fx_link = Effect_Get(link_num);
             if (fx_link->next_draw == effect_num) {
@@ -114,11 +114,11 @@ void Effect_Kill(int16_t effect_num)
 void Effect_NewRoom(int16_t effect_num, int16_t room_num)
 {
     EFFECT *effect = Effect_Get(effect_num);
-    ROOM *r = &g_RoomInfo[effect->room_num];
+    ROOM *room = Room_Get(effect->room_num);
 
-    int16_t link_num = r->effect_num;
+    int16_t link_num = room->effect_num;
     if (link_num == effect_num) {
-        r->effect_num = effect->next_draw;
+        room->effect_num = effect->next_draw;
     } else {
         for (; link_num != NO_EFFECT;
              link_num = Effect_Get(link_num)->next_draw) {
@@ -129,10 +129,10 @@ void Effect_NewRoom(int16_t effect_num, int16_t room_num)
         }
     }
 
-    r = &g_RoomInfo[room_num];
+    room = Room_Get(room_num);
     effect->room_num = room_num;
-    effect->next_draw = r->effect_num;
-    r->effect_num = effect_num;
+    effect->next_draw = room->effect_num;
+    room->effect_num = effect_num;
 }
 
 void Effect_Draw(const int16_t effect_num)

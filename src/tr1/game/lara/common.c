@@ -505,7 +505,7 @@ void Lara_Initialise(const GF_LEVEL *const level)
     g_Lara.interact_target.item_num = NO_OBJECT;
     g_Lara.interact_target.move_count = 0;
 
-    if (g_RoomInfo[g_LaraItem->room_num].flags & RF_UNDERWATER) {
+    if (Room_Get(g_LaraItem->room_num)->flags & RF_UNDERWATER) {
         g_Lara.water_status = LWS_UNDERWATER;
         g_LaraItem->fall_speed = 0;
         g_LaraItem->goal_anim_state = LS_TREAD;

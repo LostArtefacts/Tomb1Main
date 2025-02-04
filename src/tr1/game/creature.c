@@ -51,16 +51,16 @@ void Creature_AIInfo(ITEM *item, AI_INFO *info)
         zone = g_GroundZone2[g_FlipStatus];
     }
 
-    const ROOM *r = &g_RoomInfo[item->room_num];
-    int32_t z_sector = (item->pos.z - r->pos.z) >> WALL_SHIFT;
-    int32_t x_sector = (item->pos.x - r->pos.x) >> WALL_SHIFT;
-    item->box_num = r->sectors[z_sector + x_sector * r->size.z].box;
+    const ROOM *room = Room_Get(item->room_num);
+    int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
+    int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
+    item->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
     info->zone_num = zone[item->box_num];
 
-    r = &g_RoomInfo[g_LaraItem->room_num];
-    z_sector = (g_LaraItem->pos.z - r->pos.z) >> WALL_SHIFT;
-    x_sector = (g_LaraItem->pos.x - r->pos.x) >> WALL_SHIFT;
-    g_LaraItem->box_num = r->sectors[z_sector + x_sector * r->size.z].box;
+    room = Room_Get(g_LaraItem->room_num);
+    z_sector = (g_LaraItem->pos.z - room->pos.z) >> WALL_SHIFT;
+    x_sector = (g_LaraItem->pos.x - room->pos.x) >> WALL_SHIFT;
+    g_LaraItem->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
     info->enemy_zone = zone[g_LaraItem->box_num];
 
     if (g_Boxes[g_LaraItem->box_num].overlap_index & creature->lot.block_mask) {
@@ -348,7 +348,7 @@ bool Creature_CheckBaddieOverlap(int16_t item_num)
     int32_t z = item->pos.z;
     const int32_t radius = SQUARE(Object_Get(item->object_id)->radius);
 
-    int16_t link = g_RoomInfo[item->room_num].item_num;
+    int16_t link = Room_Get(item->room_num)->item_num;
     do {
         item = &g_Items[link];
 

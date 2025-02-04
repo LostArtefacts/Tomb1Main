@@ -24,7 +24,7 @@ void Bubble_Control(int16_t effect_num)
 
     int16_t room_num = effect->room_num;
     const SECTOR *const sector = Room_GetSector(x, y, z, &room_num);
-    if (!sector || !(g_RoomInfo[room_num].flags & RF_UNDERWATER)) {
+    if (!sector || !(Room_Get(room_num)->flags & RF_UNDERWATER)) {
         Effect_Kill(effect_num);
         return;
     }
