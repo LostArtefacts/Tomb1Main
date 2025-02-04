@@ -19,27 +19,27 @@ typedef struct {
 } DOOR_DATA;
 
 static SECTOR *M_GetRoomRelSector(
-    const ROOM *r, const ITEM *item, int32_t sector_dx, int32_t sector_dz);
+    const ROOM *room, const ITEM *item, int32_t sector_dx, int32_t sector_dz);
 static void M_Initialise(
-    const ROOM *r, const ITEM *item, int32_t sector_dx, int32_t sector_dz,
+    const ROOM *room, const ITEM *item, int32_t sector_dx, int32_t sector_dz,
     DOORPOS_DATA *door_pos);
 
 static SECTOR *M_GetRoomRelSector(
-    const ROOM *const r, const ITEM *item, const int32_t sector_dx,
+    const ROOM *const room, const ITEM *item, const int32_t sector_dx,
     const int32_t sector_dz)
 {
     const XZ_32 sector = {
-        .x = ((item->pos.x - r->pos.x) >> WALL_SHIFT) + sector_dx,
-        .z = ((item->pos.z - r->pos.z) >> WALL_SHIFT) + sector_dz,
+        .x = ((item->pos.x - room->pos.x) >> WALL_SHIFT) + sector_dx,
+        .z = ((item->pos.z - room->pos.z) >> WALL_SHIFT) + sector_dz,
     };
-    return &r->sectors[sector.x * r->size.z + sector.z];
+    return &room->sectors[sector.x * room->size.z + sector.z];
 }
 
 static void M_Initialise(
-    const ROOM *const r, const ITEM *const item, const int32_t sector_dx,
+    const ROOM *const room, const ITEM *const item, const int32_t sector_dx,
     const int32_t sector_dz, DOORPOS_DATA *const door_pos)
 {
-    door_pos->sector = M_GetRoomRelSector(r, item, sector_dx, sector_dz);
+    door_pos->sector = M_GetRoomRelSector(room, item, sector_dx, sector_dz);
 
     const SECTOR *sector = door_pos->sector;
 
@@ -122,18 +122,15 @@ void Door_Initialise(const int16_t item_num)
         dx = 1;
     }
 
-    const ROOM *r;
-    int16_t room_num;
+    int16_t room_num = item->room_num;
+    const ROOM *room = Room_Get(room_num);
+    M_Initialise(room, item, dx, dz, &door->d1);
 
-    room_num = item->room_num;
-    r = Room_Get(room_num);
-    M_Initialise(r, item, dx, dz, &door->d1);
-
-    if (r->flipped_room == NO_ROOM_NEG) {
+    if (room->flipped_room == NO_ROOM_NEG) {
         door->d1flip.sector = nullptr;
     } else {
-        r = Room_Get(r->flipped_room);
-        M_Initialise(r, item, dx, dz, &door->d1flip);
+        room = Room_Get(room->flipped_room);
+        M_Initialise(room, item, dx, dz, &door->d1flip);
     }
 
     room_num = door->d1.sector->portal_room.wall;
@@ -144,13 +141,13 @@ void Door_Initialise(const int16_t item_num)
         door->d2.sector = nullptr;
         door->d2flip.sector = nullptr;
     } else {
-        r = Room_Get(room_num);
-        M_Initialise(r, item, 0, 0, &door->d2);
-        if (r->flipped_room == NO_ROOM_NEG) {
+        room = Room_Get(room_num);
+        M_Initialise(room, item, 0, 0, &door->d2);
+        if (room->flipped_room == NO_ROOM_NEG) {
             door->d2flip.sector = nullptr;
         } else {
-            r = Room_Get(r->flipped_room);
-            M_Initialise(r, item, 0, 0, &door->d2flip);
+            room = Room_Get(room->flipped_room);
+            M_Initialise(room, item, 0, 0, &door->d2flip);
         }
 
         Door_Shut(&door->d2);

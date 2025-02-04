@@ -242,7 +242,7 @@ int32_t Boat_TestWaterHeight(
 void Boat_DoShift(const int32_t boat_num)
 {
     ITEM *const boat = &g_Items[boat_num];
-    int16_t item_num = g_Rooms[boat->room_num].item_num;
+    int16_t item_num = Room_Get(boat->room_num)->item_num;
 
     while (item_num != NO_ITEM) {
         ITEM *item = &g_Items[item_num];

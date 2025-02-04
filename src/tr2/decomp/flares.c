@@ -395,7 +395,7 @@ void Flare_Control(const int16_t item_num)
     item->pos.z += (item->speed * Math_Cos(item->rot.y)) >> W2V_SHIFT;
     item->pos.x += (item->speed * Math_Sin(item->rot.y)) >> W2V_SHIFT;
 
-    if (g_Rooms[item->room_num].flags & RF_UNDERWATER) {
+    if (Room_Get(item->room_num)->flags & RF_UNDERWATER) {
         item->fall_speed += (5 - item->fall_speed) / 2;
         item->speed = item->speed + (5 - item->speed) / 2;
     } else {

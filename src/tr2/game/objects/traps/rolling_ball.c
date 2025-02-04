@@ -125,9 +125,9 @@ void RollingBall_Control(const int16_t item_num)
         item->pos.z = data->z;
         if (item->room_num != data->room_num) {
             Item_RemoveDrawn(item_num);
-            ROOM *const r = Room_Get(data->room_num);
-            item->next_item = r->item_num;
-            r->item_num = item_num;
+            ROOM *const room = Room_Get(data->room_num);
+            item->next_item = room->item_num;
+            room->item_num = item_num;
             item->room_num = data->room_num;
         }
         item->goal_anim_state = TRAP_SET;

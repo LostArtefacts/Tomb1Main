@@ -32,8 +32,8 @@ void BodyPart_Control(const int16_t effect_num)
     const SECTOR *const sector =
         Room_GetSector(effect->pos.x, effect->pos.y, effect->pos.z, &room_num);
 
-    if (!(g_Rooms[effect->room_num].flags & RF_UNDERWATER)
-        && (g_Rooms[room_num].flags & RF_UNDERWATER)) {
+    if (!(Room_Get(effect->room_num)->flags & RF_UNDERWATER)
+        && (Room_Get(room_num)->flags & RF_UNDERWATER)) {
         const int16_t effect_num = Effect_Create(effect->room_num);
         if (effect_num != NO_EFFECT) {
             EFFECT *const splash_fx = Effect_Get(effect_num);

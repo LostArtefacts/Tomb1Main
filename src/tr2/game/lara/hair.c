@@ -300,7 +300,7 @@ void Lara_Hair_Control(const bool in_cutscene)
         height = g_LaraItem->floor;
     }
 
-    if (g_Rooms[room_num].flags & RF_NOT_INSIDE) {
+    if (Room_Get(room_num)->flags & RF_NOT_INSIDE) {
         const int32_t random = Random_GetDraw() & 7;
         if (random != 0) {
             m_HairWind += random - 4;

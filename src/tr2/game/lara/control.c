@@ -442,7 +442,7 @@ void Lara_Control(const int16_t item_num)
         Lara_Cheat_EnterFlyMode();
     }
 
-    const bool room_submerged = g_Rooms[item->room_num].flags & RF_UNDERWATER;
+    const bool room_submerged = Room_Get(item->room_num)->flags & RF_UNDERWATER;
     const int32_t water_depth = Lara_GetWaterDepth(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
     const int32_t water_height = Room_GetWaterHeight(
@@ -825,7 +825,7 @@ void Lara_Initialise(const GF_LEVEL *const level)
         Lara_Animate(item);
         g_Lara.extra_anim = 1;
         Camera_InvokeCinematic(item, 0, 0);
-    } else if ((g_Rooms[item->room_num].flags & RF_UNDERWATER)) {
+    } else if ((Room_Get(item->room_num)->flags & RF_UNDERWATER)) {
         g_Lara.water_status = LWS_UNDERWATER;
         item->fall_speed = 0;
         item->goal_anim_state = LS_TREAD;

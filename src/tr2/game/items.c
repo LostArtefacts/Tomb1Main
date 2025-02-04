@@ -166,7 +166,7 @@ void Item_Initialise(const int16_t item_num)
         item->status = IS_ACTIVE;
     }
 
-    ROOM *const room = &g_Rooms[item->room_num];
+    ROOM *const room = Room_Get(item->room_num);
     item->next_item = room->item_num;
     room->item_num = item_num;
 
@@ -215,9 +215,10 @@ void Item_RemoveDrawn(const int16_t item_num)
         return;
     }
 
-    int16_t link_num = g_Rooms[item->room_num].item_num;
+    ROOM *const room = Room_Get(item->room_num);
+    int16_t link_num = room->item_num;
     if (link_num == item_num) {
-        g_Rooms[item->room_num].item_num = item->next_item;
+        room->item_num = item->next_item;
         return;
     }
 
@@ -253,7 +254,7 @@ void Item_NewRoom(const int16_t item_num, const int16_t room_num)
     ROOM *room = nullptr;
 
     if (item->room_num != NO_ROOM) {
-        room = &g_Rooms[item->room_num];
+        room = Room_Get(item->room_num);
 
         int16_t link_num = room->item_num;
         if (link_num == item_num) {
@@ -270,7 +271,7 @@ void Item_NewRoom(const int16_t item_num, const int16_t room_num)
     }
 
     item->room_num = room_num;
-    room = &g_Rooms[room_num];
+    room = Room_Get(room_num);
     item->next_item = room->item_num;
     room->item_num = item_num;
 }
@@ -281,7 +282,7 @@ int32_t Item_GlobalReplace(
     int32_t changed = 0;
 
     for (int32_t i = 0; i < g_RoomCount; i++) {
-        int16_t j = g_Rooms[i].item_num;
+        int16_t j = Room_Get(i)->item_num;
         while (j != NO_ITEM) {
             ITEM *const item = &g_Items[j];
             if (item->object_id == src_obj_id) {

@@ -994,7 +994,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
 
     roomies[roomies_count++] = lara_item->room_num;
 
-    PORTALS *portals = g_Rooms[roomies[0]].portals;
+    const PORTALS *const portals = Room_Get(roomies[0])->portals;
     if (portals != nullptr) {
         for (int32_t i = 0; i < portals->count; i++) {
             if (roomies_count >= MAX_BADDIE_COLLISION) {
@@ -1005,7 +1005,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
     }
 
     for (int32_t i = 0; i < roomies_count; i++) {
-        int16_t item_num = g_Rooms[roomies[i]].item_num;
+        int16_t item_num = Room_Get(roomies[i])->item_num;
         while (item_num != NO_ITEM) {
             const ITEM *const item = &g_Items[item_num];
 
@@ -1485,66 +1485,66 @@ int32_t Lara_TestClimbUpPos(
 int32_t Lara_GetWaterDepth(
     const int32_t x, const int32_t y, const int32_t z, int16_t room_num)
 {
-    const ROOM *r = &g_Rooms[room_num];
+    const ROOM *room = Room_Get(room_num);
     const SECTOR *sector;
 
     while (true) {
-        int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-        int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
+        int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+        int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
 
         if (z_sector <= 0) {
             z_sector = 0;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
-        } else if (z_sector >= r->size.z - 1) {
-            z_sector = r->size.z - 1;
+        } else if (z_sector >= room->size.z - 1) {
+            z_sector = room->size.z - 1;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
         } else if (x_sector < 0) {
             x_sector = 0;
-        } else if (x_sector >= r->size.x) {
-            x_sector = r->size.x - 1;
+        } else if (x_sector >= room->size.x) {
+            x_sector = room->size.x - 1;
         }
 
-        sector = &r->sectors[z_sector + x_sector * r->size.z];
+        sector = &room->sectors[z_sector + x_sector * room->size.z];
         if (sector->portal_room.wall == NO_ROOM) {
             break;
         }
         room_num = sector->portal_room.wall;
-        r = &g_Rooms[room_num];
+        room = Room_Get(room_num);
     }
 
-    if (r->flags & RF_UNDERWATER) {
+    if (room->flags & RF_UNDERWATER) {
         while (sector->portal_room.sky != NO_ROOM) {
-            r = &g_Rooms[sector->portal_room.sky];
-            if (!(r->flags & RF_UNDERWATER)) {
+            room = Room_Get(sector->portal_room.sky);
+            if (!(room->flags & RF_UNDERWATER)) {
                 const int32_t water_height = sector->ceiling.height;
                 sector = Room_GetSector(x, y, z, &room_num);
                 return Room_GetHeight(sector, x, y, z) - water_height;
             }
-            const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
-            sector = &r->sectors[z_sector + x_sector * r->size.z];
+            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
+            sector = &room->sectors[z_sector + x_sector * room->size.z];
         }
         return 0x7FFF;
     }
 
     while (sector->portal_room.pit != NO_ROOM) {
-        r = &g_Rooms[sector->portal_room.pit];
-        if (r->flags & RF_UNDERWATER) {
+        room = Room_Get(sector->portal_room.pit);
+        if (room->flags & RF_UNDERWATER) {
             const int32_t water_height = sector->floor.height;
             sector = Room_GetSector(x, y, z, &room_num);
             return Room_GetHeight(sector, x, y, z) - water_height;
         }
-        const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
-        sector = &r->sectors[z_sector + x_sector * r->size.z];
+        const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+        const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
+        sector = &room->sectors[z_sector + x_sector * room->size.z];
     }
     return NO_HEIGHT;
 }
@@ -1648,10 +1648,10 @@ void Lara_WaterCurrent(COLL_INFO *const coll)
     ITEM *const item = g_LaraItem;
 
     int16_t room_num = g_LaraItem->room_num;
-    const ROOM *const r = &g_Rooms[g_LaraItem->room_num];
-    const int32_t z_sector = (g_LaraItem->pos.z - r->pos.z) >> WALL_SHIFT;
-    const int32_t x_sector = (g_LaraItem->pos.x - r->pos.x) >> WALL_SHIFT;
-    g_LaraItem->box_num = r->sectors[z_sector + x_sector * r->size.z].box;
+    const ROOM *const room = Room_Get(g_LaraItem->room_num);
+    const int32_t z_sector = (g_LaraItem->pos.z - room->pos.z) >> WALL_SHIFT;
+    const int32_t x_sector = (g_LaraItem->pos.x - room->pos.x) >> WALL_SHIFT;
+    g_LaraItem->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
 
     if (g_Lara.creature == nullptr) {
         g_Lara.current_active = 0;

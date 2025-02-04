@@ -171,7 +171,7 @@ bool Lara_Cheat_ExitFlyMode(void)
         return false;
     }
 
-    const ROOM *const room = &g_Rooms[g_LaraItem->room_num];
+    const ROOM *const room = Room_Get(g_LaraItem->room_num);
     const bool room_submerged = (room->flags & RF_UNDERWATER) != 0;
     const int16_t water_height = Room_GetWaterHeight(
         g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z,
@@ -384,7 +384,7 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
     Lara_GetOffVehicle();
 
     if (g_Lara.extra_anim) {
-        const ROOM *const room = &g_Rooms[g_LaraItem->room_num];
+        const ROOM *const room = Room_Get(g_LaraItem->room_num);
         const bool room_submerged = (room->flags & RF_UNDERWATER) != 0;
         const int16_t water_height = Room_GetWaterHeight(
             g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z,

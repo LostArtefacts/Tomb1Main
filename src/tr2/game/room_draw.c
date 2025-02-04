@@ -41,60 +41,60 @@ void Room_GetBounds(void)
 {
     while (m_BoundStart != m_BoundEnd) {
         const int16_t room_num = m_BoundRooms[m_BoundStart++ % MAX_BOUND_ROOMS];
-        ROOM *const r = &g_Rooms[room_num];
-        r->bound_active &= ~2;
-        g_MidSort = (r->bound_active >> 8) + 1;
+        ROOM *const room = Room_Get(room_num);
+        room->bound_active &= ~2;
+        g_MidSort = (room->bound_active >> 8) + 1;
 
-        if (r->test_left < r->bound_left) {
-            r->bound_left = r->test_left;
+        if (room->test_left < room->bound_left) {
+            room->bound_left = room->test_left;
         }
-        if (r->test_top < r->bound_top) {
-            r->bound_top = r->test_top;
+        if (room->test_top < room->bound_top) {
+            room->bound_top = room->test_top;
         }
-        if (r->test_right > r->bound_right) {
-            r->bound_right = r->test_right;
+        if (room->test_right > room->bound_right) {
+            room->bound_right = room->test_right;
         }
-        if (r->test_bottom > r->bound_bottom) {
-            r->bound_bottom = r->test_bottom;
+        if (room->test_bottom > room->bound_bottom) {
+            room->bound_bottom = room->test_bottom;
         }
 
-        if (!(r->bound_active & 1)) {
+        if (!(room->bound_active & 1)) {
             Room_MarkToBeDrawn(room_num);
-            r->bound_active |= 1;
-            if (r->flags & RF_OUTSIDE) {
+            room->bound_active |= 1;
+            if (room->flags & RF_OUTSIDE) {
                 m_Outside = RF_OUTSIDE;
             }
         }
 
-        if (!(r->flags & RF_INSIDE) || (r->flags & RF_OUTSIDE)) {
-            if (r->bound_left < m_OutsideLeft) {
-                m_OutsideLeft = r->bound_left;
+        if (!(room->flags & RF_INSIDE) || (room->flags & RF_OUTSIDE)) {
+            if (room->bound_left < m_OutsideLeft) {
+                m_OutsideLeft = room->bound_left;
             }
-            if (r->bound_right > m_OutsideRight) {
-                m_OutsideRight = r->bound_right;
+            if (room->bound_right > m_OutsideRight) {
+                m_OutsideRight = room->bound_right;
             }
-            if (r->bound_top < m_OutsideTop) {
-                m_OutsideTop = r->bound_top;
+            if (room->bound_top < m_OutsideTop) {
+                m_OutsideTop = room->bound_top;
             }
-            if (r->bound_bottom > m_OutsideBottom) {
-                m_OutsideBottom = r->bound_bottom;
+            if (room->bound_bottom > m_OutsideBottom) {
+                m_OutsideBottom = room->bound_bottom;
             }
         }
 
-        if (r->portals == nullptr) {
+        if (room->portals == nullptr) {
             continue;
         }
 
         Matrix_Push();
-        Matrix_TranslateAbs32(r->pos);
-        for (int32_t i = 0; i < r->portals->count; i++) {
-            const PORTAL *const portal = &r->portals->portal[i];
+        Matrix_TranslateAbs32(room->pos);
+        for (int32_t i = 0; i < room->portals->count; i++) {
+            const PORTAL *const portal = &room->portals->portal[i];
 
             // clang-format off
             const XYZ_32 offset = {
-                .x = portal->normal.x * (r->pos.x + portal->vertex[0].x - g_W2VMatrix._03),
-                .y = portal->normal.y * (r->pos.y + portal->vertex[0].y - g_W2VMatrix._13),
-                .z = portal->normal.z * (r->pos.z + portal->vertex[0].z - g_W2VMatrix._23),
+                .x = portal->normal.x * (room->pos.x + portal->vertex[0].x - g_W2VMatrix._03),
+                .y = portal->normal.y * (room->pos.y + portal->vertex[0].y - g_W2VMatrix._13),
+                .z = portal->normal.z * (room->pos.z + portal->vertex[0].z - g_W2VMatrix._23),
             };
             // clang-format on
 
@@ -102,7 +102,7 @@ void Room_GetBounds(void)
                 continue;
             }
 
-            Room_SetBounds(&portal->normal.x, portal->room_num, r);
+            Room_SetBounds(&portal->normal.x, portal->room_num, room);
         }
         Matrix_Pop();
     }
@@ -111,14 +111,14 @@ void Room_GetBounds(void)
 void Room_SetBounds(
     const int16_t *obj_ptr, int32_t room_num, const ROOM *parent)
 {
-    ROOM *const r = &g_Rooms[room_num];
+    ROOM *const room = Room_Get(room_num);
     const PORTAL *const portal = (const PORTAL *)(obj_ptr - 1);
 
     // clang-format off
-    if (r->bound_left <= parent->test_left &&
-        r->bound_right >= parent->test_right &&
-        r->bound_top <= parent->test_top &&
-        r->bound_bottom >= parent->test_bottom
+    if (room->bound_left <= parent->test_left &&
+        room->bound_right >= parent->test_right &&
+        room->bound_top <= parent->test_top &&
+        room->bound_bottom >= parent->test_bottom
    ) {
         return;
     }
@@ -226,67 +226,67 @@ void Room_SetBounds(
         return;
     }
 
-    if (r->bound_active & 2) {
-        if (left < r->test_left) {
-            r->test_left = left;
+    if (room->bound_active & 2) {
+        if (left < room->test_left) {
+            room->test_left = left;
         }
-        if (top < r->test_top) {
-            r->test_top = top;
+        if (top < room->test_top) {
+            room->test_top = top;
         }
-        if (right > r->test_right) {
-            r->test_right = right;
+        if (right > room->test_right) {
+            room->test_right = right;
         }
-        if (bottom > r->test_bottom) {
-            r->test_bottom = bottom;
+        if (bottom > room->test_bottom) {
+            room->test_bottom = bottom;
         }
     } else {
         m_BoundRooms[m_BoundEnd++ % MAX_BOUND_ROOMS] = room_num;
-        r->bound_active |= 2;
-        r->bound_active += (int16_t)(g_MidSort << 8);
-        r->test_left = left;
-        r->test_right = right;
-        r->test_top = top;
-        r->test_bottom = bottom;
+        room->bound_active |= 2;
+        room->bound_active += (int16_t)(g_MidSort << 8);
+        room->test_left = left;
+        room->test_right = right;
+        room->test_top = top;
+        room->test_bottom = bottom;
     }
 }
 
-void Room_Clip(const ROOM *const r)
+void Room_Clip(const ROOM *const room)
 {
     int32_t xv[8];
     int32_t yv[8];
     int32_t zv[8];
 
     xv[0] = WALL_L;
-    yv[0] = r->max_ceiling - r->pos.y;
+    yv[0] = room->max_ceiling - room->pos.y;
     zv[0] = WALL_L;
 
-    xv[1] = (r->size.x - 1) * WALL_L;
-    yv[1] = r->max_ceiling - r->pos.y;
+    xv[1] = (room->size.x - 1) * WALL_L;
+    yv[1] = room->max_ceiling - room->pos.y;
     zv[1] = WALL_L;
 
-    xv[2] = (r->size.x - 1) * WALL_L;
-    yv[2] = r->max_ceiling - r->pos.y;
-    zv[2] = (r->size.z - 1) * WALL_L;
+    xv[2] = (room->size.x - 1) * WALL_L;
+    yv[2] = room->max_ceiling - room->pos.y;
+    zv[2] = (room->size.z - 1) * WALL_L;
 
     xv[3] = WALL_L;
-    yv[3] = r->max_ceiling - r->pos.y;
-    zv[3] = (r->size.z - 1) * WALL_L;
+    yv[3] = room->max_ceiling - room->pos.y;
+    zv[3] = (room->size.z - 1) * WALL_L;
 
     xv[4] = WALL_L;
-    yv[4] = r->min_floor - r->pos.y;
+    yv[4] = room->min_floor - room->pos.y;
     zv[4] = WALL_L;
 
-    xv[5] = (r->size.x - 1) * WALL_L;
-    yv[5] = r->min_floor - r->pos.y;
+    xv[5] = (room->size.x - 1) * WALL_L;
+    yv[5] = room->min_floor - room->pos.y;
     zv[5] = WALL_L;
 
-    xv[6] = (r->size.x - 1) * WALL_L;
-    yv[6] = r->min_floor - r->pos.y;
-    zv[6] = (r->size.z - 1) * WALL_L;
+    xv[6] = (room->size.x - 1) * WALL_L;
+    yv[6] = room->min_floor - room->pos.y;
+    zv[6] = (room->size.z - 1) * WALL_L;
 
     xv[7] = WALL_L;
-    yv[7] = r->min_floor - r->pos.y;
-    zv[7] = (r->size.z - 1) * WALL_L;
+    yv[7] = room->min_floor - room->pos.y;
+    zv[7] = (room->size.z - 1) * WALL_L;
 
     bool clip_room = false;
     bool clip[8];
@@ -374,53 +374,53 @@ void Room_Clip(const ROOM *const r)
 
 void Room_DrawSingleRoomGeometry(const int16_t room_num)
 {
-    ROOM *const r = &g_Rooms[room_num];
+    ROOM *const room = Room_Get(room_num);
 
-    if (r->flags & RF_UNDERWATER) {
+    if (room->flags & RF_UNDERWATER) {
         Output_SetupBelowWater(g_CameraUnderwater);
     } else {
         Output_SetupAboveWater(g_CameraUnderwater);
     }
 
-    Matrix_TranslateAbs32(r->pos);
-    g_PhdWinLeft = r->bound_left;
-    g_PhdWinRight = r->bound_right;
-    g_PhdWinTop = r->bound_top;
-    g_PhdWinBottom = r->bound_bottom;
+    Matrix_TranslateAbs32(room->pos);
+    g_PhdWinLeft = room->bound_left;
+    g_PhdWinRight = room->bound_right;
+    g_PhdWinTop = room->bound_top;
+    g_PhdWinBottom = room->bound_bottom;
 
-    Output_LightRoom(r);
-    if (m_Outside > 0 && !(r->flags & RF_INSIDE)) {
-        Output_DrawRoom(&r->mesh, true);
+    Output_LightRoom(room);
+    if (m_Outside > 0 && !(room->flags & RF_INSIDE)) {
+        Output_DrawRoom(&room->mesh, true);
     } else {
         if (m_Outside >= 0) {
-            Room_Clip(r);
+            Room_Clip(room);
         }
-        Output_DrawRoom(&r->mesh, false);
+        Output_DrawRoom(&room->mesh, false);
     }
 }
 
 void Room_DrawSingleRoomObjects(const int16_t room_num)
 {
-    ROOM *const r = &g_Rooms[room_num];
+    ROOM *const room = Room_Get(room_num);
 
-    if (r->flags & RF_UNDERWATER) {
+    if (room->flags & RF_UNDERWATER) {
         Output_SetupBelowWater(g_CameraUnderwater);
     } else {
         Output_SetupAboveWater(g_CameraUnderwater);
     }
 
-    r->bound_active = 0;
+    room->bound_active = 0;
 
     Matrix_Push();
-    Matrix_TranslateAbs32(r->pos);
+    Matrix_TranslateAbs32(room->pos);
 
-    g_PhdWinLeft = r->bound_left;
-    g_PhdWinTop = r->bound_top;
-    g_PhdWinRight = r->bound_right;
-    g_PhdWinBottom = r->bound_bottom;
+    g_PhdWinLeft = room->bound_left;
+    g_PhdWinTop = room->bound_top;
+    g_PhdWinRight = room->bound_right;
+    g_PhdWinBottom = room->bound_bottom;
 
-    for (int32_t i = 0; i < r->num_static_meshes; i++) {
-        const STATIC_MESH *const mesh = &r->static_meshes[i];
+    for (int32_t i = 0; i < room->num_static_meshes; i++) {
+        const STATIC_MESH *const mesh = &room->static_meshes[i];
         const STATIC_OBJECT_3D *const obj =
             Object_Get3DStatic(mesh->static_num);
         if (!obj->visible) {
@@ -432,7 +432,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         Matrix_RotY(mesh->rot.y);
         const int16_t clip = Output_GetObjectBounds(&obj->draw_bounds);
         if (clip != 0) {
-            Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, r);
+            Output_CalculateStaticMeshLight(mesh->pos, mesh->shade, room);
             Object_DrawMesh(obj->mesh_idx, clip, false);
         }
         Matrix_Pop();
@@ -443,7 +443,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
     g_PhdWinRight = g_PhdWinMaxX + 1;
     g_PhdWinBottom = g_PhdWinMaxY + 1;
 
-    int16_t item_num = r->item_num;
+    int16_t item_num = room->item_num;
     while (item_num != NO_ITEM) {
         ITEM *const item = &g_Items[item_num];
         if (item->status != IS_INVISIBLE) {
@@ -453,7 +453,7 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
         item_num = item->next_item;
     }
 
-    int16_t effect_num = r->effect_num;
+    int16_t effect_num = room->effect_num;
     while (effect_num != NO_EFFECT) {
         const EFFECT *const effect = Effect_Get(effect_num);
         Effect_Draw(effect_num);
@@ -462,32 +462,32 @@ void Room_DrawSingleRoomObjects(const int16_t room_num)
 
     Matrix_Pop();
 
-    r->bound_left = g_PhdWinMaxX;
-    r->bound_top = g_PhdWinMaxY;
-    r->bound_right = 0;
-    r->bound_bottom = 0;
+    room->bound_left = g_PhdWinMaxX;
+    room->bound_top = g_PhdWinMaxY;
+    room->bound_right = 0;
+    room->bound_bottom = 0;
 }
 
 void Room_DrawAllRooms(const int16_t current_room)
 {
-    ROOM *const r = &g_Rooms[current_room];
-    r->test_left = 0;
-    r->test_top = 0;
-    r->test_right = g_PhdWinMaxX;
-    r->test_bottom = g_PhdWinMaxY;
-    r->bound_active = 2;
+    ROOM *const room = Room_Get(current_room);
+    room->test_left = 0;
+    room->test_top = 0;
+    room->test_right = g_PhdWinMaxX;
+    room->test_bottom = g_PhdWinMaxY;
+    room->bound_active = 2;
 
-    g_PhdWinLeft = r->test_left;
-    g_PhdWinTop = r->test_top;
-    g_PhdWinRight = r->test_right;
-    g_PhdWinBottom = r->test_bottom;
+    g_PhdWinLeft = room->test_left;
+    g_PhdWinTop = room->test_top;
+    g_PhdWinRight = room->test_right;
+    g_PhdWinBottom = room->test_bottom;
 
     m_BoundRooms[0] = current_room;
     m_BoundStart = 0;
     m_BoundEnd = 1;
 
     g_RoomsToDrawCount = 0;
-    m_Outside = r->flags & RF_OUTSIDE;
+    m_Outside = room->flags & RF_OUTSIDE;
 
     if (m_Outside) {
         m_OutsideTop = 0;
@@ -501,7 +501,7 @@ void Room_DrawAllRooms(const int16_t current_room)
         m_OutsideRight = 0;
     }
 
-    g_CameraUnderwater = r->flags & RF_UNDERWATER;
+    g_CameraUnderwater = room->flags & RF_UNDERWATER;
     Room_GetBounds();
 
     g_MidSort = 0;
@@ -527,12 +527,13 @@ void Room_DrawAllRooms(const int16_t current_room)
     }
 
     if (Object_Get(O_LARA)->loaded && !(g_LaraItem->flags & IF_ONE_SHOT)) {
-        if (g_Rooms[g_LaraItem->room_num].flags & RF_UNDERWATER) {
+        const ROOM *const lara_room = Room_Get(g_LaraItem->room_num);
+        if (lara_room->flags & RF_UNDERWATER) {
             Output_SetupBelowWater(g_CameraUnderwater);
         } else {
             Output_SetupAboveWater(g_CameraUnderwater);
         }
-        g_MidSort = g_Rooms[g_LaraItem->room_num].bound_active >> 8;
+        g_MidSort = lara_room->bound_active >> 8;
         if (g_MidSort) {
             g_MidSort--;
         }

@@ -38,39 +38,39 @@ static const BITE m_DiverBite = {
     .mesh_num = 18,
 };
 
-static const SECTOR *M_GetRelSector(const ROOM *r, int32_t x, int32_t z);
+static const SECTOR *M_GetRelSector(const ROOM *room, int32_t x, int32_t z);
 
 static const SECTOR *M_GetRelSector(
-    const ROOM *const r, const int32_t x, const int32_t z)
+    const ROOM *const room, const int32_t x, const int32_t z)
 {
     const XZ_32 sector_pos = {
-        .x = (x - r->pos.x) >> WALL_SHIFT,
-        .z = (z - r->pos.z) >> WALL_SHIFT,
+        .x = (x - room->pos.x) >> WALL_SHIFT,
+        .z = (z - room->pos.z) >> WALL_SHIFT,
     };
-    return &r->sectors[sector_pos.z + r->size.z * sector_pos.x];
+    return &room->sectors[sector_pos.z + room->size.z * sector_pos.x];
 }
 
 int32_t Diver_GetWaterSurface(
     const int32_t x, const int32_t y, const int32_t z, const int16_t room_num)
 {
-    const ROOM *r = Room_Get(room_num);
-    const SECTOR *sector = M_GetRelSector(r, x, z);
+    const ROOM *room = Room_Get(room_num);
+    const SECTOR *sector = M_GetRelSector(room, x, z);
 
-    if ((r->flags & RF_UNDERWATER)) {
+    if ((room->flags & RF_UNDERWATER)) {
         while (sector->portal_room.sky != NO_ROOM) {
-            r = Room_Get(sector->portal_room.sky);
-            if (!(r->flags & RF_UNDERWATER)) {
+            room = Room_Get(sector->portal_room.sky);
+            if (!(room->flags & RF_UNDERWATER)) {
                 return sector->ceiling.height;
             }
-            sector = M_GetRelSector(r, x, z);
+            sector = M_GetRelSector(room, x, z);
         }
     } else {
         while (sector->portal_room.pit != NO_ROOM) {
-            r = Room_Get(sector->portal_room.pit);
-            if ((r->flags & RF_UNDERWATER)) {
+            room = Room_Get(sector->portal_room.pit);
+            if ((room->flags & RF_UNDERWATER)) {
                 return sector->floor.height;
             }
-            sector = M_GetRelSector(r, x, z);
+            sector = M_GetRelSector(room, x, z);
         }
     }
     return NO_HEIGHT;

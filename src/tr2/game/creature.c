@@ -94,18 +94,18 @@ void Creature_AIInfo(ITEM *const item, AI_INFO *const info)
     }
 
     {
-        const ROOM *const r = &g_Rooms[item->room_num];
-        const int32_t z_sector = (item->pos.z - r->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (item->pos.x - r->pos.x) >> WALL_SHIFT;
-        item->box_num = r->sectors[z_sector + x_sector * r->size.z].box;
+        const ROOM *const room = Room_Get(item->room_num);
+        const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
+        const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
+        item->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
         info->zone_num = zone[item->box_num];
     }
 
     {
-        const ROOM *const r = &g_Rooms[enemy->room_num];
-        const int32_t z_sector = (enemy->pos.z - r->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (enemy->pos.x - r->pos.x) >> WALL_SHIFT;
-        enemy->box_num = r->sectors[z_sector + x_sector * r->size.z].box;
+        const ROOM *const room = Room_Get(enemy->room_num);
+        const int32_t z_sector = (enemy->pos.z - room->pos.z) >> WALL_SHIFT;
+        const int32_t x_sector = (enemy->pos.x - room->pos.x) >> WALL_SHIFT;
+        enemy->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
         info->enemy_zone_num = zone[enemy->box_num];
     }
 
@@ -309,7 +309,7 @@ int32_t Creature_CheckBaddieOverlap(const int16_t item_num)
     const int32_t z = item->pos.z;
     const int32_t radius = SQUARE(Object_Get(item->object_id)->radius);
 
-    int16_t link = g_Rooms[item->room_num].item_num;
+    int16_t link = Room_Get(item->room_num)->item_num;
     while (link != NO_ITEM && link != item_num) {
         item = &g_Items[link];
         if (item != g_LaraItem && item->status == IS_ACTIVE
@@ -621,7 +621,7 @@ int32_t Creature_Animate(
     if (!Object_IsType(item->object_id, g_WaterObjects)) {
         Room_GetSector(
             item->pos.x, item->pos.y - (STEP_L * 2), item->pos.z, &room_num);
-        if (g_Rooms[room_num].flags & RF_UNDERWATER) {
+        if (Room_Get(room_num)->flags & RF_UNDERWATER) {
             item->hit_points = 0;
         }
     }

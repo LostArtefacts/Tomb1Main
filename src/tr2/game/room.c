@@ -521,31 +521,31 @@ SECTOR *Room_GetSector(
     SECTOR *sector = nullptr;
 
     while (true) {
-        const ROOM *r = &g_Rooms[*room_num];
-        int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-        int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
+        const ROOM *room = Room_Get(*room_num);
+        int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+        int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
 
         if (z_sector <= 0) {
             z_sector = 0;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
-        } else if (z_sector >= r->size.z - 1) {
-            z_sector = r->size.z - 1;
+        } else if (z_sector >= room->size.z - 1) {
+            z_sector = room->size.z - 1;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
         } else if (x_sector < 0) {
             x_sector = 0;
-        } else if (x_sector >= r->size.x) {
-            x_sector = r->size.x - 1;
+        } else if (x_sector >= room->size.x) {
+            x_sector = room->size.x - 1;
         }
 
-        sector = &r->sectors[z_sector + x_sector * r->size.z];
+        sector = &room->sectors[z_sector + x_sector * room->size.z];
         if (sector->portal_room.wall == NO_ROOM) {
             break;
         }
@@ -557,10 +557,10 @@ SECTOR *Room_GetSector(
     if (y >= sector->floor.height) {
         while (sector->portal_room.pit != NO_ROOM) {
             *room_num = sector->portal_room.pit;
-            const ROOM *const r = &g_Rooms[*room_num];
-            const int32_t z_sector = ((z - r->pos.z) >> WALL_SHIFT);
-            const int32_t x_sector = ((x - r->pos.x) >> WALL_SHIFT);
-            sector = &r->sectors[z_sector + x_sector * r->size.z];
+            const ROOM *const room = Room_Get(*room_num);
+            const int32_t z_sector = ((z - room->pos.z) >> WALL_SHIFT);
+            const int32_t x_sector = ((x - room->pos.x) >> WALL_SHIFT);
+            sector = &room->sectors[z_sector + x_sector * room->size.z];
             if (y < sector->floor.height) {
                 break;
             }
@@ -568,10 +568,10 @@ SECTOR *Room_GetSector(
     } else if (y < sector->ceiling.height) {
         while (sector->portal_room.sky != NO_ROOM) {
             *room_num = sector->portal_room.sky;
-            const ROOM *const r = &g_Rooms[sector->portal_room.sky];
-            const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
-            sector = &r->sectors[z_sector + x_sector * r->size.z];
+            const ROOM *const room = Room_Get(sector->portal_room.sky);
+            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
+            sector = &room->sectors[z_sector + x_sector * room->size.z];
             if (y >= sector->ceiling.height) {
                 break;
             }
@@ -585,57 +585,57 @@ int32_t Room_GetWaterHeight(
     const int32_t x, const int32_t y, const int32_t z, int16_t room_num)
 {
     const SECTOR *sector = nullptr;
-    const ROOM *r = nullptr;
+    const ROOM *room = nullptr;
 
     do {
-        r = &g_Rooms[room_num];
-        int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-        int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
+        room = Room_Get(room_num);
+        int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+        int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
 
         if (z_sector <= 0) {
             z_sector = 0;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
-        } else if (z_sector >= r->size.z - 1) {
-            z_sector = r->size.z - 1;
+        } else if (z_sector >= room->size.z - 1) {
+            z_sector = room->size.z - 1;
             if (x_sector < 1) {
                 x_sector = 1;
-            } else if (x_sector > r->size.x - 2) {
-                x_sector = r->size.x - 2;
+            } else if (x_sector > room->size.x - 2) {
+                x_sector = room->size.x - 2;
             }
         } else if (x_sector < 0) {
             x_sector = 0;
-        } else if (x_sector >= r->size.x) {
-            x_sector = r->size.x - 1;
+        } else if (x_sector >= room->size.x) {
+            x_sector = room->size.x - 1;
         }
 
-        sector = &r->sectors[z_sector + x_sector * r->size.z];
+        sector = &room->sectors[z_sector + x_sector * room->size.z];
         room_num = sector->portal_room.wall;
     } while (room_num != NO_ROOM);
 
-    if (r->flags & RF_UNDERWATER) {
+    if (room->flags & RF_UNDERWATER) {
         while (sector->portal_room.sky != NO_ROOM) {
-            r = &g_Rooms[sector->portal_room.sky];
-            if (!(r->flags & RF_UNDERWATER)) {
+            room = Room_Get(sector->portal_room.sky);
+            if (!(room->flags & RF_UNDERWATER)) {
                 break;
             }
-            const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
-            sector = &r->sectors[z_sector + x_sector * r->size.z];
+            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
+            sector = &room->sectors[z_sector + x_sector * room->size.z];
         }
         return sector->ceiling.height;
     } else {
         while (sector->portal_room.pit != NO_ROOM) {
-            r = &g_Rooms[sector->portal_room.pit];
-            if (r->flags & RF_UNDERWATER) {
+            room = Room_Get(sector->portal_room.pit);
+            if (room->flags & RF_UNDERWATER) {
                 return sector->floor.height;
             }
-            const int32_t z_sector = (z - r->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - r->pos.x) >> WALL_SHIFT;
-            sector = &r->sectors[z_sector + x_sector * r->size.z];
+            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
+            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
+            sector = &room->sectors[z_sector + x_sector * room->size.z];
         }
         return NO_HEIGHT;
     }
@@ -759,36 +759,36 @@ bool Room_GetFlipStatus(void)
 void Room_FlipMap(void)
 {
     for (int32_t i = 0; i < g_RoomCount; i++) {
-        ROOM *const r = &g_Rooms[i];
-        if (r->flipped_room == NO_ROOM_NEG) {
+        ROOM *const room = Room_Get(i);
+        if (room->flipped_room == NO_ROOM_NEG) {
             continue;
         }
 
-        Room_RemoveFlipItems(r);
+        Room_RemoveFlipItems(room);
 
-        ROOM *const flipped = &g_Rooms[r->flipped_room];
-        ROOM temp = *r;
-        *r = *flipped;
+        ROOM *const flipped = Room_Get(room->flipped_room);
+        const ROOM temp = *room;
+        *room = *flipped;
         *flipped = temp;
 
-        r->flipped_room = flipped->flipped_room;
+        room->flipped_room = flipped->flipped_room;
         flipped->flipped_room = NO_ROOM_NEG;
-        r->flip_status = RFS_UNFLIPPED;
+        room->flip_status = RFS_UNFLIPPED;
         flipped->flip_status = RFS_FLIPPED;
 
         // TODO: is this really necessary given the assignments above?
-        r->item_num = flipped->item_num;
-        r->effect_num = flipped->effect_num;
+        room->item_num = flipped->item_num;
+        room->effect_num = flipped->effect_num;
 
-        Room_AddFlipItems(r);
+        Room_AddFlipItems(room);
     }
 
     g_FlipStatus = !g_FlipStatus;
 }
 
-void Room_RemoveFlipItems(const ROOM *const r)
+void Room_RemoveFlipItems(const ROOM *const room)
 {
-    int16_t item_num = r->item_num;
+    int16_t item_num = room->item_num;
 
     while (item_num != NO_ITEM) {
         ITEM *const item = &g_Items[item_num];
@@ -816,9 +816,9 @@ void Room_RemoveFlipItems(const ROOM *const r)
     }
 }
 
-void Room_AddFlipItems(const ROOM *const r)
+void Room_AddFlipItems(const ROOM *const room)
 {
-    int16_t item_num = r->item_num;
+    int16_t item_num = room->item_num;
     while (item_num != NO_ITEM) {
         const ITEM *const item = &g_Items[item_num];
 
@@ -857,16 +857,16 @@ ROOM *Room_Get(const int32_t room_num)
 void Room_InitCinematic(void)
 {
     for (int32_t i = 0; i < g_RoomCount; i++) {
-        const int16_t flipped_room = g_Rooms[i].flipped_room;
-        if (flipped_room != NO_ROOM_NEG) {
-            g_Rooms[flipped_room].bound_active = 1;
+        ROOM *const room = Room_Get(i);
+        if (room->flipped_room != NO_ROOM_NEG) {
+            Room_Get(room->flipped_room)->bound_active = 1;
         }
-        g_Rooms[i].flags |= RF_OUTSIDE;
+        room->flags |= RF_OUTSIDE;
     }
 
     g_RoomsToDrawCount = 0;
     for (int32_t i = 0; i < g_RoomCount; i++) {
-        if (!g_Rooms[i].bound_active) {
+        if (!Room_Get(i)->bound_active) {
             Room_MarkToBeDrawn(i);
         }
     }
