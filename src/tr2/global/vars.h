@@ -78,7 +78,6 @@ extern ITEM *g_LaraItem;
 extern int16_t g_NextItemActive;
 extern int16_t g_PrevItemActive;
 extern int32_t g_SoundEffectCount;
-extern ROOM *g_Rooms;
 extern int32_t g_FlipStatus;
 extern ITEM *g_Items;
 extern BOX_INFO *g_Boxes;

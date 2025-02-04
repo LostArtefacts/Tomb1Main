@@ -25,6 +25,7 @@
 #endif
 
 static int32_t m_RoomCount = 0;
+static ROOM *m_Rooms = nullptr;
 
 static const int16_t *M_ReadTrigger(
     const int16_t *data, int16_t fd_entry, SECTOR *sector);
@@ -101,11 +102,22 @@ static const int16_t *M_ReadTrigger(
 void Room_InitialiseRooms(const int32_t num_rooms)
 {
     m_RoomCount = num_rooms;
+    m_Rooms = num_rooms == 0
+        ? nullptr
+        : GameBuf_Alloc(sizeof(ROOM) * num_rooms, GBUF_ROOMS);
 }
 
 int32_t Room_GetTotalCount(void)
 {
     return m_RoomCount;
+}
+
+ROOM *Room_Get(const int32_t room_num)
+{
+    if (m_Rooms == nullptr) {
+        return nullptr;
+    }
+    return &m_Rooms[room_num];
 }
 
 void Room_InitialiseFlipStatus(void)

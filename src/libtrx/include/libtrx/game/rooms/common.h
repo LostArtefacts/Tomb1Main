@@ -5,7 +5,7 @@
 
 void Room_InitialiseRooms(int32_t num_rooms);
 int32_t Room_GetTotalCount(void);
-extern ROOM *Room_Get(int32_t room_num);
+ROOM *Room_Get(int32_t room_num);
 
 void Room_InitialiseFlipStatus(void);
 extern void Room_FlipMap(void);

@@ -844,11 +844,6 @@ void Room_Legacy_TriggerMusicTrack(
     ASSERT_FAIL();
 }
 
-ROOM *Room_Get(const int32_t room_num)
-{
-    return &g_Rooms[room_num];
-}
-
 void Room_InitCinematic(void)
 {
     const int32_t room_count = Room_GetTotalCount();

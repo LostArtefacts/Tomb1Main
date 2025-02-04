@@ -66,11 +66,8 @@ static void M_LoadRooms(VFILE *const file)
     }
 
     Room_InitialiseRooms(num_rooms);
-    g_Rooms = GameBuf_Alloc(sizeof(ROOM) * num_rooms, GBUF_ROOMS);
-    ASSERT(g_Rooms != nullptr);
-
     for (int32_t i = 0; i < num_rooms; i++) {
-        ROOM *const r = &g_Rooms[i];
+        ROOM *const r = Room_Get(i);
 
         r->pos.x = VFile_ReadS32(file);
         r->pos.y = 0;

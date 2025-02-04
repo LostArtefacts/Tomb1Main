@@ -935,8 +935,3 @@ bool Room_IsOnWalkable(
 
     return object_found && room_height == height;
 }
-
-ROOM *Room_Get(const int32_t room_num)
-{
-    return &g_RoomInfo[room_num];
-}
