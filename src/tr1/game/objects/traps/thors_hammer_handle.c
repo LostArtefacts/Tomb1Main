@@ -64,8 +64,8 @@ void ThorsHammerHandle_Control(int16_t item_num)
         break;
 
     case THOR_HAMMER_HANDLE_STATE_ACTIVE: {
-        int32_t frm = item->frame_num - Item_GetAnim(item)->frame_base;
-        if (frm > 30) {
+        const int32_t frame_num = Item_GetRelativeFrame(item);
+        if (frame_num > 30) {
             int32_t x = item->pos.x;
             int32_t z = item->pos.z;
 
@@ -136,11 +136,9 @@ void ThorsHammerHandle_Control(int16_t item_num)
     }
     Item_Animate(item);
 
-    ITEM *head_item = item->data;
-    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    int16_t relative_anim =
-        item->anim_num - Object_Get(item->object_id)->anim_idx;
-    int16_t relative_frame = item->frame_num - Item_GetAnim(item)->frame_base;
+    ITEM *const head_item = item->data;
+    const int16_t relative_anim = Item_GetRelativeAnim(item);
+    const int16_t relative_frame = Item_GetRelativeFrame(item);
     Item_SwitchToAnim(head_item, relative_anim, relative_frame);
     head_item->current_anim_state = item->current_anim_state;
 }

@@ -48,9 +48,8 @@ static void M_FixEmbeddedPosition(int16_t item_num)
     // The bats animation and frame have to be changed to the hanging
     // one to properly measure them. Save it so it can be restored
     // after.
-    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    int16_t old_anim = item->anim_num - Object_Get(item->object_id)->anim_idx;
-    int16_t old_frame = item->frame_num - Item_GetAnim(item)->frame_base;
+    const int16_t old_anim = Item_GetRelativeAnim(item);
+    const int16_t old_frame = Item_GetRelativeFrame(item);
 
     Item_SwitchToAnim(item, 0, 0);
     const BOUNDS_16 *const bounds = Item_GetBoundsAccurate(item);

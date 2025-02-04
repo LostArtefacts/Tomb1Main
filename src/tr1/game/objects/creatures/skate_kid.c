@@ -180,10 +180,8 @@ void SkateKid_Draw(ITEM *item)
         return;
     }
 
-    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    int16_t relative_anim =
-        item->anim_num - Object_Get(item->object_id)->anim_idx;
-    int16_t relative_frame = item->frame_num - Item_GetAnim(item)->frame_base;
+    const int16_t relative_anim = Item_GetRelativeAnim(item);
+    const int16_t relative_frame = Item_GetRelativeFrame(item);
     item->object_id = O_SKATEBOARD;
     Item_SwitchToAnim(item, relative_anim, relative_frame);
     Object_DrawAnimatingItem(item);

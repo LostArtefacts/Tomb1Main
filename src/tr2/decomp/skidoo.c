@@ -912,11 +912,9 @@ int32_t Skidoo_Control(void)
     if (dead) {
         Item_SwitchToObjAnim(skidoo, LA_SKIDOO_DEAD, 0, O_SKIDOO_FAST);
     } else {
-        // TODO: Item_GetRelativeAnim
         const int16_t lara_anim_num =
-            g_LaraItem->anim_num - Object_Get(O_LARA_SKIDOO)->anim_idx;
-        const int16_t lara_frame_num =
-            g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
+            Item_GetRelativeObjAnim(g_LaraItem, O_LARA_SKIDOO);
+        const int16_t lara_frame_num = Item_GetRelativeFrame(g_LaraItem);
         Item_SwitchToObjAnim(
             skidoo, lara_anim_num, lara_frame_num, O_SKIDOO_FAST);
     }

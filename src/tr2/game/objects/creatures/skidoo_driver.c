@@ -256,9 +256,8 @@ void SkidooDriver_Control(const int16_t driver_item_num)
             Item_NewRoom(driver_item_num, room_num);
         }
         const int16_t anim_num =
-            skidoo_item->anim_num - Object_Get(O_SKIDOO_ARMED)->anim_idx;
-        const int16_t frame_num =
-            skidoo_item->frame_num - Item_GetAnim(skidoo_item)->frame_base;
+            Item_GetRelativeObjAnim(skidoo_item, O_SKIDOO_ARMED);
+        const int16_t frame_num = Item_GetRelativeFrame(skidoo_item);
         Item_SwitchToAnim(driver_item, anim_num, frame_num);
     }
 }

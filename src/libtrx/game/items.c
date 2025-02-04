@@ -49,6 +49,22 @@ bool Item_TestAnimEqual(const ITEM *const item, const int16_t anim_idx)
     return item->anim_num == obj->anim_idx + anim_idx;
 }
 
+int16_t Item_GetRelativeAnim(const ITEM *const item)
+{
+    return Item_GetRelativeObjAnim(item, item->object_id);
+}
+
+int16_t Item_GetRelativeObjAnim(
+    const ITEM *const item, const GAME_OBJECT_ID obj_id)
+{
+    return item->anim_num - Object_Get(obj_id)->anim_idx;
+}
+
+int16_t Item_GetRelativeFrame(const ITEM *const item)
+{
+    return item->frame_num - Item_GetAnim(item)->frame_base;
+}
+
 void Item_SwitchToAnim(
     ITEM *const item, const int16_t anim_idx, const int16_t frame)
 {

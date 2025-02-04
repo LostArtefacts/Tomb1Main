@@ -79,11 +79,8 @@ void BaconLara_Control(int16_t item_num)
         int32_t lh = Room_GetHeight(
             sector, g_LaraItem->pos.x, g_LaraItem->pos.y, g_LaraItem->pos.z);
 
-        // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-        int16_t relative_anim =
-            g_LaraItem->anim_num - Object_Get(g_LaraItem->object_id)->anim_idx;
-        int16_t relative_frame =
-            g_LaraItem->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
+        const int16_t relative_anim = Item_GetRelativeAnim(g_LaraItem);
+        const int16_t relative_frame = Item_GetRelativeFrame(g_LaraItem);
         Item_SwitchToObjAnim(item, relative_anim, relative_frame, O_LARA);
         item->pos.x = x;
         item->pos.y = y;

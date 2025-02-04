@@ -18,6 +18,9 @@ int32_t Item_Explode(int16_t item_num, int32_t mesh_bits, int16_t damage);
 
 ANIM *Item_GetAnim(const ITEM *item);
 bool Item_TestAnimEqual(const ITEM *item, int16_t anim_idx);
+int16_t Item_GetRelativeAnim(const ITEM *item);
+int16_t Item_GetRelativeObjAnim(const ITEM *item, GAME_OBJECT_ID obj_id);
+int16_t Item_GetRelativeFrame(const ITEM *item);
 void Item_SwitchToAnim(ITEM *item, int16_t anim_idx, int16_t frame);
 void Item_SwitchToObjAnim(
     ITEM *item, int16_t anim_idx, int16_t frame, GAME_OBJECT_ID obj_id);

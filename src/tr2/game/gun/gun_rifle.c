@@ -275,12 +275,10 @@ void Gun_Rifle_Draw(const LARA_GUN_TYPE weapon_type)
 
     g_Lara.left_arm.anim_num = item->anim_num;
     g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.left_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.left_arm.frame_num = Item_GetRelativeFrame(item);
     g_Lara.right_arm.anim_num = item->anim_num;
     g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.right_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.right_arm.frame_num = Item_GetRelativeFrame(item);
 }
 
 void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
@@ -310,12 +308,10 @@ void Gun_Rifle_Undraw(const LARA_GUN_TYPE weapon_type)
 
     g_Lara.left_arm.anim_num = item->anim_num;
     g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.left_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.left_arm.frame_num = Item_GetRelativeFrame(item);
     g_Lara.right_arm.anim_num = item->anim_num;
     g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.right_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.right_arm.frame_num = Item_GetRelativeFrame(item);
 }
 
 void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
@@ -444,10 +440,8 @@ void Gun_Rifle_Animate(const LARA_GUN_TYPE weapon_type)
     M_AnimateGun(item);
     g_Lara.left_arm.anim_num = item->anim_num;
     g_Lara.left_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.left_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.left_arm.frame_num = Item_GetRelativeFrame(item);
     g_Lara.right_arm.anim_num = item->anim_num;
     g_Lara.right_arm.frame_base = Item_GetAnim(item)->frame_ptr;
-    g_Lara.right_arm.frame_num =
-        item->frame_num - Item_GetAnim(item)->frame_base;
+    g_Lara.right_arm.frame_num = Item_GetRelativeFrame(item);
 }

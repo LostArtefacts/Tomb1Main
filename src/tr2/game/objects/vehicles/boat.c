@@ -735,11 +735,9 @@ void Boat_Control(const int16_t item_num)
         Item_Animate(lara);
 
         if (lara->hit_points > 0) {
-            // TODO: Item_GetRelativeAnim
             const int16_t lara_anim_num =
-                lara->anim_num - Object_Get(O_LARA_BOAT)->anim_idx;
-            const int16_t lara_frame_num =
-                lara->frame_num - Item_GetAnim(g_LaraItem)->frame_base;
+                Item_GetRelativeObjAnim(g_LaraItem, O_LARA_BOAT);
+            const int16_t lara_frame_num = Item_GetRelativeFrame(g_LaraItem);
             Item_SwitchToAnim(boat, lara_anim_num, lara_frame_num);
         }
 

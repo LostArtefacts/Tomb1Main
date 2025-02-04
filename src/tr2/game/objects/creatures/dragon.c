@@ -444,10 +444,8 @@ void Dragon_Control(const int16_t item_num)
     Creature_Animate(dragon_front_item_num, angle, 0);
     dragon_back_item->current_anim_state =
         dragon_front_item->current_anim_state;
-    // TODO: Item_GetRelativeAnim, Item_GetRelativeFrame
-    const int16_t anim_num = dragon_front_item->anim_num - front_obj->anim_idx;
-    const int16_t frame_num = dragon_front_item->frame_num
-        - Item_GetAnim(dragon_front_item)->frame_base;
+    const int16_t anim_num = Item_GetRelativeAnim(dragon_front_item);
+    const int16_t frame_num = Item_GetRelativeFrame(dragon_front_item);
     Item_SwitchToAnim(dragon_back_item, anim_num, frame_num);
     dragon_back_item->pos.x = dragon_front_item->pos.x;
     dragon_back_item->pos.y = dragon_front_item->pos.y;
