@@ -1,7 +1,10 @@
 ## [Unreleased](https://github.com/LostArtefacts/TRX/compare/tr1-4.7.1...develop) - ××××-××-××
 >[!WARNING]
->There is a backwards incompatible change important for level builders, that changes where to place key item names and level titles.
->Please refer to the [documentation](../GAME_STRINGS.md) to see how to upgrade your level files.
+>Attention level builders: this version introduces backwards incompatible changes to the game flow file.
+>Please refer to the following documents to see how to update your levels:
+>- [Migration guide](../MIGRATING.md)
+>- [Game flow documentation](../GAME_FLOW.md)
+>- [Game strings documentation](../GAME_STRINGS.md)
 
 - added the ability to hold left/right to move through menus more quickly (#2298)
 - added an option for pickup aids, which will show an intermittent twinkle when Lara is nearby pickup items (#2076)
@@ -15,6 +18,7 @@
 - added a `/music` console command that plays a specific music track
 - added a console log when using the `/demo` command
 - ⚠️ changed the game data to use a separate strings file for text information, removing it from the game flow file
+- ⚠️ changed the game flow file internal structure
 - changed the object texture limit from 2048 to unlimited (within game's overall memory cap)
 - changed the sprite texture limit from 512 to unlimited (within game's overall memory cap)
 - changed demo to be interrupted only by esc or action keys
