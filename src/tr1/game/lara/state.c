@@ -157,14 +157,15 @@ void Lara_State_Run(ITEM *item, COLL_INFO *coll)
     }
 
     if (g_Config.gameplay.enable_tr2_jumping) {
-        // TODO: Item_GetRelativeAnim
-        int16_t anim = item->anim_num - Object_Get(item->object_id)->anim_idx;
-        if (anim == LA_RUN_START) {
+        if (Item_TestAnimEqual(item, LA_RUN_START)) {
             m_JumpPermitted = false;
         } else if (
-            anim != LA_RUN || Item_TestFrameEqual(item, LF_JUMP_READY - 1)) {
+            !Item_TestAnimEqual(item, LA_RUN)
+            || Item_TestFrameEqual(item, LF_JUMP_READY - 1)) {
             m_JumpPermitted = true;
         }
+    } else {
+        m_JumpPermitted = true;
     }
 
     if (g_Input.jump && m_JumpPermitted && !item->gravity) {
