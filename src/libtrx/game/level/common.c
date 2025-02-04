@@ -21,6 +21,8 @@
 static int16_t *m_AnimCommands = nullptr;
 
 static RGBA_8888 M_ARGB1555To8888(uint16_t argb1555);
+static void M_ReadPosition(XYZ_32 *pos, VFILE *file);
+static void M_ReadShade(SHADE *shade, VFILE *file);
 static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
 static void M_ReadFace3(FACE3 *face, VFILE *file);
@@ -48,6 +50,23 @@ static RGBA_8888 M_ARGB1555To8888(const uint16_t argb1555)
         .b = b8,
         .a = a8,
     };
+}
+
+static void M_ReadPosition(XYZ_32 *const pos, VFILE *const file)
+{
+    pos->x = VFile_ReadS32(file);
+    pos->y = VFile_ReadS32(file);
+    pos->z = VFile_ReadS32(file);
+}
+
+static void M_ReadShade(SHADE *const shade, VFILE *const file)
+{
+    shade->value_1 = VFile_ReadS16(file);
+#if TR_VERSION == 1
+    shade->value_2 = shade->value_1;
+#else
+    shade->value_2 = VFile_ReadS16(file);
+#endif
 }
 
 static void M_ReadVertex(XYZ_16 *const vertex, VFILE *const file)
@@ -378,13 +397,8 @@ void Level_ReadRooms(VFILE *const file)
             : GameBuf_Alloc(sizeof(LIGHT) * room->num_lights, GBUF_ROOM_LIGHTS);
         for (int32_t i = 0; i < room->num_lights; i++) {
             LIGHT *const light = &room->lights[i];
-            light->pos.x = VFile_ReadS32(file);
-            light->pos.y = VFile_ReadS32(file);
-            light->pos.z = VFile_ReadS32(file);
-            light->shade.value_1 = VFile_ReadS16(file);
-#if TR_VERSION == 2
-            light->shade.value_2 = VFile_ReadS16(file);
-#endif
+            M_ReadPosition(&light->pos, file);
+            M_ReadShade(&light->shade, file);
             light->falloff.value_1 = VFile_ReadS32(file);
 #if TR_VERSION == 2
             light->falloff.value_2 = VFile_ReadS32(file);
@@ -399,14 +413,9 @@ void Level_ReadRooms(VFILE *const file)
                   GBUF_ROOM_STATIC_MESHES);
         for (int32_t i = 0; i < room->num_static_meshes; i++) {
             STATIC_MESH *const mesh = &room->static_meshes[i];
-            mesh->pos.x = VFile_ReadS32(file);
-            mesh->pos.y = VFile_ReadS32(file);
-            mesh->pos.z = VFile_ReadS32(file);
+            M_ReadPosition(&mesh->pos, file);
             mesh->rot.y = VFile_ReadS16(file);
-            mesh->shade.value_1 = VFile_ReadS16(file);
-#if TR_VERSION == 2
-            mesh->shade.value_2 = VFile_ReadS16(file);
-#endif
+            M_ReadShade(&mesh->shade, file);
             mesh->static_num = VFile_ReadS16(file);
         }
 
@@ -550,9 +559,7 @@ void Level_ReadAnimBones(
         bone->rot_x = false;
         bone->rot_y = false;
         bone->rot_z = false;
-        bone->pos.x = VFile_ReadS32(file);
-        bone->pos.y = VFile_ReadS32(file);
-        bone->pos.z = VFile_ReadS32(file);
+        M_ReadPosition(&bone->pos, file);
     }
 }
 
@@ -747,12 +754,10 @@ void Level_ReadCamerasAndSinks(VFILE *const file)
     LOG_DEBUG("fixed cameras/sinks: %d", num_objects);
     Camera_InitialiseFixedObjects(num_objects);
     for (int32_t i = 0; i < num_objects; i++) {
-        OBJECT_VECTOR *const camera = Camera_GetFixedObject(i);
-        camera->x = VFile_ReadS32(file);
-        camera->y = VFile_ReadS32(file);
-        camera->z = VFile_ReadS32(file);
-        camera->data = VFile_ReadS16(file);
-        camera->flags = VFile_ReadS16(file);
+        OBJECT_VECTOR *const obj = Camera_GetFixedObject(i);
+        M_ReadPosition(&obj->pos, file);
+        obj->data = VFile_ReadS16(file);
+        obj->flags = VFile_ReadS16(file);
     }
 
     Benchmark_End(benchmark, nullptr);
