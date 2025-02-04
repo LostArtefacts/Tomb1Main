@@ -19,6 +19,7 @@
 #include "game/room.h"
 #include "game/shell.h"
 #include "game/sound.h"
+#include "game/viewport.h"
 #include "global/const.h"
 #include "global/vars.h"
 
@@ -149,8 +150,8 @@ static void M_LoadRooms(VFILE *const file)
         r->flags = VFile_ReadU16(file);
 
         r->bound_active = 0;
-        r->bound_left = g_PhdWinMaxX;
-        r->bound_top = g_PhdWinMaxY;
+        r->bound_left = Viewport_GetMaxX();
+        r->bound_top = Viewport_GetMaxY();
         r->bound_bottom = 0;
         r->bound_right = 0;
         r->item_num = NO_ITEM;

@@ -202,3 +202,13 @@ void Viewport_AlterFOV(const int16_t view_angle)
     M_AlterFov(&m_Viewport);
     M_ApplyGameVars(&m_Viewport);
 }
+
+int32_t Viewport_GetMaxX(void)
+{
+    return g_PhdWinMaxX;
+}
+
+int32_t Viewport_GetMaxY(void)
+{
+    return g_PhdWinMaxY;
+}

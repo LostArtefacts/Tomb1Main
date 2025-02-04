@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <libtrx/game/viewport.h>
 
 typedef struct {
     int32_t width;
