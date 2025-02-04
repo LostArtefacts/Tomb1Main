@@ -114,7 +114,7 @@ OBJ_NAME_DEFINE(O_BARTOLI,               "bartoli",               "Marco Bartoli
 OBJ_NAME_DEFINE(O_XIAN_SPEARMAN,         "xian_spearman",         "Xian Spearman")
 OBJ_NAME_DEFINE(O_XIAN_SPEARMAN_STATUE,  "xian_spearman_statue",  "Xian Spearman Statue")
 OBJ_NAME_DEFINE(O_XIAN_KNIGHT,           "xian_knight",           "Xian Knight")
-OBJ_NAME_DEFINE(O_XIAN_KNIGHT_STATUE,    "xian_knight_statue",    "Xian Knight")
+OBJ_NAME_DEFINE(O_XIAN_KNIGHT_STATUE,    "xian_knight_statue",    "Xian Knight Statue")
 OBJ_NAME_DEFINE(O_YETI,                  "yeti",                  "Yeti")
 OBJ_NAME_DEFINE(O_BIRD_GUARDIAN,         "bird_guardian",         "Bird Monster")
 OBJ_NAME_DEFINE(O_EAGLE,                 "eagle",                 "Eagle")
