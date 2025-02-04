@@ -1,8 +1,6 @@
 #pragma once
 
-#include <libtrx/game/effects/types.h>
-
-#define NO_EFFECT (-1)
+#include <libtrx/game/effects.h>
 
 void Effect_InitialiseArray(void);
 void Effect_Control(void);
