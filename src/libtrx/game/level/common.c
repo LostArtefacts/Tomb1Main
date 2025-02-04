@@ -24,6 +24,7 @@ static RGBA_8888 M_ARGB1555To8888(uint16_t argb1555);
 static void M_ReadVertex(XYZ_16 *vertex, VFILE *file);
 static void M_ReadFace4(FACE4 *face, VFILE *file);
 static void M_ReadFace3(FACE3 *face, VFILE *file);
+static void M_ReadRoomMesh(int32_t room_num, VFILE *file);
 static void M_ReadObjectMesh(OBJECT_MESH *mesh, VFILE *file);
 static void M_ReadBounds16(BOUNDS_16 *bounds, VFILE *file);
 
@@ -72,6 +73,74 @@ static void M_ReadFace3(FACE3 *const face, VFILE *const file)
     }
     face->texture_idx = VFile_ReadU16(file);
     face->enable_reflections = false;
+}
+
+static void M_ReadRoomMesh(const int32_t room_num, VFILE *const file)
+{
+    ROOM *const room = Room_Get(room_num);
+    const INJECTION_MESH_META inj_data = Inject_GetRoomMeshMeta(room_num);
+
+    const uint32_t mesh_length = VFile_ReadU32(file);
+    size_t start_pos = VFile_GetPos(file);
+
+    {
+        room->mesh.num_vertices = VFile_ReadS16(file);
+        const int32_t alloc_count =
+            room->mesh.num_vertices + inj_data.num_vertices;
+        room->mesh.vertices =
+            GameBuf_Alloc(sizeof(ROOM_VERTEX) * alloc_count, GBUF_ROOM_MESH);
+        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
+            ROOM_VERTEX *const vertex = &room->mesh.vertices[i];
+            M_ReadVertex(&vertex->pos, file);
+            vertex->light_base = VFile_ReadS16(file);
+#if TR_VERSION == 1
+            vertex->flags = 0;
+            vertex->light_adder = vertex->light_base;
+#elif TR_VERSION == 2
+            vertex->light_table_value = VFile_ReadU8(file);
+            vertex->flags = VFile_ReadU8(file);
+            vertex->light_adder = VFile_ReadS16(file);
+#endif
+        }
+    }
+
+    {
+        room->mesh.num_face4s = VFile_ReadS16(file);
+        const int32_t alloc_count = room->mesh.num_face4s + inj_data.num_quads;
+        room->mesh.face4s =
+            GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
+        for (int32_t i = 0; i < room->mesh.num_face4s; i++) {
+            M_ReadFace4(&room->mesh.face4s[i], file);
+        }
+    }
+
+    {
+        room->mesh.num_face3s = VFile_ReadS16(file);
+        const int32_t alloc_count =
+            room->mesh.num_face3s + inj_data.num_triangles;
+        room->mesh.face3s =
+            GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
+        for (int32_t i = 0; i < room->mesh.num_face3s; i++) {
+            M_ReadFace3(&room->mesh.face3s[i], file);
+        }
+    }
+
+    {
+        room->mesh.num_sprites = VFile_ReadS16(file);
+        const int32_t alloc_count =
+            room->mesh.num_sprites + inj_data.num_sprites;
+        room->mesh.sprites =
+            GameBuf_Alloc(sizeof(ROOM_SPRITE) * alloc_count, GBUF_ROOM_MESH);
+        for (int32_t i = 0; i < room->mesh.num_sprites; i++) {
+            ROOM_SPRITE *const sprite = &room->mesh.sprites[i];
+            sprite->vertex = VFile_ReadU16(file);
+            sprite->texture = VFile_ReadU16(file);
+        }
+    }
+
+    const size_t total_read =
+        (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
+    ASSERT(total_read == mesh_length);
 }
 
 static void M_ReadObjectMesh(OBJECT_MESH *const mesh, VFILE *const file)
@@ -237,74 +306,6 @@ void Level_ReadTexturePages(
     Benchmark_End(benchmark, nullptr);
 }
 
-void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
-{
-    ROOM *const room = Room_Get(room_num);
-    const INJECTION_MESH_META inj_data = Inject_GetRoomMeshMeta(room_num);
-
-    const uint32_t mesh_length = VFile_ReadU32(file);
-    size_t start_pos = VFile_GetPos(file);
-
-    {
-        room->mesh.num_vertices = VFile_ReadS16(file);
-        const int32_t alloc_count =
-            room->mesh.num_vertices + inj_data.num_vertices;
-        room->mesh.vertices =
-            GameBuf_Alloc(sizeof(ROOM_VERTEX) * alloc_count, GBUF_ROOM_MESH);
-        for (int32_t i = 0; i < room->mesh.num_vertices; i++) {
-            ROOM_VERTEX *const vertex = &room->mesh.vertices[i];
-            M_ReadVertex(&vertex->pos, file);
-            vertex->light_base = VFile_ReadS16(file);
-#if TR_VERSION == 1
-            vertex->flags = 0;
-            vertex->light_adder = vertex->light_base;
-#elif TR_VERSION == 2
-            vertex->light_table_value = VFile_ReadU8(file);
-            vertex->flags = VFile_ReadU8(file);
-            vertex->light_adder = VFile_ReadS16(file);
-#endif
-        }
-    }
-
-    {
-        room->mesh.num_face4s = VFile_ReadS16(file);
-        const int32_t alloc_count = room->mesh.num_face4s + inj_data.num_quads;
-        room->mesh.face4s =
-            GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
-        for (int32_t i = 0; i < room->mesh.num_face4s; i++) {
-            M_ReadFace4(&room->mesh.face4s[i], file);
-        }
-    }
-
-    {
-        room->mesh.num_face3s = VFile_ReadS16(file);
-        const int32_t alloc_count =
-            room->mesh.num_face3s + inj_data.num_triangles;
-        room->mesh.face3s =
-            GameBuf_Alloc(sizeof(FACE4) * alloc_count, GBUF_ROOM_MESH);
-        for (int32_t i = 0; i < room->mesh.num_face3s; i++) {
-            M_ReadFace3(&room->mesh.face3s[i], file);
-        }
-    }
-
-    {
-        room->mesh.num_sprites = VFile_ReadS16(file);
-        const int32_t alloc_count =
-            room->mesh.num_sprites + inj_data.num_sprites;
-        room->mesh.sprites =
-            GameBuf_Alloc(sizeof(ROOM_SPRITE) * alloc_count, GBUF_ROOM_MESH);
-        for (int32_t i = 0; i < room->mesh.num_sprites; i++) {
-            ROOM_SPRITE *const sprite = &room->mesh.sprites[i];
-            sprite->vertex = VFile_ReadU16(file);
-            sprite->texture = VFile_ReadU16(file);
-        }
-    }
-
-    const size_t total_read =
-        (VFile_GetPos(file) - start_pos) / sizeof(int16_t);
-    ASSERT(total_read == mesh_length);
-}
-
 void Level_ReadRooms(VFILE *const file)
 {
     BENCHMARK *const benchmark = Benchmark_Start();
@@ -327,7 +328,7 @@ void Level_ReadRooms(VFILE *const file)
         room->min_floor = VFile_ReadS32(file);
         room->max_ceiling = VFile_ReadS32(file);
 
-        Level_ReadRoomMesh(i, file);
+        M_ReadRoomMesh(i, file);
 
         const int16_t num_portals = VFile_ReadS16(file);
         if (num_portals <= 0) {
