@@ -5,12 +5,14 @@
 #include "game/anims.h"
 #include "game/camera.h"
 #include "game/const.h"
+#include "game/effects/const.h"
 #include "game/game_buf.h"
 #include "game/inject.h"
 #include "game/objects/common.h"
 #include "game/output.h"
 #include "game/rooms.h"
 #include "game/shell.h"
+#include "game/viewport.h"
 #include "log.h"
 #include "memory.h"
 #include "utils.h"
@@ -303,14 +305,133 @@ void Level_ReadRoomMesh(const int32_t room_num, VFILE *const file)
     ASSERT(total_read == mesh_length);
 }
 
-void Level_ReadFloorData(VFILE *const file)
+void Level_ReadRooms(VFILE *const file)
 {
+    BENCHMARK *const benchmark = Benchmark_Start();
+
+    const int32_t num_rooms = VFile_ReadS16(file);
+    LOG_INFO("rooms: %d", num_rooms);
+    if (num_rooms > MAX_ROOMS) {
+        Shell_ExitSystem("Too many rooms");
+        goto finish;
+    }
+
+    Room_InitialiseRooms(num_rooms);
+    for (int32_t i = 0; i < num_rooms; i++) {
+        ROOM *const room = Room_Get(i);
+
+        room->pos.x = VFile_ReadS32(file);
+        room->pos.y = 0;
+        room->pos.z = VFile_ReadS32(file);
+
+        room->min_floor = VFile_ReadS32(file);
+        room->max_ceiling = VFile_ReadS32(file);
+
+        Level_ReadRoomMesh(i, file);
+
+        const int16_t num_portals = VFile_ReadS16(file);
+        if (num_portals <= 0) {
+            room->portals = nullptr;
+        } else {
+            room->portals = GameBuf_Alloc(
+                sizeof(PORTAL) * num_portals + sizeof(PORTALS),
+                GBUF_ROOM_PORTALS);
+            room->portals->count = num_portals;
+            for (int32_t j = 0; j < num_portals; j++) {
+                PORTAL *const portal = &room->portals->portal[j];
+                portal->room_num = VFile_ReadS16(file);
+                M_ReadVertex(&portal->normal, file);
+                for (int32_t k = 0; k < 4; k++) {
+                    M_ReadVertex(&portal->vertex[k], file);
+                }
+            }
+        }
+
+        room->size.z = VFile_ReadS16(file);
+        room->size.x = VFile_ReadS16(file);
+
+        const int32_t sector_count = room->size.x * room->size.z;
+        room->sectors =
+            GameBuf_Alloc(sizeof(SECTOR) * sector_count, GBUF_ROOM_SECTORS);
+        for (int32_t i = 0; i < sector_count; i++) {
+            SECTOR *const sector = &room->sectors[i];
+            sector->idx = VFile_ReadU16(file);
+            sector->box = VFile_ReadS16(file);
+            sector->portal_room.pit = VFile_ReadU8(file);
+            sector->floor.height = VFile_ReadS8(file) * STEP_L;
+            sector->portal_room.sky = VFile_ReadU8(file);
+            sector->ceiling.height = VFile_ReadS8(file) * STEP_L;
+        }
+
+        room->ambient = VFile_ReadS16(file);
+#if TR_VERSION == 1
+        room->light_mode = RLM_NORMAL;
+#else
+        VFile_Skip(file, sizeof(int16_t)); // Unused second ambient
+        room->light_mode = VFile_ReadS16(file);
+#endif
+
+        room->num_lights = VFile_ReadS16(file);
+        room->lights = room->num_lights == 0
+            ? nullptr
+            : GameBuf_Alloc(sizeof(LIGHT) * room->num_lights, GBUF_ROOM_LIGHTS);
+        for (int32_t i = 0; i < room->num_lights; i++) {
+            LIGHT *const light = &room->lights[i];
+            light->pos.x = VFile_ReadS32(file);
+            light->pos.y = VFile_ReadS32(file);
+            light->pos.z = VFile_ReadS32(file);
+            light->shade.value_1 = VFile_ReadS16(file);
+#if TR_VERSION == 2
+            light->shade.value_2 = VFile_ReadS16(file);
+#endif
+            light->falloff.value_1 = VFile_ReadS32(file);
+#if TR_VERSION == 2
+            light->falloff.value_2 = VFile_ReadS32(file);
+#endif
+        }
+
+        room->num_static_meshes = VFile_ReadS16(file);
+        room->static_meshes = room->num_static_meshes == 0
+            ? nullptr
+            : GameBuf_Alloc(
+                  sizeof(STATIC_MESH) * room->num_static_meshes,
+                  GBUF_ROOM_STATIC_MESHES);
+        for (int32_t i = 0; i < room->num_static_meshes; i++) {
+            STATIC_MESH *const mesh = &room->static_meshes[i];
+            mesh->pos.x = VFile_ReadS32(file);
+            mesh->pos.y = VFile_ReadS32(file);
+            mesh->pos.z = VFile_ReadS32(file);
+            mesh->rot.y = VFile_ReadS16(file);
+            mesh->shade.value_1 = VFile_ReadS16(file);
+#if TR_VERSION == 2
+            mesh->shade.value_2 = VFile_ReadS16(file);
+#endif
+            mesh->static_num = VFile_ReadS16(file);
+        }
+
+        room->flipped_room = VFile_ReadS16(file);
+        room->flags = VFile_ReadU16(file);
+
+        room->bound_active = 0;
+        room->bound_left = Viewport_GetMaxX();
+        room->bound_top = Viewport_GetMaxY();
+        room->bound_bottom = 0;
+        room->bound_right = 0;
+        room->item_num = NO_ITEM;
+        room->effect_num = NO_EFFECT;
+    }
+
+    Room_InitialiseFlipStatus();
+
     const int32_t floor_data_size = VFile_ReadS32(file);
     int16_t *floor_data = Memory_Alloc(sizeof(int16_t) * floor_data_size);
     VFile_Read(file, floor_data, sizeof(int16_t) * floor_data_size);
 
     Room_ParseFloorData(floor_data);
     Memory_FreePointer(&floor_data);
+
+finish:
+    Benchmark_End(benchmark, nullptr);
 }
 
 void Level_ReadObjectMeshes(
