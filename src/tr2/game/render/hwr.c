@@ -441,11 +441,6 @@ static void M_InsertGT3_Sorted(
         }
     }
 
-    num_points = Render_XYGUVClipper(num_points, m_VBuffer);
-    if (num_points == 0) {
-        return;
-    }
-
     M_InsertPolyTextured(num_points, zv, poly_type, texture->tex_page);
 }
 
@@ -869,10 +864,6 @@ static void M_InsertSprite_Sorted(
         g_FltWinTop = 0.0f;
         g_FltWinRight = g_PhdWinWidth;
         g_FltWinBottom = g_PhdWinHeight;
-        num_points = Render_XYGUVClipper(num_points, m_VBuffer);
-        if (num_points == 0) {
-            return;
-        }
     }
 
     const bool old_shade = g_IsShadeEffect;
@@ -1040,11 +1031,6 @@ static void M_InsertGT3_ZBuffered(
         if (num_points == 0) {
             return;
         }
-    }
-
-    num_points = Render_XYGUVClipper(num_points, m_VBuffer);
-    if (num_points == 0) {
-        return;
     }
 
     M_SelectTexture(renderer, texture->tex_page);

@@ -63,6 +63,7 @@
 - fixed Eidos logo briefly flashing prior to the initial fade-in effect (#1388, regression from 4.1)
 - improved pause screen compatibility with PS1 (#2248)
 - improved level loading times with respect to injection processing
+- improved wireframe mode appearance around screen edges
 
 ## [4.7.1](https://github.com/LostArtefacts/TRX/compare/tr1-4.7...tr1-4.7.1) - 2024-12-21
 - changed the inventory examine UI to auto-hide if the item description is empty (#2097)
