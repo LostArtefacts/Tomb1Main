@@ -1512,7 +1512,7 @@ int32_t Lara_GetWaterDepth(
             x_sector = room->size.x - 1;
         }
 
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetUnitSector(room, x_sector, z_sector);
         if (sector->portal_room.wall == NO_ROOM) {
             break;
         }
@@ -1528,9 +1528,7 @@ int32_t Lara_GetWaterDepth(
                 sector = Room_GetSector(x, y, z, &room_num);
                 return Room_GetHeight(sector, x, y, z) - water_height;
             }
-            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-            sector = &room->sectors[z_sector + x_sector * room->size.z];
+            sector = Room_GetWorldSector(room, x, z);
         }
         return 0x7FFF;
     }
@@ -1542,9 +1540,7 @@ int32_t Lara_GetWaterDepth(
             sector = Room_GetSector(x, y, z, &room_num);
             return Room_GetHeight(sector, x, y, z) - water_height;
         }
-        const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetWorldSector(room, x, z);
     }
     return NO_HEIGHT;
 }
@@ -1651,7 +1647,8 @@ void Lara_WaterCurrent(COLL_INFO *const coll)
     const ROOM *const room = Room_Get(g_LaraItem->room_num);
     const int32_t z_sector = (g_LaraItem->pos.z - room->pos.z) >> WALL_SHIFT;
     const int32_t x_sector = (g_LaraItem->pos.x - room->pos.x) >> WALL_SHIFT;
-    g_LaraItem->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
+    g_LaraItem->box_num =
+        Room_GetWorldSector(room, g_LaraItem->pos.x, g_LaraItem->pos.z)->box;
 
     if (g_Lara.creature == nullptr) {
         g_Lara.current_active = 0;

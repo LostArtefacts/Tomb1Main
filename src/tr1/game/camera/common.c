@@ -412,15 +412,14 @@ static void M_SmartShift(
     int32_t z_sector = (g_Camera.target.z - room->pos.z) >> WALL_SHIFT;
     int32_t x_sector = (g_Camera.target.x - room->pos.x) >> WALL_SHIFT;
 
-    const int16_t item_box =
-        room->sectors[z_sector + x_sector * room->size.z].box;
+    const int16_t item_box = Room_GetUnitSector(room, x_sector, z_sector)->box;
     BOX_INFO *box = &g_Boxes[item_box];
 
     room = Room_Get(ideal->room_num);
     z_sector = (ideal->z - room->pos.z) >> WALL_SHIFT;
     x_sector = (ideal->x - room->pos.x) >> WALL_SHIFT;
 
-    int16_t camera_box = room->sectors[z_sector + x_sector * room->size.z].box;
+    int16_t camera_box = Room_GetUnitSector(room, x_sector, z_sector)->box;
     if (camera_box != NO_BOX
         && (ideal->z < box->left || ideal->z > box->right || ideal->x < box->top
             || ideal->x > box->bottom)) {
@@ -436,7 +435,7 @@ static void M_SmartShift(
     const bool bad_left =
         M_BadPosition(ideal->x, ideal->y, test, ideal->room_num);
     if (!bad_left) {
-        camera_box = room->sectors[z_sector - 1 + x_sector * room->size.z].box;
+        camera_box = Room_GetUnitSector(room, x_sector, z_sector - 1)->box;
         if (camera_box != NO_ITEM && g_Boxes[camera_box].left < left) {
             left = g_Boxes[camera_box].left;
         }
@@ -446,7 +445,7 @@ static void M_SmartShift(
     const bool bad_right =
         M_BadPosition(ideal->x, ideal->y, test, ideal->room_num);
     if (!bad_right) {
-        camera_box = room->sectors[z_sector + 1 + x_sector * room->size.z].box;
+        camera_box = Room_GetUnitSector(room, x_sector, z_sector + 1)->box;
         if (camera_box != NO_ITEM && g_Boxes[camera_box].right > right) {
             right = g_Boxes[camera_box].right;
         }
@@ -456,8 +455,7 @@ static void M_SmartShift(
     const bool bad_top =
         M_BadPosition(test, ideal->y, ideal->z, ideal->room_num);
     if (!bad_top) {
-        camera_box =
-            room->sectors[z_sector + (x_sector - 1) * room->size.z].box;
+        camera_box = Room_GetUnitSector(room, x_sector - 1, z_sector)->box;
         if (camera_box != NO_ITEM && g_Boxes[camera_box].top < top) {
             top = g_Boxes[camera_box].top;
         }
@@ -467,8 +465,7 @@ static void M_SmartShift(
     const bool bad_bottom =
         M_BadPosition(test, ideal->y, ideal->z, ideal->room_num);
     if (!bad_bottom) {
-        camera_box =
-            room->sectors[z_sector + (x_sector + 1) * room->size.z].box;
+        camera_box = Room_GetUnitSector(room, x_sector + 1, z_sector)->box;
         if (camera_box != NO_ITEM && g_Boxes[camera_box].bottom > bottom) {
             bottom = g_Boxes[camera_box].bottom;
         }

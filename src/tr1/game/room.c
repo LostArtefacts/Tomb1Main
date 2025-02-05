@@ -230,9 +230,7 @@ SECTOR *Room_GetPitSector(
 {
     while (sector->portal_room.pit != NO_ROOM) {
         const ROOM *const room = Room_Get(sector->portal_room.pit);
-        const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetWorldSector(room, x, z);
     }
 
     return (SECTOR *)sector;
@@ -243,9 +241,7 @@ static SECTOR *M_GetSkySector(
 {
     while (sector->portal_room.sky != NO_ROOM) {
         const ROOM *const room = Room_Get(sector->portal_room.sky);
-        const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetWorldSector(room, x, z);
     }
 
     return (SECTOR *)sector;
@@ -280,7 +276,7 @@ SECTOR *Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num)
             x_sector = room->size.x - 1;
         }
 
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetUnitSector(room, x_sector, z_sector);
         portal_room = sector->portal_room.wall;
         if (portal_room != NO_ROOM) {
             *room_num = portal_room;
@@ -295,11 +291,8 @@ SECTOR *Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num)
             }
 
             *room_num = sector->portal_room.pit;
-
             room = Room_Get(sector->portal_room.pit);
-            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-            sector = &room->sectors[z_sector + x_sector * room->size.z];
+            sector = Room_GetWorldSector(room, x, z);
         } while (y >= sector->floor.height);
     } else if (y < sector->ceiling.height) {
         do {
@@ -308,11 +301,8 @@ SECTOR *Room_GetSector(int32_t x, int32_t y, int32_t z, int16_t *room_num)
             }
 
             *room_num = sector->portal_room.sky;
-
             room = Room_Get(sector->portal_room.sky);
-            const int32_t z_sector = (z - room->pos.z) >> WALL_SHIFT;
-            const int32_t x_sector = (x - room->pos.x) >> WALL_SHIFT;
-            sector = &room->sectors[z_sector + x_sector * room->size.z];
+            sector = Room_GetWorldSector(room, x, z);
         } while (y < sector->ceiling.height);
     }
 
@@ -472,7 +462,7 @@ int16_t Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num)
             x_sector = room->size.x - 1;
         }
 
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetUnitSector(room, x_sector, z_sector);
         portal_room = sector->portal_room.wall;
         if (portal_room != NO_ROOM) {
             room = Room_Get(portal_room);
@@ -485,9 +475,7 @@ int16_t Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num)
             if (!(room->flags & RF_UNDERWATER)) {
                 break;
             }
-            z_sector = (z - room->pos.z) >> WALL_SHIFT;
-            x_sector = (x - room->pos.x) >> WALL_SHIFT;
-            sector = &room->sectors[z_sector + x_sector * room->size.z];
+            sector = Room_GetWorldSector(room, x, z);
         }
         return sector->ceiling.height;
     } else {
@@ -496,9 +484,7 @@ int16_t Room_GetWaterHeight(int32_t x, int32_t y, int32_t z, int16_t room_num)
             if (room->flags & RF_UNDERWATER) {
                 return sector->floor.height;
             }
-            z_sector = (z - room->pos.z) >> WALL_SHIFT;
-            x_sector = (x - room->pos.x) >> WALL_SHIFT;
-            sector = &room->sectors[z_sector + x_sector * room->size.z];
+            sector = Room_GetWorldSector(room, x, z);
         }
         return NO_HEIGHT;
     }
@@ -528,7 +514,7 @@ void Room_AlterFloorHeight(ITEM *item, int32_t height)
             CLAMP(x_sector, 0, room->size.x - 1);
         }
 
-        sector = &room->sectors[z_sector + x_sector * room->size.z];
+        sector = Room_GetUnitSector(room, x_sector, z_sector);
         portal_room = sector->portal_room.wall;
         if (portal_room != NO_ROOM) {
             room = Room_Get(portal_room);

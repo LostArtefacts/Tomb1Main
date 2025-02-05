@@ -958,7 +958,7 @@ static void M_FloorDataEdits(INJECTION *injection, LEVEL_INFO *level_info)
                 LOG_WARNING(
                     "Sector [%d,%d] is invalid for room %d", x, z, room_num);
             } else {
-                sector = &room->sectors[room->size.z * x + z];
+                sector = Room_GetUnitSector(room, x, z);
             }
         }
 

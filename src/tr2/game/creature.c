@@ -95,17 +95,15 @@ void Creature_AIInfo(ITEM *const item, AI_INFO *const info)
 
     {
         const ROOM *const room = Room_Get(item->room_num);
-        const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
-        item->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
+        item->box_num =
+            Room_GetWorldSector(room, item->pos.x, item->pos.z)->box;
         info->zone_num = zone[item->box_num];
     }
 
     {
         const ROOM *const room = Room_Get(enemy->room_num);
-        const int32_t z_sector = (enemy->pos.z - room->pos.z) >> WALL_SHIFT;
-        const int32_t x_sector = (enemy->pos.x - room->pos.x) >> WALL_SHIFT;
-        enemy->box_num = room->sectors[z_sector + x_sector * room->size.z].box;
+        enemy->box_num =
+            Room_GetWorldSector(room, enemy->pos.x, enemy->pos.z)->box;
         info->enemy_zone_num = zone[enemy->box_num];
     }
 

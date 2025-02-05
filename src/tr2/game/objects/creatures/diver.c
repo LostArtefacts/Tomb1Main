@@ -38,23 +38,11 @@ static const BITE m_DiverBite = {
     .mesh_num = 18,
 };
 
-static const SECTOR *M_GetRelSector(const ROOM *room, int32_t x, int32_t z);
-
-static const SECTOR *M_GetRelSector(
-    const ROOM *const room, const int32_t x, const int32_t z)
-{
-    const XZ_32 sector_pos = {
-        .x = (x - room->pos.x) >> WALL_SHIFT,
-        .z = (z - room->pos.z) >> WALL_SHIFT,
-    };
-    return &room->sectors[sector_pos.z + room->size.z * sector_pos.x];
-}
-
 int32_t Diver_GetWaterSurface(
     const int32_t x, const int32_t y, const int32_t z, const int16_t room_num)
 {
     const ROOM *room = Room_Get(room_num);
-    const SECTOR *sector = M_GetRelSector(room, x, z);
+    const SECTOR *sector = Room_GetWorldSector(room, x, z);
 
     if ((room->flags & RF_UNDERWATER)) {
         while (sector->portal_room.sky != NO_ROOM) {
@@ -62,7 +50,7 @@ int32_t Diver_GetWaterSurface(
             if (!(room->flags & RF_UNDERWATER)) {
                 return sector->ceiling.height;
             }
-            sector = M_GetRelSector(room, x, z);
+            sector = Room_GetWorldSector(room, x, z);
         }
     } else {
         while (sector->portal_room.pit != NO_ROOM) {
@@ -70,7 +58,7 @@ int32_t Diver_GetWaterSurface(
             if ((room->flags & RF_UNDERWATER)) {
                 return sector->floor.height;
             }
-            sector = M_GetRelSector(room, x, z);
+            sector = Room_GetWorldSector(room, x, z);
         }
     }
     return NO_HEIGHT;

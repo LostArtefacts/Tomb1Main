@@ -669,7 +669,7 @@ void Output_DrawRoomTriggers(const ROOM *const room)
     S_Output_SetBlendingMode(GFX_BLEND_MODE_NORMAL);
     for (int32_t z = 0; z < room->size.z; z++) {
         for (int32_t x = 0; x < room->size.x; x++) {
-            const SECTOR *sector = &room->sectors[z + x * room->size.z];
+            const SECTOR *sector = Room_GetUnitSector(room, x, z);
             if (sector->trigger == nullptr) {
                 continue;
             }

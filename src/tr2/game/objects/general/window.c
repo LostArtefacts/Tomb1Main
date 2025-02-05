@@ -38,10 +38,8 @@ void Window_Initialise(const int16_t item_num)
     item->mesh_bits = 1;
 
     const ROOM *const room = Room_Get(item->room_num);
-    const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
-    const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
     const SECTOR *const sector =
-        &room->sectors[z_sector + x_sector * room->size.z];
+        Room_GetWorldSector(room, item->pos.x, item->pos.z);
     BOX_INFO *const box = &g_Boxes[sector->box];
 
     if (box->overlap_index & BOX_BLOCKABLE) {
@@ -79,10 +77,8 @@ void Window_2_Control(const int16_t item_num)
     }
 
     const ROOM *const room = Room_Get(item->room_num);
-    const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
-    const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
     const SECTOR *const sector =
-        &room->sectors[z_sector + x_sector * room->size.z];
+        Room_GetWorldSector(room, item->pos.x, item->pos.z);
     BOX_INFO *const box = &g_Boxes[sector->box];
 
     if (box->overlap_index & BOX_BLOCKED) {
@@ -103,10 +99,8 @@ void Window_Smash(const int16_t item_num)
 {
     ITEM *const item = Item_Get(item_num);
     const ROOM *const room = Room_Get(item->room_num);
-    const int32_t z_sector = (item->pos.z - room->pos.z) >> WALL_SHIFT;
-    const int32_t x_sector = (item->pos.x - room->pos.x) >> WALL_SHIFT;
     const SECTOR *const sector =
-        &room->sectors[z_sector + x_sector * room->size.z];
+        Room_GetWorldSector(room, item->pos.x, item->pos.z);
     BOX_INFO *const box = &g_Boxes[sector->box];
 
     if (box->overlap_index & BOX_BLOCKABLE) {

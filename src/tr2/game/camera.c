@@ -291,9 +291,8 @@ void Camera_SmartShift(
     LOS_Check(&g_Camera.target, target);
 
     const ROOM *room = Room_Get(g_Camera.target.room_num);
-    int32_t z_sector = (g_Camera.target.z - room->pos.z) >> WALL_SHIFT;
-    int32_t x_sector = (g_Camera.target.x - room->pos.x) >> WALL_SHIFT;
-    int16_t item_box = room->sectors[z_sector + x_sector * room->size.z].box;
+    int16_t item_box =
+        Room_GetWorldSector(room, g_Camera.target.x, g_Camera.target.z)->box;
     const BOX_INFO *box = &g_Boxes[item_box];
 
     int32_t left = (int32_t)box->left << WALL_SHIFT;
@@ -302,9 +301,7 @@ void Camera_SmartShift(
     int32_t bottom = ((int32_t)box->bottom << WALL_SHIFT) - 1;
 
     room = Room_Get(target->room_num);
-    z_sector = (target->z - room->pos.z) >> WALL_SHIFT;
-    x_sector = (target->x - room->pos.x) >> WALL_SHIFT;
-    int16_t camera_box = room->sectors[z_sector + x_sector * room->size.z].box;
+    int16_t camera_box = Room_GetWorldSector(room, target->x, target->z)->box;
 
     if (camera_box != NO_BOX
         && (target->z < left || target->z > right || target->x < top

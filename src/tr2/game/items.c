@@ -170,9 +170,8 @@ void Item_Initialise(const int16_t item_num)
     item->next_item = room->item_num;
     room->item_num = item_num;
 
-    const int32_t dx = (item->pos.x - room->pos.x) >> WALL_SHIFT;
-    const int32_t dz = (item->pos.z - room->pos.z) >> WALL_SHIFT;
-    const SECTOR *const sector = &room->sectors[dx * room->size.z + dz];
+    const SECTOR *const sector =
+        Room_GetWorldSector(room, item->pos.x, item->pos.z);
     item->floor = sector->floor.height;
 
     if (g_SaveGame.bonus_flag && GF_GetCurrentLevel()->type != GFL_DEMO) {

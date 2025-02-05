@@ -278,3 +278,17 @@ BOUNDS_32 Room_GetWorldBounds(void)
 
     return bounds;
 }
+
+SECTOR *Room_GetWorldSector(
+    const ROOM *const room, const int32_t x_pos, const int32_t z_pos)
+{
+    const int32_t x_sector = (x_pos - room->pos.x) >> WALL_SHIFT;
+    const int32_t z_sector = (z_pos - room->pos.z) >> WALL_SHIFT;
+    return Room_GetUnitSector(room, x_sector, z_sector);
+}
+
+SECTOR *Room_GetUnitSector(
+    const ROOM *const room, const int32_t x_sector, const int32_t z_sector)
+{
+    return &room->sectors[z_sector + x_sector * room->size.z];
+}

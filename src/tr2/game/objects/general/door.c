@@ -32,7 +32,7 @@ static SECTOR *M_GetRoomRelSector(
         .x = ((item->pos.x - room->pos.x) >> WALL_SHIFT) + sector_dx,
         .z = ((item->pos.z - room->pos.z) >> WALL_SHIFT) + sector_dz,
     };
-    return &room->sectors[sector.x * room->size.z + sector.z];
+    return Room_GetUnitSector(room, sector.x, sector.z);
 }
 
 static void M_Initialise(
