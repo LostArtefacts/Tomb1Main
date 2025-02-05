@@ -340,9 +340,8 @@ bool Collide_CollideStaticObjects(
 
     Room_GetNearByRooms(x, y, z, coll->radius + 50, height + 50, room_num);
 
-    for (int i = 0; i < g_RoomsToDrawCount; i++) {
-        int16_t room_num = g_RoomsToDraw[i];
-        const ROOM *const room = Room_Get(room_num);
+    for (int32_t i = 0; i < Room_DrawGetCount(); i++) {
+        const ROOM *const room = Room_Get(Room_DrawGetRoom(i));
 
         for (int32_t j = 0; j < room->num_static_meshes; j++) {
             const STATIC_MESH *const mesh = &room->static_meshes[j];

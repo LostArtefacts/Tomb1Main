@@ -44,8 +44,8 @@ void Game_Draw(bool draw_overlay)
 
     } else {
         // cinematic scene
-        for (int i = 0; i < g_RoomsToDrawCount; i++) {
-            int16_t room_num = g_RoomsToDraw[i];
+        for (int32_t i = 0; i < Room_DrawGetCount(); i++) {
+            const int16_t room_num = Room_DrawGetRoom(i);
             ROOM *const room = Room_Get(room_num);
             room->bound_top = 0;
             room->bound_left = 0;

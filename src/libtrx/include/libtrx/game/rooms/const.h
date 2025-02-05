@@ -1,6 +1,7 @@
 #pragma once
 
 #define MAX_ROOMS 1024
+#define MAX_ROOMS_TO_DRAW 100
 
 #define NO_ROOM_NEG (-1)
 #define NO_ROOM 255 // TODO: merge this with NO_ROOM_NEG

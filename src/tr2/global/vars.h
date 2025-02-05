@@ -8,9 +8,6 @@
 
 #include <SDL2/SDL.h>
 
-extern int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW];
-extern int16_t g_RoomsToDrawCount;
-
 extern const float g_RhwFactor;
 
 extern SDL_Window *g_SDLWindow;

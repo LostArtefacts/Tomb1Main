@@ -457,7 +457,7 @@ void Room_GetNearbyRooms(
     const int32_t x, const int32_t y, const int32_t z, const int32_t r,
     const int32_t h, const int16_t room_num)
 {
-    g_RoomsToDrawCount = 0;
+    Room_DrawReset();
     Room_MarkToBeDrawn(room_num);
 
     Room_GetNewRoom(r + x, y, r + z, room_num);
@@ -843,7 +843,7 @@ void Room_InitCinematic(void)
         room->flags |= RF_OUTSIDE;
     }
 
-    g_RoomsToDrawCount = 0;
+    Room_DrawReset();
     for (int32_t i = 0; i < room_count; i++) {
         if (!Room_Get(i)->bound_active) {
             Room_MarkToBeDrawn(i);

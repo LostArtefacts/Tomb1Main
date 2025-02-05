@@ -8,9 +8,6 @@
 const char *g_TRXVersion = "TR2X (non-Docker build)";
 #endif
 
-int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW] = {};
-int16_t g_RoomsToDrawCount = 0;
-
 const float g_RhwFactor = 0x14000000.p0;
 
 SDL_Window *g_SDLWindow = nullptr;

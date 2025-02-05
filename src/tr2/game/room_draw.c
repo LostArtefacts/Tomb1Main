@@ -24,19 +24,6 @@ static int32_t m_BoxLines[12][2] = {
     { 6, 7 }, { 7, 4 }, { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 },
 };
 
-void Room_MarkToBeDrawn(const int16_t room_num)
-{
-    for (int32_t i = 0; i < g_RoomsToDrawCount; i++) {
-        if (g_RoomsToDraw[i] == room_num) {
-            return;
-        }
-    }
-
-    if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-        g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
-    }
-}
-
 void Room_GetBounds(void)
 {
     while (m_BoundStart != m_BoundEnd) {
@@ -486,7 +473,7 @@ void Room_DrawAllRooms(const int16_t current_room)
     m_BoundStart = 0;
     m_BoundEnd = 1;
 
-    g_RoomsToDrawCount = 0;
+    Room_DrawReset();
     m_Outside = room->flags & RF_OUTSIDE;
 
     if (m_Outside) {
@@ -540,13 +527,13 @@ void Room_DrawAllRooms(const int16_t current_room)
         Lara_Draw(g_LaraItem);
     }
 
-    for (int32_t i = 0; i < g_RoomsToDrawCount; i++) {
-        const int16_t room_num = g_RoomsToDraw[i];
+    for (int32_t i = 0; i < Room_DrawGetCount(); i++) {
+        const int16_t room_num = Room_DrawGetRoom(i);
         Room_DrawSingleRoomGeometry(room_num);
     }
 
-    for (int32_t i = 0; i < g_RoomsToDrawCount; i++) {
-        const int16_t room_num = g_RoomsToDraw[i];
+    for (int32_t i = 0; i < Room_DrawGetCount(); i++) {
+        const int16_t room_num = Room_DrawGetRoom(i);
         Room_DrawSingleRoomObjects(room_num);
     }
 

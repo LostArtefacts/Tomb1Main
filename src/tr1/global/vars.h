@@ -44,8 +44,6 @@ extern int16_t *g_GroundZone2[2];
 extern int16_t *g_FlyZone[2];
 extern int32_t g_NumberSoundEffects;
 extern OBJECT_VECTOR *g_SoundEffectsTable;
-extern int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW];
-extern int16_t g_RoomsToDrawCount;
 
 extern REQUEST_INFO g_SavegameRequester;
 

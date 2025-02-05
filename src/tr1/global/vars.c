@@ -35,8 +35,6 @@ int16_t *g_GroundZone2[2] = { nullptr };
 int16_t *g_FlyZone[2] = { nullptr };
 int32_t g_NumberSoundEffects = 0;
 OBJECT_VECTOR *g_SoundEffectsTable = nullptr;
-int16_t g_RoomsToDraw[MAX_ROOMS_TO_DRAW] = { -1 };
-int16_t g_RoomsToDrawCount = 0;
 
 INVENTORY_MODE g_InvMode;
 

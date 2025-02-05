@@ -195,10 +195,8 @@ int32_t Room_FindGridShift(int32_t src, int32_t dst)
 void Room_GetNearByRooms(
     int32_t x, int32_t y, int32_t z, int32_t r, int32_t h, int16_t room_num)
 {
-    g_RoomsToDrawCount = 0;
-    if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-        g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
-    }
+    Room_DrawReset();
+    Room_MarkToBeDrawn(room_num);
     Room_GetNewRoom(x + r, y, z + r, room_num);
     Room_GetNewRoom(x - r, y, z + r, room_num);
     Room_GetNewRoom(x + r, y, z - r, room_num);
@@ -212,17 +210,7 @@ void Room_GetNearByRooms(
 void Room_GetNewRoom(int32_t x, int32_t y, int32_t z, int16_t room_num)
 {
     Room_GetSector(x, y, z, &room_num);
-
-    for (int i = 0; i < g_RoomsToDrawCount; i++) {
-        int16_t drawn_room = g_RoomsToDraw[i];
-        if (drawn_room == room_num) {
-            return;
-        }
-    }
-
-    if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-        g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
-    }
+    Room_MarkToBeDrawn(room_num);
 }
 
 SECTOR *Room_GetPitSector(

@@ -164,9 +164,7 @@ static bool M_SetBounds(const PORTAL *portal, const ROOM *parent)
     }
 
     if (!room->bound_active) {
-        if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-            g_RoomsToDraw[g_RoomsToDrawCount++] = portal->room_num;
-        }
+        Room_MarkToBeDrawn(portal->room_num);
         room->bound_active = 1;
     }
     return true;
@@ -200,14 +198,14 @@ void Room_DrawAllRooms(int16_t base_room, int16_t target_room)
     g_PhdRight = Viewport_GetMaxX();
     g_PhdBottom = Viewport_GetMaxY();
 
-    g_RoomsToDrawCount = 0;
+    Room_DrawReset();
 
     M_PrepareToDraw(base_room);
     M_PrepareToDraw(target_room);
     M_DrawSkybox();
 
-    for (int i = 0; i < g_RoomsToDrawCount; i++) {
-        Room_DrawSingleRoom(g_RoomsToDraw[i]);
+    for (int32_t i = 0; i < Room_DrawGetCount(); i++) {
+        Room_DrawSingleRoom(Room_DrawGetRoom(i));
     }
     Output_SetupAboveWater(false);
 }
@@ -225,9 +223,7 @@ static void M_PrepareToDraw(int16_t room_num)
     room->bound_bottom = g_PhdBottom;
     room->bound_active = 1;
 
-    if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-        g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
-    }
+    Room_MarkToBeDrawn(room_num);
 
     Matrix_Push();
     Matrix_TranslateAbs32(room->pos);

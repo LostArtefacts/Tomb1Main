@@ -71,12 +71,10 @@ bool Cutscene_Start(const int32_t level_num)
         }
     }
 
-    g_RoomsToDrawCount = 0;
+    Room_DrawReset();
     for (int16_t room_num = 0; room_num < room_count; room_num++) {
         if (!Room_Get(room_num)->bound_active) {
-            if (g_RoomsToDrawCount + 1 < MAX_ROOMS_TO_DRAW) {
-                g_RoomsToDraw[g_RoomsToDrawCount++] = room_num;
-            }
+            Room_MarkToBeDrawn(room_num);
         }
     }
 
