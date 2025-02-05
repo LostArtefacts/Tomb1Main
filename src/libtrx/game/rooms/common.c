@@ -107,7 +107,7 @@ void Room_InitialiseRooms(const int32_t num_rooms)
         : GameBuf_Alloc(sizeof(ROOM) * num_rooms, GBUF_ROOMS);
 }
 
-int32_t Room_GetTotalCount(void)
+int32_t Room_GetCount(void)
 {
     return m_RoomCount;
 }
@@ -122,7 +122,7 @@ ROOM *Room_Get(const int32_t room_num)
 
 void Room_InitialiseFlipStatus(void)
 {
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room == -1) {
             room->flip_status = RFS_NONE;
@@ -136,7 +136,7 @@ void Room_InitialiseFlipStatus(void)
 
 void Room_ParseFloorData(const int16_t *floor_data)
 {
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         for (int32_t j = 0; j < room->size.x * room->size.z; j++) {
             SECTOR *const sector = &room->sectors[j];
@@ -236,7 +236,7 @@ int16_t Room_GetIndexFromPos(const int32_t x, const int32_t y, const int32_t z)
 
 int32_t Room_FindByPos(const int32_t x, const int32_t y, const int32_t z)
 {
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         if (room->flip_status == RFS_FLIPPED) {
             continue;
@@ -266,7 +266,7 @@ BOUNDS_32 Room_GetWorldBounds(void)
         .max.y = -MAX_HEIGHT,
     };
 
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         bounds.min.x = MIN(bounds.min.x, room->pos.x);
         bounds.max.x = MAX(bounds.max.x, room->pos.x + room->size.x * WALL_L);

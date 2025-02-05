@@ -167,8 +167,8 @@ static COMMAND_RESULT M_TeleportToXYZ(float x, const float y, float z)
 
 static COMMAND_RESULT M_TeleportToRoom(const int16_t room_num)
 {
-    if (room_num < 0 || room_num >= Room_GetTotalCount()) {
-        Console_Log(GS(OSD_INVALID_ROOM), room_num, Room_GetTotalCount() - 1);
+    if (room_num < 0 || room_num >= Room_GetCount()) {
+        Console_Log(GS(OSD_INVALID_ROOM), room_num, Room_GetCount() - 1);
         return CR_FAILURE;
     }
 

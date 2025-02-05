@@ -758,7 +758,7 @@ bool Room_GetFlipStatus(void)
 
 void Room_FlipMap(void)
 {
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room == NO_ROOM_NEG) {
             continue;
@@ -846,7 +846,7 @@ void Room_Legacy_TriggerMusicTrack(
 
 void Room_InitCinematic(void)
 {
-    const int32_t room_count = Room_GetTotalCount();
+    const int32_t room_count = Room_GetCount();
     for (int32_t i = 0; i < room_count; i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room != NO_ROOM_NEG) {

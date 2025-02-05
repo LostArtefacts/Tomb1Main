@@ -630,7 +630,7 @@ static void M_MarkWaterEdgeVertices(void)
     }
 
     BENCHMARK *const benchmark = Benchmark_Start();
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         const int32_t y_test =
             (room->flags & RF_UNDERWATER) ? room->max_ceiling : room->min_floor;
@@ -671,7 +671,7 @@ static size_t M_CalculateMaxVertices(void)
         max_vertices = MAX(max_vertices, mesh->num_vertices);
     }
 
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         max_vertices = MAX(max_vertices, room->mesh.num_vertices);
     }

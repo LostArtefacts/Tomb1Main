@@ -567,7 +567,7 @@ void Room_FlipMap(void)
 {
     Sound_StopAmbientSounds();
 
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         ROOM *const room = Room_Get(i);
         if (room->flipped_room < 0) {
             continue;

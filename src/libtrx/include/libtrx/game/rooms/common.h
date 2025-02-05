@@ -4,7 +4,7 @@
 #include "./types.h"
 
 void Room_InitialiseRooms(int32_t num_rooms);
-int32_t Room_GetTotalCount(void);
+int32_t Room_GetCount(void);
 ROOM *Room_Get(int32_t room_num);
 
 void Room_InitialiseFlipStatus(void);

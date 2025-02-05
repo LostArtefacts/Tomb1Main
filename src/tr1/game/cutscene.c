@@ -63,7 +63,7 @@ bool Cutscene_Start(const int32_t level_num)
 
     M_InitialiseLara(level);
 
-    const int32_t room_count = Room_GetTotalCount();
+    const int32_t room_count = Room_GetCount();
     for (int16_t room_num = 0; room_num < room_count; room_num++) {
         const ROOM *const room = Room_Get(room_num);
         if (room->flipped_room >= 0) {

@@ -45,7 +45,7 @@ static void M_TraverseFloor(void)
 {
     uint32_t secrets = 0;
 
-    for (int32_t i = 0; i < Room_GetTotalCount(); i++) {
+    for (int32_t i = 0; i < Room_GetCount(); i++) {
         const ROOM *const room = Room_Get(i);
         for (int32_t z_sector = 0; z_sector < room->size.z; z_sector++) {
             for (int32_t x_sector = 0; x_sector < room->size.x; x_sector++) {
@@ -147,7 +147,7 @@ void Stats_ComputeFinal(GF_LEVEL_TYPE level_type, FINAL_STATS *final_stats)
 
 void Stats_ObserveRoomsLoad(void)
 {
-    const int32_t room_count = Room_GetTotalCount();
+    const int32_t room_count = Room_GetCount();
     m_CachedSectorArray =
         GameBuf_Alloc(room_count * sizeof(SECTOR *), GBUF_ROOM_SECTORS);
     for (int32_t i = 0; i < room_count; i++) {

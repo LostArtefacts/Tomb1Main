@@ -39,7 +39,7 @@ void BaconLara_Initialise(int16_t item_num)
 
 bool BaconLara_InitialiseAnchor(const int32_t room_index)
 {
-    if (room_index >= Room_GetTotalCount()) {
+    if (room_index >= Room_GetCount()) {
         return false;
     }
 

@@ -140,7 +140,7 @@ static void M_FloorDataEdits(
         // Individual FD functions must check that sector is actually set.
         const ROOM *room = nullptr;
         SECTOR *sector = nullptr;
-        if (room_num < 0 || room_num >= Room_GetTotalCount()) {
+        if (room_num < 0 || room_num >= Room_GetCount()) {
             LOG_WARNING("Room index %d is invalid", room_num);
         } else {
             room = Room_Get(room_num);
