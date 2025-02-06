@@ -462,7 +462,7 @@ static void M_LoadItems(VFILE *file)
 
     if (m_LevelInfo.item_count) {
         if (m_LevelInfo.item_count > MAX_ITEMS) {
-            Shell_ExitSystem("M_LoadItems(): Too Many g_Items being Loaded!!");
+            Shell_ExitSystem("Too many items");
         }
 
         g_Items = GameBuf_Alloc(sizeof(ITEM) * MAX_ITEMS, GBUF_ITEMS);
@@ -470,7 +470,7 @@ static void M_LoadItems(VFILE *file)
         Item_InitialiseArray(MAX_ITEMS);
 
         for (int i = 0; i < m_LevelInfo.item_count; i++) {
-            ITEM *item = &g_Items[i];
+            ITEM *const item = Item_Get(i);
             item->object_id = VFile_ReadS16(file);
             item->room_num = VFile_ReadS16(file);
             item->pos.x = VFile_ReadS32(file);
@@ -482,8 +482,7 @@ static void M_LoadItems(VFILE *file)
 
             if (item->object_id < 0 || item->object_id >= O_NUMBER_OF) {
                 Shell_ExitSystemFmt(
-                    "M_LoadItems(): Bad Object number (%d) on Item %d",
-                    item->object_id, i);
+                    "Bad object number (%d) on item %d", item->object_id, i);
             }
         }
     }

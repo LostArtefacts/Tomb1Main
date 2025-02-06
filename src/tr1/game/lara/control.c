@@ -121,7 +121,7 @@ static void M_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
     for (int32_t i = 0; i < roomies_count; i++) {
         int16_t item_num = Room_Get(roomies[i])->item_num;
         while (item_num != NO_ITEM) {
-            ITEM *item = &g_Items[item_num];
+            const ITEM *const item = Item_Get(item_num);
             if (item->collidable && item->status != IS_INVISIBLE) {
                 const OBJECT *const obj = Object_Get(item->object_id);
                 if (obj->collision != nullptr) {

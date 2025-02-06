@@ -145,7 +145,7 @@ static bool M_NeedsBaconLaraFix(char *buffer)
     M_Skip(Camera_GetFixedObjectCount() * sizeof(int16_t)); // cameras
 
     for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         ITEM tmp_item;
@@ -588,7 +588,7 @@ bool Savegame_Legacy_LoadFromFile(MYFILE *fp, GAME_INFO *game_info)
     Savegame_ProcessItemsBeforeLoad();
 
     for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         if (obj->save_position) {
@@ -770,7 +770,7 @@ void Savegame_Legacy_SaveToFile(MYFILE *fp, GAME_INFO *game_info)
     Savegame_ProcessItemsBeforeSave();
 
     for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         if (obj->save_position) {

@@ -27,10 +27,10 @@ void ThorsHammerHandle_Setup(OBJECT *obj)
 
 void ThorsHammerHandle_Initialise(int16_t item_num)
 {
-    ITEM *hand_item = &g_Items[item_num];
+    ITEM *const hand_item = Item_Get(item_num);
     int16_t head_item_num = Item_Create();
     ASSERT(head_item_num != NO_ITEM);
-    ITEM *head_item = &g_Items[head_item_num];
+    ITEM *const head_item = Item_Get(head_item_num);
     head_item->object_id = O_THORS_HEAD;
     head_item->room_num = hand_item->room_num;
     head_item->pos = hand_item->pos;
@@ -43,7 +43,7 @@ void ThorsHammerHandle_Initialise(int16_t item_num)
 
 void ThorsHammerHandle_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     switch (item->current_anim_state) {
     case THOR_HAMMER_HANDLE_STATE_SET:
@@ -146,7 +146,7 @@ void ThorsHammerHandle_Control(int16_t item_num)
 void ThorsHammerHandle_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;
     }

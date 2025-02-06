@@ -45,19 +45,19 @@ void SaveCrystal_Initialise(int16_t item_num)
     if (g_Config.gameplay.enable_save_crystals) {
         Item_AddActive(item_num);
     } else {
-        g_Items[item_num].status = IS_INVISIBLE;
+        Item_Get(item_num)->status = IS_INVISIBLE;
     }
 }
 
 void SaveCrystal_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     Item_Animate(item);
 }
 
 void SaveCrystal_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_Get(item->object_id);
 
     Object_Collision(item_num, lara_item, coll);

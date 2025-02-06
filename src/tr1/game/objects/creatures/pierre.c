@@ -64,13 +64,13 @@ void Pierre_Setup(OBJECT *obj)
 
 void Pierre_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (g_Config.gameplay.change_pierre_spawn) {
         if (m_PierreItemNum == NO_ITEM) {
             m_PierreItemNum = item_num;
         } else if (m_PierreItemNum != item_num) {
-            ITEM *old_pierre = &g_Items[m_PierreItemNum];
+            ITEM *old_pierre = Item_Get(m_PierreItemNum);
             if (old_pierre->flags & IF_ONE_SHOT) {
                 if (!(item->flags & IF_ONE_SHOT)) {
                     Item_Kill(item_num);

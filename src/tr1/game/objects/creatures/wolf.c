@@ -71,13 +71,13 @@ void Wolf_Setup(OBJECT *obj)
 
 void Wolf_Initialise(int16_t item_num)
 {
-    g_Items[item_num].frame_num = WOLF_SLEEP_FRAME;
+    Item_Get(item_num)->frame_num = WOLF_SLEEP_FRAME;
     Creature_Initialise(item_num);
 }
 
 void Wolf_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

@@ -57,7 +57,7 @@ static bool M_TestDoor(ITEM *lara_item, COLL_INFO *coll)
     const int32_t shift = 8; // constant shift to avoid overflow errors
     const int32_t max_dist = SQUARE((WALL_L * 2) >> shift);
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
-        ITEM *const item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
         if (!Object_IsType(item->object_id, g_DoorObjects)) {
             continue;
         }
@@ -278,7 +278,7 @@ void MovableBlock_Setup(OBJECT *obj)
 
 void MovableBlock_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status != IS_INVISIBLE && item->pos.y >= Item_GetHeight(item)) {
         Room_AlterFloorHeight(item, -WALL_L);
@@ -287,7 +287,7 @@ void MovableBlock_Initialise(int16_t item_num)
 
 void MovableBlock_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->flags & IF_ONE_SHOT) {
         Room_AlterFloorHeight(item, WALL_L);
@@ -332,7 +332,7 @@ void MovableBlock_Control(int16_t item_num)
 
 void MovableBlock_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_Get(item->object_id);
 
     if (M_TestDeathCollision(item, lara_item)) {

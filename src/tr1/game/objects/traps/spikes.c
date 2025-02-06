@@ -15,7 +15,7 @@ void Spikes_Setup(OBJECT *obj)
 
 void Spikes_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (lara_item->hit_points < 0) {
         return;
     }

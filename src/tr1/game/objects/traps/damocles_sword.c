@@ -26,7 +26,7 @@ void DamoclesSword_Setup(OBJECT *obj)
 
 void DamoclesSword_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->rot.y = Random_GetControl();
     item->required_anim_state = (Random_GetControl() - 0x4000) / 16;
     item->fall_speed = 50;
@@ -34,7 +34,7 @@ void DamoclesSword_Initialise(int16_t item_num)
 
 void DamoclesSword_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->gravity) {
         item->rot.y += item->required_anim_state;
         item->fall_speed += item->fall_speed < FAST_FALL_SPEED ? GRAVITY : 1;
@@ -66,7 +66,7 @@ void DamoclesSword_Control(int16_t item_num)
 
 void DamoclesSword_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;
     }

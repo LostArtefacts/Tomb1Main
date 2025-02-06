@@ -78,7 +78,7 @@ static int16_t M_GetCeilingHeight(
 
 static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    const ITEM *const item = Item_Get(item_num);
     if (item->current_anim_state == DRAWBRIDGE_STATE_CLOSED) {
         Door_Collision(item_num, lara_item, coll);
     }
@@ -86,7 +86,7 @@ static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 
 static void M_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (Item_IsTriggerActive(item)) {
         item->goal_anim_state = DRAWBRIDGE_STATE_OPEN;
     } else {

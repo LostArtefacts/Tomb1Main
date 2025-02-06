@@ -20,7 +20,7 @@ void Waterfall_Setup(OBJECT *obj)
 
 void Waterfall_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if ((item->flags & IF_CODE_BITS) != IF_CODE_BITS) {
         return;
     }

@@ -16,7 +16,7 @@ void Cog_Setup(OBJECT *obj)
 
 void Cog_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (Item_IsTriggerActive(item)) {
         item->goal_anim_state = COG_STATE_ACTIVE;
     } else {

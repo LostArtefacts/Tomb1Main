@@ -21,7 +21,7 @@ int16_t Object_FindReceptacle(const GAME_OBJECT_ID obj_id)
     GAME_OBJECT_ID receptacle_to_check =
         Object_GetCognate(obj_id, g_KeyItemToReceptacleMap);
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
-        ITEM *item = &g_Items[item_num];
+        const ITEM *const item = Item_Get(item_num);
         if (item->object_id == receptacle_to_check) {
             const OBJECT *const obj = Object_Get(item->object_id);
             if (obj->is_usable != nullptr && !obj->is_usable(item_num)) {
@@ -38,7 +38,7 @@ int16_t Object_FindReceptacle(const GAME_OBJECT_ID obj_id)
 
 void Object_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;
@@ -54,7 +54,7 @@ void Object_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 
 void Object_CollisionTrap(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_ACTIVE) {
         if (Lara_TestBoundsCollide(item, coll->radius)) {

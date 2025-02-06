@@ -67,7 +67,7 @@ void TRex_Setup(OBJECT *obj)
 void TRex_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
     if (g_Config.gameplay.disable_trex_collision
-        && g_Items[item_num].hit_points <= 0) {
+        && Item_Get(item_num)->hit_points <= 0) {
         return;
     }
 
@@ -76,7 +76,7 @@ void TRex_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 
 void TRex_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

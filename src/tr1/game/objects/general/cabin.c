@@ -23,7 +23,7 @@ void Cabin_Setup(OBJECT *obj)
 
 void Cabin_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if ((item->flags & IF_CODE_BITS) == IF_CODE_BITS) {
         switch (item->current_anim_state) {

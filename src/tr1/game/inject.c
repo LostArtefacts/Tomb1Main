@@ -1121,8 +1121,8 @@ static void M_TriggeredItem(INJECTION *injection, LEVEL_INFO *level_info)
         return;
     }
 
-    int16_t item_num = Item_Create();
-    ITEM *item = &g_Items[item_num];
+    const int16_t item_num = Item_Create();
+    ITEM *const item = Item_Get(item_num);
 
     item->object_id = VFile_ReadS16(fp);
     item->room_num = VFile_ReadS16(fp);
@@ -1522,7 +1522,7 @@ static void M_ItemPositions(INJECTION *injection)
             continue;
         }
 
-        ITEM *item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
         item->rot.y = y_rot;
         if (injection->version > INJ_VERSION_4) {
             item->pos.x = pos.x;

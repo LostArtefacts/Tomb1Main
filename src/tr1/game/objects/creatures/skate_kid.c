@@ -70,12 +70,12 @@ void SkateKid_Setup(OBJECT *obj)
 void SkateKid_Initialise(int16_t item_num)
 {
     Creature_Initialise(item_num);
-    g_Items[item_num].current_anim_state = SKATE_KID_STATE_SKATE;
+    Item_Get(item_num)->current_anim_state = SKATE_KID_STATE_SKATE;
 }
 
 void SkateKid_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

@@ -16,7 +16,7 @@ void Earthquake_Setup(OBJECT *obj)
 
 void Earthquake_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (Item_IsTriggerActive(item)) {
         if (Random_GetDraw() < 0x100) {
             g_Camera.bounce = -150;

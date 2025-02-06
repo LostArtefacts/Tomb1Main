@@ -86,7 +86,7 @@ static void M_CheckTriggers(
                 continue;
             }
 
-            const ITEM *const item = &g_Items[item_num];
+            const ITEM *const item = Item_Get(item_num);
 
             if (item->object_id == O_PIERRE) {
                 // Add Pierre pickup and kills if oneshot
@@ -100,7 +100,7 @@ static void M_CheckTriggers(
                 // Check for only valid pods
                 if (item->data != nullptr) {
                     const int16_t bug_item_num = *(int16_t *)item->data;
-                    const ITEM *const bug_item = &g_Items[bug_item_num];
+                    const ITEM *const bug_item = Item_Get(bug_item_num);
                     if (Object_Get(bug_item->object_id)->loaded) {
                         M_IncludeKillableItem(item_num);
                     }
@@ -174,12 +174,12 @@ void Stats_CalculateStats(void)
 
     if (m_CachedItemCount) {
         if (m_CachedItemCount > MAX_ITEMS) {
-            LOG_ERROR("Too Many g_Items being Loaded!!");
+            LOG_ERROR("Too many items");
             return;
         }
 
         for (int i = 0; i < m_CachedItemCount; i++) {
-            ITEM *item = &g_Items[i];
+            const ITEM *const item = Item_Get(i);
 
             if (item->object_id < 0 || item->object_id >= O_NUMBER_OF) {
                 LOG_ERROR(

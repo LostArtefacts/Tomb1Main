@@ -52,7 +52,7 @@ static bool M_Vault(int16_t item_num, int16_t angle);
 
 static bool M_Vault(int16_t item_num, int16_t angle)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     CREATURE *ape = item->data;
     int32_t x = item->pos.x >> WALL_SHIFT;
     int32_t y = item->pos.y;
@@ -132,7 +132,7 @@ void Ape_Setup(OBJECT *obj)
 
 void Ape_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

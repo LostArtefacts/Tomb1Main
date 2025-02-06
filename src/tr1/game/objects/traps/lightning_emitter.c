@@ -45,10 +45,11 @@ void LightningEmitter_Setup(OBJECT *obj)
 void LightningEmitter_Initialise(int16_t item_num)
 {
     LIGHTNING *l = GameBuf_Alloc(sizeof(LIGHTNING), GBUF_ITEM_DATA);
-    g_Items[item_num].data = l;
+    ITEM *const item = Item_Get(item_num);
+    item->data = l;
 
-    if (Object_Get(g_Items[item_num].object_id)->mesh_count > 1) {
-        g_Items[item_num].mesh_bits = 1;
+    if (Object_Get(item->object_id)->mesh_count > 1) {
+        item->mesh_bits = 1;
         l->no_target = false;
     } else {
         l->no_target = true;
@@ -61,7 +62,7 @@ void LightningEmitter_Initialise(int16_t item_num)
 
 void LightningEmitter_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     LIGHTNING *l = item->data;
 
     if (!Item_IsTriggerActive(item)) {
@@ -151,7 +152,7 @@ void LightningEmitter_Control(int16_t item_num)
 void LightningEmitter_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    LIGHTNING *l = g_Items[item_num].data;
+    const LIGHTNING *const l = Item_Get(item_num)->data;
     if (!l->zapped) {
         return;
     }

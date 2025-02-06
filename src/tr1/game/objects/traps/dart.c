@@ -21,7 +21,7 @@ void Dart_Setup(OBJECT *obj)
 
 void Dart_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->touch_bits) {
         Lara_TakeDamage(DART_DAMAGE, true);
         Spawn_Blood(

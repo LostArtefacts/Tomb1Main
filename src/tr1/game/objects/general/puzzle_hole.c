@@ -65,7 +65,7 @@ void PuzzleHole_SetupDone(OBJECT *obj)
 
 void PuzzleHole_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_Get(item->object_id);
 
     if (lara_item->current_anim_state == LS_USE_PUZZLE) {

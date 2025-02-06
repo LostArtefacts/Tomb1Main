@@ -17,7 +17,7 @@ void EmberEmitter_Setup(OBJECT *obj)
 
 void EmberEmitter_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    const ITEM *const item = Item_Get(item_num);
     int16_t effect_num = Effect_Create(item->room_num);
     if (effect_num != NO_EFFECT) {
         EFFECT *effect = Effect_Get(effect_num);

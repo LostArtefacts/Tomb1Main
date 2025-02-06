@@ -858,7 +858,7 @@ void Camera_RefreshFromTrigger(const TRIGGER *const trigger)
             }
         } else if (cmd->type == TO_TARGET) {
             if (g_Camera.type != CAM_LOOK && g_Camera.type != CAM_COMBAT) {
-                g_Camera.item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
+                g_Camera.item = Item_Get((int16_t)(intptr_t)cmd->parameter);
             }
         }
     }

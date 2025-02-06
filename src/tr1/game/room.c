@@ -119,9 +119,9 @@ static void M_TriggerMusicTrack(int16_t track, const TRIGGER *const trigger)
 
 static void M_AddFlipItems(const ROOM *const room)
 {
-    for (int16_t item_num = room->item_num; item_num != NO_ITEM;
-         item_num = g_Items[item_num].next_item) {
-        ITEM *item = &g_Items[item_num];
+    int16_t item_num = room->item_num;
+    while (item_num != NO_ITEM) {
+        ITEM *const item = Item_Get(item_num);
 
         switch (item->object_id) {
         case O_MOVABLE_BLOCK_1:
@@ -138,14 +138,16 @@ static void M_AddFlipItems(const ROOM *const room)
         default:
             break;
         }
+
+        item_num = item->next_item;
     }
 }
 
 static void M_RemoveFlipItems(const ROOM *const room)
 {
-    for (int16_t item_num = room->item_num; item_num != NO_ITEM;
-         item_num = g_Items[item_num].next_item) {
-        ITEM *item = &g_Items[item_num];
+    int16_t item_num = room->item_num;
+    while (item_num != NO_ITEM) {
+        ITEM *const item = Item_Get(item_num);
 
         switch (item->object_id) {
         case O_MOVABLE_BLOCK_1:
@@ -162,6 +164,8 @@ static void M_RemoveFlipItems(const ROOM *const room)
         default:
             break;
         }
+
+        item_num = item->next_item;
     }
 }
 
@@ -317,7 +321,7 @@ int16_t Room_GetCeiling(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
             continue;
         }
 
-        const ITEM *const item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
+        const ITEM *const item = Item_Get((int16_t)(intptr_t)cmd->parameter);
         const OBJECT *const obj = Object_Get(item->object_id);
         if (obj->ceiling_height_func) {
             height = obj->ceiling_height_func(item, x, y, z, height);
@@ -344,7 +348,7 @@ int16_t Room_GetHeight(const SECTOR *sector, int32_t x, int32_t y, int32_t z)
             continue;
         }
 
-        const ITEM *const item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
+        const ITEM *const item = Item_Get((int16_t)(intptr_t)cmd->parameter);
         const OBJECT *const obj = Object_Get(item->object_id);
         if (obj->floor_height_func) {
             height = obj->floor_height_func(item, x, y, z, height);
@@ -645,7 +649,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
                 return;
             }
             switch_off =
-                g_Items[trigger->item_index].current_anim_state == LS_RUN;
+                Item_Get(trigger->item_index)->current_anim_state == LS_RUN;
             break;
         }
 
@@ -687,7 +691,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
         switch (cmd->type) {
         case TO_OBJECT: {
             const int16_t item_num = (int16_t)(intptr_t)cmd->parameter;
-            ITEM *const item = &g_Items[item_num];
+            ITEM *const item = Item_Get(item_num);
             if (item->flags & IF_ONE_SHOT) {
                 break;
             }
@@ -780,7 +784,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
         }
 
         case TO_TARGET:
-            camera_item = &g_Items[(int16_t)(intptr_t)cmd->parameter];
+            camera_item = Item_Get((int16_t)(intptr_t)cmd->parameter);
             break;
 
         case TO_SINK: {
@@ -899,7 +903,7 @@ bool Room_IsOnWalkable(
         }
 
         const int16_t item_num = (int16_t)(intptr_t)cmd->parameter;
-        const ITEM *const item = &g_Items[item_num];
+        const ITEM *const item = Item_Get(item_num);
         const OBJECT *const obj = Object_Get(item->object_id);
         if (obj->floor_height_func) {
             height = obj->floor_height_func(item, x, y, z, height);
