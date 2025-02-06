@@ -60,8 +60,8 @@ static inline float M_GetUV(const uint16_t uv)
 {
     return g_Config.rendering.pretty_pixels
             && g_Config.rendering.texture_filter == GFX_TF_NN
-        ? uv / 256.0f
-        : ((uv & 0xFF00) + 127) / 256.0f;
+        ? uv / 65536.0f
+        : ((uv & 0xFF00) + 127) / 65536.0f;
 }
 
 static void M_ReleaseTextures(void)
@@ -172,9 +172,9 @@ static int32_t M_ZedClipper(
                 + Viewport_GetCenterY();
             v->z = MAP_DEPTH(pts0->zv + (pts1->zv - pts0->zv) * clip);
 
-            v->w = 65536.0f / near_z;
-            v->s = v->w * (pts0->u + (pts1->u - pts0->u) * clip) / 256.0f;
-            v->t = v->w * (pts0->v + (pts1->v - pts0->v) * clip) / 256.0f;
+            v->w = 1.0f / near_z;
+            v->s = v->w * (pts0->u + (pts1->u - pts0->u) * clip);
+            v->t = v->w * (pts0->v + (pts1->v - pts0->v) * clip);
 
             v->r = v->g = v->b =
                 (8192.0f - (pts0->g + (pts1->g - pts0->g) * clip)) * multiplier;
@@ -188,9 +188,9 @@ static int32_t M_ZedClipper(
             v->y = pts0->ys;
             v->z = MAP_DEPTH(pts0->zv);
 
-            v->w = 65536.0f / pts0->zv;
-            v->s = pts0->u * v->w / 256.0f;
-            v->t = pts0->v * v->w / 256.0f;
+            v->w = 1.0f / pts0->zv;
+            v->s = pts0->u * v->w;
+            v->t = pts0->v * v->w;
 
             v->r = v->g = v->b = (8192.0f - pts0->g) * multiplier;
             Output_ApplyTint(&v->r, &v->g, &v->b);
@@ -323,12 +323,6 @@ void S_Output_SelectTexture(const int32_t texture_num)
 void S_Output_DrawSprite(
     int16_t x1, int16_t y1, int16_t x2, int y2, int z, int sprnum, int shade)
 {
-    float t1;
-    float t2;
-    float t3;
-    float t4;
-    float t5;
-    float vz;
     int vertex_count = 4;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
 
@@ -340,19 +334,19 @@ void S_Output_DrawSprite(
         vshade = 255.0f;
     }
 
-    t1 = ((int)sprite->offset & 0xFF) + 0.5f;
-    t2 = ((int)sprite->offset >> 8) + 0.5f;
-    t3 = ((int)sprite->width >> 8) + t1;
-    t4 = ((int)sprite->height >> 8) + t2;
-    vz = MAP_DEPTH(z);
-    t5 = 65536.0f / z;
+    const float u0 = (sprite->offset & 0xFF) / 256.0f;
+    const float v0 = (sprite->offset >> 8) / 256.0f;
+    const float u1 = (sprite->width >> 8) / 256.0f + u0;
+    const float v1 = (sprite->height >> 8) / 256.0f + v0;
+    const float vz = MAP_DEPTH(z);
+    const float rhw = 1.0f / z;
 
     vertices[0].x = x1;
     vertices[0].y = y1;
     vertices[0].z = vz;
-    vertices[0].s = t1 * t5 / 256.0f;
-    vertices[0].t = t2 * t5 / 256.0f;
-    vertices[0].w = t5;
+    vertices[0].s = u0 * rhw;
+    vertices[0].t = v0 * rhw;
+    vertices[0].w = rhw;
     vertices[0].r = vshade;
     vertices[0].g = vshade;
     vertices[0].b = vshade;
@@ -360,9 +354,9 @@ void S_Output_DrawSprite(
     vertices[1].x = x2;
     vertices[1].y = y1;
     vertices[1].z = vz;
-    vertices[1].s = t3 * t5 / 256.0f;
-    vertices[1].t = t2 * t5 / 256.0f;
-    vertices[1].w = t5;
+    vertices[1].s = u1 * rhw;
+    vertices[1].t = v0 * rhw;
+    vertices[1].w = rhw;
     vertices[1].r = vshade;
     vertices[1].g = vshade;
     vertices[1].b = vshade;
@@ -370,9 +364,9 @@ void S_Output_DrawSprite(
     vertices[2].x = x2;
     vertices[2].y = y2;
     vertices[2].z = vz;
-    vertices[2].s = t3 * t5 / 256.0f;
-    vertices[2].t = t4 * t5 / 256.0f;
-    vertices[2].w = t5;
+    vertices[2].s = u1 * rhw;
+    vertices[2].t = v1 * rhw;
+    vertices[2].w = rhw;
     vertices[2].r = vshade;
     vertices[2].g = vshade;
     vertices[2].b = vshade;
@@ -380,9 +374,9 @@ void S_Output_DrawSprite(
     vertices[3].x = x1;
     vertices[3].y = y2;
     vertices[3].z = vz;
-    vertices[3].s = t1 * t5 / 256.0f;
-    vertices[3].t = t4 * t5 / 256.0f;
-    vertices[3].w = t5;
+    vertices[3].s = u0 * rhw;
+    vertices[3].t = v1 * rhw;
+    vertices[3].w = rhw;
     vertices[3].r = vshade;
     vertices[3].g = vshade;
     vertices[3].b = vshade;
@@ -755,9 +749,9 @@ void S_Output_DrawEnvMapTriangle(
             vertices[i].y = src_vbuf[i]->ys;
             vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
-            vertices[i].w = 65536.0f / src_vbuf[i]->zv;
-            vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
-            vertices[i].t = M_GetUV(src_uv[i]->v) * (vertices[i].w / 256.0f);
+            vertices[i].w = 1.0f / src_vbuf[i]->zv;
+            vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
+            vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
 
             vertices[i].r = vertices[i].g = vertices[i].b =
                 (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -841,9 +835,9 @@ void S_Output_DrawEnvMapQuad(
         vertices[i].y = src_vbuf[i]->ys;
         vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
-        vertices[i].w = 65536.0f / src_vbuf[i]->zv;
-        vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
-        vertices[i].t = M_GetUV(src_uv[i]->v) * (vertices[i].w / 256.0f);
+        vertices[i].w = 1.0f / src_vbuf[i]->zv;
+        vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
+        vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
 
         vertices[i].r = vertices[i].g = vertices[i].b =
             (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -893,9 +887,9 @@ void S_Output_DrawTexturedTriangle(
             vertices[i].y = src_vbuf[i]->ys;
             vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
-            vertices[i].w = 65536.0f / src_vbuf[i]->zv;
-            vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
-            vertices[i].t = M_GetUV(src_uv[i]->v) * (vertices[i].w / 256.0f);
+            vertices[i].w = 1.0f / src_vbuf[i]->zv;
+            vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
+            vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
 
             vertices[i].r = vertices[i].g = vertices[i].b =
                 (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -990,9 +984,9 @@ void S_Output_DrawTexturedQuad(
         vertices[i].y = src_vbuf[i]->ys;
         vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
-        vertices[i].w = 65536.0f / src_vbuf[i]->zv;
-        vertices[i].s = M_GetUV(src_uv[i]->u) * (vertices[i].w / 256.0f);
-        vertices[i].t = M_GetUV(src_uv[i]->v) * (vertices[i].w / 256.0f);
+        vertices[i].w = 1.0f / src_vbuf[i]->zv;
+        vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
+        vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
 
         vertices[i].r = vertices[i].g = vertices[i].b =
             (8192.0f - src_vbuf[i]->g) * multiplier;
