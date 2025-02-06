@@ -44,7 +44,7 @@ static GFX_2D_SURFACE *m_PrimarySurface = nullptr;
 static GFX_2D_SURFACE *m_PictureSurface = nullptr;
 static GFX_2D_SURFACE *m_TextureSurfaces[GFX_MAX_TEXTURES] = { nullptr };
 
-static inline float M_GetUV(const uint16_t uv);
+static inline float M_GetUV(uint16_t uv);
 static void M_ReleaseTextures(void);
 static void M_ReleaseSurfaces(void);
 static void M_FlipPrimaryBuffer(void);
@@ -54,7 +54,7 @@ static void M_DrawTriangleStrip(GFX_3D_VERTEX *vertices, int vertex_count);
 static int32_t M_VisibleZClip(
     const PHD_VBUF *vn1, const PHD_VBUF *vn2, const PHD_VBUF *vn3);
 static int32_t M_ZedClipper(
-    int32_t vertex_count, POINT_INFO *pts, GFX_3D_VERTEX *vertices);
+    int32_t vertex_count, const PHD_VBUF *vns[], GFX_3D_VERTEX *vertices);
 
 static inline float M_GetUV(const uint16_t uv)
 {
@@ -148,58 +148,65 @@ static int32_t M_VisibleZClip(
 }
 
 static int32_t M_ZedClipper(
-    int32_t vertex_count, POINT_INFO *pts, GFX_3D_VERTEX *vertices)
+    const int32_t vertex_count, const PHD_VBUF *vns[],
+    GFX_3D_VERTEX *const vertices)
 {
     const float multiplier = g_Config.visuals.brightness / 16.0f;
     const float near_z = Output_GetNearZ();
     const float persp_o_near_z = (double)g_PhdPersp / near_z;
 
     GFX_3D_VERTEX *v = &vertices[0];
-    const POINT_INFO *pts0 = &pts[0];
-    const POINT_INFO *pts1 = &pts[vertex_count - 1];
-    for (int i = 0; i < vertex_count; i++) {
-        const int32_t diff0 = near_z - pts0->zv;
-        const int32_t diff1 = near_z - pts1->zv;
+    int32_t current = 0;
+    int32_t prev = vertex_count - 1;
+    for (int32_t i = 0; i < vertex_count; i++) {
+        const PHD_VBUF *vn0 = vns[current];
+        const PHD_VBUF *vn1 = vns[prev];
+        const int32_t diff0 = near_z - vn0->zv;
+        const int32_t diff1 = near_z - vn1->zv;
         if ((diff0 | diff1) >= 0) {
             goto loop_end;
         }
 
         if ((diff0 ^ diff1) < 0) {
-            const double clip = diff0 / (pts1->zv - pts0->zv);
-            v->x = (pts0->xv + (pts1->xv - pts0->xv) * clip) * persp_o_near_z
+            const double clip = diff0 / (vn1->zv - vn0->zv);
+            v->x = (vn0->xv + (vn1->xv - vn0->xv) * clip) * persp_o_near_z
                 + Viewport_GetCenterX();
-            v->y = (pts0->yv + (pts1->yv - pts0->yv) * clip) * persp_o_near_z
+            v->y = (vn0->yv + (vn1->yv - vn0->yv) * clip) * persp_o_near_z
                 + Viewport_GetCenterY();
-            v->z = MAP_DEPTH(pts0->zv + (pts1->zv - pts0->zv) * clip);
+            v->z = MAP_DEPTH(vn0->zv + (vn1->zv - vn0->zv) * clip);
 
             v->w = 1.0f / near_z;
-            v->s = v->w * (pts0->u + (pts1->u - pts0->u) * clip);
-            v->t = v->w * (pts0->v + (pts1->v - pts0->v) * clip);
+            v->s =
+                (M_GetUV(vn0->u) + (M_GetUV(vn1->u) - M_GetUV(vn0->u)) * clip)
+                * v->w;
+            v->t =
+                (M_GetUV(vn0->v) + (M_GetUV(vn1->v) - M_GetUV(vn0->v)) * clip)
+                * v->w;
 
             v->r = v->g = v->b =
-                (8192.0f - (pts0->g + (pts1->g - pts0->g) * clip)) * multiplier;
+                (8192.0f - (vn0->g + (vn1->g - vn0->g) * clip)) * multiplier;
             Output_ApplyTint(&v->r, &v->g, &v->b);
 
             v++;
         }
 
         if (diff0 < 0) {
-            v->x = pts0->xs;
-            v->y = pts0->ys;
-            v->z = MAP_DEPTH(pts0->zv);
+            v->x = vn0->xs;
+            v->y = vn0->ys;
+            v->z = MAP_DEPTH(vn0->zv);
 
-            v->w = 1.0f / pts0->zv;
-            v->s = pts0->u * v->w;
-            v->t = pts0->v * v->w;
+            v->w = 1.0f / vn0->zv;
+            v->s = M_GetUV(vn0->u) * v->w;
+            v->t = M_GetUV(vn0->v) * v->w;
 
-            v->r = v->g = v->b = (8192.0f - pts0->g) * multiplier;
+            v->r = v->g = v->b = (8192.0f - vn0->g) * multiplier;
             Output_ApplyTint(&v->r, &v->g, &v->b);
 
             v++;
         }
 
     loop_end:
-        pts1 = pts0++;
+        prev = current++;
     }
 
     const int32_t count = v - vertices;
@@ -693,17 +700,8 @@ void S_Output_DrawFlatTriangle(
             return;
         }
 
-        POINT_INFO points[3];
-        for (int i = 0; i < vertex_count; i++) {
-            points[i].xv = src_vbuf[i]->xv;
-            points[i].yv = src_vbuf[i]->yv;
-            points[i].zv = src_vbuf[i]->zv;
-            points[i].xs = src_vbuf[i]->xs;
-            points[i].ys = src_vbuf[i]->ys;
-            points[i].g = src_vbuf[i]->g;
-        }
-
-        vertex_count = M_ZedClipper(vertex_count, points, vertices);
+        vertex_count =
+            M_ZedClipper(vertex_count, (const PHD_VBUF **)src_vbuf, vertices);
         if (vertex_count == 0) {
             return;
         }
@@ -761,19 +759,8 @@ void S_Output_DrawEnvMapTriangle(
             return;
         }
 
-        POINT_INFO points[3];
-        for (int i = 0; i < vertex_count; i++) {
-            points[i].xv = src_vbuf[i]->xv;
-            points[i].yv = src_vbuf[i]->yv;
-            points[i].zv = src_vbuf[i]->zv;
-            points[i].xs = src_vbuf[i]->xs;
-            points[i].ys = src_vbuf[i]->ys;
-            points[i].g = src_vbuf[i]->g;
-            points[i].u = M_GetUV(src_vbuf[i]->u);
-            points[i].v = M_GetUV(src_vbuf[i]->v);
-        }
-
-        vertex_count = M_ZedClipper(vertex_count, points, vertices);
+        vertex_count =
+            M_ZedClipper(vertex_count, (const PHD_VBUF **)src_vbuf, vertices);
         if (vertex_count == 0) {
             return;
         }
@@ -854,7 +841,6 @@ void S_Output_DrawTexturedTriangle(
 {
     int vertex_count = 3;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
-    POINT_INFO points[3];
     PHD_VBUF *src_vbuf[3];
 
     float multiplier = g_Config.visuals.brightness / 16.0f;
@@ -891,18 +877,8 @@ void S_Output_DrawTexturedTriangle(
             return;
         }
 
-        for (int i = 0; i < vertex_count; i++) {
-            points[i].xv = src_vbuf[i]->xv;
-            points[i].yv = src_vbuf[i]->yv;
-            points[i].zv = src_vbuf[i]->zv;
-            points[i].xs = src_vbuf[i]->xs;
-            points[i].ys = src_vbuf[i]->ys;
-            points[i].g = src_vbuf[i]->g;
-            points[i].u = M_GetUV(src_vbuf[i]->u);
-            points[i].v = M_GetUV(src_vbuf[i]->v);
-        }
-
-        vertex_count = M_ZedClipper(vertex_count, points, vertices);
+        vertex_count =
+            M_ZedClipper(vertex_count, (const PHD_VBUF **)src_vbuf, vertices);
         if (vertex_count == 0) {
             return;
         }

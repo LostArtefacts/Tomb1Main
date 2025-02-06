@@ -148,17 +148,6 @@ typedef struct {
     float zv;
     float xs;
     float ys;
-    float u;
-    float v;
-    float g;
-} POINT_INFO;
-
-typedef struct {
-    float xv;
-    float yv;
-    float zv;
-    float xs;
-    float ys;
     int16_t clip;
     int16_t g;
     int16_t u;
