@@ -37,7 +37,7 @@
 
 void Creature_Initialise(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->rot.y += (Random_GetControl() - DEG_90) >> 1;
     item->collidable = 1;
     item->data = 0;
@@ -45,7 +45,7 @@ void Creature_Initialise(const int16_t item_num)
 
 int32_t Creature_Activate(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status != IS_INVISIBLE) {
         return true;
     }
@@ -300,7 +300,7 @@ void Creature_Mood(const ITEM *item, const AI_INFO *info, int32_t violent)
 
 int32_t Creature_CheckBaddieOverlap(const int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    const ITEM *item = Item_Get(item_num);
 
     const int32_t x = item->pos.x;
     const int32_t y = item->pos.y;
@@ -309,7 +309,7 @@ int32_t Creature_CheckBaddieOverlap(const int16_t item_num)
 
     int16_t link = Room_Get(item->room_num)->item_num;
     while (link != NO_ITEM && link != item_num) {
-        item = &g_Items[link];
+        item = Item_Get(link);
         if (item != g_LaraItem && item->status == IS_ACTIVE
             && item->speed != 0) {
             const int32_t distance =
@@ -328,7 +328,7 @@ int32_t Creature_CheckBaddieOverlap(const int16_t item_num)
 
 void Creature_Die(const int16_t item_num, const bool explode)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->object_id == O_DRAGON_FRONT) {
         item->hit_points = 0;
@@ -341,7 +341,7 @@ void Creature_Die(const int16_t item_num, const bool explode)
         }
         item->hit_points = DONT_TARGET;
         const int16_t vehicle_item_num = (int16_t)(intptr_t)item->data;
-        ITEM *const vehicle_item = &g_Items[vehicle_item_num];
+        ITEM *const vehicle_item = Item_Get(vehicle_item_num);
         vehicle_item->hit_points = 0;
         return;
     }
@@ -369,7 +369,7 @@ void Creature_Die(const int16_t item_num, const bool explode)
     if (obj->intelligent) {
         int16_t pickup_num = item->carried_item;
         while (pickup_num != NO_ITEM) {
-            ITEM *const pickup = &g_Items[pickup_num];
+            ITEM *const pickup = Item_Get(pickup_num);
             pickup->pos = item->pos;
             Item_NewRoom(pickup_num, item->room_num);
             pickup_num = pickup->carried_item;
@@ -380,7 +380,7 @@ void Creature_Die(const int16_t item_num, const bool explode)
 int32_t Creature_Animate(
     const int16_t item_num, const int16_t angle, const int16_t tilt)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const CREATURE *const creature = item->data;
     const OBJECT *const obj = Object_Get(item->object_id);
     if (creature == nullptr) {
@@ -690,7 +690,7 @@ void Creature_Neck(ITEM *const item, const int16_t required)
 
 void Creature_Float(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     item->hit_points = DONT_TARGET;
     item->rot.x = 0;
@@ -746,7 +746,7 @@ int32_t Creature_Vault(
     const int16_t item_num, const int16_t angle, int32_t vault,
     const int32_t shift)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const int16_t room_num = item->room_num;
     const XYZ_32 old = item->pos;
 
@@ -835,7 +835,7 @@ void Creature_Kill(
 
 void Creature_GetBaddieTarget(const int16_t item_num, const int32_t goody)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     CREATURE *const creature = item->data;
 
     ITEM *best_item = nullptr;
@@ -846,7 +846,7 @@ void Creature_GetBaddieTarget(const int16_t item_num, const int32_t goody)
             continue;
         }
 
-        ITEM *target = &g_Items[target_item_num];
+        ITEM *const target = Item_Get(target_item_num);
         const GAME_OBJECT_ID obj_id = target->object_id;
         if (goody && obj_id != O_BANDIT_1 && obj_id != O_BANDIT_2) {
             continue;
@@ -901,7 +901,7 @@ void Creature_GetBaddieTarget(const int16_t item_num, const int32_t goody)
 void Creature_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (!Item_TestBoundsCollide(item, lara_item, coll->radius)) {
         return;
     }

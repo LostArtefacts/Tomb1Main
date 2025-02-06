@@ -46,6 +46,7 @@ static void M_CalculateSpheres(const ANIM_FRAME *const frame)
 
     const ANIM_BONE *bone = Object_GetBone(Object_Get(O_LARA), 0);
     Matrix_TranslateRel32(bone[LM_TORSO - 1].pos);
+    // TODO: this is ugly
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
@@ -126,6 +127,7 @@ static void M_CalculateSpheres_I(
 
     const ANIM_BONE *bone = Object_GetBone(Object_Get(O_LARA), 0);
     Matrix_TranslateRel32_I(bone[LM_TORSO - 1].pos);
+    // TODO: this is ugly
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2

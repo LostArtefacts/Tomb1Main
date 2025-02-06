@@ -84,7 +84,7 @@ static void M_Initialise(int16_t item_num);
 
 static void M_Initialise(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     Item_SwitchToAnim(item, XIAN_SPEARMAN_ANIM_START, 0);
     item->goal_anim_state = XIAN_SPEARMAN_STATE_START;
     item->current_anim_state = XIAN_SPEARMAN_STATE_START;
@@ -172,7 +172,7 @@ void XianSpearman_Control(const int16_t item_num)
     }
 
     AI_INFO info;
-    Creature_AIInfo(&g_Items[item_num], &info);
+    Creature_AIInfo(item, &info);
     Creature_Mood(item, &info, MOOD_ATTACK);
 
     angle = Creature_Turn(item, creature->maximum_turn);

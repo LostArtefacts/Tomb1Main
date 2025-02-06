@@ -213,7 +213,7 @@ bool Lara_Cheat_OpenNearestDoor(void)
     const int32_t shift = 8; // constant shift to avoid overflow errors
     const int32_t max_dist = SQUARE((WALL_L * 2) >> shift);
     for (int item_num = 0; item_num < g_LevelItemCount; item_num++) {
-        ITEM *const item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
         if (!Object_IsType(item->object_id, g_DoorObjects)
             && !Object_IsType(item->object_id, g_TrapdoorObjects)) {
             continue;
@@ -373,7 +373,7 @@ bool Lara_Cheat_Teleport(int32_t x, int32_t y, int32_t z)
     g_LaraItem->floor = height;
 
     if (g_LaraItem->room_num != room_num) {
-        const int16_t item_num = g_LaraItem - g_Items;
+        const int16_t item_num = g_LaraItem - Item_Get(0);
         Item_NewRoom(item_num, room_num);
     }
 

@@ -40,7 +40,8 @@ static int16_t M_ControlAlive(ITEM *driver_item, ITEM *skidoo_item);
 
 static void M_KillDriver(ITEM *const driver_item)
 {
-    const int32_t driver_item_num = driver_item - g_Items;
+    // TODO: Item_GetIndex(const ITEM *item)
+    const int32_t driver_item_num = driver_item - Item_Get(0);
     Item_RemoveActive(driver_item_num);
     driver_item->collidable = 0;
     driver_item->flags |= IF_ONE_SHOT;
@@ -49,7 +50,7 @@ static void M_KillDriver(ITEM *const driver_item)
 
 static void M_MakeMountable(ITEM *const skidoo_item)
 {
-    const int32_t skidoo_item_num = skidoo_item - g_Items;
+    const int32_t skidoo_item_num = skidoo_item - Item_Get(0);
     LOT_DisableBaddieAI(skidoo_item_num);
     skidoo_item->object_id = O_SKIDOO_FAST;
     skidoo_item->status = IS_DEACTIVATED;

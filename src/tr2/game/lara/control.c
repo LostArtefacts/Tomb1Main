@@ -228,7 +228,7 @@ void Lara_HandleAboveWater(ITEM *const item, COLL_INFO *const coll)
     g_Lara.look = 1;
 
     if (g_Lara.skidoo != NO_ITEM) {
-        if (g_Items[g_Lara.skidoo].object_id == O_SKIDOO_FAST) {
+        if (Item_Get(g_Lara.skidoo)->object_id == O_SKIDOO_FAST) {
             // TODO: make this Object_Get(O_SKIDOO_FAST)->control
             if (Skidoo_Control()) {
                 return;
@@ -689,7 +689,7 @@ void Lara_Control(const int16_t item_num)
 
 void Lara_ControlExtra(const int16_t item_num)
 {
-    Item_Animate(&g_Items[item_num]);
+    Item_Animate(Item_Get(item_num));
 }
 
 void Lara_UseItem(const GAME_OBJECT_ID obj_id)
@@ -766,7 +766,7 @@ void Lara_UseItem(const GAME_OBJECT_ID obj_id)
 void Lara_InitialiseLoad(const int16_t item_num)
 {
     g_Lara.item_num = item_num;
-    g_LaraItem = &g_Items[item_num];
+    g_LaraItem = Item_Get(item_num);
 }
 
 void Lara_Initialise(const GF_LEVEL *const level)
@@ -1019,7 +1019,7 @@ void Lara_InitialiseMeshes(const GF_LEVEL *const level)
 void Lara_GetOffVehicle(void)
 {
     if (g_Lara.skidoo != NO_ITEM) {
-        ITEM *const vehicle = &g_Items[g_Lara.skidoo];
+        ITEM *const vehicle = Item_Get(g_Lara.skidoo);
         Item_SwitchToAnim(vehicle, 0, 0);
         g_Lara.skidoo = NO_ITEM;
 

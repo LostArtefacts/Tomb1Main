@@ -36,7 +36,7 @@ static CAMERA_INFO m_LocalCamera = {};
 
 void CutscenePlayer_Control(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->rot.y = m_LocalCamera.target_angle;
     item->pos.x = m_LocalCamera.pos.pos.x;
     item->pos.y = m_LocalCamera.pos.pos.y;
@@ -63,7 +63,7 @@ void CutscenePlayer_Control(const int16_t item_num)
 
 void Lara_Control_Cutscene(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->rot.y = m_LocalCamera.target_angle;
     item->pos.x = m_LocalCamera.pos.pos.x;
     item->pos.y = m_LocalCamera.pos.pos.y;
@@ -87,7 +87,7 @@ void CutscenePlayer1_Initialise(const int16_t item_num)
     obj->control = Lara_Control_Cutscene;
 
     Item_AddActive(item_num);
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     m_LocalCamera.pos.pos.x = item->pos.x;
     m_LocalCamera.pos.pos.y = item->pos.y;
     m_LocalCamera.pos.pos.z = item->pos.z;
@@ -107,7 +107,7 @@ void CutscenePlayer1_Initialise(const int16_t item_num)
 void CutscenePlayerGen_Initialise(const int16_t item_num)
 {
     Item_AddActive(item_num);
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->rot.y = 0;
     item->dynamic_light = 0;
 }

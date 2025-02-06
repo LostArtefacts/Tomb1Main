@@ -98,6 +98,7 @@ void Lara_Draw(const ITEM *const item)
     Matrix_Pop();
 
     Matrix_TranslateRel32(bone[6].pos);
+    // TODO: this is ugly
     if (g_Lara.weapon_item != NO_ITEM && g_Lara.gun_type == LGT_M16
         && (g_Items[g_Lara.weapon_item].current_anim_state == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2
@@ -336,6 +337,7 @@ void Lara_Draw_I(
     Matrix_Pop_I();
 
     Matrix_TranslateRel32_I(bone[6].pos);
+    // TODO: this is ugly
     if (g_Lara.weapon_item != -1 && g_Lara.gun_type == 5
         && ((g_Items[g_Lara.weapon_item].current_anim_state) == 0
             || g_Items[g_Lara.weapon_item].current_anim_state == 2

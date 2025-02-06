@@ -298,8 +298,8 @@ int32_t LOS_CheckSmashable(
 
     for (int32_t i = 0; i < m_LOSNumRooms; i++) {
         for (int16_t item_num = Room_Get(m_LOSRooms[i])->item_num;
-             item_num != NO_ITEM; item_num = g_Items[item_num].next_item) {
-            const ITEM *const item = &g_Items[item_num];
+             item_num != NO_ITEM; item_num = Item_Get(item_num)->next_item) {
+            const ITEM *const item = Item_Get(item_num);
             if (item->status == IS_DEACTIVATED) {
                 continue;
             }

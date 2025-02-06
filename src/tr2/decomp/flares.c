@@ -380,7 +380,7 @@ void Flare_Ready(void)
 
 void Flare_Control(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->fall_speed) {
         item->rot.x += DEG_1 * 3;
         item->rot.z += DEG_1 * 5;

@@ -88,7 +88,7 @@ void Bird_SetupCrow(void)
 void Bird_Initialise(const int16_t item_num)
 {
     Creature_Initialise(item_num);
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->object_id == O_CROW) {
         Item_SwitchToAnim(item, CROW_START_ANIM, 0);
         item->goal_anim_state = BIRD_STATE_EAT;
@@ -106,7 +106,7 @@ void Bird_Control(const int16_t item_num)
         return;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     CREATURE *const bird = (CREATURE *)item->data;
 
     if (item->hit_points <= 0) {

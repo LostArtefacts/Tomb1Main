@@ -1007,7 +1007,7 @@ void Lara_BaddieCollision(ITEM *lara_item, COLL_INFO *coll)
     for (int32_t i = 0; i < roomies_count; i++) {
         int16_t item_num = Room_Get(roomies[i])->item_num;
         while (item_num != NO_ITEM) {
-            const ITEM *const item = &g_Items[item_num];
+            const ITEM *const item = Item_Get(item_num);
 
             // the collision routine can destroy the item - need to store the
             // next item beforehand

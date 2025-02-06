@@ -190,7 +190,7 @@ void Door_Control(const int16_t item_num)
 void Door_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Item_TestBoundsCollide(item, lara_item, coll->radius)) {
         return;

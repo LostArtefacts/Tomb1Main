@@ -168,7 +168,7 @@ void Switch_Collision(
 void Switch_CollisionUW(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!g_Input.action || item->status != IS_INACTIVE
         || g_Lara.water_status != LWS_UNDERWATER

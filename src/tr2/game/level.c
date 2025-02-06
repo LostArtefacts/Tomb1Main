@@ -183,7 +183,7 @@ static void M_LoadItems(VFILE *const file)
     Item_InitialiseArray(MAX_ITEMS);
 
     for (int32_t i = 0; i < num_items; i++) {
-        ITEM *const item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         item->object_id = VFile_ReadS16(file);
         item->room_num = VFile_ReadS16(file);
         item->pos.x = VFile_ReadS32(file);

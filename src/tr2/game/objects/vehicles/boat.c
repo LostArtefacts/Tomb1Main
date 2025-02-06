@@ -71,7 +71,7 @@ void Boat_Initialise(const int16_t item_num)
     boat_data->water = 0;
     boat_data->pitch = 0;
 
-    ITEM *const boat = &g_Items[item_num];
+    ITEM *const boat = Item_Get(item_num);
     boat->data = boat_data;
 }
 
@@ -92,7 +92,7 @@ int32_t Boat_CheckGetOn(const int16_t item_num, const COLL_INFO *const coll)
         return 0;
     }
 
-    ITEM *const boat = &g_Items[item_num];
+    ITEM *const boat = Item_Get(item_num);
     const ITEM *const lara = g_LaraItem;
     const int32_t dist =
         ((lara->pos.z - boat->pos.z) * Math_Cos(-boat->rot.y)
@@ -184,7 +184,7 @@ void Boat_Collision(
     g_Lara.water_status = LWS_ABOVE_WATER;
     g_Lara.hit_direction = -1;
 
-    ITEM *const boat = &g_Items[item_num];
+    ITEM *const boat = Item_Get(item_num);
 
     lara->pos.x = boat->pos.x;
     lara->pos.y = boat->pos.y - 5;
@@ -241,11 +241,11 @@ int32_t Boat_TestWaterHeight(
 
 void Boat_DoShift(const int32_t boat_num)
 {
-    ITEM *const boat = &g_Items[boat_num];
+    ITEM *const boat = Item_Get(boat_num);
     int16_t item_num = Room_Get(boat->room_num)->item_num;
 
     while (item_num != NO_ITEM) {
-        ITEM *item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
 
         if (item->object_id == O_BOAT && item_num != boat_num
             && g_Lara.skidoo != item_num) {
@@ -349,7 +349,7 @@ int32_t Boat_DoDynamics(
 
 int32_t Boat_Dynamics(const int16_t boat_num)
 {
-    ITEM *const boat = &g_Items[boat_num];
+    ITEM *const boat = Item_Get(boat_num);
     BOAT_INFO *const boat_data = (BOAT_INFO *)boat->data;
     boat->rot.z -= boat_data->tilt_angle;
 
@@ -629,7 +629,7 @@ void Boat_Animation(const ITEM *const boat, const int32_t collide)
 void Boat_Control(const int16_t item_num)
 {
     ITEM *const lara = g_LaraItem;
-    ITEM *const boat = &g_Items[item_num];
+    ITEM *const boat = Item_Get(item_num);
     BOAT_INFO *const boat_data = (BOAT_INFO *)boat->data;
 
     bool drive = false;

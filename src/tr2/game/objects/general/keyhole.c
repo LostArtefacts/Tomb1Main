@@ -79,13 +79,13 @@ void Keyhole_Collision(
         return;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if ((g_Inv_Chosen == NO_OBJECT && !g_Input.action)
         || g_Lara.gun_status != LGS_ARMLESS || lara_item->gravity) {
         return;
     }
 
-    if (!Item_TestPosition(m_KeyholeBounds, &g_Items[item_num], lara_item)) {
+    if (!Item_TestPosition(m_KeyholeBounds, item, lara_item)) {
         return;
     }
 
@@ -118,7 +118,7 @@ void Keyhole_Collision(
 
 int32_t Keyhole_Trigger(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status != IS_ACTIVE || g_Lara.gun_status == LGS_HANDS_BUSY) {
         return false;
     }

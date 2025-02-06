@@ -50,7 +50,7 @@ int16_t Spawn_FireStream(
 
 void Spawn_MysticLight(const int16_t item_num)
 {
-    const ITEM *const item = &g_Items[item_num];
+    const ITEM *const item = Item_Get(item_num);
 
     const int16_t effect_num = Effect_Create(item->room_num);
     if (effect_num != NO_EFFECT) {
