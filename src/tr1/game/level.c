@@ -462,15 +462,15 @@ static void M_LoadItems(VFILE *file)
 
     if (m_LevelInfo.item_count) {
         if (m_LevelInfo.item_count > MAX_ITEMS) {
-            Shell_ExitSystem("M_LoadItems(): Too Many g_Items being Loaded!!");
+            Shell_ExitSystem("Too many items");
         }
 
+        Item_InitialiseItems(m_LevelInfo.item_count);
         g_Items = GameBuf_Alloc(sizeof(ITEM) * MAX_ITEMS, GBUF_ITEMS);
-        g_LevelItemCount = m_LevelInfo.item_count;
         Item_InitialiseArray(MAX_ITEMS);
 
         for (int i = 0; i < m_LevelInfo.item_count; i++) {
-            ITEM *item = &g_Items[i];
+            ITEM *const item = Item_Get(i);
             item->object_id = VFile_ReadS16(file);
             item->room_num = VFile_ReadS16(file);
             item->pos.x = VFile_ReadS32(file);
@@ -482,8 +482,7 @@ static void M_LoadItems(VFILE *file)
 
             if (item->object_id < 0 || item->object_id >= O_NUMBER_OF) {
                 Shell_ExitSystemFmt(
-                    "M_LoadItems(): Bad Object number (%d) on Item %d",
-                    item->object_id, i);
+                    "Bad object number (%d) on item %d", item->object_id, i);
             }
         }
     }
@@ -577,9 +576,10 @@ static void M_CompleteSetup(const GF_LEVEL *const level)
     // Must be called after all animations, meshes etc are initialised.
     Object_SetupAllObjects();
 
-    // Must be called after Setup_AllObjects using the cached item
-    // count, as individual setups may increment g_LevelItemCount.
-    for (int i = 0; i < m_LevelInfo.item_count; i++) {
+    // Must be called after Setup_AllObjects using the cached item count, as
+    // individual setups may increment the level item count.
+    const int32_t item_count = Item_GetLevelCount();
+    for (int32_t i = 0; i < item_count; i++) {
         Item_Initialise(i);
     }
 

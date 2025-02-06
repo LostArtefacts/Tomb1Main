@@ -39,7 +39,7 @@ void Mummy_Setup(OBJECT *obj)
 
 void Mummy_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->touch_bits = 0;
     item->mesh_bits = 0xFFFF87FF;
     item->data = GameBuf_Alloc(sizeof(int16_t), GBUF_CREATURE_DATA);
@@ -48,7 +48,7 @@ void Mummy_Initialise(int16_t item_num)
 
 void Mummy_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     int16_t head = 0;
 
     if (item->current_anim_state == MUMMY_STATE_STOP) {

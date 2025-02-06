@@ -40,7 +40,7 @@ static int16_t M_ControlAlive(ITEM *driver_item, ITEM *skidoo_item);
 
 static void M_KillDriver(ITEM *const driver_item)
 {
-    const int32_t driver_item_num = driver_item - g_Items;
+    const int32_t driver_item_num = Item_GetIndex(driver_item);
     Item_RemoveActive(driver_item_num);
     driver_item->collidable = 0;
     driver_item->flags |= IF_ONE_SHOT;
@@ -49,7 +49,7 @@ static void M_KillDriver(ITEM *const driver_item)
 
 static void M_MakeMountable(ITEM *const skidoo_item)
 {
-    const int32_t skidoo_item_num = skidoo_item - g_Items;
+    const int32_t skidoo_item_num = Item_GetIndex(skidoo_item);
     LOT_DisableBaddieAI(skidoo_item_num);
     skidoo_item->object_id = O_SKIDOO_FAST;
     skidoo_item->status = IS_DEACTIVATED;
@@ -186,7 +186,7 @@ void SkidooDriver_Initialise(const int16_t item_num)
 {
     ITEM *const skidoo_driver = Item_Get(item_num);
 
-    const int16_t skidoo_item_num = Item_Create();
+    const int16_t skidoo_item_num = Item_CreateLevelItem();
     ASSERT(skidoo_item_num != NO_ITEM);
 
     ITEM *const skidoo = Item_Get(skidoo_item_num);
@@ -201,7 +201,6 @@ void SkidooDriver_Initialise(const int16_t item_num)
     Item_Initialise(skidoo_item_num);
 
     skidoo_driver->data = (void *)(intptr_t)skidoo_item_num;
-    g_LevelItemCount++;
 }
 
 void SkidooDriver_Control(const int16_t driver_item_num)

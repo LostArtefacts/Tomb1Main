@@ -154,7 +154,7 @@ static bool M_CheckBaddieCollision(ITEM *const item, ITEM *const skidoo)
 
 void Skidoo_Initialise(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     SKIDOO_INFO *const skidoo_data =
         GameBuf_Alloc(sizeof(SKIDOO_INFO), GBUF_ITEM_DATA);
@@ -176,7 +176,7 @@ int32_t Skidoo_CheckGetOn(const int16_t item_num, COLL_INFO *const coll)
         return SKIDOO_GET_ON_NONE;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const int16_t angle = item->rot.y - g_LaraItem->rot.y;
 
     SKIDOO_GET_ON_SIDE get_on = SKIDOO_GET_ON_NONE;
@@ -235,7 +235,7 @@ void Skidoo_Collision(
     g_Lara.gun_status = LGS_ARMLESS;
     g_Lara.hit_direction = -1;
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     lara_item->pos.x = item->pos.x;
     lara_item->pos.y = item->pos.y;
     lara_item->pos.z = item->pos.z;
@@ -703,7 +703,7 @@ void Skidoo_Explode(const ITEM *const skidoo)
 
 int32_t Skidoo_CheckGetOff(void)
 {
-    ITEM *const skidoo = &g_Items[g_Lara.skidoo];
+    ITEM *const skidoo = Item_Get(g_Lara.skidoo);
 
     if ((g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_R
          || g_LaraItem->current_anim_state == LARA_STATE_SKIDOO_GET_OFF_L)

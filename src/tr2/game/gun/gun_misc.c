@@ -120,7 +120,7 @@ void Gun_GetNewTarget(const WEAPON_INFO *const winfo)
             continue;
         }
 
-        ITEM *const item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
         if (item->hit_points <= 0) {
             continue;
         }
@@ -337,7 +337,7 @@ void Gun_HitTarget(
 
 void Gun_SmashItem(const int16_t item_num, const LARA_GUN_TYPE weapon_type)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     switch (item->object_id) {
     case O_WINDOW_1:

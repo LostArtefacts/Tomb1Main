@@ -148,7 +148,7 @@ void Object_DrawSpriteItem(const ITEM *const item)
 void Object_Collision(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Item_TestBoundsCollide(item, lara_item, coll->radius)) {
         return;
@@ -166,7 +166,7 @@ void Object_Collision(
 void Object_Collision_Trap(
     const int16_t item_num, ITEM *const lara_item, COLL_INFO *const coll)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_ACTIVE) {
         if (Item_TestBoundsCollide(item, lara_item, coll->radius)) {

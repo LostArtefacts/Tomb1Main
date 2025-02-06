@@ -1114,15 +1114,15 @@ static void M_TriggeredItem(INJECTION *injection, LEVEL_INFO *level_info)
 {
     VFILE *const fp = injection->fp;
 
-    if (g_LevelItemCount == MAX_ITEMS) {
+    if (Item_GetLevelCount() == MAX_ITEMS) {
         VFile_Skip(
             fp, sizeof(int16_t) * 4 + sizeof(int32_t) * 3 + sizeof(uint16_t));
         LOG_WARNING("Cannot add more than %d items", MAX_ITEMS);
         return;
     }
 
-    int16_t item_num = Item_Create();
-    ITEM *item = &g_Items[item_num];
+    const int16_t item_num = Item_CreateLevelItem();
+    ITEM *const item = Item_Get(item_num);
 
     item->object_id = VFile_ReadS16(fp);
     item->room_num = VFile_ReadS16(fp);
@@ -1133,8 +1133,7 @@ static void M_TriggeredItem(INJECTION *injection, LEVEL_INFO *level_info)
     item->shade.value_1 = VFile_ReadS16(fp);
     item->flags = VFile_ReadU16(fp);
 
-    level_info->item_count++;
-    g_LevelItemCount++;
+    level_info->item_count++; // TODO: remove?
 }
 
 static void M_RoomMeshEdits(const INJECTION *const injection)
@@ -1517,12 +1516,12 @@ static void M_ItemPositions(INJECTION *injection)
             pos.room_num = VFile_ReadS16(fp);
         }
 
-        if (item_num < 0 || item_num >= g_LevelItemCount) {
+        if (item_num < 0 || item_num >= Item_GetLevelCount()) {
             LOG_WARNING("Item number %d is out of level item range", item_num);
             continue;
         }
 
-        ITEM *item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
         item->rot.y = y_rot;
         if (injection->version > INJ_VERSION_4) {
             item->pos.x = pos.x;

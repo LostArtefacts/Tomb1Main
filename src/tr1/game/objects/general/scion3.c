@@ -19,7 +19,7 @@ void Scion3_Setup(OBJECT *obj)
 void Scion3_Control(int16_t item_num)
 {
     static int32_t counter = 0;
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->hit_points > 0) {
         counter = 0;

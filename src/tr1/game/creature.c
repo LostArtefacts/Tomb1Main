@@ -28,7 +28,7 @@ static bool M_TestSwitchOrKill(int16_t item_num, GAME_OBJECT_ID target_id);
 
 void Creature_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     item->rot.y += (PHD_ANGLE)((Random_GetControl() - DEG_90) >> 1);
     item->collidable = 1;
@@ -338,7 +338,7 @@ int16_t Creature_Effect(
 
 bool Creature_CheckBaddieOverlap(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    const ITEM *item = Item_Get(item_num);
 
     int32_t x = item->pos.x;
     int32_t y = item->pos.y;
@@ -347,7 +347,7 @@ bool Creature_CheckBaddieOverlap(int16_t item_num)
 
     int16_t link = Room_Get(item->room_num)->item_num;
     do {
-        item = &g_Items[link];
+        item = Item_Get(link);
 
         if (link == item_num) {
             return false;
@@ -370,7 +370,7 @@ bool Creature_CheckBaddieOverlap(int16_t item_num)
 
 void Creature_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;
@@ -390,7 +390,7 @@ void Creature_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 
 bool Creature_Animate(int16_t item_num, int16_t angle, int16_t tilt)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     CREATURE *creature = item->data;
     if (!creature) {
         return false;
@@ -712,7 +712,7 @@ bool Creature_EnsureHabitat(
 {
     // Test the environment for a hybrid creature. Record the water height and
     // return whether or not a type conversion has taken place.
-    const ITEM *const item = &g_Items[item_num];
+    const ITEM *const item = Item_Get(item_num);
     *wh = Room_GetWaterHeight(
         item->pos.x, item->pos.y, item->pos.z, item->room_num);
 
@@ -723,7 +723,7 @@ bool Creature_EnsureHabitat(
 
 bool Creature_IsBoss(const int16_t item_num)
 {
-    const ITEM *const item = &g_Items[item_num];
+    const ITEM *const item = Item_Get(item_num);
     return Object_IsType(item->object_id, g_BossObjects);
 }
 
@@ -735,7 +735,7 @@ static bool M_SwitchToWater(
         return false;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->hit_points <= 0) {
         // Dead land creatures should remain in their pose permanently.
@@ -769,7 +769,7 @@ static bool M_SwitchToLand(
         return false;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     // Switch to the land creature regardless of death state.
     item->object_id = info->land.id;

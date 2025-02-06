@@ -108,7 +108,7 @@ void Mutant_Setup3(OBJECT *obj)
 
 void Mutant_FlyerControl(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {
@@ -362,5 +362,5 @@ void Mutant_FlyerControl(int16_t item_num)
 void Mutant_Initialise2(int16_t item_num)
 {
     Creature_Initialise(item_num);
-    g_Items[item_num].mesh_bits = 0xFFE07FFF;
+    Item_Get(item_num)->mesh_bits = 0xFFE07FFF;
 }

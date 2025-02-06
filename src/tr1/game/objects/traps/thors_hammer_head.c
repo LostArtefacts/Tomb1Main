@@ -22,7 +22,7 @@ void ThorsHammerHead_Setup(OBJECT *obj)
 void ThorsHammerHead_Collision(
     int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;
     }

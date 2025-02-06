@@ -282,11 +282,13 @@ void Room_DrawSingleRoom(int16_t room_num)
     Output_LightRoom(room);
     Output_DrawRoom(&room->mesh);
 
-    for (int32_t i = room->item_num; i != NO_ITEM; i = g_Items[i].next_item) {
-        ITEM *item = &g_Items[i];
+    int16_t item_num = room->item_num;
+    while (item_num != NO_ITEM) {
+        ITEM *const item = Item_Get(item_num);
         if (item->status != IS_INVISIBLE) {
             Object_Get(item->object_id)->draw_routine(item);
         }
+        item_num = item->next_item;
     }
 
     for (int32_t i = 0; i < room->num_static_meshes; i++) {

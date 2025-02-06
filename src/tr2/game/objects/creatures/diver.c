@@ -95,7 +95,7 @@ void Diver_Control(int16_t item_num)
         return;
     }
 
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     CREATURE *const creature = item->data;
 
     if (item->hit_points <= 0) {

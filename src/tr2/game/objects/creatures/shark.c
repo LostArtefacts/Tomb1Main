@@ -92,7 +92,7 @@ void Shark_Control(const int16_t item_num)
         Creature_Float(item_num);
     } else {
         AI_INFO info;
-        Creature_AIInfo(&g_Items[item_num], &info);
+        Creature_AIInfo(item, &info);
         Creature_Mood(item, &info, MOOD_ATTACK);
 
         int16_t head = 0;

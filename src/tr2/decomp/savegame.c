@@ -159,7 +159,7 @@ static void M_ReadStats(MYFILE *const fp, LEVEL_STATS *const stats)
 
 static void M_ReadItems(void)
 {
-    for (int32_t item_num = 0; item_num < g_LevelItemCount; item_num++) {
+    for (int32_t item_num = 0; item_num < Item_GetLevelCount(); item_num++) {
         ITEM *const item = Item_Get(item_num);
         const OBJECT *const obj = Object_Get(item->object_id);
 
@@ -243,8 +243,8 @@ static void M_ReadItems(void)
                 item->data = nullptr;
                 if (item->killed && item->hit_points <= 0
                     && !(item->flags & IF_KILLED)) {
-                    item->next_active = g_PrevItemActive;
-                    g_PrevItemActive = item_num;
+                    item->next_active = Item_GetPrevActive();
+                    Item_SetPrevActive(item_num);
                 }
             }
 
@@ -488,7 +488,7 @@ static void M_WriteStats(MYFILE *const fp, const LEVEL_STATS *const stats)
 
 static void M_WriteItems(void)
 {
-    for (int32_t i = 0; i < g_LevelItemCount; i++) {
+    for (int32_t i = 0; i < Item_GetLevelCount(); i++) {
         const ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
         if (obj->save_position) {

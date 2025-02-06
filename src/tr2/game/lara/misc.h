@@ -80,3 +80,5 @@ void Lara_WaterCurrent(COLL_INFO *coll);
 void Lara_CatchFire(void);
 
 void Lara_TouchLava(ITEM *item);
+
+bool Lara_IsM16Active(void);

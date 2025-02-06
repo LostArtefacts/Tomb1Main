@@ -29,7 +29,7 @@ void RollingBall_Setup(OBJECT *obj)
 
 void RollingBall_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     GAME_VECTOR *data = GameBuf_Alloc(sizeof(GAME_VECTOR), GBUF_ITEM_DATA);
     item->data = data;
     data->x = item->pos.x;
@@ -40,7 +40,7 @@ void RollingBall_Initialise(int16_t item_num)
 
 void RollingBall_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status == IS_ACTIVE) {
         if (item->pos.y < item->floor) {
             if (!item->gravity) {
@@ -112,7 +112,7 @@ void RollingBall_Control(int16_t item_num)
 
 void RollingBall_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status != IS_ACTIVE) {
         if (item->status != IS_INVISIBLE) {

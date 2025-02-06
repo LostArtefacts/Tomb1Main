@@ -14,5 +14,5 @@ void ScionHolder_Setup(OBJECT *obj)
 
 void ScionHolder_Control(int16_t item_num)
 {
-    Item_Animate(&g_Items[item_num]);
+    Item_Animate(Item_Get(item_num));
 }

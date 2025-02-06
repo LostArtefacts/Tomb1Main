@@ -76,7 +76,7 @@ void Interpolation_Commit(void)
     INTERPOLATE_ROT(&g_Lara, head_rot.z, ratio, DEG_45);
 
     for (int i = 0; i < Item_GetTotalCount(); i++) {
-        ITEM *const item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         if ((item->flags & IF_KILLED) || item->status == IS_INACTIVE
             || item->object_id == O_BAT) {
             COMMIT(item, pos.x);
@@ -160,7 +160,7 @@ void Interpolation_Remember(void)
     REMEMBER(&g_Lara, head_rot.z);
 
     for (int i = 0; i < Item_GetTotalCount(); i++) {
-        ITEM *const item = &g_Items[i];
+        ITEM *const item = Item_Get(i);
         REMEMBER(item, pos.x);
         REMEMBER(item, pos.y);
         REMEMBER(item, pos.z);

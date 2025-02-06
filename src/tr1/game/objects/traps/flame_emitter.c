@@ -14,7 +14,7 @@ void FlameEmitter_Setup(OBJECT *obj)
 
 void FlameEmitter_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (Item_IsTriggerActive(item)) {
         if (!item->data) {
             int16_t effect_num = Effect_Create(item->room_num);

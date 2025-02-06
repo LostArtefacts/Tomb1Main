@@ -53,12 +53,12 @@ void Baldy_Setup(OBJECT *obj)
 void Baldy_Initialise(int16_t item_num)
 {
     Creature_Initialise(item_num);
-    g_Items[item_num].current_anim_state = BALDY_STATE_RUN;
+    Item_Get(item_num)->current_anim_state = BALDY_STATE_RUN;
 }
 
 void Baldy_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

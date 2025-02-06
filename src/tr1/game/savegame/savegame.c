@@ -102,8 +102,8 @@ static void M_LoadPreprocess(void)
 
 static void M_LoadPostprocess(void)
 {
-    for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+    for (int32_t i = 0; i < Item_GetLevelCount(); i++) {
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         if (obj->save_position && obj->shadow_size) {
@@ -236,8 +236,8 @@ bool Savegame_IsInitialised(void)
 
 void Savegame_ProcessItemsBeforeLoad(void)
 {
-    for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+    for (int32_t i = 0; i < Item_GetLevelCount(); i++) {
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         if (obj->control == MovableBlock_Control && item->status != IS_INVISIBLE
@@ -252,8 +252,8 @@ void Savegame_ProcessItemsBeforeLoad(void)
 
 void Savegame_ProcessItemsBeforeSave(void)
 {
-    for (int i = 0; i < g_LevelItemCount; i++) {
-        ITEM *item = &g_Items[i];
+    for (int32_t i = 0; i < Item_GetLevelCount(); i++) {
+        ITEM *const item = Item_Get(i);
         const OBJECT *const obj = Object_Get(item->object_id);
 
         if (obj->control == SaveCrystal_Control && item->data) {

@@ -193,7 +193,7 @@ void Door_Initialise(int16_t item_num)
 
 void Door_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     DOOR_DATA *door = item->data;
 
     if (Item_IsTriggerActive(item)) {
@@ -225,7 +225,7 @@ void Door_Control(int16_t item_num)
 
 void Door_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (!Lara_TestBoundsCollide(item, coll->radius)) {
         return;

@@ -30,11 +30,11 @@ void Pod_Setup(OBJECT *obj)
 
 void Pod_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
-    int16_t bug_item_num = Item_Create();
+    const int16_t bug_item_num = Item_CreateLevelItem();
     if (bug_item_num != NO_ITEM) {
-        ITEM *bug = &g_Items[bug_item_num];
+        ITEM *const bug = Item_Get(bug_item_num);
 
         switch ((item->flags & IF_CODE_BITS) >> 9) {
         case 1:
@@ -66,8 +66,6 @@ void Pod_Initialise(int16_t item_num)
 
         item->data = GameBuf_Alloc(sizeof(int16_t), GBUF_CREATURE_DATA);
         *(int16_t *)item->data = bug_item_num;
-
-        g_LevelItemCount++;
     }
 
     item->flags = 0;
@@ -76,7 +74,7 @@ void Pod_Initialise(int16_t item_num)
 
 void Pod_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->goal_anim_state != POD_STATE_EXPLODE) {
         int32_t explode = 0;
@@ -102,7 +100,7 @@ void Pod_Control(int16_t item_num)
             Item_Explode(item_num, 0xFFFE00, 0);
 
             int16_t bug_item_num = *(int16_t *)item->data;
-            ITEM *bug = &g_Items[bug_item_num];
+            ITEM *const bug = Item_Get(bug_item_num);
             if (Object_Get(bug->object_id)->loaded) {
                 bug->touch_bits = 0;
                 Item_AddActive(bug_item_num);

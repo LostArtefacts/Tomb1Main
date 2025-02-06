@@ -34,7 +34,7 @@ void BaconLara_Initialise(int16_t item_num)
     OBJECT *const bacon_obj = Object_Get(O_BACON_LARA);
     bacon_obj->anim_idx = lara_obj->anim_idx;
     bacon_obj->frame_base = lara_obj->frame_base;
-    g_Items[item_num].data = nullptr;
+    Item_Get(item_num)->data = nullptr;
 }
 
 bool BaconLara_InitialiseAnchor(const int32_t room_index)
@@ -56,7 +56,7 @@ void BaconLara_Control(int16_t item_num)
         return;
     }
 
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->hit_points < LARA_MAX_HITPOINTS) {
         Lara_TakeDamage((LARA_MAX_HITPOINTS - item->hit_points) * 10, false);

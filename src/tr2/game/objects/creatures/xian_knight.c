@@ -54,7 +54,7 @@ static void M_Initialise(int16_t item_num);
 
 static void M_Initialise(const int16_t item_num)
 {
-    ITEM *const item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     item->status = IS_INACTIVE;
     item->mesh_bits = 0;
 }

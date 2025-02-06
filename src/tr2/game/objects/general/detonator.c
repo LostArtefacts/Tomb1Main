@@ -42,7 +42,7 @@ static void M_CreateGongBonger(ITEM *const lara_item)
         return;
     }
 
-    ITEM *const item_gong_bonger = &g_Items[item_gong_bonger_num];
+    ITEM *const item_gong_bonger = Item_Get(item_gong_bonger_num);
     item_gong_bonger->object_id = O_GONG_BONGER;
     item_gong_bonger->pos.x = lara_item->pos.x;
     item_gong_bonger->pos.y = lara_item->pos.y;

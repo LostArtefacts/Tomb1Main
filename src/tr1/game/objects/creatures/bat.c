@@ -33,7 +33,7 @@ static void M_FixEmbeddedPosition(int16_t item_num);
 
 static void M_FixEmbeddedPosition(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status == IS_ACTIVE) {
         return;
     }
@@ -86,7 +86,7 @@ void Bat_Setup(OBJECT *obj)
 
 void Bat_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (item->status == IS_INVISIBLE) {
         if (!LOT_EnableBaddieAI(item_num, 0)) {

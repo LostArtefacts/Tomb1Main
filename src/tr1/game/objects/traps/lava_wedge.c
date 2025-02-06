@@ -20,7 +20,7 @@ void LavaWedge_Setup(OBJECT *obj)
 
 void LavaWedge_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     int16_t room_num = item->room_num;
     Room_GetSector(item->pos.x, item->pos.y, item->pos.z, &room_num);

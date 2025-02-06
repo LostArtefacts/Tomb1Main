@@ -115,9 +115,7 @@ void RollingBall_Control(const int16_t item_num)
                 item->touch_bits = 0;
             }
         }
-    } else if (
-        item->status == IS_DEACTIVATED
-        && !Item_IsTriggerActive(&g_Items[item_num])) {
+    } else if (item->status == IS_DEACTIVATED && !Item_IsTriggerActive(item)) {
         item->status = IS_INACTIVE;
         const GAME_VECTOR *const data = item->data;
         item->pos.x = data->x;
@@ -151,7 +149,7 @@ void RollingBall_Collision(
         return;
     }
 
-    if (!Item_TestBoundsCollide(&g_Items[item_num], lara_item, coll->radius)) {
+    if (!Item_TestBoundsCollide(item, lara_item, coll->radius)) {
         return;
     }
     if (!Collide_TestCollision(item, lara_item)) {

@@ -27,7 +27,7 @@ static bool M_IsUsable(int16_t item_num);
 
 static void M_Collision(int16_t item_num, ITEM *lara_item, COLL_INFO *coll)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     const OBJECT *const obj = Object_Get(item->object_id);
 
     if (g_Lara.interact_target.is_moving
@@ -79,7 +79,7 @@ void KeyHole_Setup(OBJECT *obj)
 
 bool KeyHole_Trigger(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (item->status == IS_ACTIVE && g_Lara.gun_status != LGS_HANDS_BUSY) {
         item->status = IS_DEACTIVATED;
         return true;

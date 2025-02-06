@@ -15,13 +15,13 @@ void SlidingPillar_Setup(OBJECT *obj)
 
 void SlidingPillar_Initialise(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     Room_AlterFloorHeight(item, -WALL_L * 2);
 }
 
 void SlidingPillar_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
     if (Item_IsTriggerActive(item)) {
         if (item->current_anim_state == SPS_START) {
             item->goal_anim_state = SPS_END;

@@ -17,7 +17,7 @@ void DartEmitter_Setup(OBJECT *obj)
 
 void DartEmitter_Control(int16_t item_num)
 {
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     if (Item_IsTriggerActive(item)) {
         if (item->current_anim_state == DART_EMITTER_STATE_IDLE) {
@@ -33,7 +33,7 @@ void DartEmitter_Control(int16_t item_num)
         && Item_TestFrameEqual(item, 0)) {
         int16_t dart_item_num = Item_Create();
         if (dart_item_num != NO_ITEM) {
-            ITEM *dart = &g_Items[dart_item_num];
+            ITEM *const dart = Item_Get(dart_item_num);
             dart->object_id = O_DART;
             dart->room_num = item->room_num;
             dart->shade.value_1 = -1;

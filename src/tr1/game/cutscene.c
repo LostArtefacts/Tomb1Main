@@ -37,7 +37,7 @@ static void M_InitialiseLara(const GF_LEVEL *const level)
 
     int16_t lara_item_num = NO_ITEM;
     for (int32_t i = 0; i < Item_GetTotalCount(); i++) {
-        if (g_Items[i].object_id == lara_type) {
+        if (Item_Get(i)->object_id == lara_type) {
             lara_item_num = i;
             break;
         }

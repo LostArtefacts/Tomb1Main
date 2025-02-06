@@ -779,7 +779,7 @@ void Room_RemoveFlipItems(const ROOM *const room)
     int16_t item_num = room->item_num;
 
     while (item_num != NO_ITEM) {
-        ITEM *const item = &g_Items[item_num];
+        ITEM *const item = Item_Get(item_num);
 
         switch (item->object_id) {
         case O_MOVABLE_BLOCK_1:
@@ -808,7 +808,7 @@ void Room_AddFlipItems(const ROOM *const room)
 {
     int16_t item_num = room->item_num;
     while (item_num != NO_ITEM) {
-        const ITEM *const item = &g_Items[item_num];
+        const ITEM *const item = Item_Get(item_num);
 
         switch (item->object_id) {
         case O_MOVABLE_BLOCK_1:

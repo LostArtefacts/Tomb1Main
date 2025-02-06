@@ -74,7 +74,7 @@ void Bridge_FixEmbeddedPosition(int16_t item_num)
     // Some bridges at floor level are embedded into the floor.
     // This checks if bridges are below a room's floor level
     // and moves them up.
-    ITEM *item = &g_Items[item_num];
+    ITEM *const item = Item_Get(item_num);
 
     int32_t x = item->pos.x;
     int32_t y = item->pos.y;

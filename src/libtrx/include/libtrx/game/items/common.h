@@ -3,11 +3,21 @@
 #include "../anims.h"
 #include "./types.h"
 
+void Item_InitialiseItems(int32_t num_items);
 ITEM *Item_Get(int16_t num);
+int16_t Item_GetIndex(const ITEM *item);
 ITEM *Item_Find(GAME_OBJECT_ID obj_id);
+int32_t Item_GetLevelCount(void);
 int32_t Item_GetTotalCount(void);
+int16_t Item_GetNextActive(void);
+int16_t Item_GetPrevActive(void);
+void Item_SetNextActive(int16_t item_num);
+void Item_SetPrevActive(int16_t item_num);
 int32_t Item_GetDistance(const ITEM *item, const XYZ_32 *target);
 void Item_TakeDamage(ITEM *item, int16_t damage, bool hit_status);
+
+int16_t Item_Create(void);
+int16_t Item_CreateLevelItem(void);
 
 // Mesh_bits: which meshes to affect.
 // Damage:
