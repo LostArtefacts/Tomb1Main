@@ -35,18 +35,15 @@ void S_Output_DrawBackdropSurface(void);
 void S_Output_DrawFlatTriangle(
     PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, RGBA_8888 color);
 void S_Output_DrawEnvMapTriangle(
-    const PHD_VBUF *vn1, const PHD_VBUF *vn2, const PHD_VBUF *vn3,
-    const TEXTURE_UV *uv1, const TEXTURE_UV *uv2, const TEXTURE_UV *uv3);
+    const PHD_VBUF *vn1, const PHD_VBUF *vn2, const PHD_VBUF *vn3);
 void S_Output_DrawEnvMapQuad(
     const PHD_VBUF *vn1, const PHD_VBUF *vn2, const PHD_VBUF *vn3,
-    const PHD_VBUF *vn4, const TEXTURE_UV *uv1, const TEXTURE_UV *uv2,
-    const TEXTURE_UV *uv3, const TEXTURE_UV *uv4);
+    const PHD_VBUF *vn4);
 void S_Output_DrawTexturedTriangle(
-    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, int16_t tpage, TEXTURE_UV *uv1,
-    TEXTURE_UV *uv2, TEXTURE_UV *uv3, uint16_t textype);
+    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, int16_t tpage,
+    uint16_t textype);
 void S_Output_DrawTexturedQuad(
     PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, PHD_VBUF *vn4, int16_t tpage,
-    TEXTURE_UV *uv1, TEXTURE_UV *uv2, TEXTURE_UV *uv3, TEXTURE_UV *uv4,
     uint16_t textype);
 void S_Output_DrawSprite(
     int16_t x1, int16_t y1, int16_t x2, int y2, int z, int sprnum, int shade);

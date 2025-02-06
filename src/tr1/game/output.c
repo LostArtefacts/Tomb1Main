@@ -144,9 +144,13 @@ static void M_DrawTexturedFace3s(const FACE3 *const faces, const int32_t count)
         };
 
         OBJECT_TEXTURE *const tex = Output_GetObjectTexture(face->texture_idx);
+        for (int32_t j = 0; j < 3; j++) {
+            vns[j]->u = tex->uv[j].u;
+            vns[j]->v = tex->uv[j].v;
+        }
+
         S_Output_DrawTexturedTriangle(
-            vns[0], vns[1], vns[2], tex->tex_page, &tex->uv[0], &tex->uv[1],
-            &tex->uv[2], tex->draw_type);
+            vns[0], vns[1], vns[2], tex->tex_page, tex->draw_type);
     }
 }
 
@@ -164,29 +168,34 @@ static void M_DrawTexturedFace4s(const FACE4 *const faces, const int32_t count)
         };
 
         OBJECT_TEXTURE *const tex = Output_GetObjectTexture(face->texture_idx);
+        for (int32_t j = 0; j < 4; j++) {
+            vns[j]->u = tex->uv[j].u;
+            vns[j]->v = tex->uv[j].v;
+        }
+
         S_Output_DrawTexturedQuad(
-            vns[0], vns[1], vns[2], vns[3], tex->tex_page, &tex->uv[0],
-            &tex->uv[1], &tex->uv[2], &tex->uv[3], tex->draw_type);
+            vns[0], vns[1], vns[2], vns[3], tex->tex_page, tex->draw_type);
     }
 }
 
 static void M_DrawObjectFace3EnvMap(
     const FACE3 *const faces, const int32_t count)
 {
-    const PHD_VBUF *vns[3];
-    const TEXTURE_UV *uv[3];
-
     for (int32_t i = 0; i < count; i++) {
         const FACE3 *const face = &faces[i];
+        PHD_VBUF *vns[3] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+        };
+
         for (int32_t j = 0; j < 3; j++) {
-            const uint16_t vertex_num = face->vertices[j];
-            vns[j] = &m_VBuf[vertex_num];
-            uv[j] = &m_EnvMapUV[vertex_num];
+            vns[j]->u = m_EnvMapUV[face->vertices[j]].u;
+            vns[j]->v = m_EnvMapUV[face->vertices[j]].v;
         }
 
         if (face->enable_reflections) {
-            S_Output_DrawEnvMapTriangle(
-                vns[0], vns[1], vns[2], uv[0], uv[1], uv[2]);
+            S_Output_DrawEnvMapTriangle(vns[0], vns[1], vns[2]);
         }
     }
 }
@@ -194,20 +203,22 @@ static void M_DrawObjectFace3EnvMap(
 static void M_DrawObjectFace4EnvMap(
     const FACE4 *const faces, const int32_t count)
 {
-    const PHD_VBUF *vns[4];
-    const TEXTURE_UV *uv[4];
-
     for (int32_t i = 0; i < count; i++) {
         const FACE4 *const face = &faces[i];
+        PHD_VBUF *vns[4] = {
+            &m_VBuf[face->vertices[0]],
+            &m_VBuf[face->vertices[1]],
+            &m_VBuf[face->vertices[2]],
+            &m_VBuf[face->vertices[3]],
+        };
+
         for (int32_t j = 0; j < 4; j++) {
-            const uint16_t vertex_num = face->vertices[j];
-            vns[j] = &m_VBuf[vertex_num];
-            uv[j] = &m_EnvMapUV[vertex_num];
+            vns[j]->u = m_EnvMapUV[face->vertices[j]].u;
+            vns[j]->v = m_EnvMapUV[face->vertices[j]].v;
         }
 
         if (face->enable_reflections) {
-            S_Output_DrawEnvMapQuad(
-                vns[0], vns[1], vns[2], vns[3], uv[0], uv[1], uv[2], uv[3]);
+            S_Output_DrawEnvMapQuad(vns[0], vns[1], vns[2], vns[3]);
         }
     }
 }

@@ -724,8 +724,7 @@ void S_Output_DrawFlatTriangle(
 
 void S_Output_DrawEnvMapTriangle(
     const PHD_VBUF *const vn1, const PHD_VBUF *const vn2,
-    const PHD_VBUF *const vn3, const TEXTURE_UV *const uv1,
-    const TEXTURE_UV *const uv2, const TEXTURE_UV *const uv3)
+    const PHD_VBUF *const vn3)
 {
     int vertex_count = 3;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
@@ -733,7 +732,6 @@ void S_Output_DrawEnvMapTriangle(
     const float multiplier = g_Config.visuals.brightness / 16.0f;
 
     const PHD_VBUF *const src_vbuf[3] = { vn1, vn2, vn3 };
-    const TEXTURE_UV *const src_uv[3] = { uv1, uv2, uv3 };
 
     if (vn3->clip & vn2->clip & vn1->clip) {
         return;
@@ -750,8 +748,8 @@ void S_Output_DrawEnvMapTriangle(
             vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
             vertices[i].w = 1.0f / src_vbuf[i]->zv;
-            vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
-            vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
+            vertices[i].s = M_GetUV(src_vbuf[i]->u) * vertices[i].w;
+            vertices[i].t = M_GetUV(src_vbuf[i]->v) * vertices[i].w;
 
             vertices[i].r = vertices[i].g = vertices[i].b =
                 (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -771,8 +769,8 @@ void S_Output_DrawEnvMapTriangle(
             points[i].xs = src_vbuf[i]->xs;
             points[i].ys = src_vbuf[i]->ys;
             points[i].g = src_vbuf[i]->g;
-            points[i].u = M_GetUV(src_uv[i]->u);
-            points[i].v = M_GetUV(src_uv[i]->v);
+            points[i].u = M_GetUV(src_vbuf[i]->u);
+            points[i].v = M_GetUV(src_vbuf[i]->v);
         }
 
         vertex_count = M_ZedClipper(vertex_count, points, vertices);
@@ -795,9 +793,7 @@ void S_Output_DrawEnvMapTriangle(
 
 void S_Output_DrawEnvMapQuad(
     const PHD_VBUF *const vn1, const PHD_VBUF *const vn2,
-    const PHD_VBUF *const vn3, const PHD_VBUF *const vn4,
-    const TEXTURE_UV *const uv1, const TEXTURE_UV *const uv2,
-    const TEXTURE_UV *const uv3, const TEXTURE_UV *const uv4)
+    const PHD_VBUF *const vn3, const PHD_VBUF *const vn4)
 {
     int vertex_count = 4;
     GFX_3D_VERTEX vertices[vertex_count];
@@ -816,8 +812,8 @@ void S_Output_DrawEnvMapQuad(
             return;
         }
 
-        S_Output_DrawEnvMapTriangle(vn1, vn2, vn3, uv1, uv2, uv3);
-        S_Output_DrawEnvMapTriangle(vn3, vn4, vn1, uv3, uv4, uv1);
+        S_Output_DrawEnvMapTriangle(vn1, vn2, vn3);
+        S_Output_DrawEnvMapTriangle(vn3, vn4, vn1);
         return;
     }
 
@@ -828,7 +824,6 @@ void S_Output_DrawEnvMapQuad(
     float multiplier = g_Config.visuals.brightness / 16.0f;
 
     const PHD_VBUF *const src_vbuf[4] = { vn2, vn1, vn3, vn4 };
-    const TEXTURE_UV *const src_uv[4] = { uv2, uv1, uv3, uv4 };
 
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
@@ -836,8 +831,8 @@ void S_Output_DrawEnvMapQuad(
         vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
         vertices[i].w = 1.0f / src_vbuf[i]->zv;
-        vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
-        vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
+        vertices[i].s = M_GetUV(src_vbuf[i]->u) * vertices[i].w;
+        vertices[i].t = M_GetUV(src_vbuf[i]->v) * vertices[i].w;
 
         vertices[i].r = vertices[i].g = vertices[i].b =
             (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -854,24 +849,19 @@ void S_Output_DrawEnvMapQuad(
 }
 
 void S_Output_DrawTexturedTriangle(
-    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, int16_t tpage, TEXTURE_UV *uv1,
-    TEXTURE_UV *uv2, TEXTURE_UV *uv3, uint16_t textype)
+    PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, int16_t tpage,
+    uint16_t textype)
 {
     int vertex_count = 3;
     GFX_3D_VERTEX vertices[vertex_count * CLIP_VERTCOUNT_SCALE];
     POINT_INFO points[3];
     PHD_VBUF *src_vbuf[3];
-    TEXTURE_UV *src_uv[3];
 
     float multiplier = g_Config.visuals.brightness / 16.0f;
 
     src_vbuf[0] = vn1;
     src_vbuf[1] = vn2;
     src_vbuf[2] = vn3;
-
-    src_uv[0] = uv1;
-    src_uv[1] = uv2;
-    src_uv[2] = uv3;
 
     if (vn3->clip & vn2->clip & vn1->clip) {
         return;
@@ -888,8 +878,8 @@ void S_Output_DrawTexturedTriangle(
             vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
             vertices[i].w = 1.0f / src_vbuf[i]->zv;
-            vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
-            vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
+            vertices[i].s = M_GetUV(src_vbuf[i]->u) * vertices[i].w;
+            vertices[i].t = M_GetUV(src_vbuf[i]->v) * vertices[i].w;
 
             vertices[i].r = vertices[i].g = vertices[i].b =
                 (8192.0f - src_vbuf[i]->g) * multiplier;
@@ -908,8 +898,8 @@ void S_Output_DrawTexturedTriangle(
             points[i].xs = src_vbuf[i]->xs;
             points[i].ys = src_vbuf[i]->ys;
             points[i].g = src_vbuf[i]->g;
-            points[i].u = M_GetUV(src_uv[i]->u);
-            points[i].v = M_GetUV(src_uv[i]->v);
+            points[i].u = M_GetUV(src_vbuf[i]->u);
+            points[i].v = M_GetUV(src_vbuf[i]->v);
         }
 
         vertex_count = M_ZedClipper(vertex_count, points, vertices);
@@ -934,13 +924,11 @@ void S_Output_DrawTexturedTriangle(
 
 void S_Output_DrawTexturedQuad(
     PHD_VBUF *vn1, PHD_VBUF *vn2, PHD_VBUF *vn3, PHD_VBUF *vn4, int16_t tpage,
-    TEXTURE_UV *uv1, TEXTURE_UV *uv2, TEXTURE_UV *uv3, TEXTURE_UV *uv4,
     uint16_t textype)
 {
     int vertex_count = 4;
     GFX_3D_VERTEX vertices[vertex_count];
     PHD_VBUF *src_vbuf[4];
-    TEXTURE_UV *src_uv[4];
 
     if (vn4->clip | vn3->clip | vn2->clip | vn1->clip) {
         if ((vn4->clip & vn3->clip & vn2->clip & vn1->clip)) {
@@ -956,10 +944,8 @@ void S_Output_DrawTexturedQuad(
             return;
         }
 
-        S_Output_DrawTexturedTriangle(
-            vn1, vn2, vn3, tpage, uv1, uv2, uv3, textype);
-        S_Output_DrawTexturedTriangle(
-            vn3, vn4, vn1, tpage, uv3, uv4, uv1, textype);
+        S_Output_DrawTexturedTriangle(vn1, vn2, vn3, tpage, textype);
+        S_Output_DrawTexturedTriangle(vn3, vn4, vn1, tpage, textype);
         return;
     }
 
@@ -974,19 +960,14 @@ void S_Output_DrawTexturedQuad(
     src_vbuf[2] = vn3;
     src_vbuf[3] = vn4;
 
-    src_uv[0] = uv2;
-    src_uv[1] = uv1;
-    src_uv[2] = uv3;
-    src_uv[3] = uv4;
-
     for (int i = 0; i < vertex_count; i++) {
         vertices[i].x = src_vbuf[i]->xs;
         vertices[i].y = src_vbuf[i]->ys;
         vertices[i].z = MAP_DEPTH(src_vbuf[i]->zv);
 
         vertices[i].w = 1.0f / src_vbuf[i]->zv;
-        vertices[i].s = M_GetUV(src_uv[i]->u) * vertices[i].w;
-        vertices[i].t = M_GetUV(src_uv[i]->v) * vertices[i].w;
+        vertices[i].s = M_GetUV(src_vbuf[i]->u) * vertices[i].w;
+        vertices[i].t = M_GetUV(src_vbuf[i]->v) * vertices[i].w;
 
         vertices[i].r = vertices[i].g = vertices[i].b =
             (8192.0f - src_vbuf[i]->g) * multiplier;
